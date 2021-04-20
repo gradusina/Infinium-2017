@@ -146,6 +146,7 @@ namespace Infinium
 
             dgvPatina.Columns["PatinaID"].HeaderText = "ID";
             dgvPatina.Columns["PatinaName"].HeaderText = "Патина";
+            dgvPatina.Columns["Patina"].HeaderText = "Patina";
             dgvPatina.Columns["DisplayName"].HeaderText = "Отображаемое\r\nимя";
 
             dgvPatinaRal.Columns["PatinaID"].Visible = false;
@@ -155,6 +156,7 @@ namespace Infinium
             dgvPatinaRal.Columns["Enabled"].HeaderText = "Используется";
 
             dgvPatina.Columns["PatinaID"].Width = 45;
+            dgvPatina.Columns["Patina"].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
 
             dgvPatinaRal.Columns["PatinaRALID"].Width = 75;
             dgvPatinaRal.Columns["DisplayName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;

@@ -3642,7 +3642,7 @@ namespace Infinium
             SetStyle(ControlStyles.AllPaintingInWmPaint, true);
             SetStyle(ControlStyles.DoubleBuffer, true);
 
-            Back = new Bitmap(Properties.Resources.n2);
+            //Back = new Bitmap(Properties.Resources.n21);
             //scale = (float)Back.Width / Back.Height;
         }
 

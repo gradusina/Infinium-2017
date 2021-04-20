@@ -16,16 +16,54 @@ using System.Windows.Forms;
 
 namespace Infinium.Modules.TechnologyCatalog
 {
+    public struct TechLabelInfo
+    {
+        #region Fields
+
+        public string Color;
+        public string DocDateTime;
+        public int Factory;
+        public int Height;
+        public int LabelsCount;
+        public int Length;
+        public int PositionsCount;
+        public int Width;
+
+        #endregion Fields
+    }
+
+    public struct TechStoreGroupInfo
+    {
+        #region Fields
+
+        public int Height;
+        public int Length;
+        public string SubGroupNotes;
+        public string SubGroupNotes1;
+        public string SubGroupNotes2;
+        public string TechStoreName;
+        public string TechStoreSubGroupName;
+        public int Width;
+
+        #endregion Fields
+    }
+
     public class PatinaManager
     {
+        #region Fields
+
         public BindingSource PatinaBS;
         public BindingSource PatinaRalBS;
-        DataTable PatinaDT;
-        DataTable PatinaRalDT;
-        SqlCommandBuilder PatinaRalSCB;
-        SqlDataAdapter PatinaRalSDA;
-        SqlCommandBuilder PatinaSCB;
-        SqlDataAdapter PatinaSDA;
+        private DataTable PatinaDT;
+        private DataTable PatinaRalDT;
+        private SqlCommandBuilder PatinaRalSCB;
+        private SqlDataAdapter PatinaRalSDA;
+        private SqlCommandBuilder PatinaSCB;
+        private SqlDataAdapter PatinaSDA;
+
+        #endregion Fields
+
+        #region Constructors
 
         public PatinaManager()
         {
@@ -33,7 +71,7 @@ namespace Infinium.Modules.TechnologyCatalog
             PatinaRalDT = new DataTable();
             PatinaBS = new BindingSource();
             PatinaRalBS = new BindingSource();
-            string SelectCommand = @"SELECT * FROM Patina WHERE PatinaID NOT IN (-1,0) ORDER BY PatinaName";
+            string SelectCommand = @"SELECT * FROM Patina ORDER BY PatinaID";
             PatinaSDA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString);
             PatinaSCB = new SqlCommandBuilder(PatinaSDA);
             PatinaSDA.Fill(PatinaDT);
@@ -47,6 +85,10 @@ namespace Infinium.Modules.TechnologyCatalog
             PatinaRalBS.DataSource = PatinaRalDT;
         }
 
+        #endregion Constructors
+
+        #region Methods
+
         public void ChangePatinaGroup(int PatinaRALID, int PatinaID)
         {
             DataRow[] Rows = PatinaRalDT.Select("PatinaRALID = " + PatinaRALID);
@@ -54,6 +96,11 @@ namespace Infinium.Modules.TechnologyCatalog
             {
                 Rows[0]["PatinaID"] = PatinaID;
             }
+        }
+
+        public void FilterPatinaRAL(int PatinaID)
+        {
+            PatinaRalBS.Filter = "PatinaID=" + PatinaID;
         }
 
         public void RemoveCurrentPatina()
@@ -96,14 +143,13 @@ namespace Infinium.Modules.TechnologyCatalog
             PatinaRalSDA.Fill(PatinaRalDT);
         }
 
-        public void FilterPatinaRAL(int PatinaID)
-        {
-            PatinaRalBS.Filter = "PatinaID=" + PatinaID;
-        }
+        #endregion Methods
     }
 
     public class TechCatalogEvents
     {
+        #region Methods
+
         public static void SaveEvents(string Event)
         {
             DataTable EventsDataTable = new DataTable();
@@ -126,32 +172,56 @@ namespace Infinium.Modules.TechnologyCatalog
                 }
             }
         }
+
+        #endregion Methods
     }
 
     public class TechCatalogOperationsTerms
     {
-        BindingSource ColorsBS;
-        DataTable ColorsDT;
-        BindingSource CoversBS;
-        DataTable CoversDT;
-        BindingSource InsetColorsBS;
-        DataTable InsetColorsDT;
-        BindingSource InsetTypesBS;
-        DataTable InsetTypesDT;
-        int iTechCatalogOperationsDetailID = 0;
-        BindingSource MathSymbolsBS;
-        BindingSource LogicOperationsBS;
-        DataTable MathSymbolsDT;
-        DataTable LogicOperationsDT;
-        BindingSource ParametersBS;
-        DataTable ParametersDT;
-        BindingSource PatinaBS;
-        DataTable PatinaDT;
-        BindingSource TermsBS;
-        DataTable TermsDT;
-        public TechCatalogOperationsTerms()
-        {
+        #region Fields
 
+        private BindingSource ColorsBS;
+        private DataTable ColorsDT;
+        private BindingSource CoversBS;
+        private DataTable CoversDT;
+        private BindingSource InsetColorsBS;
+        private DataTable InsetColorsDT;
+        private BindingSource InsetTypesBS;
+        private DataTable InsetTypesDT;
+        private int iTechCatalogOperationsDetailID = 0;
+        private BindingSource LogicOperationsBS;
+        private DataTable LogicOperationsDT;
+        private BindingSource MathSymbolsBS;
+        private DataTable MathSymbolsDT;
+        private BindingSource ParametersBS;
+        private DataTable ParametersDT;
+        private BindingSource PatinaBS;
+        private DataTable PatinaDT;
+        private BindingSource TermsBS;
+        private DataTable TermsDT;
+
+        #endregion Fields
+
+        #region Properties
+
+        public DataGridViewComboBoxColumn LogicOperationsColumn
+        {
+            get
+            {
+                DataGridViewComboBoxColumn Column = new DataGridViewComboBoxColumn()
+                {
+                    Name = "LogicOperationsColumn",
+                    HeaderText = "Лог. операция",
+                    DataPropertyName = "LogicOperation",
+                    DataSource = new DataView(LogicOperationsDT),
+                    ValueMember = "LogicOperation",
+                    DisplayMember = "LogicOperation",
+                    DisplayStyle = DataGridViewComboBoxDisplayStyle.Nothing,
+                    SortMode = DataGridViewColumnSortMode.Automatic
+                };
+                Column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                return Column;
+            }
         }
 
         public DataGridViewComboBoxColumn ParameterColumn
@@ -174,30 +244,20 @@ namespace Infinium.Modules.TechnologyCatalog
             }
         }
 
-        public DataGridViewComboBoxColumn LogicOperationsColumn
-        {
-            get
-            {
-                DataGridViewComboBoxColumn Column = new DataGridViewComboBoxColumn()
-                {
-                    Name = "LogicOperationsColumn",
-                    HeaderText = "Лог. операция",
-                    DataPropertyName = "LogicOperation",
-                    DataSource = new DataView(LogicOperationsDT),
-                    ValueMember = "LogicOperation",
-                    DisplayMember = "LogicOperation",
-                    DisplayStyle = DataGridViewComboBoxDisplayStyle.Nothing,
-                    SortMode = DataGridViewColumnSortMode.Automatic
-                };
-                Column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
-                return Column;
-            }
-        }
-
         public int TechCatalogOperationsDetailID
         {
             set { iTechCatalogOperationsDetailID = value; }
         }
+
+        #endregion Properties
+
+        #region Constructors
+
+        public TechCatalogOperationsTerms()
+        {
+        }
+
+        #endregion Constructors
 
         #region DataSources
 
@@ -221,13 +281,14 @@ namespace Infinium.Modules.TechnologyCatalog
             get { return InsetTypesBS; }
         }
 
-        public BindingSource MathSymbolsList
-        {
-            get { return MathSymbolsBS; }
-        }
         public BindingSource LogicOperationsList
         {
             get { return LogicOperationsBS; }
+        }
+
+        public BindingSource MathSymbolsList
+        {
+            get { return MathSymbolsBS; }
         }
 
         public BindingSource ParametersList
@@ -245,19 +306,22 @@ namespace Infinium.Modules.TechnologyCatalog
             get { return TermsBS; }
         }
 
-        #endregion
-        public void AddMathSymbol(string MathSymbol)
-        {
-            DataRow NewRow = MathSymbolsDT.NewRow();
-            NewRow["MathSymbol"] = MathSymbol;
-            MathSymbolsDT.Rows.Add(NewRow);
-        }
+        #endregion DataSources
+
+        #region Methods
 
         public void AddLogicOperation(string LogicOperation)
         {
             DataRow NewRow = LogicOperationsDT.NewRow();
             NewRow["LogicOperation"] = LogicOperation;
             LogicOperationsDT.Rows.Add(NewRow);
+        }
+
+        public void AddMathSymbol(string MathSymbol)
+        {
+            DataRow NewRow = MathSymbolsDT.NewRow();
+            NewRow["MathSymbol"] = MathSymbol;
+            MathSymbolsDT.Rows.Add(NewRow);
         }
 
         public void AddTerm(string Parameter, string MathSymbol, decimal Term, string LogicOperation)
@@ -292,26 +356,31 @@ namespace Infinium.Modules.TechnologyCatalog
                         if (rows1.Count() > 0)
                             ParameterName = rows1[0]["CoverName"].ToString();
                         break;
+
                     case "InsetTypeID":
                         DataRow[] rows2 = InsetTypesDT.Select("InsetTypeID = " + Term);
                         if (rows2.Count() > 0)
                             ParameterName = rows2[0]["InsetTypeName"].ToString();
                         break;
+
                     case "InsetColorID":
                         DataRow[] rows3 = InsetColorsDT.Select("InsetColorID = " + Term);
                         if (rows3.Count() > 0)
                             ParameterName = rows3[0]["InsetColorName"].ToString();
                         break;
+
                     case "ColorID":
                         DataRow[] rows4 = ColorsDT.Select("ColorID = " + Term);
                         if (rows4.Count() > 0)
                             ParameterName = rows4[0]["ColorName"].ToString();
                         break;
+
                     case "PatinaID":
                         DataRow[] rows5 = PatinaDT.Select("PatinaID = " + Term);
                         if (rows5.Count() > 0)
                             ParameterName = rows5[0]["PatinaName"].ToString();
                         break;
+
                     default:
                         ParameterName = Term.ToString();
                         break;
@@ -320,11 +389,44 @@ namespace Infinium.Modules.TechnologyCatalog
             }
         }
 
+        public string GetColorName(int TechStoreID)
+        {
+            string ColorName = string.Empty;
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TechStoreID, TechStoreName FROM TechStore WHERE TechStoreID=" + TechStoreID, ConnectionStrings.CatalogConnectionString))
+            {
+                using (DataTable DT = new DataTable())
+                {
+                    DA.Fill(DT);
+                    try
+                    {
+                        DataRow[] Rows = DT.Select("TechStoreID = " + TechStoreID);
+                        ColorName = Rows[0]["TechStoreName"].ToString();
+                    }
+                    catch
+                    {
+                        return string.Empty;
+                    }
+                }
+            }
+            return ColorName;
+        }
+
         public void Initialize()
         {
             Create();
             Fill();
             Binding();
+            FillParameterNames();
+        }
+
+        public void RefreshTerms()
+        {
+            string SelectCommand = "SELECT * FROM TechCatalogOperationsTerms WHERE TechCatalogOperationsDetailID = " + iTechCatalogOperationsDetailID;
+            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
+            {
+                TermsDT.Clear();
+                DA.Fill(TermsDT);
+            }
             FillParameterNames();
         }
 
@@ -356,7 +458,6 @@ namespace Infinium.Modules.TechnologyCatalog
                                 DT.Rows[0]["IsPerform"] = false;
                             DA.Update(DT);
                         }
-
                     }
                 }
             }
@@ -535,39 +636,6 @@ namespace Infinium.Modules.TechnologyCatalog
             AddParameter("Weight", "Вес");
         }
 
-        public void RefreshTerms()
-        {
-            string SelectCommand = "SELECT * FROM TechCatalogOperationsTerms WHERE TechCatalogOperationsDetailID = " + iTechCatalogOperationsDetailID;
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
-            {
-                TermsDT.Clear();
-                DA.Fill(TermsDT);
-            }
-            FillParameterNames();
-        }
-
-        public string GetColorName(int TechStoreID)
-        {
-            string ColorName = string.Empty;
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TechStoreID, TechStoreName FROM TechStore WHERE TechStoreID=" + TechStoreID, ConnectionStrings.CatalogConnectionString))
-            {
-                using (DataTable DT = new DataTable())
-                {
-                    DA.Fill(DT);
-                    try
-                    {
-                        DataRow[] Rows = DT.Select("TechStoreID = " + TechStoreID);
-                        ColorName = Rows[0]["TechStoreName"].ToString();
-                    }
-                    catch
-                    {
-                        return string.Empty;
-                    }
-                }
-            }
-            return ColorName;
-        }
-
         private void GetColorsDT()
         {
             ColorsDT = new DataTable();
@@ -646,47 +714,58 @@ namespace Infinium.Modules.TechnologyCatalog
                     NewRow["InsetColorName"] = "на выбор";
                     InsetColorsDT.Rows.Add(NewRow);
                 }
-
             }
-
         }
+
+        #endregion Methods
     }
 
     public class TechCatalogStoreDetailTerms
     {
-        BindingSource ColorsBS;
-        DataTable ColorsDT;
-        BindingSource CoversBS;
-        DataTable CoversDT;
-        BindingSource InsetColorsBS;
-        DataTable InsetColorsDT;
-        BindingSource InsetTypesBS;
-        DataTable InsetTypesDT;
-        int iTechCatalogStoreDetailID = 0;
-        BindingSource MathSymbolsBS;
-        BindingSource LogicOperationsBS;
-        DataTable MathSymbolsDT;
-        DataTable LogicOperationsDT;
-        BindingSource ParametersBS;
-        DataTable ParametersDT;
-        BindingSource PatinaBS;
-        DataTable PatinaDT;
-        BindingSource TermsBS;
-        DataTable TermsDT;
-        public TechCatalogStoreDetailTerms()
-        {
+        #region Fields
 
-        }
+        private BindingSource ColorsBS;
+        private DataTable ColorsDT;
+        private BindingSource CoversBS;
+        private DataTable CoversDT;
+        private BindingSource InsetColorsBS;
+        private DataTable InsetColorsDT;
+        private BindingSource InsetTypesBS;
+        private DataTable InsetTypesDT;
+        private int iTechCatalogStoreDetailID = 0;
+        private BindingSource LogicOperationsBS;
+        private DataTable LogicOperationsDT;
+        private BindingSource MathSymbolsBS;
+        private DataTable MathSymbolsDT;
+        private BindingSource ParametersBS;
+        private DataTable ParametersDT;
+        private BindingSource PatinaBS;
+        private DataTable PatinaDT;
+        private BindingSource TermsBS;
+        private DataTable TermsDT;
 
-        public void RefreshTerms()
+        #endregion Fields
+
+        #region Properties
+
+        public DataGridViewComboBoxColumn LogicOperationsColumn
         {
-            string SelectCommand = "SELECT * FROM TechCatalogStoreDetailTerms WHERE TechCatalogStoreDetailID = " + iTechCatalogStoreDetailID;
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
+            get
             {
-                TermsDT.Clear();
-                DA.Fill(TermsDT);
+                DataGridViewComboBoxColumn Column = new DataGridViewComboBoxColumn()
+                {
+                    Name = "LogicOperationsColumn",
+                    HeaderText = "Лог. операция",
+                    DataPropertyName = "LogicOperation",
+                    DataSource = new DataView(LogicOperationsDT),
+                    ValueMember = "LogicOperation",
+                    DisplayMember = "LogicOperation",
+                    DisplayStyle = DataGridViewComboBoxDisplayStyle.Nothing,
+                    SortMode = DataGridViewColumnSortMode.Automatic
+                };
+                Column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                return Column;
             }
-            FillParameterNames();
         }
 
         public DataGridViewComboBoxColumn ParameterColumn
@@ -709,91 +788,35 @@ namespace Infinium.Modules.TechnologyCatalog
             }
         }
 
-        public DataGridViewComboBoxColumn LogicOperationsColumn
-        {
-            get
-            {
-                DataGridViewComboBoxColumn Column = new DataGridViewComboBoxColumn()
-                {
-                    Name = "LogicOperationsColumn",
-                    HeaderText = "Лог. операция",
-                    DataPropertyName = "LogicOperation",
-                    DataSource = new DataView(LogicOperationsDT),
-                    ValueMember = "LogicOperation",
-                    DisplayMember = "LogicOperation",
-                    DisplayStyle = DataGridViewComboBoxDisplayStyle.Nothing,
-                    SortMode = DataGridViewColumnSortMode.Automatic
-                };
-                Column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
-                return Column;
-            }
-        }
-
         public int TechCatalogStoreDetailID
         {
             set { iTechCatalogStoreDetailID = value; }
         }
 
-        #region DataSources
+        #endregion Properties
 
-        public BindingSource ColorsList
+        #region Constructors
+
+        public TechCatalogStoreDetailTerms()
         {
-            get { return ColorsBS; }
         }
 
-        public BindingSource CoversList
-        {
-            get { return CoversBS; }
-        }
+        #endregion Constructors
 
-        public BindingSource InsetColorsList
-        {
-            get { return InsetColorsBS; }
-        }
-
-        public BindingSource InsetTypesList
-        {
-            get { return InsetTypesBS; }
-        }
-
-        public BindingSource MathSymbolsList
-        {
-            get { return MathSymbolsBS; }
-        }
-
-        public BindingSource LogicOperationsList
-        {
-            get { return LogicOperationsBS; }
-        }
-
-        public BindingSource ParametersList
-        {
-            get { return ParametersBS; }
-        }
-
-        public BindingSource PatinaList
-        {
-            get { return PatinaBS; }
-        }
-
-        public BindingSource TermsList
-        {
-            get { return TermsBS; }
-        }
-
-        #endregion
-        public void AddMathSymbol(string MathSymbol)
-        {
-            DataRow NewRow = MathSymbolsDT.NewRow();
-            NewRow["MathSymbol"] = MathSymbol;
-            MathSymbolsDT.Rows.Add(NewRow);
-        }
+        #region Methods
 
         public void AddLogicOperation(string LogicOperation)
         {
             DataRow NewRow = LogicOperationsDT.NewRow();
             NewRow["LogicOperation"] = LogicOperation;
             LogicOperationsDT.Rows.Add(NewRow);
+        }
+
+        public void AddMathSymbol(string MathSymbol)
+        {
+            DataRow NewRow = MathSymbolsDT.NewRow();
+            NewRow["MathSymbol"] = MathSymbol;
+            MathSymbolsDT.Rows.Add(NewRow);
         }
 
         public void AddTerm(string Parameter, string MathSymbol, decimal Term, string LogicOperation)
@@ -828,32 +851,59 @@ namespace Infinium.Modules.TechnologyCatalog
                         if (rows1.Count() > 0)
                             ParameterName = rows1[0]["CoverName"].ToString();
                         break;
+
                     case "InsetTypeID":
                         DataRow[] rows2 = InsetTypesDT.Select("InsetTypeID = " + Term);
                         if (rows2.Count() > 0)
                             ParameterName = rows2[0]["InsetTypeName"].ToString();
                         break;
+
                     case "InsetColorID":
                         DataRow[] rows3 = InsetColorsDT.Select("InsetColorID = " + Term);
                         if (rows3.Count() > 0)
                             ParameterName = rows3[0]["InsetColorName"].ToString();
                         break;
+
                     case "ColorID":
                         DataRow[] rows4 = ColorsDT.Select("ColorID = " + Term);
                         if (rows4.Count() > 0)
                             ParameterName = rows4[0]["ColorName"].ToString();
                         break;
+
                     case "PatinaID":
                         DataRow[] rows5 = PatinaDT.Select("PatinaID = " + Term);
                         if (rows5.Count() > 0)
                             ParameterName = rows5[0]["PatinaName"].ToString();
                         break;
+
                     default:
                         ParameterName = Term.ToString();
                         break;
                 }
                 TermsDT.Rows[i]["TermDisplayName"] = ParameterName;
             }
+        }
+
+        public string GetColorName(int TechStoreID)
+        {
+            string ColorName = string.Empty;
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TechStoreID, TechStoreName FROM TechStore WHERE TechStoreID=" + TechStoreID, ConnectionStrings.CatalogConnectionString))
+            {
+                using (DataTable DT = new DataTable())
+                {
+                    DA.Fill(DT);
+                    try
+                    {
+                        DataRow[] Rows = DT.Select("TechStoreID = " + TechStoreID);
+                        ColorName = Rows[0]["TechStoreName"].ToString();
+                    }
+                    catch
+                    {
+                        return string.Empty;
+                    }
+                }
+            }
+            return ColorName;
         }
 
         public void Initialize()
@@ -863,6 +913,70 @@ namespace Infinium.Modules.TechnologyCatalog
             Binding();
             FillParameterNames();
         }
+
+        public void RefreshTerms()
+        {
+            string SelectCommand = "SELECT * FROM TechCatalogStoreDetailTerms WHERE TechCatalogStoreDetailID = " + iTechCatalogStoreDetailID;
+            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
+            {
+                TermsDT.Clear();
+                DA.Fill(TermsDT);
+            }
+            FillParameterNames();
+        }
+
+        #endregion Methods
+
+        #region DataSources
+
+        public BindingSource ColorsList
+        {
+            get { return ColorsBS; }
+        }
+
+        public BindingSource CoversList
+        {
+            get { return CoversBS; }
+        }
+
+        public BindingSource InsetColorsList
+        {
+            get { return InsetColorsBS; }
+        }
+
+        public BindingSource InsetTypesList
+        {
+            get { return InsetTypesBS; }
+        }
+
+        public BindingSource LogicOperationsList
+        {
+            get { return LogicOperationsBS; }
+        }
+
+        public BindingSource MathSymbolsList
+        {
+            get { return MathSymbolsBS; }
+        }
+
+        public BindingSource ParametersList
+        {
+            get { return ParametersBS; }
+        }
+
+        public BindingSource PatinaList
+        {
+            get { return PatinaBS; }
+        }
+
+        public BindingSource TermsList
+        {
+            get { return TermsBS; }
+        }
+
+        #endregion DataSources
+
+        #region Public Methods
 
         public bool RemoveTerm()
         {
@@ -892,7 +1006,6 @@ namespace Infinium.Modules.TechnologyCatalog
                                 DT.Rows[0]["IsPerform"] = false;
                             DA.Update(DT);
                         }
-
                     }
                 }
             }
@@ -918,6 +1031,10 @@ namespace Infinium.Modules.TechnologyCatalog
                 DA.Fill(TermsDT);
             }
         }
+
+        #endregion Public Methods
+
+        #region Private Methods
 
         private void AddParameter(string Parameter, string Name)
         {
@@ -1071,28 +1188,6 @@ namespace Infinium.Modules.TechnologyCatalog
             AddParameter("Weight", "Вес");
         }
 
-        public string GetColorName(int TechStoreID)
-        {
-            string ColorName = string.Empty;
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TechStoreID, TechStoreName FROM TechStore WHERE TechStoreID=" + TechStoreID, ConnectionStrings.CatalogConnectionString))
-            {
-                using (DataTable DT = new DataTable())
-                {
-                    DA.Fill(DT);
-                    try
-                    {
-                        DataRow[] Rows = DT.Select("TechStoreID = " + TechStoreID);
-                        ColorName = Rows[0]["TechStoreName"].ToString();
-                    }
-                    catch
-                    {
-                        return string.Empty;
-                    }
-                }
-            }
-            return ColorName;
-        }
-
         private void GetColorsDT()
         {
             ColorsDT = new DataTable();
@@ -1171,14 +1266,16 @@ namespace Infinium.Modules.TechnologyCatalog
                     NewRow["InsetColorName"] = "на выбор";
                     InsetColorsDT.Rows.Add(NewRow);
                 }
-
             }
-
         }
+
+        #endregion Private Methods
     }
 
     public class TechStoreItemsManager
     {
+        #region Fields
+
         public BindingSource ColorsBS;
         public int CopyTechStoreID = -1;
 
@@ -1191,58 +1288,51 @@ namespace Infinium.Modules.TechnologyCatalog
         public BindingSource PatinaBS;
         public BindingSource StoreColorsGroupsBS;
         public BindingSource SubGroupsBS;
-        DataGridViewComboBoxColumn ColorColumn = new DataGridViewComboBoxColumn();
-        DataGridViewComboBoxColumn ColorColumn1 = new DataGridViewComboBoxColumn();
-        DataTable ColorsDT;
-        DataGridViewComboBoxColumn CoverColumn = new DataGridViewComboBoxColumn();
-        DataGridViewComboBoxColumn CoverColumn1 = new DataGridViewComboBoxColumn();
-        DataTable CoversDT;
-        SqlCommandBuilder GroupsCB;
-        SqlDataAdapter GroupsDA;
-        PercentageDataGrid GroupsDG;
-        DataTable GroupsDT;
-        DataGridViewComboBoxColumn InsetColorColumn = new DataGridViewComboBoxColumn();
-        DataGridViewComboBoxColumn InsetColorColumn1 = new DataGridViewComboBoxColumn();
-        DataTable InsetColorsDT;
-        DataGridViewComboBoxColumn InsetTypeColumn = new DataGridViewComboBoxColumn();
-        DataGridViewComboBoxColumn InsetTypeColumn1 = new DataGridViewComboBoxColumn();
-        DataTable InsetTypesDT;
-        SqlCommandBuilder ItemsCB;
-        SqlDataAdapter ItemsDA;
-        PercentageDataGrid ItemsDG;
-        DataTable ItemsDT;
-        DataGridViewComboBoxColumn MeasureColumn = new DataGridViewComboBoxColumn();
-        DataGridViewComboBoxColumn MeasureColumn1 = new DataGridViewComboBoxColumn();
-        DataTable MeasuresDT;
-        PercentageDataGrid NewItemsDG;
-        DataTable NewItemsDT;
-        DataGridViewComboBoxColumn PatinaColumn = new DataGridViewComboBoxColumn();
-        DataGridViewComboBoxColumn PatinaColumn1 = new DataGridViewComboBoxColumn();
-        DataTable PatinaDT;
+        private DataGridViewComboBoxColumn ColorColumn = new DataGridViewComboBoxColumn();
+        private DataGridViewComboBoxColumn ColorColumn1 = new DataGridViewComboBoxColumn();
+        private DataTable ColorsDT;
+        private DataGridViewComboBoxColumn CoverColumn = new DataGridViewComboBoxColumn();
+        private DataGridViewComboBoxColumn CoverColumn1 = new DataGridViewComboBoxColumn();
+        private DataTable CoversDT;
+        private SqlCommandBuilder GroupsCB;
+        private SqlDataAdapter GroupsDA;
+        private PercentageDataGrid GroupsDG;
+        private DataTable GroupsDT;
+        private DataGridViewComboBoxColumn InsetColorColumn = new DataGridViewComboBoxColumn();
+        private DataGridViewComboBoxColumn InsetColorColumn1 = new DataGridViewComboBoxColumn();
+        private DataTable InsetColorsDT;
+        private DataGridViewComboBoxColumn InsetTypeColumn = new DataGridViewComboBoxColumn();
+        private DataGridViewComboBoxColumn InsetTypeColumn1 = new DataGridViewComboBoxColumn();
+        private DataTable InsetTypesDT;
+        private SqlCommandBuilder ItemsCB;
+        private SqlDataAdapter ItemsDA;
+        private PercentageDataGrid ItemsDG;
+        private DataTable ItemsDT;
+        private DataGridViewComboBoxColumn MeasureColumn = new DataGridViewComboBoxColumn();
+        private DataGridViewComboBoxColumn MeasureColumn1 = new DataGridViewComboBoxColumn();
+        private DataTable MeasuresDT;
+        private PercentageDataGrid NewItemsDG;
+        private DataTable NewItemsDT;
+        private DataGridViewComboBoxColumn PatinaColumn = new DataGridViewComboBoxColumn();
+        private DataGridViewComboBoxColumn PatinaColumn1 = new DataGridViewComboBoxColumn();
+        private DataTable PatinaDT;
+
         //SqlCommandBuilder StoreColorsGroupsCB;
         //SqlDataAdapter StoreColorsGroupsDA;
         //DataTable StoreColorsGroupsDT;
-        SqlCommandBuilder SubGroupsCB;
-        SqlDataAdapter SubGroupsDA;
-        PercentageDataGrid SubGroupsDG;
-        DataTable SubGroupsDT;
-        DataGridViewComboBoxColumn TechnoInsetColorColumn = new DataGridViewComboBoxColumn();
-        DataGridViewComboBoxColumn TechnoInsetColorColumn1 = new DataGridViewComboBoxColumn();
-        DataGridViewComboBoxColumn TechnoInsetTypeColumn = new DataGridViewComboBoxColumn();
-        DataGridViewComboBoxColumn TechnoInsetTypeColumn1 = new DataGridViewComboBoxColumn();
-        public TechStoreItemsManager(ref PercentageDataGrid tGroupsDataGrid,
-            ref PercentageDataGrid tSubGroupsDataGrid,
-            ref PercentageDataGrid tItemsDataGrid)
-        {
-            GroupsDG = tGroupsDataGrid;
-            SubGroupsDG = tSubGroupsDataGrid;
-            ItemsDG = tItemsDataGrid;
+        private SqlCommandBuilder SubGroupsCB;
 
+        private SqlDataAdapter SubGroupsDA;
+        private PercentageDataGrid SubGroupsDG;
+        private DataTable SubGroupsDT;
+        private DataGridViewComboBoxColumn TechnoInsetColorColumn = new DataGridViewComboBoxColumn();
+        private DataGridViewComboBoxColumn TechnoInsetColorColumn1 = new DataGridViewComboBoxColumn();
+        private DataGridViewComboBoxColumn TechnoInsetTypeColumn = new DataGridViewComboBoxColumn();
+        private DataGridViewComboBoxColumn TechnoInsetTypeColumn1 = new DataGridViewComboBoxColumn();
 
-            CreateAndFill();
-            Binding();
-            GridSettings();
-        }
+        #endregion Fields
+
+        #region Properties
 
         public int CurrentGroup
         {
@@ -1287,6 +1377,7 @@ namespace Infinium.Modules.TechnologyCatalog
                     return Convert.ToInt32(((DataRowView)SubGroupsBS.Current).Row["TechStoreSubGroupID"]);
             }
         }
+
         public string CurrentSubGroupNotes
         {
             get
@@ -1297,6 +1388,7 @@ namespace Infinium.Modules.TechnologyCatalog
                     return ((DataRowView)SubGroupsBS.Current).Row["Notes"].ToString();
             }
         }
+
         public string CurrentSubGroupNotes1
         {
             get
@@ -1307,6 +1399,7 @@ namespace Infinium.Modules.TechnologyCatalog
                     return ((DataRowView)SubGroupsBS.Current).Row["Notes1"].ToString();
             }
         }
+
         public string CurrentSubGroupNotes2
         {
             get
@@ -1317,6 +1410,27 @@ namespace Infinium.Modules.TechnologyCatalog
                     return ((DataRowView)SubGroupsBS.Current).Row["Notes2"].ToString();
             }
         }
+
+        #endregion Properties
+
+        #region Constructors
+
+        public TechStoreItemsManager(ref PercentageDataGrid tGroupsDataGrid,
+                                                                    ref PercentageDataGrid tSubGroupsDataGrid,
+            ref PercentageDataGrid tItemsDataGrid)
+        {
+            GroupsDG = tGroupsDataGrid;
+            SubGroupsDG = tSubGroupsDataGrid;
+            ItemsDG = tItemsDataGrid;
+
+            CreateAndFill();
+            Binding();
+            GridSettings();
+        }
+
+        #endregion Constructors
+
+        #region Methods
 
         public void AddInsetColor(int TechStoreID, int GroupID, string TechStoreName)
         {
@@ -1415,6 +1529,28 @@ namespace Infinium.Modules.TechnologyCatalog
             ItemsDA.Fill(ItemsDT);
         }
 
+        public string GetColorName(int TechStoreID)
+        {
+            string ColorName = string.Empty;
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TechStoreID, TechStoreName FROM TechStore WHERE TechStoreID=" + TechStoreID, ConnectionStrings.CatalogConnectionString))
+            {
+                using (DataTable DT = new DataTable())
+                {
+                    DA.Fill(DT);
+                    try
+                    {
+                        DataRow[] Rows = DT.Select("TechStoreID = " + TechStoreID);
+                        ColorName = Rows[0]["TechStoreName"].ToString();
+                    }
+                    catch
+                    {
+                        return string.Empty;
+                    }
+                }
+            }
+            return ColorName;
+        }
+
         public bool IsInsetColorAlreadyExist(int TechStoreID, int GroupID)
         {
             DataRow[] Rows = InsetColorsDT.Select("InsetColorID = " + TechStoreID + " AND GroupID = " + GroupID);
@@ -1452,6 +1588,7 @@ namespace Infinium.Modules.TechnologyCatalog
                 }
             }
         }
+
         public void MoveToStore(int TechStoreID)
         {
             ItemsBS.Position = ItemsBS.Find("TechStoreID", TechStoreID);
@@ -1490,26 +1627,6 @@ namespace Infinium.Modules.TechnologyCatalog
             SubGroupsDA.Fill(SubGroupsDT);
         }
 
-        public void SaveEditItems()
-        {
-            DataRow[] row = ItemsDT.Select("TechStoreID = " + NewItemsDT.Rows[0]["TechStoreID"]);
-
-            foreach (DataColumn dc in ItemsDT.Columns)
-            {
-                if (dc.ColumnName == "ColorID" || dc.ColumnName == "PatinaID" || dc.ColumnName == "CoverID" || dc.ColumnName == "InsetTypeID" || dc.ColumnName == "InsetColorID")
-                {
-                    if (NewItemsDT.Rows[0][dc.ColumnName] != DBNull.Value && Convert.ToInt32(NewItemsDT.Rows[0][dc.ColumnName]) == -1)
-                    {
-                        row[0][dc.ColumnName] = DBNull.Value;
-                        continue;
-                    }
-                }
-                row[0][dc.ColumnName] = NewItemsDT.Rows[0][dc.ColumnName];
-            }
-
-            ItemsDA.Update(ItemsDT);
-        }
-
         public void SaveChangesToStoreDetail()
         {
             foreach (DataRow row in NewItemsDT.Rows)
@@ -1541,6 +1658,27 @@ namespace Infinium.Modules.TechnologyCatalog
                 }
             }
         }
+
+        public void SaveEditItems()
+        {
+            DataRow[] row = ItemsDT.Select("TechStoreID = " + NewItemsDT.Rows[0]["TechStoreID"]);
+
+            foreach (DataColumn dc in ItemsDT.Columns)
+            {
+                if (dc.ColumnName == "ColorID" || dc.ColumnName == "PatinaID" || dc.ColumnName == "CoverID" || dc.ColumnName == "InsetTypeID" || dc.ColumnName == "InsetColorID")
+                {
+                    if (NewItemsDT.Rows[0][dc.ColumnName] != DBNull.Value && Convert.ToInt32(NewItemsDT.Rows[0][dc.ColumnName]) == -1)
+                    {
+                        row[0][dc.ColumnName] = DBNull.Value;
+                        continue;
+                    }
+                }
+                row[0][dc.ColumnName] = NewItemsDT.Rows[0][dc.ColumnName];
+            }
+
+            ItemsDA.Update(ItemsDT);
+        }
+
         public void SaveInsetColors()
         {
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM InsetColors",
@@ -1548,7 +1686,6 @@ namespace Infinium.Modules.TechnologyCatalog
             {
                 using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
                 {
-
                     if (InsetColorsDT.GetChanges() != null)
                     {
                         DataTable D = InsetColorsDT.GetChanges();
@@ -1699,6 +1836,7 @@ namespace Infinium.Modules.TechnologyCatalog
             NewItemsDG.Columns["IsHalfStuff"].HeaderText = "п/ф";
             NewItemsDG.Columns["InvNumber1S"].HeaderText = "Инв.№ 1С";
             NewItemsDG.Columns["TechStoreName"].HeaderText = "Название";
+            NewItemsDG.Columns["Cvet"].HeaderText = "Cvet";
             NewItemsDG.Columns["SellerCode"].HeaderText = "Кодировка поставщика";
             NewItemsDG.Columns["LeftAngle"].HeaderText = "ᵒ∠ л";
             NewItemsDG.Columns["RightAngle"].HeaderText = "ᵒ∠ пр";
@@ -1725,6 +1863,7 @@ namespace Infinium.Modules.TechnologyCatalog
             NewItemsDG.Columns["MeasureColumn"].DisplayIndex = DisplayIndex++;
             NewItemsDG.Columns["IsHalfStuff"].DisplayIndex = DisplayIndex++;
             NewItemsDG.Columns["InvNumber1S"].DisplayIndex = DisplayIndex++;
+            NewItemsDG.Columns["Cvet"].DisplayIndex = DisplayIndex++;
             NewItemsDG.Columns["CoverColumn"].DisplayIndex = DisplayIndex++;
             NewItemsDG.Columns["InsetTypeColumn"].DisplayIndex = DisplayIndex++;
             NewItemsDG.Columns["InsetColorColumn"].DisplayIndex = DisplayIndex++;
@@ -1908,28 +2047,6 @@ namespace Infinium.Modules.TechnologyCatalog
             }
         }
 
-        public string GetColorName(int TechStoreID)
-        {
-            string ColorName = string.Empty;
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TechStoreID, TechStoreName FROM TechStore WHERE TechStoreID=" + TechStoreID, ConnectionStrings.CatalogConnectionString))
-            {
-                using (DataTable DT = new DataTable())
-                {
-                    DA.Fill(DT);
-                    try
-                    {
-                        DataRow[] Rows = DT.Select("TechStoreID = " + TechStoreID);
-                        ColorName = Rows[0]["TechStoreName"].ToString();
-                    }
-                    catch
-                    {
-                        return string.Empty;
-                    }
-                }
-            }
-            return ColorName;
-        }
-
         private void GetColorsDT()
         {
             ColorsDT = new DataTable();
@@ -2016,8 +2133,8 @@ namespace Infinium.Modules.TechnologyCatalog
                 //    InsetColorsDT.Rows.Add(NewRow);
                 //}
             }
-
         }
+
         private void GridSettings()
         {
             GroupsDG.Columns["TechStoreGroupID"].Visible = false;
@@ -2138,6 +2255,7 @@ namespace Infinium.Modules.TechnologyCatalog
             ItemsDG.Columns["IsHalfStuff"].HeaderText = "п/ф";
             ItemsDG.Columns["InvNumber1S"].HeaderText = "Инв.№ 1С";
             ItemsDG.Columns["TechStoreName"].HeaderText = "Название";
+            ItemsDG.Columns["Cvet"].HeaderText = "Cvet";
             ItemsDG.Columns["SellerCode"].HeaderText = "Кодировка поставщика";
             ItemsDG.Columns["LeftAngle"].HeaderText = "ᵒ∠ л";
             ItemsDG.Columns["RightAngle"].HeaderText = "ᵒ∠ пр";
@@ -2165,6 +2283,7 @@ namespace Infinium.Modules.TechnologyCatalog
             ItemsDG.Columns["MeasureColumn"].DisplayIndex = DisplayIndex++;
             ItemsDG.Columns["IsHalfStuff"].DisplayIndex = DisplayIndex++;
             ItemsDG.Columns["InvNumber1S"].DisplayIndex = DisplayIndex++;
+            ItemsDG.Columns["Cvet"].DisplayIndex = DisplayIndex++;
             ItemsDG.Columns["CoverColumn"].DisplayIndex = DisplayIndex++;
             ItemsDG.Columns["InsetTypeColumn"].DisplayIndex = DisplayIndex++;
             ItemsDG.Columns["InsetColorColumn"].DisplayIndex = DisplayIndex++;
@@ -2191,12 +2310,20 @@ namespace Infinium.Modules.TechnologyCatalog
             ItemsDG.Columns["Notes"].DisplayIndex = DisplayIndex++;
             ItemsDG.Columns["TechStoreID"].DisplayIndex = DisplayIndex++;
         }
+
+        #endregion Methods
     }
 
     public class TechStoreManager
     {
+        #region Fields
+
         public BindingSource AllMachinesBS;
+        public DataTable CabFurnitureAlgorithmsDT;
+        public BindingSource CabFurnitureDocumentTypesBS;
+        public DataTable CabFurnitureDocumentTypesDT;
         public DataTable CurrentMachineParametrsDT;
+
         //public DataTable TechStoreNamesDT;
         //public DataTable TechSubGroupsNamesDT;
         public DataTable CurrentParametrsDT;
@@ -2207,11 +2334,7 @@ namespace Infinium.Modules.TechnologyCatalog
         public BindingSource MachinesOperationsBS;
         public DataTable MachinesOperationsDT;
         public DataTable MeasuresDT;
-        public DataTable CabFurnitureDocumentTypesDT;
-        public DataTable CabFurnitureAlgorithmsDT;
         public DataTable OperationsDocumentsDT;
-
-        public BindingSource CabFurnitureDocumentTypesBS;
         public BindingSource OperationsOnMachineBS;
         public BindingSource PositionsBS;
         public DataTable PositionsDT;
@@ -2245,39 +2368,58 @@ namespace Infinium.Modules.TechnologyCatalog
         public BindingSource ToolsSubTypesBS;
         public DataTable ToolsTypeDT;
         public BindingSource ToolsTypesBS;
-        static DataTable DecorConfigDT = null;
-        static DataTable FrontsConfigDT = null;
-        DataTable ManufactureDT;
-        int techStoreGroupID = 0;
-        int techStoreID = 0;
-        int techStoreSubGroupID = 0;
+        private static DataTable DecorConfigDT = null;
+        private static DataTable FrontsConfigDT = null;
+        private DataTable dtRolePermissions;
+        private DataTable ManufactureDT;
+        private int techStoreGroupID = 0;
+        private int techStoreID = 0;
+        private int techStoreSubGroupID = 0;
 
-        DataTable dtRolePermissions;
+        #endregion Fields
 
-        public void GetPermissions(int UserID, string FormName)
+        #region Properties
+
+        public DataGridViewComboBoxColumn AlgorithmsColumn
         {
-            if (dtRolePermissions == null)
-                dtRolePermissions = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM UserRoles WHERE UserID = " + UserID +
-                " AND RoleID IN (SELECT RoleID FROM Roles WHERE ModuleID IN " +
-                " (SELECT ModuleID FROM Modules WHERE FormName = '" + FormName + "'))", ConnectionStrings.UsersConnectionString))
+            get
             {
-                DA.Fill(dtRolePermissions);
+                DataGridViewComboBoxColumn Column = new DataGridViewComboBoxColumn()
+                {
+                    Name = "AlgorithmsColumn",
+                    HeaderText = "Алгоритм",
+                    DataPropertyName = "CabFurAlgorithmID",
+                    DataSource = new DataView(CabFurnitureAlgorithmsDT),
+                    ValueMember = "CabFurAlgorithmID",
+                    DisplayMember = "Algorithm",
+                    ReadOnly = true,
+                    DisplayStyle = DataGridViewComboBoxDisplayStyle.Nothing,
+                    AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
+                };
+                return Column;
             }
         }
-        public bool PermissionGranted(int RoleID)
-        {
-            DataRow[] Rows = dtRolePermissions.Select("RoleID = " + RoleID);
-            return Rows.Count() > 0;
-        }
 
-        public TechStoreManager()
+        public BindingSource AlgorithmsList
         {
+            get
+            {
+                BindingSource bs = new BindingSource()
+                {
+                    DataSource = CabFurnitureAlgorithmsDT
+                };
+                return bs;
+            }
         }
 
         public BindingSource AllMachinesList
         {
             get { return AllMachinesBS; }
+        }
+
+        public BindingSource CabFurnitureDocumentTypesList
+        {
+            get { return CabFurnitureDocumentTypesBS; }
         }
 
         public DataTable CurrentMachineParametrsList
@@ -2306,6 +2448,38 @@ namespace Infinium.Modules.TechnologyCatalog
         {
             get { return techStoreSubGroupID; }
             set { techStoreSubGroupID = value; }
+        }
+
+        public DataGridViewComboBoxColumn DocTypesColumn
+        {
+            get
+            {
+                DataGridViewComboBoxColumn Column = new DataGridViewComboBoxColumn()
+                {
+                    Name = "DocTypesColumn",
+                    HeaderText = "Тип задания",
+                    DataPropertyName = "CabFurDocTypeID",
+                    DataSource = new DataView(CabFurnitureDocumentTypesDT),
+                    ValueMember = "CabFurDocTypeID",
+                    DisplayMember = "DocName",
+                    ReadOnly = true,
+                    DisplayStyle = DataGridViewComboBoxDisplayStyle.Nothing,
+                    AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
+                };
+                return Column;
+            }
+        }
+
+        public BindingSource DocTypesList
+        {
+            get
+            {
+                BindingSource bs = new BindingSource()
+                {
+                    DataSource = CabFurnitureDocumentTypesDT
+                };
+                return bs;
+            }
         }
 
         public bool HasTechCatalogOperationsDetails
@@ -2444,30 +2618,6 @@ namespace Infinium.Modules.TechnologyCatalog
             }
         }
 
-        public BindingSource DocTypesList
-        {
-            get
-            {
-                BindingSource bs = new BindingSource()
-                {
-                    DataSource = CabFurnitureDocumentTypesDT
-                };
-                return bs;
-            }
-        }
-
-        public BindingSource AlgorithmsList
-        {
-            get
-            {
-                BindingSource bs = new BindingSource()
-                {
-                    DataSource = CabFurnitureAlgorithmsDT
-                };
-                return bs;
-            }
-        }
-
         public DataGridViewComboBoxColumn SectorNameColumn
         {
             get
@@ -2492,46 +2642,6 @@ namespace Infinium.Modules.TechnologyCatalog
             get { return SectorsBS; }
         }
 
-        public DataGridViewComboBoxColumn DocTypesColumn
-        {
-            get
-            {
-                DataGridViewComboBoxColumn Column = new DataGridViewComboBoxColumn()
-                {
-                    Name = "DocTypesColumn",
-                    HeaderText = "Тип задания",
-                    DataPropertyName = "CabFurDocTypeID",
-                    DataSource = new DataView(CabFurnitureDocumentTypesDT),
-                    ValueMember = "CabFurDocTypeID",
-                    DisplayMember = "DocName",
-                    ReadOnly = true,
-                    DisplayStyle = DataGridViewComboBoxDisplayStyle.Nothing,
-                    AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
-                };
-                return Column;
-            }
-        }
-
-        public DataGridViewComboBoxColumn AlgorithmsColumn
-        {
-            get
-            {
-                DataGridViewComboBoxColumn Column = new DataGridViewComboBoxColumn()
-                {
-                    Name = "AlgorithmsColumn",
-                    HeaderText = "Алгоритм",
-                    DataPropertyName = "CabFurAlgorithmID",
-                    DataSource = new DataView(CabFurnitureAlgorithmsDT),
-                    ValueMember = "CabFurAlgorithmID",
-                    DisplayMember = "Algorithm",
-                    ReadOnly = true,
-                    DisplayStyle = DataGridViewComboBoxDisplayStyle.Nothing,
-                    AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
-                };
-                return Column;
-            }
-        }
-
         public DataGridViewComboBoxColumn SubSectorNameColumn
         {
             get
@@ -2549,11 +2659,6 @@ namespace Infinium.Modules.TechnologyCatalog
                 };
                 return Column;
             }
-        }
-
-        public BindingSource CabFurnitureDocumentTypesList
-        {
-            get { return CabFurnitureDocumentTypesBS; }
         }
 
         public BindingSource SubSectorsList
@@ -2633,6 +2738,18 @@ namespace Infinium.Modules.TechnologyCatalog
         {
             get { return ToolsTypesBS; }
         }
+
+        #endregion Properties
+
+        #region Constructors
+
+        public TechStoreManager()
+        {
+        }
+
+        #endregion Constructors
+
+        #region Methods
 
         public static void DataSetIntoDBF()
         {
@@ -2737,7 +2854,6 @@ namespace Infinium.Modules.TechnologyCatalog
 
         public static void DataSetIntoDBF11(DataTable table, string filePath, string fileName)
         {
-
             if (File.Exists(filePath + fileName + ".dbf"))
             {
                 File.Delete(filePath + fileName + ".dbf");
@@ -3106,72 +3222,6 @@ namespace Infinium.Modules.TechnologyCatalog
             }
         }
 
-        public bool RemoveNotExistedRecords()
-        {
-            DataTable newsDt = new DataTable();
-            using (SqlDataAdapter da = new SqlDataAdapter("SELECT * FROM NewsAttachs", ConnectionStrings.LightConnectionString))
-            {
-                using (SqlCommandBuilder cb = new SqlCommandBuilder(da))
-                {
-                    da.Fill(newsDt);
-
-                    string sDestFolder = Configs.DocumentsPath + FileManager.GetPath("LightNews");
-
-                    for (int i = newsDt.Rows.Count - 1; i >= 0; i--)
-                    {
-                        int newsAttachId = Convert.ToInt32(newsDt.Rows[i]["NewsAttachID"]);
-
-                        string sExtension = ".idf";
-                        string sFileName = newsDt.Rows[i]["FileName"].ToString();
-
-                        if (!FM.FileExist(sDestFolder + "/" + newsAttachId + sExtension, Configs.FTPType))
-                        {
-                            newsDt.Rows[i].Delete();
-                        }
-                    }
-
-                    da.Update(newsDt);
-                }
-            }
-            return true;
-        }
-
-        public bool SaveRenamedLightNews()
-        {
-            DataTable newsDt = new DataTable();
-            using (SqlDataAdapter da = new SqlDataAdapter("SELECT * FROM NewsAttachs", ConnectionStrings.LightConnectionString))
-            {
-                using (SqlCommandBuilder cb = new SqlCommandBuilder(da))
-                {
-                    da.Fill(newsDt);
-
-                    string sDestFolder = Configs.DocumentsZOVTPSPath + FileManager.GetPath("LightNews");
-                    string sSourceFolder = @"C:\\LightNews";
-
-                    for (int i = newsDt.Rows.Count - 1; i >= 0; i--)
-                    {
-                        int newsAttachId = Convert.ToInt32(newsDt.Rows[i]["NewsAttachID"]);
-                        FileInfo fi = new FileInfo(newsDt.Rows[i]["FileName"].ToString());
-                        string sExtension = fi.Extension;
-                        string sFileName = Path.GetFileNameWithoutExtension(fi.Name);
-                        string sFileName1 = sFileName;
-
-                        int j = 1;
-                        while (FM.FileExist(sDestFolder + "/" + sFileName + sExtension, Configs.FTPType))
-                        {
-                            sFileName = sFileName1 + "(" + j++ + ")";
-                        }
-                        newsDt.Rows[i]["FileName"] = sFileName + sExtension;
-                        if (!FM.UploadFile(sSourceFolder + "/" + newsAttachId + ".idf", sDestFolder + "/" + sFileName + sExtension, Configs.FTPType))
-                            continue;
-                    }
-
-                    da.Update(newsDt);
-                }
-            }
-            return true;
-        }
-
         public bool AttachOperationsDocument(DataTable AttachmentsDataTable, string TechID)
         {
             if (AttachmentsDataTable.Rows.Count == 0)
@@ -3194,7 +3244,6 @@ namespace Infinium.Modules.TechnologyCatalog
                             try
                             {
                                 fi = new FileInfo(Row["Path"].ToString());
-
                             }
                             catch
                             {
@@ -3210,7 +3259,6 @@ namespace Infinium.Modules.TechnologyCatalog
                         }
 
                         DA.Update(DT);
-
                     }
                 }
             }
@@ -3303,7 +3351,6 @@ namespace Infinium.Modules.TechnologyCatalog
                             try
                             {
                                 fi = new FileInfo(Row["Path"].ToString());
-
                             }
                             catch
                             {
@@ -3351,7 +3398,6 @@ namespace Infinium.Modules.TechnologyCatalog
                             try
                             {
                                 fi = new FileInfo(Row["Path"].ToString());
-
                             }
                             catch
                             {
@@ -3367,7 +3413,6 @@ namespace Infinium.Modules.TechnologyCatalog
                         }
 
                         DA.Update(DT);
-
                     }
                 }
             }
@@ -3572,6 +3617,12 @@ namespace Infinium.Modules.TechnologyCatalog
             }
         }
 
+        public void DeleteCabFurDocType(int CabFurDocTypeID)
+        {
+            foreach (DataRow row in CabFurnitureDocumentTypesDT.Select("CabFurDocTypeID = " + CabFurDocTypeID))
+                row.Delete();
+        }
+
         public void FilterMachines(int SubSectorID)
         {
             MachinesBS.Filter = "SubSectorID = " + SubSectorID;
@@ -3685,6 +3736,53 @@ namespace Infinium.Modules.TechnologyCatalog
                     return DT;
                 }
             }
+        }
+
+        public void GetPermissions(int UserID, string FormName)
+        {
+            if (dtRolePermissions == null)
+                dtRolePermissions = new DataTable();
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM UserRoles WHERE UserID = " + UserID +
+                " AND RoleID IN (SELECT RoleID FROM Roles WHERE ModuleID IN " +
+                " (SELECT ModuleID FROM Modules WHERE FormName = '" + FormName + "'))", ConnectionStrings.UsersConnectionString))
+            {
+                DA.Fill(dtRolePermissions);
+            }
+        }
+
+        public TechStoreGroupInfo GetSubGroupInfo(int TechStoreID)
+        {
+            TechStoreGroupInfo techStoreGroupInfo = new TechStoreGroupInfo();
+            string SelectCommand = @"SELECT TOP 1 TSG.*, TechStore.* FROM TechStore
+                INNER JOIN TechStoreSubGroups as TSG ON TechStore.TechStoreSubGroupID = TSG.TechStoreSubGroupID
+                WHERE TechStoreID = " + TechStoreID;
+            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
+            {
+                using (DataTable DT = new DataTable())
+                {
+                    if (DA.Fill(DT) > 0)
+                    {
+                        techStoreGroupInfo.TechStoreName = DT.Rows[0]["TechStoreName"].ToString();
+                        techStoreGroupInfo.TechStoreSubGroupName = DT.Rows[0]["TechStoreSubGroupName"].ToString();
+                        techStoreGroupInfo.SubGroupNotes = DT.Rows[0]["Notes"].ToString();
+                        techStoreGroupInfo.SubGroupNotes1 = DT.Rows[0]["Notes1"].ToString();
+                        techStoreGroupInfo.SubGroupNotes2 = DT.Rows[0]["Notes2"].ToString();
+                        if (DT.Rows[0]["Length"] != DBNull.Value)
+                            techStoreGroupInfo.Length = Convert.ToInt32(DT.Rows[0]["Length"]);
+                        else
+                            techStoreGroupInfo.Length = -1;
+                        if (DT.Rows[0]["Width"] != DBNull.Value)
+                            techStoreGroupInfo.Width = Convert.ToInt32(DT.Rows[0]["Width"]);
+                        else
+                            techStoreGroupInfo.Width = -1;
+                        if (DT.Rows[0]["Height"] != DBNull.Value)
+                            techStoreGroupInfo.Height = Convert.ToInt32(DT.Rows[0]["Height"]);
+                        else
+                            techStoreGroupInfo.Height = -1;
+                    }
+                }
+            }
+            return techStoreGroupInfo;
         }
 
         public DataTable GetTechStoreDocuments(string TechID)
@@ -3824,7 +3922,17 @@ namespace Infinium.Modules.TechnologyCatalog
             TechCatalogOperationsDetailGroupsBS.Position = TechCatalogOperationsDetailGroupsBS.Find("TechCatalogOperationsGroupID", GroupNumber);
         }
 
+        public void MoveToMachinesOperation(int MachinesOperationID)
+        {
+            MachinesOperationsBS.Position = MachinesOperationsBS.Find("MachinesOperationID", MachinesOperationID);
+        }
+
         public void MoveToOperationsDetail(int TechCatalogOperationsDetailID)
+        {
+            TechCatalogOperationsDetailBS.Position = TechCatalogOperationsDetailBS.Find("TechCatalogOperationsDetailID", TechCatalogOperationsDetailID);
+        }
+
+        public void MoveToSerialNumber(int TechCatalogOperationsDetailID)
         {
             TechCatalogOperationsDetailBS.Position = TechCatalogOperationsDetailBS.Find("TechCatalogOperationsDetailID", TechCatalogOperationsDetailID);
         }
@@ -3832,16 +3940,6 @@ namespace Infinium.Modules.TechnologyCatalog
         public void MoveToStoreDetail(int TechCatalogStoreDetailID)
         {
             TechCatalogStoreDetailBS.Position = TechCatalogStoreDetailBS.Find("TechCatalogStoreDetailID", TechCatalogStoreDetailID);
-        }
-
-        public void MoveToMachinesOperation(int MachinesOperationID)
-        {
-            MachinesOperationsBS.Position = MachinesOperationsBS.Find("MachinesOperationID", MachinesOperationID);
-        }
-
-        public void MoveToSerialNumber(int TechCatalogOperationsDetailID)
-        {
-            TechCatalogOperationsDetailBS.Position = TechCatalogOperationsDetailBS.Find("TechCatalogOperationsDetailID", TechCatalogOperationsDetailID);
         }
 
         public void MoveToTechStore(int TechStoreID)
@@ -3879,6 +3977,12 @@ namespace Infinium.Modules.TechnologyCatalog
                 }
             }
             return true;
+        }
+
+        public bool PermissionGranted(int RoleID)
+        {
+            DataRow[] Rows = dtRolePermissions.Select("RoleID = " + RoleID);
+            return Rows.Count() > 0;
         }
 
         public DataTable ReadValueTable(string ValueParametrsXML, string ParametrsXML)
@@ -3954,6 +4058,36 @@ namespace Infinium.Modules.TechnologyCatalog
             }
         }
 
+        public bool RemoveNotExistedRecords()
+        {
+            DataTable newsDt = new DataTable();
+            using (SqlDataAdapter da = new SqlDataAdapter("SELECT * FROM NewsAttachs", ConnectionStrings.LightConnectionString))
+            {
+                using (SqlCommandBuilder cb = new SqlCommandBuilder(da))
+                {
+                    da.Fill(newsDt);
+
+                    string sDestFolder = Configs.DocumentsPath + FileManager.GetPath("LightNews");
+
+                    for (int i = newsDt.Rows.Count - 1; i >= 0; i--)
+                    {
+                        int newsAttachId = Convert.ToInt32(newsDt.Rows[i]["NewsAttachID"]);
+
+                        string sExtension = ".idf";
+                        string sFileName = newsDt.Rows[i]["FileName"].ToString();
+
+                        if (!FM.FileExist(sDestFolder + "/" + newsAttachId + sExtension, Configs.FTPType))
+                        {
+                            newsDt.Rows[i].Delete();
+                        }
+                    }
+
+                    da.Update(newsDt);
+                }
+            }
+            return true;
+        }
+
         public void RemoveOperationsDocuments(string TechID, string FileName)
         {
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM OperationsDocuments WHERE TechID = " + TechID +
@@ -4012,7 +4146,6 @@ namespace Infinium.Modules.TechnologyCatalog
                     }
                 }
             }
-
         }
 
         public void RemoveTechStoreDocuments(int TechStoreDocumentID)
@@ -4176,63 +4309,16 @@ namespace Infinium.Modules.TechnologyCatalog
             }
         }
 
-        public void SaveClientsCatalogImagesFromExcel()
+        public void SaveCabFurDocTypes()
         {
-            ManufactureDT = new DataTable();
-            DataTable table = new DataTable();
-            table.Columns.Add(new DataColumn(("ImageID"), System.Type.GetType("System.Int32")));
-            table.Columns.Add(new DataColumn(("TempName"), System.Type.GetType("System.String")));
-            table.TableName = "ImportedTable";
-
-            string s = Clipboard.GetText();
-            string[] lines = s.Split('\n');
-            System.Collections.Generic.List<string> data = new System.Collections.Generic.List<string>(lines);
-
-            if (data.Count > 0 && string.IsNullOrWhiteSpace(data[data.Count - 1]))
-            {
-                data.RemoveAt(data.Count - 1);
-            }
-
-            foreach (string iterationRow in data)
-            {
-                string row = iterationRow;
-                if (row.EndsWith("\r"))
-                {
-                    row = row.Substring(0, row.Length - "\r".Length);
-                }
-
-                string[] rowData = row.Split(new char[] { '\r', '\x09' });
-                DataRow newRow = table.NewRow();
-
-                for (int i = 0; i < rowData.Length; i++)
-                {
-                    if (i >= table.Columns.Count) break;
-                    if (rowData[i].Length > 0)
-                        newRow[i] = rowData[i];
-                }
-                table.Rows.Add(newRow);
-            }
-
-            using (SqlDataAdapter DA = new SqlDataAdapter(@"SELECT * FROM ClientsCatalogImages",
-                ConnectionStrings.CatalogConnectionString))
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM CabFurnitureDocumentTypes",
+                ConnectionStrings.StorageConnectionString))
             {
                 using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
-                    {
-                        DA.Fill(DT);
-                        for (int i = 0; i < table.Rows.Count; i++)
-                        {
-                            int ImageID = 0;
-                            string TempName = string.Empty;
-                            ImageID = Convert.ToInt32(table.Rows[i]["ImageID"]);
-                            TempName = table.Rows[i]["TempName"].ToString();
-                            DataRow[] rows = DT.Select("ImageID=" + ImageID);
-                            if (rows.Count() > 0)
-                                rows[0]["TempName"] = TempName;
-                        }
-                        DA.Update(DT);
-                    }
+                    DA.Update(CabFurnitureDocumentTypesDT);
+                    CabFurnitureDocumentTypesDT.Clear();
+                    DA.Fill(CabFurnitureDocumentTypesDT);
                 }
             }
         }
@@ -4298,6 +4384,67 @@ namespace Infinium.Modules.TechnologyCatalog
             }
         }
 
+        public void SaveClientsCatalogImagesFromExcel()
+        {
+            ManufactureDT = new DataTable();
+            DataTable table = new DataTable();
+            table.Columns.Add(new DataColumn(("ImageID"), System.Type.GetType("System.Int32")));
+            table.Columns.Add(new DataColumn(("TempName"), System.Type.GetType("System.String")));
+            table.TableName = "ImportedTable";
+
+            string s = Clipboard.GetText();
+            string[] lines = s.Split('\n');
+            System.Collections.Generic.List<string> data = new System.Collections.Generic.List<string>(lines);
+
+            if (data.Count > 0 && string.IsNullOrWhiteSpace(data[data.Count - 1]))
+            {
+                data.RemoveAt(data.Count - 1);
+            }
+
+            foreach (string iterationRow in data)
+            {
+                string row = iterationRow;
+                if (row.EndsWith("\r"))
+                {
+                    row = row.Substring(0, row.Length - "\r".Length);
+                }
+
+                string[] rowData = row.Split(new char[] { '\r', '\x09' });
+                DataRow newRow = table.NewRow();
+
+                for (int i = 0; i < rowData.Length; i++)
+                {
+                    if (i >= table.Columns.Count) break;
+                    if (rowData[i].Length > 0)
+                        newRow[i] = rowData[i];
+                }
+                table.Rows.Add(newRow);
+            }
+
+            using (SqlDataAdapter DA = new SqlDataAdapter(@"SELECT * FROM ClientsCatalogImages",
+                ConnectionStrings.CatalogConnectionString))
+            {
+                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                {
+                    using (DataTable DT = new DataTable())
+                    {
+                        DA.Fill(DT);
+                        for (int i = 0; i < table.Rows.Count; i++)
+                        {
+                            int ImageID = 0;
+                            string TempName = string.Empty;
+                            ImageID = Convert.ToInt32(table.Rows[i]["ImageID"]);
+                            TempName = table.Rows[i]["TempName"].ToString();
+                            DataRow[] rows = DT.Select("ImageID=" + ImageID);
+                            if (rows.Count() > 0)
+                                rows[0]["TempName"] = TempName;
+                        }
+                        DA.Update(DT);
+                    }
+                }
+            }
+        }
+
         public void SaveCoatingMaterialFromExcel()
         {
             ManufactureDT = new DataTable();
@@ -4340,7 +4487,7 @@ namespace Infinium.Modules.TechnologyCatalog
             }
 
             using (SqlDataAdapter DA = new SqlDataAdapter(@"SELECT * FROM Store
-WHERE StoreItemID IN (SELECT TechStoreID FROM infiniu2_catalog.dbo.TechStore WHERE TechStoreSubGroupID IN 
+WHERE StoreItemID IN (SELECT TechStoreID FROM infiniu2_catalog.dbo.TechStore WHERE TechStoreSubGroupID IN
 (SELECT TechStoreSubGroupID FROM infiniu2_catalog.dbo.TechStoreSubGroups WHERE TechStoreGroupID = 1))",
                 ConnectionStrings.StorageConnectionString))
             {
@@ -4503,11 +4650,46 @@ WHERE StoreItemID IN (SELECT TechStoreID FROM infiniu2_catalog.dbo.TechStore WHE
                     {
                         return null;
                     }
-
                 }
             }
 
             return tempFolder + "\\" + FileName;
+        }
+
+        public bool SaveRenamedLightNews()
+        {
+            DataTable newsDt = new DataTable();
+            using (SqlDataAdapter da = new SqlDataAdapter("SELECT * FROM NewsAttachs", ConnectionStrings.LightConnectionString))
+            {
+                using (SqlCommandBuilder cb = new SqlCommandBuilder(da))
+                {
+                    da.Fill(newsDt);
+
+                    string sDestFolder = Configs.DocumentsZOVTPSPath + FileManager.GetPath("LightNews");
+                    string sSourceFolder = @"C:\\LightNews";
+
+                    for (int i = newsDt.Rows.Count - 1; i >= 0; i--)
+                    {
+                        int newsAttachId = Convert.ToInt32(newsDt.Rows[i]["NewsAttachID"]);
+                        FileInfo fi = new FileInfo(newsDt.Rows[i]["FileName"].ToString());
+                        string sExtension = fi.Extension;
+                        string sFileName = Path.GetFileNameWithoutExtension(fi.Name);
+                        string sFileName1 = sFileName;
+
+                        int j = 1;
+                        while (FM.FileExist(sDestFolder + "/" + sFileName + sExtension, Configs.FTPType))
+                        {
+                            sFileName = sFileName1 + "(" + j++ + ")";
+                        }
+                        newsDt.Rows[i]["FileName"] = sFileName + sExtension;
+                        if (!FM.UploadFile(sSourceFolder + "/" + newsAttachId + ".idf", sDestFolder + "/" + sFileName + sExtension, Configs.FTPType))
+                            continue;
+                    }
+
+                    da.Update(newsDt);
+                }
+            }
+            return true;
         }
 
         public void SaveSellersFromExcel()
@@ -4604,7 +4786,6 @@ WHERE StoreItemID IN (SELECT TechStoreID FROM infiniu2_catalog.dbo.TechStore WHE
                     {
                         return null;
                     }
-
                 }
             }
 
@@ -4636,7 +4817,6 @@ WHERE StoreItemID IN (SELECT TechStoreID FROM infiniu2_catalog.dbo.TechStore WHE
                     {
                         return null;
                     }
-
                 }
             }
 
@@ -4648,8 +4828,8 @@ WHERE StoreItemID IN (SELECT TechStoreID FROM infiniu2_catalog.dbo.TechStore WHE
             int TechStoreGroupID = 0;
             int TechStoreSubGroupID = 0;
             using (SqlDataAdapter DA = new SqlDataAdapter(@"SELECT TechStoreGroups.TechStoreGroupID, TechStoreSubGroups.TechStoreSubGroupID FROM TechStore
-                INNER JOIN TechStoreSubGroups ON TechStore.TechStoreSubGroupID=TechStoreSubGroups.TechStoreSubGroupID  
-                INNER JOIN TechStoreGroups ON TechStoreSubGroups.TechStoreGroupID=TechStoreGroups.TechStoreGroupID  
+                INNER JOIN TechStoreSubGroups ON TechStore.TechStoreSubGroupID=TechStoreSubGroups.TechStoreSubGroupID
+                INNER JOIN TechStoreGroups ON TechStoreSubGroups.TechStoreGroupID=TechStoreGroups.TechStoreGroupID
                 WHERE TechStoreID = " + TechStoreID, ConnectionStrings.CatalogConnectionString))
             {
                 using (DataTable DT = new DataTable())
@@ -4994,7 +5174,10 @@ WHERE StoreItemID IN (SELECT TechStoreID FROM infiniu2_catalog.dbo.TechStore WHE
             }
         }
 
+        #endregion Methods
+
         #region ToolsGroup
+
         public void AddToolsGroup(int FactoryID, string Name)
         {
             DataRow NewRow = ToolsGroupDT.NewRow();
@@ -5072,9 +5255,10 @@ WHERE StoreItemID IN (SELECT TechStoreID FROM infiniu2_catalog.dbo.TechStore WHE
             }
         }
 
-        #endregion
+        #endregion ToolsGroup
 
         #region Tools
+
         public void AddTools(int ToolsSubTypeID, string Name, string ValueParametrs)
         {
             DataRow NewRow = ToolsDT.NewRow();
@@ -5132,6 +5316,7 @@ WHERE StoreItemID IN (SELECT TechStoreID FROM infiniu2_catalog.dbo.TechStore WHE
         {
             ((DataGridViewComboBoxColumn)TechCatalogToolsGrid.Columns["ToolsName"]).DataSource = ToolsDT.Copy();
         }
+
         private void UpdateTools()
         {
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 ToolsID, ToolsSubTypeID, ToolsName, ValueParametrs FROM Tools", ConnectionStrings.CatalogConnectionString))
@@ -5143,9 +5328,10 @@ WHERE StoreItemID IN (SELECT TechStoreID FROM infiniu2_catalog.dbo.TechStore WHE
             }
         }
 
-        #endregion
+        #endregion Tools
 
         #region ToolsType
+
         public void AddToolsType(int ToolsGroupID, string Name)
         {
             DataRow NewRow = ToolsTypeDT.NewRow();
@@ -5220,29 +5406,10 @@ WHERE StoreItemID IN (SELECT TechStoreID FROM infiniu2_catalog.dbo.TechStore WHE
             }
         }
 
-        #endregion
-
-        public void DeleteCabFurDocType(int CabFurDocTypeID)
-        {
-            foreach (DataRow row in CabFurnitureDocumentTypesDT.Select("CabFurDocTypeID = " + CabFurDocTypeID))
-                row.Delete();
-        }
-
-        public void SaveCabFurDocTypes()
-        {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM CabFurnitureDocumentTypes",
-                ConnectionStrings.StorageConnectionString))
-            {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
-                {
-                    DA.Update(CabFurnitureDocumentTypesDT);
-                    CabFurnitureDocumentTypesDT.Clear();
-                    DA.Fill(CabFurnitureDocumentTypesDT);
-                }
-            }
-        }
+        #endregion ToolsType
 
         #region ToolsSubType
+
         public void AddToolsSubType(int ToolsTypeID, string Name, string Parametrs)
         {
             DataRow NewRow = ToolsSubTypeDT.NewRow();
@@ -5315,9 +5482,10 @@ WHERE StoreItemID IN (SELECT TechStoreID FROM infiniu2_catalog.dbo.TechStore WHE
             }
         }
 
-        #endregion
+        #endregion ToolsSubType
 
         #region TechStoreGroup
+
         public void AddTechStoreGroup(string Name)
         {
             DataRow NewRow = TechStoreGroupsDT.NewRow();
@@ -5401,7 +5569,8 @@ WHERE StoreItemID IN (SELECT TechStoreID FROM infiniu2_catalog.dbo.TechStore WHE
                 }
             }
         }
-        #endregion
+
+        #endregion TechStoreGroup
 
         #region TechStoreSubGroup
 
@@ -5488,7 +5657,8 @@ WHERE StoreItemID IN (SELECT TechStoreID FROM infiniu2_catalog.dbo.TechStore WHE
                 }
             }
         }
-        #endregion
+
+        #endregion TechStoreSubGroup
 
         #region TechStore
 
@@ -5571,7 +5741,8 @@ WHERE StoreItemID IN (SELECT TechStoreID FROM infiniu2_catalog.dbo.TechStore WHE
                 }
             }
         }
-        #endregion
+
+        #endregion TechStore
 
         #region TechCatalogOperationsDetail
 
@@ -5916,6 +6087,34 @@ WHERE StoreItemID IN (SELECT TechStoreID FROM infiniu2_catalog.dbo.TechStore WHE
             }
         }
 
+        public void CopyTechStore(List<int> TechStoreIDs, int NewTechStoreSubGroupID)
+        {
+            for (int i = 0; i < TechStoreIDs.Count(); i++)
+            {
+                int TechStoreID = TechStoreIDs[i];
+
+                using (var da = new SqlDataAdapter("SELECT * FROM TechStore" +
+                    " WHERE TechStoreID = " + TechStoreID,
+                    ConnectionStrings.CatalogConnectionString))
+                {
+                    using (new SqlCommandBuilder(da))
+                    {
+                        using (var dt = new DataTable())
+                        {
+                            if (da.Fill(dt) > 0)
+                            {
+                                DataRow NewRow = dt.NewRow();
+                                NewRow.ItemArray = dt.Rows[0].ItemArray;
+                                NewRow["TechStoreSubGroupID"] = NewTechStoreSubGroupID;
+                                dt.Rows.Add(NewRow);
+                                da.Update(dt);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         public void CopyTechStoreDetail(int TechCatalogStoreDetailID, int NewTechCatalogOperationsDetailID)
         {
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM TechCatalogStoreDetail" +
@@ -6065,34 +6264,6 @@ WHERE StoreItemID IN (SELECT TechStoreID FROM infiniu2_catalog.dbo.TechStore WHE
             }
         }
 
-        public void CopyTechStore(List<int> TechStoreIDs, int NewTechStoreSubGroupID)
-        {
-            for (int i = 0; i < TechStoreIDs.Count(); i++)
-            {
-                int TechStoreID = TechStoreIDs[i];
-
-                using (var da = new SqlDataAdapter("SELECT * FROM TechStore" +
-                    " WHERE TechStoreID = " + TechStoreID,
-                    ConnectionStrings.CatalogConnectionString))
-                {
-                    using (new SqlCommandBuilder(da))
-                    {
-                        using (var dt = new DataTable())
-                        {
-                            if (da.Fill(dt) > 0)
-                            {
-                                DataRow NewRow = dt.NewRow();
-                                NewRow.ItemArray = dt.Rows[0].ItemArray;
-                                NewRow["TechStoreSubGroupID"] = NewTechStoreSubGroupID;
-                                dt.Rows.Add(NewRow);
-                                da.Update(dt);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
         public void RefreshTechCatalogOperationsDetail()
         {
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM TechCatalogOperationsDetail ORDER BY SerialNumber", ConnectionStrings.CatalogConnectionString))
@@ -6177,7 +6348,6 @@ WHERE StoreItemID IN (SELECT TechStoreID FROM infiniu2_catalog.dbo.TechStore WHE
                         Rows[0].Delete();
                         TechCatalogEvents.SaveEvents("Склад: операция MachinesOperationID=" + MachinesOperationID + " откреплена от наименования");
                     }
-
                 }
 
                 RowDetailGroup.Delete();
@@ -6229,6 +6399,7 @@ WHERE StoreItemID IN (SELECT TechStoreID FROM infiniu2_catalog.dbo.TechStore WHE
                 }
             }
         }
+
         public void UpdateTechCatalogOperationsDetails()
         {
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM TechCatalogOperationsDetail ORDER BY SerialNumber", ConnectionStrings.CatalogConnectionString))
@@ -6242,9 +6413,11 @@ WHERE StoreItemID IN (SELECT TechStoreID FROM infiniu2_catalog.dbo.TechStore WHE
             }
             RefreshTechCatalogOperationsDetail();
         }
-        #endregion
+
+        #endregion TechCatalogOperationsDetail
 
         #region TechCatalogStoreDetail
+
         public void AddTechCatalogStoreDetail(int TechCatalogOperationsDetailID, int[] TechStoreID, object[] IsHalfStuff1, object[] Length, object[] Height, object[] Width)
         {
             for (int i = 0; i < TechStoreID.Count(); i++)
@@ -6352,9 +6525,11 @@ WHERE StoreItemID IN (SELECT TechStoreID FROM infiniu2_catalog.dbo.TechStore WHE
                 }
             }
         }
-        #endregion
+
+        #endregion TechCatalogStoreDetail
 
         #region Sector
+
         public void AddSector(int FactoryID, string Name)
         {
             DataRow NewRow = SectorsDT.NewRow();
@@ -6425,6 +6600,7 @@ WHERE StoreItemID IN (SELECT TechStoreID FROM infiniu2_catalog.dbo.TechStore WHE
         {
             ((DataGridViewComboBoxColumn)TechCatalogOperationsDetailGrid.Columns["SectorName"]).DataSource = SectorsDT.Copy();
         }
+
         private void UpdateSectors()
         {
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT SectorID, FactoryID, SectorName FROM Sectors", ConnectionStrings.CatalogConnectionString))
@@ -6436,9 +6612,10 @@ WHERE StoreItemID IN (SELECT TechStoreID FROM infiniu2_catalog.dbo.TechStore WHE
             }
         }
 
-        #endregion
+        #endregion Sector
 
         #region SubSector
+
         public void AddSubSector(int SectorID, string Name)
         {
             DataRow NewRow = SubSectorsDT.NewRow();
@@ -6503,6 +6680,7 @@ WHERE StoreItemID IN (SELECT TechStoreID FROM infiniu2_catalog.dbo.TechStore WHE
         {
             ((DataGridViewComboBoxColumn)TechCatalogOperationsDetailGrid.Columns["SubSectorName"]).DataSource = SubSectorsDT.Copy();
         }
+
         private void UpdateSubSectors()
         {
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT SubSectorID, SectorID, SubSectorName FROM SubSectors", ConnectionStrings.CatalogConnectionString))
@@ -6514,9 +6692,11 @@ WHERE StoreItemID IN (SELECT TechStoreID FROM infiniu2_catalog.dbo.TechStore WHE
             }
             RefreshTechCatalogOperationsDetail();
         }
-        #endregion
+
+        #endregion SubSector
 
         #region Machine
+
         public void AddMachine(int SubSectorID, string Name)
         {
             DataRow NewRow = MachinesDT.NewRow();
@@ -6585,6 +6765,7 @@ WHERE StoreItemID IN (SELECT TechStoreID FROM infiniu2_catalog.dbo.TechStore WHE
         {
             ((DataGridViewComboBoxColumn)TechCatalogOperationsDetailGrid.Columns["MachineName"]).DataSource = MachinesDT.Copy();
         }
+
         private void UpdateMachines()
         {
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT MachineID, SubSectorID, MachineName, Parametrs, ValueParametrs FROM Machines", ConnectionStrings.CatalogConnectionString))
@@ -6598,9 +6779,10 @@ WHERE StoreItemID IN (SELECT TechStoreID FROM infiniu2_catalog.dbo.TechStore WHE
             RefreshTechCatalogOperationsDetail();
         }
 
-        #endregion
+        #endregion Machine
 
         #region MachinesOperation
+
         public void AddMachinesOperation(string Name, decimal Norm, decimal PreparatoryNorm, int MeasureID, string Article, int PositionID, int Rank,
             int PositionID2, int Rank2, int CabFurDocTypeID, int CabFurAlgorithmID)
         {
@@ -6634,16 +6816,6 @@ WHERE StoreItemID IN (SELECT TechStoreID FROM infiniu2_catalog.dbo.TechStore WHE
             RefreshTechCatalogOperationsDetail();
         }
 
-        public void EditCabFurDocType(int MachinesOperationID, int CabFurDocTypeID)
-        {
-            DataRow[] EditRows = MachinesOperationsDT.Select("MachinesOperationID = " + MachinesOperationID);
-            if (EditRows.Count() > 0)
-            {
-                EditRows[0]["CabFurDocTypeID"] = CabFurDocTypeID;
-            }
-
-        }
-
         public void AddMachinesOperationToMachine(int MachineID, int MachinesOperationID)
         {
             DataRow[] Rows = MachinesOperationsDT.Select("MachinesOperationID = " + MachinesOperationID);
@@ -6662,6 +6834,15 @@ WHERE StoreItemID IN (SELECT TechStoreID FROM infiniu2_catalog.dbo.TechStore WHE
                 }
             }
             RefreshTechCatalogOperationsDetail();
+        }
+
+        public void EditCabFurDocType(int MachinesOperationID, int CabFurDocTypeID)
+        {
+            DataRow[] EditRows = MachinesOperationsDT.Select("MachinesOperationID = " + MachinesOperationID);
+            if (EditRows.Count() > 0)
+            {
+                EditRows[0]["CabFurDocTypeID"] = CabFurDocTypeID;
+            }
         }
 
         public void EditMachinesOperation(int MachinesOperationID, string NewName, decimal NewNorm, decimal NewPreparatoryNorm, int NewMeasureID, string NewArticle,
@@ -6733,6 +6914,7 @@ WHERE StoreItemID IN (SELECT TechStoreID FROM infiniu2_catalog.dbo.TechStore WHE
             ((DataGridViewComboBoxColumn)TechCatalogOperationsDetailGrid.Columns["MachinesOperationName"]).DataSource = MachinesOperationsDT.Copy();
             ((DataGridViewComboBoxColumn)TechCatalogOperationsDetailGrid.Columns["MachinesOperationArticle"]).DataSource = MachinesOperationsDT.Copy();
         }
+
         public void UpdateMachinesOperations()
         {
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM MachinesOperations", ConnectionStrings.CatalogConnectionString))
@@ -6745,9 +6927,10 @@ WHERE StoreItemID IN (SELECT TechStoreID FROM infiniu2_catalog.dbo.TechStore WHE
             RefreshTechCatalogOperationsDetail();
         }
 
-        #endregion
+        #endregion MachinesOperation
 
         #region TechCatalogTools
+
         public void AddTechCatalogTools(int TechCatalogOperationsDetailID, int ToolsID, int Count)
         {
             DataRow NewRow = TechCatalogToolsDT.NewRow();
@@ -6800,73 +6983,48 @@ WHERE StoreItemID IN (SELECT TechStoreID FROM infiniu2_catalog.dbo.TechStore WHE
                 }
             }
         }
-        #endregion
 
-        public TechStoreGroupInfo GetSubGroupInfo(int TechStoreID)
-        {
-            TechStoreGroupInfo techStoreGroupInfo = new TechStoreGroupInfo();
-            string SelectCommand = @"SELECT TOP 1 TSG.*, TechStore.* FROM TechStore                
-                INNER JOIN TechStoreSubGroups as TSG ON TechStore.TechStoreSubGroupID = TSG.TechStoreSubGroupID
-                WHERE TechStoreID = " + TechStoreID;
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
-            {
-                using (DataTable DT = new DataTable())
-                {
-                    if (DA.Fill(DT) > 0)
-                    {
-                        techStoreGroupInfo.TechStoreName = DT.Rows[0]["TechStoreName"].ToString();
-                        techStoreGroupInfo.TechStoreSubGroupName = DT.Rows[0]["TechStoreSubGroupName"].ToString();
-                        techStoreGroupInfo.SubGroupNotes = DT.Rows[0]["Notes"].ToString();
-                        techStoreGroupInfo.SubGroupNotes1 = DT.Rows[0]["Notes1"].ToString();
-                        techStoreGroupInfo.SubGroupNotes2 = DT.Rows[0]["Notes2"].ToString();
-                        if (DT.Rows[0]["Length"] != DBNull.Value)
-                            techStoreGroupInfo.Length = Convert.ToInt32(DT.Rows[0]["Length"]);
-                        else
-                            techStoreGroupInfo.Length = -1;
-                        if (DT.Rows[0]["Width"] != DBNull.Value)
-                            techStoreGroupInfo.Width = Convert.ToInt32(DT.Rows[0]["Width"]);
-                        else
-                            techStoreGroupInfo.Width = -1;
-                        if (DT.Rows[0]["Height"] != DBNull.Value)
-                            techStoreGroupInfo.Height = Convert.ToInt32(DT.Rows[0]["Height"]);
-                        else
-                            techStoreGroupInfo.Height = -1;
-                    }
-                }
-            }
-            return techStoreGroupInfo;
-        }
-
+        #endregion TechCatalogTools
     }
-
-
-
-
 
     public class TestTechCatalog
     {
+        #region Fields
+
         public BindingSource ResultBS;
         public BindingSource SummaryBS;
-        DataTable DecorConfigDT;
-        DataTable DecorOrdersDT;
-        DataTable DTTTTTT;
-        DataTable FrontsConfigDT;
-        DataTable FrontsOrdersDT;
-        DataTable ResultDT;
-        DataTable SummaryDT;
-        DataTable TechCatalogOperationsDetail;
-        DataTable TechCatalogOperationsTerms;
-        DataTable TechCatalogStoreDetailDT;
-        DataTable TechStore;
-        public TestTechCatalog()
-        {
+        private DataTable DecorConfigDT;
+        private DataTable DecorOrdersDT;
+        private DataTable DTTTTTT;
+        private DataTable FrontsConfigDT;
+        private DataTable FrontsOrdersDT;
+        private DataTable ResultDT;
+        private DataTable SummaryDT;
+        private DataTable TechCatalogOperationsDetail;
+        private DataTable TechCatalogOperationsTerms;
+        private DataTable TechCatalogStoreDetailDT;
+        private DataTable TechStore;
 
-        }
+        #endregion Fields
+
+        #region Properties
 
         public DataView ResultDV
         {
             get { return DTTTTTT.AsDataView(); }
         }
+
+        #endregion Properties
+
+        #region Constructors
+
+        public TestTechCatalog()
+        {
+        }
+
+        #endregion Constructors
+
+        #region Methods
 
         public void CreateDecorExcel(int TechCatalogOperationsGroupID)
         {
@@ -6976,7 +7134,7 @@ WHERE StoreItemID IN (SELECT TechStoreID FROM infiniu2_catalog.dbo.TechStore WHE
             TotamAmountCS.TopBorderColor = HSSFColor.BLACK.index;
             TotamAmountCS.SetFont(SerifBold10F);
 
-            #endregion
+            #endregion Create fonts and styles
 
             //DataTable DT = new DataTable();
             //GridsDecorAssemblyToExcelSingly(ref hssfworkbook, ref sheet1,
@@ -7099,7 +7257,7 @@ WHERE StoreItemID IN (SELECT TechStoreID FROM infiniu2_catalog.dbo.TechStore WHE
             SimpleDecCS.Alignment = HSSFCellStyle.ALIGN_RIGHT;
             SimpleDecCS.SetFont(Serif8F);
 
-            #endregion
+            #endregion Create fonts and styles
 
             HSSFSheet sheet1 = hssfworkbook.CreateSheet(TechStoreName);
             sheet1.PrintSetup.PaperSize = (short)PaperSizeType.A4;
@@ -7195,7 +7353,6 @@ WHERE StoreItemID IN (SELECT TechStoreID FROM infiniu2_catalog.dbo.TechStore WHE
                     {
                         if (firstRowMergeIndex == -1)
                         {
-
                         }
                         else
                             secondRowMergeIndex = x;
@@ -7242,7 +7399,6 @@ WHERE StoreItemID IN (SELECT TechStoreID FROM infiniu2_catalog.dbo.TechStore WHE
                     {
                         if (firstRowMergeIndex == -1)
                         {
-
                         }
                         else
                             secondRowMergeIndex = x;
@@ -7311,7 +7467,6 @@ WHERE StoreItemID IN (SELECT TechStoreID FROM infiniu2_catalog.dbo.TechStore WHE
 
                 //if (Func1(DT1, TechCatalogOperationsDetailID))
                 //{
-
                 //}
             }
         }
@@ -7380,7 +7535,7 @@ WHERE StoreItemID IN (SELECT TechStoreID FROM infiniu2_catalog.dbo.TechStore WHE
                 TechStore.Clear();
                 DA.Fill(TechStore);
             }
-            SelectCommand = @"SELECT TechCatalogOperationsGroups.GroupName, TechCatalogOperationsGroups.GroupNumber, TechCatalogOperationsGroups.TechStoreID, TechCatalogOperationsDetail.TechCatalogOperationsDetailID, TechCatalogOperationsDetail.TechCatalogOperationsGroupID, TechCatalogOperationsDetail.SerialNumber, MachinesOperationName FROM TechCatalogOperationsDetail 
+            SelectCommand = @"SELECT TechCatalogOperationsGroups.GroupName, TechCatalogOperationsGroups.GroupNumber, TechCatalogOperationsGroups.TechStoreID, TechCatalogOperationsDetail.TechCatalogOperationsDetailID, TechCatalogOperationsDetail.TechCatalogOperationsGroupID, TechCatalogOperationsDetail.SerialNumber, MachinesOperationName FROM TechCatalogOperationsDetail
                 INNER JOIN TechCatalogOperationsGroups ON TechCatalogOperationsDetail.TechCatalogOperationsGroupID=TechCatalogOperationsGroups.TechCatalogOperationsGroupID
                 INNER JOIN MachinesOperations ON TechCatalogOperationsDetail.MachinesOperationID = MachinesOperations.MachinesOperationID
                 ORDER BY TechCatalogOperationsGroups.TechStoreID, TechCatalogOperationsGroups.GroupNumber, TechCatalogOperationsDetail.SerialNumber";
@@ -7397,7 +7552,7 @@ WHERE StoreItemID IN (SELECT TechStoreID FROM infiniu2_catalog.dbo.TechStore WHE
             }
             SelectCommand = @"SELECT TechCatalogStoreDetail.*, TechStore.TechStoreName, Measures.Measure FROM TechCatalogStoreDetail
                 INNER JOIN TechStore ON TechCatalogStoreDetail.TechStoreID = TechStore.TechStoreID
-                INNER JOIN Measures ON TechStore.MeasureID = Measures.MeasureID 
+                INNER JOIN Measures ON TechStore.MeasureID = Measures.MeasureID
                 ORDER BY GroupA, GroupB, GroupC";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
@@ -7532,6 +7687,7 @@ WHERE StoreItemID IN (SELECT TechStoreID FROM infiniu2_catalog.dbo.TechStore WHE
                 DataSource = SummaryDT
             };
         }
+
         private void GetDecor(int TechCatalogOperationsGroupID)
         {
             DataTable DT1 = new DataTable();
@@ -7662,6 +7818,7 @@ WHERE StoreItemID IN (SELECT TechStoreID FROM infiniu2_catalog.dbo.TechStore WHE
             foreach (DataRow row in SummaryDT.Rows)
                 row["check"] = false;
         }
+
         private void GetOperations(int PrevTechCatalogOperationsDetailID, int TechStoreID, int ColumnOffset,
             int InsetTypeID, int ColorID, int PatinaID, int Height, int Width, int Count, decimal Square, int iGroupNumber = 0)
         {
@@ -7792,6 +7949,7 @@ WHERE StoreItemID IN (SELECT TechStoreID FROM infiniu2_catalog.dbo.TechStore WHE
                 {
                     case "CoverID":
                         break;
+
                     case "InsetTypeID":
                         if (row["MathSymbol"].ToString().Equals("="))
                         {
@@ -7822,10 +7980,13 @@ WHERE StoreItemID IN (SELECT TechStoreID FROM infiniu2_catalog.dbo.TechStore WHE
                                 return false;
                         }
                         break;
+
                     case "InsetColorID":
                         break;
+
                     case "ColorID":
                         break;
+
                     case "PatinaID":
                         if (row["MathSymbol"].ToString().Equals("="))
                         {
@@ -7856,12 +8017,16 @@ WHERE StoreItemID IN (SELECT TechStoreID FROM infiniu2_catalog.dbo.TechStore WHE
                                 return false;
                         }
                         break;
+
                     case "Diameter":
                         break;
+
                     case "Thickness":
                         break;
+
                     case "Length":
                         break;
+
                     case "Height":
                         if (row["MathSymbol"].ToString().Equals("="))
                         {
@@ -7892,6 +8057,7 @@ WHERE StoreItemID IN (SELECT TechStoreID FROM infiniu2_catalog.dbo.TechStore WHE
                                 return false;
                         }
                         break;
+
                     case "Width":
                         if (row["MathSymbol"].ToString().Equals("="))
                         {
@@ -7922,14 +8088,19 @@ WHERE StoreItemID IN (SELECT TechStoreID FROM infiniu2_catalog.dbo.TechStore WHE
                                 return false;
                         }
                         break;
+
                     case "Admission":
                         break;
+
                     case "InsetHeightAdmission":
                         break;
+
                     case "InsetWidthAdmission":
                         break;
+
                     case "Capacity":
                         break;
+
                     case "Weight":
                         break;
                 }
@@ -7950,29 +8121,7 @@ WHERE StoreItemID IN (SELECT TechStoreID FROM infiniu2_catalog.dbo.TechStore WHE
             }
             return false;
         }
-    }
 
-    public struct TechStoreGroupInfo
-    {
-        public int Length;
-        public int Width;
-        public int Height;
-        public string TechStoreName;
-        public string TechStoreSubGroupName;
-        public string SubGroupNotes;
-        public string SubGroupNotes1;
-        public string SubGroupNotes2;
-    }
-
-    public struct TechLabelInfo
-    {
-        public int Length;
-        public int Width;
-        public int Height;
-        public int PositionsCount;
-        public int LabelsCount;
-        public int Factory;
-        public string Color;
-        public string DocDateTime;
+        #endregion Methods
     }
 }

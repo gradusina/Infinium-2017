@@ -19,7 +19,7 @@ namespace Infinium.Properties {
     // с помощью такого средства, как ResGen или Visual Studio.
     // Чтобы добавить или удалить член, измените файл .ResX и снова запустите ResGen
     // с параметром /str или перестройте свой проект VS.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -68,7 +68,17 @@ namespace Infinium.Properties {
                 return ResourceManager.GetStream("_01_01", resourceCulture);
             }
         }
-                
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap _1380035188_stock_task {
+            get {
+                object obj = ResourceManager.GetObject("_1380035188_stock_task", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
@@ -961,9 +971,9 @@ namespace Infinium.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap n2 {
+        internal static System.Drawing.Bitmap n21 {
             get {
-                object obj = ResourceManager.GetObject("n2", resourceCulture);
+                object obj = ResourceManager.GetObject("n21", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
