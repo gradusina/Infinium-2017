@@ -1,5 +1,5 @@
 ﻿using Infinium.Modules.Marketing.NewOrders;
-
+using Infinium.Modules.Marketing.NewOrders.InvoiceReportToDBF;
 using System;
 using System.Data;
 using System.Drawing;

@@ -13,7 +13,7 @@
     <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,6 +22,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <LangVersion>7.1</LangVersion>
+    <CodeAnalysisRuleSet>Infinium.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -32,6 +34,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <LangVersion>7.1</LangVersion>
+    <CodeAnalysisRuleSet>Infinium.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>Infinium.Program</StartupObject>
@@ -964,6 +967,9 @@
     <Compile Include="Modules\Marketing\NewOrders\ClientReportMenu.designer.cs">
       <DependentUpon>ClientReportMenu.cs</DependentUpon>
     </Compile>
+    <Compile Include="Modules\Marketing\NewOrders\ColorInvoiceReportToDBF\ColorInvoiceDecorReportToDBF.cs" />
+    <Compile Include="Modules\Marketing\NewOrders\ColorInvoiceReportToDBF\ColorInvoiceFrontsReportToDBF.cs" />
+    <Compile Include="Modules\Marketing\NewOrders\ColorInvoiceReportToDBF\ColorInvoiceReportToDBF.cs" />
     <Compile Include="Modules\Marketing\NewOrders\CopyMarketingOrderForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -988,6 +994,8 @@
     <Compile Include="Modules\Marketing\NewOrders\FrontsSizesExportForm.designer.cs">
       <DependentUpon>FrontsSizesExportForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Modules\Marketing\NewOrders\InvoiceReportToDBF\InvoiceDecorReportToDBF.cs" />
+    <Compile Include="Modules\Marketing\NewOrders\InvoiceReportToDBF\InvoiceFrontsReportToDBF.cs" />
     <Compile Include="Modules\Marketing\NewOrders\MarketingDiscountManagementForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -1013,14 +1021,23 @@
     <Compile Include="Modules\Marketing\NewOrders\MCupboardsForm.designer.cs">
       <DependentUpon>MCupboardsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Modules\Marketing\NewOrders\NewInvoiceExportToDBF.cs" />
+    <Compile Include="Modules\Marketing\NewOrders\InvoiceReportToDBF\InvoiceReportToDBF.cs" />
     <Compile Include="Modules\Marketing\NewOrders\NewOrderSelectClientsMenu.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Modules\Marketing\NewOrders\NewOrderSelectClientsMenu.designer.cs">
       <DependentUpon>NewOrderSelectClientsMenu.cs</DependentUpon>
     </Compile>
-    <Compile Include="Modules\Marketing\NewOrders\PrepareReport.cs" />
+    <Compile Include="Modules\Marketing\NewOrders\PrepareReport\ColorInvoiceReportToDBF\ColorInvoiceDecorReportToDBF.cs" />
+    <Compile Include="Modules\Marketing\NewOrders\PrepareReport\ColorInvoiceReportToDBF\ColorInvoiceFrontsReportToDBF.cs" />
+    <Compile Include="Modules\Marketing\NewOrders\PrepareReport\ColorInvoiceReportToDBF\ColorInvoiceReportToDBF.cs" />
+    <Compile Include="Modules\Marketing\NewOrders\PrepareReport\DetailsReport.cs" />
+    <Compile Include="Modules\Marketing\NewOrders\PrepareReport\InvoiceReport\InvoiceDecorReportToDBF.cs" />
+    <Compile Include="Modules\Marketing\NewOrders\PrepareReport\InvoiceReport\InvoiceFrontsReportToDBF.cs" />
+    <Compile Include="Modules\Marketing\NewOrders\PrepareReport\InvoiceReport\InvoiceReportToDBF.cs" />
+    <Compile Include="Modules\Marketing\NewOrders\PrepareReport\SimpleReport\DecorReport.cs" />
+    <Compile Include="Modules\Marketing\NewOrders\PrepareReport\SimpleReport\FrontsReport.cs" />
+    <Compile Include="Modules\Marketing\NewOrders\PrepareReport\SimpleReport\Report.cs" />
     <Compile Include="Modules\Marketing\NewOrders\SaveDBFReportMenu.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -2773,6 +2790,7 @@
     <EmbeddedResource Include="WaitForm.resx">
       <DependentUpon>WaitForm.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="Infinium.ruleset" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

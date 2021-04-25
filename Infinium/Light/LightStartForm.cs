@@ -33,7 +33,6 @@ namespace Infinium
         private static extern IntPtr GetActiveWindow();
 
         private Thread NotifyThread;
-        private TablesManager TM;
         private int iRefreshTime = 150000;
         private NotifyForm NotifyForm;
 
@@ -42,9 +41,7 @@ namespace Infinium
             InitializeComponent();
 
             LoginForm = tLoginForm;
-
-            TM = new TablesManager();
-
+            
             MaximumSize = Screen.PrimaryScreen.WorkingArea.Size;
 
             //CurrentTimeLabel.Text = DateTime.Now.ToString("HH:mm");

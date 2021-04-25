@@ -2299,7 +2299,7 @@ namespace Infinium.Modules.Marketing.NewOrders
 
                     if (ClientID == 145)
                     {
-                        CurrentPrice = Convert.ToDecimal(PRows[0]["ZOVPrice"]);
+                        OriginalPrice = Convert.ToDecimal(PRows[0]["ZOVPrice"]);
                         CurrentPrice = DiscountVolume * OriginalPrice;
                     }
                     Price = CurrentPrice - CurrentPrice / 100 * TotalDiscount;

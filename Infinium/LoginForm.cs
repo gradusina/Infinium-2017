@@ -9,8 +9,8 @@ namespace Infinium
     {
         Security Security = null;
         Form TopForm = null;
-        bool WaitForEnter = false;
-        Connection Connection;
+        bool _waitForEnter = false;
+        Connection _connection;
 
         public void CloseJournalRec()
         {
@@ -27,7 +27,7 @@ namespace Infinium
 
             this.MaximumSize = Screen.PrimaryScreen.WorkingArea.Size;
 
-            Connection = new Connection();
+            _connection = new Connection();
 
             //ConnectionStrings.CatalogConnectionString = Connection.DecryptStringConnectionString(CommonVariables.CatalogConnectionString);
             //ConnectionStrings.LightConnectionString = Connection.DecryptStringConnectionString(CommonVariables.LightConnectionString);
@@ -45,14 +45,14 @@ namespace Infinium
             //Configs.DocumentsPathHost = CommonVariables.DocumentsPath;
             //Configs.FTPType = CommonVariables.FTPType;
 
-            ConnectionStrings.UsersConnectionString = Connection.GetConnectionString("ConnectionUsers.config");
-            ConnectionStrings.CatalogConnectionString = Connection.GetConnectionString("ConnectionCatalog.config");
-            ConnectionStrings.LightConnectionString = Connection.GetConnectionString("ConnectionLight.config");
-            ConnectionStrings.MarketingOrdersConnectionString = Connection.GetConnectionString("ConnectionMarketingOrders.config");
-            ConnectionStrings.MarketingReferenceConnectionString = Connection.GetConnectionString("ConnectionMarketingReference.config");
-            ConnectionStrings.StorageConnectionString = Connection.GetConnectionString("ConnectionStorage.config");
-            ConnectionStrings.ZOVOrdersConnectionString = Connection.GetConnectionString("ConnectionZOVOrders.config");
-            ConnectionStrings.ZOVReferenceConnectionString = Connection.GetConnectionString("ConnectionZOVReference.config");
+            ConnectionStrings.UsersConnectionString = _connection.GetConnectionString("ConnectionUsers.config");
+            ConnectionStrings.CatalogConnectionString = _connection.GetConnectionString("ConnectionCatalog.config");
+            ConnectionStrings.LightConnectionString = _connection.GetConnectionString("ConnectionLight.config");
+            ConnectionStrings.MarketingOrdersConnectionString = _connection.GetConnectionString("ConnectionMarketingOrders.config");
+            ConnectionStrings.MarketingReferenceConnectionString = _connection.GetConnectionString("ConnectionMarketingReference.config");
+            ConnectionStrings.StorageConnectionString = _connection.GetConnectionString("ConnectionStorage.config");
+            ConnectionStrings.ZOVOrdersConnectionString = _connection.GetConnectionString("ConnectionZOVOrders.config");
+            ConnectionStrings.ZOVReferenceConnectionString = _connection.GetConnectionString("ConnectionZOVReference.config");
 
             //ConnectionStrings.CatalogConnectionString = Connection.GetConnectionString("ConnectionCatalog.config");
             //ConnectionStrings.LightConnectionString = Connection.GetConnectionString("ConnectionLight.config");
@@ -200,7 +200,7 @@ namespace Infinium
                 CurrentDayOfWeekLabel.Left = GetTimeLabelLength(CurrentTimeLabel.Text) + CurrentTimeLabel.Left;
                 CurrentDayMonthLabel.Left = GetTimeLabelLength(CurrentTimeLabel.Text) + CurrentTimeLabel.Left;
             }
-            if (WaitForEnter)
+            if (_waitForEnter)
             {
 
             }

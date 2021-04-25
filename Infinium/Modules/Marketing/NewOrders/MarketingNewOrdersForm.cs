@@ -1,4 +1,6 @@
 ﻿using Infinium.Modules.Marketing.NewOrders;
+using Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF;
+using Infinium.Modules.Marketing.NewOrders.InvoiceReportToDBF;
 using Infinium.Modules.Marketing.WeeklyPlanning;
 
 using NPOI.HSSF.UserModel;
@@ -1299,7 +1301,7 @@ namespace Infinium
 
             NeedSplash = false;
 
-            InvoiceReportToDBF DBFReport = new InvoiceReportToDBF();
+            ColorInvoiceReportToDBF DBFReport = new ColorInvoiceReportToDBF();
 
             Infinium.Modules.Marketing.MutualSettlements.MutualSettlements MutualSettlementsManager = new Modules.Marketing.MutualSettlements.MutualSettlements();
             MutualSettlementsManager.Initialize();
@@ -2088,7 +2090,7 @@ namespace Infinium
 
             NeedSplash = false;
 
-            InvoiceReportToDBF DBFReport = new InvoiceReportToDBF();
+            ColorInvoiceReportToDBF DBFReport = new ColorInvoiceReportToDBF();
 
             decimal TotalProfil = 0;
             decimal TotalTPS = 0;
@@ -2529,9 +2531,9 @@ namespace Infinium
 
             NeedSplash = false;
 
-            Modules.Marketing.NewOrders.PrepareReport.InvoiceReportToDBF DBFReport = new Modules.Marketing.NewOrders.PrepareReport.InvoiceReportToDBF();
+            Modules.Marketing.NewOrders.PrepareReport.InvoiceReport.InvoiceReportToDBF DBFReport = new Modules.Marketing.NewOrders.PrepareReport.InvoiceReport.InvoiceReportToDBF();
 
-            Infinium.Modules.Marketing.MutualSettlements.MutualSettlements MutualSettlementsManager = new Modules.Marketing.MutualSettlements.MutualSettlements();
+            Modules.Marketing.MutualSettlements.MutualSettlements MutualSettlementsManager = new Modules.Marketing.MutualSettlements.MutualSettlements();
             MutualSettlementsManager.Initialize();
 
             if (ClientID == 145)

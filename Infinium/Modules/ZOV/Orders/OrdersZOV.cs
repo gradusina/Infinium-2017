@@ -7186,41 +7186,6 @@ namespace Infinium.Modules.ZOV
                     NewRow["Count"] = r.Count;
                     NewFrontsTable.Rows.Add(NewRow);
                 }
-                //countriesTable.cop
-                //IEnumerable<DataRow> newSort = from row in NewFrontsTable.AsEnumerable()
-                //               group row by new
-                //               {
-                //                   FrontID = row.Field<Int64>("FrontID"),
-                //                   PatinaID = row.Field<Int64>("PatinaID"),
-                //                   InsetTypeID = row.Field<Int64>("InsetTypeID"),
-                //                   ColorID = row.Field<Int64>("ColorID"),
-                //                   InsetColorID = row.Field<Int64>("InsetColorID"),
-                //                   TechnoInsetTypeID = row.Field<Int64>("TechnoInsetTypeID"),
-                //                   TechnoInsetColorID = row.Field<Int64>("TechnoInsetColorID"),
-                //                   Height = row.Field<Int32>("Height"),
-                //                   Width = row.Field<Int32>("Width")
-                //               } into grp
-                //               select new
-                //               {
-                //                   FrontID1 = grp.Key.FrontID,
-                //                   PatinaID1 = grp.Key.PatinaID,
-                //                   InsetTypeID1 = grp.Key.InsetTypeID,
-                //                   ColorID1 = grp.Key.ColorID,
-                //                   InsetColorID1 = grp.Key.InsetColorID,
-                //                   TechnoInsetTypeID1 = grp.Key.TechnoInsetTypeID,
-                //                   TechnoInsetColorID1 = grp.Key.TechnoInsetColorID,
-                //                   Height1 = grp.Key.Height,
-                //                   Width1 = grp.Key.Width,
-                //                   Count1 = grp.Sum(r => r.Field<Int32>("Count"))
-                //               };
-                //foreach (var r in newSort)
-                //{
-                //    Console.WriteLine("Group {0}, Type {1}, Sum {2}", r.ColorID1, r.Count1, r.FrontID1);
-                //}
-                //if (newSort != null)
-                //{
-                //    DataTable boundTable = newSort;
-                //}
             }
         }
 

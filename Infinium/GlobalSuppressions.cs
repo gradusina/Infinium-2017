@@ -345,3 +345,6 @@
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2122:DoNotIndirectlyExposeMethodsWithLinkDemands", Scope = "member", Target = "Hercules.BlockForm.#DefWndProc(System.Windows.Forms.Message&)")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2122:DoNotIndirectlyExposeMethodsWithLinkDemands", Scope = "member", Target = "Hercules.ScrollPanel.#WndProc(System.Windows.Forms.Message&)")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Не ликвидировать объекты несколько раз", Scope = "member", Target = "Hercules.Modules.MarketingOrdersManagement.Parties.#DateFromSqlServer()")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2100:Проверка запросов SQL на уязвимости безопасности", Scope = "member", Target = "Infinium.Modules.Marketing.MutualSettlements.MutualSettlements.#DetachDispatchDocuments()")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2100:Проверка запросов SQL на уязвимости безопасности", Scope = "member", Target = "Infinium.Modules.Marketing.MutualSettlements.MutualSettlements.#BYRReportCash(System.Int32,System.DateTime,System.DateTime,System.Decimal&,System.Decimal&,System.Decimal&,System.Decimal&)")]
+

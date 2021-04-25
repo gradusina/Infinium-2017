@@ -45,9 +45,6 @@ namespace Infinium
         SolidBrush SelectedCellBackBrush;
 
         Pen pCheckedRectPen;
-
-        string sBackText = "Нет данных";
-
         Rectangle rCheckBoxRect;
 
         bool NeedRefresh = false;
@@ -245,11 +242,7 @@ namespace Infinium
             return Convert.ToInt32(Convert.ToDecimal(CellWidth - 10) * Convert.ToDecimal(Value) / 100);
         }
 
-        public string BackText
-        {
-            get { return sBackText; }
-            set { sBackText = value; }
-        }
+        public string BackText { get; set; } = "Нет данных";
 
         protected override void OnCellPainting(DataGridViewCellPaintingEventArgs e)
         {
@@ -404,9 +397,9 @@ namespace Infinium
             if (this.RowCount != 0) return;
             e.Graphics.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
 
-            e.Graphics.DrawString(sBackText, NoDataLabelFont, NoDataLabelBrush,
-                (this.ClientRectangle.Width - e.Graphics.MeasureString(sBackText, NoDataLabelFont).Width) / 2 + 4,
-                (this.ClientRectangle.Height - e.Graphics.MeasureString(sBackText, NoDataLabelFont).Height) / 2);
+            e.Graphics.DrawString(BackText, NoDataLabelFont, NoDataLabelBrush,
+                (this.ClientRectangle.Width - e.Graphics.MeasureString(BackText, NoDataLabelFont).Width) / 2 + 4,
+                (this.ClientRectangle.Height - e.Graphics.MeasureString(BackText, NoDataLabelFont).Height) / 2);
         }
 
         public bool UseCustomBackColor
@@ -3632,7 +3625,7 @@ namespace Infinium
 
     public partial class InfiniumLoginForm : Form
     {
-        Bitmap Back;
+        //Bitmap Back;
 
         bool bDrawImage = true;
 

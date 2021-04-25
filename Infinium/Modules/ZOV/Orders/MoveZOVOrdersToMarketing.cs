@@ -1,11 +1,9 @@
-﻿using System;
+﻿using Infinium.Modules.Marketing.NewOrders.InvoiceReportToDBF;
+using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Net;
 using System.Xml;
-
-using MInvoiceReportToDBF = Infinium.Modules.Marketing.NewOrders.InvoiceReportToDBF;
-using MOrdersCalculate = Infinium.Modules.Marketing.NewOrders.OrdersCalculate;
 
 namespace Infinium.Modules.ZOV.Orders
 {
@@ -29,8 +27,9 @@ namespace Infinium.Modules.ZOV.Orders
         DataTable zovPackagesDT = null;
         DataTable zovPackageDetailsDT = null;
 
-        MInvoiceReportToDBF DBFReport = null;
-        MOrdersCalculate OrdersCalculate = null;
+        InvoiceReportToDBF DBFReport = null;
+        Infinium.Modules.Marketing.NewOrders.OrdersCalculate OrdersCalculate = null;
+
         public MoveZOVOrdersToMarketing()
         {
             zovMainOrdersInfoDT = new DataTable();
@@ -49,8 +48,8 @@ namespace Infinium.Modules.ZOV.Orders
             zovPackagesDT = new DataTable();
             zovPackageDetailsDT = new DataTable();
 
-            DBFReport = new MInvoiceReportToDBF();
-            OrdersCalculate = new MOrdersCalculate();
+            DBFReport = new InvoiceReportToDBF();
+            OrdersCalculate = new Marketing.NewOrders.OrdersCalculate();
         }
 
         public int MarketingClientID
