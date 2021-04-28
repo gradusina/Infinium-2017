@@ -507,16 +507,20 @@ namespace Infinium.Modules.WorkAssignments
         {
             string SelectCommand = string.Empty;
             DataTable DT = new DataTable();
-
-            SelectCommand = @"SELECT FrontsOrdersID, MainOrderID, FrontID, PatinaID, InsetTypeID,
-                ColorID, InsetColorID, Height, Width, Count, FrontConfigID, Notes FROM FrontsOrders
-                WHERE Width<>-1 AND FrontID IN (30501,30502,30503,30504,30505,30506,16269,30364,30366,30367,28945,15760, 3737, 3727,3728,3729,3730,3731,3732,3733,3734,3735,3736,3737,3739,3740,3741,3742,3743,3744,3745,3746,3747,3748,15108,29597,27914)" +
-                " AND MainOrderID IN (SELECT MainOrderID FROM BatchDetails WHERE BatchID IN (SELECT BatchID FROM Batch WHERE ProfilWorkAssignmentID=" + WorkAssignmentID + "))";
+            
+            SelectCommand = $"SELECT FrontsOrdersID, MainOrderID, FrontID, PatinaID, InsetTypeID, " +
+                $"ColorID, InsetColorID, Height, Width, Count, FrontConfigID, Notes FROM FrontsOrders " +
+                $"WHERE Width<>-1 AND FrontID IN (30501,30502,30503,30504,30505,30506,16269,30364,30366,30367,28945,15760, { Convert.ToInt32(Fronts.Grand)}, " +
+                $" {Convert.ToInt32(Fronts.GrandVg)}, {Convert.ToInt32(Fronts.Polo)}, {Convert.ToInt32(Fronts.PoloVg)}, " +
+                $"3737, 3727,3728,3729,3730,3731,3732,3733,3734,3735,3736,3737,3739,3740,3741,3742,3743,3744,3745,3746,3747,3748,15108,29597,27914) " +
+                $"AND MainOrderID IN (SELECT MainOrderID FROM BatchDetails WHERE BatchID IN (SELECT BatchID FROM Batch WHERE ProfilWorkAssignmentID={ WorkAssignmentID }))";
             if (FactoryID == 2)
-                SelectCommand = @"SELECT FrontsOrdersID, MainOrderID, FrontID, PatinaID, InsetTypeID,
-                    ColorID, InsetColorID, Height, Width, Count, FrontConfigID, Notes FROM FrontsOrders
-                    WHERE Width<>-1 AND FrontID IN (30501,30502,30503,30504,30505,30506,16269,30364,30366,30367,28945,15760, 3737, 3727,3728,3729,3730,3731,3732,3733,3734,3735,3736,3737,3739,3740,3741,3742,3743,3744,3745,3746,3747,3748,15108,29597,27914)" +
-                    " AND MainOrderID IN (SELECT MainOrderID FROM BatchDetails WHERE BatchID IN (SELECT BatchID FROM Batch WHERE TPSWorkAssignmentID=" + WorkAssignmentID + "))";
+                SelectCommand = $"SELECT FrontsOrdersID, MainOrderID, FrontID, PatinaID, InsetTypeID, " +
+                $"ColorID, InsetColorID, Height, Width, Count, FrontConfigID, Notes FROM FrontsOrders " +
+                $"WHERE Width<>-1 AND FrontID IN (30501,30502,30503,30504,30505,30506,16269,30364,30366,30367,28945,15760, { Convert.ToInt32(Fronts.Grand)}, " +
+                $" {Convert.ToInt32(Fronts.GrandVg)}, {Convert.ToInt32(Fronts.Polo)}, {Convert.ToInt32(Fronts.PoloVg)}, " +
+                $"3737, 3727,3728,3729,3730,3731,3732,3733,3734,3735,3736,3737,3739,3740,3741,3742,3743,3744,3745,3746,3747,3748,15108,29597,27914) " +
+                $"AND MainOrderID IN (SELECT MainOrderID FROM BatchDetails WHERE BatchID IN (SELECT BatchID FROM Batch WHERE TPSWorkAssignmentID={ WorkAssignmentID }))";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.ZOVOrdersConnectionString))
             {
                 DA.Fill(DT);

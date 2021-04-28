@@ -9,29 +9,26 @@ namespace Infinium
 {
     public partial class IncomeMonthMarketingForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
-        int FormEvent = 0;
+        private int FormEvent = 0;
 
-
-        Form TopForm = null;
-        LightStartForm LightStartForm;
+        private Form TopForm = null;
+        private LightStartForm LightStartForm;
 
         public Modules.StatisticsMarketing.IncomeMonthMarketing IncomeMonth;
 
-        NumberFormatInfo nfi1;
+        private NumberFormatInfo nfi1;
 
         public IncomeMonthMarketingForm(LightStartForm tLightStartForm)
         {
             InitializeComponent();
             LightStartForm = tLightStartForm;
 
-
             this.MaximumSize = Screen.PrimaryScreen.WorkingArea.Size;
-
 
             Initialize();
             while (!SplashForm.bCreated) ;
@@ -56,16 +53,13 @@ namespace Infinium
 
                     if (FormEvent == eClose)
                     {
-
                         LightStartForm.CloseForm(this);
                     }
 
                     if (FormEvent == eHide)
                     {
-
                         LightStartForm.HideForm(this);
                     }
-
 
                     return;
                 }
@@ -76,7 +70,6 @@ namespace Infinium
                     SplashForm.CloseS = true;
                     return;
                 }
-
             }
 
             if (FormEvent == eClose || FormEvent == eHide)
@@ -89,21 +82,17 @@ namespace Infinium
 
                     if (FormEvent == eClose)
                     {
-
                         LightStartForm.CloseForm(this);
                     }
 
                     if (FormEvent == eHide)
                     {
-
                         LightStartForm.HideForm(this);
                     }
-
                 }
 
                 return;
             }
-
 
             if (FormEvent == eShow || FormEvent == eShow)
             {
@@ -140,7 +129,6 @@ namespace Infinium
             AnimateTimer.Enabled = true;
         }
 
-
         private void Initialize()
         {
             nfi1 = new NumberFormatInfo()
@@ -163,7 +151,6 @@ namespace Infinium
             IncomeChart.SeriesTemplate.Label.Antialiasing = true;
 
             ((DevExpress.XtraCharts.XYDiagram)IncomeChart.Diagram).AxisX.Label.EnableAntialiasing = DevExpress.Utils.DefaultBoolean.True;
-
         }
 
         private void IncomeChart_CustomDrawSeriesPoint(object sender, DevExpress.XtraCharts.CustomDrawSeriesPointEventArgs e)
@@ -174,7 +161,7 @@ namespace Infinium
             e.LegendFont = new Font("Segoe UI", 18.0f, FontStyle.Bold);
         }
 
-        ListSortDirection SD;
+        private ListSortDirection SD;
 
         private void IncomeDataGrid_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
@@ -187,7 +174,6 @@ namespace Infinium
 
                 IncomeDataGrid.Sort(IncomeDataGrid.Columns["DateTime"], SD);
             }
-
         }
 
         protected override void WndProc(ref Message m)
@@ -245,7 +231,6 @@ namespace Infinium
                 while (SplashWindow.bSmallCreated)
                     SmallWaitForm.CloseS = true;
             }
-
         }
 
         private void MinimizeButton_Click(object sender, EventArgs e)

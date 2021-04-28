@@ -70,7 +70,7 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportT
                         DataRow NewRow = FrameColorsDataTable.NewRow();
                         NewRow["ColorID"] = -1;
                         NewRow["ColorName"] = "-";
-                        NewRow["Cvet"] = "ххх-0";
+                        NewRow["Cvet"] = "000";
                         FrameColorsDataTable.Rows.Add(NewRow);
                     }
                     {
@@ -290,6 +290,36 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportT
                 return string.Empty;
             }
             return ColorName;
+        }
+
+        public string GetColorNameByCode(string Cvet)
+        {
+            string ColorName = string.Empty;
+            try
+            {
+                DataRow[] Rows = FrameColorsDataTable.Select($"Cvet = '{ Cvet } '");
+                ColorName = Rows[0]["ColorName"].ToString();
+            }
+            catch
+            {
+                return string.Empty;
+            }
+            return ColorName;
+        }
+
+        public string GetPatinaNameByCode(string Patina)
+        {
+            string PatinaName = string.Empty;
+            try
+            {
+                DataRow[] Rows = PatinaDataTable.Select($"Patina = '{ Patina } '");
+                PatinaName = Rows[0]["DisplayName"].ToString();
+            }
+            catch
+            {
+                return string.Empty;
+            }
+            return PatinaName;
         }
 
         private string GetPatinaCode(int PatinaID)
@@ -2238,7 +2268,7 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportT
                 " INNER JOIN infiniu2_catalog.dbo.FrontsConfig ON NewFrontsOrders.FrontConfigID = infiniu2_catalog.dbo.FrontsConfig.FrontConfigID" +
                 " INNER JOIN NewMainOrders ON NewFrontsOrders.MainOrderID = NewMainOrders.MainOrderID" +
                 " INNER JOIN NewMegaOrders ON NewMainOrders.MegaOrderID = NewMegaOrders.MegaOrderID" +
-                " WHERE  InvNumber IS NOT NULL AND NewFrontsOrders.MainOrderID IN (" + string.Join(",", MainOrderIDs) + ") ORDER BY InvNumber";
+                " WHERE InvNumber IS NOT NULL AND NewFrontsOrders.MainOrderID IN (" + string.Join(",", MainOrderIDs) + ") ORDER BY InvNumber";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand,
                 ConnectionStrings.MarketingOrdersConnectionString))
             {

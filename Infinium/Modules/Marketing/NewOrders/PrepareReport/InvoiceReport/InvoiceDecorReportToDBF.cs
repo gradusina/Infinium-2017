@@ -1190,62 +1190,6 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.InvoiceReport
             Items.Dispose();
         }
 
-        public void Report(int MegaOrderID, decimal dPaymentRate, bool IsSample)
-        {
-            GetMegaOrderInfo1(MegaOrderID);
-            DecorOrdersDataTable.Clear();
-            ProfilReportDataTable.Clear();
-            TPSReportDataTable.Clear();
-            string SelectCommand = "SELECT NewDecorOrders.*, infiniu2_catalog.dbo.DecorConfig.AccountingName, infiniu2_catalog.dbo.DecorConfig.InvNumber, NewMegaOrders.PaymentRate FROM NewDecorOrders" +
-                " INNER JOIN NewMainOrders ON NewDecorOrders.MainOrderID = NewMainOrders.MainOrderID" +
-                " INNER JOIN NewMegaOrders ON NewMainOrders.MegaOrderID = NewMegaOrders.MegaOrderID AND NewMegaOrders.MegaOrderID=" + MegaOrderID +
-                " INNER JOIN infiniu2_catalog.dbo.DecorConfig ON NewDecorOrders.DecorConfigID = infiniu2_catalog.dbo.DecorConfig.DecorConfigID" +
-                " WHERE NeedCalcPrice=0 AND NewDecorOrders.IsSample=1 AND InvNumber IS NOT NULL ORDER BY InvNumber";
-            if (!IsSample)
-                SelectCommand = "SELECT NewDecorOrders.*, infiniu2_catalog.dbo.DecorConfig.AccountingName, infiniu2_catalog.dbo.DecorConfig.InvNumber, NewMegaOrders.PaymentRate FROM NewDecorOrders" +
-                    " INNER JOIN NewMainOrders ON NewDecorOrders.MainOrderID = NewMainOrders.MainOrderID" +
-                    " INNER JOIN NewMegaOrders ON NewMainOrders.MegaOrderID = NewMegaOrders.MegaOrderID AND NewMegaOrders.MegaOrderID=" + MegaOrderID +
-                    " INNER JOIN infiniu2_catalog.dbo.DecorConfig ON NewDecorOrders.DecorConfigID = infiniu2_catalog.dbo.DecorConfig.DecorConfigID" +
-                    " WHERE NeedCalcPrice=0 AND NewDecorOrders.IsSample=0 AND InvNumber IS NOT NULL ORDER BY InvNumber";
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand,
-                ConnectionStrings.MarketingOrdersConnectionString))
-            {
-                DA.Fill(DecorOrdersDataTable);
-            }
-
-            for (int j = 0; j < DecorOrdersDataTable.Rows.Count; j++)
-            {
-                DecorOrdersDataTable.Rows[j]["PaymentRate"] = dPaymentRate;
-            }
-            Collect();
-
-        }
-
-        public void Report(int MegaOrderID, decimal dPaymentRate)
-        {
-            GetMegaOrderInfo1(MegaOrderID);
-            DecorOrdersDataTable.Clear();
-            ProfilReportDataTable.Clear();
-            TPSReportDataTable.Clear();
-            string SelectCommand = "SELECT NewDecorOrders.*, infiniu2_catalog.dbo.DecorConfig.AccountingName, infiniu2_catalog.dbo.DecorConfig.InvNumber, NewMegaOrders.PaymentRate FROM NewDecorOrders" +
-                " INNER JOIN NewMainOrders ON NewDecorOrders.MainOrderID = NewMainOrders.MainOrderID" +
-                " INNER JOIN NewMegaOrders ON NewMainOrders.MegaOrderID = NewMegaOrders.MegaOrderID AND NewMegaOrders.MegaOrderID=" + MegaOrderID +
-                " INNER JOIN infiniu2_catalog.dbo.DecorConfig ON NewDecorOrders.DecorConfigID = infiniu2_catalog.dbo.DecorConfig.DecorConfigID" +
-                " WHERE InvNumber IS NOT NULL ORDER BY InvNumber";
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand,
-                ConnectionStrings.MarketingOrdersConnectionString))
-            {
-                DA.Fill(DecorOrdersDataTable);
-            }
-
-            for (int j = 0; j < DecorOrdersDataTable.Rows.Count; j++)
-            {
-                DecorOrdersDataTable.Rows[j]["PaymentRate"] = dPaymentRate;
-            }
-            Collect();
-
-        }
-
         public void Report(int[] MainOrderIDs, bool IsSample)
         {
             GetMegaOrderInfo(MainOrderIDs[0]);

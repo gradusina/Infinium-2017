@@ -30,7 +30,7 @@ namespace Infinium
         Form TopForm = null;
 
         FileManager FM = new FileManager();
-        CreationAssignments CreationAssignmentsManager;
+        CreateAssignments CreationAssignmentsManager;
         ControlAssignments ControlAssignmentsManager;
 
         FrontsOrdersManager MarketFrontsOrdersManager;
@@ -194,22 +194,27 @@ namespace Infinium
             //Techno4DominoAssignments.Initialize();
             ProfilAngle45Assignments = new ProfilAngle45Assignments();
             ProfilAngle45Assignments.Initialize();
+
             ProfilAngle90Assignments = new ProfilAngle90Assignments();
-            ProfilAngle90Assignments.Initialize();
+
             ImpostAssignments = new ImpostAssignments();
-            ImpostAssignments.Initialize();
+
             DecorAssignments = new DecorAssignments();
             DecorAssignments.Initialize();
+
             TPSAngle45Assignments = new TPSAngle45Assignments();
             TPSAngle45Assignments.Initialize();
+
             GenevaAssignments = new GenevaAssignments();
             GenevaAssignments.Initialize();
+
             Tafel1Assignments = new Tafel1Assignments();
             Tafel1Assignments.Initialize();
+
             TafelAssignments = new TafelAssignments();
             TafelAssignments.Initialize();
 
-            CreationAssignmentsManager = new CreationAssignments();
+            CreationAssignmentsManager = new CreateAssignments();
             CreationAssignmentsManager.Initialize();
             ControlAssignmentsManager = new ControlAssignments();
             ControlAssignmentsManager.Initialize();
@@ -3531,10 +3536,11 @@ namespace Infinium
                 ClientName = "ЗОВ";
             if (ControlAssignmentsManager.IsM1(WorkAssignmentID, FactoryID))
                 ClientName = "Москва-1";
-            bool HasOrders = TafelAssignments.GetOrders(EditFrontOrdersDT, WorkAssignmentID, FactoryID);
+            Tafel1Assignments.WorkAssignmentID = WorkAssignmentID;
+            bool HasOrders = TafelAssignments.GetOrders(EditFrontOrdersDT, FactoryID);
             if (HasOrders)
             {
-                TafelAssignments.CreateExcel(WorkAssignmentID, ClientName, BatchName, ref sSourceFileName);
+                TafelAssignments.CreateExcel(ClientName, BatchName, ref sSourceFileName);
                 ControlAssignmentsManager.SetPrintDateTime(3, WorkAssignmentID);
                 ControlAssignmentsManager.SaveWorkAssignments();
                 ControlAssignmentsManager.SetInProduction(WorkAssignmentID, FactoryID);
@@ -3616,10 +3622,11 @@ namespace Infinium
                 ClientName = "ЗОВ";
             if (ControlAssignmentsManager.IsM1(WorkAssignmentID, FactoryID))
                 ClientName = "Москва-1";
-            bool HasOrders = Tafel1Assignments.GetOrders(WorkAssignmentID, FactoryID);
+            Tafel1Assignments.WorkAssignmentID = WorkAssignmentID;
+            bool HasOrders = Tafel1Assignments.GetOrders(FactoryID);
             if (HasOrders)
             {
-                Tafel1Assignments.CreateExcel(WorkAssignmentID, ClientName, BatchName, ref sSourceFileName);
+                Tafel1Assignments.CreateExcel(ClientName, BatchName, ref sSourceFileName);
                 ControlAssignmentsManager.SetPrintDateTime(7, WorkAssignmentID);
                 ControlAssignmentsManager.SetInProduction(WorkAssignmentID, FactoryID);
             }

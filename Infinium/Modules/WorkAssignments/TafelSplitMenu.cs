@@ -1,6 +1,4 @@
-﻿using Infinium.Modules.WorkAssignments;
-
-using System;
+﻿using System;
 using System.Windows.Forms;
 
 namespace Infinium
@@ -21,9 +19,9 @@ namespace Infinium
         Form MainForm = null;
         Form TopForm = null;
 
-        TafelSplitStruct TafelSplitStruct;
+        Modules.WorkAssignments.TafelManager.SplitStruct TafelSplitStruct;
 
-        public TafelSplitMenu(Form tMainForm, ref TafelSplitStruct tTafelSplitStruct)
+        public TafelSplitMenu(Form tMainForm, ref Modules.WorkAssignments.TafelManager.SplitStruct tTafelSplitStruct)
         {
             MainForm = tMainForm;
             TafelSplitStruct = tTafelSplitStruct;

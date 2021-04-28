@@ -5695,13 +5695,13 @@ namespace Infinium.Modules.WorkAssignments
 
             using (DataView DV = new DataView(SourceDT))
             {
-                DT1 = DV.ToTable(true, new string[] { "ColorID", "TechnoInsetColorID", "Height", "Width" });
+                DT1 = DV.ToTable(true, new string[] { "ColorID", "InsetColorID", "Height", "Width" });
             }
 
             for (int i = 0; i < DT1.Rows.Count; i++)
             {
                 DataRow[] Srows = SourceDT.Select("ColorID=" + Convert.ToInt32(DT1.Rows[i]["ColorID"]) +
-                    " AND TechnoInsetColorID=" + Convert.ToInt32(DT1.Rows[i]["TechnoInsetColorID"]) + " AND Width=" + Convert.ToInt32(DT1.Rows[i]["Width"]) +
+                    " AND InsetColorID=" + Convert.ToInt32(DT1.Rows[i]["InsetColorID"]) + " AND Width=" + Convert.ToInt32(DT1.Rows[i]["Width"]) +
                     " AND Height=" + Convert.ToInt32(DT1.Rows[i]["Height"]));
                 if (Srows.Count() > 0)
                 {
@@ -5710,6 +5710,7 @@ namespace Infinium.Modules.WorkAssignments
                     foreach (DataRow item in Srows)
                         Count += Convert.ToInt32(item["Count"]);
 
+                    Profile = $"Стекло {GetInsetColorName(Convert.ToInt32(DT1.Rows[i]["InsetColorID"]))}";
                     int Height = Convert.ToInt32(DT1.Rows[i]["Height"]) - Margin;
                     int Width = Convert.ToInt32(DT1.Rows[i]["Width"]) - Margin;
 
@@ -5717,7 +5718,7 @@ namespace Infinium.Modules.WorkAssignments
                     Square = decimal.Round(Square, 3, MidpointRounding.AwayFromZero);
 
                     DataRow[] rows = DestinationDT.Select("ColorID=" + Convert.ToInt32(DT1.Rows[i]["ColorID"]) +
-                    " AND TechnoInsetColorID=" + Convert.ToInt32(DT1.Rows[i]["TechnoInsetColorID"]) + " AND Width=" + Width + " AND Height=" + Height);
+                    " AND TechnoInsetColorID=" + Convert.ToInt32(DT1.Rows[i]["InsetColorID"]) + " AND Width=" + Width + " AND Height=" + Height);
                     if (rows.Count() == 0)
                     {
                         DataRow NewRow = DestinationDT.NewRow();
@@ -5729,7 +5730,7 @@ namespace Infinium.Modules.WorkAssignments
                         NewRow["Count"] = Count;
                         NewRow["Square"] = Square;
                         NewRow["ColorID"] = Convert.ToInt32(DT1.Rows[i]["ColorID"]);
-                        NewRow["TechnoInsetColorID"] = Convert.ToInt32(DT1.Rows[i]["TechnoInsetColorID"]);
+                        NewRow["TechnoInsetColorID"] = Convert.ToInt32(DT1.Rows[i]["InsetColorID"]);
                         DestinationDT.Rows.Add(NewRow);
                     }
                     else

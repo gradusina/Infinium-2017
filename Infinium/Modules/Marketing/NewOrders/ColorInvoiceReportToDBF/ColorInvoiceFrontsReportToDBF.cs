@@ -70,7 +70,7 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
                         DataRow NewRow = FrameColorsDataTable.NewRow();
                         NewRow["ColorID"] = -1;
                         NewRow["ColorName"] = "-";
-                        NewRow["Cvet"] = "ххх-0";
+                        NewRow["Cvet"] = "000";
                         FrameColorsDataTable.Rows.Add(NewRow);
                     }
                     {
@@ -299,6 +299,36 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
             {
                 DataRow[] Rows = PatinaDataTable.Select("PatinaID = " + PatinaID);
                 PatinaName = Rows[0]["Patina"].ToString();
+            }
+            catch
+            {
+                return string.Empty;
+            }
+            return PatinaName;
+        }
+
+        public string GetColorNameByCode(string Cvet)
+        {
+            string ColorName = string.Empty;
+            try
+            {
+                DataRow[] Rows = FrameColorsDataTable.Select($"Cvet = '{ Cvet } '");
+                ColorName = Rows[0]["ColorName"].ToString();
+            }
+            catch
+            {
+                return string.Empty;
+            }
+            return ColorName;
+        }
+
+        public string GetPatinaNameByCode(string Patina)
+        {
+            string PatinaName = string.Empty;
+            try
+            {
+                DataRow[] Rows = PatinaDataTable.Select($"Patina = '{ Patina } '");
+                PatinaName = Rows[0]["DisplayName"].ToString();
             }
             catch
             {

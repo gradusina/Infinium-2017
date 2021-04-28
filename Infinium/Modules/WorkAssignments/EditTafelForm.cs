@@ -308,7 +308,7 @@ namespace Infinium
 
         private void kryptonContextMenuItem1_Click(object sender, EventArgs e)
         {
-            TafelSplitStruct TafelSplitStruct = new Modules.WorkAssignments.TafelSplitStruct()
+            TafelManager.SplitStruct TafelSplitStruct = new TafelManager.SplitStruct()
             {
                 bEqual = true,
                 SourceCount = TafelManager.CurrentFrontsCount
@@ -358,7 +358,7 @@ namespace Infinium
 
         private void kryptonContextMenuItem2_Click(object sender, EventArgs e)
         {
-            TafelSplitStruct TafelSplitStruct = new Modules.WorkAssignments.TafelSplitStruct()
+            TafelManager.SplitStruct TafelSplitStruct = new TafelManager.SplitStruct()
             {
                 bEqual = false,
                 SourceCount = TafelManager.CurrentFrontsCount

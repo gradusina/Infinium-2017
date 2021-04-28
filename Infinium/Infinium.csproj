@@ -961,6 +961,12 @@
       <DependentUpon>AddMarketingNewOrdersForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Modules\Marketing\NewOrders\CalculateNewOrders.cs" />
+    <Compile Include="Modules\Marketing\NewOrders\ReportTypeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modules\Marketing\NewOrders\ReportTypeForm.designer.cs">
+      <DependentUpon>ReportTypeForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Modules\Marketing\NewOrders\ClientReportMenu.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -1063,7 +1069,12 @@
       <DependentUpon>AddMarketingOrdersForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Modules\Marketing\Orders\CalculateOrders.cs" />
-    <Compile Include="Modules\Marketing\Orders\InvoiceExportToDBF.cs" />
+    <Compile Include="Modules\Marketing\Orders\ColorInvoiceReportToDBF\ColorInvoiceDecorReportToDBF.cs" />
+    <Compile Include="Modules\Marketing\Orders\ColorInvoiceReportToDBF\ColorInvoiceFrontsReportToDBF.cs" />
+    <Compile Include="Modules\Marketing\Orders\ColorInvoiceReportToDBF\ColorInvoiceReportToDBF.cs" />
+    <Compile Include="Modules\Marketing\Orders\InvoiceReportToDBF\InvoiceDecorReportToDBF.cs" />
+    <Compile Include="Modules\Marketing\Orders\InvoiceReportToDBF\InvoiceFrontsReportToDBF.cs" />
+    <Compile Include="Modules\Marketing\Orders\InvoiceReportToDBF\InvoiceReportToDBF.cs" />
     <Compile Include="Modules\Marketing\Orders\MarketingOrders.cs" />
     <Compile Include="Modules\Marketing\Orders\MarketingOrdersForm.cs">
       <SubType>Form</SubType>
@@ -1359,30 +1370,38 @@
     <Compile Include="Modules\StaticticsZOV\ZOVStorageStatisticsForm.designer.cs">
       <DependentUpon>ZOVStorageStatisticsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Modules\StatisticsMarketing\CommonStatistics.cs" />
     <Compile Include="Modules\StatisticsMarketing\CommonStatisticsForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Modules\StatisticsMarketing\CommonStatisticsForm.designer.cs">
       <DependentUpon>CommonStatisticsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Modules\StatisticsMarketing\ConditionOrdersStatistics.cs" />
     <Compile Include="Modules\StatisticsMarketing\ConditionOrdersStatisticsForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Modules\StatisticsMarketing\ConditionOrdersStatisticsForm.designer.cs">
       <DependentUpon>ConditionOrdersStatisticsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Modules\StatisticsMarketing\DispatchStatistics.cs" />
+    <Compile Include="Modules\StatisticsMarketing\ExpeditionStatistics.cs" />
+    <Compile Include="Modules\StatisticsMarketing\GeneralStatisticsMarketing.cs" />
+    <Compile Include="Modules\StatisticsMarketing\IncomeMonthMarketing.cs" />
     <Compile Include="Modules\StatisticsMarketing\IncomeMonthMarketingForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Modules\StatisticsMarketing\IncomeMonthMarketingForm.designer.cs">
       <DependentUpon>IncomeMonthMarketingForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Modules\StatisticsMarketing\MarketingBatchStatistics.cs" />
     <Compile Include="Modules\StatisticsMarketing\MarketingBatchStatisticsForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Modules\StatisticsMarketing\MarketingBatchStatisticsForm.designer.cs">
       <DependentUpon>MarketingBatchStatisticsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Modules\StatisticsMarketing\MarketingExpeditionStatistics.cs" />
     <Compile Include="Modules\StatisticsMarketing\MarketingExpeditionStatisticsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -1395,13 +1414,27 @@
     <Compile Include="Modules\StatisticsMarketing\MarketingStateForm.designer.cs">
       <DependentUpon>MarketingStateForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Modules\StatisticsMarketing\MarketingStorageStatistics.cs" />
     <Compile Include="Modules\StatisticsMarketing\MarketingStorageStatisticsForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Modules\StatisticsMarketing\MarketingStorageStatisticsForm.designer.cs">
       <DependentUpon>MarketingStorageStatisticsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Modules\StatisticsMarketing\Reports\AdditionalCostReport.cs" />
+    <Compile Include="Modules\StatisticsMarketing\Reports\ClientNotPackedReport.cs" />
+    <Compile Include="Modules\StatisticsMarketing\Reports\ClientNotStoredReport.cs" />
+    <Compile Include="Modules\StatisticsMarketing\Reports\ClientStoreReport.cs" />
+    <Compile Include="Modules\StatisticsMarketing\Reports\ComplaintCostReport.cs" />
+    <Compile Include="Modules\StatisticsMarketing\Reports\DecorBalancesReport.cs" />
+    <Compile Include="Modules\StatisticsMarketing\Reports\ProducedReport.cs" />
+    <Compile Include="Modules\StatisticsMarketing\Reports\TransportCostReport.cs" />
+    <Compile Include="Modules\StatisticsMarketing\Reports\WeightDispatchReport.cs" />
     <Compile Include="Modules\StatisticsMarketing\StatisticsMarketing.cs" />
+    <Compile Include="Modules\StatisticsMarketing\StatisticsReportByClient.cs" />
+    <Compile Include="Modules\StatisticsMarketing\StatisticsReportByProduction.cs" />
+    <Compile Include="Modules\StatisticsMarketing\StorageStatistics.cs" />
+    <Compile Include="Modules\StatisticsMarketing\ZOVOrdersStatistics.cs" />
     <Compile Include="Modules\Storage\AddInventoryRestForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -1717,13 +1750,19 @@
     <Compile Include="Modules\UserProfile\PhotoEditForm.designer.cs">
       <DependentUpon>PhotoEditForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Modules\WorkAssignments\Barcode.cs" />
+    <Compile Include="Modules\WorkAssignments\ControlAssignments.cs" />
+    <Compile Include="Modules\WorkAssignments\CreateAssignments.cs" />
     <Compile Include="Modules\WorkAssignments\DecorAssignments.cs" />
+    <Compile Include="Modules\WorkAssignments\DecorOrdersManager.cs" />
     <Compile Include="Modules\WorkAssignments\EditTafelForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Modules\WorkAssignments\EditTafelForm.designer.cs">
       <DependentUpon>EditTafelForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Modules\WorkAssignments\FrontsOrdersManager.cs" />
+    <Compile Include="Modules\WorkAssignments\FrontsProdCapacity.cs" />
     <Compile Include="Modules\WorkAssignments\FrontsProdCapacityForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -1735,6 +1774,7 @@
     <Compile Include="Modules\WorkAssignments\ProfilAngle45Assignments.cs" />
     <Compile Include="Modules\WorkAssignments\ProfilAngle90Assignments.cs" />
     <Compile Include="Modules\WorkAssignments\Tafel1Assignments.cs" />
+    <Compile Include="Modules\WorkAssignments\TafelManager.cs" />
     <Compile Include="Modules\WorkAssignments\TafelSplitMenu.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -2330,6 +2370,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Modules\Marketing\NewOrders\AddMarketingNewOrdersForm.resx">
       <DependentUpon>AddMarketingNewOrdersForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modules\Marketing\NewOrders\ReportTypeForm.resx">
+      <DependentUpon>ReportTypeForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Modules\Marketing\NewOrders\ClientReportMenu.resx">
       <DependentUpon>ClientReportMenu.cs</DependentUpon>

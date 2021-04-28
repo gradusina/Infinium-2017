@@ -6,31 +6,31 @@ namespace Infinium
 {
     public partial class MarketingStateForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
-        decimal NonAgreementProfilCost = 0;
-        decimal AgreementProfilCost = 0;
-        decimal OnProductionProfilCost = 0;
-        decimal InProductionProfilCost = 0;
-        decimal OnStorageProfilCost = 0;
-        decimal OnExpeditionProfilCost = 0;
+        private decimal NonAgreementProfilCost = 0;
+        private decimal AgreementProfilCost = 0;
+        private decimal OnProductionProfilCost = 0;
+        private decimal InProductionProfilCost = 0;
+        private decimal OnStorageProfilCost = 0;
+        private decimal OnExpeditionProfilCost = 0;
 
-        decimal NonAgreementTPSCost = 0;
-        decimal AgreementTPSCost = 0;
-        decimal OnProductionTPSCost = 0;
-        decimal InProductionTPSCost = 0;
-        decimal OnStorageTPSCost = 0;
-        decimal OnExpeditionTPSCost = 0;
+        private decimal NonAgreementTPSCost = 0;
+        private decimal AgreementTPSCost = 0;
+        private decimal OnProductionTPSCost = 0;
+        private decimal InProductionTPSCost = 0;
+        private decimal OnStorageTPSCost = 0;
+        private decimal OnExpeditionTPSCost = 0;
 
-        int FormEvent = 0;
+        private int FormEvent = 0;
 
-        LightStartForm LightStartForm;
-        Form TopForm = null;
-        System.Globalization.NumberFormatInfo nfi1;
-        Infinium.Modules.StatisticsMarketing.GeneralStatisticsMarketing StatisticsMarketing = null;
+        private LightStartForm LightStartForm;
+        private Form TopForm = null;
+        private System.Globalization.NumberFormatInfo nfi1;
+        private Infinium.Modules.StatisticsMarketing.GeneralStatisticsMarketing StatisticsMarketing = null;
 
         public MarketingStateForm(LightStartForm tLightStartForm)
         {
@@ -70,16 +70,13 @@ namespace Infinium
 
                     if (FormEvent == eClose)
                     {
-
                         LightStartForm.CloseForm(this);
                     }
 
                     if (FormEvent == eHide)
                     {
-
                         LightStartForm.HideForm(this);
                     }
-
 
                     return;
                 }
@@ -90,7 +87,6 @@ namespace Infinium
                     SplashForm.CloseS = true;
                     return;
                 }
-
             }
 
             if (FormEvent == eClose || FormEvent == eHide)
@@ -103,21 +99,17 @@ namespace Infinium
 
                     if (FormEvent == eClose)
                     {
-
                         LightStartForm.CloseForm(this);
                     }
 
                     if (FormEvent == eHide)
                     {
-
                         LightStartForm.HideForm(this);
                     }
-
                 }
 
                 return;
             }
-
 
             if (FormEvent == eShow || FormEvent == eShow)
             {

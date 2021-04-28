@@ -11760,59 +11760,6 @@ namespace Infinium.Modules.Marketing.Orders
             return IsComplaint;
         }
 
-        public static void DataSetIntoDBF(string path, string fileName, DataTable DT)
-        {
-            if (File.Exists(path + fileName + ".dbf"))
-            {
-                File.Delete(path + fileName + ".dbf");
-            }
-
-            string createSql = "create table " + fileName + " ([UNN] varchar(20), [CurrencyCode] varchar(20), [TPSCurCode] varchar(20), [InvNumber] varchar(20), [AccountingName] varchar(100), [Amount] Double, [Price] Double, [Weight] Double)";
-
-            OleDbConnection con = new OleDbConnection(GetConnection(path));
-
-            OleDbCommand cmd = new OleDbCommand()
-            {
-                Connection = con
-            };
-            con.Open();
-
-            cmd.CommandText = createSql;
-
-            cmd.ExecuteNonQuery();
-
-            foreach (DataRow row in DT.Rows)
-            {
-                string insertSql = "insert into " + fileName +
-                    " (UNN, CurrencyCode, TPSCurCode, InvNumber, AccountingName, Amount, Price, Weight) values(UNN, CurrencyCode, TPSCurCode, InvNumber, AccountingName, Amount, Price, Weight)";
-                decimal d = Decimal.Round(Convert.ToDecimal(row["Weight"]) / 1000, 3, MidpointRounding.AwayFromZero);
-                double Amount = Convert.ToDouble(row["Count"]);
-                double Price = Convert.ToDouble(row["Price"]);
-                double Weight = Convert.ToDouble(d);
-                string InvNumber = row["InvNumber"].ToString();
-                string CurrencyCode = row["CurrencyCode"].ToString();
-                string TPSCurCode = row["TPSCurCode"].ToString();
-                string UNN = row["UNN"].ToString();
-                string AccountingName = row["AccountingName"].ToString();
-                string Name = row["Name"].ToString();
-                //Name = convertDefaultToDos(Name);
-                cmd.CommandText = insertSql;
-                cmd.Parameters.Clear();
-
-                cmd.Parameters.Add("UNN", OleDbType.VarChar).Value = UNN;
-                cmd.Parameters.Add("CurrencyCode", OleDbType.VarChar).Value = CurrencyCode;
-                cmd.Parameters.Add("TPSCurCode", OleDbType.VarChar).Value = TPSCurCode;
-                cmd.Parameters.Add("InvNumber", OleDbType.VarChar).Value = InvNumber;
-                cmd.Parameters.Add("AccountingName", OleDbType.VarChar).Value = AccountingName;
-                cmd.Parameters.Add("Amount", OleDbType.Double).Value = Amount;
-                cmd.Parameters.Add("Price", OleDbType.Double).Value = Price;
-                cmd.Parameters.Add("Weight", OleDbType.Double).Value = Weight;
-                cmd.ExecuteNonQuery();
-            }
-
-            con.Close();
-        }
-
         private static string convertDefaultToDos(string src)
         {
             byte[] buffer;

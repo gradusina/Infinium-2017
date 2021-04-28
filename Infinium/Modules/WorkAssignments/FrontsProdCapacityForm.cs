@@ -131,8 +131,7 @@ namespace Infinium
         private void FrontsProdCapacityForm_Load(object sender, EventArgs e)
         {
             ClassManager = new FrontsProdCapacity(TechStoreID, InsetTypeID, PatinaID, TechHeight, TechWidth);
-            ClassManager.Initialize();
-            ClassManager.FF();
+            ClassManager.Test();
         }
     }
 }

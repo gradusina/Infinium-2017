@@ -56,7 +56,7 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportT
                         DataRow NewRow = FrameColorsDataTable.NewRow();
                         NewRow["ColorID"] = -1;
                         NewRow["ColorName"] = "-";
-                        NewRow["Cvet"] = "ххх-0";
+                        NewRow["Cvet"] = "000";
                         FrameColorsDataTable.Rows.Add(NewRow);
                     }
                     {

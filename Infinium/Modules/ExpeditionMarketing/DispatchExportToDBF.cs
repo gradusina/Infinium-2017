@@ -3347,7 +3347,7 @@ namespace Infinium.Modules.Marketing.Dispatch
 
 
 
-    public class DBFReport
+    public class DispatchReportDBFReport
     {
         decimal VAT = 1.0m;
         private DataTable temppackagesDtTable;
@@ -3358,7 +3358,7 @@ namespace Infinium.Modules.Marketing.Dispatch
         public DataTable ProfilReportTable = null;
         public DataTable TPSReportTable = null;
 
-        public DBFReport(ref DecorCatalogOrder DecorCatalogOrder)
+        public DispatchReportDBFReport(ref DecorCatalogOrder DecorCatalogOrder)
         {
             FrontsReport = new FrontsReportToDBF();
             DecorReport = new DecorReportToDBF(ref DecorCatalogOrder);

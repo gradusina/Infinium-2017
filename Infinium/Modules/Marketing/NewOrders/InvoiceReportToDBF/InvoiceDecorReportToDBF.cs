@@ -235,10 +235,11 @@ namespace Infinium.Modules.Marketing.NewOrders.InvoiceReportToDBF
 
         public void Report(int MegaOrderID, decimal dPaymentRate, bool IsSample)
         {
-            GetMegaOrderInfo1(MegaOrderID);
             DecorOrdersDataTable.Clear();
             ProfilReportDataTable.Clear();
             TPSReportDataTable.Clear();
+            GetMegaOrderInfo1(MegaOrderID);
+
             string SelectCommand = "SELECT NewDecorOrders.*, infiniu2_catalog.dbo.DecorConfig.AccountingName, infiniu2_catalog.dbo.DecorConfig.InvNumber, NewMegaOrders.PaymentRate FROM NewDecorOrders" +
                 " INNER JOIN NewMainOrders ON NewDecorOrders.MainOrderID = NewMainOrders.MainOrderID" +
                 " INNER JOIN NewMegaOrders ON NewMainOrders.MegaOrderID = NewMegaOrders.MegaOrderID AND NewMegaOrders.MegaOrderID=" + MegaOrderID +
@@ -265,10 +266,11 @@ namespace Infinium.Modules.Marketing.NewOrders.InvoiceReportToDBF
 
         public void Report(int MegaOrderID, decimal dPaymentRate)
         {
-            GetMegaOrderInfo1(MegaOrderID);
             DecorOrdersDataTable.Clear();
             ProfilReportDataTable.Clear();
             TPSReportDataTable.Clear();
+            GetMegaOrderInfo1(MegaOrderID);
+
             string SelectCommand = "SELECT NewDecorOrders.*, infiniu2_catalog.dbo.DecorConfig.AccountingName, infiniu2_catalog.dbo.DecorConfig.InvNumber, NewMegaOrders.PaymentRate FROM NewDecorOrders" +
                 " INNER JOIN NewMainOrders ON NewDecorOrders.MainOrderID = NewMainOrders.MainOrderID" +
                 " INNER JOIN NewMegaOrders ON NewMainOrders.MegaOrderID = NewMegaOrders.MegaOrderID AND NewMegaOrders.MegaOrderID=" + MegaOrderID +
@@ -289,19 +291,10 @@ namespace Infinium.Modules.Marketing.NewOrders.InvoiceReportToDBF
 
         public void Report(int[] MainOrderIDs, bool IsSample)
         {
-            GetMegaOrderInfo(MainOrderIDs[0]);
             DecorOrdersDataTable.Clear();
             ProfilReportDataTable.Clear();
             TPSReportDataTable.Clear();
-            string sWhere = "";
-
-            for (int i = 0; i < MainOrderIDs.Count(); i++)
-            {
-                if (sWhere != "")
-                    sWhere += " OR MainOrderID = " + MainOrderIDs[i].ToString();
-                else
-                    sWhere += "MainOrderID = " + MainOrderIDs[i].ToString();
-            }
+            GetMegaOrderInfo(MainOrderIDs[0]);
 
             string SelectCommand = "SELECT DecorOrders.*, infiniu2_catalog.dbo.DecorConfig.AccountingName, infiniu2_catalog.dbo.DecorConfig.InvNumber, MegaOrders.PaymentRate FROM DecorOrders" +
                 " INNER JOIN MainOrders ON DecorOrders.MainOrderID = MainOrders.MainOrderID" +
@@ -325,10 +318,10 @@ namespace Infinium.Modules.Marketing.NewOrders.InvoiceReportToDBF
 
         public void Report(int[] MainOrderIDs)
         {
-            GetMegaOrderInfo(MainOrderIDs[0]);
             DecorOrdersDataTable.Clear();
             ProfilReportDataTable.Clear();
             TPSReportDataTable.Clear();
+            GetMegaOrderInfo(MainOrderIDs[0]);
 
             string SelectCommand = "SELECT DecorOrders.*, infiniu2_catalog.dbo.DecorConfig.AccountingName, infiniu2_catalog.dbo.DecorConfig.InvNumber, MegaOrders.PaymentRate FROM DecorOrders" +
                 " INNER JOIN MainOrders ON DecorOrders.MainOrderID = MainOrders.MainOrderID" +

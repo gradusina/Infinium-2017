@@ -1946,6 +1946,104 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.InvoiceReport
             return InvDataTables;
         }
 
+        public void Report(int[] MainOrderIDs)
+        {
+            ProfilFrontsOrdersDataTable.Clear();
+            TPSFrontsOrdersDataTable.Clear();
+            DecorInvNumbersDT.Clear();
+            GetMegaOrderInfo(MainOrderIDs[0]);
+
+            string SelectCommand = "SELECT NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, NewMegaOrders.PaymentRate FROM NewFrontsOrders" +
+                " INNER JOIN infiniu2_catalog.dbo.FrontsConfig ON NewFrontsOrders.FrontConfigID = infiniu2_catalog.dbo.FrontsConfig.FrontConfigID" +
+                " INNER JOIN NewMainOrders ON NewFrontsOrders.MainOrderID = NewMainOrders.MainOrderID" +
+                " INNER JOIN NewMegaOrders ON NewMainOrders.MegaOrderID = NewMegaOrders.MegaOrderID" +
+                " WHERE InvNumber IS NOT NULL AND NewFrontsOrders.MainOrderID IN (" + string.Join(",", MainOrderIDs) + ") ORDER BY InvNumber";
+            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand,
+                ConnectionStrings.MarketingOrdersConnectionString))
+            {
+                using (DataTable DT = new DataTable())
+                {
+                    if (DA.Fill(DT) == 0)
+                        return;
+
+                    DataTable DistRatesDT = new DataTable();
+                    DataTable DT1 = DT.Clone();
+                    //get count of different covertypes
+                    using (DataView DV = new DataView(DT))
+                    {
+                        DistRatesDT = DV.ToTable(true, new string[] { "PaymentRate" });
+                    }
+
+                    ProfilFrontsOrdersDataTable = DT.Clone();
+                    TPSFrontsOrdersDataTable = DT.Clone();
+
+                    SplitTables(DT, ref ProfilFrontsOrdersDataTable, ref TPSFrontsOrdersDataTable);
+
+                    if (ProfilFrontsOrdersDataTable.Rows.Count > 0)
+                    {
+                        DataTable[] DTs = GroupInvNumber(ProfilFrontsOrdersDataTable);
+
+                        for (int i = 0; i < DTs.Count(); i++)
+                        {
+                            for (int j = 0; j < DistRatesDT.Rows.Count; j++)
+                            {
+                                DT1.Clear();
+                                PaymentRate = Convert.ToDecimal(DistRatesDT.Rows[j]["PaymentRate"]);
+                                DataRow[] rows = DTs[i].Select("PaymentRate='" + PaymentRate.ToString() + "'");
+                                foreach (DataRow item in rows)
+                                    DT1.Rows.Add(item.ItemArray);
+                                if (DT1.Rows.Count == 0)
+                                    continue;
+
+                                GetSimpleFronts(DT1, ProfilReportDataTable, false);
+                                GetSimpleFronts(DT1, ProfilReportDataTable, true);
+
+                                GetCurvedFronts(DT1, ProfilReportDataTable);
+
+                                GetGrids(DT1, ProfilReportDataTable, TPSReportDataTable, 1);
+
+                                GetInsets(DT1, ProfilReportDataTable);
+
+                                GetGlass(DT1, ProfilReportDataTable, TPSReportDataTable, 1);
+                            }
+                        }
+                    }
+
+                    DT1.Clear();
+                    if (TPSFrontsOrdersDataTable.Rows.Count > 0)
+                    {
+                        DataTable[] DTs = GroupInvNumber(TPSFrontsOrdersDataTable);
+
+                        for (int i = 0; i < DTs.Count(); i++)
+                        {
+                            for (int j = 0; j < DistRatesDT.Rows.Count; j++)
+                            {
+                                DT1.Clear();
+                                PaymentRate = Convert.ToDecimal(DistRatesDT.Rows[j]["PaymentRate"]);
+                                DataRow[] rows = DTs[i].Select("PaymentRate='" + PaymentRate.ToString() + "'");
+                                foreach (DataRow item in rows)
+                                    DT1.Rows.Add(item.ItemArray);
+                                if (DT1.Rows.Count == 0)
+                                    continue;
+
+                                GetSimpleFronts(DT1, TPSReportDataTable, false);
+                                GetSimpleFronts(DT1, TPSReportDataTable, true);
+
+                                GetCurvedFronts(DT1, TPSReportDataTable);
+
+                                GetGrids(DT1, TPSReportDataTable, ProfilReportDataTable, 2);
+
+                                GetInsets(DT1, TPSReportDataTable);
+
+                                GetGlass(DT1, TPSReportDataTable, ProfilReportDataTable, 2);
+                            }
+                        }
+                    }
+
+                }
+            }
+        }
+
         public void Report(int[] MainOrderIDs, bool IsSample)
         {
             ProfilFrontsOrdersDataTable.Clear();
@@ -1953,15 +2051,6 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.InvoiceReport
             DecorInvNumbersDT.Clear();
             GetMegaOrderInfo(MainOrderIDs[0]);
 
-            string sWhere = "";
-
-            for (int i = 0; i < MainOrderIDs.Count(); i++)
-            {
-                if (sWhere != "")
-                    sWhere += " OR MainOrderID = " + MainOrderIDs[i].ToString();
-                else
-                    sWhere += "MainOrderID = " + MainOrderIDs[i].ToString();
-            }
             string SelectCommand = "SELECT NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, NewMegaOrders.PaymentRate FROM NewFrontsOrders" +
                 " INNER JOIN infiniu2_catalog.dbo.FrontsConfig ON NewFrontsOrders.FrontConfigID = infiniu2_catalog.dbo.FrontsConfig.FrontConfigID" +
                 " INNER JOIN NewMainOrders ON NewFrontsOrders.MainOrderID = NewMainOrders.MainOrderID" +
@@ -1981,314 +2070,6 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.InvoiceReport
                     if (DA.Fill(DT) == 0)
                         return;
 
-                    DataTable DistRatesDT = new DataTable();
-                    DataTable DT1 = DT.Clone();
-                    //get count of different covertypes
-                    using (DataView DV = new DataView(DT))
-                    {
-                        DistRatesDT = DV.ToTable(true, new string[] { "PaymentRate" });
-                    }
-
-                    ProfilFrontsOrdersDataTable = DT.Clone();
-                    TPSFrontsOrdersDataTable = DT.Clone();
-
-                    SplitTables(DT, ref ProfilFrontsOrdersDataTable, ref TPSFrontsOrdersDataTable);
-
-                    if (ProfilFrontsOrdersDataTable.Rows.Count > 0)
-                    {
-                        DataTable[] DTs = GroupInvNumber(ProfilFrontsOrdersDataTable);
-
-                        for (int i = 0; i < DTs.Count(); i++)
-                        {
-                            for (int j = 0; j < DistRatesDT.Rows.Count; j++)
-                            {
-                                DT1.Clear();
-                                PaymentRate = Convert.ToDecimal(DistRatesDT.Rows[j]["PaymentRate"]);
-                                DataRow[] rows = DTs[i].Select("PaymentRate='" + PaymentRate.ToString() + "'");
-                                foreach (DataRow item in rows)
-                                    DT1.Rows.Add(item.ItemArray);
-                                if (DT1.Rows.Count == 0)
-                                    continue;
-
-                                GetSimpleFronts(DT1, ProfilReportDataTable, false);
-                                GetSimpleFronts(DT1, ProfilReportDataTable, true);
-
-                                GetCurvedFronts(DT1, ProfilReportDataTable);
-
-                                GetGrids(DT1, ProfilReportDataTable, TPSReportDataTable, 1);
-
-                                GetInsets(DT1, ProfilReportDataTable);
-
-                                GetGlass(DT1, ProfilReportDataTable, TPSReportDataTable, 1);
-                            }
-                        }
-                    }
-
-                    DT1.Clear();
-                    if (TPSFrontsOrdersDataTable.Rows.Count > 0)
-                    {
-                        DataTable[] DTs = GroupInvNumber(TPSFrontsOrdersDataTable);
-
-                        for (int i = 0; i < DTs.Count(); i++)
-                        {
-                            for (int j = 0; j < DistRatesDT.Rows.Count; j++)
-                            {
-                                DT1.Clear();
-                                PaymentRate = Convert.ToDecimal(DistRatesDT.Rows[j]["PaymentRate"]);
-                                DataRow[] rows = DTs[i].Select("PaymentRate='" + PaymentRate.ToString() + "'");
-                                foreach (DataRow item in rows)
-                                    DT1.Rows.Add(item.ItemArray);
-                                if (DT1.Rows.Count == 0)
-                                    continue;
-
-                                GetSimpleFronts(DT1, TPSReportDataTable, false);
-                                GetSimpleFronts(DT1, TPSReportDataTable, true);
-
-                                GetCurvedFronts(DT1, TPSReportDataTable);
-
-                                GetGrids(DT1, TPSReportDataTable, ProfilReportDataTable, 2);
-
-                                GetInsets(DT1, TPSReportDataTable);
-
-                                GetGlass(DT1, TPSReportDataTable, ProfilReportDataTable, 2);
-                            }
-                        }
-                    }
-
-                }
-            }
-        }
-
-        public void Report(int[] MainOrderIDs)
-        {
-            ProfilFrontsOrdersDataTable.Clear();
-            TPSFrontsOrdersDataTable.Clear();
-            DecorInvNumbersDT.Clear();
-            GetMegaOrderInfo(MainOrderIDs[0]);
-
-            string SelectCommand = "SELECT NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, NewMegaOrders.PaymentRate FROM NewFrontsOrders" +
-                " INNER JOIN infiniu2_catalog.dbo.FrontsConfig ON NewFrontsOrders.FrontConfigID = infiniu2_catalog.dbo.FrontsConfig.FrontConfigID" +
-                " INNER JOIN NewMainOrders ON NewFrontsOrders.MainOrderID = NewMainOrders.MainOrderID" +
-                " INNER JOIN NewMegaOrders ON NewMainOrders.MegaOrderID = NewMegaOrders.MegaOrderID" +
-                " WHERE  InvNumber IS NOT NULL AND NewFrontsOrders.MainOrderID IN (" + string.Join(",", MainOrderIDs) + ") ORDER BY InvNumber";
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand,
-                ConnectionStrings.MarketingOrdersConnectionString))
-            {
-                using (DataTable DT = new DataTable())
-                {
-                    if (DA.Fill(DT) == 0)
-                        return;
-
-                    DataTable DistRatesDT = new DataTable();
-                    DataTable DT1 = DT.Clone();
-                    //get count of different covertypes
-                    using (DataView DV = new DataView(DT))
-                    {
-                        DistRatesDT = DV.ToTable(true, new string[] { "PaymentRate" });
-                    }
-
-                    ProfilFrontsOrdersDataTable = DT.Clone();
-                    TPSFrontsOrdersDataTable = DT.Clone();
-
-                    SplitTables(DT, ref ProfilFrontsOrdersDataTable, ref TPSFrontsOrdersDataTable);
-
-                    if (ProfilFrontsOrdersDataTable.Rows.Count > 0)
-                    {
-                        DataTable[] DTs = GroupInvNumber(ProfilFrontsOrdersDataTable);
-
-                        for (int i = 0; i < DTs.Count(); i++)
-                        {
-                            for (int j = 0; j < DistRatesDT.Rows.Count; j++)
-                            {
-                                DT1.Clear();
-                                PaymentRate = Convert.ToDecimal(DistRatesDT.Rows[j]["PaymentRate"]);
-                                DataRow[] rows = DTs[i].Select("PaymentRate='" + PaymentRate.ToString() + "'");
-                                foreach (DataRow item in rows)
-                                    DT1.Rows.Add(item.ItemArray);
-                                if (DT1.Rows.Count == 0)
-                                    continue;
-
-                                GetSimpleFronts(DT1, ProfilReportDataTable, false);
-                                GetSimpleFronts(DT1, ProfilReportDataTable, true);
-
-                                GetCurvedFronts(DT1, ProfilReportDataTable);
-
-                                GetGrids(DT1, ProfilReportDataTable, TPSReportDataTable, 1);
-
-                                GetInsets(DT1, ProfilReportDataTable);
-
-                                GetGlass(DT1, ProfilReportDataTable, TPSReportDataTable, 1);
-                            }
-                        }
-                    }
-
-                    DT1.Clear();
-                    if (TPSFrontsOrdersDataTable.Rows.Count > 0)
-                    {
-                        DataTable[] DTs = GroupInvNumber(TPSFrontsOrdersDataTable);
-
-                        for (int i = 0; i < DTs.Count(); i++)
-                        {
-                            for (int j = 0; j < DistRatesDT.Rows.Count; j++)
-                            {
-                                DT1.Clear();
-                                PaymentRate = Convert.ToDecimal(DistRatesDT.Rows[j]["PaymentRate"]);
-                                DataRow[] rows = DTs[i].Select("PaymentRate='" + PaymentRate.ToString() + "'");
-                                foreach (DataRow item in rows)
-                                    DT1.Rows.Add(item.ItemArray);
-                                if (DT1.Rows.Count == 0)
-                                    continue;
-
-                                GetSimpleFronts(DT1, TPSReportDataTable, false);
-                                GetSimpleFronts(DT1, TPSReportDataTable, true);
-
-                                GetCurvedFronts(DT1, TPSReportDataTable);
-
-                                GetGrids(DT1, TPSReportDataTable, ProfilReportDataTable, 2);
-
-                                GetInsets(DT1, TPSReportDataTable);
-
-                                GetGlass(DT1, TPSReportDataTable, ProfilReportDataTable, 2);
-                            }
-                        }
-                    }
-
-                }
-            }
-        }
-
-        public void Report(int MegaOrderID, decimal dPaymentRate, bool IsSample)
-        {
-            ProfilFrontsOrdersDataTable.Clear();
-            TPSFrontsOrdersDataTable.Clear();
-            DecorInvNumbersDT.Clear();
-            GetMegaOrderInfo1(MegaOrderID);
-
-            string SelectCommand = "SELECT NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, NewMegaOrders.PaymentRate FROM NewFrontsOrders" +
-                " INNER JOIN infiniu2_catalog.dbo.FrontsConfig ON NewFrontsOrders.FrontConfigID = infiniu2_catalog.dbo.FrontsConfig.FrontConfigID" +
-                " INNER JOIN NewMainOrders ON NewFrontsOrders.MainOrderID = NewMainOrders.MainOrderID" +
-                " INNER JOIN NewMegaOrders ON NewMainOrders.MegaOrderID = NewMegaOrders.MegaOrderID AND NewMegaOrders.MegaOrderID = " + MegaOrderID + @"
-                WHERE NeedCalcPrice=0 AND NewFrontsOrders.IsSample=1 AND InvNumber IS NOT NULL ORDER BY InvNumber";
-            if (!IsSample)
-                SelectCommand = "SELECT NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, NewMegaOrders.PaymentRate FROM NewFrontsOrders" +
-                " INNER JOIN infiniu2_catalog.dbo.FrontsConfig ON NewFrontsOrders.FrontConfigID = infiniu2_catalog.dbo.FrontsConfig.FrontConfigID" +
-                " INNER JOIN NewMainOrders ON NewFrontsOrders.MainOrderID = NewMainOrders.MainOrderID" +
-                " INNER JOIN NewMegaOrders ON NewMainOrders.MegaOrderID = NewMegaOrders.MegaOrderID AND NewMegaOrders.MegaOrderID = " + MegaOrderID + @"
-                WHERE NeedCalcPrice=0 AND NewFrontsOrders.IsSample=0 AND InvNumber IS NOT NULL ORDER BY InvNumber";
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand,
-                ConnectionStrings.MarketingOrdersConnectionString))
-            {
-                using (DataTable DT = new DataTable())
-                {
-                    if (DA.Fill(DT) == 0)
-                        return;
-
-                    for (int j = 0; j < DT.Rows.Count; j++)
-                    {
-                        DT.Rows[j]["PaymentRate"] = dPaymentRate;
-                    }
-                    DataTable DistRatesDT = new DataTable();
-                    DataTable DT1 = DT.Clone();
-                    //get count of different covertypes
-                    using (DataView DV = new DataView(DT))
-                    {
-                        DistRatesDT = DV.ToTable(true, new string[] { "PaymentRate" });
-                    }
-
-                    ProfilFrontsOrdersDataTable = DT.Clone();
-                    TPSFrontsOrdersDataTable = DT.Clone();
-
-                    SplitTables(DT, ref ProfilFrontsOrdersDataTable, ref TPSFrontsOrdersDataTable);
-
-                    if (ProfilFrontsOrdersDataTable.Rows.Count > 0)
-                    {
-                        DataTable[] DTs = GroupInvNumber(ProfilFrontsOrdersDataTable);
-
-                        for (int i = 0; i < DTs.Count(); i++)
-                        {
-                            for (int j = 0; j < DistRatesDT.Rows.Count; j++)
-                            {
-                                DT1.Clear();
-                                PaymentRate = Convert.ToDecimal(DistRatesDT.Rows[j]["PaymentRate"]);
-                                DataRow[] rows = DTs[i].Select("PaymentRate='" + PaymentRate.ToString() + "'");
-                                foreach (DataRow item in rows)
-                                    DT1.Rows.Add(item.ItemArray);
-                                if (DT1.Rows.Count == 0)
-                                    continue;
-
-                                GetSimpleFronts(DT1, ProfilReportDataTable, false);
-                                GetSimpleFronts(DT1, ProfilReportDataTable, true);
-
-                                GetCurvedFronts(DT1, ProfilReportDataTable);
-
-                                GetGrids(DT1, ProfilReportDataTable, TPSReportDataTable, 1);
-
-                                GetInsets(DT1, ProfilReportDataTable);
-
-                                GetGlass(DT1, ProfilReportDataTable, TPSReportDataTable, 1);
-                            }
-                        }
-                    }
-
-                    DT1.Clear();
-                    if (TPSFrontsOrdersDataTable.Rows.Count > 0)
-                    {
-                        DataTable[] DTs = GroupInvNumber(TPSFrontsOrdersDataTable);
-
-                        for (int i = 0; i < DTs.Count(); i++)
-                        {
-                            for (int j = 0; j < DistRatesDT.Rows.Count; j++)
-                            {
-                                DT1.Clear();
-                                PaymentRate = Convert.ToDecimal(DistRatesDT.Rows[j]["PaymentRate"]);
-                                DataRow[] rows = DTs[i].Select("PaymentRate='" + PaymentRate.ToString() + "'");
-                                foreach (DataRow item in rows)
-                                    DT1.Rows.Add(item.ItemArray);
-                                if (DT1.Rows.Count == 0)
-                                    continue;
-
-                                GetSimpleFronts(DT1, TPSReportDataTable, false);
-                                GetSimpleFronts(DT1, TPSReportDataTable, true);
-
-                                GetCurvedFronts(DT1, TPSReportDataTable);
-
-                                GetGrids(DT1, TPSReportDataTable, ProfilReportDataTable, 2);
-
-                                GetInsets(DT1, TPSReportDataTable);
-
-                                GetGlass(DT1, TPSReportDataTable, ProfilReportDataTable, 2);
-                            }
-                        }
-                    }
-
-                }
-            }
-        }
-
-        public void Report(int MegaOrderID, decimal dPaymentRate)
-        {
-            ProfilFrontsOrdersDataTable.Clear();
-            TPSFrontsOrdersDataTable.Clear();
-            DecorInvNumbersDT.Clear();
-            GetMegaOrderInfo1(MegaOrderID);
-
-            string SelectCommand = "SELECT NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, NewMegaOrders.PaymentRate FROM NewFrontsOrders" +
-                " INNER JOIN infiniu2_catalog.dbo.FrontsConfig ON NewFrontsOrders.FrontConfigID = infiniu2_catalog.dbo.FrontsConfig.FrontConfigID" +
-                " INNER JOIN NewMainOrders ON NewFrontsOrders.MainOrderID = NewMainOrders.MainOrderID" +
-                " INNER JOIN NewMegaOrders ON NewMainOrders.MegaOrderID = NewMegaOrders.MegaOrderID AND NewMegaOrders.MegaOrderID = " + MegaOrderID + @"
-                WHERE NeedCalcPrice=0 AND InvNumber IS NOT NULL ORDER BY InvNumber";
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand,
-                ConnectionStrings.MarketingOrdersConnectionString))
-            {
-                using (DataTable DT = new DataTable())
-                {
-                    if (DA.Fill(DT) == 0)
-                        return;
-
-                    for (int j = 0; j < DT.Rows.Count; j++)
-                    {
-                        DT.Rows[j]["PaymentRate"] = dPaymentRate;
-                    }
                     DataTable DistRatesDT = new DataTable();
                     DataTable DT1 = DT.Clone();
                     //get count of different covertypes

@@ -7160,15 +7160,15 @@ namespace Infinium.Modules.ZOV
                 })
                              .Select(grp => new
                              {
-                                 FrontID = grp.Key.FrontID,
-                                 PatinaID = grp.Key.PatinaID,
-                                 InsetTypeID = grp.Key.InsetTypeID,
-                                 ColorID = grp.Key.ColorID,
-                                 InsetColorID = grp.Key.InsetColorID,
-                                 TechnoInsetTypeID = grp.Key.TechnoInsetTypeID,
-                                 TechnoInsetColorID = grp.Key.TechnoInsetColorID,
-                                 Height = grp.Key.Height,
-                                 Width = grp.Key.Width,
+                                 grp.Key.FrontID,
+                                 grp.Key.PatinaID,
+                                 grp.Key.InsetTypeID,
+                                 grp.Key.ColorID,
+                                 grp.Key.InsetColorID,
+                                 grp.Key.TechnoInsetTypeID,
+                                 grp.Key.TechnoInsetColorID,
+                                 grp.Key.Height,
+                                 grp.Key.Width,
                                  Count = grp.Sum(r => r.Field<Int32>("Count"))
                              });
                 foreach (var r in countriesTable)

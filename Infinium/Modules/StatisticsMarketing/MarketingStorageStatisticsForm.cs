@@ -12,22 +12,22 @@ namespace Infinium
 {
     public partial class MarketingStorageStatisticsForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
-        bool NeedSplash = false;
-        bool bExpSummaryClient = false;
-        int FormEvent = 0;
+        private bool NeedSplash = false;
+        private bool bExpSummaryClient = false;
+        private int FormEvent = 0;
 
-        NumberFormatInfo nfi2;
+        private NumberFormatInfo nfi2;
 
-        LightStartForm LightStartForm;
+        private LightStartForm LightStartForm;
 
-        Form TopForm = null;
-        MarketingStorageStatistics StorageStatistics;
-        BatchExcelReport MarketingBatchReport;
+        private Form TopForm = null;
+        private MarketingStorageStatistics StorageStatistics;
+        private BatchExcelReport MarketingBatchReport;
 
         public MarketingStorageStatisticsForm(LightStartForm tLightStartForm)
         {
@@ -61,16 +61,13 @@ namespace Infinium
 
                     if (FormEvent == eClose)
                     {
-
                         LightStartForm.CloseForm(this);
                     }
 
                     if (FormEvent == eHide)
                     {
-
                         LightStartForm.HideForm(this);
                     }
-
 
                     return;
                 }
@@ -82,7 +79,6 @@ namespace Infinium
                     SplashForm.CloseS = true;
                     return;
                 }
-
             }
 
             if (FormEvent == eClose || FormEvent == eHide)
@@ -95,21 +91,17 @@ namespace Infinium
 
                     if (FormEvent == eClose)
                     {
-
                         LightStartForm.CloseForm(this);
                     }
 
                     if (FormEvent == eHide)
                     {
-
                         LightStartForm.HideForm(this);
                     }
-
                 }
 
                 return;
             }
-
 
             if (FormEvent == eShow || FormEvent == eShow)
             {
@@ -209,7 +201,6 @@ namespace Infinium
 
         private void MarketingExpeditionStatisticsForm_Load(object sender, EventArgs e)
         {
-
         }
 
         private void MinimizeButton_Click(object sender, EventArgs e)
@@ -427,7 +418,6 @@ namespace Infinium
                 ExpFrontsInfo();
                 ExpDecorInfo();
 
-
                 while (SplashWindow.bSmallCreated)
                     SmallWaitForm.CloseS = true;
                 NeedSplash = true;
@@ -452,6 +442,5 @@ namespace Infinium
             ExpOrdersSummaryCheckBox.Enabled = !ExpClientSummaryCheckBox.Checked;
             ExpOrdersSummaryCheckBox.Checked = !ExpClientSummaryCheckBox.Checked;
         }
-
     }
 }

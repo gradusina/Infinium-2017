@@ -19,18 +19,18 @@ using System.Windows.Forms;
 
 namespace Infinium
 {
-    public class TablesManager
+    public static class TablesManager
     {
         private static DataTable FrontsAllConfigDT;
         private static DataTable FrontsConfigDT;
         private static DataTable DecorAllConfigDT;
         private static DataTable DecorConfigDT;
         private static DataTable TechStoreDT;
-        public static DataTable UsersDataTable;
-        public static DataTable UsersPhotoDataTable;
-        public static DataTable DepartmentsDataTable;
-        public static DataTable PositionsDataTable;
-        public static DataTable ModulesDataTable;
+        private static DataTable _usersDataTable;
+        private static DataTable _usersPhotoDataTable;
+        private static DataTable _departmentsDataTable;
+        private static DataTable _positionsDataTable;
+        private static DataTable _modulesDataTable;
 
         public static DataTable FrontsConfigDataTableAll
         {
@@ -138,61 +138,128 @@ namespace Infinium
             }
         }
 
-        public TablesManager()
+        public static DataTable UsersDataTable
         {
-            UsersDataTable = new DataTable();
-            FillUsersDataTable();
-            UsersPhotoDataTable = new DataTable();
-            FillUsersPhotoDataTable();
-            DepartmentsDataTable = new DataTable();
-            FillDepartmentsDataTable();
-            PositionsDataTable = new DataTable();
-            FillPositionsDataTable();
-            ModulesDataTable = new DataTable();
-            FillModulesDataTable();
+            get
+            {
+                if (_usersDataTable == null)
+                {
+                    _usersDataTable = new DataTable();
+                    using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Users WHERE Fired <> 1 ORDER BY Name", ConnectionStrings.UsersConnectionString))
+                    {
+                        DA.Fill(_usersDataTable);
+                    }
+                }
+                return _usersDataTable;
+            }
         }
 
-        public static void FillUsersDataTable()
+        public static DataTable UsersPhotoDataTable
+        {
+            get
+            {
+                if (_usersPhotoDataTable == null)
+                {
+                    _usersPhotoDataTable = new DataTable();
+                    using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM UsersPhoto", ConnectionStrings.UsersConnectionString))
+                    {
+                        DA.Fill(_usersPhotoDataTable);
+                    }
+                }
+                return _usersPhotoDataTable;
+            }
+        }
+
+        public static DataTable DepartmentsDataTable
+        {
+            get
+            {
+                if (_departmentsDataTable == null)
+                {
+                    _departmentsDataTable = new DataTable();
+                    using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Departments ORDER BY DepartmentName", ConnectionStrings.LightConnectionString))
+                    {
+                        DA.Fill(_departmentsDataTable);
+                    }
+                }
+                return _departmentsDataTable;
+            }
+        }
+
+        public static DataTable PositionsDataTable
+        {
+            get
+            {
+                if (_positionsDataTable == null)
+                {
+                    _positionsDataTable = new DataTable();
+                    using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Positions ORDER BY Position", ConnectionStrings.LightConnectionString))
+                    {
+                        DA.Fill(_positionsDataTable);
+                    }
+                }
+                return _positionsDataTable;
+            }
+        }
+
+        public static DataTable ModulesDataTable
+        {
+            get
+            {
+                if (_modulesDataTable == null)
+                {
+                    _modulesDataTable = new DataTable();
+                    using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Modules", ConnectionStrings.UsersConnectionString))
+                    {
+                        DA.Fill(_modulesDataTable);
+                    }
+                }
+                return _modulesDataTable;
+            }
+        }
+
+        public static void RefreshUsersDataTable()
         {
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Users  WHERE Fired <> 1 ORDER BY Name", ConnectionStrings.UsersConnectionString))
             {
-                UsersDataTable.Clear();
-                DA.Fill(UsersDataTable);
+                _usersDataTable.Clear();
+                DA.Fill(_usersDataTable);
             }
         }
 
-        public static void FillUsersPhotoDataTable()
+        public static void RefreshUsersPhotoDataTable()
         {
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM UsersPhoto", ConnectionStrings.UsersConnectionString))
             {
-                UsersPhotoDataTable.Clear();
-                DA.Fill(UsersPhotoDataTable);
+                _usersPhotoDataTable.Clear();
+                DA.Fill(_usersPhotoDataTable);
             }
         }
 
-        public static void FillDepartmentsDataTable()
+        public static void RefreshDepartmentsDataTable()
         {
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Departments ORDER BY DepartmentName", ConnectionStrings.LightConnectionString))
             {
-                DepartmentsDataTable.Clear();
-                DA.Fill(DepartmentsDataTable);
+                _departmentsDataTable.Clear();
+                DA.Fill(_departmentsDataTable);
             }
         }
 
-        public static void FillPositionsDataTable()
+        public static void RefreshPositionsDataTable()
         {
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Positions ORDER BY Position", ConnectionStrings.LightConnectionString))
             {
-                PositionsDataTable.Clear();
-                DA.Fill(PositionsDataTable);
+                _positionsDataTable.Clear();
+                DA.Fill(_positionsDataTable);
             }
         }
 
-        public static void FillModulesDataTable()
+        public static void RefreshModulesDataTable()
         {
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Modules", ConnectionStrings.UsersConnectionString))
             {
-                DA.Fill(ModulesDataTable);
+                _modulesDataTable.Clear();
+                DA.Fill(_modulesDataTable);
             }
         }
     }
@@ -2153,7 +2220,7 @@ namespace Infinium
                 }
             }
 
-            TablesManager.FillUsersPhotoDataTable();
+            TablesManager.RefreshUsersPhotoDataTable();
         }
         /////////////////////////////////////////////////////////////////////////////////////
 
@@ -2360,7 +2427,7 @@ namespace Infinium
                 }
             }
 
-            TablesManager.FillUsersPhotoDataTable();
+            TablesManager.RefreshUsersPhotoDataTable();
         }
 
         public void UpdateUsersDataTable()

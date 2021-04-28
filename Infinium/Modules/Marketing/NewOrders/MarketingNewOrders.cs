@@ -6061,6 +6061,7 @@ namespace Infinium.Modules.Marketing.NewOrders
         {
             int IsOrder = 0;
 
+            DecorTabControl.SuspendLayout();
             for (int i = 0; i < DecorTabControl.TabPages.Count; i++)
             {
                 if (DecorItemOrdersDataTables[i].Rows.Count > 0)
@@ -6071,6 +6072,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                 else
                     DecorTabControl.TabPages[i].PageVisible = false;
             }
+            DecorTabControl.ResumeLayout();
 
             if (IsOrder > 0)
                 return true;
@@ -7447,8 +7449,10 @@ namespace Infinium.Modules.Marketing.NewOrders
 
         public void FilterProductByMainOrder(int MainOrderID)
         {
+            OrdersTabControl.SuspendLayout();
             bool FrontsVisible = MainOrdersFrontsOrders.Filter(MainOrderID, 0);
             bool DecorVisible = MainOrdersDecorOrders.Filter(MainOrderID, 0);
+
             if (MainOrderID > 0)
             {
                 if (OrdersTabControl.TabPages[0].PageVisible != FrontsVisible)
@@ -7456,6 +7460,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                 if (OrdersTabControl.TabPages[1].PageVisible != DecorVisible)
                     OrdersTabControl.TabPages[1].PageVisible = DecorVisible;
             }
+            OrdersTabControl.ResumeLayout();
         }
 
         public void FilterMegaOrders(
@@ -14571,66 +14576,6 @@ namespace Infinium.Modules.Marketing.NewOrders
             }
 
             return IsComplaint;
-        }
-
-        public static void DataSetIntoDBF(string path, string fileName, DataTable DT, int FactoryID)
-        {
-            if (File.Exists(path + fileName + ".dbf"))
-            {
-                File.Delete(path + fileName + ".dbf");
-            }
-
-            string createSql = "create table " + fileName + " ([UNNP] varchar(20), [UNN] varchar(20), [CurrencyCode] varchar(20), [InvNumber] varchar(20), [AccountingName] varchar(100), [Amount] Double, [Price] Double, [NDS] varchar(10), [Weight] Double)";
-
-            OleDbConnection con = new OleDbConnection(GetConnection(path));
-
-            OleDbCommand cmd = new OleDbCommand()
-            {
-                Connection = con
-            };
-            con.Open();
-
-            cmd.CommandText = createSql;
-
-            cmd.ExecuteNonQuery();
-
-            foreach (DataRow row in DT.Rows)
-            {
-                string insertSql = "insert into " + fileName +
-                    " (UNNP, UNN, CurrencyCode, InvNumber, AccountingName, Amount, Price, NDS, Weight) values(UNNP, UNN, CurrencyCode, InvNumber, AccountingName, Amount, Price, NDS, Weight)";
-                decimal d = Decimal.Round(Convert.ToDecimal(row["Weight"]) / 1000, 3, MidpointRounding.AwayFromZero);
-                double Amount = Convert.ToDouble(row["Count"]);
-                double Price = Convert.ToDouble(row["Price"]);
-                double Weight = Convert.ToDouble(d);
-                string InvNumber = row["InvNumber"].ToString();
-                string CurrencyCode = row["CurrencyCode"].ToString();
-                //string TPSCurCode = row["TPSCurCode"].ToString();
-                string UNN = row["UNN"].ToString();
-                string AccountingName = row["AccountingName"].ToString();
-                string Name = row["Name"].ToString();
-                string NDS = "0 %";
-                string UNNP = "800014979";
-                cmd.CommandText = insertSql;
-                cmd.Parameters.Clear();
-
-                if (Convert.ToInt32(CurrencyCode) == 974 || Convert.ToInt32(CurrencyCode) == 933)
-                    NDS = "20 %";
-                if (FactoryID == 2)
-                    UNNP = "590618616";
-                cmd.Parameters.Add("UNNP", OleDbType.VarChar).Value = UNNP;
-                cmd.Parameters.Add("UNN", OleDbType.VarChar).Value = UNN;
-                cmd.Parameters.Add("CurrencyCode", OleDbType.VarChar).Value = CurrencyCode;
-                //cmd.Parameters.Add("TPSCurCode", OleDbType.VarChar).Value = TPSCurCode;
-                cmd.Parameters.Add("InvNumber", OleDbType.VarChar).Value = InvNumber;
-                cmd.Parameters.Add("AccountingName", OleDbType.VarChar).Value = AccountingName;
-                cmd.Parameters.Add("Amount", OleDbType.Double).Value = Amount;
-                cmd.Parameters.Add("Price", OleDbType.Double).Value = Price;
-                cmd.Parameters.Add("NDS", OleDbType.VarChar).Value = NDS;
-                cmd.Parameters.Add("Weight", OleDbType.Double).Value = Weight;
-                cmd.ExecuteNonQuery();
-            }
-
-            con.Close();
         }
 
         private static string ConvertDefaultToDos(string src)

@@ -13,23 +13,23 @@ namespace Infinium
 {
     public partial class ConditionOrdersStatisticsForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
-        bool NeedSplash = false;
-        int CurrentWeekNumber = 1;
-        int FormEvent = 0;
+        private bool NeedSplash = false;
+        private int CurrentWeekNumber = 1;
+        private int FormEvent = 0;
 
-        NumberFormatInfo nfi2;
+        private NumberFormatInfo nfi2;
 
-        LightStartForm LightStartForm;
+        private LightStartForm LightStartForm;
 
-        Form TopForm = null;
+        private Form TopForm = null;
 
-        BatchExcelReport MarketingBatchReport;
-        ConditionOrdersStatistics ConditionOrdersStatistics;
+        private BatchExcelReport MarketingBatchReport;
+        private ConditionOrdersStatistics ConditionOrdersStatistics;
 
         public ConditionOrdersStatisticsForm(LightStartForm tLightStartForm)
         {
@@ -63,16 +63,13 @@ namespace Infinium
 
                     if (FormEvent == eClose)
                     {
-
                         LightStartForm.CloseForm(this);
                     }
 
                     if (FormEvent == eHide)
                     {
-
                         LightStartForm.HideForm(this);
                     }
-
 
                     return;
                 }
@@ -84,7 +81,6 @@ namespace Infinium
                     SplashForm.CloseS = true;
                     return;
                 }
-
             }
 
             if (FormEvent == eClose || FormEvent == eHide)
@@ -97,21 +93,17 @@ namespace Infinium
 
                     if (FormEvent == eClose)
                     {
-
                         LightStartForm.CloseForm(this);
                     }
 
                     if (FormEvent == eHide)
                     {
-
                         LightStartForm.HideForm(this);
                     }
-
                 }
 
                 return;
             }
-
 
             if (FormEvent == eShow || FormEvent == eShow)
             {
@@ -177,7 +169,6 @@ namespace Infinium
             DMondayLabel.Text = CurrentWeekNumber + " неделя\r\n" + "Понедельник " + Monday.ToString("dd.MM.yyyy HH:mm");
             DWednesdayLabel.Text = CurrentWeekNumber + " неделя\r\n" + "Среда " + Wednesday.ToString("dd.MM.yyyy HH:mm");
             DFridayLabel.Text = CurrentWeekNumber + " неделя\r\n" + "Пятница " + Friday.ToString("dd.MM.yyyy HH:mm");
-
         }
 
         private void ConditionOrdersGrids1()
@@ -567,7 +558,6 @@ namespace Infinium
 
         private void ConditionOrdersStatisticsForm_Load(object sender, EventArgs e)
         {
-
         }
 
         private void MinimizeButton_Click(object sender, EventArgs e)
@@ -781,7 +771,6 @@ namespace Infinium
             }
             else
             {
-
             }
         }
 
@@ -938,6 +927,5 @@ namespace Infinium
             }
             WeeksOfYearListBox.SelectedIndex = CurrentWeekNumber - 1;
         }
-
     }
 }

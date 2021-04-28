@@ -1,6 +1,6 @@
 ﻿using Infinium.Modules.Marketing.NewOrders;
 using Infinium.Modules.StatisticsMarketing;
-
+using Infinium.Modules.StatisticsMarketing.Reports;
 using System;
 using System.Collections;
 using System.Data;
@@ -13,37 +13,36 @@ namespace Infinium
 {
     public partial class CommonStatisticsForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
-        bool NeedSplash = false;
-        bool bStoreSummaryClient = false;
-        bool bExpSummaryClient = false;
-        bool NeedSelectionChange = true;
+        private bool NeedSplash = false;
+        private bool bStoreSummaryClient = false;
+        private bool bExpSummaryClient = false;
+        private bool NeedSelectionChange = true;
 
-        int FormEvent = 0;
-        int CurrentWeekNumber = 1;
+        private int FormEvent = 0;
+        private int CurrentWeekNumber = 1;
 
+        private LightStartForm LightStartForm;
 
-        LightStartForm LightStartForm;
+        private Form TopForm = null;
 
-        Form TopForm = null;
+        private MarketingBatchStatistics BatchStatistics;
+        private Infinium.Modules.ZOV.DecorCatalogOrder DecorCatalogOrder;
+        private CommonStatistics AllProductsStatistics;
+        private ZOVOrdersStatistics ZOVOrdersStatistics;
+        private StorageStatistics StorageStatistics;
+        private ExpeditionStatistics ExpeditionStatistics;
+        private DispatchStatistics DispatchStatistics;
 
-        MarketingBatchStatistics BatchStatistics;
-        Infinium.Modules.ZOV.DecorCatalogOrder DecorCatalogOrder;
-        CommonStatistics AllProductsStatistics;
-        ZOVOrdersStatistics ZOVOrdersStatistics;
-        StorageStatistics StorageStatistics;
-        ExpeditionStatistics ExpeditionStatistics;
-        DispatchStatistics DispatchStatistics;
+        private ConditionOrdersStatistics ConditionOrdersStatistics;
+        private BatchExcelReport MarketingBatchReport;
 
-        ConditionOrdersStatistics ConditionOrdersStatistics;
-        BatchExcelReport MarketingBatchReport;
-
-        NumberFormatInfo nfi1;
-        NumberFormatInfo nfi2;
+        private NumberFormatInfo nfi1;
+        private NumberFormatInfo nfi2;
 
         public CommonStatisticsForm(LightStartForm tLightStartForm)
         {
@@ -129,16 +128,13 @@ namespace Infinium
 
                     if (FormEvent == eClose)
                     {
-
                         LightStartForm.CloseForm(this);
                     }
 
                     if (FormEvent == eHide)
                     {
-
                         LightStartForm.HideForm(this);
                     }
-
 
                     return;
                 }
@@ -149,7 +145,6 @@ namespace Infinium
                     SplashForm.CloseS = true;
                     return;
                 }
-
             }
 
             if (FormEvent == eClose || FormEvent == eHide)
@@ -162,7 +157,6 @@ namespace Infinium
 
                     if (FormEvent == eClose)
                     {
-
                         LightStartForm.CloseForm(this);
                     }
 
@@ -170,12 +164,10 @@ namespace Infinium
                     {
                         LightStartForm.HideForm(this);
                     }
-
                 }
 
                 return;
             }
-
 
             if (FormEvent == eShow || FormEvent == eShow)
             {
@@ -441,7 +433,6 @@ namespace Infinium
             {
                 Column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
             }
-
 
             foreach (DataGridViewColumn Column in DecorProductsDataGrid.Columns)
             {
@@ -728,7 +719,6 @@ namespace Infinium
             DecorColorsDataGrid.Columns["Cost"].DefaultCellStyle.FormatProvider = nfi1;
             DecorColorsDataGrid.Columns["Count"].DefaultCellStyle.Format = "N";
             DecorColorsDataGrid.Columns["Count"].DefaultCellStyle.FormatProvider = nfi1;
-
 
             DecorSizesDataGrid.Columns["Size"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             DecorSizesDataGrid.Columns["Size"].MinimumWidth = 100;
@@ -1698,7 +1688,6 @@ namespace Infinium
                 }
             }
 
-
             FrontsDataGrid_SelectionChanged(null, null);
             FrameColorsDataGrid_SelectionChanged(null, null);
             InsetTypesDataGrid_SelectionChanged(null, null);
@@ -1858,7 +1847,6 @@ namespace Infinium
             FrontsCostLabel.Text = FrontCost.ToString("N", nfi2) + " €";
             FrontsCountLabel.Text = FrontsCount.ToString();
             CurvedCountLabel.Text = CurvedCount.ToString() + " шт.";
-
         }
 
         private void FrameColorsDataGrid_SelectionChanged(object sender, EventArgs e)
@@ -2586,7 +2574,6 @@ namespace Infinium
                 StoreCurvedFrontsInfo();
                 StoreDecorInfo();
 
-
                 while (SplashWindow.bSmallCreated)
                     SmallWaitForm.CloseS = true;
                 NeedSplash = true;
@@ -3227,7 +3214,6 @@ namespace Infinium
             }
             else
             {
-
             }
         }
 
@@ -3457,7 +3443,6 @@ namespace Infinium
 
         private void StoreFrontsDataGrid_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
         {
-
             if (e.Button == System.Windows.Forms.MouseButtons.Right)
             {
                 kryptonContextMenu5.Show(new Point(Cursor.Position.X - 212, Cursor.Position.Y - 10));
@@ -3466,7 +3451,6 @@ namespace Infinium
 
         private void StoreDecorProductsDataGrid_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
         {
-
             if (e.Button == System.Windows.Forms.MouseButtons.Right)
             {
                 kryptonContextMenu5.Show(new Point(Cursor.Position.X - 212, Cursor.Position.Y - 10));
@@ -3475,7 +3459,6 @@ namespace Infinium
 
         private void ExpFrontsDataGrid_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
         {
-
             if (e.Button == System.Windows.Forms.MouseButtons.Right)
             {
                 kryptonContextMenu10.Show(new Point(Cursor.Position.X - 212, Cursor.Position.Y - 10));
@@ -3484,7 +3467,6 @@ namespace Infinium
 
         private void ExpDecorProductsDataGrid_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
         {
-
             if (e.Button == System.Windows.Forms.MouseButtons.Right)
             {
                 kryptonContextMenu10.Show(new Point(Cursor.Position.X - 212, Cursor.Position.Y - 10));
@@ -3493,7 +3475,6 @@ namespace Infinium
 
         private void DispFrontsDataGrid_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
         {
-
             if (e.Button == System.Windows.Forms.MouseButtons.Right)
             {
                 kryptonContextMenu6.Show(new Point(Cursor.Position.X - 212, Cursor.Position.Y - 10));
@@ -3502,7 +3483,6 @@ namespace Infinium
 
         private void DispDecorProductsDataGrid_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
         {
-
             if (e.Button == System.Windows.Forms.MouseButtons.Right)
             {
                 kryptonContextMenu6.Show(new Point(Cursor.Position.X - 212, Cursor.Position.Y - 10));
@@ -3636,7 +3616,6 @@ namespace Infinium
             DMondayLabel.Text = CurrentWeekNumber + " неделя\r\n" + "Понедельник " + Monday.ToString("dd.MM.yyyy HH:mm");
             DWednesdayLabel.Text = CurrentWeekNumber + " неделя\r\n" + "Среда " + Wednesday.ToString("dd.MM.yyyy HH:mm");
             DFridayLabel.Text = CurrentWeekNumber + " неделя\r\n" + "Пятница " + Friday.ToString("dd.MM.yyyy HH:mm");
-
         }
 
         private void cbxYears_SelectionChangeCommitted(object sender, EventArgs e)
@@ -3650,17 +3629,14 @@ namespace Infinium
                 WeeksOfYearListBox.Items.Add(i);
             }
             WeeksOfYearListBox.SelectedIndex = CurrentWeekNumber - 1;
-
         }
 
         private void cbxYears_SelectedValueChanged(object sender, EventArgs e)
         {
-
         }
 
         private void cbxYears_SelectedIndexChanged(object sender, EventArgs e)
         {
-
         }
 
         private void kryptonContextMenuItem4_Click(object sender, EventArgs e)
@@ -4295,7 +4271,7 @@ namespace Infinium
             ArrayList MClients = AllProductsStatistics.SelectedMarketingClients;
             ArrayList MClientGroups = AllProductsStatistics.SelectedMarketingClientGroups;
             DecorCatalogOrder = new Modules.ZOV.DecorCatalogOrder();
-            ProducedProducts ProducedProducts = new ProducedProducts(ref DecorCatalogOrder);
+            ProducedReport ProducedProducts = new ProducedReport(ref DecorCatalogOrder);
             ProducedProducts.GetDateRates(date, ref EURBYRCurrency);
             //ProducedProducts.CreateZOVReport(CalendarFrom.SelectionStart, CalendarTo.SelectionStart, FileName, EURBYRCurrency);
             ProducedProducts.CreateMarketingReport(CalendarFrom.SelectionStart, CalendarTo.SelectionStart, cbSamples.Checked, cbNotSamples.Checked, FileName, EURBYRCurrency, MClients, MClientGroups);
@@ -4321,7 +4297,7 @@ namespace Infinium
             ArrayList MClients = AllProductsStatistics.SelectedMarketingClients;
             ArrayList MClientGroups = AllProductsStatistics.SelectedMarketingClientGroups;
             DecorCatalogOrder = new Modules.ZOV.DecorCatalogOrder();
-            ProducedProducts ProducedProducts = new ProducedProducts(ref DecorCatalogOrder);
+            ProducedReport ProducedProducts = new ProducedReport(ref DecorCatalogOrder);
             ProducedProducts.GetDateRates(date, ref EURBYRCurrency);
             //ProducedProducts.CreateZOVDispReport(CalendarFrom.SelectionStart, CalendarTo.SelectionStart, FileName, EURBYRCurrency);
             ProducedProducts.CreateMarketingDispReport(CalendarFrom.SelectionStart, CalendarTo.SelectionStart, cbSamples.Checked, cbNotSamples.Checked,
@@ -4352,7 +4328,7 @@ namespace Infinium
             ArrayList MClients = AllProductsStatistics.SelectedMarketingClients;
             ArrayList MClientGroups = AllProductsStatistics.SelectedMarketingClientGroups;
             DecorCatalogOrder = new Modules.ZOV.DecorCatalogOrder();
-            ProducedProducts ProducedProducts = new ProducedProducts(ref DecorCatalogOrder);
+            ProducedReport ProducedProducts = new ProducedReport(ref DecorCatalogOrder);
             ProducedProducts.StartEndProducedReport(CalendarFrom.SelectionStart, CalendarTo.SelectionStart, cbSamples.Checked, cbNotSamples.Checked, FileName, MClients, MClientGroups);
             NeedSplash = true;
             while (SplashWindow.bSmallCreated)
@@ -4478,7 +4454,6 @@ namespace Infinium
 
         private void ClientsDataGrid_RowPrePaint(object sender, DataGridViewRowPrePaintEventArgs e)
         {
-
         }
 
         private void ZOVClientsDataGrid_RowPrePaint(object sender, DataGridViewRowPrePaintEventArgs e)
@@ -4533,7 +4508,6 @@ namespace Infinium
 
         private void kryptonCheckBox3_CheckedChanged(object sender, EventArgs e)
         {
-
             AllProductsStatistics.checkbox3_CheckedChanged(kryptonCheckBox3.Checked);
         }
 

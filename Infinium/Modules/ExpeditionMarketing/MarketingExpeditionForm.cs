@@ -1,7 +1,6 @@
 ﻿using Infinium.Modules.Marketing.Dispatch;
 using Infinium.Modules.Marketing.Expedition;
 using Infinium.Modules.Marketing.Orders;
-
 using NPOI.HPSF;
 using NPOI.HSSF.UserModel;
 
@@ -76,9 +75,9 @@ namespace Infinium
         CabFurAssembleReport cabFurAssembleReport;
         Modules.CabFurnitureAssignments.CabFurAssemble cabFurAssembleManager;
         MarketingDispatch MarketingDispatchManager;
-        DBFReport DBFReport;
+        DispatchReportDBFReport DBFReport;
         Infinium.Modules.Marketing.Dispatch.DetailsReport DetailsReport;
-        InvoiceReportToDBF iDBFReport;
+        Infinium.Modules.Marketing.Orders.InvoiceReportToDBF.InvoiceReportToDBF iDBFReport;
         MarketingExpeditionManager MarketingExpeditionManager;
         OrdersCalculate OrdersCalculate;
 
@@ -455,12 +454,12 @@ namespace Infinium
             cbxCabFurMonths.SelectedValue = DateTime.Now.Month;
             cbxCabFurYears.SelectedValue = DateTime.Now.Year;
 
-            DBFReport = new DBFReport(ref DecorCatalogOrder);
+            DBFReport = new DispatchReportDBFReport(ref DecorCatalogOrder);
             OrdersCalculate = new OrdersCalculate();
             DetailsReport = new Modules.Marketing.Dispatch.DetailsReport(ref DecorCatalogOrder, ref OrdersCalculate.FrontsCalculate);
             MarketingDispatchManager = new MarketingDispatch();
             cabFurAssembleManager = new Modules.CabFurnitureAssignments.CabFurAssemble();
-            iDBFReport = new InvoiceReportToDBF(ref DecorCatalogOrder, ref OrdersCalculate.FrontsCalculate);
+            iDBFReport = new Modules.Marketing.Orders.InvoiceReportToDBF.InvoiceReportToDBF();
 
             MarketingDispatchManager.Initialize();
             cabFurAssembleManager.Initialize();

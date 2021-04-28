@@ -10,19 +10,19 @@ namespace Infinium
 {
     public partial class MarketingBatchStatisticsForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
-        bool Marketing = true;
-        bool ZOV = false;
-        bool NeedSplash = false;
-        int FormEvent = 0;
-        MarketingBatchStatistics BatchStatistics;
-        LightStartForm LightStartForm;
+        private bool Marketing = true;
+        private bool ZOV = false;
+        private bool NeedSplash = false;
+        private int FormEvent = 0;
+        private MarketingBatchStatistics BatchStatistics;
+        private LightStartForm LightStartForm;
 
-        Form TopForm = null;
+        private Form TopForm = null;
 
         public MarketingBatchStatisticsForm(LightStartForm tLightStartForm)
         {
@@ -57,16 +57,13 @@ namespace Infinium
 
                     if (FormEvent == eClose)
                     {
-
                         LightStartForm.CloseForm(this);
                     }
 
                     if (FormEvent == eHide)
                     {
-
                         LightStartForm.HideForm(this);
                     }
-
 
                     return;
                 }
@@ -78,7 +75,6 @@ namespace Infinium
                     SplashForm.CloseS = true;
                     return;
                 }
-
             }
 
             if (FormEvent == eClose || FormEvent == eHide)
@@ -91,21 +87,17 @@ namespace Infinium
 
                     if (FormEvent == eClose)
                     {
-
                         LightStartForm.CloseForm(this);
                     }
 
                     if (FormEvent == eHide)
                     {
-
                         LightStartForm.HideForm(this);
                     }
-
                 }
 
                 return;
             }
-
 
             if (FormEvent == eShow || FormEvent == eShow)
             {
@@ -413,7 +405,6 @@ namespace Infinium
 
         private void MarketingBatchStatisticsForm_Load(object sender, EventArgs e)
         {
-
         }
 
         private void dgvGeneralSummary_SelectionChanged(object sender, EventArgs e)
@@ -737,6 +728,5 @@ namespace Infinium
             MenuButton.Checked = false;
             BatchMenuPanel.Visible = !BatchMenuPanel.Visible;
         }
-
     }
 }

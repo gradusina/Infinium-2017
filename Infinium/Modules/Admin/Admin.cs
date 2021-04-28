@@ -2076,7 +2076,7 @@ namespace Infinium
             prDT.Dispose();
             UsersDataTable.Clear();
             UsersDataAdapter.Fill(UsersDataTable);
-            TablesManager.FillUsersDataTable();
+            TablesManager.RefreshUsersDataTable();
         }
 
         private int GetNextUserID()
@@ -2169,7 +2169,7 @@ namespace Infinium
             UsersDataAdapter.Update(UsersDataTable);
             UsersDataTable.Clear();
             UsersDataAdapter.Fill(UsersDataTable);
-            TablesManager.FillUsersDataTable();
+            TablesManager.RefreshUsersDataTable();
 
             Rating();
 
@@ -2649,7 +2649,7 @@ namespace Infinium
                 }
             }
 
-            TablesManager.FillDepartmentsDataTable();
+            TablesManager.RefreshDepartmentsDataTable();
         }
 
         public void AddDepartment(string Name)
@@ -2664,7 +2664,7 @@ namespace Infinium
 
             DepartmentsDA.Fill(DepartmentsDataTable);
 
-            TablesManager.FillDepartmentsDataTable();
+            TablesManager.RefreshDepartmentsDataTable();
         }
 
         public void SaveDepartments()
@@ -2721,7 +2721,7 @@ namespace Infinium
 
             PositionsDA.Fill(PositionsDataTable);
 
-            TablesManager.FillPositionsDataTable();
+            TablesManager.RefreshPositionsDataTable();
         }
 
     }
