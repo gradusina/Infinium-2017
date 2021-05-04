@@ -7,43 +7,43 @@ namespace Infinium.Modules.Marketing.NewOrders.InvoiceReportToDBF
 {
     public class InvoiceDecorReportToDBF
     {
-        #region Public Constructors
+        public DataTable ProfilReportDataTable = null;
+
+        public DataTable TPSReportDataTable = null;
+
+        private decimal AdditionalCost = 0;
+
+        private int ClientID = 0;
+
+        private DataTable CurrencyTypesDT;
+
+        private DataTable DecorConfigDataTable = null;
+
+        private DataTable DecorDataTable = null;
+
+        private DataTable DecorOrdersDataTable = null;
+
+        private DataTable DecorParametersDataTable = null;
+
+        private DataTable DecorProductsDataTable = null;
+
+        private DataTable MeasuresDataTable = null;
+
+        private decimal PaymentRate = 1;
+
+        private string ProfilCurrencyCode = "0";
+
+        private string TPSCurrencyCode = "0";
+
+        private decimal TransportCost = 0;
+
+        private string UNN = string.Empty;
 
         public InvoiceDecorReportToDBF()
         {
             Create();
             CreateReportDataTable();
         }
-
-        #endregion Public Constructors
-
-        #region Public Fields
-
-        public DataTable ProfilReportDataTable = null;
-        public DataTable TPSReportDataTable = null;
-
-        #endregion Public Fields
-
-        #region Private Fields
-
-        private decimal AdditionalCost = 0;
-        private int ClientID = 0;
-        private DataTable CurrencyTypesDT;
-        private DataTable DecorConfigDataTable = null;
-        private DataTable DecorDataTable = null;
-        private DataTable DecorOrdersDataTable = null;
-        private DataTable DecorParametersDataTable = null;
-        private DataTable DecorProductsDataTable = null;
-        private DataTable MeasuresDataTable = null;
-        private decimal PaymentRate = 1;
-        private string ProfilCurrencyCode = "0";
-        private string TPSCurrencyCode = "0";
-        private decimal TransportCost = 0;
-        private string UNN = string.Empty;
-
-        #endregion Private Fields
-
-        #region Public Methods
 
         public void ClearReport()
         {
@@ -336,10 +336,6 @@ namespace Infinium.Modules.Marketing.NewOrders.InvoiceReportToDBF
 
             Collect();
         }
-
-        #endregion Public Methods
-
-        #region Private Methods
 
         private void Collect()
         {
@@ -1284,7 +1280,5 @@ namespace Infinium.Modules.Marketing.NewOrders.InvoiceReportToDBF
 
             return false;
         }
-
-        #endregion Private Methods
     }
 }

@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
 {
-    public class ColorInvoiceReportToDBF
+    public class ColorInvoiceReportToDbf
     {
         decimal VAT = 1.0m;
         public ColorInvoiceFrontsReportToDBF FrontsReport;
@@ -20,7 +20,7 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
         public DataTable ProfilReportTable = null;
         public DataTable TPSReportTable = null;
 
-        public ColorInvoiceReportToDBF()
+        public ColorInvoiceReportToDbf()
         {
             FrontsReport = new ColorInvoiceFrontsReportToDBF();
             DecorReport = new ColorInvoiceDecorReportToDBF();

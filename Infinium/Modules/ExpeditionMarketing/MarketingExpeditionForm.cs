@@ -77,7 +77,7 @@ namespace Infinium
         MarketingDispatch MarketingDispatchManager;
         DispatchReportDBFReport DBFReport;
         Infinium.Modules.Marketing.Dispatch.DetailsReport DetailsReport;
-        Infinium.Modules.Marketing.Orders.InvoiceReportToDBF.InvoiceReportToDBF iDBFReport;
+        Infinium.Modules.Marketing.NewOrders.InvoiceReportToDBF.InvoiceReportToDBF iDBFReport;
         MarketingExpeditionManager MarketingExpeditionManager;
         OrdersCalculate OrdersCalculate;
 
@@ -459,7 +459,7 @@ namespace Infinium
             DetailsReport = new Modules.Marketing.Dispatch.DetailsReport(ref DecorCatalogOrder, ref OrdersCalculate.FrontsCalculate);
             MarketingDispatchManager = new MarketingDispatch();
             cabFurAssembleManager = new Modules.CabFurnitureAssignments.CabFurAssemble();
-            iDBFReport = new Modules.Marketing.Orders.InvoiceReportToDBF.InvoiceReportToDBF();
+            iDBFReport = new Modules.Marketing.NewOrders.InvoiceReportToDBF.InvoiceReportToDBF();
 
             MarketingDispatchManager.Initialize();
             cabFurAssembleManager.Initialize();

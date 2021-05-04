@@ -4832,5 +4832,108 @@ namespace Infinium
                        "Дополнительно");
             }
         }
+
+        private void kryptonContextMenuItem22_Click(object sender, EventArgs e)
+        {
+            Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Создание документа Excel.\r\nПодождите..."); });
+            T.Start();
+
+            while (!SplashWindow.bSmallCreated) ;
+
+            DecorCatalogOrder = new Modules.ZOV.DecorCatalogOrder();
+
+            DateTime DateFrom = CalendarFrom.SelectionEnd;
+            DateTime DateTo = CalendarTo.SelectionEnd;
+
+            bool PlanDispDate = PlanDispDateRadioButton.Checked;
+            //bool PrepareZOV = PrepareRadioButton.Checked;
+            bool OrderDate = OrderDateRadioButton.Checked;
+            bool ConfirmDate = ConfirmDateRadioButton.Checked;
+            bool PackDate = PackDateRadioButton.Checked;
+            bool StoreDate = StoreDateRadioButton.Checked;
+            bool ExpDate = ExpDateRadioButton.Checked;
+            bool FactDispDate = FactDispDateRadioButton.Checked;
+            bool OnProduction = OnProductionRadioButton.Checked;
+
+            string FileName = string.Empty;
+
+            if (OnProduction)
+            {
+                FileName = "Вошло на пр-во " + DateFrom.ToString("dd.MM.yyyy") + ". Отчет по клиентам.";
+                if (DateFrom != DateTo)
+                    FileName = "Вошло на пр-во за период с " + DateFrom.ToString("dd.MM.yyyy") + " по " + DateTo.ToString("dd.MM.yyyy") + ". Отчет по клиентам.";
+            }
+
+            if (PlanDispDate)
+            {
+                FileName = "Плановая отгрузка " + DateFrom.ToString("dd.MM.yyyy") + ". Отчет по клиентам.";
+                if (DateFrom != DateTo)
+                    FileName = "Плановая отгрузка за период с " + DateFrom.ToString("dd.MM.yyyy") + " по " + DateTo.ToString("dd.MM.yyyy") + ". Отчет по клиентам.";
+            }
+
+            if (FactDispDate)
+            {
+                FileName = "Фактическая отгрузка " + DateFrom.ToString("dd.MM.yyyy") + ". Отчет по клиентам.";
+                if (DateFrom != DateTo)
+                    FileName = "Фактическая отгрузка за период с " + DateFrom.ToString("dd.MM.yyyy") + " по " + DateTo.ToString("dd.MM.yyyy") + ". Отчет по клиентам.";
+            }
+
+            if (PackDate)
+            {
+                FileName = "Упакованная продукция " + DateFrom.ToString("dd.MM.yyyy") + ". Отчет по клиентам.";
+                if (DateFrom != DateTo)
+                    FileName = "Упакованная продукция за период с " + DateFrom.ToString("dd.MM.yyyy") + " по " + DateTo.ToString("dd.MM.yyyy") + ". Отчет по клиентам.";
+            }
+
+            if (StoreDate)
+            {
+                FileName = "Продукция, принятая на на склад " + DateFrom.ToString("dd.MM.yyyy") + ". Отчет по клиентам.";
+                if (DateFrom != DateTo)
+                    FileName = "Продукция, принятая на склад за период с " + DateFrom.ToString("dd.MM.yyyy") + " по " + DateTo.ToString("dd.MM.yyyy") + ". Отчет по клиентам.";
+            }
+
+            if (ExpDate)
+            {
+                FileName = "Продукция, принятая на экспедицию " + DateFrom.ToString("dd.MM.yyyy") + ". Отчет по клиентам.";
+                if (DateFrom != DateTo)
+                    FileName = "Продукция, принятая на экспедицию за период с " + DateFrom.ToString("dd.MM.yyyy") + " по " + DateTo.ToString("dd.MM.yyyy") + ". Отчет по клиентам.";
+            }
+
+            if (OrderDate)
+            {
+                FileName = "Заказы, созданные " + DateFrom.ToString("dd.MM.yyyy") + ". Отчет по клиентам.";
+                if (DateFrom != DateTo)
+                    FileName = "Заказы, созданные за период с " + DateFrom.ToString("dd.MM.yyyy") + " по " + DateTo.ToString("dd.MM.yyyy") + ". Отчет по клиентам.";
+            }
+
+            if (ConfirmDate)
+            {
+                FileName = "Заказы, согласованные " + DateFrom.ToString("dd.MM.yyyy") + ". Отчет по клиентам.";
+                if (DateFrom != DateTo)
+                    FileName = "Заказы, согласованные за период с " + DateFrom.ToString("dd.MM.yyyy") + " по " + DateTo.ToString("dd.MM.yyyy") + ". Отчет по клиентам.";
+            }
+
+            int FactoryID = 0;
+
+            if (ProfilCheckBox.Checked && !TPSCheckBox.Checked)
+                FactoryID = 1;
+            if (!ProfilCheckBox.Checked && TPSCheckBox.Checked)
+                FactoryID = 2;
+            if (!ProfilCheckBox.Checked && !TPSCheckBox.Checked)
+                FactoryID = -1;
+
+            Modules.StatisticsMarketing.StatisticsReportByClient StatisticsReport = new Modules.StatisticsMarketing.StatisticsReportByClient(ref DecorCatalogOrder);
+
+            if (rbMarketing.Checked)
+            {
+                StatisticsReport.CreateReportOrderNumber(DateFrom, DateTo, FactoryID, AllProductsStatistics.FrontsOrdersDataTable, AllProductsStatistics.DecorOrdersDataTable, FileName, false);
+            }
+            if (rbZOV.Checked)
+            {
+                StatisticsReport.CreateReportOrderNumber(DateFrom, DateTo, FactoryID, ZOVOrdersStatistics.FrontsOrdersDataTable, ZOVOrdersStatistics.DecorOrdersDataTable, FileName, true);
+            }
+            while (SplashWindow.bSmallCreated)
+                SmallWaitForm.CloseS = true;
+        }
     }
 }

@@ -107,13 +107,13 @@ namespace Infinium.Modules.ZOV.Orders
                             {
                                 OrdersCalculate.Recalculate(MegaOrderID, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 5, EURBYRCurrency, DocDateTime);
                                 SetCurrencyCost(MegaOrderID, 0, 0, string.Empty, false, marketingDelayOfPayment, 0, 0, 5, EURBYRCurrency, EURBYRCurrency, 1, 1, 0, 0, 0, 0,
-                                    DBFReport.CalcCurrencyCost(MegaOrderID, marketingClientID, 5, EURBYRCurrency));
+                                    DBFReport.CalcCurrencyCost(MegaOrderID, marketingClientID, EURBYRCurrency));
                             }
                             else
                             {
                                 OrdersCalculate.Recalculate(MegaOrderID, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, DocDateTime);
                                 SetCurrencyCost(MegaOrderID, 0, 0, string.Empty, false, marketingDelayOfPayment, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0,
-                                    DBFReport.CalcCurrencyCost(MegaOrderID, marketingClientID, 1, 1));
+                                    DBFReport.CalcCurrencyCost(MegaOrderID, marketingClientID, 1));
                             }
                             AcceptOrder(MegaOrderID);
                             MoveOrdersTo(MegaOrderID);
@@ -159,13 +159,13 @@ namespace Infinium.Modules.ZOV.Orders
                             {
                                 OrdersCalculate.Recalculate(MegaOrderID, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 5, EURBYRCurrency, DocDateTime);
                                 SetCurrencyCost(MegaOrderID, 0, 0, string.Empty, false, marketingDelayOfPayment, 0, 0, 5, EURBYRCurrency, EURBYRCurrency, 1, 1, 0, 0, 0, 0,
-                                    DBFReport.CalcCurrencyCost(MegaOrderID, marketingClientID, 5, EURBYRCurrency));
+                                    DBFReport.CalcCurrencyCost(MegaOrderID, marketingClientID, EURBYRCurrency));
                             }
                             else
                             {
                                 OrdersCalculate.Recalculate(MegaOrderID, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, DocDateTime);
                                 SetCurrencyCost(MegaOrderID, 0, 0, string.Empty, false, marketingDelayOfPayment, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0,
-                                    DBFReport.CalcCurrencyCost(MegaOrderID, marketingClientID, 1, 1));
+                                    DBFReport.CalcCurrencyCost(MegaOrderID, marketingClientID, 1));
                             }
                             AcceptOrder(MegaOrderID);
                             MoveOrdersTo(MegaOrderID);

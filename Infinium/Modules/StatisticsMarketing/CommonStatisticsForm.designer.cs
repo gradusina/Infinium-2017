@@ -915,6 +915,7 @@
             this.kryptonContextMenuItem19 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
             this.kryptonContextMenuItem20 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
             this.kryptonContextMenuItem21 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
+            this.kryptonContextMenuItem22 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
             this.NavigatePanel.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel115.SuspendLayout();
@@ -14356,6 +14357,7 @@
             this.kryptonContextMenuItem10,
             this.kryptonContextMenuItem11,
             this.kryptonContextMenuItem12,
+            this.kryptonContextMenuItem22,
             this.kryptonContextMenuItem13,
             this.kryptonContextMenuItem14,
             this.kryptonContextMenuItem15,
@@ -14423,6 +14425,11 @@
             // kryptonContextMenuItem21
             // 
             this.kryptonContextMenuItem21.Text = "Рекламации за период";
+            // 
+            // kryptonContextMenuItem22
+            // 
+            this.kryptonContextMenuItem22.Text = "Отчет по клиенту (с № заказа)";
+            this.kryptonContextMenuItem22.Click += new System.EventHandler(this.kryptonContextMenuItem22_Click);
             // 
             // CommonStatisticsForm
             // 
@@ -15718,5 +15725,6 @@
         private ComponentFactory.Krypton.Toolkit.KryptonCheckBox cbTransport;
         private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem kryptonContextMenuItem20;
         private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem kryptonContextMenuItem21;
+        private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem kryptonContextMenuItem22;
     }
 }

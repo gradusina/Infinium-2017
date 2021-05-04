@@ -4371,9 +4371,9 @@ namespace Infinium.Modules.WorkAssignments
         {
             DataTable DT2 = new DataTable();
 
-            using (DataView DV = new DataView(SourceDT, "ColorID=" + ColorID, "ColorID, TechnoColorID, InsetTypeID, InsetColorID, TechnoInsetTypeID, TechnoInsetColorID, Height, Width", DataViewRowState.CurrentRows))
+            using (DataView DV = new DataView(SourceDT, "ColorID=" + ColorID, "ColorID, TechnoProfileID, TechnoColorID, InsetTypeID, InsetColorID, TechnoInsetTypeID, TechnoInsetColorID, Height, Width", DataViewRowState.CurrentRows))
             {
-                DT2 = DV.ToTable(true, new string[] { "ColorID", "TechnoColorID", "InsetTypeID", "InsetColorID", "TechnoInsetTypeID", "TechnoInsetColorID", "Height", "Width" });
+                DT2 = DV.ToTable(true, new string[] { "ColorID", "TechnoProfileID",  "TechnoColorID", "InsetTypeID", "InsetColorID", "TechnoInsetTypeID", "TechnoInsetColorID", "Height", "Width" });
             }
             for (int j = 0; j < DT2.Rows.Count; j++)
             {
@@ -4382,7 +4382,7 @@ namespace Infinium.Modules.WorkAssignments
                 string InsetColor = string.Empty;
                 string TechnoColor = string.Empty;
                 //витрины
-                DataRow[] rows = SourceDT.Select("ColorID=" + Convert.ToInt32(DT2.Rows[j]["ColorID"]) + " AND TechnoColorID=" + Convert.ToInt32(DT2.Rows[j]["TechnoColorID"]) + " AND InsetTypeID=" + Convert.ToInt32(DT2.Rows[j]["InsetTypeID"]) +
+                DataRow[] rows = SourceDT.Select("ColorID=" + Convert.ToInt32(DT2.Rows[j]["ColorID"]) + " AND TechnoProfileID=" + Convert.ToInt32(DT2.Rows[j]["TechnoProfileID"]) + " AND TechnoColorID=" + Convert.ToInt32(DT2.Rows[j]["TechnoColorID"]) + " AND InsetTypeID=" + Convert.ToInt32(DT2.Rows[j]["InsetTypeID"]) +
                     " AND InsetColorID=" + Convert.ToInt32(DT2.Rows[j]["InsetColorID"]) + " AND TechnoInsetTypeID=" + Convert.ToInt32(DT2.Rows[j]["TechnoInsetTypeID"]) + " AND TechnoInsetColorID=" + Convert.ToInt32(DT2.Rows[j]["TechnoInsetColorID"]) + " AND Height=" + Convert.ToInt32(DT2.Rows[j]["Height"]) +
                     " AND Width=" + Convert.ToInt32(DT2.Rows[j]["Width"]));
                 foreach (DataRow item in rows)
@@ -4400,15 +4400,16 @@ namespace Infinium.Modules.WorkAssignments
                 if (Convert.ToInt32(rows[0]["TechnoInsetColorID"]) != -1)
                     TechnoColor += " " + GetInsetColorName(Convert.ToInt32(rows[0]["TechnoInsetColorID"]));
 
+                string Name = ProfileName(Convert.ToInt32(rows[0]["FrontConfigID"]), 1);
                 DataRow NewRow = DestinationDT.NewRow();
                 NewRow["FrontType"] = FrontType;
                 NewRow["ColorType"] = ColorType;
-                NewRow["Name"] = ProfileName(Convert.ToInt32(rows[0]["FrontConfigID"]), 1);
+                NewRow["Name"] = Name;
                 NewRow["FrameColor"] = GetColorName(Convert.ToInt32(rows[0]["ColorID"]));
 
-                if (Impost && Convert.ToInt32(rows[0]["TechnoColorID"]) != -1)
+                if (Convert.ToInt32(rows[0]["TechnoProfileID"]) != -1)
                 {
-                    NewRow["Name"] = ProfileName(Convert.ToInt32(rows[0]["FrontConfigID"]), 1) + " ИМПОСТ";
+                    NewRow["Name"] = Name + " " + ProfileName(Convert.ToInt32(rows[0]["FrontConfigID"]), 2);
                     NewRow["FrameColor"] = GetColorName(Convert.ToInt32(rows[0]["ColorID"])) + "/" + GetColorName(Convert.ToInt32(rows[0]["TechnoColorID"]));
                 }
 
@@ -4426,9 +4427,9 @@ namespace Infinium.Modules.WorkAssignments
         {
             DataTable DT2 = new DataTable();
 
-            using (DataView DV = new DataView(SourceDT, "ColorID=" + ColorID, "ColorID, TechnoColorID, InsetTypeID, InsetColorID, TechnoInsetTypeID, TechnoInsetColorID, Height, Width", DataViewRowState.CurrentRows))
+            using (DataView DV = new DataView(SourceDT, "ColorID=" + ColorID, "ColorID, TechnoProfileID, TechnoColorID, InsetTypeID, InsetColorID, TechnoInsetTypeID, TechnoInsetColorID, Height, Width", DataViewRowState.CurrentRows))
             {
-                DT2 = DV.ToTable(true, new string[] { "ColorID", "TechnoColorID", "InsetTypeID", "InsetColorID", "TechnoInsetTypeID", "TechnoInsetColorID", "Height", "Width" });
+                DT2 = DV.ToTable(true, new string[] { "ColorID", "TechnoProfileID", "TechnoColorID", "InsetTypeID", "InsetColorID", "TechnoInsetTypeID", "TechnoInsetColorID", "Height", "Width" });
             }
             for (int j = 0; j < DT2.Rows.Count; j++)
             {
@@ -4437,7 +4438,8 @@ namespace Infinium.Modules.WorkAssignments
                 string InsetColor = "витрина";
                 string TechnoColor = string.Empty;
                 //витрины
-                DataRow[] rows = SourceDT.Select("ColorID=" + Convert.ToInt32(DT2.Rows[j]["ColorID"]) + " AND TechnoColorID=" + Convert.ToInt32(DT2.Rows[j]["TechnoColorID"]) + " AND InsetTypeID=" + Convert.ToInt32(DT2.Rows[j]["InsetTypeID"]) +
+                DataRow[] rows = SourceDT.Select("ColorID=" + Convert.ToInt32(DT2.Rows[j]["ColorID"]) + " AND TechnoProfileID=" + Convert.ToInt32(DT2.Rows[j]["TechnoProfileID"]) + 
+                     " AND TechnoColorID=" + Convert.ToInt32(DT2.Rows[j]["TechnoColorID"]) + " AND InsetTypeID=" + Convert.ToInt32(DT2.Rows[j]["InsetTypeID"]) +
                     " AND InsetColorID=" + Convert.ToInt32(DT2.Rows[j]["InsetColorID"]) + " AND TechnoInsetTypeID=" + Convert.ToInt32(DT2.Rows[j]["TechnoInsetTypeID"]) + " AND TechnoInsetColorID=" + Convert.ToInt32(DT2.Rows[j]["TechnoInsetColorID"]) + " AND Height=" + Convert.ToInt32(DT2.Rows[j]["Height"]) +
                     " AND Width=" + Convert.ToInt32(DT2.Rows[j]["Width"]));
                 foreach (DataRow item in rows)
@@ -4451,15 +4453,16 @@ namespace Infinium.Modules.WorkAssignments
 
                 Square = decimal.Round(Square, 3, MidpointRounding.AwayFromZero);
 
+                string Name = ProfileName(Convert.ToInt32(rows[0]["FrontConfigID"]), 1);
                 DataRow NewRow = DestinationDT.NewRow();
                 NewRow["FrontType"] = FrontType;
                 NewRow["ColorType"] = ColorType;
-                NewRow["Name"] = ProfileName(Convert.ToInt32(rows[0]["FrontConfigID"]), 1);
+                NewRow["Name"] = Name;
                 NewRow["FrameColor"] = GetColorName(Convert.ToInt32(rows[0]["ColorID"]));
 
-                if (Impost && Convert.ToInt32(rows[0]["TechnoColorID"]) != -1)
+                if (Convert.ToInt32(rows[0]["TechnoProfileID"]) != -1)
                 {
-                    NewRow["Name"] = ProfileName(Convert.ToInt32(rows[0]["FrontConfigID"]), 1) + " ИМПОСТ";
+                    NewRow["Name"] = Name + " " + ProfileName(Convert.ToInt32(rows[0]["FrontConfigID"]), 2);
                     NewRow["FrameColor"] = GetColorName(Convert.ToInt32(rows[0]["ColorID"])) + "/" + GetColorName(Convert.ToInt32(rows[0]["TechnoColorID"]));
                 }
 
@@ -5106,11 +5109,14 @@ namespace Infinium.Modules.WorkAssignments
             {
                 using (DataView DV = new DataView(SourceDT))
                 {
-                    DT1 = DV.ToTable(true, new string[] { "ColorID", "TechnoColorID" });
+                    DT1 = DV.ToTable(true, new string[] { "ColorID", "TechnoProfileID", "TechnoColorID" });
                 }
                 for (int i = 0; i < DT1.Rows.Count; i++)
                 {
-                    using (DataView DV = new DataView(SourceDT, "ColorID=" + Convert.ToInt32(DT1.Rows[i]["ColorID"]) + " AND TechnoColorID=" + Convert.ToInt32(DT1.Rows[i]["TechnoColorID"]), string.Empty, DataViewRowState.CurrentRows))
+                    using (DataView DV = new DataView(SourceDT, 
+                        "ColorID=" + Convert.ToInt32(DT1.Rows[i]["ColorID"]) 
+                                   + " AND TechnoProfileID=" + Convert.ToInt32(DT1.Rows[i]["TechnoProfileID"]) 
+                                   + " AND TechnoColorID=" + Convert.ToInt32(DT1.Rows[i]["TechnoColorID"]), string.Empty, DataViewRowState.CurrentRows))
                     {
                         DT2 = DV.ToTable(true, new string[] { "InsetTypeID" });
                     }
@@ -5128,7 +5134,9 @@ namespace Infinium.Modules.WorkAssignments
                             }
                             for (int c = 0; c < DT4.Rows.Count; c++)
                             {
-                                DataRow[] rows = SourceDT.Select("ColorID=" + Convert.ToInt32(DT1.Rows[i]["ColorID"]) + " AND TechnoColorID=" + Convert.ToInt32(DT1.Rows[i]["TechnoColorID"]) +
+                                DataRow[] rows = SourceDT.Select("ColorID=" + Convert.ToInt32(DT1.Rows[i]["ColorID"]) +
+                                    " AND TechnoProfileID=" + Convert.ToInt32(DT1.Rows[i]["TechnoProfileID"]) +
+                                    " AND TechnoColorID=" + Convert.ToInt32(DT1.Rows[i]["TechnoColorID"]) +
                                     " AND InsetTypeID=" + Convert.ToInt32(DT2.Rows[j]["InsetTypeID"]) + " AND InsetColorID=" + Convert.ToInt32(DT3.Rows[x]["InsetColorID"]) +
                                     " AND TechnoInsetTypeID=" + Convert.ToInt32(DT4.Rows[c]["TechnoInsetTypeID"]) + " AND TechnoInsetColorID=" + Convert.ToInt32(DT4.Rows[c]["TechnoInsetColorID"]));
 
@@ -5203,14 +5211,20 @@ namespace Infinium.Modules.WorkAssignments
                                     if (TechnoGroupID == 26)
                                         InsetColor = GetInsetTypeName(Convert.ToInt32(DT4.Rows[c]["TechnoInsetTypeID"])) + " " + GetInsetColorName(Convert.ToInt32(rows[0]["InsetColorID"]));
 
+                                    string name = FrontName;
+                                    if (Convert.ToInt32(DT1.Rows[i]["TechnoProfileID"]) != -1)
+                                        name = FrontName + " " + ProfileName(Convert.ToInt32(rows[0]["FrontConfigID"]), 2);
+
                                     ColName = FrameColor + "(" + InsetColor + ")_" + FrontType;
                                     if (Impost && Convert.ToInt32(DT1.Rows[i]["TechnoColorID"]) != -1)
                                         ColName = "Импост " + ColName;
                                     if (!DestinationDT.Columns.Contains(ColName))
                                         DestinationDT.Columns.Add(new DataColumn(ColName, Type.GetType("System.String")));
 
-                                    DestinationDT.Rows[0][ColName] = FrontName;
-                                    DataRow[] Srows = SourceDT.Select("ColorID=" + Convert.ToInt32(DT1.Rows[i]["ColorID"]) + " AND TechnoColorID=" + Convert.ToInt32(DT1.Rows[i]["TechnoColorID"]) +
+                                    DestinationDT.Rows[0][ColName] = name;
+                                    DataRow[] Srows = SourceDT.Select("ColorID=" + Convert.ToInt32(DT1.Rows[i]["ColorID"]) +
+                                        " AND TechnoProfileID=" + Convert.ToInt32(DT1.Rows[i]["TechnoProfileID"]) +
+                                        " AND TechnoColorID=" + Convert.ToInt32(DT1.Rows[i]["TechnoColorID"]) +
                                         " AND InsetTypeID=" + Convert.ToInt32(DT2.Rows[j]["InsetTypeID"]) + " AND InsetColorID=" + Convert.ToInt32(DT3.Rows[x]["InsetColorID"]) +
                                         " AND TechnoInsetTypeID=" + Convert.ToInt32(DT4.Rows[c]["TechnoInsetTypeID"]) + " AND TechnoInsetColorID=" + Convert.ToInt32(DT4.Rows[c]["TechnoInsetColorID"]) +
                                         " AND Height=" + Convert.ToInt32(DistinctSizesDT.Rows[y]["Height"]) + " AND Width=" + Convert.ToInt32(DistinctSizesDT.Rows[y]["Width"]));
@@ -5529,7 +5543,7 @@ namespace Infinium.Modules.WorkAssignments
                         continue;
                     }
 
-                    SticksCount = SticksCount * 1.15m / 2620;
+                    SticksCount = SticksCount * 1.15m / 2800;
                     SticksCount = decimal.Round(SticksCount, 1, MidpointRounding.AwayFromZero);
                     cell = sheet1.CreateRow(RowIndex).CreateCell(5);
                     cell.SetCellValue(SticksCount + " палок");
@@ -5567,7 +5581,7 @@ namespace Infinium.Modules.WorkAssignments
                         continue;
                     }
 
-                    SticksCount = SticksCount * 1.15m / 2620;
+                    SticksCount = SticksCount * 1.15m / 2800;
                     SticksCount = decimal.Round(SticksCount, 1, MidpointRounding.AwayFromZero);
                     cell = sheet1.CreateRow(RowIndex).CreateCell(5);
                     cell.SetCellValue(SticksCount + " палок");
@@ -10910,7 +10924,7 @@ namespace Infinium.Modules.WorkAssignments
                         NewRow["Height"] = Height;
                         NewRow["Count"] = Count * 2;
                         NewRow["iCount"] = iCount * 2;
-                        NewRow["ImpostCount"] = ImpostCount * 2;
+                        NewRow["ImpostCount"] = 0 * 2;
                         NewRow["ProfileType"] = ProfileType;
                         NewRow["ColorType"] = Convert.ToInt32(DT1.Rows[i]["ColorID"]);
                         DestinationDT.Rows.Add(NewRow);
@@ -10919,7 +10933,7 @@ namespace Infinium.Modules.WorkAssignments
                     {
                         rows[0]["Count"] = Convert.ToInt32(rows[0]["Count"]) + Count * 2;
                         rows[0]["iCount"] = Convert.ToInt32(rows[0]["iCount"]) + iCount * 2;
-                        rows[0]["ImpostCount"] = Convert.ToInt32(rows[0]["ImpostCount"]) + ImpostCount * 2;
+                        rows[0]["ImpostCount"] = Convert.ToInt32(rows[0]["ImpostCount"]) + 0 * 2;
                     }
                 }
 
@@ -10973,7 +10987,7 @@ namespace Infinium.Modules.WorkAssignments
                         NewRow["Height"] = Height;
                         NewRow["Count"] = Count * 2;
                         NewRow["iCount"] = iCount * 2;
-                        NewRow["ImpostCount"] = ImpostCount * 2;
+                        NewRow["ImpostCount"] = 0 * 2;
                         NewRow["ProfileType"] = ProfileType;
                         NewRow["ColorType"] = Convert.ToInt32(DT1.Rows[i]["ColorID"]);
                         DestinationDT.Rows.Add(NewRow);
@@ -10982,7 +10996,7 @@ namespace Infinium.Modules.WorkAssignments
                     {
                         rows[0]["Count"] = Convert.ToInt32(rows[0]["Count"]) + Count * 2;
                         rows[0]["iCount"] = Convert.ToInt32(rows[0]["iCount"]) + iCount * 2;
-                        rows[0]["ImpostCount"] = Convert.ToInt32(rows[0]["ImpostCount"]) + ImpostCount * 2;
+                        rows[0]["ImpostCount"] = Convert.ToInt32(rows[0]["ImpostCount"]) + 0 * 2;
                     }
                 }
             }
@@ -11052,7 +11066,7 @@ namespace Infinium.Modules.WorkAssignments
                         NewRow["Height"] = Height;
                         NewRow["Count"] = Count * 2;
                         NewRow["iCount"] = iCount * 2;
-                        NewRow["ImpostCount"] = ImpostCount * 2;
+                        NewRow["ImpostCount"] = 0 * 2;
                         NewRow["ProfileType"] = ProfileType;
                         NewRow["ColorType"] = Convert.ToInt32(DT1.Rows[i]["ColorID"]);
                         DestinationDT.Rows.Add(NewRow);
@@ -11061,7 +11075,7 @@ namespace Infinium.Modules.WorkAssignments
                     {
                         rows[0]["Count"] = Convert.ToInt32(rows[0]["Count"]) + Count * 2;
                         rows[0]["iCount"] = Convert.ToInt32(rows[0]["iCount"]) + iCount * 2;
-                        rows[0]["ImpostCount"] = Convert.ToInt32(rows[0]["ImpostCount"]) + ImpostCount * 2;
+                        rows[0]["ImpostCount"] = Convert.ToInt32(rows[0]["ImpostCount"]) + 0 * 2;
                     }
                 }
 
@@ -11115,7 +11129,7 @@ namespace Infinium.Modules.WorkAssignments
                         NewRow["Height"] = Height;
                         NewRow["Count"] = Count * 2;
                         NewRow["iCount"] = iCount * 2;
-                        NewRow["ImpostCount"] = ImpostCount * 2;
+                        NewRow["ImpostCount"] = 0 * 2;
                         NewRow["ProfileType"] = ProfileType;
                         NewRow["ColorType"] = Convert.ToInt32(DT1.Rows[i]["ColorID"]);
                         DestinationDT.Rows.Add(NewRow);
@@ -11124,7 +11138,7 @@ namespace Infinium.Modules.WorkAssignments
                     {
                         rows[0]["Count"] = Convert.ToInt32(rows[0]["Count"]) + Count * 2;
                         rows[0]["iCount"] = Convert.ToInt32(rows[0]["iCount"]) + iCount * 2;
-                        rows[0]["ImpostCount"] = Convert.ToInt32(rows[0]["ImpostCount"]) + ImpostCount * 2;
+                        rows[0]["ImpostCount"] = Convert.ToInt32(rows[0]["ImpostCount"]) + 0 * 2;
                     }
                 }
             }
@@ -12288,7 +12302,7 @@ namespace Infinium.Modules.WorkAssignments
                     cell.SetCellValue(TotalAmount);
                     cell.CellStyle = TableHeaderCS;
 
-                    SticksCount = SticksCount * 1.15m / 2620;
+                    SticksCount = SticksCount * 1.15m / 2800;
                     SticksCount = decimal.Round(SticksCount, 1, MidpointRounding.AwayFromZero);
                     cell = sheet1.CreateRow(RowIndex).CreateCell(4);
                     cell.SetCellValue(SticksCount + " палок");
@@ -12326,7 +12340,7 @@ namespace Infinium.Modules.WorkAssignments
                     cell.SetCellValue(TotalAmount);
                     cell.CellStyle = TableHeaderCS;
 
-                    SticksCount = SticksCount * 1.15m / 2620;
+                    SticksCount = SticksCount * 1.15m / 2800;
                     SticksCount = decimal.Round(SticksCount, 1, MidpointRounding.AwayFromZero);
                     cell = sheet1.CreateRow(RowIndex).CreateCell(4);
                     cell.SetCellValue(SticksCount + " палок");
@@ -12466,7 +12480,7 @@ namespace Infinium.Modules.WorkAssignments
                     cell.SetCellValue(TotalAmount);
                     cell.CellStyle = TableHeaderCS;
 
-                    SticksCount = SticksCount * 1.15m / 2620;
+                    SticksCount = SticksCount * 1.15m / 2800;
                     SticksCount = decimal.Round(SticksCount, 1, MidpointRounding.AwayFromZero);
                     cell = sheet1.CreateRow(RowIndex).CreateCell(4);
                     cell.SetCellValue(SticksCount + " палок");
@@ -12504,7 +12518,7 @@ namespace Infinium.Modules.WorkAssignments
                     cell.SetCellValue(TotalAmount);
                     cell.CellStyle = TableHeaderCS;
 
-                    SticksCount = SticksCount * 1.15m / 2620;
+                    SticksCount = SticksCount * 1.15m / 2800;
                     SticksCount = decimal.Round(SticksCount, 1, MidpointRounding.AwayFromZero);
                     cell = sheet1.CreateRow(RowIndex).CreateCell(4);
                     cell.SetCellValue(SticksCount + " палок");
@@ -13271,6 +13285,7 @@ namespace Infinium.Modules.WorkAssignments
 
             return OrderedDT;
         }
+
         private void OrdersSummaryInfoToExcel(ref HSSFWorkbook hssfworkbook,
            HSSFCellStyle CalibriBold15CS, HSSFCellStyle Calibri11CS, HSSFCellStyle CalibriBold11CS, HSSFFont CalibriBold11F, HSSFCellStyle TableHeaderCS, HSSFCellStyle TableHeaderDecCS,
             int WorkAssignmentID, string DispatchDate, string BatchName, string ClientName, bool IsPR1, bool IsPR2, bool IsPR3, bool IsPRU8)
@@ -13410,7 +13425,7 @@ namespace Infinium.Modules.WorkAssignments
                 if (pFlorencOrdersDT.Rows.Count > 0)
                     FrontName = ProfileName(Convert.ToInt32(pFlorencOrdersDT.Rows[0]["FrontConfigID"]), 1);
 
-                SummarypFoxOrders(pFlorencOrdersDT, pFlorencSimpleDT, pFlorencVitrinaDT, pFlorencGridsDT, FrontName, ref AllSquare);
+                SummarypFlorenceOrders(pFlorencOrdersDT, pFlorencSimpleDT, pFlorencVitrinaDT, pFlorencGridsDT, FrontName, ref AllSquare);
                 OrdersToExcelSingly(ref hssfworkbook,
                     CalibriBold15CS, Calibri11CS, CalibriBold11CS, CalibriBold11F, TableHeaderCS, TableHeaderDecCS, ref sheet1, WorkAssignmentID, DispatchDate, BatchName, ClientName, ref RowIndex, IsPR1, IsPR2, IsPR3, IsPRU8);
                 RowIndex++;
@@ -14398,8 +14413,6 @@ namespace Infinium.Modules.WorkAssignments
             cell.CellStyle = TableHeaderCS;
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), DisplayIndex++, "сверл");
             cell.CellStyle = TableHeaderCS;
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), DisplayIndex++, "франц");
-            cell.CellStyle = TableHeaderCS;
             RowIndex++;
 
             int AllTotalAmount = 0;
@@ -14624,8 +14637,6 @@ namespace Infinium.Modules.WorkAssignments
             cell.CellStyle = TableHeaderCS;
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 5, "терм");
             cell.CellStyle = TableHeaderCS;
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 6, "франц");
-            cell.CellStyle = TableHeaderCS;
             RowIndex++;
 
             int AllTotalAmount = 0;
@@ -14754,6 +14765,116 @@ namespace Infinium.Modules.WorkAssignments
             }
         }
 
+        private void StemasFlorenceProfil16(DataTable SourceDT, ref DataTable DestinationDT, string Front,
+            int WidthMargin, int WidthMin, int ProfileType, bool OrderASC)
+        {
+            DataTable DT1 = new DataTable();
+            DataTable DistinctSizesDT = DistWidthTable(SourceDT, true);
+
+            using (DataView DV = new DataView(SourceDT))
+            {
+                DV.RowFilter = "TechnoColorID = -1";
+                DT1 = DV.ToTable(true, new string[] { "ColorID" });
+            }
+
+            for (int i = 0; i < DT1.Rows.Count; i++)
+            {
+                bool AlreadyExist = false;
+                for (int j = 0; j < DistinctSizesDT.Rows.Count; j++)
+                {
+                    DataRow[] Srows = SourceDT.Select("TechnoColorID = -1 AND ColorID=" + Convert.ToInt32(DT1.Rows[i]["ColorID"]) +
+                        " AND Width=" + Convert.ToInt32(DistinctSizesDT.Rows[j]["Height"]));
+                    if (Srows.Count() == 0)
+                        continue;
+
+                    int Count = 0;
+                    int Height = Convert.ToInt32(DistinctSizesDT.Rows[j]["Height"]) - WidthMargin;
+                    string FrameColor = GetColorName(Convert.ToInt32(DT1.Rows[i]["ColorID"]));
+                    foreach (DataRow item in Srows)
+                    {
+                        Count += Convert.ToInt32(item["Count"]);
+                    }
+
+                    if (Height <= WidthMin)
+                        Height = WidthMin;
+
+                    DataRow[] rows = DestinationDT.Select("Color='" + FrameColor + "' AND Height=" + Height + " AND ProfileType=" + ProfileType);
+                    if (rows.Count() == 0)
+                    {
+                        DataRow NewRow = DestinationDT.NewRow();
+                        if (!AlreadyExist)
+                        {
+                            AlreadyExist = true;
+                            NewRow["Front"] = ProfileName(Convert.ToInt32(Srows[0]["FrontConfigID"]), 1);
+                            NewRow["Color"] = FrameColor;
+                        }
+                        NewRow["Height"] = Height;
+                        NewRow["Count"] = Count * 2;
+                        NewRow["ProfileType"] = ProfileType;
+                        NewRow["IsBox"] = false;
+                        NewRow["ColorType"] = Convert.ToInt32(DT1.Rows[i]["ColorID"]);
+                        DestinationDT.Rows.Add(NewRow);
+                    }
+                    else
+                    {
+                        rows[0]["Count"] = Convert.ToInt32(rows[0]["Count"]) + Count * 2;
+                    }
+                }
+            }
+
+            DT1.Clear();
+            using (DataView DV = new DataView(SourceDT))
+            {
+                DV.RowFilter = "TechnoColorID <> -1";
+                DT1 = DV.ToTable(true, new string[] { "ColorID" });
+            }
+
+            for (int i = 0; i < DT1.Rows.Count; i++)
+            {
+                bool AlreadyExist = false;
+                for (int j = 0; j < DistinctSizesDT.Rows.Count; j++)
+                {
+                    DataRow[] Srows = SourceDT.Select("TechnoColorID <> -1 AND ColorID=" + Convert.ToInt32(DT1.Rows[i]["ColorID"]) +
+                        " AND Width=" + Convert.ToInt32(DistinctSizesDT.Rows[j]["Height"]));
+                    if (Srows.Count() == 0)
+                        continue;
+
+                    int Count = 0;
+                    int Height = Convert.ToInt32(DistinctSizesDT.Rows[j]["Height"]) - WidthMargin;
+                    string FrameColor = GetColorName(Convert.ToInt32(DT1.Rows[i]["ColorID"]));
+                    foreach (DataRow item in Srows)
+                    {
+                        Count += Convert.ToInt32(item["Count"]);
+                    }
+
+                    if (Height <= WidthMin)
+                        Height = WidthMin;
+
+                    DataRow[] rows = DestinationDT.Select("Color='" + FrameColor + "' AND Height=" + Height + " AND ProfileType=" + ProfileType);
+                    if (rows.Count() == 0)
+                    {
+                        DataRow NewRow = DestinationDT.NewRow();
+                        if (!AlreadyExist)
+                        {
+                            AlreadyExist = true;
+                            NewRow["Front"] = ProfileName(Convert.ToInt32(Srows[0]["FrontConfigID"]), 1);
+                            NewRow["Color"] = FrameColor;
+                        }
+                        NewRow["Height"] = Height;
+                        NewRow["Count"] = Count * 2;
+                        NewRow["ProfileType"] = ProfileType;
+                        NewRow["IsBox"] = false;
+                        NewRow["ColorType"] = Convert.ToInt32(DT1.Rows[i]["ColorID"]);
+                        DestinationDT.Rows.Add(NewRow);
+                    }
+                    else
+                    {
+                        rows[0]["Count"] = Convert.ToInt32(rows[0]["Count"]) + Count * 2;
+                    }
+                }
+            }
+        }
+        
         private void StemasAllFrontsProfil16(DataTable SourceDT, ref DataTable DestinationDT, string Front,
             int WidthMargin, int WidthMin, int ProfileType, bool OrderASC)
         {
@@ -14812,6 +14933,127 @@ namespace Infinium.Modules.WorkAssignments
             }
         }
 
+        private void StemasFlorenceProfil18(DataTable SourceDT, ref DataTable DestinationDT, string Front,
+            int HeightMargin, int ProfileType, bool OrderASC)
+        {
+            DataTable DT1 = new DataTable();
+            DataTable DistinctSizesDT = DistHeightTable(SourceDT, true);
+
+            using (DataView DV = new DataView(SourceDT))
+            {
+                DV.RowFilter = "TechnoColorID=-1";
+                DT1 = DV.ToTable(true, new string[] { "ColorID" });
+            }
+
+            for (int i = 0; i < DT1.Rows.Count; i++)
+            {
+                bool AlreadyExist = false;
+                for (int j = 0; j < DistinctSizesDT.Rows.Count; j++)
+                {
+                    DataRow[] Srows = SourceDT.Select("TechnoColorID=-1 AND ColorID=" + Convert.ToInt32(DT1.Rows[i]["ColorID"]) +
+                        " AND Height=" + Convert.ToInt32(DistinctSizesDT.Rows[j]["Height"]) + " AND ImpostMargin=" + Convert.ToInt32(DistinctSizesDT.Rows[j]["ImpostMargin"]));
+                    if (Srows.Count() == 0)
+                        continue;
+
+                    bool IsBox = false;
+                    int Count = 0;
+                    int Height = Convert.ToInt32(DistinctSizesDT.Rows[j]["Height"]) - 1;
+                    int ImpostMargin = Convert.ToInt32(DistinctSizesDT.Rows[j]["ImpostMargin"]);
+                    string FrameColor = GetColorName(Convert.ToInt32(DT1.Rows[i]["ColorID"]));
+                    foreach (DataRow item in Srows)
+                        Count += Convert.ToInt32(item["Count"]);
+
+                    if (Height <= HeightMargin)
+                    {
+                        Height = HeightMargin;
+                        IsBox = true;
+                    }
+
+                    DataRow[] rows = DestinationDT.Select("Color='" + FrameColor + "' AND Height=" + Height + " AND ProfileType=" + ProfileType + " AND ImpostMargin=" + ImpostMargin);
+                    if (rows.Count() == 0)
+                    {
+                        DataRow NewRow = DestinationDT.NewRow();
+                        if (!AlreadyExist)
+                        {
+                            AlreadyExist = true;
+                            NewRow["Front"] = ProfileName(Convert.ToInt32(Srows[0]["FrontConfigID"]), 1);
+                            NewRow["Color"] = FrameColor;
+                        }
+
+                        if (bImpostMargin && ImpostMargin != 0)
+                            NewRow["ImpostMargin"] = ImpostMargin;
+                        NewRow["Height"] = Height;
+                        NewRow["Count"] = Count * 2;
+                        NewRow["ProfileType"] = ProfileType;
+                        NewRow["ColorType"] = Convert.ToInt32(DT1.Rows[i]["ColorID"]);
+                        NewRow["IsBox"] = IsBox;
+                        DestinationDT.Rows.Add(NewRow);
+                    }
+                    else
+                    {
+                        rows[0]["Count"] = Convert.ToInt32(rows[0]["Count"]) + Count * 2;
+                    }
+                }
+            }
+            DT1.Clear();
+            using (DataView DV = new DataView(SourceDT))
+            {
+                DV.RowFilter = "TechnoColorID<>-1";
+                DT1 = DV.ToTable(true, new string[] { "ColorID" });
+            }
+
+            for (int i = 0; i < DT1.Rows.Count; i++)
+            {
+                bool AlreadyExist = false;
+                for (int j = 0; j < DistinctSizesDT.Rows.Count; j++)
+                {
+                    DataRow[] Srows = SourceDT.Select("TechnoColorID<>-1 AND ColorID=" + Convert.ToInt32(DT1.Rows[i]["ColorID"]) +
+                        " AND Height=" + Convert.ToInt32(DistinctSizesDT.Rows[j]["Height"]) + " AND ImpostMargin=" + Convert.ToInt32(DistinctSizesDT.Rows[j]["ImpostMargin"]));
+                    if (Srows.Count() == 0)
+                        continue;
+
+                    bool IsBox = false;
+                    int Count = 0;
+                    int Height = Convert.ToInt32(DistinctSizesDT.Rows[j]["Height"]) - 1;
+                    int ImpostMargin = Convert.ToInt32(DistinctSizesDT.Rows[j]["ImpostMargin"]);
+                    string FrameColor = GetColorName(Convert.ToInt32(DT1.Rows[i]["ColorID"]));
+                    foreach (DataRow item in Srows)
+                        Count += Convert.ToInt32(item["Count"]);
+
+                    if (Height <= HeightMargin)
+                    {
+                        Height = HeightMargin;
+                        IsBox = true;
+                    }
+
+                    DataRow[] rows = DestinationDT.Select("Color='" + FrameColor + "' AND Height=" + Height + " AND ProfileType=" + ProfileType + " AND ImpostMargin=" + ImpostMargin);
+                    if (rows.Count() == 0)
+                    {
+                        DataRow NewRow = DestinationDT.NewRow();
+                        if (!AlreadyExist)
+                        {
+                            AlreadyExist = true;
+                            NewRow["Front"] = ProfileName(Convert.ToInt32(Srows[0]["FrontConfigID"]), 1);
+                            NewRow["Color"] = FrameColor;
+                        }
+
+                        if (bImpostMargin && ImpostMargin != 0)
+                            NewRow["ImpostMargin"] = ImpostMargin;
+                        NewRow["Height"] = Height;
+                        NewRow["Count"] = Count * 2;
+                        NewRow["ProfileType"] = ProfileType;
+                        NewRow["ColorType"] = Convert.ToInt32(DT1.Rows[i]["ColorID"]);
+                        NewRow["IsBox"] = IsBox;
+                        DestinationDT.Rows.Add(NewRow);
+                    }
+                    else
+                    {
+                        rows[0]["Count"] = Convert.ToInt32(rows[0]["Count"]) + Count * 2;
+                    }
+                }
+            }
+        }
+        
         private void StemasAllFrontsProfil18(DataTable SourceDT, ref DataTable DestinationDT, string Front,
             int HeightMargin, int ProfileType, bool OrderASC)
         {
@@ -14905,7 +15147,7 @@ namespace Infinium.Modules.WorkAssignments
                 StemasAllFrontsProfil18(pFoxOrdersDT, ref DestinationDT, "Фокс П-042-4", Convert.ToInt32(FrontMargins.pFoxHeight),
                     ProfileType++, true);
             if (pFlorencOrdersDT.Rows.Count > 0)
-                StemasAllFrontsProfil18(pFlorencOrdersDT, ref DestinationDT, "П-01418", Convert.ToInt32(FrontMargins.pFlorencHeight),
+                StemasFlorenceProfil18(pFlorencOrdersDT, ref DestinationDT, "П-01418", Convert.ToInt32(FrontMargins.pFlorencHeight),
                     ProfileType++, true);
 
             if (Techno5OrdersDT.Rows.Count > 0)
@@ -14991,7 +15233,7 @@ namespace Infinium.Modules.WorkAssignments
                     Convert.ToInt32(FrontMargins.pFoxWidth), Convert.ToInt32(FrontMinSizes.pFoxMinWidth), ProfileType++, true);
             if (pFlorencOrdersDT.Rows.Count > 0)
             {
-                StemasAllFrontsProfil16(pFlorencOrdersDT, ref DestinationDT, "П-1418",
+                StemasFlorenceProfil16(pFlorencOrdersDT, ref DestinationDT, "П-1418-0",
                     Convert.ToInt32(FrontMargins.pFlorencWidth), Convert.ToInt32(FrontMinSizes.pFlorencMinWidth), ProfileType++, true);
                 StemasImpost(pFlorencOrdersDT, ref DestinationDT, ProfileType++, true);
             }
@@ -15805,26 +16047,22 @@ namespace Infinium.Modules.WorkAssignments
             DataColumn Col1 = new DataColumn();
             DataColumn Col2 = new DataColumn();
             DataColumn Col3 = new DataColumn();
-            DataColumn Col4 = new DataColumn();
 
             Col1 = DT.Columns.Add("Col1", System.Type.GetType("System.String"));
             Col2 = DT.Columns.Add("Col2", System.Type.GetType("System.String"));
             Col3 = DT.Columns.Add("Col3", System.Type.GetType("System.String"));
-            Col4 = DT.Columns.Add("Col4", System.Type.GetType("System.String"));
 
             if (bImpostMargin)
             {
                 Col1.SetOrdinal(5);
                 Col2.SetOrdinal(6);
                 Col3.SetOrdinal(7);
-                Col4.SetOrdinal(8);
             }
             else
             {
                 Col1.SetOrdinal(4);
                 Col2.SetOrdinal(5);
                 Col3.SetOrdinal(6);
-                Col4.SetOrdinal(7);
             }
             //DT.Columns["IsBox"].SetOrdinal(8);
 
@@ -15846,11 +16084,9 @@ namespace Infinium.Modules.WorkAssignments
             DT = StemasDT.Copy();
             Col1 = DT.Columns.Add("Col1", System.Type.GetType("System.String"));
             Col2 = DT.Columns.Add("Col2", System.Type.GetType("System.String"));
-            Col3 = DT.Columns.Add("Col3", System.Type.GetType("System.String"));
             Col1.SetOrdinal(4);
             Col2.SetOrdinal(5);
-            Col3.SetOrdinal(6);
-            DT.Columns["IsBox"].SetOrdinal(7);
+            DT.Columns["IsBox"].SetOrdinal(6);
 
             if (DT.Rows.Count > 0)
             {
@@ -16071,6 +16307,71 @@ namespace Infinium.Modules.WorkAssignments
             SummOrdersDT.Rows[SummOrdersDT.Rows.Count - 2]["TotalAmount"] = TotalSquare;
         }
 
+        private void SummarypFlorenceOrders(DataTable SourceDT, DataTable SimpleDT, DataTable VitrinaDT, DataTable GridsDT, string FrontName, ref decimal AllSquare)
+        {
+            SummOrdersDT.Dispose();
+            SummOrdersDT = new DataTable();
+            SummOrdersDT.Columns.Add(new DataColumn("Sizes", Type.GetType("System.String")));
+            SummOrdersDT.Columns.Add(new DataColumn("Height", Type.GetType("System.Int32")));
+            SummOrdersDT.Columns.Add(new DataColumn("Width", Type.GetType("System.Int32")));
+
+            DataRow NewRow1 = SummOrdersDT.NewRow();
+            NewRow1["Sizes"] = "Профиль";
+            SummOrdersDT.Rows.Add(NewRow1);
+
+            DataTable DistinctSizesDT = DistSizesTable(SourceDT, true);
+
+            CollectOrders(DistinctSizesDT, SimpleDT, ref SummOrdersDT, 2, FrontName, false);
+            CollectOrders(DistinctSizesDT, VitrinaDT, ref SummOrdersDT, 1, FrontName, false);
+            CollectOrders(DistinctSizesDT, GridsDT, ref SummOrdersDT, 3, FrontName, false);
+            SummOrdersDT.Columns.Add(new DataColumn("TotalAmount", Type.GetType("System.String")));
+
+            using (DataView DV = new DataView(SummOrdersDT.Copy()))
+            {
+                SummOrdersDT.Clear();
+                DV.Sort = "Height, Width";
+                SummOrdersDT = DV.ToTable();
+            }
+
+            DataRow NewRow2 = SummOrdersDT.NewRow();
+            NewRow2["Sizes"] = "Квадратура";
+            SummOrdersDT.Rows.Add(NewRow2);
+
+            DataRow NewRow3 = SummOrdersDT.NewRow();
+            NewRow3["Sizes"] = "Кол-во";
+            SummOrdersDT.Rows.Add(NewRow3);
+
+            decimal TotalSquare = 0;
+            int TotalCount = 0;
+
+            for (int y = 0; y < SummOrdersDT.Columns.Count; y++)
+            {
+                if (SummOrdersDT.Columns[y].ColumnName == "Sizes" || SummOrdersDT.Columns[y].ColumnName == "TotalAmount"
+                    || SummOrdersDT.Columns[y].ColumnName == "Height" || SummOrdersDT.Columns[y].ColumnName == "Width")
+                    continue;
+                decimal Square = 0;
+                int Count = 0;
+
+                for (int x = 0; x < SummOrdersDT.Rows.Count; x++)
+                {
+                    if (SummOrdersDT.Rows[x]["Height"] != DBNull.Value && SummOrdersDT.Rows[x]["Width"] != DBNull.Value && SummOrdersDT.Rows[x][y] != DBNull.Value)
+                    {
+                        Square += Convert.ToDecimal(SummOrdersDT.Rows[x]["Height"]) * Convert.ToDecimal(SummOrdersDT.Rows[x]["Width"]) * Convert.ToDecimal(SummOrdersDT.Rows[x][y]) / 1000000;
+                        Count += Convert.ToInt32(SummOrdersDT.Rows[x][y]);
+                        TotalSquare += Convert.ToDecimal(SummOrdersDT.Rows[x]["Height"]) * Convert.ToDecimal(SummOrdersDT.Rows[x]["Width"]) * Convert.ToDecimal(SummOrdersDT.Rows[x][y]) / 1000000;
+                        TotalCount += Convert.ToInt32(SummOrdersDT.Rows[x][y]);
+                    }
+                }
+                Square = decimal.Round(Square, 3, MidpointRounding.AwayFromZero);
+                SummOrdersDT.Rows[SummOrdersDT.Rows.Count - 1][y] = Count;
+                SummOrdersDT.Rows[SummOrdersDT.Rows.Count - 2][y] = Square;
+            }
+            AllSquare += TotalSquare;
+            TotalSquare = decimal.Round(TotalSquare, 3, MidpointRounding.AwayFromZero);
+            SummOrdersDT.Rows[SummOrdersDT.Rows.Count - 1]["TotalAmount"] = TotalCount;
+            SummOrdersDT.Rows[SummOrdersDT.Rows.Count - 2]["TotalAmount"] = TotalSquare;
+        }
+        
         private void SummarypFoxOrders(DataTable SourceDT, DataTable SimpleDT, DataTable VitrinaDT, DataTable GridsDT, string FrontName, ref decimal AllSquare)
         {
             SummOrdersDT.Dispose();
@@ -17080,7 +17381,7 @@ namespace Infinium.Modules.WorkAssignments
                         Height = HeightMargin;
 
                     SticksCount = (Height + 4) * Count * 2;
-                    SticksCount = SticksCount * 1.15m / 2620;
+                    SticksCount = SticksCount * 1.15m / 2800;
                     SticksCount = decimal.Round(SticksCount, 1, MidpointRounding.AwayFromZero);
 
                     DataRow[] rows = DestinationDT.Select("Front='" + ProfileName2 + "' AND Color='" + FrameColor + "'");
@@ -17120,7 +17421,7 @@ namespace Infinium.Modules.WorkAssignments
                         Height = WidthMin;
 
                     SticksCount = (Height + 4) * Count * 2;
-                    SticksCount = SticksCount * 1.15m / 2620;
+                    SticksCount = SticksCount * 1.15m / 2800;
                     SticksCount = decimal.Round(SticksCount, 1, MidpointRounding.AwayFromZero);
 
                     DataRow[] rows = DestinationDT.Select("Front='" + ProfileName1 + "' AND Color='" + FrameColor + "'");
@@ -17173,7 +17474,7 @@ namespace Infinium.Modules.WorkAssignments
                         Count += Convert.ToInt32(item["Count"]);
 
                     SticksCount = (Height + 4) * Count * 2;
-                    SticksCount = SticksCount * 1.15m / 2620;
+                    SticksCount = SticksCount * 1.15m / 2800;
                     SticksCount = decimal.Round(SticksCount, 1, MidpointRounding.AwayFromZero);
 
                     DataRow[] rows = DestinationDT.Select("Front='" + ProfileName2 + "' AND Color='" + FrameColor + "'");
@@ -17217,7 +17518,7 @@ namespace Infinium.Modules.WorkAssignments
                         Height = WidthMin;
 
                     SticksCount = (Height + 4) * Count * 2;
-                    SticksCount = SticksCount * 1.15m / 2620;
+                    SticksCount = SticksCount * 1.15m / 2800;
                     SticksCount = decimal.Round(SticksCount, 1, MidpointRounding.AwayFromZero);
 
                     DataRow[] rows = DestinationDT.Select("Front='" + ProfileName1 + "' AND Color='" + FrameColor + "'");

@@ -188,7 +188,7 @@ namespace Infinium.Modules.WorkAssignments
                         continue;
                     }
 
-                    SticksCount = SticksCount * 1.15m / 2620;
+                    SticksCount = SticksCount * 1.15m / 2800;
                     SticksCount = decimal.Round(SticksCount, 1, MidpointRounding.AwayFromZero);
                     cell = sheet1.CreateRow(RowIndex).CreateCell(4);
                     cell.SetCellValue(SticksCount + " палок");
@@ -226,7 +226,7 @@ namespace Infinium.Modules.WorkAssignments
                         continue;
                     }
 
-                    SticksCount = SticksCount * 1.15m / 2620;
+                    SticksCount = SticksCount * 1.15m / 2800;
                     SticksCount = decimal.Round(SticksCount, 1, MidpointRounding.AwayFromZero);
                     cell = sheet1.CreateRow(RowIndex).CreateCell(4);
                     cell.SetCellValue(SticksCount + " палок");
@@ -7887,7 +7887,7 @@ namespace Infinium.Modules.WorkAssignments
                     cell.SetCellValue(TotalAmount);
                     cell.CellStyle = TableHeaderCS;
 
-                    SticksCount = SticksCount * 1.15m / 2620;
+                    SticksCount = SticksCount * 1.15m / 2800;
                     SticksCount = decimal.Round(SticksCount, 1, MidpointRounding.AwayFromZero);
                     cell = sheet1.CreateRow(RowIndex).CreateCell(4);
                     cell.SetCellValue(SticksCount + " палок");
@@ -7925,7 +7925,7 @@ namespace Infinium.Modules.WorkAssignments
                     cell.SetCellValue(TotalAmount);
                     cell.CellStyle = TableHeaderCS;
 
-                    SticksCount = SticksCount * 1.15m / 2620;
+                    SticksCount = SticksCount * 1.15m / 2800;
                     SticksCount = decimal.Round(SticksCount, 1, MidpointRounding.AwayFromZero);
                     cell = sheet1.CreateRow(RowIndex).CreateCell(4);
                     cell.SetCellValue(SticksCount + " палок");
@@ -8065,7 +8065,7 @@ namespace Infinium.Modules.WorkAssignments
                     cell.SetCellValue(TotalAmount);
                     cell.CellStyle = TableHeaderCS;
 
-                    SticksCount = SticksCount * 1.15m / 2620;
+                    SticksCount = SticksCount * 1.15m / 2800;
                     SticksCount = decimal.Round(SticksCount, 1, MidpointRounding.AwayFromZero);
                     cell = sheet1.CreateRow(RowIndex).CreateCell(4);
                     cell.SetCellValue(SticksCount + " палок");
@@ -8103,7 +8103,7 @@ namespace Infinium.Modules.WorkAssignments
                     cell.SetCellValue(TotalAmount);
                     cell.CellStyle = TableHeaderCS;
 
-                    SticksCount = SticksCount * 1.15m / 2620;
+                    SticksCount = SticksCount * 1.15m / 2800;
                     SticksCount = decimal.Round(SticksCount, 1, MidpointRounding.AwayFromZero);
                     cell = sheet1.CreateRow(RowIndex).CreateCell(4);
                     cell.SetCellValue(SticksCount + " палок");
@@ -11073,7 +11073,7 @@ namespace Infinium.Modules.WorkAssignments
                         Height = HeightMargin;
 
                     SticksCount = (Height + 4) * Count * 2;
-                    SticksCount = SticksCount * 1.15m / 2620;
+                    SticksCount = SticksCount * 1.15m / 2800;
                     SticksCount = decimal.Round(SticksCount, 1, MidpointRounding.AwayFromZero);
 
                     DataRow[] rows = DestinationDT.Select("Front='" + ProfileName2 + "' AND Color='" + FrameColor + "'");
@@ -11113,7 +11113,7 @@ namespace Infinium.Modules.WorkAssignments
                         Height = WidthMin;
 
                     SticksCount = (Height + 4) * Count * 2;
-                    SticksCount = SticksCount * 1.15m / 2620;
+                    SticksCount = SticksCount * 1.15m / 2800;
                     SticksCount = decimal.Round(SticksCount, 1, MidpointRounding.AwayFromZero);
 
                     DataRow[] rows = DestinationDT.Select("Front='" + ProfileName1 + "' AND Color='" + FrameColor + "'");
@@ -11166,7 +11166,7 @@ namespace Infinium.Modules.WorkAssignments
                         Count += Convert.ToInt32(item["Count"]);
 
                     SticksCount = (Height + 4) * Count * 2;
-                    SticksCount = SticksCount * 1.15m / 2620;
+                    SticksCount = SticksCount * 1.15m / 2800;
                     SticksCount = decimal.Round(SticksCount, 1, MidpointRounding.AwayFromZero);
 
                     DataRow[] rows = DestinationDT.Select("Front='" + ProfileName2 + "' AND Color='" + FrameColor + "'");
@@ -11210,7 +11210,7 @@ namespace Infinium.Modules.WorkAssignments
                         Height = WidthMin;
 
                     SticksCount = (Height + 4) * Count * 2;
-                    SticksCount = SticksCount * 1.15m / 2620;
+                    SticksCount = SticksCount * 1.15m / 2800;
                     SticksCount = decimal.Round(SticksCount, 1, MidpointRounding.AwayFromZero);
 
                     DataRow[] rows = DestinationDT.Select("Front='" + ProfileName1 + "' AND Color='" + FrameColor + "'");

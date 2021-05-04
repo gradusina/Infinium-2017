@@ -392,7 +392,7 @@ namespace Infinium.Modules.Marketing.NewOrders.InvoiceReportToDBF
             return ReturnDT;
         }
 
-        public decimal CalcCurrencyCost(int MegaOrderID, int ClientID, int CurrencyTypeID, decimal PaymentRate)
+        public decimal CalcCurrencyCost(int MegaOrderID, int ClientID, decimal PaymentRate)
         {
             ClearReport();
             if (ClientID == 145)
@@ -406,6 +406,109 @@ namespace Infinium.Modules.Marketing.NewOrders.InvoiceReportToDBF
 
             FrontsReport.Report(MegaOrderID, PaymentRate);
             DecorReport.Report(MegaOrderID, PaymentRate);
+
+            //PROFIL
+            if (FrontsReport.ProfilReportDataTable.Rows.Count > 0)
+            {
+                for (int i = 0; i < FrontsReport.ProfilReportDataTable.Rows.Count; i++)
+                {
+                    ProfilReportTable.ImportRow(FrontsReport.ProfilReportDataTable.Rows[i]);
+                }
+            }
+
+            if (DecorReport.ProfilReportDataTable.Rows.Count > 0)
+            {
+                for (int i = 0; i < DecorReport.ProfilReportDataTable.Rows.Count; i++)
+                {
+                    ProfilReportTable.ImportRow(DecorReport.ProfilReportDataTable.Rows[i]);
+                }
+            }
+
+            //TPS
+            if (FrontsReport.TPSReportDataTable.Rows.Count > 0)
+            {
+                for (int i = 0; i < FrontsReport.TPSReportDataTable.Rows.Count; i++)
+                {
+                    TPSReportTable.ImportRow(FrontsReport.TPSReportDataTable.Rows[i]);
+                }
+            }
+
+            if (DecorReport.TPSReportDataTable.Rows.Count > 0)
+            {
+                for (int i = 0; i < DecorReport.TPSReportDataTable.Rows.Count; i++)
+                {
+                    TPSReportTable.ImportRow(DecorReport.TPSReportDataTable.Rows[i]);
+                }
+            }
+
+            decimal TotalCost = 0;
+            decimal TotalProfil = 0;
+            decimal TotalTPS = 0;
+
+            for (int i = 0; i < ProfilReportTable.Rows.Count; i++)
+            {
+                TotalProfil += Convert.ToDecimal(ProfilReportTable.Rows[i]["CostWithTransport"]);
+            }
+
+            for (int i = 0; i < TPSReportTable.Rows.Count; i++)
+            {
+                TotalTPS += Convert.ToDecimal(TPSReportTable.Rows[i]["CostWithTransport"]);
+            }
+
+            TotalCost = (TotalProfil + TotalTPS);
+            TotalCost = Decimal.Round(TotalCost, 2, MidpointRounding.AwayFromZero);
+
+            TotalCost = 0;
+            TotalProfil = 0;
+            TotalTPS = 0;
+
+            DataTable table1 = ProfilReportTable.Copy();
+            DataTable table2 = TPSReportTable.Copy();
+            ProfilReportTable.Clear();
+            TPSReportTable.Clear();
+            Collect(table1, table2, false);
+            Collect(table1, table2, true);
+
+            using (DataView DV = new DataView(ProfilReportTable.Copy(), string.Empty, "AccountingName", DataViewRowState.CurrentRows))
+            {
+                ProfilReportTable.Clear();
+                ProfilReportTable = DV.ToTable();
+            }
+            using (DataView DV = new DataView(TPSReportTable.Copy(), string.Empty, "AccountingName", DataViewRowState.CurrentRows))
+            {
+                TPSReportTable.Clear();
+                TPSReportTable = DV.ToTable();
+            }
+
+            for (int i = 0; i < ProfilReportTable.Rows.Count; i++)
+            {
+                TotalProfil += Convert.ToDecimal(ProfilReportTable.Rows[i]["CostWithTransport"]);
+            }
+
+            for (int i = 0; i < TPSReportTable.Rows.Count; i++)
+            {
+                TotalTPS += Convert.ToDecimal(TPSReportTable.Rows[i]["CostWithTransport"]);
+            }
+
+            TotalCost = (TotalProfil + TotalTPS);
+            TotalCost = Decimal.Round(TotalCost, 2, MidpointRounding.AwayFromZero);
+            return TotalCost;
+        }
+        
+        public decimal CalcCurrencyCost(int MegaOrderID, int ClientID, decimal PaymentRate, bool IsSample)
+        {
+            ClearReport();
+            if (ClientID == 145)
+            {
+                VAT = 1.2m;
+            }
+            else
+            {
+                VAT = 1.0m;
+            }
+
+            FrontsReport.Report(MegaOrderID, PaymentRate, IsSample);
+            DecorReport.Report(MegaOrderID, PaymentRate, IsSample);
 
             //PROFIL
             if (FrontsReport.ProfilReportDataTable.Rows.Count > 0)

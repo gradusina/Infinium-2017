@@ -1,16 +1,13 @@
-﻿using NPOI.HSSF.UserModel;
-using NPOI.HSSF.Util;
-
+﻿
 using System;
 using System.Data;
-using System.Data.OleDb;
 using System.Data.SqlClient;
-using System.IO;
 using System.Linq;
 
-namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
+
+namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.NotesInvoiceReportToDbf
 {
-    public class ColorInvoiceFrontsReportToDBF
+    public class NotesInvoiceFrontsReportToDbf
     {
         private decimal PaymentRate = 1;
         private int ClientID = 0;
@@ -44,7 +41,7 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
         public DataTable ProfilReportDataTable => _profilReportDataTable;
         public DataTable TPSReportDataTable => _tPSReportDataTable;
 
-        public ColorInvoiceFrontsReportToDBF()
+        public NotesInvoiceFrontsReportToDbf()
         {
             Create();
             CreateReportDataTables();
@@ -241,7 +238,7 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
         private void CreateReportDataTables()
         {
             DecorInvNumbersDT = new DataTable();
-            DecorInvNumbersDT.Columns.Add(new DataColumn("FrontsOrdersID", Type.GetType("System.Int32")));
+            DecorInvNumbersDT.Columns.Add(new DataColumn("NewFrontsOrdersID", Type.GetType("System.Int32")));
             DecorInvNumbersDT.Columns.Add(new DataColumn("DecorInvNumber", Type.GetType("System.String")));
             DecorInvNumbersDT.Columns.Add(new DataColumn("DecorAccountingName", Type.GetType("System.String")));
             DecorInvNumbersDT.Columns.Add(new DataColumn("FactoryID", Type.GetType("System.Int32")));
@@ -251,6 +248,7 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
             _profilReportDataTable.Columns.Add(new DataColumn("CurrencyCode", Type.GetType("System.String")));
             _profilReportDataTable.Columns.Add(new DataColumn("TPSCurCode", Type.GetType("System.String")));
             _profilReportDataTable.Columns.Add(new DataColumn("InvNumber", Type.GetType("System.String")));
+            _profilReportDataTable.Columns.Add(new DataColumn("Notes", Type.GetType("System.String")));
             _profilReportDataTable.Columns.Add(new DataColumn("Cvet", Type.GetType("System.String")));
             _profilReportDataTable.Columns.Add(new DataColumn("Patina", Type.GetType("System.String")));
             _profilReportDataTable.Columns.Add(new DataColumn("AccountingName", Type.GetType("System.String")));
@@ -374,10 +372,10 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
         }
 
         //ALUMINIUM
-        private int IsAluminium(DataRow FrontsOrdersRow)
+        private int IsAluminium(DataRow NewFrontsOrdersRow)
         {
-            string str = FrontsOrdersRow["FrontID"].ToString();
-            DataRow[] Row = FrontsDataTable.Select("FrontID = " + FrontsOrdersRow["FrontID"].ToString());
+            string str = NewFrontsOrdersRow["FrontID"].ToString();
+            DataRow[] Row = FrontsDataTable.Select("FrontID = " + NewFrontsOrdersRow["FrontID"].ToString());
 
             if (Row.Count() > 0 && Row[0]["FrontName"].ToString()[0] == 'Z')
             {
@@ -388,9 +386,9 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
             return -1;
         }
 
-        private void GetGlassMarginAluminium(DataRow FrontsOrdersRow, ref int GlassMarginHeight, ref int GlassMarginWidth)
+        private void GetGlassMarginAluminium(DataRow NewFrontsOrdersRow, ref int GlassMarginHeight, ref int GlassMarginWidth)
         {
-            DataRow[] Rows = TechStoreDataTable.Select("TechStoreID = " + Convert.ToInt32(FrontsOrdersRow["FrontID"]));
+            DataRow[] Rows = TechStoreDataTable.Select("TechStoreID = " + Convert.ToInt32(NewFrontsOrdersRow["FrontID"]));
             if (Rows.Count() > 0)
             {
                 if (Rows[0]["InsetHeightAdmission"] != DBNull.Value)
@@ -398,7 +396,7 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
                 if (Rows[0]["InsetWidthAdmission"] != DBNull.Value)
                     GlassMarginWidth = Convert.ToInt32(Rows[0]["InsetWidthAdmission"]);
             }
-            //DataRow[] Rows = AluminiumFrontsDataTable.Select("FrontID = " + IsAluminium(FrontsOrdersRow));
+            //DataRow[] Rows = AluminiumFrontsDataTable.Select("FrontID = " + IsAluminium(NewFrontsOrdersRow));
             //if (Rows.Count() > 0)
             //{
             //    GlassMarginHeight = Convert.ToInt32(Rows[0]["GlassMarginHeight"]);
@@ -406,45 +404,45 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
             //}
         }
 
-        private decimal GetJobPriceAluminium(DataRow FrontsOrdersRow)
+        private decimal GetJobPriceAluminium(DataRow NewFrontsOrdersRow)
         {
-            DataRow[] Rows = AluminiumFrontsDataTable.Select("FrontID = " + IsAluminium(FrontsOrdersRow));
+            DataRow[] Rows = AluminiumFrontsDataTable.Select("FrontID = " + IsAluminium(NewFrontsOrdersRow));
             if (Rows.Count() == 0)
                 return 0;
             return Convert.ToDecimal(Rows[0]["JobPrice"]);
         }
 
-        private decimal FrontsPriceAluminium(DataRow FrontsOrdersRow)
+        private decimal FrontsPriceAluminium(DataRow NewFrontsOrdersRow)
         {
             decimal Price = 0;
 
-            DataRow[] Rows = AluminiumFrontsDataTable.Select("FrontID = " + IsAluminium(FrontsOrdersRow));
+            DataRow[] Rows = AluminiumFrontsDataTable.Select("FrontID = " + IsAluminium(NewFrontsOrdersRow));
             if (Rows.Count() > 0)
             {
                 Price = Convert.ToDecimal(Rows[0]["ProfilPrice"]);
             }
-            FrontsOrdersRow["FrontPrice"] = Price;
+            NewFrontsOrdersRow["FrontPrice"] = Price;
 
             return Price;
         }
 
-        private decimal InsetPriceAluminium(DataRow FrontsOrdersRow)
+        private decimal InsetPriceAluminium(DataRow NewFrontsOrdersRow)
         {
             decimal Price = 0;
 
-            DataRow[] Rows = InsetPriceDataTable.Select("InsetTypeID = " + FrontsOrdersRow["InsetColorID"].ToString());
+            DataRow[] Rows = InsetPriceDataTable.Select("InsetTypeID = " + NewFrontsOrdersRow["InsetColorID"].ToString());
 
             if (Rows.Count() > 0)
                 Price = Convert.ToDecimal(Rows[0]["GlassZXPrice"]);
             else
                 Price = 0;
 
-            FrontsOrdersRow["InsetPrice"] = Price;
+            NewFrontsOrdersRow["InsetPrice"] = Price;
 
             return Price;
         }
 
-        private decimal GetFrontCostAluminium(DataRow FrontsOrdersRow)
+        private decimal GetFrontCostAluminium(DataRow NewFrontsOrdersRow)
         {
             decimal Cost = 0;
             decimal Perimeter = 0;
@@ -453,15 +451,15 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
             int MarginHeight = 0;
             int MarginWidth = 0;
 
-            decimal GlassPrice = InsetPriceAluminium(FrontsOrdersRow);
-            decimal JobPrice = GetJobPriceAluminium(FrontsOrdersRow);
-            decimal ProfilPrice = FrontsPriceAluminium(FrontsOrdersRow);
+            decimal GlassPrice = InsetPriceAluminium(NewFrontsOrdersRow);
+            decimal JobPrice = GetJobPriceAluminium(NewFrontsOrdersRow);
+            decimal ProfilPrice = FrontsPriceAluminium(NewFrontsOrdersRow);
 
-            GetGlassMarginAluminium(FrontsOrdersRow, ref MarginHeight, ref MarginWidth);
+            GetGlassMarginAluminium(NewFrontsOrdersRow, ref MarginHeight, ref MarginWidth);
 
-            decimal Height = Convert.ToInt32(FrontsOrdersRow["Height"]);
-            decimal Width = Convert.ToInt32(FrontsOrdersRow["Width"]);
-            decimal Count = Convert.ToInt32(FrontsOrdersRow["Count"]);
+            decimal Height = Convert.ToInt32(NewFrontsOrdersRow["Height"]);
+            decimal Width = Convert.ToInt32(NewFrontsOrdersRow["Width"]);
+            decimal Count = Convert.ToInt32(NewFrontsOrdersRow["Count"]);
 
 
             Perimeter = Decimal.Round((Height * 2 + Width * 2) / 1000 * Count, 3, MidpointRounding.AwayFromZero);
@@ -472,29 +470,29 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
 
             Cost = Cost * 100 / 120;
 
-            //FrontsOrdersRow["InsetPrice"] = 0;
-            //FrontsOrdersRow["Cost"] = Cost;
-            //FrontsOrdersRow["Square"] = (Height * Width * Count) / 1000000;
-            //FrontsOrdersRow["FrontPrice"] = Cost / Convert.ToDecimal(FrontsOrdersRow["Square"]);
+            //NewFrontsOrdersRow["InsetPrice"] = 0;
+            //NewFrontsOrdersRow["Cost"] = Cost;
+            //NewFrontsOrdersRow["Square"] = (Height * Width * Count) / 1000000;
+            //NewFrontsOrdersRow["FrontPrice"] = Cost / Convert.ToDecimal(NewFrontsOrdersRow["Square"]);
 
             return Cost;
         }
 
-        private decimal GetAluminiumWeight(DataRow FrontsOrdersRow, bool WithGlass)
+        private decimal GetAluminiumWeight(DataRow NewFrontsOrdersRow, bool WithGlass)
         {
-            DataRow[] Row = AluminiumFrontsDataTable.Select("FrontID = " + IsAluminium(FrontsOrdersRow));
+            DataRow[] Row = AluminiumFrontsDataTable.Select("FrontID = " + IsAluminium(NewFrontsOrdersRow));
             if (Row.Count() == 0)
                 return 0;
-            decimal FrontHeight = Convert.ToDecimal(FrontsOrdersRow["Height"]);
-            decimal FrontWidth = Convert.ToDecimal(FrontsOrdersRow["Width"]);
-            decimal Count = Convert.ToInt32(FrontsOrdersRow["Count"]);
+            decimal FrontHeight = Convert.ToDecimal(NewFrontsOrdersRow["Height"]);
+            decimal FrontWidth = Convert.ToDecimal(NewFrontsOrdersRow["Width"]);
+            decimal Count = Convert.ToInt32(NewFrontsOrdersRow["Count"]);
 
             int MarginHeight = 0;
             int MarginWidth = 0;
 
-            GetGlassMarginAluminium(FrontsOrdersRow, ref MarginHeight, ref MarginWidth);
+            GetGlassMarginAluminium(NewFrontsOrdersRow, ref MarginHeight, ref MarginWidth);
 
-            DataRow[] FrontsConfigRow = FrontsConfigDataTable.Select("FrontConfigID = " + FrontsOrdersRow["FrontConfigID"].ToString());
+            DataRow[] FrontsConfigRow = FrontsConfigDataTable.Select("FrontConfigID = " + NewFrontsOrdersRow["FrontConfigID"].ToString());
             if (FrontsConfigRow.Count() == 0)
                 return 0;
             int ProfileID = Convert.ToInt32(FrontsConfigRow[0]["ProfileID"]);
@@ -508,7 +506,7 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
 
             decimal GlassSquare = 0;
 
-            if (FrontsOrdersRow["InsetColorID"].ToString() != "3946")//если не СТЕКЛО КЛИЕНТА
+            if (NewFrontsOrdersRow["InsetColorID"].ToString() != "3946")//если не СТЕКЛО КЛИЕНТА
                 GlassSquare = Decimal.Round((FrontHeight - MarginHeight) * (FrontWidth - MarginWidth) / 1000000, 3, MidpointRounding.AwayFromZero);
 
             decimal GlassWeight = GlassSquare * 10;
@@ -562,8 +560,8 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
 
         private void GetMegaOrderInfo(int MainOrderID)
         {
-            string SelectCommand = $"SELECT MegaOrderID, TransportCost, AdditionalCost, PaymentRate, ClientID, CurrencyTypeID FROM MegaOrders" +
-                $" WHERE MegaOrderID IN (SELECT MegaOrderID FROM MainOrders WHERE MainOrderID = { MainOrderID })";
+            string SelectCommand = $"SELECT MegaOrderID, TransportCost, AdditionalCost, PaymentRate, ClientID, CurrencyTypeID FROM NewMegaOrders" +
+                $" WHERE MegaOrderID IN (SELECT MegaOrderID FROM NewMainOrders WHERE MainOrderID = { MainOrderID })";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (DataTable DT = new DataTable())
@@ -607,7 +605,7 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
 
         private void GetMegaOrderInfo1(int MegaOrderID)
         {
-            string SelectCommand = $"SELECT MegaOrderID, TransportCost, AdditionalCost, PaymentRate, ClientID, CurrencyTypeID FROM MegaOrders" +
+            string SelectCommand = $"SELECT MegaOrderID, TransportCost, AdditionalCost, PaymentRate, ClientID, CurrencyTypeID FROM NewMegaOrders" +
                 $" WHERE MegaOrderID = {MegaOrderID}";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
             {
@@ -675,19 +673,19 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
             return Decimal.Round(GridHeight * GridWidth / 1000000, 3, MidpointRounding.AwayFromZero);
         }
 
-        private decimal GetInsetSquare(DataRow FrontsOrdersRow)
+        private decimal GetInsetSquare(DataRow NewFrontsOrdersRow)
         {
             decimal GridHeight = 0;
             decimal GridWidth = 0;
-            DataRow[] Rows = TechStoreDataTable.Select("TechStoreID = " + Convert.ToInt32(FrontsOrdersRow["FrontID"]));
+            DataRow[] Rows = TechStoreDataTable.Select("TechStoreID = " + Convert.ToInt32(NewFrontsOrdersRow["FrontID"]));
             if (Rows.Count() > 0)
             {
                 if (Rows[0]["InsetHeightAdmission"] != DBNull.Value)
-                    GridHeight = Convert.ToInt32(FrontsOrdersRow["Height"]) - Convert.ToInt32(Rows[0]["InsetHeightAdmission"]);
+                    GridHeight = Convert.ToInt32(NewFrontsOrdersRow["Height"]) - Convert.ToInt32(Rows[0]["InsetHeightAdmission"]);
                 if (Rows[0]["InsetWidthAdmission"] != DBNull.Value)
-                    GridWidth = Convert.ToInt32(FrontsOrdersRow["Width"]) - Convert.ToInt32(Rows[0]["InsetWidthAdmission"]);
+                    GridWidth = Convert.ToInt32(NewFrontsOrdersRow["Width"]) - Convert.ToInt32(Rows[0]["InsetWidthAdmission"]);
 
-                if (Convert.ToInt32(FrontsOrdersRow["FrontID"]) == 3729)
+                if (Convert.ToInt32(NewFrontsOrdersRow["FrontID"]) == 3729)
                 {
                     return Decimal.Round(Convert.ToInt32(Rows[0]["InsetHeightAdmission"]) * GridWidth / 1000000, 3, MidpointRounding.AwayFromZero);
                 }
@@ -709,6 +707,7 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
             string DecorInvNumber = string.Empty;
             string AccountingName = OrdersDataTable.Rows[0]["AccountingName"].ToString();
             string InvNumber = OrdersDataTable.Rows[0]["InvNumber"].ToString();
+            string Notes = OrdersDataTable.Rows[0]["Notes"].ToString();
             int fID = Convert.ToInt32(OrdersDataTable.Rows[0]["FactoryID"]);
             DataTable Fronts = new DataTable();
             if (IsNonStandard)
@@ -752,8 +751,8 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
                     filter += item["InsetTypeID"].ToString() + ",";
                 if (filter.Length > 0)
                     filter = " AND NOT (FrontID IN (3728,3731,3732,3739,3740,3741,3744,3745,3746) OR InsetTypeID IN (28961,3653,3654,3655)) AND (FrontID = 3729 OR InsetTypeID IN (" + filter.Substring(0, filter.Length - 1) + "))";
-                DataRow[] Rows = OrdersDataTable.Select("ColorID = " + Fronts.Rows[i]["ColorID"].ToString() + 
-                    " AND PatinaID = " + Fronts.Rows[i]["PatinaID"].ToString() + 
+                DataRow[] Rows = OrdersDataTable.Select("ColorID = " + Fronts.Rows[i]["ColorID"].ToString() +
+                    " AND PatinaID = " + Fronts.Rows[i]["PatinaID"].ToString() +
                     " AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString() + " AND (Width <> -1)" + filter + IsNonStandardFilter);
                 for (int r = 0; r < Rows.Count(); r++)
                 {
@@ -767,7 +766,7 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
                         if (DecorInvNumber.Length > 0)
                         {
                             DataRow NewRow = DecorInvNumbersDT.NewRow();
-                            NewRow["FrontsOrdersID"] = Convert.ToInt32(Rows[r]["FrontsOrdersID"]);
+                            NewRow["NewFrontsOrdersID"] = Convert.ToInt32(Rows[r]["FrontsOrdersID"]);
                             NewRow["FactoryID"] = FactoryID;
                             NewRow["DecorAccountingName"] = DecorAccountingName;
                             NewRow["DecorInvNumber"] = DecorInvNumber;
@@ -801,8 +800,8 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
                 }
                 //АППЛИКАЦИИ
                 filter = " AND (FrontID IN (3728,3731,3732,3739,3740,3741,3744,3745,3746) OR InsetTypeID IN (28961,3653,3654,3655))";
-                Rows = OrdersDataTable.Select("ColorID = " + Fronts.Rows[i]["ColorID"].ToString() + 
-                    " AND PatinaID = " + Fronts.Rows[i]["PatinaID"].ToString() + 
+                Rows = OrdersDataTable.Select("ColorID = " + Fronts.Rows[i]["ColorID"].ToString() +
+                    " AND PatinaID = " + Fronts.Rows[i]["PatinaID"].ToString() +
                     " AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString() + " AND (Width <> -1)" + filter + IsNonStandardFilter);
                 for (int r = 0; r < Rows.Count(); r++)
                 {
@@ -839,8 +838,8 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
                 }
                 //ФИЛЕНКА
                 filter = " AND InsetTypeID IN (2069,2070,2071,2073,2075,2077,2233,3644,29043,29531)";
-                Rows = OrdersDataTable.Select("ColorID = " + Fronts.Rows[i]["ColorID"].ToString() + 
-                    " AND PatinaID = " + Fronts.Rows[i]["PatinaID"].ToString() + 
+                Rows = OrdersDataTable.Select("ColorID = " + Fronts.Rows[i]["ColorID"].ToString() +
+                    " AND PatinaID = " + Fronts.Rows[i]["PatinaID"].ToString() +
                     " AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString() + " AND (Width <> -1)" + filter + IsNonStandardFilter);
                 for (int r = 0; r < Rows.Count(); r++)
                 {
@@ -859,8 +858,8 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
                 }
                 //ВИТРИНЫ, РЕШЕТКИ, СТЕКЛО
                 filter = " AND InsetTypeID IN (1,2,685,686,687,688,29470,29471) AND FrontID <> 3729";
-                Rows = OrdersDataTable.Select("ColorID = " + Fronts.Rows[i]["ColorID"].ToString() + 
-                    " AND PatinaID = " + Fronts.Rows[i]["PatinaID"].ToString() + 
+                Rows = OrdersDataTable.Select("ColorID = " + Fronts.Rows[i]["ColorID"].ToString() +
+                    " AND PatinaID = " + Fronts.Rows[i]["PatinaID"].ToString() +
                     " AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString() + " AND (Width <> -1)" + filter + IsNonStandardFilter);
                 for (int r = 0; r < Rows.Count(); r++)
                 {
@@ -877,7 +876,7 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
                         if (DecorInvNumber.Length > 0)
                         {
                             DataRow NewRow = DecorInvNumbersDT.NewRow();
-                            NewRow["FrontsOrdersID"] = Convert.ToInt32(Rows[r]["FrontsOrdersID"]);
+                            NewRow["NewFrontsOrdersID"] = Convert.ToInt32(Rows[r]["FrontsOrdersID"]);
                             NewRow["FactoryID"] = FactoryID;
                             NewRow["DecorAccountingName"] = DecorAccountingName;
                             NewRow["DecorInvNumber"] = DecorInvNumber;
@@ -898,7 +897,7 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
                         if (DecorInvNumber.Length > 0)
                         {
                             DataRow NewRow = DecorInvNumbersDT.NewRow();
-                            NewRow["FrontsOrdersID"] = Convert.ToInt32(Rows[r]["FrontsOrdersID"]);
+                            NewRow["NewFrontsOrdersID"] = Convert.ToInt32(Rows[r]["FrontsOrdersID"]);
                             NewRow["FactoryID"] = FactoryID;
                             NewRow["DecorAccountingName"] = DecorAccountingName;
                             NewRow["DecorInvNumber"] = DecorInvNumber;
@@ -933,8 +932,8 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
                 }
                 //ЛЮКС, МЕГА
                 filter = " AND InsetTypeID IN (860,862,4310)";
-                Rows = OrdersDataTable.Select("ColorID = " + Fronts.Rows[i]["ColorID"].ToString() + 
-                    " AND PatinaID = " + Fronts.Rows[i]["PatinaID"].ToString() + 
+                Rows = OrdersDataTable.Select("ColorID = " + Fronts.Rows[i]["ColorID"].ToString() +
+                    " AND PatinaID = " + Fronts.Rows[i]["PatinaID"].ToString() +
                     " AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString() + " AND (Width <> -1)" + filter + IsNonStandardFilter);
                 for (int r = 0; r < Rows.Count(); r++)
                 {
@@ -968,6 +967,7 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
                     Row["Cvet"] = GetColorCode(Convert.ToInt32(Fronts.Rows[i]["ColorID"]));
                     Row["Patina"] = GetPatinaCode(Convert.ToInt32(Fronts.Rows[i]["PatinaID"]));
                     Row["AccountingName"] = AccountingName;
+                    Row["Notes"] = Notes;
                     Row["InvNumber"] = InvNumber;
                     Row["CurrencyCode"] = ProfilCurrencyCode;
                     if (fID == 2)
@@ -995,6 +995,7 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
                     Row["PaymentRate"] = PaymentRate;
                     Row["AccountingName"] = AccountingName;
                     Row["InvNumber"] = InvNumber;
+                    Row["Notes"] = Notes;
                     Row["CurrencyCode"] = ProfilCurrencyCode;
                     if (fID == 2)
                         Row["TPSCurCode"] = TPSCurrencyCode;
@@ -1021,6 +1022,7 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
                     Row["PaymentRate"] = PaymentRate;
                     Row["AccountingName"] = AccountingName;
                     Row["InvNumber"] = InvNumber;
+                    Row["Notes"] = Notes;
                     Row["CurrencyCode"] = ProfilCurrencyCode;
                     if (fID == 2)
                         Row["TPSCurCode"] = TPSCurrencyCode;
@@ -1047,6 +1049,7 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
                     Row["PaymentRate"] = PaymentRate;
                     Row["AccountingName"] = AccountingName;
                     Row["InvNumber"] = InvNumber;
+                    Row["Notes"] = Notes;
                     Row["CurrencyCode"] = ProfilCurrencyCode;
                     if (fID == 2)
                         Row["TPSCurCode"] = TPSCurrencyCode;
@@ -1067,6 +1070,7 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
         {
             string AccountingName = OrdersDataTable.Rows[0]["AccountingName"].ToString();
             string InvNumber = OrdersDataTable.Rows[0]["InvNumber"].ToString();
+            string Notes = OrdersDataTable.Rows[0]["Notes"].ToString();
             int fID = Convert.ToInt32(OrdersDataTable.Rows[0]["FactoryID"]);
             DataTable Fronts = new DataTable();
 
@@ -1078,7 +1082,7 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
             for (int i = 0; i < Fronts.Rows.Count; i++)
             {
                 DataRow[] Rows = OrdersDataTable.Select("ColorID = " + Fronts.Rows[i]["ColorID"].ToString() +
-                    " AND PatinaID = " + Fronts.Rows[i]["PatinaID"].ToString() + 
+                    " AND PatinaID = " + Fronts.Rows[i]["PatinaID"].ToString() +
                     " AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString() + " AND Width = -1");
 
                 if (Rows.Count() == 0)
@@ -1270,6 +1274,7 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
                     Row["PaymentRate"] = PaymentRate;
                     Row["AccountingName"] = AccountingName;
                     Row["InvNumber"] = InvNumber;
+                    Row["Notes"] = Notes;
                     Row["CurrencyCode"] = ProfilCurrencyCode;
                     if (fID == 2)
                         Row["TPSCurCode"] = TPSCurrencyCode;
@@ -1293,6 +1298,7 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
                     Row["PaymentRate"] = PaymentRate;
                     Row["AccountingName"] = AccountingName;
                     Row["InvNumber"] = InvNumber;
+                    Row["Notes"] = Notes;
                     Row["CurrencyCode"] = ProfilCurrencyCode;
                     if (fID == 2)
                         Row["TPSCurCode"] = TPSCurrencyCode;
@@ -1316,6 +1322,7 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
                     Row["PaymentRate"] = PaymentRate;
                     Row["AccountingName"] = AccountingName;
                     Row["InvNumber"] = InvNumber;
+                    Row["Notes"] = Notes;
                     Row["CurrencyCode"] = ProfilCurrencyCode;
                     if (fID == 2)
                         Row["TPSCurCode"] = TPSCurrencyCode;
@@ -1339,6 +1346,7 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
                     Row["PaymentRate"] = PaymentRate;
                     Row["AccountingName"] = AccountingName;
                     Row["InvNumber"] = InvNumber;
+                    Row["Notes"] = Notes;
                     Row["CurrencyCode"] = ProfilCurrencyCode;
                     if (fID == 2)
                         Row["TPSCurCode"] = TPSCurrencyCode;
@@ -1361,6 +1369,7 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
                     Row["Patina"] = GetPatinaCode(Convert.ToInt32(Fronts.Rows[i]["PatinaID"]));
                     Row["PaymentRate"] = PaymentRate;
                     Row["InvNumber"] = InvNumber;
+                    Row["Notes"] = Notes;
                     Row["CurrencyCode"] = ProfilCurrencyCode;
                     if (fID == 2)
                         Row["TPSCurCode"] = TPSCurrencyCode;
@@ -1384,6 +1393,7 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
                     Row["PaymentRate"] = PaymentRate;
                     Row["AccountingName"] = AccountingName;
                     Row["InvNumber"] = InvNumber;
+                    Row["Notes"] = Notes;
                     Row["CurrencyCode"] = ProfilCurrencyCode;
                     if (fID == 2)
                         Row["TPSCurCode"] = TPSCurrencyCode;
@@ -1407,6 +1417,7 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
                     Row["PaymentRate"] = PaymentRate;
                     Row["AccountingName"] = AccountingName;
                     Row["InvNumber"] = InvNumber;
+                    Row["Notes"] = Notes;
                     Row["CurrencyCode"] = ProfilCurrencyCode;
                     if (fID == 2)
                         Row["TPSCurCode"] = TPSCurrencyCode;
@@ -1430,6 +1441,7 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
                     Row["PaymentRate"] = PaymentRate;
                     Row["AccountingName"] = AccountingName;
                     Row["InvNumber"] = InvNumber;
+                    Row["Notes"] = Notes;
                     Row["CurrencyCode"] = ProfilCurrencyCode;
                     if (fID == 2)
                         Row["TPSCurCode"] = TPSCurrencyCode;
@@ -1482,7 +1494,7 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
 
                 if (CountPP > 0)
                 {
-                    DataRow[] rows = DecorInvNumbersDT.Select("FrontsOrdersID = " + Convert.ToInt32(OrdersDataTable.Select("InsetTypeID IN (685,686,687,688,29470,29471)")[0]["FrontsOrdersID"]));
+                    DataRow[] rows = DecorInvNumbersDT.Select("NewFrontsOrdersID = " + Convert.ToInt32(OrdersDataTable.Select("InsetTypeID IN (685,686,687,688,29470,29471)")[0]["FrontsOrdersID"]));
                     int FactoryID = 0;
                     if (rows.Count() > 0)
                         FactoryID = Convert.ToInt32(rows[0]["FactoryID"]);
@@ -1497,6 +1509,7 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
                         NewRow["PaymentRate"] = PaymentRate;
                         NewRow["AccountingName"] = OrdersDataTable.Rows[0]["AccountingName"].ToString();
                         NewRow["InvNumber"] = OrdersDataTable.Rows[0]["InvNumber"].ToString();
+                        NewRow["Notes"] = OrdersDataTable.Rows[0]["Notes"].ToString();
                         NewRow["CurrencyCode"] = ProfilCurrencyCode;
                         if (fID == 2)
                             NewRow["TPSCurCode"] = TPSCurrencyCode;
@@ -1521,6 +1534,7 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
                         NewRow["PaymentRate"] = PaymentRate;
                         NewRow["AccountingName"] = OrdersDataTable.Rows[0]["AccountingName"].ToString();
                         NewRow["InvNumber"] = OrdersDataTable.Rows[0]["InvNumber"].ToString();
+                        NewRow["Notes"] = OrdersDataTable.Rows[0]["Notes"].ToString();
                         NewRow["CurrencyCode"] = ProfilCurrencyCode;
                         if (fID == 2)
                             NewRow["TPSCurCode"] = TPSCurrencyCode;
@@ -1544,6 +1558,7 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
         {
             string AccountingName = OrdersDataTable.Rows[0]["AccountingName"].ToString();
             string InvNumber = OrdersDataTable.Rows[0]["InvNumber"].ToString();
+            string Notes = OrdersDataTable.Rows[0]["Notes"].ToString();
 
 
             int fID = Convert.ToInt32(OrdersDataTable.Rows[0]["FactoryID"]);
@@ -1599,7 +1614,7 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
                     if (CountFlutes > 0)
                     {
                         //decimal Cost = Math.Ceiling(CountFlutes * PriceFlutes / 0.01m) * 0.01m;
-                        DataRow[] rows = DecorInvNumbersDT.Select("FrontsOrdersID = " + Convert.ToInt32(FRows[0]["FrontsOrdersID"]));
+                        DataRow[] rows = DecorInvNumbersDT.Select("NewFrontsOrdersID = " + Convert.ToInt32(FRows[0]["FrontsOrdersID"]));
                         int FactoryID = 0;
                         if (rows.Count() > 0)
                             FactoryID = Convert.ToInt32(rows[0]["FactoryID"]);
@@ -1614,6 +1629,7 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
                             NewRow["PaymentRate"] = PaymentRate;
                             NewRow["AccountingName"] = AccountingName;
                             NewRow["InvNumber"] = InvNumber;
+                            NewRow["Notes"] = Notes;
                             NewRow["CurrencyCode"] = ProfilCurrencyCode;
                             if (fID == 2)
                                 NewRow["TPSCurCode"] = TPSCurrencyCode;
@@ -1638,6 +1654,7 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
                             NewRow["PaymentRate"] = PaymentRate;
                             NewRow["AccountingName"] = AccountingName;
                             NewRow["InvNumber"] = InvNumber;
+                            NewRow["Notes"] = Notes;
                             if (rows.Count() > 0)
                             {
                                 NewRow["AccountingName"] = rows[0]["DecorAccountingName"].ToString();
@@ -1693,7 +1710,7 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
                     if (CountLacomat > 0)
                     {
                         //decimal Cost = Math.Ceiling(CountLacomat * PriceLacomat / 0.01m) * 0.01m;
-                        DataRow[] rows = DecorInvNumbersDT.Select("FrontsOrdersID = " + Convert.ToInt32(LRows[0]["FrontsOrdersID"]));
+                        DataRow[] rows = DecorInvNumbersDT.Select("NewFrontsOrdersID = " + Convert.ToInt32(LRows[0]["FrontsOrdersID"]));
                         int FactoryID = 0;
                         if (rows.Count() > 0)
                             FactoryID = Convert.ToInt32(rows[0]["FactoryID"]);
@@ -1708,6 +1725,7 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
                             NewRow["PaymentRate"] = PaymentRate;
                             NewRow["AccountingName"] = AccountingName;
                             NewRow["InvNumber"] = InvNumber;
+                            NewRow["Notes"] = Notes;
                             if (rows.Count() > 0)
                             {
                                 NewRow["AccountingName"] = rows[0]["DecorAccountingName"].ToString();
@@ -1732,6 +1750,7 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
                             NewRow["PaymentRate"] = PaymentRate;
                             NewRow["AccountingName"] = AccountingName;
                             NewRow["InvNumber"] = InvNumber;
+                            NewRow["Notes"] = Notes;
                             if (rows.Count() > 0)
                             {
                                 NewRow["AccountingName"] = rows[0]["DecorAccountingName"].ToString();
@@ -1750,7 +1769,7 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
                     }
                 }
             }
-            
+
             Fronts.Clear();
             using (DataView DV = new DataView(OrdersDataTable))
             {
@@ -1786,7 +1805,7 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
                     if (CountKrizet > 0)
                     {
                         //decimal Cost = Math.Ceiling(CountKrizet * PriceKrizet / 0.01m) * 0.01m;
-                        DataRow[] rows = DecorInvNumbersDT.Select("FrontsOrdersID = " + Convert.ToInt32(KRows[0]["FrontsOrdersID"]));
+                        DataRow[] rows = DecorInvNumbersDT.Select("NewFrontsOrdersID = " + Convert.ToInt32(KRows[0]["FrontsOrdersID"]));
                         int FactoryID = 0;
                         if (rows.Count() > 0)
                             FactoryID = Convert.ToInt32(rows[0]["FactoryID"]);
@@ -1801,6 +1820,7 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
                             NewRow["PaymentRate"] = PaymentRate;
                             NewRow["AccountingName"] = AccountingName;
                             NewRow["InvNumber"] = InvNumber;
+                            NewRow["Notes"] = Notes;
                             if (rows.Count() > 0)
                             {
                                 NewRow["AccountingName"] = rows[0]["DecorAccountingName"].ToString();
@@ -1825,6 +1845,7 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
                             NewRow["PaymentRate"] = PaymentRate;
                             NewRow["AccountingName"] = AccountingName;
                             NewRow["InvNumber"] = InvNumber;
+                            NewRow["Notes"] = Notes;
                             if (rows.Count() > 0)
                             {
                                 NewRow["AccountingName"] = rows[0]["DecorAccountingName"].ToString();
@@ -1875,7 +1896,7 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
 
                     if (CountOther > 0)
                     {
-                        DataRow[] rows = DecorInvNumbersDT.Select("FrontsOrdersID = " + Convert.ToInt32(ORows[0]["FrontsOrdersID"]));
+                        DataRow[] rows = DecorInvNumbersDT.Select("NewFrontsOrdersID = " + Convert.ToInt32(ORows[0]["FrontsOrdersID"]));
                         int FactoryID = 0;
                         if (rows.Count() > 0)
                             FactoryID = Convert.ToInt32(rows[0]["FactoryID"]);
@@ -1890,6 +1911,7 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
                             NewRow["PaymentRate"] = PaymentRate;
                             NewRow["AccountingName"] = AccountingName;
                             NewRow["InvNumber"] = InvNumber;
+                            NewRow["Notes"] = Notes;
                             if (rows.Count() > 0)
                             {
                                 NewRow["AccountingName"] = rows[0]["DecorAccountingName"].ToString();
@@ -1914,6 +1936,7 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
                             NewRow["PaymentRate"] = PaymentRate;
                             NewRow["AccountingName"] = AccountingName;
                             NewRow["InvNumber"] = InvNumber;
+                            NewRow["Notes"] = Notes;
                             if (rows.Count() > 0)
                             {
                                 NewRow["AccountingName"] = rows[0]["DecorAccountingName"].ToString();
@@ -1985,7 +2008,7 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
                     NewRow["PriceWithTransport"] = PriceEllipseGrid;
                     NewRow["CostWithTransport"] = Decimal.Round(Math.Ceiling(CountEllipseGrid * PriceEllipseGrid / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
                     NewRow["Weight"] = 0;
-                    DataRow[] rows = DecorInvNumbersDT.Select("FrontsOrdersID = " + Convert.ToInt32(EGRows[0]["FrontsOrdersID"]));
+                    DataRow[] rows = DecorInvNumbersDT.Select("NewFrontsOrdersID = " + Convert.ToInt32(EGRows[0]["FrontsOrdersID"]));
                     if (rows.Count() > 0)
                     {
                         NewRow["AccountingName"] = rows[0]["DecorAccountingName"].ToString();
@@ -1997,12 +2020,12 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
             }
         }
 
-        private decimal GetInsetWeight(DataRow FrontsOrdersRow)
+        private decimal GetInsetWeight(DataRow NewFrontsOrdersRow)
         {
-            int InsetTypeID = Convert.ToInt32(FrontsOrdersRow["InsetTypeID"]);
+            int InsetTypeID = Convert.ToInt32(NewFrontsOrdersRow["InsetTypeID"]);
             if (InsetTypeID == 2)
-                InsetTypeID = Convert.ToInt32(FrontsOrdersRow["InsetColorID"]);//стекло
-            decimal InsetSquare = GetInsetSquare(FrontsOrdersRow);
+                InsetTypeID = Convert.ToInt32(NewFrontsOrdersRow["InsetColorID"]);//стекло
+            decimal InsetSquare = GetInsetSquare(NewFrontsOrdersRow);
             if (InsetSquare <= 0)
                 return 0;
             decimal InsetWeight = 0;
@@ -2016,18 +2039,18 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
             return InsetSquare * InsetWeight;
         }
 
-        private decimal GetProfileWeight(DataRow FrontsOrdersRow)
+        private decimal GetProfileWeight(DataRow NewFrontsOrdersRow)
         {
-            decimal FrontHeight = Convert.ToDecimal(FrontsOrdersRow["Height"]);
-            decimal FrontWidth = Convert.ToDecimal(FrontsOrdersRow["Width"]);
+            decimal FrontHeight = Convert.ToDecimal(NewFrontsOrdersRow["Height"]);
+            decimal FrontWidth = Convert.ToDecimal(NewFrontsOrdersRow["Width"]);
             decimal ProfileWeight = 0;
             decimal ProfileWidth = 0;
-            DataRow[] FrontsConfigRow = FrontsConfigDataTable.Select("FrontConfigID = " + FrontsOrdersRow["FrontConfigID"].ToString());
+            DataRow[] FrontsConfigRow = FrontsConfigDataTable.Select("FrontConfigID = " + NewFrontsOrdersRow["FrontConfigID"].ToString());
             if (FrontsConfigRow.Count() > 0)
                 ProfileWeight = Convert.ToDecimal(FrontsConfigRow[0]["Weight"]);
 
             //для Женевы и Тафеля глухой - вес квадрата профиля на площадь фасада
-            int FrontID = Convert.ToInt32(FrontsOrdersRow["FrontID"]);
+            int FrontID = Convert.ToInt32(NewFrontsOrdersRow["FrontID"]);
             if (FrontID == 30504 || FrontID == 30505 || FrontID == 30506 ||
                 FrontID == 30364 || FrontID == 30366 || FrontID == 30367 ||
                 FrontID == 30501 || FrontID == 30502 || FrontID == 30503 ||
@@ -2050,44 +2073,44 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
             return 0;
         }
 
-        private void GetFrontWeight(DataRow FrontsOrdersRow, ref decimal outFrontWeight, ref decimal outInsetWeight)
+        private void GetFrontWeight(DataRow NewFrontsOrdersRow, ref decimal outFrontWeight, ref decimal outInsetWeight)
         {
             //decimal FrontsWeight = 0;
-            DataRow[] FrontsConfigRow = FrontsConfigDataTable.Select("FrontConfigID = " + FrontsOrdersRow["FrontConfigID"].ToString());
+            DataRow[] FrontsConfigRow = FrontsConfigDataTable.Select("FrontConfigID = " + NewFrontsOrdersRow["FrontConfigID"].ToString());
             decimal InsetWeight = Convert.ToDecimal(FrontsConfigRow[0]["InsetWeight"]);
-            decimal FrontsOrderSquare = Convert.ToDecimal(FrontsOrdersRow["Square"]);
+            decimal NewFrontsOrdersquare = Convert.ToDecimal(NewFrontsOrdersRow["Square"]);
             decimal PackWeight = 0;
-            if (FrontsOrderSquare > 0)
-                PackWeight = FrontsOrderSquare * Convert.ToDecimal(0.7);
+            if (NewFrontsOrdersquare > 0)
+                PackWeight = NewFrontsOrdersquare * Convert.ToDecimal(0.7);
             //если гнутый то вес за штуки
             if (FrontsConfigRow[0]["Width"].ToString() == "-1")
             {
                 outFrontWeight = PackWeight +
-                    Convert.ToDecimal(FrontsOrdersRow["Count"]) * Convert.ToDecimal(FrontsConfigRow[0]["Weight"]);
+                    Convert.ToDecimal(NewFrontsOrdersRow["Count"]) * Convert.ToDecimal(FrontsConfigRow[0]["Weight"]);
                 return;
             }
             //если алюминий
-            if (IsAluminium(FrontsOrdersRow) > -1)
+            if (IsAluminium(NewFrontsOrdersRow) > -1)
             {
                 outFrontWeight = PackWeight +
-                    GetAluminiumWeight(FrontsOrdersRow, true);
+                    GetAluminiumWeight(NewFrontsOrdersRow, true);
                 return;
             }
-            decimal ResultProfileWeight = GetProfileWeight(FrontsOrdersRow);
+            decimal ResultProfileWeight = GetProfileWeight(NewFrontsOrdersRow);
             decimal ResultInsetWeight = 0;
             DataRow[] rows = InsetTypesDataTable.Select("GroupID = 2 OR GroupID = 3 OR GroupID = 4 OR GroupID = 7 OR GroupID = 12 OR GroupID = 13");
             foreach (DataRow item in rows)
             {
-                if (FrontsOrdersRow["InsetTypeID"].ToString() == item["InsetTypeID"].ToString())
+                if (NewFrontsOrdersRow["InsetTypeID"].ToString() == item["InsetTypeID"].ToString())
                 {
-                    ResultInsetWeight = GetInsetWeight(FrontsOrdersRow);
+                    ResultInsetWeight = GetInsetWeight(NewFrontsOrdersRow);
                 }
             }
-            if (Convert.ToInt32(FrontsOrdersRow["FrontID"]) == 3729)
-                ResultInsetWeight = GetInsetWeight(FrontsOrdersRow);
+            if (Convert.ToInt32(NewFrontsOrdersRow["FrontID"]) == 3729)
+                ResultInsetWeight = GetInsetWeight(NewFrontsOrdersRow);
 
-            outFrontWeight = PackWeight + ResultProfileWeight * Convert.ToDecimal(FrontsOrdersRow["Count"]);
-            outInsetWeight = ResultInsetWeight * Convert.ToDecimal(FrontsOrdersRow["Count"]);
+            outFrontWeight = PackWeight + ResultProfileWeight * Convert.ToDecimal(NewFrontsOrdersRow["Count"]);
+            outInsetWeight = ResultInsetWeight * Convert.ToDecimal(NewFrontsOrdersRow["Count"]);
         }
 
         private DataTable[] GroupInvNumber(DataTable OrdersDataTable)
@@ -2097,7 +2120,7 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
             //get count of different covertypes
             using (DataView DV = new DataView(OrdersDataTable))
             {
-                InvCount = DV.ToTable(true, new string[] { "InvNumber", "ColorID", "PatinaID" }).Rows.Count;
+                InvCount = DV.ToTable(true, new string[] { "InvNumber", "Notes", "ColorID", "PatinaID" }).Rows.Count;
             }
 
             //create DataTables
@@ -2113,6 +2136,7 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
                 int ColorID = -1;
                 int PatinaID = -1;
                 string InvNumber = "";
+                string Notes = "";
 
                 for (int r = g; r < OrdersDataTable.Rows.Count; r++)
                 {
@@ -2120,12 +2144,14 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
                     {
                         InvDataTables[i].ImportRow(OrdersDataTable.DefaultView[r].Row);
                         InvNumber = OrdersDataTable.DefaultView[r].Row["InvNumber"].ToString();
+                        Notes = OrdersDataTable.DefaultView[r].Row["Notes"].ToString();
                         ColorID = Convert.ToInt32(OrdersDataTable.DefaultView[r].Row["ColorID"]);
                         PatinaID = Convert.ToInt32(OrdersDataTable.DefaultView[r].Row["PatinaID"]);
                         continue;
                     }
 
                     if (InvNumber == OrdersDataTable.DefaultView[r].Row["InvNumber"].ToString()
+                        && Notes == OrdersDataTable.DefaultView[r].Row["Notes"].ToString()
                         && ColorID == Convert.ToInt32(OrdersDataTable.DefaultView[r].Row["ColorID"])
                         && PatinaID == Convert.ToInt32(OrdersDataTable.DefaultView[r].Row["PatinaID"]))
                     {
@@ -2158,7 +2184,10 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
                 else
                     sWhere += "MainOrderID = " + MainOrderIDs[i].ToString();
             }
-            string SelectCommand = "SELECT FrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, MegaOrders.PaymentRate FROM FrontsOrders" +
+            string SelectCommand = $@"SELECT 
+CASE WHEN MainOrders.Notes = '' THEN CAST(MegaOrders.OrderNumber AS varchar(12)) + '_' + CAST(FrontsOrders.MainOrderID AS varchar(12)) ELSE CAST(MegaOrders.OrderNumber AS varchar(12)) 
+                         + '_' + CAST(FrontsOrders.MainOrderID AS varchar(12)) + '_' + MainOrders.Notes END AS Notes,
+FrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, MegaOrders.PaymentRate FROM FrontsOrders" +
                 " INNER JOIN infiniu2_catalog.dbo.FrontsConfig ON FrontsOrders.FrontConfigID = infiniu2_catalog.dbo.FrontsConfig.FrontConfigID" +
                 " INNER JOIN MainOrders ON FrontsOrders.MainOrderID = MainOrders.MainOrderID" +
                 " INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID" +
@@ -2262,7 +2291,10 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
             DecorInvNumbersDT.Clear();
             GetMegaOrderInfo(MainOrderIDs[0]);
 
-            string SelectCommand = "SELECT FrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, MegaOrders.PaymentRate FROM FrontsOrders" +
+            string SelectCommand = $@"SELECT 
+CASE WHEN MainOrders.Notes = '' THEN CAST(MegaOrders.OrderNumber AS varchar(12)) + '_' + CAST(FrontsOrders.MainOrderID AS varchar(12)) ELSE CAST(MegaOrders.OrderNumber AS varchar(12)) 
+                         + '_' + CAST(FrontsOrders.MainOrderID AS varchar(12)) + '_' + MainOrders.Notes END AS Notes,
+FrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, MegaOrders.PaymentRate FROM FrontsOrders" +
                 " INNER JOIN infiniu2_catalog.dbo.FrontsConfig ON FrontsOrders.FrontConfigID = infiniu2_catalog.dbo.FrontsConfig.FrontConfigID" +
                 " INNER JOIN MainOrders ON FrontsOrders.MainOrderID = MainOrders.MainOrderID" +
                 " INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID" +

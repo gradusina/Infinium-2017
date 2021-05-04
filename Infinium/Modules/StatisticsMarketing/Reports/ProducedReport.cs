@@ -8,6 +8,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
+using Infinium.Modules.Marketing.NewOrders;
 
 namespace Infinium.Modules.StatisticsMarketing.Reports
 {
@@ -7735,6 +7736,19 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
                     if (DT.Rows.Count > 0)
                     {
                         EURBYRCurrency = Convert.ToDecimal(DT.Rows[0]["BYN"]);
+                    }
+                    else
+                    {
+                        decimal EURRUBCurrency = 1000000;
+                        decimal USDRUBCurrency = 1000000;
+                        decimal EURUSDCurrency = 1000000;
+
+                        OrdersManager.CBRDailyRates(date, ref EURRUBCurrency, ref USDRUBCurrency);
+                        OrdersManager.NBRBDailyRates(date, ref EURBYRCurrency);
+                        
+                        if (USDRUBCurrency != 0)
+                            EURUSDCurrency = Decimal.Round(EURRUBCurrency / USDRUBCurrency, 4, MidpointRounding.AwayFromZero);
+                        OrdersManager.SaveDateRates(date, EURUSDCurrency, EURRUBCurrency, EURBYRCurrency, USDRUBCurrency);
                     }
                 }
             }

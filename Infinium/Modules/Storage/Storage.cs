@@ -770,7 +770,6 @@ namespace Infinium.Store
             }
 
             XmlTextReader reader = new XmlTextReader(myHttpWebResponse.GetResponseStream());
-            //XmlTextReader reader = new XmlTextReader("http://www.nbrb.by/Services/XmlExRates.aspx?ondate=" + date.ToString("MM/dd/yyyy"));
             try
             {
                 while (reader.Read())

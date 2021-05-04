@@ -1219,7 +1219,7 @@ namespace Infinium
                 InvoiceReportToDBF DBFReport = new InvoiceReportToDBF();
                 decimal CurrencyTotalCost = DBFReport.CalcCurrencyCost(
                     Convert.ToInt32(((DataRowView)OrdersManager.MegaOrdersBindingSource.Current).Row["MegaOrderID"]),
-                    Convert.ToInt32(((DataRowView)OrdersManager.MegaOrdersBindingSource.Current).Row["ClientID"]), OrdersManager.CurrencyTypeID, OrdersManager.PaymentCurrency);
+                    Convert.ToInt32(((DataRowView)OrdersManager.MegaOrdersBindingSource.Current).Row["ClientID"]), OrdersManager.PaymentCurrency);
                 OrdersManager.SetCurrencyCost(Convert.ToInt32(((DataRowView)OrdersManager.MegaOrdersBindingSource.Current).Row["MegaOrderID"]), CurrencyTotalCost);
             }
 

@@ -7436,14 +7436,14 @@ namespace Infinium.Modules.Marketing.NewOrders
 
             if (!bsNotInProduction && !bsInProduction && !bsOnProduction && !bsInStorage && !bsOnExpedition && !bsIsDispatched)
                 MainProductionStatus = " AND MainOrderID = -1";
-
+            
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM NewMainOrders WHERE MegaOrderID = " + MegaOrderID + MainProductionStatus,
                 ConnectionStrings.MarketingOrdersConnectionString))
             {
                 MainOrdersDataTable.Clear();
                 DA.Fill(MainOrdersDataTable);
             }
-
+            
             CurrentMegaOrderID = MegaOrderID;
         }
 
@@ -7650,6 +7650,8 @@ namespace Infinium.Modules.Marketing.NewOrders
 
             CurrentMegaOrderID = -1;
 
+            //MainOrdersBindingSource.SuspendBinding();
+            //MainOrdersBindingSource.RaiseListChangedEvents = false;
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT NewMegaOrders.*, ClientName FROM NewMegaOrders" +
                 " INNER JOIN infiniu2_marketingreference.dbo.Clients" +
                 " ON NewMegaOrders.ClientID = infiniu2_marketingreference.dbo.Clients.ClientID" +
@@ -7660,6 +7662,8 @@ namespace Infinium.Modules.Marketing.NewOrders
                 MegaOrdersDataTable.Clear();
                 DA.Fill(MegaOrdersDataTable);
             }
+            //MainOrdersBindingSource.RaiseListChangedEvents = true;
+            //MainOrdersBindingSource.ResumeBinding();
 
             MoveToMegaOrder(MegaOrderID);
         }
@@ -9440,7 +9444,7 @@ namespace Infinium.Modules.Marketing.NewOrders
             return ClientName;
         }
 
-        public bool NBRBDailyRates(DateTime date, ref decimal EURBYRCurrency)
+        public static bool NBRBDailyRates(DateTime date, ref decimal EURBYRCurrency)
         {
             string EuroXML = "";
             string url = "http://www.nbrb.by/Services/XmlExRates.aspx?ondate=" + date.ToString("MM.dd.yyyy");
@@ -9464,7 +9468,6 @@ namespace Infinium.Modules.Marketing.NewOrders
             }
 
             XmlTextReader reader = new XmlTextReader(myHttpWebResponse.GetResponseStream());
-            //XmlTextReader reader = new XmlTextReader("http://www.nbrb.by/Services/XmlExRates.aspx?ondate=" + date.ToString("MM/dd/yyyy"));
             try
             {
                 while (reader.Read())
@@ -9518,104 +9521,8 @@ namespace Infinium.Modules.Marketing.NewOrders
             }
             return true;
         }
-
-        //public bool NBRBDailyRates(DateTime date, ref decimal EURBYRCurrency)
-        //{
-        //    string EuroXML = "";
-        //    //string url = "http://www.nbrb.by/Services/XmlExRates.aspx?ondate=" + date.ToString("MM.dd.yyyy");
-        //    string url = "https://www.nbrb.by/api/exrates/rates?ondate=" + date.ToString("yyyy-MM-dd") + "&periodicity=0";
-        //    HttpWebRequest myHttpWebRequest = null;
-        //    HttpWebResponse myHttpWebResponse = null;
-
-        //    try
-        //    {
-        //        ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;
-        //        myHttpWebRequest = (HttpWebRequest)HttpWebRequest.Create(url);
-        //        myHttpWebRequest.KeepAlive = false;
-        //        myHttpWebRequest.AllowAutoRedirect = true;
-        //        myHttpWebRequest.Credentials = CredentialCache.DefaultCredentials;
-
-        //        myHttpWebResponse = (HttpWebResponse)myHttpWebRequest.GetResponse();
-        //    }
-        //    catch (WebException webExcp)
-        //    {
-        //        return false;
-        //    }
-
-        //    XmlTextReader reader = new XmlTextReader(myHttpWebResponse.GetResponseStream());
-        //    //XmlTextReader reader = new XmlTextReader("https://www.nbrb.by/api/exrates/rates?ondate=" + date.ToString("yyyy-MM-dd") + "&periodicity=0");
-        //    try
-        //    {
-        //        System.IO.Stream stream = myHttpWebResponse.GetResponseStream();
-        //        StreamReader readStream = new StreamReader(stream, Encoding.UTF8);
-
-        //        string result = readStream.ReadToEnd();
-        //        //dynamic myDetails = JsonConvert.DeserializeObject<Rate>(result);
-        //        string line;
-
-        //        while ((line = readStream.ReadLine()) != null)
-        //        {
-        //            Console.WriteLine(line);
-        //        }
-
-        //        //foreach (Rate item in myDetails)
-        //        //{
-        //        //    if (item.Cur_ID == 293 || item.Cur_Name == "EUR")
-        //        //        EURBYRCurrency = (decimal)item.Cur_OfficialRate;
-        //        //}
-
-        //        //while (reader.Read())
-        //        //{
-        //        //    switch (reader.NodeType)
-        //        //    {
-        //        //        case XmlNodeType.Element:
-        //        //            if (reader.Name == "Currency")
-        //        //            {
-        //        //                if (reader.HasAttributes)
-        //        //                {
-        //        //                    while (reader.MoveToNextAttribute())
-        //        //                    {
-        //        //                        if (reader.Name == "Id")
-        //        //                        {
-        //        //                            if (reader.Value == "292")
-        //        //                            {
-        //        //                                reader.MoveToElement();
-        //        //                                EuroXML = reader.ReadOuterXml();
-        //        //                            }
-        //        //                        }
-        //        //                        if (reader.Name == "Id")
-        //        //                        {
-        //        //                            if (reader.Value == "19")
-        //        //                            {
-        //        //                                reader.MoveToElement();
-        //        //                                EuroXML = reader.ReadOuterXml();
-        //        //                            }
-        //        //                        }
-        //        //                    }
-        //        //                }
-        //        //            }
-
-        //        //            break;
-        //        //    }
-        //        //}
-        //        //XmlDocument euroXmlDocument = new XmlDocument();
-        //        //euroXmlDocument.LoadXml(EuroXML);
-        //        //XmlNode xmlNode = euroXmlDocument.SelectSingleNode("Currency/Rate");
-        //        //bool b = decimal.TryParse(xmlNode.InnerText, out EURBYRCurrency);
-        //        //if (!b)
-        //        //    EURBYRCurrency = Convert.ToDecimal(xmlNode.InnerText = xmlNode.InnerText.Replace('.', ','));
-        //        //else
-        //        //    EURBYRCurrency = Convert.ToDecimal(xmlNode.InnerText);
-        //    }
-        //    catch (WebException ex)
-        //    {
-        //        MessageBox.Show(ex.Message + " . КУРСЫ МОЖНО БУДЕТ ВВЕСТИ ВРУЧНУЮ");
-        //        return false;
-        //    }
-        //    return true;
-        //}
-
-        public bool CBRDailyRates(DateTime date, ref decimal EURRUBCurrency, ref decimal USDRUBCurrency)
+        
+        public static bool CBRDailyRates(DateTime date, ref decimal EURRUBCurrency, ref decimal USDRUBCurrency)
         {
             string EuroXML = "";
             string USDXml = "";
@@ -9928,7 +9835,7 @@ namespace Infinium.Modules.Marketing.NewOrders
             return;
         }
 
-        public void SaveDateRates(DateTime DateTime, decimal USD, decimal RUB, decimal BYN, decimal USDRUB)
+        public static void SaveDateRates(DateTime DateTime, decimal USD, decimal RUB, decimal BYN, decimal USDRUB)
         {
             using (DataTable DT = new DataTable())
             {

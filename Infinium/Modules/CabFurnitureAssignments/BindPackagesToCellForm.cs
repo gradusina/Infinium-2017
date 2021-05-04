@@ -190,71 +190,70 @@ namespace Infinium
 
         private void BarcodeTextBox_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter)
+            if (e.KeyCode != Keys.Enter) return;
+
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
+
+            BarcodeLabel.Text = "";
+            CheckPicture.Visible = false;
+
+            BarcodeLabel.ForeColor = Color.FromArgb(240, 0, 0);
+
+            ClearControls();
+
+            if (BarcodeTextBox.Text.Length < 12)
             {
-                System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
-                sw.Start();
+                BarcodeTextBox.Clear();
+                BarcodeLabel.Text = "Неверный штрихкод";
+                CheckPicture.Visible = true;
+                CheckPicture.Image = Properties.Resources.cancel;
+                BarcodeLabel.ForeColor = Color.FromArgb(240, 0, 0);
+                return;
+            }
 
-                BarcodeLabel.Text = "";
-                CheckPicture.Visible = false;
+            string Prefix = BarcodeTextBox.Text.Substring(0, 3);
 
+            if (Prefix != "021")
+            {
+                BarcodeTextBox.Clear();
+                BarcodeLabel.Text = "Это не штрихкод упаковки";
+                CheckPicture.Visible = true;
+                CheckPicture.Image = Properties.Resources.cancel;
+                BarcodeLabel.ForeColor = Color.FromArgb(240, 0, 0);
+                return;
+            }
+
+            int CabFurniturePackageID = Convert.ToInt32(BarcodeTextBox.Text.Substring(3, 9));
+
+            if (!storagePackagesManager.IsPackageExist(CabFurniturePackageID))
+            {
+                CabFurniturePackageID = -1;
+                BarcodeTextBox.Clear();
+                BarcodeLabel.Text = "Упаковки не существует";
+                CheckPicture.Visible = true;
+                CheckPicture.Image = Properties.Resources.cancel;
+                BarcodeLabel.ForeColor = Color.FromArgb(240, 0, 0);
+                return;
+            }
+
+            BarcodeLabel.Text = BarcodeTextBox.Text;
+            BarcodeTextBox.Clear();
+
+            if (storagePackagesManager.GetBindPackagesLabels(CabFurniturePackageID))
+            {
+                CheckPicture.Visible = true;
+                CheckPicture.Image = Properties.Resources.OK;
+                BarcodeLabel.ForeColor = Color.FromArgb(82, 169, 24);
+            }
+            else
+            {
+                CheckPicture.Visible = true;
+                CheckPicture.Image = Properties.Resources.cancel;
                 BarcodeLabel.ForeColor = Color.FromArgb(240, 0, 0);
 
+                BarcodeLabel.Text = "Упаковки не существует";
                 ClearControls();
-
-                if (BarcodeTextBox.Text.Length < 12)
-                {
-                    BarcodeTextBox.Clear();
-                    BarcodeLabel.Text = "Неверный штрихкод";
-                    CheckPicture.Visible = true;
-                    CheckPicture.Image = Properties.Resources.cancel;
-                    BarcodeLabel.ForeColor = Color.FromArgb(240, 0, 0);
-                    return;
-                }
-
-                string Prefix = BarcodeTextBox.Text.Substring(0, 3);
-
-                if (Prefix != "021")
-                {
-                    BarcodeTextBox.Clear();
-                    BarcodeLabel.Text = "Это не штрихкод упаковки";
-                    CheckPicture.Visible = true;
-                    CheckPicture.Image = Properties.Resources.cancel;
-                    BarcodeLabel.ForeColor = Color.FromArgb(240, 0, 0);
-                    return;
-                }
-
-                int CabFurniturePackageID = Convert.ToInt32(BarcodeTextBox.Text.Substring(3, 9));
-
-                if (!storagePackagesManager.IsPackageExist(CabFurniturePackageID))
-                {
-                    CabFurniturePackageID = -1;
-                    BarcodeTextBox.Clear();
-                    BarcodeLabel.Text = "Упаковки не существует";
-                    CheckPicture.Visible = true;
-                    CheckPicture.Image = Properties.Resources.cancel;
-                    BarcodeLabel.ForeColor = Color.FromArgb(240, 0, 0);
-                    return;
-                }
-
-                BarcodeLabel.Text = BarcodeTextBox.Text;
-                BarcodeTextBox.Clear();
-
-                if (storagePackagesManager.GetBindPackagesLabels(CabFurniturePackageID))
-                {
-                    CheckPicture.Visible = true;
-                    CheckPicture.Image = Properties.Resources.OK;
-                    BarcodeLabel.ForeColor = Color.FromArgb(82, 169, 24);
-                }
-                else
-                {
-                    CheckPicture.Visible = true;
-                    CheckPicture.Image = Properties.Resources.cancel;
-                    BarcodeLabel.ForeColor = Color.FromArgb(240, 0, 0);
-
-                    BarcodeLabel.Text = "Упаковки не существует";
-                    ClearControls();
-                }
             }
 
         }

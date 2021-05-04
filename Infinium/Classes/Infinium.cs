@@ -414,52 +414,7 @@ namespace Infinium
 
 
         }
-
-        //public string GetMuttlementSaveFilePath()
-        //{
-        //    if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/Infinium") == false)//not exists
-        //    {
-        //        return string.Empty;
-        //    }
-
-        //    if (File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/Infinium/muttlementsave.txt") == true)
-        //    {
-        //        using (System.IO.StreamReader sr = new System.IO.StreamReader(Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/Infinium/muttlementsave.txt"))
-        //        {
-        //            string secondLine = string.Empty;
-        //            if (File.ReadLines(Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/Infinium/muttlementsave.txt").Count() > 1)
-        //                secondLine = File.ReadLines(Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/Infinium/muttlementsave.txt").Skip(1).First();
-
-        //            return secondLine;
-        //        }
-        //    }
-        //    else
-        //        return string.Empty;
-        //}
-
-        //public static void SetMuttlementSaveFilePath(string Path)
-        //{
-        //    if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/Infinium") == false)//not exists
-        //    {
-        //        Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/Infinium");
-        //    }
-        //    string[] fileLines = File.ReadAllLines(Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/Infinium/muttlementsave.txt");
-        //    for (int i = 1; i < fileLines.Count(); i++)
-        //    {
-        //        fileLines[i] = String.Empty; // deleting
-        //        File.WriteAllLines(Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/Infinium/muttlementsave.txt", fileLines);
-        //    }
-        //    string[] file = File.ReadAllLines(Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/Infinium/muttlementsave.txt");
-        //    List<string> list = new List<string>(file);
-        //    list.RemoveAll(x => x == string.Empty);
-        //    File.WriteAllLines(Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/Infinium/muttlementsave.txt", list);
-
-        //    using (System.IO.StreamWriter sr = new System.IO.StreamWriter(Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/Infinium/muttlementsave.txt", true))
-        //    {
-        //        sr.Write(Path);
-        //    }
-        //}
-
+        
         public string GetDBFSaveFilePath()
         {
             if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/Infinium") == false)//not exists

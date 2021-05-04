@@ -44,10 +44,10 @@
             this.ProgressBar = new System.Windows.Forms.ProgressBar();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.SpeedLabel = new System.Windows.Forms.Label();
-            this.DownloadedLabel = new System.Windows.Forms.Label();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.PercentsLabel = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.DownloadedLabel = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -262,15 +262,6 @@
             this.SpeedLabel.TabIndex = 255;
             this.SpeedLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // DownloadedLabel
-            // 
-            this.DownloadedLabel.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.DownloadedLabel.Location = new System.Drawing.Point(192, 53);
-            this.DownloadedLabel.Name = "DownloadedLabel";
-            this.DownloadedLabel.Size = new System.Drawing.Size(262, 23);
-            this.DownloadedLabel.TabIndex = 256;
-            this.DownloadedLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
             // saveFileDialog1
             // 
             this.saveFileDialog1.RestoreDirectory = true;
@@ -296,6 +287,15 @@
             this.label1.Size = new System.Drawing.Size(411, 21);
             this.label1.TabIndex = 264;
             this.label1.Text = "Открыть или сохранить на диске прикрепленный файл?";
+            // 
+            // DownloadedLabel
+            // 
+            this.DownloadedLabel.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.DownloadedLabel.Location = new System.Drawing.Point(192, 53);
+            this.DownloadedLabel.Name = "DownloadedLabel";
+            this.DownloadedLabel.Size = new System.Drawing.Size(262, 23);
+            this.DownloadedLabel.TabIndex = 256;
+            this.DownloadedLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // MuttlementDownloadForm
             // 
@@ -347,9 +347,9 @@
         private System.Windows.Forms.ProgressBar ProgressBar;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Label SpeedLabel;
-        private System.Windows.Forms.Label DownloadedLabel;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
         private System.Windows.Forms.Label PercentsLabel;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label DownloadedLabel;
     }
 }

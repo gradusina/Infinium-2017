@@ -208,7 +208,7 @@ namespace Infinium
 
             CurrencyTotalCost = DBFReport.CalcCurrencyCost(
                 Convert.ToInt32(((DataRowView)OrdersManager.MegaOrdersBindingSource.Current).Row["MegaOrderID"]),
-                Convert.ToInt32(((DataRowView)OrdersManager.MegaOrdersBindingSource.Current).Row["ClientID"]), CurrencyTypeID, PaymentRate);
+                Convert.ToInt32(((DataRowView)OrdersManager.MegaOrdersBindingSource.Current).Row["ClientID"]), PaymentRate);
             OrdersManager.SetCurrencyCost(Convert.ToDecimal(tbComplaintProfilCost.Text), Convert.ToDecimal(tbComplaintTPSCost.Text), tbComplaintNotes.Text, IsComplaintCheckBox.Checked, DelayOfPayment,
                 TransportCost, Convert.ToDecimal(AdditionalCostTextEdit.Text),
                 CurrencyTypeID, OriginalRate, PaymentRate,

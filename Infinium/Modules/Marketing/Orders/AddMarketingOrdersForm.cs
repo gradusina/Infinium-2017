@@ -1038,8 +1038,8 @@ namespace Infinium
                 F = FactoryIDD;
 
             OrdersManager.SaveOrder(MainOrderNotes.Text, F, false);
-            Infinium.Modules.Marketing.Orders.InvoiceReportToDBF.InvoiceReportToDBF DBFReport = 
-                new Modules.Marketing.Orders.InvoiceReportToDBF.InvoiceReportToDBF();
+            Infinium.Modules.Marketing.NewOrders.InvoiceReportToDBF.InvoiceReportToDBF DBFReport = 
+                new Modules.Marketing.NewOrders.InvoiceReportToDBF.InvoiceReportToDBF();
             decimal CurrencyTotalCost = DBFReport.CalcCurrencyCost(
                 Convert.ToInt32(((DataRowView)OrdersManager.MegaOrdersBindingSource.Current).Row["MegaOrderID"]),
                 Convert.ToInt32(((DataRowView)OrdersManager.MegaOrdersBindingSource.Current).Row["ClientID"]), OrdersManager.PaymentCurrency);

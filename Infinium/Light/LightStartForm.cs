@@ -33,7 +33,7 @@ namespace Infinium
         private static extern IntPtr GetActiveWindow();
 
         private Thread NotifyThread;
-        private int iRefreshTime = 150000;
+        private int iRefreshTime = 4000;
         private NotifyForm NotifyForm;
 
         public LightStartForm(LoginForm tLoginForm)

@@ -961,6 +961,12 @@
       <DependentUpon>AddMarketingNewOrdersForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Modules\Marketing\NewOrders\CalculateNewOrders.cs" />
+    <Compile Include="Modules\Marketing\NewOrders\NotesInvoiceReportToDBF\NotesInvoiceDecorReportToDbf.cs" />
+    <Compile Include="Modules\Marketing\NewOrders\NotesInvoiceReportToDBF\NotesInvoiceFrontsReportToDbf.cs" />
+    <Compile Include="Modules\Marketing\NewOrders\NotesInvoiceReportToDBF\NotesInvoiceReportToDbf.cs" />
+    <Compile Include="Modules\Marketing\NewOrders\PrepareReport\NotesInvoiceReportToDBF\NotesInvoiceDecorReportToDbf.cs" />
+    <Compile Include="Modules\Marketing\NewOrders\PrepareReport\NotesInvoiceReportToDBF\NotesInvoiceFrontsReportToDbf.cs" />
+    <Compile Include="Modules\Marketing\NewOrders\PrepareReport\NotesInvoiceReportToDBF\NotesInvoiceReportToDbf.cs" />
     <Compile Include="Modules\Marketing\NewOrders\ReportTypeForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -975,7 +981,7 @@
     </Compile>
     <Compile Include="Modules\Marketing\NewOrders\ColorInvoiceReportToDBF\ColorInvoiceDecorReportToDBF.cs" />
     <Compile Include="Modules\Marketing\NewOrders\ColorInvoiceReportToDBF\ColorInvoiceFrontsReportToDBF.cs" />
-    <Compile Include="Modules\Marketing\NewOrders\ColorInvoiceReportToDBF\ColorInvoiceReportToDBF.cs" />
+    <Compile Include="Modules\Marketing\NewOrders\ColorInvoiceReportToDBF\ColorInvoiceReportToDbf.cs" />
     <Compile Include="Modules\Marketing\NewOrders\CopyMarketingOrderForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -1034,9 +1040,9 @@
     <Compile Include="Modules\Marketing\NewOrders\NewOrderSelectClientsMenu.designer.cs">
       <DependentUpon>NewOrderSelectClientsMenu.cs</DependentUpon>
     </Compile>
-    <Compile Include="Modules\Marketing\NewOrders\PrepareReport\ColorInvoiceReportToDBF\ColorInvoiceDecorReportToDBF.cs" />
-    <Compile Include="Modules\Marketing\NewOrders\PrepareReport\ColorInvoiceReportToDBF\ColorInvoiceFrontsReportToDBF.cs" />
-    <Compile Include="Modules\Marketing\NewOrders\PrepareReport\ColorInvoiceReportToDBF\ColorInvoiceReportToDBF.cs" />
+    <Compile Include="Modules\Marketing\NewOrders\PrepareReport\ColorInvoiceReportToDBF\ColorInvoiceDecorReportToDbf.cs" />
+    <Compile Include="Modules\Marketing\NewOrders\PrepareReport\ColorInvoiceReportToDBF\ColorInvoiceFrontsReportToDbf.cs" />
+    <Compile Include="Modules\Marketing\NewOrders\PrepareReport\ColorInvoiceReportToDBF\ColorInvoiceReportToDbf.cs" />
     <Compile Include="Modules\Marketing\NewOrders\PrepareReport\DetailsReport.cs" />
     <Compile Include="Modules\Marketing\NewOrders\PrepareReport\InvoiceReport\InvoiceDecorReportToDBF.cs" />
     <Compile Include="Modules\Marketing\NewOrders\PrepareReport\InvoiceReport\InvoiceFrontsReportToDBF.cs" />

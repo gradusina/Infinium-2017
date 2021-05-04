@@ -6269,7 +6269,7 @@ namespace Infinium.Modules.WorkAssignments
                         continue;
                     }
 
-                    SticksCount = SticksCount * 1.15m / 2620;
+                    SticksCount = SticksCount * 1.15m / 2800;
                     SticksCount = decimal.Round(SticksCount, 1, MidpointRounding.AwayFromZero);
                     cell = sheet1.CreateRow(RowIndex).CreateCell(4);
                     cell.SetCellValue(SticksCount + " палок");
@@ -6297,7 +6297,7 @@ namespace Infinium.Modules.WorkAssignments
                         continue;
                     }
 
-                    SticksCount = SticksCount * 1.15m / 2620;
+                    SticksCount = SticksCount * 1.15m / 2800;
                     SticksCount = decimal.Round(SticksCount, 1, MidpointRounding.AwayFromZero);
                     cell = sheet1.CreateRow(RowIndex).CreateCell(4);
                     cell.SetCellValue(SticksCount + " палок");
@@ -6554,7 +6554,7 @@ namespace Infinium.Modules.WorkAssignments
                         continue;
                     }
 
-                    SticksCount = SticksCount * 1.15m / 2620;
+                    SticksCount = SticksCount * 1.15m / 2800;
                     SticksCount = decimal.Round(SticksCount, 1, MidpointRounding.AwayFromZero);
                     cell = sheet1.CreateRow(RowIndex).CreateCell(4);
                     cell.SetCellValue(SticksCount + " палок");
@@ -6579,7 +6579,7 @@ namespace Infinium.Modules.WorkAssignments
                         continue;
                     }
 
-                    SticksCount = SticksCount * 1.15m / 2620;
+                    SticksCount = SticksCount * 1.15m / 2800;
                     SticksCount = decimal.Round(SticksCount, 1, MidpointRounding.AwayFromZero);
                     cell = sheet1.CreateRow(RowIndex).CreateCell(4);
                     cell.SetCellValue(SticksCount + " палок");
@@ -7579,7 +7579,7 @@ namespace Infinium.Modules.WorkAssignments
                         continue;
                     }
 
-                    SticksCount = SticksCount * 1.15m / 2620;
+                    SticksCount = SticksCount * 1.15m / 2800;
                     SticksCount = decimal.Round(SticksCount, 1, MidpointRounding.AwayFromZero);
                     cell = sheet1.CreateRow(RowIndex).CreateCell(4);
                     cell.SetCellValue(SticksCount + " палок");
@@ -7606,7 +7606,7 @@ namespace Infinium.Modules.WorkAssignments
                         continue;
                     }
 
-                    SticksCount = SticksCount * 1.15m / 2620;
+                    SticksCount = SticksCount * 1.15m / 2800;
                     SticksCount = decimal.Round(SticksCount, 1, MidpointRounding.AwayFromZero);
                     cell = sheet1.CreateRow(RowIndex).CreateCell(4);
                     cell.SetCellValue(SticksCount + " палок");

@@ -1,15 +1,17 @@
-﻿
+﻿using NPOI.HSSF.UserModel;
+using NPOI.HSSF.Util;
+
 using System;
 using System.Data;
+using System.Data.OleDb;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 
-namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportToDbf
+namespace Infinium.Modules.Marketing.NewOrders.NotesInvoiceReportToDbf
 {
-    public class ColorInvoiceDecorReportToDbf
+    public class NotesInvoiceDecorReportToDbf
     {
-        decimal TransportCost = 0;
-        decimal AdditionalCost = 0;
         decimal PaymentRate = 1;
         int ClientID = 0;
         string ProfilCurrencyCode = "0";
@@ -29,10 +31,10 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportT
         private DataTable DecorDataTable = null;
         private DataTable DecorParametersDataTable = null;
 
-        public DataTable ProfilReportDataTable { get => _profilReportDataTable; }
-        public DataTable TPSReportDataTable { get => _tPSReportDataTable;  }
+        public DataTable ProfilReportDataTable => _profilReportDataTable;
+        public DataTable TPSReportDataTable => _tPSReportDataTable;
 
-        public ColorInvoiceDecorReportToDbf()
+        public NotesInvoiceDecorReportToDbf()
         {
             Create();
             CreateReportDataTable();
@@ -166,6 +168,7 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportT
             _profilReportDataTable.Columns.Add(new DataColumn("CurrencyCode", Type.GetType("System.String")));
             _profilReportDataTable.Columns.Add(new DataColumn("TPSCurCode", Type.GetType("System.String")));
             _profilReportDataTable.Columns.Add(new DataColumn("InvNumber", Type.GetType("System.String")));
+            _profilReportDataTable.Columns.Add(new DataColumn("Notes", Type.GetType("System.String")));
             _profilReportDataTable.Columns.Add(new DataColumn("Cvet", Type.GetType("System.String")));
             _profilReportDataTable.Columns.Add(new DataColumn("Patina", Type.GetType("System.String")));
             _profilReportDataTable.Columns.Add(new DataColumn("AccountingName", Type.GetType("System.String")));
@@ -202,7 +205,7 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportT
 
         public void GetMegaOrderInfo1(int MegaOrderID)
         {
-            string SelectCommand = "SELECT MegaOrderID, TransportCost, AdditionalCost, PaymentRate, ClientID, CurrencyTypeID FROM NewMegaOrders" +
+            string SelectCommand = "SELECT MegaOrderID, TransportCost, AdditionalCost, PaymentRate, ClientID, CurrencyTypeID FROM MegaOrders" +
                 " WHERE MegaOrderID = " + MegaOrderID;
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
             {
@@ -212,9 +215,9 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportT
                     {
                         int CurrencyTypeID = 1;
                         if (DT.Rows[0]["TransportCost"] != DBNull.Value)
-                            decimal.TryParse(DT.Rows[0]["TransportCost"].ToString(), out TransportCost);
+                            decimal.TryParse(DT.Rows[0]["TransportCost"].ToString(), out _);
                         if (DT.Rows[0]["AdditionalCost"] != DBNull.Value)
-                            decimal.TryParse(DT.Rows[0]["AdditionalCost"].ToString(), out AdditionalCost);
+                            decimal.TryParse(DT.Rows[0]["AdditionalCost"].ToString(), out _);
                         //if (DT.Rows[0]["PaymentRate"] != DBNull.Value)
                         //    decimal.TryParse(DT.Rows[0]["PaymentRate"].ToString(), out PaymentRate);
                         if (DT.Rows[0]["ClientID"] != DBNull.Value)
@@ -247,8 +250,8 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportT
 
         public void GetMegaOrderInfo(int MainOrderID)
         {
-            string SelectCommand = "SELECT MegaOrderID, TransportCost, AdditionalCost, PaymentRate, ClientID, CurrencyTypeID FROM NewMegaOrders" +
-                " WHERE MegaOrderID IN (SELECT MegaOrderID FROM NewMainOrders WHERE MainOrderID = " + MainOrderID + ")";
+            string SelectCommand = "SELECT MegaOrderID, TransportCost, AdditionalCost, PaymentRate, ClientID, CurrencyTypeID FROM MegaOrders" +
+                " WHERE MegaOrderID IN (SELECT MegaOrderID FROM MainOrders WHERE MainOrderID = " + MainOrderID + ")";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (DataTable DT = new DataTable())
@@ -257,9 +260,9 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportT
                     {
                         int CurrencyTypeID = 1;
                         if (DT.Rows[0]["TransportCost"] != DBNull.Value)
-                            decimal.TryParse(DT.Rows[0]["TransportCost"].ToString(), out TransportCost);
+                            decimal.TryParse(DT.Rows[0]["TransportCost"].ToString(), out _);
                         if (DT.Rows[0]["AdditionalCost"] != DBNull.Value)
-                            decimal.TryParse(DT.Rows[0]["AdditionalCost"].ToString(), out AdditionalCost);
+                            decimal.TryParse(DT.Rows[0]["AdditionalCost"].ToString(), out _);
                         //if (DT.Rows[0]["PaymentRate"] != DBNull.Value)
                         //    decimal.TryParse(DT.Rows[0]["PaymentRate"].ToString(), out PaymentRate);
                         if (DT.Rows[0]["ClientID"] != DBNull.Value)
@@ -407,6 +410,7 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportT
             DT.Columns.Add(new DataColumn("TPSCurCode", Type.GetType("System.String")));
             DT.Columns.Add(new DataColumn("InvNumber", Type.GetType("System.String")));
             DT.Columns.Add(new DataColumn("AccountingName", Type.GetType("System.String")));
+            DT.Columns.Add(new DataColumn("Notes", Type.GetType("System.String")));
             DT.Columns.Add(new DataColumn("Cvet", Type.GetType("System.String")));
             DT.Columns.Add(new DataColumn("Patina", Type.GetType("System.String")));
             DT.Columns.Add(new DataColumn("Count", Type.GetType("System.Decimal")));
@@ -462,6 +466,7 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportT
                     if (IsProfil(Convert.ToInt32(Rows[r]["DecorConfigID"])))
                     {
                         DataRow[] InvRows = PDT.Select("InvNumber = '" + Rows[r]["InvNumber"].ToString() +
+                                                       "' AND Notes = '" + Rows[r]["Notes"].ToString() +
                             "' AND ColorID = " + Rows[r]["ColorID"].ToString() +
                             " AND PatinaID = " + Rows[r]["PatinaID"].ToString());
                         if (InvRows.Count() == 0)
@@ -471,6 +476,7 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportT
                             NewRow["PaymentRate"] = PaymentRate;
                             NewRow["AccountingName"] = Rows[r]["AccountingName"].ToString();
                             NewRow["InvNumber"] = Rows[r]["InvNumber"].ToString();
+                            NewRow["Notes"] = Rows[r]["Notes"].ToString();
                             NewRow["Cvet"] = GetColorCode(ColorID);
                             NewRow["Patina"] = GetPatinaCode(PatinaID);
                             NewRow["CurrencyCode"] = ProfilCurrencyCode;
@@ -497,6 +503,7 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportT
                     else
                     {
                         DataRow[] InvRows = TDT.Select("InvNumber = '" + Rows[r]["InvNumber"].ToString() +
+                                                       " AND Notes = '" + Rows[r]["Notes"].ToString() +
                             "' AND ColorID = " + Rows[r]["ColorID"].ToString() +
                             " AND PatinaID = " + Rows[r]["PatinaID"].ToString());
                         if (InvRows.Count() == 0)
@@ -506,6 +513,7 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportT
                             NewRow["PaymentRate"] = PaymentRate;
                             NewRow["AccountingName"] = Rows[r]["AccountingName"].ToString();
                             NewRow["InvNumber"] = Rows[r]["InvNumber"].ToString();
+                            NewRow["Notes"] = Rows[r]["Notes"].ToString();
                             NewRow["Cvet"] = GetColorCode(ColorID);
                             NewRow["Patina"] = GetPatinaCode(PatinaID);
                             NewRow["CurrencyCode"] = ProfilCurrencyCode;
@@ -543,6 +551,7 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportT
                     if (IsProfil(Convert.ToInt32(Rows[r]["DecorConfigID"])))
                     {
                         DataRow[] InvRows = PDT.Select("InvNumber = '" + Rows[r]["InvNumber"].ToString() +
+                                                       "' AND Notes = '" + Rows[r]["Notes"].ToString() +
                             "' AND ColorID = " + Rows[r]["ColorID"].ToString() +
                             " AND PatinaID = " + Rows[r]["PatinaID"].ToString());
                         if (InvRows.Count() == 0)
@@ -552,6 +561,7 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportT
                             NewRow["PaymentRate"] = PaymentRate;
                             NewRow["AccountingName"] = Rows[r]["AccountingName"].ToString();
                             NewRow["InvNumber"] = Rows[r]["InvNumber"].ToString();
+                            NewRow["Notes"] = Rows[r]["Notes"].ToString();
                             NewRow["Cvet"] = GetColorCode(ColorID);
                             NewRow["Patina"] = GetPatinaCode(PatinaID);
                             NewRow["CurrencyCode"] = ProfilCurrencyCode;
@@ -657,6 +667,7 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportT
                     else
                     {
                         DataRow[] InvRows = TDT.Select("InvNumber = '" + Rows[r]["InvNumber"].ToString() +
+                                                       "' AND Notes = '" + Rows[r]["Notes"].ToString() +
                             "' AND ColorID = " + Rows[r]["ColorID"].ToString() +
                             " AND PatinaID = " + Rows[r]["PatinaID"].ToString());
                         if (InvRows.Count() == 0)
@@ -666,6 +677,7 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportT
                             NewRow["PaymentRate"] = PaymentRate;
                             NewRow["AccountingName"] = Rows[r]["AccountingName"].ToString();
                             NewRow["InvNumber"] = Rows[r]["InvNumber"].ToString();
+                            NewRow["Notes"] = Rows[r]["Notes"].ToString();
                             NewRow["Cvet"] = GetColorCode(ColorID);
                             NewRow["Patina"] = GetPatinaCode(PatinaID);
                             NewRow["CurrencyCode"] = ProfilCurrencyCode;
@@ -789,6 +801,7 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportT
                         NewRow["PaymentRate"] = PaymentRate;
                         NewRow["AccountingName"] = PDT.Rows[i]["AccountingName"].ToString();
                         NewRow["InvNumber"] = PDT.Rows[i]["InvNumber"].ToString();
+                        NewRow["Notes"] = PDT.Rows[i]["Notes"].ToString();
                         NewRow["Cvet"] = PDT.Rows[i]["Cvet"].ToString();
                         NewRow["Patina"] = PDT.Rows[i]["Patina"].ToString();
                         NewRow["CurrencyCode"] = ProfilCurrencyCode;
@@ -811,6 +824,7 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportT
                         NewRow["PaymentRate"] = PaymentRate;
                         NewRow["AccountingName"] = TDT.Rows[i]["AccountingName"].ToString();
                         NewRow["InvNumber"] = TDT.Rows[i]["InvNumber"].ToString();
+                        NewRow["Notes"] = TDT.Rows[i]["Notes"].ToString();
                         NewRow["Cvet"] = TDT.Rows[i]["Cvet"].ToString();
                         NewRow["Patina"] = TDT.Rows[i]["Patina"].ToString();
                         NewRow["CurrencyCode"] = ProfilCurrencyCode;
@@ -845,6 +859,7 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportT
                         NewRow["PaymentRate"] = PaymentRate;
                         NewRow["AccountingName"] = PDT.Rows[i]["AccountingName"].ToString();
                         NewRow["InvNumber"] = PDT.Rows[i]["InvNumber"].ToString();
+                        NewRow["Notes"] = PDT.Rows[i]["Notes"].ToString();
                         NewRow["Cvet"] = PDT.Rows[i]["Cvet"].ToString();
                         NewRow["Patina"] = PDT.Rows[i]["Patina"].ToString();
                         NewRow["CurrencyCode"] = ProfilCurrencyCode;
@@ -868,6 +883,7 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportT
                         NewRow["PaymentRate"] = PaymentRate;
                         NewRow["AccountingName"] = TDT.Rows[i]["AccountingName"].ToString();
                         NewRow["InvNumber"] = TDT.Rows[i]["InvNumber"].ToString();
+                        NewRow["Notes"] = TDT.Rows[i]["Notes"].ToString();
                         NewRow["Cvet"] = TDT.Rows[i]["Cvet"].ToString();
                         NewRow["Patina"] = TDT.Rows[i]["Patina"].ToString();
                         NewRow["CurrencyCode"] = ProfilCurrencyCode;
@@ -918,7 +934,7 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportT
                     string Patina = GetPatinaCode(Convert.ToInt32(Rows[r]["PatinaID"]));
                     if (IsProfil(Convert.ToInt32(Rows[r]["DecorConfigID"])))
                     {
-                        DataRow[] InvRows = PDT.Select($"InvNumber = '{ Rows[r]["InvNumber"].ToString() }' AND Cvet = '{ Cvet }' AND Patina = '{ Patina }'");
+                        DataRow[] InvRows = PDT.Select($"InvNumber = '{ Rows[r]["InvNumber"].ToString() }' AND Notes = '{ Rows[r]["Notes"].ToString() }' AND Cvet = '{ Cvet }' AND Patina = '{ Patina }'");
                         if (InvRows.Count() == 0)
                         {
                             DataRow NewRow = PDT.NewRow();
@@ -926,6 +942,7 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportT
                             NewRow["PaymentRate"] = PaymentRate;
                             NewRow["AccountingName"] = Rows[r]["AccountingName"].ToString();
                             NewRow["InvNumber"] = Rows[r]["InvNumber"].ToString();
+                            NewRow["Notes"] = Rows[r]["Notes"].ToString();
                             NewRow["Cvet"] = Cvet;
                             NewRow["Patina"] = Patina;
                             NewRow["CurrencyCode"] = ProfilCurrencyCode;
@@ -950,7 +967,7 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportT
                     }
                     else
                     {
-                        DataRow[] InvRows = TDT.Select($"InvNumber = '{ Rows[r]["InvNumber"].ToString() }' AND Cvet = '{ Cvet }' AND Patina = '{ Patina }'");
+                        DataRow[] InvRows = TDT.Select($"InvNumber = '{ Rows[r]["InvNumber"].ToString() }' AND Notes = '{ Rows[r]["Notes"].ToString() }' AND Cvet = '{ Cvet }' AND Patina = '{ Patina }'");
                         if (InvRows.Count() == 0)
                         {
                             DataRow NewRow = TDT.NewRow();
@@ -958,6 +975,7 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportT
                             NewRow["PaymentRate"] = PaymentRate;
                             NewRow["AccountingName"] = Rows[r]["AccountingName"].ToString();
                             NewRow["InvNumber"] = Rows[r]["InvNumber"].ToString();
+                            NewRow["Notes"] = Rows[r]["Notes"].ToString();
                             NewRow["Cvet"] = Cvet;
                             NewRow["Patina"] = Patina;
                             NewRow["CurrencyCode"] = ProfilCurrencyCode;
@@ -995,7 +1013,9 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportT
                     string Patina = GetPatinaCode(Convert.ToInt32(Rows[r]["PatinaID"]));
                     if (IsProfil(Convert.ToInt32(Rows[r]["DecorConfigID"])))
                     {
-                        DataRow[] InvRows = PDT.Select($"InvNumber = '{ Rows[r]["InvNumber"].ToString() }' AND Cvet = '{ Cvet }' AND Patina = '{ Patina }'");
+                        DataRow[] InvRows = PDT.Select($"InvNumber = '{ Rows[r]["InvNumber"].ToString() }' AND" +
+                                                       $" Notes = '{ Rows[r]["Notes"].ToString() }' AND" +
+                                                       $" Cvet = '{ Cvet }' AND Patina = '{ Patina }'");
                         if (InvRows.Count() == 0)
                         {
                             DataRow NewRow = PDT.NewRow();
@@ -1003,6 +1023,7 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportT
                             NewRow["PaymentRate"] = PaymentRate;
                             NewRow["AccountingName"] = Rows[r]["AccountingName"].ToString();
                             NewRow["InvNumber"] = Rows[r]["InvNumber"].ToString();
+                            NewRow["Notes"] = Rows[r]["Notes"].ToString();
                             NewRow["Cvet"] = Cvet;
                             NewRow["Patina"] = Patina;
                             NewRow["CurrencyCode"] = ProfilCurrencyCode;
@@ -1029,7 +1050,8 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportT
                     }
                     else
                     {
-                        DataRow[] InvRows = TDT.Select($"InvNumber = '{ Rows[r]["InvNumber"].ToString() }' AND Cvet = '{ Cvet }' AND Patina = '{ Patina }'");
+                        DataRow[] InvRows = TDT.Select($"InvNumber = '{ Rows[r]["InvNumber"].ToString() }' AND " +
+                                                       $" Notes = '{ Rows[r]["Notes"].ToString() }' AND Cvet = '{ Cvet }' AND Patina = '{ Patina }'");
                         if (InvRows.Count() == 0)
                         {
                             DataRow NewRow = TDT.NewRow();
@@ -1037,6 +1059,7 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportT
                             NewRow["PaymentRate"] = PaymentRate;
                             NewRow["AccountingName"] = Rows[r]["AccountingName"].ToString();
                             NewRow["InvNumber"] = Rows[r]["InvNumber"].ToString();
+                            NewRow["Notes"] = Rows[r]["Notes"].ToString();
                             NewRow["Cvet"] = Cvet;
                             NewRow["Patina"] = Patina;
                             NewRow["CurrencyCode"] = ProfilCurrencyCode;
@@ -1073,7 +1096,8 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportT
                     string Patina = GetPatinaCode(Convert.ToInt32(Rows[r]["PatinaID"]));
                     if (IsProfil(Convert.ToInt32(Rows[r]["DecorConfigID"])))
                     {
-                        DataRow[] InvRows = PDT.Select($"InvNumber = '{ Rows[r]["InvNumber"].ToString() }' AND Cvet = '{ Cvet }' AND Patina = '{ Patina }'");
+                        DataRow[] InvRows = PDT.Select($"InvNumber = '{ Rows[r]["InvNumber"].ToString() }' AND " +
+                                                       $" Notes = '{ Rows[r]["Notes"].ToString() }' AND Cvet = '{ Cvet }' AND Patina = '{ Patina }'");
                         if (InvRows.Count() == 0)
                         {
                             DataRow NewRow = PDT.NewRow();
@@ -1081,6 +1105,7 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportT
                             NewRow["PaymentRate"] = PaymentRate;
                             NewRow["AccountingName"] = Rows[r]["AccountingName"].ToString();
                             NewRow["InvNumber"] = Rows[r]["InvNumber"].ToString();
+                            NewRow["Notes"] = Rows[r]["Notes"].ToString();
                             NewRow["Cvet"] = Cvet;
                             NewRow["Patina"] = Patina;
                             NewRow["CurrencyCode"] = ProfilCurrencyCode;
@@ -1106,7 +1131,8 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportT
                     }
                     else
                     {
-                        DataRow[] InvRows = TDT.Select($"InvNumber = '{ Rows[r]["InvNumber"].ToString() }' AND Cvet = '{ Cvet }' AND Patina = '{ Patina }'");
+                        DataRow[] InvRows = TDT.Select($"InvNumber = '{ Rows[r]["InvNumber"].ToString() }' AND " +
+                                                       $" Notes = '{ Rows[r]["Notes"].ToString() }' AND Cvet = '{ Cvet }' AND Patina = '{ Patina }'");
                         if (InvRows.Count() == 0)
                         {
                             DataRow NewRow = TDT.NewRow();
@@ -1114,6 +1140,7 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportT
                             NewRow["PaymentRate"] = PaymentRate;
                             NewRow["AccountingName"] = Rows[r]["AccountingName"].ToString();
                             NewRow["InvNumber"] = Rows[r]["InvNumber"].ToString();
+                            NewRow["Notes"] = Rows[r]["Notes"].ToString();
                             NewRow["Cvet"] = Cvet;
                             NewRow["Patina"] = Patina;
                             NewRow["CurrencyCode"] = ProfilCurrencyCode;
@@ -1158,6 +1185,7 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportT
                         NewRow["PaymentRate"] = PaymentRate;
                         NewRow["AccountingName"] = PDT.Rows[g]["AccountingName"].ToString();
                         NewRow["InvNumber"] = PDT.Rows[g]["InvNumber"].ToString();
+                        NewRow["Notes"] = PDT.Rows[g]["Notes"].ToString();
                         NewRow["Cvet"] = PDT.Rows[g]["Cvet"].ToString();
                         NewRow["Patina"] = PDT.Rows[g]["Patina"].ToString();
                         NewRow["CurrencyCode"] = ProfilCurrencyCode;
@@ -1178,6 +1206,7 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportT
                         NewRow["PaymentRate"] = PaymentRate;
                         NewRow["AccountingName"] = PDT.Rows[g]["AccountingName"].ToString();
                         NewRow["InvNumber"] = PDT.Rows[g]["InvNumber"].ToString();
+                        NewRow["Notes"] = PDT.Rows[g]["Notes"].ToString();
                         NewRow["Cvet"] = PDT.Rows[g]["Cvet"].ToString();
                         NewRow["Patina"] = PDT.Rows[g]["Patina"].ToString();
                         NewRow["CurrencyCode"] = ProfilCurrencyCode;
@@ -1198,6 +1227,7 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportT
                         NewRow["PaymentRate"] = PaymentRate;
                         NewRow["AccountingName"] = PDT.Rows[g]["AccountingName"].ToString();
                         NewRow["InvNumber"] = PDT.Rows[g]["InvNumber"].ToString();
+                        NewRow["Notes"] = PDT.Rows[g]["Notes"].ToString();
                         NewRow["Cvet"] = PDT.Rows[g]["Cvet"].ToString();
                         NewRow["Patina"] = PDT.Rows[g]["Patina"].ToString();
                         NewRow["CurrencyCode"] = ProfilCurrencyCode;
@@ -1224,6 +1254,7 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportT
                         NewRow["PaymentRate"] = PaymentRate;
                         NewRow["AccountingName"] = TDT.Rows[g]["AccountingName"].ToString();
                         NewRow["InvNumber"] = TDT.Rows[g]["InvNumber"].ToString();
+                        NewRow["Notes"] = TDT.Rows[g]["Notes"].ToString();
                         NewRow["Cvet"] = TDT.Rows[g]["Cvet"].ToString();
                         NewRow["Patina"] = TDT.Rows[g]["Patina"].ToString();
                         NewRow["CurrencyCode"] = ProfilCurrencyCode;
@@ -1245,6 +1276,7 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportT
                         NewRow["PaymentRate"] = PaymentRate;
                         NewRow["AccountingName"] = TDT.Rows[g]["AccountingName"].ToString();
                         NewRow["InvNumber"] = TDT.Rows[g]["InvNumber"].ToString();
+                        NewRow["Notes"] = TDT.Rows[g]["Notes"].ToString();
                         NewRow["Cvet"] = TDT.Rows[g]["Cvet"].ToString();
                         NewRow["Patina"] = TDT.Rows[g]["Patina"].ToString();
                         NewRow["CurrencyCode"] = ProfilCurrencyCode;
@@ -1266,6 +1298,7 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportT
                         NewRow["PaymentRate"] = PaymentRate;
                         NewRow["AccountingName"] = TDT.Rows[g]["AccountingName"].ToString();
                         NewRow["InvNumber"] = TDT.Rows[g]["InvNumber"].ToString();
+                        NewRow["Notes"] = TDT.Rows[g]["Notes"].ToString();
                         NewRow["Cvet"] = TDT.Rows[g]["Cvet"].ToString();
                         NewRow["Patina"] = TDT.Rows[g]["Patina"].ToString();
                         NewRow["CurrencyCode"] = ProfilCurrencyCode;
@@ -1291,7 +1324,7 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportT
 
             using (DataView DV = new DataView(DecorOrdersDataTable))
             {
-                Items = DV.ToTable(true, new string[] { "InvNumber", "ColorID", "PatinaID" });
+                Items = DV.ToTable(true, new string[] { "InvNumber", "Notes", "ColorID", "PatinaID" });
             }
 
             //get count of different covertypes
@@ -1309,8 +1342,10 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportT
                     int ColorID = Convert.ToInt32(Items.Rows[i]["ColorID"]);
                     int PatinaID = Convert.ToInt32(Items.Rows[i]["PatinaID"]);
                     string InvNumber = Items.Rows[i]["InvNumber"].ToString();
+                    string Notes = Items.Rows[i]["Notes"].ToString();
                     DataRow[] ItemsRows = DecorOrdersDataTable.Select("PaymentRate = '" + PaymentRate.ToString() + "' AND InvNumber = '" + InvNumber +
-                        "' AND ColorID=" + ColorID + " AND PatinaID=" + PatinaID,
+                                                                      "' AND Notes = '" + Notes +
+                                                                      "' AND ColorID=" + ColorID + " AND PatinaID=" + PatinaID,
                         "Price ASC");
 
                     if (ItemsRows.Count() == 0)
@@ -1352,7 +1387,7 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportT
 
             Items.Dispose();
         }
-        
+
         public void Report(int[] MainOrderIDs, bool IsSample)
         {
             GetMegaOrderInfo(MainOrderIDs[0]);
@@ -1369,17 +1404,20 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportT
                     sWhere += "MainOrderID = " + MainOrderIDs[i].ToString();
             }
 
-            string SelectCommand = "SELECT NewDecorOrders.*, infiniu2_catalog.dbo.DecorConfig.AccountingName, infiniu2_catalog.dbo.DecorConfig.InvNumber, NewMegaOrders.PaymentRate FROM NewDecorOrders" +
-                " INNER JOIN NewMainOrders ON NewDecorOrders.MainOrderID = NewMainOrders.MainOrderID" +
-                " INNER JOIN NewMegaOrders ON NewMainOrders.MegaOrderID = NewMegaOrders.MegaOrderID" +
-                " INNER JOIN infiniu2_catalog.dbo.DecorConfig ON NewDecorOrders.DecorConfigID = infiniu2_catalog.dbo.DecorConfig.DecorConfigID" +
-                " WHERE NewDecorOrders.IsSample=1 AND InvNumber IS NOT NULL AND NewDecorOrders.MainOrderID IN (" + string.Join(",", MainOrderIDs) + ") ORDER BY InvNumber";
+            string SelectCommand = $@"SELECT 
+CASE WHEN MainOrders.Notes = '' THEN CAST(MegaOrders.OrderNumber AS varchar(12)) + '_' + CAST(DecorOrders.MainOrderID AS varchar(12)) ELSE CAST(MegaOrders.OrderNumber AS varchar(12)) 
+                         + '_' + CAST(DecorOrders.MainOrderID AS varchar(12)) + '_' + MainOrders.Notes END AS Notes,
+DecorOrders.*, infiniu2_catalog.dbo.DecorConfig.AccountingName, infiniu2_catalog.dbo.DecorConfig.InvNumber, MegaOrders.PaymentRate FROM DecorOrders" +
+                " INNER JOIN MainOrders ON DecorOrders.MainOrderID = MainOrders.MainOrderID" +
+                " INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID" +
+                " INNER JOIN infiniu2_catalog.dbo.DecorConfig ON DecorOrders.DecorConfigID = infiniu2_catalog.dbo.DecorConfig.DecorConfigID" +
+                " WHERE DecorOrders.IsSample=1 AND InvNumber IS NOT NULL AND DecorOrders.MainOrderID IN (" + string.Join(",", MainOrderIDs) + ") ORDER BY InvNumber";
             if (!IsSample)
-                SelectCommand = "SELECT NewDecorOrders.*, infiniu2_catalog.dbo.DecorConfig.AccountingName, infiniu2_catalog.dbo.DecorConfig.InvNumber, NewMegaOrders.PaymentRate FROM NewDecorOrders" +
-                    " INNER JOIN NewMainOrders ON NewDecorOrders.MainOrderID = NewMainOrders.MainOrderID" +
-                    " INNER JOIN NewMegaOrders ON NewMainOrders.MegaOrderID = NewMegaOrders.MegaOrderID" +
-                    " INNER JOIN infiniu2_catalog.dbo.DecorConfig ON NewDecorOrders.DecorConfigID = infiniu2_catalog.dbo.DecorConfig.DecorConfigID" +
-                    " WHERE NewDecorOrders.IsSample=0 AND InvNumber IS NOT NULL AND NewDecorOrders.MainOrderID IN (" + string.Join(",", MainOrderIDs) + ") ORDER BY InvNumber";
+                SelectCommand = "SELECT DecorOrders.*, infiniu2_catalog.dbo.DecorConfig.AccountingName, infiniu2_catalog.dbo.DecorConfig.InvNumber, MegaOrders.PaymentRate FROM DecorOrders" +
+                    " INNER JOIN MainOrders ON DecorOrders.MainOrderID = MainOrders.MainOrderID" +
+                    " INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID" +
+                    " INNER JOIN infiniu2_catalog.dbo.DecorConfig ON DecorOrders.DecorConfigID = infiniu2_catalog.dbo.DecorConfig.DecorConfigID" +
+                    " WHERE DecorOrders.IsSample=0 AND InvNumber IS NOT NULL AND DecorOrders.MainOrderID IN (" + string.Join(",", MainOrderIDs) + ") ORDER BY InvNumber";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand,
                 ConnectionStrings.MarketingOrdersConnectionString))
             {
@@ -1397,11 +1435,14 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportT
             _profilReportDataTable.Clear();
             _tPSReportDataTable.Clear();
 
-            string SelectCommand = "SELECT NewDecorOrders.*, infiniu2_catalog.dbo.DecorConfig.AccountingName, infiniu2_catalog.dbo.DecorConfig.InvNumber, NewMegaOrders.PaymentRate FROM NewDecorOrders" +
-                " INNER JOIN NewMainOrders ON NewDecorOrders.MainOrderID = NewMainOrders.MainOrderID" +
-                " INNER JOIN NewMegaOrders ON NewMainOrders.MegaOrderID = NewMegaOrders.MegaOrderID" +
-                " INNER JOIN infiniu2_catalog.dbo.DecorConfig ON NewDecorOrders.DecorConfigID = infiniu2_catalog.dbo.DecorConfig.DecorConfigID" +
-                " WHERE InvNumber IS NOT NULL AND NewDecorOrders.MainOrderID IN (" + string.Join(",", MainOrderIDs) + ") ORDER BY InvNumber";
+            string SelectCommand = $@"SELECT 
+CASE WHEN MainOrders.Notes = '' THEN CAST(MegaOrders.OrderNumber AS varchar(12)) + '_' + CAST(DecorOrders.MainOrderID AS varchar(12)) ELSE CAST(MegaOrders.OrderNumber AS varchar(12)) 
+                         + '_' + CAST(DecorOrders.MainOrderID AS varchar(12)) + '_' + MainOrders.Notes END AS Notes,
+DecorOrders.*, infiniu2_catalog.dbo.DecorConfig.AccountingName, infiniu2_catalog.dbo.DecorConfig.InvNumber, MegaOrders.PaymentRate FROM DecorOrders" +
+                " INNER JOIN MainOrders ON DecorOrders.MainOrderID = MainOrders.MainOrderID" +
+                " INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID" +
+                " INNER JOIN infiniu2_catalog.dbo.DecorConfig ON DecorOrders.DecorConfigID = infiniu2_catalog.dbo.DecorConfig.DecorConfigID" +
+                " WHERE InvNumber IS NOT NULL AND DecorOrders.MainOrderID IN (" + string.Join(",", MainOrderIDs) + ") ORDER BY InvNumber";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand,
                 ConnectionStrings.MarketingOrdersConnectionString))
             {
@@ -1412,5 +1453,4 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportT
 
         }
     }
-
 }
