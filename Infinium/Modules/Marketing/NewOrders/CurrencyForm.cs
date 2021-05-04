@@ -1,5 +1,5 @@
 ﻿using Infinium.Modules.Marketing.NewOrders;
-using Infinium.Modules.Marketing.NewOrders.InvoiceReportToDBF;
+using Infinium.Modules.Marketing.NewOrders.InvoiceReportToDbf;
 using System;
 using System.Data;
 using System.Drawing;
@@ -36,11 +36,11 @@ namespace Infinium
 
         OrdersManager OrdersManager = null;
         OrdersCalculate OrdersCalculate = null;
-        InvoiceReportToDBF DBFReport = null;
+        InvoiceReportToDbf DBFReport = null;
 
         bool CanSetDirectorDiscount = false;
 
-        public CurrencyForm(Form tMainForm, ref OrdersManager tOrdersManager, ref OrdersCalculate tOrdersCalculate, ref InvoiceReportToDBF tDBFReport, int iClientID, string ClientName, bool bCanSetDirectorDiscount)
+        public CurrencyForm(Form tMainForm, ref OrdersManager tOrdersManager, ref OrdersCalculate tOrdersCalculate, ref InvoiceReportToDbf tDBFReport, int iClientID, string ClientName, bool bCanSetDirectorDiscount)
         {
             MainForm = tMainForm;
             ClientID = iClientID;

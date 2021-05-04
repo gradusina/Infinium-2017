@@ -1,5 +1,5 @@
 ﻿using Infinium.Modules.Marketing.NewOrders;
-using Infinium.Modules.Marketing.NewOrders.InvoiceReportToDBF;
+using Infinium.Modules.Marketing.NewOrders.InvoiceReportToDbf;
 using System;
 using System.Data;
 using System.Windows.Forms;
@@ -1216,7 +1216,7 @@ namespace Infinium
                 OrdersCalculate.Recalculate(MegaOrderID, OrdersManager.CurrentProfilDiscountDirector, OrdersManager.CurrentTPSDiscountDirector,
                     OrdersManager.CurrentProfilTotalDiscount, OrdersManager.CurrentTPSTotalDiscount, DiscountPaymentCondition, OrdersManager.CurrencyTypeID,
                     OrdersManager.PaymentCurrency, OrdersManager.ConfirmDateTime);
-                InvoiceReportToDBF DBFReport = new InvoiceReportToDBF();
+                InvoiceReportToDbf DBFReport = new InvoiceReportToDbf();
                 decimal CurrencyTotalCost = DBFReport.CalcCurrencyCost(
                     Convert.ToInt32(((DataRowView)OrdersManager.MegaOrdersBindingSource.Current).Row["MegaOrderID"]),
                     Convert.ToInt32(((DataRowView)OrdersManager.MegaOrdersBindingSource.Current).Row["ClientID"]), OrdersManager.PaymentCurrency);

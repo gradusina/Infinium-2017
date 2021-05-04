@@ -8,22 +8,22 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 
-namespace Infinium.Modules.Marketing.NewOrders.InvoiceReportToDBF
+namespace Infinium.Modules.Marketing.NewOrders.InvoiceReportToDbf
 {
-    public class InvoiceReportToDBF
+    public class InvoiceReportToDbf
     {
         decimal VAT = 1.0m;
-        public InvoiceFrontsReportToDBF FrontsReport;
-        public InvoiceDecorReportToDBF DecorReport = null;
+        public InvoiceFrontsReportToDbf FrontsReport;
+        public InvoiceDecorReportToDbf DecorReport = null;
         //HSSFWorkbook hssfworkbook;
         public DataTable CurrencyTypesDataTable = null;
         public DataTable ProfilReportTable = null;
         public DataTable TPSReportTable = null;
 
-        public InvoiceReportToDBF()
+        public InvoiceReportToDbf()
         {
-            FrontsReport = new InvoiceFrontsReportToDBF();
-            DecorReport = new InvoiceDecorReportToDBF();
+            FrontsReport = new InvoiceFrontsReportToDbf();
+            DecorReport = new InvoiceDecorReportToDbf();
 
             CreateProfilReportTable();
 

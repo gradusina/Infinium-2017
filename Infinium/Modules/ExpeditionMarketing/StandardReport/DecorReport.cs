@@ -1,17 +1,11 @@
-﻿using NPOI.HPSF;
-using NPOI.HSSF.UserModel;
-using NPOI.HSSF.Util;
+﻿using Infinium.Modules.Marketing.Orders;
 
 using System;
 using System.Data;
-using System.Data.OleDb;
 using System.Data.SqlClient;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Windows.Forms;
 
-namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.SimpleReport
+namespace Infinium.Modules.ExpeditionMarketing.StandardReport
 {
     public class DecorReport
     {
@@ -19,7 +13,7 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.SimpleReport
         string TPSCurrencyCode = "0";
         decimal PaymentRate = 0;
         string UNN = string.Empty;
-        int ClientID = 0;
+        //int ClientID = 0;
 
         public DataTable CurrencyTypesDT = null;
 
@@ -54,7 +48,7 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.SimpleReport
             DecorOrdersDataTable = new DataTable();
 
             string SelectCommand = @"SELECT ProductID, ProductName, MeasureID, ReportParam FROM DecorProducts" +
-                " WHERE (ProductID IN (SELECT ProductID FROM DecorConfig WHERE (Enabled = 1))) ORDER BY ProductName ASC";
+                " WHERE (ProductID IN (SELECT ProductID FROM DecorConfig)) ORDER BY ProductName ASC";
             DecorProductsDataTable = new DataTable();
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
@@ -62,7 +56,7 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.SimpleReport
             }
             DecorDataTable = new DataTable();
             SelectCommand = @"SELECT DISTINCT TechStore.TechStoreID AS DecorID, TechStore.TechStoreName AS Name, DecorConfig.ProductID FROM TechStore 
-                INNER JOIN DecorConfig ON TechStore.TechStoreID = DecorConfig.DecorID AND Enabled = 1 ORDER BY TechStoreName";
+                INNER JOIN DecorConfig ON TechStore.TechStoreID = DecorConfig.DecorID ORDER BY TechStoreName";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(DecorDataTable);
@@ -130,48 +124,7 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.SimpleReport
 
             if (Rows[0]["FactoryID"].ToString() == "1")
                 return true;
-
             return false;
-        }
-
-        public void GetMegaOrderInfo(int MainOrderID)
-        {
-            string SelectCommand = "SELECT MegaOrderID, TransportCost, AdditionalCost, Rate, ClientID, CurrencyTypeID FROM NewMegaOrders" +
-                " WHERE MegaOrderID IN (SELECT MegaOrderID FROM NewMainOrders WHERE MainOrderID = " + MainOrderID + ")";
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
-            {
-                using (DataTable DT = new DataTable())
-                {
-                    if (DA.Fill(DT) > 0)
-                    {
-                        int CurrencyTypeID = 0;
-
-                        if (DT.Rows[0]["ClientID"] != DBNull.Value)
-                            int.TryParse(DT.Rows[0]["ClientID"].ToString(), out ClientID);
-                        if (DT.Rows[0]["CurrencyTypeID"] != DBNull.Value)
-                            int.TryParse(DT.Rows[0]["CurrencyTypeID"].ToString(), out CurrencyTypeID);
-
-                        DataRow[] rows = CurrencyTypesDT.Select("CurrencyTypeID = " + CurrencyTypeID);
-                        if (rows.Count() > 0)
-                        {
-                            ProfilCurrencyCode = rows[0]["CurrencyCode"].ToString();
-                            TPSCurrencyCode = rows[0]["TPSCurrencyCode"].ToString();
-                        }
-                    }
-                }
-            }
-            SelectCommand = "SELECT UNN FROM Clients WHERE ClientID = " + ClientID;
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingReferenceConnectionString))
-            {
-                using (DataTable DT = new DataTable())
-                {
-                    if (DA.Fill(DT) > 0)
-                    {
-                        if (DT.Rows[0]["UNN"] != DBNull.Value)
-                            UNN = DT.Rows[0]["UNN"].ToString();
-                    }
-                }
-            }
         }
 
         private int GetReportMeasureTypeID(int DecorConfigID)
@@ -282,8 +235,8 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.SimpleReport
             DT.Columns.Add(new DataColumn("TotalDiscount", Type.GetType("System.String")));
             DT.Columns.Add(new DataColumn("ProductID", Type.GetType("System.Int32")));
             DT.Columns.Add(new DataColumn("DecorID", Type.GetType("System.Int32")));
-            DT.Columns.Add(new DataColumn("Count", Type.GetType("System.Decimal")));
             DT.Columns.Add(new DataColumn("TotalCount", Type.GetType("System.Int32")));
+            DT.Columns.Add(new DataColumn("Count", Type.GetType("System.Decimal")));
             DT.Columns.Add(new DataColumn("Cost", Type.GetType("System.Decimal")));
             DT.Columns.Add(new DataColumn("Price", Type.GetType("System.Decimal")));
             DT.Columns.Add(new DataColumn("Weight", Type.GetType("System.Decimal")));
@@ -331,6 +284,8 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.SimpleReport
                         if (PDT.Rows.Count == 0)
                         {
                             DataRow NewRow = PDT.NewRow();
+                            NewRow["UNN"] = UNN;
+                            NewRow["PaymentRate"] = PaymentRate;
                             NewRow["AccountingName"] = Rows[r]["AccountingName"].ToString();
                             NewRow["InvNumber"] = Rows[r]["InvNumber"].ToString();
                             NewRow["CurrencyCode"] = ProfilCurrencyCode;
@@ -914,8 +869,10 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.SimpleReport
                                 (Convert.ToDecimal(PDT.Rows[0]["TotalCount"]) + Convert.ToDecimal(Rows[r]["Count"]));
                             PDT.Rows[0]["TotalCount"] = Convert.ToDecimal(PDT.Rows[0]["TotalCount"]) +
                                 Convert.ToDecimal(Rows[r]["Count"]);
+
                             PDT.Rows[0]["Count"] = Convert.ToDecimal(PDT.Rows[0]["Count"]) +
                                                             Convert.ToDecimal(Rows[r]["Count"]);
+                            PDT.Rows[0]["Price"] = Convert.ToDecimal(Rows[r]["Price"]);
                             PDT.Rows[0]["Cost"] = Convert.ToDecimal(PDT.Rows[0]["Cost"]) +
                                                             Convert.ToDecimal(Rows[r]["Cost"]);
                             PDT.Rows[0]["CostWithTransport"] = Convert.ToDecimal(PDT.Rows[0]["CostWithTransport"]) + Convert.ToDecimal(Rows[r]["CostWithTransport"]);
@@ -966,7 +923,7 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.SimpleReport
                             TDT.Rows[0]["CostWithTransport"] = Convert.ToDecimal(TDT.Rows[0]["CostWithTransport"]) + Convert.ToDecimal(Rows[r]["CostWithTransport"]);
                             TDT.Rows[0]["Weight"] = Convert.ToDecimal(TDT.Rows[0]["Weight"]) +
                                                             GetDecorWeight(Rows[r]);
-                            continue;
+                            break;
                         }
                     }
                 }
@@ -1383,11 +1340,28 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.SimpleReport
 
         }
 
-        private void Collect()
+        private void Collect(bool ProfilVerify, bool TPSVerify, int ClientID, int DiscountPaymentConditionID)
         {
             DataTable DistRatesDT = new DataTable();
             DataTable Items = new DataTable();
 
+            for (int i = 0; i < DecorOrdersDataTable.Rows.Count; i++)
+            {
+                if (DecorOrdersDataTable.Rows[i]["FactoryID"].ToString() == "1")//profil
+                {
+                    if (ClientID != 145 && DiscountPaymentConditionID != 6 && !ProfilVerify)
+                    {
+                        DecorOrdersDataTable.Rows[i]["PaymentRate"] = Convert.ToDecimal(DecorOrdersDataTable.Rows[i]["Rate"]) * 1.05m;
+                    }
+                }
+                if (DecorOrdersDataTable.Rows[i]["FactoryID"].ToString() == "2")//tps
+                {
+                    if (ClientID != 145 && DiscountPaymentConditionID != 6 && !TPSVerify)
+                    {
+                        DecorOrdersDataTable.Rows[i]["PaymentRate"] = Convert.ToDecimal(DecorOrdersDataTable.Rows[i]["Rate"]) * 1.05m;
+                    }
+                }
+            }
             using (DataView DV = new DataView(DecorOrdersDataTable))
             {
                 Items = DV.ToTable(true, new string[] { "DecorID" });
@@ -1448,53 +1422,94 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.SimpleReport
             Items.Dispose();
         }
 
-        public void Report(int[] MainOrderIDs, bool IsSample)
+        public void Report(int[] DispatchID, int CurrencyTypeID, bool ProfilVerify, bool TPSVerify, int ClientID, int DiscountPaymentConditionID)
         {
-            GetMegaOrderInfo(MainOrderIDs[0]);
+            DataRow[] rows = CurrencyTypesDT.Select("CurrencyTypeID = " + CurrencyTypeID);
+            if (rows.Count() > 0)
+            {
+                ProfilCurrencyCode = rows[0]["CurrencyCode"].ToString();
+                TPSCurrencyCode = rows[0]["TPSCurrencyCode"].ToString();
+            }
+            string SelectCommand = "SELECT UNN FROM Clients WHERE ClientID = " + ClientID;
+            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingReferenceConnectionString))
+            {
+                using (DataTable DT = new DataTable())
+                {
+                    if (DA.Fill(DT) > 0)
+                    {
+                        if (DT.Rows[0]["UNN"] != DBNull.Value)
+                            UNN = DT.Rows[0]["UNN"].ToString();
+                    }
+                }
+            }
 
-            ProfilReportDataTable.Clear();
-            TPSReportDataTable.Clear();
-            DecorOrdersDataTable.Clear();
-            string SelectCommand = @"SELECT NewDecorOrders.*, infiniu2_catalog.dbo.DecorConfig.AccountingName, infiniu2_catalog.dbo.DecorConfig.InvNumber, NewMegaOrders.PaymentRate FROM NewDecorOrders
-                INNER JOIN NewMainOrders ON NewDecorOrders.MainOrderID = NewMainOrders.MainOrderID
-                INNER JOIN NewMegaOrders ON NewMainOrders.MegaOrderID = NewMegaOrders.MegaOrderID
-                INNER JOIN infiniu2_catalog.dbo.DecorConfig ON NewDecorOrders.DecorConfigID = infiniu2_catalog.dbo.DecorConfig.DecorConfigID
-                WHERE NewDecorOrders.MainOrderID IN (" + string.Join(",", MainOrderIDs) + ") AND NewDecorOrders.IsSample=1 ORDER BY DecorID";
-            if (!IsSample)
-                SelectCommand = @"SELECT NewDecorOrders.*, infiniu2_catalog.dbo.DecorConfig.AccountingName, infiniu2_catalog.dbo.DecorConfig.InvNumber, NewMegaOrders.PaymentRate FROM NewDecorOrders
-                INNER JOIN NewMainOrders ON NewDecorOrders.MainOrderID = NewMainOrders.MainOrderID
-                INNER JOIN NewMegaOrders ON NewMainOrders.MegaOrderID = NewMegaOrders.MegaOrderID
-                INNER JOIN infiniu2_catalog.dbo.DecorConfig ON NewDecorOrders.DecorConfigID = infiniu2_catalog.dbo.DecorConfig.DecorConfigID
-                WHERE NewDecorOrders.MainOrderID IN (" + string.Join(",", MainOrderIDs) + ") AND NewDecorOrders.IsSample=0 ORDER BY DecorID";
+            SelectCommand = @"SELECT DISTINCT PackageDetailID, PackageDetails.Count AS Count, (DecorOrders.Cost * PackageDetails.Count / DecorOrders.Count) AS Cost, (DecorOrders.CostWithTransport * PackageDetails.Count / DecorOrders.Count) AS CostWithTransport, DecorOrders.*, infiniu2_catalog.dbo.DecorConfig.AccountingName, infiniu2_catalog.dbo.DecorConfig.InvNumber, MegaOrders.Rate, MegaOrders.PaymentRate FROM PackageDetails
+                INNER JOIN DecorOrders ON PackageDetails.OrderID = DecorOrders.DecorOrderID
+                INNER JOIN MainOrders ON DecorOrders.MainOrderID = MainOrders.MainOrderID
+                INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID
+                INNER JOIN  Packages ON PackageDetails.PackageID = Packages.PackageID AND Packages.ProductType = 1
+                AND Packages.DispatchID IN (" + string.Join(",", DispatchID) + @")
+                INNER JOIN infiniu2_catalog.dbo.DecorConfig ON DecorOrders.DecorConfigID = infiniu2_catalog.dbo.DecorConfig.DecorConfigID
+                WHERE InvNumber IS NOT NULL ORDER BY InvNumber";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand,
                 ConnectionStrings.MarketingOrdersConnectionString))
             {
                 DA.Fill(DecorOrdersDataTable);
             }
 
-            Collect();
+            Collect(ProfilVerify, TPSVerify, ClientID, DiscountPaymentConditionID);
 
         }
 
-        public void Report(int[] MainOrderIDs)
+        public void Report(int[] DispatchID, int CurrencyTypeID,
+            bool ProfilVerify, bool TPSVerify, int ClientID, int DiscountPaymentConditionID, bool IsSample)
         {
-            GetMegaOrderInfo(MainOrderIDs[0]);
-
+            DecorOrdersDataTable.Clear();
             ProfilReportDataTable.Clear();
             TPSReportDataTable.Clear();
-            DecorOrdersDataTable.Clear();
-            string SelectCommand = @"SELECT NewDecorOrders.*, infiniu2_catalog.dbo.DecorConfig.AccountingName, infiniu2_catalog.dbo.DecorConfig.InvNumber, NewMegaOrders.PaymentRate FROM NewDecorOrders
-                INNER JOIN NewMainOrders ON NewDecorOrders.MainOrderID = NewMainOrders.MainOrderID
-                INNER JOIN NewMegaOrders ON NewMainOrders.MegaOrderID = NewMegaOrders.MegaOrderID
-                INNER JOIN infiniu2_catalog.dbo.DecorConfig ON NewDecorOrders.DecorConfigID = infiniu2_catalog.dbo.DecorConfig.DecorConfigID
-                WHERE NewDecorOrders.MainOrderID IN (" + string.Join(",", MainOrderIDs) + ") ORDER BY DecorID";
+            DataRow[] rows = CurrencyTypesDT.Select("CurrencyTypeID = " + CurrencyTypeID);
+            if (rows.Count() > 0)
+            {
+                ProfilCurrencyCode = rows[0]["CurrencyCode"].ToString();
+                TPSCurrencyCode = rows[0]["TPSCurrencyCode"].ToString();
+            }
+            string SelectCommand = "SELECT UNN FROM Clients WHERE ClientID = " + ClientID;
+            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingReferenceConnectionString))
+            {
+                using (DataTable DT = new DataTable())
+                {
+                    if (DA.Fill(DT) > 0)
+                    {
+                        if (DT.Rows[0]["UNN"] != DBNull.Value)
+                            UNN = DT.Rows[0]["UNN"].ToString();
+                    }
+                }
+            }
+
+            SelectCommand = @"SELECT DISTINCT PackageDetailID, PackageDetails.Count AS Count, (DecorOrders.Cost * PackageDetails.Count / DecorOrders.Count) AS Cost, (DecorOrders.CostWithTransport * PackageDetails.Count / DecorOrders.Count) AS CostWithTransport, DecorOrders.*, infiniu2_catalog.dbo.DecorConfig.AccountingName, infiniu2_catalog.dbo.DecorConfig.InvNumber, MegaOrders.Rate, MegaOrders.PaymentRate FROM PackageDetails
+                INNER JOIN DecorOrders ON PackageDetails.OrderID = DecorOrders.DecorOrderID
+                INNER JOIN MainOrders ON DecorOrders.MainOrderID = MainOrders.MainOrderID
+                INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID
+                INNER JOIN  Packages ON PackageDetails.PackageID = Packages.PackageID AND Packages.ProductType = 1
+                AND Packages.DispatchID IN (" + string.Join(",", DispatchID) + @")
+                INNER JOIN infiniu2_catalog.dbo.DecorConfig ON DecorOrders.DecorConfigID = infiniu2_catalog.dbo.DecorConfig.DecorConfigID
+                WHERE DecorOrders.IsSample=1 AND InvNumber IS NOT NULL ORDER BY InvNumber";
+            if (!IsSample)
+                SelectCommand = @"SELECT DISTINCT PackageDetailID, PackageDetails.Count AS Count, (DecorOrders.Cost * PackageDetails.Count / DecorOrders.Count) AS Cost, (DecorOrders.CostWithTransport * PackageDetails.Count / DecorOrders.Count) AS CostWithTransport, DecorOrders.*, infiniu2_catalog.dbo.DecorConfig.AccountingName, infiniu2_catalog.dbo.DecorConfig.InvNumber, MegaOrders.Rate, MegaOrders.PaymentRate FROM PackageDetails
+                INNER JOIN DecorOrders ON PackageDetails.OrderID = DecorOrders.DecorOrderID
+                INNER JOIN MainOrders ON DecorOrders.MainOrderID = MainOrders.MainOrderID
+                INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID
+                INNER JOIN  Packages ON PackageDetails.PackageID = Packages.PackageID AND Packages.ProductType = 1
+                AND Packages.DispatchID IN (" + string.Join(",", DispatchID) + @")
+                INNER JOIN infiniu2_catalog.dbo.DecorConfig ON DecorOrders.DecorConfigID = infiniu2_catalog.dbo.DecorConfig.DecorConfigID
+                WHERE DecorOrders.IsSample=0 AND InvNumber IS NOT NULL ORDER BY InvNumber";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand,
                 ConnectionStrings.MarketingOrdersConnectionString))
             {
                 DA.Fill(DecorOrdersDataTable);
             }
 
-            Collect();
+            Collect(ProfilVerify, TPSVerify, ClientID, DiscountPaymentConditionID);
 
         }
 

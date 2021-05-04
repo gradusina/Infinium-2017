@@ -42,16 +42,16 @@
             this.btnCancel = new ComponentFactory.Krypton.Toolkit.KryptonButton();
             this.AnimateTimer = new System.Windows.Forms.Timer(this.components);
             this.label11 = new System.Windows.Forms.Label();
-            this.NotSendReportCheck = new ComponentFactory.Krypton.Toolkit.KryptonCheckButton();
+            this.cbCvetPatina = new ComponentFactory.Krypton.Toolkit.KryptonCheckButton();
             this.label57 = new System.Windows.Forms.Label();
-            this.SendReportCheck = new ComponentFactory.Krypton.Toolkit.KryptonCheckButton();
+            this.cbStandard = new ComponentFactory.Krypton.Toolkit.KryptonCheckButton();
             this.kryptonCheckSet1 = new ComponentFactory.Krypton.Toolkit.KryptonCheckSet(this.components);
             this.kryptonBorderEdge1 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonCheckSet2 = new ComponentFactory.Krypton.Toolkit.KryptonCheckSet(this.components);
             this.kryptonBorderEdge19 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
+            this.label1 = new System.Windows.Forms.Label();
+            this.cbNotes = new ComponentFactory.Krypton.Toolkit.KryptonCheckButton();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.kryptonCheckSet1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.kryptonCheckSet2)).BeginInit();
             this.SuspendLayout();
             // 
             // kryptonBorderEdge20
@@ -60,7 +60,7 @@
             this.kryptonBorderEdge20.Location = new System.Drawing.Point(544, 0);
             this.kryptonBorderEdge20.Name = "kryptonBorderEdge20";
             this.kryptonBorderEdge20.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge20.Size = new System.Drawing.Size(1, 297);
+            this.kryptonBorderEdge20.Size = new System.Drawing.Size(1, 386);
             this.kryptonBorderEdge20.StateCommon.Color1 = System.Drawing.Color.Black;
             this.kryptonBorderEdge20.Text = "kryptonBorderEdge20";
             // 
@@ -70,14 +70,14 @@
             this.kryptonBorderEdge21.Location = new System.Drawing.Point(0, 0);
             this.kryptonBorderEdge21.Name = "kryptonBorderEdge21";
             this.kryptonBorderEdge21.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge21.Size = new System.Drawing.Size(1, 297);
+            this.kryptonBorderEdge21.Size = new System.Drawing.Size(1, 386);
             this.kryptonBorderEdge21.StateCommon.Color1 = System.Drawing.Color.Black;
             this.kryptonBorderEdge21.Text = "kryptonBorderEdge21";
             // 
             // kryptonBorderEdge22
             // 
             this.kryptonBorderEdge22.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.kryptonBorderEdge22.Location = new System.Drawing.Point(1, 296);
+            this.kryptonBorderEdge22.Location = new System.Drawing.Point(1, 385);
             this.kryptonBorderEdge22.Name = "kryptonBorderEdge22";
             this.kryptonBorderEdge22.Size = new System.Drawing.Size(543, 1);
             this.kryptonBorderEdge22.StateCommon.Color1 = System.Drawing.Color.Black;
@@ -96,7 +96,7 @@
             // 
             this.btnOk.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.btnOk.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOk.Location = new System.Drawing.Point(135, 232);
+            this.btnOk.Location = new System.Drawing.Point(135, 321);
             this.btnOk.Name = "btnOk";
             this.btnOk.Palette = this.StandardButtonsPalette;
             this.btnOk.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Custom;
@@ -183,7 +183,7 @@
             this.kryptonBorderEdge2.Location = new System.Drawing.Point(-308, 77);
             this.kryptonBorderEdge2.Name = "kryptonBorderEdge2";
             this.kryptonBorderEdge2.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge2.Size = new System.Drawing.Size(4, 52);
+            this.kryptonBorderEdge2.Size = new System.Drawing.Size(4, 141);
             this.kryptonBorderEdge2.StateCommon.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(150)))), ((int)(((byte)(201)))));
             this.kryptonBorderEdge2.StateCommon.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
             this.kryptonBorderEdge2.Text = "kryptonBorderEdge2";
@@ -192,7 +192,7 @@
             // 
             this.btnCancel.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(287, 232);
+            this.btnCancel.Location = new System.Drawing.Point(287, 321);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Palette = this.StandardButtonsPalette;
             this.btnCancel.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Custom;
@@ -221,144 +221,145 @@
             this.label11.AutoSize = true;
             this.label11.Font = new System.Drawing.Font("Segoe UI", 21F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.label11.ForeColor = System.Drawing.Color.Black;
-            this.label11.Location = new System.Drawing.Point(208, 128);
+            this.label11.Location = new System.Drawing.Point(208, 144);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(188, 60);
             this.label11.TabIndex = 395;
             this.label11.Text = "С разделением \r\nпо цвету и патине";
             // 
-            // NotSendReportCheck
+            // cbCvetPatina
             // 
-            this.NotSendReportCheck.Cursor = System.Windows.Forms.Cursors.Default;
-            this.NotSendReportCheck.Location = new System.Drawing.Point(149, 131);
-            this.NotSendReportCheck.Name = "NotSendReportCheck";
-            this.NotSendReportCheck.OverrideDefault.Back.Color1 = System.Drawing.Color.Transparent;
-            this.NotSendReportCheck.OverrideDefault.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.NotSendReportCheck.OverrideDefault.Border.Draw = ComponentFactory.Krypton.Toolkit.InheritBool.False;
-            this.NotSendReportCheck.OverrideDefault.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            this.cbCvetPatina.Cursor = System.Windows.Forms.Cursors.Default;
+            this.cbCvetPatina.Location = new System.Drawing.Point(149, 147);
+            this.cbCvetPatina.Name = "cbCvetPatina";
+            this.cbCvetPatina.OverrideDefault.Back.Color1 = System.Drawing.Color.Transparent;
+            this.cbCvetPatina.OverrideDefault.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.cbCvetPatina.OverrideDefault.Border.Draw = ComponentFactory.Krypton.Toolkit.InheritBool.False;
+            this.cbCvetPatina.OverrideDefault.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.NotSendReportCheck.Size = new System.Drawing.Size(54, 55);
-            this.NotSendReportCheck.StateCheckedNormal.Back.Color1 = System.Drawing.Color.Transparent;
-            this.NotSendReportCheck.StateCheckedNormal.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.NotSendReportCheck.StateCheckedNormal.Border.Draw = ComponentFactory.Krypton.Toolkit.InheritBool.False;
-            this.NotSendReportCheck.StateCheckedNormal.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            this.cbCvetPatina.Size = new System.Drawing.Size(54, 55);
+            this.cbCvetPatina.StateCheckedNormal.Back.Color1 = System.Drawing.Color.Transparent;
+            this.cbCvetPatina.StateCheckedNormal.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.cbCvetPatina.StateCheckedNormal.Border.Draw = ComponentFactory.Krypton.Toolkit.InheritBool.False;
+            this.cbCvetPatina.StateCheckedNormal.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.NotSendReportCheck.StateCheckedPressed.Border.Draw = ComponentFactory.Krypton.Toolkit.InheritBool.False;
-            this.NotSendReportCheck.StateCheckedPressed.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            this.cbCvetPatina.StateCheckedPressed.Border.Draw = ComponentFactory.Krypton.Toolkit.InheritBool.False;
+            this.cbCvetPatina.StateCheckedPressed.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.NotSendReportCheck.StateCheckedTracking.Back.Color1 = System.Drawing.Color.Transparent;
-            this.NotSendReportCheck.StateCheckedTracking.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.NotSendReportCheck.StateCheckedTracking.Border.Draw = ComponentFactory.Krypton.Toolkit.InheritBool.False;
-            this.NotSendReportCheck.StateCheckedTracking.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            this.cbCvetPatina.StateCheckedTracking.Back.Color1 = System.Drawing.Color.Transparent;
+            this.cbCvetPatina.StateCheckedTracking.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.cbCvetPatina.StateCheckedTracking.Border.Draw = ComponentFactory.Krypton.Toolkit.InheritBool.False;
+            this.cbCvetPatina.StateCheckedTracking.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.NotSendReportCheck.StateCommon.Back.Color1 = System.Drawing.Color.Transparent;
-            this.NotSendReportCheck.StateCommon.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.NotSendReportCheck.StateCommon.Border.Draw = ComponentFactory.Krypton.Toolkit.InheritBool.False;
-            this.NotSendReportCheck.StateCommon.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            this.cbCvetPatina.StateCommon.Back.Color1 = System.Drawing.Color.Transparent;
+            this.cbCvetPatina.StateCommon.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.cbCvetPatina.StateCommon.Border.Draw = ComponentFactory.Krypton.Toolkit.InheritBool.False;
+            this.cbCvetPatina.StateCommon.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.NotSendReportCheck.StatePressed.Back.Color1 = System.Drawing.Color.Transparent;
-            this.NotSendReportCheck.StatePressed.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.NotSendReportCheck.StatePressed.Border.Draw = ComponentFactory.Krypton.Toolkit.InheritBool.False;
-            this.NotSendReportCheck.StatePressed.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            this.cbCvetPatina.StatePressed.Back.Color1 = System.Drawing.Color.Transparent;
+            this.cbCvetPatina.StatePressed.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.cbCvetPatina.StatePressed.Border.Draw = ComponentFactory.Krypton.Toolkit.InheritBool.False;
+            this.cbCvetPatina.StatePressed.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.NotSendReportCheck.StateTracking.Back.Color1 = System.Drawing.Color.Transparent;
-            this.NotSendReportCheck.StateTracking.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.NotSendReportCheck.StateTracking.Border.Draw = ComponentFactory.Krypton.Toolkit.InheritBool.False;
-            this.NotSendReportCheck.StateTracking.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            this.cbCvetPatina.StateTracking.Back.Color1 = System.Drawing.Color.Transparent;
+            this.cbCvetPatina.StateTracking.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.cbCvetPatina.StateTracking.Border.Draw = ComponentFactory.Krypton.Toolkit.InheritBool.False;
+            this.cbCvetPatina.StateTracking.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.NotSendReportCheck.TabIndex = 394;
-            this.NotSendReportCheck.Values.ImageStates.ImageCheckedNormal = ((System.Drawing.Image)(resources.GetObject("NotSendReportCheck.Values.ImageStates.ImageCheckedNormal")));
-            this.NotSendReportCheck.Values.ImageStates.ImageCheckedPressed = ((System.Drawing.Image)(resources.GetObject("NotSendReportCheck.Values.ImageStates.ImageCheckedPressed")));
-            this.NotSendReportCheck.Values.ImageStates.ImageCheckedTracking = ((System.Drawing.Image)(resources.GetObject("NotSendReportCheck.Values.ImageStates.ImageCheckedTracking")));
-            this.NotSendReportCheck.Values.ImageStates.ImageNormal = ((System.Drawing.Image)(resources.GetObject("NotSendReportCheck.Values.ImageStates.ImageNormal")));
-            this.NotSendReportCheck.Values.ImageStates.ImagePressed = ((System.Drawing.Image)(resources.GetObject("NotSendReportCheck.Values.ImageStates.ImagePressed")));
-            this.NotSendReportCheck.Values.ImageStates.ImageTracking = ((System.Drawing.Image)(resources.GetObject("NotSendReportCheck.Values.ImageStates.ImageTracking")));
-            this.NotSendReportCheck.Values.Text = "";
+            this.cbCvetPatina.TabIndex = 394;
+            this.cbCvetPatina.Values.ImageStates.ImageCheckedNormal = ((System.Drawing.Image)(resources.GetObject("NotSendReportCheck.Values.ImageStates.ImageCheckedNormal")));
+            this.cbCvetPatina.Values.ImageStates.ImageCheckedPressed = ((System.Drawing.Image)(resources.GetObject("NotSendReportCheck.Values.ImageStates.ImageCheckedPressed")));
+            this.cbCvetPatina.Values.ImageStates.ImageCheckedTracking = ((System.Drawing.Image)(resources.GetObject("NotSendReportCheck.Values.ImageStates.ImageCheckedTracking")));
+            this.cbCvetPatina.Values.ImageStates.ImageNormal = ((System.Drawing.Image)(resources.GetObject("NotSendReportCheck.Values.ImageStates.ImageNormal")));
+            this.cbCvetPatina.Values.ImageStates.ImagePressed = ((System.Drawing.Image)(resources.GetObject("NotSendReportCheck.Values.ImageStates.ImagePressed")));
+            this.cbCvetPatina.Values.ImageStates.ImageTracking = ((System.Drawing.Image)(resources.GetObject("NotSendReportCheck.Values.ImageStates.ImageTracking")));
+            this.cbCvetPatina.Values.Text = "";
             // 
             // label57
             // 
             this.label57.AutoSize = true;
             this.label57.Font = new System.Drawing.Font("Segoe UI", 21F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.label57.ForeColor = System.Drawing.Color.Black;
-            this.label57.Location = new System.Drawing.Point(208, 82);
+            this.label57.Location = new System.Drawing.Point(208, 98);
             this.label57.Name = "label57";
             this.label57.Size = new System.Drawing.Size(140, 30);
             this.label57.TabIndex = 393;
             this.label57.Text = "Стандартный";
             // 
-            // SendReportCheck
+            // cbStandard
             // 
-            this.SendReportCheck.Checked = true;
-            this.SendReportCheck.Cursor = System.Windows.Forms.Cursors.Default;
-            this.SendReportCheck.Location = new System.Drawing.Point(149, 70);
-            this.SendReportCheck.Name = "SendReportCheck";
-            this.SendReportCheck.OverrideDefault.Back.Color1 = System.Drawing.Color.Transparent;
-            this.SendReportCheck.OverrideDefault.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.SendReportCheck.OverrideDefault.Border.Draw = ComponentFactory.Krypton.Toolkit.InheritBool.False;
-            this.SendReportCheck.OverrideDefault.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            this.cbStandard.Checked = true;
+            this.cbStandard.Cursor = System.Windows.Forms.Cursors.Default;
+            this.cbStandard.Location = new System.Drawing.Point(149, 86);
+            this.cbStandard.Name = "cbStandard";
+            this.cbStandard.OverrideDefault.Back.Color1 = System.Drawing.Color.Transparent;
+            this.cbStandard.OverrideDefault.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.cbStandard.OverrideDefault.Border.Draw = ComponentFactory.Krypton.Toolkit.InheritBool.False;
+            this.cbStandard.OverrideDefault.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.SendReportCheck.Size = new System.Drawing.Size(54, 55);
-            this.SendReportCheck.StateCheckedNormal.Back.Color1 = System.Drawing.Color.Transparent;
-            this.SendReportCheck.StateCheckedNormal.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.SendReportCheck.StateCheckedNormal.Border.Draw = ComponentFactory.Krypton.Toolkit.InheritBool.False;
-            this.SendReportCheck.StateCheckedNormal.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            this.cbStandard.Size = new System.Drawing.Size(54, 55);
+            this.cbStandard.StateCheckedNormal.Back.Color1 = System.Drawing.Color.Transparent;
+            this.cbStandard.StateCheckedNormal.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.cbStandard.StateCheckedNormal.Border.Draw = ComponentFactory.Krypton.Toolkit.InheritBool.False;
+            this.cbStandard.StateCheckedNormal.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.SendReportCheck.StateCheckedPressed.Border.Draw = ComponentFactory.Krypton.Toolkit.InheritBool.False;
-            this.SendReportCheck.StateCheckedPressed.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            this.cbStandard.StateCheckedPressed.Border.Draw = ComponentFactory.Krypton.Toolkit.InheritBool.False;
+            this.cbStandard.StateCheckedPressed.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.SendReportCheck.StateCheckedTracking.Back.Color1 = System.Drawing.Color.Transparent;
-            this.SendReportCheck.StateCheckedTracking.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.SendReportCheck.StateCheckedTracking.Border.Draw = ComponentFactory.Krypton.Toolkit.InheritBool.False;
-            this.SendReportCheck.StateCheckedTracking.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            this.cbStandard.StateCheckedTracking.Back.Color1 = System.Drawing.Color.Transparent;
+            this.cbStandard.StateCheckedTracking.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.cbStandard.StateCheckedTracking.Border.Draw = ComponentFactory.Krypton.Toolkit.InheritBool.False;
+            this.cbStandard.StateCheckedTracking.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.SendReportCheck.StateCommon.Back.Color1 = System.Drawing.Color.Transparent;
-            this.SendReportCheck.StateCommon.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.SendReportCheck.StateCommon.Border.Draw = ComponentFactory.Krypton.Toolkit.InheritBool.False;
-            this.SendReportCheck.StateCommon.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            this.cbStandard.StateCommon.Back.Color1 = System.Drawing.Color.Transparent;
+            this.cbStandard.StateCommon.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.cbStandard.StateCommon.Border.Draw = ComponentFactory.Krypton.Toolkit.InheritBool.False;
+            this.cbStandard.StateCommon.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.SendReportCheck.StatePressed.Back.Color1 = System.Drawing.Color.Transparent;
-            this.SendReportCheck.StatePressed.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.SendReportCheck.StatePressed.Border.Draw = ComponentFactory.Krypton.Toolkit.InheritBool.False;
-            this.SendReportCheck.StatePressed.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            this.cbStandard.StatePressed.Back.Color1 = System.Drawing.Color.Transparent;
+            this.cbStandard.StatePressed.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.cbStandard.StatePressed.Border.Draw = ComponentFactory.Krypton.Toolkit.InheritBool.False;
+            this.cbStandard.StatePressed.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.SendReportCheck.StateTracking.Back.Color1 = System.Drawing.Color.Transparent;
-            this.SendReportCheck.StateTracking.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.SendReportCheck.StateTracking.Border.Draw = ComponentFactory.Krypton.Toolkit.InheritBool.False;
-            this.SendReportCheck.StateTracking.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            this.cbStandard.StateTracking.Back.Color1 = System.Drawing.Color.Transparent;
+            this.cbStandard.StateTracking.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.cbStandard.StateTracking.Border.Draw = ComponentFactory.Krypton.Toolkit.InheritBool.False;
+            this.cbStandard.StateTracking.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.SendReportCheck.TabIndex = 392;
-            this.SendReportCheck.Values.ImageStates.ImageCheckedNormal = ((System.Drawing.Image)(resources.GetObject("SendReportCheck.Values.ImageStates.ImageCheckedNormal")));
-            this.SendReportCheck.Values.ImageStates.ImageCheckedPressed = ((System.Drawing.Image)(resources.GetObject("SendReportCheck.Values.ImageStates.ImageCheckedPressed")));
-            this.SendReportCheck.Values.ImageStates.ImageCheckedTracking = ((System.Drawing.Image)(resources.GetObject("SendReportCheck.Values.ImageStates.ImageCheckedTracking")));
-            this.SendReportCheck.Values.ImageStates.ImageNormal = ((System.Drawing.Image)(resources.GetObject("SendReportCheck.Values.ImageStates.ImageNormal")));
-            this.SendReportCheck.Values.ImageStates.ImagePressed = ((System.Drawing.Image)(resources.GetObject("SendReportCheck.Values.ImageStates.ImagePressed")));
-            this.SendReportCheck.Values.ImageStates.ImageTracking = ((System.Drawing.Image)(resources.GetObject("SendReportCheck.Values.ImageStates.ImageTracking")));
-            this.SendReportCheck.Values.Text = "";
+            this.cbStandard.TabIndex = 392;
+            this.cbStandard.Values.ImageStates.ImageCheckedNormal = ((System.Drawing.Image)(resources.GetObject("SendReportCheck.Values.ImageStates.ImageCheckedNormal")));
+            this.cbStandard.Values.ImageStates.ImageCheckedPressed = ((System.Drawing.Image)(resources.GetObject("SendReportCheck.Values.ImageStates.ImageCheckedPressed")));
+            this.cbStandard.Values.ImageStates.ImageCheckedTracking = ((System.Drawing.Image)(resources.GetObject("SendReportCheck.Values.ImageStates.ImageCheckedTracking")));
+            this.cbStandard.Values.ImageStates.ImageNormal = ((System.Drawing.Image)(resources.GetObject("SendReportCheck.Values.ImageStates.ImageNormal")));
+            this.cbStandard.Values.ImageStates.ImagePressed = ((System.Drawing.Image)(resources.GetObject("SendReportCheck.Values.ImageStates.ImagePressed")));
+            this.cbStandard.Values.ImageStates.ImageTracking = ((System.Drawing.Image)(resources.GetObject("SendReportCheck.Values.ImageStates.ImageTracking")));
+            this.cbStandard.Values.Text = "";
             // 
             // kryptonCheckSet1
             // 
-            this.kryptonCheckSet1.CheckButtons.Add(this.NotSendReportCheck);
-            this.kryptonCheckSet1.CheckButtons.Add(this.SendReportCheck);
-            this.kryptonCheckSet1.CheckedButton = this.SendReportCheck;
+            this.kryptonCheckSet1.CheckButtons.Add(this.cbCvetPatina);
+            this.kryptonCheckSet1.CheckButtons.Add(this.cbStandard);
+            this.kryptonCheckSet1.CheckButtons.Add(this.cbNotes);
+            this.kryptonCheckSet1.CheckedButton = this.cbStandard;
             // 
             // kryptonBorderEdge1
             // 
             this.kryptonBorderEdge1.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.kryptonBorderEdge1.Location = new System.Drawing.Point(1, 210);
+            this.kryptonBorderEdge1.Location = new System.Drawing.Point(1, 299);
             this.kryptonBorderEdge1.Name = "kryptonBorderEdge1";
             this.kryptonBorderEdge1.Size = new System.Drawing.Size(545, 1);
             this.kryptonBorderEdge1.StateCommon.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(140)))), ((int)(((byte)(140)))), ((int)(((byte)(140)))));
@@ -376,16 +377,84 @@
             this.kryptonBorderEdge19.StateCommon.Color1 = System.Drawing.Color.DarkGray;
             this.kryptonBorderEdge19.Text = "kryptonBorderEdge19";
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 21F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.label1.ForeColor = System.Drawing.Color.Black;
+            this.label1.Location = new System.Drawing.Point(208, 220);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(167, 30);
+            this.label1.TabIndex = 403;
+            this.label1.Text = "С примечанием";
+            // 
+            // cbNotes
+            // 
+            this.cbNotes.Cursor = System.Windows.Forms.Cursors.Default;
+            this.cbNotes.Location = new System.Drawing.Point(149, 208);
+            this.cbNotes.Name = "cbNotes";
+            this.cbNotes.OverrideDefault.Back.Color1 = System.Drawing.Color.Transparent;
+            this.cbNotes.OverrideDefault.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.cbNotes.OverrideDefault.Border.Draw = ComponentFactory.Krypton.Toolkit.InheritBool.False;
+            this.cbNotes.OverrideDefault.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.cbNotes.Size = new System.Drawing.Size(54, 55);
+            this.cbNotes.StateCheckedNormal.Back.Color1 = System.Drawing.Color.Transparent;
+            this.cbNotes.StateCheckedNormal.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.cbNotes.StateCheckedNormal.Border.Draw = ComponentFactory.Krypton.Toolkit.InheritBool.False;
+            this.cbNotes.StateCheckedNormal.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.cbNotes.StateCheckedPressed.Border.Draw = ComponentFactory.Krypton.Toolkit.InheritBool.False;
+            this.cbNotes.StateCheckedPressed.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.cbNotes.StateCheckedTracking.Back.Color1 = System.Drawing.Color.Transparent;
+            this.cbNotes.StateCheckedTracking.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.cbNotes.StateCheckedTracking.Border.Draw = ComponentFactory.Krypton.Toolkit.InheritBool.False;
+            this.cbNotes.StateCheckedTracking.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.cbNotes.StateCommon.Back.Color1 = System.Drawing.Color.Transparent;
+            this.cbNotes.StateCommon.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.cbNotes.StateCommon.Border.Draw = ComponentFactory.Krypton.Toolkit.InheritBool.False;
+            this.cbNotes.StateCommon.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.cbNotes.StatePressed.Back.Color1 = System.Drawing.Color.Transparent;
+            this.cbNotes.StatePressed.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.cbNotes.StatePressed.Border.Draw = ComponentFactory.Krypton.Toolkit.InheritBool.False;
+            this.cbNotes.StatePressed.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.cbNotes.StateTracking.Back.Color1 = System.Drawing.Color.Transparent;
+            this.cbNotes.StateTracking.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.cbNotes.StateTracking.Border.Draw = ComponentFactory.Krypton.Toolkit.InheritBool.False;
+            this.cbNotes.StateTracking.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.cbNotes.TabIndex = 402;
+            this.cbNotes.Values.ImageStates.ImageCheckedNormal = ((System.Drawing.Image)(resources.GetObject("kryptonCheckButton1.Values.ImageStates.ImageCheckedNormal")));
+            this.cbNotes.Values.ImageStates.ImageCheckedPressed = ((System.Drawing.Image)(resources.GetObject("kryptonCheckButton1.Values.ImageStates.ImageCheckedPressed")));
+            this.cbNotes.Values.ImageStates.ImageCheckedTracking = ((System.Drawing.Image)(resources.GetObject("kryptonCheckButton1.Values.ImageStates.ImageCheckedTracking")));
+            this.cbNotes.Values.ImageStates.ImageNormal = ((System.Drawing.Image)(resources.GetObject("kryptonCheckButton1.Values.ImageStates.ImageNormal")));
+            this.cbNotes.Values.ImageStates.ImagePressed = ((System.Drawing.Image)(resources.GetObject("kryptonCheckButton1.Values.ImageStates.ImagePressed")));
+            this.cbNotes.Values.ImageStates.ImageTracking = ((System.Drawing.Image)(resources.GetObject("kryptonCheckButton1.Values.ImageStates.ImageTracking")));
+            this.cbNotes.Values.Text = "";
+            // 
             // ReportTypeForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(545, 297);
+            this.ClientSize = new System.Drawing.Size(545, 386);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.cbNotes);
             this.Controls.Add(this.kryptonBorderEdge1);
             this.Controls.Add(this.label11);
-            this.Controls.Add(this.NotSendReportCheck);
+            this.Controls.Add(this.cbCvetPatina);
             this.Controls.Add(this.label57);
-            this.Controls.Add(this.SendReportCheck);
+            this.Controls.Add(this.cbStandard);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.kryptonBorderEdge2);
             this.Controls.Add(this.kryptonBorderEdge19);
@@ -404,7 +473,6 @@
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.kryptonCheckSet1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.kryptonCheckSet2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -424,12 +492,13 @@
         private ComponentFactory.Krypton.Toolkit.KryptonPalette StandardButtonsPalette;
         private System.Windows.Forms.Timer AnimateTimer;
         private System.Windows.Forms.Label label11;
-        private ComponentFactory.Krypton.Toolkit.KryptonCheckButton NotSendReportCheck;
+        private ComponentFactory.Krypton.Toolkit.KryptonCheckButton cbCvetPatina;
         private System.Windows.Forms.Label label57;
-        private ComponentFactory.Krypton.Toolkit.KryptonCheckButton SendReportCheck;
+        private ComponentFactory.Krypton.Toolkit.KryptonCheckButton cbStandard;
         private ComponentFactory.Krypton.Toolkit.KryptonCheckSet kryptonCheckSet1;
         private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge1;
-        private ComponentFactory.Krypton.Toolkit.KryptonCheckSet kryptonCheckSet2;
         private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge19;
+        private ComponentFactory.Krypton.Toolkit.KryptonCheckButton cbNotes;
+        private System.Windows.Forms.Label label1;
     }
 }

@@ -3,14 +3,13 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 
-namespace Infinium.Modules.Marketing.NewOrders.NotesInvoiceReportToDbf
+namespace Infinium.Modules.ExpeditionMarketing.NotesDispatchReportToDbf
 {
-    public class NotesInvoiceFrontsReportToDbf
+    public class NotesDispatchFrontsReportToDbf
     {
         private DataTable _profilReportDataTable = null;
         private DataTable _tPSReportDataTable = null;
         private DataTable AluminiumFrontsDataTable = null;
-        private int ClientID = 0;
         private DataTable CurrencyTypesDT;
         private DataTable DecorConfigDataTable = null;
         private DataTable DecorInvNumbersDT = null;
@@ -26,17 +25,14 @@ namespace Infinium.Modules.Marketing.NewOrders.NotesInvoiceReportToDbf
         private DataTable PatinaDataTable = null;
         private DataTable PatinaRALDataTable = null;
         private decimal PaymentRate = 1;
-
-        //int CurrencyCode = 0;
         private string ProfilCurrencyCode = "0";
-
         private DataTable ProfilFrontsOrdersDataTable = null;
         private DataTable TechStoreDataTable = null;
         private string TPSCurrencyCode = "0";
         private DataTable TPSFrontsOrdersDataTable = null;
         private string UNN = string.Empty;
 
-        public NotesInvoiceFrontsReportToDbf()
+        public NotesDispatchFrontsReportToDbf()
         {
             Create();
             CreateReportDataTables();
@@ -51,39 +47,57 @@ namespace Infinium.Modules.Marketing.NewOrders.NotesInvoiceReportToDbf
             _tPSReportDataTable.Clear();
         }
 
-        public void Report(int[] MainOrderIDs, bool IsSample)
+        private string GetPatinaCode(int PatinaID)
+        {
+            string PatinaName = string.Empty;
+            try
+            {
+                DataRow[] Rows = PatinaDataTable.Select("PatinaID = " + PatinaID);
+                PatinaName = Rows[0]["Patina"].ToString();
+            }
+            catch
+            {
+                return string.Empty;
+            }
+            return PatinaName;
+        }
+
+        public void Report(int[] DispatchID, int CurrencyTypeID, int ClientID, bool ProfilVerify, bool TPSVerify, int DiscountPaymentConditionID)
         {
             ProfilFrontsOrdersDataTable.Clear();
             TPSFrontsOrdersDataTable.Clear();
             DecorInvNumbersDT.Clear();
-            GetMegaOrderInfo(MainOrderIDs[0]);
 
-            string sWhere = "";
-
-            for (int i = 0; i < MainOrderIDs.Count(); i++)
+            DataRow[] rows = CurrencyTypesDT.Select("CurrencyTypeID = " + CurrencyTypeID);
+            if (rows.Count() > 0)
             {
-                if (sWhere != "")
-                    sWhere += " OR MainOrderID = " + MainOrderIDs[i].ToString();
-                else
-                    sWhere += "MainOrderID = " + MainOrderIDs[i].ToString();
+                ProfilCurrencyCode = rows[0]["CurrencyCode"].ToString();
+                TPSCurrencyCode = rows[0]["TPSCurrencyCode"].ToString();
             }
-            string SelectCommand = $@"SELECT
-CASE WHEN NewMainOrders.Notes = '' THEN CAST(NewMegaOrders.OrderNumber AS varchar(12)) + '_' + CAST(NewFrontsOrders.MainOrderID AS varchar(12)) ELSE CAST(NewMegaOrders.OrderNumber AS varchar(12))
-                         + '_' + CAST(NewFrontsOrders.MainOrderID AS varchar(12)) + '_' + NewMainOrders.Notes END AS Notes,
-NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, NewMegaOrders.PaymentRate FROM NewFrontsOrders" +
-                " INNER JOIN infiniu2_catalog.dbo.FrontsConfig ON NewFrontsOrders.FrontConfigID = infiniu2_catalog.dbo.FrontsConfig.FrontConfigID" +
-                " INNER JOIN NewMainOrders ON NewFrontsOrders.MainOrderID = NewMainOrders.MainOrderID" +
-                " INNER JOIN NewMegaOrders ON NewMainOrders.MegaOrderID = NewMegaOrders.MegaOrderID" +
-                " WHERE NewFrontsOrders.IsSample=1 AND InvNumber IS NOT NULL AND NewFrontsOrders.MainOrderID IN (" + string.Join(",", MainOrderIDs) + ") ORDER BY InvNumber";
-            if (!IsSample)
-                SelectCommand = $@"SELECT
-CASE WHEN NewMainOrders.Notes = '' THEN CAST(NewMegaOrders.OrderNumber AS varchar(12)) + '_' + CAST(NewFrontsOrders.MainOrderID AS varchar(12)) ELSE CAST(NewMegaOrders.OrderNumber AS varchar(12))
-                         + '_' + CAST(NewFrontsOrders.MainOrderID AS varchar(12)) + '_' + NewMainOrders.Notes END AS Notes,
-NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, NewMegaOrders.PaymentRate FROM NewFrontsOrders" +
-                " INNER JOIN infiniu2_catalog.dbo.FrontsConfig ON NewFrontsOrders.FrontConfigID = infiniu2_catalog.dbo.FrontsConfig.FrontConfigID" +
-                " INNER JOIN NewMainOrders ON NewFrontsOrders.MainOrderID = NewMainOrders.MainOrderID" +
-                " INNER JOIN NewMegaOrders ON NewMainOrders.MegaOrderID = NewMegaOrders.MegaOrderID" +
-                " WHERE NewFrontsOrders.IsSample=0 AND InvNumber IS NOT NULL AND NewFrontsOrders.MainOrderID IN (" + string.Join(",", MainOrderIDs) + ") ORDER BY InvNumber";
+            string SelectCommand = "SELECT UNN FROM Clients WHERE ClientID = " + ClientID;
+            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingReferenceConnectionString))
+            {
+                using (DataTable DT = new DataTable())
+                {
+                    if (DA.Fill(DT) > 0)
+                    {
+                        if (DT.Rows[0]["UNN"] != DBNull.Value)
+                            UNN = DT.Rows[0]["UNN"].ToString();
+                    }
+                }
+            }
+
+            SelectCommand = $@"SELECT DISTINCT 
+CASE WHEN MainOrders.Notes = '' THEN CAST(MegaOrders.OrderNumber AS varchar(12)) + '_' + CAST(FrontsOrders.MainOrderID AS varchar(12)) ELSE CAST(MegaOrders.OrderNumber AS varchar(12)) 
+                         + '_' + CAST(FrontsOrders.MainOrderID AS varchar(12)) + '_' + MainOrders.Notes END AS Notes,
+PackageDetailID, PackageDetails.Count AS Count, (FrontsOrders.Square * PackageDetails.Count / FrontsOrders.Count) AS Square, (FrontsOrders.Cost * PackageDetails.Count / FrontsOrders.Count) AS Cost, (FrontsOrders.CostWithTransport * PackageDetails.Count / FrontsOrders.Count) AS CostWithTransport, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, MegaOrders.Rate, MegaOrders.PaymentRate, FrontsOrders.* FROM PackageDetails
+                INNER JOIN FrontsOrders ON PackageDetails.OrderID = FrontsOrders.FrontsOrdersID
+                INNER JOIN MainOrders ON FrontsOrders.MainOrderID = MainOrders.MainOrderID
+                INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID
+                INNER JOIN  Packages ON PackageDetails.PackageID = Packages.PackageID AND Packages.ProductType = 0
+                AND Packages.DispatchID IN (" + string.Join(",", DispatchID) + @")
+                INNER JOIN infiniu2_catalog.dbo.FrontsConfig ON FrontsOrders.FrontConfigID = infiniu2_catalog.dbo.FrontsConfig.FrontConfigID
+                WHERE InvNumber IS NOT NULL ORDER BY InvNumber";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand,
                 ConnectionStrings.MarketingOrdersConnectionString))
             {
@@ -94,16 +108,18 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
 
                     DataTable DistRatesDT = new DataTable();
                     DataTable DT1 = DT.Clone();
+
+                    ProfilFrontsOrdersDataTable = DT.Clone();
+                    TPSFrontsOrdersDataTable = DT.Clone();
+
+                    SplitTables(DT, ref ProfilFrontsOrdersDataTable, ref TPSFrontsOrdersDataTable,
+                        ProfilVerify, TPSVerify, ClientID, DiscountPaymentConditionID);
+
                     //get count of different covertypes
                     using (DataView DV = new DataView(DT))
                     {
                         DistRatesDT = DV.ToTable(true, new string[] { "PaymentRate" });
                     }
-
-                    ProfilFrontsOrdersDataTable = DT.Clone();
-                    TPSFrontsOrdersDataTable = DT.Clone();
-
-                    SplitTables(DT, ref ProfilFrontsOrdersDataTable, ref TPSFrontsOrdersDataTable);
 
                     if (ProfilFrontsOrdersDataTable.Rows.Count > 0)
                     {
@@ -115,7 +131,7 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
                             {
                                 DT1.Clear();
                                 PaymentRate = Convert.ToDecimal(DistRatesDT.Rows[j]["PaymentRate"]);
-                                DataRow[] rows = DTs[i].Select("PaymentRate='" + PaymentRate.ToString() + "'");
+                                rows = DTs[i].Select("PaymentRate='" + PaymentRate.ToString() + "'");
                                 foreach (DataRow item in rows)
                                     DT1.Rows.Add(item.ItemArray);
                                 if (DT1.Rows.Count == 0)
@@ -146,7 +162,7 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
                             {
                                 DT1.Clear();
                                 PaymentRate = Convert.ToDecimal(DistRatesDT.Rows[j]["PaymentRate"]);
-                                DataRow[] rows = DTs[i].Select("PaymentRate='" + PaymentRate.ToString() + "'");
+                                rows = DTs[i].Select("PaymentRate='" + PaymentRate.ToString() + "'");
                                 foreach (DataRow item in rows)
                                     DT1.Rows.Add(item.ItemArray);
                                 if (DT1.Rows.Count == 0)
@@ -169,21 +185,55 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
             }
         }
 
-        public void Report(int[] MainOrderIDs)
+        public void Report(int[] DispatchID, int CurrencyTypeID, int ClientID,
+            bool ProfilVerify, bool TPSVerify, int DiscountPaymentConditionID, bool IsSample)
         {
             ProfilFrontsOrdersDataTable.Clear();
             TPSFrontsOrdersDataTable.Clear();
             DecorInvNumbersDT.Clear();
-            GetMegaOrderInfo(MainOrderIDs[0]);
 
-            string SelectCommand = $@"SELECT
-CASE WHEN NewMainOrders.Notes = '' THEN CAST(NewMegaOrders.OrderNumber AS varchar(12)) + '_' + CAST(NewFrontsOrders.MainOrderID AS varchar(12)) ELSE CAST(NewMegaOrders.OrderNumber AS varchar(12))
-                         + '_' + CAST(NewFrontsOrders.MainOrderID AS varchar(12)) + '_' + NewMainOrders.Notes END AS Notes,
-NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, NewMegaOrders.PaymentRate FROM NewFrontsOrders" +
-                " INNER JOIN infiniu2_catalog.dbo.FrontsConfig ON NewFrontsOrders.FrontConfigID = infiniu2_catalog.dbo.FrontsConfig.FrontConfigID" +
-                " INNER JOIN NewMainOrders ON NewFrontsOrders.MainOrderID = NewMainOrders.MainOrderID" +
-                " INNER JOIN NewMegaOrders ON NewMainOrders.MegaOrderID = NewMegaOrders.MegaOrderID" +
-                " WHERE  InvNumber IS NOT NULL AND NewFrontsOrders.MainOrderID IN (" + string.Join(",", MainOrderIDs) + ") ORDER BY InvNumber";
+            DataRow[] rows = CurrencyTypesDT.Select("CurrencyTypeID = " + CurrencyTypeID);
+            if (rows.Count() > 0)
+            {
+                ProfilCurrencyCode = rows[0]["CurrencyCode"].ToString();
+                TPSCurrencyCode = rows[0]["TPSCurrencyCode"].ToString();
+            }
+            string SelectCommand = "SELECT UNN FROM Clients WHERE ClientID = " + ClientID;
+            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingReferenceConnectionString))
+            {
+                using (DataTable DT = new DataTable())
+                {
+                    if (DA.Fill(DT) > 0)
+                    {
+                        if (DT.Rows[0]["UNN"] != DBNull.Value)
+                            UNN = DT.Rows[0]["UNN"].ToString();
+                    }
+                }
+            }
+
+            SelectCommand = $@"SELECT DISTINCT 
+CASE WHEN MainOrders.Notes = '' THEN CAST(MegaOrders.OrderNumber AS varchar(12)) + '_' + CAST(FrontsOrders.MainOrderID AS varchar(12)) ELSE CAST(MegaOrders.OrderNumber AS varchar(12))
+                         + '_' + CAST(FrontsOrders.MainOrderID AS varchar(12)) + '_' + MainOrders.Notes END AS Notes,
+PackageDetailID, PackageDetails.Count AS Count, (FrontsOrders.Square * PackageDetails.Count / FrontsOrders.Count) AS Square, (FrontsOrders.Cost * PackageDetails.Count / FrontsOrders.Count) AS Cost, (FrontsOrders.CostWithTransport * PackageDetails.Count / FrontsOrders.Count) AS CostWithTransport, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, MegaOrders.Rate, MegaOrders.PaymentRate, FrontsOrders.* FROM PackageDetails
+                INNER JOIN FrontsOrders ON PackageDetails.OrderID = FrontsOrders.FrontsOrdersID
+                INNER JOIN MainOrders ON FrontsOrders.MainOrderID = MainOrders.MainOrderID
+                INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID
+                INNER JOIN  Packages ON PackageDetails.PackageID = Packages.PackageID AND Packages.ProductType = 0
+                AND Packages.DispatchID IN (" + string.Join(",", DispatchID) + @")
+                INNER JOIN infiniu2_catalog.dbo.FrontsConfig ON FrontsOrders.FrontConfigID = infiniu2_catalog.dbo.FrontsConfig.FrontConfigID
+                WHERE FrontsOrders.IsSample = 1 AND InvNumber IS NOT NULL ORDER BY InvNumber";
+            if (!IsSample)
+                SelectCommand = $@"SELECT DISTINCT 
+CASE WHEN MainOrders.Notes = '' THEN CAST(MegaOrders.OrderNumber AS varchar(12)) + '_' + CAST(FrontsOrders.MainOrderID AS varchar(12)) ELSE CAST(MegaOrders.OrderNumber AS varchar(12))
+                         + '_' + CAST(FrontsOrders.MainOrderID AS varchar(12)) + '_' + MainOrders.Notes END AS Notes,
+PackageDetailID, PackageDetails.Count AS Count, (FrontsOrders.Square * PackageDetails.Count / FrontsOrders.Count) AS Square, (FrontsOrders.Cost * PackageDetails.Count / FrontsOrders.Count) AS Cost, (FrontsOrders.CostWithTransport * PackageDetails.Count / FrontsOrders.Count) AS CostWithTransport, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, MegaOrders.Rate, MegaOrders.PaymentRate, FrontsOrders.* FROM PackageDetails
+                INNER JOIN FrontsOrders ON PackageDetails.OrderID = FrontsOrders.FrontsOrdersID
+                INNER JOIN MainOrders ON FrontsOrders.MainOrderID = MainOrders.MainOrderID
+                INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID
+                INNER JOIN  Packages ON PackageDetails.PackageID = Packages.PackageID AND Packages.ProductType = 0
+                AND Packages.DispatchID IN (" + string.Join(",", DispatchID) + @")
+                INNER JOIN infiniu2_catalog.dbo.FrontsConfig ON FrontsOrders.FrontConfigID = infiniu2_catalog.dbo.FrontsConfig.FrontConfigID
+                WHERE FrontsOrders.IsSample = 0 AND InvNumber IS NOT NULL ORDER BY InvNumber";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand,
                 ConnectionStrings.MarketingOrdersConnectionString))
             {
@@ -194,16 +244,18 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
 
                     DataTable DistRatesDT = new DataTable();
                     DataTable DT1 = DT.Clone();
+
+                    ProfilFrontsOrdersDataTable = DT.Clone();
+                    TPSFrontsOrdersDataTable = DT.Clone();
+
+                    SplitTables(DT, ref ProfilFrontsOrdersDataTable, ref TPSFrontsOrdersDataTable,
+                        ProfilVerify, TPSVerify, ClientID, DiscountPaymentConditionID);
+
                     //get count of different covertypes
                     using (DataView DV = new DataView(DT))
                     {
                         DistRatesDT = DV.ToTable(true, new string[] { "PaymentRate" });
                     }
-
-                    ProfilFrontsOrdersDataTable = DT.Clone();
-                    TPSFrontsOrdersDataTable = DT.Clone();
-
-                    SplitTables(DT, ref ProfilFrontsOrdersDataTable, ref TPSFrontsOrdersDataTable);
 
                     if (ProfilFrontsOrdersDataTable.Rows.Count > 0)
                     {
@@ -215,7 +267,7 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
                             {
                                 DT1.Clear();
                                 PaymentRate = Convert.ToDecimal(DistRatesDT.Rows[j]["PaymentRate"]);
-                                DataRow[] rows = DTs[i].Select("PaymentRate='" + PaymentRate.ToString() + "'");
+                                rows = DTs[i].Select("PaymentRate='" + PaymentRate.ToString() + "'");
                                 foreach (DataRow item in rows)
                                     DT1.Rows.Add(item.ItemArray);
                                 if (DT1.Rows.Count == 0)
@@ -246,7 +298,7 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
                             {
                                 DT1.Clear();
                                 PaymentRate = Convert.ToDecimal(DistRatesDT.Rows[j]["PaymentRate"]);
-                                DataRow[] rows = DTs[i].Select("PaymentRate='" + PaymentRate.ToString() + "'");
+                                rows = DTs[i].Select("PaymentRate='" + PaymentRate.ToString() + "'");
                                 foreach (DataRow item in rows)
                                     DT1.Rows.Add(item.ItemArray);
                                 if (DT1.Rows.Count == 0)
@@ -276,6 +328,7 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
 
             FrontsDataTable = new DataTable();
             InsetTypesDataTable = new DataTable();
+            InsetColorsDataTable = new DataTable();
             InsetPriceDataTable = new DataTable();
             AluminiumFrontsDataTable = new DataTable();
 
@@ -287,7 +340,7 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
             }
 
             SelectCommand = @"SELECT TechStoreID AS FrontID, TechStoreName AS FrontName FROM TechStore
-                WHERE TechStoreID IN (SELECT FrontID FROM FrontsConfig WHERE Enabled = 1)
+                WHERE TechStoreID IN (SELECT FrontID FROM FrontsConfig)
                 ORDER BY TechStoreName";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
@@ -343,7 +396,7 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
             //{
             //    DA.Fill(FrontsConfigDataTable);
             //}
-            FrontsConfigDataTable = TablesManager.FrontsConfigDataTable;
+            FrontsConfigDataTable = TablesManager.FrontsConfigDataTableAll;
 
             DecorConfigDataTable = new DataTable();
             //using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DecorConfig",
@@ -534,8 +587,8 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
             for (int i = 0; i < Fronts.Rows.Count; i++)
             {
                 DataRow[] Rows = OrdersDataTable.Select("ColorID = " + Fronts.Rows[i]["ColorID"].ToString() +
-                    " AND PatinaID = " + Fronts.Rows[i]["PatinaID"].ToString() +
-                    " AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString() + " AND Width = -1");
+                                                        " AND PatinaID = " + Fronts.Rows[i]["PatinaID"].ToString() +
+                                                        " AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString() + " AND Width = -1");
 
                 if (Rows.Count() == 0)
                     continue;
@@ -720,12 +773,12 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
                     DataRow Row = ReportDataTable.NewRow();
                     Row["OriginalPrice"] = Solid713Price;
                     Row["UNN"] = UNN;
-                    Row["Cvet"] = GetColorCode(Convert.ToInt32(Fronts.Rows[i]["ColorID"]));
-                    Row["Patina"] = GetPatinaCode(Convert.ToInt32(Fronts.Rows[i]["PatinaID"]));
-                    Row["Notes"] = Notes;
                     Row["PaymentRate"] = PaymentRate;
                     Row["AccountingName"] = AccountingName;
                     Row["InvNumber"] = InvNumber;
+                    Row["Cvet"] = GetColorCode(Convert.ToInt32(Fronts.Rows[i]["ColorID"]));
+                    Row["Patina"] = GetPatinaCode(Convert.ToInt32(Fronts.Rows[i]["PatinaID"]));
+                    Row["Notes"] = Notes;
                     Row["CurrencyCode"] = ProfilCurrencyCode;
                     if (fID == 2)
                         Row["TPSCurCode"] = TPSCurrencyCode;
@@ -744,11 +797,11 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
                     DataRow Row = ReportDataTable.NewRow();
                     Row["OriginalPrice"] = Filenka713Price;
                     Row["UNN"] = UNN;
-                    Row["Cvet"] = GetColorCode(Convert.ToInt32(Fronts.Rows[i]["ColorID"]));
-                    Row["Patina"] = GetPatinaCode(Convert.ToInt32(Fronts.Rows[i]["PatinaID"]));
                     Row["PaymentRate"] = PaymentRate;
                     Row["AccountingName"] = AccountingName;
                     Row["InvNumber"] = InvNumber;
+                    Row["Cvet"] = GetColorCode(Convert.ToInt32(Fronts.Rows[i]["ColorID"]));
+                    Row["Patina"] = GetPatinaCode(Convert.ToInt32(Fronts.Rows[i]["PatinaID"]));
                     Row["Notes"] = Notes;
                     Row["CurrencyCode"] = ProfilCurrencyCode;
                     if (fID == 2)
@@ -768,11 +821,11 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
                     DataRow Row = ReportDataTable.NewRow();
                     Row["OriginalPrice"] = NoInset713Price;
                     Row["UNN"] = UNN;
-                    Row["Cvet"] = GetColorCode(Convert.ToInt32(Fronts.Rows[i]["ColorID"]));
-                    Row["Patina"] = GetPatinaCode(Convert.ToInt32(Fronts.Rows[i]["PatinaID"]));
                     Row["PaymentRate"] = PaymentRate;
                     Row["AccountingName"] = AccountingName;
                     Row["InvNumber"] = InvNumber;
+                    Row["Cvet"] = GetColorCode(Convert.ToInt32(Fronts.Rows[i]["ColorID"]));
+                    Row["Patina"] = GetPatinaCode(Convert.ToInt32(Fronts.Rows[i]["PatinaID"]));
                     Row["Notes"] = Notes;
                     Row["CurrencyCode"] = ProfilCurrencyCode;
                     if (fID == 2)
@@ -792,11 +845,11 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
                     DataRow Row = ReportDataTable.NewRow();
                     Row["OriginalPrice"] = Vitrina713Price;
                     Row["UNN"] = UNN;
-                    Row["Cvet"] = GetColorCode(Convert.ToInt32(Fronts.Rows[i]["ColorID"]));
-                    Row["Patina"] = GetPatinaCode(Convert.ToInt32(Fronts.Rows[i]["PatinaID"]));
                     Row["PaymentRate"] = PaymentRate;
                     Row["AccountingName"] = AccountingName;
                     Row["InvNumber"] = InvNumber;
+                    Row["Cvet"] = GetColorCode(Convert.ToInt32(Fronts.Rows[i]["ColorID"]));
+                    Row["Patina"] = GetPatinaCode(Convert.ToInt32(Fronts.Rows[i]["PatinaID"]));
                     Row["Notes"] = Notes;
                     Row["CurrencyCode"] = ProfilCurrencyCode;
                     if (fID == 2)
@@ -816,10 +869,10 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
                     DataRow Row = ReportDataTable.NewRow();
                     Row["OriginalPrice"] = Solid910Price;
                     Row["UNN"] = UNN;
-                    Row["Cvet"] = GetColorCode(Convert.ToInt32(Fronts.Rows[i]["ColorID"]));
-                    Row["Patina"] = GetPatinaCode(Convert.ToInt32(Fronts.Rows[i]["PatinaID"]));
                     Row["PaymentRate"] = PaymentRate;
                     Row["InvNumber"] = InvNumber;
+                    Row["Cvet"] = GetColorCode(Convert.ToInt32(Fronts.Rows[i]["ColorID"]));
+                    Row["Patina"] = GetPatinaCode(Convert.ToInt32(Fronts.Rows[i]["PatinaID"]));
                     Row["Notes"] = Notes;
                     Row["CurrencyCode"] = ProfilCurrencyCode;
                     if (fID == 2)
@@ -839,11 +892,11 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
                     DataRow Row = ReportDataTable.NewRow();
                     Row["OriginalPrice"] = Filenka910Price;
                     Row["UNN"] = UNN;
-                    Row["Cvet"] = GetColorCode(Convert.ToInt32(Fronts.Rows[i]["ColorID"]));
-                    Row["Patina"] = GetPatinaCode(Convert.ToInt32(Fronts.Rows[i]["PatinaID"]));
                     Row["PaymentRate"] = PaymentRate;
                     Row["AccountingName"] = AccountingName;
                     Row["InvNumber"] = InvNumber;
+                    Row["Cvet"] = GetColorCode(Convert.ToInt32(Fronts.Rows[i]["ColorID"]));
+                    Row["Patina"] = GetPatinaCode(Convert.ToInt32(Fronts.Rows[i]["PatinaID"]));
                     Row["Notes"] = Notes;
                     Row["CurrencyCode"] = ProfilCurrencyCode;
                     if (fID == 2)
@@ -863,11 +916,11 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
                     DataRow Row = ReportDataTable.NewRow();
                     Row["OriginalPrice"] = NoInset910Price;
                     Row["UNN"] = UNN;
-                    Row["Cvet"] = GetColorCode(Convert.ToInt32(Fronts.Rows[i]["ColorID"]));
-                    Row["Patina"] = GetPatinaCode(Convert.ToInt32(Fronts.Rows[i]["PatinaID"]));
                     Row["PaymentRate"] = PaymentRate;
                     Row["AccountingName"] = AccountingName;
                     Row["InvNumber"] = InvNumber;
+                    Row["Cvet"] = GetColorCode(Convert.ToInt32(Fronts.Rows[i]["ColorID"]));
+                    Row["Patina"] = GetPatinaCode(Convert.ToInt32(Fronts.Rows[i]["PatinaID"]));
                     Row["Notes"] = Notes;
                     Row["CurrencyCode"] = ProfilCurrencyCode;
                     if (fID == 2)
@@ -887,11 +940,11 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
                     DataRow Row = ReportDataTable.NewRow();
                     Row["OriginalPrice"] = Vitrina910Price;
                     Row["UNN"] = UNN;
-                    Row["Cvet"] = GetColorCode(Convert.ToInt32(Fronts.Rows[i]["ColorID"]));
-                    Row["Patina"] = GetPatinaCode(Convert.ToInt32(Fronts.Rows[i]["PatinaID"]));
                     Row["PaymentRate"] = PaymentRate;
                     Row["AccountingName"] = AccountingName;
                     Row["InvNumber"] = InvNumber;
+                    Row["Cvet"] = GetColorCode(Convert.ToInt32(Fronts.Rows[i]["ColorID"]));
+                    Row["Patina"] = GetPatinaCode(Convert.ToInt32(Fronts.Rows[i]["PatinaID"]));
                     Row["Notes"] = Notes;
                     Row["CurrencyCode"] = ProfilCurrencyCode;
                     if (fID == 2)
@@ -1642,7 +1695,6 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
                     GridHeight = Height - Convert.ToInt32(Rows[0]["InsetHeightAdmission"]);
                 if (Rows[0]["InsetWidthAdmission"] != DBNull.Value)
                     GridWidth = Width - Convert.ToInt32(Rows[0]["InsetWidthAdmission"]);
-
                 if (FrontID == 3729)
                 {
                     return Decimal.Round(Convert.ToInt32(Rows[0]["InsetHeightAdmission"]) * GridWidth / 1000000, 3, MidpointRounding.AwayFromZero);
@@ -1662,7 +1714,6 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
                     GridHeight = Convert.ToInt32(FrontsOrdersRow["Height"]) - Convert.ToInt32(Rows[0]["InsetHeightAdmission"]);
                 if (Rows[0]["InsetWidthAdmission"] != DBNull.Value)
                     GridWidth = Convert.ToInt32(FrontsOrdersRow["Width"]) - Convert.ToInt32(Rows[0]["InsetWidthAdmission"]);
-
                 if (Convert.ToInt32(FrontsOrdersRow["FrontID"]) == 3729)
                 {
                     return Decimal.Round(Convert.ToInt32(Rows[0]["InsetHeightAdmission"]) * GridWidth / 1000000, 3, MidpointRounding.AwayFromZero);
@@ -1703,96 +1754,6 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
             return Convert.ToInt32(FrontsConfigDataTable.Select("FrontConfigID = " + FrontConfigID.ToString())[0]["MeasureID"]);
         }
 
-        private void GetMegaOrderInfo(int MainOrderID)
-        {
-            string SelectCommand = $"SELECT MegaOrderID, TransportCost, AdditionalCost, PaymentRate, ClientID, CurrencyTypeID FROM NewMegaOrders" +
-                $" WHERE MegaOrderID IN (SELECT MegaOrderID FROM NewMainOrders WHERE MainOrderID = { MainOrderID })";
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
-            {
-                using (DataTable DT = new DataTable())
-                {
-                    if (DA.Fill(DT) > 0)
-                    {
-                        int CurrencyTypeID = 1;
-                        if (DT.Rows[0]["TransportCost"] != DBNull.Value)
-                            decimal.TryParse(DT.Rows[0]["TransportCost"].ToString(), out _);
-                        if (DT.Rows[0]["AdditionalCost"] != DBNull.Value)
-                            decimal.TryParse(DT.Rows[0]["AdditionalCost"].ToString(), out _);
-                        //if (DT.Rows[0]["PaymentRate"] != DBNull.Value)
-                        //    decimal.TryParse(DT.Rows[0]["PaymentRate"].ToString(), out PaymentRate);
-                        if (DT.Rows[0]["ClientID"] != DBNull.Value)
-                            int.TryParse(DT.Rows[0]["ClientID"].ToString(), out ClientID);
-                        if (DT.Rows[0]["CurrencyTypeID"] != DBNull.Value)
-                            int.TryParse(DT.Rows[0]["CurrencyTypeID"].ToString(), out CurrencyTypeID);
-
-                        DataRow[] rows = CurrencyTypesDT.Select("CurrencyTypeID = " + CurrencyTypeID);
-                        if (rows.Count() > 0)
-                        {
-                            ProfilCurrencyCode = rows[0]["CurrencyCode"].ToString();
-                            TPSCurrencyCode = rows[0]["TPSCurrencyCode"].ToString();
-                        }
-                    }
-                }
-            }
-            SelectCommand = "SELECT UNN FROM Clients WHERE ClientID = " + ClientID;
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingReferenceConnectionString))
-            {
-                using (DataTable DT = new DataTable())
-                {
-                    if (DA.Fill(DT) > 0)
-                    {
-                        if (DT.Rows[0]["UNN"] != DBNull.Value)
-                            UNN = DT.Rows[0]["UNN"].ToString();
-                    }
-                }
-            }
-        }
-
-        private void GetMegaOrderInfo1(int MegaOrderID)
-        {
-            string SelectCommand = $"SELECT MegaOrderID, TransportCost, AdditionalCost, PaymentRate, ClientID, CurrencyTypeID FROM NewMegaOrders" +
-                $" WHERE MegaOrderID = {MegaOrderID}";
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
-            {
-                using (DataTable DT = new DataTable())
-                {
-                    if (DA.Fill(DT) > 0)
-                    {
-                        int CurrencyTypeID = 1;
-                        if (DT.Rows[0]["TransportCost"] != DBNull.Value)
-                            decimal.TryParse(DT.Rows[0]["TransportCost"].ToString(), out _);
-                        if (DT.Rows[0]["AdditionalCost"] != DBNull.Value)
-                            decimal.TryParse(DT.Rows[0]["AdditionalCost"].ToString(), out _);
-                        //if (DT.Rows[0]["PaymentRate"] != DBNull.Value)
-                        //    decimal.TryParse(DT.Rows[0]["PaymentRate"].ToString(), out PaymentRate);
-                        if (DT.Rows[0]["ClientID"] != DBNull.Value)
-                            int.TryParse(DT.Rows[0]["ClientID"].ToString(), out ClientID);
-                        if (DT.Rows[0]["CurrencyTypeID"] != DBNull.Value)
-                            int.TryParse(DT.Rows[0]["CurrencyTypeID"].ToString(), out CurrencyTypeID);
-
-                        DataRow[] rows = CurrencyTypesDT.Select("CurrencyTypeID = " + CurrencyTypeID);
-                        if (rows.Count() > 0)
-                        {
-                            ProfilCurrencyCode = rows[0]["CurrencyCode"].ToString();
-                            TPSCurrencyCode = rows[0]["TPSCurrencyCode"].ToString();
-                        }
-                    }
-                }
-            }
-            SelectCommand = "SELECT UNN FROM Clients WHERE ClientID = " + ClientID;
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingReferenceConnectionString))
-            {
-                using (DataTable DT = new DataTable())
-                {
-                    if (DA.Fill(DT) > 0)
-                    {
-                        if (DT.Rows[0]["UNN"] != DBNull.Value)
-                            UNN = DT.Rows[0]["UNN"].ToString();
-                    }
-                }
-            }
-        }
-
         private decimal GetNonStandardMargin(int FrontConfigID)
         {
             DataRow[] Rows = FrontsConfigDataTable.Select("FrontConfigID = " + FrontConfigID);
@@ -1800,27 +1761,12 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
             return Convert.ToDecimal(Rows[0]["ZOVNonStandMargin"]);
         }
 
-        private string GetPatinaCode(int PatinaID)
-        {
-            string PatinaName = string.Empty;
-            try
-            {
-                DataRow[] Rows = PatinaDataTable.Select("PatinaID = " + PatinaID);
-                PatinaName = Rows[0]["Patina"].ToString();
-            }
-            catch
-            {
-                return string.Empty;
-            }
-            return PatinaName;
-        }
-
         private void GetPatinaDT()
         {
             PatinaDataTable = new DataTable();
             PatinaRALDataTable = new DataTable();
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Patina",
-       ConnectionStrings.CatalogConnectionString))
+                ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(PatinaDataTable);
             }
@@ -1854,7 +1800,6 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
             }
             return PatinaName;
         }
-
         private decimal GetProfileWeight(DataRow FrontsOrdersRow)
         {
             decimal FrontHeight = Convert.ToDecimal(FrontsOrdersRow["Height"]);
@@ -2354,27 +2299,28 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
             return -1;
         }
 
-        private void SplitTables(DataTable FrontsOrdersDataTable, ref DataTable ProfilDT, ref DataTable TPSDT)
+        private void SplitTables(DataTable FrontsOrdersDataTable, ref DataTable ProfilDT, ref DataTable TPSDT,
+                                            bool ProfilVerify, bool TPSVerify, int ClientID, int DiscountPaymentConditionID)
         {
             for (int i = 0; i < FrontsOrdersDataTable.Rows.Count; i++)
             {
                 DataRow[] Rows = FrontsConfigDataTable.Select("FrontConfigID = " + FrontsOrdersDataTable.Rows[i]["FrontConfigID"].ToString());
 
-                if (Convert.ToDateTime(FrontsOrdersDataTable.Rows[i]["CreateDateTime"]) < new DateTime(2019, 10, 01))
+                if (Rows[0]["FactoryID"].ToString() == "1")//profil
                 {
-                    if (Rows[0]["AreaID"].ToString() == "1")//profil
-                        ProfilDT.ImportRow(FrontsOrdersDataTable.Rows[i]);
-
-                    if (Rows[0]["AreaID"].ToString() == "2")//tps
-                        TPSDT.ImportRow(FrontsOrdersDataTable.Rows[i]);
+                    if (ClientID != 145 && DiscountPaymentConditionID != 6 && !ProfilVerify)
+                    {
+                        FrontsOrdersDataTable.Rows[i]["PaymentRate"] = Convert.ToDecimal(FrontsOrdersDataTable.Rows[i]["Rate"]) * 1.05m;
+                    }
+                    ProfilDT.ImportRow(FrontsOrdersDataTable.Rows[i]);
                 }
-                else
+                if (Rows[0]["FactoryID"].ToString() == "2")//tps
                 {
-                    if (Rows[0]["FactoryID"].ToString() == "1")//profil
-                        ProfilDT.ImportRow(FrontsOrdersDataTable.Rows[i]);
-
-                    if (Rows[0]["FactoryID"].ToString() == "2")//tps
-                        TPSDT.ImportRow(FrontsOrdersDataTable.Rows[i]);
+                    if (ClientID != 145 && DiscountPaymentConditionID != 6 && !TPSVerify)
+                    {
+                        FrontsOrdersDataTable.Rows[i]["PaymentRate"] = Convert.ToDecimal(FrontsOrdersDataTable.Rows[i]["Rate"]) * 1.05m;
+                    }
+                    TPSDT.ImportRow(FrontsOrdersDataTable.Rows[i]);
                 }
             }
         }

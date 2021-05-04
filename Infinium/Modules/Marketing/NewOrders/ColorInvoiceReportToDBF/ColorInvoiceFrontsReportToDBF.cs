@@ -8,9 +8,9 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 
-namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
+namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDbf
 {
-    public class ColorInvoiceFrontsReportToDBF
+    public class ColorInvoiceFrontsReportToDbf
     {
         private decimal PaymentRate = 1;
         private int ClientID = 0;
@@ -44,7 +44,7 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF
         public DataTable ProfilReportDataTable => _profilReportDataTable;
         public DataTable TPSReportDataTable => _tPSReportDataTable;
 
-        public ColorInvoiceFrontsReportToDBF()
+        public ColorInvoiceFrontsReportToDbf()
         {
             Create();
             CreateReportDataTables();

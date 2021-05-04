@@ -3,9 +3,9 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 
-namespace Infinium.Modules.Marketing.NewOrders.InvoiceReportToDBF
+namespace Infinium.Modules.Marketing.NewOrders.InvoiceReportToDbf
 {
-    public class InvoiceDecorReportToDBF
+    public class InvoiceDecorReportToDbf
     {
         public DataTable ProfilReportDataTable = null;
 
@@ -39,7 +39,7 @@ namespace Infinium.Modules.Marketing.NewOrders.InvoiceReportToDBF
 
         private string UNN = string.Empty;
 
-        public InvoiceDecorReportToDBF()
+        public InvoiceDecorReportToDbf()
         {
             Create();
             CreateReportDataTable();

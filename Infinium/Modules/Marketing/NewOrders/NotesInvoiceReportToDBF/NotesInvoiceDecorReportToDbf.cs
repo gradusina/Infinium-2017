@@ -1,38 +1,29 @@
-﻿using NPOI.HSSF.UserModel;
-using NPOI.HSSF.Util;
-
-using System;
+﻿using System;
 using System.Data;
-using System.Data.OleDb;
 using System.Data.SqlClient;
-using System.IO;
 using System.Linq;
 
 namespace Infinium.Modules.Marketing.NewOrders.NotesInvoiceReportToDbf
 {
     public class NotesInvoiceDecorReportToDbf
     {
-        decimal PaymentRate = 1;
-        int ClientID = 0;
-        string ProfilCurrencyCode = "0";
-        string TPSCurrencyCode = "0";
-        string UNN = string.Empty;
-
-        DataTable CurrencyTypesDT;
         private DataTable _profilReportDataTable = null;
         private DataTable _tPSReportDataTable = null;
+        private int ClientID = 0;
+        private DataTable CurrencyTypesDT;
+        private DataTable DecorConfigDataTable = null;
+        private DataTable DecorDataTable = null;
+        private DataTable DecorOrdersDataTable = null;
+        private DataTable DecorParametersDataTable = null;
+        private DataTable DecorProductsDataTable = null;
         private DataTable FrameColorsDataTable = null;
+        private DataTable MeasuresDataTable = null;
         private DataTable PatinaDataTable = null;
         private DataTable PatinaRALDataTable = null;
-        private DataTable DecorProductsDataTable = null;
-        private DataTable DecorConfigDataTable = null;
-        private DataTable MeasuresDataTable = null;
-        private DataTable DecorOrdersDataTable = null;
-        private DataTable DecorDataTable = null;
-        private DataTable DecorParametersDataTable = null;
-
-        public DataTable ProfilReportDataTable => _profilReportDataTable;
-        public DataTable TPSReportDataTable => _tPSReportDataTable;
+        private decimal PaymentRate = 1;
+        private string ProfilCurrencyCode = "0";
+        private string TPSCurrencyCode = "0";
+        private string UNN = string.Empty;
 
         public NotesInvoiceDecorReportToDbf()
         {
@@ -40,147 +31,8 @@ namespace Infinium.Modules.Marketing.NewOrders.NotesInvoiceReportToDbf
             CreateReportDataTable();
         }
 
-        private void GetColorsDT()
-        {
-            FrameColorsDataTable = new DataTable();
-            FrameColorsDataTable.Columns.Add(new DataColumn("ColorID", Type.GetType("System.Int64")));
-            FrameColorsDataTable.Columns.Add(new DataColumn("ColorName", Type.GetType("System.String")));
-            FrameColorsDataTable.Columns.Add(new DataColumn("Cvet", Type.GetType("System.String")));
-            string SelectCommand = @"SELECT TechStoreID, TechStoreName, Cvet FROM TechStore
-                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)
-                ORDER BY TechStoreName";
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
-            {
-                using (DataTable DT = new DataTable())
-                {
-                    DA.Fill(DT);
-                    {
-                        DataRow NewRow = FrameColorsDataTable.NewRow();
-                        NewRow["ColorID"] = -1;
-                        NewRow["ColorName"] = "-";
-                        NewRow["Cvet"] = "000";
-                        FrameColorsDataTable.Rows.Add(NewRow);
-                    }
-                    {
-                        DataRow NewRow = FrameColorsDataTable.NewRow();
-                        NewRow["ColorID"] = 0;
-                        NewRow["ColorName"] = "на выбор";
-                        NewRow["Cvet"] = "0000000";
-                        FrameColorsDataTable.Rows.Add(NewRow);
-                    }
-                    for (int i = 0; i < DT.Rows.Count; i++)
-                    {
-                        DataRow NewRow = FrameColorsDataTable.NewRow();
-                        NewRow["ColorID"] = Convert.ToInt64(DT.Rows[i]["TechStoreID"]);
-                        NewRow["ColorName"] = DT.Rows[i]["TechStoreName"].ToString();
-                        NewRow["Cvet"] = DT.Rows[i]["Cvet"].ToString();
-                        FrameColorsDataTable.Rows.Add(NewRow);
-                    }
-                }
-            }
-        }
-
-        private void GetPatinaDT()
-        {
-            PatinaDataTable = new DataTable();
-            PatinaRALDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Patina",
-       ConnectionStrings.CatalogConnectionString))
-            {
-                DA.Fill(PatinaDataTable);
-            }
-            PatinaRALDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM PatinaRAL WHERE Enabled=1",
-                ConnectionStrings.CatalogConnectionString))
-            {
-                DA.Fill(PatinaRALDataTable);
-            }
-            foreach (DataRow item in PatinaRALDataTable.Rows)
-            {
-                DataRow NewRow = PatinaDataTable.NewRow();
-                NewRow["PatinaID"] = item["PatinaRALID"];
-                NewRow["PatinaName"] = item["PatinaRAL"];
-                NewRow["DisplayName"] = item["DisplayName"];
-                PatinaDataTable.Rows.Add(NewRow);
-            }
-        }
-
-        private void Create()
-        {
-            string SelectCommand = "SELECT * FROM CurrencyTypes";
-            CurrencyTypesDT = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
-            {
-                DA.Fill(CurrencyTypesDT);
-            }
-            DecorOrdersDataTable = new DataTable();
-
-            SelectCommand = @"SELECT ProductID, ProductName, MeasureID, ReportParam FROM DecorProducts" +
-                " WHERE (ProductID IN (SELECT ProductID FROM DecorConfig WHERE (Enabled = 1))) ORDER BY ProductName ASC";
-            DecorProductsDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
-            {
-                DA.Fill(DecorProductsDataTable);
-            }
-            DecorDataTable = new DataTable();
-            SelectCommand = @"SELECT DISTINCT TechStore.TechStoreID AS DecorID, TechStore.TechStoreName AS Name, DecorConfig.ProductID FROM TechStore 
-                INNER JOIN DecorConfig ON TechStore.TechStoreID = DecorConfig.DecorID ORDER BY TechStoreName";
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
-            {
-                DA.Fill(DecorDataTable);
-            }
-            MeasuresDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Measures",
-                ConnectionStrings.CatalogConnectionString))
-            {
-                DA.Fill(MeasuresDataTable);
-            }
-
-            GetColorsDT();
-            GetPatinaDT();
-
-            DecorConfigDataTable = new DataTable();
-            //using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DecorConfig",
-            //    ConnectionStrings.CatalogConnectionString))
-            //{
-            //    DA.Fill(DecorConfigDataTable);
-            //}
-            DecorConfigDataTable = TablesManager.DecorConfigDataTable;
-
-            DecorParametersDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DecorParameters", ConnectionStrings.CatalogConnectionString))
-            {
-                DA.Fill(DecorParametersDataTable);
-            }
-
-        }
-        public bool HasParameter(int ProductID, String Parameter)
-        {
-            DataRow[] Rows = DecorParametersDataTable.Select("ProductID = " + ProductID);
-
-            return Convert.ToBoolean(Rows[0][Parameter]);
-        }
-
-        private void CreateReportDataTable()
-        {
-            _profilReportDataTable = new DataTable();
-            _profilReportDataTable.Columns.Add(new DataColumn("UNN", Type.GetType("System.String")));
-            _profilReportDataTable.Columns.Add(new DataColumn("CurrencyCode", Type.GetType("System.String")));
-            _profilReportDataTable.Columns.Add(new DataColumn("TPSCurCode", Type.GetType("System.String")));
-            _profilReportDataTable.Columns.Add(new DataColumn("InvNumber", Type.GetType("System.String")));
-            _profilReportDataTable.Columns.Add(new DataColumn("Notes", Type.GetType("System.String")));
-            _profilReportDataTable.Columns.Add(new DataColumn("Cvet", Type.GetType("System.String")));
-            _profilReportDataTable.Columns.Add(new DataColumn("Patina", Type.GetType("System.String")));
-            _profilReportDataTable.Columns.Add(new DataColumn("AccountingName", Type.GetType("System.String")));
-            _profilReportDataTable.Columns.Add(new DataColumn("Count", Type.GetType("System.Decimal")));
-            _profilReportDataTable.Columns.Add(new DataColumn("Price", Type.GetType("System.String")));
-            _profilReportDataTable.Columns.Add(new DataColumn("Cost", Type.GetType("System.String")));
-            _profilReportDataTable.Columns.Add(new DataColumn("PriceWithTransport", Type.GetType("System.String")));
-            _profilReportDataTable.Columns.Add(new DataColumn("CostWithTransport", Type.GetType("System.String")));
-            _profilReportDataTable.Columns.Add(new DataColumn("Weight", Type.GetType("System.String")));
-            _profilReportDataTable.Columns.Add(new DataColumn("PaymentRate", Type.GetType("System.Decimal")));
-            _tPSReportDataTable = _profilReportDataTable.Clone();
-        }
+        public DataTable ProfilReportDataTable => _profilReportDataTable;
+        public DataTable TPSReportDataTable => _tPSReportDataTable;
 
         public void ClearReport()
         {
@@ -191,61 +43,6 @@ namespace Infinium.Modules.Marketing.NewOrders.NotesInvoiceReportToDbf
 
             _profilReportDataTable.AcceptChanges();
             _tPSReportDataTable.AcceptChanges();
-        }
-
-        private bool IsProfil(int DecorConfigID)
-        {
-            DataRow[] Rows = DecorConfigDataTable.Select("DecorConfigID = " + DecorConfigID.ToString());
-
-            if (Rows[0]["FactoryID"].ToString() == "1")
-                return true;
-
-            return false;
-        }
-
-        public void GetMegaOrderInfo1(int MegaOrderID)
-        {
-            string SelectCommand = "SELECT MegaOrderID, TransportCost, AdditionalCost, PaymentRate, ClientID, CurrencyTypeID FROM MegaOrders" +
-                " WHERE MegaOrderID = " + MegaOrderID;
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
-            {
-                using (DataTable DT = new DataTable())
-                {
-                    if (DA.Fill(DT) > 0)
-                    {
-                        int CurrencyTypeID = 1;
-                        if (DT.Rows[0]["TransportCost"] != DBNull.Value)
-                            decimal.TryParse(DT.Rows[0]["TransportCost"].ToString(), out _);
-                        if (DT.Rows[0]["AdditionalCost"] != DBNull.Value)
-                            decimal.TryParse(DT.Rows[0]["AdditionalCost"].ToString(), out _);
-                        //if (DT.Rows[0]["PaymentRate"] != DBNull.Value)
-                        //    decimal.TryParse(DT.Rows[0]["PaymentRate"].ToString(), out PaymentRate);
-                        if (DT.Rows[0]["ClientID"] != DBNull.Value)
-                            int.TryParse(DT.Rows[0]["ClientID"].ToString(), out ClientID);
-                        if (DT.Rows[0]["CurrencyTypeID"] != DBNull.Value)
-                            int.TryParse(DT.Rows[0]["CurrencyTypeID"].ToString(), out CurrencyTypeID);
-
-                        DataRow[] rows = CurrencyTypesDT.Select("CurrencyTypeID = " + CurrencyTypeID);
-                        if (rows.Count() > 0)
-                        {
-                            ProfilCurrencyCode = rows[0]["CurrencyCode"].ToString();
-                            TPSCurrencyCode = rows[0]["TPSCurrencyCode"].ToString();
-                        }
-                    }
-                }
-            }
-            SelectCommand = "SELECT UNN FROM Clients WHERE ClientID = " + ClientID;
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingReferenceConnectionString))
-            {
-                using (DataTable DT = new DataTable())
-                {
-                    if (DA.Fill(DT) > 0)
-                    {
-                        if (DT.Rows[0]["UNN"] != DBNull.Value)
-                            UNN = DT.Rows[0]["UNN"].ToString();
-                    }
-                }
-            }
         }
 
         public void GetMegaOrderInfo(int MainOrderID)
@@ -293,18 +90,297 @@ namespace Infinium.Modules.Marketing.NewOrders.NotesInvoiceReportToDbf
             }
         }
 
-        private int GetReportMeasureTypeID(int DecorConfigID)
+        public void GetMegaOrderInfo1(int MegaOrderID)
         {
-            DataRow[] Row = DecorConfigDataTable.Select("DecorConfigID = " + DecorConfigID);
+            string SelectCommand = "SELECT MegaOrderID, TransportCost, AdditionalCost, PaymentRate, ClientID, CurrencyTypeID FROM MegaOrders" +
+                " WHERE MegaOrderID = " + MegaOrderID;
+            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
+            {
+                using (DataTable DT = new DataTable())
+                {
+                    if (DA.Fill(DT) > 0)
+                    {
+                        int CurrencyTypeID = 1;
+                        if (DT.Rows[0]["TransportCost"] != DBNull.Value)
+                            decimal.TryParse(DT.Rows[0]["TransportCost"].ToString(), out _);
+                        if (DT.Rows[0]["AdditionalCost"] != DBNull.Value)
+                            decimal.TryParse(DT.Rows[0]["AdditionalCost"].ToString(), out _);
+                        //if (DT.Rows[0]["PaymentRate"] != DBNull.Value)
+                        //    decimal.TryParse(DT.Rows[0]["PaymentRate"].ToString(), out PaymentRate);
+                        if (DT.Rows[0]["ClientID"] != DBNull.Value)
+                            int.TryParse(DT.Rows[0]["ClientID"].ToString(), out ClientID);
+                        if (DT.Rows[0]["CurrencyTypeID"] != DBNull.Value)
+                            int.TryParse(DT.Rows[0]["CurrencyTypeID"].ToString(), out CurrencyTypeID);
 
-            return Convert.ToInt32(Row[0]["ReportMeasureID"]);//1 м.кв.  2 м.п. 3 шт.
+                        DataRow[] rows = CurrencyTypesDT.Select("CurrencyTypeID = " + CurrencyTypeID);
+                        if (rows.Count() > 0)
+                        {
+                            ProfilCurrencyCode = rows[0]["CurrencyCode"].ToString();
+                            TPSCurrencyCode = rows[0]["TPSCurrencyCode"].ToString();
+                        }
+                    }
+                }
+            }
+            SelectCommand = "SELECT UNN FROM Clients WHERE ClientID = " + ClientID;
+            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingReferenceConnectionString))
+            {
+                using (DataTable DT = new DataTable())
+                {
+                    if (DA.Fill(DT) > 0)
+                    {
+                        if (DT.Rows[0]["UNN"] != DBNull.Value)
+                            UNN = DT.Rows[0]["UNN"].ToString();
+                    }
+                }
+            }
         }
 
-        private int GetMeasureTypeID(int DecorConfigID)
+        private bool HasParameter(int ProductID, String Parameter)
         {
-            DataRow[] Row = DecorConfigDataTable.Select("DecorConfigID = " + DecorConfigID);
+            DataRow[] Rows = DecorParametersDataTable.Select("ProductID = " + ProductID);
 
-            return Convert.ToInt32(Row[0]["MeasureID"]);//1 м.кв.  2 м.п. 3 шт.
+            return Convert.ToBoolean(Rows[0][Parameter]);
+        }
+
+        public void Report(int[] MainOrderIDs, bool IsSample)
+        {
+            GetMegaOrderInfo(MainOrderIDs[0]);
+            DecorOrdersDataTable.Clear();
+            _profilReportDataTable.Clear();
+            _tPSReportDataTable.Clear();
+            string sWhere = "";
+
+            for (int i = 0; i < MainOrderIDs.Count(); i++)
+            {
+                if (sWhere != "")
+                    sWhere += " OR MainOrderID = " + MainOrderIDs[i].ToString();
+                else
+                    sWhere += "MainOrderID = " + MainOrderIDs[i].ToString();
+            }
+
+            string SelectCommand = $@"SELECT
+CASE WHEN MainOrders.Notes = '' THEN CAST(MegaOrders.OrderNumber AS varchar(12)) + '_' + CAST(DecorOrders.MainOrderID AS varchar(12)) ELSE CAST(MegaOrders.OrderNumber AS varchar(12))
+                         + '_' + CAST(DecorOrders.MainOrderID AS varchar(12)) + '_' + MainOrders.Notes END AS Notes,
+DecorOrders.*, infiniu2_catalog.dbo.DecorConfig.AccountingName, infiniu2_catalog.dbo.DecorConfig.InvNumber, MegaOrders.PaymentRate FROM DecorOrders" +
+                " INNER JOIN MainOrders ON DecorOrders.MainOrderID = MainOrders.MainOrderID" +
+                " INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID" +
+                " INNER JOIN infiniu2_catalog.dbo.DecorConfig ON DecorOrders.DecorConfigID = infiniu2_catalog.dbo.DecorConfig.DecorConfigID" +
+                " WHERE DecorOrders.IsSample=1 AND InvNumber IS NOT NULL AND DecorOrders.MainOrderID IN (" + string.Join(",", MainOrderIDs) + ") ORDER BY InvNumber";
+            if (!IsSample)
+                SelectCommand = $@"SELECT
+CASE WHEN MainOrders.Notes = '' THEN CAST(MegaOrders.OrderNumber AS varchar(12)) + '_' + CAST(DecorOrders.MainOrderID AS varchar(12)) ELSE CAST(MegaOrders.OrderNumber AS varchar(12))
+                         + '_' + CAST(DecorOrders.MainOrderID AS varchar(12)) + '_' + MainOrders.Notes END AS Notes,
+DecorOrders.*, infiniu2_catalog.dbo.DecorConfig.AccountingName, infiniu2_catalog.dbo.DecorConfig.InvNumber, MegaOrders.PaymentRate FROM DecorOrders" +
+                    " INNER JOIN MainOrders ON DecorOrders.MainOrderID = MainOrders.MainOrderID" +
+                    " INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID" +
+                    " INNER JOIN infiniu2_catalog.dbo.DecorConfig ON DecorOrders.DecorConfigID = infiniu2_catalog.dbo.DecorConfig.DecorConfigID" +
+                    " WHERE DecorOrders.IsSample=0 AND InvNumber IS NOT NULL AND DecorOrders.MainOrderID IN (" + string.Join(",", MainOrderIDs) + ") ORDER BY InvNumber";
+            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand,
+                ConnectionStrings.MarketingOrdersConnectionString))
+            {
+                DA.Fill(DecorOrdersDataTable);
+            }
+
+            Collect();
+        }
+
+        public void Report(int[] MainOrderIDs)
+        {
+            GetMegaOrderInfo(MainOrderIDs[0]);
+            DecorOrdersDataTable.Clear();
+            _profilReportDataTable.Clear();
+            _tPSReportDataTable.Clear();
+
+            string SelectCommand = $@"SELECT
+CASE WHEN MainOrders.Notes = '' THEN CAST(MegaOrders.OrderNumber AS varchar(12)) + '_' + CAST(DecorOrders.MainOrderID AS varchar(12)) ELSE CAST(MegaOrders.OrderNumber AS varchar(12))
+                         + '_' + CAST(DecorOrders.MainOrderID AS varchar(12)) + '_' + MainOrders.Notes END AS Notes,
+DecorOrders.*, infiniu2_catalog.dbo.DecorConfig.AccountingName, infiniu2_catalog.dbo.DecorConfig.InvNumber, MegaOrders.PaymentRate FROM DecorOrders" +
+                " INNER JOIN MainOrders ON DecorOrders.MainOrderID = MainOrders.MainOrderID" +
+                " INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID" +
+                " INNER JOIN infiniu2_catalog.dbo.DecorConfig ON DecorOrders.DecorConfigID = infiniu2_catalog.dbo.DecorConfig.DecorConfigID" +
+                " WHERE InvNumber IS NOT NULL AND DecorOrders.MainOrderID IN (" + string.Join(",", MainOrderIDs) + ") ORDER BY InvNumber";
+            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand,
+                ConnectionStrings.MarketingOrdersConnectionString))
+            {
+                DA.Fill(DecorOrdersDataTable);
+            }
+
+            Collect();
+        }
+
+        private void Collect()
+        {
+            DataTable DistRatesDT = new DataTable();
+            DataTable Items = new DataTable();
+
+            using (DataView DV = new DataView(DecorOrdersDataTable))
+            {
+                Items = DV.ToTable(true, new string[] { "InvNumber", "Notes", "ColorID", "PatinaID" });
+            }
+
+            //get count of different covertypes
+            using (DataView DV = new DataView(DecorOrdersDataTable))
+            {
+                DistRatesDT = DV.ToTable(true, new string[] { "PaymentRate" });
+            }
+
+            for (int i = 0; i < Items.Rows.Count; i++)
+            {
+                for (int j = 0; j < DistRatesDT.Rows.Count; j++)
+                {
+                    PaymentRate = Convert.ToDecimal(DistRatesDT.Rows[j]["PaymentRate"]);
+
+                    int ColorID = Convert.ToInt32(Items.Rows[i]["ColorID"]);
+                    int PatinaID = Convert.ToInt32(Items.Rows[i]["PatinaID"]);
+                    string InvNumber = Items.Rows[i]["InvNumber"].ToString();
+                    string Notes = Items.Rows[i]["Notes"].ToString();
+                    DataRow[] ItemsRows = DecorOrdersDataTable.Select("PaymentRate = '" + PaymentRate.ToString() + "' AND InvNumber = '" + InvNumber +
+                                                                      "' AND Notes = '" + Notes +
+                                                                      "' AND ColorID=" + ColorID + " AND PatinaID=" + PatinaID,
+                        "Price ASC");
+
+                    if (ItemsRows.Count() == 0)
+                        continue;
+                    int DecorConfigID = Convert.ToInt32(ItemsRows[0]["DecorConfigID"]);
+                    //м.п.
+                    if (GetReportMeasureTypeID(Convert.ToInt32(ItemsRows[0]["DecorConfigID"])) == 2)
+                    {
+                        GroupCoverTypes(ItemsRows, 2);
+                    }
+
+                    //шт.
+                    if (GetReportMeasureTypeID(Convert.ToInt32(ItemsRows[0]["DecorConfigID"])) == 3)
+                    {
+                        DataTable ParamTableProfil = new DataTable();
+                        DataTable ParamTableTPS = new DataTable();
+
+                        DataRow[] DCs = DecorConfigDataTable.Select("DecorConfigID = " +
+                            ItemsRows[0]["DecorConfigID"].ToString());
+
+                        CreateParamsTable(DCs[0]["ReportParam"].ToString(), ParamTableProfil);
+                        CreateParamsTable(DCs[0]["ReportParam"].ToString(), ParamTableTPS);
+
+                        GetParametrizedData(ItemsRows, ParamTableProfil, ParamTableTPS);
+
+                        ParamTableProfil.Dispose();
+                        ParamTableTPS.Dispose();
+                    }
+
+                    //м.кв.
+                    if (GetReportMeasureTypeID(Convert.ToInt32(ItemsRows[0]["DecorConfigID"])) == 1)
+                    {
+                        GroupCoverTypes(ItemsRows, 1);
+                    }
+                }
+            }
+
+            Items.Dispose();
+        }
+
+        private void Create()
+        {
+            string SelectCommand = "SELECT * FROM CurrencyTypes";
+            CurrencyTypesDT = new DataTable();
+            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
+            {
+                DA.Fill(CurrencyTypesDT);
+            }
+            DecorOrdersDataTable = new DataTable();
+
+            SelectCommand = @"SELECT ProductID, ProductName, MeasureID, ReportParam FROM DecorProducts" +
+                " WHERE (ProductID IN (SELECT ProductID FROM DecorConfig WHERE (Enabled = 1))) ORDER BY ProductName ASC";
+            DecorProductsDataTable = new DataTable();
+            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
+            {
+                DA.Fill(DecorProductsDataTable);
+            }
+            DecorDataTable = new DataTable();
+            SelectCommand = @"SELECT DISTINCT TechStore.TechStoreID AS DecorID, TechStore.TechStoreName AS Name, DecorConfig.ProductID FROM TechStore
+                INNER JOIN DecorConfig ON TechStore.TechStoreID = DecorConfig.DecorID ORDER BY TechStoreName";
+            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
+            {
+                DA.Fill(DecorDataTable);
+            }
+            MeasuresDataTable = new DataTable();
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Measures",
+                ConnectionStrings.CatalogConnectionString))
+            {
+                DA.Fill(MeasuresDataTable);
+            }
+
+            GetColorsDT();
+            GetPatinaDT();
+
+            DecorConfigDataTable = new DataTable();
+            //using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DecorConfig",
+            //    ConnectionStrings.CatalogConnectionString))
+            //{
+            //    DA.Fill(DecorConfigDataTable);
+            //}
+            DecorConfigDataTable = TablesManager.DecorConfigDataTable;
+
+            DecorParametersDataTable = new DataTable();
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DecorParameters", ConnectionStrings.CatalogConnectionString))
+            {
+                DA.Fill(DecorParametersDataTable);
+            }
+        }
+
+        private void CreateParamsTable(string Params, DataTable DT)
+        {
+            string Param = null;
+
+            for (int i = 0; i < Params.Length; i++)
+            {
+                if (Params[i] != ';')
+                    Param += Params[i];
+
+                if (Params[i] == ';' || i == Params.Length - 1)
+                {
+                    if (Param.Length > 0)
+                    {
+                        DT.Columns.Add(new DataColumn(Param, Type.GetType("System.Int32")));
+                        Param = "";
+                    }
+                }
+            }
+
+            DT.Columns.Add(new DataColumn("UNN", Type.GetType("System.String")));
+            DT.Columns.Add(new DataColumn("CurrencyCode", Type.GetType("System.String")));
+            DT.Columns.Add(new DataColumn("TPSCurCode", Type.GetType("System.String")));
+            DT.Columns.Add(new DataColumn("InvNumber", Type.GetType("System.String")));
+            DT.Columns.Add(new DataColumn("Notes", Type.GetType("System.String")));
+            DT.Columns.Add(new DataColumn("Cvet", Type.GetType("System.String")));
+            DT.Columns.Add(new DataColumn("Patina", Type.GetType("System.String")));
+            DT.Columns.Add(new DataColumn("AccountingName", Type.GetType("System.String")));
+            DT.Columns.Add(new DataColumn("Count", Type.GetType("System.Decimal")));
+            DT.Columns.Add(new DataColumn("TotalCount", Type.GetType("System.Int32")));
+            DT.Columns.Add(new DataColumn("Cost", Type.GetType("System.Decimal")));
+            DT.Columns.Add(new DataColumn("PriceWithTransport", Type.GetType("System.String")));
+            DT.Columns.Add(new DataColumn("CostWithTransport", Type.GetType("System.String")));
+            DT.Columns.Add(new DataColumn("Weight", Type.GetType("System.Decimal")));
+            DT.Columns.Add(new DataColumn("PaymentRate", Type.GetType("System.Decimal")));
+        }
+
+        private void CreateReportDataTable()
+        {
+            _profilReportDataTable = new DataTable();
+            _profilReportDataTable.Columns.Add(new DataColumn("UNN", Type.GetType("System.String")));
+            _profilReportDataTable.Columns.Add(new DataColumn("CurrencyCode", Type.GetType("System.String")));
+            _profilReportDataTable.Columns.Add(new DataColumn("TPSCurCode", Type.GetType("System.String")));
+            _profilReportDataTable.Columns.Add(new DataColumn("InvNumber", Type.GetType("System.String")));
+            _profilReportDataTable.Columns.Add(new DataColumn("Notes", Type.GetType("System.String")));
+            _profilReportDataTable.Columns.Add(new DataColumn("Cvet", Type.GetType("System.String")));
+            _profilReportDataTable.Columns.Add(new DataColumn("Patina", Type.GetType("System.String")));
+            _profilReportDataTable.Columns.Add(new DataColumn("AccountingName", Type.GetType("System.String")));
+            _profilReportDataTable.Columns.Add(new DataColumn("Count", Type.GetType("System.Decimal")));
+            _profilReportDataTable.Columns.Add(new DataColumn("Price", Type.GetType("System.String")));
+            _profilReportDataTable.Columns.Add(new DataColumn("Cost", Type.GetType("System.String")));
+            _profilReportDataTable.Columns.Add(new DataColumn("PriceWithTransport", Type.GetType("System.String")));
+            _profilReportDataTable.Columns.Add(new DataColumn("CostWithTransport", Type.GetType("System.String")));
+            _profilReportDataTable.Columns.Add(new DataColumn("Weight", Type.GetType("System.String")));
+            _profilReportDataTable.Columns.Add(new DataColumn("PaymentRate", Type.GetType("System.Decimal")));
+            _tPSReportDataTable = _profilReportDataTable.Clone();
         }
 
         private string GetColorCode(int ColorID)
@@ -322,22 +398,47 @@ namespace Infinium.Modules.Marketing.NewOrders.NotesInvoiceReportToDbf
             return code;
         }
 
-        private string GetPatinaCode(int PatinaID)
+        private void GetColorsDT()
         {
-            string code = string.Empty;
-            try
+            FrameColorsDataTable = new DataTable();
+            FrameColorsDataTable.Columns.Add(new DataColumn("ColorID", Type.GetType("System.Int64")));
+            FrameColorsDataTable.Columns.Add(new DataColumn("ColorName", Type.GetType("System.String")));
+            FrameColorsDataTable.Columns.Add(new DataColumn("Cvet", Type.GetType("System.String")));
+            string SelectCommand = @"SELECT TechStoreID, TechStoreName, Cvet FROM TechStore
+                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)
+                ORDER BY TechStoreName";
+            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
-                DataRow[] Rows = PatinaDataTable.Select("PatinaID = " + PatinaID);
-                code = Rows[0]["Patina"].ToString();
+                using (DataTable DT = new DataTable())
+                {
+                    DA.Fill(DT);
+                    {
+                        DataRow NewRow = FrameColorsDataTable.NewRow();
+                        NewRow["ColorID"] = -1;
+                        NewRow["ColorName"] = "-";
+                        NewRow["Cvet"] = "000";
+                        FrameColorsDataTable.Rows.Add(NewRow);
+                    }
+                    {
+                        DataRow NewRow = FrameColorsDataTable.NewRow();
+                        NewRow["ColorID"] = 0;
+                        NewRow["ColorName"] = "на выбор";
+                        NewRow["Cvet"] = "0000000";
+                        FrameColorsDataTable.Rows.Add(NewRow);
+                    }
+                    for (int i = 0; i < DT.Rows.Count; i++)
+                    {
+                        DataRow NewRow = FrameColorsDataTable.NewRow();
+                        NewRow["ColorID"] = Convert.ToInt64(DT.Rows[i]["TechStoreID"]);
+                        NewRow["ColorName"] = DT.Rows[i]["TechStoreName"].ToString();
+                        NewRow["Cvet"] = DT.Rows[i]["Cvet"].ToString();
+                        FrameColorsDataTable.Rows.Add(NewRow);
+                    }
+                }
             }
-            catch
-            {
-                return string.Empty;
-            }
-            return code;
         }
 
-        public decimal GetDecorWeight(DataRow DecorOrderRow)
+        private decimal GetDecorWeight(DataRow DecorOrderRow)
         {
             if (DecorOrderRow["Weight"] == DBNull.Value)
             {
@@ -368,7 +469,6 @@ namespace Infinium.Modules.Marketing.NewOrders.NotesInvoiceReportToDbf
 
             if (Row[0]["WeightMeasureID"].ToString() == "2")
             {
-
                 L = 0;
 
                 L = Convert.ToDecimal(DecorOrderRow["Length"]);
@@ -378,7 +478,6 @@ namespace Infinium.Modules.Marketing.NewOrders.NotesInvoiceReportToDbf
 
                 Weight = Convert.ToDecimal(L) / 1000 * Convert.ToDecimal(Row[0]["Weight"]) *
                          Convert.ToDecimal(DecorOrderRow["Count"]);
-
             }
             if (Row[0]["WeightMeasureID"].ToString() == "3")
                 Weight = Convert.ToDecimal(Row[0]["Weight"]) * Convert.ToDecimal(DecorOrderRow["Count"]);
@@ -386,40 +485,461 @@ namespace Infinium.Modules.Marketing.NewOrders.NotesInvoiceReportToDbf
             return Weight;
         }
 
-        public void CreateParamsTable(string Params, DataTable DT)
+        private int GetMeasureTypeID(int DecorConfigID)
         {
-            string Param = null;
+            DataRow[] Row = DecorConfigDataTable.Select("DecorConfigID = " + DecorConfigID);
 
-            for (int i = 0; i < Params.Length; i++)
+            return Convert.ToInt32(Row[0]["MeasureID"]);//1 м.кв.  2 м.п. 3 шт.
+        }
+
+        private void GetParametrizedData(DataRow[] Rows, DataTable PDT, DataTable TDT)
+        {
+            string p1 = "";
+            string p2 = "";
+            string p3 = "";
+
+            if (PDT.Columns["Height"] != null)
+                p1 = "Height";
+
+            if (PDT.Columns["Length"] != null)
+                p1 = "Length";
+
+            if (PDT.Columns["Width"] != null)
+                p2 = "Width";
+
+            if (p1.Length > 0 && p2.Length == 0)
+                p3 = p1;
+
+            if (p1.Length == 0 && p2.Length > 0)
+                p3 = p2;
+
+            if (p1.Length == 0 && p2.Length == 0 && p3.Length == 0)
             {
-                if (Params[i] != ';')
-                    Param += Params[i];
-
-                if (Params[i] == ';' || i == Params.Length - 1)
+                for (int r = 0; r < Rows.Count(); r++)
                 {
-                    if (Param.Length > 0)
+                    string Cvet = GetColorCode(Convert.ToInt32(Rows[r]["ColorID"]));
+                    string Patina = GetPatinaCode(Convert.ToInt32(Rows[r]["PatinaID"]));
+                    if (IsProfil(Convert.ToInt32(Rows[r]["DecorConfigID"])))
                     {
-                        DT.Columns.Add(new DataColumn(Param, Type.GetType("System.Int32")));
-                        Param = "";
+                        DataRow[] InvRows = PDT.Select($"InvNumber = '{ Rows[r]["InvNumber"].ToString() }' AND Notes = '{ Rows[r]["Notes"].ToString() }' AND Cvet = '{ Cvet }' AND Patina = '{ Patina }'");
+                        if (InvRows.Count() == 0)
+                        {
+                            DataRow NewRow = PDT.NewRow();
+                            NewRow["UNN"] = UNN;
+                            NewRow["PaymentRate"] = PaymentRate;
+                            NewRow["AccountingName"] = Rows[r]["AccountingName"].ToString();
+                            NewRow["InvNumber"] = Rows[r]["InvNumber"].ToString();
+                            NewRow["Notes"] = Rows[r]["Notes"].ToString();
+                            NewRow["Cvet"] = Cvet;
+                            NewRow["Patina"] = Patina;
+                            NewRow["CurrencyCode"] = ProfilCurrencyCode;
+                            NewRow["Count"] = Convert.ToDecimal(Rows[r]["Count"]);
+                            NewRow["PriceWithTransport"] = Convert.ToDecimal(Rows[r]["PriceWithTransport"]);
+                            NewRow["CostWithTransport"] = Convert.ToDecimal(Rows[r]["CostWithTransport"]);
+                            NewRow["Cost"] = Convert.ToDecimal(Rows[r]["Cost"]);
+                            NewRow["Weight"] = GetDecorWeight(Rows[r]);
+                            PDT.Rows.Add(NewRow);
+                        }
+                        else
+                        {
+                            InvRows[0]["Count"] = Convert.ToDecimal(InvRows[0]["Count"]) +
+                                Convert.ToDecimal(Rows[r]["Count"]);
+                            InvRows[0]["Cost"] = Convert.ToDecimal(InvRows[0]["Cost"]) +
+                                Convert.ToDecimal(Rows[r]["Cost"]);
+                            InvRows[0]["CostWithTransport"] = Convert.ToDecimal(InvRows[0]["CostWithTransport"]) +
+                                Convert.ToDecimal(Rows[r]["CostWithTransport"]);
+                            InvRows[0]["Weight"] = Convert.ToDecimal(InvRows[0]["Weight"]) +
+                                GetDecorWeight(Rows[r]);
+                        }
+                    }
+                    else
+                    {
+                        DataRow[] InvRows = TDT.Select($"InvNumber = '{ Rows[r]["InvNumber"].ToString() }' AND Notes = '{ Rows[r]["Notes"].ToString() }' AND Cvet = '{ Cvet }' AND Patina = '{ Patina }'");
+                        if (InvRows.Count() == 0)
+                        {
+                            DataRow NewRow = TDT.NewRow();
+                            NewRow["UNN"] = UNN;
+                            NewRow["PaymentRate"] = PaymentRate;
+                            NewRow["AccountingName"] = Rows[r]["AccountingName"].ToString();
+                            NewRow["InvNumber"] = Rows[r]["InvNumber"].ToString();
+                            NewRow["Notes"] = Rows[r]["Notes"].ToString();
+                            NewRow["Cvet"] = Cvet;
+                            NewRow["Patina"] = Patina;
+                            NewRow["CurrencyCode"] = ProfilCurrencyCode;
+                            NewRow["TPSCurCode"] = TPSCurrencyCode;
+                            NewRow["Count"] = Convert.ToDecimal(Rows[r]["Count"]);
+                            NewRow["PriceWithTransport"] = Convert.ToDecimal(Rows[r]["PriceWithTransport"]);
+                            NewRow["CostWithTransport"] = Convert.ToDecimal(Rows[r]["CostWithTransport"]);
+                            NewRow["Cost"] = Convert.ToDecimal(Rows[r]["Cost"]);
+                            NewRow["Weight"] = GetDecorWeight(Rows[r]);
+                            TDT.Rows.Add(NewRow);
+                        }
+                        else
+                        {
+                            InvRows[0]["Count"] = Convert.ToDecimal(InvRows[0]["Count"]) +
+                                Convert.ToDecimal(Rows[r]["Count"]);
+                            InvRows[0]["Cost"] = Convert.ToDecimal(InvRows[0]["Cost"]) +
+                                Convert.ToDecimal(Rows[r]["Cost"]);
+                            InvRows[0]["CostWithTransport"] = Convert.ToDecimal(InvRows[0]["CostWithTransport"]) +
+                                Convert.ToDecimal(Rows[r]["CostWithTransport"]);
+                            InvRows[0]["Weight"] = Convert.ToDecimal(InvRows[0]["Weight"]) +
+                                GetDecorWeight(Rows[r]);
+                        }
                     }
                 }
             }
 
-            DT.Columns.Add(new DataColumn("UNN", Type.GetType("System.String")));
-            DT.Columns.Add(new DataColumn("CurrencyCode", Type.GetType("System.String")));
-            DT.Columns.Add(new DataColumn("TPSCurCode", Type.GetType("System.String")));
-            DT.Columns.Add(new DataColumn("InvNumber", Type.GetType("System.String")));
-            DT.Columns.Add(new DataColumn("AccountingName", Type.GetType("System.String")));
-            DT.Columns.Add(new DataColumn("Notes", Type.GetType("System.String")));
-            DT.Columns.Add(new DataColumn("Cvet", Type.GetType("System.String")));
-            DT.Columns.Add(new DataColumn("Patina", Type.GetType("System.String")));
-            DT.Columns.Add(new DataColumn("Count", Type.GetType("System.Decimal")));
-            DT.Columns.Add(new DataColumn("TotalCount", Type.GetType("System.Int32")));
-            DT.Columns.Add(new DataColumn("Cost", Type.GetType("System.Decimal")));
-            DT.Columns.Add(new DataColumn("PriceWithTransport", Type.GetType("System.String")));
-            DT.Columns.Add(new DataColumn("CostWithTransport", Type.GetType("System.String")));
-            DT.Columns.Add(new DataColumn("Weight", Type.GetType("System.Decimal")));
-            DT.Columns.Add(new DataColumn("PaymentRate", Type.GetType("System.Decimal")));
+            if (p1.Length > 0 && p2.Length > 0)
+            {
+                for (int r = 0; r < Rows.Count(); r++)
+                {
+                    string Cvet = GetColorCode(Convert.ToInt32(Rows[r]["ColorID"]));
+                    string Patina = GetPatinaCode(Convert.ToInt32(Rows[r]["PatinaID"]));
+                    if (IsProfil(Convert.ToInt32(Rows[r]["DecorConfigID"])))
+                    {
+                        DataRow[] InvRows = PDT.Select($"InvNumber = '{ Rows[r]["InvNumber"].ToString() }' AND" +
+                                                       $" Notes = '{ Rows[r]["Notes"].ToString() }' AND" +
+                                                       $" Cvet = '{ Cvet }' AND Patina = '{ Patina }'");
+                        if (InvRows.Count() == 0)
+                        {
+                            DataRow NewRow = PDT.NewRow();
+                            NewRow["UNN"] = UNN;
+                            NewRow["PaymentRate"] = PaymentRate;
+                            NewRow["AccountingName"] = Rows[r]["AccountingName"].ToString();
+                            NewRow["InvNumber"] = Rows[r]["InvNumber"].ToString();
+                            NewRow["Notes"] = Rows[r]["Notes"].ToString();
+                            NewRow["Cvet"] = Cvet;
+                            NewRow["Patina"] = Patina;
+                            NewRow["CurrencyCode"] = ProfilCurrencyCode;
+                            NewRow[p1] = Convert.ToDecimal(Rows[r][p1]);
+                            NewRow[p2] = Convert.ToDecimal(Rows[r][p2]);
+                            NewRow["Count"] = Convert.ToDecimal(Rows[r]["Count"]);
+                            NewRow["PriceWithTransport"] = Convert.ToDecimal(Rows[r]["PriceWithTransport"]);
+                            NewRow["CostWithTransport"] = Convert.ToDecimal(Rows[r]["CostWithTransport"]);
+                            NewRow["Cost"] = Convert.ToDecimal(Rows[r]["Cost"]);
+                            NewRow["Weight"] = GetDecorWeight(Rows[r]);
+                            PDT.Rows.Add(NewRow);
+                        }
+                        else
+                        {
+                            InvRows[0]["Count"] = Convert.ToDecimal(InvRows[0]["Count"]) +
+                                Convert.ToDecimal(Rows[r]["Count"]);
+                            InvRows[0]["CostWithTransport"] = Convert.ToDecimal(InvRows[0]["CostWithTransport"]) +
+                                Convert.ToDecimal(Rows[r]["CostWithTransport"]);
+                            InvRows[0]["Cost"] = Convert.ToDecimal(InvRows[0]["Cost"]) +
+                                Convert.ToDecimal(Rows[r]["Cost"]);
+                            InvRows[0]["Weight"] = Convert.ToDecimal(InvRows[0]["Weight"]) +
+                                GetDecorWeight(Rows[r]);
+                        }
+                    }
+                    else
+                    {
+                        DataRow[] InvRows = TDT.Select($"InvNumber = '{ Rows[r]["InvNumber"].ToString() }' AND " +
+                                                       $" Notes = '{ Rows[r]["Notes"].ToString() }' AND Cvet = '{ Cvet }' AND Patina = '{ Patina }'");
+                        if (InvRows.Count() == 0)
+                        {
+                            DataRow NewRow = TDT.NewRow();
+                            NewRow["UNN"] = UNN;
+                            NewRow["PaymentRate"] = PaymentRate;
+                            NewRow["AccountingName"] = Rows[r]["AccountingName"].ToString();
+                            NewRow["InvNumber"] = Rows[r]["InvNumber"].ToString();
+                            NewRow["Notes"] = Rows[r]["Notes"].ToString();
+                            NewRow["Cvet"] = Cvet;
+                            NewRow["Patina"] = Patina;
+                            NewRow["CurrencyCode"] = ProfilCurrencyCode;
+                            NewRow["TPSCurCode"] = TPSCurrencyCode;
+                            NewRow[p1] = Convert.ToDecimal(Rows[r][p1]);
+                            NewRow[p2] = Convert.ToDecimal(Rows[r][p2]);
+                            NewRow["Count"] = Convert.ToDecimal(Rows[r]["Count"]);
+                            NewRow["PriceWithTransport"] = Convert.ToDecimal(Rows[r]["PriceWithTransport"]);
+                            NewRow["CostWithTransport"] = Convert.ToDecimal(Rows[r]["CostWithTransport"]);
+                            NewRow["Cost"] = Convert.ToDecimal(Rows[r]["Cost"]);
+                            NewRow["Weight"] = GetDecorWeight(Rows[r]);
+                            TDT.Rows.Add(NewRow);
+                        }
+                        else
+                        {
+                            InvRows[0]["Count"] = Convert.ToDecimal(InvRows[0]["Count"]) +
+                                Convert.ToDecimal(Rows[r]["Count"]);
+                            InvRows[0]["CostWithTransport"] = Convert.ToDecimal(InvRows[0]["CostWithTransport"]) +
+                                Convert.ToDecimal(Rows[r]["CostWithTransport"]);
+                            InvRows[0]["Cost"] = Convert.ToDecimal(InvRows[0]["Cost"]) +
+                                Convert.ToDecimal(Rows[r]["Cost"]);
+                            InvRows[0]["Weight"] = Convert.ToDecimal(InvRows[0]["Weight"]) +
+                                GetDecorWeight(Rows[r]);
+                        }
+                    }
+                }
+            }
+
+            if (p3.Length > 0)
+            {
+                for (int r = 0; r < Rows.Count(); r++)
+                {
+                    string Cvet = GetColorCode(Convert.ToInt32(Rows[r]["ColorID"]));
+                    string Patina = GetPatinaCode(Convert.ToInt32(Rows[r]["PatinaID"]));
+                    if (IsProfil(Convert.ToInt32(Rows[r]["DecorConfigID"])))
+                    {
+                        DataRow[] InvRows = PDT.Select($"InvNumber = '{ Rows[r]["InvNumber"].ToString() }' AND " +
+                                                       $" Notes = '{ Rows[r]["Notes"].ToString() }' AND Cvet = '{ Cvet }' AND Patina = '{ Patina }'");
+                        if (InvRows.Count() == 0)
+                        {
+                            DataRow NewRow = PDT.NewRow();
+                            NewRow["UNN"] = UNN;
+                            NewRow["PaymentRate"] = PaymentRate;
+                            NewRow["AccountingName"] = Rows[r]["AccountingName"].ToString();
+                            NewRow["InvNumber"] = Rows[r]["InvNumber"].ToString();
+                            NewRow["Notes"] = Rows[r]["Notes"].ToString();
+                            NewRow["Cvet"] = Cvet;
+                            NewRow["Patina"] = Patina;
+                            NewRow["CurrencyCode"] = ProfilCurrencyCode;
+                            NewRow[p3] = Convert.ToDecimal(Rows[r][p3]);
+                            NewRow["Count"] = Convert.ToDecimal(Rows[r]["Count"]);
+                            NewRow["PriceWithTransport"] = Convert.ToDecimal(Rows[r]["PriceWithTransport"]);
+                            NewRow["CostWithTransport"] = Convert.ToDecimal(Rows[r]["CostWithTransport"]);
+                            NewRow["Cost"] = Convert.ToDecimal(Rows[r]["Cost"]);
+                            NewRow["Weight"] = GetDecorWeight(Rows[r]);
+                            PDT.Rows.Add(NewRow);
+                        }
+                        else
+                        {
+                            InvRows[0]["Count"] = Convert.ToDecimal(InvRows[0]["Count"]) +
+                                Convert.ToDecimal(Rows[r]["Count"]);
+                            InvRows[0]["CostWithTransport"] = Convert.ToDecimal(InvRows[0]["CostWithTransport"]) +
+                                Convert.ToDecimal(Rows[r]["CostWithTransport"]);
+                            InvRows[0]["Cost"] = Convert.ToDecimal(InvRows[0]["Cost"]) +
+                                Convert.ToDecimal(Rows[r]["Cost"]);
+                            InvRows[0]["Weight"] = Convert.ToDecimal(InvRows[0]["Weight"]) +
+                                GetDecorWeight(Rows[r]);
+                        }
+                    }
+                    else
+                    {
+                        DataRow[] InvRows = TDT.Select($"InvNumber = '{ Rows[r]["InvNumber"].ToString() }' AND " +
+                                                       $" Notes = '{ Rows[r]["Notes"].ToString() }' AND Cvet = '{ Cvet }' AND Patina = '{ Patina }'");
+                        if (InvRows.Count() == 0)
+                        {
+                            DataRow NewRow = TDT.NewRow();
+                            NewRow["UNN"] = UNN;
+                            NewRow["PaymentRate"] = PaymentRate;
+                            NewRow["AccountingName"] = Rows[r]["AccountingName"].ToString();
+                            NewRow["InvNumber"] = Rows[r]["InvNumber"].ToString();
+                            NewRow["Notes"] = Rows[r]["Notes"].ToString();
+                            NewRow["Cvet"] = Cvet;
+                            NewRow["Patina"] = Patina;
+                            NewRow["CurrencyCode"] = ProfilCurrencyCode;
+                            NewRow["TPSCurCode"] = TPSCurrencyCode;
+                            NewRow[p3] = Convert.ToDecimal(Rows[r][p3]);
+                            NewRow["Count"] = Convert.ToDecimal(Rows[r]["Count"]);
+                            NewRow["PriceWithTransport"] = Convert.ToDecimal(Rows[r]["PriceWithTransport"]);
+                            NewRow["CostWithTransport"] = Convert.ToDecimal(Rows[r]["CostWithTransport"]);
+                            NewRow["Cost"] = Convert.ToDecimal(Rows[r]["Cost"]);
+                            NewRow["Weight"] = GetDecorWeight(Rows[r]);
+                            TDT.Rows.Add(NewRow);
+                        }
+                        else
+                        {
+                            InvRows[0]["Count"] = Convert.ToDecimal(InvRows[0]["Count"]) +
+                                Convert.ToDecimal(Rows[r]["Count"]);
+                            InvRows[0]["Cost"] = Convert.ToDecimal(InvRows[0]["Cost"]) +
+                                Convert.ToDecimal(Rows[r]["Cost"]);
+                            InvRows[0]["CostWithTransport"] = Convert.ToDecimal(InvRows[0]["CostWithTransport"]) +
+                                Convert.ToDecimal(Rows[r]["CostWithTransport"]);
+                            InvRows[0]["Weight"] = Convert.ToDecimal(InvRows[0]["Weight"]) +
+                                GetDecorWeight(Rows[r]);
+                        }
+                    }
+                }
+            }
+
+            //REPORT TABLES
+            if (PDT.Rows.Count > 0)
+            {
+                for (int g = 0; g < PDT.Rows.Count; g++)
+                {
+                    if (p1.Length > 0 && p2.Length > 0)
+                    {
+                        DataRow NewRow = _profilReportDataTable.NewRow();
+
+                        NewRow["UNN"] = UNN;
+                        NewRow["PaymentRate"] = PaymentRate;
+                        NewRow["AccountingName"] = PDT.Rows[g]["AccountingName"].ToString();
+                        NewRow["InvNumber"] = PDT.Rows[g]["InvNumber"].ToString();
+                        NewRow["Notes"] = PDT.Rows[g]["Notes"].ToString();
+                        NewRow["Cvet"] = PDT.Rows[g]["Cvet"].ToString();
+                        NewRow["Patina"] = PDT.Rows[g]["Patina"].ToString();
+                        NewRow["CurrencyCode"] = ProfilCurrencyCode;
+                        NewRow["Count"] = PDT.Rows[g]["Count"];
+                        NewRow["PriceWithTransport"] = Decimal.Round(Convert.ToDecimal(PDT.Rows[g]["CostWithTransport"]) / Convert.ToDecimal(PDT.Rows[g]["Count"]), 2, MidpointRounding.AwayFromZero);
+                        NewRow["CostWithTransport"] = Decimal.Round(Convert.ToDecimal(PDT.Rows[g]["CostWithTransport"]), 2, MidpointRounding.AwayFromZero);
+                        NewRow["Cost"] = Decimal.Round(Convert.ToDecimal(PDT.Rows[g]["Cost"]), 2, MidpointRounding.AwayFromZero);
+                        NewRow["Weight"] = Decimal.Round(Convert.ToDecimal(PDT.Rows[g]["Weight"]), 3, MidpointRounding.AwayFromZero);
+
+                        _profilReportDataTable.Rows.Add(NewRow);
+                    }
+
+                    if (p3.Length > 0)
+                    {
+                        DataRow NewRow = _profilReportDataTable.NewRow();
+
+                        NewRow["UNN"] = UNN;
+                        NewRow["PaymentRate"] = PaymentRate;
+                        NewRow["AccountingName"] = PDT.Rows[g]["AccountingName"].ToString();
+                        NewRow["InvNumber"] = PDT.Rows[g]["InvNumber"].ToString();
+                        NewRow["Notes"] = PDT.Rows[g]["Notes"].ToString();
+                        NewRow["Cvet"] = PDT.Rows[g]["Cvet"].ToString();
+                        NewRow["Patina"] = PDT.Rows[g]["Patina"].ToString();
+                        NewRow["CurrencyCode"] = ProfilCurrencyCode;
+                        NewRow["Count"] = PDT.Rows[g]["Count"];
+                        NewRow["PriceWithTransport"] = Decimal.Round(Convert.ToDecimal(PDT.Rows[g]["CostWithTransport"]) / Convert.ToDecimal(PDT.Rows[g]["Count"]), 2, MidpointRounding.AwayFromZero);
+                        NewRow["CostWithTransport"] = Decimal.Round(Convert.ToDecimal(PDT.Rows[g]["CostWithTransport"]), 2, MidpointRounding.AwayFromZero);
+                        NewRow["Cost"] = Decimal.Round(Convert.ToDecimal(PDT.Rows[g]["Cost"]), 2, MidpointRounding.AwayFromZero);
+                        NewRow["Weight"] = Decimal.Round(Convert.ToDecimal(PDT.Rows[g]["Weight"]), 3, MidpointRounding.AwayFromZero);
+
+                        _profilReportDataTable.Rows.Add(NewRow);
+                    }
+
+                    if (p1.Length == 0 && p2.Length == 0 && p3.Length == 0)
+                    {
+                        DataRow NewRow = _profilReportDataTable.NewRow();
+
+                        NewRow["UNN"] = UNN;
+                        NewRow["PaymentRate"] = PaymentRate;
+                        NewRow["AccountingName"] = PDT.Rows[g]["AccountingName"].ToString();
+                        NewRow["InvNumber"] = PDT.Rows[g]["InvNumber"].ToString();
+                        NewRow["Notes"] = PDT.Rows[g]["Notes"].ToString();
+                        NewRow["Cvet"] = PDT.Rows[g]["Cvet"].ToString();
+                        NewRow["Patina"] = PDT.Rows[g]["Patina"].ToString();
+                        NewRow["CurrencyCode"] = ProfilCurrencyCode;
+                        NewRow["Count"] = PDT.Rows[g]["Count"];
+                        NewRow["PriceWithTransport"] = Decimal.Round(Convert.ToDecimal(PDT.Rows[g]["CostWithTransport"]) / Convert.ToDecimal(PDT.Rows[g]["Count"]), 2, MidpointRounding.AwayFromZero);
+                        NewRow["CostWithTransport"] = Decimal.Round(Convert.ToDecimal(PDT.Rows[g]["CostWithTransport"]), 2, MidpointRounding.AwayFromZero);
+                        NewRow["Cost"] = Decimal.Round(Convert.ToDecimal(PDT.Rows[g]["Cost"]), 2, MidpointRounding.AwayFromZero);
+                        NewRow["Weight"] = Decimal.Round(Convert.ToDecimal(PDT.Rows[g]["Weight"]), 3, MidpointRounding.AwayFromZero);
+
+                        _profilReportDataTable.Rows.Add(NewRow);
+                    }
+                }
+            }
+
+            if (TDT.Rows.Count > 0)
+            {
+                for (int g = 0; g < TDT.Rows.Count; g++)
+                {
+                    if (p1.Length > 0 && p2.Length > 0)
+                    {
+                        DataRow NewRow = _tPSReportDataTable.NewRow();
+
+                        NewRow["UNN"] = UNN;
+                        NewRow["PaymentRate"] = PaymentRate;
+                        NewRow["AccountingName"] = TDT.Rows[g]["AccountingName"].ToString();
+                        NewRow["InvNumber"] = TDT.Rows[g]["InvNumber"].ToString();
+                        NewRow["Notes"] = TDT.Rows[g]["Notes"].ToString();
+                        NewRow["Cvet"] = TDT.Rows[g]["Cvet"].ToString();
+                        NewRow["Patina"] = TDT.Rows[g]["Patina"].ToString();
+                        NewRow["CurrencyCode"] = ProfilCurrencyCode;
+                        NewRow["TPSCurCode"] = TPSCurrencyCode;
+                        NewRow["Count"] = TDT.Rows[g]["Count"];
+                        NewRow["PriceWithTransport"] = Decimal.Round(Convert.ToDecimal(TDT.Rows[g]["CostWithTransport"]) / Convert.ToDecimal(TDT.Rows[g]["Count"]), 2, MidpointRounding.AwayFromZero);
+                        NewRow["CostWithTransport"] = Decimal.Round(Convert.ToDecimal(TDT.Rows[g]["CostWithTransport"]), 2, MidpointRounding.AwayFromZero);
+                        NewRow["Cost"] = Decimal.Round(Convert.ToDecimal(TDT.Rows[g]["Cost"]), 2, MidpointRounding.AwayFromZero);
+                        NewRow["Weight"] = Decimal.Round(Convert.ToDecimal(TDT.Rows[g]["Weight"]), 3, MidpointRounding.AwayFromZero);
+
+                        _tPSReportDataTable.Rows.Add(NewRow);
+                    }
+
+                    if (p3.Length > 0)
+                    {
+                        DataRow NewRow = _tPSReportDataTable.NewRow();
+
+                        NewRow["UNN"] = UNN;
+                        NewRow["PaymentRate"] = PaymentRate;
+                        NewRow["AccountingName"] = TDT.Rows[g]["AccountingName"].ToString();
+                        NewRow["InvNumber"] = TDT.Rows[g]["InvNumber"].ToString();
+                        NewRow["Notes"] = TDT.Rows[g]["Notes"].ToString();
+                        NewRow["Cvet"] = TDT.Rows[g]["Cvet"].ToString();
+                        NewRow["Patina"] = TDT.Rows[g]["Patina"].ToString();
+                        NewRow["CurrencyCode"] = ProfilCurrencyCode;
+                        NewRow["TPSCurCode"] = TPSCurrencyCode;
+                        NewRow["Count"] = TDT.Rows[g]["Count"];
+                        NewRow["PriceWithTransport"] = Decimal.Round(Convert.ToDecimal(TDT.Rows[g]["CostWithTransport"]) / Convert.ToDecimal(TDT.Rows[g]["Count"]), 2, MidpointRounding.AwayFromZero);
+                        NewRow["CostWithTransport"] = Decimal.Round(Convert.ToDecimal(TDT.Rows[g]["CostWithTransport"]), 2, MidpointRounding.AwayFromZero);
+                        NewRow["Cost"] = Decimal.Round(Convert.ToDecimal(TDT.Rows[g]["Cost"]), 2, MidpointRounding.AwayFromZero);
+                        NewRow["Weight"] = Decimal.Round(Convert.ToDecimal(TDT.Rows[g]["Weight"]), 3, MidpointRounding.AwayFromZero);
+
+                        _tPSReportDataTable.Rows.Add(NewRow);
+                    }
+
+                    if (p1.Length == 0 && p2.Length == 0 && p3.Length == 0)
+                    {
+                        DataRow NewRow = _tPSReportDataTable.NewRow();
+
+                        NewRow["UNN"] = UNN;
+                        NewRow["PaymentRate"] = PaymentRate;
+                        NewRow["AccountingName"] = TDT.Rows[g]["AccountingName"].ToString();
+                        NewRow["InvNumber"] = TDT.Rows[g]["InvNumber"].ToString();
+                        NewRow["Notes"] = TDT.Rows[g]["Notes"].ToString();
+                        NewRow["Cvet"] = TDT.Rows[g]["Cvet"].ToString();
+                        NewRow["Patina"] = TDT.Rows[g]["Patina"].ToString();
+                        NewRow["CurrencyCode"] = ProfilCurrencyCode;
+                        NewRow["TPSCurCode"] = TPSCurrencyCode;
+                        NewRow["Count"] = TDT.Rows[g]["Count"];
+                        NewRow["PriceWithTransport"] = Decimal.Round(Convert.ToDecimal(TDT.Rows[g]["CostWithTransport"]) / Convert.ToDecimal(TDT.Rows[g]["Count"]), 2, MidpointRounding.AwayFromZero);
+                        NewRow["CostWithTransport"] = Decimal.Round(Convert.ToDecimal(TDT.Rows[g]["CostWithTransport"]), 2, MidpointRounding.AwayFromZero);
+                        NewRow["Cost"] = Decimal.Round(Convert.ToDecimal(TDT.Rows[g]["Cost"]), 2, MidpointRounding.AwayFromZero);
+                        NewRow["Weight"] = Decimal.Round(Convert.ToDecimal(TDT.Rows[g]["Weight"]), 3, MidpointRounding.AwayFromZero);
+
+                        _tPSReportDataTable.Rows.Add(NewRow);
+                    }
+                }
+            }
+        }
+
+        private string GetPatinaCode(int PatinaID)
+        {
+            string code = string.Empty;
+            try
+            {
+                DataRow[] Rows = PatinaDataTable.Select("PatinaID = " + PatinaID);
+                code = Rows[0]["Patina"].ToString();
+            }
+            catch
+            {
+                return string.Empty;
+            }
+            return code;
+        }
+
+        private void GetPatinaDT()
+        {
+            PatinaDataTable = new DataTable();
+            PatinaRALDataTable = new DataTable();
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Patina",
+       ConnectionStrings.CatalogConnectionString))
+            {
+                DA.Fill(PatinaDataTable);
+            }
+            PatinaRALDataTable = new DataTable();
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM PatinaRAL WHERE Enabled=1",
+                ConnectionStrings.CatalogConnectionString))
+            {
+                DA.Fill(PatinaRALDataTable);
+            }
+            foreach (DataRow item in PatinaRALDataTable.Rows)
+            {
+                DataRow NewRow = PatinaDataTable.NewRow();
+                NewRow["PatinaID"] = item["PatinaRALID"];
+                NewRow["PatinaName"] = item["PatinaRAL"];
+                NewRow["DisplayName"] = item["DisplayName"];
+                PatinaDataTable.Rows.Add(NewRow);
+            }
+        }
+
+        private int GetReportMeasureTypeID(int DecorConfigID)
+        {
+            DataRow[] Row = DecorConfigDataTable.Select("DecorConfigID = " + DecorConfigID);
+
+            return Convert.ToInt32(Row[0]["ReportMeasureID"]);//1 м.кв.  2 м.п. 3 шт.
         }
 
         private void GroupCoverTypes(DataRow[] Rows, int MeasureTypeID)
@@ -445,7 +965,6 @@ namespace Infinium.Modules.Marketing.NewOrders.NotesInvoiceReportToDbf
             TDT.Columns.Add(new DataColumn("TPSCurCode", Type.GetType("System.String")));
             TDT.Columns.Add(new DataColumn("Cvet", Type.GetType("System.String")));
             TDT.Columns.Add(new DataColumn("Patina", Type.GetType("System.String")));
-
 
             for (int r = 0; r < Rows.Count(); r++)
             {
@@ -784,9 +1303,6 @@ namespace Infinium.Modules.Marketing.NewOrders.NotesInvoiceReportToDbf
                 }
             }
 
-
-
-
             //REPORT TABLE
             //м.п.
             if (MeasureTypeID == 2)
@@ -903,554 +1419,14 @@ namespace Infinium.Modules.Marketing.NewOrders.NotesInvoiceReportToDbf
             TDT.Dispose();
         }
 
-        private void GetParametrizedData(DataRow[] Rows, DataTable PDT, DataTable TDT)
+        private bool IsProfil(int DecorConfigID)
         {
-            string p1 = "";
-            string p2 = "";
-            string p3 = "";
+            DataRow[] Rows = DecorConfigDataTable.Select("DecorConfigID = " + DecorConfigID.ToString());
 
-            if (PDT.Columns["Height"] != null)
-                p1 = "Height";
+            if (Rows[0]["FactoryID"].ToString() == "1")
+                return true;
 
-            if (PDT.Columns["Length"] != null)
-                p1 = "Length";
-
-            if (PDT.Columns["Width"] != null)
-                p2 = "Width";
-
-            if (p1.Length > 0 && p2.Length == 0)
-                p3 = p1;
-
-            if (p1.Length == 0 && p2.Length > 0)
-                p3 = p2;
-
-
-
-            if (p1.Length == 0 && p2.Length == 0 && p3.Length == 0)
-            {
-                for (int r = 0; r < Rows.Count(); r++)
-                {
-                    string Cvet = GetColorCode(Convert.ToInt32(Rows[r]["ColorID"]));
-                    string Patina = GetPatinaCode(Convert.ToInt32(Rows[r]["PatinaID"]));
-                    if (IsProfil(Convert.ToInt32(Rows[r]["DecorConfigID"])))
-                    {
-                        DataRow[] InvRows = PDT.Select($"InvNumber = '{ Rows[r]["InvNumber"].ToString() }' AND Notes = '{ Rows[r]["Notes"].ToString() }' AND Cvet = '{ Cvet }' AND Patina = '{ Patina }'");
-                        if (InvRows.Count() == 0)
-                        {
-                            DataRow NewRow = PDT.NewRow();
-                            NewRow["UNN"] = UNN;
-                            NewRow["PaymentRate"] = PaymentRate;
-                            NewRow["AccountingName"] = Rows[r]["AccountingName"].ToString();
-                            NewRow["InvNumber"] = Rows[r]["InvNumber"].ToString();
-                            NewRow["Notes"] = Rows[r]["Notes"].ToString();
-                            NewRow["Cvet"] = Cvet;
-                            NewRow["Patina"] = Patina;
-                            NewRow["CurrencyCode"] = ProfilCurrencyCode;
-                            NewRow["Count"] = Convert.ToDecimal(Rows[r]["Count"]);
-                            NewRow["PriceWithTransport"] = Convert.ToDecimal(Rows[r]["PriceWithTransport"]);
-                            NewRow["CostWithTransport"] = Convert.ToDecimal(Rows[r]["CostWithTransport"]);
-                            NewRow["Cost"] = Convert.ToDecimal(Rows[r]["Cost"]);
-                            NewRow["Weight"] = GetDecorWeight(Rows[r]);
-                            PDT.Rows.Add(NewRow);
-                        }
-                        else
-                        {
-                            InvRows[0]["Count"] = Convert.ToDecimal(InvRows[0]["Count"]) +
-                                Convert.ToDecimal(Rows[r]["Count"]);
-                            InvRows[0]["Cost"] = Convert.ToDecimal(InvRows[0]["Cost"]) +
-                                Convert.ToDecimal(Rows[r]["Cost"]);
-                            InvRows[0]["CostWithTransport"] = Convert.ToDecimal(InvRows[0]["CostWithTransport"]) +
-                                Convert.ToDecimal(Rows[r]["CostWithTransport"]);
-                            InvRows[0]["Weight"] = Convert.ToDecimal(InvRows[0]["Weight"]) +
-                                GetDecorWeight(Rows[r]);
-                        }
-                    }
-                    else
-                    {
-                        DataRow[] InvRows = TDT.Select($"InvNumber = '{ Rows[r]["InvNumber"].ToString() }' AND Notes = '{ Rows[r]["Notes"].ToString() }' AND Cvet = '{ Cvet }' AND Patina = '{ Patina }'");
-                        if (InvRows.Count() == 0)
-                        {
-                            DataRow NewRow = TDT.NewRow();
-                            NewRow["UNN"] = UNN;
-                            NewRow["PaymentRate"] = PaymentRate;
-                            NewRow["AccountingName"] = Rows[r]["AccountingName"].ToString();
-                            NewRow["InvNumber"] = Rows[r]["InvNumber"].ToString();
-                            NewRow["Notes"] = Rows[r]["Notes"].ToString();
-                            NewRow["Cvet"] = Cvet;
-                            NewRow["Patina"] = Patina;
-                            NewRow["CurrencyCode"] = ProfilCurrencyCode;
-                            NewRow["TPSCurCode"] = TPSCurrencyCode;
-                            NewRow["Count"] = Convert.ToDecimal(Rows[r]["Count"]);
-                            NewRow["PriceWithTransport"] = Convert.ToDecimal(Rows[r]["PriceWithTransport"]);
-                            NewRow["CostWithTransport"] = Convert.ToDecimal(Rows[r]["CostWithTransport"]);
-                            NewRow["Cost"] = Convert.ToDecimal(Rows[r]["Cost"]);
-                            NewRow["Weight"] = GetDecorWeight(Rows[r]);
-                            TDT.Rows.Add(NewRow);
-                        }
-                        else
-                        {
-                            InvRows[0]["Count"] = Convert.ToDecimal(InvRows[0]["Count"]) +
-                                Convert.ToDecimal(Rows[r]["Count"]);
-                            InvRows[0]["Cost"] = Convert.ToDecimal(InvRows[0]["Cost"]) +
-                                Convert.ToDecimal(Rows[r]["Cost"]);
-                            InvRows[0]["CostWithTransport"] = Convert.ToDecimal(InvRows[0]["CostWithTransport"]) +
-                                Convert.ToDecimal(Rows[r]["CostWithTransport"]);
-                            InvRows[0]["Weight"] = Convert.ToDecimal(InvRows[0]["Weight"]) +
-                                GetDecorWeight(Rows[r]);
-                        }
-                    }
-                }
-
-            }
-
-
-
-            if (p1.Length > 0 && p2.Length > 0)
-            {
-                for (int r = 0; r < Rows.Count(); r++)
-                {
-                    string Cvet = GetColorCode(Convert.ToInt32(Rows[r]["ColorID"]));
-                    string Patina = GetPatinaCode(Convert.ToInt32(Rows[r]["PatinaID"]));
-                    if (IsProfil(Convert.ToInt32(Rows[r]["DecorConfigID"])))
-                    {
-                        DataRow[] InvRows = PDT.Select($"InvNumber = '{ Rows[r]["InvNumber"].ToString() }' AND" +
-                                                       $" Notes = '{ Rows[r]["Notes"].ToString() }' AND" +
-                                                       $" Cvet = '{ Cvet }' AND Patina = '{ Patina }'");
-                        if (InvRows.Count() == 0)
-                        {
-                            DataRow NewRow = PDT.NewRow();
-                            NewRow["UNN"] = UNN;
-                            NewRow["PaymentRate"] = PaymentRate;
-                            NewRow["AccountingName"] = Rows[r]["AccountingName"].ToString();
-                            NewRow["InvNumber"] = Rows[r]["InvNumber"].ToString();
-                            NewRow["Notes"] = Rows[r]["Notes"].ToString();
-                            NewRow["Cvet"] = Cvet;
-                            NewRow["Patina"] = Patina;
-                            NewRow["CurrencyCode"] = ProfilCurrencyCode;
-                            NewRow[p1] = Convert.ToDecimal(Rows[r][p1]);
-                            NewRow[p2] = Convert.ToDecimal(Rows[r][p2]);
-                            NewRow["Count"] = Convert.ToDecimal(Rows[r]["Count"]);
-                            NewRow["PriceWithTransport"] = Convert.ToDecimal(Rows[r]["PriceWithTransport"]);
-                            NewRow["CostWithTransport"] = Convert.ToDecimal(Rows[r]["CostWithTransport"]);
-                            NewRow["Cost"] = Convert.ToDecimal(Rows[r]["Cost"]);
-                            NewRow["Weight"] = GetDecorWeight(Rows[r]);
-                            PDT.Rows.Add(NewRow);
-                        }
-                        else
-                        {
-                            InvRows[0]["Count"] = Convert.ToDecimal(InvRows[0]["Count"]) +
-                                Convert.ToDecimal(Rows[r]["Count"]);
-                            InvRows[0]["CostWithTransport"] = Convert.ToDecimal(InvRows[0]["CostWithTransport"]) +
-                                Convert.ToDecimal(Rows[r]["CostWithTransport"]);
-                            InvRows[0]["Cost"] = Convert.ToDecimal(InvRows[0]["Cost"]) +
-                                Convert.ToDecimal(Rows[r]["Cost"]);
-                            InvRows[0]["Weight"] = Convert.ToDecimal(InvRows[0]["Weight"]) +
-                                GetDecorWeight(Rows[r]);
-                        }
-                    }
-                    else
-                    {
-                        DataRow[] InvRows = TDT.Select($"InvNumber = '{ Rows[r]["InvNumber"].ToString() }' AND " +
-                                                       $" Notes = '{ Rows[r]["Notes"].ToString() }' AND Cvet = '{ Cvet }' AND Patina = '{ Patina }'");
-                        if (InvRows.Count() == 0)
-                        {
-                            DataRow NewRow = TDT.NewRow();
-                            NewRow["UNN"] = UNN;
-                            NewRow["PaymentRate"] = PaymentRate;
-                            NewRow["AccountingName"] = Rows[r]["AccountingName"].ToString();
-                            NewRow["InvNumber"] = Rows[r]["InvNumber"].ToString();
-                            NewRow["Notes"] = Rows[r]["Notes"].ToString();
-                            NewRow["Cvet"] = Cvet;
-                            NewRow["Patina"] = Patina;
-                            NewRow["CurrencyCode"] = ProfilCurrencyCode;
-                            NewRow["TPSCurCode"] = TPSCurrencyCode;
-                            NewRow[p1] = Convert.ToDecimal(Rows[r][p1]);
-                            NewRow[p2] = Convert.ToDecimal(Rows[r][p2]);
-                            NewRow["Count"] = Convert.ToDecimal(Rows[r]["Count"]);
-                            NewRow["PriceWithTransport"] = Convert.ToDecimal(Rows[r]["PriceWithTransport"]);
-                            NewRow["CostWithTransport"] = Convert.ToDecimal(Rows[r]["CostWithTransport"]);
-                            NewRow["Cost"] = Convert.ToDecimal(Rows[r]["Cost"]);
-                            NewRow["Weight"] = GetDecorWeight(Rows[r]);
-                            TDT.Rows.Add(NewRow);
-                        }
-                        else
-                        {
-                            InvRows[0]["Count"] = Convert.ToDecimal(InvRows[0]["Count"]) +
-                                Convert.ToDecimal(Rows[r]["Count"]);
-                            InvRows[0]["CostWithTransport"] = Convert.ToDecimal(InvRows[0]["CostWithTransport"]) +
-                                Convert.ToDecimal(Rows[r]["CostWithTransport"]);
-                            InvRows[0]["Cost"] = Convert.ToDecimal(InvRows[0]["Cost"]) +
-                                Convert.ToDecimal(Rows[r]["Cost"]);
-                            InvRows[0]["Weight"] = Convert.ToDecimal(InvRows[0]["Weight"]) +
-                                GetDecorWeight(Rows[r]);
-                        }
-                    }
-                }
-            }
-
-            if (p3.Length > 0)
-            {
-                for (int r = 0; r < Rows.Count(); r++)
-                {
-                    string Cvet = GetColorCode(Convert.ToInt32(Rows[r]["ColorID"]));
-                    string Patina = GetPatinaCode(Convert.ToInt32(Rows[r]["PatinaID"]));
-                    if (IsProfil(Convert.ToInt32(Rows[r]["DecorConfigID"])))
-                    {
-                        DataRow[] InvRows = PDT.Select($"InvNumber = '{ Rows[r]["InvNumber"].ToString() }' AND " +
-                                                       $" Notes = '{ Rows[r]["Notes"].ToString() }' AND Cvet = '{ Cvet }' AND Patina = '{ Patina }'");
-                        if (InvRows.Count() == 0)
-                        {
-                            DataRow NewRow = PDT.NewRow();
-                            NewRow["UNN"] = UNN;
-                            NewRow["PaymentRate"] = PaymentRate;
-                            NewRow["AccountingName"] = Rows[r]["AccountingName"].ToString();
-                            NewRow["InvNumber"] = Rows[r]["InvNumber"].ToString();
-                            NewRow["Notes"] = Rows[r]["Notes"].ToString();
-                            NewRow["Cvet"] = Cvet;
-                            NewRow["Patina"] = Patina;
-                            NewRow["CurrencyCode"] = ProfilCurrencyCode;
-                            NewRow[p3] = Convert.ToDecimal(Rows[r][p3]);
-                            NewRow["Count"] = Convert.ToDecimal(Rows[r]["Count"]);
-                            NewRow["PriceWithTransport"] = Convert.ToDecimal(Rows[r]["PriceWithTransport"]);
-                            NewRow["CostWithTransport"] = Convert.ToDecimal(Rows[r]["CostWithTransport"]);
-                            NewRow["Cost"] = Convert.ToDecimal(Rows[r]["Cost"]);
-                            NewRow["Weight"] = GetDecorWeight(Rows[r]);
-                            PDT.Rows.Add(NewRow);
-                        }
-                        else
-                        {
-                            InvRows[0]["Count"] = Convert.ToDecimal(InvRows[0]["Count"]) +
-                                Convert.ToDecimal(Rows[r]["Count"]);
-                            InvRows[0]["CostWithTransport"] = Convert.ToDecimal(InvRows[0]["CostWithTransport"]) +
-                                Convert.ToDecimal(Rows[r]["CostWithTransport"]);
-                            InvRows[0]["Cost"] = Convert.ToDecimal(InvRows[0]["Cost"]) +
-                                Convert.ToDecimal(Rows[r]["Cost"]);
-                            InvRows[0]["Weight"] = Convert.ToDecimal(InvRows[0]["Weight"]) +
-                                GetDecorWeight(Rows[r]);
-                        }
-                    }
-                    else
-                    {
-                        DataRow[] InvRows = TDT.Select($"InvNumber = '{ Rows[r]["InvNumber"].ToString() }' AND " +
-                                                       $" Notes = '{ Rows[r]["Notes"].ToString() }' AND Cvet = '{ Cvet }' AND Patina = '{ Patina }'");
-                        if (InvRows.Count() == 0)
-                        {
-                            DataRow NewRow = TDT.NewRow();
-                            NewRow["UNN"] = UNN;
-                            NewRow["PaymentRate"] = PaymentRate;
-                            NewRow["AccountingName"] = Rows[r]["AccountingName"].ToString();
-                            NewRow["InvNumber"] = Rows[r]["InvNumber"].ToString();
-                            NewRow["Notes"] = Rows[r]["Notes"].ToString();
-                            NewRow["Cvet"] = Cvet;
-                            NewRow["Patina"] = Patina;
-                            NewRow["CurrencyCode"] = ProfilCurrencyCode;
-                            NewRow["TPSCurCode"] = TPSCurrencyCode;
-                            NewRow[p3] = Convert.ToDecimal(Rows[r][p3]);
-                            NewRow["Count"] = Convert.ToDecimal(Rows[r]["Count"]);
-                            NewRow["PriceWithTransport"] = Convert.ToDecimal(Rows[r]["PriceWithTransport"]);
-                            NewRow["CostWithTransport"] = Convert.ToDecimal(Rows[r]["CostWithTransport"]);
-                            NewRow["Cost"] = Convert.ToDecimal(Rows[r]["Cost"]);
-                            NewRow["Weight"] = GetDecorWeight(Rows[r]);
-                            TDT.Rows.Add(NewRow);
-                        }
-                        else
-                        {
-                            InvRows[0]["Count"] = Convert.ToDecimal(InvRows[0]["Count"]) +
-                                Convert.ToDecimal(Rows[r]["Count"]);
-                            InvRows[0]["Cost"] = Convert.ToDecimal(InvRows[0]["Cost"]) +
-                                Convert.ToDecimal(Rows[r]["Cost"]);
-                            InvRows[0]["CostWithTransport"] = Convert.ToDecimal(InvRows[0]["CostWithTransport"]) +
-                                Convert.ToDecimal(Rows[r]["CostWithTransport"]);
-                            InvRows[0]["Weight"] = Convert.ToDecimal(InvRows[0]["Weight"]) +
-                                GetDecorWeight(Rows[r]);
-                        }
-                    }
-                }
-            }
-
-
-
-
-
-            //REPORT TABLES
-            if (PDT.Rows.Count > 0)
-            {
-                for (int g = 0; g < PDT.Rows.Count; g++)
-                {
-                    if (p1.Length > 0 && p2.Length > 0)
-                    {
-                        DataRow NewRow = _profilReportDataTable.NewRow();
-
-                        NewRow["UNN"] = UNN;
-                        NewRow["PaymentRate"] = PaymentRate;
-                        NewRow["AccountingName"] = PDT.Rows[g]["AccountingName"].ToString();
-                        NewRow["InvNumber"] = PDT.Rows[g]["InvNumber"].ToString();
-                        NewRow["Notes"] = PDT.Rows[g]["Notes"].ToString();
-                        NewRow["Cvet"] = PDT.Rows[g]["Cvet"].ToString();
-                        NewRow["Patina"] = PDT.Rows[g]["Patina"].ToString();
-                        NewRow["CurrencyCode"] = ProfilCurrencyCode;
-                        NewRow["Count"] = PDT.Rows[g]["Count"];
-                        NewRow["PriceWithTransport"] = Decimal.Round(Convert.ToDecimal(PDT.Rows[g]["CostWithTransport"]) / Convert.ToDecimal(PDT.Rows[g]["Count"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["CostWithTransport"] = Decimal.Round(Convert.ToDecimal(PDT.Rows[g]["CostWithTransport"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["Cost"] = Decimal.Round(Convert.ToDecimal(PDT.Rows[g]["Cost"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["Weight"] = Decimal.Round(Convert.ToDecimal(PDT.Rows[g]["Weight"]), 3, MidpointRounding.AwayFromZero);
-
-                        _profilReportDataTable.Rows.Add(NewRow);
-                    }
-
-                    if (p3.Length > 0)
-                    {
-                        DataRow NewRow = _profilReportDataTable.NewRow();
-
-                        NewRow["UNN"] = UNN;
-                        NewRow["PaymentRate"] = PaymentRate;
-                        NewRow["AccountingName"] = PDT.Rows[g]["AccountingName"].ToString();
-                        NewRow["InvNumber"] = PDT.Rows[g]["InvNumber"].ToString();
-                        NewRow["Notes"] = PDT.Rows[g]["Notes"].ToString();
-                        NewRow["Cvet"] = PDT.Rows[g]["Cvet"].ToString();
-                        NewRow["Patina"] = PDT.Rows[g]["Patina"].ToString();
-                        NewRow["CurrencyCode"] = ProfilCurrencyCode;
-                        NewRow["Count"] = PDT.Rows[g]["Count"];
-                        NewRow["PriceWithTransport"] = Decimal.Round(Convert.ToDecimal(PDT.Rows[g]["CostWithTransport"]) / Convert.ToDecimal(PDT.Rows[g]["Count"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["CostWithTransport"] = Decimal.Round(Convert.ToDecimal(PDT.Rows[g]["CostWithTransport"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["Cost"] = Decimal.Round(Convert.ToDecimal(PDT.Rows[g]["Cost"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["Weight"] = Decimal.Round(Convert.ToDecimal(PDT.Rows[g]["Weight"]), 3, MidpointRounding.AwayFromZero);
-
-                        _profilReportDataTable.Rows.Add(NewRow);
-                    }
-
-                    if (p1.Length == 0 && p2.Length == 0 && p3.Length == 0)
-                    {
-                        DataRow NewRow = _profilReportDataTable.NewRow();
-
-                        NewRow["UNN"] = UNN;
-                        NewRow["PaymentRate"] = PaymentRate;
-                        NewRow["AccountingName"] = PDT.Rows[g]["AccountingName"].ToString();
-                        NewRow["InvNumber"] = PDT.Rows[g]["InvNumber"].ToString();
-                        NewRow["Notes"] = PDT.Rows[g]["Notes"].ToString();
-                        NewRow["Cvet"] = PDT.Rows[g]["Cvet"].ToString();
-                        NewRow["Patina"] = PDT.Rows[g]["Patina"].ToString();
-                        NewRow["CurrencyCode"] = ProfilCurrencyCode;
-                        NewRow["Count"] = PDT.Rows[g]["Count"];
-                        NewRow["PriceWithTransport"] = Decimal.Round(Convert.ToDecimal(PDT.Rows[g]["CostWithTransport"]) / Convert.ToDecimal(PDT.Rows[g]["Count"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["CostWithTransport"] = Decimal.Round(Convert.ToDecimal(PDT.Rows[g]["CostWithTransport"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["Cost"] = Decimal.Round(Convert.ToDecimal(PDT.Rows[g]["Cost"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["Weight"] = Decimal.Round(Convert.ToDecimal(PDT.Rows[g]["Weight"]), 3, MidpointRounding.AwayFromZero);
-
-                        _profilReportDataTable.Rows.Add(NewRow);
-                    }
-                }
-            }
-
-            if (TDT.Rows.Count > 0)
-            {
-                for (int g = 0; g < TDT.Rows.Count; g++)
-                {
-                    if (p1.Length > 0 && p2.Length > 0)
-                    {
-                        DataRow NewRow = _tPSReportDataTable.NewRow();
-
-                        NewRow["UNN"] = UNN;
-                        NewRow["PaymentRate"] = PaymentRate;
-                        NewRow["AccountingName"] = TDT.Rows[g]["AccountingName"].ToString();
-                        NewRow["InvNumber"] = TDT.Rows[g]["InvNumber"].ToString();
-                        NewRow["Notes"] = TDT.Rows[g]["Notes"].ToString();
-                        NewRow["Cvet"] = TDT.Rows[g]["Cvet"].ToString();
-                        NewRow["Patina"] = TDT.Rows[g]["Patina"].ToString();
-                        NewRow["CurrencyCode"] = ProfilCurrencyCode;
-                        NewRow["TPSCurCode"] = TPSCurrencyCode;
-                        NewRow["Count"] = TDT.Rows[g]["Count"];
-                        NewRow["PriceWithTransport"] = Decimal.Round(Convert.ToDecimal(TDT.Rows[g]["CostWithTransport"]) / Convert.ToDecimal(TDT.Rows[g]["Count"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["CostWithTransport"] = Decimal.Round(Convert.ToDecimal(TDT.Rows[g]["CostWithTransport"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["Cost"] = Decimal.Round(Convert.ToDecimal(TDT.Rows[g]["Cost"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["Weight"] = Decimal.Round(Convert.ToDecimal(TDT.Rows[g]["Weight"]), 3, MidpointRounding.AwayFromZero);
-
-                        _tPSReportDataTable.Rows.Add(NewRow);
-                    }
-
-                    if (p3.Length > 0)
-                    {
-                        DataRow NewRow = _tPSReportDataTable.NewRow();
-
-                        NewRow["UNN"] = UNN;
-                        NewRow["PaymentRate"] = PaymentRate;
-                        NewRow["AccountingName"] = TDT.Rows[g]["AccountingName"].ToString();
-                        NewRow["InvNumber"] = TDT.Rows[g]["InvNumber"].ToString();
-                        NewRow["Notes"] = TDT.Rows[g]["Notes"].ToString();
-                        NewRow["Cvet"] = TDT.Rows[g]["Cvet"].ToString();
-                        NewRow["Patina"] = TDT.Rows[g]["Patina"].ToString();
-                        NewRow["CurrencyCode"] = ProfilCurrencyCode;
-                        NewRow["TPSCurCode"] = TPSCurrencyCode;
-                        NewRow["Count"] = TDT.Rows[g]["Count"];
-                        NewRow["PriceWithTransport"] = Decimal.Round(Convert.ToDecimal(TDT.Rows[g]["CostWithTransport"]) / Convert.ToDecimal(TDT.Rows[g]["Count"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["CostWithTransport"] = Decimal.Round(Convert.ToDecimal(TDT.Rows[g]["CostWithTransport"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["Cost"] = Decimal.Round(Convert.ToDecimal(TDT.Rows[g]["Cost"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["Weight"] = Decimal.Round(Convert.ToDecimal(TDT.Rows[g]["Weight"]), 3, MidpointRounding.AwayFromZero);
-
-                        _tPSReportDataTable.Rows.Add(NewRow);
-                    }
-
-                    if (p1.Length == 0 && p2.Length == 0 && p3.Length == 0)
-                    {
-                        DataRow NewRow = _tPSReportDataTable.NewRow();
-
-                        NewRow["UNN"] = UNN;
-                        NewRow["PaymentRate"] = PaymentRate;
-                        NewRow["AccountingName"] = TDT.Rows[g]["AccountingName"].ToString();
-                        NewRow["InvNumber"] = TDT.Rows[g]["InvNumber"].ToString();
-                        NewRow["Notes"] = TDT.Rows[g]["Notes"].ToString();
-                        NewRow["Cvet"] = TDT.Rows[g]["Cvet"].ToString();
-                        NewRow["Patina"] = TDT.Rows[g]["Patina"].ToString();
-                        NewRow["CurrencyCode"] = ProfilCurrencyCode;
-                        NewRow["TPSCurCode"] = TPSCurrencyCode;
-                        NewRow["Count"] = TDT.Rows[g]["Count"];
-                        NewRow["PriceWithTransport"] = Decimal.Round(Convert.ToDecimal(TDT.Rows[g]["CostWithTransport"]) / Convert.ToDecimal(TDT.Rows[g]["Count"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["CostWithTransport"] = Decimal.Round(Convert.ToDecimal(TDT.Rows[g]["CostWithTransport"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["Cost"] = Decimal.Round(Convert.ToDecimal(TDT.Rows[g]["Cost"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["Weight"] = Decimal.Round(Convert.ToDecimal(TDT.Rows[g]["Weight"]), 3, MidpointRounding.AwayFromZero);
-
-                        _tPSReportDataTable.Rows.Add(NewRow);
-                    }
-                }
-            }
-
-
-        }
-
-        private void Collect()
-        {
-            DataTable DistRatesDT = new DataTable();
-            DataTable Items = new DataTable();
-
-            using (DataView DV = new DataView(DecorOrdersDataTable))
-            {
-                Items = DV.ToTable(true, new string[] { "InvNumber", "Notes", "ColorID", "PatinaID" });
-            }
-
-            //get count of different covertypes
-            using (DataView DV = new DataView(DecorOrdersDataTable))
-            {
-                DistRatesDT = DV.ToTable(true, new string[] { "PaymentRate" });
-            }
-
-            for (int i = 0; i < Items.Rows.Count; i++)
-            {
-                for (int j = 0; j < DistRatesDT.Rows.Count; j++)
-                {
-                    PaymentRate = Convert.ToDecimal(DistRatesDT.Rows[j]["PaymentRate"]);
-
-                    int ColorID = Convert.ToInt32(Items.Rows[i]["ColorID"]);
-                    int PatinaID = Convert.ToInt32(Items.Rows[i]["PatinaID"]);
-                    string InvNumber = Items.Rows[i]["InvNumber"].ToString();
-                    string Notes = Items.Rows[i]["Notes"].ToString();
-                    DataRow[] ItemsRows = DecorOrdersDataTable.Select("PaymentRate = '" + PaymentRate.ToString() + "' AND InvNumber = '" + InvNumber +
-                                                                      "' AND Notes = '" + Notes +
-                                                                      "' AND ColorID=" + ColorID + " AND PatinaID=" + PatinaID,
-                        "Price ASC");
-
-                    if (ItemsRows.Count() == 0)
-                        continue;
-                    int DecorConfigID = Convert.ToInt32(ItemsRows[0]["DecorConfigID"]);
-                    //м.п.
-                    if (GetReportMeasureTypeID(Convert.ToInt32(ItemsRows[0]["DecorConfigID"])) == 2)
-                    {
-                        GroupCoverTypes(ItemsRows, 2);
-                    }
-
-
-                    //шт.
-                    if (GetReportMeasureTypeID(Convert.ToInt32(ItemsRows[0]["DecorConfigID"])) == 3)
-                    {
-                        DataTable ParamTableProfil = new DataTable();
-                        DataTable ParamTableTPS = new DataTable();
-
-                        DataRow[] DCs = DecorConfigDataTable.Select("DecorConfigID = " +
-                            ItemsRows[0]["DecorConfigID"].ToString());
-
-                        CreateParamsTable(DCs[0]["ReportParam"].ToString(), ParamTableProfil);
-                        CreateParamsTable(DCs[0]["ReportParam"].ToString(), ParamTableTPS);
-
-                        GetParametrizedData(ItemsRows, ParamTableProfil, ParamTableTPS);
-
-                        ParamTableProfil.Dispose();
-                        ParamTableTPS.Dispose();
-                    }
-
-
-                    //м.кв.
-                    if (GetReportMeasureTypeID(Convert.ToInt32(ItemsRows[0]["DecorConfigID"])) == 1)
-                    {
-                        GroupCoverTypes(ItemsRows, 1);
-                    }
-                }
-            }
-
-            Items.Dispose();
-        }
-
-        public void Report(int[] MainOrderIDs, bool IsSample)
-        {
-            GetMegaOrderInfo(MainOrderIDs[0]);
-            DecorOrdersDataTable.Clear();
-            _profilReportDataTable.Clear();
-            _tPSReportDataTable.Clear();
-            string sWhere = "";
-
-            for (int i = 0; i < MainOrderIDs.Count(); i++)
-            {
-                if (sWhere != "")
-                    sWhere += " OR MainOrderID = " + MainOrderIDs[i].ToString();
-                else
-                    sWhere += "MainOrderID = " + MainOrderIDs[i].ToString();
-            }
-
-            string SelectCommand = $@"SELECT 
-CASE WHEN MainOrders.Notes = '' THEN CAST(MegaOrders.OrderNumber AS varchar(12)) + '_' + CAST(DecorOrders.MainOrderID AS varchar(12)) ELSE CAST(MegaOrders.OrderNumber AS varchar(12)) 
-                         + '_' + CAST(DecorOrders.MainOrderID AS varchar(12)) + '_' + MainOrders.Notes END AS Notes,
-DecorOrders.*, infiniu2_catalog.dbo.DecorConfig.AccountingName, infiniu2_catalog.dbo.DecorConfig.InvNumber, MegaOrders.PaymentRate FROM DecorOrders" +
-                " INNER JOIN MainOrders ON DecorOrders.MainOrderID = MainOrders.MainOrderID" +
-                " INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID" +
-                " INNER JOIN infiniu2_catalog.dbo.DecorConfig ON DecorOrders.DecorConfigID = infiniu2_catalog.dbo.DecorConfig.DecorConfigID" +
-                " WHERE DecorOrders.IsSample=1 AND InvNumber IS NOT NULL AND DecorOrders.MainOrderID IN (" + string.Join(",", MainOrderIDs) + ") ORDER BY InvNumber";
-            if (!IsSample)
-                SelectCommand = "SELECT DecorOrders.*, infiniu2_catalog.dbo.DecorConfig.AccountingName, infiniu2_catalog.dbo.DecorConfig.InvNumber, MegaOrders.PaymentRate FROM DecorOrders" +
-                    " INNER JOIN MainOrders ON DecorOrders.MainOrderID = MainOrders.MainOrderID" +
-                    " INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID" +
-                    " INNER JOIN infiniu2_catalog.dbo.DecorConfig ON DecorOrders.DecorConfigID = infiniu2_catalog.dbo.DecorConfig.DecorConfigID" +
-                    " WHERE DecorOrders.IsSample=0 AND InvNumber IS NOT NULL AND DecorOrders.MainOrderID IN (" + string.Join(",", MainOrderIDs) + ") ORDER BY InvNumber";
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand,
-                ConnectionStrings.MarketingOrdersConnectionString))
-            {
-                DA.Fill(DecorOrdersDataTable);
-            }
-
-            Collect();
-
-        }
-
-        public void Report(int[] MainOrderIDs)
-        {
-            GetMegaOrderInfo(MainOrderIDs[0]);
-            DecorOrdersDataTable.Clear();
-            _profilReportDataTable.Clear();
-            _tPSReportDataTable.Clear();
-
-            string SelectCommand = $@"SELECT 
-CASE WHEN MainOrders.Notes = '' THEN CAST(MegaOrders.OrderNumber AS varchar(12)) + '_' + CAST(DecorOrders.MainOrderID AS varchar(12)) ELSE CAST(MegaOrders.OrderNumber AS varchar(12)) 
-                         + '_' + CAST(DecorOrders.MainOrderID AS varchar(12)) + '_' + MainOrders.Notes END AS Notes,
-DecorOrders.*, infiniu2_catalog.dbo.DecorConfig.AccountingName, infiniu2_catalog.dbo.DecorConfig.InvNumber, MegaOrders.PaymentRate FROM DecorOrders" +
-                " INNER JOIN MainOrders ON DecorOrders.MainOrderID = MainOrders.MainOrderID" +
-                " INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID" +
-                " INNER JOIN infiniu2_catalog.dbo.DecorConfig ON DecorOrders.DecorConfigID = infiniu2_catalog.dbo.DecorConfig.DecorConfigID" +
-                " WHERE InvNumber IS NOT NULL AND DecorOrders.MainOrderID IN (" + string.Join(",", MainOrderIDs) + ") ORDER BY InvNumber";
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand,
-                ConnectionStrings.MarketingOrdersConnectionString))
-            {
-                DA.Fill(DecorOrdersDataTable);
-            }
-
-            Collect();
-
+            return false;
         }
     }
 }

@@ -10,8 +10,9 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
-using Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDBF;
-using Infinium.Modules.Marketing.NewOrders.InvoiceReportToDBF;
+using Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDbf;
+using Infinium.Modules.Marketing.NewOrders.InvoiceReportToDbf;
+using Infinium.Modules.Marketing.NewOrders.NotesInvoiceReportToDbf;
 
 namespace Infinium
 {
@@ -827,7 +828,7 @@ namespace Infinium
                         "Согласование заказа");
                 int ClientID = 0;
                 string ClientName = string.Empty;
-                InvoiceReportToDBF DBFReport = null;
+                InvoiceReportToDbf DBFReport = null;
                 PhantomForm PhantomForm = null;
                 if (OKCancel)
                 {
@@ -840,7 +841,7 @@ namespace Infinium
                     if (RoleType == RoleTypes.Admin || RoleType == RoleTypes.Director)
                         bCanDirectorDiscount = true;
 
-                    DBFReport = new InvoiceReportToDBF();
+                    DBFReport = new InvoiceReportToDbf();
                     CurrencyForm = new CurrencyForm(this, ref OrdersManager, ref OrdersCalculate, ref DBFReport, ClientID, ClientName, bCanDirectorDiscount);
 
                     CurrencyForm.SetParameters(
@@ -957,7 +958,7 @@ namespace Infinium
             if (RoleType == RoleTypes.Admin || RoleType == RoleTypes.Director)
                 bCanDirectorDiscount = true;
 
-            InvoiceReportToDBF DBFReport = new InvoiceReportToDBF();
+            InvoiceReportToDbf DBFReport = new InvoiceReportToDbf();
             CurrencyForm = new CurrencyForm(this, ref OrdersManager, ref OrdersCalculate, ref DBFReport, ClientID, ClientName, bCanDirectorDiscount);
 
             CurrencyForm.SetParameters(
@@ -1158,7 +1159,7 @@ namespace Infinium
 
             PhantomForm PhantomForm = new Infinium.PhantomForm();
             PhantomForm.Show();
-            InvoiceReportToDBF DBFReport = new InvoiceReportToDBF();
+            InvoiceReportToDbf DBFReport = new InvoiceReportToDbf();
             for (int i = 0; i < MegaOrdersDataGrid.SelectedRows.Count; i++)
             {
                 int MegaOrderID = Convert.ToInt32(MegaOrdersDataGrid.SelectedRows[i].Cells["MegaOrderID"].Value);
@@ -1271,18 +1272,22 @@ namespace Infinium
                 DialogResult result = form.ShowDialog();
                 if (result == DialogResult.OK)
                 {
-                    bool _standardReport = form._standardReport;
+                    InvoiceReportType invoiceReportType = form.invoiceReportType;
 
-                    if (_standardReport)
+                    if (invoiceReportType == InvoiceReportType.Notes)
                     {
-                        Infinium.Modules.Marketing.NewOrders.InvoiceReportToDBF.InvoiceReportToDBF DBFReport = new InvoiceReportToDBF();
-                        //Infinium.Modules.Marketing.NewOrders.NotesInvoiceReportToDBF.NotesInvoiceReportToDbf DBFReport = new NotesInvoiceReportToDbf();
-                        InvoiceReportToDBF(DBFReport);
+                        Infinium.Modules.Marketing.NewOrders.NotesInvoiceReportToDbf.NotesInvoiceReportToDbf dbfReport = new NotesInvoiceReportToDbf();
+                        InvoiceReportToDBF(dbfReport);
                     }
-                    else
+                    if (invoiceReportType == InvoiceReportType.Standard)
                     {
-                        Modules.Marketing.NewOrders.ColorInvoiceReportToDBF.ColorInvoiceReportToDbf DBFReport = new Modules.Marketing.NewOrders.ColorInvoiceReportToDBF.ColorInvoiceReportToDbf();
-                        InvoiceReportToDBF(DBFReport);
+                        Infinium.Modules.Marketing.NewOrders.InvoiceReportToDbf.InvoiceReportToDbf dbfReport = new InvoiceReportToDbf();
+                        InvoiceReportToDBF(dbfReport);
+                    }
+                    if (invoiceReportType == InvoiceReportType.CvetPatina)
+                    {
+                        Modules.Marketing.NewOrders.ColorInvoiceReportToDbf.ColorInvoiceReportToDbf dbfReport = new ColorInvoiceReportToDbf();
+                        InvoiceReportToDBF(dbfReport);
                     }
                 }
                 else
@@ -1292,7 +1297,7 @@ namespace Infinium
             }
         }
 
-        private void InvoiceReportToDBF(Modules.Marketing.NewOrders.InvoiceReportToDBF.InvoiceReportToDBF DBFReport)
+        private void InvoiceReportToDBF(Modules.Marketing.NewOrders.InvoiceReportToDbf.InvoiceReportToDbf DBFReport)
         {
             decimal ComplaintProfilCost = 0;
             decimal ComplaintTPSCost = 0;
@@ -1876,7 +1881,7 @@ namespace Infinium
             }
         }
 
-        private void InvoiceReportToDBF(Modules.Marketing.NewOrders.ColorInvoiceReportToDBF.ColorInvoiceReportToDbf DBFReport)
+        private void InvoiceReportToDBF(Modules.Marketing.NewOrders.ColorInvoiceReportToDbf.ColorInvoiceReportToDbf DBFReport)
         {
             decimal ComplaintProfilCost = 0;
             decimal ComplaintTPSCost = 0;
@@ -3679,17 +3684,22 @@ namespace Infinium
                 DialogResult result = form.ShowDialog();
                 if (result == DialogResult.OK)
                 {
-                    bool _standardReport = form._standardReport;
+                    InvoiceReportType invoiceReportType = form.invoiceReportType;
 
-                    if (_standardReport)
+                    if (invoiceReportType == InvoiceReportType.Notes)
                     {
-                        Modules.Marketing.NewOrders.PrepareReport.InvoiceReport.InvoiceReportToDBF DBFReport = new Modules.Marketing.NewOrders.PrepareReport.InvoiceReport.InvoiceReportToDBF();
-                        PrepareInvoiceReportToDBF(DBFReport);
+                        Infinium.Modules.Marketing.NewOrders.NotesInvoiceReportToDbf.NotesInvoiceReportToDbf dbfReport = new NotesInvoiceReportToDbf();
+                        InvoiceReportToDBF(dbfReport);
                     }
-                    else
+                    if (invoiceReportType == InvoiceReportType.Standard)
                     {
-                        Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportToDbf.ColorInvoiceReportToDbf DBFReport = new Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportToDbf.ColorInvoiceReportToDbf();
-                        PrepareInvoiceReportToDBF(DBFReport);
+                        Infinium.Modules.Marketing.NewOrders.InvoiceReportToDbf.InvoiceReportToDbf dbfReport = new InvoiceReportToDbf();
+                        InvoiceReportToDBF(dbfReport);
+                    }
+                    if (invoiceReportType == InvoiceReportType.CvetPatina)
+                    {
+                        Modules.Marketing.NewOrders.ColorInvoiceReportToDbf.ColorInvoiceReportToDbf dbfReport = new ColorInvoiceReportToDbf();
+                        InvoiceReportToDBF(dbfReport);
                     }
                 }
                 else

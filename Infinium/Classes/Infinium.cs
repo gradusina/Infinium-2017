@@ -265,6 +265,12 @@ namespace Infinium
     }
 
 
+    public enum InvoiceReportType
+    {
+        Standard = 0,
+        CvetPatina = 1,
+        Notes = 2
+    }
 
     public class Security
     {

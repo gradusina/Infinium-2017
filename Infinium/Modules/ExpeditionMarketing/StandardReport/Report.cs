@@ -1,21 +1,20 @@
-﻿using NPOI.HSSF.UserModel;
+﻿using Infinium.Modules.Marketing.Orders;
+
+using NPOI.HSSF.UserModel;
 using NPOI.HSSF.Util;
 
 using System;
 using System.Data;
-using System.Data.OleDb;
 using System.Data.SqlClient;
-using System.IO;
 using System.Text;
 
-namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.SimpleReport
+namespace Infinium.Modules.ExpeditionMarketing.StandardReport
 {
     public class Report
     {
         //string ReportFilePath = string.Empty;
         //HSSFWorkbook hssfworkbook;
-        private decimal VAT = 1.0m;
-
+        decimal VAT = 1.0m;
         public FrontsReport FrontsReport = null;
         public DecorReport DecorReport = null;
 
@@ -36,18 +35,6 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.SimpleReport
             {
                 DA.Fill(CurrencyTypesDataTable);
             }
-
-            //ReadReportFilePath("MarketingClientReportPath.config");
-
-            //if (!(Directory.Exists(ReportFilePath)))
-            //{
-            //    Directory.CreateDirectory(ReportFilePath);
-            //}
-
-            //if (!(Directory.Exists(ReportFilePath)))
-            //{
-            //    Directory.CreateDirectory(ReportFilePath);
-            //}
         }
 
         private void CreateProfilReportTable()
@@ -71,6 +58,8 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.SimpleReport
             ProfilReportTable.Columns.Add(new DataColumn("DiscountVolume", Type.GetType("System.String")));
             ProfilReportTable.Columns.Add(new DataColumn("TotalDiscount", Type.GetType("System.String")));
             ProfilReportTable.Columns.Add(new DataColumn("PaymentRate", Type.GetType("System.Decimal")));
+            ProfilReportTable.Columns.Add(new DataColumn("OriginalCount", Type.GetType("System.Decimal")));
+            ProfilReportTable.Columns.Add(new DataColumn("OriginalCost", Type.GetType("System.Decimal")));
             ProfilReportTable.Columns.Add(new DataColumn("IsNonStandard", Type.GetType("System.Boolean")));
             ProfilReportTable.Columns.Add(new DataColumn("NonStandardMargin", Type.GetType("System.Decimal")));
             TPSReportTable = ProfilReportTable.Clone();
@@ -113,18 +102,18 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.SimpleReport
                 CostWithTransport = Math.Ceiling(CostWithTransport / 0.01m) * 0.01m;
                 Price = Cost / Count;
                 PriceWithTransport = CostWithTransport / Count;
-                //if (CurrencyTypeID == 4)
-                //{
-                //    DecCount = 0;
-                //    if (OriginalPrice != 0)
-                //        OriginalPrice = Math.Ceiling(OriginalPrice / 100.0m) * 100.0m;
-                //    if (CostWithTransport != 0)
-                //        CostWithTransport = Math.Ceiling(CostWithTransport / 100.0m) * 100.0m;
-                //    Price = Math.Ceiling(Price / 100.0m) * 100.0m;
-                //    Cost = Price * Count;
-                //    PriceWithTransport = Math.Ceiling(PriceWithTransport / 100.0m) * 100.0m;
-                //    CostWithTransport = PriceWithTransport * Count;
-                //}
+                if (CurrencyTypeID == 0)
+                {
+                    DecCount = 0;
+                    if (OriginalPrice != 0)
+                        OriginalPrice = Math.Ceiling(OriginalPrice / 100.0m) * 100.0m;
+                    if (CostWithTransport != 0)
+                        CostWithTransport = Math.Ceiling(CostWithTransport / 100.0m) * 100.0m;
+                    Price = Math.Ceiling(Price / 100.0m) * 100.0m;
+                    Cost = Price * Count;
+                    PriceWithTransport = Math.Ceiling(PriceWithTransport / 100.0m) * 100.0m;
+                    CostWithTransport = PriceWithTransport * Count;
+                }
                 if (ProfilReportTable.Rows[i]["NonStandardMargin"] != DBNull.Value)
                 {
                     decimal ExtraPrice = Convert.ToDecimal(ProfilReportTable.Rows[i]["NonStandardMargin"]);
@@ -166,18 +155,18 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.SimpleReport
                 CostWithTransport = Math.Ceiling(CostWithTransport / 0.01m) * 0.01m;
                 Price = Cost / Count;
                 PriceWithTransport = CostWithTransport / Count;
-                //if (CurrencyTypeID == 4)
-                //{
-                //    DecCount = 0;
-                //    if (OriginalPrice != 0)
-                //        OriginalPrice = Math.Ceiling(OriginalPrice / 100.0m) * 100.0m;
-                //    if (CostWithTransport != 0)
-                //        CostWithTransport = Math.Ceiling(CostWithTransport / 100.0m) * 100.0m;
-                //    Price = Math.Ceiling(Price / 100.0m) * 100.0m;
-                //    Cost = Price * Count;
-                //    PriceWithTransport = Math.Ceiling(PriceWithTransport / 100.0m) * 100.0m;
-                //    CostWithTransport = PriceWithTransport * Count;
-                //}
+                if (CurrencyTypeID == 0)
+                {
+                    DecCount = 0;
+                    if (OriginalPrice != 0)
+                        OriginalPrice = Math.Ceiling(OriginalPrice / 100.0m) * 100.0m;
+                    if (CostWithTransport != 0)
+                        CostWithTransport = Math.Ceiling(CostWithTransport / 100.0m) * 100.0m;
+                    Price = Math.Ceiling(Price / 100.0m) * 100.0m;
+                    Cost = Price * Count;
+                    PriceWithTransport = Math.Ceiling(PriceWithTransport / 100.0m) * 100.0m;
+                    CostWithTransport = PriceWithTransport * Count;
+                }
                 if (TPSReportTable.Rows[i]["NonStandardMargin"] != DBNull.Value)
                 {
                     decimal ExtraPrice = Convert.ToDecimal(TPSReportTable.Rows[i]["NonStandardMargin"]);
@@ -323,7 +312,6 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.SimpleReport
                     string AccountingName = string.Empty;
                     string InvNumber = string.Empty;
                     string UNN = string.Empty;
-                    decimal TotalDiscount = 0;
                     string ProfilCurrencyCode = string.Empty;
                     string TPSCurrencyCode = string.Empty;
                     //ADD to Table
@@ -333,7 +321,6 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.SimpleReport
                         AccountingName = ProfilReportTable.Rows[0]["AccountingName"].ToString();
                         InvNumber = ProfilReportTable.Rows[0]["InvNumber"].ToString();
                         UNN = ProfilReportTable.Rows[0]["UNN"].ToString();
-                        TotalDiscount = Convert.ToDecimal(ProfilReportTable.Rows[0]["TotalDiscount"]);
                         ProfilCurrencyCode = ProfilReportTable.Rows[0]["CurrencyCode"].ToString();
                         TPSCurrencyCode = ProfilReportTable.Rows[0]["TPSCurCode"].ToString();
                     }
@@ -346,7 +333,6 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.SimpleReport
                         NewRow["InvNumber"] = InvNumber;
                         NewRow["CurrencyCode"] = ProfilCurrencyCode;
                         NewRow["TPSCurCode"] = TPSCurrencyCode;
-                        NewRow["TotalDiscount"] = TotalDiscount;
                         NewRow["Name"] = "Решетка";
                         NewRow["Count"] = GridSquare;
                         NewRow["Measure"] = "м.кв.";
@@ -373,7 +359,6 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.SimpleReport
                         NewRow["InvNumber"] = InvNumber;
                         NewRow["CurrencyCode"] = ProfilCurrencyCode;
                         NewRow["TPSCurCode"] = TPSCurrencyCode;
-                        NewRow["TotalDiscount"] = TotalDiscount;
                         NewRow["Name"] = "Стекло Лакомат";
                         NewRow["Count"] = LacomatSquare;
                         NewRow["Measure"] = "м.кв.";
@@ -402,7 +387,6 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.SimpleReport
                         NewRow["InvNumber"] = InvNumber;
                         NewRow["CurrencyCode"] = ProfilCurrencyCode;
                         NewRow["TPSCurCode"] = TPSCurrencyCode;
-                        NewRow["TotalDiscount"] = TotalDiscount;
                         NewRow["Name"] = "Стекло Кризет";
                         NewRow["Count"] = KrizetSquare;
                         NewRow["Measure"] = "м.кв.";
@@ -431,7 +415,6 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.SimpleReport
                         NewRow["InvNumber"] = InvNumber;
                         NewRow["CurrencyCode"] = ProfilCurrencyCode;
                         NewRow["TPSCurCode"] = TPSCurrencyCode;
-                        NewRow["TotalDiscount"] = TotalDiscount;
                         NewRow["Name"] = "Стекло Флутес";
                         NewRow["Count"] = FlutesSquare;
                         NewRow["Measure"] = "м.кв.";
@@ -461,7 +444,6 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.SimpleReport
                 NewRow["InvNumber"] = dt.Rows[i]["InvNumber"];
                 NewRow["CurrencyCode"] = dt.Rows[i]["CurrencyCode"];
                 NewRow["TPSCurCode"] = dt.Rows[i]["TPSCurCode"];
-                NewRow["TotalDiscount"] = dt.Rows[i]["TotalDiscount"];
                 NewRow["Name"] = dt.Rows[i]["Name"];
                 NewRow["Count"] = dt.Rows[i]["Count"];
                 NewRow["Measure"] = dt.Rows[i]["Measure"];
@@ -520,12 +502,12 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.SimpleReport
                     bool b = false;
                     if (TPSReportTable.Rows[i]["Name"].ToString().IndexOf("Решетка") > -1)
                     {
-                        //GridCost += Convert.ToDecimal(TPSReportTable.Rows[i]["Cost"]);
-                        //GridCostWithTransport += Convert.ToDecimal(TPSReportTable.Rows[i]["CostWithTransport"]);
+                        GridCost += Convert.ToDecimal(TPSReportTable.Rows[i]["Cost"]);
+                        GridCostWithTransport += Convert.ToDecimal(TPSReportTable.Rows[i]["CostWithTransport"]);
                         GridSquare += Convert.ToDecimal(TPSReportTable.Rows[i]["Count"]);
                         GridWeight += Convert.ToDecimal(TPSReportTable.Rows[i]["Weight"]);
-                        //GridCost = 0;
-                        //GridCostWithTransport = 0;
+                        GridCost = 0;
+                        GridCostWithTransport = 0;
                         GridCost += Math.Ceiling(Convert.ToDecimal(TPSReportTable.Rows[i]["OriginalPrice"]) * Convert.ToDecimal(TPSReportTable.Rows[i]["Count"]) / 0.001m) * 0.001m;
                         GridCostWithTransport += Math.Ceiling(Convert.ToDecimal(TPSReportTable.Rows[i]["PriceWithTransport"]) * Convert.ToDecimal(TPSReportTable.Rows[i]["Count"]) / 0.001m) * 0.001m;
 
@@ -579,7 +561,6 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.SimpleReport
                     string AccountingName = string.Empty;
                     string InvNumber = string.Empty;
                     string UNN = string.Empty;
-                    decimal TotalDiscount = 0;
                     string ProfilCurrencyCode = string.Empty;
                     string TPSCurrencyCode = string.Empty;
                     //ADD to Table
@@ -589,7 +570,6 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.SimpleReport
                         AccountingName = TPSReportTable.Rows[0]["AccountingName"].ToString();
                         InvNumber = TPSReportTable.Rows[0]["InvNumber"].ToString();
                         UNN = TPSReportTable.Rows[0]["UNN"].ToString();
-                        TotalDiscount = Convert.ToDecimal(TPSReportTable.Rows[0]["TotalDiscount"]);
                         ProfilCurrencyCode = TPSReportTable.Rows[0]["CurrencyCode"].ToString();
                         TPSCurrencyCode = TPSReportTable.Rows[0]["TPSCurCode"].ToString();
                     }
@@ -604,7 +584,6 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.SimpleReport
                         NewRow["InvNumber"] = InvNumber;
                         NewRow["CurrencyCode"] = ProfilCurrencyCode;
                         NewRow["TPSCurCode"] = TPSCurrencyCode;
-                        NewRow["TotalDiscount"] = TotalDiscount;
                         NewRow["Name"] = "Решетка";
                         NewRow["Count"] = GridSquare;
                         NewRow["Measure"] = "м.кв.";
@@ -626,7 +605,6 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.SimpleReport
                         NewRow["InvNumber"] = InvNumber;
                         NewRow["CurrencyCode"] = ProfilCurrencyCode;
                         NewRow["TPSCurCode"] = TPSCurrencyCode;
-                        NewRow["TotalDiscount"] = TotalDiscount;
                         NewRow["Name"] = "Стекло Лакомат";
                         NewRow["Count"] = LacomatSquare;
                         NewRow["Measure"] = "м.кв.";
@@ -648,7 +626,6 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.SimpleReport
                         NewRow["InvNumber"] = InvNumber;
                         NewRow["CurrencyCode"] = ProfilCurrencyCode;
                         NewRow["TPSCurCode"] = TPSCurrencyCode;
-                        NewRow["TotalDiscount"] = TotalDiscount;
                         NewRow["Name"] = "Стекло Кризет";
                         NewRow["Count"] = KrizetSquare;
                         NewRow["Measure"] = "м.кв.";
@@ -670,7 +647,6 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.SimpleReport
                         NewRow["InvNumber"] = InvNumber;
                         NewRow["CurrencyCode"] = ProfilCurrencyCode;
                         NewRow["TPSCurCode"] = TPSCurrencyCode;
-                        NewRow["TotalDiscount"] = TotalDiscount;
                         NewRow["Name"] = "Стекло Флутес";
                         NewRow["Count"] = FlutesSquare;
                         NewRow["Measure"] = "м.кв.";
@@ -694,7 +670,6 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.SimpleReport
                 NewRow["CurrencyCode"] = dt.Rows[i]["CurrencyCode"];
                 NewRow["TPSCurCode"] = dt.Rows[i]["TPSCurCode"];
                 NewRow["Name"] = dt.Rows[i]["Name"];
-                NewRow["TotalDiscount"] = dt.Rows[i]["TotalDiscount"];
                 NewRow["Count"] = dt.Rows[i]["Count"];
                 NewRow["Measure"] = dt.Rows[i]["Measure"];
                 NewRow["Price"] = dt.Rows[i]["Price"];
@@ -722,6 +697,7 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.SimpleReport
             decimal cProfil = 0;
             decimal cTPS = 0;
 
+
             pProfil = WeightProfil / (TotalWeight / 100);
             pTPS = WeightTPS / (TotalWeight / 100);
 
@@ -737,7 +713,7 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.SimpleReport
             int MegaOrderID = 0;
             using (DataTable DT = new DataTable())
             {
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT MegaOrderID FROM NewMainOrders" +
+                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT MegaOrderID FROM MainOrders" +
                     " WHERE MainOrderID=" + MainOrderID, ConnectionStrings.MarketingOrdersConnectionString))
                 {
                     DA.Fill(DT);
@@ -753,7 +729,7 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.SimpleReport
             bool IsComplaint = false;
 
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT IsComplaint" +
-                            " FROM NewMegaOrders WHERE MegaOrderID = " + MegaOrderID,
+                            " FROM MegaOrders WHERE MegaOrderID = " + MegaOrderID,
                             ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
@@ -774,7 +750,7 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.SimpleReport
             return IsComplaint;
         }
 
-        private static string ConvertDefaultToDos(string src)
+        private static string convertDefaultToDos(string src)
         {
             byte[] buffer;
             buffer = Encoding.Default.GetBytes(src);
@@ -787,73 +763,11 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.SimpleReport
             return "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + path + ";Extended Properties=dBASE 5.0;";
         }
 
-        public DataTable GetMegaOrdersTable(int[] NewMegaOrders)
-        {
-            DataTable ReturnDT = new DataTable();
-            string SelectCommand = @"SELECT NewMegaOrders.MegaOrderID, NewMegaOrders.OrderNumber, NewMegaOrders.ClientID,
-                NewMegaOrders.ComplaintProfilCost, NewMegaOrders.ComplaintTPSCost, NewMegaOrders.TransportCost, NewMegaOrders.AdditionalCost, NewMegaOrders.CurrencyTypeID,
-                NewMainOrders.MainOrderID, NewMainOrders.Weight
-                FROM NewMainOrders
-                INNER JOIN NewMegaOrders ON NewMainOrders.MegaOrderID=NewMegaOrders.MegaOrderID
-                AND NewMegaOrders.MegaOrderID IN (" + string.Join(",", NewMegaOrders) + ")";
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
-            {
-                DA.Fill(ReturnDT);
-                ReturnDT.Columns.Add(new DataColumn("ProfilFrontsWeight", Type.GetType("System.Decimal")));
-                ReturnDT.Columns.Add(new DataColumn("TPSFrontsWeight", Type.GetType("System.Decimal")));
-                ReturnDT.Columns.Add(new DataColumn("ProfilDecorWeight", Type.GetType("System.Decimal")));
-                ReturnDT.Columns.Add(new DataColumn("TPSDecorWeight", Type.GetType("System.Decimal")));
-                for (int i = 0; i < ReturnDT.Rows.Count; i++)
-                {
-                    decimal ProfilFrontsWeight = 0;
-                    decimal TPSFrontsWeight = 0;
-                    decimal ProfilDecorWeight = 0;
-                    decimal TPSDecorWeight = 0;
-                    int MainOrderID = Convert.ToInt32(ReturnDT.Rows[i]["MainOrderID"]);
-                    SelectCommand = @"SELECT Square,Weight,FactoryID FROM NewFrontsOrders WHERE MainOrderID=" + MainOrderID;
-                    using (SqlDataAdapter DA1 = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
-                    {
-                        using (DataTable DT = new DataTable())
-                        {
-                            DA1.Fill(DT);
-                            for (int j = 0; j < DT.Rows.Count; j++)
-                            {
-                                if (Convert.ToInt32(DT.Rows[j]["FactoryID"]) == 1)
-                                    ProfilFrontsWeight += Convert.ToDecimal(DT.Rows[j]["Square"]) * Convert.ToDecimal(0.7) + Convert.ToDecimal(DT.Rows[j]["Weight"]);
-                                if (Convert.ToInt32(DT.Rows[j]["FactoryID"]) == 2)
-                                    TPSFrontsWeight += Convert.ToDecimal(DT.Rows[j]["Square"]) * Convert.ToDecimal(0.7) + Convert.ToDecimal(DT.Rows[j]["Weight"]);
-                            }
-                        }
-                    }
-                    SelectCommand = @"SELECT Weight,FactoryID FROM NewDecorOrders WHERE MainOrderID=" + MainOrderID;
-                    using (SqlDataAdapter DA1 = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
-                    {
-                        using (DataTable DT = new DataTable())
-                        {
-                            DA1.Fill(DT);
-                            for (int j = 0; j < DT.Rows.Count; j++)
-                            {
-                                if (Convert.ToInt32(DT.Rows[j]["FactoryID"]) == 1)
-                                    ProfilDecorWeight += Convert.ToDecimal(DT.Rows[j]["Weight"]);
-                                if (Convert.ToInt32(DT.Rows[j]["FactoryID"]) == 2)
-                                    TPSDecorWeight += Convert.ToDecimal(DT.Rows[j]["Weight"]);
-                            }
-                        }
-                    }
-                    ReturnDT.Rows[i]["ProfilFrontsWeight"] = ProfilFrontsWeight;
-                    ReturnDT.Rows[i]["TPSFrontsWeight"] = TPSFrontsWeight;
-                    ReturnDT.Rows[i]["ProfilDecorWeight"] = ProfilDecorWeight;
-                    ReturnDT.Rows[i]["TPSDecorWeight"] = TPSDecorWeight;
-                }
-            }
-            return ReturnDT;
-        }
-
         public void CreateReport(
             ref HSSFWorkbook hssfworkbook,
-            ref HSSFSheet sheet1, int[] NewMegaOrders, int[] OrderNumbers, int[] MainOrdersIDs, int ClientID, string ClientName,
+            ref HSSFSheet sheet1, int[] DispatchID, int[] OrderNumbers, int[] MainOrdersIDs, int ClientID, string ClientName,
             decimal ComplaintProfilCost, decimal ComplaintTPSCost, decimal TransportCost, decimal AdditionalCost,
-            decimal TotalCost, int CurrencyTypeID, decimal TotalWeight, int pos, bool IsSample)
+            decimal TotalCost, int CurrencyTypeID, decimal TotalWeight, int pos, bool ProfilVerify, bool TPSVerify, int DiscountPaymentConditionID)
         {
             ClearReport();
 
@@ -873,11 +787,10 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.SimpleReport
             {
                 VAT = 1.0m;
             }
-            DataTable InfoDT = GetMegaOrdersTable(NewMegaOrders);
             TransportCost = TransportCost / VAT;
             AdditionalCost = AdditionalCost / VAT;
-            FrontsReport.Report(MainOrdersIDs, InfoDT, IsSample);
-            DecorReport.Report(MainOrdersIDs, IsSample);
+            FrontsReport.Report(DispatchID, CurrencyTypeID, ProfilVerify, TPSVerify, ClientID, DiscountPaymentConditionID);
+            DecorReport.Report(DispatchID, CurrencyTypeID, ProfilVerify, TPSVerify, ClientID, DiscountPaymentConditionID);
 
             //PROFIL
             if (FrontsReport.ProfilReportDataTable.Rows.Count > 0)
@@ -895,6 +808,7 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.SimpleReport
                     ProfilReportTable.ImportRow(DecorReport.ProfilReportDataTable.Rows[i]);
                 }
             }
+
 
             //TPS
             if (FrontsReport.TPSReportDataTable.Rows.Count > 0)
@@ -944,9 +858,7 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.SimpleReport
             AssignCost(ComplaintProfilCost, ComplaintTPSCost, TransportCost, AdditionalCost, WeightProfil, WeightTPS, TotalWeight, TotalProfil, TotalTPS, ref TransportAndOtherProfil,
                        ref TransportAndOtherTPS);
 
-            decimal dd = 0;
-            if (TotalWeight != 0)
-                dd = Decimal.Round((WeightProfil + WeightTPS) / TotalWeight, 3, MidpointRounding.AwayFromZero);
+            decimal dd = Decimal.Round((WeightProfil + WeightTPS) / TotalWeight, 3, MidpointRounding.AwayFromZero);
             TotalProfil = Decimal.Round(TotalProfil, 3, MidpointRounding.AwayFromZero);
             TotalTPS = Decimal.Round(TotalTPS, 3, MidpointRounding.AwayFromZero);
             TransportCost = Decimal.Round(TransportCost * dd, 3, MidpointRounding.AwayFromZero);
@@ -1103,7 +1015,7 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.SimpleReport
             //SimpleHeaderCS.WrapText = true;
             SimpleHeaderCS.SetFont(HeaderF3);
 
-            #endregion Create fonts and styles
+            #endregion
 
             HSSFCell Cell1 = sheet1.CreateRow(pos).CreateCell(0);
             Cell1.SetCellValue("Сводный отчет:");
@@ -1150,21 +1062,17 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.SimpleReport
                 Cell1.SetCellValue("Скидка, %");
                 Cell1.CellStyle = SimpleHeaderCS;
 
-                //Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
-                //Cell1.SetCellValue("Цена кон, " + Currency);
-                //Cell1.CellStyle = SimpleHeaderCS;
-
                 Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
                 Cell1.SetCellValue("Цена с транс, " + Currency);
                 Cell1.CellStyle = SimpleHeaderCS;
 
                 Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
-                Cell1.SetCellValue("Стоимость с транс, " + Currency);
+                Cell1.SetCellValue("Нестандарт, %");
                 Cell1.CellStyle = SimpleHeaderCS;
 
-                //Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
-                //Cell1.SetCellValue("Стоимость, " + Currency);
-                //Cell1.CellStyle = SimpleHeaderCS;
+                Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
+                Cell1.SetCellValue("Стоимость с транс, " + Currency);
+                Cell1.CellStyle = SimpleHeaderCS;
 
                 Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
                 Cell1.SetCellValue("Курс, " + Currency);
@@ -1200,20 +1108,18 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.SimpleReport
                         if (ProfilReportTable.Rows[i]["TotalDiscount"] != DBNull.Value)
                             Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["TotalDiscount"]));
                         Cell1.CellStyle = WeightCS;
-                        //Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
-                        //Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["Price"]));
-                        //Cell1.CellStyle = PriceBelCS;
                         Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
-                        if (ProfilReportTable.Rows[i]["PriceWithTransport"] != DBNull.Value)
-                            Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["PriceWithTransport"]));
+                        Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["PriceWithTransport"]));
                         Cell1.CellStyle = PriceBelCS;
                         Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
-                        if (ProfilReportTable.Rows[i]["CostWithTransport"] != DBNull.Value)
-                            Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["CostWithTransport"]));
+                        if (ProfilReportTable.Rows[i]["NonStandardMargin"] != DBNull.Value)
+                        {
+                            Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["NonStandardMargin"]));
+                        }
+                        Cell1.CellStyle = CountCS;
+                        Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
+                        Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["CostWithTransport"]));
                         Cell1.CellStyle = PriceBelCS;
-                        //Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
-                        //Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["Cost"]));
-                        //Cell1.CellStyle = PriceBelCS;
                         Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
                         Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["PaymentRate"]));
                         Cell1.CellStyle = CurrencyCS;
@@ -1232,20 +1138,18 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.SimpleReport
                         if (ProfilReportTable.Rows[i]["TotalDiscount"] != DBNull.Value)
                             Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["TotalDiscount"]));
                         Cell1.CellStyle = PriceForeignCS;
-                        //Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
-                        //Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["Price"]));
-                        //Cell1.CellStyle = PriceForeignCS;
                         Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
-                        if (ProfilReportTable.Rows[i]["PriceWithTransport"] != DBNull.Value)
-                            Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["PriceWithTransport"]));
+                        Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["PriceWithTransport"]));
                         Cell1.CellStyle = PriceForeignCS;
                         Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
-                        if (ProfilReportTable.Rows[i]["CostWithTransport"] != DBNull.Value)
-                            Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["CostWithTransport"]));
+                        if (ProfilReportTable.Rows[i]["NonStandardMargin"] != DBNull.Value)
+                        {
+                            Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["NonStandardMargin"]));
+                        }
+                        Cell1.CellStyle = CountCS;
+                        Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
+                        Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["CostWithTransport"]));
                         Cell1.CellStyle = PriceForeignCS;
-                        //Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
-                        //Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["Cost"]));
-                        //Cell1.CellStyle = PriceForeignCS;
                         Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
                         Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["PaymentRate"]));
                         Cell1.CellStyle = CurrencyCS;
@@ -1261,16 +1165,16 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.SimpleReport
                     Cell1 = sheet1.CreateRow(pos).CreateCell(0);
                     Cell1.SetCellValue("Заказ, " + Currency + ":");
                     Cell1.CellStyle = SummaryWithoutBorderBelCS;
-                    Cell1 = sheet1.CreateRow(pos++).CreateCell(7);
+                    Cell1 = sheet1.CreateRow(pos++).CreateCell(8);
                     Cell1.SetCellValue(Convert.ToDouble(TotalProfil));
                     Cell1.CellStyle = SummaryWithoutBorderBelCS;
                     Cell1 = sheet1.CreateRow(pos).CreateCell(0);
                     Cell1.SetCellValue("Транспорт, прочее, " + Currency + ":");
                     Cell1.CellStyle = SummaryWithoutBorderBelCS;
-                    Cell1 = sheet1.CreateRow(pos++).CreateCell(7);
+                    Cell1 = sheet1.CreateRow(pos++).CreateCell(8);
                     Cell1.SetCellValue(Convert.ToDouble(TransportAndOtherProfil));
                     Cell1.CellStyle = SummaryWithoutBorderBelCS;
-                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(9);
+                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(10);
                     Cell1.SetCellValue(Convert.ToDouble(WeightProfil));
                     Cell1.CellStyle = SummaryWeightCS;
                 }
@@ -1279,16 +1183,16 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.SimpleReport
                     Cell1 = sheet1.CreateRow(pos).CreateCell(0);
                     Cell1.SetCellValue("Заказ, " + Currency + ":");
                     Cell1.CellStyle = SummaryWithoutBorderForeignCS;
-                    Cell1 = sheet1.CreateRow(pos++).CreateCell(7);
+                    Cell1 = sheet1.CreateRow(pos++).CreateCell(8);
                     Cell1.SetCellValue(Convert.ToDouble(TotalProfil));
                     Cell1.CellStyle = SummaryWithoutBorderForeignCS;
                     Cell1 = sheet1.CreateRow(pos).CreateCell(0);
                     Cell1.SetCellValue("Транспорт, прочее, " + Currency + ":");
                     Cell1.CellStyle = SummaryWithoutBorderForeignCS;
-                    Cell1 = sheet1.CreateRow(pos++).CreateCell(7);
+                    Cell1 = sheet1.CreateRow(pos++).CreateCell(8);
                     Cell1.SetCellValue(Convert.ToDouble(TransportAndOtherProfil));
                     Cell1.CellStyle = SummaryWithoutBorderForeignCS;
-                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(9);
+                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(10);
                     Cell1.SetCellValue(Convert.ToDouble(WeightProfil));
                     Cell1.CellStyle = SummaryWeightCS;
                 }
@@ -1327,21 +1231,17 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.SimpleReport
                 Cell1.SetCellValue("Скидка, %");
                 Cell1.CellStyle = SimpleHeaderCS;
 
-                //Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
-                //Cell1.SetCellValue("Цена кон, " + Currency);
-                //Cell1.CellStyle = SimpleHeaderCS;
-
                 Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
                 Cell1.SetCellValue("Цена с транс, " + Currency);
                 Cell1.CellStyle = SimpleHeaderCS;
 
                 Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
-                Cell1.SetCellValue("Стоимость с транс, " + Currency);
+                Cell1.SetCellValue("Нестандарт, %");
                 Cell1.CellStyle = SimpleHeaderCS;
 
-                //Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
-                //Cell1.SetCellValue("Стоимость, " + Currency);
-                //Cell1.CellStyle = SimpleHeaderCS;
+                Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
+                Cell1.SetCellValue("Стоимость с транс, " + Currency);
+                Cell1.CellStyle = SimpleHeaderCS;
 
                 Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
                 Cell1.SetCellValue("Курс, " + Currency);
@@ -1377,20 +1277,18 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.SimpleReport
                         if (TPSReportTable.Rows[i]["TotalDiscount"] != DBNull.Value)
                             Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["TotalDiscount"]));
                         Cell1.CellStyle = WeightCS;
-                        //Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
-                        //Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["Price"]));
-                        //Cell1.CellStyle = PriceBelCS;
                         Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
-                        if (TPSReportTable.Rows[i]["PriceWithTransport"] != DBNull.Value)
-                            Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["PriceWithTransport"]));
+                        Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["PriceWithTransport"]));
                         Cell1.CellStyle = PriceBelCS;
                         Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
-                        if (TPSReportTable.Rows[i]["CostWithTransport"] != DBNull.Value)
-                            Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["CostWithTransport"]));
+                        if (TPSReportTable.Rows[i]["NonStandardMargin"] != DBNull.Value)
+                        {
+                            Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["NonStandardMargin"]));
+                        }
+                        Cell1.CellStyle = CountCS;
+                        Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
+                        Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["CostWithTransport"]));
                         Cell1.CellStyle = PriceBelCS;
-                        //Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
-                        //Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["Cost"]));
-                        //Cell1.CellStyle = PriceBelCS;
                         Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
                         Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["PaymentRate"]));
                         Cell1.CellStyle = CurrencyCS;
@@ -1409,20 +1307,18 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.SimpleReport
                         if (TPSReportTable.Rows[i]["TotalDiscount"] != DBNull.Value)
                             Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["TotalDiscount"]));
                         Cell1.CellStyle = WeightCS;
-                        //Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
-                        //Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["Price"]));
-                        //Cell1.CellStyle = PriceForeignCS;
                         Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
-                        if (TPSReportTable.Rows[i]["PriceWithTransport"] != DBNull.Value)
-                            Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["PriceWithTransport"]));
+                        Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["PriceWithTransport"]));
                         Cell1.CellStyle = PriceForeignCS;
                         Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
-                        if (TPSReportTable.Rows[i]["CostWithTransport"] != DBNull.Value)
-                            Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["CostWithTransport"]));
+                        if (TPSReportTable.Rows[i]["NonStandardMargin"] != DBNull.Value)
+                        {
+                            Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["NonStandardMargin"]));
+                        }
+                        Cell1.CellStyle = CountCS;
+                        Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
+                        Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["CostWithTransport"]));
                         Cell1.CellStyle = PriceForeignCS;
-                        //Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
-                        //Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["Cost"]));
-                        //Cell1.CellStyle = PriceForeignCS;
                         Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
                         Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["PaymentRate"]));
                         Cell1.CellStyle = CurrencyCS;
@@ -1438,16 +1334,16 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.SimpleReport
                     Cell1 = sheet1.CreateRow(pos).CreateCell(0);
                     Cell1.SetCellValue("Заказ, " + Currency + ":");
                     Cell1.CellStyle = SummaryWithoutBorderBelCS;
-                    Cell1 = sheet1.CreateRow(pos++).CreateCell(7);
+                    Cell1 = sheet1.CreateRow(pos++).CreateCell(8);
                     Cell1.SetCellValue(Convert.ToDouble(TotalTPS));
                     Cell1.CellStyle = SummaryWithoutBorderBelCS;
                     Cell1 = sheet1.CreateRow(pos).CreateCell(0);
                     Cell1.SetCellValue("Транспорт, прочее, " + Currency + ":");
                     Cell1.CellStyle = SummaryWithoutBorderBelCS;
-                    Cell1 = sheet1.CreateRow(pos++).CreateCell(7);
+                    Cell1 = sheet1.CreateRow(pos++).CreateCell(8);
                     Cell1.SetCellValue(Convert.ToDouble(TransportAndOtherTPS));
                     Cell1.CellStyle = SummaryWithoutBorderBelCS;
-                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(9);
+                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(10);
                     Cell1.SetCellValue(Convert.ToDouble(WeightTPS));
                     Cell1.CellStyle = SummaryWeightCS;
                 }
@@ -1456,16 +1352,16 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.SimpleReport
                     Cell1 = sheet1.CreateRow(pos).CreateCell(0);
                     Cell1.SetCellValue("Заказ, " + Currency + ":");
                     Cell1.CellStyle = SummaryWithoutBorderForeignCS;
-                    Cell1 = sheet1.CreateRow(pos++).CreateCell(7);
+                    Cell1 = sheet1.CreateRow(pos++).CreateCell(8);
                     Cell1.SetCellValue(Convert.ToDouble(TotalTPS));
                     Cell1.CellStyle = SummaryWithoutBorderForeignCS;
                     Cell1 = sheet1.CreateRow(pos).CreateCell(0);
                     Cell1.SetCellValue("Транспорт, прочее, " + Currency + ":");
                     Cell1.CellStyle = SummaryWithoutBorderForeignCS;
-                    Cell1 = sheet1.CreateRow(pos++).CreateCell(7);
+                    Cell1 = sheet1.CreateRow(pos++).CreateCell(8);
                     Cell1.SetCellValue(Convert.ToDouble(TransportAndOtherTPS));
                     Cell1.CellStyle = SummaryWithoutBorderForeignCS;
-                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(9);
+                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(10);
                     Cell1.SetCellValue(Convert.ToDouble(WeightTPS));
                     Cell1.CellStyle = SummaryWeightCS;
                 }
@@ -1546,9 +1442,9 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.SimpleReport
 
         public void CreateReport(
             ref HSSFWorkbook hssfworkbook,
-            ref HSSFSheet sheet1, int[] NewMegaOrders, int[] OrderNumbers, int[] MainOrdersIDs, int ClientID, string ClientName,
+            ref HSSFSheet sheet1, int[] DispatchID, int[] OrderNumbers, int[] MainOrdersIDs, int ClientID, string ClientName,
             decimal ComplaintProfilCost, decimal ComplaintTPSCost, decimal TransportCost, decimal AdditionalCost,
-            decimal TotalCost, int CurrencyTypeID, decimal TotalWeight, int pos)
+            decimal TotalCost, int CurrencyTypeID, decimal TotalWeight, int pos, bool ProfilVerify, bool TPSVerify, int DiscountPaymentConditionID, bool IsSample)
         {
             ClearReport();
 
@@ -1568,11 +1464,10 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.SimpleReport
             {
                 VAT = 1.0m;
             }
-            DataTable InfoDT = GetMegaOrdersTable(NewMegaOrders);
             TransportCost = TransportCost / VAT;
             AdditionalCost = AdditionalCost / VAT;
-            FrontsReport.Report(MainOrdersIDs, InfoDT);
-            DecorReport.Report(MainOrdersIDs);
+            FrontsReport.Report(DispatchID, CurrencyTypeID, ProfilVerify, TPSVerify, ClientID, DiscountPaymentConditionID, IsSample);
+            DecorReport.Report(DispatchID, CurrencyTypeID, ProfilVerify, TPSVerify, ClientID, DiscountPaymentConditionID, IsSample);
 
             //PROFIL
             if (FrontsReport.ProfilReportDataTable.Rows.Count > 0)
@@ -1590,6 +1485,7 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.SimpleReport
                     ProfilReportTable.ImportRow(DecorReport.ProfilReportDataTable.Rows[i]);
                 }
             }
+
 
             //TPS
             if (FrontsReport.TPSReportDataTable.Rows.Count > 0)
@@ -1639,9 +1535,7 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.SimpleReport
             AssignCost(ComplaintProfilCost, ComplaintTPSCost, TransportCost, AdditionalCost, WeightProfil, WeightTPS, TotalWeight, TotalProfil, TotalTPS, ref TransportAndOtherProfil,
                        ref TransportAndOtherTPS);
 
-            decimal dd = 0;
-            if (TotalWeight != 0)
-                dd = Decimal.Round((WeightProfil + WeightTPS) / TotalWeight, 3, MidpointRounding.AwayFromZero);
+            decimal dd = Decimal.Round((WeightProfil + WeightTPS) / TotalWeight, 3, MidpointRounding.AwayFromZero);
             TotalProfil = Decimal.Round(TotalProfil, 3, MidpointRounding.AwayFromZero);
             TotalTPS = Decimal.Round(TotalTPS, 3, MidpointRounding.AwayFromZero);
             TransportCost = Decimal.Round(TransportCost * dd, 3, MidpointRounding.AwayFromZero);
@@ -1798,7 +1692,7 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.SimpleReport
             //SimpleHeaderCS.WrapText = true;
             SimpleHeaderCS.SetFont(HeaderF3);
 
-            #endregion Create fonts and styles
+            #endregion
 
             HSSFCell Cell1 = sheet1.CreateRow(pos).CreateCell(0);
             Cell1.SetCellValue("Сводный отчет:");
@@ -1845,21 +1739,17 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.SimpleReport
                 Cell1.SetCellValue("Скидка, %");
                 Cell1.CellStyle = SimpleHeaderCS;
 
-                //Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
-                //Cell1.SetCellValue("Цена кон, " + Currency);
-                //Cell1.CellStyle = SimpleHeaderCS;
-
                 Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
                 Cell1.SetCellValue("Цена с транс, " + Currency);
                 Cell1.CellStyle = SimpleHeaderCS;
 
                 Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
-                Cell1.SetCellValue("Стоимость с транс, " + Currency);
+                Cell1.SetCellValue("Нестандарт, %");
                 Cell1.CellStyle = SimpleHeaderCS;
 
-                //Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
-                //Cell1.SetCellValue("Стоимость, " + Currency);
-                //Cell1.CellStyle = SimpleHeaderCS;
+                Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
+                Cell1.SetCellValue("Стоимость с транс, " + Currency);
+                Cell1.CellStyle = SimpleHeaderCS;
 
                 Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
                 Cell1.SetCellValue("Курс, " + Currency);
@@ -1895,20 +1785,18 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.SimpleReport
                         if (ProfilReportTable.Rows[i]["TotalDiscount"] != DBNull.Value)
                             Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["TotalDiscount"]));
                         Cell1.CellStyle = WeightCS;
-                        //Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
-                        //Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["Price"]));
-                        //Cell1.CellStyle = PriceBelCS;
                         Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
-                        if (ProfilReportTable.Rows[i]["PriceWithTransport"] != DBNull.Value)
-                            Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["PriceWithTransport"]));
+                        Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["PriceWithTransport"]));
                         Cell1.CellStyle = PriceBelCS;
                         Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
-                        if (ProfilReportTable.Rows[i]["CostWithTransport"] != DBNull.Value)
-                            Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["CostWithTransport"]));
+                        if (ProfilReportTable.Rows[i]["NonStandardMargin"] != DBNull.Value)
+                        {
+                            Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["NonStandardMargin"]));
+                        }
+                        Cell1.CellStyle = CountCS;
+                        Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
+                        Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["CostWithTransport"]));
                         Cell1.CellStyle = PriceBelCS;
-                        //Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
-                        //Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["Cost"]));
-                        //Cell1.CellStyle = PriceBelCS;
                         Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
                         Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["PaymentRate"]));
                         Cell1.CellStyle = CurrencyCS;
@@ -1927,20 +1815,18 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.SimpleReport
                         if (ProfilReportTable.Rows[i]["TotalDiscount"] != DBNull.Value)
                             Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["TotalDiscount"]));
                         Cell1.CellStyle = PriceForeignCS;
-                        //Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
-                        //Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["Price"]));
-                        //Cell1.CellStyle = PriceForeignCS;
                         Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
-                        if (ProfilReportTable.Rows[i]["PriceWithTransport"] != DBNull.Value)
-                            Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["PriceWithTransport"]));
+                        Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["PriceWithTransport"]));
                         Cell1.CellStyle = PriceForeignCS;
                         Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
-                        if (ProfilReportTable.Rows[i]["CostWithTransport"] != DBNull.Value)
-                            Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["CostWithTransport"]));
+                        if (ProfilReportTable.Rows[i]["NonStandardMargin"] != DBNull.Value)
+                        {
+                            Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["NonStandardMargin"]));
+                        }
+                        Cell1.CellStyle = CountCS;
+                        Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
+                        Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["CostWithTransport"]));
                         Cell1.CellStyle = PriceForeignCS;
-                        //Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
-                        //Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["Cost"]));
-                        //Cell1.CellStyle = PriceForeignCS;
                         Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
                         Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["PaymentRate"]));
                         Cell1.CellStyle = CurrencyCS;
@@ -1956,16 +1842,16 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.SimpleReport
                     Cell1 = sheet1.CreateRow(pos).CreateCell(0);
                     Cell1.SetCellValue("Заказ, " + Currency + ":");
                     Cell1.CellStyle = SummaryWithoutBorderBelCS;
-                    Cell1 = sheet1.CreateRow(pos++).CreateCell(7);
+                    Cell1 = sheet1.CreateRow(pos++).CreateCell(8);
                     Cell1.SetCellValue(Convert.ToDouble(TotalProfil));
                     Cell1.CellStyle = SummaryWithoutBorderBelCS;
                     Cell1 = sheet1.CreateRow(pos).CreateCell(0);
                     Cell1.SetCellValue("Транспорт, прочее, " + Currency + ":");
                     Cell1.CellStyle = SummaryWithoutBorderBelCS;
-                    Cell1 = sheet1.CreateRow(pos++).CreateCell(7);
+                    Cell1 = sheet1.CreateRow(pos++).CreateCell(8);
                     Cell1.SetCellValue(Convert.ToDouble(TransportAndOtherProfil));
                     Cell1.CellStyle = SummaryWithoutBorderBelCS;
-                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(9);
+                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(10);
                     Cell1.SetCellValue(Convert.ToDouble(WeightProfil));
                     Cell1.CellStyle = SummaryWeightCS;
                 }
@@ -1974,16 +1860,16 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.SimpleReport
                     Cell1 = sheet1.CreateRow(pos).CreateCell(0);
                     Cell1.SetCellValue("Заказ, " + Currency + ":");
                     Cell1.CellStyle = SummaryWithoutBorderForeignCS;
-                    Cell1 = sheet1.CreateRow(pos++).CreateCell(7);
+                    Cell1 = sheet1.CreateRow(pos++).CreateCell(8);
                     Cell1.SetCellValue(Convert.ToDouble(TotalProfil));
                     Cell1.CellStyle = SummaryWithoutBorderForeignCS;
                     Cell1 = sheet1.CreateRow(pos).CreateCell(0);
                     Cell1.SetCellValue("Транспорт, прочее, " + Currency + ":");
                     Cell1.CellStyle = SummaryWithoutBorderForeignCS;
-                    Cell1 = sheet1.CreateRow(pos++).CreateCell(7);
+                    Cell1 = sheet1.CreateRow(pos++).CreateCell(8);
                     Cell1.SetCellValue(Convert.ToDouble(TransportAndOtherProfil));
                     Cell1.CellStyle = SummaryWithoutBorderForeignCS;
-                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(9);
+                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(10);
                     Cell1.SetCellValue(Convert.ToDouble(WeightProfil));
                     Cell1.CellStyle = SummaryWeightCS;
                 }
@@ -2022,21 +1908,17 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.SimpleReport
                 Cell1.SetCellValue("Скидка, %");
                 Cell1.CellStyle = SimpleHeaderCS;
 
-                //Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
-                //Cell1.SetCellValue("Цена кон, " + Currency);
-                //Cell1.CellStyle = SimpleHeaderCS;
-
                 Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
                 Cell1.SetCellValue("Цена с транс, " + Currency);
                 Cell1.CellStyle = SimpleHeaderCS;
 
                 Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
-                Cell1.SetCellValue("Стоимость с транс, " + Currency);
+                Cell1.SetCellValue("Нестандарт, %");
                 Cell1.CellStyle = SimpleHeaderCS;
 
-                //Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
-                //Cell1.SetCellValue("Стоимость, " + Currency);
-                //Cell1.CellStyle = SimpleHeaderCS;
+                Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
+                Cell1.SetCellValue("Стоимость с транс, " + Currency);
+                Cell1.CellStyle = SimpleHeaderCS;
 
                 Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
                 Cell1.SetCellValue("Курс, " + Currency);
@@ -2072,20 +1954,18 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.SimpleReport
                         if (TPSReportTable.Rows[i]["TotalDiscount"] != DBNull.Value)
                             Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["TotalDiscount"]));
                         Cell1.CellStyle = WeightCS;
-                        //Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
-                        //Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["Price"]));
-                        //Cell1.CellStyle = PriceBelCS;
                         Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
-                        if (TPSReportTable.Rows[i]["PriceWithTransport"] != DBNull.Value)
-                            Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["PriceWithTransport"]));
+                        Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["PriceWithTransport"]));
                         Cell1.CellStyle = PriceBelCS;
                         Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
-                        if (TPSReportTable.Rows[i]["CostWithTransport"] != DBNull.Value)
-                            Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["CostWithTransport"]));
+                        if (TPSReportTable.Rows[i]["NonStandardMargin"] != DBNull.Value)
+                        {
+                            Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["NonStandardMargin"]));
+                        }
+                        Cell1.CellStyle = CountCS;
+                        Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
+                        Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["CostWithTransport"]));
                         Cell1.CellStyle = PriceBelCS;
-                        //Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
-                        //Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["Cost"]));
-                        //Cell1.CellStyle = PriceBelCS;
                         Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
                         Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["PaymentRate"]));
                         Cell1.CellStyle = CurrencyCS;
@@ -2104,20 +1984,18 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.SimpleReport
                         if (TPSReportTable.Rows[i]["TotalDiscount"] != DBNull.Value)
                             Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["TotalDiscount"]));
                         Cell1.CellStyle = WeightCS;
-                        //Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
-                        //Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["Price"]));
-                        //Cell1.CellStyle = PriceForeignCS;
                         Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
-                        if (TPSReportTable.Rows[i]["PriceWithTransport"] != DBNull.Value)
-                            Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["PriceWithTransport"]));
+                        Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["PriceWithTransport"]));
                         Cell1.CellStyle = PriceForeignCS;
                         Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
-                        if (TPSReportTable.Rows[i]["CostWithTransport"] != DBNull.Value)
-                            Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["CostWithTransport"]));
+                        if (TPSReportTable.Rows[i]["NonStandardMargin"] != DBNull.Value)
+                        {
+                            Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["NonStandardMargin"]));
+                        }
+                        Cell1.CellStyle = CountCS;
+                        Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
+                        Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["CostWithTransport"]));
                         Cell1.CellStyle = PriceForeignCS;
-                        //Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
-                        //Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["Cost"]));
-                        //Cell1.CellStyle = PriceForeignCS;
                         Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
                         Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["PaymentRate"]));
                         Cell1.CellStyle = CurrencyCS;
@@ -2133,16 +2011,16 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.SimpleReport
                     Cell1 = sheet1.CreateRow(pos).CreateCell(0);
                     Cell1.SetCellValue("Заказ, " + Currency + ":");
                     Cell1.CellStyle = SummaryWithoutBorderBelCS;
-                    Cell1 = sheet1.CreateRow(pos++).CreateCell(7);
+                    Cell1 = sheet1.CreateRow(pos++).CreateCell(8);
                     Cell1.SetCellValue(Convert.ToDouble(TotalTPS));
                     Cell1.CellStyle = SummaryWithoutBorderBelCS;
                     Cell1 = sheet1.CreateRow(pos).CreateCell(0);
                     Cell1.SetCellValue("Транспорт, прочее, " + Currency + ":");
                     Cell1.CellStyle = SummaryWithoutBorderBelCS;
-                    Cell1 = sheet1.CreateRow(pos++).CreateCell(7);
+                    Cell1 = sheet1.CreateRow(pos++).CreateCell(8);
                     Cell1.SetCellValue(Convert.ToDouble(TransportAndOtherTPS));
                     Cell1.CellStyle = SummaryWithoutBorderBelCS;
-                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(9);
+                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(10);
                     Cell1.SetCellValue(Convert.ToDouble(WeightTPS));
                     Cell1.CellStyle = SummaryWeightCS;
                 }
@@ -2151,16 +2029,16 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.SimpleReport
                     Cell1 = sheet1.CreateRow(pos).CreateCell(0);
                     Cell1.SetCellValue("Заказ, " + Currency + ":");
                     Cell1.CellStyle = SummaryWithoutBorderForeignCS;
-                    Cell1 = sheet1.CreateRow(pos++).CreateCell(7);
+                    Cell1 = sheet1.CreateRow(pos++).CreateCell(8);
                     Cell1.SetCellValue(Convert.ToDouble(TotalTPS));
                     Cell1.CellStyle = SummaryWithoutBorderForeignCS;
                     Cell1 = sheet1.CreateRow(pos).CreateCell(0);
                     Cell1.SetCellValue("Транспорт, прочее, " + Currency + ":");
                     Cell1.CellStyle = SummaryWithoutBorderForeignCS;
-                    Cell1 = sheet1.CreateRow(pos++).CreateCell(7);
+                    Cell1 = sheet1.CreateRow(pos++).CreateCell(8);
                     Cell1.SetCellValue(Convert.ToDouble(TransportAndOtherTPS));
                     Cell1.CellStyle = SummaryWithoutBorderForeignCS;
-                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(9);
+                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(10);
                     Cell1.SetCellValue(Convert.ToDouble(WeightTPS));
                     Cell1.CellStyle = SummaryWeightCS;
                 }
@@ -2247,13 +2125,5 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.SimpleReport
             FrontsReport.ClearReport();
             DecorReport.ClearReport();
         }
-
-        //private void ReadReportFilePath(string FileName)
-        //{
-        //using (System.IO.StreamReader sr = new System.IO.StreamReader(FileName, Encoding.Default))
-        //    {
-        //        ReportFilePath = sr.ReadToEnd();
-        //    }
-        //}
     }
 }

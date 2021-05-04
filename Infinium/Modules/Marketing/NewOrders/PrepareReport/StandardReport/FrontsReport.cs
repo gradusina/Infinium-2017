@@ -1,17 +1,10 @@
-﻿using NPOI.HPSF;
-using NPOI.HSSF.UserModel;
-using NPOI.HSSF.Util;
-
+﻿
 using System;
 using System.Data;
-using System.Data.OleDb;
 using System.Data.SqlClient;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Windows.Forms;
 
-namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.SimpleReport
+namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.StandardReport
 {
     public class FrontsReport
     {

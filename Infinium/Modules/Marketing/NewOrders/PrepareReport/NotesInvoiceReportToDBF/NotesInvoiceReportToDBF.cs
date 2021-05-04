@@ -565,10 +565,15 @@ PackageDetails.PackNumber, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog
                 DT = TempDT.Clone();
             foreach (DataRow item in TempDT.Rows)
                 DT.Rows.Add(item.ItemArray);
-            using (SqlDataAdapter DA = new SqlDataAdapter(@"SELECT PackageDetails.PackNumber, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog.dbo.Patina.Patina, infiniu2_catalog.dbo.DecorConfig.InvNumber, infiniu2_catalog.dbo.DecorConfig.FactoryID, NewDecorOrders.MainOrderID
+            using (SqlDataAdapter DA = new SqlDataAdapter(@"SELECT 
+CASE WHEN MainOrders.Notes = '' THEN CAST(MegaOrders.OrderNumber AS varchar(12)) + '_' + CAST(DecorOrders.MainOrderID AS varchar(12)) ELSE CAST(MegaOrders.OrderNumber AS varchar(12)) 
+                         + '_' + CAST(DecorOrders.MainOrderID AS varchar(12)) + '_' + MainOrders.Notes END AS Notes,
+PackageDetails.PackNumber, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog.dbo.Patina.Patina, infiniu2_catalog.dbo.DecorConfig.InvNumber, infiniu2_catalog.dbo.DecorConfig.FactoryID, NewDecorOrders.MainOrderID
                 FROM PackageDetails INNER JOIN
-                NewDecorOrders ON PackageDetails.OrderID = NewDecorOrders.DecorOrderID INNER JOIN
-                infiniu2_catalog.dbo.DecorConfig ON NewDecorOrders.DecorConfigID = infiniu2_catalog.dbo.DecorConfig.DecorConfigID LEFT JOIN
+                DecorOrders ON PackageDetails.OrderID = DecorOrders.DecorOrderID INNER JOIN
+                MainOrders ON DecorOrders.MainOrderID = MainOrders.MainOrderID INNER JOIN
+                MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID INNER JOIN
+                infiniu2_catalog.dbo.DecorConfig ON DecorOrders.DecorConfigID = infiniu2_catalog.dbo.DecorConfig.DecorConfigID LEFT JOIN
                 infiniu2_catalog.dbo.TechStore ON infiniu2_catalog.dbo.DecorConfig.ColorID = infiniu2_catalog.dbo.TechStore.TechStoreID LEFT JOIN
                 infiniu2_catalog.dbo.Patina ON infiniu2_catalog.dbo.DecorConfig.PatinaID = infiniu2_catalog.dbo.Patina.PatinaID
                 WHERE PackageDetails.PackageID IN 
@@ -596,25 +601,27 @@ PackageDetails.PackNumber, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog
                     DistPackagesDT = DV.ToTable(true, "PackNumber");
                 }
                 dtGroup.Clear();
-                dtGroup = GroupBy("InvNumber", "Cvet", "Patina", "PackNumber", dtMainOrders);
+                dtGroup = GroupBy("InvNumber", "Notes", "Cvet", "Patina", "PackNumber", dtMainOrders);
                 for (int i = 0; i < DistPackagesDT.Rows.Count; i++)
                 {
                     using (DataView DV = new DataView(dtMainOrders, "PackNumber=" + Convert.ToInt32(DistPackagesDT.Rows[i]["PackNumber"]), string.Empty, DataViewRowState.CurrentRows))
                     {
                         dtDistInvNumbers.Clear();
-                        dtDistInvNumbers = DV.ToTable(true, "InvNumber", "Cvet", "Patina");
+                        dtDistInvNumbers = DV.ToTable(true, "InvNumber", "Notes", "Cvet", "Patina");
                         string InvNumber = dtDistInvNumbers.Rows[0]["InvNumber"].ToString();
+                        string Notes = dtDistInvNumbers.Rows[0]["Notes"].ToString();
                         string Cvet = dtDistInvNumbers.Rows[0]["Cvet"].ToString();
                         string Patina = dtDistInvNumbers.Rows[0]["Patina"].ToString();
                         int PackageCount = 0;
 
-                        DataRow[] rows0 = dtGroup.Select("InvNumber='" + InvNumber + "' AND Cvet='" + Cvet + "' AND Patina='" + Patina + "'");
+                        DataRow[] rows0 = dtGroup.Select("InvNumber='" + InvNumber + "' AND Notes='" + Notes + "' AND Cvet='" + Cvet + "' AND Patina='" + Patina + "'");
                         if (rows0.Count() > 0)
                             PackageCount = Convert.ToInt32(rows0[0]["Count"]);
 
                         for (int x = 1; x < dtDistInvNumbers.Rows.Count; x++)
                         {
                             DataRow[] rows1 = dtGroup.Select("InvNumber='" + dtDistInvNumbers.Rows[x]["InvNumber"].ToString() +
+                                "' AND Notes='" + dtDistInvNumbers.Rows[x]["Notes"].ToString() +
                                 "' AND Cvet='" + dtDistInvNumbers.Rows[x]["Cvet"].ToString() + "' AND Patina='" + dtDistInvNumbers.Rows[x]["Patina"].ToString() + "'");
                             if (rows1.Count() > 0)
                             {
@@ -622,6 +629,7 @@ PackageDetails.PackNumber, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog
                                 {
                                     PackageCount = Convert.ToInt32(rows1[0]["Count"]);
                                     InvNumber = dtDistInvNumbers.Rows[x]["InvNumber"].ToString();
+                                    Notes = dtDistInvNumbers.Rows[x]["Notes"].ToString();
                                     Cvet = dtDistInvNumbers.Rows[x]["Cvet"].ToString();
                                     Patina = dtDistInvNumbers.Rows[x]["Patina"].ToString();
                                 }
@@ -631,6 +639,7 @@ PackageDetails.PackNumber, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog
                         for (int x = 0; x < dtDistInvNumbers.Rows.Count; x++)
                         {
                             DataRow[] rows1 = ProfilReportTable.Select("InvNumber='" + dtDistInvNumbers.Rows[x]["InvNumber"].ToString() +
+                                "' AND Notes='" + dtDistInvNumbers.Rows[x]["Notes"].ToString() +
                                 "' AND Cvet='" + dtDistInvNumbers.Rows[x]["Cvet"].ToString() + "' AND Patina='" + dtDistInvNumbers.Rows[x]["Patina"].ToString() + "'");
                             if (rows1.Count() > 0)
                             {
@@ -638,10 +647,11 @@ PackageDetails.PackNumber, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog
                                 {
                                     PackageCount = Convert.ToInt32(rows1[0]["PackageCount"]);
                                     InvNumber = dtDistInvNumbers.Rows[x]["InvNumber"].ToString();
+                                    Notes = dtDistInvNumbers.Rows[x]["Notes"].ToString();
                                 }
                             }
                         }
-                        DataRow[] rows = ProfilReportTable.Select("InvNumber='" + InvNumber + "' AND Cvet='" + Cvet + "' AND Patina='" + Patina + "'");
+                        DataRow[] rows = ProfilReportTable.Select("InvNumber='" + InvNumber + "' AND Notes='" + Notes + "' AND Cvet='" + Cvet + "' AND Patina='" + Patina + "'");
                         if (rows.Count() > 0)
                             rows[0]["PackageCount"] = Convert.ToInt32(rows[0]["PackageCount"]) + 1;
                     }
@@ -655,25 +665,27 @@ PackageDetails.PackNumber, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog
                     DistPackagesDT = DV.ToTable(true, "PackNumber");
                 }
                 dtGroup.Clear();
-                dtGroup = GroupBy("InvNumber", "Cvet", "Patina", "PackNumber", dtMainOrders);
+                dtGroup = GroupBy("InvNumber", "Notes", "Cvet", "Patina", "PackNumber", dtMainOrders);
                 for (int i = 0; i < DistPackagesDT.Rows.Count; i++)
                 {
                     using (DataView DV = new DataView(dtMainOrders, "PackNumber=" + Convert.ToInt32(DistPackagesDT.Rows[i]["PackNumber"]), string.Empty, DataViewRowState.CurrentRows))
                     {
                         dtDistInvNumbers.Clear();
-                        dtDistInvNumbers = DV.ToTable(true, "InvNumber", "Cvet", "Patina");
+                        dtDistInvNumbers = DV.ToTable(true, "InvNumber", "Notes", "Cvet", "Patina");
                         string InvNumber = dtDistInvNumbers.Rows[0]["InvNumber"].ToString();
+                        string Notes = dtDistInvNumbers.Rows[0]["Notes"].ToString();
                         string Cvet = dtDistInvNumbers.Rows[0]["Cvet"].ToString();
                         string Patina = dtDistInvNumbers.Rows[0]["Patina"].ToString();
                         int PackageCount = 0;
 
-                        DataRow[] rows0 = dtGroup.Select("InvNumber='" + InvNumber + "'");
+                        DataRow[] rows0 = dtGroup.Select("InvNumber='" + InvNumber + "' AND Notes='" + Notes + "' AND Cvet='" + Cvet + "' AND Patina='" + Patina + "'");
                         if (rows0.Count() > 0)
                             PackageCount = Convert.ToInt32(rows0[0]["Count"]);
 
                         for (int x = 1; x < dtDistInvNumbers.Rows.Count; x++)
                         {
                             DataRow[] rows1 = dtGroup.Select("InvNumber='" + dtDistInvNumbers.Rows[x]["InvNumber"].ToString() +
+                                "' AND Notes='" + dtDistInvNumbers.Rows[x]["Notes"].ToString() +
                                 "' AND Cvet='" + dtDistInvNumbers.Rows[x]["Cvet"].ToString() + "' AND Patina='" + dtDistInvNumbers.Rows[x]["Patina"].ToString() + "'");
                             if (rows1.Count() > 0)
                             {
@@ -681,6 +693,7 @@ PackageDetails.PackNumber, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog
                                 {
                                     PackageCount = Convert.ToInt32(rows1[0]["Count"]);
                                     InvNumber = dtDistInvNumbers.Rows[x]["InvNumber"].ToString();
+                                    Notes = dtDistInvNumbers.Rows[x]["Notes"].ToString();
                                     Cvet = dtDistInvNumbers.Rows[x]["Cvet"].ToString();
                                     Patina = dtDistInvNumbers.Rows[x]["Patina"].ToString();
                                 }
@@ -689,19 +702,20 @@ PackageDetails.PackNumber, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog
                         PackageCount = 0;
                         for (int x = 0; x < dtDistInvNumbers.Rows.Count; x++)
                         {
-                            DataRow[] rows1 = TPSReportTable.Select("InvNumber='" + InvNumber + "' AND Cvet='" + Cvet + "' AND Patina='" + Patina + "'");
+                            DataRow[] rows1 = TPSReportTable.Select("InvNumber='" + InvNumber + "' AND Notes='" + Notes + "' AND Cvet='" + Cvet + "' AND Patina='" + Patina + "'");
                             if (rows1.Count() > 0)
                             {
                                 if (Convert.ToInt32(rows1[0]["PackageCount"]) < PackageCount)
                                 {
                                     PackageCount = Convert.ToInt32(rows1[0]["PackageCount"]);
                                     InvNumber = dtDistInvNumbers.Rows[x]["InvNumber"].ToString();
+                                    Notes = dtDistInvNumbers.Rows[x]["Notes"].ToString();
                                     Cvet = dtDistInvNumbers.Rows[x]["Cvet"].ToString();
                                     Patina = dtDistInvNumbers.Rows[x]["Patina"].ToString();
                                 }
                             }
                         }
-                        DataRow[] rows = TPSReportTable.Select("InvNumber='" + InvNumber + "' AND Cvet='" + Cvet + "' AND Patina='" + Patina + "'");
+                        DataRow[] rows = TPSReportTable.Select("InvNumber='" + InvNumber + "' AND Notes='" + Notes + "' AND Cvet='" + Cvet + "' AND Patina='" + Patina + "'");
                         if (rows.Count() > 0)
                             rows[0]["PackageCount"] = Convert.ToInt32(rows[0]["PackageCount"]) + 1;
                     }
@@ -873,6 +887,7 @@ PackageDetails.PackNumber, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog
             int displayIndex = 0;
             sheet1.SetColumnWidth(displayIndex++, 16 * 256);
             sheet1.SetColumnWidth(displayIndex++, 12 * 256);
+            sheet1.SetColumnWidth(displayIndex++, 24 * 256);
             sheet1.SetColumnWidth(displayIndex++, 51 * 256);
             sheet1.SetColumnWidth(displayIndex++, 18 * 256);
             sheet1.SetColumnWidth(displayIndex++, 8 * 256);
@@ -939,6 +954,7 @@ PackageDetails.PackNumber, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog
                 Cell1.CellStyle = ReportCS1;
             }
 
+            displayIndex = 0;
             if (ProfilReportTable.Rows.Count > 0)
             {
                 //Профиль
@@ -956,6 +972,10 @@ PackageDetails.PackNumber, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog
                 Cell1.SetCellValue("Инв.№");
                 Cell1.CellStyle = SimpleHeaderCS;
 
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Примечание");
+                Cell1.CellStyle = SimpleHeaderCS;
+                
                 Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                 Cell1.SetCellValue("Наименование");
                 Cell1.CellStyle = SimpleHeaderCS;
@@ -1006,6 +1026,9 @@ PackageDetails.PackNumber, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog
                     Cell1.CellStyle = SimpleCS;
                     Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                     Cell1.SetCellValue(ProfilReportTable.Rows[i]["InvNumber"].ToString());
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(ProfilReportTable.Rows[i]["Notes"].ToString());
                     Cell1.CellStyle = SimpleCS;
                     Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                     Cell1.SetCellValue(ProfilReportTable.Rows[i]["AccountingName"].ToString());
@@ -1124,6 +1147,10 @@ PackageDetails.PackNumber, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog
                 Cell1.CellStyle = SimpleHeaderCS;
 
                 Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Примечание");
+                Cell1.CellStyle = SimpleHeaderCS;
+                
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                 Cell1.SetCellValue("Наименование");
                 Cell1.CellStyle = SimpleHeaderCS;
 
@@ -1166,11 +1193,16 @@ PackageDetails.PackNumber, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog
 
                 for (int i = 0; i < TPSReportTable.Rows.Count; i++)
                 {
+                    displayIndex = 0;
+
                     Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                     Cell1.SetCellValue(TPSReportTable.Rows[i]["UNN"].ToString());
                     Cell1.CellStyle = SimpleCS;
                     Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                     Cell1.SetCellValue(TPSReportTable.Rows[i]["InvNumber"].ToString());
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(TPSReportTable.Rows[i]["Notes"].ToString());
                     Cell1.CellStyle = SimpleCS;
                     Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                     Cell1.SetCellValue(TPSReportTable.Rows[i]["AccountingName"].ToString());

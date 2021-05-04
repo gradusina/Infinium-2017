@@ -1,6 +1,9 @@
-﻿using Infinium.Modules.Marketing.Dispatch;
+﻿using Infinium.Modules.ExpeditionMarketing.ColorDispatchReportToDbf;
+using Infinium.Modules.ExpeditionMarketing.NotesDispatchReportToDbf;
+using Infinium.Modules.ExpeditionMarketing.DispatchReportToDbf;
 using Infinium.Modules.Marketing.Expedition;
 using Infinium.Modules.Marketing.Orders;
+
 using NPOI.HPSF;
 using NPOI.HSSF.UserModel;
 
@@ -75,9 +78,11 @@ namespace Infinium
         CabFurAssembleReport cabFurAssembleReport;
         Modules.CabFurnitureAssignments.CabFurAssemble cabFurAssembleManager;
         MarketingDispatch MarketingDispatchManager;
-        DispatchReportDBFReport DBFReport;
+        private DispatchReportToDbf _dispatchReportToDbf;
+        private ColorInvoiceReportToDbf _colorInvoiceReportToDbf;
+        private NotesInvoiceReportToDbf _notesInvoiceReportToDbf;
         Infinium.Modules.Marketing.Dispatch.DetailsReport DetailsReport;
-        Infinium.Modules.Marketing.NewOrders.InvoiceReportToDBF.InvoiceReportToDBF iDBFReport;
+        Infinium.Modules.Marketing.NewOrders.InvoiceReportToDbf.InvoiceReportToDbf iDBFReport;
         MarketingExpeditionManager MarketingExpeditionManager;
         OrdersCalculate OrdersCalculate;
 
@@ -454,12 +459,14 @@ namespace Infinium
             cbxCabFurMonths.SelectedValue = DateTime.Now.Month;
             cbxCabFurYears.SelectedValue = DateTime.Now.Year;
 
-            DBFReport = new DispatchReportDBFReport(ref DecorCatalogOrder);
+            _dispatchReportToDbf = new DispatchReportToDbf(ref DecorCatalogOrder);
+            _colorInvoiceReportToDbf = new ColorInvoiceReportToDbf(ref DecorCatalogOrder);
+            _notesInvoiceReportToDbf = new NotesInvoiceReportToDbf(ref DecorCatalogOrder);
             OrdersCalculate = new OrdersCalculate();
             DetailsReport = new Modules.Marketing.Dispatch.DetailsReport(ref DecorCatalogOrder, ref OrdersCalculate.FrontsCalculate);
             MarketingDispatchManager = new MarketingDispatch();
             cabFurAssembleManager = new Modules.CabFurnitureAssignments.CabFurAssemble();
-            iDBFReport = new Modules.Marketing.NewOrders.InvoiceReportToDBF.InvoiceReportToDBF();
+            iDBFReport = new Modules.Marketing.NewOrders.InvoiceReportToDbf.InvoiceReportToDbf();
 
             MarketingDispatchManager.Initialize();
             cabFurAssembleManager.Initialize();
@@ -2983,7 +2990,7 @@ namespace Infinium
             string TPSDBFName = string.Empty;
             string ReportName = string.Empty;
             InMutualSettlement = false;
-            DBFReport.ClearTempPackages();
+            _dispatchReportToDbf.ClearTempPackages();
             if (!InMutualSettlement)
             {
                 Modules.Marketing.MutualSettlements.MutualSettlements MutualSettlementsManager = new Modules.Marketing.MutualSettlements.MutualSettlements();
@@ -3000,7 +3007,6 @@ namespace Infinium
                         PhantomForm.Show();
 
                         int Result = 1;
-                        bool Old = false;
                         string SaveFilePath = string.Empty;
                         SaveDBFReportMenu = new Infinium.SaveDBFReportMenu(this, ReportName);
 
@@ -3009,7 +3015,6 @@ namespace Infinium
 
                         PhantomForm.Close();
                         Result = SaveDBFReportMenu.Result;
-                        Old = SaveDBFReportMenu.Old;
                         SaveFilePath = SaveDBFReportMenu.SaveFilePath;
                         PhantomForm.Dispose();
                         SaveDBFReportMenu.Dispose();
@@ -3100,9 +3105,9 @@ namespace Infinium
                             hssfworkbook.SummaryInformation = si;
 
                             ReportName = ClientLogin + " №" + Dispatches[j].ToString();
-                            DBFReport.CreateReport(ref hssfworkbook, new int[1] { Dispatches[j] }, MainOrders, ClientID, ClientName, ref TotalProfil, ref TotalTPS, ProfilVerify, TPSVerify, iDiscountPaymentConditionID, true, Old);
-                            DBFReport.SaveDBF(FilePath, ReportName, true, ref ProfilDBFName, ref TPSDBFName);
-                            DetailsReport.CreateReport(ref hssfworkbook, new int[1] { Dispatches[j] }, OrderNumbers.OfType<Int32>().ToArray(), MainOrders, ClientID, ClientName, ProfilVerify, TPSVerify, iDiscountPaymentConditionID, true, Old);
+                            _dispatchReportToDbf.CreateReport(ref hssfworkbook, new int[1] { Dispatches[j] }, MainOrders, ClientID, ClientName, ref TotalProfil, ref TotalTPS, ProfilVerify, TPSVerify, iDiscountPaymentConditionID, true);
+                            _dispatchReportToDbf.SaveDBF(FilePath, ReportName, true, ref ProfilDBFName, ref TPSDBFName);
+                            DetailsReport.CreateReport(ref hssfworkbook, new int[1] { Dispatches[j] }, OrderNumbers.OfType<Int32>().ToArray(), MainOrders, ClientID, ClientName, ProfilVerify, TPSVerify, iDiscountPaymentConditionID, true);
 
                             FileInfo file = new FileInfo(FilePath + @"\" + ReportName + ".xls");
                             int x = 1;
@@ -3154,7 +3159,7 @@ namespace Infinium
                         MarketingDispatchManager.MoveToDispatchDate(DispatchDate);
                         MarketingDispatchManager.MoveToDispatch(Dispatches[0]);
 
-                        NewMethod(ClientID, ClientName, Dispatches, iDiscountPaymentConditionID, ClientLogin, ProfilVerify, TPSVerify, FilePath, Old);
+                        DispatchInvoiceClient(ClientID, ClientName, Dispatches, iDiscountPaymentConditionID, ClientLogin, ProfilVerify, TPSVerify, FilePath);
 
                         NeedSplash = true;
                         while (SplashWindow.bSmallCreated)
@@ -3166,7 +3171,6 @@ namespace Infinium
                         PhantomForm.Show();
 
                         int Result = 1;
-                        bool Old = false;
                         string SaveFilePath = string.Empty;
                         SaveDBFReportMenu = new Infinium.SaveDBFReportMenu(this, ReportName);
 
@@ -3175,7 +3179,6 @@ namespace Infinium
 
                         PhantomForm.Close();
                         Result = SaveDBFReportMenu.Result;
-                        Old = SaveDBFReportMenu.Old;
                         SaveFilePath = SaveDBFReportMenu.SaveFilePath;
                         PhantomForm.Dispose();
                         SaveDBFReportMenu.Dispose();
@@ -3266,9 +3269,9 @@ namespace Infinium
                             hssfworkbook.SummaryInformation = si;
 
                             ReportName = ClientLogin + " №" + Dispatches[j].ToString();
-                            DBFReport.CreateReport(ref hssfworkbook, new int[1] { Dispatches[j] }, MainOrders, ClientID, ClientName, ref TotalProfil, ref TotalTPS, ProfilVerify, TPSVerify, iDiscountPaymentConditionID, false, Old);
-                            DBFReport.SaveDBF(FilePath, ReportName, false, ref ProfilDBFName, ref TPSDBFName);
-                            DetailsReport.CreateReport(ref hssfworkbook, new int[1] { Dispatches[j] }, OrderNumbers.OfType<Int32>().ToArray(), MainOrders, ClientID, ClientName, ProfilVerify, TPSVerify, iDiscountPaymentConditionID, false, Old);
+                            _dispatchReportToDbf.CreateReport(ref hssfworkbook, new int[1] { Dispatches[j] }, MainOrders, ClientID, ClientName, ref TotalProfil, ref TotalTPS, ProfilVerify, TPSVerify, iDiscountPaymentConditionID, false);
+                            _dispatchReportToDbf.SaveDBF(FilePath, ReportName, false, ref ProfilDBFName, ref TPSDBFName);
+                            DetailsReport.CreateReport(ref hssfworkbook, new int[1] { Dispatches[j] }, OrderNumbers.OfType<Int32>().ToArray(), MainOrders, ClientID, ClientName, ProfilVerify, TPSVerify, iDiscountPaymentConditionID, false);
 
                             FileInfo file = new FileInfo(FilePath + @"\" + ReportName + ".xls");
                             int x = 1;
@@ -3320,7 +3323,7 @@ namespace Infinium
                         MarketingDispatchManager.MoveToDispatchDate(DispatchDate);
                         MarketingDispatchManager.MoveToDispatch(Dispatches[0]);
 
-                        NewMethod(ClientID, ClientName, Dispatches, iDiscountPaymentConditionID, ClientLogin, ProfilVerify, TPSVerify, FilePath, Old);
+                        DispatchInvoiceClient(ClientID, ClientName, Dispatches, iDiscountPaymentConditionID, ClientLogin, ProfilVerify, TPSVerify, FilePath);
 
                         NeedSplash = true;
                         while (SplashWindow.bSmallCreated)
@@ -3333,7 +3336,6 @@ namespace Infinium
                     PhantomForm.Show();
 
                     int Result = 1;
-                    bool Old = false;
                     string SaveFilePath = string.Empty;
                     SaveDBFReportMenu = new Infinium.SaveDBFReportMenu(this, ReportName);
 
@@ -3342,7 +3344,6 @@ namespace Infinium
 
                     PhantomForm.Close();
                     Result = SaveDBFReportMenu.Result;
-                    Old = SaveDBFReportMenu.Old;
                     SaveFilePath = SaveDBFReportMenu.SaveFilePath;
                     PhantomForm.Dispose();
                     SaveDBFReportMenu.Dispose();
@@ -3438,9 +3439,11 @@ namespace Infinium
                         hssfworkbook.SummaryInformation = si;
 
                         ReportName = ClientLogin + " №" + Dispatches[j].ToString();
-                        DBFReport.CreateReport(ref hssfworkbook, new int[1] { Dispatches[j] }, MainOrders, ClientID, ClientName, ref TotalProfil, ref TotalTPS, ProfilVerify, TPSVerify, iDiscountPaymentConditionID, Old);
-                        DBFReport.SaveDBF(FilePath, ReportName, ref ProfilDBFName, ref TPSDBFName);
-                        DetailsReport.CreateReport(ref hssfworkbook, new int[1] { Dispatches[j] }, OrderNumbers.OfType<Int32>().ToArray(), MainOrders, ClientID, ClientName, ProfilVerify, TPSVerify, iDiscountPaymentConditionID, Old);
+
+                        _dispatchReportToDbf.CreateReport(ref hssfworkbook, new int[1] { Dispatches[j] }, MainOrders, ClientID, ClientName, ref TotalProfil, ref TotalTPS, ProfilVerify, TPSVerify, iDiscountPaymentConditionID);
+                        _dispatchReportToDbf.SaveDBF(FilePath, ReportName, ref ProfilDBFName, ref TPSDBFName);
+
+                        DetailsReport.CreateReport(ref hssfworkbook, new int[1] { Dispatches[j] }, OrderNumbers.OfType<Int32>().ToArray(), MainOrders, ClientID, ClientName, ProfilVerify, TPSVerify, iDiscountPaymentConditionID);
 
                         FileInfo file = new FileInfo(FilePath + @"\" + ReportName + ".xls");
                         int x = 1;
@@ -3492,7 +3495,7 @@ namespace Infinium
                     MarketingDispatchManager.MoveToDispatchDate(DispatchDate);
                     MarketingDispatchManager.MoveToDispatch(Dispatches[0]);
 
-                    NewMethod(ClientID, ClientName, Dispatches, iDiscountPaymentConditionID, ClientLogin, ProfilVerify, TPSVerify, FilePath, Old);
+                    DispatchInvoiceClient(ClientID, ClientName, Dispatches, iDiscountPaymentConditionID, ClientLogin, ProfilVerify, TPSVerify, FilePath);
 
                     NeedSplash = true;
                     while (SplashWindow.bSmallCreated)
@@ -3501,8 +3504,8 @@ namespace Infinium
             }
         }
 
-        private void NewMethod(int ClientID, string ClientName, int[] Dispatches, int iDiscountPaymentConditionID, string ClientLogin,
-            bool ProfilVerify, bool TPSVerify, string FilePath, bool Old)
+        private void ColorInvoiceClient(int ClientID, string ClientName, int[] Dispatches, int iDiscountPaymentConditionID, string ClientLogin,
+            bool ProfilVerify, bool TPSVerify, string FilePath)
         {
             decimal TotalProfil = 0;
             decimal TotalTPS = 0;
@@ -3526,8 +3529,132 @@ namespace Infinium
             int[] MainOrders = MarketingDispatchManager.GetMainOrders(Dispatches);
 
             string ReportName = ClientLogin + " №" + string.Join(",", Dispatches);
-            DBFReport.CreateReport(ref hssfworkbook, Dispatches, MainOrders, ClientID, ClientName, ref TotalProfil, ref TotalTPS, ProfilVerify, TPSVerify, iDiscountPaymentConditionID, Old);
-            DetailsReport.CreateReport(ref hssfworkbook, Dispatches, OrderNumbers.OfType<Int32>().ToArray(), MainOrders, ClientID, ClientName, ProfilVerify, TPSVerify, iDiscountPaymentConditionID, Old);
+            _colorInvoiceReportToDbf.CreateReport(ref hssfworkbook, Dispatches, MainOrders, ClientID, ClientName, ref TotalProfil, ref TotalTPS, ProfilVerify, TPSVerify, iDiscountPaymentConditionID);
+            DetailsReport.CreateReport(ref hssfworkbook, Dispatches, OrderNumbers.OfType<Int32>().ToArray(), MainOrders, ClientID, ClientName, ProfilVerify, TPSVerify, iDiscountPaymentConditionID);
+
+            object CreationDateTime = dgvDispatch.SelectedRows[0].Cells["CreationDateTime"].Value;
+            object ConfirmExpDateTime = dgvDispatch.SelectedRows[0].Cells["ConfirmExpDateTime"].Value;
+            object ConfirmDispDateTime = dgvDispatch.SelectedRows[0].Cells["ConfirmDispDateTime"].Value;
+            object PrepareDispDateTime = dgvDispatchDates.SelectedRows[0].Cells["PrepareDispatchDateTime"].Value;
+            object ConfirmExpUserID = dgvDispatch.SelectedRows[0].Cells["ConfirmExpUserID"].Value;
+            object ConfirmDispUserID = dgvDispatch.SelectedRows[0].Cells["ConfirmDispUserID"].Value;
+            object RealDispDateTime = DBNull.Value;
+            object DispUserID = DBNull.Value;
+            MarketingDispatchManager.GetRealDispDateTime(Dispatches[0], ref RealDispDateTime, ref DispUserID);
+
+            DispatchReport.GetDispatchInfo(ref CreationDateTime, ref ConfirmExpDateTime, ref ConfirmDispDateTime, ref RealDispDateTime, ref PrepareDispDateTime,
+                ref ConfirmExpUserID, ref ConfirmDispUserID, ref DispUserID);
+            DispatchReport.CurrentClient = ClientID;
+            DispatchReport.CurrentDispatches = Dispatches;
+            DispatchReport.Initialize();
+            DispatchReport.CreateReport(ref hssfworkbook, true, true, true, false);
+
+            FileInfo file = new FileInfo(FilePath + @"\" + ReportName + ".xls");
+            int j = 1;
+            while (file.Exists == true)
+            {
+                file = new FileInfo(FilePath + @"\" + ReportName + "(" + j++ + ").xls");
+            }
+
+            FileStream NewFile = new FileStream(file.FullName, FileMode.Create);
+            hssfworkbook.Write(NewFile);
+            NewFile.Close();
+
+            ReportName = file.FullName;
+
+            SendEmail SendEmail = new SendEmail();
+            SendEmail.Send(ClientID, string.Join(",", OrderNumbers.OfType<Int32>().ToArray()), DetailsReport.Save, ReportName);
+        }
+
+        private void NotesInvoiceClient(int ClientID, string ClientName, int[] Dispatches, int iDiscountPaymentConditionID, string ClientLogin,
+            bool ProfilVerify, bool TPSVerify, string FilePath)
+        {
+            decimal TotalProfil = 0;
+            decimal TotalTPS = 0;
+
+            HSSFWorkbook hssfworkbook = new HSSFWorkbook();
+
+            ////create a entry of DocumentSummaryInformation
+            DocumentSummaryInformation dsi = PropertySetFactory.CreateDocumentSummaryInformation();
+            dsi.Company = "NPOI Team";
+            hssfworkbook.DocumentSummaryInformation = dsi;
+
+            ////create a entry of SummaryInformation
+            SummaryInformation si = PropertySetFactory.CreateSummaryInformation();
+            si.Subject = "NPOI SDK Example";
+            hssfworkbook.SummaryInformation = si;
+
+            DataTable ReturnDT = MarketingDispatchManager.GetMegaOrders(Dispatches);
+            ArrayList OrderNumbers = new ArrayList();
+            for (int i = 0; i < ReturnDT.Rows.Count; i++)
+                OrderNumbers.Add(Convert.ToInt32(ReturnDT.Rows[i]["OrderNumber"]));
+            int[] MainOrders = MarketingDispatchManager.GetMainOrders(Dispatches);
+
+            string ReportName = ClientLogin + " №" + string.Join(",", Dispatches);
+            _notesInvoiceReportToDbf.CreateReport(ref hssfworkbook, Dispatches, MainOrders, ClientID, ClientName, ref TotalProfil, ref TotalTPS, ProfilVerify, TPSVerify, iDiscountPaymentConditionID);
+            DetailsReport.CreateReport(ref hssfworkbook, Dispatches, OrderNumbers.OfType<Int32>().ToArray(), MainOrders, ClientID, ClientName, ProfilVerify, TPSVerify, iDiscountPaymentConditionID);
+
+            object CreationDateTime = dgvDispatch.SelectedRows[0].Cells["CreationDateTime"].Value;
+            object ConfirmExpDateTime = dgvDispatch.SelectedRows[0].Cells["ConfirmExpDateTime"].Value;
+            object ConfirmDispDateTime = dgvDispatch.SelectedRows[0].Cells["ConfirmDispDateTime"].Value;
+            object PrepareDispDateTime = dgvDispatchDates.SelectedRows[0].Cells["PrepareDispatchDateTime"].Value;
+            object ConfirmExpUserID = dgvDispatch.SelectedRows[0].Cells["ConfirmExpUserID"].Value;
+            object ConfirmDispUserID = dgvDispatch.SelectedRows[0].Cells["ConfirmDispUserID"].Value;
+            object RealDispDateTime = DBNull.Value;
+            object DispUserID = DBNull.Value;
+            MarketingDispatchManager.GetRealDispDateTime(Dispatches[0], ref RealDispDateTime, ref DispUserID);
+
+            DispatchReport.GetDispatchInfo(ref CreationDateTime, ref ConfirmExpDateTime, ref ConfirmDispDateTime, ref RealDispDateTime, ref PrepareDispDateTime,
+                ref ConfirmExpUserID, ref ConfirmDispUserID, ref DispUserID);
+            DispatchReport.CurrentClient = ClientID;
+            DispatchReport.CurrentDispatches = Dispatches;
+            DispatchReport.Initialize();
+            DispatchReport.CreateReport(ref hssfworkbook, true, true, true, false);
+
+            FileInfo file = new FileInfo(FilePath + @"\" + ReportName + ".xls");
+            int j = 1;
+            while (file.Exists == true)
+            {
+                file = new FileInfo(FilePath + @"\" + ReportName + "(" + j++ + ").xls");
+            }
+
+            FileStream NewFile = new FileStream(file.FullName, FileMode.Create);
+            hssfworkbook.Write(NewFile);
+            NewFile.Close();
+
+            ReportName = file.FullName;
+
+            SendEmail SendEmail = new SendEmail();
+            SendEmail.Send(ClientID, string.Join(",", OrderNumbers.OfType<Int32>().ToArray()), DetailsReport.Save, ReportName);
+        }
+        
+        private void DispatchInvoiceClient(int ClientID, string ClientName, int[] Dispatches, int iDiscountPaymentConditionID, string ClientLogin,
+            bool ProfilVerify, bool TPSVerify, string FilePath)
+        {
+            decimal TotalProfil = 0;
+            decimal TotalTPS = 0;
+
+            HSSFWorkbook hssfworkbook = new HSSFWorkbook();
+
+            ////create a entry of DocumentSummaryInformation
+            DocumentSummaryInformation dsi = PropertySetFactory.CreateDocumentSummaryInformation();
+            dsi.Company = "NPOI Team";
+            hssfworkbook.DocumentSummaryInformation = dsi;
+
+            ////create a entry of SummaryInformation
+            SummaryInformation si = PropertySetFactory.CreateSummaryInformation();
+            si.Subject = "NPOI SDK Example";
+            hssfworkbook.SummaryInformation = si;
+
+            DataTable ReturnDT = MarketingDispatchManager.GetMegaOrders(Dispatches);
+            ArrayList OrderNumbers = new ArrayList();
+            for (int i = 0; i < ReturnDT.Rows.Count; i++)
+                OrderNumbers.Add(Convert.ToInt32(ReturnDT.Rows[i]["OrderNumber"]));
+            int[] MainOrders = MarketingDispatchManager.GetMainOrders(Dispatches);
+
+            string ReportName = ClientLogin + " №" + string.Join(",", Dispatches);
+            _dispatchReportToDbf.CreateReport(ref hssfworkbook, Dispatches, MainOrders, ClientID, ClientName, ref TotalProfil, ref TotalTPS, ProfilVerify, TPSVerify, iDiscountPaymentConditionID);
+            DetailsReport.CreateReport(ref hssfworkbook, Dispatches, OrderNumbers.OfType<Int32>().ToArray(), MainOrders, ClientID, ClientName, ProfilVerify, TPSVerify, iDiscountPaymentConditionID);
 
             object CreationDateTime = dgvDispatch.SelectedRows[0].Cells["CreationDateTime"].Value;
             object ConfirmExpDateTime = dgvDispatch.SelectedRows[0].Cells["ConfirmExpDateTime"].Value;
@@ -4103,6 +4230,7 @@ namespace Infinium
 
             int MutualSettlementID1 = -1;
             int MutualSettlementID2 = -1;
+            bool IsSample = false;
             bool bProfilVerify = false;
             MutualSettlementID1 = MutualSettlementsManager.FindMutualSettlementIDByOrderNumber(ClientID, 1, OrderNumbers.OfType<Int32>().ToArray());
             decimal DispatchSum = MutualSettlementsManager.GetDispatchSum(MutualSettlementID1);
@@ -4115,9 +4243,10 @@ namespace Infinium
             if (MutualSettlementID2 != 0)
                 bTPSVerify = MutualSettlementsManager.VerifyTransaction(MutualSettlementID2, DispatchSum, ref DiscountPaymentCondition);
 
-            DBFReport.CreateReport(ref hssfworkbook, Dispatches, MainOrders, NewClientID, ClientName,
-                ref TotalProfil, ref TotalTPS, bProfilVerify, bTPSVerify, DiscountPaymentConditionID, false);
-            DBFReport.SaveDBF(FilePath, ReportName, ref ProfilDBFName, ref TPSDBFName);
+            _dispatchReportToDbf.CreateReport(ref hssfworkbook, Dispatches, MainOrders, NewClientID, ClientName,
+                ref TotalProfil, ref TotalTPS, bProfilVerify, bTPSVerify, DiscountPaymentConditionID, IsSample);
+            _dispatchReportToDbf.SaveDBF(FilePath, ReportName, ref ProfilDBFName, ref TPSDBFName);
+
             DetailsReport.CreateReport(ref hssfworkbook, Dispatches, OrderNumbers.OfType<Int32>().ToArray(), MainOrders, NewClientID, ClientName,
                 bProfilVerify, bTPSVerify, DiscountPaymentConditionID, false);
 
@@ -4883,5 +5012,1080 @@ namespace Infinium
             if (MarketingExpeditionManager != null)
                 FilterOrders();
         }
+        
+        private void kryptonContextMenuItem22_Click(object sender, EventArgs e)
+        {
+            bool InMutualSettlement = Convert.ToBoolean(dgvDispatch.SelectedRows[0].Cells["InMutualSettlement"].Value);
+            //int DispatchID = Convert.ToInt32(dgvDispatch.SelectedRows[0].Cells["DispatchID"].Value);
+            DateTime DispatchDate = Convert.ToDateTime(dgvDispatchDates.SelectedRows[0].Cells["PrepareDispatchDateTime"].Value);
+            int ClientID = Convert.ToInt32(dgvDispatch.SelectedRows[0].Cells["ClientID"].Value);
+            string ClientName = dgvDispatch.SelectedRows[0].Cells["ClientName"].Value.ToString();
+            int[] Dispatches = new int[dgvDispatch.SelectedRows.Count];
+            for (int i = 0; i < dgvDispatch.SelectedRows.Count; i++)
+                Dispatches[i] = Convert.ToInt32(dgvDispatch.SelectedRows[i].Cells["DispatchID"].Value);
+
+            int ClientCountryID = OrdersManager.GetClientCountry(ClientID);
+            int iDiscountPaymentConditionID = 0;
+            string ClientLogin = OrdersManager.GetClientLogin(ClientID);
+
+            decimal DiscountPaymentCondition = 0;
+            decimal TotalProfil = 0;
+            decimal TotalTPS = 0;
+
+            string ProfilDBFName = string.Empty;
+            string TPSDBFName = string.Empty;
+            string ReportName = string.Empty;
+            InMutualSettlement = false;
+            _colorInvoiceReportToDbf.ClearTempPackages();
+            if (!InMutualSettlement)
+            {
+                Modules.Marketing.MutualSettlements.MutualSettlements MutualSettlementsManager = new Modules.Marketing.MutualSettlements.MutualSettlements();
+                MutualSettlementsManager.Initialize();
+
+                if (ClientID == 145)
+                {
+                    bool HasOrdinaryOrders = MarketingDispatchManager.HasOrders(Dispatches, false);
+                    bool HasSampleOrders = MarketingDispatchManager.HasOrders(Dispatches, true);
+
+                    if (HasSampleOrders)
+                    {
+                        PhantomForm PhantomForm = new Infinium.PhantomForm();
+                        PhantomForm.Show();
+
+                        int Result = 1;
+                        string SaveFilePath = string.Empty;
+                        SaveDBFReportMenu = new Infinium.SaveDBFReportMenu(this, ReportName);
+
+                        TopForm = SaveDBFReportMenu;
+                        SaveDBFReportMenu.ShowDialog();
+
+                        PhantomForm.Close();
+                        Result = SaveDBFReportMenu.Result;
+                        SaveFilePath = SaveDBFReportMenu.SaveFilePath;
+                        PhantomForm.Dispose();
+                        SaveDBFReportMenu.Dispose();
+                        TopForm = null;
+
+                        if (Result == 3)
+                            return;
+
+                        int ClientDispatchID = -1;
+                        int MutualSettlementID1 = -1;
+                        int MutualSettlementID2 = -1;
+                        bool ProfilVerify = true;
+                        bool TPSVerify = true;
+
+                        ClientName = ClientName.Replace("\"", " ");
+                        ClientName = ClientName.Replace("*", " ");
+                        ClientName = ClientName.Replace("|", " ");
+                        ClientName = ClientName.Replace(@"\", " ");
+                        ClientName = ClientName.Replace(":", " ");
+                        ClientName = ClientName.Replace("<", " ");
+                        ClientName = ClientName.Replace(">", " ");
+                        ClientName = ClientName.Replace("?", " ");
+                        ClientName = ClientName.Replace("/", " ");
+
+                        string CurrentMonthName = DateTime.Now.ToString("dd-MM-yyyy");
+                        string FilePath = Security.DBFSaveFilePath;
+                        if (Security.DBFSaveFilePath.Length == 0)
+                            FilePath = Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/Infinium/1C data/" + CurrentMonthName;
+
+                        Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Создание документа Excel.\r\nПодождите..."); });
+                        T.Start();
+
+                        while (!SplashWindow.bSmallCreated) ;
+                        NeedSplash = false;
+
+                        for (int j = 0; j < Dispatches.Count(); j++)
+                        {
+                            int[] MainOrders = MarketingDispatchManager.GetMainOrdersInDispatch(Dispatches[j]);
+
+                            DataTable ReturnDT = MarketingDispatchManager.GetMegaOrdersInDispatch(Dispatches[j]);
+                            ArrayList OrderNumbers = new ArrayList();
+                            for (int i = 0; i < ReturnDT.Rows.Count; i++)
+                                OrderNumbers.Add(Convert.ToInt32(ReturnDT.Rows[i]["OrderNumber"]));
+
+                            int CurrencyTypeID = 1;
+                            if (ReturnDT.Rows.Count > 0)
+                                CurrencyTypeID = Convert.ToInt32(ReturnDT.Rows[0]["CurrencyTypeID"]);
+
+                            MutualSettlementID1 = MutualSettlementsManager.FindMutualSettlementIDByOrderNumber(ClientID, 1, OrderNumbers.OfType<Int32>().ToArray(), true);
+                            if (MutualSettlementID1 != 0)
+                            {
+                                decimal DispatchSum = MutualSettlementsManager.GetDispatchSum(MutualSettlementID1);
+                                ProfilVerify = MutualSettlementsManager.VerifyTransaction(MutualSettlementID1, DispatchSum, ref DiscountPaymentCondition);
+                                for (int i = 0; i < ReturnDT.Rows.Count; i++)
+                                {
+                                    int MegaOrderID = Convert.ToInt32(ReturnDT.Rows[i]["MegaOrderID"]);
+
+                                    MegaOrderInfo m = MarketingDispatchManager.GetMegaOrders(MegaOrderID);
+                                    iDiscountPaymentConditionID = ProfilReCalcMegaOrder(ClientID, CurrencyTypeID, DiscountPaymentCondition, ProfilVerify, true, MegaOrderID, m);
+                                    OrdersManager.FixOrderEvent(MegaOrderID, "Выписать накладную. Пересчитан заказ Профиль");
+                                }
+                            }
+                            MutualSettlementID2 = 0;
+                            MutualSettlementID2 = MutualSettlementsManager.FindMutualSettlementIDByOrderNumber(ClientID, 2, OrderNumbers.OfType<Int32>().ToArray(), true);
+                            if (MutualSettlementID2 != 0)
+                            {
+                                decimal DispatchSum = MutualSettlementsManager.GetDispatchSum(MutualSettlementID2);
+                                TPSVerify = MutualSettlementsManager.VerifyTransaction(MutualSettlementID2, DispatchSum, ref DiscountPaymentCondition);
+                                for (int i = 0; i < ReturnDT.Rows.Count; i++)
+                                {
+                                    int MegaOrderID = Convert.ToInt32(ReturnDT.Rows[i]["MegaOrderID"]);
+                                    MegaOrderInfo m = MarketingDispatchManager.GetMegaOrders(MegaOrderID);
+                                    iDiscountPaymentConditionID = TPSReCalcMegaOrder(ClientID, CurrencyTypeID, DiscountPaymentCondition, TPSVerify, true, MegaOrderID, m);
+                                    OrdersManager.FixOrderEvent(MegaOrderID, "Выписать накладную. Пересчитан заказ ТПС");
+                                }
+                            }
+
+                            HSSFWorkbook hssfworkbook = new HSSFWorkbook();
+
+                            ////create a entry of DocumentSummaryInformation
+                            DocumentSummaryInformation dsi = PropertySetFactory.CreateDocumentSummaryInformation();
+                            dsi.Company = "NPOI Team";
+                            hssfworkbook.DocumentSummaryInformation = dsi;
+
+                            ////create a entry of SummaryInformation
+                            SummaryInformation si = PropertySetFactory.CreateSummaryInformation();
+                            si.Subject = "NPOI SDK Example";
+                            hssfworkbook.SummaryInformation = si;
+
+                            ReportName = ClientLogin + " №" + Dispatches[j].ToString();
+                            _colorInvoiceReportToDbf.CreateReport(ref hssfworkbook, new int[1] { Dispatches[j] }, MainOrders, ClientID, ClientName, ref TotalProfil, ref TotalTPS, ProfilVerify, TPSVerify, iDiscountPaymentConditionID, true);
+                            _colorInvoiceReportToDbf.SaveDBF(FilePath, ReportName, true, ref ProfilDBFName, ref TPSDBFName);
+                            DetailsReport.CreateReport(ref hssfworkbook, new int[1] { Dispatches[j] }, OrderNumbers.OfType<Int32>().ToArray(), MainOrders, ClientID, ClientName, ProfilVerify, TPSVerify, iDiscountPaymentConditionID, true);
+
+                            FileInfo file = new FileInfo(FilePath + @"\" + ReportName + ".xls");
+                            int x = 1;
+                            while (file.Exists == true)
+                            {
+                                file = new FileInfo(FilePath + @"\" + ReportName + "(" + x++ + ").xls");
+                            }
+
+                            FileStream NewFile = new FileStream(file.FullName, FileMode.Create);
+                            hssfworkbook.Write(NewFile);
+                            NewFile.Close();
+
+                            ReportName = file.FullName;
+
+                            if (Result == 1)
+                            {
+                                if (TotalProfil > 0)
+                                {
+                                    if (ClientCountryID == 1)
+                                        TotalProfil *= 1.2m;
+                                    ClientDispatchID = MutualSettlementsManager.AddClientDispatch(MutualSettlementID1, CurrencyTypeID, TotalProfil);
+                                    var fileInfo = new System.IO.FileInfo(ReportName);
+                                    MutualSettlementsManager.AttachDispatchDocument(Path.GetFileNameWithoutExtension(ReportName),
+                                        fileInfo.Extension, ReportName, Infinium.Modules.Marketing.MutualSettlements.DocumentTypes.DispatchExcel, ClientDispatchID);
+                                    fileInfo = new System.IO.FileInfo(ProfilDBFName);
+                                    MutualSettlementsManager.AttachDispatchDocument(Path.GetFileNameWithoutExtension(ProfilDBFName),
+                                        fileInfo.Extension, ProfilDBFName, Infinium.Modules.Marketing.MutualSettlements.DocumentTypes.DispatchDbf, ClientDispatchID);
+                                }
+                                if (TotalTPS > 0)
+                                {
+                                    if (ClientCountryID == 1)
+                                        TotalTPS *= 1.2m;
+                                    ClientDispatchID = MutualSettlementsManager.AddClientDispatch(MutualSettlementID2, CurrencyTypeID, TotalTPS);
+                                    var fileInfo = new System.IO.FileInfo(ReportName);
+                                    MutualSettlementsManager.AttachDispatchDocument(Path.GetFileNameWithoutExtension(ReportName),
+                                        fileInfo.Extension, ReportName, Infinium.Modules.Marketing.MutualSettlements.DocumentTypes.DispatchExcel, ClientDispatchID);
+                                    fileInfo = new System.IO.FileInfo(TPSDBFName);
+                                    MutualSettlementsManager.AttachDispatchDocument(Path.GetFileNameWithoutExtension(TPSDBFName),
+                                        fileInfo.Extension, TPSDBFName, Infinium.Modules.Marketing.MutualSettlements.DocumentTypes.DispatchDbf, ClientDispatchID);
+                                }
+                            }
+                            MarketingDispatchManager.IncludeInMutualSettlement(Dispatches[j], MutualSettlementID1, MutualSettlementID2);
+                        }
+
+                        MutualSettlementsManager.SaveMutualSettlements();
+                        MutualSettlementsManager.SaveMutualSettlementOrders();
+
+                        UpdateDispatchDate();
+                        MarketingDispatchManager.MoveToDispatchDate(DispatchDate);
+                        MarketingDispatchManager.MoveToDispatch(Dispatches[0]);
+
+                        ColorInvoiceClient(ClientID, ClientName, Dispatches, iDiscountPaymentConditionID, ClientLogin, ProfilVerify, TPSVerify, FilePath);
+
+                        NeedSplash = true;
+                        while (SplashWindow.bSmallCreated)
+                            SmallWaitForm.CloseS = true;
+                    }
+                    if (HasOrdinaryOrders)
+                    {
+                        PhantomForm PhantomForm = new Infinium.PhantomForm();
+                        PhantomForm.Show();
+
+                        int Result = 1;
+                        string SaveFilePath = string.Empty;
+                        SaveDBFReportMenu = new Infinium.SaveDBFReportMenu(this, ReportName);
+
+                        TopForm = SaveDBFReportMenu;
+                        SaveDBFReportMenu.ShowDialog();
+
+                        PhantomForm.Close();
+                        Result = SaveDBFReportMenu.Result;
+                        SaveFilePath = SaveDBFReportMenu.SaveFilePath;
+                        PhantomForm.Dispose();
+                        SaveDBFReportMenu.Dispose();
+                        TopForm = null;
+
+                        if (Result == 3)
+                            return;
+
+                        int ClientDispatchID = -1;
+                        int MutualSettlementID1 = -1;
+                        int MutualSettlementID2 = -1;
+                        bool ProfilVerify = true;
+                        bool TPSVerify = true;
+
+                        ClientName = ClientName.Replace("\"", " ");
+                        ClientName = ClientName.Replace("*", " ");
+                        ClientName = ClientName.Replace("|", " ");
+                        ClientName = ClientName.Replace(@"\", " ");
+                        ClientName = ClientName.Replace(":", " ");
+                        ClientName = ClientName.Replace("<", " ");
+                        ClientName = ClientName.Replace(">", " ");
+                        ClientName = ClientName.Replace("?", " ");
+                        ClientName = ClientName.Replace("/", " ");
+
+                        string CurrentMonthName = DateTime.Now.ToString("dd-MM-yyyy");
+                        string FilePath = Security.DBFSaveFilePath;
+                        if (Security.DBFSaveFilePath.Length == 0)
+                            FilePath = Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/Infinium/1C data/" + CurrentMonthName;
+
+                        Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Создание документа Excel.\r\nПодождите..."); });
+                        T.Start();
+
+                        while (!SplashWindow.bSmallCreated) ;
+                        NeedSplash = false;
+
+                        for (int j = 0; j < Dispatches.Count(); j++)
+                        {
+                            int[] MainOrders = MarketingDispatchManager.GetMainOrdersInDispatch(Dispatches[j]);
+
+                            DataTable ReturnDT = MarketingDispatchManager.GetMegaOrdersInDispatch(Dispatches[j]);
+                            ArrayList OrderNumbers = new ArrayList();
+                            for (int i = 0; i < ReturnDT.Rows.Count; i++)
+                                OrderNumbers.Add(Convert.ToInt32(ReturnDT.Rows[i]["OrderNumber"]));
+
+                            int CurrencyTypeID = 1;
+                            if (ReturnDT.Rows.Count > 0)
+                                CurrencyTypeID = Convert.ToInt32(ReturnDT.Rows[0]["CurrencyTypeID"]);
+
+                            MutualSettlementID1 = MutualSettlementsManager.FindMutualSettlementIDByOrderNumber(ClientID, 1, OrderNumbers.OfType<Int32>().ToArray(), false);
+                            if (MutualSettlementID1 != 0)
+                            {
+                                decimal DispatchSum = MutualSettlementsManager.GetDispatchSum(MutualSettlementID1);
+                                ProfilVerify = MutualSettlementsManager.VerifyTransaction(MutualSettlementID1, DispatchSum, ref DiscountPaymentCondition);
+                                for (int i = 0; i < ReturnDT.Rows.Count; i++)
+                                {
+                                    int MegaOrderID = Convert.ToInt32(ReturnDT.Rows[i]["MegaOrderID"]);
+
+                                    MegaOrderInfo m = MarketingDispatchManager.GetMegaOrders(MegaOrderID);
+                                    iDiscountPaymentConditionID = ProfilReCalcMegaOrder(ClientID, CurrencyTypeID, DiscountPaymentCondition, ProfilVerify, false, MegaOrderID, m);
+                                    OrdersManager.FixOrderEvent(MegaOrderID, "Выписать накладную. Пересчитан заказ Профиль");
+                                }
+                            }
+                            MutualSettlementID2 = 0;
+                            MutualSettlementID2 = MutualSettlementsManager.FindMutualSettlementIDByOrderNumber(ClientID, 2, OrderNumbers.OfType<Int32>().ToArray(), false);
+                            if (MutualSettlementID2 != 0)
+                            {
+                                decimal DispatchSum = MutualSettlementsManager.GetDispatchSum(MutualSettlementID2);
+                                TPSVerify = MutualSettlementsManager.VerifyTransaction(MutualSettlementID2, DispatchSum, ref DiscountPaymentCondition);
+                                for (int i = 0; i < ReturnDT.Rows.Count; i++)
+                                {
+                                    int MegaOrderID = Convert.ToInt32(ReturnDT.Rows[i]["MegaOrderID"]);
+                                    MegaOrderInfo m = MarketingDispatchManager.GetMegaOrders(MegaOrderID);
+                                    iDiscountPaymentConditionID = TPSReCalcMegaOrder(ClientID, CurrencyTypeID, DiscountPaymentCondition, TPSVerify, false, MegaOrderID, m);
+                                    OrdersManager.FixOrderEvent(MegaOrderID, "Выписать накладную. Пересчитан заказ ТПС");
+                                }
+                            }
+
+                            HSSFWorkbook hssfworkbook = new HSSFWorkbook();
+
+                            ////create a entry of DocumentSummaryInformation
+                            DocumentSummaryInformation dsi = PropertySetFactory.CreateDocumentSummaryInformation();
+                            dsi.Company = "NPOI Team";
+                            hssfworkbook.DocumentSummaryInformation = dsi;
+
+                            ////create a entry of SummaryInformation
+                            SummaryInformation si = PropertySetFactory.CreateSummaryInformation();
+                            si.Subject = "NPOI SDK Example";
+                            hssfworkbook.SummaryInformation = si;
+
+                            ReportName = ClientLogin + " №" + Dispatches[j].ToString();
+                            _colorInvoiceReportToDbf.CreateReport(ref hssfworkbook, new int[1] { Dispatches[j] }, MainOrders, ClientID, ClientName, ref TotalProfil, ref TotalTPS, ProfilVerify, TPSVerify, iDiscountPaymentConditionID, false);
+                            _colorInvoiceReportToDbf.SaveDBF(FilePath, ReportName, false, ref ProfilDBFName, ref TPSDBFName);
+                            DetailsReport.CreateReport(ref hssfworkbook, new int[1] { Dispatches[j] }, OrderNumbers.OfType<Int32>().ToArray(), MainOrders, ClientID, ClientName, ProfilVerify, TPSVerify, iDiscountPaymentConditionID, false);
+
+                            FileInfo file = new FileInfo(FilePath + @"\" + ReportName + ".xls");
+                            int x = 1;
+                            while (file.Exists == true)
+                            {
+                                file = new FileInfo(FilePath + @"\" + ReportName + "(" + x++ + ").xls");
+                            }
+
+                            FileStream NewFile = new FileStream(file.FullName, FileMode.Create);
+                            hssfworkbook.Write(NewFile);
+                            NewFile.Close();
+
+                            ReportName = file.FullName;
+
+                            if (Result == 1)
+                            {
+                                if (TotalProfil > 0)
+                                {
+                                    if (ClientCountryID == 1)
+                                        TotalProfil *= 1.2m;
+                                    ClientDispatchID = MutualSettlementsManager.AddClientDispatch(MutualSettlementID1, CurrencyTypeID, TotalProfil);
+                                    var fileInfo = new System.IO.FileInfo(ReportName);
+                                    MutualSettlementsManager.AttachDispatchDocument(Path.GetFileNameWithoutExtension(ReportName),
+                                        fileInfo.Extension, ReportName, Infinium.Modules.Marketing.MutualSettlements.DocumentTypes.DispatchExcel, ClientDispatchID);
+                                    fileInfo = new System.IO.FileInfo(ProfilDBFName);
+                                    MutualSettlementsManager.AttachDispatchDocument(Path.GetFileNameWithoutExtension(ProfilDBFName),
+                                        fileInfo.Extension, ProfilDBFName, Infinium.Modules.Marketing.MutualSettlements.DocumentTypes.DispatchDbf, ClientDispatchID);
+                                }
+                                if (TotalTPS > 0)
+                                {
+                                    if (ClientCountryID == 1)
+                                        TotalTPS *= 1.2m;
+                                    ClientDispatchID = MutualSettlementsManager.AddClientDispatch(MutualSettlementID2, CurrencyTypeID, TotalTPS);
+                                    var fileInfo = new System.IO.FileInfo(ReportName);
+                                    MutualSettlementsManager.AttachDispatchDocument(Path.GetFileNameWithoutExtension(ReportName),
+                                        fileInfo.Extension, ReportName, Infinium.Modules.Marketing.MutualSettlements.DocumentTypes.DispatchExcel, ClientDispatchID);
+                                    fileInfo = new System.IO.FileInfo(TPSDBFName);
+                                    MutualSettlementsManager.AttachDispatchDocument(Path.GetFileNameWithoutExtension(TPSDBFName),
+                                        fileInfo.Extension, TPSDBFName, Infinium.Modules.Marketing.MutualSettlements.DocumentTypes.DispatchDbf, ClientDispatchID);
+                                }
+                            }
+                            MarketingDispatchManager.IncludeInMutualSettlement(Dispatches[j], MutualSettlementID1, MutualSettlementID2);
+                        }
+
+                        MutualSettlementsManager.SaveMutualSettlements();
+                        MutualSettlementsManager.SaveMutualSettlementOrders();
+
+                        UpdateDispatchDate();
+                        MarketingDispatchManager.MoveToDispatchDate(DispatchDate);
+                        MarketingDispatchManager.MoveToDispatch(Dispatches[0]);
+
+                        ColorInvoiceClient(ClientID, ClientName, Dispatches, iDiscountPaymentConditionID, ClientLogin, ProfilVerify, TPSVerify, FilePath);
+
+                        NeedSplash = true;
+                        while (SplashWindow.bSmallCreated)
+                            SmallWaitForm.CloseS = true;
+                    }
+                }
+                else
+                {
+                    PhantomForm PhantomForm = new Infinium.PhantomForm();
+                    PhantomForm.Show();
+
+                    int Result = 1;
+                    string SaveFilePath = string.Empty;
+                    SaveDBFReportMenu = new Infinium.SaveDBFReportMenu(this, ReportName);
+
+                    TopForm = SaveDBFReportMenu;
+                    SaveDBFReportMenu.ShowDialog();
+
+                    PhantomForm.Close();
+                    Result = SaveDBFReportMenu.Result;
+                    SaveFilePath = SaveDBFReportMenu.SaveFilePath;
+                    PhantomForm.Dispose();
+                    SaveDBFReportMenu.Dispose();
+                    TopForm = null;
+
+                    if (Result == 3)
+                        return;
+
+                    int ClientDispatchID = -1;
+                    int MutualSettlementID1 = -1;
+                    int MutualSettlementID2 = -1;
+                    bool ProfilVerify = true;
+                    bool TPSVerify = true;
+
+                    ClientName = ClientName.Replace("\"", " ");
+                    ClientName = ClientName.Replace("*", " ");
+                    ClientName = ClientName.Replace("|", " ");
+                    ClientName = ClientName.Replace(@"\", " ");
+                    ClientName = ClientName.Replace(":", " ");
+                    ClientName = ClientName.Replace("<", " ");
+                    ClientName = ClientName.Replace(">", " ");
+                    ClientName = ClientName.Replace("?", " ");
+                    ClientName = ClientName.Replace("/", " ");
+
+                    string CurrentMonthName = DateTime.Now.ToString("dd-MM-yyyy");
+                    string FilePath = Security.DBFSaveFilePath;
+                    if (Security.DBFSaveFilePath.Length == 0)
+                        FilePath = Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/Infinium/1C data/" + CurrentMonthName;
+
+                    Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Создание документа Excel.\r\nПодождите..."); });
+                    T.Start();
+
+                    while (!SplashWindow.bSmallCreated) ;
+                    NeedSplash = false;
+
+                    for (int j = 0; j < Dispatches.Count(); j++)
+                    {
+                        int[] MainOrders = MarketingDispatchManager.GetMainOrdersInDispatch(Dispatches[j]);
+
+                        DataTable ReturnDT = MarketingDispatchManager.GetMegaOrdersInDispatch(Dispatches[j]);
+                        ArrayList OrderNumbers = new ArrayList();
+                        for (int i = 0; i < ReturnDT.Rows.Count; i++)
+                            OrderNumbers.Add(Convert.ToInt32(ReturnDT.Rows[i]["OrderNumber"]));
+
+                        int CurrencyTypeID = 1;
+                        int FactoryID = 1;
+
+                        if (ReturnDT.Rows.Count > 0)
+                        {
+                            CurrencyTypeID = Convert.ToInt32(ReturnDT.Rows[0]["CurrencyTypeID"]);
+                            FactoryID = Convert.ToInt32(ReturnDT.Rows[0]["FactoryID"]);
+                        }
+
+                        MutualSettlementID1 = MutualSettlementsManager.FindMutualSettlementIDByOrderNumber(ClientID, 1, OrderNumbers.OfType<Int32>().ToArray());
+                        if (MutualSettlementID1 != 0)
+                        {
+                            decimal DispatchSum = MutualSettlementsManager.GetDispatchSum(MutualSettlementID1);
+                            ProfilVerify = MutualSettlementsManager.VerifyTransaction(MutualSettlementID1, DispatchSum, ref DiscountPaymentCondition);
+                            for (int i = 0; i < ReturnDT.Rows.Count; i++)
+                            {
+                                int MegaOrderID = Convert.ToInt32(ReturnDT.Rows[i]["MegaOrderID"]);
+
+                                MegaOrderInfo m = MarketingDispatchManager.GetMegaOrders(MegaOrderID);
+                                iDiscountPaymentConditionID = ProfilReCalcMegaOrder(ClientID, CurrencyTypeID, DiscountPaymentCondition, ProfilVerify, MegaOrderID, m);
+                                OrdersManager.FixOrderEvent(MegaOrderID, "Выписать накладную. Пересчитан заказ Профиль");
+                            }
+                        }
+                        MutualSettlementID2 = 0;
+                        MutualSettlementID2 = MutualSettlementsManager.FindMutualSettlementIDByOrderNumber(ClientID, 2, OrderNumbers.OfType<Int32>().ToArray());
+                        if (MutualSettlementID2 != 0)
+                        {
+                            decimal DispatchSum = MutualSettlementsManager.GetDispatchSum(MutualSettlementID2);
+                            TPSVerify = MutualSettlementsManager.VerifyTransaction(MutualSettlementID2, DispatchSum, ref DiscountPaymentCondition);
+                            for (int i = 0; i < ReturnDT.Rows.Count; i++)
+                            {
+                                int MegaOrderID = Convert.ToInt32(ReturnDT.Rows[i]["MegaOrderID"]);
+                                MegaOrderInfo m = MarketingDispatchManager.GetMegaOrders(MegaOrderID);
+                                iDiscountPaymentConditionID = TPSReCalcMegaOrder(ClientID, CurrencyTypeID, DiscountPaymentCondition, TPSVerify, MegaOrderID, m);
+                                OrdersManager.FixOrderEvent(MegaOrderID, "Выписать накладную. Пересчитан заказ ТПС");
+                            }
+                        }
+
+                        HSSFWorkbook hssfworkbook = new HSSFWorkbook();
+
+                        ////create a entry of DocumentSummaryInformation
+                        DocumentSummaryInformation dsi = PropertySetFactory.CreateDocumentSummaryInformation();
+                        dsi.Company = "NPOI Team";
+                        hssfworkbook.DocumentSummaryInformation = dsi;
+
+                        ////create a entry of SummaryInformation
+                        SummaryInformation si = PropertySetFactory.CreateSummaryInformation();
+                        si.Subject = "NPOI SDK Example";
+                        hssfworkbook.SummaryInformation = si;
+
+                        ReportName = ClientLogin + " №" + Dispatches[j].ToString();
+
+                        _colorInvoiceReportToDbf.CreateReport(ref hssfworkbook, new int[1] { Dispatches[j] }, MainOrders, ClientID, ClientName, ref TotalProfil, ref TotalTPS, ProfilVerify, TPSVerify, iDiscountPaymentConditionID);
+                        _colorInvoiceReportToDbf.SaveDBF(FilePath, ReportName, ref ProfilDBFName, ref TPSDBFName);
+
+                        DetailsReport.CreateReport(ref hssfworkbook, new int[1] { Dispatches[j] }, OrderNumbers.OfType<Int32>().ToArray(), MainOrders, ClientID, ClientName, ProfilVerify, TPSVerify, iDiscountPaymentConditionID);
+
+                        FileInfo file = new FileInfo(FilePath + @"\" + ReportName + ".xls");
+                        int x = 1;
+                        while (file.Exists == true)
+                        {
+                            file = new FileInfo(FilePath + @"\" + ReportName + "(" + x++ + ").xls");
+                        }
+
+                        FileStream NewFile = new FileStream(file.FullName, FileMode.Create);
+                        hssfworkbook.Write(NewFile);
+                        NewFile.Close();
+
+                        ReportName = file.FullName;
+
+                        if (Result == 1)
+                        {
+                            if (TotalProfil > 0)
+                            {
+                                if (ClientCountryID == 1)
+                                    TotalProfil *= 1.2m;
+                                ClientDispatchID = MutualSettlementsManager.AddClientDispatch(MutualSettlementID1, CurrencyTypeID, TotalProfil);
+                                var fileInfo = new System.IO.FileInfo(ReportName);
+                                MutualSettlementsManager.AttachDispatchDocument(Path.GetFileNameWithoutExtension(ReportName),
+                                    fileInfo.Extension, ReportName, Infinium.Modules.Marketing.MutualSettlements.DocumentTypes.DispatchExcel, ClientDispatchID);
+                                fileInfo = new System.IO.FileInfo(ProfilDBFName);
+                                MutualSettlementsManager.AttachDispatchDocument(Path.GetFileNameWithoutExtension(ProfilDBFName),
+                                    fileInfo.Extension, ProfilDBFName, Infinium.Modules.Marketing.MutualSettlements.DocumentTypes.DispatchDbf, ClientDispatchID);
+                            }
+                            if (TotalTPS > 0)
+                            {
+                                if (ClientCountryID == 1)
+                                    TotalTPS *= 1.2m;
+                                ClientDispatchID = MutualSettlementsManager.AddClientDispatch(MutualSettlementID2, CurrencyTypeID, TotalTPS);
+                                var fileInfo = new System.IO.FileInfo(ReportName);
+                                MutualSettlementsManager.AttachDispatchDocument(Path.GetFileNameWithoutExtension(ReportName),
+                                    fileInfo.Extension, ReportName, Infinium.Modules.Marketing.MutualSettlements.DocumentTypes.DispatchExcel, ClientDispatchID);
+                                fileInfo = new System.IO.FileInfo(TPSDBFName);
+                                MutualSettlementsManager.AttachDispatchDocument(Path.GetFileNameWithoutExtension(TPSDBFName),
+                                    fileInfo.Extension, TPSDBFName, Infinium.Modules.Marketing.MutualSettlements.DocumentTypes.DispatchDbf, ClientDispatchID);
+                            }
+                        }
+                        MarketingDispatchManager.IncludeInMutualSettlement(Dispatches[j], MutualSettlementID1, MutualSettlementID2);
+                    }
+
+                    MutualSettlementsManager.SaveMutualSettlements();
+                    MutualSettlementsManager.SaveMutualSettlementOrders();
+
+                    UpdateDispatchDate();
+                    MarketingDispatchManager.MoveToDispatchDate(DispatchDate);
+                    MarketingDispatchManager.MoveToDispatch(Dispatches[0]);
+
+                    ColorInvoiceClient(ClientID, ClientName, Dispatches, iDiscountPaymentConditionID, ClientLogin, ProfilVerify, TPSVerify, FilePath);
+
+                    NeedSplash = true;
+                    while (SplashWindow.bSmallCreated)
+                        SmallWaitForm.CloseS = true;
+                }
+            }
+        }
+
+        private void kryptonContextMenuItem24_Click(object sender, EventArgs e)
+        {
+            bool InMutualSettlement = Convert.ToBoolean(dgvDispatch.SelectedRows[0].Cells["InMutualSettlement"].Value);
+            //int DispatchID = Convert.ToInt32(dgvDispatch.SelectedRows[0].Cells["DispatchID"].Value);
+            DateTime DispatchDate = Convert.ToDateTime(dgvDispatchDates.SelectedRows[0].Cells["PrepareDispatchDateTime"].Value);
+            int ClientID = Convert.ToInt32(dgvDispatch.SelectedRows[0].Cells["ClientID"].Value);
+            string ClientName = dgvDispatch.SelectedRows[0].Cells["ClientName"].Value.ToString();
+            int[] Dispatches = new int[dgvDispatch.SelectedRows.Count];
+            for (int i = 0; i < dgvDispatch.SelectedRows.Count; i++)
+                Dispatches[i] = Convert.ToInt32(dgvDispatch.SelectedRows[i].Cells["DispatchID"].Value);
+
+            int ClientCountryID = OrdersManager.GetClientCountry(ClientID);
+            int iDiscountPaymentConditionID = 0;
+            string ClientLogin = OrdersManager.GetClientLogin(ClientID);
+
+            decimal DiscountPaymentCondition = 0;
+            decimal TotalProfil = 0;
+            decimal TotalTPS = 0;
+
+            string ProfilDBFName = string.Empty;
+            string TPSDBFName = string.Empty;
+            string ReportName = string.Empty;
+            InMutualSettlement = false;
+            _notesInvoiceReportToDbf.ClearTempPackages();
+            if (!InMutualSettlement)
+            {
+                Modules.Marketing.MutualSettlements.MutualSettlements MutualSettlementsManager = new Modules.Marketing.MutualSettlements.MutualSettlements();
+                MutualSettlementsManager.Initialize();
+
+                if (ClientID == 145)
+                {
+                    bool HasOrdinaryOrders = MarketingDispatchManager.HasOrders(Dispatches, false);
+                    bool HasSampleOrders = MarketingDispatchManager.HasOrders(Dispatches, true);
+
+                    if (HasSampleOrders)
+                    {
+                        PhantomForm PhantomForm = new Infinium.PhantomForm();
+                        PhantomForm.Show();
+
+                        int Result = 1;
+                        string SaveFilePath = string.Empty;
+                        SaveDBFReportMenu = new Infinium.SaveDBFReportMenu(this, ReportName);
+
+                        TopForm = SaveDBFReportMenu;
+                        SaveDBFReportMenu.ShowDialog();
+
+                        PhantomForm.Close();
+                        Result = SaveDBFReportMenu.Result;
+                        SaveFilePath = SaveDBFReportMenu.SaveFilePath;
+                        PhantomForm.Dispose();
+                        SaveDBFReportMenu.Dispose();
+                        TopForm = null;
+
+                        if (Result == 3)
+                            return;
+
+                        int ClientDispatchID = -1;
+                        int MutualSettlementID1 = -1;
+                        int MutualSettlementID2 = -1;
+                        bool ProfilVerify = true;
+                        bool TPSVerify = true;
+
+                        ClientName = ClientName.Replace("\"", " ");
+                        ClientName = ClientName.Replace("*", " ");
+                        ClientName = ClientName.Replace("|", " ");
+                        ClientName = ClientName.Replace(@"\", " ");
+                        ClientName = ClientName.Replace(":", " ");
+                        ClientName = ClientName.Replace("<", " ");
+                        ClientName = ClientName.Replace(">", " ");
+                        ClientName = ClientName.Replace("?", " ");
+                        ClientName = ClientName.Replace("/", " ");
+
+                        string CurrentMonthName = DateTime.Now.ToString("dd-MM-yyyy");
+                        string FilePath = Security.DBFSaveFilePath;
+                        if (Security.DBFSaveFilePath.Length == 0)
+                            FilePath = Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/Infinium/1C data/" + CurrentMonthName;
+
+                        Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Создание документа Excel.\r\nПодождите..."); });
+                        T.Start();
+
+                        while (!SplashWindow.bSmallCreated) ;
+                        NeedSplash = false;
+
+                        for (int j = 0; j < Dispatches.Count(); j++)
+                        {
+                            int[] MainOrders = MarketingDispatchManager.GetMainOrdersInDispatch(Dispatches[j]);
+
+                            DataTable ReturnDT = MarketingDispatchManager.GetMegaOrdersInDispatch(Dispatches[j]);
+                            ArrayList OrderNumbers = new ArrayList();
+                            for (int i = 0; i < ReturnDT.Rows.Count; i++)
+                                OrderNumbers.Add(Convert.ToInt32(ReturnDT.Rows[i]["OrderNumber"]));
+
+                            int CurrencyTypeID = 1;
+                            if (ReturnDT.Rows.Count > 0)
+                                CurrencyTypeID = Convert.ToInt32(ReturnDT.Rows[0]["CurrencyTypeID"]);
+
+                            MutualSettlementID1 = MutualSettlementsManager.FindMutualSettlementIDByOrderNumber(ClientID, 1, OrderNumbers.OfType<Int32>().ToArray(), true);
+                            if (MutualSettlementID1 != 0)
+                            {
+                                decimal DispatchSum = MutualSettlementsManager.GetDispatchSum(MutualSettlementID1);
+                                ProfilVerify = MutualSettlementsManager.VerifyTransaction(MutualSettlementID1, DispatchSum, ref DiscountPaymentCondition);
+                                for (int i = 0; i < ReturnDT.Rows.Count; i++)
+                                {
+                                    int MegaOrderID = Convert.ToInt32(ReturnDT.Rows[i]["MegaOrderID"]);
+
+                                    MegaOrderInfo m = MarketingDispatchManager.GetMegaOrders(MegaOrderID);
+                                    iDiscountPaymentConditionID = ProfilReCalcMegaOrder(ClientID, CurrencyTypeID, DiscountPaymentCondition, ProfilVerify, true, MegaOrderID, m);
+                                    OrdersManager.FixOrderEvent(MegaOrderID, "Выписать накладную. Пересчитан заказ Профиль");
+                                }
+                            }
+                            MutualSettlementID2 = 0;
+                            MutualSettlementID2 = MutualSettlementsManager.FindMutualSettlementIDByOrderNumber(ClientID, 2, OrderNumbers.OfType<Int32>().ToArray(), true);
+                            if (MutualSettlementID2 != 0)
+                            {
+                                decimal DispatchSum = MutualSettlementsManager.GetDispatchSum(MutualSettlementID2);
+                                TPSVerify = MutualSettlementsManager.VerifyTransaction(MutualSettlementID2, DispatchSum, ref DiscountPaymentCondition);
+                                for (int i = 0; i < ReturnDT.Rows.Count; i++)
+                                {
+                                    int MegaOrderID = Convert.ToInt32(ReturnDT.Rows[i]["MegaOrderID"]);
+                                    MegaOrderInfo m = MarketingDispatchManager.GetMegaOrders(MegaOrderID);
+                                    iDiscountPaymentConditionID = TPSReCalcMegaOrder(ClientID, CurrencyTypeID, DiscountPaymentCondition, TPSVerify, true, MegaOrderID, m);
+                                    OrdersManager.FixOrderEvent(MegaOrderID, "Выписать накладную. Пересчитан заказ ТПС");
+                                }
+                            }
+
+                            HSSFWorkbook hssfworkbook = new HSSFWorkbook();
+
+                            ////create a entry of DocumentSummaryInformation
+                            DocumentSummaryInformation dsi = PropertySetFactory.CreateDocumentSummaryInformation();
+                            dsi.Company = "NPOI Team";
+                            hssfworkbook.DocumentSummaryInformation = dsi;
+
+                            ////create a entry of SummaryInformation
+                            SummaryInformation si = PropertySetFactory.CreateSummaryInformation();
+                            si.Subject = "NPOI SDK Example";
+                            hssfworkbook.SummaryInformation = si;
+
+                            ReportName = ClientLogin + " №" + Dispatches[j].ToString();
+                            _notesInvoiceReportToDbf.CreateReport(ref hssfworkbook, new int[1] { Dispatches[j] }, MainOrders, ClientID, ClientName, ref TotalProfil, ref TotalTPS, ProfilVerify, TPSVerify, iDiscountPaymentConditionID, true);
+                            _notesInvoiceReportToDbf.SaveDBF(FilePath, ReportName, true, ref ProfilDBFName, ref TPSDBFName);
+                            DetailsReport.CreateReport(ref hssfworkbook, new int[1] { Dispatches[j] }, OrderNumbers.OfType<Int32>().ToArray(), MainOrders, ClientID, ClientName, ProfilVerify, TPSVerify, iDiscountPaymentConditionID, true);
+
+                            FileInfo file = new FileInfo(FilePath + @"\" + ReportName + ".xls");
+                            int x = 1;
+                            while (file.Exists == true)
+                            {
+                                file = new FileInfo(FilePath + @"\" + ReportName + "(" + x++ + ").xls");
+                            }
+
+                            FileStream NewFile = new FileStream(file.FullName, FileMode.Create);
+                            hssfworkbook.Write(NewFile);
+                            NewFile.Close();
+
+                            ReportName = file.FullName;
+
+                            if (Result == 1)
+                            {
+                                if (TotalProfil > 0)
+                                {
+                                    if (ClientCountryID == 1)
+                                        TotalProfil *= 1.2m;
+                                    ClientDispatchID = MutualSettlementsManager.AddClientDispatch(MutualSettlementID1, CurrencyTypeID, TotalProfil);
+                                    var fileInfo = new System.IO.FileInfo(ReportName);
+                                    MutualSettlementsManager.AttachDispatchDocument(Path.GetFileNameWithoutExtension(ReportName),
+                                        fileInfo.Extension, ReportName, Infinium.Modules.Marketing.MutualSettlements.DocumentTypes.DispatchExcel, ClientDispatchID);
+                                    fileInfo = new System.IO.FileInfo(ProfilDBFName);
+                                    MutualSettlementsManager.AttachDispatchDocument(Path.GetFileNameWithoutExtension(ProfilDBFName),
+                                        fileInfo.Extension, ProfilDBFName, Infinium.Modules.Marketing.MutualSettlements.DocumentTypes.DispatchDbf, ClientDispatchID);
+                                }
+                                if (TotalTPS > 0)
+                                {
+                                    if (ClientCountryID == 1)
+                                        TotalTPS *= 1.2m;
+                                    ClientDispatchID = MutualSettlementsManager.AddClientDispatch(MutualSettlementID2, CurrencyTypeID, TotalTPS);
+                                    var fileInfo = new System.IO.FileInfo(ReportName);
+                                    MutualSettlementsManager.AttachDispatchDocument(Path.GetFileNameWithoutExtension(ReportName),
+                                        fileInfo.Extension, ReportName, Infinium.Modules.Marketing.MutualSettlements.DocumentTypes.DispatchExcel, ClientDispatchID);
+                                    fileInfo = new System.IO.FileInfo(TPSDBFName);
+                                    MutualSettlementsManager.AttachDispatchDocument(Path.GetFileNameWithoutExtension(TPSDBFName),
+                                        fileInfo.Extension, TPSDBFName, Infinium.Modules.Marketing.MutualSettlements.DocumentTypes.DispatchDbf, ClientDispatchID);
+                                }
+                            }
+                            MarketingDispatchManager.IncludeInMutualSettlement(Dispatches[j], MutualSettlementID1, MutualSettlementID2);
+                        }
+
+                        MutualSettlementsManager.SaveMutualSettlements();
+                        MutualSettlementsManager.SaveMutualSettlementOrders();
+
+                        UpdateDispatchDate();
+                        MarketingDispatchManager.MoveToDispatchDate(DispatchDate);
+                        MarketingDispatchManager.MoveToDispatch(Dispatches[0]);
+
+                        NotesInvoiceClient(ClientID, ClientName, Dispatches, iDiscountPaymentConditionID, ClientLogin, ProfilVerify, TPSVerify, FilePath);
+
+                        NeedSplash = true;
+                        while (SplashWindow.bSmallCreated)
+                            SmallWaitForm.CloseS = true;
+                    }
+                    if (HasOrdinaryOrders)
+                    {
+                        PhantomForm PhantomForm = new Infinium.PhantomForm();
+                        PhantomForm.Show();
+
+                        int Result = 1;
+                        string SaveFilePath = string.Empty;
+                        SaveDBFReportMenu = new Infinium.SaveDBFReportMenu(this, ReportName);
+
+                        TopForm = SaveDBFReportMenu;
+                        SaveDBFReportMenu.ShowDialog();
+
+                        PhantomForm.Close();
+                        Result = SaveDBFReportMenu.Result;
+                        SaveFilePath = SaveDBFReportMenu.SaveFilePath;
+                        PhantomForm.Dispose();
+                        SaveDBFReportMenu.Dispose();
+                        TopForm = null;
+
+                        if (Result == 3)
+                            return;
+
+                        int ClientDispatchID = -1;
+                        int MutualSettlementID1 = -1;
+                        int MutualSettlementID2 = -1;
+                        bool ProfilVerify = true;
+                        bool TPSVerify = true;
+
+                        ClientName = ClientName.Replace("\"", " ");
+                        ClientName = ClientName.Replace("*", " ");
+                        ClientName = ClientName.Replace("|", " ");
+                        ClientName = ClientName.Replace(@"\", " ");
+                        ClientName = ClientName.Replace(":", " ");
+                        ClientName = ClientName.Replace("<", " ");
+                        ClientName = ClientName.Replace(">", " ");
+                        ClientName = ClientName.Replace("?", " ");
+                        ClientName = ClientName.Replace("/", " ");
+
+                        string CurrentMonthName = DateTime.Now.ToString("dd-MM-yyyy");
+                        string FilePath = Security.DBFSaveFilePath;
+                        if (Security.DBFSaveFilePath.Length == 0)
+                            FilePath = Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/Infinium/1C data/" + CurrentMonthName;
+
+                        Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Создание документа Excel.\r\nПодождите..."); });
+                        T.Start();
+
+                        while (!SplashWindow.bSmallCreated) ;
+                        NeedSplash = false;
+
+                        for (int j = 0; j < Dispatches.Count(); j++)
+                        {
+                            int[] MainOrders = MarketingDispatchManager.GetMainOrdersInDispatch(Dispatches[j]);
+
+                            DataTable ReturnDT = MarketingDispatchManager.GetMegaOrdersInDispatch(Dispatches[j]);
+                            ArrayList OrderNumbers = new ArrayList();
+                            for (int i = 0; i < ReturnDT.Rows.Count; i++)
+                                OrderNumbers.Add(Convert.ToInt32(ReturnDT.Rows[i]["OrderNumber"]));
+
+                            int CurrencyTypeID = 1;
+                            if (ReturnDT.Rows.Count > 0)
+                                CurrencyTypeID = Convert.ToInt32(ReturnDT.Rows[0]["CurrencyTypeID"]);
+
+                            MutualSettlementID1 = MutualSettlementsManager.FindMutualSettlementIDByOrderNumber(ClientID, 1, OrderNumbers.OfType<Int32>().ToArray(), false);
+                            if (MutualSettlementID1 != 0)
+                            {
+                                decimal DispatchSum = MutualSettlementsManager.GetDispatchSum(MutualSettlementID1);
+                                ProfilVerify = MutualSettlementsManager.VerifyTransaction(MutualSettlementID1, DispatchSum, ref DiscountPaymentCondition);
+                                for (int i = 0; i < ReturnDT.Rows.Count; i++)
+                                {
+                                    int MegaOrderID = Convert.ToInt32(ReturnDT.Rows[i]["MegaOrderID"]);
+
+                                    MegaOrderInfo m = MarketingDispatchManager.GetMegaOrders(MegaOrderID);
+                                    iDiscountPaymentConditionID = ProfilReCalcMegaOrder(ClientID, CurrencyTypeID, DiscountPaymentCondition, ProfilVerify, false, MegaOrderID, m);
+                                    OrdersManager.FixOrderEvent(MegaOrderID, "Выписать накладную. Пересчитан заказ Профиль");
+                                }
+                            }
+                            MutualSettlementID2 = 0;
+                            MutualSettlementID2 = MutualSettlementsManager.FindMutualSettlementIDByOrderNumber(ClientID, 2, OrderNumbers.OfType<Int32>().ToArray(), false);
+                            if (MutualSettlementID2 != 0)
+                            {
+                                decimal DispatchSum = MutualSettlementsManager.GetDispatchSum(MutualSettlementID2);
+                                TPSVerify = MutualSettlementsManager.VerifyTransaction(MutualSettlementID2, DispatchSum, ref DiscountPaymentCondition);
+                                for (int i = 0; i < ReturnDT.Rows.Count; i++)
+                                {
+                                    int MegaOrderID = Convert.ToInt32(ReturnDT.Rows[i]["MegaOrderID"]);
+                                    MegaOrderInfo m = MarketingDispatchManager.GetMegaOrders(MegaOrderID);
+                                    iDiscountPaymentConditionID = TPSReCalcMegaOrder(ClientID, CurrencyTypeID, DiscountPaymentCondition, TPSVerify, false, MegaOrderID, m);
+                                    OrdersManager.FixOrderEvent(MegaOrderID, "Выписать накладную. Пересчитан заказ ТПС");
+                                }
+                            }
+
+                            HSSFWorkbook hssfworkbook = new HSSFWorkbook();
+
+                            ////create a entry of DocumentSummaryInformation
+                            DocumentSummaryInformation dsi = PropertySetFactory.CreateDocumentSummaryInformation();
+                            dsi.Company = "NPOI Team";
+                            hssfworkbook.DocumentSummaryInformation = dsi;
+
+                            ////create a entry of SummaryInformation
+                            SummaryInformation si = PropertySetFactory.CreateSummaryInformation();
+                            si.Subject = "NPOI SDK Example";
+                            hssfworkbook.SummaryInformation = si;
+
+                            ReportName = ClientLogin + " №" + Dispatches[j].ToString();
+                            _notesInvoiceReportToDbf.CreateReport(ref hssfworkbook, new int[1] { Dispatches[j] }, MainOrders, ClientID, ClientName, ref TotalProfil, ref TotalTPS, ProfilVerify, TPSVerify, iDiscountPaymentConditionID, false);
+                            _notesInvoiceReportToDbf.SaveDBF(FilePath, ReportName, false, ref ProfilDBFName, ref TPSDBFName);
+                            DetailsReport.CreateReport(ref hssfworkbook, new int[1] { Dispatches[j] }, OrderNumbers.OfType<Int32>().ToArray(), MainOrders, ClientID, ClientName, ProfilVerify, TPSVerify, iDiscountPaymentConditionID, false);
+
+                            FileInfo file = new FileInfo(FilePath + @"\" + ReportName + ".xls");
+                            int x = 1;
+                            while (file.Exists == true)
+                            {
+                                file = new FileInfo(FilePath + @"\" + ReportName + "(" + x++ + ").xls");
+                            }
+
+                            FileStream NewFile = new FileStream(file.FullName, FileMode.Create);
+                            hssfworkbook.Write(NewFile);
+                            NewFile.Close();
+
+                            ReportName = file.FullName;
+
+                            if (Result == 1)
+                            {
+                                if (TotalProfil > 0)
+                                {
+                                    if (ClientCountryID == 1)
+                                        TotalProfil *= 1.2m;
+                                    ClientDispatchID = MutualSettlementsManager.AddClientDispatch(MutualSettlementID1, CurrencyTypeID, TotalProfil);
+                                    var fileInfo = new System.IO.FileInfo(ReportName);
+                                    MutualSettlementsManager.AttachDispatchDocument(Path.GetFileNameWithoutExtension(ReportName),
+                                        fileInfo.Extension, ReportName, Infinium.Modules.Marketing.MutualSettlements.DocumentTypes.DispatchExcel, ClientDispatchID);
+                                    fileInfo = new System.IO.FileInfo(ProfilDBFName);
+                                    MutualSettlementsManager.AttachDispatchDocument(Path.GetFileNameWithoutExtension(ProfilDBFName),
+                                        fileInfo.Extension, ProfilDBFName, Infinium.Modules.Marketing.MutualSettlements.DocumentTypes.DispatchDbf, ClientDispatchID);
+                                }
+                                if (TotalTPS > 0)
+                                {
+                                    if (ClientCountryID == 1)
+                                        TotalTPS *= 1.2m;
+                                    ClientDispatchID = MutualSettlementsManager.AddClientDispatch(MutualSettlementID2, CurrencyTypeID, TotalTPS);
+                                    var fileInfo = new System.IO.FileInfo(ReportName);
+                                    MutualSettlementsManager.AttachDispatchDocument(Path.GetFileNameWithoutExtension(ReportName),
+                                        fileInfo.Extension, ReportName, Infinium.Modules.Marketing.MutualSettlements.DocumentTypes.DispatchExcel, ClientDispatchID);
+                                    fileInfo = new System.IO.FileInfo(TPSDBFName);
+                                    MutualSettlementsManager.AttachDispatchDocument(Path.GetFileNameWithoutExtension(TPSDBFName),
+                                        fileInfo.Extension, TPSDBFName, Infinium.Modules.Marketing.MutualSettlements.DocumentTypes.DispatchDbf, ClientDispatchID);
+                                }
+                            }
+                            MarketingDispatchManager.IncludeInMutualSettlement(Dispatches[j], MutualSettlementID1, MutualSettlementID2);
+                        }
+
+                        MutualSettlementsManager.SaveMutualSettlements();
+                        MutualSettlementsManager.SaveMutualSettlementOrders();
+
+                        UpdateDispatchDate();
+                        MarketingDispatchManager.MoveToDispatchDate(DispatchDate);
+                        MarketingDispatchManager.MoveToDispatch(Dispatches[0]);
+
+                        NotesInvoiceClient(ClientID, ClientName, Dispatches, iDiscountPaymentConditionID, ClientLogin, ProfilVerify, TPSVerify, FilePath);
+
+                        NeedSplash = true;
+                        while (SplashWindow.bSmallCreated)
+                            SmallWaitForm.CloseS = true;
+                    }
+                }
+                else
+                {
+                    PhantomForm PhantomForm = new Infinium.PhantomForm();
+                    PhantomForm.Show();
+
+                    int Result = 1;
+                    string SaveFilePath = string.Empty;
+                    SaveDBFReportMenu = new Infinium.SaveDBFReportMenu(this, ReportName);
+
+                    TopForm = SaveDBFReportMenu;
+                    SaveDBFReportMenu.ShowDialog();
+
+                    PhantomForm.Close();
+                    Result = SaveDBFReportMenu.Result;
+                    SaveFilePath = SaveDBFReportMenu.SaveFilePath;
+                    PhantomForm.Dispose();
+                    SaveDBFReportMenu.Dispose();
+                    TopForm = null;
+
+                    if (Result == 3)
+                        return;
+
+                    int ClientDispatchID = -1;
+                    int MutualSettlementID1 = -1;
+                    int MutualSettlementID2 = -1;
+                    bool ProfilVerify = true;
+                    bool TPSVerify = true;
+
+                    ClientName = ClientName.Replace("\"", " ");
+                    ClientName = ClientName.Replace("*", " ");
+                    ClientName = ClientName.Replace("|", " ");
+                    ClientName = ClientName.Replace(@"\", " ");
+                    ClientName = ClientName.Replace(":", " ");
+                    ClientName = ClientName.Replace("<", " ");
+                    ClientName = ClientName.Replace(">", " ");
+                    ClientName = ClientName.Replace("?", " ");
+                    ClientName = ClientName.Replace("/", " ");
+
+                    string CurrentMonthName = DateTime.Now.ToString("dd-MM-yyyy");
+                    string FilePath = Security.DBFSaveFilePath;
+                    if (Security.DBFSaveFilePath.Length == 0)
+                        FilePath = Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/Infinium/1C data/" + CurrentMonthName;
+
+                    Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Создание документа Excel.\r\nПодождите..."); });
+                    T.Start();
+
+                    while (!SplashWindow.bSmallCreated) ;
+                    NeedSplash = false;
+
+                    for (int j = 0; j < Dispatches.Count(); j++)
+                    {
+                        int[] MainOrders = MarketingDispatchManager.GetMainOrdersInDispatch(Dispatches[j]);
+
+                        DataTable ReturnDT = MarketingDispatchManager.GetMegaOrdersInDispatch(Dispatches[j]);
+                        ArrayList OrderNumbers = new ArrayList();
+                        for (int i = 0; i < ReturnDT.Rows.Count; i++)
+                            OrderNumbers.Add(Convert.ToInt32(ReturnDT.Rows[i]["OrderNumber"]));
+
+                        int CurrencyTypeID = 1;
+                        int FactoryID = 1;
+
+                        if (ReturnDT.Rows.Count > 0)
+                        {
+                            CurrencyTypeID = Convert.ToInt32(ReturnDT.Rows[0]["CurrencyTypeID"]);
+                            FactoryID = Convert.ToInt32(ReturnDT.Rows[0]["FactoryID"]);
+                        }
+
+                        MutualSettlementID1 = MutualSettlementsManager.FindMutualSettlementIDByOrderNumber(ClientID, 1, OrderNumbers.OfType<Int32>().ToArray());
+                        if (MutualSettlementID1 != 0)
+                        {
+                            decimal DispatchSum = MutualSettlementsManager.GetDispatchSum(MutualSettlementID1);
+                            ProfilVerify = MutualSettlementsManager.VerifyTransaction(MutualSettlementID1, DispatchSum, ref DiscountPaymentCondition);
+                            for (int i = 0; i < ReturnDT.Rows.Count; i++)
+                            {
+                                int MegaOrderID = Convert.ToInt32(ReturnDT.Rows[i]["MegaOrderID"]);
+
+                                MegaOrderInfo m = MarketingDispatchManager.GetMegaOrders(MegaOrderID);
+                                iDiscountPaymentConditionID = ProfilReCalcMegaOrder(ClientID, CurrencyTypeID, DiscountPaymentCondition, ProfilVerify, MegaOrderID, m);
+                                OrdersManager.FixOrderEvent(MegaOrderID, "Выписать накладную. Пересчитан заказ Профиль");
+                            }
+                        }
+                        MutualSettlementID2 = 0;
+                        MutualSettlementID2 = MutualSettlementsManager.FindMutualSettlementIDByOrderNumber(ClientID, 2, OrderNumbers.OfType<Int32>().ToArray());
+                        if (MutualSettlementID2 != 0)
+                        {
+                            decimal DispatchSum = MutualSettlementsManager.GetDispatchSum(MutualSettlementID2);
+                            TPSVerify = MutualSettlementsManager.VerifyTransaction(MutualSettlementID2, DispatchSum, ref DiscountPaymentCondition);
+                            for (int i = 0; i < ReturnDT.Rows.Count; i++)
+                            {
+                                int MegaOrderID = Convert.ToInt32(ReturnDT.Rows[i]["MegaOrderID"]);
+                                MegaOrderInfo m = MarketingDispatchManager.GetMegaOrders(MegaOrderID);
+                                iDiscountPaymentConditionID = TPSReCalcMegaOrder(ClientID, CurrencyTypeID, DiscountPaymentCondition, TPSVerify, MegaOrderID, m);
+                                OrdersManager.FixOrderEvent(MegaOrderID, "Выписать накладную. Пересчитан заказ ТПС");
+                            }
+                        }
+
+                        HSSFWorkbook hssfworkbook = new HSSFWorkbook();
+
+                        ////create a entry of DocumentSummaryInformation
+                        DocumentSummaryInformation dsi = PropertySetFactory.CreateDocumentSummaryInformation();
+                        dsi.Company = "NPOI Team";
+                        hssfworkbook.DocumentSummaryInformation = dsi;
+
+                        ////create a entry of SummaryInformation
+                        SummaryInformation si = PropertySetFactory.CreateSummaryInformation();
+                        si.Subject = "NPOI SDK Example";
+                        hssfworkbook.SummaryInformation = si;
+
+                        ReportName = ClientLogin + " №" + Dispatches[j].ToString();
+
+                        _notesInvoiceReportToDbf.CreateReport(ref hssfworkbook, new int[1] { Dispatches[j] }, MainOrders, ClientID, ClientName, ref TotalProfil, ref TotalTPS, ProfilVerify, TPSVerify, iDiscountPaymentConditionID);
+                        _notesInvoiceReportToDbf.SaveDBF(FilePath, ReportName, ref ProfilDBFName, ref TPSDBFName);
+
+                        DetailsReport.CreateReport(ref hssfworkbook, new int[1] { Dispatches[j] }, OrderNumbers.OfType<Int32>().ToArray(), MainOrders, ClientID, ClientName, ProfilVerify, TPSVerify, iDiscountPaymentConditionID);
+
+                        FileInfo file = new FileInfo(FilePath + @"\" + ReportName + ".xls");
+                        int x = 1;
+                        while (file.Exists == true)
+                        {
+                            file = new FileInfo(FilePath + @"\" + ReportName + "(" + x++ + ").xls");
+                        }
+
+                        FileStream NewFile = new FileStream(file.FullName, FileMode.Create);
+                        hssfworkbook.Write(NewFile);
+                        NewFile.Close();
+
+                        ReportName = file.FullName;
+
+                        if (Result == 1)
+                        {
+                            if (TotalProfil > 0)
+                            {
+                                if (ClientCountryID == 1)
+                                    TotalProfil *= 1.2m;
+                                ClientDispatchID = MutualSettlementsManager.AddClientDispatch(MutualSettlementID1, CurrencyTypeID, TotalProfil);
+                                var fileInfo = new System.IO.FileInfo(ReportName);
+                                MutualSettlementsManager.AttachDispatchDocument(Path.GetFileNameWithoutExtension(ReportName),
+                                    fileInfo.Extension, ReportName, Infinium.Modules.Marketing.MutualSettlements.DocumentTypes.DispatchExcel, ClientDispatchID);
+                                fileInfo = new System.IO.FileInfo(ProfilDBFName);
+                                MutualSettlementsManager.AttachDispatchDocument(Path.GetFileNameWithoutExtension(ProfilDBFName),
+                                    fileInfo.Extension, ProfilDBFName, Infinium.Modules.Marketing.MutualSettlements.DocumentTypes.DispatchDbf, ClientDispatchID);
+                            }
+                            if (TotalTPS > 0)
+                            {
+                                if (ClientCountryID == 1)
+                                    TotalTPS *= 1.2m;
+                                ClientDispatchID = MutualSettlementsManager.AddClientDispatch(MutualSettlementID2, CurrencyTypeID, TotalTPS);
+                                var fileInfo = new System.IO.FileInfo(ReportName);
+                                MutualSettlementsManager.AttachDispatchDocument(Path.GetFileNameWithoutExtension(ReportName),
+                                    fileInfo.Extension, ReportName, Infinium.Modules.Marketing.MutualSettlements.DocumentTypes.DispatchExcel, ClientDispatchID);
+                                fileInfo = new System.IO.FileInfo(TPSDBFName);
+                                MutualSettlementsManager.AttachDispatchDocument(Path.GetFileNameWithoutExtension(TPSDBFName),
+                                    fileInfo.Extension, TPSDBFName, Infinium.Modules.Marketing.MutualSettlements.DocumentTypes.DispatchDbf, ClientDispatchID);
+                            }
+                        }
+                        MarketingDispatchManager.IncludeInMutualSettlement(Dispatches[j], MutualSettlementID1, MutualSettlementID2);
+                    }
+
+                    MutualSettlementsManager.SaveMutualSettlements();
+                    MutualSettlementsManager.SaveMutualSettlementOrders();
+
+                    UpdateDispatchDate();
+                    MarketingDispatchManager.MoveToDispatchDate(DispatchDate);
+                    MarketingDispatchManager.MoveToDispatch(Dispatches[0]);
+
+                    NotesInvoiceClient(ClientID, ClientName, Dispatches, iDiscountPaymentConditionID, ClientLogin, ProfilVerify, TPSVerify, FilePath);
+
+                    NeedSplash = true;
+                    while (SplashWindow.bSmallCreated)
+                        SmallWaitForm.CloseS = true;
+                }
+            }
+        }
+
     }
 }

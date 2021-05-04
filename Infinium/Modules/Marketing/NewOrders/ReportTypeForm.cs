@@ -13,7 +13,7 @@ namespace Infinium
         int FormEvent = 0;
 
         Form MainForm = null;
-        public bool _standardReport = true;
+        public InvoiceReportType invoiceReportType = InvoiceReportType.Standard;
 
         public ReportTypeForm(Form tMainForm)
         {
@@ -24,10 +24,14 @@ namespace Infinium
 
         private void btnOk_Click(object sender, EventArgs e)
         {
-            if (NotSendReportCheck.Checked)
-                _standardReport = false;
+            if (cbStandard.Checked)
+                invoiceReportType = InvoiceReportType.Standard;
+            if (cbCvetPatina.Checked)
+                invoiceReportType = InvoiceReportType.CvetPatina;
+            if (cbNotes.Checked)
+                invoiceReportType = InvoiceReportType.Notes;
 
-           FormEvent = eClose;
+            FormEvent = eClose;
             AnimateTimer.Enabled = true;
         }
 

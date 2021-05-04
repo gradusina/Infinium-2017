@@ -212,6 +212,8 @@
             this.kryptonContextMenuItem23 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
             this.kryptonContextMenuItem20 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
             this.kryptonContextMenuItem21 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
+            this.kryptonContextMenuItem22 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
+            this.kryptonContextMenuItem24 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
             this.NavigatePanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MainOrdersSplitContainer)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.MainOrdersSplitContainer.Panel1)).BeginInit();
@@ -2479,6 +2481,8 @@
             this.kryptonContextMenuItem2,
             this.kryptonContextMenuItem4,
             this.kryptonContextMenuItem5,
+            this.kryptonContextMenuItem22,
+            this.kryptonContextMenuItem24,
             this.kryptonContextMenuItem6,
             this.kryptonContextMenuItem14});
             // 
@@ -3101,6 +3105,16 @@
             this.kryptonContextMenuItem21.Text = "Скомплектовать";
             this.kryptonContextMenuItem21.Click += new System.EventHandler(this.kryptonContextMenuItem21_Click);
             // 
+            // kryptonContextMenuItem22
+            // 
+            this.kryptonContextMenuItem22.Text = "Выписать накладную (цвет-патина)";
+            this.kryptonContextMenuItem22.Click += new System.EventHandler(this.kryptonContextMenuItem22_Click);
+            // 
+            // kryptonContextMenuItem24
+            // 
+            this.kryptonContextMenuItem24.Text = "Выписать накладную (примечание-цвет-патина)";
+            this.kryptonContextMenuItem24.Click += new System.EventHandler(this.kryptonContextMenuItem24_Click);
+            // 
             // MarketingExpeditionForm
             // 
             this.AccessibleName = "false";
@@ -3422,5 +3436,7 @@
         private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem kryptonContextMenuItem23;
         private ComponentFactory.Krypton.Toolkit.KryptonButton btnShowCabFurAssemble;
         private ComponentFactory.Krypton.Toolkit.KryptonButton btnShowAllOrders;
+        private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem kryptonContextMenuItem22;
+        private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem kryptonContextMenuItem24;
     }
 }

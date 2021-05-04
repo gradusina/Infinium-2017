@@ -54,7 +54,6 @@
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.label4 = new System.Windows.Forms.Label();
             this.tbNotes = new System.Windows.Forms.TextBox();
-            this.cbOld = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.kryptonCheckSet1)).BeginInit();
             this.SuspendLayout();
@@ -180,7 +179,7 @@
             this.label11.AutoSize = true;
             this.label11.Font = new System.Drawing.Font("Segoe UI", 21F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.label11.ForeColor = System.Drawing.Color.Black;
-            this.label11.Location = new System.Drawing.Point(106, 227);
+            this.label11.Location = new System.Drawing.Point(106, 209);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(312, 30);
             this.label11.TabIndex = 395;
@@ -189,7 +188,7 @@
             // NotSendReportCheck
             // 
             this.NotSendReportCheck.Cursor = System.Windows.Forms.Cursors.Default;
-            this.NotSendReportCheck.Location = new System.Drawing.Point(47, 215);
+            this.NotSendReportCheck.Location = new System.Drawing.Point(47, 197);
             this.NotSendReportCheck.Name = "NotSendReportCheck";
             this.NotSendReportCheck.OverrideDefault.Back.Color1 = System.Drawing.Color.Transparent;
             this.NotSendReportCheck.OverrideDefault.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
@@ -246,7 +245,7 @@
             this.label57.AutoSize = true;
             this.label57.Font = new System.Drawing.Font("Segoe UI", 21F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.label57.ForeColor = System.Drawing.Color.Black;
-            this.label57.Location = new System.Drawing.Point(106, 118);
+            this.label57.Location = new System.Drawing.Point(106, 100);
             this.label57.Name = "label57";
             this.label57.Size = new System.Drawing.Size(276, 30);
             this.label57.TabIndex = 393;
@@ -256,7 +255,7 @@
             // 
             this.SendReportCheck.Checked = true;
             this.SendReportCheck.Cursor = System.Windows.Forms.Cursors.Default;
-            this.SendReportCheck.Location = new System.Drawing.Point(47, 106);
+            this.SendReportCheck.Location = new System.Drawing.Point(47, 88);
             this.SendReportCheck.Name = "SendReportCheck";
             this.SendReportCheck.OverrideDefault.Back.Color1 = System.Drawing.Color.Transparent;
             this.SendReportCheck.OverrideDefault.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
@@ -392,7 +391,7 @@
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.label1.ForeColor = System.Drawing.Color.Black;
-            this.label1.Location = new System.Drawing.Point(42, 164);
+            this.label1.Location = new System.Drawing.Point(42, 146);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(208, 19);
             this.label1.TabIndex = 415;
@@ -403,7 +402,7 @@
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.label3.ForeColor = System.Drawing.Color.Black;
-            this.label3.Location = new System.Drawing.Point(43, 273);
+            this.label3.Location = new System.Drawing.Point(43, 255);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(208, 19);
             this.label3.TabIndex = 416;
@@ -412,7 +411,7 @@
             // 
             // kryptonButton1
             // 
-            this.kryptonButton1.Location = new System.Drawing.Point(424, 229);
+            this.kryptonButton1.Location = new System.Drawing.Point(424, 211);
             this.kryptonButton1.Name = "kryptonButton1";
             this.kryptonButton1.Palette = this.StandardButtonsPalette;
             this.kryptonButton1.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Custom;
@@ -441,7 +440,7 @@
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.label4.ForeColor = System.Drawing.Color.Black;
-            this.label4.Location = new System.Drawing.Point(43, 310);
+            this.label4.Location = new System.Drawing.Point(43, 292);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(93, 19);
             this.label4.TabIndex = 424;
@@ -450,31 +449,17 @@
             // tbNotes
             // 
             this.tbNotes.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.tbNotes.Location = new System.Drawing.Point(142, 307);
+            this.tbNotes.Location = new System.Drawing.Point(142, 289);
             this.tbNotes.Name = "tbNotes";
             this.tbNotes.Size = new System.Drawing.Size(356, 26);
             this.tbNotes.TabIndex = 425;
             this.tbNotes.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
-            // cbOld
-            // 
-            this.cbOld.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalControl;
-            this.cbOld.Location = new System.Drawing.Point(172, 61);
-            this.cbOld.Name = "cbOld";
-            this.cbOld.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.cbOld.Size = new System.Drawing.Size(246, 28);
-            this.cbOld.StateCommon.ShortText.Color1 = System.Drawing.Color.Black;
-            this.cbOld.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 17.81F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.cbOld.TabIndex = 432;
-            this.cbOld.Text = "Посчитать \"по-старому\"";
-            this.cbOld.Values.Text = "Посчитать \"по-старому\"";
             // 
             // SaveDBFReportMenu
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(545, 395);
-            this.Controls.Add(this.cbOld);
             this.Controls.Add(this.tbNotes);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.kryptonButton1);
@@ -534,6 +519,5 @@
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox tbNotes;
-        private ComponentFactory.Krypton.Toolkit.KryptonCheckBox cbOld;
     }
 }

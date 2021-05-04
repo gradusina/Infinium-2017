@@ -1,11 +1,9 @@
-﻿using NPOI.HPSF;
-using NPOI.HSSF.UserModel;
+﻿using NPOI.HSSF.UserModel;
 using NPOI.HSSF.Util;
 
 using System;
 using System.Data;
 using System.Data.SqlClient;
-using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -13,7 +11,7 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport
 {
     public class DetailsReport : IAllFrontParameterName, IIsMarsel
     {
-        private SimpleReport.Report ClientReport = null;
+        private StandardReport.Report ClientReport = null;
 
         //string ReportFilePath = null;
 
@@ -678,7 +676,7 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport
         {
             ClearReport();
 
-            ClientReport = new SimpleReport.Report(ref DecorCatalogOrder, ref FrontsCalculate);
+            ClientReport = new StandardReport.Report(ref DecorCatalogOrder, ref FrontsCalculate);
 
             #region Create fonts and styles
 
@@ -1145,7 +1143,7 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport
         {
             ClearReport();
 
-            ClientReport = new SimpleReport.Report(ref DecorCatalogOrder, ref FrontsCalculate);
+            ClientReport = new StandardReport.Report(ref DecorCatalogOrder, ref FrontsCalculate);
 
             #region Create fonts and styles
 

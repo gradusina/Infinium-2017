@@ -12,7 +12,6 @@ namespace Infinium
         const int eMainMenu = 4;
 
         public int Result = 1;
-        public bool Old = false;
         public bool InMutualSettlement = false;
         public string Notes = string.Empty;
         public string SaveFilePath = string.Empty;
@@ -162,7 +161,6 @@ namespace Infinium
 
             InMutualSettlement = true;
             Result = 1;
-            Old = cbOld.Checked;
             FormEvent = eClose;
             AnimateTimer.Enabled = true;
         }
@@ -181,7 +179,6 @@ namespace Infinium
 
             InMutualSettlement = false;
             Result = 2;
-            Old = cbOld.Checked;
             FormEvent = eClose;
             AnimateTimer.Enabled = true;
         }
@@ -190,7 +187,6 @@ namespace Infinium
         {
             InMutualSettlement = true;
             Result = 3;
-            Old = cbOld.Checked;
             FormEvent = eClose;
             AnimateTimer.Enabled = true;
         }

@@ -8,9 +8,9 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 
-namespace Infinium.Modules.Marketing.NewOrders.InvoiceReportToDBF
+namespace Infinium.Modules.Marketing.NewOrders.InvoiceReportToDbf
 {
-    public class InvoiceFrontsReportToDBF
+    public class InvoiceFrontsReportToDbf
     {
         decimal TransportCost = 0;
         decimal AdditionalCost = 0;
@@ -42,7 +42,7 @@ namespace Infinium.Modules.Marketing.NewOrders.InvoiceReportToDBF
         public DataTable ProfilReportDataTable = null;
         public DataTable TPSReportDataTable = null;
 
-        public InvoiceFrontsReportToDBF()
+        public InvoiceFrontsReportToDbf()
         {
             Create();
             CreateReportDataTables();
