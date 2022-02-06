@@ -1149,122 +1149,122 @@
       <DependentUpon>MarketingPickFrontsSelectForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Modules\Marketing\WeeklyPlanning\WeeklyPlanning.cs" />
-    <Compile Include="Modules\Packages\CheckLabel.cs" />
-    <Compile Include="Modules\Packages\LabelCheck\ExpeditionLabelCheckForm.cs">
+    <Compile Include="Modules\Packages1\CheckLabel.cs" />
+    <Compile Include="Modules\Packages1\LabelCheck\ExpeditionLabelCheckForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Modules\Packages\LabelCheck\ExpeditionLabelCheckForm.designer.cs">
+    <Compile Include="Modules\Packages1\LabelCheck\ExpeditionLabelCheckForm.designer.cs">
       <DependentUpon>ExpeditionLabelCheckForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Modules\Packages\LabelCheck\LabelCheckProfilForm.cs">
+    <Compile Include="Modules\Packages1\LabelCheck\LabelCheckProfilForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Modules\Packages\LabelCheck\LabelCheckProfilForm.designer.cs">
+    <Compile Include="Modules\Packages1\LabelCheck\LabelCheckProfilForm.designer.cs">
       <DependentUpon>LabelCheckProfilForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Modules\Packages\LabelCheck\PalleteLabelCheckForm.cs">
+    <Compile Include="Modules\Packages1\LabelCheck\PalleteLabelCheckForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Modules\Packages\LabelCheck\PalleteLabelCheckForm.designer.cs">
+    <Compile Include="Modules\Packages1\LabelCheck\PalleteLabelCheckForm.designer.cs">
       <DependentUpon>PalleteLabelCheckForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Modules\Packages\LabelCheck\ReAutorizationForm.cs">
+    <Compile Include="Modules\Packages1\LabelCheck\ReAutorizationForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Modules\Packages\LabelCheck\ReAutorizationForm.designer.cs">
+    <Compile Include="Modules\Packages1\LabelCheck\ReAutorizationForm.designer.cs">
       <DependentUpon>ReAutorizationForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Modules\Packages\LabelCheck\StorageLabelCheckForm.cs">
+    <Compile Include="Modules\Packages1\LabelCheck\StorageLabelCheckForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Modules\Packages\LabelCheck\StorageLabelCheckForm.designer.cs">
+    <Compile Include="Modules\Packages1\LabelCheck\StorageLabelCheckForm.designer.cs">
       <DependentUpon>StorageLabelCheckForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Modules\Packages\MarketingPackages.cs" />
-    <Compile Include="Modules\Packages\MarketingPackagesAllocation\MarketingPackagesAllocProfilForm.cs">
+    <Compile Include="Modules\Packages1\MarketingPackages.cs" />
+    <Compile Include="Modules\Packages1\MarketingPackagesAllocation\MarketingPackagesAllocProfilForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Modules\Packages\MarketingPackagesAllocation\MarketingPackagesAllocProfilForm.designer.cs">
+    <Compile Include="Modules\Packages1\MarketingPackagesAllocation\MarketingPackagesAllocProfilForm.designer.cs">
       <DependentUpon>MarketingPackagesAllocProfilForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Modules\Packages\MarketingPackagesAllocation\MarketingPackagesAllocTPSForm.cs">
+    <Compile Include="Modules\Packages1\MarketingPackagesAllocation\MarketingPackagesAllocTPSForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Modules\Packages\MarketingPackagesAllocation\MarketingPackagesAllocTPSForm.designer.cs">
+    <Compile Include="Modules\Packages1\MarketingPackagesAllocation\MarketingPackagesAllocTPSForm.designer.cs">
       <DependentUpon>MarketingPackagesAllocTPSForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Modules\Packages\MarketingPackagesAllocation\MarketingSplitOrdersForm.cs">
+    <Compile Include="Modules\Packages1\MarketingPackagesAllocation\MarketingSplitOrdersForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Modules\Packages\MarketingPackagesAllocation\MarketingSplitOrdersForm.designer.cs">
+    <Compile Include="Modules\Packages1\MarketingPackagesAllocation\MarketingSplitOrdersForm.designer.cs">
       <DependentUpon>MarketingSplitOrdersForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Modules\Packages\MarketingPackagesAllocation\MarketingSplitPackagesForm.cs">
+    <Compile Include="Modules\Packages1\MarketingPackagesAllocation\MarketingSplitPackagesForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Modules\Packages\MarketingPackagesAllocation\MarketingSplitPackagesForm.designer.cs">
+    <Compile Include="Modules\Packages1\MarketingPackagesAllocation\MarketingSplitPackagesForm.designer.cs">
       <DependentUpon>MarketingSplitPackagesForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Modules\Packages\MarketingPackagesAllocation\SplitOrdersForm.cs">
+    <Compile Include="Modules\Packages1\MarketingPackagesAllocation\SplitOrdersForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Modules\Packages\MarketingPackagesAllocation\SplitOrdersForm.designer.cs">
+    <Compile Include="Modules\Packages1\MarketingPackagesAllocation\SplitOrdersForm.designer.cs">
       <DependentUpon>SplitOrdersForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Modules\Packages\MarketingPrintPackages\MarketingFilterProductsForm.cs">
+    <Compile Include="Modules\Packages1\MarketingPrintPackages\MarketingFilterProductsForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Modules\Packages\MarketingPrintPackages\MarketingFilterProductsForm.designer.cs">
+    <Compile Include="Modules\Packages1\MarketingPrintPackages\MarketingFilterProductsForm.designer.cs">
       <DependentUpon>MarketingFilterProductsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Modules\Packages\MarketingPrintPackages\MarketingPackagesPrintProfilForm.cs">
+    <Compile Include="Modules\Packages1\MarketingPrintPackages\MarketingPackagesPrintProfilForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Modules\Packages\MarketingPrintPackages\MarketingPackagesPrintProfilForm.designer.cs">
+    <Compile Include="Modules\Packages1\MarketingPrintPackages\MarketingPackagesPrintProfilForm.designer.cs">
       <DependentUpon>MarketingPackagesPrintProfilForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Modules\Packages\MarketingPrintPackages\MarketingPackagesPrintTPSForm.cs">
+    <Compile Include="Modules\Packages1\MarketingPrintPackages\MarketingPackagesPrintTPSForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Modules\Packages\MarketingPrintPackages\MarketingPackagesPrintTPSForm.designer.cs">
+    <Compile Include="Modules\Packages1\MarketingPrintPackages\MarketingPackagesPrintTPSForm.designer.cs">
       <DependentUpon>MarketingPackagesPrintTPSForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Modules\Packages\MarketingSplitOrders.cs" />
-    <Compile Include="Modules\Packages\ZOVPackages.cs" />
-    <Compile Include="Modules\Packages\ZOVPackagesAllocation\ZOVPackagesAllocProfilForm.cs">
+    <Compile Include="Modules\Packages1\MarketingSplitOrders.cs" />
+    <Compile Include="Modules\Packages1\ZOVPackages.cs" />
+    <Compile Include="Modules\Packages1\ZOVPackagesAllocation\ZOVPackagesAllocProfilForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Modules\Packages\ZOVPackagesAllocation\ZOVPackagesAllocProfilForm.designer.cs">
+    <Compile Include="Modules\Packages1\ZOVPackagesAllocation\ZOVPackagesAllocProfilForm.designer.cs">
       <DependentUpon>ZOVPackagesAllocProfilForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Modules\Packages\ZOVPackagesAllocation\ZOVPackagesAllocTPSForm.cs">
+    <Compile Include="Modules\Packages1\ZOVPackagesAllocation\ZOVPackagesAllocTPSForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Modules\Packages\ZOVPackagesAllocation\ZOVPackagesAllocTPSForm.designer.cs">
+    <Compile Include="Modules\Packages1\ZOVPackagesAllocation\ZOVPackagesAllocTPSForm.designer.cs">
       <DependentUpon>ZOVPackagesAllocTPSForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Modules\Packages\ZOVPackagesAllocation\ZOVSplitPackagesForm.cs">
+    <Compile Include="Modules\Packages1\ZOVPackagesAllocation\ZOVSplitPackagesForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Modules\Packages\ZOVPackagesAllocation\ZOVSplitPackagesForm.designer.cs">
+    <Compile Include="Modules\Packages1\ZOVPackagesAllocation\ZOVSplitPackagesForm.designer.cs">
       <DependentUpon>ZOVSplitPackagesForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Modules\Packages\ZOVPrintPackages\ZOVFilterProductsForm.cs">
+    <Compile Include="Modules\Packages1\ZOVPrintPackages\ZOVFilterProductsForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Modules\Packages\ZOVPrintPackages\ZOVFilterProductsForm.designer.cs">
+    <Compile Include="Modules\Packages1\ZOVPrintPackages\ZOVFilterProductsForm.designer.cs">
       <DependentUpon>ZOVFilterProductsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Modules\Packages\ZOVPrintPackages\ZOVPackagesPrintProfilForm.cs">
+    <Compile Include="Modules\Packages1\ZOVPrintPackages\ZOVPackagesPrintProfilForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Modules\Packages\ZOVPrintPackages\ZOVPackagesPrintProfilForm.designer.cs">
+    <Compile Include="Modules\Packages1\ZOVPrintPackages\ZOVPackagesPrintProfilForm.designer.cs">
       <DependentUpon>ZOVPackagesPrintProfilForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Modules\Packages\ZOVPrintPackages\ZOVPackagesPrintTPSForm.cs">
+    <Compile Include="Modules\Packages1\ZOVPrintPackages\ZOVPackagesPrintTPSForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Modules\Packages\ZOVPrintPackages\ZOVPackagesPrintTPSForm.designer.cs">
+    <Compile Include="Modules\Packages1\ZOVPrintPackages\ZOVPackagesPrintTPSForm.designer.cs">
       <DependentUpon>ZOVPackagesPrintTPSForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Modules\PaymentWeeks\PaymentWeeks.cs" />
@@ -2469,61 +2469,61 @@
     <EmbeddedResource Include="Modules\Marketing\WeeklyPlanning\MarketingPickFrontsSelectForm.resx">
       <DependentUpon>MarketingPickFrontsSelectForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Modules\Packages\LabelCheck\ExpeditionLabelCheckForm.resx">
+    <EmbeddedResource Include="Modules\Packages1\LabelCheck\ExpeditionLabelCheckForm.resx">
       <DependentUpon>ExpeditionLabelCheckForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Modules\Packages\LabelCheck\LabelCheckProfilForm.resx">
+    <EmbeddedResource Include="Modules\Packages1\LabelCheck\LabelCheckProfilForm.resx">
       <DependentUpon>LabelCheckProfilForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Modules\Packages\LabelCheck\PalleteLabelCheckForm.resx">
+    <EmbeddedResource Include="Modules\Packages1\LabelCheck\PalleteLabelCheckForm.resx">
       <DependentUpon>PalleteLabelCheckForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Modules\Packages\LabelCheck\ReAutorizationForm.resx">
+    <EmbeddedResource Include="Modules\Packages1\LabelCheck\ReAutorizationForm.resx">
       <DependentUpon>ReAutorizationForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Modules\Packages\LabelCheck\StorageLabelCheckForm.resx">
+    <EmbeddedResource Include="Modules\Packages1\LabelCheck\StorageLabelCheckForm.resx">
       <DependentUpon>StorageLabelCheckForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Modules\Packages\MarketingPackagesAllocation\MarketingPackagesAllocProfilForm.resx">
+    <EmbeddedResource Include="Modules\Packages1\MarketingPackagesAllocation\MarketingPackagesAllocProfilForm.resx">
       <DependentUpon>MarketingPackagesAllocProfilForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Modules\Packages\MarketingPackagesAllocation\MarketingPackagesAllocTPSForm.resx">
+    <EmbeddedResource Include="Modules\Packages1\MarketingPackagesAllocation\MarketingPackagesAllocTPSForm.resx">
       <DependentUpon>MarketingPackagesAllocTPSForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Modules\Packages\MarketingPackagesAllocation\MarketingSplitOrdersForm.resx">
+    <EmbeddedResource Include="Modules\Packages1\MarketingPackagesAllocation\MarketingSplitOrdersForm.resx">
       <DependentUpon>MarketingSplitOrdersForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Modules\Packages\MarketingPackagesAllocation\MarketingSplitPackagesForm.resx">
+    <EmbeddedResource Include="Modules\Packages1\MarketingPackagesAllocation\MarketingSplitPackagesForm.resx">
       <DependentUpon>MarketingSplitPackagesForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Modules\Packages\MarketingPackagesAllocation\SplitOrdersForm.resx">
+    <EmbeddedResource Include="Modules\Packages1\MarketingPackagesAllocation\SplitOrdersForm.resx">
       <DependentUpon>SplitOrdersForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Modules\Packages\MarketingPrintPackages\MarketingFilterProductsForm.resx">
+    <EmbeddedResource Include="Modules\Packages1\MarketingPrintPackages\MarketingFilterProductsForm.resx">
       <DependentUpon>MarketingFilterProductsForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Modules\Packages\MarketingPrintPackages\MarketingPackagesPrintProfilForm.resx">
+    <EmbeddedResource Include="Modules\Packages1\MarketingPrintPackages\MarketingPackagesPrintProfilForm.resx">
       <DependentUpon>MarketingPackagesPrintProfilForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Modules\Packages\MarketingPrintPackages\MarketingPackagesPrintTPSForm.resx">
+    <EmbeddedResource Include="Modules\Packages1\MarketingPrintPackages\MarketingPackagesPrintTPSForm.resx">
       <DependentUpon>MarketingPackagesPrintTPSForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Modules\Packages\ZOVPackagesAllocation\ZOVPackagesAllocProfilForm.resx">
+    <EmbeddedResource Include="Modules\Packages1\ZOVPackagesAllocation\ZOVPackagesAllocProfilForm.resx">
       <DependentUpon>ZOVPackagesAllocProfilForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Modules\Packages\ZOVPackagesAllocation\ZOVPackagesAllocTPSForm.resx">
+    <EmbeddedResource Include="Modules\Packages1\ZOVPackagesAllocation\ZOVPackagesAllocTPSForm.resx">
       <DependentUpon>ZOVPackagesAllocTPSForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Modules\Packages\ZOVPackagesAllocation\ZOVSplitPackagesForm.resx">
+    <EmbeddedResource Include="Modules\Packages1\ZOVPackagesAllocation\ZOVSplitPackagesForm.resx">
       <DependentUpon>ZOVSplitPackagesForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Modules\Packages\ZOVPrintPackages\ZOVFilterProductsForm.resx">
+    <EmbeddedResource Include="Modules\Packages1\ZOVPrintPackages\ZOVFilterProductsForm.resx">
       <DependentUpon>ZOVFilterProductsForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Modules\Packages\ZOVPrintPackages\ZOVPackagesPrintProfilForm.resx">
+    <EmbeddedResource Include="Modules\Packages1\ZOVPrintPackages\ZOVPackagesPrintProfilForm.resx">
       <DependentUpon>ZOVPackagesPrintProfilForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Modules\Packages\ZOVPrintPackages\ZOVPackagesPrintTPSForm.resx">
+    <EmbeddedResource Include="Modules\Packages1\ZOVPrintPackages\ZOVPackagesPrintTPSForm.resx">
       <DependentUpon>ZOVPackagesPrintTPSForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Modules\PaymentWeeks\PaymentWeeksZOVForm.resx">
