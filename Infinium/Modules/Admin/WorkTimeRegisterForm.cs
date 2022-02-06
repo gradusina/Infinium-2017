@@ -1177,6 +1177,39 @@ namespace Infinium
             }
         }
 
+        private void kryptonContextMenuItem8_Click(object sender, EventArgs e)
+        {
+
+            bool PressOK = false;
+            int NewUserID = 0;
+
+            PhantomForm PhantomForm = new Infinium.PhantomForm();
+            PhantomForm.Show();
+
+            CopyWorkDayToUserForm form = new CopyWorkDayToUserForm(this, WorkTimeRegister);
+            TopForm = form;
+            form.ShowDialog();
+
+            PressOK = form.PressOK;
+            NewUserID = form.UserID;
+
+            PhantomForm.Close();
+            PhantomForm.Dispose();
+            form.Dispose();
+            TopForm = null;
+
+            if (!PressOK)
+                return;
+
+            int WorkDayID = Convert.ToInt32(((DataRowView) WorkTimeRegister.WorkDaysBindingSource.Current).Row["WorkDayID"]);
+            WorkTimeRegister.CopyWorkDay(WorkDayID, NewUserID);
+
+            DateTime D = WorkDateTimePicker.Value;
+            WorkTimeRegister.FilterWorkDays(D);
+            CreateNotes();
+            SetOverduedColor();
+        }
+
 
         //----------------------------------------------
     }

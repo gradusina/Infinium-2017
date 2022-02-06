@@ -12,9 +12,9 @@ using System.Text;
 using System.Windows.Forms;
 
 
-namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.InvoiceReport
+namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.InvoiceReportToDbf
 {
-    public class InvoiceFrontsReportToDBF
+    public class InvoiceFrontsReportToDbf
     {
         decimal TransportCost = 0;
         decimal AdditionalCost = 0;
@@ -46,7 +46,7 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.InvoiceReport
         public DataTable ProfilReportDataTable = null;
         public DataTable TPSReportDataTable = null;
 
-        public InvoiceFrontsReportToDBF()
+        public InvoiceFrontsReportToDbf()
         {
             Create();
             CreateReportDataTables();

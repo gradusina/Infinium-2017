@@ -6395,7 +6395,7 @@ namespace Infinium
         public bool IsTimesheetHoursSaved(int UserID)
         {
             bool b = false;
-            string SelectCommand = @"SELECT TOP 1 WorkDayID, TimesheetHours FROM WorkDays WHERE UserID=" + UserID + " ORDER BY DayStartDateTime DESC";
+            string SelectCommand = @"SELECT TOP 1 * FROM WorkDays WHERE UserID=" + UserID + " ORDER BY DayStartDateTime DESC";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.LightConnectionString))
             {
                 using (DataTable DT = new DataTable())
@@ -9566,6 +9566,32 @@ namespace Infinium
             //var tuple = new Tuple<bool, int, decimal>(b, absenceTypeId, absenceHour);
             return b;
         }
+        
+        public bool IsAbsenceVacation(DateTime date)
+        {
+            int absenceTypeId = 0;
+            bool b = false;
+
+            if (_timesheetDataTable.Rows.Count == 0)
+                return false;
+
+            DateTime LastDateTime;
+            LastDateTime = (DateTime)_timesheetDataTable.Rows[_timesheetDataTable.Rows.Count - 1]["DayStartDateTime"];
+
+            for (int i = 0; i < _absJournalDataTable.Rows.Count; i++)
+            {
+                DateTime dateStart = Convert.ToDateTime(_absJournalDataTable.Rows[i]["DateStart"]);
+                DateTime dateFinish = Convert.ToDateTime(_absJournalDataTable.Rows[i]["DateFinish"]);
+
+                if (LastDateTime.Date >= dateStart.Date && LastDateTime.Date <= dateFinish.Date)
+                {
+                    absenceTypeId = Convert.ToInt32(_absJournalDataTable.Rows[i]["AbsenceTypeID"]);
+                    if (absenceTypeId == 2)
+                        b = true;
+                }
+            }
+            return b;
+        }
 
         private Tuple<bool, decimal, decimal, decimal, bool> WorkdayInThatDay(DateTime date)
         {
@@ -9681,7 +9707,8 @@ namespace Infinium
                     }
                     if (absenceTypeId != 13 && absenceTypeId != 12)
                     {
-                        AllAbsenceHours += absenceHour;
+                        if (prodSheduleHours != 0)
+                            AllAbsenceHours += absenceHour;
                     }
                 }
 
@@ -13102,9 +13129,11 @@ namespace Infinium
 
         public string SendEmailNotifyClient(int ClientID, string[] FileNames)
         {
-            string AccountPassword = "1290qpalzm";
-            string SenderEmail = "zovprofilreport@mail.ru";
+            //string AccountPassword = "1290qpalzm";
+            //string SenderEmail = "zovprofilreport@mail.ru";
 
+            string AccountPassword = "3699PassWord14772588";
+            string SenderEmail = "infiniumdevelopers@gmail.com";
 
             string to = GetClientEmail(ClientID);
 
@@ -13120,7 +13149,8 @@ namespace Infinium
                 message.Body = "Здравствуйте. Вам отправлены новые документы в программе Infinium. Agent.\r\n" +
                                "Если эта программа у Вас не установлена, обратитесь в отдел маркетинга для получения ссылки на скачивание программы или напишите нам на этот адрес\r\n" +
                                "Отправленные файлы также прикреплены к этому письму\r\n\nПисьмо сгенерировано автоматически, не надо отвечать на этот адрес. По всем вопросам обращайтесь на marketing.zovprofil@gmail.com";
-                SmtpClient client = new SmtpClient("smtp.mail.ru")
+                //SmtpClient client = new SmtpClient("smtp.mail.ru")
+                SmtpClient client = new SmtpClient("smtp.gmail.com", 587)
                 {
                     UseDefaultCredentials = false,
                     Credentials = new NetworkCredential(SenderEmail, AccountPassword)

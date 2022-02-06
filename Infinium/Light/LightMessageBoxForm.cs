@@ -20,6 +20,21 @@ namespace Infinium
 
             label2.Text = Header;
         }
+        
+        public LightMessageBoxForm(bool ShowCancelButton, string Text, string Header, string OKMessageButtonText, string CancelMessageButtonText)
+        {
+            InitializeComponent();
+            OKMessageButton.Text = OKMessageButtonText;
+            CancelMessageButton.Text = CancelMessageButtonText;
+            label1.Text = Text;
+
+            CancelMessageButton.Visible = ShowCancelButton;
+
+            if (ShowCancelButton == false)
+                OKMessageButton.Left = (this.Width - OKMessageButton.Width) / 2;
+
+            label2.Text = Header;
+        }
 
         private void OKMessageButton_Click(object sender, EventArgs e)
         {

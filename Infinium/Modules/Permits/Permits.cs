@@ -4673,7 +4673,8 @@ INNER JOIN infiniu2_marketingreference.dbo.Clients AS C ON MegaOrders.ClientID=C
                     if (bImpost)
                     {
                         string Front2 = GetFront2Name(Convert.ToInt32(Row["TechnoProfileID"]));
-                        InsetType = InsetType + "/" + Front2;
+                        if (Front2.Length > 0)
+                            InsetType = InsetType + "/" + Front2;
                     }
                 }
                 InsetColor = GetInsetColorName(Convert.ToInt32(Row["InsetColorID"]));

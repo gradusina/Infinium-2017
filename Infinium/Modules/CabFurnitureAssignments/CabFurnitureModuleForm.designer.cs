@@ -1,4 +1,6 @@
-﻿namespace Infinium
+﻿using System;
+
+namespace Infinium
 {
     partial class CabFurnitureModuleForm
     {
@@ -80,6 +82,7 @@
             this.panel17 = new System.Windows.Forms.Panel();
             this.dgvAllAssignments = new Infinium.PercentageDataGrid();
             this.InProdColumn = new ComponentFactory.Krypton.Toolkit.KryptonDataGridViewButtonColumn();
+            this.OutProdColumn = new ComponentFactory.Krypton.Toolkit.KryptonDataGridViewButtonColumn();
             this.MainMenuPalette = new ComponentFactory.Krypton.Toolkit.KryptonPalette(this.components);
             this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
             this.cbtnAllAssignments = new ComponentFactory.Krypton.Toolkit.KryptonCheckButton();
@@ -95,9 +98,10 @@
             this.kryptonContextMenuItem3 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
             this.kryptonContextMenuItem7 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
             this.cmiSaveAssignments = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
-            this.kryptonContextMenuItem5 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
-            this.kryptonContextMenuItem13 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
-            this.kryptonContextMenuItem9 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
+            this.setDispatchDateContextMenuItem = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
+            this.printAssignmentMenuItem = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
+            this.agreeAssignmentContextMenuItem = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
+            this.deleteEmptyAssignmentContextMenuItem = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
             this.kryptonContextMenuItem10 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
             this.kryptonContextMenuItem14 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
             this.kryptonContextMenuItem8 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
@@ -181,6 +185,11 @@
             this.kryptonCheckBox1 = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
             this.label36 = new System.Windows.Forms.Label();
             this.panel32 = new System.Windows.Forms.Panel();
+            this.kryptonButton2 = new ComponentFactory.Krypton.Toolkit.KryptonButton();
+            this.label54 = new System.Windows.Forms.Label();
+            this.label55 = new System.Windows.Forms.Label();
+            this.CreateDateTimePicker2 = new ComponentFactory.Krypton.Toolkit.KryptonDateTimePicker();
+            this.CreateDateTimePicker1 = new ComponentFactory.Krypton.Toolkit.KryptonDateTimePicker();
             this.kryptonBorderEdge55 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.cbAgreedAssingments = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
             this.cbPrintedAssingments = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
@@ -214,6 +223,9 @@
             this.kryptonBorderEdge39 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge40 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge41 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
+            this.popupControlContainer1 = new DevExpress.XtraBars.PopupControlContainer(this.components);
+            this.ChangeDateButton = new ComponentFactory.Krypton.Toolkit.KryptonButton();
+            this.kryptonMonthCalendar2 = new ComponentFactory.Krypton.Toolkit.KryptonMonthCalendar();
             this.kryptonContextMenu1 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenu();
             this.kryptonContextMenuItems8 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItems();
             this.kryptonContextMenuItem12 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
@@ -296,6 +308,7 @@
             this.BarcodeTextBox = new ComponentFactory.Krypton.Toolkit.KryptonTextBox();
             this.tabPage7 = new System.Windows.Forms.TabPage();
             this.panel38 = new System.Windows.Forms.Panel();
+            this.btnUpdateStorePackages = new ComponentFactory.Krypton.Toolkit.KryptonButton();
             this.panel40 = new System.Windows.Forms.Panel();
             this.btnSearchPackages = new ComponentFactory.Krypton.Toolkit.KryptonButton();
             this.cbInsetColorsSearch = new ComponentFactory.Krypton.Toolkit.KryptonComboBox();
@@ -370,7 +383,11 @@
             this.kryptonContextMenu8 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenu();
             this.kryptonContextMenuItems15 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItems();
             this.kryptonContextMenuItem23 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
-            this.btnUpdateStorePackages = new ComponentFactory.Krypton.Toolkit.KryptonButton();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.NavigatePanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cmbxPatina)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cmbxCovers)).BeginInit();
@@ -413,6 +430,8 @@
             this.panel32.SuspendLayout();
             this.panel31.SuspendLayout();
             this.panel30.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.popupControlContainer1)).BeginInit();
+            this.popupControlContainer1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.panel29.SuspendLayout();
@@ -484,6 +503,7 @@
             this.panel41.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvStoragePackagesDetails)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cmbxRacks)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             this.SuspendLayout();
             // 
             // AnimateTimer
@@ -584,7 +604,7 @@
             this.MenuButton.Palette = this.NavigateMenuButtonsPalette;
             this.MenuButton.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Custom;
             this.MenuButton.Size = new System.Drawing.Size(41, 39);
-            this.MenuButton.TabIndex = 338;
+            this.MenuButton.TabIndex = 340;
             this.MenuButton.TabStop = false;
             this.MenuButton.Values.ImageStates.ImageCheckedNormal = global::Infinium.Properties.Resources.MenuUp;
             this.MenuButton.Values.ImageStates.ImageCheckedPressed = global::Infinium.Properties.Resources.MenuUp;
@@ -1263,7 +1283,8 @@
             this.dgvAllAssignments.ColumnHeadersHeight = 40;
             this.dgvAllAssignments.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgvAllAssignments.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.InProdColumn});
+            this.InProdColumn,
+            this.OutProdColumn});
             this.dgvAllAssignments.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvAllAssignments.HideOuterBorders = true;
             this.dgvAllAssignments.Location = new System.Drawing.Point(0, 0);
@@ -1322,6 +1343,15 @@
             this.InProdColumn.Name = "InProdColumn";
             this.InProdColumn.Text = "В производство";
             this.InProdColumn.UseColumnTextForButtonValue = true;
+            // 
+            // OutProdColumn
+            // 
+            this.OutProdColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.OutProdColumn.HeaderText = "";
+            this.OutProdColumn.MinimumWidth = 95;
+            this.OutProdColumn.Name = "OutProdColumn";
+            this.OutProdColumn.Text = "Вышло из пр-ва";
+            this.OutProdColumn.UseColumnTextForButtonValue = true;
             // 
             // MainMenuPalette
             // 
@@ -1488,9 +1518,10 @@
             this.kryptonContextMenuItem3,
             this.kryptonContextMenuItem7,
             this.cmiSaveAssignments,
-            this.kryptonContextMenuItem5,
-            this.kryptonContextMenuItem13,
-            this.kryptonContextMenuItem9,
+            this.setDispatchDateContextMenuItem,
+            this.printAssignmentMenuItem,
+            this.agreeAssignmentContextMenuItem,
+            this.deleteEmptyAssignmentContextMenuItem,
             this.kryptonContextMenuItem10,
             this.kryptonContextMenuItem14});
             // 
@@ -1510,21 +1541,26 @@
             this.cmiSaveAssignments.Text = "Сохранить";
             this.cmiSaveAssignments.Click += new System.EventHandler(this.cmiSaveAssignments_Click);
             // 
-            // kryptonContextMenuItem5
+            // setDispatchDateContextMenuItem
             // 
-            this.kryptonContextMenuItem5.Text = "Распечатать";
-            this.kryptonContextMenuItem5.Visible = false;
-            this.kryptonContextMenuItem5.Click += new System.EventHandler(this.kryptonContextMenuItem5_Click);
+            this.setDispatchDateContextMenuItem.Text = "Дата отгрузки";
+            this.setDispatchDateContextMenuItem.Visible = false;
+            this.setDispatchDateContextMenuItem.Click += new System.EventHandler(this.kryptonContextMenuItem24_Click);
             // 
-            // kryptonContextMenuItem13
+            // printAssignmentMenuItem
             // 
-            this.kryptonContextMenuItem13.Text = "Согласовать";
-            this.kryptonContextMenuItem13.Click += new System.EventHandler(this.kryptonContextMenuItem13_Click);
+            this.printAssignmentMenuItem.Text = "Распечатать";
+            this.printAssignmentMenuItem.Click += new System.EventHandler(this.kryptonContextMenuItem5_Click);
             // 
-            // kryptonContextMenuItem9
+            // agreeAssignmentContextMenuItem
             // 
-            this.kryptonContextMenuItem9.Text = "Удалить (если пустое)";
-            this.kryptonContextMenuItem9.Click += new System.EventHandler(this.kryptonContextMenuItem9_Click_1);
+            this.agreeAssignmentContextMenuItem.Text = "Согласовать";
+            this.agreeAssignmentContextMenuItem.Click += new System.EventHandler(this.kryptonContextMenuItem13_Click);
+            // 
+            // deleteEmptyAssignmentContextMenuItem
+            // 
+            this.deleteEmptyAssignmentContextMenuItem.Text = "Удалить (если пустое)";
+            this.deleteEmptyAssignmentContextMenuItem.Click += new System.EventHandler(this.kryptonContextMenuItem9_Click_1);
             // 
             // kryptonContextMenuItem10
             // 
@@ -2717,7 +2753,7 @@
             this.label37.AutoSize = true;
             this.label37.Font = new System.Drawing.Font("Segoe UI", 17.81F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.label37.ForeColor = System.Drawing.Color.White;
-            this.label37.Location = new System.Drawing.Point(3, 241);
+            this.label37.Location = new System.Drawing.Point(512, 255);
             this.label37.Name = "label37";
             this.label37.Size = new System.Drawing.Size(103, 25);
             this.label37.TabIndex = 435;
@@ -2727,7 +2763,7 @@
             // 
             this.panel33.Controls.Add(this.kryptonBorderEdge56);
             this.panel33.Controls.Add(this.kryptonCheckBox1);
-            this.panel33.Location = new System.Drawing.Point(8, 269);
+            this.panel33.Location = new System.Drawing.Point(517, 283);
             this.panel33.Name = "panel33";
             this.panel33.Size = new System.Drawing.Size(221, 43);
             this.panel33.TabIndex = 434;
@@ -2770,6 +2806,11 @@
             // 
             // panel32
             // 
+            this.panel32.Controls.Add(this.kryptonButton2);
+            this.panel32.Controls.Add(this.label54);
+            this.panel32.Controls.Add(this.label55);
+            this.panel32.Controls.Add(this.CreateDateTimePicker2);
+            this.panel32.Controls.Add(this.CreateDateTimePicker1);
             this.panel32.Controls.Add(this.kryptonBorderEdge55);
             this.panel32.Controls.Add(this.cbAgreedAssingments);
             this.panel32.Controls.Add(this.cbPrintedAssingments);
@@ -2778,8 +2819,71 @@
             this.panel32.Controls.Add(this.cbPartPrintedAssingments);
             this.panel32.Location = new System.Drawing.Point(8, 40);
             this.panel32.Name = "panel32";
-            this.panel32.Size = new System.Drawing.Size(221, 198);
+            this.panel32.Size = new System.Drawing.Size(221, 356);
             this.panel32.TabIndex = 432;
+            // 
+            // kryptonButton2
+            // 
+            this.kryptonButton2.Location = new System.Drawing.Point(36, 264);
+            this.kryptonButton2.Name = "kryptonButton2";
+            this.kryptonButton2.Palette = this.StandardButtonsPalette;
+            this.kryptonButton2.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Custom;
+            this.kryptonButton2.Size = new System.Drawing.Size(146, 39);
+            this.kryptonButton2.StateCommon.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.kryptonButton2.StateCommon.Content.Image.ImageH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.kryptonButton2.StateCommon.Content.Image.ImageV = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
+            this.kryptonButton2.StateCommon.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.kryptonButton2.StateCommon.Content.ShortText.TextV = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.kryptonButton2.StateTracking.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(253)))), ((int)(((byte)(164)))), ((int)(((byte)(61)))));
+            this.kryptonButton2.StateTracking.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.kryptonButton2.TabIndex = 436;
+            this.kryptonButton2.TabStop = false;
+            this.kryptonButton2.Values.Text = "Поиск";
+            this.kryptonButton2.Click += new System.EventHandler(this.kryptonButton2_Click);
+            // 
+            // label54
+            // 
+            this.label54.AutoSize = true;
+            this.label54.Font = new System.Drawing.Font("Segoe UI", 17.81F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.label54.ForeColor = System.Drawing.Color.White;
+            this.label54.Location = new System.Drawing.Point(19, 224);
+            this.label54.Name = "label54";
+            this.label54.Size = new System.Drawing.Size(39, 25);
+            this.label54.TabIndex = 435;
+            this.label54.Text = "До:";
+            // 
+            // label55
+            // 
+            this.label55.AutoSize = true;
+            this.label55.Font = new System.Drawing.Font("Segoe UI", 17.81F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.label55.ForeColor = System.Drawing.Color.White;
+            this.label55.Location = new System.Drawing.Point(19, 183);
+            this.label55.Name = "label55";
+            this.label55.Size = new System.Drawing.Size(37, 25);
+            this.label55.TabIndex = 434;
+            this.label55.Text = "От:";
+            // 
+            // CreateDateTimePicker2
+            // 
+            this.CreateDateTimePicker2.CalendarTodayDate = new System.DateTime(2020, 12, 1, 0, 0, 0, 0);
+            this.CreateDateTimePicker2.Location = new System.Drawing.Point(56, 224);
+            this.CreateDateTimePicker2.Name = "CreateDateTimePicker2";
+            this.CreateDateTimePicker2.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.CreateDateTimePicker2.Size = new System.Drawing.Size(146, 25);
+            this.CreateDateTimePicker2.StateCommon.Content.Font = new System.Drawing.Font("Segoe UI", 14.06F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.CreateDateTimePicker2.TabIndex = 433;
+            // 
+            // CreateDateTimePicker1
+            // 
+            this.CreateDateTimePicker1.CalendarTodayDate = new System.DateTime(2020, 12, 1, 0, 0, 0, 0);
+            this.CreateDateTimePicker1.Location = new System.Drawing.Point(56, 183);
+            this.CreateDateTimePicker1.Name = "CreateDateTimePicker1";
+            this.CreateDateTimePicker1.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.CreateDateTimePicker1.Size = new System.Drawing.Size(146, 25);
+            this.CreateDateTimePicker1.StateCommon.Content.Font = new System.Drawing.Font("Segoe UI", 14.06F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.CreateDateTimePicker1.TabIndex = 432;
             // 
             // kryptonBorderEdge55
             // 
@@ -3243,6 +3347,55 @@
             this.kryptonBorderEdge41.Size = new System.Drawing.Size(1, 411);
             this.kryptonBorderEdge41.StateCommon.Color1 = System.Drawing.Color.White;
             this.kryptonBorderEdge41.Text = "kryptonBorderEdge41";
+            // 
+            // popupControlContainer1
+            // 
+            this.popupControlContainer1.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
+            this.popupControlContainer1.Controls.Add(this.ChangeDateButton);
+            this.popupControlContainer1.Controls.Add(this.kryptonMonthCalendar2);
+            this.popupControlContainer1.Location = new System.Drawing.Point(0, 0);
+            this.popupControlContainer1.Margin = new System.Windows.Forms.Padding(4);
+            this.popupControlContainer1.Name = "popupControlContainer1";
+            this.popupControlContainer1.Size = new System.Drawing.Size(232, 235);
+            this.popupControlContainer1.TabIndex = 433;
+            this.popupControlContainer1.Visible = false;
+            // 
+            // ChangeDateButton
+            // 
+            this.ChangeDateButton.Location = new System.Drawing.Point(0, 183);
+            this.ChangeDateButton.Margin = new System.Windows.Forms.Padding(4);
+            this.ChangeDateButton.Name = "ChangeDateButton";
+            this.ChangeDateButton.Palette = this.StandardButtonsPalette;
+            this.ChangeDateButton.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Custom;
+            this.ChangeDateButton.Size = new System.Drawing.Size(230, 49);
+            this.ChangeDateButton.StateCommon.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.ChangeDateButton.StateCommon.Content.Image.ImageH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.ChangeDateButton.StateCommon.Content.Image.ImageV = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
+            this.ChangeDateButton.StateCommon.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 17.81F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.ChangeDateButton.StateCommon.Content.ShortText.TextV = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.ChangeDateButton.StateTracking.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(253)))), ((int)(((byte)(164)))), ((int)(((byte)(61)))));
+            this.ChangeDateButton.StateTracking.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.ChangeDateButton.TabIndex = 104;
+            this.ChangeDateButton.TabStop = false;
+            this.ChangeDateButton.Values.Text = "OK";
+            this.ChangeDateButton.Click += new System.EventHandler(this.ChangeDateButton_Click);
+            // 
+            // kryptonMonthCalendar2
+            // 
+            this.kryptonMonthCalendar2.Location = new System.Drawing.Point(0, 0);
+            this.kryptonMonthCalendar2.Margin = new System.Windows.Forms.Padding(4);
+            this.kryptonMonthCalendar2.MaxSelectionCount = 1;
+            this.kryptonMonthCalendar2.Name = "kryptonMonthCalendar2";
+            this.kryptonMonthCalendar2.Size = new System.Drawing.Size(230, 184);
+            this.kryptonMonthCalendar2.StateCommon.Day.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.kryptonMonthCalendar2.StateCommon.DayOfWeek.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.kryptonMonthCalendar2.StateCommon.Header.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(140)))), ((int)(((byte)(140)))), ((int)(((byte)(140)))));
+            this.kryptonMonthCalendar2.StateCommon.Header.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.kryptonMonthCalendar2.StateCommon.Header.Content.ShortText.Color1 = System.Drawing.Color.White;
+            this.kryptonMonthCalendar2.TabIndex = 1;
+            this.kryptonMonthCalendar2.TodayDate = new System.DateTime(2022, 1, 24, 22, 41, 32, 435);
             // 
             // kryptonContextMenu1
             // 
@@ -4742,6 +4895,24 @@
             this.panel38.Size = new System.Drawing.Size(1262, 643);
             this.panel38.TabIndex = 478;
             // 
+            // btnUpdateStorePackages
+            // 
+            this.btnUpdateStorePackages.Location = new System.Drawing.Point(914, 20);
+            this.btnUpdateStorePackages.Name = "btnUpdateStorePackages";
+            this.btnUpdateStorePackages.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.btnUpdateStorePackages.Size = new System.Drawing.Size(90, 28);
+            this.btnUpdateStorePackages.StateCommon.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.btnUpdateStorePackages.StateCommon.Content.Image.ImageH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.btnUpdateStorePackages.StateCommon.Content.Image.ImageV = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.btnUpdateStorePackages.TabIndex = 495;
+            this.btnUpdateStorePackages.TabStop = false;
+            this.btnUpdateStorePackages.Tag = "25";
+            this.btnUpdateStorePackages.Values.ExtraText = "Показать всё";
+            this.btnUpdateStorePackages.Values.Text = "";
+            this.btnUpdateStorePackages.Click += new System.EventHandler(this.btnUpdateStorePackages_Click);
+            // 
             // panel40
             // 
             this.panel40.BackColor = System.Drawing.Color.Transparent;
@@ -5222,10 +5393,10 @@
             // 
             // btnPrintCellLabel
             // 
-            this.btnPrintCellLabel.Location = new System.Drawing.Point(255, 178);
+            this.btnPrintCellLabel.Location = new System.Drawing.Point(209, 173);
             this.btnPrintCellLabel.Name = "btnPrintCellLabel";
             this.btnPrintCellLabel.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.btnPrintCellLabel.Size = new System.Drawing.Size(30, 30);
+            this.btnPrintCellLabel.Size = new System.Drawing.Size(36, 36);
             this.btnPrintCellLabel.StateCommon.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
@@ -5258,10 +5429,10 @@
             // 
             // btnBindPackages
             // 
-            this.btnBindPackages.Location = new System.Drawing.Point(291, 178);
+            this.btnBindPackages.Location = new System.Drawing.Point(255, 173);
             this.btnBindPackages.Name = "btnBindPackages";
             this.btnBindPackages.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.btnBindPackages.Size = new System.Drawing.Size(30, 30);
+            this.btnBindPackages.Size = new System.Drawing.Size(36, 36);
             this.btnBindPackages.StateCommon.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
@@ -5477,10 +5648,10 @@
             // 
             // btnRemoveCell
             // 
-            this.btnRemoveCell.Location = new System.Drawing.Point(399, 178);
+            this.btnRemoveCell.Location = new System.Drawing.Point(393, 173);
             this.btnRemoveCell.Name = "btnRemoveCell";
             this.btnRemoveCell.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.btnRemoveCell.Size = new System.Drawing.Size(30, 30);
+            this.btnRemoveCell.Size = new System.Drawing.Size(36, 36);
             this.btnRemoveCell.StateCommon.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
@@ -5511,10 +5682,10 @@
             // 
             // btnEditCell
             // 
-            this.btnEditCell.Location = new System.Drawing.Point(363, 178);
+            this.btnEditCell.Location = new System.Drawing.Point(347, 173);
             this.btnEditCell.Name = "btnEditCell";
             this.btnEditCell.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.btnEditCell.Size = new System.Drawing.Size(30, 30);
+            this.btnEditCell.Size = new System.Drawing.Size(36, 36);
             this.btnEditCell.StateCommon.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
@@ -5547,10 +5718,10 @@
             // 
             // btnAddCell
             // 
-            this.btnAddCell.Location = new System.Drawing.Point(327, 178);
+            this.btnAddCell.Location = new System.Drawing.Point(301, 173);
             this.btnAddCell.Name = "btnAddCell";
             this.btnAddCell.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.btnAddCell.Size = new System.Drawing.Size(30, 30);
+            this.btnAddCell.Size = new System.Drawing.Size(36, 36);
             this.btnAddCell.StateCommon.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
@@ -5597,6 +5768,7 @@
             this.btnRemoveRack.Tag = "25";
             this.btnRemoveRack.Values.Image = global::Infinium.Properties.Resources.Small_Red_Remove;
             this.btnRemoveRack.Values.Text = "";
+            this.btnRemoveRack.Click += new System.EventHandler(this.btnRemoveRack_Click);
             // 
             // PrintDialog
             // 
@@ -5728,23 +5900,46 @@
             this.kryptonContextMenuItem23.Text = "Сканировать";
             this.kryptonContextMenuItem23.Click += new System.EventHandler(this.kryptonContextMenuItem23_Click);
             // 
-            // btnUpdateStorePackages
+            // barManager1
             // 
-            this.btnUpdateStorePackages.Location = new System.Drawing.Point(914, 20);
-            this.btnUpdateStorePackages.Name = "btnUpdateStorePackages";
-            this.btnUpdateStorePackages.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.btnUpdateStorePackages.Size = new System.Drawing.Size(90, 28);
-            this.btnUpdateStorePackages.StateCommon.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.btnUpdateStorePackages.StateCommon.Content.Image.ImageH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
-            this.btnUpdateStorePackages.StateCommon.Content.Image.ImageV = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
-            this.btnUpdateStorePackages.TabIndex = 495;
-            this.btnUpdateStorePackages.TabStop = false;
-            this.btnUpdateStorePackages.Tag = "25";
-            this.btnUpdateStorePackages.Values.ExtraText = "Показать всё";
-            this.btnUpdateStorePackages.Values.Text = "";
-            this.btnUpdateStorePackages.Click += new System.EventHandler(this.btnUpdateStorePackages_Click);
+            this.barManager1.DockControls.Add(this.barDockControlTop);
+            this.barManager1.DockControls.Add(this.barDockControlBottom);
+            this.barManager1.DockControls.Add(this.barDockControlLeft);
+            this.barManager1.DockControls.Add(this.barDockControlRight);
+            this.barManager1.Form = this;
+            this.barManager1.MaxItemId = 0;
+            // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
+            this.barDockControlTop.Margin = new System.Windows.Forms.Padding(4);
+            this.barDockControlTop.Size = new System.Drawing.Size(1270, 0);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 740);
+            this.barDockControlBottom.Margin = new System.Windows.Forms.Padding(4);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1270, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 0);
+            this.barDockControlLeft.Margin = new System.Windows.Forms.Padding(4);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 740);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(1270, 0);
+            this.barDockControlRight.Margin = new System.Windows.Forms.Padding(4);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 740);
             // 
             // CabFurnitureModuleForm
             // 
@@ -5755,7 +5950,12 @@
             this.Controls.Add(this.flowLayoutPanel3);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.NavigatePanel);
+            this.Controls.Add(this.popupControlContainer1);
             this.Controls.Add(this.MenuPanel);
+            this.Controls.Add(this.barDockControlLeft);
+            this.Controls.Add(this.barDockControlRight);
+            this.Controls.Add(this.barDockControlBottom);
+            this.Controls.Add(this.barDockControlTop);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MaximizeBox = false;
@@ -5828,6 +6028,8 @@
             this.panel31.PerformLayout();
             this.panel30.ResumeLayout(false);
             this.panel30.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.popupControlContainer1)).EndInit();
+            this.popupControlContainer1.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
@@ -5907,6 +6109,7 @@
             this.panel41.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvStoragePackagesDetails)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cmbxRacks)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -5942,10 +6145,10 @@
         private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItems kryptonContextMenuItems1;
         private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem kryptonContextMenuItem3;
         private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem kryptonContextMenuItem7;
-        private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem kryptonContextMenuItem5;
+        private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem printAssignmentMenuItem;
         private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem kryptonContextMenuItem8;
         private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem cmiSaveAssignments;
-        private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem kryptonContextMenuItem13;
+        private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem agreeAssignmentContextMenuItem;
         private ComponentFactory.Krypton.Toolkit.KryptonPalette MainMenuPalette;
         private ComponentFactory.Krypton.Toolkit.KryptonComboBox cmbxTechStore;
         private System.Windows.Forms.Label label3;
@@ -6026,7 +6229,6 @@
         private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge11;
         private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge12;
         private System.Windows.Forms.Panel panel17;
-        private ComponentFactory.Krypton.Toolkit.KryptonCheckButton MenuButton;
         private System.Windows.Forms.Panel MenuPanel;
         private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge38;
         private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge39;
@@ -6063,7 +6265,6 @@
         private System.Windows.Forms.TextBox tbCount;
         private System.Windows.Forms.Label label14;
         private ComponentFactory.Krypton.Toolkit.KryptonDataGridViewButtonColumn PrintDocColumn;
-        private ComponentFactory.Krypton.Toolkit.KryptonDataGridViewButtonColumn InProdColumn;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
@@ -6149,7 +6350,7 @@
         private ComponentFactory.Krypton.Toolkit.KryptonContextMenu kryptonContextMenu5;
         private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItems kryptonContextMenuItems12;
         private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem kryptonContextMenuItem11;
-        private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem kryptonContextMenuItem9;
+        private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem deleteEmptyAssignmentContextMenuItem;
         private ComponentFactory.Krypton.Toolkit.KryptonButton kryptonButton1;
         private System.Windows.Forms.Label label33;
         private System.Windows.Forms.Panel panel30;
@@ -6254,5 +6455,22 @@
         private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge63;
         private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge64;
         private ComponentFactory.Krypton.Toolkit.KryptonButton btnUpdateStorePackages;
+        private ComponentFactory.Krypton.Toolkit.KryptonDataGridViewButtonColumn InProdColumn;
+        private ComponentFactory.Krypton.Toolkit.KryptonDataGridViewButtonColumn OutProdColumn;
+        private ComponentFactory.Krypton.Toolkit.KryptonButton kryptonButton2;
+        private System.Windows.Forms.Label label54;
+        private System.Windows.Forms.Label label55;
+        private ComponentFactory.Krypton.Toolkit.KryptonDateTimePicker CreateDateTimePicker2;
+        private ComponentFactory.Krypton.Toolkit.KryptonDateTimePicker CreateDateTimePicker1;
+        private DevExpress.XtraBars.PopupControlContainer popupControlContainer1;
+        private ComponentFactory.Krypton.Toolkit.KryptonButton ChangeDateButton;
+        private ComponentFactory.Krypton.Toolkit.KryptonMonthCalendar kryptonMonthCalendar2;
+        private DevExpress.XtraBars.BarManager barManager1;
+        private DevExpress.XtraBars.BarDockControl barDockControlTop;
+        private DevExpress.XtraBars.BarDockControl barDockControlBottom;
+        private DevExpress.XtraBars.BarDockControl barDockControlLeft;
+        private DevExpress.XtraBars.BarDockControl barDockControlRight;
+        private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem setDispatchDateContextMenuItem;
+        private ComponentFactory.Krypton.Toolkit.KryptonCheckButton MenuButton;
     }
 }

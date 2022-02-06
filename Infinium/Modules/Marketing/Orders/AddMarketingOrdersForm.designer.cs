@@ -94,6 +94,7 @@
             this.DecorInsetColorDropButton = new ComponentFactory.Krypton.Toolkit.KryptonDropButton();
             this.label14 = new System.Windows.Forms.Label();
             this.DecorInsetColorsComboBox = new ComponentFactory.Krypton.Toolkit.KryptonComboBox();
+            this.flowLayoutPanel4 = new System.Windows.Forms.FlowLayoutPanel();
             this.panel4 = new System.Windows.Forms.Panel();
             this.label8 = new System.Windows.Forms.Label();
             this.DecorLengthComboBox = new ComponentFactory.Krypton.Toolkit.KryptonComboBox();
@@ -151,7 +152,6 @@
             this.panel20 = new System.Windows.Forms.Panel();
             this.NoDecorLabel = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.flowLayoutPanel4 = new System.Windows.Forms.FlowLayoutPanel();
             this.NavigatePanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.FrontsOrdersDataGrid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.MainOrdersDecorTabControl)).BeginInit();
@@ -182,6 +182,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.DecorInsetTypesComboBox)).BeginInit();
             this.panel6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DecorInsetColorsComboBox)).BeginInit();
+            this.flowLayoutPanel4.SuspendLayout();
             this.panel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DecorLengthComboBox)).BeginInit();
             this.panel1.SuspendLayout();
@@ -214,7 +215,6 @@
             this.panel19.SuspendLayout();
             this.xtraTabPage2.SuspendLayout();
             this.panel20.SuspendLayout();
-            this.flowLayoutPanel4.SuspendLayout();
             this.SuspendLayout();
             // 
             // AnimateTimer
@@ -771,9 +771,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.FrontsPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(160)))), ((int)(((byte)(160)))));
             this.FrontsPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.FrontsPanel.Controls.Add(this.FrontsPanel1);
             this.FrontsPanel.Controls.Add(this.DecorPanel1);
             this.FrontsPanel.Controls.Add(this.cbOnlyExcluzive);
-            this.FrontsPanel.Controls.Add(this.FrontsPanel1);
             this.FrontsPanel.Controls.Add(this.MainOrderNotes);
             this.FrontsPanel.Controls.Add(this.label9);
             this.FrontsPanel.Location = new System.Drawing.Point(0, 0);
@@ -1369,6 +1369,17 @@
             this.DecorInsetColorsComboBox.Enter += new System.EventHandler(this.DecorInsetColorsComboBox_Leave);
             this.DecorInsetColorsComboBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.DecorInsetColorsComboBox_KeyDown);
             this.DecorInsetColorsComboBox.Leave += new System.EventHandler(this.DecorInsetColorsComboBox_Leave);
+            // 
+            // flowLayoutPanel4
+            // 
+            this.flowLayoutPanel4.Controls.Add(this.panel4);
+            this.flowLayoutPanel4.Controls.Add(this.panel1);
+            this.flowLayoutPanel4.Controls.Add(this.panel2);
+            this.flowLayoutPanel4.Controls.Add(this.panel3);
+            this.flowLayoutPanel4.Location = new System.Drawing.Point(509, 3);
+            this.flowLayoutPanel4.Name = "flowLayoutPanel4";
+            this.flowLayoutPanel4.Size = new System.Drawing.Size(218, 128);
+            this.flowLayoutPanel4.TabIndex = 7;
             // 
             // panel4
             // 
@@ -2248,17 +2259,6 @@
             this.label3.Text = "Нет декоративных элементов";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // flowLayoutPanel4
-            // 
-            this.flowLayoutPanel4.Controls.Add(this.panel4);
-            this.flowLayoutPanel4.Controls.Add(this.panel1);
-            this.flowLayoutPanel4.Controls.Add(this.panel2);
-            this.flowLayoutPanel4.Controls.Add(this.panel3);
-            this.flowLayoutPanel4.Location = new System.Drawing.Point(509, 3);
-            this.flowLayoutPanel4.Name = "flowLayoutPanel4";
-            this.flowLayoutPanel4.Size = new System.Drawing.Size(218, 128);
-            this.flowLayoutPanel4.TabIndex = 7;
-            // 
             // AddMarketingOrdersForm
             // 
             this.AccessibleName = "false";
@@ -2319,6 +2319,7 @@
             this.panel6.ResumeLayout(false);
             this.panel6.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DecorInsetColorsComboBox)).EndInit();
+            this.flowLayoutPanel4.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DecorLengthComboBox)).EndInit();
@@ -2365,7 +2366,6 @@
             this.panel19.ResumeLayout(false);
             this.xtraTabPage2.ResumeLayout(false);
             this.panel20.ResumeLayout(false);
-            this.flowLayoutPanel4.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }

@@ -288,7 +288,7 @@
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(35)))));
-            this.BackgroundImage = global::Infinium.Properties.Resources.n21;
+            this.BackgroundImage = global::Infinium.Properties.Resources.n2;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.ClientSize = new System.Drawing.Size(1254, 711);
             this.Controls.Add(this.CurrentDayOfWeekLabel);

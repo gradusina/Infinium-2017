@@ -603,8 +603,12 @@
             this.kryptonContextMenu4 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenu();
             this.kryptonContextMenuItems4 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItems();
             this.kryptonContextMenuItem1 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
-            this.kryptonContextMenuItem8 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
-            this.kryptonContextMenuItem9 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
+            this.OnProdDateMenuItem = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
+            this.PackDateMenuItem = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
+            this.StoreDateMenuItem = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
+            this.ExpDateMenuItem = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
+            this.PlanDispDateMenuItem = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
+            this.FactDispDateMenuItem = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
             this.kryptonContextMenu5 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenu();
             this.kryptonContextMenuItems5 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItems();
             this.kryptonContextMenuItem2 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
@@ -906,6 +910,7 @@
             this.kryptonContextMenuItem10 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
             this.kryptonContextMenuItem11 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
             this.kryptonContextMenuItem12 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
+            this.kryptonContextMenuItem22 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
             this.kryptonContextMenuItem13 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
             this.kryptonContextMenuItem14 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
             this.kryptonContextMenuItem15 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
@@ -915,7 +920,6 @@
             this.kryptonContextMenuItem19 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
             this.kryptonContextMenuItem20 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
             this.kryptonContextMenuItem21 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
-            this.kryptonContextMenuItem22 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
             this.NavigatePanel.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel115.SuspendLayout();
@@ -3273,6 +3277,7 @@
             this.OrderDateRadioButton.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.OrderDateRadioButton.TabIndex = 347;
             this.OrderDateRadioButton.Values.Text = "По дате создания";
+            this.OrderDateRadioButton.CheckedChanged += new System.EventHandler(this.OrderDateRadioButton_CheckedChanged);
             // 
             // PlanDispDateRadioButton
             // 
@@ -3284,6 +3289,7 @@
             this.PlanDispDateRadioButton.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.PlanDispDateRadioButton.TabIndex = 346;
             this.PlanDispDateRadioButton.Values.Text = "Плановая отгрузка";
+            this.PlanDispDateRadioButton.CheckedChanged += new System.EventHandler(this.OrderDateRadioButton_CheckedChanged);
             // 
             // CalendarTo
             // 
@@ -3668,6 +3674,7 @@
             this.OnAgreementRadioButton.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.OnAgreementRadioButton.TabIndex = 368;
             this.OnAgreementRadioButton.Values.Text = "На согласовании";
+            this.OnAgreementRadioButton.CheckedChanged += new System.EventHandler(this.OrderDateRadioButton_CheckedChanged);
             // 
             // ExpDateRadioButton
             // 
@@ -3679,6 +3686,7 @@
             this.ExpDateRadioButton.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.ExpDateRadioButton.TabIndex = 367;
             this.ExpDateRadioButton.Values.Text = "Принято на экспедицию";
+            this.ExpDateRadioButton.CheckedChanged += new System.EventHandler(this.OrderDateRadioButton_CheckedChanged);
             // 
             // OnProductionRadioButton
             // 
@@ -3690,6 +3698,7 @@
             this.OnProductionRadioButton.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.OnProductionRadioButton.TabIndex = 366;
             this.OnProductionRadioButton.Values.Text = "Вошло на пр-во";
+            this.OnProductionRadioButton.CheckedChanged += new System.EventHandler(this.OrderDateRadioButton_CheckedChanged);
             // 
             // ConfirmDateRadioButton
             // 
@@ -3701,6 +3710,7 @@
             this.ConfirmDateRadioButton.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.ConfirmDateRadioButton.TabIndex = 364;
             this.ConfirmDateRadioButton.Values.Text = "По дате согласования";
+            this.ConfirmDateRadioButton.CheckedChanged += new System.EventHandler(this.OrderDateRadioButton_CheckedChanged);
             // 
             // StoreDateRadioButton
             // 
@@ -3712,6 +3722,7 @@
             this.StoreDateRadioButton.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.StoreDateRadioButton.TabIndex = 363;
             this.StoreDateRadioButton.Values.Text = "Принято на склад";
+            this.StoreDateRadioButton.CheckedChanged += new System.EventHandler(this.OrderDateRadioButton_CheckedChanged);
             // 
             // PackDateRadioButton
             // 
@@ -3723,6 +3734,7 @@
             this.PackDateRadioButton.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.PackDateRadioButton.TabIndex = 362;
             this.PackDateRadioButton.Values.Text = "Вышло из пр-ва";
+            this.PackDateRadioButton.CheckedChanged += new System.EventHandler(this.OrderDateRadioButton_CheckedChanged);
             // 
             // FactDispDateRadioButton
             // 
@@ -3734,6 +3746,7 @@
             this.FactDispDateRadioButton.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.FactDispDateRadioButton.TabIndex = 361;
             this.FactDispDateRadioButton.Values.Text = "Фактическая отгрузка";
+            this.FactDispDateRadioButton.CheckedChanged += new System.EventHandler(this.OrderDateRadioButton_CheckedChanged);
             // 
             // kryptonBorderEdge38
             // 
@@ -9991,8 +10004,12 @@
             // 
             this.kryptonContextMenuItems4.Items.AddRange(new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItemBase[] {
             this.kryptonContextMenuItem1,
-            this.kryptonContextMenuItem8,
-            this.kryptonContextMenuItem9});
+            this.OnProdDateMenuItem,
+            this.PackDateMenuItem,
+            this.StoreDateMenuItem,
+            this.ExpDateMenuItem,
+            this.PlanDispDateMenuItem,
+            this.FactDispDateMenuItem});
             // 
             // kryptonContextMenuItem1
             // 
@@ -10000,15 +10017,41 @@
             this.kryptonContextMenuItem1.Text = "Экспорт в Excel";
             this.kryptonContextMenuItem1.Click += new System.EventHandler(this.kryptonContextMenuItem1_Click);
             // 
-            // kryptonContextMenuItem8
+            // OnProdDateMenuItem
             // 
-            this.kryptonContextMenuItem8.Text = "Вышло с пр-ва за указанный период";
-            this.kryptonContextMenuItem8.Click += new System.EventHandler(this.kryptonContextMenuItem8_Click);
+            this.OnProdDateMenuItem.Enabled = false;
+            this.OnProdDateMenuItem.Text = "Вошло на пр-во за указанный период";
+            this.OnProdDateMenuItem.Click += new System.EventHandler(this.OnProdDateMenuItem_Click);
             // 
-            // kryptonContextMenuItem9
+            // PackDateMenuItem
             // 
-            this.kryptonContextMenuItem9.Text = "Отгружено за указанный период";
-            this.kryptonContextMenuItem9.Click += new System.EventHandler(this.kryptonContextMenuItem9_Click);
+            this.PackDateMenuItem.Enabled = false;
+            this.PackDateMenuItem.Text = "Вышло из пр-ва за указанный период";
+            this.PackDateMenuItem.Click += new System.EventHandler(this.kryptonContextMenuItem8_Click);
+            // 
+            // StoreDateMenuItem
+            // 
+            this.StoreDateMenuItem.Enabled = false;
+            this.StoreDateMenuItem.Text = "Принято на склад за указанный период";
+            this.StoreDateMenuItem.Click += new System.EventHandler(this.StoreDateMenuItem_Click);
+            // 
+            // ExpDateMenuItem
+            // 
+            this.ExpDateMenuItem.Enabled = false;
+            this.ExpDateMenuItem.Text = "Принято на экспедицию за указанный период";
+            this.ExpDateMenuItem.Click += new System.EventHandler(this.ExpDateMenuItem_Click);
+            // 
+            // PlanDispDateMenuItem
+            // 
+            this.PlanDispDateMenuItem.Enabled = false;
+            this.PlanDispDateMenuItem.Text = "Планово отгружено за указанный период";
+            this.PlanDispDateMenuItem.Click += new System.EventHandler(this.PlanDispDateMenuItem_Click);
+            // 
+            // FactDispDateMenuItem
+            // 
+            this.FactDispDateMenuItem.Enabled = false;
+            this.FactDispDateMenuItem.Text = "Фактически отгружено за указанный период";
+            this.FactDispDateMenuItem.Click += new System.EventHandler(this.kryptonContextMenuItem9_Click);
             // 
             // kryptonContextMenu5
             // 
@@ -14382,6 +14425,11 @@
             this.kryptonContextMenuItem12.Text = "Отчет по клиенту";
             this.kryptonContextMenuItem12.Click += new System.EventHandler(this.kryptonButton1_Click_1);
             // 
+            // kryptonContextMenuItem22
+            // 
+            this.kryptonContextMenuItem22.Text = "Отчет по клиенту (с № заказа)";
+            this.kryptonContextMenuItem22.Click += new System.EventHandler(this.kryptonContextMenuItem22_Click);
+            // 
             // kryptonContextMenuItem13
             // 
             this.kryptonContextMenuItem13.Text = "Отчет по весу";
@@ -14425,11 +14473,6 @@
             // kryptonContextMenuItem21
             // 
             this.kryptonContextMenuItem21.Text = "Рекламации за период";
-            // 
-            // kryptonContextMenuItem22
-            // 
-            this.kryptonContextMenuItem22.Text = "Отчет по клиенту (с № заказа)";
-            this.kryptonContextMenuItem22.Click += new System.EventHandler(this.kryptonContextMenuItem22_Click);
             // 
             // CommonStatisticsForm
             // 
@@ -15672,8 +15715,8 @@
         private PercentageDataGrid StorePrepareCurvedFSummaryDG;
         private PercentageDataGrid StoreZCurvedFSummaryDG;
         private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge303;
-        private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem kryptonContextMenuItem8;
-        private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem kryptonContextMenuItem9;
+        private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem PackDateMenuItem;
+        private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem FactDispDateMenuItem;
         private System.Windows.Forms.Label label29;
         private PercentageDataGrid dgvClientsGroups;
         private ComponentFactory.Krypton.Toolkit.KryptonDropButton ExportContextMenuButton;
@@ -15726,5 +15769,9 @@
         private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem kryptonContextMenuItem20;
         private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem kryptonContextMenuItem21;
         private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem kryptonContextMenuItem22;
+        private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem StoreDateMenuItem;
+        private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem ExpDateMenuItem;
+        private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem OnProdDateMenuItem;
+        private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem PlanDispDateMenuItem;
     }
 }

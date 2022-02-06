@@ -415,6 +415,7 @@ namespace Infinium.Modules.CabFurnitureAssignments
 
         DataTable ComplementLabelDataDT = null;
         DataTable PackageLabelDataDT = null;
+        DataTable RolesDataTable = null;
 
         public bool NewAssignment
         {
@@ -718,6 +719,7 @@ WHERE        CAST(CreateDateTime AS date) >= '2019-12-26 00:00' AND CAST(CreateD
 
             CabFurnitureDocumentTypesDT = new DataTable();
             ClientsDT = new DataTable();
+            RolesDataTable = new DataTable();
 
             NonAgreementDetailDT = new DataTable();
             AgreedDetailDT = new DataTable();
@@ -831,7 +833,10 @@ WHERE        CAST(CreateDateTime AS date) >= '2019-12-26 00:00' AND CAST(CreateD
                 DA.Fill(DocumentsDT);
             }
 
-            SelectCommand = @"SELECT * FROM CabFurnitureAssignments ORDER BY CabFurAssignmentID DESC";
+            string Filter = " WHERE CAST(CreationDateTime AS date) >= '" + DateTime.Now.AddDays(-90).ToString("yyyy-MM-dd") +
+                            " 00:00' AND CAST(CreationDateTime AS date) <= '" + DateTime.Now.ToString("yyyy-MM-dd") + " 23:59'";
+
+            SelectCommand = @"SELECT TOP 0 * FROM CabFurnitureAssignments " + Filter + " ORDER BY CabFurAssignmentID DESC";
             AllAssignmentsDA = new SqlDataAdapter(SelectCommand, ConnectionStrings.StorageConnectionString);
             AllAssignmentsCB = new SqlCommandBuilder(AllAssignmentsDA);
             AllAssignmentsDA.Fill(AllAssignmentsDT);
@@ -1559,9 +1564,11 @@ WHERE        CAST(CreateDateTime AS date) >= '2019-12-26 00:00' AND CAST(CreateD
             AllAssignmentsDA.Update(AllAssignmentsDT);
         }
 
-        public void UpdateDocuments()
+        public void UpdateDocuments(DateTime date1, DateTime date2)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM CabFurnitureDocuments",
+            string Filter = " WHERE CAST(CreationDateTime AS date) >= '" + date1.ToString("yyyy-MM-dd") +
+                            " 00:00' AND CAST(CreationDateTime AS date) <= '" + date2.ToString("yyyy-MM-dd") + " 23:59'";
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM CabFurnitureDocuments" + Filter,
                 ConnectionStrings.StorageConnectionString))
             {
                 DocumentsDT.Clear();
@@ -1578,9 +1585,17 @@ WHERE        CAST(CreateDateTime AS date) >= '2019-12-26 00:00' AND CAST(CreateD
             NewAssignmentDA.Fill(NewAssignmentDetailsDT);
         }
 
-        public void UpdateAllAssignments()
+        public void UpdateAllAssignments(DateTime date1, DateTime date2)
         {
             AllAssignmentsDT.Clear();
+
+            string Filter = " WHERE CAST(CreationDateTime AS date) >= '" + date1.ToString("yyyy-MM-dd") +
+                                " 00:00' AND CAST(CreationDateTime AS date) <= '" + date2.ToString("yyyy-MM-dd") + " 23:59'";
+
+            string SelectCommand = @"SELECT * FROM CabFurnitureAssignments " + Filter + " ORDER BY CabFurAssignmentID DESC";
+
+            AllAssignmentsDA = new SqlDataAdapter(SelectCommand, ConnectionStrings.StorageConnectionString);
+            AllAssignmentsCB = new SqlCommandBuilder(AllAssignmentsDA);
             AllAssignmentsDA.Fill(AllAssignmentsDT);
 
             for (int i = 0; i < AllAssignmentsDT.Rows.Count; i++)
@@ -1702,19 +1717,25 @@ WHERE        CAST(CreateDateTime AS date) >= '2019-12-26 00:00' AND CAST(CreateD
                     AllAssignmentsBS.Position = Pos;
         }
 
-        public DataTable GetPermissions(int UserID, string FormName)
+        public void GetPermissions(int UserID, string FormName)
         {
+            RolesDataTable.Clear();
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM UserRoles WHERE UserID = " + UserID +
                 " AND RoleID IN (SELECT RoleID FROM Roles WHERE ModuleID IN " +
                 " (SELECT ModuleID FROM Modules WHERE FormName = '" + FormName + "'))", ConnectionStrings.UsersConnectionString))
             {
                 using (DataTable DT = new DataTable())
                 {
-                    DA.Fill(DT);
-
-                    return (DataTable)DT;
+                    DA.Fill(RolesDataTable);
                 }
             }
+        }
+
+        public bool PermissionGranted(int RoleID)
+        {
+            DataRow[] Rows = RolesDataTable.Select("RoleID = " + RoleID);
+
+            return Rows.Count() > 0;
         }
 
         public void PrintAssignment(int CabFurAssignmentID)
@@ -1784,6 +1805,37 @@ WHERE        CAST(CreateDateTime AS date) >= '2019-12-26 00:00' AND CAST(CreateD
                 rows[0]["AgreementUserID"] = Security.CurrentUserID;
             if (rows[0]["AgreementDateTime"] == DBNull.Value)
                 rows[0]["AgreementDateTime"] = Security.GetCurrentDate();
+        }
+
+        public void InProduction(int CabFurAssignmentID)
+        {
+            DataRow[] rows = AllAssignmentsDT.Select("CabFurAssignmentID=" + CabFurAssignmentID);
+            if (rows.Count() == 0)
+                return;
+            if (rows[0]["ProductionUserID"] == DBNull.Value)
+                rows[0]["ProductionUserID"] = Security.CurrentUserID;
+            if (rows[0]["ProductionDateTime"] == DBNull.Value)
+                rows[0]["ProductionDateTime"] = Security.GetCurrentDate();
+        }
+        
+        public void OutProduction(int CabFurAssignmentID)
+        {
+            DataRow[] rows = AllAssignmentsDT.Select("CabFurAssignmentID=" + CabFurAssignmentID);
+            if (rows.Count() == 0)
+                return;
+            if (rows[0]["OutProductionUserID"] == DBNull.Value)
+                rows[0]["OutProductionUserID"] = Security.CurrentUserID;
+            if (rows[0]["OutProductionDateTime"] == DBNull.Value)
+                rows[0]["OutProductionDateTime"] = Security.GetCurrentDate();
+        }
+        
+        public void SetDispatchDate(int CabFurAssignmentID, DateTime DispatchDate)
+        {
+            DataRow[] rows = AllAssignmentsDT.Select("CabFurAssignmentID=" + CabFurAssignmentID);
+            if (rows.Count() == 0)
+                return;
+            rows[0]["PlanDispatchUserID"] = Security.CurrentUserID;
+            rows[0]["PlanDispatchDateTime"] = DispatchDate;
         }
 
         public void FillAssignmentID(int CabFurAssignmentID)
@@ -2844,6 +2896,7 @@ WHERE dbo.TechCatalogOperationsDetail.TechCatalogOperationsGroupID IN
                             //string TechStoreSubGroup = DT.Rows[i]["TechStoreSubGroupName"].ToString();
                             string TechStoreSubGroup = GetTechStoreName(Convert.ToInt32(DT.Rows[i]["TechStoreID"]));
                             string Cover = GetCoverName(Convert.ToInt32(DT.Rows[i]["CoverID"]));
+                            string Patina = GetPatinaName(Convert.ToInt32(DT.Rows[i]["PatinaID"]));
                             string DispatchDate = "";
                             string BarcodeNumber = GetBarcodeNumber(20, Convert.ToInt32(DT.Rows[i]["CabFurnitureComplementID"]));
                             string Notes = DT.Rows[i]["Notes"].ToString();
@@ -2863,6 +2916,8 @@ WHERE dbo.TechCatalogOperationsDetail.TechCatalogOperationsGroupID IN
                             LabelInfo.BarcodeNumber = BarcodeNumber;
                             LabelInfo.Notes = Notes;
                             LabelInfo.FactoryType = FactoryType;
+                            if (Convert.ToInt32(DT.Rows[i]["PatinaID"]) != -1)
+                                LabelInfo.Cover = Cover + " " + Patina;
 
                             ComplementLabelDataDT.Clear();
                             SelectCommand = @"SELECT T.TechStoreName, CabFurnitureComplementDetails.* FROM CabFurnitureComplementDetails 
@@ -2923,6 +2978,7 @@ WHERE dbo.TechCatalogOperationsDetail.TechCatalogOperationsGroupID IN
                             //string TechStoreSubGroup = DT.Rows[i]["TechStoreSubGroupName"].ToString();
                             string TechStoreSubGroup = GetTechStoreName(Convert.ToInt32(DT.Rows[i]["TechStoreID"]));
                             string Cover = GetCoverName(Convert.ToInt32(DT.Rows[i]["CoverID"]));
+                            string Patina = GetPatinaName(Convert.ToInt32(DT.Rows[i]["PatinaID"]));
                             string DispatchDate = "";
                             string BarcodeNumber = GetBarcodeNumber(20, Convert.ToInt32(DT.Rows[i]["CabFurnitureComplementID"]));
                             string Notes = DT.Rows[i]["Notes"].ToString();
@@ -2942,6 +2998,8 @@ WHERE dbo.TechCatalogOperationsDetail.TechCatalogOperationsGroupID IN
                             LabelInfo.BarcodeNumber = BarcodeNumber;
                             LabelInfo.Notes = Notes;
                             LabelInfo.FactoryType = FactoryType;
+                            if (Convert.ToInt32(DT.Rows[i]["PatinaID"]) != -1)
+                                LabelInfo.Cover = Cover + " " + Patina;
 
                             ComplementLabelDataDT.Clear();
                             SelectCommand = @"SELECT T.TechStoreName, CabFurnitureComplementDetails.* FROM CabFurnitureComplementDetails 
@@ -14206,7 +14264,7 @@ INNER JOIN infiniu2_marketingorders.dbo.MainOrders AS M ON C.MainOrderID=M.MainO
         {
             FontBrush = new System.Drawing.SolidBrush(Color.Black);
             ClientFont = new Font("Arial", 14, FontStyle.Regular);
-            DocFont = new Font("Arial", 14, FontStyle.Regular);
+            DocFont = new Font("Arial", 12, FontStyle.Regular);
             InfoFont = new Font("Arial", 5.0f, FontStyle.Regular);
             NotesFont = new Font("Arial", 12, FontStyle.Regular);
             HeaderFont = new Font("Arial", 9.0f, FontStyle.Regular);

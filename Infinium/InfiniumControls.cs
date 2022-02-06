@@ -2444,21 +2444,32 @@ namespace Infinium
                             int index = Array.FindIndex(UsersImages, UI => UI.UserID == CommentsItems[i].SenderID);
                             if (index > -1)
                                 CommentsItems[i].SenderImage = UsersImages[index].Photo;
-                            CommentsItems[i].SenderName = UsersDT.Select("UserID = " + CommentsRows[i]["UserID"])[0]["Name"].ToString();
+
+                            if (UsersDT.Select("UserID = " + CommentsRows[i]["UserID"]).Any())
+                                CommentsItems[i].SenderName = UsersDT.Select("UserID = " + CommentsRows[i]["UserID"])[0]["Name"].ToString();
                         }
 
-                        if (CommentsRows[i]["UserTypeID"].ToString() == "1")
+                        if (UsersDT.Select("UserID = " + CommentsRows[i]["UserID"]).Any())
                         {
-                            CommentsItems[i].SenderName = ManagersDT.Select("ManagerID = " + CommentsRows[i]["UserID"])[0]["Name"].ToString();
-                        }
+                            if (CommentsRows[i]["UserTypeID"].ToString() == "1")
+                            {
+                                CommentsItems[i].SenderName =
+                                    ManagersDT.Select("ManagerID = " + CommentsRows[i]["UserID"])[0]["Name"].ToString();
+                            }
 
-                        if (CommentsRows[i]["UserTypeID"].ToString() == "2")
-                        {
-                            CommentsItems[i].SenderName = ManagersDT.Select("ClientID = " + CommentsRows[i]["UserID"])[0]["ClientName"].ToString();
-                        }
-                        if (CommentsRows[i]["UserTypeID"].ToString() == "3")
-                        {
-                            CommentsItems[i].SenderName = ClientsManagersDT.Select("ManagerID = " + CommentsRows[i]["UserID"])[0]["Name"].ToString();
+                            if (CommentsRows[i]["UserTypeID"].ToString() == "2")
+                            {
+                                CommentsItems[i].SenderName =
+                                    ManagersDT.Select("ClientID = " + CommentsRows[i]["UserID"])[0]["ClientName"]
+                                        .ToString();
+                            }
+
+                            if (CommentsRows[i]["UserTypeID"].ToString() == "3")
+                            {
+                                CommentsItems[i].SenderName =
+                                    ClientsManagersDT.Select("ManagerID = " + CommentsRows[i]["UserID"])[0]["Name"]
+                                        .ToString();
+                            }
                         }
                     }
                     else
@@ -2466,7 +2477,8 @@ namespace Infinium
                         int index = Array.FindIndex(UsersImages, UI => UI.UserID == CommentsItems[i].SenderID);
                         if (index > -1)
                             CommentsItems[i].SenderImage = UsersImages[index].Photo;
-                        CommentsItems[i].SenderName = UsersDT.Select("UserID = " + CommentsRows[i]["UserID"])[0]["Name"].ToString();
+                        if (UsersDT.Select("UserID = " + CommentsRows[i]["UserID"]).Any())
+                            CommentsItems[i].SenderName = UsersDT.Select("UserID = " + CommentsRows[i]["UserID"])[0]["Name"].ToString();
                     }
 
                     CommentsItems[i].CommentsLikesRows = DT.Select("NewsCommentID = " + CommentsRows[i]["NewsCommentID"]);
@@ -9441,7 +9453,9 @@ namespace Infinium
                         SenderID = Convert.ToInt32(CommentsRows[i]["UserID"])
                     };
                     CommentsItems[i].SenderImage = UsersImages[Array.FindIndex(UsersImages, UI => UI.UserID == CommentsItems[i].SenderID)].Photo;
-                    CommentsItems[i].SenderName = UsersDT.Select("UserID = " + CommentsRows[i]["UserID"])[0]["Name"].ToString();
+
+                    if (UsersDT.Select("UserID = " + CommentsRows[i]["UserID"]).Any())
+                        CommentsItems[i].SenderName = UsersDT.Select("UserID = " + CommentsRows[i]["UserID"])[0]["Name"].ToString();
                     CommentsItems[i].CommentsLikesRows = DT.Select("NewsCommentID = " + CommentsRows[i]["NewsCommentID"]);
                     CommentsItems[i].Date = CommentsRows[i]["DateTime"].ToString();
                     CommentsItems[i].CommentText = CommentsRows[i]["NewsComment"].ToString();

@@ -20,10 +20,10 @@ namespace Infinium.Modules.Marketing.NewOrders.InvoiceReportToDbf
         public DataTable ProfilReportTable = null;
         public DataTable TPSReportTable = null;
 
-        public InvoiceReportToDbf()
+        public InvoiceReportToDbf(FrontsCatalogOrder FrontsCatalogOrder, DecorCatalogOrder DecorCatalogOrder)
         {
-            FrontsReport = new InvoiceFrontsReportToDbf();
-            DecorReport = new InvoiceDecorReportToDbf();
+            FrontsReport = new InvoiceFrontsReportToDbf(FrontsCatalogOrder, DecorCatalogOrder);
+            DecorReport = new InvoiceDecorReportToDbf(DecorCatalogOrder);
 
             CreateProfilReportTable();
 
@@ -2460,9 +2460,9 @@ namespace Infinium.Modules.Marketing.NewOrders.InvoiceReportToDbf
 
         public static void DataSetIntoDBF(string path, string fileName, DataTable DT1, int FactoryID)
         {
-            if (File.Exists(path + fileName + ".dbf"))
+            if (File.Exists(path + "/"+ fileName + ".dbf"))
             {
-                File.Delete(path + fileName + ".dbf");
+                File.Delete(path + "/" + fileName + ".dbf");
             }
 
             string createSql = "create table " + fileName + " ([UNNP] varchar(20), [UNN] varchar(20), [CurrencyCode] varchar(20), [InvNumber] varchar(20), [Amount] Double, [Price] Double, [NDS] varchar(10), [Weight] Double, [PackageCount] Integer)";
@@ -2521,9 +2521,9 @@ namespace Infinium.Modules.Marketing.NewOrders.InvoiceReportToDbf
 
         public static void DataSetIntoDBF(string path, string fileName, DataTable DT1, DataTable DT2, int FactoryID)
         {
-            if (File.Exists(path + fileName + ".dbf"))
+            if (File.Exists(path + "/"+ fileName + ".dbf"))
             {
-                File.Delete(path + fileName + ".dbf");
+                File.Delete(path + "/" + fileName + ".dbf");
             }
 
             string createSql = "create table " + fileName + " ([UNNP] varchar(20), [UNN] varchar(20), [CurrencyCode] varchar(20), [InvNumber] varchar(20), [Amount] Double, [Price] Double, [NDS] varchar(10), [Weight] Double, [PackageCount] Integer)";

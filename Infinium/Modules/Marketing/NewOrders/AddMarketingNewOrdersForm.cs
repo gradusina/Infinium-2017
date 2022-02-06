@@ -155,10 +155,10 @@ namespace Infinium
         private void Initialize()
         {
             FrontsCatalogOrder = new FrontsCatalogOrder(ref FrontsHeightComboBox, ref FrontsWidthComboBox);
-            FrontsCatalogOrder.Initialize();
+            FrontsCatalogOrder.Initialize(true);
 
             DecorCatalogOrder = new DecorCatalogOrder(ref DecorLengthComboBox, ref DecorHeightComboBox, ref DecorWidthComboBox);
-            DecorCatalogOrder.Initialize();
+            DecorCatalogOrder.Initialize(true);
 
             //ExportOrdersFromExcel T = new ExportOrdersFromExcel(ref DecorCatalogOrder, ref FrontsCatalogOrder);
             //T.FF();
@@ -1216,7 +1216,7 @@ namespace Infinium
                 OrdersCalculate.Recalculate(MegaOrderID, OrdersManager.CurrentProfilDiscountDirector, OrdersManager.CurrentTPSDiscountDirector,
                     OrdersManager.CurrentProfilTotalDiscount, OrdersManager.CurrentTPSTotalDiscount, DiscountPaymentCondition, OrdersManager.CurrencyTypeID,
                     OrdersManager.PaymentCurrency, OrdersManager.ConfirmDateTime);
-                InvoiceReportToDbf DBFReport = new InvoiceReportToDbf();
+                InvoiceReportToDbf DBFReport = new InvoiceReportToDbf(FrontsCatalogOrder, DecorCatalogOrder);
                 decimal CurrencyTotalCost = DBFReport.CalcCurrencyCost(
                     Convert.ToInt32(((DataRowView)OrdersManager.MegaOrdersBindingSource.Current).Row["MegaOrderID"]),
                     Convert.ToInt32(((DataRowView)OrdersManager.MegaOrdersBindingSource.Current).Row["ClientID"]), OrdersManager.PaymentCurrency);

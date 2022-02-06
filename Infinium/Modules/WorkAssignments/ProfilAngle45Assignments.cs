@@ -93,6 +93,7 @@ namespace Infinium.Modules.WorkAssignments
         private DataTable ep066Marsel4OrdersDT;
         private DataTable ep066Marsel4SimpleDT;
         private DataTable ep066Marsel4VitrinaDT;
+        private DataTable ep071GlassDT;
         private DataTable ep071GridsDT;
         private DataTable ep071OrdersDT;
         private DataTable ep071SimpleDT;
@@ -1955,6 +1956,8 @@ namespace Infinium.Modules.WorkAssignments
             GetVitrinaFronts(ep071OrdersDT, ref ep071VitrinaDT);
             ep071GridsDT.Clear();
             GetGridFronts(ep071OrdersDT, ref ep071GridsDT);
+            ep071GlassDT.Clear();
+            GetGlassFronts(ep071OrdersDT, ref ep071GlassDT);
 
             ep206SimpleDT.Clear();
             GetSimpleFronts(ep206OrdersDT, ref ep206SimpleDT);
@@ -2212,6 +2215,7 @@ namespace Infinium.Modules.WorkAssignments
                 AssemblySingly(Convert.ToInt32(DistFrameColorsDT.Rows[i]["ColorID"]), ep071SimpleDT, ref DT1);
                 AssemblySingly(Convert.ToInt32(DistFrameColorsDT.Rows[i]["ColorID"]), ep071VitrinaDT, ref DT2);
                 AssemblySingly(Convert.ToInt32(DistFrameColorsDT.Rows[i]["ColorID"]), ep071GridsDT, ref DT1);
+                AssemblySingly(Convert.ToInt32(DistFrameColorsDT.Rows[i]["ColorID"]), ep071GlassDT, ref DT1);
             }
             DistFrameColorsDT.Clear();
             DistFrameColorsDT = DistFrameColorsTable(ep206OrdersDT, true);
@@ -4766,7 +4770,7 @@ namespace Infinium.Modules.WorkAssignments
             if (ep071OrdersDT.Rows.Count > 0)
             {
                 FrontName = GetFrontName(Convert.ToInt32(ep071OrdersDT.Rows[0]["FrontID"]));
-                SummaryOrders(ep071OrdersDT, ep071SimpleDT, ep071VitrinaDT, ep071GridsDT, FrontName, ref AllSquare);
+                SummaryOrders(ep071OrdersDT, ep071SimpleDT, ep071VitrinaDT, ep071GridsDT, ep071GlassDT, FrontName, ref AllSquare);
                 OrdersToExcelSingly(ref hssfworkbook, ref sheet1,
                         Calibri11CS, CalibriBold11CS, CalibriBold11F, TableHeaderCS, TableHeaderDecCS, WorkAssignmentID, DispatchDate, BatchName, ClientName, ref RowIndex);
                 RowIndex++;
@@ -5710,7 +5714,7 @@ namespace Infinium.Modules.WorkAssignments
                     foreach (DataRow item in Srows)
                         Count += Convert.ToInt32(item["Count"]);
 
-                    Profile = $"Стекло {GetInsetColorName(Convert.ToInt32(DT1.Rows[i]["InsetColorID"]))}";
+                    //Profile = $"Стекло {GetInsetColorName(Convert.ToInt32(DT1.Rows[i]["InsetColorID"]))}";
                     int Height = Convert.ToInt32(DT1.Rows[i]["Height"]) - Margin;
                     int Width = Convert.ToInt32(DT1.Rows[i]["Width"]) - Margin;
 
@@ -6441,6 +6445,8 @@ namespace Infinium.Modules.WorkAssignments
         {
             if (BostonGlassDT.Rows.Count > 0)
                 AdditionsSyngly(BostonGlassDT, ref DestinationDT, "Стекло 4 мм", "-", Margin);
+            if (ep071GlassDT.Rows.Count > 0)
+                AdditionsSyngly(ep071GlassDT, ref DestinationDT, "Стекло 4 мм", "-", Margin);
 
             for (int i = 1; i < DestinationDT.Rows.Count; i++)
             {
@@ -9282,6 +9288,7 @@ namespace Infinium.Modules.WorkAssignments
             ep071GridsDT = new DataTable();
             ep071SimpleDT = new DataTable();
             ep071OrdersDT = new DataTable();
+            ep071GlassDT = new DataTable();
 
             ep206VitrinaDT = new DataTable();
             ep206GridsDT = new DataTable();
@@ -9307,6 +9314,7 @@ namespace Infinium.Modules.WorkAssignments
             BostonGridsDT = new DataTable();
             BostonSimpleDT = new DataTable();
             BostonOrdersDT = new DataTable();
+            BostonGlassDT = new DataTable();
 
             LeonVitrinaDT = new DataTable();
             LeonGridsDT = new DataTable();
@@ -9385,7 +9393,6 @@ namespace Infinium.Modules.WorkAssignments
 
             SigmaVitrinaDT = new DataTable();
             SigmaGlassDT = new DataTable();
-            BostonGlassDT = new DataTable();
             SigmaGridsDT = new DataTable();
             SigmaSimpleDT = new DataTable();
             SigmaOrdersDT = new DataTable();
@@ -9799,6 +9806,11 @@ namespace Infinium.Modules.WorkAssignments
                         foreach (DataRow item in rows)
                             DT.Rows.Add(item.ItemArray);
                         CollectDeying(Convert.ToInt32(DT1.Rows[j]["ColorID"]), DT, ref DeyingDT, " РЕШ");
+                        DT.Clear();
+                        rows = ep071GlassDT.Select("MainOrderID=" + MainOrderID);
+                        foreach (DataRow item in rows)
+                            DT.Rows.Add(item.ItemArray);
+                        CollectDeying(Convert.ToInt32(DT1.Rows[j]["ColorID"]), DT, ref DeyingDT, string.Empty);
                     }
 
                     using (DataView DV = new DataView(ep206OrdersDT, "MainOrderID=" + MainOrderID, "ColorID", DataViewRowState.CurrentRows))
@@ -10532,6 +10544,7 @@ namespace Infinium.Modules.WorkAssignments
                 ep071GridsDT = LeonOrdersDT.Clone();
                 ep071SimpleDT = LeonOrdersDT.Clone();
                 ep071OrdersDT = LeonOrdersDT.Clone();
+                ep071GlassDT = LeonOrdersDT.Clone();
 
                 ep206VitrinaDT = LeonOrdersDT.Clone();
                 ep206GridsDT = LeonOrdersDT.Clone();
@@ -10557,6 +10570,7 @@ namespace Infinium.Modules.WorkAssignments
                 BostonGridsDT = LeonOrdersDT.Clone();
                 BostonSimpleDT = LeonOrdersDT.Clone();
                 BostonOrdersDT = LeonOrdersDT.Clone();
+                BostonGlassDT = LeonOrdersDT.Clone();
 
                 LeonVitrinaDT = LeonOrdersDT.Clone();
                 LeonGridsDT = LeonOrdersDT.Clone();
@@ -10634,7 +10648,6 @@ namespace Infinium.Modules.WorkAssignments
 
                 SigmaVitrinaDT = LeonOrdersDT.Clone();
                 SigmaGlassDT = LeonOrdersDT.Clone();
-                BostonGlassDT = LeonOrdersDT.Clone();
                 SigmaGridsDT = LeonOrdersDT.Clone();
                 SigmaSimpleDT = LeonOrdersDT.Clone();
                 SigmaOrdersDT = LeonOrdersDT.Clone();

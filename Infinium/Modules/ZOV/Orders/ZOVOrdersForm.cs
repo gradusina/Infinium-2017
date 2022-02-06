@@ -1468,10 +1468,12 @@ namespace Infinium
             else
             {
                 bool RateExist = false;
+                decimal EURBYRCurrency = 0;
                 obj.GetDateRates(DateTime.Now, ref RateExist);
                 if (!RateExist)
-                    RateExist = obj.NBRBDailyRates(DateTime.Now);
-                if (RateExist)
+                    EURBYRCurrency = Infinium.Modules.Marketing.NewOrders.CurrencyConverter.NbrbDailyRates(DateTime.Now);
+                //RateExist = obj.NBRBDailyRates(DateTime.Now);
+                if (EURBYRCurrency != 0)
                 {
                     obj.ClearZOVMainOrdersInfo();
                     for (int i = 0; i < MainOrdersDataGrid.SelectedRows.Count; i++)
@@ -1542,9 +1544,16 @@ namespace Infinium
             else
             {
                 bool RateExist = false;
+                decimal EURBYRCurrency = 0;
                 obj.GetDateRates(DateTime.Now, ref RateExist);
                 if (!RateExist)
-                    RateExist = obj.NBRBDailyRates(DateTime.Now);
+                {
+                    EURBYRCurrency = Infinium.Modules.Marketing.NewOrders.CurrencyConverter.NbrbDailyRates(DateTime.Now);
+                    if (EURBYRCurrency == 0)
+                        RateExist = false;
+                }
+
+                //RateExist = obj.NBRBDailyRates(DateTime.Now);
                 if (RateExist)
                 {
                     obj.ClearZOVMainOrdersInfo();

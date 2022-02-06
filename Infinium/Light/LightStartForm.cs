@@ -54,7 +54,7 @@ namespace Infinium
 
             //UpdatesPanel.Width = UserPanel.Left - UpdatesPanel.Left - 5;
 
-            PhotoBox.Image = UserProfile.GetUserPhoto();
+            //PhotoBox.Image = UserProfile.GetUserPhoto();
 
             InfiniumStart = new Infinium.InfiniumStart();
             InfiniumTilesContainer.ItemsDataTable = InfiniumStart.ModulesDataTable;

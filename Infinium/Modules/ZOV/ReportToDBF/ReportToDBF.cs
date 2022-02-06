@@ -5558,9 +5558,9 @@ namespace Infinium.Modules.ZOV.ReportToDBF
 
         public static void DataSetIntoDBF(string path, string fileName, DataTable DT, int FactoryID)
         {
-            if (File.Exists(path + fileName + ".dbf"))
+            if (File.Exists(path + "/"+ fileName + ".dbf"))
             {
-                File.Delete(path + fileName + ".dbf");
+                File.Delete(path + "/" + fileName + ".dbf");
             }
 
             string createSql = "create table " + fileName + " ([UNNP] varchar(20), [UNN] varchar(20), [CurrencyCode] varchar(20), [InvNumber] varchar(20), [Amount] Double, [Price] Double, [Nest] Double, [NDS] varchar(10), [Weight] Double, [PackageCount] Integer)";
@@ -5625,9 +5625,9 @@ namespace Infinium.Modules.ZOV.ReportToDBF
 
         public static void DataSetIntoDBF(string path, string fileName, DataTable DT1, DataTable DT2, int FactoryID)
         {
-            if (File.Exists(path + fileName + ".dbf"))
+            if (File.Exists(path + "/"+ fileName + ".dbf"))
             {
-                File.Delete(path + fileName + ".dbf");
+                File.Delete(path + "/" + fileName + ".dbf");
             }
 
             string createSql = "create table " + fileName + " ([UNNP] varchar(20), [UNN] varchar(20), [CurrencyCode] varchar(20), [InvNumber] varchar(20), [Amount] Double, [Price] Double, [Nest] Double, [NDS] varchar(10), [Weight] Double, [PackageCount] Integer)";

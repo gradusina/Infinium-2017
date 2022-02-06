@@ -7,6 +7,7 @@ using System.Data.OleDb;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDbf
 {
@@ -164,7 +165,7 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDbf
             using (DataView DV = new DataView(table2))
             {
                 DV.RowFilter = IsNonStandardFilter;
-                DistinctInvNumbersDT = DV.ToTable(true, new string[] { "AccountingName", "InvNumber", "PaymentRate" });
+                DistinctInvNumbersDT = DV.ToTable(true, new string[] { "AccountingName", "InvNumber", "Cvet", "Patina", "PaymentRate" });
             }
             IsNonStandardFilter = " AND " + IsNonStandardFilter;
             for (int i = 0; i < DistinctInvNumbersDT.Rows.Count; i++)
@@ -568,6 +569,11 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDbf
             foreach (DataRow item in TempDT.Rows)
                 DT.Rows.Add(item.ItemArray);
 
+            foreach (DataRow item in DT.Rows)
+            {
+                if (item["Cvet"].ToString() == "")
+                    item["Cvet"] = "000";
+            }
             for (int z = 0; z < MainOrdersIDs.Count(); z++)
             {
                 using (DataView DV = new DataView(DT, "MainOrderID=" + MainOrdersIDs[z], string.Empty, DataViewRowState.CurrentRows))
@@ -1491,6 +1497,11 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDbf
             foreach (DataRow item in TempDT.Rows)
                 DT.Rows.Add(item.ItemArray);
 
+            foreach (DataRow item in DT.Rows)
+            {
+                if (item["Cvet"].ToString() == "")
+                    item["Cvet"] = "000";
+            }
             for (int z = 0; z < MainOrdersIDs.Count(); z++)
             {
                 using (DataView DV = new DataView(DT, "MainOrderID=" + MainOrdersIDs[z], string.Empty, DataViewRowState.CurrentRows))
@@ -2373,9 +2384,9 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDbf
 
         public static void DataSetIntoDBF(string path, string fileName, DataTable DT1, int FactoryID)
         {
-            if (File.Exists(path + fileName + ".dbf"))
+            if (File.Exists(path + "/"+ fileName + ".dbf"))
             {
-                File.Delete(path + fileName + ".dbf");
+                File.Delete(path + "/" + fileName + ".dbf");
             }
 
             string createSql = $"create table { fileName } ([UNNP] varchar(20), [UNN] varchar(20), [CurrencyCode] varchar(20), " +
@@ -2426,7 +2437,7 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDbf
                 //cmd.Parameters.Add("TPSCurCode", OleDbType.VarChar).Value = TPSCurCode;
                 cmd.Parameters.Add("InvNumber", OleDbType.VarChar).Value = InvNumber;
                 cmd.Parameters.Add("Cvet", OleDbType.VarChar).Value = Cvet;
-                cmd.Parameters.Add("Patina", OleDbType.VarChar).Value = Patina;
+                cmd.Parameters.Add("Patina", OleDbType.VarChar).Value = Encoding.GetEncoding(866).GetString(Encoding.GetEncoding(1251).GetBytes(Patina));
                 cmd.Parameters.Add("Amount", OleDbType.Double).Value = Amount;
                 cmd.Parameters.Add("PriceWithTransport", OleDbType.Double).Value = Price;
                 cmd.Parameters.Add("NDS", OleDbType.VarChar).Value = NDS;
@@ -2440,9 +2451,9 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDbf
 
         public static void DataSetIntoDBF(string path, string fileName, DataTable DT1, DataTable DT2, int FactoryID)
         {
-            if (File.Exists(path + fileName + ".dbf"))
+            if (File.Exists(path + "/"+ fileName + ".dbf"))
             {
-                File.Delete(path + fileName + ".dbf");
+                File.Delete(path + "/" + fileName + ".dbf");
             }
 
             string createSql = $"create table { fileName } ([UNNP] varchar(20), [UNN] varchar(20), [CurrencyCode] varchar(20), " +
@@ -2493,7 +2504,7 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDbf
                 //cmd.Parameters.Add("TPSCurCode", OleDbType.VarChar).Value = TPSCurCode;
                 cmd.Parameters.Add("InvNumber", OleDbType.VarChar).Value = InvNumber;
                 cmd.Parameters.Add("Cvet", OleDbType.VarChar).Value = Cvet;
-                cmd.Parameters.Add("Patina", OleDbType.VarChar).Value = Patina;
+                cmd.Parameters.Add("Patina", OleDbType.VarChar).Value = Encoding.GetEncoding(866).GetString(Encoding.GetEncoding(1251).GetBytes(Patina));
                 cmd.Parameters.Add("Amount", OleDbType.Double).Value = Amount;
                 cmd.Parameters.Add("PriceWithTransport", OleDbType.Double).Value = Price;
                 cmd.Parameters.Add("NDS", OleDbType.VarChar).Value = NDS;
@@ -2534,7 +2545,7 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDbf
                 //cmd.Parameters.Add("TPSCurCode", OleDbType.VarChar).Value = TPSCurCode;
                 cmd.Parameters.Add("InvNumber", OleDbType.VarChar).Value = InvNumber;
                 cmd.Parameters.Add("Cvet", OleDbType.VarChar).Value = Cvet;
-                cmd.Parameters.Add("Patina", OleDbType.VarChar).Value = Patina;
+                cmd.Parameters.Add("Patina", OleDbType.VarChar).Value = Encoding.GetEncoding(866).GetString(Encoding.GetEncoding(1251).GetBytes(Patina));
                 cmd.Parameters.Add("Amount", OleDbType.Double).Value = Amount;
                 cmd.Parameters.Add("PriceWithTransport", OleDbType.Double).Value = Price;
                 cmd.Parameters.Add("NDS", OleDbType.VarChar).Value = NDS;

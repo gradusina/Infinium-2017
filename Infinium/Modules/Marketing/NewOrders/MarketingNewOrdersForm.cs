@@ -50,6 +50,7 @@ namespace Infinium
         DataTable RolePermissionsDataTable;
 
         public OrdersManager OrdersManager;
+        public FrontsCatalogOrder FrontsCatalogOrder;
         public DecorCatalogOrder DecorCatalogOrder;
         public OrdersCalculate OrdersCalculate;
 
@@ -231,7 +232,10 @@ namespace Infinium
 
             CreateOrdersFromExcel = new CreateOrdersFromExcel();
 
+            FrontsCatalogOrder = new FrontsCatalogOrder();
+            FrontsCatalogOrder.Initialize(true);
             DecorCatalogOrder = new DecorCatalogOrder();
+            DecorCatalogOrder.Initialize(true);
 
             OrdersManager = new OrdersManager(ref MainOrdersDataGrid, ref MainOrdersFrontsOrdersDataGrid, ref MegaOrdersDataGrid,
                 ref MainOrdersDecorTabControl, ref MainOrdersTabControl, ref DecorCatalogOrder);
@@ -841,7 +845,7 @@ namespace Infinium
                     if (RoleType == RoleTypes.Admin || RoleType == RoleTypes.Director)
                         bCanDirectorDiscount = true;
 
-                    DBFReport = new InvoiceReportToDbf();
+                    DBFReport = new InvoiceReportToDbf(FrontsCatalogOrder, DecorCatalogOrder);
                     CurrencyForm = new CurrencyForm(this, ref OrdersManager, ref OrdersCalculate, ref DBFReport, ClientID, ClientName, bCanDirectorDiscount);
 
                     CurrencyForm.SetParameters(
@@ -958,7 +962,7 @@ namespace Infinium
             if (RoleType == RoleTypes.Admin || RoleType == RoleTypes.Director)
                 bCanDirectorDiscount = true;
 
-            InvoiceReportToDbf DBFReport = new InvoiceReportToDbf();
+            InvoiceReportToDbf DBFReport = new InvoiceReportToDbf(FrontsCatalogOrder, DecorCatalogOrder);
             CurrencyForm = new CurrencyForm(this, ref OrdersManager, ref OrdersCalculate, ref DBFReport, ClientID, ClientName, bCanDirectorDiscount);
 
             CurrencyForm.SetParameters(
@@ -1152,63 +1156,6 @@ namespace Infinium
             }
         }
 
-        public void asdf()
-        {
-            if (OrdersManager.MegaOrdersBindingSource.Count == 0)
-                return;
-
-            PhantomForm PhantomForm = new Infinium.PhantomForm();
-            PhantomForm.Show();
-            InvoiceReportToDbf DBFReport = new InvoiceReportToDbf();
-            for (int i = 0; i < MegaOrdersDataGrid.SelectedRows.Count; i++)
-            {
-                int MegaOrderID = Convert.ToInt32(MegaOrdersDataGrid.SelectedRows[i].Cells["MegaOrderID"].Value);
-                int ClientID = Convert.ToInt32(MegaOrdersDataGrid.SelectedRows[i].Cells["ClientID"].Value);
-                string ClientName = OrdersManager.GetClientName(ClientID);
-
-                bool bCanDirectorDiscount = false;
-                if (RoleType == RoleTypes.Admin || RoleType == RoleTypes.Director)
-                    bCanDirectorDiscount = true;
-
-                CurrencyForm = new CurrencyForm(this, ref OrdersManager, ref OrdersCalculate, ref DBFReport, ClientID, ClientName, bCanDirectorDiscount);
-
-                CurrencyForm.SetParameters(
-                    Convert.ToInt32(MegaOrdersDataGrid.SelectedRows[i].Cells["TransportType"].Value),
-                    Convert.ToInt32(MegaOrdersDataGrid.SelectedRows[i].Cells["DelayOfPayment"].Value),
-                    MegaOrdersDataGrid.SelectedRows[i].Cells["DesireDate"].Value,
-                    MegaOrdersDataGrid.SelectedRows[i].Cells["ConfirmDateTime"].Value,
-                    Convert.ToInt32(MegaOrdersDataGrid.SelectedRows[i].Cells["CurrencyTypeID"].Value),
-
-                    Convert.ToDecimal(MegaOrdersDataGrid.SelectedRows[i].Cells["Rate"].Value),
-                    Convert.ToDecimal(MegaOrdersDataGrid.SelectedRows[i].Cells["PaymentRate"].Value),
-                    Convert.ToDecimal(MegaOrdersDataGrid.SelectedRows[i].Cells["ComplaintProfilCost"].Value),
-                    Convert.ToDecimal(MegaOrdersDataGrid.SelectedRows[i].Cells["ComplaintTPSCost"].Value),
-
-                    MegaOrdersDataGrid.SelectedRows[i].Cells["ComplaintNotes"].Value.ToString(),
-
-                    Convert.ToDecimal(MegaOrdersDataGrid.SelectedRows[i].Cells["TransportCost"].Value),
-                    Convert.ToDecimal(MegaOrdersDataGrid.SelectedRows[i].Cells["AdditionalCost"].Value),
-
-                    Convert.ToInt32(MegaOrdersDataGrid.SelectedRows[i].Cells["DiscountPaymentConditionID"].Value),
-                    Convert.ToInt32(MegaOrdersDataGrid.SelectedRows[i].Cells["DiscountFactoringID"].Value),
-
-                    Convert.ToDecimal(MegaOrdersDataGrid.SelectedRows[i].Cells["ProfilDiscountDirector"].Value),
-                    Convert.ToDecimal(MegaOrdersDataGrid.SelectedRows[i].Cells["TPSDiscountDirector"].Value),
-
-                    Convert.ToDecimal(MegaOrdersDataGrid.SelectedRows[i].Cells["Weight"].Value));
-
-                TopForm = CurrencyForm;
-                CurrencyForm.ShowDialog();
-
-            }
-
-            PhantomForm.Close();
-
-            PhantomForm.Dispose();
-            CurrencyForm.Dispose();
-            TopForm = null;
-        }
-
         private void CreateReportButton_Click(object sender, EventArgs e)
         {
             if (OrdersManager.MainOrdersBindingSource.Count == 0)
@@ -1281,7 +1228,7 @@ namespace Infinium
                     }
                     if (invoiceReportType == InvoiceReportType.Standard)
                     {
-                        Infinium.Modules.Marketing.NewOrders.InvoiceReportToDbf.InvoiceReportToDbf dbfReport = new InvoiceReportToDbf();
+                        Infinium.Modules.Marketing.NewOrders.InvoiceReportToDbf.InvoiceReportToDbf dbfReport = new InvoiceReportToDbf(FrontsCatalogOrder, DecorCatalogOrder);
                         InvoiceReportToDBF(dbfReport);
                     }
                     if (invoiceReportType == InvoiceReportType.CvetPatina)
@@ -3067,7 +3014,8 @@ namespace Infinium
             if (!RateExist)
             {
                 OrdersManager.CBRDailyRates(Date, ref EURRUBCurrency, ref USDRUBCurrency);
-                OrdersManager.NBRBDailyRates(Date, ref EURBYRCurrency);
+                EURBYRCurrency = CurrencyConverter.NbrbDailyRates(DateTime.Now);
+                //OrdersManager.NBRBDailyRates(Date, ref EURBYRCurrency);
 
                 if (USDRUBCurrency != 0)
                     EURUSDCurrency = Decimal.Round(EURRUBCurrency / USDRUBCurrency, 4, MidpointRounding.AwayFromZero);
@@ -3688,18 +3636,18 @@ namespace Infinium
 
                     if (invoiceReportType == InvoiceReportType.Notes)
                     {
-                        Infinium.Modules.Marketing.NewOrders.NotesInvoiceReportToDbf.NotesInvoiceReportToDbf dbfReport = new NotesInvoiceReportToDbf();
-                        InvoiceReportToDBF(dbfReport);
+                        Infinium.Modules.Marketing.NewOrders.PrepareReport.NotesInvoiceReportToDbf.NotesInvoiceReportToDbf dbfReport = new Modules.Marketing.NewOrders.PrepareReport.NotesInvoiceReportToDbf.NotesInvoiceReportToDbf();
+                        PrepareInvoiceReportToDBF(dbfReport);
                     }
                     if (invoiceReportType == InvoiceReportType.Standard)
                     {
-                        Infinium.Modules.Marketing.NewOrders.InvoiceReportToDbf.InvoiceReportToDbf dbfReport = new InvoiceReportToDbf();
-                        InvoiceReportToDBF(dbfReport);
+                        Infinium.Modules.Marketing.NewOrders.PrepareReport.InvoiceReportToDbf.InvoiceReportToDbf dbfReport = new Modules.Marketing.NewOrders.PrepareReport.InvoiceReportToDbf.InvoiceReportToDbf();
+                        PrepareInvoiceReportToDBF(dbfReport);
                     }
                     if (invoiceReportType == InvoiceReportType.CvetPatina)
                     {
-                        Modules.Marketing.NewOrders.ColorInvoiceReportToDbf.ColorInvoiceReportToDbf dbfReport = new ColorInvoiceReportToDbf();
-                        InvoiceReportToDBF(dbfReport);
+                        Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportToDbf.ColorInvoiceReportToDbf dbfReport = new Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportToDbf.ColorInvoiceReportToDbf();
+                        PrepareInvoiceReportToDBF(dbfReport);
                     }
                 }
                 else
@@ -3709,6 +3657,287 @@ namespace Infinium
             }
         }
 
+        private void PrepareInvoiceReportToDBF(Modules.Marketing.NewOrders.PrepareReport.NotesInvoiceReportToDbf.NotesInvoiceReportToDbf DBFReport)
+        {
+            int CurrencyTypeID = Convert.ToInt32(MegaOrdersDataGrid.SelectedRows[0].Cells["CurrencyTypeID"].Value);
+            int DiscountPaymentConditionID = Convert.ToInt32(MegaOrdersDataGrid.SelectedRows[0].Cells["DiscountPaymentConditionID"].Value);
+            int DelayOfPayment = Convert.ToInt32(MegaOrdersDataGrid.SelectedRows[0].Cells["DelayOfPayment"].Value);
+
+            decimal ComplaintProfilCost = 0;
+            decimal ComplaintTPSCost = 0;
+            decimal TransportCost = 0;
+            decimal AdditionalCost = 0;
+            decimal TotalWeight = 0;
+            CurrencyTypeID = Convert.ToInt32(((DataRowView)OrdersManager.MegaOrdersBindingSource.Current).Row["CurrencyTypeID"]);
+            decimal Rate = Convert.ToDecimal(((DataRowView)OrdersManager.MegaOrdersBindingSource.Current).Row["PaymentRate"]);
+            int OrderNumber = Convert.ToInt32(((DataRowView)OrdersManager.MegaOrdersBindingSource.Current).Row["OrderNumber"]);
+
+            for (int i = 0; i < MegaOrdersDataGrid.SelectedRows.Count; i++)
+            {
+                ComplaintProfilCost += Convert.ToDecimal(MegaOrdersDataGrid.SelectedRows[i].Cells["CurrencyComplaintProfilCost"].Value);
+                ComplaintTPSCost += Convert.ToDecimal(MegaOrdersDataGrid.SelectedRows[i].Cells["CurrencyComplaintTPSCost"].Value);
+                TotalWeight += Convert.ToDecimal(MegaOrdersDataGrid.SelectedRows[i].Cells["Weight"].Value);
+                TransportCost += Convert.ToDecimal(MegaOrdersDataGrid.SelectedRows[i].Cells["CurrencyTransportCost"].Value);
+                AdditionalCost += Convert.ToDecimal(MegaOrdersDataGrid.SelectedRows[i].Cells["CurrencyAdditionalCost"].Value);
+            }
+
+            int[] SelectedMegaOrders = OrdersManager.GetSelectedMegaOrders();
+            int[] SelectedOrderNumbers = OrdersManager.GetSelectedOrderNumbers();
+            int[] SelectedProfilOrderNumbers = new int[MegaOrdersDataGrid.SelectedRows.Count];
+            int[] SelectedTPSOrderNumbers = new int[MegaOrdersDataGrid.SelectedRows.Count];
+            int[] MainOrders = OrdersManager.GetMainOrders(SelectedMegaOrders);
+
+            for (int i = 0; i < MegaOrdersDataGrid.SelectedRows.Count; i++)
+            {
+                if (Convert.ToInt32(MegaOrdersDataGrid.SelectedRows[i].Cells["FactoryID"].Value) == 1 || Convert.ToInt32(MegaOrdersDataGrid.SelectedRows[i].Cells["FactoryID"].Value) == 0)
+                    SelectedProfilOrderNumbers[i] = Convert.ToInt32(MegaOrdersDataGrid.SelectedRows[i].Cells["OrderNumber"].Value);
+                if (Convert.ToInt32(MegaOrdersDataGrid.SelectedRows[i].Cells["FactoryID"].Value) == 2 || Convert.ToInt32(MegaOrdersDataGrid.SelectedRows[i].Cells["FactoryID"].Value) == 0)
+                    SelectedTPSOrderNumbers[i] = Convert.ToInt32(MegaOrdersDataGrid.SelectedRows[i].Cells["OrderNumber"].Value);
+            }
+            SelectedProfilOrderNumbers = SelectedProfilOrderNumbers.Where(val => val != 0).ToArray();
+            SelectedTPSOrderNumbers = SelectedTPSOrderNumbers.Where(val => val != 0).ToArray();
+            int ClientID = Convert.ToInt32(((DataRowView)OrdersManager.MegaOrdersBindingSource.Current).Row["ClientID"]);
+            string ClientName = OrdersManager.GetClientName(ClientID);
+
+            NeedSplash = false;
+
+            Modules.Marketing.MutualSettlements.MutualSettlements MutualSettlementsManager = new Modules.Marketing.MutualSettlements.MutualSettlements();
+            MutualSettlementsManager.Initialize();
+
+            if (ClientID == 145)
+            {
+                bool HasOrdinaryOrders = OrdersManager.HasOrders(MainOrders, false);
+                bool HasSampleOrders = OrdersManager.HasOrders(MainOrders, true);
+
+                if (HasOrdinaryOrders)
+                {
+                    decimal TotalProfil = 0;
+                    decimal TotalTPS = 0;
+
+                    string ProfilDBFName = string.Empty;
+                    string TPSDBFName = string.Empty;
+                    string ReportName = string.Empty;
+                    int ClientCountryID = OrdersManager.GetClientCountry(ClientID);
+
+                    ClientName = ClientName.Replace("\"", " ");
+                    ClientName = ClientName.Replace("*", " ");
+                    ClientName = ClientName.Replace("|", " ");
+                    ClientName = ClientName.Replace(@"\", " ");
+                    ClientName = ClientName.Replace(":", " ");
+                    ClientName = ClientName.Replace("<", " ");
+                    ClientName = ClientName.Replace(">", " ");
+                    ClientName = ClientName.Replace("?", " ");
+                    ClientName = ClientName.Replace("/", " ");
+                    ReportName = ClientName + " №" + string.Join(",", SelectedOrderNumbers);
+
+                    PhantomForm PhantomForm = new Infinium.PhantomForm();
+                    PhantomForm.Show();
+                    bool InMutualSettlement = false;
+                    int Result = 1;
+                    string Notes = string.Empty;
+                    string SaveFilePath = string.Empty;
+                    SaveDBFReportMenu = new Infinium.SaveDBFReportMenu(this, ReportName);
+
+                    TopForm = SaveDBFReportMenu;
+                    SaveDBFReportMenu.ShowDialog();
+
+                    PhantomForm.Close();
+                    InMutualSettlement = SaveDBFReportMenu.InMutualSettlement;
+                    Result = SaveDBFReportMenu.Result;
+                    Notes = SaveDBFReportMenu.Notes;
+                    SaveFilePath = SaveDBFReportMenu.SaveFilePath;
+                    PhantomForm.Dispose();
+                    SaveDBFReportMenu.Dispose();
+                    TopForm = null;
+
+                    if (Result != 3)
+                    {
+                        Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Загрузка данных с сервера.\r\nПодождите..."); });
+                        T.Start();
+
+                        while (!SplashWindow.bSmallCreated) ;
+
+                        HSSFWorkbook hssfworkbook = new HSSFWorkbook();
+
+                        DBFReport.CreateReport(ref hssfworkbook, SelectedMegaOrders, SelectedOrderNumbers, MainOrders,
+                            ClientID, ClientName, ComplaintProfilCost, ComplaintTPSCost, TransportCost, AdditionalCost,
+                            OrdersManager.GetMainOrdersCost(MainOrders), CurrencyTypeID, TotalWeight, false, ref TotalProfil, ref TotalTPS);
+                        DBFReport.SaveDBF(SaveFilePath, ReportName, false, ref ProfilDBFName, ref TPSDBFName);
+
+                        PrepareReport.Report(ref hssfworkbook, SelectedMegaOrders, SelectedOrderNumbers, MainOrders, ClientID, ClientName,
+                            ComplaintProfilCost, ComplaintTPSCost, TransportCost, AdditionalCost,
+                            OrdersManager.GetMainOrdersCost(MainOrders), CurrencyTypeID, TotalWeight, false);
+
+                        FileInfo file = new FileInfo(SaveFilePath + @"\" + ReportName + ".xls");
+                        int j = 1;
+                        while (file.Exists == true)
+                        {
+                            file = new FileInfo(SaveFilePath + @"\" + ReportName + "(" + j++ + ").xls");
+                        }
+
+                        FileStream NewFile = new FileStream(file.FullName, FileMode.Create);
+                        hssfworkbook.Write(NewFile);
+                        NewFile.Close();
+
+                        while (SplashWindow.bSmallCreated)
+                            SmallWaitForm.CloseS = true;
+                        NeedSplash = true;
+                    }
+                }
+                if (HasSampleOrders)
+                {
+                    decimal TotalProfil = 0;
+                    decimal TotalTPS = 0;
+
+                    string ProfilDBFName = string.Empty;
+                    string TPSDBFName = string.Empty;
+                    string ReportName = string.Empty;
+                    int ClientCountryID = OrdersManager.GetClientCountry(ClientID);
+
+                    ClientName = ClientName.Replace("\"", " ");
+                    ClientName = ClientName.Replace("*", " ");
+                    ClientName = ClientName.Replace("|", " ");
+                    ClientName = ClientName.Replace(@"\", " ");
+                    ClientName = ClientName.Replace(":", " ");
+                    ClientName = ClientName.Replace("<", " ");
+                    ClientName = ClientName.Replace(">", " ");
+                    ClientName = ClientName.Replace("?", " ");
+                    ClientName = ClientName.Replace("/", " ");
+                    ReportName = ClientName + " №" + string.Join(",", SelectedOrderNumbers) + ", обр";
+
+                    PhantomForm PhantomForm = new Infinium.PhantomForm();
+                    PhantomForm.Show();
+                    bool InMutualSettlement = false;
+                    int Result = 1;
+                    string Notes = string.Empty;
+                    string SaveFilePath = string.Empty;
+                    SaveDBFReportMenu = new Infinium.SaveDBFReportMenu(this, ReportName);
+
+                    TopForm = SaveDBFReportMenu;
+                    SaveDBFReportMenu.ShowDialog();
+
+                    PhantomForm.Close();
+                    InMutualSettlement = SaveDBFReportMenu.InMutualSettlement;
+                    Result = SaveDBFReportMenu.Result;
+                    Notes = SaveDBFReportMenu.Notes;
+                    SaveFilePath = SaveDBFReportMenu.SaveFilePath;
+                    PhantomForm.Dispose();
+                    SaveDBFReportMenu.Dispose();
+                    TopForm = null;
+
+                    if (Result != 3)
+                    {
+                        Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Загрузка данных с сервера.\r\nПодождите..."); });
+                        T.Start();
+
+                        while (!SplashWindow.bSmallCreated) ;
+
+                        HSSFWorkbook hssfworkbook = new HSSFWorkbook();
+
+                        DBFReport.CreateReport(ref hssfworkbook, SelectedMegaOrders, SelectedOrderNumbers, MainOrders,
+                            ClientID, ClientName, ComplaintProfilCost, ComplaintTPSCost, TransportCost, AdditionalCost,
+                            OrdersManager.GetMainOrdersCost(MainOrders), CurrencyTypeID, TotalWeight, true, ref TotalProfil, ref TotalTPS);
+                        DBFReport.SaveDBF(SaveFilePath, ReportName, true, ref ProfilDBFName, ref TPSDBFName);
+
+                        PrepareReport.Report(ref hssfworkbook, SelectedMegaOrders, SelectedOrderNumbers, MainOrders, ClientID, ClientName,
+                            ComplaintProfilCost, ComplaintTPSCost, TransportCost, AdditionalCost,
+                            OrdersManager.GetMainOrdersCost(MainOrders), CurrencyTypeID, TotalWeight, true);
+
+                        FileInfo file = new FileInfo(SaveFilePath + @"\" + ReportName + ".xls");
+                        int j = 1;
+                        while (file.Exists == true)
+                        {
+                            file = new FileInfo(SaveFilePath + @"\" + ReportName + "(" + j++ + ").xls");
+                        }
+
+                        FileStream NewFile = new FileStream(file.FullName, FileMode.Create);
+                        hssfworkbook.Write(NewFile);
+                        NewFile.Close();
+
+                        while (SplashWindow.bSmallCreated)
+                            SmallWaitForm.CloseS = true;
+                        NeedSplash = true;
+                    }
+                }
+            }
+            else
+            {
+                decimal TotalProfil = 0;
+                decimal TotalTPS = 0;
+
+                string ProfilDBFName = string.Empty;
+                string TPSDBFName = string.Empty;
+                string ReportName = string.Empty;
+                int ClientCountryID = OrdersManager.GetClientCountry(ClientID);
+
+                ClientName = ClientName.Replace("\"", " ");
+                ClientName = ClientName.Replace("*", " ");
+                ClientName = ClientName.Replace("|", " ");
+                ClientName = ClientName.Replace(@"\", " ");
+                ClientName = ClientName.Replace(":", " ");
+                ClientName = ClientName.Replace("<", " ");
+                ClientName = ClientName.Replace(">", " ");
+                ClientName = ClientName.Replace("?", " ");
+                ClientName = ClientName.Replace("/", " ");
+                ReportName = ClientName + " №" + string.Join(",", SelectedOrderNumbers);
+
+                PhantomForm PhantomForm = new Infinium.PhantomForm();
+                PhantomForm.Show();
+                bool InMutualSettlement = false;
+                int Result = 1;
+                string Notes = string.Empty;
+                string SaveFilePath = string.Empty;
+                SaveDBFReportMenu = new Infinium.SaveDBFReportMenu(this, ReportName);
+
+                TopForm = SaveDBFReportMenu;
+                SaveDBFReportMenu.ShowDialog();
+
+                PhantomForm.Close();
+                InMutualSettlement = SaveDBFReportMenu.InMutualSettlement;
+                Result = SaveDBFReportMenu.Result;
+                Notes = SaveDBFReportMenu.Notes;
+                SaveFilePath = SaveDBFReportMenu.SaveFilePath;
+                PhantomForm.Dispose();
+                SaveDBFReportMenu.Dispose();
+                TopForm = null;
+
+                if (Result != 3)
+                {
+                    Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Загрузка данных с сервера.\r\nПодождите..."); });
+                    T.Start();
+
+                    while (!SplashWindow.bSmallCreated) ;
+
+                    HSSFWorkbook hssfworkbook = new HSSFWorkbook();
+
+                    DBFReport.CreateReport(ref hssfworkbook, SelectedMegaOrders, SelectedOrderNumbers, MainOrders,
+                        ClientID, ClientName, ComplaintProfilCost, ComplaintTPSCost, TransportCost, AdditionalCost,
+                        OrdersManager.GetMainOrdersCost(MainOrders), CurrencyTypeID, TotalWeight, ref TotalProfil, ref TotalTPS);
+                    DBFReport.SaveDBF(SaveFilePath, ReportName, ref ProfilDBFName, ref TPSDBFName);
+
+                    PrepareReport.Report(ref hssfworkbook, SelectedMegaOrders, SelectedOrderNumbers, MainOrders, ClientID, ClientName,
+                        ComplaintProfilCost, ComplaintTPSCost, TransportCost, AdditionalCost,
+                        OrdersManager.GetMainOrdersCost(MainOrders), CurrencyTypeID, TotalWeight);
+
+                    FileInfo file = new FileInfo(SaveFilePath + @"\" + ReportName + ".xls");
+                    int j = 1;
+                    while (file.Exists == true)
+                    {
+                        file = new FileInfo(SaveFilePath + @"\" + ReportName + "(" + j++ + ").xls");
+                    }
+
+                    FileStream NewFile = new FileStream(file.FullName, FileMode.Create);
+                    hssfworkbook.Write(NewFile);
+                    NewFile.Close();
+                    System.Diagnostics.Process.Start(file.FullName);
+
+                    while (SplashWindow.bSmallCreated)
+                        SmallWaitForm.CloseS = true;
+                    NeedSplash = true;
+                }
+            }
+        }
+        
         private void PrepareInvoiceReportToDBF(Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportToDbf.ColorInvoiceReportToDbf DBFReport)
         {
             int CurrencyTypeID = Convert.ToInt32(MegaOrdersDataGrid.SelectedRows[0].Cells["CurrencyTypeID"].Value);
@@ -3990,7 +4219,7 @@ namespace Infinium
             }
         }
 
-        private void PrepareInvoiceReportToDBF(Modules.Marketing.NewOrders.PrepareReport.InvoiceReport.InvoiceReportToDBF DBFReport)
+        private void PrepareInvoiceReportToDBF(Modules.Marketing.NewOrders.PrepareReport.InvoiceReportToDbf.InvoiceReportToDbf DBFReport)
         {
             int CurrencyTypeID = Convert.ToInt32(MegaOrdersDataGrid.SelectedRows[0].Cells["CurrencyTypeID"].Value);
             int DiscountPaymentConditionID = Convert.ToInt32(MegaOrdersDataGrid.SelectedRows[0].Cells["DiscountPaymentConditionID"].Value);

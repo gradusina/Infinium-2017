@@ -115,6 +115,7 @@
             this.kryptonContextMenuItems8 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItems();
             this.kryptonContextMenuItem7 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
             this.kryptonContextMenu8 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenu();
+            this.kryptonContextMenuItem8 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
             this.NavigatePanel.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MainOrdersTabControl)).BeginInit();
@@ -1352,7 +1353,8 @@
             this.kryptonContextMenuItem4,
             this.kryptonContextMenuItem5,
             this.kryptonContextMenuItem2,
-            this.kryptonContextMenuItem6});
+            this.kryptonContextMenuItem6,
+            this.kryptonContextMenuItem8});
             // 
             // kryptonContextMenuItem1
             // 
@@ -1410,6 +1412,11 @@
             // 
             this.kryptonContextMenu8.Items.AddRange(new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItemBase[] {
             this.kryptonContextMenuItems8});
+            // 
+            // kryptonContextMenuItem8
+            // 
+            this.kryptonContextMenuItem8.Text = "Скопировать";
+            this.kryptonContextMenuItem8.Click += new System.EventHandler(this.kryptonContextMenuItem8_Click);
             // 
             // WorkTimeRegisterForm
             // 
@@ -1551,5 +1558,6 @@
         private PercentageDataGrid WorkDaysGrid;
         private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem kryptonContextMenuItem6;
         private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem kryptonContextMenuItem7;
+        private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem kryptonContextMenuItem8;
     }
 }

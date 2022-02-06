@@ -454,7 +454,8 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport
                     if (bImpost)
                     {
                         string Front2 = GetFront2Name(Convert.ToInt32(Row["TechnoProfileID"]));
-                        InsetType = InsetType + "/" + Front2;
+                        if (Front2.Length > 0)
+                            InsetType = InsetType + "/" + Front2;
                     }
                 }
                 string InsetType2 = string.Empty;

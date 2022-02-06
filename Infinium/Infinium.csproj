@@ -100,6 +100,9 @@
       <HintPath>..\..\gradusina\Infinium\bin\Debug\DevExpress.XtraRichEdit.v12.1.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="NLog">
       <HintPath>..\..\gradusina\Infinium\bin\Debug\NLog.dll</HintPath>
     </Reference>
@@ -549,6 +552,12 @@
       <DependentUpon>ControlResponsibilitiesForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Modules\Admin\ProductionShedule.cs" />
+    <Compile Include="Modules\Admin\CopyWorkDayToUser.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modules\Admin\CopyWorkDayToUser.designer.cs">
+      <DependentUpon>CopyWorkDayToUser.cs</DependentUpon>
+    </Compile>
     <Compile Include="Modules\Admin\WebServiceForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -973,6 +982,9 @@
       <DependentUpon>AddMarketingNewOrdersForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Modules\Marketing\NewOrders\CalculateNewOrders.cs" />
+    <Compile Include="Modules\Marketing\NewOrders\CurrencyConverter.cs" />
+    <Compile Include="Modules\Marketing\NewOrders\DecorCatalogOrder.cs" />
+    <Compile Include="Modules\Marketing\NewOrders\FrontsCatalogOrder.cs" />
     <Compile Include="Modules\Marketing\NewOrders\NotesInvoiceReportToDbf\NotesInvoiceDecorReportToDbf.cs" />
     <Compile Include="Modules\Marketing\NewOrders\NotesInvoiceReportToDbf\NotesInvoiceFrontsReportToDbf.cs" />
     <Compile Include="Modules\Marketing\NewOrders\NotesInvoiceReportToDbf\NotesInvoiceReportToDbf.cs" />
@@ -1056,9 +1068,9 @@
     <Compile Include="Modules\Marketing\NewOrders\PrepareReport\ColorInvoiceReportToDbf\ColorInvoiceFrontsReportToDbf.cs" />
     <Compile Include="Modules\Marketing\NewOrders\PrepareReport\ColorInvoiceReportToDbf\ColorInvoiceReportToDbf.cs" />
     <Compile Include="Modules\Marketing\NewOrders\PrepareReport\DetailsReport.cs" />
-    <Compile Include="Modules\Marketing\NewOrders\PrepareReport\InvoiceReport\InvoiceDecorReportToDBF.cs" />
-    <Compile Include="Modules\Marketing\NewOrders\PrepareReport\InvoiceReport\InvoiceFrontsReportToDBF.cs" />
-    <Compile Include="Modules\Marketing\NewOrders\PrepareReport\InvoiceReport\InvoiceReportToDBF.cs" />
+    <Compile Include="Modules\Marketing\NewOrders\PrepareReport\InvoiceReportToDbf\InvoiceDecorReportToDbf.cs" />
+    <Compile Include="Modules\Marketing\NewOrders\PrepareReport\InvoiceReportToDbf\InvoiceFrontsReportToDbf.cs" />
+    <Compile Include="Modules\Marketing\NewOrders\PrepareReport\InvoiceReportToDbf\InvoiceReportToDbf.cs" />
     <Compile Include="Modules\Marketing\NewOrders\PrepareReport\StandardReport\DecorReport.cs" />
     <Compile Include="Modules\Marketing\NewOrders\PrepareReport\StandardReport\FrontsReport.cs" />
     <Compile Include="Modules\Marketing\NewOrders\PrepareReport\StandardReport\Report.cs" />
@@ -1087,6 +1099,11 @@
       <DependentUpon>AddMarketingOrdersForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Modules\Marketing\Orders\CalculateOrders.cs" />
+    <Compile Include="Modules\Marketing\Orders\DecorCatalogOrder.cs" />
+    <Compile Include="Modules\Marketing\Orders\FrontsCatalogOrder.cs" />
+    <Compile Include="Modules\Marketing\Orders\InvoiceReportToDBF\InvoiceDecorReportToDBF.cs" />
+    <Compile Include="Modules\Marketing\Orders\InvoiceReportToDBF\InvoiceFrontsReportToDbf.cs" />
+    <Compile Include="Modules\Marketing\Orders\InvoiceReportToDBF\InvoiceReportToDBF.cs" />
     <Compile Include="Modules\Marketing\Orders\MarketingOrders.cs" />
     <Compile Include="Modules\Marketing\Orders\MarketingOrdersForm.cs">
       <SubType>Form</SubType>
@@ -2185,6 +2202,9 @@
     <EmbeddedResource Include="Modules\Admin\ControlResponsibilitiesForm.resx">
       <DependentUpon>ControlResponsibilitiesForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Modules\Admin\CopyWorkDayToUser.resx">
+      <DependentUpon>CopyWorkDayToUser.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Modules\Admin\WebServiceForm.resx">
       <DependentUpon>WebServiceForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -2846,6 +2866,7 @@
       <DependentUpon>WaitForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Infinium.ruleset" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -2861,7 +2882,6 @@
     <Folder Include="Images\GroupsImages\" />
     <Folder Include="Images\TilesIcons\" />
     <Folder Include="Modules\Marketing\Orders\ColorInvoiceReportToDBF\" />
-    <Folder Include="Modules\Marketing\Orders\InvoiceReportToDBF\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\1380035188_stock_task.png" />
@@ -3351,6 +3371,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\n2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\n21.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\n2.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

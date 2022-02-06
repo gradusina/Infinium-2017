@@ -900,7 +900,7 @@ namespace Infinium.Modules.Marketing.Clients
             return ans.ToString();
         }
 
-        public void Send(string ClientEmail, string Login)
+        public void Send(int ClientID, string ClientEmail, string Login)
         {
             string AccountPassword = "3699PassWord14772588";
             string SenderEmail = "infiniumdevelopers@gmail.com";
@@ -925,31 +925,43 @@ https://drive.google.com/file/d/0BzOa6U366p2pOFRESEdUN2hQSGc/view?usp=sharing
 --
 С уважением, отдел разработки программного обеспечения СООО «ЗОВ - Профиль», Республика Беларусь, г. Гродно
 infiniumdevelopers@gmail.com";
+                //SmtpClient client = new SmtpClient("smtp.gmail.com", 587)
+                //{
+                //    EnableSsl = true,
+                //    UseDefaultCredentials = false,
+                //    Credentials = new NetworkCredential(SenderEmail, AccountPassword)
+                //};
                 SmtpClient client = new SmtpClient("smtp.gmail.com", 587)
                 {
                     EnableSsl = true,
                     UseDefaultCredentials = false,
-                    Credentials = new NetworkCredential(SenderEmail, AccountPassword)
+                    Credentials = new NetworkCredential(SenderEmail, AccountPassword),
+                    DeliveryMethod = SmtpDeliveryMethod.Network
                 };
                 try
                 {
                     client.Send(message);
+                    ClientEvents.AddEvent(ClientID, "Письмо с Агентом успешно отправлено", "MarketingClientsForm");
                 }
 
                 catch (ArgumentException ex)
                 {
+                    ClientEvents.AddEvent(ClientID, $"ArgumentException: {ex.Message}", "MarketingClientsForm");
                     MessageBox.Show("ArgumentException\r\n" + ex.Message);
                 }
                 catch (InvalidOperationException ex)
                 {
+                    ClientEvents.AddEvent(ClientID, $"InvalidOperationException: {ex.Message}", "MarketingClientsForm");
                     MessageBox.Show("InvalidOperationException\r\n" + ex.Message);
                 }
                 catch (SmtpException ex)
                 {
+                    ClientEvents.AddEvent(ClientID, $"SmtpException: {ex.Message}", "MarketingClientsForm");
                     MessageBox.Show("SmtpException\r\n" + ex.Message);
                 }
                 catch (Exception ex)
                 {
+                    ClientEvents.AddEvent(ClientID, $"Exception: {ex.Message}", "MarketingClientsForm");
                     MessageBox.Show("Exception\r\n" + ex.Message);
                 }
 

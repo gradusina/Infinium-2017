@@ -6324,7 +6324,8 @@ namespace Infinium.Modules.ZOV.Expedition
                     if (bImpost)
                     {
                         string Front2 = GetFront2Name(Convert.ToInt32(Row["TechnoProfileID"]));
-                        InsetType = InsetType + "/" + Front2;
+                        if (Front2.Length > 0)
+                            InsetType = InsetType + "/" + Front2;
                     }
                 }
 
@@ -8219,8 +8220,11 @@ namespace Infinium.Modules.ZOV.Expedition
 
         public void Send(string FileName, string MailAddressTo)
         {
-            string AccountPassword = "1290qpalzm";
-            string SenderEmail = "zovprofilreport@mail.ru";
+            //string AccountPassword = "1290qpalzm";
+            //string SenderEmail = "zovprofilreport@mail.ru";
+
+            string AccountPassword = "3699PassWord14772588";
+            string SenderEmail = "infiniumdevelopers@gmail.com";
 
             string from = SenderEmail;
 
@@ -8235,7 +8239,8 @@ namespace Infinium.Modules.ZOV.Expedition
                 message.Subject = "Отчет по отгрузке " + Convert.ToDateTime(PrepareDispatchDateTime).ToString("dd.MM.yyyy");
                 message.Body = "Отчет сгенерирован автоматически системой Infinium. Не надо отвечать на это письмо. По всем вопросам обращайтесь " +
                     "infiniumdevelopers@gmail.com";
-                SmtpClient client = new SmtpClient("smtp.mail.ru")
+                //SmtpClient client = new SmtpClient("smtp.mail.ru")
+                SmtpClient client = new SmtpClient("smtp.gmail.com", 587)
                 {
                     EnableSsl = true,
                     UseDefaultCredentials = false,

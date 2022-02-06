@@ -615,7 +615,7 @@
             this.panel21.Controls.Add(this.panel13);
             this.panel21.Location = new System.Drawing.Point(0, 0);
             this.panel21.Name = "panel21";
-            this.panel21.Size = new System.Drawing.Size(1854, 536);
+            this.panel21.Size = new System.Drawing.Size(1854, 621);
             this.panel21.TabIndex = 389;
             // 
             // panel26
@@ -732,7 +732,7 @@
             this.panel20.Controls.Add(this.TechStoreAttachDocumentsGrid);
             this.panel20.Location = new System.Drawing.Point(15, 384);
             this.panel20.Name = "panel20";
-            this.panel20.Size = new System.Drawing.Size(270, 102);
+            this.panel20.Size = new System.Drawing.Size(270, 187);
             this.panel20.TabIndex = 437;
             // 
             // TechStoreAttachDocumentsGrid
@@ -756,7 +756,7 @@
             this.TechStoreAttachDocumentsGrid.RowTemplate.Height = 30;
             this.TechStoreAttachDocumentsGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
             this.TechStoreAttachDocumentsGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.TechStoreAttachDocumentsGrid.Size = new System.Drawing.Size(268, 100);
+            this.TechStoreAttachDocumentsGrid.Size = new System.Drawing.Size(268, 185);
             this.TechStoreAttachDocumentsGrid.StandardStyle = true;
             this.TechStoreAttachDocumentsGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
             this.TechStoreAttachDocumentsGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
@@ -895,7 +895,7 @@
             this.panel1.Controls.Add(this.RemoveTechStoreAtStoreDetailButton);
             this.panel1.Controls.Add(this.RemoveTechCatalogToolsButton);
             this.panel1.Controls.Add(this.AddTechCatalogToolsButton);
-            this.panel1.Location = new System.Drawing.Point(22, 490);
+            this.panel1.Location = new System.Drawing.Point(22, 575);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1814, 44);
             this.panel1.TabIndex = 408;
@@ -1733,7 +1733,7 @@
             this.panel22.Controls.Add(this.TechCatalogToolsGrid);
             this.panel22.Location = new System.Drawing.Point(1418, 384);
             this.panel22.Name = "panel22";
-            this.panel22.Size = new System.Drawing.Size(418, 103);
+            this.panel22.Size = new System.Drawing.Size(418, 188);
             this.panel22.TabIndex = 402;
             // 
             // TechCatalogToolsGrid
@@ -1755,7 +1755,7 @@
             this.TechCatalogToolsGrid.RowTemplate.Height = 30;
             this.TechCatalogToolsGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
             this.TechCatalogToolsGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.TechCatalogToolsGrid.Size = new System.Drawing.Size(416, 101);
+            this.TechCatalogToolsGrid.Size = new System.Drawing.Size(416, 186);
             this.TechCatalogToolsGrid.StandardStyle = false;
             this.TechCatalogToolsGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
             this.TechCatalogToolsGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
@@ -1847,7 +1847,7 @@
             this.panel11.Controls.Add(this.TechCatalogStoreDetailGrid);
             this.panel11.Location = new System.Drawing.Point(563, 384);
             this.panel11.Name = "panel11";
-            this.panel11.Size = new System.Drawing.Size(849, 103);
+            this.panel11.Size = new System.Drawing.Size(849, 188);
             this.panel11.TabIndex = 379;
             // 
             // TechCatalogStoreDetailGrid
@@ -1869,7 +1869,7 @@
             this.TechCatalogStoreDetailGrid.RowTemplate.Height = 30;
             this.TechCatalogStoreDetailGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
             this.TechCatalogStoreDetailGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.TechCatalogStoreDetailGrid.Size = new System.Drawing.Size(847, 101);
+            this.TechCatalogStoreDetailGrid.Size = new System.Drawing.Size(847, 186);
             this.TechCatalogStoreDetailGrid.StandardStyle = false;
             this.TechCatalogStoreDetailGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
             this.TechCatalogStoreDetailGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
@@ -1967,7 +1967,7 @@
             this.panel13.Controls.Add(this.TechStoreGrid);
             this.panel13.Location = new System.Drawing.Point(293, 31);
             this.panel13.Name = "panel13";
-            this.panel13.Size = new System.Drawing.Size(265, 456);
+            this.panel13.Size = new System.Drawing.Size(265, 541);
             this.panel13.TabIndex = 377;
             // 
             // TechStoreGrid
@@ -1992,7 +1992,7 @@
             this.TechStoreGrid.RowTemplate.Height = 30;
             this.TechStoreGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
             this.TechStoreGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.TechStoreGrid.Size = new System.Drawing.Size(263, 454);
+            this.TechStoreGrid.Size = new System.Drawing.Size(263, 539);
             this.TechStoreGrid.StandardStyle = false;
             this.TechStoreGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
             this.TechStoreGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
@@ -2029,7 +2029,7 @@
             this.toolStripMenuItem1,
             this.toolStripMenuItem2});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(192, 70);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(192, 48);
             this.contextMenuStrip1.Text = "Открыть";
             // 
             // toolStripMenuItem1

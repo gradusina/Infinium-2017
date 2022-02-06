@@ -267,6 +267,7 @@
         ElegantSimpleInsetHeight = 134,
 
         Patricia1SimpleInsetHeight = 134,
+        ScandiaSimpleInsetHeight = 134,
 
         KansasSimpleInsetHeight = 128,
 
@@ -287,6 +288,7 @@
         ElegantBoxInsetHeight = 99,
 
         Patricia1BoxInsetHeight = 99,
+        ScandiaBoxInsetHeight = 98,
 
         KansasBoxInsetHeight = 89,
 
@@ -321,6 +323,7 @@
         ElegantGridInsetHeight = 134,
 
         Patricia1GridInsetHeight = 134,
+        ScandiaGridInsetHeight = 134,
 
         KansasGridInsetHeight = 128,
 
@@ -341,6 +344,7 @@
         ElegantSimpleInsetWidth = 134,
 
         Patricia1SimpleInsetWidth = 134,
+        ScandiaSimpleInsetWidth = 134,
 
         KansasSimpleInsetWidth = 128,
 
@@ -361,6 +365,7 @@
         ElegantBoxInsetWidth = 99,
 
         Patricia1BoxInsetWidth = 99,
+        ScandiaBoxInsetWidth = 99,
 
         KansasBoxInsetWidth = 89,
 
@@ -395,6 +400,7 @@
         ElegantGridInsetWidth = 134,
 
         Patricia1GridInsetWidth = 134,
+        ScandiaGridInsetWidth = 134,
 
         KansasGridInsetWidth = 128,
 
@@ -597,7 +603,7 @@
 
         Leon = 2348,
 
-        Limog = 3641,
+        Limog = 1111111,
 
         Luk = 2344,
 
@@ -677,11 +683,14 @@
 
         Patricia1 = 30379,
 
+        Scandia = 41118,
+
         Kansas = 3760,
 
         KansasPat = 3577,
 
         Sofia = 3415,
+        SofiaNotColored = 15033,
 
         Tafel2 = 3662,
 
@@ -695,7 +704,8 @@
 
         LeonTPS = 27920,
 
-        Turin3 = 3633
+        Turin3 = 3633,
+        Turin3NotColored = 3641
     }
 
     public enum Machines

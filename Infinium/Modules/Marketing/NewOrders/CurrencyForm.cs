@@ -396,12 +396,16 @@ namespace Infinium
                 if (ConfirmDate != DBNull.Value)
                 {
                     CBRDailyRates = OrdersManager.CBRDailyRates(Convert.ToDateTime(ConfirmDate), ref EURRUBCurrency, ref USDRUBCurrency);
-                    NBRBDailyRates = OrdersManager.NBRBDailyRates(Convert.ToDateTime(ConfirmDate), ref EURBYRCurrency);
+
+                    EURBYRCurrency = CurrencyConverter.NbrbDailyRates(DateTime.Now);
+
+                    //NBRBDailyRates = OrdersManager.NBRBDailyRates(Convert.ToDateTime(ConfirmDate), ref EURBYRCurrency);
                 }
                 else
                 {
                     CBRDailyRates = OrdersManager.CBRDailyRates(CurrencyDateTimePicker.Value.Date, ref EURRUBCurrency, ref USDRUBCurrency);
-                    NBRBDailyRates = OrdersManager.NBRBDailyRates(CurrencyDateTimePicker.Value.Date, ref EURBYRCurrency);
+                    EURBYRCurrency = CurrencyConverter.NbrbDailyRates(DateTime.Now);
+                    //NBRBDailyRates = OrdersManager.NBRBDailyRates(CurrencyDateTimePicker.Value.Date, ref EURBYRCurrency);
                 }
                 if (USDRUBCurrency != 0)
                     EURUSDCurrency = Decimal.Round(EURRUBCurrency / USDRUBCurrency, 4, MidpointRounding.AwayFromZero);
@@ -447,7 +451,8 @@ namespace Infinium
                     EURUSDCurrency = 0;
                     EURBYRCurrency = 0;
                     CBRDailyRates = OrdersManager.CBRDailyRates(CurrencyDateTimePicker.Value.Date, ref EURRUBCurrency, ref USDRUBCurrency);
-                    NBRBDailyRates = OrdersManager.NBRBDailyRates(CurrencyDateTimePicker.Value.Date, ref EURBYRCurrency);
+                    EURBYRCurrency = CurrencyConverter.NbrbDailyRates(DateTime.Now);
+                    //NBRBDailyRates = OrdersManager.NBRBDailyRates(CurrencyDateTimePicker.Value.Date, ref EURBYRCurrency);
                     if (USDRUBCurrency != 0)
                         EURUSDCurrency = Decimal.Round(EURRUBCurrency / USDRUBCurrency, 4, MidpointRounding.AwayFromZero);
                 }

@@ -41,16 +41,13 @@ namespace Infinium.Modules.Marketing.Clients
             UsersBS.DataSource = UsersDT;
         }
 
-        public void AddManager(int UserID, string Name, string ShortName, string Password, string Phone, string Email, string Skype)
+        public void AddManager(int UserID, string Name, string ShortName, string Password)
         {
             DataRow NewRow = ManagersDT.NewRow();
             NewRow["UserID"] = UserID;
             NewRow["Password"] = Password;
             NewRow["ShortName"] = ShortName;
             NewRow["Name"] = Name;
-            NewRow["Phone"] = Phone;
-            NewRow["Email"] = Email;
-            NewRow["Skype"] = Skype;
             ManagersDT.Rows.Add(NewRow);
         }
 

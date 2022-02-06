@@ -19,6 +19,33 @@ using System.Windows.Forms;
 
 namespace Infinium
 {
+    public class ClientEvents
+    {
+        public static void AddEvent(int ClientID, string Event, string ModuleName)
+        {
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM ClientEventsJournal", ConnectionStrings.MarketingReferenceConnectionString))
+            {
+                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                {
+                    using (DataTable DT = new DataTable())
+                    {
+                        DA.Fill(DT);
+
+                        DataRow NewRow = DT.NewRow();
+                        NewRow["ClientEvent"] = Event;
+                        NewRow["ModuleName"] = ModuleName;
+                        NewRow["ClientID"] = ClientID;
+                        NewRow["LoginJournalID"] = Security.CurrentLoginJournalID;
+                        NewRow["EventDateTime"] = DateTime.Now;
+                        DT.Rows.Add(NewRow);
+
+                        DA.Update(DT);
+                    }
+                }
+            }
+        }
+    }
+
     public static class TablesManager
     {
         private static DataTable FrontsAllConfigDT;
@@ -86,7 +113,8 @@ namespace Infinium
                     using (
                         SqlDataAdapter DA =
                             new SqlDataAdapter(
-                                "SELECT * FROM DecorConfig WHERE AccountingName IS NOT NULL AND InvNumber IS NOT NULL",
+                                $@"SELECT *, Decor.TechStoreName FROM DecorConfig LEFT JOIN
+                    infiniu2_catalog.dbo.TechStore AS Decor ON DecorConfig.DecorID = Decor.TechStoreID WHERE AccountingName IS NOT NULL AND InvNumber IS NOT NULL",
                                 ConnectionStrings.CatalogConnectionString))
                     {
                         DA.Fill(DecorAllConfigDT);
@@ -220,6 +248,9 @@ namespace Infinium
 
         public static void RefreshUsersDataTable()
         {
+            //if (_usersDataTable == null)
+            //    _usersDataTable = new DataTable();
+
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Users  WHERE Fired <> 1 ORDER BY Name", ConnectionStrings.UsersConnectionString))
             {
                 _usersDataTable.Clear();
@@ -262,6 +293,77 @@ namespace Infinium
                 DA.Fill(_modulesDataTable);
             }
         }
+
+        public static Tuple<string, decimal> GetTechStoreNameAndBalance(int DecorConfigID)
+        {
+            string TechStoreName = "";
+            decimal MinBalanceOnStorage = 0;
+
+            DataRow[] Rows = DecorAllConfigDT.Select("DecorConfigID = " + DecorConfigID);
+            if (Rows.Count() > 0)
+            {
+                TechStoreName = Rows[0]["TechStoreName"].ToString();
+                MinBalanceOnStorage = Convert.ToInt32(Rows[0]["MinBalanceOnStorage"]);
+            }
+
+            return new Tuple<string, decimal>(TechStoreName, MinBalanceOnStorage);
+        }
+
+        public static string GetTechStoreNameByConfigID(int DecorConfigID)
+        {
+            string TechStoreName = "";
+
+            DataRow[] Rows = DecorAllConfigDT.Select("DecorConfigID = " + DecorConfigID);
+            if (Rows.Count() > 0)
+            {
+                TechStoreName = Rows[0]["TechStoreName"].ToString();
+            }
+
+            return TechStoreName;
+        }
+
+        public static string GetTechStoreNameByDecorID(int DecorID)
+        {
+            string TechStoreName = "";
+
+            DataRow[] Rows = DecorAllConfigDT.Select("DecorID = " + DecorID);
+            if (Rows.Count() > 0)
+            {
+                TechStoreName = Rows[0]["TechStoreName"].ToString();
+            }
+
+            return TechStoreName;
+        }
+
+        //public static bool IsInsetTypePressed(int TechStoreID)
+        //{
+        //    int ConstTechStoreSubGroupID = 65;
+        //    int TechStoreSubGroupID = 0;
+
+        //    DataRow[] Rows = TechStoreDT.Select("TechStoreID = " + TechStoreID);
+        //    if (Rows.Count() > 0)
+        //    {
+        //        TechStoreSubGroupID = Convert.ToInt32(Rows[0]["TechStoreSubGroupID"]);
+        //    }
+
+        //    if (TechStoreSubGroupID == ConstTechStoreSubGroupID)
+        //        return true;
+        //    else
+        //        return false;
+        //}
+
+        //public static decimal GetWidthMin(int TechStoreID)
+        //{
+        //    decimal WidthMin = 0;
+
+        //    DataRow[] Rows = TechStoreDT.Select("TechStoreID = " + TechStoreID);
+        //    if (Rows.Count() > 0)
+        //    {
+        //        WidthMin = Convert.ToDecimal(Rows[0]["WidthMin"]);
+        //    }
+
+        //    return WidthMin;
+        //}
     }
 
 
@@ -6086,6 +6188,78 @@ namespace Infinium
             DecorPackagesDT.Dispose();
         }
 
+        static private void CheckPackagesInMegaOrder(int MegaOrderID)
+        {
+            string OrdersConnectionString = ConnectionStrings.MarketingOrdersConnectionString;
+            string selectCommandText = $@"SELECT * FROM PackageDetails WHERE PackageID IN 
+(SELECT PackageID FROM Packages WHERE ProductType = 0 
+AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = { MegaOrderID })) 
+AND OrderID NOT IN (SELECT FrontsOrdersID FROM FrontsOrders WHERE MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = { MegaOrderID }))";
+
+            using (SqlDataAdapter DA = new SqlDataAdapter(selectCommandText, OrdersConnectionString))
+            {
+                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                {
+                    using (DataTable DT = new DataTable())
+                    {
+                        if (DA.Fill(DT) > 0)
+                        {
+                            foreach (DataRow row in DT.Rows)
+                            {
+                                row.Delete();
+                            }
+
+                            DA.Update(DT);
+                        }
+                    }
+                }
+            }
+            selectCommandText = $@"SELECT * FROM PackageDetails WHERE PackageID IN 
+(SELECT PackageID FROM Packages WHERE ProductType = 1 
+AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = { MegaOrderID })) 
+AND OrderID NOT IN (SELECT DecorOrderID FROM DecorOrders WHERE MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = { MegaOrderID }))";
+            using (SqlDataAdapter DA = new SqlDataAdapter(selectCommandText, OrdersConnectionString))
+            {
+                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                {
+                    using (DataTable DT = new DataTable())
+                    {
+                        if (DA.Fill(DT) > 0)
+                        {
+                            foreach (DataRow row in DT.Rows)
+                            {
+                                row.Delete();
+                            }
+
+                            DA.Update(DT);
+                        }
+                    }
+                }
+            }
+
+            using (SqlDataAdapter DA = new SqlDataAdapter($@"SELECT * FROM Packages WHERE PackageID NOT IN 
+(SELECT PackageID FROM PackageDetails) 
+AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = { MegaOrderID })",
+                OrdersConnectionString))
+            {
+                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                {
+                    using (DataTable DT = new DataTable())
+                    {
+                        if (DA.Fill(DT) > 0)
+                        {
+                            foreach (DataRow row in DT.Rows)
+                            {
+                                row.Delete();
+                            }
+
+                            DA.Update(DT);
+                        }
+                    }
+                }
+            }
+        }
+        
         static private void CheckPackages(bool Marketing, int MainOrderID)
         {
             string OrdersConnectionString = ConnectionStrings.MarketingOrdersConnectionString;
@@ -6301,10 +6475,13 @@ namespace Infinium
             double G = sw.Elapsed.Milliseconds;
         }
 
-        static public void GG(int MegaOrderID)
+        static public void GGBet(int MegaOrderID)
         {
             System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
             sw.Start();
+
+            CheckPackagesInMegaOrder(MegaOrderID);
+            DataTable mainOrdersDataTable = new DataTable();
 
             using (SqlDataAdapter DA = new SqlDataAdapter(
                 "SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = " + MegaOrderID,
@@ -6316,11 +6493,80 @@ namespace Infinium
                     {
                         for (int i = 0; i < DT.Rows.Count; i++)
                         {
-                            CheckPackages(true, Convert.ToInt32(DT.Rows[i]["MainOrderID"]));
                             SetMainOrderStatus(true, Convert.ToInt32(DT.Rows[i]["MainOrderID"]), false);
                         }
 
                         SetMegaOrderStatus(MegaOrderID);
+                    }
+                }
+            }
+
+            using (SqlDataAdapter DA = new SqlDataAdapter(
+                "SELECT MainOrderID FROM NewMainOrders WHERE MegaOrderID = " + MegaOrderID,
+                ConnectionStrings.MarketingOrdersConnectionString))
+            {
+                using (DataTable DT = new DataTable())
+                {
+                    if (DA.Fill(DT) > 0)
+                    {
+                        for (int i = 0; i < DT.Rows.Count; i++)
+                        {
+                            SetMainOrderStatus(true, Convert.ToInt32(DT.Rows[i]["MainOrderID"]), false);
+                        }
+
+                        SetMegaOrderStatus(MegaOrderID);
+                    }
+                }
+            }
+
+            sw.Stop();
+            double G = sw.Elapsed.Milliseconds;
+        }
+
+        static public void GG(int MegaOrderID)
+        {
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            System.Diagnostics.Stopwatch sw1 = new System.Diagnostics.Stopwatch();
+
+            double packagesTime = 0;
+            double mainOrdersTime = 0;
+            double megaOrdersTime = 0;
+            double packagesTimeMegaOrder = 0;
+
+            sw.Start();
+            CheckPackagesInMegaOrder(MegaOrderID);
+            sw.Stop();
+            packagesTimeMegaOrder = sw.Elapsed.TotalMilliseconds;
+
+            sw.Reset();
+
+            using (SqlDataAdapter DA = new SqlDataAdapter(
+                "SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = " + MegaOrderID,
+                ConnectionStrings.MarketingOrdersConnectionString))
+            {
+                using (DataTable DT = new DataTable())
+                {
+                    if (DA.Fill(DT) > 0)
+                    {
+                        for (int i = 0; i < DT.Rows.Count; i++)
+                        {
+                            sw.Start();
+                            CheckPackages(true, Convert.ToInt32(DT.Rows[i]["MainOrderID"]));
+                            sw.Stop();
+
+                            sw1.Start();
+                            SetMainOrderStatus(true, Convert.ToInt32(DT.Rows[i]["MainOrderID"]), false);
+                            sw1.Stop();
+                        }
+
+                        packagesTime = sw.Elapsed.TotalMilliseconds;
+                        mainOrdersTime = sw1.Elapsed.TotalMilliseconds;
+
+                        sw.Restart();
+                        SetMegaOrderStatus(MegaOrderID);
+                        sw.Stop();
+
+                        megaOrdersTime = sw.Elapsed.TotalMilliseconds;
                     }
                 }
             }
@@ -6539,7 +6785,7 @@ namespace Infinium
             }
 
             DateTime DispDate = Security.GetCurrentDate();
-            if (!HasPackages)
+            if (true)
             {
                 int ProfilProductionStatusID = 0;
                 int ProfilStorageStatusID = 0;
@@ -7758,6 +8004,26 @@ namespace Infinium
             PhantomForm.Show();
 
             LightMessageBoxForm LightMessageBoxForm = new LightMessageBoxForm(ShowCancelButton, Text, HeaderText);
+
+            TopForm = LightMessageBoxForm;
+            LightMessageBoxForm.ShowDialog();
+
+            PhantomForm.Close();
+
+            PhantomForm.Dispose();
+            LightMessageBoxForm.Dispose();
+            TopForm = null;
+
+            return LightMessageBoxForm.OKCancel;
+        }
+
+        public static bool Show(ref Form TopForm, bool ShowCancelButton, string Text, string HeaderText, 
+            string OKMessageButtonText, string CancelMessageButtonText)
+        {
+            PhantomForm PhantomForm = new Infinium.PhantomForm();
+            PhantomForm.Show();
+
+            LightMessageBoxForm LightMessageBoxForm = new LightMessageBoxForm(ShowCancelButton, Text, HeaderText, OKMessageButtonText, CancelMessageButtonText);
 
             TopForm = LightMessageBoxForm;
             LightMessageBoxForm.ShowDialog();

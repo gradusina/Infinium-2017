@@ -177,11 +177,11 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Times New Roman", 25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 23F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.label2.ForeColor = System.Drawing.Color.Black;
-            this.label2.Location = new System.Drawing.Point(3, 7);
+            this.label2.Location = new System.Drawing.Point(3, 6);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(232, 29);
+            this.label2.Size = new System.Drawing.Size(232, 31);
             this.label2.TabIndex = 240;
             this.label2.Text = "Добавление новости";
             // 
@@ -210,7 +210,7 @@
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.CancelMessageButton.OverrideDefault.Border.Rounding = 0;
-            this.CancelMessageButton.Size = new System.Drawing.Size(102, 34);
+            this.CancelMessageButton.Size = new System.Drawing.Size(108, 34);
             this.CancelMessageButton.StateCommon.Back.Color1 = System.Drawing.Color.Silver;
             this.CancelMessageButton.StateCommon.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
             this.CancelMessageButton.StateCommon.Border.Color1 = System.Drawing.Color.White;
@@ -220,7 +220,7 @@
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.CancelMessageButton.StateCommon.Border.Rounding = 0;
             this.CancelMessageButton.StateCommon.Content.ShortText.Color1 = System.Drawing.Color.White;
-            this.CancelMessageButton.StateCommon.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.CancelMessageButton.StateCommon.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.CancelMessageButton.StateTracking.Border.Color1 = System.Drawing.Color.White;
             this.CancelMessageButton.StateTracking.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
             this.CancelMessageButton.StateTracking.Border.Draw = ComponentFactory.Krypton.Toolkit.InheritBool.True;
@@ -235,7 +235,7 @@
             // OKMessageButton
             // 
             this.OKMessageButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.OKMessageButton.Location = new System.Drawing.Point(105, 159);
+            this.OKMessageButton.Location = new System.Drawing.Point(99, 159);
             this.OKMessageButton.Name = "OKMessageButton";
             this.OKMessageButton.OverrideDefault.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(184)))), ((int)(((byte)(238)))));
             this.OKMessageButton.OverrideDefault.Border.Color1 = System.Drawing.Color.White;
@@ -245,7 +245,7 @@
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.OKMessageButton.OverrideDefault.Border.Rounding = 0;
-            this.OKMessageButton.Size = new System.Drawing.Size(102, 34);
+            this.OKMessageButton.Size = new System.Drawing.Size(108, 34);
             this.OKMessageButton.StateCommon.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(184)))), ((int)(((byte)(238)))));
             this.OKMessageButton.StateCommon.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
             this.OKMessageButton.StateCommon.Border.Draw = ComponentFactory.Krypton.Toolkit.InheritBool.False;
@@ -254,7 +254,7 @@
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.OKMessageButton.StateCommon.Border.Rounding = 0;
             this.OKMessageButton.StateCommon.Content.ShortText.Color1 = System.Drawing.Color.White;
-            this.OKMessageButton.StateCommon.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.OKMessageButton.StateCommon.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.OKMessageButton.StateTracking.Border.Color1 = System.Drawing.Color.White;
             this.OKMessageButton.StateTracking.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
             this.OKMessageButton.StateTracking.Border.Draw = ComponentFactory.Krypton.Toolkit.InheritBool.True;

@@ -7,6 +7,7 @@ using System.Data.OleDb;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
+using System.Text;
 
 
 namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.NotesInvoiceReportToDbf
@@ -169,7 +170,7 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.NotesInvoiceReportT
             using (DataView DV = new DataView(table2))
             {
                 DV.RowFilter = IsNonStandardFilter;
-                DistinctInvNumbersDT = DV.ToTable(true, new string[] { "AccountingName", "InvNumber", "Notes", "PaymentRate" });
+                DistinctInvNumbersDT = DV.ToTable(true, new string[] { "AccountingName", "InvNumber", "Notes", "Cvet", "Patina", "PaymentRate" });
             }
             IsNonStandardFilter = " AND " + IsNonStandardFilter;
             for (int i = 0; i < DistinctInvNumbersDT.Rows.Count; i++)
@@ -568,7 +569,7 @@ PackageDetails.PackNumber, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog
             using (SqlDataAdapter DA = new SqlDataAdapter(@"SELECT 
 CASE WHEN MainOrders.Notes = '' THEN CAST(MegaOrders.OrderNumber AS varchar(12)) + '_' + CAST(DecorOrders.MainOrderID AS varchar(12)) ELSE CAST(MegaOrders.OrderNumber AS varchar(12)) 
                          + '_' + CAST(DecorOrders.MainOrderID AS varchar(12)) + '_' + MainOrders.Notes END AS Notes,
-PackageDetails.PackNumber, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog.dbo.Patina.Patina, infiniu2_catalog.dbo.DecorConfig.InvNumber, infiniu2_catalog.dbo.DecorConfig.FactoryID, NewDecorOrders.MainOrderID
+PackageDetails.PackNumber, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog.dbo.Patina.Patina, infiniu2_catalog.dbo.DecorConfig.InvNumber, infiniu2_catalog.dbo.DecorConfig.FactoryID, DecorOrders.MainOrderID
                 FROM PackageDetails INNER JOIN
                 DecorOrders ON PackageDetails.OrderID = DecorOrders.DecorOrderID INNER JOIN
                 MainOrders ON DecorOrders.MainOrderID = MainOrders.MainOrderID INNER JOIN
@@ -588,6 +589,11 @@ PackageDetails.PackNumber, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog
             foreach (DataRow item in TempDT.Rows)
                 DT.Rows.Add(item.ItemArray);
 
+            foreach (DataRow item in DT.Rows)
+            {
+                if (item["Cvet"].ToString() == "")
+                    item["Cvet"] = "000";
+            }
             for (int z = 0; z < MainOrdersIDs.Count(); z++)
             {
                 using (DataView DV = new DataView(DT, "MainOrderID=" + MainOrdersIDs[z], string.Empty, DataViewRowState.CurrentRows))
@@ -1095,16 +1101,16 @@ PackageDetails.PackNumber, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog
                     Cell1 = sheet1.CreateRow(pos).CreateCell(0);
                     Cell1.SetCellValue("Заказ, " + Currency + ":");
                     Cell1.CellStyle = SummaryWithoutBorderBelCS;
-                    Cell1 = sheet1.CreateRow(pos++).CreateCell(8);
+                    Cell1 = sheet1.CreateRow(pos++).CreateCell(9);
                     Cell1.SetCellValue(Convert.ToDouble(TotalProfil));
                     Cell1.CellStyle = SummaryWithoutBorderBelCS;
                     Cell1 = sheet1.CreateRow(pos).CreateCell(0);
                     Cell1.SetCellValue("Транспорт, прочее, " + Currency + ":");
                     Cell1.CellStyle = SummaryWithoutBorderBelCS;
-                    Cell1 = sheet1.CreateRow(pos++).CreateCell(8);
+                    Cell1 = sheet1.CreateRow(pos++).CreateCell(9);
                     Cell1.SetCellValue(Convert.ToDouble(TransportAndOtherProfil));
                     Cell1.CellStyle = SummaryWithoutBorderBelCS;
-                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(10);
+                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(11);
                     Cell1.SetCellValue(Convert.ToDouble(WeightProfil));
                     Cell1.CellStyle = SummaryWeightCS;
                 }
@@ -1113,16 +1119,16 @@ PackageDetails.PackNumber, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog
                     Cell1 = sheet1.CreateRow(pos).CreateCell(0);
                     Cell1.SetCellValue("Заказ, " + Currency + ":");
                     Cell1.CellStyle = SummaryWithoutBorderForeignCS;
-                    Cell1 = sheet1.CreateRow(pos++).CreateCell(8);
+                    Cell1 = sheet1.CreateRow(pos++).CreateCell(9);
                     Cell1.SetCellValue(Convert.ToDouble(TotalProfil));
                     Cell1.CellStyle = SummaryWithoutBorderForeignCS;
                     Cell1 = sheet1.CreateRow(pos).CreateCell(0);
                     Cell1.SetCellValue("Транспорт, прочее, " + Currency + ":");
                     Cell1.CellStyle = SummaryWithoutBorderForeignCS;
-                    Cell1 = sheet1.CreateRow(pos++).CreateCell(8);
+                    Cell1 = sheet1.CreateRow(pos++).CreateCell(9);
                     Cell1.SetCellValue(Convert.ToDouble(TransportAndOtherProfil));
                     Cell1.CellStyle = SummaryWithoutBorderForeignCS;
-                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(10);
+                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(11);
                     Cell1.SetCellValue(Convert.ToDouble(WeightProfil));
                     Cell1.CellStyle = SummaryWeightCS;
                 }
@@ -1269,16 +1275,16 @@ PackageDetails.PackNumber, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog
                     Cell1 = sheet1.CreateRow(pos).CreateCell(0);
                     Cell1.SetCellValue("Заказ, " + Currency + ":");
                     Cell1.CellStyle = SummaryWithoutBorderBelCS;
-                    Cell1 = sheet1.CreateRow(pos++).CreateCell(8);
+                    Cell1 = sheet1.CreateRow(pos++).CreateCell(9);
                     Cell1.SetCellValue(Convert.ToDouble(TotalTPS));
                     Cell1.CellStyle = SummaryWithoutBorderBelCS;
                     Cell1 = sheet1.CreateRow(pos).CreateCell(0);
                     Cell1.SetCellValue("Транспорт, прочее, " + Currency + ":");
                     Cell1.CellStyle = SummaryWithoutBorderBelCS;
-                    Cell1 = sheet1.CreateRow(pos++).CreateCell(8);
+                    Cell1 = sheet1.CreateRow(pos++).CreateCell(9);
                     Cell1.SetCellValue(Convert.ToDouble(TransportAndOtherTPS));
                     Cell1.CellStyle = SummaryWithoutBorderBelCS;
-                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(10);
+                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(11);
                     Cell1.SetCellValue(Convert.ToDouble(WeightTPS));
                     Cell1.CellStyle = SummaryWeightCS;
                 }
@@ -1287,16 +1293,16 @@ PackageDetails.PackNumber, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog
                     Cell1 = sheet1.CreateRow(pos).CreateCell(0);
                     Cell1.SetCellValue("Заказ, " + Currency + ":");
                     Cell1.CellStyle = SummaryWithoutBorderForeignCS;
-                    Cell1 = sheet1.CreateRow(pos++).CreateCell(8);
+                    Cell1 = sheet1.CreateRow(pos++).CreateCell(9);
                     Cell1.SetCellValue(Convert.ToDouble(TotalTPS));
                     Cell1.CellStyle = SummaryWithoutBorderForeignCS;
                     Cell1 = sheet1.CreateRow(pos).CreateCell(0);
                     Cell1.SetCellValue("Транспорт, прочее, " + Currency + ":");
                     Cell1.CellStyle = SummaryWithoutBorderForeignCS;
-                    Cell1 = sheet1.CreateRow(pos++).CreateCell(8);
+                    Cell1 = sheet1.CreateRow(pos++).CreateCell(9);
                     Cell1.SetCellValue(Convert.ToDouble(TransportAndOtherTPS));
                     Cell1.CellStyle = SummaryWithoutBorderForeignCS;
-                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(10);
+                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(11);
                     Cell1.SetCellValue(Convert.ToDouble(WeightTPS));
                     Cell1.CellStyle = SummaryWeightCS;
                 }
@@ -1373,7 +1379,8 @@ PackageDetails.PackNumber, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog
             #endregion
         }
 
-        public void CreateReport(ref HSSFWorkbook hssfworkbook, int[] NewMegaOrders, int[] OrderNumbers, int[] MainOrdersIDs, int ClientID, string ClientName,
+        public void CreateReport(ref HSSFWorkbook hssfworkbook, int[] NewMegaOrders, int[] OrderNumbers,
+            int[] MainOrdersIDs, int ClientID, string ClientName,
             decimal ComplaintProfilCost, decimal ComplaintTPSCost, decimal TransportCost, decimal AdditionalCost,
             decimal TotalCost, int CurrencyTypeID, decimal TotalWeight, ref decimal TotalProfil1, ref decimal TotalTPS1)
         {
@@ -1397,6 +1404,7 @@ PackageDetails.PackNumber, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog
             {
                 VAT = 1.0m;
             }
+
             TransportCost = TransportCost / VAT;
             AdditionalCost = AdditionalCost / VAT;
             FrontsReport.Report(MainOrdersIDs);
@@ -1451,12 +1459,15 @@ PackageDetails.PackNumber, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog
             TPSReportTable.Clear();
             Collect(table1, table2, false);
             Collect(table1, table2, true);
-            using (DataView DV = new DataView(ProfilReportTable.Copy(), string.Empty, "AccountingName", DataViewRowState.CurrentRows))
+            using (DataView DV = new DataView(ProfilReportTable.Copy(), string.Empty, "AccountingName",
+                DataViewRowState.CurrentRows))
             {
                 ProfilReportTable.Clear();
                 ProfilReportTable = DV.ToTable();
             }
-            using (DataView DV = new DataView(TPSReportTable.Copy(), string.Empty, "AccountingName", DataViewRowState.CurrentRows))
+
+            using (DataView DV = new DataView(TPSReportTable.Copy(), string.Empty, "AccountingName",
+                DataViewRowState.CurrentRows))
             {
                 TPSReportTable.Clear();
                 TPSReportTable = DV.ToTable();
@@ -1477,8 +1488,9 @@ PackageDetails.PackNumber, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog
             TotalCost = (TotalProfil + TotalTPS);
 
             //Assign COST
-            AssignCost(ComplaintProfilCost, ComplaintTPSCost, TransportCost, AdditionalCost, WeightProfil, WeightTPS, TotalWeight, ref TransportAndOtherProfil,
-                       ref TransportAndOtherTPS);
+            AssignCost(ComplaintProfilCost, ComplaintTPSCost, TransportCost, AdditionalCost, WeightProfil, WeightTPS,
+                TotalWeight, ref TransportAndOtherProfil,
+                ref TransportAndOtherTPS);
 
             TotalProfil1 = (TotalProfil);
             TotalTPS1 = (TotalTPS);
@@ -1515,11 +1527,13 @@ PackageDetails.PackNumber, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog
                 infiniu2_catalog.dbo.TechStore ON infiniu2_catalog.dbo.FrontsConfig.ColorID = infiniu2_catalog.dbo.TechStore.TechStoreID LEFT JOIN
                 infiniu2_catalog.dbo.Patina ON infiniu2_catalog.dbo.FrontsConfig.PatinaID = infiniu2_catalog.dbo.Patina.PatinaID
                 WHERE PackageDetails.PackageID IN 
-                (SELECT PackageID FROM Packages WHERE ProductType = 0 AND MainOrderID IN (" + string.Join(",", MainOrdersIDs) + "))",
+                (SELECT PackageID FROM Packages WHERE ProductType = 0 AND MainOrderID IN (" +
+                                                          string.Join(",", MainOrdersIDs) + "))",
                 ConnectionStrings.MarketingOrdersConnectionString))
             {
                 DA.Fill(TempDT);
             }
+
             if (DT == null)
                 DT = TempDT.Clone();
             foreach (DataRow item in TempDT.Rows)
@@ -1536,34 +1550,47 @@ PackageDetails.PackNumber, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog
                 infiniu2_catalog.dbo.TechStore ON infiniu2_catalog.dbo.DecorConfig.ColorID = infiniu2_catalog.dbo.TechStore.TechStoreID LEFT JOIN
                 infiniu2_catalog.dbo.Patina ON infiniu2_catalog.dbo.DecorConfig.PatinaID = infiniu2_catalog.dbo.Patina.PatinaID
                 WHERE PackageDetails.PackageID IN 
-                (SELECT PackageID FROM Packages WHERE ProductType = 1 AND MainOrderID IN (" + string.Join(",", MainOrdersIDs) + "))",
-                 ConnectionStrings.MarketingOrdersConnectionString))
+                (SELECT PackageID FROM Packages WHERE ProductType = 1 AND MainOrderID IN (" +
+                                                          string.Join(",", MainOrdersIDs) + "))",
+                ConnectionStrings.MarketingOrdersConnectionString))
             {
                 TempDT.Clear();
                 DA.Fill(TempDT);
             }
+
             if (DT == null)
                 DT = TempDT.Clone();
             foreach (DataRow item in TempDT.Rows)
                 DT.Rows.Add(item.ItemArray);
 
+            foreach (DataRow item in DT.Rows)
+            {
+                if (item["Cvet"].ToString() == "")
+                    item["Cvet"] = "000";
+            }
             for (int z = 0; z < MainOrdersIDs.Count(); z++)
             {
-                using (DataView DV = new DataView(DT, "MainOrderID=" + MainOrdersIDs[z], string.Empty, DataViewRowState.CurrentRows))
+                using (DataView DV = new DataView(DT, "MainOrderID=" + MainOrdersIDs[z], string.Empty,
+                    DataViewRowState.CurrentRows))
                 {
                     dtMainOrders.Clear();
                     dtMainOrders = DV.ToTable();
                 }
-                using (DataView DV = new DataView(dtMainOrders, "FactoryID=1", string.Empty, DataViewRowState.CurrentRows))
+
+                using (DataView DV = new DataView(dtMainOrders, "FactoryID=1", string.Empty,
+                    DataViewRowState.CurrentRows))
                 {
                     DistPackagesDT.Clear();
                     DistPackagesDT = DV.ToTable(true, "PackNumber");
                 }
+
                 dtGroup.Clear();
                 dtGroup = GroupBy("InvNumber", "Notes", "Cvet", "Patina", "PackNumber", dtMainOrders);
                 for (int i = 0; i < DistPackagesDT.Rows.Count; i++)
                 {
-                    using (DataView DV = new DataView(dtMainOrders, "PackNumber=" + Convert.ToInt32(DistPackagesDT.Rows[i]["PackNumber"]), string.Empty, DataViewRowState.CurrentRows))
+                    using (DataView DV = new DataView(dtMainOrders,
+                        "PackNumber=" + Convert.ToInt32(DistPackagesDT.Rows[i]["PackNumber"]), string.Empty,
+                        DataViewRowState.CurrentRows))
                     {
                         dtDistInvNumbers.Clear();
                         dtDistInvNumbers = DV.ToTable(true, "InvNumber", "Notes", "Cvet", "Patina");
@@ -1573,17 +1600,23 @@ PackageDetails.PackNumber, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog
                         string Patina = dtDistInvNumbers.Rows[0]["Patina"].ToString();
                         int PackageCount = 0;
 
-                        DataRow[] rows0 = dtGroup.Select("InvNumber='" + InvNumber + "' AND Notes='" + Notes + "' AND Cvet='" + Cvet + "' AND Patina='" + Patina + "'");
+                        DataRow[] rows0 = dtGroup.Select("InvNumber='" + InvNumber + "' AND Notes='" + Notes +
+                                                         "' AND Cvet='" + Cvet + "' AND Patina='" + Patina + "'");
                         if (rows0.Count() > 0)
                             PackageCount = Convert.ToInt32(rows0[0]["Count"]);
 
                         for (int x = 1; x < dtDistInvNumbers.Rows.Count; x++)
                         {
-                            DataRow[] rows1 = dtGroup.Select("InvNumber='" + dtDistInvNumbers.Rows[x]["InvNumber"].ToString() +
-                                "' AND Notes='" + dtDistInvNumbers.Rows[x]["Notes"].ToString() +
-                                "' AND Cvet='" + dtDistInvNumbers.Rows[x]["Cvet"].ToString() + "' AND Patina='" + dtDistInvNumbers.Rows[x]["Patina"].ToString() + "'");
+                            DataRow[] rows1 = dtGroup.Select("InvNumber='" +
+                                                             dtDistInvNumbers.Rows[x]["InvNumber"].ToString() +
+                                                             "' AND Notes='" +
+                                                             dtDistInvNumbers.Rows[x]["Notes"].ToString() +
+                                                             "' AND Cvet='" +
+                                                             dtDistInvNumbers.Rows[x]["Cvet"].ToString() +
+                                                             "' AND Patina='" +
+                                                             dtDistInvNumbers.Rows[x]["Patina"].ToString() + "'");
                             if (rows1.Count() > 0)
-                                {
+                            {
                                 if (Convert.ToInt32(rows1[0]["Count"]) < PackageCount)
                                 {
                                     PackageCount = Convert.ToInt32(rows1[0]["Count"]);
@@ -1594,10 +1627,13 @@ PackageDetails.PackNumber, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog
                                 }
                             }
                         }
+
                         PackageCount = 0;
                         for (int x = 0; x < dtDistInvNumbers.Rows.Count; x++)
-                            {
-                            DataRow[] rows1 = ProfilReportTable.Select("InvNumber='" + InvNumber + "' AND Notes='" + Notes + "' AND Cvet='" + Cvet + "' AND Patina='" + Patina + "'");
+                        {
+                            DataRow[] rows1 = ProfilReportTable.Select("InvNumber='" + InvNumber + "' AND Notes='" +
+                                                                       Notes + "' AND Cvet='" + Cvet +
+                                                                       "' AND Patina='" + Patina + "'");
                             if (rows1.Count() > 0)
                             {
                                 if (Convert.ToInt32(rows1[0]["PackageCount"]) < PackageCount)
@@ -1610,7 +1646,10 @@ PackageDetails.PackNumber, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog
                                 }
                             }
                         }
-                        DataRow[] rows = ProfilReportTable.Select("InvNumber='" + InvNumber + "' AND Notes='" + Notes + "' AND Cvet='" + Cvet + "' AND Patina='" + Patina + "'");
+
+                        DataRow[] rows = ProfilReportTable.Select("InvNumber='" + InvNumber + "' AND Notes='" + Notes +
+                                                                  "' AND Cvet='" + Cvet + "' AND Patina='" + Patina +
+                                                                  "'");
                         if (rows.Count() > 0)
                             rows[0]["PackageCount"] = Convert.ToInt32(rows[0]["PackageCount"]) + 1;
                     }
@@ -1618,16 +1657,20 @@ PackageDetails.PackNumber, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog
 
 
 
-                using (DataView DV = new DataView(dtMainOrders, "FactoryID=2", string.Empty, DataViewRowState.CurrentRows))
+                using (DataView DV = new DataView(dtMainOrders, "FactoryID=2", string.Empty,
+                    DataViewRowState.CurrentRows))
                 {
                     DistPackagesDT.Clear();
                     DistPackagesDT = DV.ToTable(true, "PackNumber");
                 }
+
                 dtGroup.Clear();
                 dtGroup = GroupBy("InvNumber", "Notes", "Cvet", "Patina", "PackNumber", dtMainOrders);
                 for (int i = 0; i < DistPackagesDT.Rows.Count; i++)
                 {
-                    using (DataView DV = new DataView(dtMainOrders, "PackNumber=" + Convert.ToInt32(DistPackagesDT.Rows[i]["PackNumber"]), string.Empty, DataViewRowState.CurrentRows))
+                    using (DataView DV = new DataView(dtMainOrders,
+                        "PackNumber=" + Convert.ToInt32(DistPackagesDT.Rows[i]["PackNumber"]), string.Empty,
+                        DataViewRowState.CurrentRows))
                     {
                         dtDistInvNumbers.Clear();
                         dtDistInvNumbers = DV.ToTable(true, "InvNumber", "Notes", "Cvet", "Patina");
@@ -1637,17 +1680,23 @@ PackageDetails.PackNumber, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog
                         string Patina = dtDistInvNumbers.Rows[0]["Patina"].ToString();
                         int PackageCount = 0;
 
-                        DataRow[] rows0 = dtGroup.Select("InvNumber='" + InvNumber + "' AND Notes='" + Notes + "' AND Cvet='" + Cvet + "' AND Patina='" + Patina + "'");
+                        DataRow[] rows0 = dtGroup.Select("InvNumber='" + InvNumber + "' AND Notes='" + Notes +
+                                                         "' AND Cvet='" + Cvet + "' AND Patina='" + Patina + "'");
                         if (rows0.Count() > 0)
                             PackageCount = Convert.ToInt32(rows0[0]["Count"]);
 
                         for (int x = 1; x < dtDistInvNumbers.Rows.Count; x++)
                         {
-                            DataRow[] rows1 = dtGroup.Select("InvNumber='" + dtDistInvNumbers.Rows[x]["InvNumber"].ToString() +
-                                "' AND Notes='" + dtDistInvNumbers.Rows[x]["Notes"].ToString() +
-                                "' AND Cvet='" + dtDistInvNumbers.Rows[x]["Cvet"].ToString() + "' AND Patina='" + dtDistInvNumbers.Rows[x]["Patina"].ToString() + "'");
+                            DataRow[] rows1 = dtGroup.Select("InvNumber='" +
+                                                             dtDistInvNumbers.Rows[x]["InvNumber"].ToString() +
+                                                             "' AND Notes='" +
+                                                             dtDistInvNumbers.Rows[x]["Notes"].ToString() +
+                                                             "' AND Cvet='" +
+                                                             dtDistInvNumbers.Rows[x]["Cvet"].ToString() +
+                                                             "' AND Patina='" +
+                                                             dtDistInvNumbers.Rows[x]["Patina"].ToString() + "'");
                             if (rows1.Count() > 0)
-                                {
+                            {
                                 if (Convert.ToInt32(rows1[0]["Count"]) < PackageCount)
                                 {
                                     PackageCount = Convert.ToInt32(rows1[0]["Count"]);
@@ -1658,10 +1707,13 @@ PackageDetails.PackNumber, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog
                                 }
                             }
                         }
+
                         PackageCount = 0;
                         for (int x = 0; x < dtDistInvNumbers.Rows.Count; x++)
-                            {
-                            DataRow[] rows1 = TPSReportTable.Select("InvNumber='" + InvNumber + "' AND Notes='" + Notes + "' AND Cvet='" + Cvet + "' AND Patina='" + Patina + "'");
+                        {
+                            DataRow[] rows1 = TPSReportTable.Select("InvNumber='" + InvNumber + "' AND Notes='" +
+                                                                    Notes + "' AND Cvet='" + Cvet + "' AND Patina='" +
+                                                                    Patina + "'");
                             if (rows1.Count() > 0)
                             {
                                 if (Convert.ToInt32(rows1[0]["PackageCount"]) < PackageCount)
@@ -1674,14 +1726,16 @@ PackageDetails.PackNumber, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog
                                 }
                             }
                         }
-                        DataRow[] rows = TPSReportTable.Select("InvNumber='" + InvNumber + "' AND Notes='" + Notes + "' AND Cvet='" + Cvet + "' AND Patina='" + Patina + "'");
+
+                        DataRow[] rows = TPSReportTable.Select("InvNumber='" + InvNumber + "' AND Notes='" + Notes +
+                                                               "' AND Cvet='" + Cvet + "' AND Patina='" + Patina + "'");
                         if (rows.Count() > 0)
                             rows[0]["PackageCount"] = Convert.ToInt32(rows[0]["PackageCount"]) + 1;
                     }
                 }
             }
 
-            #region 
+            #region
 
             #region Create fonts and styles
 
@@ -1836,12 +1890,12 @@ PackageDetails.PackNumber, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog
             #endregion
 
             HSSFSheet sheet1 = hssfworkbook.CreateSheet("Сводный отчет");
-            sheet1.PrintSetup.PaperSize = (short)PaperSizeType.A4;
+            sheet1.PrintSetup.PaperSize = (short) PaperSizeType.A4;
 
-            sheet1.SetMargin(HSSFSheet.LeftMargin, (double).12);
-            sheet1.SetMargin(HSSFSheet.RightMargin, (double).07);
-            sheet1.SetMargin(HSSFSheet.TopMargin, (double).20);
-            sheet1.SetMargin(HSSFSheet.BottomMargin, (double).20);
+            sheet1.SetMargin(HSSFSheet.LeftMargin, (double) .12);
+            sheet1.SetMargin(HSSFSheet.RightMargin, (double) .07);
+            sheet1.SetMargin(HSSFSheet.TopMargin, (double) .20);
+            sheet1.SetMargin(HSSFSheet.BottomMargin, (double) .20);
 
             int displayIndex = 0;
             sheet1.SetColumnWidth(displayIndex++, 16 * 256);
@@ -1884,7 +1938,8 @@ PackageDetails.PackNumber, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog
             {
                 MainOrdersList += MainOrdersIDs[i].ToString() + ", ";
 
-                if (i > 0 && i % 9 == 0)
+                if (i > 0 &&
+                    i % 9 == 0)
                 {
                     Cell1 = sheet1.CreateRow(pos++).CreateCell(0);
                     Cell1.SetCellValue(MainOrdersList);
@@ -1893,6 +1948,7 @@ PackageDetails.PackNumber, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog
                     MainOrdersList = string.Empty;
                     RowCount++;
                 }
+
                 if (i == MainOrdersIDs.Count() - 1)
                 {
                     if (MainOrdersList.Length > 0)
@@ -1934,7 +1990,7 @@ PackageDetails.PackNumber, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog
                 Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                 Cell1.SetCellValue("Примечание");
                 Cell1.CellStyle = SimpleHeaderCS;
-                
+
                 Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                 Cell1.SetCellValue("Наименование");
                 Cell1.CellStyle = SimpleHeaderCS;
@@ -1996,7 +2052,8 @@ PackageDetails.PackNumber, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog
                     Cell1.SetCellValue(FrontsReport.GetColorNameByCode(ProfilReportTable.Rows[i]["Cvet"].ToString()));
                     Cell1.CellStyle = SimpleCS;
                     Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
-                    Cell1.SetCellValue(FrontsReport.GetPatinaNameByCode(ProfilReportTable.Rows[i]["Patina"].ToString()));
+                    Cell1.SetCellValue(
+                        FrontsReport.GetPatinaNameByCode(ProfilReportTable.Rows[i]["Patina"].ToString()));
                     Cell1.CellStyle = SimpleCS;
                     Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                     Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["Count"]));
@@ -2011,6 +2068,7 @@ PackageDetails.PackNumber, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog
                         {
                             Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["NonStandardMargin"]));
                         }
+
                         Cell1.CellStyle = CountCS;
                         Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                         Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["CostWithTransport"]));
@@ -2029,6 +2087,7 @@ PackageDetails.PackNumber, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog
                         {
                             Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["NonStandardMargin"]));
                         }
+
                         Cell1.CellStyle = CountCS;
                         Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                         Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["CostWithTransport"]));
@@ -2037,6 +2096,7 @@ PackageDetails.PackNumber, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog
                         Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["PaymentRate"]));
                         Cell1.CellStyle = CurrencyCS;
                     }
+
                     Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                     Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["Weight"]));
                     Cell1.CellStyle = WeightCS;
@@ -2046,6 +2106,7 @@ PackageDetails.PackNumber, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog
                         Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["PackageCount"]));
                         Cell1.CellStyle = SimpleCS;
                     }
+
                     pos++;
                 }
 
@@ -2054,16 +2115,16 @@ PackageDetails.PackNumber, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog
                     Cell1 = sheet1.CreateRow(pos).CreateCell(0);
                     Cell1.SetCellValue("Заказ, " + Currency + ":");
                     Cell1.CellStyle = SummaryWithoutBorderBelCS;
-                    Cell1 = sheet1.CreateRow(pos++).CreateCell(8);
+                    Cell1 = sheet1.CreateRow(pos++).CreateCell(9);
                     Cell1.SetCellValue(Convert.ToDouble(TotalProfil));
                     Cell1.CellStyle = SummaryWithoutBorderBelCS;
                     Cell1 = sheet1.CreateRow(pos).CreateCell(0);
                     Cell1.SetCellValue("Транспорт, прочее, " + Currency + ":");
                     Cell1.CellStyle = SummaryWithoutBorderBelCS;
-                    Cell1 = sheet1.CreateRow(pos++).CreateCell(8);
+                    Cell1 = sheet1.CreateRow(pos++).CreateCell(9);
                     Cell1.SetCellValue(Convert.ToDouble(TransportAndOtherProfil));
                     Cell1.CellStyle = SummaryWithoutBorderBelCS;
-                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(10);
+                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(11);
                     Cell1.SetCellValue(Convert.ToDouble(WeightProfil));
                     Cell1.CellStyle = SummaryWeightCS;
                 }
@@ -2072,16 +2133,16 @@ PackageDetails.PackNumber, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog
                     Cell1 = sheet1.CreateRow(pos).CreateCell(0);
                     Cell1.SetCellValue("Заказ, " + Currency + ":");
                     Cell1.CellStyle = SummaryWithoutBorderForeignCS;
-                    Cell1 = sheet1.CreateRow(pos++).CreateCell(8);
+                    Cell1 = sheet1.CreateRow(pos++).CreateCell(9);
                     Cell1.SetCellValue(Convert.ToDouble(TotalProfil));
                     Cell1.CellStyle = SummaryWithoutBorderForeignCS;
                     Cell1 = sheet1.CreateRow(pos).CreateCell(0);
                     Cell1.SetCellValue("Транспорт, прочее, " + Currency + ":");
                     Cell1.CellStyle = SummaryWithoutBorderForeignCS;
-                    Cell1 = sheet1.CreateRow(pos++).CreateCell(8);
+                    Cell1 = sheet1.CreateRow(pos++).CreateCell(9);
                     Cell1.SetCellValue(Convert.ToDouble(TransportAndOtherProfil));
                     Cell1.CellStyle = SummaryWithoutBorderForeignCS;
-                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(10);
+                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(11);
                     Cell1.SetCellValue(Convert.ToDouble(WeightProfil));
                     Cell1.CellStyle = SummaryWeightCS;
                 }
@@ -2108,7 +2169,7 @@ PackageDetails.PackNumber, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog
                 Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                 Cell1.SetCellValue("Примечание");
                 Cell1.CellStyle = SimpleHeaderCS;
-                
+
                 Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                 Cell1.SetCellValue("Наименование");
                 Cell1.CellStyle = SimpleHeaderCS;
@@ -2185,6 +2246,7 @@ PackageDetails.PackNumber, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog
                         {
                             Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["NonStandardMargin"]));
                         }
+
                         Cell1.CellStyle = CountCS;
                         Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                         Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["Cost"]));
@@ -2203,6 +2265,7 @@ PackageDetails.PackNumber, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog
                         {
                             Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["NonStandardMargin"]));
                         }
+
                         Cell1.CellStyle = CountCS;
                         Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                         Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["CostWithTransport"]));
@@ -2211,6 +2274,7 @@ PackageDetails.PackNumber, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog
                         Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["PaymentRate"]));
                         Cell1.CellStyle = CurrencyCS;
                     }
+
                     Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                     Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["Weight"]));
                     Cell1.CellStyle = WeightCS;
@@ -2220,6 +2284,7 @@ PackageDetails.PackNumber, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog
                         Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["PackageCount"]));
                         Cell1.CellStyle = SimpleCS;
                     }
+
                     pos++;
                 }
 
@@ -2228,16 +2293,16 @@ PackageDetails.PackNumber, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog
                     Cell1 = sheet1.CreateRow(pos).CreateCell(0);
                     Cell1.SetCellValue("Заказ, " + Currency + ":");
                     Cell1.CellStyle = SummaryWithoutBorderBelCS;
-                    Cell1 = sheet1.CreateRow(pos++).CreateCell(8);
+                    Cell1 = sheet1.CreateRow(pos++).CreateCell(9);
                     Cell1.SetCellValue(Convert.ToDouble(TotalTPS));
                     Cell1.CellStyle = SummaryWithoutBorderBelCS;
                     Cell1 = sheet1.CreateRow(pos).CreateCell(0);
                     Cell1.SetCellValue("Транспорт, прочее, " + Currency + ":");
                     Cell1.CellStyle = SummaryWithoutBorderBelCS;
-                    Cell1 = sheet1.CreateRow(pos++).CreateCell(8);
+                    Cell1 = sheet1.CreateRow(pos++).CreateCell(9);
                     Cell1.SetCellValue(Convert.ToDouble(TransportAndOtherTPS));
                     Cell1.CellStyle = SummaryWithoutBorderBelCS;
-                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(10);
+                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(11);
                     Cell1.SetCellValue(Convert.ToDouble(WeightTPS));
                     Cell1.CellStyle = SummaryWeightCS;
                 }
@@ -2246,20 +2311,21 @@ PackageDetails.PackNumber, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog
                     Cell1 = sheet1.CreateRow(pos).CreateCell(0);
                     Cell1.SetCellValue("Заказ, " + Currency + ":");
                     Cell1.CellStyle = SummaryWithoutBorderForeignCS;
-                    Cell1 = sheet1.CreateRow(pos++).CreateCell(8);
+                    Cell1 = sheet1.CreateRow(pos++).CreateCell(9);
                     Cell1.SetCellValue(Convert.ToDouble(TotalTPS));
                     Cell1.CellStyle = SummaryWithoutBorderForeignCS;
                     Cell1 = sheet1.CreateRow(pos).CreateCell(0);
                     Cell1.SetCellValue("Транспорт, прочее, " + Currency + ":");
                     Cell1.CellStyle = SummaryWithoutBorderForeignCS;
-                    Cell1 = sheet1.CreateRow(pos++).CreateCell(8);
+                    Cell1 = sheet1.CreateRow(pos++).CreateCell(9);
                     Cell1.SetCellValue(Convert.ToDouble(TransportAndOtherTPS));
                     Cell1.CellStyle = SummaryWithoutBorderForeignCS;
-                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(10);
+                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(11);
                     Cell1.SetCellValue(Convert.ToDouble(WeightTPS));
                     Cell1.CellStyle = SummaryWeightCS;
                 }
             }
+
             pos++;
 
             //if (PaymentRate != 1)
@@ -2329,6 +2395,7 @@ PackageDetails.PackNumber, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog
                 Cell1.SetCellValue(Convert.ToDouble((TotalCost)));
                 Cell1.CellStyle = SummaryWithBorderForeignCS;
             }
+
             #endregion
         }
 
@@ -2452,13 +2519,13 @@ PackageDetails.PackNumber, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog
 
         public static void DataSetIntoDBF(string path, string fileName, DataTable DT1, int FactoryID)
         {
-            if (File.Exists(path + fileName + ".dbf"))
+            if (File.Exists(path + "/"+ fileName + ".dbf"))
             {
-                File.Delete(path + fileName + ".dbf");
+                File.Delete(path + "/" + fileName + ".dbf");
             }
 
             string createSql = $"create table { fileName } ([UNNP] varchar(20), [UNN] varchar(20), [CurrencyCode] varchar(20), " +
-                $"[InvNumber] varchar(20), [Notes] varchar(50), [Cvet] varchar(20), [Patina] varchar(20), [Amount] Double, [Price] Double, [NDS] varchar(10), [Weight] Double, [PackageCount] Integer)";
+                $"[InvNumber] varchar(20), [Cvet] varchar(20), [Patina] varchar(20), [Amount] Double, [Price] Double, [NDS] varchar(10), [Weight] Double, [PackageCount] Integer, [Notes] varchar(100))";
 
             OleDbConnection con = new OleDbConnection(GetConnection(path));
 
@@ -2475,8 +2542,8 @@ PackageDetails.PackNumber, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog
             foreach (DataRow row in DT1.Rows)
             {
                 string insertSql = $"insert into { fileName } " +
-                    $"(UNNP, UNN, CurrencyCode, InvNumber, Notes, Cvet, Patina, Amount, Price, NDS, Weight, PackageCount) " +
-                    $"values(UNNP, UNN, CurrencyCode, InvNumber, Notes, Cvet, Patina, Amount, PriceWithTransport, NDS, Weight, PackageCount)";
+                    $"(UNNP, UNN, CurrencyCode, InvNumber, Cvet, Patina, Amount, Price, NDS, Weight, PackageCount, Notes) " +
+                    $"values(UNNP, UNN, CurrencyCode, InvNumber, Cvet, Patina, Amount, PriceWithTransport, NDS, Weight, PackageCount, Notes)";
                 decimal d = Decimal.Round(Convert.ToDecimal(row["Weight"]) / 1000, 3, MidpointRounding.AwayFromZero);
                 double Amount = Convert.ToDouble(row["Count"]);
                 double Price = Convert.ToDouble(row["PriceWithTransport"]);
@@ -2493,6 +2560,7 @@ PackageDetails.PackNumber, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog
                 string UNN = row["UNN"].ToString();
                 string NDS = "0 %";
                 string UNNP = "800014979";
+                
                 cmd.CommandText = insertSql;
                 cmd.Parameters.Clear();
 
@@ -2505,14 +2573,14 @@ PackageDetails.PackNumber, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog
                 cmd.Parameters.Add("CurrencyCode", OleDbType.VarChar).Value = CurrencyCode;
                 //cmd.Parameters.Add("TPSCurCode", OleDbType.VarChar).Value = TPSCurCode;
                 cmd.Parameters.Add("InvNumber", OleDbType.VarChar).Value = InvNumber;
-                cmd.Parameters.Add("Notes", OleDbType.VarChar).Value = Notes;
                 cmd.Parameters.Add("Cvet", OleDbType.VarChar).Value = Cvet;
-                cmd.Parameters.Add("Patina", OleDbType.VarChar).Value = Patina;
+                cmd.Parameters.Add("Patina", OleDbType.VarChar).Value = Encoding.GetEncoding(866).GetString(Encoding.GetEncoding(1251).GetBytes(Patina));
                 cmd.Parameters.Add("Amount", OleDbType.Double).Value = Amount;
                 cmd.Parameters.Add("PriceWithTransport", OleDbType.Double).Value = Price;
                 cmd.Parameters.Add("NDS", OleDbType.VarChar).Value = NDS;
                 cmd.Parameters.Add("Weight", OleDbType.Double).Value = Weight;
                 cmd.Parameters.Add("PackageCount", OleDbType.Integer).Value = PackageCount;
+                cmd.Parameters.Add("Notes", OleDbType.VarChar).Value = Encoding.GetEncoding(866).GetString(Encoding.GetEncoding(1251).GetBytes(Notes));
                 cmd.ExecuteNonQuery();
             }
 
@@ -2521,13 +2589,13 @@ PackageDetails.PackNumber, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog
 
         public static void DataSetIntoDBF(string path, string fileName, DataTable DT1, DataTable DT2, int FactoryID)
         {
-            if (File.Exists(path + fileName + ".dbf"))
+            if (File.Exists(path + "/"+ fileName + ".dbf"))
             {
-                File.Delete(path + fileName + ".dbf");
+                File.Delete(path + "/" + fileName + ".dbf");
             }
 
             string createSql = $"create table { fileName } ([UNNP] varchar(20), [UNN] varchar(20), [CurrencyCode] varchar(20), " +
-                $"[InvNumber] varchar(20), [Notes] varchar(50), [Cvet] varchar(20), [Patina] varchar(20), [Amount] Double, [Price] Double, [NDS] varchar(10), [Weight] Double, [PackageCount] Integer)";
+                $"[InvNumber] varchar(20), [Cvet] varchar(20), [Patina] varchar(20), [Amount] Double, [Price] Double, [NDS] varchar(10), [Weight] Double, [PackageCount] Integer, [Notes] varchar(100))";
 
             OleDbConnection con = new OleDbConnection(GetConnection(path));
 
@@ -2544,8 +2612,8 @@ PackageDetails.PackNumber, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog
             foreach (DataRow row in DT1.Rows)
             {
                 string insertSql = $"insert into { fileName } " +
-                    $"(UNNP, UNN, CurrencyCode, InvNumber, Notes, Cvet, Patina, Amount, Price, NDS, Weight, PackageCount) " +
-                    $"values(UNNP, UNN, CurrencyCode, InvNumber, Notes, Cvet, Patina, Amount, PriceWithTransport, NDS, Weight, PackageCount)";
+                    $"(UNNP, UNN, CurrencyCode, InvNumber, Cvet, Patina, Amount, Price, NDS, Weight, PackageCount, Notes) " +
+                    $"values(UNNP, UNN, CurrencyCode, InvNumber, Cvet, Patina, Amount, PriceWithTransport, NDS, Weight, PackageCount, Notes)";
                 decimal d = Decimal.Round(Convert.ToDecimal(row["Weight"]) / 1000, 3, MidpointRounding.AwayFromZero);
                 double Amount = Convert.ToDouble(row["Count"]);
                 double Price = Convert.ToDouble(row["PriceWithTransport"]);
@@ -2574,21 +2642,21 @@ PackageDetails.PackNumber, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog
                 cmd.Parameters.Add("CurrencyCode", OleDbType.VarChar).Value = CurrencyCode;
                 //cmd.Parameters.Add("TPSCurCode", OleDbType.VarChar).Value = TPSCurCode;
                 cmd.Parameters.Add("InvNumber", OleDbType.VarChar).Value = InvNumber;
-                cmd.Parameters.Add("Notes", OleDbType.VarChar).Value = Notes;
                 cmd.Parameters.Add("Cvet", OleDbType.VarChar).Value = Cvet;
-                cmd.Parameters.Add("Patina", OleDbType.VarChar).Value = Patina;
+                cmd.Parameters.Add("Patina", OleDbType.VarChar).Value = Encoding.GetEncoding(866).GetString(Encoding.GetEncoding(1251).GetBytes(Patina));
                 cmd.Parameters.Add("Amount", OleDbType.Double).Value = Amount;
                 cmd.Parameters.Add("PriceWithTransport", OleDbType.Double).Value = Price;
                 cmd.Parameters.Add("NDS", OleDbType.VarChar).Value = NDS;
                 cmd.Parameters.Add("Weight", OleDbType.Double).Value = Weight;
                 cmd.Parameters.Add("PackageCount", OleDbType.Integer).Value = PackageCount;
+                cmd.Parameters.Add("Notes", OleDbType.VarChar).Value = Encoding.GetEncoding(866).GetString(Encoding.GetEncoding(1251).GetBytes(Notes));
                 cmd.ExecuteNonQuery();
             }
             foreach (DataRow row in DT2.Rows)
             {
                 string insertSql = $"insert into { fileName } " +
-                    $"(UNNP, UNN, CurrencyCode, InvNumber, Notes, Cvet, Patina, Amount, Price, NDS, Weight, PackageCount) " +
-                    $"values(UNNP, UNN, CurrencyCode, InvNumber, Notes, Cvet, Patina, Amount, PriceWithTransport, NDS, Weight, PackageCount)";
+                    $"(UNNP, UNN, CurrencyCode, InvNumber, Cvet, Patina, Amount, Price, NDS, Weight, PackageCount, Notes) " +
+                    $"values(UNNP, UNN, CurrencyCode, InvNumber, Cvet, Patina, Amount, PriceWithTransport, NDS, Weight, PackageCount, Notes)";
                 decimal d = Decimal.Round(Convert.ToDecimal(row["Weight"]) / 1000, 3, MidpointRounding.AwayFromZero);
                 double Amount = Convert.ToDouble(row["Count"]);
                 double Price = Convert.ToDouble(row["PriceWithTransport"]);
@@ -2617,14 +2685,14 @@ PackageDetails.PackNumber, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog
                 cmd.Parameters.Add("CurrencyCode", OleDbType.VarChar).Value = CurrencyCode;
                 //cmd.Parameters.Add("TPSCurCode", OleDbType.VarChar).Value = TPSCurCode;
                 cmd.Parameters.Add("InvNumber", OleDbType.VarChar).Value = InvNumber;
-                cmd.Parameters.Add("Notes", OleDbType.VarChar).Value = Notes;
                 cmd.Parameters.Add("Cvet", OleDbType.VarChar).Value = Cvet;
-                cmd.Parameters.Add("Patina", OleDbType.VarChar).Value = Patina;
+                cmd.Parameters.Add("Patina", OleDbType.VarChar).Value = Encoding.GetEncoding(866).GetString(Encoding.GetEncoding(1251).GetBytes(Patina));
                 cmd.Parameters.Add("Amount", OleDbType.Double).Value = Amount;
                 cmd.Parameters.Add("PriceWithTransport", OleDbType.Double).Value = Price;
                 cmd.Parameters.Add("NDS", OleDbType.VarChar).Value = NDS;
                 cmd.Parameters.Add("Weight", OleDbType.Double).Value = Weight;
                 cmd.Parameters.Add("PackageCount", OleDbType.Integer).Value = PackageCount;
+                cmd.Parameters.Add("Notes", OleDbType.VarChar).Value = Encoding.GetEncoding(866).GetString(Encoding.GetEncoding(1251).GetBytes(Notes));
                 cmd.ExecuteNonQuery();
             }
 

@@ -11,25 +11,16 @@ namespace Infinium.Modules.ExpeditionMarketing.NotesDispatchReportToDbf
     {
         private DataTable _profilReportDataTable = null;
         private DataTable _tPSReportDataTable = null;
-        private DataTable DecorParametersDataTable;
-        private DataTable CurrencyTypesDT;
-        private DecorCatalogOrder DecorCatalogOrder = null;
-        private DataTable DecorConfigDataTable = null;
-        private DataTable DecorDataTable = null;
+        private DecorCatalogOrder decorCatalogOrder = null;
         private DataTable DecorOrdersDataTable = null;
-        private DataTable DecorProductsDataTable = null;
-        private DataTable FrameColorsDataTable = null;
-        private DataTable MeasuresDataTable = null;
-        private DataTable PatinaDataTable = null;
-        private DataTable PatinaRALDataTable = null;
         private decimal PaymentRate = 0;
         private string ProfilCurrencyCode = "0";
         private string TPSCurrencyCode = "0";
         private string UNN = string.Empty;
 
-        public NotesDispatchDecorReportToDbf(ref DecorCatalogOrder tDecorCatalogOrder)
+        public NotesDispatchDecorReportToDbf(DecorCatalogOrder tDecorCatalogOrder)
         {
-            DecorCatalogOrder = tDecorCatalogOrder;
+            decorCatalogOrder = tDecorCatalogOrder;
 
             Create();
             CreateReportDataTable();
@@ -51,7 +42,7 @@ namespace Infinium.Modules.ExpeditionMarketing.NotesDispatchReportToDbf
 
         public void Report(int[] DispatchID, int CurrencyTypeID, int ClientID, bool ProfilVerify, bool TPSVerify, int DiscountPaymentConditionID)
         {
-            DataRow[] rows = CurrencyTypesDT.Select("CurrencyTypeID = " + CurrencyTypeID);
+            DataRow[] rows = decorCatalogOrder.CurrencyTypesDT.Select("CurrencyTypeID = " + CurrencyTypeID);
             if (rows.Count() > 0)
             {
                 ProfilCurrencyCode = rows[0]["CurrencyCode"].ToString();
@@ -96,7 +87,7 @@ PackageDetailID, PackageDetails.Count AS Count, (DecorOrders.Cost * PackageDetai
             DecorOrdersDataTable.Clear();
             _profilReportDataTable.Clear();
             _tPSReportDataTable.Clear();
-            DataRow[] rows = CurrencyTypesDT.Select("CurrencyTypeID = " + CurrencyTypeID);
+            DataRow[] rows = decorCatalogOrder.CurrencyTypesDT.Select("CurrencyTypeID = " + CurrencyTypeID);
             if (rows.Count() > 0)
             {
                 ProfilCurrencyCode = rows[0]["CurrencyCode"].ToString();
@@ -211,7 +202,7 @@ PackageDetailID, PackageDetails.Count AS Count, (DecorOrders.Cost * PackageDetai
                         DataTable ParamTableProfil = new DataTable();
                         DataTable ParamTableTPS = new DataTable();
 
-                        DataRow[] DCs = DecorConfigDataTable.Select("DecorConfigID = " +
+                        DataRow[] DCs = decorCatalogOrder.DecorConfigDataTable.Select("DecorConfigID = " +
                             ItemsRows[0]["DecorConfigID"].ToString());
 
                         CreateParamsTable(DCs[0]["ReportParam"].ToString(), ParamTableProfil);
@@ -236,51 +227,7 @@ PackageDetailID, PackageDetails.Count AS Count, (DecorOrders.Cost * PackageDetai
 
         private void Create()
         {
-            string SelectCommand = "SELECT * FROM CurrencyTypes";
-            CurrencyTypesDT = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
-            {
-                DA.Fill(CurrencyTypesDT);
-            }
             DecorOrdersDataTable = new DataTable();
-
-            SelectCommand = @"SELECT ProductID, ProductName, MeasureID, ReportParam FROM DecorProducts" +
-                " WHERE (ProductID IN (SELECT ProductID FROM DecorConfig)) ORDER BY ProductName ASC";
-            DecorProductsDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
-            {
-                DA.Fill(DecorProductsDataTable);
-            }
-            DecorDataTable = new DataTable();
-            SelectCommand = @"SELECT DISTINCT TechStore.TechStoreID AS DecorID, TechStore.TechStoreName AS Name, DecorConfig.ProductID FROM TechStore
-                INNER JOIN DecorConfig ON TechStore.TechStoreID = DecorConfig.DecorID ORDER BY TechStoreName";
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
-            {
-                DA.Fill(DecorDataTable);
-            }
-            MeasuresDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Measures",
-                ConnectionStrings.CatalogConnectionString))
-            {
-                DA.Fill(MeasuresDataTable);
-            }
-
-            GetColorsDT();
-            GetPatinaDT();
-
-            DecorParametersDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DecorParameters", ConnectionStrings.CatalogConnectionString))
-            {
-                DA.Fill(DecorParametersDataTable);
-            }
-
-            DecorConfigDataTable = new DataTable();
-            //using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DecorConfig",
-            //    ConnectionStrings.CatalogConnectionString))
-            //{
-            //    DA.Fill(DecorConfigDataTable);
-            //}
-            DecorConfigDataTable = TablesManager.DecorConfigDataTableAll;
         }
 
         private void CreateParamsTable(string Params, DataTable DT)
@@ -346,7 +293,7 @@ PackageDetailID, PackageDetails.Count AS Count, (DecorOrders.Cost * PackageDetai
             string code = string.Empty;
             try
             {
-                DataRow[] Rows = FrameColorsDataTable.Select("ColorID = " + ColorID);
+                DataRow[] Rows = decorCatalogOrder.ColorsDataTable.Select("ColorID = " + ColorID);
                 code = Rows[0]["Cvet"].ToString();
             }
             catch
@@ -354,46 +301,6 @@ PackageDetailID, PackageDetails.Count AS Count, (DecorOrders.Cost * PackageDetai
                 return string.Empty;
             }
             return code;
-        }
-
-        private void GetColorsDT()
-        {
-            FrameColorsDataTable = new DataTable();
-            FrameColorsDataTable.Columns.Add(new DataColumn("ColorID", Type.GetType("System.Int64")));
-            FrameColorsDataTable.Columns.Add(new DataColumn("ColorName", Type.GetType("System.String")));
-            FrameColorsDataTable.Columns.Add(new DataColumn("Cvet", Type.GetType("System.String")));
-            string SelectCommand = @"SELECT TechStoreID, TechStoreName, Cvet FROM TechStore
-                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)
-                ORDER BY TechStoreName";
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
-            {
-                using (DataTable DT = new DataTable())
-                {
-                    DA.Fill(DT);
-                    {
-                        DataRow NewRow = FrameColorsDataTable.NewRow();
-                        NewRow["ColorID"] = -1;
-                        NewRow["ColorName"] = "-";
-                        NewRow["Cvet"] = "000";
-                        FrameColorsDataTable.Rows.Add(NewRow);
-                    }
-                    {
-                        DataRow NewRow = FrameColorsDataTable.NewRow();
-                        NewRow["ColorID"] = 0;
-                        NewRow["ColorName"] = "на выбор";
-                        NewRow["Cvet"] = "0000000";
-                        FrameColorsDataTable.Rows.Add(NewRow);
-                    }
-                    for (int i = 0; i < DT.Rows.Count; i++)
-                    {
-                        DataRow NewRow = FrameColorsDataTable.NewRow();
-                        NewRow["ColorID"] = Convert.ToInt64(DT.Rows[i]["TechStoreID"]);
-                        NewRow["ColorName"] = DT.Rows[i]["TechStoreName"].ToString();
-                        NewRow["Cvet"] = DT.Rows[i]["Cvet"].ToString();
-                        FrameColorsDataTable.Rows.Add(NewRow);
-                    }
-                }
-            }
         }
 
         private decimal GetDecorWeight(DataRow DecorOrderRow)
@@ -406,7 +313,7 @@ PackageDetailID, PackageDetails.Count AS Count, (DecorOrders.Cost * PackageDetai
             }
             decimal Weight = 0;
 
-            DataRow[] Row = DecorConfigDataTable.Select("DecorConfigID = " + DecorOrderRow["DecorConfigID"].ToString());
+            DataRow[] Row = decorCatalogOrder.DecorConfigDataTable.Select("DecorConfigID = " + DecorOrderRow["DecorConfigID"].ToString());
 
             if (Row[0]["Weight"] == DBNull.Value)
             {
@@ -445,7 +352,7 @@ PackageDetailID, PackageDetails.Count AS Count, (DecorOrders.Cost * PackageDetai
 
         private int GetMeasureTypeID(int DecorConfigID)
         {
-            DataRow[] Row = DecorConfigDataTable.Select("DecorConfigID = " + DecorConfigID);
+            DataRow[] Row = decorCatalogOrder.DecorConfigDataTable.Select("DecorConfigID = " + DecorConfigID);
 
             return Convert.ToInt32(Row[0]["MeasureID"]);//1 м.кв.  2 м.п. 3 шт.
         }
@@ -477,6 +384,12 @@ PackageDetailID, PackageDetails.Count AS Count, (DecorOrders.Cost * PackageDetai
                 {
                     string Cvet = GetColorCode(Convert.ToInt32(Rows[r]["ColorID"]));
                     string Patina = GetPatinaCode(Convert.ToInt32(Rows[r]["PatinaID"]));
+
+                    string AccountingName = Rows[r]["AccountingName"].ToString();
+                    if (AccountingName.ToLower().Contains("стекло"))
+                    {
+
+                    }
                     if (IsProfil(Convert.ToInt32(Rows[r]["DecorConfigID"])))
                     {
                         DataRow[] InvRows = PDT.Select($"InvNumber = '{ Rows[r]["InvNumber"].ToString() }' AND Notes = '{ Rows[r]["Notes"].ToString() }' AND Cvet = '{ Cvet }' AND Patina = '{ Patina }'");
@@ -553,6 +466,11 @@ PackageDetailID, PackageDetails.Count AS Count, (DecorOrders.Cost * PackageDetai
                 {
                     string Cvet = GetColorCode(Convert.ToInt32(Rows[r]["ColorID"]));
                     string Patina = GetPatinaCode(Convert.ToInt32(Rows[r]["PatinaID"]));
+                    string AccountingName = Rows[r]["AccountingName"].ToString();
+                    if (AccountingName.ToLower().Contains("стекло"))
+                    {
+
+                    }
                     if (IsProfil(Convert.ToInt32(Rows[r]["DecorConfigID"])))
                     {
                         DataRow[] InvRows = PDT.Select($"InvNumber = '{ Rows[r]["InvNumber"].ToString() }' AND" +
@@ -636,6 +554,11 @@ PackageDetailID, PackageDetails.Count AS Count, (DecorOrders.Cost * PackageDetai
                 {
                     string Cvet = GetColorCode(Convert.ToInt32(Rows[r]["ColorID"]));
                     string Patina = GetPatinaCode(Convert.ToInt32(Rows[r]["PatinaID"]));
+                    string AccountingName = Rows[r]["AccountingName"].ToString();
+                    if (AccountingName.ToLower().Contains("стекло"))
+                    {
+
+                    }
                     if (IsProfil(Convert.ToInt32(Rows[r]["DecorConfigID"])))
                     {
                         DataRow[] InvRows = PDT.Select($"InvNumber = '{ Rows[r]["InvNumber"].ToString() }' AND " +
@@ -858,7 +781,7 @@ PackageDetailID, PackageDetails.Count AS Count, (DecorOrders.Cost * PackageDetai
             string code = string.Empty;
             try
             {
-                DataRow[] Rows = PatinaDataTable.Select("PatinaID = " + PatinaID);
+                DataRow[] Rows = decorCatalogOrder.PatinaDataTable.Select("PatinaID = " + PatinaID);
                 code = Rows[0]["Patina"].ToString();
             }
             catch
@@ -867,35 +790,26 @@ PackageDetailID, PackageDetails.Count AS Count, (DecorOrders.Cost * PackageDetai
             }
             return code;
         }
-
-        private void GetPatinaDT()
+        
+        public int GetCubfurPackage(string invNumber)
         {
-            PatinaDataTable = new DataTable();
-            PatinaRALDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Patina",
-       ConnectionStrings.CatalogConnectionString))
-            {
-                DA.Fill(PatinaDataTable);
-            }
-            PatinaRALDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM PatinaRAL WHERE Enabled=1",
-                ConnectionStrings.CatalogConnectionString))
-            {
-                DA.Fill(PatinaRALDataTable);
-            }
-            foreach (DataRow item in PatinaRALDataTable.Rows)
-            {
-                DataRow NewRow = PatinaDataTable.NewRow();
-                NewRow["PatinaID"] = item["PatinaRALID"];
-                NewRow["PatinaName"] = item["PatinaRAL"];
-                NewRow["DisplayName"] = item["DisplayName"];
-                PatinaDataTable.Rows.Add(NewRow);
-            }
+            DataRow[] row = decorCatalogOrder.DecorConfigDataTable.Select($"InvNumber = '{invNumber}'");
+            if (!row.Any())
+                return -1;
+
+            int productId = Convert.ToInt32(row[0]["ProductId"]);
+            int packageCount;
+            if (Security.CabFurIds.Contains(productId))
+                packageCount = Convert.ToInt32(row[0]["PackageCount"]);
+            else
+                return -1;
+
+            return packageCount;
         }
 
         private int GetReportMeasureTypeID(int DecorConfigID)
         {
-            DataRow[] Row = DecorConfigDataTable.Select("DecorConfigID = " + DecorConfigID);
+            DataRow[] Row = decorCatalogOrder.DecorConfigDataTable.Select("DecorConfigID = " + DecorConfigID);
 
             return Convert.ToInt32(Row[0]["ReportMeasureID"]);//1 м.кв.  2 м.п. 3 шт.
         }
@@ -930,6 +844,11 @@ PackageDetailID, PackageDetails.Count AS Count, (DecorOrders.Cost * PackageDetai
                 int PatinaID = Convert.ToInt32(Rows[r]["PatinaID"]);
                 int D = Convert.ToInt32(Rows[r]["DecorConfigID"]);
                 string InvNumber = Rows[r]["InvNumber"].ToString();
+                string AccountingName = Rows[r]["AccountingName"].ToString();
+                if (AccountingName.ToLower().Contains("стекло"))
+                {
+
+                }
                 //м.п.
                 if (MeasureTypeID == 2)
                 {
@@ -1379,14 +1298,14 @@ PackageDetailID, PackageDetails.Count AS Count, (DecorOrders.Cost * PackageDetai
 
         private bool HasParameter(int ProductID, String Parameter)
         {
-            DataRow[] Rows = DecorParametersDataTable.Select("ProductID = " + ProductID);
+            DataRow[] Rows = decorCatalogOrder.DecorParametersDataTable.Select("ProductID = " + ProductID);
 
             return Convert.ToBoolean(Rows[0][Parameter]);
         }
 
         private bool IsProfil(int DecorConfigID)
         {
-            DataRow[] Rows = DecorConfigDataTable.Select("DecorConfigID = " + DecorConfigID.ToString());
+            DataRow[] Rows = decorCatalogOrder.DecorConfigDataTable.Select("DecorConfigID = " + DecorConfigID.ToString());
 
             if (Rows[0]["FactoryID"].ToString() == "1")
                 return true;

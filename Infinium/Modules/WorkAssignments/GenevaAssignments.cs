@@ -14,6 +14,7 @@ namespace Infinium.Modules.WorkAssignments
 
     public class GenevaAssignments : IAllFrontParameterName
     {
+        private string _appovingUser = "Егорченко Р.П.";
         private FileManager FM = new FileManager();
         private bool HeightLess180 = false;
         private DateTime CurrentDate;
@@ -2211,10 +2212,19 @@ namespace Infinium.Modules.WorkAssignments
             cell.CellStyle = Calibri11CS;
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 0, "Плановое время выполнения:");
             cell.CellStyle = Calibri11CS;
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, "УТВЕРЖДАЮ_____________");
+
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, "УТВЕРЖДАЮ_____________");
             cell.CellStyle = Calibri11CS;
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, PageName);
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, _appovingUser);
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, PageName);
             cell.CellStyle = CalibriBold11CS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, $"План. отгрузка: {DateTime.Now.AddDays(14).ToShortDateString()}");
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 0, "Задание №" + WorkAssignmentID.ToString());
             cell.CellStyle = CalibriBold11CS;
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, BatchName);
@@ -2429,10 +2439,18 @@ namespace Infinium.Modules.WorkAssignments
 
             RowIndex++;
 
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, "УТВЕРЖДАЮ_____________");
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, "УТВЕРЖДАЮ_____________");
             cell.CellStyle = Calibri11CS;
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, OperationName);
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, _appovingUser);
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, OperationName);
             cell.CellStyle = CalibriBold11CS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, $"План. отгрузка: {DateTime.Now.AddDays(14).ToShortDateString()}");
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 0, "Задание №" + WorkAssignmentID.ToString());
             cell.CellStyle = CalibriBold11CS;
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, BatchName);
@@ -3165,10 +3183,23 @@ namespace Infinium.Modules.WorkAssignments
         {
             HSSFCell cell = null;
 
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, "УТВЕРЖДАЮ_____________");
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 0, "Распечатал: Дата/время " + CurrentDate.ToString("dd.MM.yyyy HH:mm") + " \r\n ФИО: " + Security.CurrentUserShortName);
             cell.CellStyle = Calibri11CS;
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, PageName);
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 0, "Плановое время выполнения:");
+            cell.CellStyle = Calibri11CS;
+
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, "УТВЕРЖДАЮ_____________");
+            cell.CellStyle = Calibri11CS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, _appovingUser);
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, "ТСК-01");
             cell.CellStyle = CalibriBold11CS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, $"План. отгрузка: {DateTime.Now.AddDays(14).ToShortDateString()}");
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 0, "Задание №" + WorkAssignmentID.ToString());
             cell.CellStyle = CalibriBold11CS;
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, BatchName);
@@ -3371,10 +3402,23 @@ namespace Infinium.Modules.WorkAssignments
         {
             HSSFCell cell = null;
 
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, "УТВЕРЖДАЮ_____________");
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 0, "Распечатал: Дата/время " + CurrentDate.ToString("dd.MM.yyyy HH:mm") + " \r\n ФИО: " + Security.CurrentUserShortName);
             cell.CellStyle = Calibri11CS;
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, PageName);
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 0, "Плановое время выполнения:");
+            cell.CellStyle = Calibri11CS;
+
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, "УТВЕРЖДАЮ_____________");
+            cell.CellStyle = Calibri11CS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, _appovingUser);
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, PageName);
             cell.CellStyle = CalibriBold11CS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, $"План. отгрузка: {DateTime.Now.AddDays(14).ToShortDateString()}");
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 0, "Задание №" + WorkAssignmentID.ToString());
             cell.CellStyle = CalibriBold11CS;
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, BatchName);
@@ -3573,10 +3617,23 @@ namespace Infinium.Modules.WorkAssignments
         {
             HSSFCell cell = null;
 
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, "УТВЕРЖДАЮ_____________");
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 0, "Распечатал: Дата/время " + CurrentDate.ToString("dd.MM.yyyy HH:mm") + " \r\n ФИО: " + Security.CurrentUserShortName);
             cell.CellStyle = Calibri11CS;
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, PageName);
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 0, "Плановое время выполнения:");
+            cell.CellStyle = Calibri11CS;
+
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, "УТВЕРЖДАЮ_____________");
+            cell.CellStyle = Calibri11CS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, _appovingUser);
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, PageName);
             cell.CellStyle = CalibriBold11CS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, $"План. отгрузка: {DateTime.Now.AddDays(14).ToShortDateString()}");
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 0, "Задание №" + WorkAssignmentID.ToString());
             cell.CellStyle = CalibriBold11CS;
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, BatchName);
@@ -3775,10 +3832,23 @@ namespace Infinium.Modules.WorkAssignments
         {
             HSSFCell cell = null;
 
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, "УТВЕРЖДАЮ_____________");
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 0, "Распечатал: Дата/время " + CurrentDate.ToString("dd.MM.yyyy HH:mm") + " \r\n ФИО: " + Security.CurrentUserShortName);
             cell.CellStyle = Calibri11CS;
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, PageName);
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 0, "Плановое время выполнения:");
+            cell.CellStyle = Calibri11CS;
+
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, "УТВЕРЖДАЮ_____________");
+            cell.CellStyle = Calibri11CS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, _appovingUser);
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, PageName);
             cell.CellStyle = CalibriBold11CS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, $"План. отгрузка: {DateTime.Now.AddDays(14).ToShortDateString()}");
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 0, "Задание №" + WorkAssignmentID.ToString());
             cell.CellStyle = CalibriBold11CS;
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, BatchName);
@@ -3977,10 +4047,23 @@ namespace Infinium.Modules.WorkAssignments
         {
             HSSFCell cell = null;
 
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, "УТВЕРЖДАЮ_____________");
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 0, "Распечатал: Дата/время " + CurrentDate.ToString("dd.MM.yyyy HH:mm") + " \r\n ФИО: " + Security.CurrentUserShortName);
             cell.CellStyle = Calibri11CS;
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, PageName);
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 0, "Плановое время выполнения:");
+            cell.CellStyle = Calibri11CS;
+
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, "УТВЕРЖДАЮ_____________");
+            cell.CellStyle = Calibri11CS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, _appovingUser);
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, PageName);
             cell.CellStyle = CalibriBold11CS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, $"План. отгрузка: {DateTime.Now.AddDays(14).ToShortDateString()}");
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 0, "Задание №" + WorkAssignmentID.ToString());
             cell.CellStyle = CalibriBold11CS;
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, BatchName);
@@ -4203,10 +4286,18 @@ namespace Infinium.Modules.WorkAssignments
 
             RowIndex++;
 
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, "УТВЕРЖДАЮ_____________");
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, "УТВЕРЖДАЮ_____________");
             cell.CellStyle = Calibri11CS;
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, PageName);
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, _appovingUser);
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, PageName);
             cell.CellStyle = CalibriBold11CS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, $"План. отгрузка: {DateTime.Now.AddDays(14).ToShortDateString()}");
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 0, "Задание №" + WorkAssignmentID.ToString());
             cell.CellStyle = CalibriBold11CS;
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, BatchName);
@@ -4431,10 +4522,18 @@ namespace Infinium.Modules.WorkAssignments
 
             RowIndex++;
 
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, "УТВЕРЖДАЮ_____________");
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, "УТВЕРЖДАЮ_____________");
             cell.CellStyle = Calibri11CS;
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, PageName);
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, _appovingUser);
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, PageName);
             cell.CellStyle = CalibriBold11CS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, $"План. отгрузка: {DateTime.Now.AddDays(14).ToShortDateString()}");
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 0, "Задание №" + WorkAssignmentID.ToString());
             cell.CellStyle = CalibriBold11CS;
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, BatchName);
@@ -4765,6 +4864,25 @@ namespace Infinium.Modules.WorkAssignments
         {
             HSSFCell cell = null;
 
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 0, "Распечатал: Дата/время " + CurrentDate.ToString("dd.MM.yyyy HH:mm") + " \r\n ФИО: " + Security.CurrentUserShortName);
+            cell.CellStyle = Calibri11CS;
+
+
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 0, "Плановое время выполнения:");
+            cell.CellStyle = Calibri11CS;
+
+            RowIndex++;
+
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, "УТВЕРЖДАЮ_____________");
+            cell.CellStyle = Calibri11CS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, _appovingUser);
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+            
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, $"План. отгрузка: {DateTime.Now.AddDays(14).ToShortDateString()}");
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 0, "Задание №" + WorkAssignmentID.ToString());
             cell.CellStyle = CalibriBold11CS;
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, BatchName);
@@ -5069,6 +5187,25 @@ namespace Infinium.Modules.WorkAssignments
             DataTable DT, int WorkAssignmentID, string BatchName, string ClientName, string OperationName, string OrderName, string Notes, ref int RowIndex)
         {
             HSSFCell cell = null;
+
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 0, "Распечатал: Дата/время " + CurrentDate.ToString("dd.MM.yyyy HH:mm") + " \r\n ФИО: " + Security.CurrentUserShortName);
+            cell.CellStyle = Calibri11CS;
+
+
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 0, "Плановое время выполнения:");
+            cell.CellStyle = Calibri11CS;
+
+            RowIndex++;
+
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, "УТВЕРЖДАЮ_____________");
+            cell.CellStyle = Calibri11CS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, _appovingUser);
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, $"План. отгрузка: {DateTime.Now.AddDays(14).ToShortDateString()}");
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
 
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 0, "Задание №" + WorkAssignmentID.ToString());
             cell.CellStyle = CalibriBold11CS;
@@ -5375,6 +5512,25 @@ namespace Infinium.Modules.WorkAssignments
             DataTable DT, int WorkAssignmentID, string BatchName, string ClientName, string OperationName, string OrderName, string Notes, ref int RowIndex)
         {
             HSSFCell cell = null;
+
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 0, "Распечатал: Дата/время " + CurrentDate.ToString("dd.MM.yyyy HH:mm") + " \r\n ФИО: " + Security.CurrentUserShortName);
+            cell.CellStyle = Calibri11CS;
+
+
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 0, "Плановое время выполнения:");
+            cell.CellStyle = Calibri11CS;
+
+            RowIndex++;
+
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, "УТВЕРЖДАЮ_____________");
+            cell.CellStyle = Calibri11CS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, _appovingUser);
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, $"План. отгрузка: {DateTime.Now.AddDays(14).ToShortDateString()}");
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
 
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 0, "Задание №" + WorkAssignmentID.ToString());
             cell.CellStyle = CalibriBold11CS;

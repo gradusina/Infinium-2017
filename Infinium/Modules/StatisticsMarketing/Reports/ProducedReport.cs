@@ -75,7 +75,8 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
         {
             FrameColorsDataTable.Columns.Add(new DataColumn("ColorID", Type.GetType("System.Int64")));
             FrameColorsDataTable.Columns.Add(new DataColumn("ColorName", Type.GetType("System.String")));
-            string SelectCommand = @"SELECT TechStoreID, TechStoreName FROM TechStore
+            FrameColorsDataTable.Columns.Add(new DataColumn("Cvet", Type.GetType("System.String")));
+            string SelectCommand = @"SELECT TechStoreID, TechStoreName, Cvet FROM TechStore
                 WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)
                 ORDER BY TechStoreName";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
@@ -87,12 +88,14 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
                         DataRow NewRow = FrameColorsDataTable.NewRow();
                         NewRow["ColorID"] = -1;
                         NewRow["ColorName"] = "-";
+                        NewRow["Cvet"] = "000";
                         FrameColorsDataTable.Rows.Add(NewRow);
                     }
                     {
                         DataRow NewRow = FrameColorsDataTable.NewRow();
                         NewRow["ColorID"] = 0;
                         NewRow["ColorName"] = "на выбор";
+                        NewRow["Cvet"] = "0000000";
                         FrameColorsDataTable.Rows.Add(NewRow);
                     }
                     for (int i = 0; i < DT.Rows.Count; i++)
@@ -100,6 +103,7 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
                         DataRow NewRow = FrameColorsDataTable.NewRow();
                         NewRow["ColorID"] = Convert.ToInt64(DT.Rows[i]["TechStoreID"]);
                         NewRow["ColorName"] = DT.Rows[i]["TechStoreName"].ToString();
+                        NewRow["Cvet"] = DT.Rows[i]["Cvet"].ToString();
                         FrameColorsDataTable.Rows.Add(NewRow);
                     }
                 }
@@ -241,6 +245,8 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
             DecorInvNumbersDT.Columns.Add(new DataColumn("FrontsOrdersID", Type.GetType("System.Int32")));
             DecorInvNumbersDT.Columns.Add(new DataColumn("DecorInvNumber", Type.GetType("System.String")));
             DecorInvNumbersDT.Columns.Add(new DataColumn("DecorAccountingName", Type.GetType("System.String")));
+            DecorInvNumbersDT.Columns.Add(new DataColumn("Cvet", Type.GetType("System.String")));
+            DecorInvNumbersDT.Columns.Add(new DataColumn("Patina", Type.GetType("System.String")));
             DecorInvNumbersDT.Columns.Add(new DataColumn("FactoryID", Type.GetType("System.Int32")));
 
             ProfilReportDataTable = new DataTable();
@@ -249,6 +255,8 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
             ProfilReportDataTable.Columns.Add(new DataColumn("TPSCurCode", Type.GetType("System.String")));
             ProfilReportDataTable.Columns.Add(new DataColumn("Measure", Type.GetType("System.String")));
             ProfilReportDataTable.Columns.Add(new DataColumn("InvNumber", Type.GetType("System.String")));
+            ProfilReportDataTable.Columns.Add(new DataColumn("Cvet", Type.GetType("System.String")));
+            ProfilReportDataTable.Columns.Add(new DataColumn("Patina", Type.GetType("System.String")));
             ProfilReportDataTable.Columns.Add(new DataColumn("AccountingName", Type.GetType("System.String")));
             ProfilReportDataTable.Columns.Add(new DataColumn("Count", Type.GetType("System.Decimal")));
             ProfilReportDataTable.Columns.Add(new DataColumn("Price", Type.GetType("System.Decimal")));
@@ -293,6 +301,66 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
             DataRow[] Row = FrontsDataTable.Select("FrontID = " + FrontID);
 
             return Row[0]["FrontName"].ToString();
+        }
+
+        private string GetColorCode(int ColorID)
+        {
+            string ColorName = "";
+            try
+            {
+                DataRow[] Rows = FrameColorsDataTable.Select("ColorID = " + ColorID);
+                ColorName = Rows[0]["Cvet"].ToString();
+            }
+            catch
+            {
+                return "";
+            }
+            return ColorName;
+        }
+
+        private string GetPatinaCode(int PatinaID)
+        {
+            string PatinaName = "";
+            try
+            {
+                DataRow[] Rows = PatinaDataTable.Select("PatinaID = " + PatinaID);
+                PatinaName = Rows[0]["Patina"].ToString();
+            }
+            catch
+            {
+                return "";
+            }
+            return PatinaName;
+        }
+
+        public string GetColorNameByCode(string Cvet)
+        {
+            string ColorName = "";
+            try
+            {
+                DataRow[] Rows = FrameColorsDataTable.Select($"Cvet = '{ Cvet }'");
+                ColorName = Rows[0]["ColorName"].ToString();
+            }
+            catch
+            {
+                return string.Empty;
+            }
+            return ColorName;
+        }
+
+        public string GetPatinaNameByCode(string Patina)
+        {
+            string PatinaName = "";
+            try
+            {
+                DataRow[] Rows = PatinaDataTable.Select($"Patina = '{ Patina }'");
+                PatinaName = Rows[0]["DisplayName"].ToString();
+            }
+            catch
+            {
+                return "";
+            }
+            return PatinaName;
         }
 
         private void SplitTables(DataTable FrontsOrdersDataTable, ref DataTable ProfilDT, ref DataTable TPSDT)
@@ -598,7 +666,7 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
 
             using (DataView DV = new DataView(OrdersDataTable))
             {
-                Fronts = DV.ToTable(true, new string[] { "FrontID" });
+                Fronts = DV.ToTable(true, new string[] { "FrontID", "ColorID", "PatinaID" });
             }
 
             for (int i = 0; i < Fronts.Rows.Count; i++)
@@ -628,7 +696,9 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
                     filter += item["InsetTypeID"].ToString() + ",";
                 if (filter.Length > 0)
                     filter = " AND NOT (FrontID IN (3728,3731,3732,3739,3740,3741,3744,3745,3746) OR InsetTypeID IN (28961,3653,3654,3655)) AND (FrontID = 3729 OR InsetTypeID IN (" + filter.Substring(0, filter.Length - 1) + "))";
-                DataRow[] Rows = OrdersDataTable.Select("FrontID = " + Fronts.Rows[i]["FrontID"].ToString() + " AND (Width <> -1)" + filter);
+                DataRow[] Rows = OrdersDataTable.Select("ColorID = " + Fronts.Rows[i]["ColorID"].ToString() +
+                                                        " AND PatinaID = " + Fronts.Rows[i]["PatinaID"].ToString() +
+                                                        " AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString() + " AND (Width <> -1)" + filter);
                 if (Rows.Count() > 0)
                     MarketingCost = GetMarketingCost(Convert.ToInt32(Rows[0]["FrontConfigID"]));
                 for (int r = 0; r < Rows.Count(); r++)
@@ -646,6 +716,8 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
                             NewRow["FactoryID"] = FactoryID;
                             NewRow["DecorAccountingName"] = DecorAccountingName;
                             NewRow["DecorInvNumber"] = DecorInvNumber;
+                            NewRow["Cvet"] = GetColorCode(Convert.ToInt32(Fronts.Rows[i]["ColorID"]));
+                            NewRow["Patina"] = GetPatinaCode(Convert.ToInt32(Fronts.Rows[i]["PatinaID"]));
                             DecorInvNumbersDT.Rows.Add(NewRow);
                             DeductibleWeight = GetInsetWeight(Rows[r]);
                             DeductibleCount = GetInsetSquare(Convert.ToInt32(Rows[r]["FrontID"]), Convert.ToInt32(Rows[r]["Height"]),
@@ -675,7 +747,9 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
                 }
                 //АППЛИКАЦИИ
                 filter = " AND (FrontID IN (3728,3731,3732,3739,3740,3741,3744,3745,3746) OR InsetTypeID IN (28961,3653,3654,3655))";
-                Rows = OrdersDataTable.Select("FrontID = " + Fronts.Rows[i]["FrontID"].ToString() + " AND (Width <> -1)" + filter);
+                Rows = OrdersDataTable.Select("ColorID = " + Fronts.Rows[i]["ColorID"].ToString() +
+                                              " AND PatinaID = " + Fronts.Rows[i]["PatinaID"].ToString() +
+                                              " AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString() + " AND (Width <> -1)" + filter);
                 if (Rows.Count() > 0)
                     MarketingCost = GetMarketingCost(Convert.ToInt32(Rows[0]["FrontConfigID"]));
                 for (int r = 0; r < Rows.Count(); r++)
@@ -727,7 +801,9 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
                 }
                 //ФИЛЕНКА
                 filter = " AND InsetTypeID IN (2069,2070,2071,2073,2075,2077,2233,3644,29043,29531)";
-                Rows = OrdersDataTable.Select("FrontID = " + Fronts.Rows[i]["FrontID"].ToString() + " AND (Width <> -1)" + filter);
+                Rows = OrdersDataTable.Select("ColorID = " + Fronts.Rows[i]["ColorID"].ToString() +
+                                              " AND PatinaID = " + Fronts.Rows[i]["PatinaID"].ToString() +
+                                              " AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString() + " AND (Width <> -1)" + filter);
                 if (Rows.Count() > 0)
                     MarketingCost = GetMarketingCost(Convert.ToInt32(Rows[0]["FrontConfigID"]));
                 for (int r = 0; r < Rows.Count(); r++)
@@ -754,7 +830,9 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
                 }
                 //ВИТРИНЫ, РЕШЕТКИ, СТЕКЛО
                 filter = " AND InsetTypeID IN (1,2,685,686,687,688,29470,29471) AND FrontID <> 3729";
-                Rows = OrdersDataTable.Select("FrontID = " + Fronts.Rows[i]["FrontID"].ToString() + " AND (Width <> -1)" + filter);
+                Rows = OrdersDataTable.Select("ColorID = " + Fronts.Rows[i]["ColorID"].ToString() +
+                                              " AND PatinaID = " + Fronts.Rows[i]["PatinaID"].ToString() +
+                                              " AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString() + " AND (Width <> -1)" + filter);
                 if (Rows.Count() > 0)
                     MarketingCost = GetMarketingCost(Convert.ToInt32(Rows[0]["FrontConfigID"]));
                 for (int r = 0; r < Rows.Count(); r++)
@@ -775,6 +853,8 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
                             NewRow["FactoryID"] = FactoryID;
                             NewRow["DecorAccountingName"] = DecorAccountingName;
                             NewRow["DecorInvNumber"] = DecorInvNumber;
+                            NewRow["Cvet"] = GetColorCode(Convert.ToInt32(Fronts.Rows[i]["ColorID"]));
+                            NewRow["Patina"] = GetPatinaCode(Convert.ToInt32(Fronts.Rows[i]["PatinaID"]));
                             DecorInvNumbersDT.Rows.Add(NewRow);
                             DeductibleCount = GetInsetSquare(Convert.ToInt32(Rows[r]["FrontID"]), Convert.ToInt32(Rows[r]["Height"]),
                                                         Convert.ToInt32(Rows[r]["Width"])) * Convert.ToDecimal(Rows[r]["Count"]);
@@ -793,6 +873,8 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
                             NewRow["FactoryID"] = FactoryID;
                             NewRow["DecorAccountingName"] = DecorAccountingName;
                             NewRow["DecorInvNumber"] = DecorInvNumber;
+                            NewRow["Cvet"] = GetColorCode(Convert.ToInt32(Fronts.Rows[i]["ColorID"]));
+                            NewRow["Patina"] = GetPatinaCode(Convert.ToInt32(Fronts.Rows[i]["PatinaID"]));
                             DecorInvNumbersDT.Rows.Add(NewRow);
                             DeductibleCount = Convert.ToDecimal(Rows[r]["Count"]) * GetInsetSquare(Convert.ToInt32(Rows[r]["FrontID"]), Convert.ToInt32(Rows[r]["Height"]), Convert.ToInt32(Rows[r]["Width"]));
                             DeductibleWeight = Decimal.Round(DeductibleCount * 10, 3, MidpointRounding.AwayFromZero);
@@ -829,7 +911,9 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
                 }
                 //ЛЮКС, МЕГА
                 filter = " AND InsetTypeID IN (860,862,4310)";
-                Rows = OrdersDataTable.Select("FrontID = " + Fronts.Rows[i]["FrontID"].ToString() + " AND (Width <> -1)" + filter);
+                Rows = OrdersDataTable.Select("ColorID = " + Fronts.Rows[i]["ColorID"].ToString() +
+                                              " AND PatinaID = " + Fronts.Rows[i]["PatinaID"].ToString() +
+                                              " AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString() + " AND (Width <> -1)" + filter);
                 if (Rows.Count() > 0)
                     MarketingCost = GetMarketingCost(Convert.ToInt32(Rows[0]["FrontConfigID"]));
                 for (int r = 0; r < Rows.Count(); r++)
@@ -862,6 +946,8 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
                     Row["UNN"] = UNN;
                     Row["AccountingName"] = AccountingName;
                     Row["InvNumber"] = InvNumber;
+                    Row["Cvet"] = GetColorCode(Convert.ToInt32(Fronts.Rows[i]["ColorID"]));
+                    Row["Patina"] = GetPatinaCode(Convert.ToInt32(Fronts.Rows[i]["PatinaID"]));
                     Row["MarketingCost"] = MarketingCost;
                     Row["Measure"] = Measure;
                     Row["CurrencyCode"] = ProfilCurrencyCode;
@@ -880,6 +966,8 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
                     Row["UNN"] = UNN;
                     Row["AccountingName"] = AccountingName;
                     Row["InvNumber"] = InvNumber;
+                    Row["Cvet"] = GetColorCode(Convert.ToInt32(Fronts.Rows[i]["ColorID"]));
+                    Row["Patina"] = GetPatinaCode(Convert.ToInt32(Fronts.Rows[i]["PatinaID"]));
                     Row["MarketingCost"] = MarketingCost;
                     Row["Measure"] = Measure;
                     Row["CurrencyCode"] = ProfilCurrencyCode;
@@ -898,6 +986,8 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
                     Row["UNN"] = UNN;
                     Row["AccountingName"] = AccountingName;
                     Row["InvNumber"] = InvNumber;
+                    Row["Cvet"] = GetColorCode(Convert.ToInt32(Fronts.Rows[i]["ColorID"]));
+                    Row["Patina"] = GetPatinaCode(Convert.ToInt32(Fronts.Rows[i]["PatinaID"]));
                     Row["MarketingCost"] = MarketingCost;
                     Row["Measure"] = Measure;
                     Row["CurrencyCode"] = ProfilCurrencyCode;
@@ -916,6 +1006,8 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
                     Row["UNN"] = UNN;
                     Row["AccountingName"] = AccountingName;
                     Row["InvNumber"] = InvNumber;
+                    Row["Cvet"] = GetColorCode(Convert.ToInt32(Fronts.Rows[i]["ColorID"]));
+                    Row["Patina"] = GetPatinaCode(Convert.ToInt32(Fronts.Rows[i]["PatinaID"]));
                     Row["MarketingCost"] = MarketingCost;
                     Row["Measure"] = Measure;
                     Row["CurrencyCode"] = ProfilCurrencyCode;
@@ -941,13 +1033,15 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
 
             using (DataView DV = new DataView(OrdersDataTable))
             {
-                Fronts = DV.ToTable(true, new string[] { "FrontID" });
+                Fronts = DV.ToTable(true, new string[] { "FrontID", "ColorID", "PatinaID" });
             }
 
             for (int i = 0; i < Fronts.Rows.Count; i++)
             {
-                DataRow[] Rows = OrdersDataTable.Select("FrontID = " + Fronts.Rows[i]["FrontID"].ToString() +
-                                                              " AND Width = -1");
+                DataRow[] Rows = OrdersDataTable.Select("ColorID = " + Fronts.Rows[i]["ColorID"].ToString() +
+                                                        " AND PatinaID = " + Fronts.Rows[i]["PatinaID"].ToString() +
+                                                        " AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString() +
+                                                        " AND Width = -1");
 
                 if (Rows.Count() == 0)
                     continue;
@@ -1118,6 +1212,8 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
                     DataRow Row = ReportDataTable.NewRow();
                     Row["OriginalPrice"] = Solid713Price;
                     Row["UNN"] = UNN;
+                    Row["Cvet"] = GetColorCode(Convert.ToInt32(Fronts.Rows[i]["ColorID"]));
+                    Row["Patina"] = GetPatinaCode(Convert.ToInt32(Fronts.Rows[i]["PatinaID"]));
                     Row["AccountingName"] = AccountingName;
                     Row["InvNumber"] = InvNumber;
                     Row["MarketingCost"] = MarketingCost;
@@ -1136,6 +1232,8 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
                     DataRow Row = ReportDataTable.NewRow();
                     Row["OriginalPrice"] = Filenka713Price;
                     Row["UNN"] = UNN;
+                    Row["Cvet"] = GetColorCode(Convert.ToInt32(Fronts.Rows[i]["ColorID"]));
+                    Row["Patina"] = GetPatinaCode(Convert.ToInt32(Fronts.Rows[i]["PatinaID"]));
                     Row["AccountingName"] = AccountingName;
                     Row["InvNumber"] = InvNumber;
                     Row["MarketingCost"] = MarketingCost;
@@ -1154,6 +1252,8 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
                     DataRow Row = ReportDataTable.NewRow();
                     Row["OriginalPrice"] = NoInset713Price;
                     Row["UNN"] = UNN;
+                    Row["Cvet"] = GetColorCode(Convert.ToInt32(Fronts.Rows[i]["ColorID"]));
+                    Row["Patina"] = GetPatinaCode(Convert.ToInt32(Fronts.Rows[i]["PatinaID"]));
                     Row["AccountingName"] = AccountingName;
                     Row["InvNumber"] = InvNumber;
                     Row["MarketingCost"] = MarketingCost;
@@ -1172,6 +1272,8 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
                     DataRow Row = ReportDataTable.NewRow();
                     Row["OriginalPrice"] = Vitrina713Price;
                     Row["UNN"] = UNN;
+                    Row["Cvet"] = GetColorCode(Convert.ToInt32(Fronts.Rows[i]["ColorID"]));
+                    Row["Patina"] = GetPatinaCode(Convert.ToInt32(Fronts.Rows[i]["PatinaID"]));
                     Row["AccountingName"] = AccountingName;
                     Row["InvNumber"] = InvNumber;
                     Row["MarketingCost"] = MarketingCost;
@@ -1190,6 +1292,8 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
                     DataRow Row = ReportDataTable.NewRow();
                     Row["OriginalPrice"] = Solid910Price;
                     Row["UNN"] = UNN;
+                    Row["Cvet"] = GetColorCode(Convert.ToInt32(Fronts.Rows[i]["ColorID"]));
+                    Row["Patina"] = GetPatinaCode(Convert.ToInt32(Fronts.Rows[i]["PatinaID"]));
                     Row["AccountingName"] = AccountingName;
                     Row["InvNumber"] = InvNumber;
                     Row["MarketingCost"] = MarketingCost;
@@ -1208,6 +1312,8 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
                     DataRow Row = ReportDataTable.NewRow();
                     Row["OriginalPrice"] = Filenka910Price;
                     Row["UNN"] = UNN;
+                    Row["Cvet"] = GetColorCode(Convert.ToInt32(Fronts.Rows[i]["ColorID"]));
+                    Row["Patina"] = GetPatinaCode(Convert.ToInt32(Fronts.Rows[i]["PatinaID"]));
                     Row["AccountingName"] = AccountingName;
                     Row["InvNumber"] = InvNumber;
                     Row["MarketingCost"] = MarketingCost;
@@ -1226,6 +1332,8 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
                     DataRow Row = ReportDataTable.NewRow();
                     Row["OriginalPrice"] = NoInset910Price;
                     Row["UNN"] = UNN;
+                    Row["Cvet"] = GetColorCode(Convert.ToInt32(Fronts.Rows[i]["ColorID"]));
+                    Row["Patina"] = GetPatinaCode(Convert.ToInt32(Fronts.Rows[i]["PatinaID"]));
                     Row["AccountingName"] = AccountingName;
                     Row["InvNumber"] = InvNumber;
                     Row["MarketingCost"] = MarketingCost;
@@ -1244,6 +1352,8 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
                     DataRow Row = ReportDataTable.NewRow();
                     Row["OriginalPrice"] = Vitrina910Price;
                     Row["UNN"] = UNN;
+                    Row["Cvet"] = GetColorCode(Convert.ToInt32(Fronts.Rows[i]["ColorID"]));
+                    Row["Patina"] = GetPatinaCode(Convert.ToInt32(Fronts.Rows[i]["PatinaID"]));
                     Row["AccountingName"] = AccountingName;
                     Row["InvNumber"] = InvNumber;
                     Row["MarketingCost"] = MarketingCost;
@@ -1263,80 +1373,102 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
 
         private void GetGrids(DataTable OrdersDataTable, DataTable ReportDataTable, DataTable ReportDataTable1, int FactoryID1)
         {
-            DataRow[] Rows = OrdersDataTable.Select("InsetTypeID IN (685,686,687,688,29470,29471) AND FrontID <> 3729");
-
-            if (Rows.Count() == 0)
+            if (OrdersDataTable.Select("InsetTypeID IN (685,686,687,688,29470,29471)").Count() == 0)
                 return;
 
-            decimal MarketingCost = 0;
-            decimal CountPP = 0;
-            decimal CostPP = 0;
-
             int fID = Convert.ToInt32(OrdersDataTable.Rows[0]["FactoryID"]);
-            if (Rows.Count() > 0)
-                MarketingCost = GetGridMarketingCost(Convert.ToInt32(Rows[0]["FrontConfigID"]));
 
-            for (int i = 0; i < Rows.Count(); i++)
+            DataTable Fronts = new DataTable();
+            using (DataView DV = new DataView(OrdersDataTable))
             {
-                decimal d = GetInsetSquare(Convert.ToInt32(Rows[i]["FrontID"]), Convert.ToInt32(Rows[i]["Height"]),
-                                            Convert.ToInt32(Rows[i]["Width"])) * Convert.ToDecimal(Rows[i]["Count"]);
-                CountPP += d;
-                CostPP += Convert.ToDecimal(Rows[i]["InsetPrice"]) * d;
-                if (MarketingCost > GetGridMarketingCost(Convert.ToInt32(Rows[i]["FrontConfigID"])))
-                    MarketingCost = GetGridMarketingCost(Convert.ToInt32(Rows[i]["FrontConfigID"]));
+                DV.RowFilter = "InsetTypeID IN (685,686,687,688,29470,29471)";
+                Fronts = DV.ToTable(true, new string[] { "FrontID", "ColorID", "PatinaID" });
             }
 
-            if (CountPP > 0)
+            for (int i = 0; i < Fronts.Rows.Count; i++)
             {
-                DataRow[] rows = DecorInvNumbersDT.Select("FrontsOrdersID = " + Convert.ToInt32(OrdersDataTable.Select("InsetTypeID IN (685,686,687,688,29470,29471)")[0]["FrontsOrdersID"]));
-                int FactoryID = 0;
-                if (rows.Count() > 0)
-                    FactoryID = Convert.ToInt32(rows[0]["FactoryID"]);
-                if (FactoryID == 0)
-                    FactoryID = FactoryID1;
-                if (FactoryID != FactoryID1)
+                int FrontID = Convert.ToInt32(Fronts.Rows[i]["FrontID"]);
+                if (FrontID == 3729)
+                    continue;
+
+                DataRow[] Rows = OrdersDataTable.Select("ColorID = " + Fronts.Rows[i]["ColorID"].ToString() +
+                    " AND PatinaID = " + Fronts.Rows[i]["PatinaID"].ToString() +
+                    " AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString());
+
+                decimal MarketingCost = 0;
+                decimal CountPP = 0;
+                decimal CostPP = 0;
+
+                if (Rows.Count() > 0)
+                    MarketingCost = GetGridMarketingCost(Convert.ToInt32(Rows[0]["FrontConfigID"]));
+
+                for (int j = 0; j < Rows.Count(); j++)
                 {
-                    DataRow NewRow = ReportDataTable1.NewRow();
-                    NewRow["OriginalPrice"] = CostPP / CountPP;
-                    NewRow["UNN"] = UNN;
-                    NewRow["AccountingName"] = OrdersDataTable.Rows[0]["AccountingName"].ToString();
-                    NewRow["InvNumber"] = OrdersDataTable.Rows[0]["InvNumber"].ToString();
-                    NewRow["MarketingCost"] = MarketingCost;
-                    NewRow["Measure"] = OrdersDataTable.Rows[0]["Measure"].ToString();
-                    NewRow["CurrencyCode"] = ProfilCurrencyCode;
-                    if (fID == 2)
-                        NewRow["TPSCurCode"] = TPSCurrencyCode;
-                    NewRow["Count"] = Decimal.Round(CountPP, 3, MidpointRounding.AwayFromZero);
-                    NewRow["Cost"] = Decimal.Round(CostPP, 3, MidpointRounding.AwayFromZero);
-                    NewRow["Weight"] = Decimal.Round(Convert.ToDecimal(NewRow["Count"]) * Convert.ToDecimal(3.5), 3, MidpointRounding.AwayFromZero);
-                    if (rows.Count() > 0)
-                    {
-                        NewRow["AccountingName"] = rows[0]["DecorAccountingName"].ToString();
-                        NewRow["InvNumber"] = rows[0]["DecorInvNumber"].ToString();
-                    }
-                    ReportDataTable1.Rows.Add(NewRow);
+                    decimal d = GetInsetSquare(Convert.ToInt32(Rows[j]["FrontID"]), Convert.ToInt32(Rows[j]["Height"]),
+                        Convert.ToInt32(Rows[j]["Width"])) * Convert.ToDecimal(Rows[j]["Count"]);
+                    CountPP += d;
+                    CostPP += Math.Ceiling(Convert.ToDecimal(Rows[j]["InsetPrice"]) * d / 0.01m) * 0.01m;
+                    if (MarketingCost > GetGridMarketingCost(Convert.ToInt32(Rows[j]["FrontConfigID"])))
+                        MarketingCost = GetGridMarketingCost(Convert.ToInt32(Rows[j]["FrontConfigID"]));
                 }
-                else
+
+                if (CountPP > 0)
                 {
-                    DataRow NewRow = ReportDataTable.NewRow();
-                    NewRow["OriginalPrice"] = CostPP / CountPP;
-                    NewRow["UNN"] = UNN;
-                    NewRow["AccountingName"] = OrdersDataTable.Rows[0]["AccountingName"].ToString();
-                    NewRow["InvNumber"] = OrdersDataTable.Rows[0]["InvNumber"].ToString();
-                    NewRow["MarketingCost"] = MarketingCost;
-                    NewRow["Measure"] = OrdersDataTable.Rows[0]["Measure"].ToString();
-                    NewRow["CurrencyCode"] = ProfilCurrencyCode;
-                    if (fID == 2)
-                        NewRow["TPSCurCode"] = TPSCurrencyCode;
-                    NewRow["Count"] = Decimal.Round(CountPP, 3, MidpointRounding.AwayFromZero);
-                    NewRow["Cost"] = Decimal.Round(CostPP, 3, MidpointRounding.AwayFromZero);
-                    NewRow["Weight"] = Decimal.Round(Convert.ToDecimal(NewRow["Count"]) * Convert.ToDecimal(3.5), 3, MidpointRounding.AwayFromZero);
+                    DataRow[] rows = DecorInvNumbersDT.Select("FrontsOrdersID = " + Convert.ToInt32(OrdersDataTable.Select("InsetTypeID IN (685,686,687,688,29470,29471)")[0]["FrontsOrdersID"]));
+                    int FactoryID = 0;
                     if (rows.Count() > 0)
+                        FactoryID = Convert.ToInt32(rows[0]["FactoryID"]);
+                    if (FactoryID == 0)
+                        FactoryID = FactoryID1;
+                    if (FactoryID != FactoryID1)
                     {
-                        NewRow["AccountingName"] = rows[0]["DecorAccountingName"].ToString();
-                        NewRow["InvNumber"] = rows[0]["DecorInvNumber"].ToString();
+                        //CostPP = Math.Ceiling(CostPP / 0.01m) * 0.01m;
+                        DataRow NewRow = ReportDataTable1.NewRow();
+                        NewRow["OriginalPrice"] = CostPP / CountPP;
+                        NewRow["UNN"] = UNN;
+                        NewRow["AccountingName"] = OrdersDataTable.Rows[0]["AccountingName"].ToString();
+                        NewRow["InvNumber"] = OrdersDataTable.Rows[0]["InvNumber"].ToString();
+                        NewRow["MarketingCost"] = MarketingCost;
+                        NewRow["CurrencyCode"] = ProfilCurrencyCode;
+                        if (fID == 2)
+                            NewRow["TPSCurCode"] = TPSCurrencyCode;
+                        NewRow["Measure"] = OrdersDataTable.Rows[0]["Measure"].ToString();
+                        NewRow["Count"] = Decimal.Round(CountPP, 3, MidpointRounding.AwayFromZero);
+                        NewRow["Cost"] = Decimal.Round(Math.Ceiling(CostPP / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                        NewRow["Weight"] = Decimal.Round(Convert.ToDecimal(NewRow["Count"]) * Convert.ToDecimal(3.5), 3, MidpointRounding.AwayFromZero);
+                        if (rows.Count() > 0)
+                        {
+                            NewRow["AccountingName"] = rows[0]["DecorAccountingName"].ToString();
+                            NewRow["InvNumber"] = rows[0]["DecorInvNumber"].ToString();
+                            NewRow["Cvet"] = rows[0]["Cvet"].ToString();
+                            NewRow["Patina"] = rows[0]["Patina"].ToString();
+                        }
+                        ReportDataTable1.Rows.Add(NewRow);
                     }
-                    ReportDataTable.Rows.Add(NewRow);
+                    else
+                    {
+                        //CostPP = Math.Ceiling(CostPP / 0.01m) * 0.01m;
+                        DataRow NewRow = ReportDataTable.NewRow();
+                        NewRow["OriginalPrice"] = CostPP / CountPP;
+                        NewRow["UNN"] = UNN;
+                        NewRow["MarketingCost"] = MarketingCost;
+                        NewRow["AccountingName"] = OrdersDataTable.Rows[0]["AccountingName"].ToString();
+                        NewRow["InvNumber"] = OrdersDataTable.Rows[0]["InvNumber"].ToString();
+                        NewRow["CurrencyCode"] = ProfilCurrencyCode;
+                        if (fID == 2)
+                            NewRow["TPSCurCode"] = TPSCurrencyCode;
+                        NewRow["Count"] = Decimal.Round(CountPP, 3, MidpointRounding.AwayFromZero);
+                        NewRow["Cost"] = Decimal.Round(Math.Ceiling(CostPP / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                        NewRow["Measure"] = OrdersDataTable.Rows[0]["Measure"].ToString(); NewRow["Weight"] = Decimal.Round(Convert.ToDecimal(NewRow["Count"]) * Convert.ToDecimal(3.5), 3, MidpointRounding.AwayFromZero);
+                        if (rows.Count() > 0)
+                        {
+                            NewRow["AccountingName"] = rows[0]["DecorAccountingName"].ToString();
+                            NewRow["InvNumber"] = rows[0]["DecorInvNumber"].ToString();
+                            NewRow["Cvet"] = rows[0]["Cvet"].ToString();
+                            NewRow["Patina"] = rows[0]["Patina"].ToString();
+                        }
+                        ReportDataTable.Rows.Add(NewRow);
+                    }
                 }
             }
         }
@@ -1347,16 +1479,7 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
             string AccountingName = OrdersDataTable.Rows[0]["AccountingName"].ToString();
             string InvNumber = OrdersDataTable.Rows[0]["InvNumber"].ToString();
             string Measure = OrdersDataTable.Rows[0]["Measure"].ToString();
-            decimal CountFlutes = 0;
-            decimal CountLacomat = 0;
-            //decimal CountMaster = 0;
-            decimal CountKrizet = 0;
-            decimal CountOther = 0;
 
-            decimal PriceFlutes = 0;
-            decimal PriceLacomat = 0;
-            //decimal PriceMaster = 0;
-            decimal PriceKrizet = 0;
             int fID = Convert.ToInt32(OrdersDataTable.Rows[0]["FactoryID"]);
 
             if (OrdersDataTable.Select("InsetTypeID = 2").Count() == 0)
@@ -1375,319 +1498,403 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
             if (!hasGlass)
                 return;
 
-            DataRow[] FRows = OrdersDataTable.Select("InsetColorID = 3944");
-
-            if (FRows.Count() > 0)
-                MarketingCost = GetMarketingCost(Convert.ToInt32(FRows[0]["FrontConfigID"]));
-            if (FRows.Count() > 0)
+            DataTable Fronts = new DataTable();
+            using (DataView DV = new DataView(OrdersDataTable))
             {
-                PriceFlutes = Convert.ToDecimal(FRows[0]["InsetPrice"]);
+                DV.RowFilter = "InsetColorID = 3944";
+                Fronts = DV.ToTable(true, new string[] { "FrontID", "ColorID", "PatinaID" });
+            }
 
-                for (int i = 0; i < FRows.Count(); i++)
+            for (int i = 0; i < Fronts.Rows.Count; i++)
+            {
+                DataRow[] FRows = OrdersDataTable.Select("ColorID = " + Fronts.Rows[i]["ColorID"].ToString() +
+                                                         " AND PatinaID = " + Fronts.Rows[i]["PatinaID"].ToString() +
+                                                         " AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString());
+
+                if (FRows.Count() > 0)
+                    MarketingCost = GetMarketingCost(Convert.ToInt32(FRows[0]["FrontConfigID"]));
+                if (FRows.Count() > 0)
                 {
-                    if (IsAluminium(FRows[i]) != -1)
-                        continue;
+                    decimal PriceFlutes = 0;
+                    decimal CountFlutes = 0;
+                    PriceFlutes = Convert.ToDecimal(FRows[0]["InsetPrice"]);
 
-                    CountFlutes += Convert.ToDecimal(FRows[i]["Count"]) *
-                                GetInsetSquare(Convert.ToInt32(FRows[i]["FrontID"]),
-                                              Convert.ToInt32(FRows[i]["Height"]),
-                                              Convert.ToInt32(FRows[i]["Width"]));
-                    if (MarketingCost > GetMarketingCost(Convert.ToInt32(FRows[i]["FrontConfigID"])))
-                        MarketingCost = GetMarketingCost(Convert.ToInt32(FRows[i]["FrontConfigID"]));
-                }
-                CountFlutes = Decimal.Round(CountFlutes, 3, MidpointRounding.AwayFromZero);
-
-                if (CountFlutes > 0)
-                {
-                    DataRow[] rows = DecorInvNumbersDT.Select("FrontsOrdersID = " + Convert.ToInt32(FRows[0]["FrontsOrdersID"]));
-                    int FactoryID = 0;
-                    if (rows.Count() > 0)
-                        FactoryID = Convert.ToInt32(rows[0]["FactoryID"]);
-                    if (FactoryID == 0)
-                        FactoryID = FactoryID1;
-                    if (FactoryID != FactoryID1)
+                    for (int j = 0; j < FRows.Count(); j++)
                     {
-                        DataRow NewRow = ReportDataTable1.NewRow();
-                        //NewRow["Name"] = "Стекло Флутес";
-                        NewRow["OriginalPrice"] = PriceFlutes;
-                        NewRow["UNN"] = UNN;
-                        NewRow["AccountingName"] = AccountingName;
-                        NewRow["InvNumber"] = InvNumber;
-                        NewRow["MarketingCost"] = MarketingCost;
-                        NewRow["Measure"] = Measure;
-                        if (rows.Count() > 0)
-                        {
-                            NewRow["AccountingName"] = rows[0]["DecorAccountingName"].ToString();
-                            NewRow["InvNumber"] = rows[0]["DecorInvNumber"].ToString();
-                        }
-                        NewRow["CurrencyCode"] = ProfilCurrencyCode;
-                        if (fID == 2)
-                            NewRow["TPSCurCode"] = TPSCurrencyCode;
-                        NewRow["Count"] = CountFlutes;
-                        NewRow["Cost"] = Decimal.Round(CountFlutes * PriceFlutes);
-                        NewRow["Weight"] = Decimal.Round(CountFlutes * 10, 3, MidpointRounding.AwayFromZero);
-                        ReportDataTable1.Rows.Add(NewRow);
+                        if (IsAluminium(FRows[j]) != -1)
+                            continue;
+
+                        CountFlutes += Convert.ToDecimal(FRows[j]["Count"]) *
+                                       GetInsetSquare(Convert.ToInt32(FRows[j]["FrontID"]),
+                                           Convert.ToInt32(FRows[j]["Height"]),
+                                           Convert.ToInt32(FRows[j]["Width"]));
+                        if (MarketingCost > GetMarketingCost(Convert.ToInt32(FRows[j]["FrontConfigID"])))
+                            MarketingCost = GetMarketingCost(Convert.ToInt32(FRows[j]["FrontConfigID"]));
                     }
-                    else
+
+                    CountFlutes = Decimal.Round(CountFlutes, 3, MidpointRounding.AwayFromZero);
+
+                    if (CountFlutes > 0)
                     {
-                        DataRow NewRow = ReportDataTable.NewRow();
-                        //NewRow["Name"] = "Стекло Флутес";
-                        NewRow["OriginalPrice"] = PriceFlutes;
-                        NewRow["UNN"] = UNN;
-                        NewRow["AccountingName"] = AccountingName;
-                        NewRow["InvNumber"] = InvNumber;
-                        NewRow["MarketingCost"] = MarketingCost;
-                        NewRow["Measure"] = Measure;
+                        DataRow[] rows =
+                            DecorInvNumbersDT.Select("FrontsOrdersID = " + Convert.ToInt32(FRows[0]["FrontsOrdersID"]));
+                        int FactoryID = 0;
                         if (rows.Count() > 0)
+                            FactoryID = Convert.ToInt32(rows[0]["FactoryID"]);
+                        if (FactoryID == 0)
+                            FactoryID = FactoryID1;
+                        if (FactoryID != FactoryID1)
                         {
-                            NewRow["AccountingName"] = rows[0]["DecorAccountingName"].ToString();
-                            NewRow["InvNumber"] = rows[0]["DecorInvNumber"].ToString();
+                            DataRow NewRow = ReportDataTable1.NewRow();
+                            //NewRow["Name"] = "Стекло Флутес";
+                            NewRow["OriginalPrice"] = PriceFlutes;
+                            NewRow["UNN"] = UNN;
+                            NewRow["AccountingName"] = AccountingName;
+                            NewRow["InvNumber"] = InvNumber;
+                            NewRow["MarketingCost"] = MarketingCost;
+                            NewRow["Measure"] = Measure;
+                            if (rows.Count() > 0)
+                            {
+                                NewRow["AccountingName"] = rows[0]["DecorAccountingName"].ToString();
+                                NewRow["InvNumber"] = rows[0]["DecorInvNumber"].ToString();
+                                NewRow["Cvet"] = rows[0]["Cvet"].ToString();
+                                NewRow["Patina"] = rows[0]["Patina"].ToString();
+                            }
+
+                            NewRow["CurrencyCode"] = ProfilCurrencyCode;
+                            if (fID == 2)
+                                NewRow["TPSCurCode"] = TPSCurrencyCode;
+                            NewRow["Count"] = CountFlutes;
+                            NewRow["Cost"] = Decimal.Round(CountFlutes * PriceFlutes);
+                            NewRow["Weight"] = Decimal.Round(CountFlutes * 10, 3, MidpointRounding.AwayFromZero);
+                            ReportDataTable1.Rows.Add(NewRow);
                         }
-                        NewRow["CurrencyCode"] = ProfilCurrencyCode;
-                        if (fID == 2)
-                            NewRow["TPSCurCode"] = TPSCurrencyCode;
-                        NewRow["Count"] = CountFlutes;
-                        NewRow["Cost"] = Decimal.Round(CountFlutes * PriceFlutes);
-                        NewRow["Weight"] = Decimal.Round(CountFlutes * 10, 3, MidpointRounding.AwayFromZero);
-                        ReportDataTable.Rows.Add(NewRow);
+                        else
+                        {
+                            DataRow NewRow = ReportDataTable.NewRow();
+                            //NewRow["Name"] = "Стекло Флутес";
+                            NewRow["OriginalPrice"] = PriceFlutes;
+                            NewRow["UNN"] = UNN;
+                            NewRow["AccountingName"] = AccountingName;
+                            NewRow["InvNumber"] = InvNumber;
+                            NewRow["MarketingCost"] = MarketingCost;
+                            NewRow["Measure"] = Measure;
+                            if (rows.Count() > 0)
+                            {
+                                NewRow["AccountingName"] = rows[0]["DecorAccountingName"].ToString();
+                                NewRow["InvNumber"] = rows[0]["DecorInvNumber"].ToString();
+                                NewRow["Cvet"] = rows[0]["Cvet"].ToString();
+                                NewRow["Patina"] = rows[0]["Patina"].ToString();
+                            }
+
+                            NewRow["CurrencyCode"] = ProfilCurrencyCode;
+                            if (fID == 2)
+                                NewRow["TPSCurCode"] = TPSCurrencyCode;
+                            NewRow["Count"] = CountFlutes;
+                            NewRow["Cost"] = Decimal.Round(CountFlutes * PriceFlutes);
+                            NewRow["Weight"] = Decimal.Round(CountFlutes * 10, 3, MidpointRounding.AwayFromZero);
+                            ReportDataTable.Rows.Add(NewRow);
+                        }
                     }
                 }
             }
 
-            DataRow[] LRows = OrdersDataTable.Select("InsetColorID = 3943");
-
-            if (LRows.Count() > 0)
-                MarketingCost = GetMarketingCost(Convert.ToInt32(LRows[0]["FrontConfigID"]));
-            if (LRows.Count() > 0)
+            Fronts.Clear();
+            using (DataView DV = new DataView(OrdersDataTable))
             {
-                PriceLacomat = Convert.ToDecimal(LRows[0]["InsetPrice"]);
+                DV.RowFilter = "InsetColorID = 3943";
+                Fronts = DV.ToTable(true, new string[] { "FrontID", "ColorID", "PatinaID" });
+            }
 
-                for (int i = 0; i < LRows.Count(); i++)
+            for (int i = 0; i < Fronts.Rows.Count; i++)
+            {
+                DataRow[] LRows = OrdersDataTable.Select("ColorID = " + Fronts.Rows[i]["ColorID"].ToString() +
+                                                         " AND PatinaID = " + Fronts.Rows[i]["PatinaID"].ToString() +
+                                                         " AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString());
+
+                if (LRows.Count() > 0)
+                    MarketingCost = GetMarketingCost(Convert.ToInt32(LRows[0]["FrontConfigID"]));
+                if (LRows.Count() > 0)
                 {
-                    if (IsAluminium(LRows[i]) != -1)
-                        continue;
+                    decimal CountLacomat = 0;
+                    decimal PriceLacomat = 0;
+                    PriceLacomat = Convert.ToDecimal(LRows[0]["InsetPrice"]);
 
-                    CountLacomat += Convert.ToDecimal(LRows[i]["Count"]) *
-                                GetInsetSquare(Convert.ToInt32(LRows[i]["FrontID"]),
-                                              Convert.ToInt32(LRows[i]["Height"]),
-                                              Convert.ToInt32(LRows[i]["Width"]));
-                    if (MarketingCost > GetMarketingCost(Convert.ToInt32(LRows[i]["FrontConfigID"])))
-                        MarketingCost = GetMarketingCost(Convert.ToInt32(LRows[i]["FrontConfigID"]));
-                }
-
-                CountLacomat = Decimal.Round(CountLacomat, 3, MidpointRounding.AwayFromZero);
-
-                if (CountLacomat > 0)
-                {
-                    DataRow[] rows = DecorInvNumbersDT.Select("FrontsOrdersID = " + Convert.ToInt32(LRows[0]["FrontsOrdersID"]));
-                    int FactoryID = 0;
-                    if (rows.Count() > 0)
-                        FactoryID = Convert.ToInt32(rows[0]["FactoryID"]);
-                    if (FactoryID == 0)
-                        FactoryID = FactoryID1;
-                    if (FactoryID != FactoryID1)
+                    for (int j = 0; j < LRows.Count(); j++)
                     {
-                        DataRow NewRow = ReportDataTable1.NewRow();
-                        //NewRow["Name"] = "Стекло Лакомат";
-                        NewRow["OriginalPrice"] = PriceLacomat;
-                        NewRow["UNN"] = UNN;
-                        NewRow["AccountingName"] = AccountingName;
-                        NewRow["InvNumber"] = InvNumber;
-                        NewRow["MarketingCost"] = MarketingCost;
-                        NewRow["Measure"] = Measure;
-                        if (rows.Count() > 0)
-                        {
-                            NewRow["AccountingName"] = rows[0]["DecorAccountingName"].ToString();
-                            NewRow["InvNumber"] = rows[0]["DecorInvNumber"].ToString();
-                        }
-                        NewRow["CurrencyCode"] = ProfilCurrencyCode;
-                        if (fID == 2)
-                            NewRow["TPSCurCode"] = TPSCurrencyCode;
-                        NewRow["Count"] = CountLacomat;
-                        NewRow["Cost"] = Decimal.Round(CountLacomat * PriceLacomat);
-                        NewRow["Weight"] = Decimal.Round(CountLacomat * 10, 3, MidpointRounding.AwayFromZero);
-                        ReportDataTable1.Rows.Add(NewRow);
+                        if (IsAluminium(LRows[j]) != -1)
+                            continue;
+
+                        CountLacomat += Convert.ToDecimal(LRows[j]["Count"]) *
+                                        GetInsetSquare(Convert.ToInt32(LRows[j]["FrontID"]),
+                                            Convert.ToInt32(LRows[j]["Height"]),
+                                            Convert.ToInt32(LRows[j]["Width"]));
+                        if (MarketingCost > GetMarketingCost(Convert.ToInt32(LRows[j]["FrontConfigID"])))
+                            MarketingCost = GetMarketingCost(Convert.ToInt32(LRows[j]["FrontConfigID"]));
                     }
-                    else
+
+                    CountLacomat = Decimal.Round(CountLacomat, 3, MidpointRounding.AwayFromZero);
+
+                    if (CountLacomat > 0)
                     {
-                        DataRow NewRow = ReportDataTable.NewRow();
-                        //NewRow["Name"] = "Стекло Лакомат";
-                        NewRow["OriginalPrice"] = PriceLacomat;
-                        NewRow["UNN"] = UNN;
-                        NewRow["AccountingName"] = AccountingName;
-                        NewRow["InvNumber"] = InvNumber;
-                        NewRow["MarketingCost"] = MarketingCost;
-                        NewRow["Measure"] = Measure;
+                        DataRow[] rows =
+                            DecorInvNumbersDT.Select("FrontsOrdersID = " + Convert.ToInt32(LRows[0]["FrontsOrdersID"]));
+                        int FactoryID = 0;
                         if (rows.Count() > 0)
+                            FactoryID = Convert.ToInt32(rows[0]["FactoryID"]);
+                        if (FactoryID == 0)
+                            FactoryID = FactoryID1;
+                        if (FactoryID != FactoryID1)
                         {
-                            NewRow["AccountingName"] = rows[0]["DecorAccountingName"].ToString();
-                            NewRow["InvNumber"] = rows[0]["DecorInvNumber"].ToString();
+                            DataRow NewRow = ReportDataTable1.NewRow();
+                            //NewRow["Name"] = "Стекло Лакомат";
+                            NewRow["OriginalPrice"] = PriceLacomat;
+                            NewRow["UNN"] = UNN;
+                            NewRow["AccountingName"] = AccountingName;
+                            NewRow["InvNumber"] = InvNumber;
+                            NewRow["MarketingCost"] = MarketingCost;
+                            NewRow["Measure"] = Measure;
+                            if (rows.Count() > 0)
+                            {
+                                NewRow["AccountingName"] = rows[0]["DecorAccountingName"].ToString();
+                                NewRow["InvNumber"] = rows[0]["DecorInvNumber"].ToString();
+                                NewRow["Cvet"] = rows[0]["Cvet"].ToString();
+                                NewRow["Patina"] = rows[0]["Patina"].ToString();
+                            }
+
+                            NewRow["CurrencyCode"] = ProfilCurrencyCode;
+                            if (fID == 2)
+                                NewRow["TPSCurCode"] = TPSCurrencyCode;
+                            NewRow["Count"] = CountLacomat;
+                            NewRow["Cost"] = Decimal.Round(CountLacomat * PriceLacomat);
+                            NewRow["Weight"] = Decimal.Round(CountLacomat * 10, 3, MidpointRounding.AwayFromZero);
+                            ReportDataTable1.Rows.Add(NewRow);
                         }
-                        NewRow["CurrencyCode"] = ProfilCurrencyCode;
-                        if (fID == 2)
-                            NewRow["TPSCurCode"] = TPSCurrencyCode;
-                        NewRow["Count"] = CountLacomat;
-                        NewRow["Cost"] = Decimal.Round(CountLacomat * PriceLacomat);
-                        NewRow["Weight"] = Decimal.Round(CountLacomat * 10, 3, MidpointRounding.AwayFromZero);
-                        ReportDataTable.Rows.Add(NewRow);
+                        else
+                        {
+                            DataRow NewRow = ReportDataTable.NewRow();
+                            //NewRow["Name"] = "Стекло Лакомат";
+                            NewRow["OriginalPrice"] = PriceLacomat;
+                            NewRow["UNN"] = UNN;
+                            NewRow["AccountingName"] = AccountingName;
+                            NewRow["InvNumber"] = InvNumber;
+                            NewRow["MarketingCost"] = MarketingCost;
+                            NewRow["Measure"] = Measure;
+                            if (rows.Count() > 0)
+                            {
+                                NewRow["AccountingName"] = rows[0]["DecorAccountingName"].ToString();
+                                NewRow["InvNumber"] = rows[0]["DecorInvNumber"].ToString();
+                                NewRow["Cvet"] = rows[0]["Cvet"].ToString();
+                                NewRow["Patina"] = rows[0]["Patina"].ToString();
+                            }
+
+                            NewRow["CurrencyCode"] = ProfilCurrencyCode;
+                            if (fID == 2)
+                                NewRow["TPSCurCode"] = TPSCurrencyCode;
+                            NewRow["Count"] = CountLacomat;
+                            NewRow["Cost"] = Decimal.Round(CountLacomat * PriceLacomat);
+                            NewRow["Weight"] = Decimal.Round(CountLacomat * 10, 3, MidpointRounding.AwayFromZero);
+                            ReportDataTable.Rows.Add(NewRow);
+                        }
                     }
                 }
             }
 
-            DataRow[] KRows = OrdersDataTable.Select("InsetColorID = 3945");
-
-            if (KRows.Count() > 0)
-                MarketingCost = GetMarketingCost(Convert.ToInt32(KRows[0]["FrontConfigID"]));
-            if (KRows.Count() > 0)
+            Fronts.Clear();
+            using (DataView DV = new DataView(OrdersDataTable))
             {
-                PriceKrizet = Convert.ToDecimal(KRows[0]["InsetPrice"]);
+                DV.RowFilter = "InsetColorID = 3945";
+                Fronts = DV.ToTable(true, new string[] { "FrontID", "ColorID", "PatinaID" });
+            }
 
-                for (int i = 0; i < KRows.Count(); i++)
+            for (int i = 0; i < Fronts.Rows.Count; i++)
+            {
+                DataRow[] KRows = OrdersDataTable.Select("ColorID = " + Fronts.Rows[i]["ColorID"].ToString() +
+                                                         " AND PatinaID = " + Fronts.Rows[i]["PatinaID"].ToString() +
+                                                         " AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString());
+
+                if (KRows.Count() > 0)
+                    MarketingCost = GetMarketingCost(Convert.ToInt32(KRows[0]["FrontConfigID"]));
+                if (KRows.Count() > 0)
                 {
-                    if (IsAluminium(KRows[i]) != -1)
-                        continue;
+                    decimal PriceKrizet = 0;
+                    decimal CountKrizet = 0;
+                    PriceKrizet = Convert.ToDecimal(KRows[0]["InsetPrice"]);
 
-                    CountKrizet += Convert.ToDecimal(KRows[i]["Count"]) *
-                                GetInsetSquare(Convert.ToInt32(KRows[i]["FrontID"]),
-                                              Convert.ToInt32(KRows[i]["Height"]),
-                                              Convert.ToInt32(KRows[i]["Width"]));
-                    if (MarketingCost > GetMarketingCost(Convert.ToInt32(KRows[i]["FrontConfigID"])))
-                        MarketingCost = GetMarketingCost(Convert.ToInt32(KRows[i]["FrontConfigID"]));
-                }
-
-                CountKrizet = Decimal.Round(CountKrizet, 3, MidpointRounding.AwayFromZero);
-
-                if (CountKrizet > 0)
-                {
-                    DataRow[] rows = DecorInvNumbersDT.Select("FrontsOrdersID = " + Convert.ToInt32(KRows[0]["FrontsOrdersID"]));
-                    int FactoryID = 0;
-                    if (rows.Count() > 0)
-                        FactoryID = Convert.ToInt32(rows[0]["FactoryID"]);
-                    if (FactoryID == 0)
-                        FactoryID = FactoryID1;
-                    if (FactoryID != FactoryID1)
+                    for (int j = 0; j < KRows.Count(); j++)
                     {
-                        DataRow NewRow = ReportDataTable1.NewRow();
-                        //NewRow["Name"] = "Стекло Кризет";
-                        NewRow["OriginalPrice"] = PriceKrizet;
-                        NewRow["UNN"] = UNN;
-                        NewRow["AccountingName"] = AccountingName;
-                        NewRow["InvNumber"] = InvNumber;
-                        NewRow["MarketingCost"] = MarketingCost;
-                        NewRow["Measure"] = Measure;
-                        if (rows.Count() > 0)
-                        {
-                            NewRow["AccountingName"] = rows[0]["DecorAccountingName"].ToString();
-                            NewRow["InvNumber"] = rows[0]["DecorInvNumber"].ToString();
-                        }
-                        NewRow["CurrencyCode"] = ProfilCurrencyCode;
-                        if (fID == 2)
-                            NewRow["TPSCurCode"] = TPSCurrencyCode;
-                        NewRow["Count"] = CountKrizet;
-                        NewRow["Cost"] = Decimal.Round(CountKrizet * PriceKrizet);
-                        NewRow["Weight"] = Decimal.Round(CountKrizet * 10, 3, MidpointRounding.AwayFromZero);
-                        ReportDataTable1.Rows.Add(NewRow);
+                        if (IsAluminium(KRows[j]) != -1)
+                            continue;
+
+                        CountKrizet += Convert.ToDecimal(KRows[j]["Count"]) *
+                                       GetInsetSquare(Convert.ToInt32(KRows[j]["FrontID"]),
+                                           Convert.ToInt32(KRows[j]["Height"]),
+                                           Convert.ToInt32(KRows[j]["Width"]));
+                        if (MarketingCost > GetMarketingCost(Convert.ToInt32(KRows[j]["FrontConfigID"])))
+                            MarketingCost = GetMarketingCost(Convert.ToInt32(KRows[j]["FrontConfigID"]));
                     }
-                    else
+
+                    CountKrizet = Decimal.Round(CountKrizet, 3, MidpointRounding.AwayFromZero);
+
+                    if (CountKrizet > 0)
                     {
-                        DataRow NewRow = ReportDataTable.NewRow();
-                        //NewRow["Name"] = "Стекло Кризет";
-                        NewRow["OriginalPrice"] = PriceKrizet;
-                        NewRow["UNN"] = UNN;
-                        NewRow["AccountingName"] = AccountingName;
-                        NewRow["InvNumber"] = InvNumber;
-                        NewRow["MarketingCost"] = MarketingCost;
-                        NewRow["Measure"] = Measure;
+                        DataRow[] rows =
+                            DecorInvNumbersDT.Select("FrontsOrdersID = " + Convert.ToInt32(KRows[0]["FrontsOrdersID"]));
+                        int FactoryID = 0;
                         if (rows.Count() > 0)
+                            FactoryID = Convert.ToInt32(rows[0]["FactoryID"]);
+                        if (FactoryID == 0)
+                            FactoryID = FactoryID1;
+                        if (FactoryID != FactoryID1)
                         {
-                            NewRow["AccountingName"] = rows[0]["DecorAccountingName"].ToString();
-                            NewRow["InvNumber"] = rows[0]["DecorInvNumber"].ToString();
+                            DataRow NewRow = ReportDataTable1.NewRow();
+                            //NewRow["Name"] = "Стекло Кризет";
+                            NewRow["OriginalPrice"] = PriceKrizet;
+                            NewRow["UNN"] = UNN;
+                            NewRow["AccountingName"] = AccountingName;
+                            NewRow["InvNumber"] = InvNumber;
+                            NewRow["MarketingCost"] = MarketingCost;
+                            NewRow["Measure"] = Measure;
+                            if (rows.Count() > 0)
+                            {
+                                NewRow["AccountingName"] = rows[0]["DecorAccountingName"].ToString();
+                                NewRow["InvNumber"] = rows[0]["DecorInvNumber"].ToString();
+                                NewRow["Cvet"] = rows[0]["Cvet"].ToString();
+                                NewRow["Patina"] = rows[0]["Patina"].ToString();
+                            }
+
+                            NewRow["CurrencyCode"] = ProfilCurrencyCode;
+                            if (fID == 2)
+                                NewRow["TPSCurCode"] = TPSCurrencyCode;
+                            NewRow["Count"] = CountKrizet;
+                            NewRow["Cost"] = Decimal.Round(CountKrizet * PriceKrizet);
+                            NewRow["Weight"] = Decimal.Round(CountKrizet * 10, 3, MidpointRounding.AwayFromZero);
+                            ReportDataTable1.Rows.Add(NewRow);
                         }
-                        NewRow["CurrencyCode"] = ProfilCurrencyCode;
-                        if (fID == 2)
-                            NewRow["TPSCurCode"] = TPSCurrencyCode;
-                        NewRow["Count"] = CountKrizet;
-                        NewRow["Cost"] = Decimal.Round(CountKrizet * PriceKrizet);
-                        NewRow["Weight"] = Decimal.Round(CountKrizet * 10, 3, MidpointRounding.AwayFromZero);
-                        ReportDataTable.Rows.Add(NewRow);
+                        else
+                        {
+                            DataRow NewRow = ReportDataTable.NewRow();
+                            //NewRow["Name"] = "Стекло Кризет";
+                            NewRow["OriginalPrice"] = PriceKrizet;
+                            NewRow["UNN"] = UNN;
+                            NewRow["AccountingName"] = AccountingName;
+                            NewRow["InvNumber"] = InvNumber;
+                            NewRow["MarketingCost"] = MarketingCost;
+                            NewRow["Measure"] = Measure;
+                            if (rows.Count() > 0)
+                            {
+                                NewRow["AccountingName"] = rows[0]["DecorAccountingName"].ToString();
+                                NewRow["InvNumber"] = rows[0]["DecorInvNumber"].ToString();
+                                NewRow["Cvet"] = rows[0]["Cvet"].ToString();
+                                NewRow["Patina"] = rows[0]["Patina"].ToString();
+                            }
+
+                            NewRow["CurrencyCode"] = ProfilCurrencyCode;
+                            if (fID == 2)
+                                NewRow["TPSCurCode"] = TPSCurrencyCode;
+                            NewRow["Count"] = CountKrizet;
+                            NewRow["Cost"] = Decimal.Round(CountKrizet * PriceKrizet);
+                            NewRow["Weight"] = Decimal.Round(CountKrizet * 10, 3, MidpointRounding.AwayFromZero);
+                            ReportDataTable.Rows.Add(NewRow);
+                        }
                     }
                 }
             }
 
-            DataRow[] ORows = OrdersDataTable.Select("InsetTypeID = 18");
-
-            if (ORows.Count() > 0)
-                MarketingCost = GetMarketingCost(Convert.ToInt32(ORows[0]["FrontConfigID"]));
-            if (ORows.Count() > 0)
+            Fronts.Clear();
+            using (DataView DV = new DataView(OrdersDataTable))
             {
-                for (int i = 0; i < ORows.Count(); i++)
+                DV.RowFilter = "InsetTypeID = 18";
+                Fronts = DV.ToTable(true, new string[] { "FrontID", "ColorID", "PatinaID" });
+            }
+
+            for (int i = 0; i < Fronts.Rows.Count; i++)
+            {
+                DataRow[] ORows = OrdersDataTable.Select("ColorID = " + Fronts.Rows[i]["ColorID"].ToString() +
+                                                         " AND PatinaID = " + Fronts.Rows[i]["PatinaID"].ToString() +
+                                                         " AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString());
+
+                if (ORows.Count() > 0)
+                    MarketingCost = GetMarketingCost(Convert.ToInt32(ORows[0]["FrontConfigID"]));
+                if (ORows.Count() > 0)
                 {
-                    if (IsAluminium(ORows[i]) != -1)
-                        continue;
-
-                    CountOther += Convert.ToDecimal(ORows[i]["Count"]) *
-                                GetInsetSquare(Convert.ToInt32(ORows[i]["FrontID"]),
-                                              Convert.ToInt32(ORows[i]["Height"]),
-                                              Convert.ToInt32(ORows[i]["Width"]));
-                    if (MarketingCost > GetMarketingCost(Convert.ToInt32(ORows[i]["FrontConfigID"])))
-                        MarketingCost = GetMarketingCost(Convert.ToInt32(ORows[i]["FrontConfigID"]));
-                }
-
-                CountOther = Decimal.Round(CountOther, 3, MidpointRounding.AwayFromZero);
-
-                if (CountOther > 0)
-                {
-                    DataRow[] rows = DecorInvNumbersDT.Select("FrontsOrdersID = " + Convert.ToInt32(ORows[0]["FrontsOrdersID"]));
-                    int FactoryID = 0;
-                    if (rows.Count() > 0)
-                        FactoryID = Convert.ToInt32(rows[0]["FactoryID"]);
-                    if (FactoryID == 0)
-                        FactoryID = FactoryID1;
-                    if (FactoryID != FactoryID1)
+                    decimal CountOther = 0;
+                    for (int j = 0; j < ORows.Count(); j++)
                     {
-                        DataRow NewRow = ReportDataTable1.NewRow();
-                        //NewRow["Name"] = "Стекло другое";
-                        NewRow["OriginalPrice"] = 0;
-                        NewRow["UNN"] = UNN;
-                        NewRow["AccountingName"] = AccountingName;
-                        NewRow["InvNumber"] = InvNumber;
-                        NewRow["MarketingCost"] = MarketingCost;
-                        NewRow["Measure"] = Measure;
-                        if (rows.Count() > 0)
-                        {
-                            NewRow["AccountingName"] = rows[0]["DecorAccountingName"].ToString();
-                            NewRow["InvNumber"] = rows[0]["DecorInvNumber"].ToString();
-                        }
-                        NewRow["CurrencyCode"] = ProfilCurrencyCode;
-                        if (fID == 2)
-                            NewRow["TPSCurCode"] = TPSCurrencyCode;
-                        NewRow["Count"] = CountOther;
-                        NewRow["Cost"] = 0;
-                        NewRow["Weight"] = Decimal.Round(CountOther * 10, 3, MidpointRounding.AwayFromZero);
-                        ReportDataTable1.Rows.Add(NewRow);
+                        if (IsAluminium(ORows[j]) != -1)
+                            continue;
+
+                        CountOther += Convert.ToDecimal(ORows[j]["Count"]) *
+                                      GetInsetSquare(Convert.ToInt32(ORows[j]["FrontID"]),
+                                          Convert.ToInt32(ORows[j]["Height"]),
+                                          Convert.ToInt32(ORows[j]["Width"]));
+                        if (MarketingCost > GetMarketingCost(Convert.ToInt32(ORows[j]["FrontConfigID"])))
+                            MarketingCost = GetMarketingCost(Convert.ToInt32(ORows[j]["FrontConfigID"]));
                     }
-                    else
+
+                    CountOther = Decimal.Round(CountOther, 3, MidpointRounding.AwayFromZero);
+
+                    if (CountOther > 0)
                     {
-                        DataRow NewRow = ReportDataTable.NewRow();
-                        //NewRow["Name"] = "Стекло другое";
-                        NewRow["OriginalPrice"] = 0;
-                        NewRow["UNN"] = UNN;
-                        NewRow["AccountingName"] = AccountingName;
-                        NewRow["InvNumber"] = InvNumber;
-                        NewRow["MarketingCost"] = MarketingCost;
-                        NewRow["Measure"] = Measure;
+                        DataRow[] rows =
+                            DecorInvNumbersDT.Select("FrontsOrdersID = " + Convert.ToInt32(ORows[0]["FrontsOrdersID"]));
+                        int FactoryID = 0;
                         if (rows.Count() > 0)
+                            FactoryID = Convert.ToInt32(rows[0]["FactoryID"]);
+                        if (FactoryID == 0)
+                            FactoryID = FactoryID1;
+                        if (FactoryID != FactoryID1)
                         {
-                            NewRow["AccountingName"] = rows[0]["DecorAccountingName"].ToString();
-                            NewRow["InvNumber"] = rows[0]["DecorInvNumber"].ToString();
+                            DataRow NewRow = ReportDataTable1.NewRow();
+                            //NewRow["Name"] = "Стекло другое";
+                            NewRow["OriginalPrice"] = 0;
+                            NewRow["UNN"] = UNN;
+                            NewRow["AccountingName"] = AccountingName;
+                            NewRow["InvNumber"] = InvNumber;
+                            NewRow["MarketingCost"] = MarketingCost;
+                            NewRow["Measure"] = Measure;
+                            if (rows.Count() > 0)
+                            {
+                                NewRow["AccountingName"] = rows[0]["DecorAccountingName"].ToString();
+                                NewRow["InvNumber"] = rows[0]["DecorInvNumber"].ToString();
+                                NewRow["Cvet"] = rows[0]["Cvet"].ToString();
+                                NewRow["Patina"] = rows[0]["Patina"].ToString();
+                            }
+
+                            NewRow["CurrencyCode"] = ProfilCurrencyCode;
+                            if (fID == 2)
+                                NewRow["TPSCurCode"] = TPSCurrencyCode;
+                            NewRow["Count"] = CountOther;
+                            NewRow["Cost"] = 0;
+                            NewRow["Weight"] = Decimal.Round(CountOther * 10, 3, MidpointRounding.AwayFromZero);
+                            ReportDataTable1.Rows.Add(NewRow);
                         }
-                        NewRow["CurrencyCode"] = ProfilCurrencyCode;
-                        if (fID == 2)
-                            NewRow["TPSCurCode"] = TPSCurrencyCode;
-                        NewRow["Count"] = CountOther;
-                        NewRow["Cost"] = 0;
-                        NewRow["Weight"] = Decimal.Round(CountOther * 10, 3, MidpointRounding.AwayFromZero);
-                        ReportDataTable.Rows.Add(NewRow);
+                        else
+                        {
+                            DataRow NewRow = ReportDataTable.NewRow();
+                            //NewRow["Name"] = "Стекло другое";
+                            NewRow["OriginalPrice"] = 0;
+                            NewRow["UNN"] = UNN;
+                            NewRow["AccountingName"] = AccountingName;
+                            NewRow["InvNumber"] = InvNumber;
+                            NewRow["MarketingCost"] = MarketingCost;
+                            NewRow["Measure"] = Measure;
+                            if (rows.Count() > 0)
+                            {
+                                NewRow["AccountingName"] = rows[0]["DecorAccountingName"].ToString();
+                                NewRow["InvNumber"] = rows[0]["DecorInvNumber"].ToString();
+                                NewRow["Cvet"] = rows[0]["Cvet"].ToString();
+                                NewRow["Patina"] = rows[0]["Patina"].ToString();
+                            }
+
+                            NewRow["CurrencyCode"] = ProfilCurrencyCode;
+                            if (fID == 2)
+                                NewRow["TPSCurCode"] = TPSCurrencyCode;
+                            NewRow["Count"] = CountOther;
+                            NewRow["Cost"] = 0;
+                            NewRow["Weight"] = Decimal.Round(CountOther * 10, 3, MidpointRounding.AwayFromZero);
+                            ReportDataTable.Rows.Add(NewRow);
+                        }
                     }
                 }
             }
@@ -1696,51 +1903,73 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
         private void GetInsets(DataTable OrdersDataTable, DataTable ReportDataTable)
         {
             decimal MarketingCost = 0;
-            decimal CountEllipseGrid = 0;
-            decimal PriceEllipseGrid = 0;
             int fID = Convert.ToInt32(OrdersDataTable.Rows[0]["FactoryID"]);
 
-            DataRow[] EGRows = OrdersDataTable.Select("FrontID IN (3729)");//ellipse grid
-
-            if (EGRows.Count() > 0)
+            DataTable Fronts = new DataTable();
+            using (DataView DV = new DataView(OrdersDataTable))
             {
-                int MarginHeight = 0;
-                int MarginWidth = 0;
+                DV.RowFilter = "FrontID IN (3729)";
+                Fronts = DV.ToTable(true, new string[] { "FrontID", "ColorID", "PatinaID" });
+            }
 
-                GetGlassMarginAluminium(EGRows[0], ref MarginHeight, ref MarginWidth);
+            for (int i = 0; i < Fronts.Rows.Count; i++)
+            {
+                //ellipse grid
+                DataRow[] EGRows = OrdersDataTable.Select("ColorID = " + Fronts.Rows[i]["ColorID"].ToString() +
+                                                          " AND PatinaID = " + Fronts.Rows[i]["PatinaID"].ToString() +
+                                                          " AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString());
 
-                PriceEllipseGrid = Convert.ToDecimal(EGRows[0]["InsetPrice"]);
-
-                MarketingCost = GetMarketingCost(Convert.ToInt32(EGRows[0]["FrontConfigID"]));
-                for (int i = 0; i < EGRows.Count(); i++)
+                if (EGRows.Count() > 0)
                 {
-                    decimal dd = Decimal.Round(Convert.ToDecimal(EGRows[i]["Count"]) * MarginHeight * (Convert.ToDecimal(EGRows[i]["Width"]) - MarginWidth) / 1000000, 3, MidpointRounding.AwayFromZero);
-                    CountEllipseGrid += dd;
-                    if (MarketingCost > GetMarketingCost(Convert.ToInt32(EGRows[i]["FrontConfigID"])))
-                        MarketingCost = GetMarketingCost(Convert.ToInt32(EGRows[i]["FrontConfigID"]));
-                }
+                    int MarginHeight = 0;
+                    int MarginWidth = 0;
 
-                decimal Weight = GetInsetWeight(EGRows[0]);
-                Weight = Decimal.Round(CountEllipseGrid * Weight, 3, MidpointRounding.AwayFromZero);
+                    decimal CountEllipseGrid = 0;
+                    decimal PriceEllipseGrid = 0;
 
-                DataRow NewRow = ReportDataTable.NewRow();
-                NewRow["OriginalPrice"] = PriceEllipseGrid;
-                NewRow["MarketingCost"] = MarketingCost;
-                NewRow["UNN"] = UNN;
-                NewRow["CurrencyCode"] = ProfilCurrencyCode;
-                if (fID == 2)
-                    NewRow["TPSCurCode"] = TPSCurrencyCode;
-                NewRow["Count"] = CountEllipseGrid;
-                NewRow["Cost"] = CountEllipseGrid * PriceEllipseGrid;
-                NewRow["Weight"] = 0;
-                NewRow["Measure"] = OrdersDataTable.Rows[0]["Measure"].ToString();
-                DataRow[] rows = DecorInvNumbersDT.Select("FrontsOrdersID = " + Convert.ToInt32(EGRows[0]["FrontsOrdersID"]));
-                if (rows.Count() > 0)
-                {
-                    NewRow["AccountingName"] = rows[0]["DecorAccountingName"].ToString();
-                    NewRow["InvNumber"] = rows[0]["DecorInvNumber"].ToString();
+                    GetGlassMarginAluminium(EGRows[0], ref MarginHeight, ref MarginWidth);
+
+                    PriceEllipseGrid = Convert.ToDecimal(EGRows[0]["InsetPrice"]);
+
+                    MarketingCost = GetMarketingCost(Convert.ToInt32(EGRows[0]["FrontConfigID"]));
+                    for (int j = 0; j < EGRows.Count(); j++)
+                    {
+                        decimal dd =
+                            Decimal.Round(
+                                Convert.ToDecimal(EGRows[j]["Count"]) * MarginHeight *
+                                (Convert.ToDecimal(EGRows[j]["Width"]) - MarginWidth) / 1000000, 3,
+                                MidpointRounding.AwayFromZero);
+                        CountEllipseGrid += dd;
+                        if (MarketingCost > GetMarketingCost(Convert.ToInt32(EGRows[j]["FrontConfigID"])))
+                            MarketingCost = GetMarketingCost(Convert.ToInt32(EGRows[j]["FrontConfigID"]));
+                    }
+
+                    decimal Weight = GetInsetWeight(EGRows[0]);
+                    Weight = Decimal.Round(CountEllipseGrid * Weight, 3, MidpointRounding.AwayFromZero);
+
+                    DataRow NewRow = ReportDataTable.NewRow();
+                    NewRow["OriginalPrice"] = PriceEllipseGrid;
+                    NewRow["MarketingCost"] = MarketingCost;
+                    NewRow["UNN"] = UNN;
+                    NewRow["CurrencyCode"] = ProfilCurrencyCode;
+                    if (fID == 2)
+                        NewRow["TPSCurCode"] = TPSCurrencyCode;
+                    NewRow["Count"] = CountEllipseGrid;
+                    NewRow["Cost"] = CountEllipseGrid * PriceEllipseGrid;
+                    NewRow["Weight"] = 0;
+                    NewRow["Measure"] = OrdersDataTable.Rows[0]["Measure"].ToString();
+                    DataRow[] rows =
+                        DecorInvNumbersDT.Select("FrontsOrdersID = " + Convert.ToInt32(EGRows[0]["FrontsOrdersID"]));
+                    if (rows.Count() > 0)
+                    {
+                        NewRow["AccountingName"] = rows[0]["DecorAccountingName"].ToString();
+                        NewRow["InvNumber"] = rows[0]["DecorInvNumber"].ToString();
+                        NewRow["Cvet"] = rows[0]["Cvet"].ToString();
+                        NewRow["Patina"] = rows[0]["Patina"].ToString();
+                    }
+
+                    ReportDataTable.Rows.Add(NewRow);
                 }
-                ReportDataTable.Rows.Add(NewRow);
             }
         }
 
@@ -3113,6 +3342,115 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
             return InvDataTables;
         }
 
+        public void ExpReport(DateTime date1, DateTime date2, bool ZOV, bool IsSample, bool IsNotSample, ArrayList MClients, ArrayList MClientGroups)
+        {
+            string MClientFilter = string.Empty;
+            if (MClients.Count > 0)
+            {
+                if (MClientFilter.Length > 0)
+                    MClientFilter += " AND ClientID IN (" + string.Join(",", MClients.OfType<Int32>().ToArray()) + ")";
+                else
+                    MClientFilter = " WHERE ClientID IN (" + string.Join(",", MClients.OfType<Int32>().ToArray()) + ")";
+            }
+            if (MClientGroups.Count > 0)
+            {
+                if (MClientFilter.Length > 0)
+                    MClientFilter += " AND ClientID IN" +
+                        " (SELECT ClientID FROM infiniu2_marketingreference.dbo.Clients" +
+                        " WHERE ClientGroupID IN (" + string.Join(",", MClientGroups.OfType<Int32>().ToArray()) + "))";
+                else
+                    MClientFilter = " WHERE ClientID IN" +
+                        " (SELECT ClientID FROM infiniu2_marketingreference.dbo.Clients" +
+                        " WHERE ClientGroupID IN (" + string.Join(",", MClientGroups.OfType<Int32>().ToArray()) + "))";
+            }
+            if (MClients.Count < 1 && MClientGroups.Count < 1)
+                MClientFilter = " WHERE ClientID = -1";
+
+            ProfilFrontsOrdersDataTable.Clear();
+            TPSFrontsOrdersDataTable.Clear();
+            DecorInvNumbersDT.Clear();
+            string ConnectionString = ConnectionStrings.MarketingOrdersConnectionString;
+            if (ZOV)
+                ConnectionString = ConnectionStrings.ZOVOrdersConnectionString;
+
+            string Filter = " (ExpeditionDateTime >= '" + date1.ToString("yyyy-MM-dd") +
+                " 00:00' AND ExpeditionDateTime <= '" + date2.ToString("yyyy-MM-dd") + " 23:59')";
+
+            string MFSampleFilter = string.Empty;
+            string MDSampleFilter = string.Empty;
+            if (!IsSample || !IsNotSample)
+            {
+                if (IsSample)
+                    MFSampleFilter = " AND FrontsOrders.IsSample = 1";
+                if (IsNotSample)
+                    MFSampleFilter = " AND FrontsOrders.IsSample = 0";
+                if (IsSample)
+                    MDSampleFilter = " AND (DecorOrders.IsSample = 1 OR (DecorOrders.ProductID=42 AND DecorOrders.IsSample = 0)) ";
+                if (IsNotSample)
+                    MDSampleFilter = " AND DecorOrders.IsSample = 0";
+            }
+
+            string SelectCommand = @"SELECT dbo.FrontsOrders.FrontsOrdersID, dbo.FrontsOrders.FrontID, dbo.FrontsOrders.ColorID, dbo.FrontsOrders.PatinaID, dbo.FrontsOrders.InsetTypeID, dbo.FrontsOrders.InsetColorID,
+                dbo.FrontsOrders.TechnoColorID, dbo.FrontsOrders.TechnoInsetTypeID, dbo.FrontsOrders.TechnoInsetColorID, dbo.FrontsOrders.Height, dbo.FrontsOrders.Width, PackageDetails.Count,
+                dbo.FrontsOrders.FrontConfigID, dbo.FrontsOrders.FactoryID, dbo.FrontsOrders.FrontPrice, dbo.FrontsOrders.InsetPrice,
+                (FrontsOrders.Square * PackageDetails.Count / FrontsOrders.Count) AS Square, dbo.FrontsOrders.Cost, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog.dbo.Patina.Patina, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, infiniu2_catalog.dbo.Measures.Measure, dbo.FrontsOrders.CreateDateTime FROM PackageDetails
+                INNER JOIN FrontsOrders ON PackageDetails.OrderID = FrontsOrders.FrontsOrdersID" + MFSampleFilter + @" AND FrontsOrders.MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID IN (SELECT MegaOrderID FROM MegaOrders " + MClientFilter + @"))
+                INNER JOIN infiniu2_catalog.dbo.FrontsConfig ON FrontsOrders.FrontConfigID = infiniu2_catalog.dbo.FrontsConfig.FrontConfigID  LEFT JOIN
+                infiniu2_catalog.dbo.TechStore ON infiniu2_catalog.dbo.FrontsConfig.ColorID = infiniu2_catalog.dbo.TechStore.TechStoreID LEFT JOIN
+                infiniu2_catalog.dbo.Patina ON infiniu2_catalog.dbo.FrontsConfig.PatinaID = infiniu2_catalog.dbo.Patina.PatinaID
+                INNER JOIN infiniu2_catalog.dbo.Measures ON infiniu2_catalog.dbo.FrontsConfig.MeasureID=infiniu2_catalog.dbo.Measures.MeasureID
+                WHERE InvNumber IS NOT NULL AND PackageID IN (SELECT PackageID FROM Packages WHERE ProductType = 0 AND " + Filter + ") ORDER BY InvNumber";
+            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionString))
+            {
+                using (DataTable DT = new DataTable())
+                {
+                    if (DA.Fill(DT) == 0)
+                        return;
+
+                    ProfilFrontsOrdersDataTable = DT.Clone();
+                    TPSFrontsOrdersDataTable = DT.Clone();
+
+                    SplitTables(DT, ref ProfilFrontsOrdersDataTable, ref TPSFrontsOrdersDataTable);
+
+                    if (ProfilFrontsOrdersDataTable.Rows.Count > 0)
+                    {
+                        DataTable[] DTs = GroupInvNumber(ProfilFrontsOrdersDataTable);
+
+                        for (int i = 0; i < DTs.Count(); i++)
+                        {
+                            GetSimpleFronts(DTs[i], ProfilReportDataTable);
+
+                            GetCurvedFronts(DTs[i], ProfilReportDataTable);
+
+                            GetGrids(DTs[i], ProfilReportDataTable, TPSReportDataTable, 1);
+
+                            GetInsets(DTs[i], ProfilReportDataTable);
+
+                            GetGlass(DTs[i], ProfilReportDataTable, TPSReportDataTable, 1);
+                        }
+                    }
+
+                    if (TPSFrontsOrdersDataTable.Rows.Count > 0)
+                    {
+                        DataTable[] DTs = GroupInvNumber(TPSFrontsOrdersDataTable);
+
+                        for (int i = 0; i < DTs.Count(); i++)
+                        {
+                            GetSimpleFronts(DTs[i], TPSReportDataTable);
+
+                            GetCurvedFronts(DTs[i], TPSReportDataTable);
+
+                            GetGrids(DTs[i], TPSReportDataTable, ProfilReportDataTable, 2);
+
+                            GetInsets(DTs[i], TPSReportDataTable);
+
+                            GetGlass(DTs[i], TPSReportDataTable, ProfilReportDataTable, 2);
+                        }
+                    }
+                }
+            }
+        }
+        
         public void DispReport(DateTime date1, DateTime date2, bool ZOV, bool IsSample, bool IsNotSample, ArrayList MClients, ArrayList MClientGroups)
         {
             string MClientFilter = string.Empty;
@@ -3164,9 +3502,11 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
             string SelectCommand = @"SELECT dbo.FrontsOrders.FrontsOrdersID, dbo.FrontsOrders.FrontID, dbo.FrontsOrders.ColorID, dbo.FrontsOrders.PatinaID, dbo.FrontsOrders.InsetTypeID, dbo.FrontsOrders.InsetColorID,
                 dbo.FrontsOrders.TechnoColorID, dbo.FrontsOrders.TechnoInsetTypeID, dbo.FrontsOrders.TechnoInsetColorID, dbo.FrontsOrders.Height, dbo.FrontsOrders.Width, PackageDetails.Count,
                 dbo.FrontsOrders.FrontConfigID, dbo.FrontsOrders.FactoryID, dbo.FrontsOrders.FrontPrice, dbo.FrontsOrders.InsetPrice,
-                (FrontsOrders.Square * PackageDetails.Count / FrontsOrders.Count) AS Square, dbo.FrontsOrders.Cost, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, infiniu2_catalog.dbo.Measures.Measure, dbo.FrontsOrders.CreateDateTime FROM PackageDetails
+                (FrontsOrders.Square * PackageDetails.Count / FrontsOrders.Count) AS Square, dbo.FrontsOrders.Cost, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog.dbo.Patina.Patina, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, infiniu2_catalog.dbo.Measures.Measure, dbo.FrontsOrders.CreateDateTime FROM PackageDetails
                 INNER JOIN FrontsOrders ON PackageDetails.OrderID = FrontsOrders.FrontsOrdersID" + MFSampleFilter + @" AND FrontsOrders.MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID IN (SELECT MegaOrderID FROM MegaOrders " + MClientFilter + @"))
-                INNER JOIN infiniu2_catalog.dbo.FrontsConfig ON FrontsOrders.FrontConfigID = infiniu2_catalog.dbo.FrontsConfig.FrontConfigID
+                INNER JOIN infiniu2_catalog.dbo.FrontsConfig ON FrontsOrders.FrontConfigID = infiniu2_catalog.dbo.FrontsConfig.FrontConfigID LEFT JOIN
+                infiniu2_catalog.dbo.TechStore ON infiniu2_catalog.dbo.FrontsConfig.ColorID = infiniu2_catalog.dbo.TechStore.TechStoreID LEFT JOIN
+                infiniu2_catalog.dbo.Patina ON infiniu2_catalog.dbo.FrontsConfig.PatinaID = infiniu2_catalog.dbo.Patina.PatinaID
                 INNER JOIN infiniu2_catalog.dbo.Measures ON infiniu2_catalog.dbo.FrontsConfig.MeasureID=infiniu2_catalog.dbo.Measures.MeasureID
                 WHERE InvNumber IS NOT NULL AND PackageID IN (SELECT PackageID FROM Packages WHERE ProductType = 0 AND " + Filter + ") ORDER BY InvNumber";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionString))
@@ -3220,7 +3560,7 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
             }
         }
 
-        public void Report(DateTime date1, DateTime date2, bool ZOV, bool IsSample, bool IsNotSample, ArrayList MClients, ArrayList MClientGroups)
+        public void StoreReport(DateTime date1, DateTime date2, bool ZOV, bool IsSample, bool IsNotSample, ArrayList MClients, ArrayList MClientGroups)
         {
             string MClientFilter = string.Empty;
             if (MClients.Count > 0)
@@ -3251,8 +3591,8 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
             if (ZOV)
                 ConnectionString = ConnectionStrings.ZOVOrdersConnectionString;
 
-            string Filter = " (PackingDateTime >= '" + date1.ToString("yyyy-MM-dd") +
-                " 00:00' AND PackingDateTime <= '" + date2.ToString("yyyy-MM-dd") + " 23:59')";
+            string Filter = " (StorageDateTime >= '" + date1.ToString("yyyy-MM-dd") +
+                " 00:00' AND StorageDateTime <= '" + date2.ToString("yyyy-MM-dd") + " 23:59')";
 
             string MFSampleFilter = string.Empty;
             string MDSampleFilter = string.Empty;
@@ -3271,9 +3611,11 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
             string SelectCommand = @"SELECT dbo.FrontsOrders.FrontsOrdersID, dbo.FrontsOrders.FrontID, dbo.FrontsOrders.ColorID, dbo.FrontsOrders.PatinaID, dbo.FrontsOrders.InsetTypeID, dbo.FrontsOrders.InsetColorID,
                 dbo.FrontsOrders.TechnoColorID, dbo.FrontsOrders.TechnoInsetTypeID, dbo.FrontsOrders.TechnoInsetColorID, dbo.FrontsOrders.Height, dbo.FrontsOrders.Width, PackageDetails.Count,
                 dbo.FrontsOrders.FrontConfigID, dbo.FrontsOrders.FactoryID, dbo.FrontsOrders.FrontPrice, dbo.FrontsOrders.InsetPrice,
-                (FrontsOrders.Square * PackageDetails.Count / FrontsOrders.Count) AS Square, dbo.FrontsOrders.Cost, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, infiniu2_catalog.dbo.Measures.Measure, dbo.FrontsOrders.CreateDateTime FROM PackageDetails
+                (FrontsOrders.Square * PackageDetails.Count / FrontsOrders.Count) AS Square, dbo.FrontsOrders.Cost, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog.dbo.Patina.Patina, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, infiniu2_catalog.dbo.Measures.Measure, dbo.FrontsOrders.CreateDateTime FROM PackageDetails
                 INNER JOIN FrontsOrders ON PackageDetails.OrderID = FrontsOrders.FrontsOrdersID" + MFSampleFilter + @" AND FrontsOrders.MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID IN (SELECT MegaOrderID FROM MegaOrders " + MClientFilter + @"))
-                INNER JOIN infiniu2_catalog.dbo.FrontsConfig ON FrontsOrders.FrontConfigID = infiniu2_catalog.dbo.FrontsConfig.FrontConfigID
+                INNER JOIN infiniu2_catalog.dbo.FrontsConfig ON FrontsOrders.FrontConfigID = infiniu2_catalog.dbo.FrontsConfig.FrontConfigID LEFT JOIN
+                infiniu2_catalog.dbo.TechStore ON infiniu2_catalog.dbo.FrontsConfig.ColorID = infiniu2_catalog.dbo.TechStore.TechStoreID LEFT JOIN
+                infiniu2_catalog.dbo.Patina ON infiniu2_catalog.dbo.FrontsConfig.PatinaID = infiniu2_catalog.dbo.Patina.PatinaID
                 INNER JOIN infiniu2_catalog.dbo.Measures ON infiniu2_catalog.dbo.FrontsConfig.MeasureID=infiniu2_catalog.dbo.Measures.MeasureID
                 WHERE InvNumber IS NOT NULL AND PackageID IN (SELECT PackageID FROM Packages WHERE ProductType = 0 AND " + Filter + ") ORDER BY InvNumber";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionString))
@@ -3327,7 +3669,7 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
             }
         }
 
-        public void ReportByClient(DateTime date1, DateTime date2, bool ZOV, bool IsSample, bool IsNotSample, ArrayList MClients, ArrayList MClientGroups)
+        public void PackReport(DateTime date1, DateTime date2, bool ZOV, bool IsSample, bool IsNotSample, ArrayList MClients, ArrayList MClientGroups)
         {
             string MClientFilter = string.Empty;
             if (MClients.Count > 0)
@@ -3378,13 +3720,12 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
             string SelectCommand = @"SELECT dbo.FrontsOrders.FrontsOrdersID, dbo.FrontsOrders.FrontID, dbo.FrontsOrders.ColorID, dbo.FrontsOrders.PatinaID, dbo.FrontsOrders.InsetTypeID, dbo.FrontsOrders.InsetColorID,
                 dbo.FrontsOrders.TechnoColorID, dbo.FrontsOrders.TechnoInsetTypeID, dbo.FrontsOrders.TechnoInsetColorID, dbo.FrontsOrders.Height, dbo.FrontsOrders.Width, PackageDetails.Count,
                 dbo.FrontsOrders.FrontConfigID, dbo.FrontsOrders.FactoryID, dbo.FrontsOrders.FrontPrice, dbo.FrontsOrders.InsetPrice,
-                (FrontsOrders.Square * PackageDetails.Count / FrontsOrders.Count) AS Square, dbo.FrontsOrders.Cost, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, infiniu2_catalog.dbo.Measures.Measure, dbo.FrontsOrders.CreateDateTime FROM PackageDetails
+                (FrontsOrders.Square * PackageDetails.Count / FrontsOrders.Count) AS Square, dbo.FrontsOrders.Cost, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog.dbo.Patina.Patina, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, infiniu2_catalog.dbo.Measures.Measure, dbo.FrontsOrders.CreateDateTime FROM PackageDetails
                 INNER JOIN FrontsOrders ON PackageDetails.OrderID = FrontsOrders.FrontsOrdersID" + MFSampleFilter + @" AND FrontsOrders.MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID IN (SELECT MegaOrderID FROM MegaOrders " + MClientFilter + @"))
-                INNER JOIN infiniu2_catalog.dbo.FrontsConfig ON FrontsOrders.FrontConfigID = infiniu2_catalog.dbo.FrontsConfig.FrontConfigID
-                INNER JOIN infiniu2_catalog.dbo.Measures ON infiniu2_catalog.dbo.FrontsConfig.MeasureID=infiniu2_catalog.dbo.Measures.MeasureID INNER JOIN
-                dbo.MainOrders ON dbo.FrontsOrders.MainOrderID = dbo.MainOrders.MainOrderID INNER JOIN
-                dbo.MegaOrders ON dbo.MainOrders.MegaOrderID = dbo.MegaOrders.MegaOrderID INNER JOIN
-                infiniu2_marketingreference.dbo.Clients ON dbo.MegaOrders.ClientID = infiniu2_marketingreference.dbo.Clients.ClientID
+                INNER JOIN infiniu2_catalog.dbo.FrontsConfig ON FrontsOrders.FrontConfigID = infiniu2_catalog.dbo.FrontsConfig.FrontConfigID LEFT JOIN
+                infiniu2_catalog.dbo.TechStore ON infiniu2_catalog.dbo.FrontsConfig.ColorID = infiniu2_catalog.dbo.TechStore.TechStoreID LEFT JOIN
+                infiniu2_catalog.dbo.Patina ON infiniu2_catalog.dbo.FrontsConfig.PatinaID = infiniu2_catalog.dbo.Patina.PatinaID
+                INNER JOIN infiniu2_catalog.dbo.Measures ON infiniu2_catalog.dbo.FrontsConfig.MeasureID=infiniu2_catalog.dbo.Measures.MeasureID
                 WHERE InvNumber IS NOT NULL AND PackageID IN (SELECT PackageID FROM Packages WHERE ProductType = 0 AND " + Filter + ") ORDER BY InvNumber";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionString))
             {
@@ -3436,7 +3777,219 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
                 }
             }
         }
+        
+        public void OnProdReport(DateTime date1, DateTime date2, bool ZOV, bool IsSample, bool IsNotSample, ArrayList MClients, ArrayList MClientGroups)
+        {
+            string MClientFilter = string.Empty;
 
+            string MMainOrdersFilter = " WHERE (CAST(ProfilOnProductionDate AS Date) >= '" + date1.ToString("yyyy-MM-dd") + "' AND CAST(ProfilOnProductionDate AS Date) <= '" + date2.ToString("yyyy-MM-dd") + "')";
+
+            if (MClients.Count > 0)
+            {
+                if (MClientFilter.Length > 0)
+                    MClientFilter += " AND ClientID IN (" + string.Join(",", MClients.OfType<Int32>().ToArray()) + ")";
+                else
+                    MClientFilter = " WHERE ClientID IN (" + string.Join(",", MClients.OfType<Int32>().ToArray()) + ")";
+            }
+            if (MClientGroups.Count > 0)
+            {
+                if (MClientFilter.Length > 0)
+                    MClientFilter += " AND ClientID IN" +
+                        " (SELECT ClientID FROM infiniu2_marketingreference.dbo.Clients" +
+                        " WHERE ClientGroupID IN (" + string.Join(",", MClientGroups.OfType<Int32>().ToArray()) + "))";
+                else
+                    MClientFilter = " WHERE ClientID IN" +
+                        " (SELECT ClientID FROM infiniu2_marketingreference.dbo.Clients" +
+                        " WHERE ClientGroupID IN (" + string.Join(",", MClientGroups.OfType<Int32>().ToArray()) + "))";
+            }
+            if (MClients.Count < 1 && MClientGroups.Count < 1)
+                MClientFilter = " WHERE ClientID = -1";
+
+            ProfilFrontsOrdersDataTable.Clear();
+            TPSFrontsOrdersDataTable.Clear();
+            DecorInvNumbersDT.Clear();
+            string ConnectionString = ConnectionStrings.MarketingOrdersConnectionString;
+            if (ZOV)
+                ConnectionString = ConnectionStrings.ZOVOrdersConnectionString;
+
+            string Filter = " (PackingDateTime >= '" + date1.ToString("yyyy-MM-dd") +
+                " 00:00' AND PackingDateTime <= '" + date2.ToString("yyyy-MM-dd") + " 23:59')";
+
+            string MFSampleFilter = string.Empty;
+            if (!IsSample || !IsNotSample)
+            {
+                if (IsSample)
+                    MFSampleFilter = " AND FrontsOrders.IsSample = 1";
+                if (IsNotSample)
+                    MFSampleFilter = " AND FrontsOrders.IsSample = 0";
+            }
+
+            string SelectCommand = @"SELECT dbo.FrontsOrders.FrontsOrdersID, dbo.FrontsOrders.FrontID, dbo.FrontsOrders.ColorID, dbo.FrontsOrders.PatinaID, dbo.FrontsOrders.InsetTypeID, dbo.FrontsOrders.InsetColorID,
+                dbo.FrontsOrders.TechnoColorID, dbo.FrontsOrders.TechnoInsetTypeID, dbo.FrontsOrders.TechnoInsetColorID, dbo.FrontsOrders.Height, dbo.FrontsOrders.Width, dbo.FrontsOrders.Count,
+                dbo.FrontsOrders.FrontConfigID, dbo.FrontsOrders.FactoryID, dbo.FrontsOrders.FrontPrice, dbo.FrontsOrders.InsetPrice,
+                FrontsOrders.Square, dbo.FrontsOrders.Cost, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog.dbo.Patina.Patina, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, infiniu2_catalog.dbo.Measures.Measure, dbo.FrontsOrders.CreateDateTime FROM FrontsOrders
+                INNER JOIN infiniu2_catalog.dbo.FrontsConfig ON FrontsOrders.FrontConfigID = infiniu2_catalog.dbo.FrontsConfig.FrontConfigID LEFT JOIN
+                infiniu2_catalog.dbo.TechStore ON infiniu2_catalog.dbo.FrontsConfig.ColorID = infiniu2_catalog.dbo.TechStore.TechStoreID LEFT JOIN
+                infiniu2_catalog.dbo.Patina ON infiniu2_catalog.dbo.FrontsConfig.PatinaID = infiniu2_catalog.dbo.Patina.PatinaID
+                INNER JOIN infiniu2_catalog.dbo.Measures ON infiniu2_catalog.dbo.FrontsConfig.MeasureID=infiniu2_catalog.dbo.Measures.MeasureID
+                WHERE FrontsOrders.MainOrderID IN (SELECT MainOrderID FROM MainOrders " + MMainOrdersFilter + @" AND MegaOrderID IN (SELECT MegaOrderID FROM MegaOrders " + MClientFilter + @")) AND InvNumber IS NOT NULL " + MFSampleFilter + " ORDER BY InvNumber";
+
+            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionString))
+            {
+                using (DataTable DT = new DataTable())
+                {
+                    if (DA.Fill(DT) == 0)
+                        return;
+
+                    ProfilFrontsOrdersDataTable = DT.Clone();
+                    TPSFrontsOrdersDataTable = DT.Clone();
+
+                    SplitTables(DT, ref ProfilFrontsOrdersDataTable, ref TPSFrontsOrdersDataTable);
+
+                    if (ProfilFrontsOrdersDataTable.Rows.Count > 0)
+                    {
+                        DataTable[] DTs = GroupInvNumber(ProfilFrontsOrdersDataTable);
+
+                        for (int i = 0; i < DTs.Count(); i++)
+                        {
+                            GetSimpleFronts(DTs[i], ProfilReportDataTable);
+
+                            GetCurvedFronts(DTs[i], ProfilReportDataTable);
+
+                            GetGrids(DTs[i], ProfilReportDataTable, TPSReportDataTable, 1);
+
+                            GetInsets(DTs[i], ProfilReportDataTable);
+
+                            GetGlass(DTs[i], ProfilReportDataTable, TPSReportDataTable, 1);
+                        }
+                    }
+
+                    if (TPSFrontsOrdersDataTable.Rows.Count > 0)
+                    {
+                        DataTable[] DTs = GroupInvNumber(TPSFrontsOrdersDataTable);
+
+                        for (int i = 0; i < DTs.Count(); i++)
+                        {
+                            GetSimpleFronts(DTs[i], TPSReportDataTable);
+
+                            GetCurvedFronts(DTs[i], TPSReportDataTable);
+
+                            GetGrids(DTs[i], TPSReportDataTable, ProfilReportDataTable, 2);
+
+                            GetInsets(DTs[i], TPSReportDataTable);
+
+                            GetGlass(DTs[i], TPSReportDataTable, ProfilReportDataTable, 2);
+                        }
+                    }
+                }
+            }
+        }
+                
+        public void PlanDispReport(DateTime date1, DateTime date2, bool ZOV, bool IsSample, bool IsNotSample, ArrayList MClients, ArrayList MClientGroups)
+        {
+            string MClientFilter = " WHERE (CAST(ProfilDispatchDate AS Date) >= '" + date1.ToString("yyyy-MM-dd") + "' AND CAST(ProfilDispatchDate AS Date) <= '" + date2.ToString("yyyy-MM-dd") + "')";
+
+            if (MClients.Count > 0)
+            {
+                if (MClientFilter.Length > 0)
+                    MClientFilter += " AND ClientID IN (" + string.Join(",", MClients.OfType<Int32>().ToArray()) + ")";
+                else
+                    MClientFilter = " WHERE ClientID IN (" + string.Join(",", MClients.OfType<Int32>().ToArray()) + ")";
+            }
+            if (MClientGroups.Count > 0)
+            {
+                if (MClientFilter.Length > 0)
+                    MClientFilter += " AND ClientID IN" +
+                        " (SELECT ClientID FROM infiniu2_marketingreference.dbo.Clients" +
+                        " WHERE ClientGroupID IN (" + string.Join(",", MClientGroups.OfType<Int32>().ToArray()) + "))";
+                else
+                    MClientFilter = " WHERE ClientID IN" +
+                        " (SELECT ClientID FROM infiniu2_marketingreference.dbo.Clients" +
+                        " WHERE ClientGroupID IN (" + string.Join(",", MClientGroups.OfType<Int32>().ToArray()) + "))";
+            }
+            if (MClients.Count < 1 && MClientGroups.Count < 1)
+                MClientFilter = " WHERE ClientID = -1";
+
+            ProfilFrontsOrdersDataTable.Clear();
+            TPSFrontsOrdersDataTable.Clear();
+            DecorInvNumbersDT.Clear();
+            string ConnectionString = ConnectionStrings.MarketingOrdersConnectionString;
+            if (ZOV)
+                ConnectionString = ConnectionStrings.ZOVOrdersConnectionString;
+
+            string Filter = " (PackingDateTime >= '" + date1.ToString("yyyy-MM-dd") +
+                " 00:00' AND PackingDateTime <= '" + date2.ToString("yyyy-MM-dd") + " 23:59')";
+
+            string MFSampleFilter = string.Empty;
+            if (!IsSample || !IsNotSample)
+            {
+                if (IsSample)
+                    MFSampleFilter = " AND FrontsOrders.IsSample = 1";
+                if (IsNotSample)
+                    MFSampleFilter = " AND FrontsOrders.IsSample = 0";
+            }
+
+            string SelectCommand = @"SELECT dbo.FrontsOrders.FrontsOrdersID, dbo.FrontsOrders.FrontID, dbo.FrontsOrders.ColorID, dbo.FrontsOrders.PatinaID, dbo.FrontsOrders.InsetTypeID, dbo.FrontsOrders.InsetColorID,
+                dbo.FrontsOrders.TechnoColorID, dbo.FrontsOrders.TechnoInsetTypeID, dbo.FrontsOrders.TechnoInsetColorID, dbo.FrontsOrders.Height, dbo.FrontsOrders.Width, dbo.FrontsOrders.Count,
+                dbo.FrontsOrders.FrontConfigID, dbo.FrontsOrders.FactoryID, dbo.FrontsOrders.FrontPrice, dbo.FrontsOrders.InsetPrice,
+                FrontsOrders.Square, dbo.FrontsOrders.Cost, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog.dbo.Patina.Patina, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, infiniu2_catalog.dbo.Measures.Measure, dbo.FrontsOrders.CreateDateTime FROM FrontsOrders
+                INNER JOIN infiniu2_catalog.dbo.FrontsConfig ON FrontsOrders.FrontConfigID = infiniu2_catalog.dbo.FrontsConfig.FrontConfigID LEFT JOIN
+                infiniu2_catalog.dbo.TechStore ON infiniu2_catalog.dbo.FrontsConfig.ColorID = infiniu2_catalog.dbo.TechStore.TechStoreID LEFT JOIN
+                infiniu2_catalog.dbo.Patina ON infiniu2_catalog.dbo.FrontsConfig.PatinaID = infiniu2_catalog.dbo.Patina.PatinaID
+                INNER JOIN infiniu2_catalog.dbo.Measures ON infiniu2_catalog.dbo.FrontsConfig.MeasureID=infiniu2_catalog.dbo.Measures.MeasureID
+                WHERE FrontsOrders.MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID IN (SELECT MegaOrderID FROM MegaOrders " + MClientFilter + @")) AND InvNumber IS NOT NULL " + MFSampleFilter + " ORDER BY InvNumber";
+
+            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionString))
+            {
+                using (DataTable DT = new DataTable())
+                {
+                    if (DA.Fill(DT) == 0)
+                        return;
+
+                    ProfilFrontsOrdersDataTable = DT.Clone();
+                    TPSFrontsOrdersDataTable = DT.Clone();
+
+                    SplitTables(DT, ref ProfilFrontsOrdersDataTable, ref TPSFrontsOrdersDataTable);
+
+                    if (ProfilFrontsOrdersDataTable.Rows.Count > 0)
+                    {
+                        DataTable[] DTs = GroupInvNumber(ProfilFrontsOrdersDataTable);
+
+                        for (int i = 0; i < DTs.Count(); i++)
+                        {
+                            GetSimpleFronts(DTs[i], ProfilReportDataTable);
+
+                            GetCurvedFronts(DTs[i], ProfilReportDataTable);
+
+                            GetGrids(DTs[i], ProfilReportDataTable, TPSReportDataTable, 1);
+
+                            GetInsets(DTs[i], ProfilReportDataTable);
+
+                            GetGlass(DTs[i], ProfilReportDataTable, TPSReportDataTable, 1);
+                        }
+                    }
+
+                    if (TPSFrontsOrdersDataTable.Rows.Count > 0)
+                    {
+                        DataTable[] DTs = GroupInvNumber(TPSFrontsOrdersDataTable);
+
+                        for (int i = 0; i < DTs.Count(); i++)
+                        {
+                            GetSimpleFronts(DTs[i], TPSReportDataTable);
+
+                            GetCurvedFronts(DTs[i], TPSReportDataTable);
+
+                            GetGrids(DTs[i], TPSReportDataTable, ProfilReportDataTable, 2);
+
+                            GetInsets(DTs[i], TPSReportDataTable);
+
+                            GetGlass(DTs[i], TPSReportDataTable, ProfilReportDataTable, 2);
+                        }
+                    }
+                }
+            }
+        }
+        
         public void MarketingProduced(DateTime date1, DateTime date2, bool IsSample, bool IsNotSample, ArrayList MClients, ArrayList MClientGroups)
         {
             string MClientFilter = string.Empty;
@@ -4711,6 +5264,10 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
         private DataTable DecorOrdersDataTable = null;
         private DataTable DecorDataTable = null;
 
+        private DataTable FrameColorsDataTable = null;
+        private DataTable PatinaDataTable = null;
+        private DataTable PatinaRALDataTable = null;
+
         private DataTable ProfilMarketingStartCountDT = null;
         private DataTable ProfilMarketingEndCountDT = null;
         private DataTable ProfilMarketingProducedDT = null;
@@ -4771,12 +5328,65 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
             }
 
             DecorConfigDataTable = new DataTable();
-            //using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DecorConfig",
-            //    ConnectionStrings.CatalogConnectionString))
-            //{
-            //    DA.Fill(DecorConfigDataTable);
-            //}
+
+            GetColorsDT();
+            GetPatinaDT();
             DecorConfigDataTable = TablesManager.DecorConfigDataTableAll;
+        }
+
+        private string GetColorCode(int ColorID)
+        {
+            string code = "";
+            try
+            {
+                DataRow[] Rows = FrameColorsDataTable.Select("ColorID = " + ColorID);
+                code = Rows[0]["Cvet"].ToString();
+            }
+            catch
+            {
+                return "";
+            }
+            return code;
+        }
+
+        private void GetColorsDT()
+        {
+            FrameColorsDataTable = new DataTable();
+            FrameColorsDataTable.Columns.Add(new DataColumn("ColorID", Type.GetType("System.Int64")));
+            FrameColorsDataTable.Columns.Add(new DataColumn("ColorName", Type.GetType("System.String")));
+            FrameColorsDataTable.Columns.Add(new DataColumn("Cvet", Type.GetType("System.String")));
+            string SelectCommand = @"SELECT TechStoreID, TechStoreName, Cvet FROM TechStore
+                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)
+                ORDER BY TechStoreName";
+            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
+            {
+                using (DataTable DT = new DataTable())
+                {
+                    DA.Fill(DT);
+                    {
+                        DataRow NewRow = FrameColorsDataTable.NewRow();
+                        NewRow["ColorID"] = -1;
+                        NewRow["ColorName"] = "-";
+                        NewRow["Cvet"] = "000";
+                        FrameColorsDataTable.Rows.Add(NewRow);
+                    }
+                    {
+                        DataRow NewRow = FrameColorsDataTable.NewRow();
+                        NewRow["ColorID"] = 0;
+                        NewRow["ColorName"] = "на выбор";
+                        NewRow["Cvet"] = "0000000";
+                        FrameColorsDataTable.Rows.Add(NewRow);
+                    }
+                    for (int i = 0; i < DT.Rows.Count; i++)
+                    {
+                        DataRow NewRow = FrameColorsDataTable.NewRow();
+                        NewRow["ColorID"] = Convert.ToInt64(DT.Rows[i]["TechStoreID"]);
+                        NewRow["ColorName"] = DT.Rows[i]["TechStoreName"].ToString();
+                        NewRow["Cvet"] = DT.Rows[i]["Cvet"].ToString();
+                        FrameColorsDataTable.Rows.Add(NewRow);
+                    }
+                }
+            }
         }
 
         private void CreateReportDataTable()
@@ -4787,6 +5397,8 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
             ProfilReportDataTable.Columns.Add(new DataColumn("TPSCurCode", Type.GetType("System.String")));
             ProfilReportDataTable.Columns.Add(new DataColumn("Measure", Type.GetType("System.String")));
             ProfilReportDataTable.Columns.Add(new DataColumn("InvNumber", Type.GetType("System.String")));
+            ProfilReportDataTable.Columns.Add(new DataColumn("Cvet", Type.GetType("System.String")));
+            ProfilReportDataTable.Columns.Add(new DataColumn("Patina", Type.GetType("System.String")));
             ProfilReportDataTable.Columns.Add(new DataColumn("AccountingName", Type.GetType("System.String")));
             ProfilReportDataTable.Columns.Add(new DataColumn("Count", Type.GetType("System.Decimal")));
             ProfilReportDataTable.Columns.Add(new DataColumn("Price", Type.GetType("System.String")));
@@ -4940,11 +5552,53 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
             DT.Columns.Add(new DataColumn("Measure", Type.GetType("System.String")));
             DT.Columns.Add(new DataColumn("InvNumber", Type.GetType("System.String")));
             DT.Columns.Add(new DataColumn("AccountingName", Type.GetType("System.String")));
+            DT.Columns.Add(new DataColumn("Cvet", Type.GetType("System.String")));
+            DT.Columns.Add(new DataColumn("Patina", Type.GetType("System.String")));
             DT.Columns.Add(new DataColumn("Count", Type.GetType("System.Decimal")));
             DT.Columns.Add(new DataColumn("TotalCount", Type.GetType("System.Int32")));
             DT.Columns.Add(new DataColumn("Cost", Type.GetType("System.Decimal")));
             DT.Columns.Add(new DataColumn("Weight", Type.GetType("System.Decimal")));
             DT.Columns.Add(new DataColumn("MarketingCost", Type.GetType("System.Decimal")));
+        }
+
+        private string GetPatinaCode(int PatinaID)
+        {
+            string code = "";
+            try
+            {
+                DataRow[] Rows = PatinaDataTable.Select("PatinaID = " + PatinaID);
+                code = Rows[0]["Patina"].ToString();
+            }
+            catch
+            {
+                return "";
+            }
+            return code;
+        }
+
+        private void GetPatinaDT()
+        {
+            PatinaDataTable = new DataTable();
+            PatinaRALDataTable = new DataTable();
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Patina",
+                ConnectionStrings.CatalogConnectionString))
+            {
+                DA.Fill(PatinaDataTable);
+            }
+            PatinaRALDataTable = new DataTable();
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM PatinaRAL WHERE Enabled=1",
+                ConnectionStrings.CatalogConnectionString))
+            {
+                DA.Fill(PatinaRALDataTable);
+            }
+            foreach (DataRow item in PatinaRALDataTable.Rows)
+            {
+                DataRow NewRow = PatinaDataTable.NewRow();
+                NewRow["PatinaID"] = item["PatinaRALID"];
+                NewRow["PatinaName"] = item["PatinaRAL"];
+                NewRow["DisplayName"] = item["DisplayName"];
+                PatinaDataTable.Rows.Add(NewRow);
+            }
         }
 
         private void GroupCoverTypes(DataRow[] Rows, int MeasureTypeID)
@@ -4961,6 +5615,8 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
             PDT.Columns.Add(new DataColumn("CurrencyCode", Type.GetType("System.String")));
             PDT.Columns.Add(new DataColumn("TPSCurCode", Type.GetType("System.String")));
             PDT.Columns.Add(new DataColumn("MarketingCost", Type.GetType("System.Decimal")));
+            PDT.Columns.Add(new DataColumn("Cvet", Type.GetType("System.String")));
+            PDT.Columns.Add(new DataColumn("Patina", Type.GetType("System.String")));
 
             TDT.Columns.Remove("Count");
             TDT.Columns.Add(new DataColumn("Count", Type.GetType("System.Decimal")));
@@ -4968,12 +5624,16 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
             TDT.Columns.Add(new DataColumn("CurrencyCode", Type.GetType("System.String")));
             TDT.Columns.Add(new DataColumn("TPSCurCode", Type.GetType("System.String")));
             TDT.Columns.Add(new DataColumn("MarketingCost", Type.GetType("System.Decimal")));
+            TDT.Columns.Add(new DataColumn("Cvet", Type.GetType("System.String")));
+            TDT.Columns.Add(new DataColumn("Patina", Type.GetType("System.String")));
             //013011
             decimal MarketingCost = 0;
             if (Rows.Count() > 0)
                 MarketingCost = GetMarketingCost(Convert.ToInt32(Rows[0]["DecorConfigID"]));
             for (int r = 0; r < Rows.Count(); r++)
             {
+                int ColorID = Convert.ToInt32(Rows[r]["ColorID"]);
+                int PatinaID = Convert.ToInt32(Rows[r]["PatinaID"]);
                 string InvNumber = Rows[r]["InvNumber"].ToString();
                 if (MarketingCost > GetMarketingCost(Convert.ToInt32(Rows[r]["DecorConfigID"])))
                     MarketingCost = GetMarketingCost(Convert.ToInt32(Rows[r]["DecorConfigID"]));
@@ -4989,13 +5649,17 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
 
                     if (IsProfil(Convert.ToInt32(Rows[r]["DecorConfigID"])))
                     {
-                        DataRow[] InvRows = PDT.Select("InvNumber = '" + Rows[r]["InvNumber"].ToString() + "'");
+                        DataRow[] InvRows = PDT.Select("InvNumber = '" + Rows[r]["InvNumber"].ToString() +
+                                                       "' AND ColorID = " + Rows[r]["ColorID"].ToString() +
+                                                       " AND PatinaID = " + Rows[r]["PatinaID"].ToString());
                         if (InvRows.Count() == 0)
                         {
                             DataRow NewRow = PDT.NewRow();
                             NewRow["UNN"] = UNN;
                             NewRow["AccountingName"] = Rows[r]["AccountingName"].ToString();
                             NewRow["InvNumber"] = Rows[r]["InvNumber"].ToString();
+                            NewRow["Cvet"] = GetColorCode(ColorID);
+                            NewRow["Patina"] = GetPatinaCode(PatinaID);
                             NewRow["MarketingCost"] = MarketingCost;
                             NewRow["CurrencyCode"] = ProfilCurrencyCode;
                             NewRow["Measure"] = "м.п.";
@@ -5018,13 +5682,17 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
                     }
                     else
                     {
-                        DataRow[] InvRows = TDT.Select("InvNumber = '" + Rows[r]["InvNumber"].ToString() + "'");
+                        DataRow[] InvRows = TDT.Select("InvNumber = '" + Rows[r]["InvNumber"].ToString() +
+                                                       "' AND ColorID = " + Rows[r]["ColorID"].ToString() +
+                                                       " AND PatinaID = " + Rows[r]["PatinaID"].ToString());
                         if (InvRows.Count() == 0)
                         {
                             DataRow NewRow = TDT.NewRow();
                             NewRow["UNN"] = UNN;
                             NewRow["AccountingName"] = Rows[r]["AccountingName"].ToString();
                             NewRow["InvNumber"] = Rows[r]["InvNumber"].ToString();
+                            NewRow["Cvet"] = GetColorCode(ColorID);
+                            NewRow["Patina"] = GetPatinaCode(PatinaID);
                             NewRow["MarketingCost"] = MarketingCost;
                             NewRow["CurrencyCode"] = ProfilCurrencyCode;
                             NewRow["TPSCurCode"] = TPSCurrencyCode;
@@ -5059,13 +5727,17 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
                 {
                     if (IsProfil(Convert.ToInt32(Rows[r]["DecorConfigID"])))
                     {
-                        DataRow[] InvRows = PDT.Select("InvNumber = '" + Rows[r]["InvNumber"].ToString() + "'");
+                        DataRow[] InvRows = PDT.Select("InvNumber = '" + Rows[r]["InvNumber"].ToString() +
+                                                       "' AND ColorID = " + Rows[r]["ColorID"].ToString() +
+                                                       " AND PatinaID = " + Rows[r]["PatinaID"].ToString());
                         if (InvRows.Count() == 0)
                         {
                             DataRow NewRow = PDT.NewRow();
                             NewRow["UNN"] = UNN;
                             NewRow["AccountingName"] = Rows[r]["AccountingName"].ToString();
                             NewRow["InvNumber"] = Rows[r]["InvNumber"].ToString();
+                            NewRow["Cvet"] = GetColorCode(ColorID);
+                            NewRow["Patina"] = GetPatinaCode(PatinaID);
                             NewRow["MarketingCost"] = MarketingCost;
                             NewRow["CurrencyCode"] = ProfilCurrencyCode;
                             NewRow["Measure"] = "м.кв.";
@@ -5148,7 +5820,9 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
                     }
                     else
                     {
-                        DataRow[] InvRows = TDT.Select("InvNumber = '" + Rows[r]["InvNumber"].ToString() + "'");
+                        DataRow[] InvRows = TDT.Select("InvNumber = '" + Rows[r]["InvNumber"].ToString() +
+                                                       "' AND ColorID = " + Rows[r]["ColorID"].ToString() +
+                                                       " AND PatinaID = " + Rows[r]["PatinaID"].ToString());
                         if (InvRows.Count() == 0)
                         {
                             DataRow NewRow = TDT.NewRow();
@@ -5156,6 +5830,8 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
                             NewRow["AccountingName"] = Rows[r]["AccountingName"].ToString();
                             NewRow["InvNumber"] = Rows[r]["InvNumber"].ToString();
                             NewRow["MarketingCost"] = MarketingCost;
+                            NewRow["Cvet"] = GetColorCode(ColorID);
+                            NewRow["Patina"] = GetPatinaCode(PatinaID);
                             NewRow["CurrencyCode"] = ProfilCurrencyCode;
                             NewRow["TPSCurCode"] = TPSCurrencyCode;
                             NewRow["Measure"] = "м.кв.";
@@ -5252,6 +5928,8 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
                         NewRow["UNN"] = UNN;
                         NewRow["AccountingName"] = PDT.Rows[i]["AccountingName"].ToString();
                         NewRow["InvNumber"] = PDT.Rows[i]["InvNumber"].ToString();
+                        NewRow["Cvet"] = PDT.Rows[i]["Cvet"].ToString();
+                        NewRow["Patina"] = PDT.Rows[i]["Patina"].ToString();
                         NewRow["MarketingCost"] = Convert.ToDecimal(PDT.Rows[i]["MarketingCost"]);
                         NewRow["CurrencyCode"] = ProfilCurrencyCode;
                         NewRow["Measure"] = "м.п.";
@@ -5273,6 +5951,8 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
                         NewRow["AccountingName"] = TDT.Rows[i]["AccountingName"].ToString();
                         NewRow["InvNumber"] = TDT.Rows[i]["InvNumber"].ToString();
                         NewRow["MarketingCost"] = Convert.ToDecimal(TDT.Rows[i]["MarketingCost"]);
+                        NewRow["Cvet"] = TDT.Rows[i]["Cvet"].ToString();
+                        NewRow["Patina"] = TDT.Rows[i]["Patina"].ToString();
                         NewRow["CurrencyCode"] = ProfilCurrencyCode;
                         NewRow["TPSCurCode"] = TPSCurrencyCode;
                         NewRow["Measure"] = "м.п.";
@@ -5305,6 +5985,8 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
                         NewRow["AccountingName"] = PDT.Rows[i]["AccountingName"].ToString();
                         NewRow["InvNumber"] = PDT.Rows[i]["InvNumber"].ToString();
                         NewRow["MarketingCost"] = Convert.ToDecimal(PDT.Rows[i]["MarketingCost"]);
+                        NewRow["Cvet"] = PDT.Rows[i]["Cvet"].ToString();
+                        NewRow["Patina"] = PDT.Rows[i]["Patina"].ToString();
                         NewRow["CurrencyCode"] = ProfilCurrencyCode;
                         NewRow["Measure"] = "м.кв.";
                         NewRow["Count"] = Decimal.Round(Convert.ToDecimal(PDT.Rows[i]["Count"]), 3, MidpointRounding.AwayFromZero);
@@ -5326,6 +6008,8 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
                         NewRow["AccountingName"] = TDT.Rows[i]["AccountingName"].ToString();
                         NewRow["InvNumber"] = TDT.Rows[i]["InvNumber"].ToString();
                         NewRow["MarketingCost"] = Convert.ToDecimal(TDT.Rows[i]["MarketingCost"]);
+                        NewRow["Cvet"] = TDT.Rows[i]["Cvet"].ToString();
+                        NewRow["Patina"] = TDT.Rows[i]["Patina"].ToString();
                         NewRow["CurrencyCode"] = ProfilCurrencyCode;
                         NewRow["TPSCurCode"] = TPSCurrencyCode;
                         NewRow["Measure"] = "м.кв.";
@@ -5357,6 +6041,8 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
             PDT.Columns.Add(new DataColumn("CurrencyCode", Type.GetType("System.String")));
             PDT.Columns.Add(new DataColumn("TPSCurCode", Type.GetType("System.String")));
             PDT.Columns.Add(new DataColumn("MarketingCost", Type.GetType("System.Decimal")));
+            PDT.Columns.Add(new DataColumn("Cvet", Type.GetType("System.String")));
+            PDT.Columns.Add(new DataColumn("Patina", Type.GetType("System.String")));
 
             TDT.Columns.Remove("Count");
             TDT.Columns.Add(new DataColumn("Count", Type.GetType("System.Decimal")));
@@ -5364,12 +6050,16 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
             TDT.Columns.Add(new DataColumn("CurrencyCode", Type.GetType("System.String")));
             TDT.Columns.Add(new DataColumn("TPSCurCode", Type.GetType("System.String")));
             TDT.Columns.Add(new DataColumn("MarketingCost", Type.GetType("System.Decimal")));
+            TDT.Columns.Add(new DataColumn("Cvet", Type.GetType("System.String")));
+            TDT.Columns.Add(new DataColumn("Patina", Type.GetType("System.String")));
             //013011
             decimal MarketingCost = 0;
             if (Rows.Count() > 0)
                 MarketingCost = GetMarketingCost(Convert.ToInt32(Rows[0]["DecorConfigID"]));
             for (int r = 0; r < Rows.Count(); r++)
             {
+                int ColorID = Convert.ToInt32(Rows[r]["ColorID"]);
+                int PatinaID = Convert.ToInt32(Rows[r]["PatinaID"]);
                 string InvNumber = Rows[r]["InvNumber"].ToString();
                 if (MarketingCost > GetMarketingCost(Convert.ToInt32(Rows[r]["DecorConfigID"])))
                     MarketingCost = GetMarketingCost(Convert.ToInt32(Rows[r]["DecorConfigID"]));
@@ -5385,7 +6075,9 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
 
                     if (IsProfil(Convert.ToInt32(Rows[r]["DecorConfigID"])))
                     {
-                        DataRow[] InvRows = PDT.Select("InvNumber = '" + Rows[r]["InvNumber"].ToString() + "'");
+                        DataRow[] InvRows = PDT.Select("InvNumber = '" + Rows[r]["InvNumber"].ToString() +
+                                                       "' AND ColorID = " + Rows[r]["ColorID"].ToString() +
+                                                       " AND PatinaID = " + Rows[r]["PatinaID"].ToString());
                         if (InvRows.Count() == 0)
                         {
                             DataRow NewRow = PDT.NewRow();
@@ -5393,6 +6085,8 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
                             NewRow["AccountingName"] = Rows[r]["AccountingName"].ToString();
                             NewRow["InvNumber"] = Rows[r]["InvNumber"].ToString();
                             NewRow["MarketingCost"] = MarketingCost;
+                            NewRow["Cvet"] = GetColorCode(ColorID);
+                            NewRow["Patina"] = GetPatinaCode(PatinaID);
                             NewRow["CurrencyCode"] = ProfilCurrencyCode;
                             NewRow["Measure"] = "м.п.";
                             NewRow["Count"] = Convert.ToDecimal(Rows[r]["Count"]) * L;
@@ -5414,7 +6108,9 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
                     }
                     else
                     {
-                        DataRow[] InvRows = TDT.Select("InvNumber = '" + Rows[r]["InvNumber"].ToString() + "'");
+                        DataRow[] InvRows = TDT.Select("InvNumber = '" + Rows[r]["InvNumber"].ToString() +
+                                                       "' AND ColorID = " + Rows[r]["ColorID"].ToString() +
+                                                       " AND PatinaID = " + Rows[r]["PatinaID"].ToString());
                         if (InvRows.Count() == 0)
                         {
                             DataRow NewRow = TDT.NewRow();
@@ -5423,6 +6119,8 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
                             NewRow["InvNumber"] = Rows[r]["InvNumber"].ToString();
                             NewRow["MarketingCost"] = MarketingCost;
                             NewRow["CurrencyCode"] = ProfilCurrencyCode;
+                            NewRow["Cvet"] = GetColorCode(ColorID);
+                            NewRow["Patina"] = GetPatinaCode(PatinaID);
                             NewRow["TPSCurCode"] = TPSCurrencyCode;
                             NewRow["Measure"] = "м.п.";
                             NewRow["Count"] = Convert.ToDecimal(Rows[r]["Count"]) * L;
@@ -5455,7 +6153,9 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
                 {
                     if (IsProfil(Convert.ToInt32(Rows[r]["DecorConfigID"])))
                     {
-                        DataRow[] InvRows = PDT.Select("InvNumber = '" + Rows[r]["InvNumber"].ToString() + "'");
+                        DataRow[] InvRows = PDT.Select("InvNumber = '" + Rows[r]["InvNumber"].ToString() +
+                                                       "' AND ColorID = " + Rows[r]["ColorID"].ToString() +
+                                                       " AND PatinaID = " + Rows[r]["PatinaID"].ToString());
                         if (InvRows.Count() == 0)
                         {
                             DataRow NewRow = PDT.NewRow();
@@ -5464,6 +6164,8 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
                             NewRow["InvNumber"] = Rows[r]["InvNumber"].ToString();
                             NewRow["MarketingCost"] = MarketingCost;
                             NewRow["CurrencyCode"] = ProfilCurrencyCode;
+                            NewRow["Cvet"] = GetColorCode(ColorID);
+                            NewRow["Patina"] = GetPatinaCode(PatinaID);
                             NewRow["Measure"] = "м.кв.";
                             if (GetMeasureTypeID(Convert.ToInt32(Rows[r]["DecorConfigID"])) == 1)
                             {
@@ -5544,7 +6246,9 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
                     }
                     else
                     {
-                        DataRow[] InvRows = TDT.Select("InvNumber = '" + Rows[r]["InvNumber"].ToString() + "'");
+                        DataRow[] InvRows = TDT.Select("InvNumber = '" + Rows[r]["InvNumber"].ToString() +
+                                                       "' AND ColorID = " + Rows[r]["ColorID"].ToString() +
+                                                       " AND PatinaID = " + Rows[r]["PatinaID"].ToString());
                         if (InvRows.Count() == 0)
                         {
                             DataRow NewRow = TDT.NewRow();
@@ -5553,6 +6257,8 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
                             NewRow["InvNumber"] = Rows[r]["InvNumber"].ToString();
                             NewRow["MarketingCost"] = MarketingCost;
                             NewRow["CurrencyCode"] = ProfilCurrencyCode;
+                            NewRow["Cvet"] = GetColorCode(ColorID);
+                            NewRow["Patina"] = GetPatinaCode(PatinaID);
                             NewRow["TPSCurCode"] = TPSCurrencyCode;
                             NewRow["Measure"] = "м.кв.";
                             if (GetMeasureTypeID(Convert.ToInt32(Rows[r]["DecorConfigID"])) == 1)
@@ -5649,6 +6355,8 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
                         NewRow["AccountingName"] = PDT.Rows[i]["AccountingName"].ToString();
                         NewRow["InvNumber"] = PDT.Rows[i]["InvNumber"].ToString();
                         NewRow["MarketingCost"] = Convert.ToDecimal(PDT.Rows[i]["MarketingCost"]);
+                        NewRow["Cvet"] = PDT.Rows[i]["Cvet"].ToString();
+                        NewRow["Patina"] = PDT.Rows[i]["Patina"].ToString();
                         NewRow["CurrencyCode"] = ProfilCurrencyCode;
                         NewRow["Measure"] = "м.п.";
                         NewRow["Count"] = Decimal.Round(Convert.ToDecimal(PDT.Rows[i]["Count"]) / 1000, 3, MidpointRounding.AwayFromZero);
@@ -5669,6 +6377,8 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
                         NewRow["AccountingName"] = TDT.Rows[i]["AccountingName"].ToString();
                         NewRow["InvNumber"] = TDT.Rows[i]["InvNumber"].ToString();
                         NewRow["MarketingCost"] = Convert.ToDecimal(TDT.Rows[i]["MarketingCost"]);
+                        NewRow["Cvet"] = TDT.Rows[i]["Cvet"].ToString();
+                        NewRow["Patina"] = TDT.Rows[i]["Patina"].ToString();
                         NewRow["CurrencyCode"] = ProfilCurrencyCode;
                         NewRow["TPSCurCode"] = TPSCurrencyCode;
                         NewRow["Measure"] = "м.п.";
@@ -5701,6 +6411,8 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
                         NewRow["AccountingName"] = PDT.Rows[i]["AccountingName"].ToString();
                         NewRow["InvNumber"] = PDT.Rows[i]["InvNumber"].ToString();
                         NewRow["MarketingCost"] = Convert.ToDecimal(PDT.Rows[i]["MarketingCost"]);
+                        NewRow["Cvet"] = PDT.Rows[i]["Cvet"].ToString();
+                        NewRow["Patina"] = PDT.Rows[i]["Patina"].ToString();
                         NewRow["CurrencyCode"] = ProfilCurrencyCode;
                         NewRow["Measure"] = "м.кв.";
                         NewRow["Count"] = Decimal.Round(Convert.ToDecimal(PDT.Rows[i]["Count"]), 3, MidpointRounding.AwayFromZero);
@@ -5722,6 +6434,8 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
                         NewRow["AccountingName"] = TDT.Rows[i]["AccountingName"].ToString();
                         NewRow["InvNumber"] = TDT.Rows[i]["InvNumber"].ToString();
                         NewRow["MarketingCost"] = Convert.ToDecimal(TDT.Rows[i]["MarketingCost"]);
+                        NewRow["Cvet"] = TDT.Rows[i]["Cvet"].ToString();
+                        NewRow["Patina"] = TDT.Rows[i]["Patina"].ToString();
                         NewRow["CurrencyCode"] = ProfilCurrencyCode;
                         NewRow["TPSCurCode"] = TPSCurrencyCode;
                         NewRow["Measure"] = "м.кв.";
@@ -5767,12 +6481,14 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
                     MarketingCost = GetMarketingCost(Convert.ToInt32(Rows[0]["DecorConfigID"]));
                 for (int r = 0; r < Rows.Count(); r++)
                 {
+                    string Cvet = GetColorCode(Convert.ToInt32(Rows[r]["ColorID"]));
+                    string Patina = GetPatinaCode(Convert.ToInt32(Rows[r]["PatinaID"]));
                     string InvNumber = Rows[r]["InvNumber"].ToString();
                     if (MarketingCost > GetMarketingCost(Convert.ToInt32(Rows[r]["DecorConfigID"])))
                         MarketingCost = GetMarketingCost(Convert.ToInt32(Rows[r]["DecorConfigID"]));
                     if (IsProfil(Convert.ToInt32(Rows[r]["DecorConfigID"])))
                     {
-                        DataRow[] InvRows = PDT.Select("InvNumber = '" + Rows[r]["InvNumber"].ToString() + "'");
+                        DataRow[] InvRows = PDT.Select($"InvNumber = '{ Rows[r]["InvNumber"].ToString() }' AND Cvet = '{ Cvet }' AND Patina = '{ Patina }'");
                         if (InvRows.Count() == 0)
                         {
                             DataRow NewRow = PDT.NewRow();
@@ -5780,6 +6496,8 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
                             NewRow["AccountingName"] = Rows[r]["AccountingName"].ToString();
                             NewRow["InvNumber"] = Rows[r]["InvNumber"].ToString();
                             NewRow["MarketingCost"] = MarketingCost;
+                            NewRow["Cvet"] = Cvet;
+                            NewRow["Patina"] = Patina;
                             NewRow["CurrencyCode"] = ProfilCurrencyCode;
                             NewRow["Measure"] = "шт.";
                             NewRow["Count"] = Convert.ToDecimal(Rows[r]["Count"]);
@@ -5810,6 +6528,8 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
                             NewRow["InvNumber"] = Rows[r]["InvNumber"].ToString();
                             NewRow["MarketingCost"] = MarketingCost;
                             NewRow["CurrencyCode"] = ProfilCurrencyCode;
+                            NewRow["Cvet"] = Cvet;
+                            NewRow["Patina"] = Patina;
                             NewRow["TPSCurCode"] = TPSCurrencyCode;
                             NewRow["Measure"] = "шт.";
                             NewRow["Count"] = Convert.ToDecimal(Rows[r]["Count"]);
@@ -5838,11 +6558,13 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
                     MarketingCost = GetMarketingCost(Convert.ToInt32(Rows[0]["DecorConfigID"]));
                 for (int r = 0; r < Rows.Count(); r++)
                 {
+                    string Cvet = GetColorCode(Convert.ToInt32(Rows[r]["ColorID"]));
+                    string Patina = GetPatinaCode(Convert.ToInt32(Rows[r]["PatinaID"]));
                     if (MarketingCost > GetMarketingCost(Convert.ToInt32(Rows[r]["DecorConfigID"])))
                         MarketingCost = GetMarketingCost(Convert.ToInt32(Rows[r]["DecorConfigID"]));
                     if (IsProfil(Convert.ToInt32(Rows[r]["DecorConfigID"])))
                     {
-                        DataRow[] InvRows = PDT.Select("InvNumber = '" + Rows[r]["InvNumber"].ToString() + "'");
+                        DataRow[] InvRows = PDT.Select($"InvNumber = '{ Rows[r]["InvNumber"].ToString() }' AND Cvet = '{ Cvet }' AND Patina = '{ Patina }'");
                         if (InvRows.Count() == 0)
                         {
                             DataRow NewRow = PDT.NewRow();
@@ -5850,6 +6572,8 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
                             NewRow["AccountingName"] = Rows[r]["AccountingName"].ToString();
                             NewRow["InvNumber"] = Rows[r]["InvNumber"].ToString();
                             NewRow["MarketingCost"] = MarketingCost;
+                            NewRow["Cvet"] = Cvet;
+                            NewRow["Patina"] = Patina;
                             NewRow["CurrencyCode"] = ProfilCurrencyCode;
                             NewRow["Measure"] = "шт.";
                             NewRow[p1] = Convert.ToDecimal(Rows[r][p1]);
@@ -5873,7 +6597,7 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
                     }
                     else
                     {
-                        DataRow[] InvRows = TDT.Select("InvNumber = '" + Rows[r]["InvNumber"].ToString() + "'");
+                        DataRow[] InvRows = TDT.Select($"InvNumber = '{ Rows[r]["InvNumber"].ToString() }' AND Cvet = '{ Cvet }' AND Patina = '{ Patina }'");
                         if (InvRows.Count() == 0)
                         {
                             DataRow NewRow = TDT.NewRow();
@@ -5882,6 +6606,8 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
                             NewRow["InvNumber"] = Rows[r]["InvNumber"].ToString();
                             NewRow["MarketingCost"] = MarketingCost;
                             NewRow["CurrencyCode"] = ProfilCurrencyCode;
+                            NewRow["Cvet"] = Cvet;
+                            NewRow["Patina"] = Patina;
                             NewRow["Measure"] = "шт.";
                             NewRow["TPSCurCode"] = TPSCurrencyCode;
                             NewRow[p1] = Convert.ToDecimal(Rows[r][p1]);
@@ -5912,11 +6638,13 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
                     MarketingCost = GetMarketingCost(Convert.ToInt32(Rows[0]["DecorConfigID"]));
                 for (int r = 0; r < Rows.Count(); r++)
                 {
+                    string Cvet = GetColorCode(Convert.ToInt32(Rows[r]["ColorID"]));
+                    string Patina = GetPatinaCode(Convert.ToInt32(Rows[r]["PatinaID"]));
                     if (MarketingCost > GetMarketingCost(Convert.ToInt32(Rows[r]["DecorConfigID"])))
                         MarketingCost = GetMarketingCost(Convert.ToInt32(Rows[r]["DecorConfigID"]));
                     if (IsProfil(Convert.ToInt32(Rows[r]["DecorConfigID"])))
                     {
-                        DataRow[] InvRows = PDT.Select("InvNumber = '" + Rows[r]["InvNumber"].ToString() + "'");
+                        DataRow[] InvRows = PDT.Select($"InvNumber = '{ Rows[r]["InvNumber"].ToString() }' AND Cvet = '{ Cvet }' AND Patina = '{ Patina }'");
                         if (InvRows.Count() == 0)
                         {
                             DataRow NewRow = PDT.NewRow();
@@ -5925,6 +6653,8 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
                             NewRow["InvNumber"] = Rows[r]["InvNumber"].ToString();
                             NewRow["MarketingCost"] = MarketingCost;
                             NewRow["CurrencyCode"] = ProfilCurrencyCode;
+                            NewRow["Cvet"] = Cvet;
+                            NewRow["Patina"] = Patina;
                             NewRow["Measure"] = "шт.";
                             NewRow[p3] = Convert.ToDecimal(Rows[r][p3]);
                             NewRow["Count"] = Convert.ToDecimal(Rows[r]["Count"]);
@@ -5946,7 +6676,7 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
                     }
                     else
                     {
-                        DataRow[] InvRows = TDT.Select("InvNumber = '" + Rows[r]["InvNumber"].ToString() + "'");
+                        DataRow[] InvRows = TDT.Select($"InvNumber = '{ Rows[r]["InvNumber"].ToString() }' AND Cvet = '{ Cvet }' AND Patina = '{ Patina }'");
                         if (InvRows.Count() == 0)
                         {
                             DataRow NewRow = TDT.NewRow();
@@ -5955,6 +6685,8 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
                             NewRow["InvNumber"] = Rows[r]["InvNumber"].ToString();
                             NewRow["MarketingCost"] = MarketingCost;
                             NewRow["CurrencyCode"] = ProfilCurrencyCode;
+                            NewRow["Cvet"] = Cvet;
+                            NewRow["Patina"] = Patina;
                             NewRow["Measure"] = "шт.";
                             NewRow["TPSCurCode"] = TPSCurrencyCode;
                             NewRow[p3] = Convert.ToDecimal(Rows[r][p3]);
@@ -5992,6 +6724,8 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
                         NewRow["InvNumber"] = PDT.Rows[g]["InvNumber"].ToString();
                         NewRow["MarketingCost"] = Convert.ToDecimal(PDT.Rows[g]["MarketingCost"]);
                         NewRow["CurrencyCode"] = ProfilCurrencyCode;
+                        NewRow["Cvet"] = PDT.Rows[g]["Cvet"].ToString();
+                        NewRow["Patina"] = PDT.Rows[g]["Patina"].ToString();
                         NewRow["Measure"] = "шт.";
                         NewRow["Count"] = PDT.Rows[g]["Count"];
                         //NewRow["Price"] = Decimal.Round(Convert.ToDecimal(PDT.Rows[g]["Price"]), 3, MidpointRounding.AwayFromZero);
@@ -6009,6 +6743,8 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
                         NewRow["AccountingName"] = PDT.Rows[g]["AccountingName"].ToString();
                         NewRow["InvNumber"] = PDT.Rows[g]["InvNumber"].ToString();
                         NewRow["MarketingCost"] = Convert.ToDecimal(PDT.Rows[g]["MarketingCost"]);
+                        NewRow["Cvet"] = PDT.Rows[g]["Cvet"].ToString();
+                        NewRow["Patina"] = PDT.Rows[g]["Patina"].ToString();
                         NewRow["CurrencyCode"] = ProfilCurrencyCode;
                         NewRow["Measure"] = "шт.";
                         NewRow["Count"] = PDT.Rows[g]["Count"];
@@ -6027,6 +6763,8 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
                         NewRow["AccountingName"] = PDT.Rows[g]["AccountingName"].ToString();
                         NewRow["InvNumber"] = PDT.Rows[g]["InvNumber"].ToString();
                         NewRow["MarketingCost"] = Convert.ToDecimal(PDT.Rows[g]["MarketingCost"]);
+                        NewRow["Cvet"] = PDT.Rows[g]["Cvet"].ToString();
+                        NewRow["Patina"] = PDT.Rows[g]["Patina"].ToString();
                         NewRow["CurrencyCode"] = ProfilCurrencyCode;
                         NewRow["Measure"] = "шт.";
                         NewRow["Count"] = PDT.Rows[g]["Count"];
@@ -6052,6 +6790,8 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
                         NewRow["InvNumber"] = TDT.Rows[g]["InvNumber"].ToString();
                         NewRow["MarketingCost"] = Convert.ToDecimal(TDT.Rows[g]["MarketingCost"]);
                         NewRow["CurrencyCode"] = ProfilCurrencyCode;
+                        NewRow["Cvet"] = TDT.Rows[g]["Cvet"].ToString();
+                        NewRow["Patina"] = TDT.Rows[g]["Patina"].ToString();
                         NewRow["Measure"] = "шт.";
                         NewRow["TPSCurCode"] = TPSCurrencyCode;
                         NewRow["Count"] = TDT.Rows[g]["Count"];
@@ -6071,6 +6811,8 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
                         NewRow["InvNumber"] = TDT.Rows[g]["InvNumber"].ToString();
                         NewRow["MarketingCost"] = Convert.ToDecimal(TDT.Rows[g]["MarketingCost"]);
                         NewRow["CurrencyCode"] = ProfilCurrencyCode;
+                        NewRow["Cvet"] = TDT.Rows[g]["Cvet"].ToString();
+                        NewRow["Patina"] = TDT.Rows[g]["Patina"].ToString();
                         NewRow["Measure"] = "шт.";
                         NewRow["TPSCurCode"] = TPSCurrencyCode;
                         NewRow["Count"] = TDT.Rows[g]["Count"];
@@ -6091,6 +6833,8 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
                         NewRow["MarketingCost"] = Convert.ToDecimal(TDT.Rows[g]["MarketingCost"]);
                         NewRow["CurrencyCode"] = ProfilCurrencyCode;
                         NewRow["Measure"] = "шт.";
+                        NewRow["Cvet"] = TDT.Rows[g]["Cvet"].ToString();
+                        NewRow["Patina"] = TDT.Rows[g]["Patina"].ToString();
                         NewRow["TPSCurCode"] = TPSCurrencyCode;
                         NewRow["Count"] = TDT.Rows[g]["Count"];
                         //NewRow["Price"] = Decimal.Round(Convert.ToDecimal(TDT.Rows[g]["Price"]), 3, MidpointRounding.AwayFromZero);
@@ -6131,12 +6875,14 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
                     MarketingCost = GetMarketingCost(Convert.ToInt32(Rows[0]["DecorConfigID"]));
                 for (int r = 0; r < Rows.Count(); r++)
                 {
+                    string Cvet = GetColorCode(Convert.ToInt32(Rows[r]["ColorID"]));
+                    string Patina = GetPatinaCode(Convert.ToInt32(Rows[r]["PatinaID"]));
                     string InvNumber = Rows[r]["InvNumber"].ToString();
                     if (MarketingCost > GetMarketingCost(Convert.ToInt32(Rows[r]["DecorConfigID"])))
                         MarketingCost = GetMarketingCost(Convert.ToInt32(Rows[r]["DecorConfigID"]));
                     if (IsProfil(Convert.ToInt32(Rows[r]["DecorConfigID"])))
                     {
-                        DataRow[] InvRows = PDT.Select("InvNumber = '" + Rows[r]["InvNumber"].ToString() + "'");
+                        DataRow[] InvRows = PDT.Select($"InvNumber = '{ Rows[r]["InvNumber"].ToString() }' AND Cvet = '{ Cvet }' AND Patina = '{ Patina }'");
                         if (InvRows.Count() == 0)
                         {
                             DataRow NewRow = PDT.NewRow();
@@ -6144,6 +6890,8 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
                             NewRow["AccountingName"] = Rows[r]["AccountingName"].ToString();
                             NewRow["InvNumber"] = Rows[r]["InvNumber"].ToString();
                             NewRow["MarketingCost"] = MarketingCost;
+                            NewRow["Cvet"] = Cvet;
+                            NewRow["Patina"] = Patina;
                             NewRow["CurrencyCode"] = ProfilCurrencyCode;
                             NewRow["Measure"] = "шт.";
                             NewRow["Count"] = Convert.ToDecimal(Rows[r]["Count"]);
@@ -6174,6 +6922,8 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
                             NewRow["InvNumber"] = Rows[r]["InvNumber"].ToString();
                             NewRow["MarketingCost"] = MarketingCost;
                             NewRow["CurrencyCode"] = ProfilCurrencyCode;
+                            NewRow["Cvet"] = Cvet;
+                            NewRow["Patina"] = Patina;
                             NewRow["TPSCurCode"] = TPSCurrencyCode;
                             NewRow["Measure"] = "шт.";
                             NewRow["Count"] = Convert.ToDecimal(Rows[r]["Count"]);
@@ -6202,11 +6952,13 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
                     MarketingCost = GetMarketingCost(Convert.ToInt32(Rows[0]["DecorConfigID"]));
                 for (int r = 0; r < Rows.Count(); r++)
                 {
+                    string Cvet = GetColorCode(Convert.ToInt32(Rows[r]["ColorID"]));
+                    string Patina = GetPatinaCode(Convert.ToInt32(Rows[r]["PatinaID"]));
                     if (MarketingCost > GetMarketingCost(Convert.ToInt32(Rows[r]["DecorConfigID"])))
                         MarketingCost = GetMarketingCost(Convert.ToInt32(Rows[r]["DecorConfigID"]));
                     if (IsProfil(Convert.ToInt32(Rows[r]["DecorConfigID"])))
                     {
-                        DataRow[] InvRows = PDT.Select("InvNumber = '" + Rows[r]["InvNumber"].ToString() + "'");
+                        DataRow[] InvRows = PDT.Select($"InvNumber = '{ Rows[r]["InvNumber"].ToString() }' AND Cvet = '{ Cvet }' AND Patina = '{ Patina }'");
                         if (InvRows.Count() == 0)
                         {
                             DataRow NewRow = PDT.NewRow();
@@ -6215,6 +6967,8 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
                             NewRow["InvNumber"] = Rows[r]["InvNumber"].ToString();
                             NewRow["MarketingCost"] = MarketingCost;
                             NewRow["CurrencyCode"] = ProfilCurrencyCode;
+                            NewRow["Cvet"] = Cvet;
+                            NewRow["Patina"] = Patina;
                             NewRow["Measure"] = "шт.";
                             NewRow[p1] = Convert.ToDecimal(Rows[r][p1]);
                             NewRow[p2] = Convert.ToDecimal(Rows[r][p2]);
@@ -6246,6 +7000,8 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
                             NewRow["InvNumber"] = Rows[r]["InvNumber"].ToString();
                             NewRow["MarketingCost"] = MarketingCost;
                             NewRow["CurrencyCode"] = ProfilCurrencyCode;
+                            NewRow["Cvet"] = Cvet;
+                            NewRow["Patina"] = Patina;
                             NewRow["Measure"] = "шт.";
                             NewRow["TPSCurCode"] = TPSCurrencyCode;
                             NewRow[p1] = Convert.ToDecimal(Rows[r][p1]);
@@ -6276,11 +7032,13 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
                     MarketingCost = GetMarketingCost(Convert.ToInt32(Rows[0]["DecorConfigID"]));
                 for (int r = 0; r < Rows.Count(); r++)
                 {
+                    string Cvet = GetColorCode(Convert.ToInt32(Rows[r]["ColorID"]));
+                    string Patina = GetPatinaCode(Convert.ToInt32(Rows[r]["PatinaID"]));
                     if (MarketingCost > GetMarketingCost(Convert.ToInt32(Rows[r]["DecorConfigID"])))
                         MarketingCost = GetMarketingCost(Convert.ToInt32(Rows[r]["DecorConfigID"]));
                     if (IsProfil(Convert.ToInt32(Rows[r]["DecorConfigID"])))
                     {
-                        DataRow[] InvRows = PDT.Select("InvNumber = '" + Rows[r]["InvNumber"].ToString() + "'");
+                        DataRow[] InvRows = PDT.Select($"InvNumber = '{ Rows[r]["InvNumber"].ToString() }' AND Cvet = '{ Cvet }' AND Patina = '{ Patina }'");
                         if (InvRows.Count() == 0)
                         {
                             DataRow NewRow = PDT.NewRow();
@@ -6289,6 +7047,8 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
                             NewRow["InvNumber"] = Rows[r]["InvNumber"].ToString();
                             NewRow["MarketingCost"] = MarketingCost;
                             NewRow["CurrencyCode"] = ProfilCurrencyCode;
+                            NewRow["Cvet"] = Cvet;
+                            NewRow["Patina"] = Patina;
                             NewRow["Measure"] = "шт.";
                             NewRow[p3] = Convert.ToDecimal(Rows[r][p3]);
                             NewRow["Count"] = Convert.ToDecimal(Rows[r]["Count"]);
@@ -6319,6 +7079,8 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
                             NewRow["InvNumber"] = Rows[r]["InvNumber"].ToString();
                             NewRow["MarketingCost"] = MarketingCost;
                             NewRow["CurrencyCode"] = ProfilCurrencyCode;
+                            NewRow["Cvet"] = Cvet;
+                            NewRow["Patina"] = Patina;
                             NewRow["Measure"] = "шт.";
                             NewRow["TPSCurCode"] = TPSCurrencyCode;
                             NewRow[p3] = Convert.ToDecimal(Rows[r][p3]);
@@ -6355,6 +7117,8 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
                         NewRow["AccountingName"] = PDT.Rows[g]["AccountingName"].ToString();
                         NewRow["InvNumber"] = PDT.Rows[g]["InvNumber"].ToString();
                         NewRow["MarketingCost"] = Convert.ToDecimal(PDT.Rows[g]["MarketingCost"]);
+                        NewRow["Cvet"] = PDT.Rows[g]["Cvet"].ToString();
+                        NewRow["Patina"] = PDT.Rows[g]["Patina"].ToString();
                         NewRow["CurrencyCode"] = ProfilCurrencyCode;
                         NewRow["Measure"] = "шт.";
                         NewRow["Count"] = PDT.Rows[g]["Count"];
@@ -6373,6 +7137,8 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
                         NewRow["AccountingName"] = PDT.Rows[g]["AccountingName"].ToString();
                         NewRow["InvNumber"] = PDT.Rows[g]["InvNumber"].ToString();
                         NewRow["MarketingCost"] = Convert.ToDecimal(PDT.Rows[g]["MarketingCost"]);
+                        NewRow["Cvet"] = PDT.Rows[g]["Cvet"].ToString();
+                        NewRow["Patina"] = PDT.Rows[g]["Patina"].ToString();
                         NewRow["CurrencyCode"] = ProfilCurrencyCode;
                         NewRow["Measure"] = "шт.";
                         NewRow["Count"] = PDT.Rows[g]["Count"];
@@ -6391,6 +7157,8 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
                         NewRow["AccountingName"] = PDT.Rows[g]["AccountingName"].ToString();
                         NewRow["InvNumber"] = PDT.Rows[g]["InvNumber"].ToString();
                         NewRow["MarketingCost"] = Convert.ToDecimal(PDT.Rows[g]["MarketingCost"]);
+                        NewRow["Cvet"] = PDT.Rows[g]["Cvet"].ToString();
+                        NewRow["Patina"] = PDT.Rows[g]["Patina"].ToString();
                         NewRow["CurrencyCode"] = ProfilCurrencyCode;
                         NewRow["Measure"] = "шт.";
                         NewRow["Count"] = PDT.Rows[g]["Count"];
@@ -6415,6 +7183,8 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
                         NewRow["AccountingName"] = TDT.Rows[g]["AccountingName"].ToString();
                         NewRow["InvNumber"] = TDT.Rows[g]["InvNumber"].ToString();
                         NewRow["MarketingCost"] = Convert.ToDecimal(TDT.Rows[g]["MarketingCost"]);
+                        NewRow["Cvet"] = TDT.Rows[g]["Cvet"].ToString();
+                        NewRow["Patina"] = TDT.Rows[g]["Patina"].ToString();
                         NewRow["CurrencyCode"] = ProfilCurrencyCode;
                         NewRow["Measure"] = "шт.";
                         NewRow["TPSCurCode"] = TPSCurrencyCode;
@@ -6434,6 +7204,8 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
                         NewRow["AccountingName"] = TDT.Rows[g]["AccountingName"].ToString();
                         NewRow["InvNumber"] = TDT.Rows[g]["InvNumber"].ToString();
                         NewRow["MarketingCost"] = Convert.ToDecimal(TDT.Rows[g]["MarketingCost"]);
+                        NewRow["Cvet"] = TDT.Rows[g]["Cvet"].ToString();
+                        NewRow["Patina"] = TDT.Rows[g]["Patina"].ToString();
                         NewRow["CurrencyCode"] = ProfilCurrencyCode;
                         NewRow["Measure"] = "шт.";
                         NewRow["TPSCurCode"] = TPSCurrencyCode;
@@ -6453,6 +7225,8 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
                         NewRow["AccountingName"] = TDT.Rows[g]["AccountingName"].ToString();
                         NewRow["InvNumber"] = TDT.Rows[g]["InvNumber"].ToString();
                         NewRow["MarketingCost"] = Convert.ToDecimal(TDT.Rows[g]["MarketingCost"]);
+                        NewRow["Cvet"] = TDT.Rows[g]["Cvet"].ToString();
+                        NewRow["Patina"] = TDT.Rows[g]["Patina"].ToString();
                         NewRow["CurrencyCode"] = ProfilCurrencyCode;
                         NewRow["Measure"] = "шт.";
                         NewRow["TPSCurCode"] = TPSCurrencyCode;
@@ -6469,19 +7243,20 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
 
         private void Collect()
         {
-            string InvNumber = string.Empty;
-
             DataTable Items = new DataTable();
 
             using (DataView DV = new DataView(DecorOrdersDataTable))
             {
-                Items = DV.ToTable(true, new string[] { "DecorID" });
+                Items = DV.ToTable(true, new string[] { "InvNumber", "ColorID", "PatinaID" });
             }
 
             for (int i = 0; i < Items.Rows.Count; i++)
             {
-                int rr = Convert.ToInt32(Items.Rows[i]["DecorID"]);
-                DataRow[] ItemsRows = DecorOrdersDataTable.Select("DecorID = " + Items.Rows[i]["DecorID"].ToString(),
+                int ColorID = Convert.ToInt32(Items.Rows[i]["ColorID"]);
+                int PatinaID = Convert.ToInt32(Items.Rows[i]["PatinaID"]);
+                string InvNumber = Items.Rows[i]["InvNumber"].ToString();
+                DataRow[] ItemsRows = DecorOrdersDataTable.Select("InvNumber = '" + InvNumber +
+                                                                  "' AND ColorID=" + ColorID + " AND PatinaID=" + PatinaID,
                                                                       "Price ASC");
 
                 int DecorConfigID = Convert.ToInt32(ItemsRows[0]["DecorConfigID"]);
@@ -6571,6 +7346,108 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
             Items.Dispose();
         }
 
+        public void ExpReport(DateTime date1, DateTime date2, bool ZOV, bool IsSample, bool IsNotSample, ArrayList MClients, ArrayList MClientGroups)
+        {
+            string MClientFilter = string.Empty;
+            if (MClients.Count > 0)
+            {
+                MClientFilter = " WHERE ClientID IN (" + string.Join(",", MClients.OfType<Int32>().ToArray()) + ")";
+            }
+            if (MClientGroups.Count > 0)
+            {
+                MClientFilter = " WHERE ClientID IN" +
+                    " (SELECT ClientID FROM infiniu2_marketingreference.dbo.Clients" +
+                    " WHERE ClientGroupID IN (" + string.Join(",", MClientGroups.OfType<Int32>().ToArray()) + "))";
+            }
+            if (MClients.Count < 1 && MClientGroups.Count < 1)
+                MClientFilter = " WHERE ClientID = -1";
+
+            string ConnectionString = ConnectionStrings.MarketingOrdersConnectionString;
+            if (ZOV)
+                ConnectionString = ConnectionStrings.ZOVOrdersConnectionString;
+            string Filter = " (ExpeditionDateTime >= '" + date1.ToString("yyyy-MM-dd") +
+                " 00:00' AND ExpeditionDateTime <= '" + date2.ToString("yyyy-MM-dd") + " 23:59')";
+
+            string MFSampleFilter = string.Empty;
+            string MDSampleFilter = string.Empty;
+            if (!IsSample || !IsNotSample)
+            {
+                if (IsSample)
+                    MFSampleFilter = " AND FrontsOrders.IsSample = 1";
+                if (IsNotSample)
+                    MFSampleFilter = " AND FrontsOrders.IsSample = 0";
+                if (IsSample)
+                    MDSampleFilter = " AND (DecorOrders.IsSample = 1 OR (DecorOrders.ProductID=42 AND DecorOrders.IsSample = 0)) ";
+                if (IsNotSample)
+                    MDSampleFilter = " AND DecorOrders.IsSample = 0";
+            }
+
+            string SelectCommand = @"SELECT dbo.DecorOrders.DecorOrderID, dbo.DecorOrders.ProductID, dbo.DecorOrders.DecorID, dbo.DecorOrders.ColorID, dbo.DecorOrders.PatinaID, dbo.DecorOrders.Length,
+                dbo.DecorOrders.Height, dbo.DecorOrders.Width, dbo.PackageDetails.Count, dbo.DecorOrders.DecorConfigID, dbo.DecorOrders.FactoryID, dbo.DecorOrders.Price, dbo.DecorOrders.Cost,
+                dbo.DecorOrders.ItemWeight, dbo.DecorOrders.Weight, infiniu2_catalog.dbo.DecorConfig.AccountingName, infiniu2_catalog.dbo.DecorConfig.InvNumber, infiniu2_catalog.dbo.Measures.Measure FROM PackageDetails
+                INNER JOIN DecorOrders ON PackageDetails.OrderID = DecorOrders.DecorOrderID" + MDSampleFilter + @" AND DecorOrders.MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID IN (SELECT MegaOrderID FROM MegaOrders " + MClientFilter + @"))
+                INNER JOIN infiniu2_catalog.dbo.DecorConfig ON DecorOrders.DecorConfigID = infiniu2_catalog.dbo.DecorConfig.DecorConfigID
+                INNER JOIN infiniu2_catalog.dbo.Measures ON infiniu2_catalog.dbo.DecorConfig.MeasureID=infiniu2_catalog.dbo.Measures.MeasureID
+                WHERE InvNumber IS NOT NULL AND PackageID IN (SELECT PackageID FROM Packages WHERE ProductType = 1 AND " + Filter + ") ORDER BY InvNumber";
+            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionString))
+            {
+                DA.Fill(DecorOrdersDataTable);
+            }
+
+            Collect();
+        }
+        
+        public void StoreReport(DateTime date1, DateTime date2, bool ZOV, bool IsSample, bool IsNotSample, ArrayList MClients, ArrayList MClientGroups)
+        {
+            string MClientFilter = string.Empty;
+            if (MClients.Count > 0)
+            {
+                MClientFilter = " WHERE ClientID IN (" + string.Join(",", MClients.OfType<Int32>().ToArray()) + ")";
+            }
+            if (MClientGroups.Count > 0)
+            {
+                MClientFilter = " WHERE ClientID IN" +
+                    " (SELECT ClientID FROM infiniu2_marketingreference.dbo.Clients" +
+                    " WHERE ClientGroupID IN (" + string.Join(",", MClientGroups.OfType<Int32>().ToArray()) + "))";
+            }
+            if (MClients.Count < 1 && MClientGroups.Count < 1)
+                MClientFilter = " WHERE ClientID = -1";
+
+            string ConnectionString = ConnectionStrings.MarketingOrdersConnectionString;
+            if (ZOV)
+                ConnectionString = ConnectionStrings.ZOVOrdersConnectionString;
+            string Filter = " (StorageDateTime >= '" + date1.ToString("yyyy-MM-dd") +
+                " 00:00' AND StorageDateTime <= '" + date2.ToString("yyyy-MM-dd") + " 23:59')";
+
+            string MFSampleFilter = string.Empty;
+            string MDSampleFilter = string.Empty;
+            if (!IsSample || !IsNotSample)
+            {
+                if (IsSample)
+                    MFSampleFilter = " AND FrontsOrders.IsSample = 1";
+                if (IsNotSample)
+                    MFSampleFilter = " AND FrontsOrders.IsSample = 0";
+                if (IsSample)
+                    MDSampleFilter = " AND (DecorOrders.IsSample = 1 OR (DecorOrders.ProductID=42 AND DecorOrders.IsSample = 0)) ";
+                if (IsNotSample)
+                    MDSampleFilter = " AND DecorOrders.IsSample = 0";
+            }
+
+            string SelectCommand = @"SELECT dbo.DecorOrders.DecorOrderID, dbo.DecorOrders.ProductID, dbo.DecorOrders.DecorID, dbo.DecorOrders.ColorID, dbo.DecorOrders.PatinaID, dbo.DecorOrders.Length,
+                dbo.DecorOrders.Height, dbo.DecorOrders.Width, dbo.PackageDetails.Count, dbo.DecorOrders.DecorConfigID, dbo.DecorOrders.FactoryID, dbo.DecorOrders.Price, dbo.DecorOrders.Cost,
+                dbo.DecorOrders.ItemWeight, dbo.DecorOrders.Weight, infiniu2_catalog.dbo.DecorConfig.AccountingName, infiniu2_catalog.dbo.DecorConfig.InvNumber, infiniu2_catalog.dbo.Measures.Measure FROM PackageDetails
+                INNER JOIN DecorOrders ON PackageDetails.OrderID = DecorOrders.DecorOrderID" + MDSampleFilter + @" AND DecorOrders.MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID IN (SELECT MegaOrderID FROM MegaOrders " + MClientFilter + @"))
+                INNER JOIN infiniu2_catalog.dbo.DecorConfig ON DecorOrders.DecorConfigID = infiniu2_catalog.dbo.DecorConfig.DecorConfigID
+                INNER JOIN infiniu2_catalog.dbo.Measures ON infiniu2_catalog.dbo.DecorConfig.MeasureID=infiniu2_catalog.dbo.Measures.MeasureID
+                WHERE InvNumber IS NOT NULL AND PackageID IN (SELECT PackageID FROM Packages WHERE ProductType = 1 AND " + Filter + ") ORDER BY InvNumber";
+            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionString))
+            {
+                DA.Fill(DecorOrdersDataTable);
+            }
+
+            Collect();
+        }
+        
         public void DispReport(DateTime date1, DateTime date2, bool ZOV, bool IsSample, bool IsNotSample, ArrayList MClients, ArrayList MClientGroups)
         {
             string MClientFilter = string.Empty;
@@ -6622,7 +7499,115 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
             Collect();
         }
 
-        public void Report(DateTime date1, DateTime date2, bool ZOV, bool IsSample, bool IsNotSample, ArrayList MClients, ArrayList MClientGroups)
+        public void OnProdReport(DateTime date1, DateTime date2, bool ZOV, bool IsSample, bool IsNotSample, ArrayList MClients, ArrayList MClientGroups)
+        {
+            string MClientFilter = string.Empty;
+
+            string MMainOrdersFilter = " WHERE (CAST(ProfilOnProductionDate AS Date) >= '" + date1.ToString("yyyy-MM-dd") + "' AND CAST(ProfilOnProductionDate AS Date) <= '" + date2.ToString("yyyy-MM-dd") + "')";
+
+            if (MClients.Count > 0)
+            {
+                if (MClientFilter.Length > 0)
+                    MClientFilter += " AND ClientID IN (" + string.Join(",", MClients.OfType<Int32>().ToArray()) + ")";
+                else
+                    MClientFilter = " WHERE ClientID IN (" + string.Join(",", MClients.OfType<Int32>().ToArray()) + ")";
+            }
+            if (MClientGroups.Count > 0)
+            {
+                if (MClientFilter.Length > 0)
+                    MClientFilter += " AND ClientID IN" +
+                                     " (SELECT ClientID FROM infiniu2_marketingreference.dbo.Clients" +
+                                     " WHERE ClientGroupID IN (" + string.Join(",", MClientGroups.OfType<Int32>().ToArray()) + "))";
+                else
+                    MClientFilter = " WHERE ClientID IN" +
+                                    " (SELECT ClientID FROM infiniu2_marketingreference.dbo.Clients" +
+                                    " WHERE ClientGroupID IN (" + string.Join(",", MClientGroups.OfType<Int32>().ToArray()) + "))";
+            }
+            if (MClients.Count < 1 && MClientGroups.Count < 1)
+                MClientFilter = " WHERE ClientID = -1";
+
+            string ConnectionString = ConnectionStrings.MarketingOrdersConnectionString;
+            if (ZOV)
+                ConnectionString = ConnectionStrings.ZOVOrdersConnectionString;
+            
+            string MDSampleFilter = string.Empty;
+            if (!IsSample || !IsNotSample)
+            {
+                if (IsSample)
+                    MDSampleFilter = " AND (DecorOrders.IsSample = 1 OR (DecorOrders.ProductID=42 AND DecorOrders.IsSample = 0)) ";
+                if (IsNotSample)
+                    MDSampleFilter = " AND DecorOrders.IsSample = 0";
+            }
+
+            string SelectCommand = @"SELECT dbo.DecorOrders.DecorOrderID, dbo.DecorOrders.ProductID, dbo.DecorOrders.DecorID, dbo.DecorOrders.ColorID, dbo.DecorOrders.PatinaID, dbo.DecorOrders.Length,
+                dbo.DecorOrders.Height, dbo.DecorOrders.Width, dbo.DecorOrders.Count, dbo.DecorOrders.DecorConfigID, dbo.DecorOrders.FactoryID, dbo.DecorOrders.Price, dbo.DecorOrders.Cost,
+                dbo.DecorOrders.ItemWeight, dbo.DecorOrders.Weight, infiniu2_catalog.dbo.DecorConfig.AccountingName, infiniu2_catalog.dbo.DecorConfig.InvNumber, infiniu2_catalog.dbo.Measures.Measure FROM DecorOrders
+                INNER JOIN infiniu2_catalog.dbo.DecorConfig ON DecorOrders.DecorConfigID = infiniu2_catalog.dbo.DecorConfig.DecorConfigID
+                INNER JOIN infiniu2_catalog.dbo.Measures ON infiniu2_catalog.dbo.DecorConfig.MeasureID=infiniu2_catalog.dbo.Measures.MeasureID
+                WHERE DecorOrders.MainOrderID IN (SELECT MainOrderID FROM MainOrders " + MMainOrdersFilter + @" AND MegaOrderID IN (SELECT MegaOrderID FROM MegaOrders " + MClientFilter + @")) AND InvNumber IS NOT NULL " + MDSampleFilter + " ORDER BY InvNumber";
+
+            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionString))
+            {
+                DA.Fill(DecorOrdersDataTable);
+            }
+
+            Collect();
+        }
+        
+        public void PlanDispReport(DateTime date1, DateTime date2, bool ZOV, bool IsSample, bool IsNotSample, ArrayList MClients, ArrayList MClientGroups)
+        {
+            string MClientFilter = " WHERE (CAST(ProfilDispatchDate AS Date) >= '" + date1.ToString("yyyy-MM-dd") + "' AND CAST(ProfilDispatchDate AS Date) <= '" + date2.ToString("yyyy-MM-dd") + "')";
+
+            if (MClients.Count > 0)
+            {
+                if (MClientFilter.Length > 0)
+                    MClientFilter += " AND ClientID IN (" + string.Join(",", MClients.OfType<Int32>().ToArray()) + ")";
+                else
+                    MClientFilter = " WHERE ClientID IN (" + string.Join(",", MClients.OfType<Int32>().ToArray()) + ")";
+            }
+            if (MClientGroups.Count > 0)
+            {
+                if (MClientFilter.Length > 0)
+                    MClientFilter += " AND ClientID IN" +
+                                     " (SELECT ClientID FROM infiniu2_marketingreference.dbo.Clients" +
+                                     " WHERE ClientGroupID IN (" + string.Join(",", MClientGroups.OfType<Int32>().ToArray()) + "))";
+                else
+                    MClientFilter = " WHERE ClientID IN" +
+                                    " (SELECT ClientID FROM infiniu2_marketingreference.dbo.Clients" +
+                                    " WHERE ClientGroupID IN (" + string.Join(",", MClientGroups.OfType<Int32>().ToArray()) + "))";
+            }
+            if (MClients.Count < 1 && MClientGroups.Count < 1)
+                MClientFilter = " WHERE ClientID = -1";
+
+            string ConnectionString = ConnectionStrings.MarketingOrdersConnectionString;
+            if (ZOV)
+                ConnectionString = ConnectionStrings.ZOVOrdersConnectionString;
+            
+            string MDSampleFilter = string.Empty;
+            if (!IsSample || !IsNotSample)
+            {
+                if (IsSample)
+                    MDSampleFilter = " AND (DecorOrders.IsSample = 1 OR (DecorOrders.ProductID=42 AND DecorOrders.IsSample = 0)) ";
+                if (IsNotSample)
+                    MDSampleFilter = " AND DecorOrders.IsSample = 0";
+            }
+
+            string SelectCommand = @"SELECT dbo.DecorOrders.DecorOrderID, dbo.DecorOrders.ProductID, dbo.DecorOrders.DecorID, dbo.DecorOrders.ColorID, dbo.DecorOrders.PatinaID, dbo.DecorOrders.Length,
+                dbo.DecorOrders.Height, dbo.DecorOrders.Width, dbo.DecorOrders.Count, dbo.DecorOrders.DecorConfigID, dbo.DecorOrders.FactoryID, dbo.DecorOrders.Price, dbo.DecorOrders.Cost,
+                dbo.DecorOrders.ItemWeight, dbo.DecorOrders.Weight, infiniu2_catalog.dbo.DecorConfig.AccountingName, infiniu2_catalog.dbo.DecorConfig.InvNumber, infiniu2_catalog.dbo.Measures.Measure FROM DecorOrders
+                INNER JOIN infiniu2_catalog.dbo.DecorConfig ON DecorOrders.DecorConfigID = infiniu2_catalog.dbo.DecorConfig.DecorConfigID
+                INNER JOIN infiniu2_catalog.dbo.Measures ON infiniu2_catalog.dbo.DecorConfig.MeasureID=infiniu2_catalog.dbo.Measures.MeasureID
+                WHERE DecorOrders.MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID IN (SELECT MegaOrderID FROM MegaOrders " + MClientFilter + @")) AND InvNumber IS NOT NULL " + MDSampleFilter + " ORDER BY InvNumber";
+
+            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionString))
+            {
+                DA.Fill(DecorOrdersDataTable);
+            }
+
+            Collect();
+        }
+        
+        public void PackReport(DateTime date1, DateTime date2, bool ZOV, bool IsSample, bool IsNotSample, ArrayList MClients, ArrayList MClientGroups)
         {
             string MClientFilter = string.Empty;
             if (MClients.Count > 0)
@@ -7546,6 +8531,8 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
             ProfilReportTable.Columns.Add(new DataColumn("TPSCurCode", Type.GetType("System.String")));
             ProfilReportTable.Columns.Add(new DataColumn("Measure", Type.GetType("System.String")));
             ProfilReportTable.Columns.Add(new DataColumn("InvNumber", Type.GetType("System.String")));
+            ProfilReportTable.Columns.Add(new DataColumn("Cvet", Type.GetType("System.String")));
+            ProfilReportTable.Columns.Add(new DataColumn("Patina", Type.GetType("System.String")));
             ProfilReportTable.Columns.Add(new DataColumn("AccountingName", Type.GetType("System.String")));
             ProfilReportTable.Columns.Add(new DataColumn("Count", Type.GetType("System.Decimal")));
             ProfilReportTable.Columns.Add(new DataColumn("Price", Type.GetType("System.Decimal")));
@@ -7563,7 +8550,7 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
             DataTable DistinctInvNumbersDT;
             using (DataView DV = new DataView(ProfilReportTable))
             {
-                DistinctInvNumbersDT = DV.ToTable(true, new string[] { "AccountingName", "InvNumber", "Measure" });
+                DistinctInvNumbersDT = DV.ToTable(true, new string[] { "AccountingName", "InvNumber", "Cvet", "Patina", "Measure" });
             }
 
             for (int i = 0; i < DistinctInvNumbersDT.Rows.Count; i++)
@@ -7576,13 +8563,25 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
                 string UNN = ProfilReportTable.Rows[0]["UNN"].ToString();
                 string AccountingName = DistinctInvNumbersDT.Rows[i]["AccountingName"].ToString();
                 string InvNumber = DistinctInvNumbersDT.Rows[i]["InvNumber"].ToString();
+                string Cvet = DistinctInvNumbersDT.Rows[i]["Cvet"].ToString();
+                string Patina = DistinctInvNumbersDT.Rows[i]["Patina"].ToString();
                 string Measure = DistinctInvNumbersDT.Rows[i]["Measure"].ToString();
                 string CurrencyCode = ProfilReportTable.Rows[0]["CurrencyCode"].ToString();
-
+                
                 //if (Convert.ToInt32(CurrencyCode) == 974)
                 //    DecCount = 0;
+                string filter = "Cvet = '" + Cvet + "' AND Patina = '" + Patina + "' AND InvNumber = '" + InvNumber +
+                                "' AND AccountingName = '" + AccountingName + "'";
+                DataRow[] InvRows = ProfilReportTable.Select(filter);
 
-                DataRow[] InvRows = ProfilReportTable.Select("InvNumber = '" + InvNumber + "' AND AccountingName = '" + AccountingName + "'");
+
+                var filteredRows = ProfilReportTable
+                    .AsEnumerable()
+                    .Where(row => row.Field<string>("InvNumber") == InvNumber
+                                  && row.Field<string>("AccountingName") == AccountingName
+                                  && row.Field<string>("Cvet") == Cvet
+                                  && row.Field<string>("Patina") == Patina);
+                DataRow[] rows2 = filteredRows.ToArray();
 
                 if (InvRows.Count() == 1)
                 {
@@ -7626,6 +8625,8 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
                     NewRow["MarketingCost"] = MarketingCost;
                     NewRow["AccountingName"] = AccountingName;
                     NewRow["InvNumber"] = InvNumber;
+                    NewRow["Cvet"] = Cvet;
+                    NewRow["Patina"] = Patina;
                     NewRow["Measure"] = Measure;
                     NewRow["CurrencyCode"] = CurrencyCode;
                     NewRow["Count"] = Count;
@@ -7639,7 +8640,7 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
             DistinctInvNumbersDT.Dispose();
             using (DataView DV = new DataView(TPSReportTable))
             {
-                DistinctInvNumbersDT = DV.ToTable(true, new string[] { "AccountingName", "InvNumber", "Measure" });
+                DistinctInvNumbersDT = DV.ToTable(true, new string[] { "AccountingName", "InvNumber", "Cvet", "Patina", "Measure" });
             }
 
             for (int i = 0; i < DistinctInvNumbersDT.Rows.Count; i++)
@@ -7652,6 +8653,8 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
                 string UNN = TPSReportTable.Rows[0]["UNN"].ToString();
                 string AccountingName = DistinctInvNumbersDT.Rows[i]["AccountingName"].ToString();
                 string InvNumber = DistinctInvNumbersDT.Rows[i]["InvNumber"].ToString();
+                string Cvet = DistinctInvNumbersDT.Rows[i]["Cvet"].ToString();
+                string Patina = DistinctInvNumbersDT.Rows[i]["Patina"].ToString();
                 string Measure = DistinctInvNumbersDT.Rows[i]["Measure"].ToString();
                 string CurrencyCode = TPSReportTable.Rows[0]["CurrencyCode"].ToString();
                 string TPSCurCode = TPSReportTable.Rows[0]["TPSCurCode"].ToString();
@@ -7659,7 +8662,7 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
                 //if (TPSCurCode.Equals("974"))
                 //    DecCount = 0;
 
-                DataRow[] InvRows = TPSReportTable.Select("InvNumber = '" + InvNumber + "' AND AccountingName = '" + AccountingName + "'");
+                DataRow[] InvRows = TPSReportTable.Select("Cvet = '" + Cvet + "' AND Patina = '" + Patina + "' AND InvNumber = '" + InvNumber + "' AND AccountingName = '" + AccountingName + "'");
                 if (InvRows.Count() == 1)
                 {
                     Count = Convert.ToDecimal(InvRows[0]["Count"]);
@@ -7702,6 +8705,8 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
                     NewRow["MarketingCost"] = MarketingCost;
                     NewRow["AccountingName"] = AccountingName;
                     NewRow["Measure"] = Measure;
+                    NewRow["Cvet"] = Cvet;
+                    NewRow["Patina"] = Patina;
                     NewRow["InvNumber"] = InvNumber;
                     NewRow["CurrencyCode"] = CurrencyCode;
                     NewRow["TPSCurCode"] = TPSCurCode;
@@ -7744,7 +8749,8 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
                         decimal EURUSDCurrency = 1000000;
 
                         OrdersManager.CBRDailyRates(date, ref EURRUBCurrency, ref USDRUBCurrency);
-                        OrdersManager.NBRBDailyRates(date, ref EURBYRCurrency);
+                        EURBYRCurrency = CurrencyConverter.NbrbDailyRates(DateTime.Now);
+                        //OrdersManager.NBRBDailyRates(date, ref EURBYRCurrency);
                         
                         if (USDRUBCurrency != 0)
                             EURUSDCurrency = Decimal.Round(EURRUBCurrency / USDRUBCurrency, 4, MidpointRounding.AwayFromZero);
@@ -7753,338 +8759,6 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
                 }
             }
             return;
-        }
-
-        public void CreateZOVDispReport(DateTime date1, DateTime date2, bool IsSample, bool IsNotSample, string FileName, decimal Rate, ArrayList MClients, ArrayList MClientGroups)
-        {
-            ClearReport();
-
-            string MainOrdersList = string.Empty;
-
-            int pos = 0;
-
-            FrontsReport.DispReport(date1, date2, true, IsSample, IsNotSample, MClients, MClientGroups);
-            DecorReport.DispReport(date1, date2, true, IsSample, IsNotSample, MClients, MClientGroups);
-
-            //PROFIL
-            if (FrontsReport.ProfilReportDataTable.Rows.Count > 0)
-            {
-                for (int i = 0; i < FrontsReport.ProfilReportDataTable.Rows.Count; i++)
-                {
-                    ProfilReportTable.ImportRow(FrontsReport.ProfilReportDataTable.Rows[i]);
-                }
-            }
-
-            if (DecorReport.ProfilReportDataTable.Rows.Count > 0)
-            {
-                for (int i = 0; i < DecorReport.ProfilReportDataTable.Rows.Count; i++)
-                {
-                    ProfilReportTable.ImportRow(DecorReport.ProfilReportDataTable.Rows[i]);
-                }
-            }
-
-            //TPS
-            if (FrontsReport.TPSReportDataTable.Rows.Count > 0)
-            {
-                for (int i = 0; i < FrontsReport.TPSReportDataTable.Rows.Count; i++)
-                {
-                    TPSReportTable.ImportRow(FrontsReport.TPSReportDataTable.Rows[i]);
-                }
-            }
-
-            if (DecorReport.TPSReportDataTable.Rows.Count > 0)
-            {
-                for (int i = 0; i < DecorReport.TPSReportDataTable.Rows.Count; i++)
-                {
-                    TPSReportTable.ImportRow(DecorReport.TPSReportDataTable.Rows[i]);
-                }
-            }
-            Collect(Rate);
-            //Export to excel
-            HSSFWorkbook hssfworkbook = new HSSFWorkbook();
-
-            ////create a entry of DocumentSummaryInformation
-            DocumentSummaryInformation dsi = PropertySetFactory.CreateDocumentSummaryInformation();
-            dsi.Company = "NPOI Team";
-            hssfworkbook.DocumentSummaryInformation = dsi;
-
-            ////create a entry of SummaryInformation
-            SummaryInformation si = PropertySetFactory.CreateSummaryInformation();
-            si.Subject = "NPOI SDK Example";
-            hssfworkbook.SummaryInformation = si;
-
-            #region Create fonts and styles
-
-            HSSFFont HeaderF1 = hssfworkbook.CreateFont();
-            HeaderF1.FontHeightInPoints = 11;
-            HeaderF1.Boldweight = 11 * 256;
-            HeaderF1.FontName = "Calibri";
-
-            HSSFFont HeaderF2 = hssfworkbook.CreateFont();
-            HeaderF2.FontHeightInPoints = 10;
-            HeaderF2.Boldweight = 10 * 256;
-            HeaderF2.FontName = "Calibri";
-
-            HSSFFont HeaderF3 = hssfworkbook.CreateFont();
-            HeaderF3.FontHeightInPoints = 9;
-            HeaderF3.Boldweight = 9 * 256;
-            HeaderF3.FontName = "Calibri";
-
-            HSSFFont SimpleF = hssfworkbook.CreateFont();
-            SimpleF.FontHeightInPoints = 8;
-            SimpleF.FontName = "Calibri";
-
-            HSSFCellStyle SimpleCS = hssfworkbook.CreateCellStyle();
-            SimpleCS.BorderBottom = HSSFCellStyle.BORDER_THIN;
-            SimpleCS.BottomBorderColor = HSSFColor.BLACK.index;
-            SimpleCS.BorderLeft = HSSFCellStyle.BORDER_THIN;
-            SimpleCS.LeftBorderColor = HSSFColor.BLACK.index;
-            SimpleCS.BorderRight = HSSFCellStyle.BORDER_THIN;
-            SimpleCS.RightBorderColor = HSSFColor.BLACK.index;
-            SimpleCS.BorderTop = HSSFCellStyle.BORDER_THIN;
-            SimpleCS.TopBorderColor = HSSFColor.BLACK.index;
-            SimpleCS.SetFont(SimpleF);
-
-            HSSFCellStyle CountCS = hssfworkbook.CreateCellStyle();
-            CountCS.DataFormat = hssfworkbook.CreateDataFormat().GetFormat("### ### ##0.000");
-            CountCS.BorderBottom = HSSFCellStyle.BORDER_THIN;
-            CountCS.BottomBorderColor = HSSFColor.BLACK.index;
-            CountCS.BorderLeft = HSSFCellStyle.BORDER_THIN;
-            CountCS.LeftBorderColor = HSSFColor.BLACK.index;
-            CountCS.BorderRight = HSSFCellStyle.BORDER_THIN;
-            CountCS.RightBorderColor = HSSFColor.BLACK.index;
-            CountCS.BorderTop = HSSFCellStyle.BORDER_THIN;
-            CountCS.TopBorderColor = HSSFColor.BLACK.index;
-            CountCS.SetFont(SimpleF);
-
-            HSSFCellStyle WeightCS = hssfworkbook.CreateCellStyle();
-            WeightCS.DataFormat = hssfworkbook.CreateDataFormat().GetFormat("### ### ##0.00");
-            WeightCS.BorderBottom = HSSFCellStyle.BORDER_THIN;
-            WeightCS.BottomBorderColor = HSSFColor.BLACK.index;
-            WeightCS.BorderLeft = HSSFCellStyle.BORDER_THIN;
-            WeightCS.LeftBorderColor = HSSFColor.BLACK.index;
-            WeightCS.BorderRight = HSSFCellStyle.BORDER_THIN;
-            WeightCS.RightBorderColor = HSSFColor.BLACK.index;
-            WeightCS.BorderTop = HSSFCellStyle.BORDER_THIN;
-            WeightCS.TopBorderColor = HSSFColor.BLACK.index;
-            WeightCS.SetFont(SimpleF);
-
-            HSSFCellStyle PriceBelCS = hssfworkbook.CreateCellStyle();
-            PriceBelCS.DataFormat = hssfworkbook.CreateDataFormat().GetFormat("### ### ##0.00");
-            PriceBelCS.BorderBottom = HSSFCellStyle.BORDER_THIN;
-            PriceBelCS.BottomBorderColor = HSSFColor.BLACK.index;
-            PriceBelCS.BorderLeft = HSSFCellStyle.BORDER_THIN;
-            PriceBelCS.LeftBorderColor = HSSFColor.BLACK.index;
-            PriceBelCS.BorderRight = HSSFCellStyle.BORDER_THIN;
-            PriceBelCS.RightBorderColor = HSSFColor.BLACK.index;
-            PriceBelCS.BorderTop = HSSFCellStyle.BORDER_THIN;
-            PriceBelCS.TopBorderColor = HSSFColor.BLACK.index;
-            PriceBelCS.SetFont(SimpleF);
-
-            HSSFCellStyle PriceForeignCS = hssfworkbook.CreateCellStyle();
-            PriceForeignCS.DataFormat = hssfworkbook.CreateDataFormat().GetFormat("### ### ##0.00");
-            PriceForeignCS.BorderBottom = HSSFCellStyle.BORDER_THIN;
-            PriceForeignCS.BottomBorderColor = HSSFColor.BLACK.index;
-            PriceForeignCS.BorderLeft = HSSFCellStyle.BORDER_THIN;
-            PriceForeignCS.LeftBorderColor = HSSFColor.BLACK.index;
-            PriceForeignCS.BorderRight = HSSFCellStyle.BORDER_THIN;
-            PriceForeignCS.RightBorderColor = HSSFColor.BLACK.index;
-            PriceForeignCS.BorderTop = HSSFCellStyle.BORDER_THIN;
-            PriceForeignCS.TopBorderColor = HSSFColor.BLACK.index;
-            PriceForeignCS.SetFont(SimpleF);
-
-            HSSFCellStyle ReportCS1 = hssfworkbook.CreateCellStyle();
-            ReportCS1.BorderBottom = HSSFCellStyle.BORDER_MEDIUM;
-            ReportCS1.BottomBorderColor = HSSFColor.BLACK.index;
-            ReportCS1.SetFont(HeaderF1);
-
-            HSSFCellStyle ReportCS2 = hssfworkbook.CreateCellStyle();
-            ReportCS2.SetFont(HeaderF1);
-
-            HSSFCellStyle SummaryWithoutBorderBelCS = hssfworkbook.CreateCellStyle();
-            SummaryWithoutBorderBelCS.DataFormat = hssfworkbook.CreateDataFormat().GetFormat("### ### ##0");
-            SummaryWithoutBorderBelCS.SetFont(HeaderF2);
-
-            HSSFCellStyle SummaryWithoutBorderForeignCS = hssfworkbook.CreateCellStyle();
-            SummaryWithoutBorderForeignCS.DataFormat = hssfworkbook.CreateDataFormat().GetFormat("### ### ##0.00");
-            SummaryWithoutBorderForeignCS.SetFont(HeaderF2);
-
-            HSSFCellStyle SummaryWeightCS = hssfworkbook.CreateCellStyle();
-            SummaryWeightCS.DataFormat = hssfworkbook.CreateDataFormat().GetFormat("### ### ##0.00");
-            SummaryWeightCS.SetFont(HeaderF2);
-
-            HSSFCellStyle SummaryWithBorderBelCS = hssfworkbook.CreateCellStyle();
-            SummaryWithBorderBelCS.DataFormat = hssfworkbook.CreateDataFormat().GetFormat("### ### ##0");
-            SummaryWithBorderBelCS.BorderBottom = HSSFCellStyle.BORDER_THIN;
-            SummaryWithBorderBelCS.BottomBorderColor = HSSFColor.BLACK.index;
-            SummaryWithBorderBelCS.BorderLeft = HSSFCellStyle.BORDER_THIN;
-            SummaryWithBorderBelCS.LeftBorderColor = HSSFColor.BLACK.index;
-            SummaryWithBorderBelCS.BorderRight = HSSFCellStyle.BORDER_THIN;
-            SummaryWithBorderBelCS.RightBorderColor = HSSFColor.BLACK.index;
-            SummaryWithBorderBelCS.BorderTop = HSSFCellStyle.BORDER_THIN;
-            SummaryWithBorderBelCS.TopBorderColor = HSSFColor.BLACK.index;
-            SummaryWithBorderBelCS.WrapText = true;
-            SummaryWithBorderBelCS.SetFont(HeaderF2);
-
-            HSSFCellStyle SummaryWithBorderForeignCS = hssfworkbook.CreateCellStyle();
-            SummaryWithBorderForeignCS.DataFormat = hssfworkbook.CreateDataFormat().GetFormat("### ### ##0.00");
-            SummaryWithBorderForeignCS.BorderBottom = HSSFCellStyle.BORDER_THIN;
-            SummaryWithBorderForeignCS.BottomBorderColor = HSSFColor.BLACK.index;
-            SummaryWithBorderForeignCS.BorderLeft = HSSFCellStyle.BORDER_THIN;
-            SummaryWithBorderForeignCS.LeftBorderColor = HSSFColor.BLACK.index;
-            SummaryWithBorderForeignCS.BorderRight = HSSFCellStyle.BORDER_THIN;
-            SummaryWithBorderForeignCS.RightBorderColor = HSSFColor.BLACK.index;
-            SummaryWithBorderForeignCS.BorderTop = HSSFCellStyle.BORDER_THIN;
-            SummaryWithBorderForeignCS.TopBorderColor = HSSFColor.BLACK.index;
-            SummaryWithBorderForeignCS.WrapText = true;
-            SummaryWithBorderForeignCS.SetFont(HeaderF2);
-
-            HSSFCellStyle SimpleHeaderCS = hssfworkbook.CreateCellStyle();
-            SimpleHeaderCS.BorderBottom = HSSFCellStyle.BORDER_MEDIUM;
-            SimpleHeaderCS.BottomBorderColor = HSSFColor.BLACK.index;
-            SimpleHeaderCS.BorderLeft = HSSFCellStyle.BORDER_MEDIUM;
-            SimpleHeaderCS.LeftBorderColor = HSSFColor.BLACK.index;
-            SimpleHeaderCS.BorderRight = HSSFCellStyle.BORDER_MEDIUM;
-            SimpleHeaderCS.RightBorderColor = HSSFColor.BLACK.index;
-            SimpleHeaderCS.BorderTop = HSSFCellStyle.BORDER_MEDIUM;
-            SimpleHeaderCS.TopBorderColor = HSSFColor.BLACK.index;
-            //SimpleHeaderCS.WrapText = true;
-            SimpleHeaderCS.SetFont(HeaderF3);
-
-            #endregion Create fonts and styles
-
-            HSSFSheet sheet1 = hssfworkbook.CreateSheet("Отчет ЗОВ");
-            sheet1.PrintSetup.PaperSize = (short)PaperSizeType.A4;
-
-            sheet1.SetMargin(HSSFSheet.LeftMargin, (double).12);
-            sheet1.SetMargin(HSSFSheet.RightMargin, (double).07);
-            sheet1.SetMargin(HSSFSheet.TopMargin, (double).20);
-            sheet1.SetMargin(HSSFSheet.BottomMargin, (double).20);
-
-            sheet1.SetColumnWidth(0, 12 * 256);
-            sheet1.SetColumnWidth(1, 71 * 256);
-            sheet1.SetColumnWidth(2, 8 * 256);
-            sheet1.SetColumnWidth(3, 8 * 256);
-            sheet1.SetColumnWidth(4, 14 * 256);
-
-            HSSFCell Cell1;
-
-            if (ProfilReportTable.Rows.Count > 0)
-            {
-                //Профиль
-                pos += 2;
-
-                Cell1 = sheet1.CreateRow(pos++).CreateCell(0);
-                Cell1.SetCellValue("ЗОВ-Профиль:");
-                Cell1.CellStyle = SummaryWithoutBorderBelCS;
-
-                Cell1 = sheet1.CreateRow(pos).CreateCell(0);
-                Cell1.SetCellValue("Инв.№");
-                Cell1.CellStyle = SimpleHeaderCS;
-
-                Cell1 = sheet1.CreateRow(pos).CreateCell(1);
-                Cell1.SetCellValue("Наименование");
-                Cell1.CellStyle = SimpleHeaderCS;
-
-                Cell1 = sheet1.CreateRow(pos).CreateCell(2);
-                Cell1.SetCellValue("Ед.изм.");
-                Cell1.CellStyle = SimpleHeaderCS;
-
-                Cell1 = sheet1.CreateRow(pos).CreateCell(3);
-                Cell1.SetCellValue("Кол-во");
-                Cell1.CellStyle = SimpleHeaderCS;
-
-                Cell1 = sheet1.CreateRow(pos).CreateCell(4);
-                Cell1.SetCellValue("Себестоимость");
-                Cell1.CellStyle = SimpleHeaderCS;
-                pos++;
-
-                for (int i = 0; i < ProfilReportTable.Rows.Count; i++)
-                {
-                    Cell1 = sheet1.CreateRow(pos).CreateCell(0);
-                    Cell1.SetCellValue(ProfilReportTable.Rows[i]["InvNumber"].ToString());
-                    Cell1.CellStyle = SimpleCS;
-                    Cell1 = sheet1.CreateRow(pos).CreateCell(1);
-                    Cell1.SetCellValue(ProfilReportTable.Rows[i]["AccountingName"].ToString());
-                    Cell1.CellStyle = SimpleCS;
-                    Cell1 = sheet1.CreateRow(pos).CreateCell(2);
-                    Cell1.SetCellValue(ProfilReportTable.Rows[i]["Measure"].ToString());
-                    Cell1.CellStyle = SimpleCS;
-                    Cell1 = sheet1.CreateRow(pos).CreateCell(3);
-                    Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["Count"]));
-                    Cell1.CellStyle = CountCS;
-                    Cell1 = sheet1.CreateRow(pos).CreateCell(4);
-                    Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["Price"]));
-                    Cell1.CellStyle = PriceBelCS;
-                    pos++;
-                }
-            }
-
-            if (TPSReportTable.Rows.Count > 0)
-            {
-                //ТПС
-                pos++;
-
-                Cell1 = sheet1.CreateRow(pos++).CreateCell(0);
-                Cell1.SetCellValue("ЗОВ-ТПС:");
-                Cell1.CellStyle = SummaryWithoutBorderBelCS;
-
-                Cell1 = sheet1.CreateRow(pos).CreateCell(0);
-                Cell1.SetCellValue("Инв.№");
-                Cell1.CellStyle = SimpleHeaderCS;
-
-                Cell1 = sheet1.CreateRow(pos).CreateCell(1);
-                Cell1.SetCellValue("Наименование");
-                Cell1.CellStyle = SimpleHeaderCS;
-
-                Cell1 = sheet1.CreateRow(pos).CreateCell(2);
-                Cell1.SetCellValue("Ед.изм.");
-                Cell1.CellStyle = SimpleHeaderCS;
-
-                Cell1 = sheet1.CreateRow(pos).CreateCell(3);
-                Cell1.SetCellValue("Кол-во");
-                Cell1.CellStyle = SimpleHeaderCS;
-                Cell1 = sheet1.CreateRow(pos).CreateCell(4);
-                Cell1.SetCellValue("Себестоимость");
-                Cell1.CellStyle = SimpleHeaderCS;
-                pos++;
-
-                for (int i = 0; i < TPSReportTable.Rows.Count; i++)
-                {
-                    Cell1 = sheet1.CreateRow(pos).CreateCell(0);
-                    Cell1.SetCellValue(TPSReportTable.Rows[i]["InvNumber"].ToString());
-                    Cell1.CellStyle = SimpleCS;
-                    Cell1 = sheet1.CreateRow(pos).CreateCell(1);
-                    Cell1.SetCellValue(TPSReportTable.Rows[i]["AccountingName"].ToString());
-                    Cell1.CellStyle = SimpleCS;
-                    Cell1 = sheet1.CreateRow(pos).CreateCell(2);
-                    Cell1.SetCellValue(TPSReportTable.Rows[i]["Measure"].ToString());
-                    Cell1.CellStyle = SimpleCS;
-                    Cell1 = sheet1.CreateRow(pos).CreateCell(3);
-                    Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["Count"]));
-                    Cell1.CellStyle = CountCS;
-                    Cell1 = sheet1.CreateRow(pos).CreateCell(4);
-                    Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["Price"]));
-                    Cell1.CellStyle = PriceBelCS;
-                    pos++;
-                }
-            }
-            pos++;
-            FileName += " ЗОВ";
-            string tempFolder = System.Environment.GetEnvironmentVariable("TEMP");
-            FileInfo file = new FileInfo(tempFolder + @"\" + FileName + ".xls");
-            int j = 1;
-            while (file.Exists == true)
-            {
-                file = new FileInfo(tempFolder + @"\" + FileName + "(" + j++ + ").xls");
-            }
-
-            FileStream NewFile = new FileStream(file.FullName, FileMode.Create);
-            hssfworkbook.Write(NewFile);
-            NewFile.Close();
-
-            System.Diagnostics.Process.Start(file.FullName);
-            ClearReport();
         }
 
         public void CreateMarketingDispReport(DateTime date1, DateTime date2, bool IsSample, bool IsNotSample, string FileName, decimal Rate, ArrayList MClients, ArrayList MClientGroups)
@@ -8294,11 +8968,15 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
             sheet1.SetMargin(HSSFSheet.TopMargin, (double).20);
             sheet1.SetMargin(HSSFSheet.BottomMargin, (double).20);
 
-            sheet1.SetColumnWidth(0, 12 * 256);
-            sheet1.SetColumnWidth(1, 71 * 256);
-            sheet1.SetColumnWidth(2, 8 * 256);
-            sheet1.SetColumnWidth(3, 8 * 256);
-            sheet1.SetColumnWidth(4, 14 * 256);
+            int displayIndex = 0;
+
+            sheet1.SetColumnWidth(displayIndex++, 12 * 256);
+            sheet1.SetColumnWidth(displayIndex++, 61 * 256);
+            sheet1.SetColumnWidth(displayIndex++, 15 * 256);
+            sheet1.SetColumnWidth(displayIndex++, 12 * 256);
+            sheet1.SetColumnWidth(displayIndex++, 8 * 256);
+            sheet1.SetColumnWidth(displayIndex++, 8 * 256);
+            sheet1.SetColumnWidth(displayIndex, 14 * 256);
 
             HSSFCell Cell1;
 
@@ -8306,47 +8984,63 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
             {
                 //Профиль
                 pos += 2;
+                displayIndex = 0;
 
                 Cell1 = sheet1.CreateRow(pos++).CreateCell(0);
                 Cell1.SetCellValue("ЗОВ-Профиль:");
                 Cell1.CellStyle = SummaryWithoutBorderBelCS;
 
-                Cell1 = sheet1.CreateRow(pos).CreateCell(0);
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                 Cell1.SetCellValue("Инв.№");
                 Cell1.CellStyle = SimpleHeaderCS;
 
-                Cell1 = sheet1.CreateRow(pos).CreateCell(1);
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                 Cell1.SetCellValue("Наименование");
                 Cell1.CellStyle = SimpleHeaderCS;
 
-                Cell1 = sheet1.CreateRow(pos).CreateCell(2);
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Цвет");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Патина");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                 Cell1.SetCellValue("Ед.изм.");
                 Cell1.CellStyle = SimpleHeaderCS;
 
-                Cell1 = sheet1.CreateRow(pos).CreateCell(3);
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                 Cell1.SetCellValue("Кол-во");
                 Cell1.CellStyle = SimpleHeaderCS;
 
-                Cell1 = sheet1.CreateRow(pos).CreateCell(4);
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                 Cell1.SetCellValue("Себестоимость");
                 Cell1.CellStyle = SimpleHeaderCS;
                 pos++;
 
                 for (int i = 0; i < ProfilReportTable.Rows.Count; i++)
                 {
-                    Cell1 = sheet1.CreateRow(pos).CreateCell(0);
+                    displayIndex = 0;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                     Cell1.SetCellValue(ProfilReportTable.Rows[i]["InvNumber"].ToString());
                     Cell1.CellStyle = SimpleCS;
-                    Cell1 = sheet1.CreateRow(pos).CreateCell(1);
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                     Cell1.SetCellValue(ProfilReportTable.Rows[i]["AccountingName"].ToString());
                     Cell1.CellStyle = SimpleCS;
-                    Cell1 = sheet1.CreateRow(pos).CreateCell(2);
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(FrontsReport.GetColorNameByCode(ProfilReportTable.Rows[i]["Cvet"].ToString()));
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(FrontsReport.GetPatinaNameByCode(ProfilReportTable.Rows[i]["Patina"].ToString()));
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                     Cell1.SetCellValue(ProfilReportTable.Rows[i]["Measure"].ToString());
                     Cell1.CellStyle = SimpleCS;
-                    Cell1 = sheet1.CreateRow(pos).CreateCell(3);
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                     Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["Count"]));
                     Cell1.CellStyle = CountCS;
-                    Cell1 = sheet1.CreateRow(pos).CreateCell(4);
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                     Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["Price"]));
                     Cell1.CellStyle = PriceBelCS;
                     pos++;
@@ -8357,47 +9051,63 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
             {
                 //ТПС
                 pos++;
+                displayIndex = 0;
 
                 Cell1 = sheet1.CreateRow(pos++).CreateCell(0);
                 Cell1.SetCellValue("ЗОВ-ТПС:");
                 Cell1.CellStyle = SummaryWithoutBorderBelCS;
 
-                Cell1 = sheet1.CreateRow(pos).CreateCell(0);
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                 Cell1.SetCellValue("Инв.№");
                 Cell1.CellStyle = SimpleHeaderCS;
 
-                Cell1 = sheet1.CreateRow(pos).CreateCell(1);
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                 Cell1.SetCellValue("Наименование");
                 Cell1.CellStyle = SimpleHeaderCS;
 
-                Cell1 = sheet1.CreateRow(pos).CreateCell(2);
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Цвет");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Патина");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                 Cell1.SetCellValue("Ед.изм.");
                 Cell1.CellStyle = SimpleHeaderCS;
 
-                Cell1 = sheet1.CreateRow(pos).CreateCell(3);
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                 Cell1.SetCellValue("Кол-во");
                 Cell1.CellStyle = SimpleHeaderCS;
 
-                Cell1 = sheet1.CreateRow(pos).CreateCell(4);
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                 Cell1.SetCellValue("Себестоимость");
                 Cell1.CellStyle = SimpleHeaderCS;
                 pos++;
 
                 for (int i = 0; i < TPSReportTable.Rows.Count; i++)
                 {
-                    Cell1 = sheet1.CreateRow(pos).CreateCell(0);
+                    displayIndex = 0;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                     Cell1.SetCellValue(TPSReportTable.Rows[i]["InvNumber"].ToString());
                     Cell1.CellStyle = SimpleCS;
-                    Cell1 = sheet1.CreateRow(pos).CreateCell(1);
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                     Cell1.SetCellValue(TPSReportTable.Rows[i]["AccountingName"].ToString());
                     Cell1.CellStyle = SimpleCS;
-                    Cell1 = sheet1.CreateRow(pos).CreateCell(2);
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(FrontsReport.GetColorNameByCode(TPSReportTable.Rows[i]["Cvet"].ToString()));
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(FrontsReport.GetPatinaNameByCode(TPSReportTable.Rows[i]["Patina"].ToString()));
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                     Cell1.SetCellValue(TPSReportTable.Rows[i]["Measure"].ToString());
                     Cell1.CellStyle = SimpleCS;
-                    Cell1 = sheet1.CreateRow(pos).CreateCell(3);
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                     Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["Count"]));
                     Cell1.CellStyle = CountCS;
-                    Cell1 = sheet1.CreateRow(pos).CreateCell(4);
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                     Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["Price"]));
                     Cell1.CellStyle = PriceBelCS;
                     pos++;
@@ -8421,7 +9131,7 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
             ClearReport();
         }
 
-        public void CreateZOVReport(DateTime date1, DateTime date2, bool IsSample, bool IsNotSample, string FileName, decimal Rate, ArrayList MClients, ArrayList MClientGroups)
+        public void CreateMarketingOnProdReport(DateTime date1, DateTime date2, bool IsSample, bool IsNotSample, string FileName, decimal Rate, ArrayList MClients, ArrayList MClientGroups)
         {
             ClearReport();
 
@@ -8429,340 +9139,8 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
 
             int pos = 0;
 
-            FrontsReport.Report(date1, date2, true, IsSample, IsNotSample, MClients, MClientGroups);
-            DecorReport.Report(date1, date2, true, IsSample, IsNotSample, MClients, MClientGroups);
-
-            //PROFIL
-            if (FrontsReport.ProfilReportDataTable.Rows.Count > 0)
-            {
-                for (int i = 0; i < FrontsReport.ProfilReportDataTable.Rows.Count; i++)
-                {
-                    ProfilReportTable.ImportRow(FrontsReport.ProfilReportDataTable.Rows[i]);
-                }
-            }
-
-            if (DecorReport.ProfilReportDataTable.Rows.Count > 0)
-            {
-                for (int i = 0; i < DecorReport.ProfilReportDataTable.Rows.Count; i++)
-                {
-                    ProfilReportTable.ImportRow(DecorReport.ProfilReportDataTable.Rows[i]);
-                }
-            }
-
-            //TPS
-            if (FrontsReport.TPSReportDataTable.Rows.Count > 0)
-            {
-                for (int i = 0; i < FrontsReport.TPSReportDataTable.Rows.Count; i++)
-                {
-                    TPSReportTable.ImportRow(FrontsReport.TPSReportDataTable.Rows[i]);
-                }
-            }
-
-            if (DecorReport.TPSReportDataTable.Rows.Count > 0)
-            {
-                for (int i = 0; i < DecorReport.TPSReportDataTable.Rows.Count; i++)
-                {
-                    TPSReportTable.ImportRow(DecorReport.TPSReportDataTable.Rows[i]);
-                }
-            }
-            Collect(Rate);
-            //Export to excel
-            HSSFWorkbook hssfworkbook = new HSSFWorkbook();
-
-            ////create a entry of DocumentSummaryInformation
-            DocumentSummaryInformation dsi = PropertySetFactory.CreateDocumentSummaryInformation();
-            dsi.Company = "NPOI Team";
-            hssfworkbook.DocumentSummaryInformation = dsi;
-
-            ////create a entry of SummaryInformation
-            SummaryInformation si = PropertySetFactory.CreateSummaryInformation();
-            si.Subject = "NPOI SDK Example";
-            hssfworkbook.SummaryInformation = si;
-
-            #region Create fonts and styles
-
-            HSSFFont HeaderF1 = hssfworkbook.CreateFont();
-            HeaderF1.FontHeightInPoints = 11;
-            HeaderF1.Boldweight = 11 * 256;
-            HeaderF1.FontName = "Calibri";
-
-            HSSFFont HeaderF2 = hssfworkbook.CreateFont();
-            HeaderF2.FontHeightInPoints = 10;
-            HeaderF2.Boldweight = 10 * 256;
-            HeaderF2.FontName = "Calibri";
-
-            HSSFFont HeaderF3 = hssfworkbook.CreateFont();
-            HeaderF3.FontHeightInPoints = 9;
-            HeaderF3.Boldweight = 9 * 256;
-            HeaderF3.FontName = "Calibri";
-
-            HSSFFont SimpleF = hssfworkbook.CreateFont();
-            SimpleF.FontHeightInPoints = 8;
-            SimpleF.FontName = "Calibri";
-
-            HSSFCellStyle SimpleCS = hssfworkbook.CreateCellStyle();
-            SimpleCS.BorderBottom = HSSFCellStyle.BORDER_THIN;
-            SimpleCS.BottomBorderColor = HSSFColor.BLACK.index;
-            SimpleCS.BorderLeft = HSSFCellStyle.BORDER_THIN;
-            SimpleCS.LeftBorderColor = HSSFColor.BLACK.index;
-            SimpleCS.BorderRight = HSSFCellStyle.BORDER_THIN;
-            SimpleCS.RightBorderColor = HSSFColor.BLACK.index;
-            SimpleCS.BorderTop = HSSFCellStyle.BORDER_THIN;
-            SimpleCS.TopBorderColor = HSSFColor.BLACK.index;
-            SimpleCS.SetFont(SimpleF);
-
-            HSSFCellStyle CountCS = hssfworkbook.CreateCellStyle();
-            CountCS.DataFormat = hssfworkbook.CreateDataFormat().GetFormat("### ### ##0.000");
-            CountCS.BorderBottom = HSSFCellStyle.BORDER_THIN;
-            CountCS.BottomBorderColor = HSSFColor.BLACK.index;
-            CountCS.BorderLeft = HSSFCellStyle.BORDER_THIN;
-            CountCS.LeftBorderColor = HSSFColor.BLACK.index;
-            CountCS.BorderRight = HSSFCellStyle.BORDER_THIN;
-            CountCS.RightBorderColor = HSSFColor.BLACK.index;
-            CountCS.BorderTop = HSSFCellStyle.BORDER_THIN;
-            CountCS.TopBorderColor = HSSFColor.BLACK.index;
-            CountCS.SetFont(SimpleF);
-
-            HSSFCellStyle WeightCS = hssfworkbook.CreateCellStyle();
-            WeightCS.DataFormat = hssfworkbook.CreateDataFormat().GetFormat("### ### ##0.00");
-            WeightCS.BorderBottom = HSSFCellStyle.BORDER_THIN;
-            WeightCS.BottomBorderColor = HSSFColor.BLACK.index;
-            WeightCS.BorderLeft = HSSFCellStyle.BORDER_THIN;
-            WeightCS.LeftBorderColor = HSSFColor.BLACK.index;
-            WeightCS.BorderRight = HSSFCellStyle.BORDER_THIN;
-            WeightCS.RightBorderColor = HSSFColor.BLACK.index;
-            WeightCS.BorderTop = HSSFCellStyle.BORDER_THIN;
-            WeightCS.TopBorderColor = HSSFColor.BLACK.index;
-            WeightCS.SetFont(SimpleF);
-
-            HSSFCellStyle PriceBelCS = hssfworkbook.CreateCellStyle();
-            PriceBelCS.DataFormat = hssfworkbook.CreateDataFormat().GetFormat("### ### ##0");
-            PriceBelCS.BorderBottom = HSSFCellStyle.BORDER_THIN;
-            PriceBelCS.BottomBorderColor = HSSFColor.BLACK.index;
-            PriceBelCS.BorderLeft = HSSFCellStyle.BORDER_THIN;
-            PriceBelCS.LeftBorderColor = HSSFColor.BLACK.index;
-            PriceBelCS.BorderRight = HSSFCellStyle.BORDER_THIN;
-            PriceBelCS.RightBorderColor = HSSFColor.BLACK.index;
-            PriceBelCS.BorderTop = HSSFCellStyle.BORDER_THIN;
-            PriceBelCS.TopBorderColor = HSSFColor.BLACK.index;
-            PriceBelCS.SetFont(SimpleF);
-
-            HSSFCellStyle PriceForeignCS = hssfworkbook.CreateCellStyle();
-            PriceForeignCS.DataFormat = hssfworkbook.CreateDataFormat().GetFormat("### ### ##0.00");
-            PriceForeignCS.BorderBottom = HSSFCellStyle.BORDER_THIN;
-            PriceForeignCS.BottomBorderColor = HSSFColor.BLACK.index;
-            PriceForeignCS.BorderLeft = HSSFCellStyle.BORDER_THIN;
-            PriceForeignCS.LeftBorderColor = HSSFColor.BLACK.index;
-            PriceForeignCS.BorderRight = HSSFCellStyle.BORDER_THIN;
-            PriceForeignCS.RightBorderColor = HSSFColor.BLACK.index;
-            PriceForeignCS.BorderTop = HSSFCellStyle.BORDER_THIN;
-            PriceForeignCS.TopBorderColor = HSSFColor.BLACK.index;
-            PriceForeignCS.SetFont(SimpleF);
-
-            HSSFCellStyle ReportCS1 = hssfworkbook.CreateCellStyle();
-            ReportCS1.BorderBottom = HSSFCellStyle.BORDER_MEDIUM;
-            ReportCS1.BottomBorderColor = HSSFColor.BLACK.index;
-            ReportCS1.SetFont(HeaderF1);
-
-            HSSFCellStyle ReportCS2 = hssfworkbook.CreateCellStyle();
-            ReportCS2.SetFont(HeaderF1);
-
-            HSSFCellStyle SummaryWithoutBorderBelCS = hssfworkbook.CreateCellStyle();
-            SummaryWithoutBorderBelCS.DataFormat = hssfworkbook.CreateDataFormat().GetFormat("### ### ##0");
-            SummaryWithoutBorderBelCS.SetFont(HeaderF2);
-
-            HSSFCellStyle SummaryWithoutBorderForeignCS = hssfworkbook.CreateCellStyle();
-            SummaryWithoutBorderForeignCS.DataFormat = hssfworkbook.CreateDataFormat().GetFormat("### ### ##0.00");
-            SummaryWithoutBorderForeignCS.SetFont(HeaderF2);
-
-            HSSFCellStyle SummaryWeightCS = hssfworkbook.CreateCellStyle();
-            SummaryWeightCS.DataFormat = hssfworkbook.CreateDataFormat().GetFormat("### ### ##0.00");
-            SummaryWeightCS.SetFont(HeaderF2);
-
-            HSSFCellStyle SummaryWithBorderBelCS = hssfworkbook.CreateCellStyle();
-            SummaryWithBorderBelCS.DataFormat = hssfworkbook.CreateDataFormat().GetFormat("### ### ##0");
-            SummaryWithBorderBelCS.BorderBottom = HSSFCellStyle.BORDER_THIN;
-            SummaryWithBorderBelCS.BottomBorderColor = HSSFColor.BLACK.index;
-            SummaryWithBorderBelCS.BorderLeft = HSSFCellStyle.BORDER_THIN;
-            SummaryWithBorderBelCS.LeftBorderColor = HSSFColor.BLACK.index;
-            SummaryWithBorderBelCS.BorderRight = HSSFCellStyle.BORDER_THIN;
-            SummaryWithBorderBelCS.RightBorderColor = HSSFColor.BLACK.index;
-            SummaryWithBorderBelCS.BorderTop = HSSFCellStyle.BORDER_THIN;
-            SummaryWithBorderBelCS.TopBorderColor = HSSFColor.BLACK.index;
-            SummaryWithBorderBelCS.WrapText = true;
-            SummaryWithBorderBelCS.SetFont(HeaderF2);
-
-            HSSFCellStyle SummaryWithBorderForeignCS = hssfworkbook.CreateCellStyle();
-            SummaryWithBorderForeignCS.DataFormat = hssfworkbook.CreateDataFormat().GetFormat("### ### ##0.00");
-            SummaryWithBorderForeignCS.BorderBottom = HSSFCellStyle.BORDER_THIN;
-            SummaryWithBorderForeignCS.BottomBorderColor = HSSFColor.BLACK.index;
-            SummaryWithBorderForeignCS.BorderLeft = HSSFCellStyle.BORDER_THIN;
-            SummaryWithBorderForeignCS.LeftBorderColor = HSSFColor.BLACK.index;
-            SummaryWithBorderForeignCS.BorderRight = HSSFCellStyle.BORDER_THIN;
-            SummaryWithBorderForeignCS.RightBorderColor = HSSFColor.BLACK.index;
-            SummaryWithBorderForeignCS.BorderTop = HSSFCellStyle.BORDER_THIN;
-            SummaryWithBorderForeignCS.TopBorderColor = HSSFColor.BLACK.index;
-            SummaryWithBorderForeignCS.WrapText = true;
-            SummaryWithBorderForeignCS.SetFont(HeaderF2);
-
-            HSSFCellStyle SimpleHeaderCS = hssfworkbook.CreateCellStyle();
-            SimpleHeaderCS.BorderBottom = HSSFCellStyle.BORDER_MEDIUM;
-            SimpleHeaderCS.BottomBorderColor = HSSFColor.BLACK.index;
-            SimpleHeaderCS.BorderLeft = HSSFCellStyle.BORDER_MEDIUM;
-            SimpleHeaderCS.LeftBorderColor = HSSFColor.BLACK.index;
-            SimpleHeaderCS.BorderRight = HSSFCellStyle.BORDER_MEDIUM;
-            SimpleHeaderCS.RightBorderColor = HSSFColor.BLACK.index;
-            SimpleHeaderCS.BorderTop = HSSFCellStyle.BORDER_MEDIUM;
-            SimpleHeaderCS.TopBorderColor = HSSFColor.BLACK.index;
-            //SimpleHeaderCS.WrapText = true;
-            SimpleHeaderCS.SetFont(HeaderF3);
-
-            #endregion Create fonts and styles
-
-            HSSFSheet sheet1 = hssfworkbook.CreateSheet("Отчет ЗОВ");
-            sheet1.PrintSetup.PaperSize = (short)PaperSizeType.A4;
-
-            sheet1.SetMargin(HSSFSheet.LeftMargin, (double).12);
-            sheet1.SetMargin(HSSFSheet.RightMargin, (double).07);
-            sheet1.SetMargin(HSSFSheet.TopMargin, (double).20);
-            sheet1.SetMargin(HSSFSheet.BottomMargin, (double).20);
-
-            sheet1.SetColumnWidth(0, 12 * 256);
-            sheet1.SetColumnWidth(1, 71 * 256);
-            sheet1.SetColumnWidth(2, 8 * 256);
-            sheet1.SetColumnWidth(3, 8 * 256);
-            sheet1.SetColumnWidth(4, 14 * 256);
-
-            HSSFCell Cell1;
-
-            if (ProfilReportTable.Rows.Count > 0)
-            {
-                //Профиль
-                pos += 2;
-
-                Cell1 = sheet1.CreateRow(pos++).CreateCell(0);
-                Cell1.SetCellValue("ЗОВ-Профиль:");
-                Cell1.CellStyle = SummaryWithoutBorderBelCS;
-
-                Cell1 = sheet1.CreateRow(pos).CreateCell(0);
-                Cell1.SetCellValue("Инв.№");
-                Cell1.CellStyle = SimpleHeaderCS;
-
-                Cell1 = sheet1.CreateRow(pos).CreateCell(1);
-                Cell1.SetCellValue("Наименование");
-                Cell1.CellStyle = SimpleHeaderCS;
-
-                Cell1 = sheet1.CreateRow(pos).CreateCell(2);
-                Cell1.SetCellValue("Ед.изм.");
-                Cell1.CellStyle = SimpleHeaderCS;
-
-                Cell1 = sheet1.CreateRow(pos).CreateCell(3);
-                Cell1.SetCellValue("Кол-во");
-                Cell1.CellStyle = SimpleHeaderCS;
-
-                Cell1 = sheet1.CreateRow(pos).CreateCell(4);
-                Cell1.SetCellValue("Себестоимость");
-                Cell1.CellStyle = SimpleHeaderCS;
-                pos++;
-
-                for (int i = 0; i < ProfilReportTable.Rows.Count; i++)
-                {
-                    Cell1 = sheet1.CreateRow(pos).CreateCell(0);
-                    Cell1.SetCellValue(ProfilReportTable.Rows[i]["InvNumber"].ToString());
-                    Cell1.CellStyle = SimpleCS;
-                    Cell1 = sheet1.CreateRow(pos).CreateCell(1);
-                    Cell1.SetCellValue(ProfilReportTable.Rows[i]["AccountingName"].ToString());
-                    Cell1.CellStyle = SimpleCS;
-                    Cell1 = sheet1.CreateRow(pos).CreateCell(2);
-                    Cell1.SetCellValue(ProfilReportTable.Rows[i]["Measure"].ToString());
-                    Cell1.CellStyle = SimpleCS;
-                    Cell1 = sheet1.CreateRow(pos).CreateCell(3);
-                    Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["Count"]));
-                    Cell1.CellStyle = CountCS;
-                    Cell1 = sheet1.CreateRow(pos).CreateCell(4);
-                    Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["Price"]));
-                    Cell1.CellStyle = PriceBelCS;
-                    pos++;
-                }
-            }
-
-            if (TPSReportTable.Rows.Count > 0)
-            {
-                //ТПС
-                pos++;
-
-                Cell1 = sheet1.CreateRow(pos++).CreateCell(0);
-                Cell1.SetCellValue("ЗОВ-ТПС:");
-                Cell1.CellStyle = SummaryWithoutBorderBelCS;
-
-                Cell1 = sheet1.CreateRow(pos).CreateCell(0);
-                Cell1.SetCellValue("Инв.№");
-                Cell1.CellStyle = SimpleHeaderCS;
-
-                Cell1 = sheet1.CreateRow(pos).CreateCell(1);
-                Cell1.SetCellValue("Наименование");
-                Cell1.CellStyle = SimpleHeaderCS;
-
-                Cell1 = sheet1.CreateRow(pos).CreateCell(2);
-                Cell1.SetCellValue("Ед.изм.");
-                Cell1.CellStyle = SimpleHeaderCS;
-
-                Cell1 = sheet1.CreateRow(pos).CreateCell(3);
-                Cell1.SetCellValue("Кол-во");
-                Cell1.CellStyle = SimpleHeaderCS;
-                Cell1 = sheet1.CreateRow(pos).CreateCell(4);
-                Cell1.SetCellValue("Себестоимость");
-                Cell1.CellStyle = SimpleHeaderCS;
-                pos++;
-
-                for (int i = 0; i < TPSReportTable.Rows.Count; i++)
-                {
-                    Cell1 = sheet1.CreateRow(pos).CreateCell(0);
-                    Cell1.SetCellValue(TPSReportTable.Rows[i]["InvNumber"].ToString());
-                    Cell1.CellStyle = SimpleCS;
-                    Cell1 = sheet1.CreateRow(pos).CreateCell(1);
-                    Cell1.SetCellValue(TPSReportTable.Rows[i]["AccountingName"].ToString());
-                    Cell1.CellStyle = SimpleCS;
-                    Cell1 = sheet1.CreateRow(pos).CreateCell(2);
-                    Cell1.SetCellValue(TPSReportTable.Rows[i]["Measure"].ToString());
-                    Cell1.CellStyle = SimpleCS;
-                    Cell1 = sheet1.CreateRow(pos).CreateCell(3);
-                    Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["Count"]));
-                    Cell1.CellStyle = CountCS;
-                    Cell1 = sheet1.CreateRow(pos).CreateCell(4);
-                    Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["Price"]));
-                    Cell1.CellStyle = PriceBelCS;
-                    pos++;
-                }
-            }
-            pos++;
-            FileName += " ЗОВ";
-            string tempFolder = System.Environment.GetEnvironmentVariable("TEMP");
-            FileInfo file = new FileInfo(tempFolder + @"\" + FileName + ".xls");
-            int j = 1;
-            while (file.Exists == true)
-            {
-                file = new FileInfo(tempFolder + @"\" + FileName + "(" + j++ + ").xls");
-            }
-
-            FileStream NewFile = new FileStream(file.FullName, FileMode.Create);
-            hssfworkbook.Write(NewFile);
-            NewFile.Close();
-
-            System.Diagnostics.Process.Start(file.FullName);
-            ClearReport();
-        }
-
-        public void CreateMarketingReport(DateTime date1, DateTime date2, bool IsSample, bool IsNotSample, string FileName, decimal Rate, ArrayList MClients, ArrayList MClientGroups)
-        {
-            ClearReport();
-
-            string MainOrdersList = string.Empty;
-
-            int pos = 0;
-
-            FrontsReport.Report(date1, date2, false, IsSample, IsNotSample, MClients, MClientGroups);
-            DecorReport.Report(date1, date2, false, IsSample, IsNotSample, MClients, MClientGroups);
+            FrontsReport.OnProdReport(date1, date2, false, IsSample, IsNotSample, MClients, MClientGroups);
+            DecorReport.OnProdReport(date1, date2, false, IsSample, IsNotSample, MClients, MClientGroups);
 
             //PROFIL
             if (FrontsReport.ProfilReportDataTable.Rows.Count > 0)
@@ -8960,11 +9338,15 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
             sheet1.SetMargin(HSSFSheet.TopMargin, (double).20);
             sheet1.SetMargin(HSSFSheet.BottomMargin, (double).20);
 
-            sheet1.SetColumnWidth(0, 12 * 256);
-            sheet1.SetColumnWidth(1, 71 * 256);
-            sheet1.SetColumnWidth(2, 8 * 256);
-            sheet1.SetColumnWidth(3, 8 * 256);
-            sheet1.SetColumnWidth(4, 14 * 256);
+            int displayIndex = 0;
+
+            sheet1.SetColumnWidth(displayIndex++, 12 * 256);
+            sheet1.SetColumnWidth(displayIndex++, 61 * 256);
+            sheet1.SetColumnWidth(displayIndex++, 15 * 256);
+            sheet1.SetColumnWidth(displayIndex++, 12 * 256);
+            sheet1.SetColumnWidth(displayIndex++, 8 * 256);
+            sheet1.SetColumnWidth(displayIndex++, 8 * 256);
+            sheet1.SetColumnWidth(displayIndex, 14 * 256);
 
             HSSFCell Cell1;
 
@@ -8972,47 +9354,63 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
             {
                 //Профиль
                 pos += 2;
+                displayIndex = 0;
 
                 Cell1 = sheet1.CreateRow(pos++).CreateCell(0);
                 Cell1.SetCellValue("ЗОВ-Профиль:");
                 Cell1.CellStyle = SummaryWithoutBorderBelCS;
 
-                Cell1 = sheet1.CreateRow(pos).CreateCell(0);
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                 Cell1.SetCellValue("Инв.№");
                 Cell1.CellStyle = SimpleHeaderCS;
 
-                Cell1 = sheet1.CreateRow(pos).CreateCell(1);
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                 Cell1.SetCellValue("Наименование");
                 Cell1.CellStyle = SimpleHeaderCS;
 
-                Cell1 = sheet1.CreateRow(pos).CreateCell(2);
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Цвет");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Патина");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                 Cell1.SetCellValue("Ед.изм.");
                 Cell1.CellStyle = SimpleHeaderCS;
 
-                Cell1 = sheet1.CreateRow(pos).CreateCell(3);
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                 Cell1.SetCellValue("Кол-во");
                 Cell1.CellStyle = SimpleHeaderCS;
 
-                Cell1 = sheet1.CreateRow(pos).CreateCell(4);
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                 Cell1.SetCellValue("Себестоимость");
                 Cell1.CellStyle = SimpleHeaderCS;
                 pos++;
 
                 for (int i = 0; i < ProfilReportTable.Rows.Count; i++)
                 {
-                    Cell1 = sheet1.CreateRow(pos).CreateCell(0);
+                    displayIndex = 0;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                     Cell1.SetCellValue(ProfilReportTable.Rows[i]["InvNumber"].ToString());
                     Cell1.CellStyle = SimpleCS;
-                    Cell1 = sheet1.CreateRow(pos).CreateCell(1);
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                     Cell1.SetCellValue(ProfilReportTable.Rows[i]["AccountingName"].ToString());
                     Cell1.CellStyle = SimpleCS;
-                    Cell1 = sheet1.CreateRow(pos).CreateCell(2);
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(FrontsReport.GetColorNameByCode(ProfilReportTable.Rows[i]["Cvet"].ToString()));
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(FrontsReport.GetPatinaNameByCode(ProfilReportTable.Rows[i]["Patina"].ToString()));
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                     Cell1.SetCellValue(ProfilReportTable.Rows[i]["Measure"].ToString());
                     Cell1.CellStyle = SimpleCS;
-                    Cell1 = sheet1.CreateRow(pos).CreateCell(3);
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                     Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["Count"]));
                     Cell1.CellStyle = CountCS;
-                    Cell1 = sheet1.CreateRow(pos).CreateCell(4);
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                     Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["Price"]));
                     Cell1.CellStyle = PriceBelCS;
                     pos++;
@@ -9023,47 +9421,1543 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
             {
                 //ТПС
                 pos++;
+                displayIndex = 0;
 
                 Cell1 = sheet1.CreateRow(pos++).CreateCell(0);
                 Cell1.SetCellValue("ЗОВ-ТПС:");
                 Cell1.CellStyle = SummaryWithoutBorderBelCS;
 
-                Cell1 = sheet1.CreateRow(pos).CreateCell(0);
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                 Cell1.SetCellValue("Инв.№");
                 Cell1.CellStyle = SimpleHeaderCS;
 
-                Cell1 = sheet1.CreateRow(pos).CreateCell(1);
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                 Cell1.SetCellValue("Наименование");
                 Cell1.CellStyle = SimpleHeaderCS;
 
-                Cell1 = sheet1.CreateRow(pos).CreateCell(2);
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Цвет");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Патина");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                 Cell1.SetCellValue("Ед.изм.");
                 Cell1.CellStyle = SimpleHeaderCS;
 
-                Cell1 = sheet1.CreateRow(pos).CreateCell(3);
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                 Cell1.SetCellValue("Кол-во");
                 Cell1.CellStyle = SimpleHeaderCS;
 
-                Cell1 = sheet1.CreateRow(pos).CreateCell(4);
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                 Cell1.SetCellValue("Себестоимость");
                 Cell1.CellStyle = SimpleHeaderCS;
                 pos++;
 
                 for (int i = 0; i < TPSReportTable.Rows.Count; i++)
                 {
-                    Cell1 = sheet1.CreateRow(pos).CreateCell(0);
+                    displayIndex = 0;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                     Cell1.SetCellValue(TPSReportTable.Rows[i]["InvNumber"].ToString());
                     Cell1.CellStyle = SimpleCS;
-                    Cell1 = sheet1.CreateRow(pos).CreateCell(1);
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                     Cell1.SetCellValue(TPSReportTable.Rows[i]["AccountingName"].ToString());
                     Cell1.CellStyle = SimpleCS;
-                    Cell1 = sheet1.CreateRow(pos).CreateCell(2);
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(FrontsReport.GetColorNameByCode(TPSReportTable.Rows[i]["Cvet"].ToString()));
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(FrontsReport.GetPatinaNameByCode(TPSReportTable.Rows[i]["Patina"].ToString()));
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                     Cell1.SetCellValue(TPSReportTable.Rows[i]["Measure"].ToString());
                     Cell1.CellStyle = SimpleCS;
-                    Cell1 = sheet1.CreateRow(pos).CreateCell(3);
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                     Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["Count"]));
                     Cell1.CellStyle = CountCS;
-                    Cell1 = sheet1.CreateRow(pos).CreateCell(4);
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["Price"]));
+                    Cell1.CellStyle = PriceBelCS;
+                    pos++;
+                }
+            }
+            pos++;
+            FileName += " Маркетинг";
+            string tempFolder = System.Environment.GetEnvironmentVariable("TEMP");
+            FileInfo file = new FileInfo(tempFolder + @"\" + FileName + ".xls");
+            int j = 1;
+            while (file.Exists == true)
+            {
+                file = new FileInfo(tempFolder + @"\" + FileName + "(" + j++ + ").xls");
+            }
+
+            FileStream NewFile = new FileStream(file.FullName, FileMode.Create);
+            hssfworkbook.Write(NewFile);
+            NewFile.Close();
+
+            System.Diagnostics.Process.Start(file.FullName);
+            ClearReport();
+        }
+        
+        public void CreateMarketingPlanDispReport(DateTime date1, DateTime date2, bool IsSample, bool IsNotSample, string FileName, decimal Rate, ArrayList MClients, ArrayList MClientGroups)
+        {
+            ClearReport();
+
+            string MainOrdersList = string.Empty;
+
+            int pos = 0;
+
+            FrontsReport.PlanDispReport(date1, date2, false, IsSample, IsNotSample, MClients, MClientGroups);
+            DecorReport.PlanDispReport(date1, date2, false, IsSample, IsNotSample, MClients, MClientGroups);
+
+            //PROFIL
+            if (FrontsReport.ProfilReportDataTable.Rows.Count > 0)
+            {
+                for (int i = 0; i < FrontsReport.ProfilReportDataTable.Rows.Count; i++)
+                {
+                    ProfilReportTable.ImportRow(FrontsReport.ProfilReportDataTable.Rows[i]);
+                }
+            }
+
+            if (DecorReport.ProfilReportDataTable.Rows.Count > 0)
+            {
+                for (int i = 0; i < DecorReport.ProfilReportDataTable.Rows.Count; i++)
+                {
+                    ProfilReportTable.ImportRow(DecorReport.ProfilReportDataTable.Rows[i]);
+                }
+            }
+
+            //TPS
+            if (FrontsReport.TPSReportDataTable.Rows.Count > 0)
+            {
+                for (int i = 0; i < FrontsReport.TPSReportDataTable.Rows.Count; i++)
+                {
+                    TPSReportTable.ImportRow(FrontsReport.TPSReportDataTable.Rows[i]);
+                }
+            }
+
+            if (DecorReport.TPSReportDataTable.Rows.Count > 0)
+            {
+                for (int i = 0; i < DecorReport.TPSReportDataTable.Rows.Count; i++)
+                {
+                    TPSReportTable.ImportRow(DecorReport.TPSReportDataTable.Rows[i]);
+                }
+            }
+
+            Collect(Rate);
+            //Export to excel
+            HSSFWorkbook hssfworkbook = new HSSFWorkbook();
+
+            ////create a entry of DocumentSummaryInformation
+            DocumentSummaryInformation dsi = PropertySetFactory.CreateDocumentSummaryInformation();
+            dsi.Company = "NPOI Team";
+            hssfworkbook.DocumentSummaryInformation = dsi;
+
+            ////create a entry of SummaryInformation
+            SummaryInformation si = PropertySetFactory.CreateSummaryInformation();
+            si.Subject = "NPOI SDK Example";
+            hssfworkbook.SummaryInformation = si;
+
+            #region Create fonts and styles
+
+            HSSFFont HeaderF1 = hssfworkbook.CreateFont();
+            HeaderF1.FontHeightInPoints = 11;
+            HeaderF1.Boldweight = 11 * 256;
+            HeaderF1.FontName = "Calibri";
+
+            HSSFFont HeaderF2 = hssfworkbook.CreateFont();
+            HeaderF2.FontHeightInPoints = 10;
+            HeaderF2.Boldweight = 10 * 256;
+            HeaderF2.FontName = "Calibri";
+
+            HSSFFont HeaderF3 = hssfworkbook.CreateFont();
+            HeaderF3.FontHeightInPoints = 9;
+            HeaderF3.Boldweight = 9 * 256;
+            HeaderF3.FontName = "Calibri";
+
+            HSSFFont SimpleF = hssfworkbook.CreateFont();
+            SimpleF.FontHeightInPoints = 8;
+            SimpleF.FontName = "Calibri";
+
+            HSSFCellStyle SimpleCS = hssfworkbook.CreateCellStyle();
+            SimpleCS.BorderBottom = HSSFCellStyle.BORDER_THIN;
+            SimpleCS.BottomBorderColor = HSSFColor.BLACK.index;
+            SimpleCS.BorderLeft = HSSFCellStyle.BORDER_THIN;
+            SimpleCS.LeftBorderColor = HSSFColor.BLACK.index;
+            SimpleCS.BorderRight = HSSFCellStyle.BORDER_THIN;
+            SimpleCS.RightBorderColor = HSSFColor.BLACK.index;
+            SimpleCS.BorderTop = HSSFCellStyle.BORDER_THIN;
+            SimpleCS.TopBorderColor = HSSFColor.BLACK.index;
+            SimpleCS.SetFont(SimpleF);
+
+            HSSFCellStyle CountCS = hssfworkbook.CreateCellStyle();
+            CountCS.DataFormat = hssfworkbook.CreateDataFormat().GetFormat("### ### ##0.000");
+            CountCS.BorderBottom = HSSFCellStyle.BORDER_THIN;
+            CountCS.BottomBorderColor = HSSFColor.BLACK.index;
+            CountCS.BorderLeft = HSSFCellStyle.BORDER_THIN;
+            CountCS.LeftBorderColor = HSSFColor.BLACK.index;
+            CountCS.BorderRight = HSSFCellStyle.BORDER_THIN;
+            CountCS.RightBorderColor = HSSFColor.BLACK.index;
+            CountCS.BorderTop = HSSFCellStyle.BORDER_THIN;
+            CountCS.TopBorderColor = HSSFColor.BLACK.index;
+            CountCS.SetFont(SimpleF);
+
+            HSSFCellStyle WeightCS = hssfworkbook.CreateCellStyle();
+            WeightCS.DataFormat = hssfworkbook.CreateDataFormat().GetFormat("### ### ##0.00");
+            WeightCS.BorderBottom = HSSFCellStyle.BORDER_THIN;
+            WeightCS.BottomBorderColor = HSSFColor.BLACK.index;
+            WeightCS.BorderLeft = HSSFCellStyle.BORDER_THIN;
+            WeightCS.LeftBorderColor = HSSFColor.BLACK.index;
+            WeightCS.BorderRight = HSSFCellStyle.BORDER_THIN;
+            WeightCS.RightBorderColor = HSSFColor.BLACK.index;
+            WeightCS.BorderTop = HSSFCellStyle.BORDER_THIN;
+            WeightCS.TopBorderColor = HSSFColor.BLACK.index;
+            WeightCS.SetFont(SimpleF);
+
+            HSSFCellStyle PriceBelCS = hssfworkbook.CreateCellStyle();
+            PriceBelCS.DataFormat = hssfworkbook.CreateDataFormat().GetFormat("### ### ##0.00");
+            PriceBelCS.BorderBottom = HSSFCellStyle.BORDER_THIN;
+            PriceBelCS.BottomBorderColor = HSSFColor.BLACK.index;
+            PriceBelCS.BorderLeft = HSSFCellStyle.BORDER_THIN;
+            PriceBelCS.LeftBorderColor = HSSFColor.BLACK.index;
+            PriceBelCS.BorderRight = HSSFCellStyle.BORDER_THIN;
+            PriceBelCS.RightBorderColor = HSSFColor.BLACK.index;
+            PriceBelCS.BorderTop = HSSFCellStyle.BORDER_THIN;
+            PriceBelCS.TopBorderColor = HSSFColor.BLACK.index;
+            PriceBelCS.SetFont(SimpleF);
+
+            HSSFCellStyle PriceForeignCS = hssfworkbook.CreateCellStyle();
+            PriceForeignCS.DataFormat = hssfworkbook.CreateDataFormat().GetFormat("### ### ##0.00");
+            PriceForeignCS.BorderBottom = HSSFCellStyle.BORDER_THIN;
+            PriceForeignCS.BottomBorderColor = HSSFColor.BLACK.index;
+            PriceForeignCS.BorderLeft = HSSFCellStyle.BORDER_THIN;
+            PriceForeignCS.LeftBorderColor = HSSFColor.BLACK.index;
+            PriceForeignCS.BorderRight = HSSFCellStyle.BORDER_THIN;
+            PriceForeignCS.RightBorderColor = HSSFColor.BLACK.index;
+            PriceForeignCS.BorderTop = HSSFCellStyle.BORDER_THIN;
+            PriceForeignCS.TopBorderColor = HSSFColor.BLACK.index;
+            PriceForeignCS.SetFont(SimpleF);
+
+            HSSFCellStyle ReportCS1 = hssfworkbook.CreateCellStyle();
+            ReportCS1.BorderBottom = HSSFCellStyle.BORDER_MEDIUM;
+            ReportCS1.BottomBorderColor = HSSFColor.BLACK.index;
+            ReportCS1.SetFont(HeaderF1);
+
+            HSSFCellStyle ReportCS2 = hssfworkbook.CreateCellStyle();
+            ReportCS2.SetFont(HeaderF1);
+
+            HSSFCellStyle SummaryWithoutBorderBelCS = hssfworkbook.CreateCellStyle();
+            SummaryWithoutBorderBelCS.DataFormat = hssfworkbook.CreateDataFormat().GetFormat("### ### ##0");
+            SummaryWithoutBorderBelCS.SetFont(HeaderF2);
+
+            HSSFCellStyle SummaryWithoutBorderForeignCS = hssfworkbook.CreateCellStyle();
+            SummaryWithoutBorderForeignCS.DataFormat = hssfworkbook.CreateDataFormat().GetFormat("### ### ##0.00");
+            SummaryWithoutBorderForeignCS.SetFont(HeaderF2);
+
+            HSSFCellStyle SummaryWeightCS = hssfworkbook.CreateCellStyle();
+            SummaryWeightCS.DataFormat = hssfworkbook.CreateDataFormat().GetFormat("### ### ##0.00");
+            SummaryWeightCS.SetFont(HeaderF2);
+
+            HSSFCellStyle SummaryWithBorderBelCS = hssfworkbook.CreateCellStyle();
+            SummaryWithBorderBelCS.DataFormat = hssfworkbook.CreateDataFormat().GetFormat("### ### ##0");
+            SummaryWithBorderBelCS.BorderBottom = HSSFCellStyle.BORDER_THIN;
+            SummaryWithBorderBelCS.BottomBorderColor = HSSFColor.BLACK.index;
+            SummaryWithBorderBelCS.BorderLeft = HSSFCellStyle.BORDER_THIN;
+            SummaryWithBorderBelCS.LeftBorderColor = HSSFColor.BLACK.index;
+            SummaryWithBorderBelCS.BorderRight = HSSFCellStyle.BORDER_THIN;
+            SummaryWithBorderBelCS.RightBorderColor = HSSFColor.BLACK.index;
+            SummaryWithBorderBelCS.BorderTop = HSSFCellStyle.BORDER_THIN;
+            SummaryWithBorderBelCS.TopBorderColor = HSSFColor.BLACK.index;
+            SummaryWithBorderBelCS.WrapText = true;
+            SummaryWithBorderBelCS.SetFont(HeaderF2);
+
+            HSSFCellStyle SummaryWithBorderForeignCS = hssfworkbook.CreateCellStyle();
+            SummaryWithBorderForeignCS.DataFormat = hssfworkbook.CreateDataFormat().GetFormat("### ### ##0.00");
+            SummaryWithBorderForeignCS.BorderBottom = HSSFCellStyle.BORDER_THIN;
+            SummaryWithBorderForeignCS.BottomBorderColor = HSSFColor.BLACK.index;
+            SummaryWithBorderForeignCS.BorderLeft = HSSFCellStyle.BORDER_THIN;
+            SummaryWithBorderForeignCS.LeftBorderColor = HSSFColor.BLACK.index;
+            SummaryWithBorderForeignCS.BorderRight = HSSFCellStyle.BORDER_THIN;
+            SummaryWithBorderForeignCS.RightBorderColor = HSSFColor.BLACK.index;
+            SummaryWithBorderForeignCS.BorderTop = HSSFCellStyle.BORDER_THIN;
+            SummaryWithBorderForeignCS.TopBorderColor = HSSFColor.BLACK.index;
+            SummaryWithBorderForeignCS.WrapText = true;
+            SummaryWithBorderForeignCS.SetFont(HeaderF2);
+
+            HSSFCellStyle SimpleHeaderCS = hssfworkbook.CreateCellStyle();
+            SimpleHeaderCS.BorderBottom = HSSFCellStyle.BORDER_MEDIUM;
+            SimpleHeaderCS.BottomBorderColor = HSSFColor.BLACK.index;
+            SimpleHeaderCS.BorderLeft = HSSFCellStyle.BORDER_MEDIUM;
+            SimpleHeaderCS.LeftBorderColor = HSSFColor.BLACK.index;
+            SimpleHeaderCS.BorderRight = HSSFCellStyle.BORDER_MEDIUM;
+            SimpleHeaderCS.RightBorderColor = HSSFColor.BLACK.index;
+            SimpleHeaderCS.BorderTop = HSSFCellStyle.BORDER_MEDIUM;
+            SimpleHeaderCS.TopBorderColor = HSSFColor.BLACK.index;
+            //SimpleHeaderCS.WrapText = true;
+            SimpleHeaderCS.SetFont(HeaderF3);
+
+            #endregion Create fonts and styles
+
+            HSSFSheet sheet1 = hssfworkbook.CreateSheet("Отчет Маркетинг");
+            sheet1.PrintSetup.PaperSize = (short)PaperSizeType.A4;
+
+            sheet1.SetMargin(HSSFSheet.LeftMargin, (double).12);
+            sheet1.SetMargin(HSSFSheet.RightMargin, (double).07);
+            sheet1.SetMargin(HSSFSheet.TopMargin, (double).20);
+            sheet1.SetMargin(HSSFSheet.BottomMargin, (double).20);
+
+            int displayIndex = 0;
+
+            sheet1.SetColumnWidth(displayIndex++, 12 * 256);
+            sheet1.SetColumnWidth(displayIndex++, 61 * 256);
+            sheet1.SetColumnWidth(displayIndex++, 15 * 256);
+            sheet1.SetColumnWidth(displayIndex++, 12 * 256);
+            sheet1.SetColumnWidth(displayIndex++, 8 * 256);
+            sheet1.SetColumnWidth(displayIndex++, 8 * 256);
+            sheet1.SetColumnWidth(displayIndex, 14 * 256);
+
+            HSSFCell Cell1;
+
+            if (ProfilReportTable.Rows.Count > 0)
+            {
+                //Профиль
+                pos += 2;
+                displayIndex = 0;
+
+                Cell1 = sheet1.CreateRow(pos++).CreateCell(0);
+                Cell1.SetCellValue("ЗОВ-Профиль:");
+                Cell1.CellStyle = SummaryWithoutBorderBelCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Инв.№");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Наименование");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Цвет");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Патина");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Ед.изм.");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Кол-во");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Себестоимость");
+                Cell1.CellStyle = SimpleHeaderCS;
+                pos++;
+
+                for (int i = 0; i < ProfilReportTable.Rows.Count; i++)
+                {
+                    displayIndex = 0;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(ProfilReportTable.Rows[i]["InvNumber"].ToString());
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(ProfilReportTable.Rows[i]["AccountingName"].ToString());
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(FrontsReport.GetColorNameByCode(ProfilReportTable.Rows[i]["Cvet"].ToString()));
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(FrontsReport.GetPatinaNameByCode(ProfilReportTable.Rows[i]["Patina"].ToString()));
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(ProfilReportTable.Rows[i]["Measure"].ToString());
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["Count"]));
+                    Cell1.CellStyle = CountCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["Price"]));
+                    Cell1.CellStyle = PriceBelCS;
+                    pos++;
+                }
+            }
+
+            if (TPSReportTable.Rows.Count > 0)
+            {
+                //ТПС
+                pos++;
+                displayIndex = 0;
+
+                Cell1 = sheet1.CreateRow(pos++).CreateCell(0);
+                Cell1.SetCellValue("ЗОВ-ТПС:");
+                Cell1.CellStyle = SummaryWithoutBorderBelCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Инв.№");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Наименование");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Цвет");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Патина");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Ед.изм.");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Кол-во");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Себестоимость");
+                Cell1.CellStyle = SimpleHeaderCS;
+                pos++;
+
+                for (int i = 0; i < TPSReportTable.Rows.Count; i++)
+                {
+                    displayIndex = 0;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(TPSReportTable.Rows[i]["InvNumber"].ToString());
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(TPSReportTable.Rows[i]["AccountingName"].ToString());
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(FrontsReport.GetColorNameByCode(TPSReportTable.Rows[i]["Cvet"].ToString()));
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(FrontsReport.GetPatinaNameByCode(TPSReportTable.Rows[i]["Patina"].ToString()));
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(TPSReportTable.Rows[i]["Measure"].ToString());
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["Count"]));
+                    Cell1.CellStyle = CountCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["Price"]));
+                    Cell1.CellStyle = PriceBelCS;
+                    pos++;
+                }
+            }
+            pos++;
+            FileName += " Маркетинг";
+            string tempFolder = System.Environment.GetEnvironmentVariable("TEMP");
+            FileInfo file = new FileInfo(tempFolder + @"\" + FileName + ".xls");
+            int j = 1;
+            while (file.Exists == true)
+            {
+                file = new FileInfo(tempFolder + @"\" + FileName + "(" + j++ + ").xls");
+            }
+
+            FileStream NewFile = new FileStream(file.FullName, FileMode.Create);
+            hssfworkbook.Write(NewFile);
+            NewFile.Close();
+
+            System.Diagnostics.Process.Start(file.FullName);
+            ClearReport();
+        }
+        
+        public void CreateMarketingExpReport(DateTime date1, DateTime date2, bool IsSample, bool IsNotSample, string FileName, decimal Rate, ArrayList MClients, ArrayList MClientGroups)
+        {
+            ClearReport();
+
+            string MainOrdersList = string.Empty;
+
+            int pos = 0;
+
+            FrontsReport.ExpReport(date1, date2, false, IsSample, IsNotSample, MClients, MClientGroups);
+            DecorReport.ExpReport(date1, date2, false, IsSample, IsNotSample, MClients, MClientGroups);
+
+            //PROFIL
+            if (FrontsReport.ProfilReportDataTable.Rows.Count > 0)
+            {
+                for (int i = 0; i < FrontsReport.ProfilReportDataTable.Rows.Count; i++)
+                {
+                    ProfilReportTable.ImportRow(FrontsReport.ProfilReportDataTable.Rows[i]);
+                }
+            }
+
+            if (DecorReport.ProfilReportDataTable.Rows.Count > 0)
+            {
+                for (int i = 0; i < DecorReport.ProfilReportDataTable.Rows.Count; i++)
+                {
+                    ProfilReportTable.ImportRow(DecorReport.ProfilReportDataTable.Rows[i]);
+                }
+            }
+
+            //TPS
+            if (FrontsReport.TPSReportDataTable.Rows.Count > 0)
+            {
+                for (int i = 0; i < FrontsReport.TPSReportDataTable.Rows.Count; i++)
+                {
+                    TPSReportTable.ImportRow(FrontsReport.TPSReportDataTable.Rows[i]);
+                }
+            }
+
+            if (DecorReport.TPSReportDataTable.Rows.Count > 0)
+            {
+                for (int i = 0; i < DecorReport.TPSReportDataTable.Rows.Count; i++)
+                {
+                    TPSReportTable.ImportRow(DecorReport.TPSReportDataTable.Rows[i]);
+                }
+            }
+
+            Collect(Rate);
+            //Export to excel
+            HSSFWorkbook hssfworkbook = new HSSFWorkbook();
+
+            ////create a entry of DocumentSummaryInformation
+            DocumentSummaryInformation dsi = PropertySetFactory.CreateDocumentSummaryInformation();
+            dsi.Company = "NPOI Team";
+            hssfworkbook.DocumentSummaryInformation = dsi;
+
+            ////create a entry of SummaryInformation
+            SummaryInformation si = PropertySetFactory.CreateSummaryInformation();
+            si.Subject = "NPOI SDK Example";
+            hssfworkbook.SummaryInformation = si;
+
+            #region Create fonts and styles
+
+            HSSFFont HeaderF1 = hssfworkbook.CreateFont();
+            HeaderF1.FontHeightInPoints = 11;
+            HeaderF1.Boldweight = 11 * 256;
+            HeaderF1.FontName = "Calibri";
+
+            HSSFFont HeaderF2 = hssfworkbook.CreateFont();
+            HeaderF2.FontHeightInPoints = 10;
+            HeaderF2.Boldweight = 10 * 256;
+            HeaderF2.FontName = "Calibri";
+
+            HSSFFont HeaderF3 = hssfworkbook.CreateFont();
+            HeaderF3.FontHeightInPoints = 9;
+            HeaderF3.Boldweight = 9 * 256;
+            HeaderF3.FontName = "Calibri";
+
+            HSSFFont SimpleF = hssfworkbook.CreateFont();
+            SimpleF.FontHeightInPoints = 8;
+            SimpleF.FontName = "Calibri";
+
+            HSSFCellStyle SimpleCS = hssfworkbook.CreateCellStyle();
+            SimpleCS.BorderBottom = HSSFCellStyle.BORDER_THIN;
+            SimpleCS.BottomBorderColor = HSSFColor.BLACK.index;
+            SimpleCS.BorderLeft = HSSFCellStyle.BORDER_THIN;
+            SimpleCS.LeftBorderColor = HSSFColor.BLACK.index;
+            SimpleCS.BorderRight = HSSFCellStyle.BORDER_THIN;
+            SimpleCS.RightBorderColor = HSSFColor.BLACK.index;
+            SimpleCS.BorderTop = HSSFCellStyle.BORDER_THIN;
+            SimpleCS.TopBorderColor = HSSFColor.BLACK.index;
+            SimpleCS.SetFont(SimpleF);
+
+            HSSFCellStyle CountCS = hssfworkbook.CreateCellStyle();
+            CountCS.DataFormat = hssfworkbook.CreateDataFormat().GetFormat("### ### ##0.000");
+            CountCS.BorderBottom = HSSFCellStyle.BORDER_THIN;
+            CountCS.BottomBorderColor = HSSFColor.BLACK.index;
+            CountCS.BorderLeft = HSSFCellStyle.BORDER_THIN;
+            CountCS.LeftBorderColor = HSSFColor.BLACK.index;
+            CountCS.BorderRight = HSSFCellStyle.BORDER_THIN;
+            CountCS.RightBorderColor = HSSFColor.BLACK.index;
+            CountCS.BorderTop = HSSFCellStyle.BORDER_THIN;
+            CountCS.TopBorderColor = HSSFColor.BLACK.index;
+            CountCS.SetFont(SimpleF);
+
+            HSSFCellStyle WeightCS = hssfworkbook.CreateCellStyle();
+            WeightCS.DataFormat = hssfworkbook.CreateDataFormat().GetFormat("### ### ##0.00");
+            WeightCS.BorderBottom = HSSFCellStyle.BORDER_THIN;
+            WeightCS.BottomBorderColor = HSSFColor.BLACK.index;
+            WeightCS.BorderLeft = HSSFCellStyle.BORDER_THIN;
+            WeightCS.LeftBorderColor = HSSFColor.BLACK.index;
+            WeightCS.BorderRight = HSSFCellStyle.BORDER_THIN;
+            WeightCS.RightBorderColor = HSSFColor.BLACK.index;
+            WeightCS.BorderTop = HSSFCellStyle.BORDER_THIN;
+            WeightCS.TopBorderColor = HSSFColor.BLACK.index;
+            WeightCS.SetFont(SimpleF);
+
+            HSSFCellStyle PriceBelCS = hssfworkbook.CreateCellStyle();
+            PriceBelCS.DataFormat = hssfworkbook.CreateDataFormat().GetFormat("### ### ##0.00");
+            PriceBelCS.BorderBottom = HSSFCellStyle.BORDER_THIN;
+            PriceBelCS.BottomBorderColor = HSSFColor.BLACK.index;
+            PriceBelCS.BorderLeft = HSSFCellStyle.BORDER_THIN;
+            PriceBelCS.LeftBorderColor = HSSFColor.BLACK.index;
+            PriceBelCS.BorderRight = HSSFCellStyle.BORDER_THIN;
+            PriceBelCS.RightBorderColor = HSSFColor.BLACK.index;
+            PriceBelCS.BorderTop = HSSFCellStyle.BORDER_THIN;
+            PriceBelCS.TopBorderColor = HSSFColor.BLACK.index;
+            PriceBelCS.SetFont(SimpleF);
+
+            HSSFCellStyle PriceForeignCS = hssfworkbook.CreateCellStyle();
+            PriceForeignCS.DataFormat = hssfworkbook.CreateDataFormat().GetFormat("### ### ##0.00");
+            PriceForeignCS.BorderBottom = HSSFCellStyle.BORDER_THIN;
+            PriceForeignCS.BottomBorderColor = HSSFColor.BLACK.index;
+            PriceForeignCS.BorderLeft = HSSFCellStyle.BORDER_THIN;
+            PriceForeignCS.LeftBorderColor = HSSFColor.BLACK.index;
+            PriceForeignCS.BorderRight = HSSFCellStyle.BORDER_THIN;
+            PriceForeignCS.RightBorderColor = HSSFColor.BLACK.index;
+            PriceForeignCS.BorderTop = HSSFCellStyle.BORDER_THIN;
+            PriceForeignCS.TopBorderColor = HSSFColor.BLACK.index;
+            PriceForeignCS.SetFont(SimpleF);
+
+            HSSFCellStyle ReportCS1 = hssfworkbook.CreateCellStyle();
+            ReportCS1.BorderBottom = HSSFCellStyle.BORDER_MEDIUM;
+            ReportCS1.BottomBorderColor = HSSFColor.BLACK.index;
+            ReportCS1.SetFont(HeaderF1);
+
+            HSSFCellStyle ReportCS2 = hssfworkbook.CreateCellStyle();
+            ReportCS2.SetFont(HeaderF1);
+
+            HSSFCellStyle SummaryWithoutBorderBelCS = hssfworkbook.CreateCellStyle();
+            SummaryWithoutBorderBelCS.DataFormat = hssfworkbook.CreateDataFormat().GetFormat("### ### ##0");
+            SummaryWithoutBorderBelCS.SetFont(HeaderF2);
+
+            HSSFCellStyle SummaryWithoutBorderForeignCS = hssfworkbook.CreateCellStyle();
+            SummaryWithoutBorderForeignCS.DataFormat = hssfworkbook.CreateDataFormat().GetFormat("### ### ##0.00");
+            SummaryWithoutBorderForeignCS.SetFont(HeaderF2);
+
+            HSSFCellStyle SummaryWeightCS = hssfworkbook.CreateCellStyle();
+            SummaryWeightCS.DataFormat = hssfworkbook.CreateDataFormat().GetFormat("### ### ##0.00");
+            SummaryWeightCS.SetFont(HeaderF2);
+
+            HSSFCellStyle SummaryWithBorderBelCS = hssfworkbook.CreateCellStyle();
+            SummaryWithBorderBelCS.DataFormat = hssfworkbook.CreateDataFormat().GetFormat("### ### ##0");
+            SummaryWithBorderBelCS.BorderBottom = HSSFCellStyle.BORDER_THIN;
+            SummaryWithBorderBelCS.BottomBorderColor = HSSFColor.BLACK.index;
+            SummaryWithBorderBelCS.BorderLeft = HSSFCellStyle.BORDER_THIN;
+            SummaryWithBorderBelCS.LeftBorderColor = HSSFColor.BLACK.index;
+            SummaryWithBorderBelCS.BorderRight = HSSFCellStyle.BORDER_THIN;
+            SummaryWithBorderBelCS.RightBorderColor = HSSFColor.BLACK.index;
+            SummaryWithBorderBelCS.BorderTop = HSSFCellStyle.BORDER_THIN;
+            SummaryWithBorderBelCS.TopBorderColor = HSSFColor.BLACK.index;
+            SummaryWithBorderBelCS.WrapText = true;
+            SummaryWithBorderBelCS.SetFont(HeaderF2);
+
+            HSSFCellStyle SummaryWithBorderForeignCS = hssfworkbook.CreateCellStyle();
+            SummaryWithBorderForeignCS.DataFormat = hssfworkbook.CreateDataFormat().GetFormat("### ### ##0.00");
+            SummaryWithBorderForeignCS.BorderBottom = HSSFCellStyle.BORDER_THIN;
+            SummaryWithBorderForeignCS.BottomBorderColor = HSSFColor.BLACK.index;
+            SummaryWithBorderForeignCS.BorderLeft = HSSFCellStyle.BORDER_THIN;
+            SummaryWithBorderForeignCS.LeftBorderColor = HSSFColor.BLACK.index;
+            SummaryWithBorderForeignCS.BorderRight = HSSFCellStyle.BORDER_THIN;
+            SummaryWithBorderForeignCS.RightBorderColor = HSSFColor.BLACK.index;
+            SummaryWithBorderForeignCS.BorderTop = HSSFCellStyle.BORDER_THIN;
+            SummaryWithBorderForeignCS.TopBorderColor = HSSFColor.BLACK.index;
+            SummaryWithBorderForeignCS.WrapText = true;
+            SummaryWithBorderForeignCS.SetFont(HeaderF2);
+
+            HSSFCellStyle SimpleHeaderCS = hssfworkbook.CreateCellStyle();
+            SimpleHeaderCS.BorderBottom = HSSFCellStyle.BORDER_MEDIUM;
+            SimpleHeaderCS.BottomBorderColor = HSSFColor.BLACK.index;
+            SimpleHeaderCS.BorderLeft = HSSFCellStyle.BORDER_MEDIUM;
+            SimpleHeaderCS.LeftBorderColor = HSSFColor.BLACK.index;
+            SimpleHeaderCS.BorderRight = HSSFCellStyle.BORDER_MEDIUM;
+            SimpleHeaderCS.RightBorderColor = HSSFColor.BLACK.index;
+            SimpleHeaderCS.BorderTop = HSSFCellStyle.BORDER_MEDIUM;
+            SimpleHeaderCS.TopBorderColor = HSSFColor.BLACK.index;
+            //SimpleHeaderCS.WrapText = true;
+            SimpleHeaderCS.SetFont(HeaderF3);
+
+            #endregion Create fonts and styles
+
+            HSSFSheet sheet1 = hssfworkbook.CreateSheet("Отчет Маркетинг");
+            sheet1.PrintSetup.PaperSize = (short)PaperSizeType.A4;
+
+            sheet1.SetMargin(HSSFSheet.LeftMargin, (double).12);
+            sheet1.SetMargin(HSSFSheet.RightMargin, (double).07);
+            sheet1.SetMargin(HSSFSheet.TopMargin, (double).20);
+            sheet1.SetMargin(HSSFSheet.BottomMargin, (double).20);
+
+            int displayIndex = 0;
+
+            sheet1.SetColumnWidth(displayIndex++, 12 * 256);
+            sheet1.SetColumnWidth(displayIndex++, 61 * 256);
+            sheet1.SetColumnWidth(displayIndex++, 15 * 256);
+            sheet1.SetColumnWidth(displayIndex++, 12 * 256);
+            sheet1.SetColumnWidth(displayIndex++, 8 * 256);
+            sheet1.SetColumnWidth(displayIndex++, 8 * 256);
+            sheet1.SetColumnWidth(displayIndex, 14 * 256);
+
+            HSSFCell Cell1;
+
+            if (ProfilReportTable.Rows.Count > 0)
+            {
+                //Профиль
+                pos += 2;
+                displayIndex = 0;
+
+                Cell1 = sheet1.CreateRow(pos++).CreateCell(0);
+                Cell1.SetCellValue("ЗОВ-Профиль:");
+                Cell1.CellStyle = SummaryWithoutBorderBelCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Инв.№");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Наименование");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Цвет");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Патина");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Ед.изм.");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Кол-во");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Себестоимость");
+                Cell1.CellStyle = SimpleHeaderCS;
+                pos++;
+
+                for (int i = 0; i < ProfilReportTable.Rows.Count; i++)
+                {
+                    displayIndex = 0;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(ProfilReportTable.Rows[i]["InvNumber"].ToString());
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(ProfilReportTable.Rows[i]["AccountingName"].ToString());
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(FrontsReport.GetColorNameByCode(ProfilReportTable.Rows[i]["Cvet"].ToString()));
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(FrontsReport.GetPatinaNameByCode(ProfilReportTable.Rows[i]["Patina"].ToString()));
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(ProfilReportTable.Rows[i]["Measure"].ToString());
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["Count"]));
+                    Cell1.CellStyle = CountCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["Price"]));
+                    Cell1.CellStyle = PriceBelCS;
+                    pos++;
+                }
+            }
+
+            if (TPSReportTable.Rows.Count > 0)
+            {
+                //ТПС
+                pos++;
+                displayIndex = 0;
+
+                Cell1 = sheet1.CreateRow(pos++).CreateCell(0);
+                Cell1.SetCellValue("ЗОВ-ТПС:");
+                Cell1.CellStyle = SummaryWithoutBorderBelCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Инв.№");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Наименование");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Цвет");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Патина");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Ед.изм.");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Кол-во");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Себестоимость");
+                Cell1.CellStyle = SimpleHeaderCS;
+                pos++;
+
+                for (int i = 0; i < TPSReportTable.Rows.Count; i++)
+                {
+                    displayIndex = 0;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(TPSReportTable.Rows[i]["InvNumber"].ToString());
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(TPSReportTable.Rows[i]["AccountingName"].ToString());
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(FrontsReport.GetColorNameByCode(TPSReportTable.Rows[i]["Cvet"].ToString()));
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(FrontsReport.GetPatinaNameByCode(TPSReportTable.Rows[i]["Patina"].ToString()));
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(TPSReportTable.Rows[i]["Measure"].ToString());
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["Count"]));
+                    Cell1.CellStyle = CountCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["Price"]));
+                    Cell1.CellStyle = PriceBelCS;
+                    pos++;
+                }
+            }
+            pos++;
+            FileName += " Маркетинг";
+            string tempFolder = System.Environment.GetEnvironmentVariable("TEMP");
+            FileInfo file = new FileInfo(tempFolder + @"\" + FileName + ".xls");
+            int j = 1;
+            while (file.Exists == true)
+            {
+                file = new FileInfo(tempFolder + @"\" + FileName + "(" + j++ + ").xls");
+            }
+
+            FileStream NewFile = new FileStream(file.FullName, FileMode.Create);
+            hssfworkbook.Write(NewFile);
+            NewFile.Close();
+
+            System.Diagnostics.Process.Start(file.FullName);
+            ClearReport();
+        }
+
+        public void CreateMarketingStoreReport(DateTime date1, DateTime date2, bool IsSample, bool IsNotSample, string FileName, decimal Rate, ArrayList MClients, ArrayList MClientGroups)
+        {
+            ClearReport();
+
+            string MainOrdersList = string.Empty;
+
+            int pos = 0;
+
+            FrontsReport.StoreReport(date1, date2, false, IsSample, IsNotSample, MClients, MClientGroups);
+            DecorReport.StoreReport(date1, date2, false, IsSample, IsNotSample, MClients, MClientGroups);
+
+            //PROFIL
+            if (FrontsReport.ProfilReportDataTable.Rows.Count > 0)
+            {
+                for (int i = 0; i < FrontsReport.ProfilReportDataTable.Rows.Count; i++)
+                {
+                    ProfilReportTable.ImportRow(FrontsReport.ProfilReportDataTable.Rows[i]);
+                }
+            }
+
+            if (DecorReport.ProfilReportDataTable.Rows.Count > 0)
+            {
+                for (int i = 0; i < DecorReport.ProfilReportDataTable.Rows.Count; i++)
+                {
+                    ProfilReportTable.ImportRow(DecorReport.ProfilReportDataTable.Rows[i]);
+                }
+            }
+
+            //TPS
+            if (FrontsReport.TPSReportDataTable.Rows.Count > 0)
+            {
+                for (int i = 0; i < FrontsReport.TPSReportDataTable.Rows.Count; i++)
+                {
+                    TPSReportTable.ImportRow(FrontsReport.TPSReportDataTable.Rows[i]);
+                }
+            }
+
+            if (DecorReport.TPSReportDataTable.Rows.Count > 0)
+            {
+                for (int i = 0; i < DecorReport.TPSReportDataTable.Rows.Count; i++)
+                {
+                    TPSReportTable.ImportRow(DecorReport.TPSReportDataTable.Rows[i]);
+                }
+            }
+
+            Collect(Rate);
+            //Export to excel
+            HSSFWorkbook hssfworkbook = new HSSFWorkbook();
+
+            ////create a entry of DocumentSummaryInformation
+            DocumentSummaryInformation dsi = PropertySetFactory.CreateDocumentSummaryInformation();
+            dsi.Company = "NPOI Team";
+            hssfworkbook.DocumentSummaryInformation = dsi;
+
+            ////create a entry of SummaryInformation
+            SummaryInformation si = PropertySetFactory.CreateSummaryInformation();
+            si.Subject = "NPOI SDK Example";
+            hssfworkbook.SummaryInformation = si;
+
+            #region Create fonts and styles
+
+            HSSFFont HeaderF1 = hssfworkbook.CreateFont();
+            HeaderF1.FontHeightInPoints = 11;
+            HeaderF1.Boldweight = 11 * 256;
+            HeaderF1.FontName = "Calibri";
+
+            HSSFFont HeaderF2 = hssfworkbook.CreateFont();
+            HeaderF2.FontHeightInPoints = 10;
+            HeaderF2.Boldweight = 10 * 256;
+            HeaderF2.FontName = "Calibri";
+
+            HSSFFont HeaderF3 = hssfworkbook.CreateFont();
+            HeaderF3.FontHeightInPoints = 9;
+            HeaderF3.Boldweight = 9 * 256;
+            HeaderF3.FontName = "Calibri";
+
+            HSSFFont SimpleF = hssfworkbook.CreateFont();
+            SimpleF.FontHeightInPoints = 8;
+            SimpleF.FontName = "Calibri";
+
+            HSSFCellStyle SimpleCS = hssfworkbook.CreateCellStyle();
+            SimpleCS.BorderBottom = HSSFCellStyle.BORDER_THIN;
+            SimpleCS.BottomBorderColor = HSSFColor.BLACK.index;
+            SimpleCS.BorderLeft = HSSFCellStyle.BORDER_THIN;
+            SimpleCS.LeftBorderColor = HSSFColor.BLACK.index;
+            SimpleCS.BorderRight = HSSFCellStyle.BORDER_THIN;
+            SimpleCS.RightBorderColor = HSSFColor.BLACK.index;
+            SimpleCS.BorderTop = HSSFCellStyle.BORDER_THIN;
+            SimpleCS.TopBorderColor = HSSFColor.BLACK.index;
+            SimpleCS.SetFont(SimpleF);
+
+            HSSFCellStyle CountCS = hssfworkbook.CreateCellStyle();
+            CountCS.DataFormat = hssfworkbook.CreateDataFormat().GetFormat("### ### ##0.000");
+            CountCS.BorderBottom = HSSFCellStyle.BORDER_THIN;
+            CountCS.BottomBorderColor = HSSFColor.BLACK.index;
+            CountCS.BorderLeft = HSSFCellStyle.BORDER_THIN;
+            CountCS.LeftBorderColor = HSSFColor.BLACK.index;
+            CountCS.BorderRight = HSSFCellStyle.BORDER_THIN;
+            CountCS.RightBorderColor = HSSFColor.BLACK.index;
+            CountCS.BorderTop = HSSFCellStyle.BORDER_THIN;
+            CountCS.TopBorderColor = HSSFColor.BLACK.index;
+            CountCS.SetFont(SimpleF);
+
+            HSSFCellStyle WeightCS = hssfworkbook.CreateCellStyle();
+            WeightCS.DataFormat = hssfworkbook.CreateDataFormat().GetFormat("### ### ##0.00");
+            WeightCS.BorderBottom = HSSFCellStyle.BORDER_THIN;
+            WeightCS.BottomBorderColor = HSSFColor.BLACK.index;
+            WeightCS.BorderLeft = HSSFCellStyle.BORDER_THIN;
+            WeightCS.LeftBorderColor = HSSFColor.BLACK.index;
+            WeightCS.BorderRight = HSSFCellStyle.BORDER_THIN;
+            WeightCS.RightBorderColor = HSSFColor.BLACK.index;
+            WeightCS.BorderTop = HSSFCellStyle.BORDER_THIN;
+            WeightCS.TopBorderColor = HSSFColor.BLACK.index;
+            WeightCS.SetFont(SimpleF);
+
+            HSSFCellStyle PriceBelCS = hssfworkbook.CreateCellStyle();
+            PriceBelCS.DataFormat = hssfworkbook.CreateDataFormat().GetFormat("### ### ##0.00");
+            PriceBelCS.BorderBottom = HSSFCellStyle.BORDER_THIN;
+            PriceBelCS.BottomBorderColor = HSSFColor.BLACK.index;
+            PriceBelCS.BorderLeft = HSSFCellStyle.BORDER_THIN;
+            PriceBelCS.LeftBorderColor = HSSFColor.BLACK.index;
+            PriceBelCS.BorderRight = HSSFCellStyle.BORDER_THIN;
+            PriceBelCS.RightBorderColor = HSSFColor.BLACK.index;
+            PriceBelCS.BorderTop = HSSFCellStyle.BORDER_THIN;
+            PriceBelCS.TopBorderColor = HSSFColor.BLACK.index;
+            PriceBelCS.SetFont(SimpleF);
+
+            HSSFCellStyle PriceForeignCS = hssfworkbook.CreateCellStyle();
+            PriceForeignCS.DataFormat = hssfworkbook.CreateDataFormat().GetFormat("### ### ##0.00");
+            PriceForeignCS.BorderBottom = HSSFCellStyle.BORDER_THIN;
+            PriceForeignCS.BottomBorderColor = HSSFColor.BLACK.index;
+            PriceForeignCS.BorderLeft = HSSFCellStyle.BORDER_THIN;
+            PriceForeignCS.LeftBorderColor = HSSFColor.BLACK.index;
+            PriceForeignCS.BorderRight = HSSFCellStyle.BORDER_THIN;
+            PriceForeignCS.RightBorderColor = HSSFColor.BLACK.index;
+            PriceForeignCS.BorderTop = HSSFCellStyle.BORDER_THIN;
+            PriceForeignCS.TopBorderColor = HSSFColor.BLACK.index;
+            PriceForeignCS.SetFont(SimpleF);
+
+            HSSFCellStyle ReportCS1 = hssfworkbook.CreateCellStyle();
+            ReportCS1.BorderBottom = HSSFCellStyle.BORDER_MEDIUM;
+            ReportCS1.BottomBorderColor = HSSFColor.BLACK.index;
+            ReportCS1.SetFont(HeaderF1);
+
+            HSSFCellStyle ReportCS2 = hssfworkbook.CreateCellStyle();
+            ReportCS2.SetFont(HeaderF1);
+
+            HSSFCellStyle SummaryWithoutBorderBelCS = hssfworkbook.CreateCellStyle();
+            SummaryWithoutBorderBelCS.DataFormat = hssfworkbook.CreateDataFormat().GetFormat("### ### ##0");
+            SummaryWithoutBorderBelCS.SetFont(HeaderF2);
+
+            HSSFCellStyle SummaryWithoutBorderForeignCS = hssfworkbook.CreateCellStyle();
+            SummaryWithoutBorderForeignCS.DataFormat = hssfworkbook.CreateDataFormat().GetFormat("### ### ##0.00");
+            SummaryWithoutBorderForeignCS.SetFont(HeaderF2);
+
+            HSSFCellStyle SummaryWeightCS = hssfworkbook.CreateCellStyle();
+            SummaryWeightCS.DataFormat = hssfworkbook.CreateDataFormat().GetFormat("### ### ##0.00");
+            SummaryWeightCS.SetFont(HeaderF2);
+
+            HSSFCellStyle SummaryWithBorderBelCS = hssfworkbook.CreateCellStyle();
+            SummaryWithBorderBelCS.DataFormat = hssfworkbook.CreateDataFormat().GetFormat("### ### ##0");
+            SummaryWithBorderBelCS.BorderBottom = HSSFCellStyle.BORDER_THIN;
+            SummaryWithBorderBelCS.BottomBorderColor = HSSFColor.BLACK.index;
+            SummaryWithBorderBelCS.BorderLeft = HSSFCellStyle.BORDER_THIN;
+            SummaryWithBorderBelCS.LeftBorderColor = HSSFColor.BLACK.index;
+            SummaryWithBorderBelCS.BorderRight = HSSFCellStyle.BORDER_THIN;
+            SummaryWithBorderBelCS.RightBorderColor = HSSFColor.BLACK.index;
+            SummaryWithBorderBelCS.BorderTop = HSSFCellStyle.BORDER_THIN;
+            SummaryWithBorderBelCS.TopBorderColor = HSSFColor.BLACK.index;
+            SummaryWithBorderBelCS.WrapText = true;
+            SummaryWithBorderBelCS.SetFont(HeaderF2);
+
+            HSSFCellStyle SummaryWithBorderForeignCS = hssfworkbook.CreateCellStyle();
+            SummaryWithBorderForeignCS.DataFormat = hssfworkbook.CreateDataFormat().GetFormat("### ### ##0.00");
+            SummaryWithBorderForeignCS.BorderBottom = HSSFCellStyle.BORDER_THIN;
+            SummaryWithBorderForeignCS.BottomBorderColor = HSSFColor.BLACK.index;
+            SummaryWithBorderForeignCS.BorderLeft = HSSFCellStyle.BORDER_THIN;
+            SummaryWithBorderForeignCS.LeftBorderColor = HSSFColor.BLACK.index;
+            SummaryWithBorderForeignCS.BorderRight = HSSFCellStyle.BORDER_THIN;
+            SummaryWithBorderForeignCS.RightBorderColor = HSSFColor.BLACK.index;
+            SummaryWithBorderForeignCS.BorderTop = HSSFCellStyle.BORDER_THIN;
+            SummaryWithBorderForeignCS.TopBorderColor = HSSFColor.BLACK.index;
+            SummaryWithBorderForeignCS.WrapText = true;
+            SummaryWithBorderForeignCS.SetFont(HeaderF2);
+
+            HSSFCellStyle SimpleHeaderCS = hssfworkbook.CreateCellStyle();
+            SimpleHeaderCS.BorderBottom = HSSFCellStyle.BORDER_MEDIUM;
+            SimpleHeaderCS.BottomBorderColor = HSSFColor.BLACK.index;
+            SimpleHeaderCS.BorderLeft = HSSFCellStyle.BORDER_MEDIUM;
+            SimpleHeaderCS.LeftBorderColor = HSSFColor.BLACK.index;
+            SimpleHeaderCS.BorderRight = HSSFCellStyle.BORDER_MEDIUM;
+            SimpleHeaderCS.RightBorderColor = HSSFColor.BLACK.index;
+            SimpleHeaderCS.BorderTop = HSSFCellStyle.BORDER_MEDIUM;
+            SimpleHeaderCS.TopBorderColor = HSSFColor.BLACK.index;
+            //SimpleHeaderCS.WrapText = true;
+            SimpleHeaderCS.SetFont(HeaderF3);
+
+            #endregion Create fonts and styles
+
+            HSSFSheet sheet1 = hssfworkbook.CreateSheet("Отчет Маркетинг");
+            sheet1.PrintSetup.PaperSize = (short)PaperSizeType.A4;
+
+            sheet1.SetMargin(HSSFSheet.LeftMargin, (double).12);
+            sheet1.SetMargin(HSSFSheet.RightMargin, (double).07);
+            sheet1.SetMargin(HSSFSheet.TopMargin, (double).20);
+            sheet1.SetMargin(HSSFSheet.BottomMargin, (double).20);
+
+            int displayIndex = 0;
+
+            sheet1.SetColumnWidth(displayIndex++, 12 * 256);
+            sheet1.SetColumnWidth(displayIndex++, 61 * 256);
+            sheet1.SetColumnWidth(displayIndex++, 15 * 256);
+            sheet1.SetColumnWidth(displayIndex++, 12 * 256);
+            sheet1.SetColumnWidth(displayIndex++, 8 * 256);
+            sheet1.SetColumnWidth(displayIndex++, 8 * 256);
+            sheet1.SetColumnWidth(displayIndex, 14 * 256);
+
+            HSSFCell Cell1;
+
+            if (ProfilReportTable.Rows.Count > 0)
+            {
+                //Профиль
+                pos += 2;
+                displayIndex = 0;
+
+                Cell1 = sheet1.CreateRow(pos++).CreateCell(0);
+                Cell1.SetCellValue("ЗОВ-Профиль:");
+                Cell1.CellStyle = SummaryWithoutBorderBelCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Инв.№");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Наименование");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Цвет");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Патина");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Ед.изм.");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Кол-во");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Себестоимость");
+                Cell1.CellStyle = SimpleHeaderCS;
+                pos++;
+
+                for (int i = 0; i < ProfilReportTable.Rows.Count; i++)
+                {
+                    displayIndex = 0;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(ProfilReportTable.Rows[i]["InvNumber"].ToString());
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(ProfilReportTable.Rows[i]["AccountingName"].ToString());
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(FrontsReport.GetColorNameByCode(ProfilReportTable.Rows[i]["Cvet"].ToString()));
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(FrontsReport.GetPatinaNameByCode(ProfilReportTable.Rows[i]["Patina"].ToString()));
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(ProfilReportTable.Rows[i]["Measure"].ToString());
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["Count"]));
+                    Cell1.CellStyle = CountCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["Price"]));
+                    Cell1.CellStyle = PriceBelCS;
+                    pos++;
+                }
+            }
+
+            if (TPSReportTable.Rows.Count > 0)
+            {
+                //ТПС
+                pos++;
+                displayIndex = 0;
+
+                Cell1 = sheet1.CreateRow(pos++).CreateCell(0);
+                Cell1.SetCellValue("ЗОВ-ТПС:");
+                Cell1.CellStyle = SummaryWithoutBorderBelCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Инв.№");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Наименование");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Цвет");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Патина");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Ед.изм.");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Кол-во");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Себестоимость");
+                Cell1.CellStyle = SimpleHeaderCS;
+                pos++;
+
+                for (int i = 0; i < TPSReportTable.Rows.Count; i++)
+                {
+                    displayIndex = 0;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(TPSReportTable.Rows[i]["InvNumber"].ToString());
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(TPSReportTable.Rows[i]["AccountingName"].ToString());
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(FrontsReport.GetColorNameByCode(TPSReportTable.Rows[i]["Cvet"].ToString()));
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(FrontsReport.GetPatinaNameByCode(TPSReportTable.Rows[i]["Patina"].ToString()));
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(TPSReportTable.Rows[i]["Measure"].ToString());
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["Count"]));
+                    Cell1.CellStyle = CountCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["Price"]));
+                    Cell1.CellStyle = PriceBelCS;
+                    pos++;
+                }
+            }
+            pos++;
+            FileName += " Маркетинг";
+            string tempFolder = System.Environment.GetEnvironmentVariable("TEMP");
+            FileInfo file = new FileInfo(tempFolder + @"\" + FileName + ".xls");
+            int j = 1;
+            while (file.Exists == true)
+            {
+                file = new FileInfo(tempFolder + @"\" + FileName + "(" + j++ + ").xls");
+            }
+
+            FileStream NewFile = new FileStream(file.FullName, FileMode.Create);
+            hssfworkbook.Write(NewFile);
+            NewFile.Close();
+
+            System.Diagnostics.Process.Start(file.FullName);
+            ClearReport();
+        }
+
+        public void CreateMarketingPackReport(DateTime date1, DateTime date2, bool IsSample, bool IsNotSample, string FileName, decimal Rate, ArrayList MClients, ArrayList MClientGroups)
+        {
+            ClearReport();
+
+            string MainOrdersList = string.Empty;
+
+            int pos = 0;
+
+            FrontsReport.PackReport(date1, date2, false, IsSample, IsNotSample, MClients, MClientGroups);
+            DecorReport.PackReport(date1, date2, false, IsSample, IsNotSample, MClients, MClientGroups);
+
+            //PROFIL
+            if (FrontsReport.ProfilReportDataTable.Rows.Count > 0)
+            {
+                for (int i = 0; i < FrontsReport.ProfilReportDataTable.Rows.Count; i++)
+                {
+                    ProfilReportTable.ImportRow(FrontsReport.ProfilReportDataTable.Rows[i]);
+                }
+            }
+
+            if (DecorReport.ProfilReportDataTable.Rows.Count > 0)
+            {
+                for (int i = 0; i < DecorReport.ProfilReportDataTable.Rows.Count; i++)
+                {
+                    ProfilReportTable.ImportRow(DecorReport.ProfilReportDataTable.Rows[i]);
+                }
+            }
+
+            //TPS
+            if (FrontsReport.TPSReportDataTable.Rows.Count > 0)
+            {
+                for (int i = 0; i < FrontsReport.TPSReportDataTable.Rows.Count; i++)
+                {
+                    TPSReportTable.ImportRow(FrontsReport.TPSReportDataTable.Rows[i]);
+                }
+            }
+
+            if (DecorReport.TPSReportDataTable.Rows.Count > 0)
+            {
+                for (int i = 0; i < DecorReport.TPSReportDataTable.Rows.Count; i++)
+                {
+                    TPSReportTable.ImportRow(DecorReport.TPSReportDataTable.Rows[i]);
+                }
+            }
+
+            Collect(Rate);
+            //Export to excel
+            HSSFWorkbook hssfworkbook = new HSSFWorkbook();
+
+            ////create a entry of DocumentSummaryInformation
+            DocumentSummaryInformation dsi = PropertySetFactory.CreateDocumentSummaryInformation();
+            dsi.Company = "NPOI Team";
+            hssfworkbook.DocumentSummaryInformation = dsi;
+
+            ////create a entry of SummaryInformation
+            SummaryInformation si = PropertySetFactory.CreateSummaryInformation();
+            si.Subject = "NPOI SDK Example";
+            hssfworkbook.SummaryInformation = si;
+
+            #region Create fonts and styles
+
+            HSSFFont HeaderF1 = hssfworkbook.CreateFont();
+            HeaderF1.FontHeightInPoints = 11;
+            HeaderF1.Boldweight = 11 * 256;
+            HeaderF1.FontName = "Calibri";
+
+            HSSFFont HeaderF2 = hssfworkbook.CreateFont();
+            HeaderF2.FontHeightInPoints = 10;
+            HeaderF2.Boldweight = 10 * 256;
+            HeaderF2.FontName = "Calibri";
+
+            HSSFFont HeaderF3 = hssfworkbook.CreateFont();
+            HeaderF3.FontHeightInPoints = 9;
+            HeaderF3.Boldweight = 9 * 256;
+            HeaderF3.FontName = "Calibri";
+
+            HSSFFont SimpleF = hssfworkbook.CreateFont();
+            SimpleF.FontHeightInPoints = 8;
+            SimpleF.FontName = "Calibri";
+
+            HSSFCellStyle SimpleCS = hssfworkbook.CreateCellStyle();
+            SimpleCS.BorderBottom = HSSFCellStyle.BORDER_THIN;
+            SimpleCS.BottomBorderColor = HSSFColor.BLACK.index;
+            SimpleCS.BorderLeft = HSSFCellStyle.BORDER_THIN;
+            SimpleCS.LeftBorderColor = HSSFColor.BLACK.index;
+            SimpleCS.BorderRight = HSSFCellStyle.BORDER_THIN;
+            SimpleCS.RightBorderColor = HSSFColor.BLACK.index;
+            SimpleCS.BorderTop = HSSFCellStyle.BORDER_THIN;
+            SimpleCS.TopBorderColor = HSSFColor.BLACK.index;
+            SimpleCS.SetFont(SimpleF);
+
+            HSSFCellStyle CountCS = hssfworkbook.CreateCellStyle();
+            CountCS.DataFormat = hssfworkbook.CreateDataFormat().GetFormat("### ### ##0.000");
+            CountCS.BorderBottom = HSSFCellStyle.BORDER_THIN;
+            CountCS.BottomBorderColor = HSSFColor.BLACK.index;
+            CountCS.BorderLeft = HSSFCellStyle.BORDER_THIN;
+            CountCS.LeftBorderColor = HSSFColor.BLACK.index;
+            CountCS.BorderRight = HSSFCellStyle.BORDER_THIN;
+            CountCS.RightBorderColor = HSSFColor.BLACK.index;
+            CountCS.BorderTop = HSSFCellStyle.BORDER_THIN;
+            CountCS.TopBorderColor = HSSFColor.BLACK.index;
+            CountCS.SetFont(SimpleF);
+
+            HSSFCellStyle WeightCS = hssfworkbook.CreateCellStyle();
+            WeightCS.DataFormat = hssfworkbook.CreateDataFormat().GetFormat("### ### ##0.00");
+            WeightCS.BorderBottom = HSSFCellStyle.BORDER_THIN;
+            WeightCS.BottomBorderColor = HSSFColor.BLACK.index;
+            WeightCS.BorderLeft = HSSFCellStyle.BORDER_THIN;
+            WeightCS.LeftBorderColor = HSSFColor.BLACK.index;
+            WeightCS.BorderRight = HSSFCellStyle.BORDER_THIN;
+            WeightCS.RightBorderColor = HSSFColor.BLACK.index;
+            WeightCS.BorderTop = HSSFCellStyle.BORDER_THIN;
+            WeightCS.TopBorderColor = HSSFColor.BLACK.index;
+            WeightCS.SetFont(SimpleF);
+
+            HSSFCellStyle PriceBelCS = hssfworkbook.CreateCellStyle();
+            PriceBelCS.DataFormat = hssfworkbook.CreateDataFormat().GetFormat("### ### ##0.00");
+            PriceBelCS.BorderBottom = HSSFCellStyle.BORDER_THIN;
+            PriceBelCS.BottomBorderColor = HSSFColor.BLACK.index;
+            PriceBelCS.BorderLeft = HSSFCellStyle.BORDER_THIN;
+            PriceBelCS.LeftBorderColor = HSSFColor.BLACK.index;
+            PriceBelCS.BorderRight = HSSFCellStyle.BORDER_THIN;
+            PriceBelCS.RightBorderColor = HSSFColor.BLACK.index;
+            PriceBelCS.BorderTop = HSSFCellStyle.BORDER_THIN;
+            PriceBelCS.TopBorderColor = HSSFColor.BLACK.index;
+            PriceBelCS.SetFont(SimpleF);
+
+            HSSFCellStyle PriceForeignCS = hssfworkbook.CreateCellStyle();
+            PriceForeignCS.DataFormat = hssfworkbook.CreateDataFormat().GetFormat("### ### ##0.00");
+            PriceForeignCS.BorderBottom = HSSFCellStyle.BORDER_THIN;
+            PriceForeignCS.BottomBorderColor = HSSFColor.BLACK.index;
+            PriceForeignCS.BorderLeft = HSSFCellStyle.BORDER_THIN;
+            PriceForeignCS.LeftBorderColor = HSSFColor.BLACK.index;
+            PriceForeignCS.BorderRight = HSSFCellStyle.BORDER_THIN;
+            PriceForeignCS.RightBorderColor = HSSFColor.BLACK.index;
+            PriceForeignCS.BorderTop = HSSFCellStyle.BORDER_THIN;
+            PriceForeignCS.TopBorderColor = HSSFColor.BLACK.index;
+            PriceForeignCS.SetFont(SimpleF);
+
+            HSSFCellStyle ReportCS1 = hssfworkbook.CreateCellStyle();
+            ReportCS1.BorderBottom = HSSFCellStyle.BORDER_MEDIUM;
+            ReportCS1.BottomBorderColor = HSSFColor.BLACK.index;
+            ReportCS1.SetFont(HeaderF1);
+
+            HSSFCellStyle ReportCS2 = hssfworkbook.CreateCellStyle();
+            ReportCS2.SetFont(HeaderF1);
+
+            HSSFCellStyle SummaryWithoutBorderBelCS = hssfworkbook.CreateCellStyle();
+            SummaryWithoutBorderBelCS.DataFormat = hssfworkbook.CreateDataFormat().GetFormat("### ### ##0");
+            SummaryWithoutBorderBelCS.SetFont(HeaderF2);
+
+            HSSFCellStyle SummaryWithoutBorderForeignCS = hssfworkbook.CreateCellStyle();
+            SummaryWithoutBorderForeignCS.DataFormat = hssfworkbook.CreateDataFormat().GetFormat("### ### ##0.00");
+            SummaryWithoutBorderForeignCS.SetFont(HeaderF2);
+
+            HSSFCellStyle SummaryWeightCS = hssfworkbook.CreateCellStyle();
+            SummaryWeightCS.DataFormat = hssfworkbook.CreateDataFormat().GetFormat("### ### ##0.00");
+            SummaryWeightCS.SetFont(HeaderF2);
+
+            HSSFCellStyle SummaryWithBorderBelCS = hssfworkbook.CreateCellStyle();
+            SummaryWithBorderBelCS.DataFormat = hssfworkbook.CreateDataFormat().GetFormat("### ### ##0");
+            SummaryWithBorderBelCS.BorderBottom = HSSFCellStyle.BORDER_THIN;
+            SummaryWithBorderBelCS.BottomBorderColor = HSSFColor.BLACK.index;
+            SummaryWithBorderBelCS.BorderLeft = HSSFCellStyle.BORDER_THIN;
+            SummaryWithBorderBelCS.LeftBorderColor = HSSFColor.BLACK.index;
+            SummaryWithBorderBelCS.BorderRight = HSSFCellStyle.BORDER_THIN;
+            SummaryWithBorderBelCS.RightBorderColor = HSSFColor.BLACK.index;
+            SummaryWithBorderBelCS.BorderTop = HSSFCellStyle.BORDER_THIN;
+            SummaryWithBorderBelCS.TopBorderColor = HSSFColor.BLACK.index;
+            SummaryWithBorderBelCS.WrapText = true;
+            SummaryWithBorderBelCS.SetFont(HeaderF2);
+
+            HSSFCellStyle SummaryWithBorderForeignCS = hssfworkbook.CreateCellStyle();
+            SummaryWithBorderForeignCS.DataFormat = hssfworkbook.CreateDataFormat().GetFormat("### ### ##0.00");
+            SummaryWithBorderForeignCS.BorderBottom = HSSFCellStyle.BORDER_THIN;
+            SummaryWithBorderForeignCS.BottomBorderColor = HSSFColor.BLACK.index;
+            SummaryWithBorderForeignCS.BorderLeft = HSSFCellStyle.BORDER_THIN;
+            SummaryWithBorderForeignCS.LeftBorderColor = HSSFColor.BLACK.index;
+            SummaryWithBorderForeignCS.BorderRight = HSSFCellStyle.BORDER_THIN;
+            SummaryWithBorderForeignCS.RightBorderColor = HSSFColor.BLACK.index;
+            SummaryWithBorderForeignCS.BorderTop = HSSFCellStyle.BORDER_THIN;
+            SummaryWithBorderForeignCS.TopBorderColor = HSSFColor.BLACK.index;
+            SummaryWithBorderForeignCS.WrapText = true;
+            SummaryWithBorderForeignCS.SetFont(HeaderF2);
+
+            HSSFCellStyle SimpleHeaderCS = hssfworkbook.CreateCellStyle();
+            SimpleHeaderCS.BorderBottom = HSSFCellStyle.BORDER_MEDIUM;
+            SimpleHeaderCS.BottomBorderColor = HSSFColor.BLACK.index;
+            SimpleHeaderCS.BorderLeft = HSSFCellStyle.BORDER_MEDIUM;
+            SimpleHeaderCS.LeftBorderColor = HSSFColor.BLACK.index;
+            SimpleHeaderCS.BorderRight = HSSFCellStyle.BORDER_MEDIUM;
+            SimpleHeaderCS.RightBorderColor = HSSFColor.BLACK.index;
+            SimpleHeaderCS.BorderTop = HSSFCellStyle.BORDER_MEDIUM;
+            SimpleHeaderCS.TopBorderColor = HSSFColor.BLACK.index;
+            //SimpleHeaderCS.WrapText = true;
+            SimpleHeaderCS.SetFont(HeaderF3);
+
+            #endregion Create fonts and styles
+
+            HSSFSheet sheet1 = hssfworkbook.CreateSheet("Отчет Маркетинг");
+            sheet1.PrintSetup.PaperSize = (short)PaperSizeType.A4;
+
+            sheet1.SetMargin(HSSFSheet.LeftMargin, (double).12);
+            sheet1.SetMargin(HSSFSheet.RightMargin, (double).07);
+            sheet1.SetMargin(HSSFSheet.TopMargin, (double).20);
+            sheet1.SetMargin(HSSFSheet.BottomMargin, (double).20);
+
+            int displayIndex = 0;
+
+            sheet1.SetColumnWidth(displayIndex++, 12 * 256);
+            sheet1.SetColumnWidth(displayIndex++, 61 * 256);
+            sheet1.SetColumnWidth(displayIndex++, 15 * 256);
+            sheet1.SetColumnWidth(displayIndex++, 12 * 256);
+            sheet1.SetColumnWidth(displayIndex++, 8 * 256);
+            sheet1.SetColumnWidth(displayIndex++, 8 * 256);
+            sheet1.SetColumnWidth(displayIndex, 14 * 256);
+
+            HSSFCell Cell1;
+
+            if (ProfilReportTable.Rows.Count > 0)
+            {
+                //Профиль
+                pos += 2;
+                displayIndex = 0;
+
+                Cell1 = sheet1.CreateRow(pos++).CreateCell(0);
+                Cell1.SetCellValue("ЗОВ-Профиль:");
+                Cell1.CellStyle = SummaryWithoutBorderBelCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Инв.№");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Наименование");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Цвет");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Патина");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Ед.изм.");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Кол-во");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Себестоимость");
+                Cell1.CellStyle = SimpleHeaderCS;
+                pos++;
+
+                for (int i = 0; i < ProfilReportTable.Rows.Count; i++)
+                {
+                    displayIndex = 0;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(ProfilReportTable.Rows[i]["InvNumber"].ToString());
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(ProfilReportTable.Rows[i]["AccountingName"].ToString());
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(FrontsReport.GetColorNameByCode(ProfilReportTable.Rows[i]["Cvet"].ToString()));
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(FrontsReport.GetPatinaNameByCode(ProfilReportTable.Rows[i]["Patina"].ToString()));
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(ProfilReportTable.Rows[i]["Measure"].ToString());
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["Count"]));
+                    Cell1.CellStyle = CountCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["Price"]));
+                    Cell1.CellStyle = PriceBelCS;
+                    pos++;
+                }
+            }
+
+            if (TPSReportTable.Rows.Count > 0)
+            {
+                //ТПС
+                pos++;
+                displayIndex = 0;
+
+                Cell1 = sheet1.CreateRow(pos++).CreateCell(0);
+                Cell1.SetCellValue("ЗОВ-ТПС:");
+                Cell1.CellStyle = SummaryWithoutBorderBelCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Инв.№");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Наименование");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Цвет");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Патина");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Ед.изм.");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Кол-во");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Себестоимость");
+                Cell1.CellStyle = SimpleHeaderCS;
+                pos++;
+
+                for (int i = 0; i < TPSReportTable.Rows.Count; i++)
+                {
+                    displayIndex = 0;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(TPSReportTable.Rows[i]["InvNumber"].ToString());
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(TPSReportTable.Rows[i]["AccountingName"].ToString());
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(FrontsReport.GetColorNameByCode(TPSReportTable.Rows[i]["Cvet"].ToString()));
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(FrontsReport.GetPatinaNameByCode(TPSReportTable.Rows[i]["Patina"].ToString()));
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(TPSReportTable.Rows[i]["Measure"].ToString());
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["Count"]));
+                    Cell1.CellStyle = CountCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                     Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["Price"]));
                     Cell1.CellStyle = PriceBelCS;
                     pos++;

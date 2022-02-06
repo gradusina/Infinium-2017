@@ -345,7 +345,7 @@ namespace Infinium
 
             while (!SplashWindow.bSmallCreated) ;
 
-            Clients.Send(((DataRowView)Clients.ClientsBindingSource.Current).Row["Email"].ToString(), ((DataRowView)Clients.ClientsBindingSource.Current).Row["Login"].ToString());
+            Clients.Send(Convert.ToInt32(((DataRowView)Clients.ClientsBindingSource.Current).Row["ClientID"]), ((DataRowView)Clients.ClientsBindingSource.Current).Row["Email"].ToString(), ((DataRowView)Clients.ClientsBindingSource.Current).Row["Login"].ToString());
 
             while (SplashWindow.bSmallCreated)
                 SmallWaitForm.CloseS = true;

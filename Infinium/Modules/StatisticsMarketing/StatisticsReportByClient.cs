@@ -1075,6 +1075,7 @@ namespace Infinium.Modules.StatisticsMarketing
                     dt.Columns.Remove("DocNumber");
                     dt.Columns.Remove("DispatchDateTime");
                 }
+                dt.Columns.Remove("OrderNumber");
 
                 int ColumnCount = dt.Columns.Count;
 
@@ -2813,6 +2814,7 @@ namespace Infinium.Modules.StatisticsMarketing
                     dt.Columns.Remove("DocNumber");
                     dt.Columns.Remove("DispatchDateTime");
                 }
+                dt.Columns.Remove("OrderNumber");
 
                 int ColumnCount = dt.Columns.Count;
 

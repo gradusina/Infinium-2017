@@ -17,16 +17,16 @@ namespace Infinium.Modules.ExpeditionMarketing.DispatchReportToDbf
         decimal VAT = 1.0m;
         private DataTable temppackagesDtTable;
         public DispatchFrontsReportToDbf DispatchFrontsReport;
-        public DispatchDecorReportToDbf DispatchDecorReport = null;
+        public DispatchDecorReportToDbf DispatchDecorReport;
 
         public DataTable CurrencyTypesDataTable = null;
         public DataTable ProfilReportTable = null;
         public DataTable TPSReportTable = null;
 
-        public DispatchReportToDbf(ref DecorCatalogOrder DecorCatalogOrder)
+        public DispatchReportToDbf(FrontsCatalogOrder FrontsCatalogOrder, DecorCatalogOrder DecorCatalogOrder)
         {
-            DispatchFrontsReport = new DispatchFrontsReportToDbf();
-            DispatchDecorReport = new DispatchDecorReportToDbf(ref DecorCatalogOrder);
+            DispatchFrontsReport = new DispatchFrontsReportToDbf(FrontsCatalogOrder, DecorCatalogOrder);
+            DispatchDecorReport = new DispatchDecorReportToDbf(DecorCatalogOrder);
 
             CreateProfilReportTable();
             temppackagesDtTable = new DataTable();
@@ -563,6 +563,10 @@ namespace Infinium.Modules.ExpeditionMarketing.DispatchReportToDbf
                                 rows2[0]["PackageCount"] = 1;
                                 break;
                             }
+                        }
+                        else
+                        {
+                            
                         }
                     }
                 }
@@ -1993,6 +1997,10 @@ namespace Infinium.Modules.ExpeditionMarketing.DispatchReportToDbf
                                 break;
                             }
                         }
+                        else
+                        {
+
+                        }
                     }
                 }
 
@@ -2173,9 +2181,9 @@ namespace Infinium.Modules.ExpeditionMarketing.DispatchReportToDbf
 
         public static void DataSetIntoDBF(string path, string fileName, DataTable DT, int FactoryID)
         {
-            if (File.Exists(path + fileName + ".dbf"))
+            if (File.Exists(path + "/"+ fileName + ".dbf"))
             {
-                File.Delete(path + fileName + ".dbf");
+                File.Delete(path + "/" + fileName + ".dbf");
             }
 
             string createSql = "create table " + fileName + " ([UNNP] varchar(20), [UNN] varchar(20), [CurrencyCode] varchar(20), [InvNumber] varchar(20), [Amount] Double, [Price] Double, [NDS] varchar(10), [Weight] Double, [PackageCount] Integer)";
@@ -2234,9 +2242,9 @@ namespace Infinium.Modules.ExpeditionMarketing.DispatchReportToDbf
 
         public static void DataSetIntoDBF(string path, string fileName, DataTable DT1, DataTable DT2, int FactoryID)
         {
-            if (File.Exists(path + fileName + ".dbf"))
+            if (File.Exists(path + "/"+ fileName + ".dbf"))
             {
-                File.Delete(path + fileName + ".dbf");
+                File.Delete(path + "/" + fileName + ".dbf");
             }
 
             string createSql = "create table " + fileName + " ([UNNP] varchar(20), [UNN] varchar(20), [CurrencyCode] varchar(20), [InvNumber] varchar(20), [Amount] Double, [Price] Double, [NDS] varchar(10), [Weight] Double, [PackageCount] Integer)";

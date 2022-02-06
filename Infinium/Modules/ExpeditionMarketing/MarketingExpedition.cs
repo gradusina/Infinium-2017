@@ -2147,8 +2147,9 @@ namespace Infinium.Modules.Marketing.Expedition
 
             for (int i = 0; i < MegaOrdersDataTable.Rows.Count; i++)
             {
+                int ClientID = Convert.ToInt32(MegaOrdersDataTable.Rows[i]["ClientID"]);
                 int MegaOrderID = Convert.ToInt32(MegaOrdersDataTable.Rows[i]["MegaOrderID"]);
-                bool b = obj.IsCabFurAssembled(MegaOrderID);
+                bool b = obj.IsCabFurAssembled(ClientID, MegaOrderID);
                 if (b)
                 {
                     MegaOrdersDataTable.Rows[i]["CabFurAssembled"] = 1;
@@ -8597,7 +8598,8 @@ namespace Infinium.Modules.Marketing.Expedition
                     if (bImpost)
                     {
                         string Front2 = GetFront2Name(Convert.ToInt32(Row["TechnoProfileID"]));
-                        InsetType = InsetType + "/" + Front2;
+                        if (Front2.Length > 0)
+                            InsetType = InsetType + "/" + Front2;
                     }
                 }
                 InsetColor = GetInsetColorName(Convert.ToInt32(Row["InsetColorID"]));
@@ -10003,7 +10005,7 @@ namespace Infinium.Modules.Marketing.Expedition
             return CabFurOrdersDataTable.Rows.Count > 0;
         }
 
-        public string IsPackageMatch(int TechCatalogOperationsDetailID, int TechStoreID, int CoverID, int PatinaID, int InsetColorID)
+        public string IsPackageMatch(int CompleteClientID, int TechCatalogOperationsDetailID, int TechStoreID, int CoverID, int PatinaID, int InsetColorID)
         {
             string CellName = "";
 
@@ -10506,6 +10508,7 @@ namespace Infinium.Modules.Marketing.Expedition
 
             if (CabFurOrdersDataTable.Rows.Count == 0)
                 return false;
+            int ClientID = -1;
             int MegaOrderID = -1;
             int OrderNumber = -1;
             int MainOrderID = Convert.ToInt32(CabFurOrdersDataTable.Rows[0]["MainOrderID"]);
@@ -10513,12 +10516,13 @@ namespace Infinium.Modules.Marketing.Expedition
             DataRow[] rows = OrdersDT.Select("MainOrderID = " + MainOrderID);
             if (rows.Count() > 0)
             {
+                ClientID = Convert.ToInt32(rows[0]["ClientID"]);
                 MegaOrderID = Convert.ToInt32(rows[0]["MegaOrderID"]);
                 OrderNumber = Convert.ToInt32(rows[0]["OrderNumber"]);
             }
 
             int CabFurnitureComplementID = Convert.ToInt32(CabFurOrdersDataTable.Rows[0]["CabFurnitureComplementID"]);
-            string CellName = IsPackageMatch(Convert.ToInt32(CabFurOrdersDataTable.Rows[0]["TechCatalogOperationsDetailID"]),
+            string CellName = IsPackageMatch(ClientID, Convert.ToInt32(CabFurOrdersDataTable.Rows[0]["TechCatalogOperationsDetailID"]),
                 Convert.ToInt32(CabFurOrdersDataTable.Rows[0]["CTechStoreID"]),
                 Convert.ToInt32(CabFurOrdersDataTable.Rows[0]["CoverID"]),
                 Convert.ToInt32(CabFurOrdersDataTable.Rows[0]["PatinaID"]),
@@ -10557,7 +10561,7 @@ namespace Infinium.Modules.Marketing.Expedition
                 if (Convert.ToInt32(CabFurOrdersDataTable.Rows[i]["CabFurnitureComplementID"]) != CabFurnitureComplementID)
                 {
                     CabFurnitureComplementID = Convert.ToInt32(CabFurOrdersDataTable.Rows[i]["CabFurnitureComplementID"]);
-                    CellName = IsPackageMatch(Convert.ToInt32(CabFurOrdersDataTable.Rows[i]["TechCatalogOperationsDetailID"]),
+                    CellName = IsPackageMatch(ClientID, Convert.ToInt32(CabFurOrdersDataTable.Rows[i]["TechCatalogOperationsDetailID"]),
                         Convert.ToInt32(CabFurOrdersDataTable.Rows[i]["CTechStoreID"]),
                         Convert.ToInt32(CabFurOrdersDataTable.Rows[i]["CoverID"]),
                         Convert.ToInt32(CabFurOrdersDataTable.Rows[i]["PatinaID"]),
@@ -10991,13 +10995,7 @@ namespace Infinium.Modules.Marketing.Expedition
         {
             Create();
         }
-
-        public void Initialize()
-        {
-            ClearPackages();
-            FillPackages();
-        }
-
+        
         private void ClearPackages()
         {
             PackagesDT.Clear();
@@ -11034,13 +11032,14 @@ namespace Infinium.Modules.Marketing.Expedition
             AttachResultDT.Columns.Add(new DataColumn(("AllPackagesCount"), System.Type.GetType("System.String")));
         }
 
-        private void FillPackages()
+        public void FillPackagesByMegaOrders()
         {
             using (SqlDataAdapter DA = new SqlDataAdapter(
-                @"SELECT MainOrders.MegaOrderID, MegaOrders.OrderNumber, Packages.ProductType, Packages.FactoryID, Packages.MainOrderID, Packages.PackageID, Packages.PackageStatusID
+                @"SELECT MainOrders.MegaOrderID, MegaOrders.ClientID, MegaOrders.OrderNumber, Packages.ProductType, Packages.FactoryID, Packages.MainOrderID, Packages.PackageID, Packages.PackageStatusID
                 FROM Packages INNER JOIN MainOrders ON Packages.MainOrderID = MainOrders.MainOrderID
                 INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID AND MegaOrders.MegaOrderID IN (" + string.Join(",", MegaOrders) + ")", ConnectionStrings.MarketingOrdersConnectionString))
             {
+                PackagesDT.Clear();
                 DA.Fill(PackagesDT);
             }
         }
@@ -11139,7 +11138,7 @@ namespace Infinium.Modules.Marketing.Expedition
 
             using (DataView DV = new DataView(PackagesDT, string.Empty, "MainOrderID", DataViewRowState.CurrentRows))
             {
-                DT = DV.ToTable(true, new string[] { "MegaOrderID", "OrderNumber", "MainOrderID" });
+                DT = DV.ToTable(true, new string[] { "ClientID", "MegaOrderID", "OrderNumber", "MainOrderID" });
             }
 
             return DT;
@@ -13424,8 +13423,11 @@ namespace Infinium.Modules.Marketing.Expedition
 
         public void Send(string FileName, string MailAddressTo)
         {
-            string AccountPassword = "1290qpalzm";
-            string SenderEmail = "zovprofilreport@mail.ru";
+            //string AccountPassword = "1290qpalzm";
+            //string SenderEmail = "zovprofilreport@mail.ru";
+
+            string AccountPassword = "3699PassWord14772588";
+            string SenderEmail = "infiniumdevelopers@gmail.com";
 
             string from = SenderEmail;
 
@@ -13439,8 +13441,9 @@ namespace Infinium.Modules.Marketing.Expedition
             {
                 message.Subject = "Отчет по отгрузке " + Convert.ToDateTime(PrepareDispatchDateTime).ToString("dd.MM.yyyy");
                 message.Body = "Отчет сгенерирован автоматически системой Infinium. Не надо отвечать на это письмо. По всем вопросам обращайтесь " +
-                    "infiniumdevelopers@gmail.com";
-                SmtpClient client = new SmtpClient("smtp.mail.ru")
+                               "marketing.zovprofil@gmail.com";
+                //SmtpClient client = new SmtpClient("smtp.mail.ru")
+                SmtpClient client = new SmtpClient("smtp.gmail.com", 587)
                 {
                     EnableSsl = true,
                     UseDefaultCredentials = false,
@@ -14503,7 +14506,8 @@ namespace Infinium.Modules.Marketing.Expedition
                     if (bImpost)
                     {
                         string Front2 = GetFront2Name(Convert.ToInt32(Row["TechnoProfileID"]));
-                        InsetType = InsetType + "/" + Front2;
+                        if (Front2.Length > 0)
+                            InsetType = InsetType + "/" + Front2;
                     }
                 }
                 InsetColor = GetInsetColorName(Convert.ToInt32(Row["InsetColorID"]));

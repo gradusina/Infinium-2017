@@ -15,6 +15,7 @@ namespace Infinium.Modules.WorkAssignments
 
     public class TPSAngle45Assignments : IAllFrontParameterName
     {
+        private string _appovingUser = "Егорченко Р.П.";
         private ArrayList FrontsID;
         private FileManager FM = new FileManager();
         private DateTime CurrentDate;
@@ -60,6 +61,11 @@ namespace Infinium.Modules.WorkAssignments
         private DataTable Patricia1GridsDT;
         private DataTable Patricia1SimpleDT;
         private DataTable Patricia1OrdersDT;
+        private DataTable ScandiaVitrinaDT;
+        private DataTable ScandiaBoxesDT;
+        private DataTable ScandiaGridsDT;
+        private DataTable ScandiaSimpleDT;
+        private DataTable ScandiaOrdersDT;
         private DataTable KansasVitrinaDT;
         private DataTable KansasBoxesDT;
         private DataTable KansasGridsDT;
@@ -107,6 +113,7 @@ namespace Infinium.Modules.WorkAssignments
         private DataTable LorenzoCurvedOrdersDT;
         private DataTable ElegantCurvedOrdersDT;
         private DataTable Patricia1CurvedOrdersDT;
+        private DataTable ScandiaCurvedOrdersDT;
         private DataTable KansasCurvedOrdersDT;
         private DataTable SofiaCurvedOrdersDT;
         private DataTable DakotaCurvedOrdersDT;
@@ -159,6 +166,11 @@ namespace Infinium.Modules.WorkAssignments
             Patricia1GridsDT = new DataTable();
             Patricia1SimpleDT = new DataTable();
             Patricia1OrdersDT = new DataTable();
+            
+            ScandiaBoxesDT = new DataTable();
+            ScandiaGridsDT = new DataTable();
+            ScandiaSimpleDT = new DataTable();
+            ScandiaOrdersDT = new DataTable();
 
             KansasBoxesDT = new DataTable();
             KansasGridsDT = new DataTable();
@@ -204,6 +216,7 @@ namespace Infinium.Modules.WorkAssignments
             LorenzoCurvedOrdersDT = new DataTable();
             ElegantCurvedOrdersDT = new DataTable();
             Patricia1CurvedOrdersDT = new DataTable();
+            ScandiaCurvedOrdersDT = new DataTable();
             KansasCurvedOrdersDT = new DataTable();
             SofiaCurvedOrdersDT = new DataTable();
             DakotaCurvedOrdersDT = new DataTable();
@@ -507,6 +520,7 @@ namespace Infinium.Modules.WorkAssignments
                 LorenzoCurvedOrdersDT = SofiaOrdersDT.Clone();
                 ElegantCurvedOrdersDT = SofiaOrdersDT.Clone();
                 Patricia1CurvedOrdersDT = SofiaOrdersDT.Clone();
+                ScandiaCurvedOrdersDT = SofiaOrdersDT.Clone();
                 KansasCurvedOrdersDT = SofiaOrdersDT.Clone();
                 SofiaCurvedOrdersDT = SofiaOrdersDT.Clone();
                 DakotaCurvedOrdersDT = SofiaOrdersDT.Clone();
@@ -524,6 +538,7 @@ namespace Infinium.Modules.WorkAssignments
                 LorenzoVitrinaDT = SofiaOrdersDT.Clone();
                 ElegantVitrinaDT = SofiaOrdersDT.Clone();
                 Patricia1VitrinaDT = SofiaOrdersDT.Clone();
+                ScandiaVitrinaDT = SofiaOrdersDT.Clone();
                 KansasVitrinaDT = SofiaOrdersDT.Clone();
                 DakotaVitrinaDT = SofiaOrdersDT.Clone();
                 SofiaVitrinaDT = SofiaOrdersDT.Clone();
@@ -548,6 +563,11 @@ namespace Infinium.Modules.WorkAssignments
                 Patricia1BoxesDT = SofiaOrdersDT.Clone();
                 Patricia1GridsDT = SofiaOrdersDT.Clone();
                 Patricia1SimpleDT = SofiaOrdersDT.Clone();
+                
+                ScandiaOrdersDT = SofiaOrdersDT.Clone();
+                ScandiaBoxesDT = SofiaOrdersDT.Clone();
+                ScandiaGridsDT = SofiaOrdersDT.Clone();
+                ScandiaSimpleDT = SofiaOrdersDT.Clone();
 
                 KansasOrdersDT = SofiaOrdersDT.Clone();
                 KansasBoxesDT = SofiaOrdersDT.Clone();
@@ -1206,7 +1226,7 @@ namespace Infinium.Modules.WorkAssignments
         }
 
         private DataTable DistMainOrdersTable(DataTable SourceDT1, DataTable SourceDT2, DataTable SourceDT3, DataTable SourceDT4, DataTable SourceDT5,
-            DataTable SourceDT6, DataTable SourceDT7, DataTable SourceDT8, DataTable SourceDT9, DataTable SourceDT10, DataTable SourceDT11, bool OrderASC)
+            DataTable SourceDT6, DataTable SourceDT7, DataTable SourceDT8, DataTable SourceDT9, DataTable SourceDT10, DataTable SourceDT11, DataTable SourceDT12, bool OrderASC)
         {
             int MainOrderID = 0;
             DataTable DT = new DataTable();
@@ -1313,6 +1333,16 @@ namespace Infinium.Modules.WorkAssignments
                 }
             }
             foreach (DataRow Row in SourceDT11.Rows)
+            {
+                if (int.TryParse(Row["MainOrderID"].ToString(), out MainOrderID))
+                {
+                    DataRow NewRow = DT.NewRow();
+                    NewRow["MainOrderID"] = MainOrderID;
+                    NewRow["GroupType"] = Convert.ToInt32(Row["GroupType"]);
+                    DT.Rows.Add(NewRow);
+                }
+            }
+            foreach (DataRow Row in SourceDT12.Rows)
             {
                 if (int.TryParse(Row["MainOrderID"].ToString(), out MainOrderID))
                 {
@@ -1608,7 +1638,11 @@ namespace Infinium.Modules.WorkAssignments
                 //NewRow["FrameColor"] = GetColorName(Convert.ToInt32(rows[0]["ColorID"]));
                 string InsetColor = "Витрина";
                 if (Convert.ToInt32(DT2.Rows[j]["TechnoProfileID"]) != -1)
+                {
                     InsetColor = "Витрина Г-170";
+                    NewRow["Worker"] = "КРЕСТЫ";
+                }
+
                 NewRow["InsetColor"] = InsetColor;
                 NewRow["Height"] = rows[0]["Height"];
                 NewRow["Width"] = rows[0]["Width"];
@@ -2147,11 +2181,15 @@ namespace Infinium.Modules.WorkAssignments
                     NewRow["FrameColor"] = GetColorName(Convert.ToInt32(rows[0]["ColorID"]));
                 else
                     NewRow["FrameColor"] = GetColorName(Convert.ToInt32(rows[0]["ColorID"])) + "+" + GetPatinaName(Convert.ToInt32(rows[0]["PatinaID"]));
+                NewRow["Notes"] = rows[0]["Notes"];
                 if (Convert.ToInt32(rows[0]["InsetTypeID"]) == 1)
                 {
                     InsetColor = "Витрина";
                     if (Convert.ToInt32(DT2.Rows[j]["TechnoProfileID"]) != -1)
+                    {
                         InsetColor = "Витрина Г-170";
+                        NewRow["Notes"] = "КРЕСТЫ";
+                    }
                     NewRow["InsetColor"] = InsetColor;
                 }
                 else
@@ -2160,7 +2198,6 @@ namespace Infinium.Modules.WorkAssignments
                 NewRow["Width"] = rows[0]["Width"];
                 NewRow["Count"] = Count;
                 NewRow["Square"] = Square;
-                NewRow["Notes"] = rows[0]["Notes"];
                 DestinationDT.Rows.Add(NewRow);
             }
 
@@ -2323,11 +2360,14 @@ namespace Infinium.Modules.WorkAssignments
             {
                 using (DataView DV = new DataView(SourceDT))
                 {
-                    DT1 = DV.ToTable(true, new string[] { "ColorID", "PatinaID" });
+                    DT1 = DV.ToTable(true, new string[] { "TechnoProfileID", "ColorID", "PatinaID" });
                 }
                 for (int i = 0; i < DT1.Rows.Count; i++)
                 {
-                    using (DataView DV = new DataView(SourceDT, "ColorID=" + Convert.ToInt32(DT1.Rows[i]["ColorID"]) + " AND PatinaID=" + Convert.ToInt32(DT1.Rows[i]["PatinaID"]), string.Empty, DataViewRowState.CurrentRows))
+                    using (DataView DV = new DataView(SourceDT, 
+                        "ColorID=" + Convert.ToInt32(DT1.Rows[i]["ColorID"]) + 
+                        " AND PatinaID=" + Convert.ToInt32(DT1.Rows[i]["PatinaID"]) + 
+                        " AND TechnoProfileID=" + Convert.ToInt32(DT1.Rows[i]["TechnoProfileID"]), string.Empty, DataViewRowState.CurrentRows))
                     {
                         DT2 = DV.ToTable(true, new string[] { "InsetTypeID" });
                     }
@@ -2338,8 +2378,11 @@ namespace Infinium.Modules.WorkAssignments
                             DT3 = DV.ToTable(true, new string[] { "InsetColorID" });
                             for (int x = 0; x < DT3.Rows.Count; x++)
                             {
-                                DataRow[] rows = SourceDT.Select("ColorID=" + Convert.ToInt32(DT1.Rows[i]["ColorID"]) + " AND PatinaID=" + Convert.ToInt32(DT1.Rows[i]["PatinaID"]) +
-                                    " AND InsetTypeID=" + Convert.ToInt32(DT2.Rows[j]["InsetTypeID"]) + " AND InsetColorID=" + Convert.ToInt32(DT3.Rows[x]["InsetColorID"]));
+                                DataRow[] rows = SourceDT.Select("ColorID=" + Convert.ToInt32(DT1.Rows[i]["ColorID"]) + 
+                                                                 " AND PatinaID=" + Convert.ToInt32(DT1.Rows[i]["PatinaID"]) + 
+                                                                 " AND TechnoProfileID=" + Convert.ToInt32(DT1.Rows[i]["TechnoProfileID"]) +
+                                                                 " AND InsetTypeID=" + Convert.ToInt32(DT2.Rows[j]["InsetTypeID"]) + 
+                                                                 " AND InsetColorID=" + Convert.ToInt32(DT3.Rows[x]["InsetColorID"]));
 
                                 if (rows.Count() > 0)
                                 {
@@ -2349,11 +2392,16 @@ namespace Infinium.Modules.WorkAssignments
                                         FrameColor = GetColorName(Convert.ToInt32(rows[0]["ColorID"])) + "+" + GetPatinaName(Convert.ToInt32(rows[0]["PatinaID"]));
                                     //FrameColor = GetColorName(Convert.ToInt32(rows[0]["ColorID"]));
                                     InsetType = GetInsetTypeName(Convert.ToInt32(rows[0]["InsetTypeID"]));
+                                    string cresty = "";
                                     if (Convert.ToInt32(DT2.Rows[j]["InsetTypeID"]) == 1)
                                     {
                                         InsetType = "Витрина";
-                                        if (Convert.ToInt32(rows[0]["TechnoProfileID"]) != -1)
-                                            InsetType = "Витрина Г-170";
+                                        if (Convert.ToInt32(DT1.Rows[i]["TechnoProfileID"]) != -1)
+                                        {
+                                            string height = DistinctSizesDT.Rows[y]["Height"].ToString();
+                                            string width = DistinctSizesDT.Rows[y]["Width"].ToString();
+                                            cresty = " КРЕСТЫ";
+                                        }
 
                                         InsetColor = "Витрина";
                                     }
@@ -2365,10 +2413,13 @@ namespace Infinium.Modules.WorkAssignments
                                         DestinationDT.Columns.Add(new DataColumn(ColName, Type.GetType("System.String")));
 
                                     DestinationDT.Rows[0][ColName] = FrontName;
-
-                                    DataRow[] Srows = SourceDT.Select("ColorID=" + Convert.ToInt32(DT1.Rows[i]["ColorID"]) + " AND PatinaID=" + Convert.ToInt32(DT1.Rows[i]["PatinaID"]) +
-                                        " AND InsetTypeID=" + Convert.ToInt32(DT2.Rows[j]["InsetTypeID"]) + " AND InsetColorID=" + Convert.ToInt32(DT3.Rows[x]["InsetColorID"]) +
-                                        " AND Height=" + Convert.ToInt32(DistinctSizesDT.Rows[y]["Height"]) + " AND Width=" + Convert.ToInt32(DistinctSizesDT.Rows[y]["Width"]));
+                                    DataRow[] Srows = SourceDT.Select("ColorID=" + Convert.ToInt32(DT1.Rows[i]["ColorID"]) + 
+                                                                      " AND PatinaID=" + Convert.ToInt32(DT1.Rows[i]["PatinaID"]) + 
+                                                                      " AND TechnoProfileID=" + Convert.ToInt32(DT1.Rows[i]["TechnoProfileID"]) +
+                                                                      " AND InsetTypeID=" + Convert.ToInt32(DT2.Rows[j]["InsetTypeID"]) + 
+                                                                      " AND InsetColorID=" + Convert.ToInt32(DT3.Rows[x]["InsetColorID"]) +
+                                                                      " AND Height=" + Convert.ToInt32(DistinctSizesDT.Rows[y]["Height"]) + 
+                                                                      " AND Width=" + Convert.ToInt32(DistinctSizesDT.Rows[y]["Width"]));
                                     if (Srows.Count() > 0)
                                     {
                                         int Count = 0;
@@ -2382,12 +2433,14 @@ namespace Infinium.Modules.WorkAssignments
                                             NewRow["Sizes"] = DistinctSizesDT.Rows[y]["Height"].ToString() + " X " + DistinctSizesDT.Rows[y]["Width"].ToString();
                                             NewRow["Height"] = DistinctSizesDT.Rows[y]["Height"];
                                             NewRow["Width"] = DistinctSizesDT.Rows[y]["Width"];
-                                            NewRow[ColName] = Count;
+                                            NewRow[ColName] = Count + cresty;
                                             DestinationDT.Rows.Add(NewRow);
                                         }
                                         else
                                         {
-                                            Drows[0][ColName] = Count;
+                                            string height = DistinctSizesDT.Rows[y]["Height"].ToString();
+                                            string width = DistinctSizesDT.Rows[y]["Width"].ToString();
+                                            Drows[0][ColName] = Count + cresty;
                                         }
                                     }
                                 }
@@ -2540,6 +2593,8 @@ namespace Infinium.Modules.WorkAssignments
                 TrimmingSyngly(ElegantSimpleDT, ref TempDT, Admission, 1, true, HeightASC, string.Empty);
             if (Patricia1SimpleDT.Rows.Count > 0)
                 TrimmingSyngly(Patricia1SimpleDT, ref TempDT, Admission, 1, true, HeightASC, string.Empty);
+            if (ScandiaSimpleDT.Rows.Count > 0)
+                TrimmingSyngly(ScandiaSimpleDT, ref TempDT, Admission, 1, true, HeightASC, string.Empty);
             if (KansasSimpleDT.Rows.Count > 0)
                 TrimmingSyngly(KansasSimpleDT, ref TempDT, Admission, 1, true, HeightASC, string.Empty);
 
@@ -2600,6 +2655,8 @@ namespace Infinium.Modules.WorkAssignments
                 TrimmingSyngly(ElegantGridsDT, ref TempDT, Admission, 3, true, HeightASC, " РЕШ");
             if (Patricia1GridsDT.Rows.Count > 0)
                 TrimmingSyngly(Patricia1GridsDT, ref TempDT, Admission, 3, true, HeightASC, " РЕШ");
+            if (ScandiaGridsDT.Rows.Count > 0)
+                TrimmingSyngly(ScandiaGridsDT, ref TempDT, Admission, 3, true, HeightASC, " РЕШ");
             if (KansasGridsDT.Rows.Count > 0)
                 TrimmingSyngly(KansasGridsDT, ref TempDT, Admission, 3, true, HeightASC, " РЕШ");
             if (DakotaGridsDT.Rows.Count > 0)
@@ -2635,6 +2692,8 @@ namespace Infinium.Modules.WorkAssignments
                 TrimmingSyngly(ElegantBoxesDT, ref TempDT, Admission, 2, true, HeightASC, " ШУФ");
             if (Patricia1BoxesDT.Rows.Count > 0)
                 TrimmingSyngly(Patricia1BoxesDT, ref TempDT, Admission, 2, true, HeightASC, " ШУФ");
+            if (ScandiaBoxesDT.Rows.Count > 0)
+                TrimmingSyngly(ScandiaBoxesDT, ref TempDT, Admission, 2, true, HeightASC, " ШУФ");
             if (KansasBoxesDT.Rows.Count > 0)
                 TrimmingSyngly(KansasBoxesDT, ref TempDT, Admission, 2, true, HeightASC, " ШУФ");
             if (DakotaBoxesDT.Rows.Count > 0)
@@ -2704,6 +2763,8 @@ namespace Infinium.Modules.WorkAssignments
                 TrimmingSyngly(ElegantSimpleDT, ref TempDT, Admission, 1, false, HeightASC, string.Empty);
             if (Patricia1SimpleDT.Rows.Count > 0)
                 TrimmingSyngly(Patricia1SimpleDT, ref TempDT, Admission, 1, false, HeightASC, string.Empty);
+            if (ScandiaSimpleDT.Rows.Count > 0)
+                TrimmingSyngly(ScandiaSimpleDT, ref TempDT, Admission, 1, false, HeightASC, string.Empty);
             if (KansasSimpleDT.Rows.Count > 0)
                 TrimmingSyngly(KansasSimpleDT, ref TempDT, Admission, 1, false, HeightASC, string.Empty);
 
@@ -2713,13 +2774,13 @@ namespace Infinium.Modules.WorkAssignments
                 dt.Rows.Add(item.ItemArray);
 
             if (dt.Rows.Count > 0)
-                TrimmingSyngly(dt, ref TempDT, Admission, 4, false, HeightASC, " РЕШ");
+                TrimmingDakotaSyngly(dt, ref TempDT, Admission, 4, false, HeightASC, " РЕШ");
             dt.Clear();
             rows = DakotaSimpleDT.Select("InsetTypeID<>29272");
             foreach (DataRow item in rows)
                 dt.Rows.Add(item.ItemArray);
             if (dt.Rows.Count > 0)
-                TrimmingSyngly(dt, ref TempDT, Admission, 4, false, HeightASC, string.Empty);
+                TrimmingDakotaSyngly(dt, ref TempDT, Admission, 4, false, HeightASC, string.Empty);
 
 
             if (TempDT.Rows.Count > 0 && Convert.ToInt32(TempDT.Rows[0]["VitrinaCount"]) > 0)
@@ -2759,6 +2820,8 @@ namespace Infinium.Modules.WorkAssignments
                 TrimmingSyngly(ElegantGridsDT, ref TempDT, Admission, 3, false, HeightASC, " РЕШ");
             if (Patricia1GridsDT.Rows.Count > 0)
                 TrimmingSyngly(Patricia1GridsDT, ref TempDT, Admission, 3, false, HeightASC, " РЕШ");
+            if (ScandiaGridsDT.Rows.Count > 0)
+                TrimmingSyngly(ScandiaGridsDT, ref TempDT, Admission, 3, false, HeightASC, " РЕШ");
             if (KansasGridsDT.Rows.Count > 0)
                 TrimmingSyngly(KansasGridsDT, ref TempDT, Admission, 3, false, HeightASC, " РЕШ");
             if (DakotaGridsDT.Rows.Count > 0)
@@ -2798,6 +2861,8 @@ namespace Infinium.Modules.WorkAssignments
                 TrimmingSyngly(ElegantBoxesDT, ref TempDT, Admission, 2, false, HeightASC, " ШУФ");
             if (Patricia1BoxesDT.Rows.Count > 0)
                 TrimmingSyngly(Patricia1BoxesDT, ref TempDT, Admission, 2, false, HeightASC, " ШУФ");
+            if (ScandiaBoxesDT.Rows.Count > 0)
+                TrimmingSyngly(ScandiaBoxesDT, ref TempDT, Admission, 2, false, HeightASC, " ШУФ");
             if (KansasBoxesDT.Rows.Count > 0)
                 TrimmingSyngly(KansasBoxesDT, ref TempDT, Admission, 2, false, HeightASC, " ШУФ");
             if (DakotaBoxesDT.Rows.Count > 0)
@@ -2821,6 +2886,126 @@ namespace Infinium.Modules.WorkAssignments
 
         #endregion
 
+        private void TrimmingDakotaSyngly(DataTable SourceDT, ref DataTable DestinationDT, int Admission, int ProfileType, bool FrameColorASC, bool HeightASC, string AdditionalName)
+        {
+            DataTable DT1 = new DataTable();
+            DataTable DT2 = TrimDistHeightTable(SourceDT, HeightASC);
+
+            using (DataView DV = new DataView(SourceDT))
+            {
+                if (FrameColorASC)
+                    DV.Sort = "ColorID";
+                else
+                    DV.Sort = "ColorID DESC";
+                DT1 = DV.ToTable(true, new string[] { "ColorID" });
+            }
+
+            for (int i = 0; i < DT1.Rows.Count; i++)
+            {
+                for (int j = 0; j < DT2.Rows.Count; j++)
+                {
+                    DataRow[] Srows = SourceDT.Select("ColorID=" + Convert.ToInt32(DT1.Rows[i]["ColorID"]) +
+                        " AND Height=" + Convert.ToInt32(DT2.Rows[j]["Height"]));
+                    if (Srows.Count() > 0)
+                    {
+                        int Count = 0;
+                        int G170Count = 0;
+                        int VitrinaCount = 0;
+                        int GridCount = 0;
+                        int Height = Convert.ToInt32(DT2.Rows[j]["Height"]) + Admission;
+                        foreach (DataRow item in Srows)
+                        {
+                            Count += Convert.ToInt32(item["Count"]);
+                            if (Convert.ToInt32(item["InsetTypeID"]) == 1)
+                                VitrinaCount += Convert.ToInt32(item["Count"]);
+                            if (Convert.ToInt32(item["InsetTypeID"]) == 685 || Convert.ToInt32(item["InsetTypeID"]) == 686 || Convert.ToInt32(item["InsetTypeID"]) == 687 || Convert.ToInt32(item["InsetTypeID"]) == 688 || Convert.ToInt32(item["InsetTypeID"]) == 29272)
+                                GridCount += Convert.ToInt32(item["Count"]);
+
+                            if (Convert.ToInt32(item["TechnoProfileID"]) != -1)
+                                G170Count++;
+                        }
+                        string Name = ProfileName(Convert.ToInt32(Srows[0]["FrontConfigID"])) + AdditionalName;
+                        DataRow[] rows = DestinationDT.Select("Front='" + Name + "' AND ColorID=" + Convert.ToInt32(DT1.Rows[i]["ColorID"]) +
+                            " AND Height=" + Height);
+                        if (rows.Count() == 0)
+                        {
+                            DataRow NewRow = DestinationDT.NewRow();
+                            NewRow["Front"] = Name;
+                            NewRow["Color"] = GetColorName(Convert.ToInt32(DT1.Rows[i]["ColorID"]));
+                            NewRow["Height"] = Height;
+                            NewRow["Count"] = Count * 2;
+                            NewRow["VitrinaCount"] = VitrinaCount * 2;
+                            NewRow["GridCount"] = GridCount * 2;
+                            if (G170Count != 0)
+                                NewRow["GridNotes"] = "КРЕСТЫ";
+                            NewRow["FrontID"] = Convert.ToInt32(Srows[0]["FrontID"]);
+                            NewRow["ColorID"] = Convert.ToInt32(DT1.Rows[i]["ColorID"]);
+                            NewRow["ProfileType"] = ProfileType;
+                            DestinationDT.Rows.Add(NewRow);
+                        }
+                        else
+                        {
+                            rows[0]["Count"] = Convert.ToInt32(rows[0]["Count"]) + Count * 2;
+                            rows[0]["VitrinaCount"] = Convert.ToInt32(rows[0]["VitrinaCount"]) + VitrinaCount * 2;
+                            rows[0]["GridCount"] = Convert.ToInt32(rows[0]["GridCount"]) + GridCount * 2;
+                            if (G170Count != 0)
+                                rows[0]["GridNotes"] = "КРЕСТЫ";
+                        }
+                    }
+                    Srows = SourceDT.Select("ColorID=" + Convert.ToInt32(DT1.Rows[i]["ColorID"]) +
+                        " AND Width=" + Convert.ToInt32(DT2.Rows[j]["Height"]));
+                    if (Srows.Count() > 0)
+                    {
+                        int Count = 0;
+                        int G170Count = 0;
+                        int VitrinaCount = 0;
+                        int GridCount = 0;
+                        int Height = Convert.ToInt32(DT2.Rows[j]["Height"]) + Admission;
+                        foreach (DataRow item in Srows)
+                        {
+                            Count += Convert.ToInt32(item["Count"]);
+                            if (Convert.ToInt32(item["InsetTypeID"]) == 1)
+                                VitrinaCount += Convert.ToInt32(item["Count"]);
+                            if (Convert.ToInt32(item["InsetTypeID"]) == 685 || Convert.ToInt32(item["InsetTypeID"]) == 686 || Convert.ToInt32(item["InsetTypeID"]) == 687 || Convert.ToInt32(item["InsetTypeID"]) == 688 || Convert.ToInt32(item["InsetTypeID"]) == 29272)
+                                GridCount += Convert.ToInt32(item["Count"]);
+                            if (Convert.ToInt32(item["TechnoProfileID"]) != -1)
+                                G170Count++;
+                        }
+
+                        string Name = ProfileName(Convert.ToInt32(Srows[0]["FrontConfigID"])) + AdditionalName;
+                        DataRow[] rows = DestinationDT.Select("Front='" + Name + "' AND ColorID=" + Convert.ToInt32(DT1.Rows[i]["ColorID"]) +
+                            " AND Height=" + Height);
+                        if (rows.Count() == 0)
+                        {
+                            DataRow NewRow = DestinationDT.NewRow();
+                            NewRow["Front"] = Name;
+                            NewRow["Color"] = GetColorName(Convert.ToInt32(DT1.Rows[i]["ColorID"]));
+                            NewRow["Height"] = Height;
+                            NewRow["Count"] = Count * 2;
+                            NewRow["VitrinaCount"] = VitrinaCount * 2;
+                            NewRow["GridCount"] = GridCount * 2;
+                            if (G170Count != 0)
+                                NewRow["GridNotes"] = "КРЕСТЫ";
+                            NewRow["FrontID"] = Convert.ToInt32(Srows[0]["FrontID"]);
+                            NewRow["ColorID"] = Convert.ToInt32(DT1.Rows[i]["ColorID"]);
+                            NewRow["ProfileType"] = ProfileType;
+                            DestinationDT.Rows.Add(NewRow);
+                        }
+                        else
+                        {
+                            rows[0]["Count"] = Convert.ToInt32(rows[0]["Count"]) + Count * 2;
+                            rows[0]["VitrinaCount"] = Convert.ToInt32(rows[0]["VitrinaCount"]) + VitrinaCount * 2;
+                            rows[0]["GridCount"] = Convert.ToInt32(rows[0]["GridCount"]) + GridCount * 2;
+                            if (G170Count != 0)
+                                rows[0]["GridNotes"] = "КРЕСТЫ";
+                        }
+                    }
+                }
+            }
+            DT1.Dispose();
+            DT2.Dispose();
+        }
+        
         private void TrimmingSyngly(DataTable SourceDT, ref DataTable DestinationDT, int Admission, int ProfileType, bool FrameColorASC, bool HeightASC, string AdditionalName)
         {
             DataTable DT1 = new DataTable();
@@ -3082,6 +3267,8 @@ namespace Infinium.Modules.WorkAssignments
                 AdditionsSyngly(ElegantVitrinaDT, ref DestinationDT);
             if (Patricia1VitrinaDT.Rows.Count > 0)
                 AdditionsSyngly(Patricia1VitrinaDT, ref DestinationDT);
+            if (ScandiaVitrinaDT.Rows.Count > 0)
+                AdditionsSyngly(ScandiaVitrinaDT, ref DestinationDT);
             if (KansasVitrinaDT.Rows.Count > 0)
                 AdditionsSyngly(KansasVitrinaDT, ref DestinationDT);
             if (DakotaVitrinaDT.Rows.Count > 0)
@@ -3185,7 +3372,7 @@ namespace Infinium.Modules.WorkAssignments
             if (!OrderASC)
                 SizeASC = "Height DESC, Width DESC, Notes DESC";
 
-            DataRow[] irows = InsetTypesDataTable.Select("(GroupID = 3 OR GroupID = 4) AND InsetTypeID<>29272");
+            DataRow[] irows = InsetTypesDataTable.Select("(GroupID = 3 OR GroupID = 4) AND InsetTypeID NOT IN (29272,29275,29279)");
             string filter = string.Empty;
             foreach (DataRow item in irows)
                 filter += item["InsetTypeID"].ToString() + ",";
@@ -3555,12 +3742,24 @@ namespace Infinium.Modules.WorkAssignments
             if (Patricia1SimpleDT.Rows.Count > 0)
                 SimpleInsetsOnly(Patricia1SimpleDT, ref DestinationDT,
                     Convert.ToInt32(FrontMargins.Patricia1SimpleInsetHeight), Convert.ToInt32(FrontMargins.Patricia1SimpleInsetWidth), OrderASC, IsBox);
+            if (ScandiaSimpleDT.Rows.Count > 0)
+                SimpleInsetsOnly(ScandiaSimpleDT, ref DestinationDT,
+                    Convert.ToInt32(FrontMargins.ScandiaSimpleInsetHeight), Convert.ToInt32(FrontMargins.ScandiaSimpleInsetWidth), OrderASC, IsBox);
             if (KansasSimpleDT.Rows.Count > 0)
                 SimpleInsetsOnly(KansasSimpleDT, ref DestinationDT,
                     Convert.ToInt32(FrontMargins.KansasSimpleInsetHeight), Convert.ToInt32(FrontMargins.KansasSimpleInsetWidth), OrderASC, IsBox);
             if (DakotaSimpleDT.Rows.Count > 0)
-                SimpleInsetsOnly(DakotaSimpleDT, ref DestinationDT,
-                    Convert.ToInt32(FrontMargins.DakotaSimpleInsetHeight), Convert.ToInt32(FrontMargins.DakotaSimpleInsetWidth), OrderASC, IsBox);
+            {
+                if (IsBox)
+                    SimpleInsetsOnly(DakotaSimpleDT, ref DestinationDT,
+                        Convert.ToInt32(FrontMargins.DakotaSimpleInsetHeight),
+                        Convert.ToInt32(FrontMargins.DakotaSimpleInsetWidth), OrderASC, IsBox);
+                else
+                    SimpleInsetsOnly(DakotaSimpleDT, ref DestinationDT,
+                        Convert.ToInt32(FrontMargins.DakotaSimpleInsetHeight + 1),
+                        Convert.ToInt32(FrontMargins.DakotaSimpleInsetWidth + 1), OrderASC, IsBox);
+            }
+
             if (SofiaSimpleDT.Rows.Count > 0)
                 SimpleInsetsOnly(SofiaSimpleDT, ref DestinationDT,
                     Convert.ToInt32(FrontMargins.SofiaSimpleInsetHeight), Convert.ToInt32(FrontMargins.SofiaSimpleInsetWidth), OrderASC, IsBox);
@@ -3605,6 +3804,9 @@ namespace Infinium.Modules.WorkAssignments
             if (Patricia1GridsDT.Rows.Count > 0)
                 GridInsetsOnly(Patricia1GridsDT, ref DestinationDT,
                     Convert.ToInt32(FrontMargins.Patricia1GridInsetHeight), Convert.ToInt32(FrontMargins.Patricia1GridInsetWidth), OrderASC, IsBox);
+            if (ScandiaGridsDT.Rows.Count > 0)
+                GridInsetsOnly(ScandiaGridsDT, ref DestinationDT,
+                    Convert.ToInt32(FrontMargins.ScandiaGridInsetHeight), Convert.ToInt32(FrontMargins.ScandiaGridInsetWidth), OrderASC, IsBox);
             if (KansasGridsDT.Rows.Count > 0)
                 GridInsetsOnly(KansasGridsDT, ref DestinationDT,
                     Convert.ToInt32(FrontMargins.KansasGridInsetHeight), Convert.ToInt32(FrontMargins.KansasGridInsetWidth), OrderASC, IsBox);
@@ -3645,6 +3847,9 @@ namespace Infinium.Modules.WorkAssignments
             if (Patricia1BoxesDT.Rows.Count > 0)
                 BoxInsetsOnly(Patricia1BoxesDT, ref DestinationDT,
                     Convert.ToInt32(FrontMargins.Patricia1BoxInsetHeight), Convert.ToInt32(FrontMargins.Patricia1BoxInsetWidth), OrderASC, IsBox);
+            if (ScandiaBoxesDT.Rows.Count > 0)
+                BoxInsetsOnly(ScandiaBoxesDT, ref DestinationDT,
+                    Convert.ToInt32(FrontMargins.ScandiaBoxInsetHeight), Convert.ToInt32(FrontMargins.ScandiaBoxInsetWidth), OrderASC, IsBox);
             if (KansasBoxesDT.Rows.Count > 0)
                 BoxInsetsOnly(KansasBoxesDT, ref DestinationDT,
                     Convert.ToInt32(FrontMargins.KansasBoxInsetHeight), Convert.ToInt32(FrontMargins.KansasBoxInsetWidth), OrderASC, IsBox);
@@ -3681,6 +3886,7 @@ namespace Infinium.Modules.WorkAssignments
             LorenzoOrdersDT.Clear();
             ElegantOrdersDT.Clear();
             Patricia1OrdersDT.Clear();
+            ScandiaOrdersDT.Clear();
             KansasOrdersDT.Clear();
             DakotaOrdersDT.Clear();
             SofiaOrdersDT.Clear();
@@ -3693,6 +3899,7 @@ namespace Infinium.Modules.WorkAssignments
             LorenzoCurvedOrdersDT.Clear();
             ElegantCurvedOrdersDT.Clear();
             Patricia1CurvedOrdersDT.Clear();
+            ScandiaCurvedOrdersDT.Clear();
             KansasCurvedOrdersDT.Clear();
             SofiaCurvedOrdersDT.Clear();
             DakotaCurvedOrdersDT.Clear();
@@ -3717,6 +3924,7 @@ namespace Infinium.Modules.WorkAssignments
             GetCurvedFrontsOrders(ref LorenzoCurvedOrdersDT, WorkAssignmentID, FactoryID, @"(15580,15581,15582,15583,15584,15585,15586,15587)");
             GetCurvedFrontsOrders(ref ElegantCurvedOrdersDT, WorkAssignmentID, FactoryID, @"(-1)");
             GetCurvedFrontsOrders(ref Patricia1CurvedOrdersDT, WorkAssignmentID, FactoryID, @"(-1)");
+            GetCurvedFrontsOrders(ref ScandiaCurvedOrdersDT, WorkAssignmentID, FactoryID, @"(-1)");
             GetCurvedFrontsOrders(ref KansasCurvedOrdersDT, WorkAssignmentID, FactoryID, @"(1658,1659,1660,1661,1991,1992,1993,1994)");
             GetCurvedFrontsOrders(ref SofiaCurvedOrdersDT, WorkAssignmentID, FactoryID, @"(1654,1655,1656,1657,1987,1988,1989,1990)");
             GetCurvedFrontsOrders(ref DakotaCurvedOrdersDT, WorkAssignmentID, FactoryID, @"(29212,29214,29215,29216)");
@@ -3742,6 +3950,11 @@ namespace Infinium.Modules.WorkAssignments
                 {
                     GetProfileNames(ref ProfileNamesDT, WorkAssignmentID, FactoryID, Fronts.Patricia1);
                     GetFrontsOrders(ref Patricia1OrdersDT, WorkAssignmentID, FactoryID, Fronts.Patricia1);
+                }
+                if (Convert.ToInt32(Convert.ToInt32(FrontsID[i])) == Convert.ToInt32(Fronts.Scandia))
+                {
+                    GetProfileNames(ref ProfileNamesDT, WorkAssignmentID, FactoryID, Fronts.Scandia);
+                    GetFrontsOrders(ref ScandiaOrdersDT, WorkAssignmentID, FactoryID, Fronts.Scandia);
                 }
                 if (Convert.ToInt32(Convert.ToInt32(FrontsID[i])) == Convert.ToInt32(Fronts.Lorenzo))
                 {
@@ -3773,6 +3986,11 @@ namespace Infinium.Modules.WorkAssignments
                     GetFrontsOrders(ref SofiaOrdersDT, WorkAssignmentID, FactoryID, Fronts.Sofia);
                     GetProfileNames(ref ProfileNamesDT, WorkAssignmentID, FactoryID, Fronts.Sofia);
                 }
+                if (Convert.ToInt32(Convert.ToInt32(FrontsID[i])) == Convert.ToInt32(Fronts.SofiaNotColored))
+                {
+                    GetFrontsOrders(ref SofiaOrdersDT, WorkAssignmentID, FactoryID, Fronts.SofiaNotColored);
+                    GetProfileNames(ref ProfileNamesDT, WorkAssignmentID, FactoryID, Fronts.SofiaNotColored);
+                }
                 if (Convert.ToInt32(Convert.ToInt32(FrontsID[i])) == Convert.ToInt32(Fronts.Turin1))
                 {
                     GetFrontsOrders(ref Turin1OrdersDT, WorkAssignmentID, FactoryID, Fronts.Turin1);
@@ -3787,6 +4005,11 @@ namespace Infinium.Modules.WorkAssignments
                 {
                     GetFrontsOrders(ref Turin3OrdersDT, WorkAssignmentID, FactoryID, Fronts.Turin3);
                     GetProfileNames(ref ProfileNamesDT, WorkAssignmentID, FactoryID, Fronts.Turin3);
+                }
+                if (Convert.ToInt32(Convert.ToInt32(FrontsID[i])) == Convert.ToInt32(Fronts.Turin3NotColored))
+                {
+                    GetFrontsOrders(ref Turin3OrdersDT, WorkAssignmentID, FactoryID, Fronts.Turin3NotColored);
+                    GetProfileNames(ref ProfileNamesDT, WorkAssignmentID, FactoryID, Fronts.Turin3NotColored);
                 }
                 if (Convert.ToInt32(Convert.ToInt32(FrontsID[i])) == Convert.ToInt32(Fronts.LeonTPS))
                 {
@@ -3805,8 +4028,8 @@ namespace Infinium.Modules.WorkAssignments
                 }
             }
 
-            if (LorenzoCurvedOrdersDT.Rows.Count == 0 && ElegantCurvedOrdersDT.Rows.Count == 0 && Patricia1CurvedOrdersDT.Rows.Count == 0 && KansasCurvedOrdersDT.Rows.Count == 0 && SofiaCurvedOrdersDT.Rows.Count == 0 && DakotaCurvedOrdersDT.Rows.Count == 0 && Turin1CurvedOrdersDT.Rows.Count == 0 && Turin1_1CurvedOrdersDT.Rows.Count == 0 && Turin3CurvedOrdersDT.Rows.Count == 0 && InfinitiCurvedOrdersDT.Rows.Count == 0 &&
-                LorenzoOrdersDT.Rows.Count == 0 && ElegantOrdersDT.Rows.Count == 0 && Patricia1OrdersDT.Rows.Count == 0 && KansasOrdersDT.Rows.Count == 0 && DakotaOrdersDT.Rows.Count == 0 && SofiaOrdersDT.Rows.Count == 0 && Turin1OrdersDT.Rows.Count == 0 && Turin1_1OrdersDT.Rows.Count == 0 && Turin3OrdersDT.Rows.Count == 0 && LeonOrdersDT.Rows.Count == 0 && InfinitiOrdersDT.Rows.Count == 0 &&
+            if (LorenzoCurvedOrdersDT.Rows.Count == 0 && ElegantCurvedOrdersDT.Rows.Count == 0 && Patricia1CurvedOrdersDT.Rows.Count == 0 && ScandiaCurvedOrdersDT.Rows.Count == 0 && KansasCurvedOrdersDT.Rows.Count == 0 && SofiaCurvedOrdersDT.Rows.Count == 0 && DakotaCurvedOrdersDT.Rows.Count == 0 && Turin1CurvedOrdersDT.Rows.Count == 0 && Turin1_1CurvedOrdersDT.Rows.Count == 0 && Turin3CurvedOrdersDT.Rows.Count == 0 && InfinitiCurvedOrdersDT.Rows.Count == 0 &&
+                LorenzoOrdersDT.Rows.Count == 0 && ElegantOrdersDT.Rows.Count == 0 && Patricia1OrdersDT.Rows.Count == 0 && ScandiaOrdersDT.Rows.Count == 0 && KansasOrdersDT.Rows.Count == 0 && DakotaOrdersDT.Rows.Count == 0 && SofiaOrdersDT.Rows.Count == 0 && Turin1OrdersDT.Rows.Count == 0 && Turin1_1OrdersDT.Rows.Count == 0 && Turin3OrdersDT.Rows.Count == 0 && LeonOrdersDT.Rows.Count == 0 && InfinitiOrdersDT.Rows.Count == 0 &&
                 BagetWithAngelOrdersDT.Rows.Count == 0 && NotArchDecorOrdersDT.Rows.Count == 0 && ArchDecorOrdersDT.Rows.Count == 0 && GridsDecorOrdersDT.Rows.Count == 0)
                 return false;
             else
@@ -3967,6 +4190,7 @@ namespace Infinium.Modules.WorkAssignments
             LorenzoSimpleDT.Clear();
             ElegantSimpleDT.Clear();
             Patricia1SimpleDT.Clear();
+            ScandiaSimpleDT.Clear();
             KansasSimpleDT.Clear();
             DakotaSimpleDT.Clear();
             SofiaSimpleDT.Clear();
@@ -3979,6 +4203,7 @@ namespace Infinium.Modules.WorkAssignments
             LorenzoVitrinaDT.Clear();
             ElegantVitrinaDT.Clear();
             Patricia1VitrinaDT.Clear();
+            ScandiaVitrinaDT.Clear();
             KansasVitrinaDT.Clear();
             DakotaVitrinaDT.Clear();
             SofiaVitrinaDT.Clear();
@@ -3994,6 +4219,7 @@ namespace Infinium.Modules.WorkAssignments
             GetVitrinaFronts(LorenzoOrdersDT, ref LorenzoVitrinaDT);
             GetVitrinaFronts(ElegantOrdersDT, ref ElegantVitrinaDT);
             GetVitrinaFronts(Patricia1OrdersDT, ref Patricia1VitrinaDT);
+            GetVitrinaFronts(ScandiaOrdersDT, ref ScandiaVitrinaDT);
             GetVitrinaFronts(KansasOrdersDT, ref KansasVitrinaDT);
             GetVitrinaFronts(DakotaOrdersDT, ref DakotaVitrinaDT);
             GetVitrinaFronts(SofiaOrdersDT, ref SofiaVitrinaDT);
@@ -4010,6 +4236,7 @@ namespace Infinium.Modules.WorkAssignments
             GetSimpleFronts(LorenzoOrdersDT, ref LorenzoSimpleDT, 222);
             GetSimpleFronts(ElegantOrdersDT, ref ElegantSimpleDT, 222);
             GetSimpleFronts(Patricia1OrdersDT, ref Patricia1SimpleDT, 222);
+            GetSimpleFronts(ScandiaOrdersDT, ref ScandiaSimpleDT, 222);
             GetSimpleFronts(KansasOrdersDT, ref KansasSimpleDT, 222);
             GetSimpleFronts(DakotaOrdersDT, ref DakotaSimpleDT, 222);
             GetSimpleFronts(SofiaOrdersDT, ref SofiaSimpleDT, 222);
@@ -4022,6 +4249,7 @@ namespace Infinium.Modules.WorkAssignments
             LorenzoGridsDT.Clear();
             ElegantGridsDT.Clear();
             Patricia1GridsDT.Clear();
+            ScandiaGridsDT.Clear();
             KansasGridsDT.Clear();
             DakotaGridsDT.Clear();
             SofiaGridsDT.Clear();
@@ -4039,6 +4267,7 @@ namespace Infinium.Modules.WorkAssignments
             GetGridFronts(LorenzoOrdersDT, ref LorenzoGridsDT);
             GetGridFronts(ElegantOrdersDT, ref ElegantGridsDT);
             GetGridFronts(Patricia1OrdersDT, ref Patricia1GridsDT);
+            GetGridFronts(ScandiaOrdersDT, ref ScandiaGridsDT);
             GetGridFronts(KansasOrdersDT, ref KansasGridsDT);
             GetGridFronts(DakotaOrdersDT, ref DakotaGridsDT);
             GetGridFronts(SofiaOrdersDT, ref SofiaGridsDT);
@@ -4051,6 +4280,7 @@ namespace Infinium.Modules.WorkAssignments
             LorenzoBoxesDT.Clear();
             ElegantBoxesDT.Clear();
             Patricia1BoxesDT.Clear();
+            ScandiaBoxesDT.Clear();
             KansasBoxesDT.Clear();
             DakotaBoxesDT.Clear();
             SofiaBoxesDT.Clear();
@@ -4063,6 +4293,7 @@ namespace Infinium.Modules.WorkAssignments
             GetBoxFronts(LorenzoOrdersDT, ref LorenzoBoxesDT, 222);
             GetBoxFronts(ElegantOrdersDT, ref ElegantBoxesDT, 222);
             GetBoxFronts(Patricia1OrdersDT, ref Patricia1BoxesDT, 222);
+            GetBoxFronts(ScandiaOrdersDT, ref ScandiaBoxesDT, 222);
             GetBoxFronts(KansasOrdersDT, ref KansasBoxesDT, 222);
             GetBoxFronts(DakotaOrdersDT, ref DakotaBoxesDT, 222);
             GetBoxFronts(SofiaOrdersDT, ref SofiaBoxesDT, 222);
@@ -4129,6 +4360,15 @@ namespace Infinium.Modules.WorkAssignments
                 CollectAssemblySimple(Convert.ToInt32(DistFrameColorsDT.Rows[i]["ColorID"]), Patricia1SimpleDT, ref AssemblyDT, FrontType);
                 CollectAssemblyBoxes(Convert.ToInt32(DistFrameColorsDT.Rows[i]["ColorID"]), Patricia1BoxesDT, ref AssemblyDT, FrontType);
                 CollectAssemblyGrids(Convert.ToInt32(DistFrameColorsDT.Rows[i]["ColorID"]), Patricia1GridsDT, ref AssemblyDT, FrontType);
+            }
+            DistFrameColorsDT.Clear();
+            DistFrameColorsDT = DistFrameColorsTable(ScandiaOrdersDT, true);
+            FrontType = 9;
+            for (int i = 0; i < DistFrameColorsDT.Rows.Count; i++)
+            {
+                CollectAssemblySimple(Convert.ToInt32(DistFrameColorsDT.Rows[i]["ColorID"]), ScandiaSimpleDT, ref AssemblyDT, FrontType);
+                CollectAssemblyBoxes(Convert.ToInt32(DistFrameColorsDT.Rows[i]["ColorID"]), ScandiaBoxesDT, ref AssemblyDT, FrontType);
+                CollectAssemblyGrids(Convert.ToInt32(DistFrameColorsDT.Rows[i]["ColorID"]), ScandiaGridsDT, ref AssemblyDT, FrontType);
             }
             DistFrameColorsDT.Clear();
             DistFrameColorsDT = DistFrameColorsTable(KansasOrdersDT, true);
@@ -4447,6 +4687,14 @@ namespace Infinium.Modules.WorkAssignments
                 RowIndex++;
                 RowIndex++;
             }
+            if (ScandiaBoxesDT.Rows.Count > 0 || ScandiaGridsDT.Rows.Count > 0 || ScandiaSimpleDT.Rows.Count > 0)
+            {
+                SummingOrders(ScandiaOrdersDT, ScandiaBoxesDT, ScandiaGridsDT, ScandiaSimpleDT, ScandiaVitrinaDT, "Скандия ШУФ", "Скандия РЕШ", "Скандия");
+                OrdersToExcelSingly(ref hssfworkbook,
+                        Calibri11CS, CalibriBold11CS, CalibriBold11F, TableHeaderCS, TableHeaderDecCS, ref sheet1, WorkAssignmentID, BatchName, ClientName, ref RowIndex);
+                RowIndex++;
+                RowIndex++;
+            }
             if (KansasBoxesDT.Rows.Count > 0 || KansasGridsDT.Rows.Count > 0 || KansasSimpleDT.Rows.Count > 0)
             {
                 SummingOrders(KansasOrdersDT, KansasBoxesDT, KansasGridsDT, KansasSimpleDT, KansasVitrinaDT, "Канзас ШУФ", "Канзас РЕШ", "Канзас");
@@ -4557,6 +4805,18 @@ namespace Infinium.Modules.WorkAssignments
                 CollectDeying(Convert.ToInt32(DT1.Rows[i]["ColorID"]), Patricia1BoxesDT, ref DeyingDT, " ШУФ");
                 CollectDeying(Convert.ToInt32(DT1.Rows[i]["ColorID"]), Patricia1GridsDT, ref DeyingDT, " РЕШ");
             }
+            
+            using (DataView DV = new DataView(ScandiaOrdersDT, string.Empty, "ColorID", DataViewRowState.CurrentRows))
+            {
+                DT1.Clear();
+                DT1 = DV.ToTable(true, new string[] { "ColorID" });
+            }
+            for (int i = 0; i < DT1.Rows.Count; i++)
+            {
+                CollectDeying(Convert.ToInt32(DT1.Rows[i]["ColorID"]), ScandiaSimpleDT, ref DeyingDT, string.Empty);
+                CollectDeying(Convert.ToInt32(DT1.Rows[i]["ColorID"]), ScandiaBoxesDT, ref DeyingDT, " ШУФ");
+                CollectDeying(Convert.ToInt32(DT1.Rows[i]["ColorID"]), ScandiaGridsDT, ref DeyingDT, " РЕШ");
+            }
 
             using (DataView DV = new DataView(KansasOrdersDT, string.Empty, "ColorID", DataViewRowState.CurrentRows))
             {
@@ -4659,7 +4919,7 @@ namespace Infinium.Modules.WorkAssignments
             HSSFCellStyle Calibri11CS, HSSFCellStyle CalibriBold11CS, HSSFFont CalibriBold11F, HSSFCellStyle TableHeaderCS, HSSFCellStyle TableHeaderDecCS,
             int WorkAssignmentID, string BatchName)
         {
-            DataTable DistMainOrdersDT = DistMainOrdersTable(LorenzoOrdersDT, ElegantOrdersDT, Patricia1OrdersDT, KansasOrdersDT, SofiaOrdersDT, Turin1OrdersDT, Turin1_1OrdersDT, Turin3OrdersDT, LeonOrdersDT, InfinitiOrdersDT, DakotaOrdersDT, true);
+            DataTable DistMainOrdersDT = DistMainOrdersTable(LorenzoOrdersDT, ElegantOrdersDT, Patricia1OrdersDT, ScandiaOrdersDT, KansasOrdersDT, SofiaOrdersDT, Turin1OrdersDT, Turin1_1OrdersDT, Turin3OrdersDT, LeonOrdersDT, InfinitiOrdersDT, DakotaOrdersDT, true);
             DataTable DT = KansasOrdersDT.Clone();
             DataTable DT1 = new DataTable();
             DataTable ZOVOrdersNames = new DataTable();
@@ -4802,6 +5062,32 @@ namespace Infinium.Modules.WorkAssignments
 
                         DT.Clear();
                         rows = Patricia1GridsDT.Select("MainOrderID=" + MainOrderID);
+                        foreach (DataRow item in rows)
+                            DT.Rows.Add(item.ItemArray);
+                        CollectDeying(Convert.ToInt32(DT1.Rows[j]["ColorID"]), DT, ref DeyingDT, " РЕШ");
+                    }
+                    
+                    using (DataView DV = new DataView(ScandiaOrdersDT, "MainOrderID=" + MainOrderID, "ColorID", DataViewRowState.CurrentRows))
+                    {
+                        DT1.Clear();
+                        DT1 = DV.ToTable(true, new string[] { "ColorID" });
+                    }
+                    for (int j = 0; j < DT1.Rows.Count; j++)
+                    {
+                        DT.Clear();
+                        DataRow[] rows = ScandiaSimpleDT.Select("MainOrderID=" + MainOrderID);
+                        foreach (DataRow item in rows)
+                            DT.Rows.Add(item.ItemArray);
+                        CollectDeying(Convert.ToInt32(DT1.Rows[j]["ColorID"]), DT, ref DeyingDT, string.Empty);
+
+                        DT.Clear();
+                        rows = ScandiaBoxesDT.Select("MainOrderID=" + MainOrderID);
+                        foreach (DataRow item in rows)
+                            DT.Rows.Add(item.ItemArray);
+                        CollectDeying(Convert.ToInt32(DT1.Rows[j]["ColorID"]), DT, ref DeyingDT, " ШУФ");
+
+                        DT.Clear();
+                        rows = ScandiaGridsDT.Select("MainOrderID=" + MainOrderID);
                         foreach (DataRow item in rows)
                             DT.Rows.Add(item.ItemArray);
                         CollectDeying(Convert.ToInt32(DT1.Rows[j]["ColorID"]), DT, ref DeyingDT, " РЕШ");
@@ -5122,6 +5408,32 @@ namespace Infinium.Modules.WorkAssignments
                             DT.Rows.Add(item.ItemArray);
                         CollectDeying(Convert.ToInt32(DT1.Rows[j]["ColorID"]), DT, ref DeyingDT, " РЕШ");
                     }
+                    
+                    using (DataView DV = new DataView(ScandiaOrdersDT, "MainOrderID=" + MainOrderID, "ColorID", DataViewRowState.CurrentRows))
+                    {
+                        DT1.Clear();
+                        DT1 = DV.ToTable(true, new string[] { "ColorID" });
+                    }
+                    for (int j = 0; j < DT1.Rows.Count; j++)
+                    {
+                        DT.Clear();
+                        DataRow[] rows = ScandiaSimpleDT.Select("MainOrderID=" + MainOrderID);
+                        foreach (DataRow item in rows)
+                            DT.Rows.Add(item.ItemArray);
+                        CollectDeying(Convert.ToInt32(DT1.Rows[j]["ColorID"]), DT, ref DeyingDT, string.Empty);
+
+                        DT.Clear();
+                        rows = ScandiaBoxesDT.Select("MainOrderID=" + MainOrderID);
+                        foreach (DataRow item in rows)
+                            DT.Rows.Add(item.ItemArray);
+                        CollectDeying(Convert.ToInt32(DT1.Rows[j]["ColorID"]), DT, ref DeyingDT, " ШУФ");
+
+                        DT.Clear();
+                        rows = ScandiaGridsDT.Select("MainOrderID=" + MainOrderID);
+                        foreach (DataRow item in rows)
+                            DT.Rows.Add(item.ItemArray);
+                        CollectDeying(Convert.ToInt32(DT1.Rows[j]["ColorID"]), DT, ref DeyingDT, " РЕШ");
+                    }
 
                     using (DataView DV = new DataView(KansasOrdersDT, "MainOrderID=" + MainOrderID, "ColorID", DataViewRowState.CurrentRows))
                     {
@@ -5416,6 +5728,32 @@ namespace Infinium.Modules.WorkAssignments
 
                     DT.Clear();
                     rows = Patricia1GridsDT.Select("MainOrderID=" + MainOrderID);
+                    foreach (DataRow item in rows)
+                        DT.Rows.Add(item.ItemArray);
+                    CollectDeying(Convert.ToInt32(DT1.Rows[j]["ColorID"]), DT, ref DeyingDT, " РЕШ");
+                }
+                
+                using (DataView DV = new DataView(ScandiaOrdersDT, "MainOrderID=" + MainOrderID, "ColorID", DataViewRowState.CurrentRows))
+                {
+                    DT1.Clear();
+                    DT1 = DV.ToTable(true, new string[] { "ColorID" });
+                }
+                for (int j = 0; j < DT1.Rows.Count; j++)
+                {
+                    DT.Clear();
+                    DataRow[] rows = ScandiaSimpleDT.Select("MainOrderID=" + MainOrderID);
+                    foreach (DataRow item in rows)
+                        DT.Rows.Add(item.ItemArray);
+                    CollectDeying(Convert.ToInt32(DT1.Rows[j]["ColorID"]), DT, ref DeyingDT, string.Empty);
+
+                    DT.Clear();
+                    rows = ScandiaBoxesDT.Select("MainOrderID=" + MainOrderID);
+                    foreach (DataRow item in rows)
+                        DT.Rows.Add(item.ItemArray);
+                    CollectDeying(Convert.ToInt32(DT1.Rows[j]["ColorID"]), DT, ref DeyingDT, " ШУФ");
+
+                    DT.Clear();
+                    rows = ScandiaGridsDT.Select("MainOrderID=" + MainOrderID);
                     foreach (DataRow item in rows)
                         DT.Rows.Add(item.ItemArray);
                     CollectDeying(Convert.ToInt32(DT1.Rows[j]["ColorID"]), DT, ref DeyingDT, " РЕШ");
@@ -5755,13 +6093,17 @@ namespace Infinium.Modules.WorkAssignments
                 DT = DeyingDT.Copy();
                 Col1 = DT.Columns.Add("Col1", System.Type.GetType("System.String"));
                 Col2 = DT.Columns.Add("Col2", System.Type.GetType("System.String"));
-                Col3 = DT.Columns.Add("Col3", System.Type.GetType("System.String"));
                 Col1.SetOrdinal(6);
                 Col2.SetOrdinal(7);
-                Col3.SetOrdinal(8);
-                DT.Columns["Square"].SetOrdinal(9);
-                DyeingMen1ToExcel(ref hssfworkbook,
+                DT.Columns["Square"].SetOrdinal(8);
+                DyeingMen1GruntToExcel(ref hssfworkbook,
                         Calibri11CS, CalibriBold11CS, CalibriBold11F, TableHeaderCS, TableHeaderDecCS, ref sheet1, DT, WorkAssignmentID, BatchName, ClientName, OrderName,
+                    "Муж1. (" + Security.CurrentUserShortName + " от " + CurrentDate.ToString("dd.MM.yyyy HH:mm") + ")", Notes, ref RowIndex);
+                RowIndex++;
+                DT.Columns.Remove("Col2");
+                DT.Columns["Square"].SetOrdinal(7);
+                DyeingMen1PatinaToExcel(ref hssfworkbook,
+                    Calibri11CS, CalibriBold11CS, CalibriBold11F, TableHeaderCS, TableHeaderDecCS, ref sheet1, DT, WorkAssignmentID, BatchName, ClientName, OrderName,
                     "Муж1. (" + Security.CurrentUserShortName + " от " + CurrentDate.ToString("dd.MM.yyyy HH:mm") + ")", Notes, ref RowIndex);
                 RowIndex++;
 
@@ -5822,7 +6164,7 @@ namespace Infinium.Modules.WorkAssignments
                 Col1.SetOrdinal(6);
                 DT.Columns["Square"].SetOrdinal(7);
                 DT.Columns["Notes"].SetOrdinal(8);
-
+                
                 div1 = 48;
                 div2 = 2.14m;
                 time = 0;
@@ -5858,6 +6200,12 @@ namespace Infinium.Modules.WorkAssignments
                 Col1.SetOrdinal(6);
                 Col2.SetOrdinal(7);
                 TempDT.Columns["Square"].SetOrdinal(8);
+
+                for (int i = 0; i < TempDT.Rows.Count; i++)
+                {
+                    if (TempDT.Rows[i]["Notes"].ToString() == "КРЕСТЫ")
+                        TempDT.Rows[i]["Col2"] = TempDT.Rows[i]["Notes"].ToString();
+                }
 
                 decimal div1 = 165;
                 decimal div2 = 2.14m;
@@ -6020,10 +6368,39 @@ namespace Infinium.Modules.WorkAssignments
                 {
                     if (SummOrdersDT.Rows[x]["Height"] != DBNull.Value && SummOrdersDT.Rows[x]["Width"] != DBNull.Value && SummOrdersDT.Rows[x][y] != DBNull.Value)
                     {
-                        Square += Convert.ToDecimal(SummOrdersDT.Rows[x]["Height"]) * Convert.ToDecimal(SummOrdersDT.Rows[x]["Width"]) * Convert.ToDecimal(SummOrdersDT.Rows[x][y]) / 1000000;
-                        Count += Convert.ToInt32(SummOrdersDT.Rows[x][y]);
-                        TotalSquare += Convert.ToDecimal(SummOrdersDT.Rows[x]["Height"]) * Convert.ToDecimal(SummOrdersDT.Rows[x]["Width"]) * Convert.ToDecimal(SummOrdersDT.Rows[x][y]) / 1000000;
-                        TotalCount += Convert.ToInt32(SummOrdersDT.Rows[x][y]);
+                        if (int.TryParse(SummOrdersDT.Rows[x][y].ToString(), out _))
+                        {
+                            Square += Convert.ToDecimal(SummOrdersDT.Rows[x]["Height"]) *
+                                Convert.ToDecimal(SummOrdersDT.Rows[x]["Width"]) *
+                                Convert.ToDecimal(SummOrdersDT.Rows[x][y]) / 1000000;
+                            Count += Convert.ToInt32(SummOrdersDT.Rows[x][y]);
+                            TotalSquare += Convert.ToDecimal(SummOrdersDT.Rows[x]["Height"]) *
+                                Convert.ToDecimal(SummOrdersDT.Rows[x]["Width"]) *
+                                Convert.ToDecimal(SummOrdersDT.Rows[x][y]) / 1000000;
+                            TotalCount += Convert.ToInt32(SummOrdersDT.Rows[x][y]);
+                        }
+                        else
+                        {
+                            string a = SummOrdersDT.Rows[x][y].ToString();
+                            string b = string.Empty;
+                            int val = 0;
+
+                            for (int i = 0; i < a.Length; i++)
+                            {
+                                if (Char.IsDigit(a[i]))
+                                    b += a[i];
+                            }
+
+                            if (b.Length > 0)
+                                val = int.Parse(b);
+
+                            Square += Convert.ToDecimal(SummOrdersDT.Rows[x]["Height"]) *
+                                Convert.ToDecimal(SummOrdersDT.Rows[x]["Width"]) * val / 1000000;
+                            Count += val;
+                            TotalSquare += Convert.ToDecimal(SummOrdersDT.Rows[x]["Height"]) *
+                                Convert.ToDecimal(SummOrdersDT.Rows[x]["Width"]) * val / 1000000;
+                            TotalCount += val;
+                        }
                     }
                 }
                 Square = decimal.Round(Square, 3, MidpointRounding.AwayFromZero);
@@ -6172,10 +6549,18 @@ namespace Infinium.Modules.WorkAssignments
 
             RowIndex++;
 
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, "УТВЕРЖДАЮ_____________");
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, "УТВЕРЖДАЮ_____________");
             cell.CellStyle = Calibri11CS;
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, "ТСК-01");
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, _appovingUser);
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, "ТСК-01");
             cell.CellStyle = CalibriBold11CS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, $"План. отгрузка: {DateTime.Now.AddDays(14).ToShortDateString()}");
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 0, "Задание №" + WorkAssignmentID.ToString());
             cell.CellStyle = CalibriBold11CS;
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, BatchName);
@@ -6464,10 +6849,19 @@ namespace Infinium.Modules.WorkAssignments
             cell.CellStyle = Calibri11CS;
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 0, "Плановое время выполнения:");
             cell.CellStyle = Calibri11CS;
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, "УТВЕРЖДАЮ_____________");
+
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, "УТВЕРЖДАЮ_____________");
             cell.CellStyle = Calibri11CS;
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, PageName);
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, _appovingUser);
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, PageName);
             cell.CellStyle = CalibriBold11CS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, $"План. отгрузка: {DateTime.Now.AddDays(14).ToShortDateString()}");
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+            
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 0, "Задание №" + WorkAssignmentID.ToString());
             cell.CellStyle = CalibriBold11CS;
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, BatchName);
@@ -7099,10 +7493,18 @@ namespace Infinium.Modules.WorkAssignments
 
             RowIndex++;
 
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, "УТВЕРЖДАЮ_____________");
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, "УТВЕРЖДАЮ_____________");
             cell.CellStyle = Calibri11CS;
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, "Сборка");
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, _appovingUser);
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, "Сборка");
             cell.CellStyle = CalibriBold11CS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, $"План. отгрузка: {DateTime.Now.AddDays(14).ToShortDateString()}");
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 0, "Задание №" + WorkAssignmentID.ToString());
             cell.CellStyle = CalibriBold11CS;
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, BatchName);
@@ -7348,6 +7750,11 @@ namespace Infinium.Modules.WorkAssignments
                 Col1 = DT.Columns.Add("Col1", System.Type.GetType("System.String"));
                 Col1.SetOrdinal(6);
                 DT.Columns["Square"].SetOrdinal(7);
+                for (int i = 0; i < DT.Rows.Count; i++)
+                {
+                    if (DT.Rows[i]["Notes"].ToString() == "КРЕСТЫ")
+                        DT.Rows[i]["Col1"] = DT.Rows[i]["Notes"].ToString();
+                }
 
                 decimal time = 0;
                 decimal cost = 0;
@@ -7366,6 +7773,13 @@ namespace Infinium.Modules.WorkAssignments
                 Col1 = DT.Columns.Add("Col1", System.Type.GetType("System.String"));
                 Col1.SetOrdinal(6);
                 DT.Columns["Square"].SetOrdinal(7);
+
+                for (int i = 0; i < DT.Rows.Count; i++)
+                {
+                    if (DT.Rows[i]["Notes"].ToString() == "КРЕСТЫ")
+                        DT.Rows[i]["Col1"] = DT.Rows[i]["Notes"].ToString();
+                }
+
                 DyeingWomen2ToExcel(ref hssfworkbook,
                         Calibri11CS, CalibriBold11CS, CalibriBold11F, TableHeaderCS, TableHeaderDecCS, ref sheet1, DT, WorkAssignmentID, BatchName, ClientName, string.Empty,
                     "Жен2. (" + Security.CurrentUserShortName + " от " + CurrentDate.ToString("dd.MM.yyyy HH:mm") + ")", string.Empty, ref RowIndex);
@@ -7480,10 +7894,18 @@ namespace Infinium.Modules.WorkAssignments
 
             RowIndex++;
 
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, "УТВЕРЖДАЮ_____________");
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, "УТВЕРЖДАЮ_____________");
             cell.CellStyle = Calibri11CS;
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, PageName);
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, _appovingUser);
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, PageName);
             cell.CellStyle = CalibriBold11CS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, $"План. отгрузка: {DateTime.Now.AddDays(14).ToShortDateString()}");
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 0, "Задание №" + WorkAssignmentID.ToString());
             cell.CellStyle = CalibriBold11CS;
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, BatchName);
@@ -7707,10 +8129,18 @@ namespace Infinium.Modules.WorkAssignments
 
             RowIndex++;
 
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, "УТВЕРЖДАЮ_____________");
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, "УТВЕРЖДАЮ_____________");
             cell.CellStyle = Calibri11CS;
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, PageName);
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, _appovingUser);
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, PageName);
             cell.CellStyle = CalibriBold11CS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, $"План. отгрузка: {DateTime.Now.AddDays(14).ToShortDateString()}");
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 0, "Задание №" + WorkAssignmentID.ToString());
             cell.CellStyle = CalibriBold11CS;
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, BatchName);
@@ -7953,10 +8383,18 @@ namespace Infinium.Modules.WorkAssignments
 
             RowIndex++;
 
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, "УТВЕРЖДАЮ_____________");
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, "УТВЕРЖДАЮ_____________");
             cell.CellStyle = Calibri11CS;
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, PageName);
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, _appovingUser);
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, PageName);
             cell.CellStyle = CalibriBold11CS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, $"План. отгрузка: {DateTime.Now.AddDays(14).ToShortDateString()}");
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 0, "Задание №" + WorkAssignmentID.ToString());
             cell.CellStyle = CalibriBold11CS;
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, BatchName);
@@ -8163,10 +8601,18 @@ namespace Infinium.Modules.WorkAssignments
 
             RowIndex++;
 
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, "УТВЕРЖДАЮ_____________");
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, "УТВЕРЖДАЮ_____________");
             cell.CellStyle = Calibri11CS;
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, PageName);
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, _appovingUser);
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, PageName);
             cell.CellStyle = CalibriBold11CS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, $"План. отгрузка: {DateTime.Now.AddDays(14).ToShortDateString()}");
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 0, "Задание №" + WorkAssignmentID.ToString());
             cell.CellStyle = CalibriBold11CS;
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, BatchName);
@@ -8373,10 +8819,18 @@ namespace Infinium.Modules.WorkAssignments
 
             RowIndex++;
 
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, "УТВЕРЖДАЮ_____________");
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, "УТВЕРЖДАЮ_____________");
             cell.CellStyle = Calibri11CS;
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, PageName);
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, _appovingUser);
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, PageName);
             cell.CellStyle = CalibriBold11CS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, $"План. отгрузка: {DateTime.Now.AddDays(14).ToShortDateString()}");
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 0, "Задание №" + WorkAssignmentID.ToString());
             cell.CellStyle = CalibriBold11CS;
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, BatchName);
@@ -8599,10 +9053,18 @@ namespace Infinium.Modules.WorkAssignments
 
             RowIndex++;
 
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, "УТВЕРЖДАЮ_____________");
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, "УТВЕРЖДАЮ_____________");
             cell.CellStyle = Calibri11CS;
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, PageName);
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, _appovingUser);
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, PageName);
             cell.CellStyle = CalibriBold11CS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, $"План. отгрузка: {DateTime.Now.AddDays(14).ToShortDateString()}");
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 0, "Задание №" + WorkAssignmentID.ToString());
             cell.CellStyle = CalibriBold11CS;
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, BatchName);
@@ -8792,10 +9254,18 @@ namespace Infinium.Modules.WorkAssignments
 
             RowIndex++;
 
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, "УТВЕРЖДАЮ_____________");
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, "УТВЕРЖДАЮ_____________");
             cell.CellStyle = Calibri11CS;
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, PageName);
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, _appovingUser);
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, PageName);
             cell.CellStyle = CalibriBold11CS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, $"План. отгрузка: {DateTime.Now.AddDays(14).ToShortDateString()}");
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 0, "Задание №" + WorkAssignmentID.ToString());
             cell.CellStyle = CalibriBold11CS;
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, BatchName);
@@ -9006,10 +9476,18 @@ namespace Infinium.Modules.WorkAssignments
 
             RowIndex++;
 
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, "УТВЕРЖДАЮ_____________");
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, "УТВЕРЖДАЮ_____________");
             cell.CellStyle = Calibri11CS;
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, "Вставка ВП-204");
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, _appovingUser);
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, "Вставка ВП-204");
             cell.CellStyle = CalibriBold11CS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, $"План. отгрузка: {DateTime.Now.AddDays(14).ToShortDateString()}");
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+            
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 0, "Задание №" + WorkAssignmentID.ToString());
             cell.CellStyle = CalibriBold11CS;
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, BatchName);
@@ -9278,12 +9756,19 @@ namespace Infinium.Modules.WorkAssignments
 
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 0, "Распечатал: Дата/время " + CurrentDate.ToString("dd.MM.yyyy HH:mm") + " \r\n ФИО: " + Security.CurrentUserShortName);
             cell.CellStyle = Calibri11CS;
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 0, "Плановое время выполнения:");
+
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, "УТВЕРЖДАЮ_____________");
             cell.CellStyle = Calibri11CS;
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, "УТВЕРЖДАЮ_____________");
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, _appovingUser);
             cell.CellStyle = Calibri11CS;
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, "Заказы");
+            RowIndex++;
+
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, "Заказы");
             cell.CellStyle = CalibriBold11CS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, $"План. отгрузка: {DateTime.Now.AddDays(14).ToShortDateString()}");
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 0, "Задание №" + WorkAssignmentID.ToString());
             cell.CellStyle = CalibriBold11CS;
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, BatchName);
@@ -9450,10 +9935,18 @@ namespace Infinium.Modules.WorkAssignments
         {
             HSSFCell cell = null;
 
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, "УТВЕРЖДАЮ_____________");
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, "УТВЕРЖДАЮ_____________");
             cell.CellStyle = Calibri11CS;
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, PageName);
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, _appovingUser);
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, PageName);
             cell.CellStyle = CalibriBold11CS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, $"План. отгрузка: {DateTime.Now.AddDays(14).ToShortDateString()}");
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 0, "Задание №" + WorkAssignmentID.ToString());
             cell.CellStyle = CalibriBold11CS;
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, BatchName);
@@ -9616,7 +10109,7 @@ namespace Infinium.Modules.WorkAssignments
                         cell.SetCellValue(TotalAmount);
                         cell.CellStyle = TableHeaderCS;
 
-                        cell = sheet1.CreateRow(RowIndex).CreateCell(7);
+                        cell = sheet1.CreateRow(RowIndex).CreateCell(9);
                         cell.SetCellValue(Convert.ToDouble(TotalSquare));
                         cell.CellStyle = TableHeaderDecCS;
                     }
@@ -9648,6 +10141,428 @@ namespace Infinium.Modules.WorkAssignments
                 RowIndex++;
             }
         }
+        
+        public void DyeingMen1GruntToExcel(ref HSSFWorkbook hssfworkbook,
+            HSSFCellStyle Calibri11CS, HSSFCellStyle CalibriBold11CS, HSSFFont CalibriBold11F, HSSFCellStyle TableHeaderCS, HSSFCellStyle TableHeaderDecCS,
+            ref HSSFSheet sheet1, DataTable DT, int WorkAssignmentID, string BatchName, string ClientName, string OrderName, string PageName, string Notes,
+            ref int RowIndex)
+        {
+            HSSFCell cell = null;
+
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, "УТВЕРЖДАЮ_____________");
+            cell.CellStyle = Calibri11CS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, _appovingUser);
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, PageName);
+            cell.CellStyle = CalibriBold11CS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, $"План. отгрузка: {DateTime.Now.AddDays(14).ToShortDateString()}");
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 0, "Задание №" + WorkAssignmentID.ToString());
+            cell.CellStyle = CalibriBold11CS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, BatchName);
+            cell.CellStyle = CalibriBold11CS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 0, "Клиент:");
+            cell.CellStyle = CalibriBold11CS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, ClientName);
+            cell.CellStyle = CalibriBold11CS;
+            if (OrderName.Length > 0)
+            {
+                cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 0, "Заказ:");
+                cell.CellStyle = CalibriBold11CS;
+                cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, OrderName);
+                cell.CellStyle = CalibriBold11CS;
+            }
+            if (Notes.Length > 0)
+            {
+                cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 0, "Примечание: " + Notes);
+                cell.CellStyle = CalibriBold11CS;
+            }
+
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 0, "Профиль");
+            cell.CellStyle = TableHeaderCS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, "Цвет профиля");
+            cell.CellStyle = TableHeaderCS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 2, "Цвет наполнителя");
+            cell.CellStyle = TableHeaderCS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, "Высота");
+            cell.CellStyle = TableHeaderCS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 4, "Ширина");
+            cell.CellStyle = TableHeaderCS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 5, "Кол-во");
+            cell.CellStyle = TableHeaderCS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 6, "Гр.в.");
+            cell.CellStyle = TableHeaderCS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 7, "Гр.н.");
+            cell.CellStyle = TableHeaderCS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 8, "м.кв.");
+            cell.CellStyle = TableHeaderCS;
+            RowIndex++;
+
+            int CType = -1;
+            int AllTotalAmount = 0;
+            int TotalAmount = 0;
+            decimal AllTotalSquare = 0;
+            decimal TotalSquare = 0;
+            int DifferentDecorCount = 0;
+
+            using (DataView DV = new DataView(DT))
+            {
+                DifferentDecorCount = DV.ToTable(true, new string[] { "ColorType" }).Rows.Count;
+            }
+
+
+            if (DT.Rows.Count > 0)
+                CType = Convert.ToInt32(DT.Rows[0]["ColorType"]);
+
+            for (int x = 0; x < DT.Rows.Count; x++)
+            {
+                if (DT.Rows[x]["Count"] != DBNull.Value)
+                {
+                    AllTotalAmount += Convert.ToInt32(DT.Rows[x]["Count"]);
+                    TotalAmount += Convert.ToInt32(DT.Rows[x]["Count"]);
+                }
+                if (DT.Rows[x]["Square"] != DBNull.Value)
+                {
+                    AllTotalSquare += Convert.ToDecimal(DT.Rows[x]["Square"]);
+                    TotalSquare += Convert.ToDecimal(DT.Rows[x]["Square"]);
+                }
+
+                for (int y = 0; y < DT.Columns.Count; y++)
+                {
+                    if (DT.Columns[y].ColumnName == "ColorType" || DT.Columns[y].ColumnName == "Notes")
+                        continue;
+
+                    Type t = DT.Rows[x][y].GetType();
+
+                    if (t.Name == "Decimal")
+                    {
+                        cell = sheet1.CreateRow(RowIndex).CreateCell(y);
+                        cell.SetCellValue(Convert.ToDouble(DT.Rows[x][y]));
+                        cell.CellStyle = TableHeaderDecCS;
+                        continue;
+                    }
+                    if (t.Name == "Int32")
+                    {
+                        cell = sheet1.CreateRow(RowIndex).CreateCell(y);
+                        cell.SetCellValue(Convert.ToInt32(DT.Rows[x][y]));
+                        cell.CellStyle = TableHeaderCS;
+                        continue;
+                    }
+
+                    if (t.Name == "String" || t.Name == "DBNull")
+                    {
+                        cell = sheet1.CreateRow(RowIndex).CreateCell(y);
+                        cell.SetCellValue(DT.Rows[x][y].ToString());
+                        cell.CellStyle = TableHeaderCS;
+                        continue;
+                    }
+                }
+
+                if (x + 1 <= DT.Rows.Count - 1)
+                {
+                    if (CType != Convert.ToInt32(DT.Rows[x + 1]["ColorType"]))
+                    {
+                        RowIndex++;
+                        for (int y = 0; y < DT.Columns.Count; y++)
+                        {
+                            if (DT.Columns[y].ColumnName == "ColorType" || DT.Columns[y].ColumnName == "Notes")
+                                continue;
+
+                            cell = sheet1.CreateRow(RowIndex).CreateCell(y);
+                            cell.SetCellValue(string.Empty);
+                            cell.CellStyle = TableHeaderCS;
+                            continue;
+                        }
+
+                        cell = sheet1.CreateRow(RowIndex).CreateCell(0);
+                        cell.SetCellValue("Итого:");
+                        cell.CellStyle = TableHeaderCS;
+
+                        cell = sheet1.CreateRow(RowIndex).CreateCell(5);
+                        cell.SetCellValue(TotalAmount);
+                        cell.CellStyle = TableHeaderCS;
+
+                        cell = sheet1.CreateRow(RowIndex).CreateCell(8);
+                        cell.SetCellValue(Convert.ToDouble(TotalSquare));
+                        cell.CellStyle = TableHeaderCS;
+
+                        CType = Convert.ToInt32(DT.Rows[x + 1]["ColorType"]);
+                        TotalAmount = 0;
+                        TotalSquare = 0;
+                        RowIndex++;
+                    }
+                }
+
+                if (x == DT.Rows.Count - 1)
+                {
+                    if (DifferentDecorCount > 1)
+                    {
+                        RowIndex++;
+                        for (int y = 0; y < DT.Columns.Count; y++)
+                        {
+                            if (DT.Columns[y].ColumnName == "ColorType" || DT.Columns[y].ColumnName == "Notes")
+                                continue;
+
+                            cell = sheet1.CreateRow(RowIndex).CreateCell(y);
+                            cell.SetCellValue(string.Empty);
+                            cell.CellStyle = TableHeaderCS;
+                            continue;
+                        }
+
+                        cell = sheet1.CreateRow(RowIndex).CreateCell(0);
+                        cell.SetCellValue("Итого:");
+                        cell.CellStyle = TableHeaderCS;
+
+                        cell = sheet1.CreateRow(RowIndex).CreateCell(5);
+                        cell.SetCellValue(TotalAmount);
+                        cell.CellStyle = TableHeaderCS;
+
+                        cell = sheet1.CreateRow(RowIndex).CreateCell(8);
+                        cell.SetCellValue(Convert.ToDouble(TotalSquare));
+                        cell.CellStyle = TableHeaderDecCS;
+                    }
+                    RowIndex++;
+
+                    for (int y = 0; y < DT.Columns.Count; y++)
+                    {
+                        if (DT.Columns[y].ColumnName == "ColorType" || DT.Columns[y].ColumnName == "Notes")
+                            continue;
+
+                        cell = sheet1.CreateRow(RowIndex).CreateCell(y);
+                        cell.SetCellValue(string.Empty);
+                        cell.CellStyle = TableHeaderCS;
+                        continue;
+                    }
+
+                    cell = sheet1.CreateRow(RowIndex).CreateCell(0);
+                    cell.SetCellValue("Всего:");
+                    cell.CellStyle = TableHeaderCS;
+
+                    cell = sheet1.CreateRow(RowIndex).CreateCell(5);
+                    cell.SetCellValue(AllTotalAmount);
+                    cell.CellStyle = TableHeaderCS;
+
+                    cell = sheet1.CreateRow(RowIndex).CreateCell(8);
+                    cell.SetCellValue(Convert.ToDouble(AllTotalSquare));
+                    cell.CellStyle = TableHeaderDecCS;
+                }
+                RowIndex++;
+            }
+        }
+        
+        public void DyeingMen1PatinaToExcel(ref HSSFWorkbook hssfworkbook,
+            HSSFCellStyle Calibri11CS, HSSFCellStyle CalibriBold11CS, HSSFFont CalibriBold11F, HSSFCellStyle TableHeaderCS, HSSFCellStyle TableHeaderDecCS,
+            ref HSSFSheet sheet1, DataTable DT, int WorkAssignmentID, string BatchName, string ClientName, string OrderName, string PageName, string Notes,
+            ref int RowIndex)
+        {
+            HSSFCell cell = null;
+
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, "УТВЕРЖДАЮ_____________");
+            cell.CellStyle = Calibri11CS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, _appovingUser);
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, PageName);
+            cell.CellStyle = CalibriBold11CS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, $"План. отгрузка: {DateTime.Now.AddDays(14).ToShortDateString()}");
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 0, "Задание №" + WorkAssignmentID.ToString());
+            cell.CellStyle = CalibriBold11CS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, BatchName);
+            cell.CellStyle = CalibriBold11CS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 0, "Клиент:");
+            cell.CellStyle = CalibriBold11CS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, ClientName);
+            cell.CellStyle = CalibriBold11CS;
+            if (OrderName.Length > 0)
+            {
+                cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 0, "Заказ:");
+                cell.CellStyle = CalibriBold11CS;
+                cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, OrderName);
+                cell.CellStyle = CalibriBold11CS;
+            }
+            if (Notes.Length > 0)
+            {
+                cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 0, "Примечание: " + Notes);
+                cell.CellStyle = CalibriBold11CS;
+            }
+
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 0, "Профиль");
+            cell.CellStyle = TableHeaderCS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, "Цвет профиля");
+            cell.CellStyle = TableHeaderCS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 2, "Цвет наполнителя");
+            cell.CellStyle = TableHeaderCS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, "Высота");
+            cell.CellStyle = TableHeaderCS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 4, "Ширина");
+            cell.CellStyle = TableHeaderCS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 5, "Кол-во");
+            cell.CellStyle = TableHeaderCS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 6, "Патина");
+            cell.CellStyle = TableHeaderCS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 7, "м.кв.");
+            cell.CellStyle = TableHeaderCS;
+            RowIndex++;
+
+            int CType = -1;
+            int AllTotalAmount = 0;
+            int TotalAmount = 0;
+            decimal AllTotalSquare = 0;
+            decimal TotalSquare = 0;
+            int DifferentDecorCount = 0;
+
+            using (DataView DV = new DataView(DT))
+            {
+                DifferentDecorCount = DV.ToTable(true, new string[] { "ColorType" }).Rows.Count;
+            }
+
+
+            if (DT.Rows.Count > 0)
+                CType = Convert.ToInt32(DT.Rows[0]["ColorType"]);
+
+            for (int x = 0; x < DT.Rows.Count; x++)
+            {
+                if (DT.Rows[x]["Count"] != DBNull.Value)
+                {
+                    AllTotalAmount += Convert.ToInt32(DT.Rows[x]["Count"]);
+                    TotalAmount += Convert.ToInt32(DT.Rows[x]["Count"]);
+                }
+                if (DT.Rows[x]["Square"] != DBNull.Value)
+                {
+                    AllTotalSquare += Convert.ToDecimal(DT.Rows[x]["Square"]);
+                    TotalSquare += Convert.ToDecimal(DT.Rows[x]["Square"]);
+                }
+
+                for (int y = 0; y < DT.Columns.Count; y++)
+                {
+                    if (DT.Columns[y].ColumnName == "ColorType" || DT.Columns[y].ColumnName == "Notes")
+                        continue;
+
+                    Type t = DT.Rows[x][y].GetType();
+
+                    if (t.Name == "Decimal")
+                    {
+                        cell = sheet1.CreateRow(RowIndex).CreateCell(y);
+                        cell.SetCellValue(Convert.ToDouble(DT.Rows[x][y]));
+                        cell.CellStyle = TableHeaderDecCS;
+                        continue;
+                    }
+                    if (t.Name == "Int32")
+                    {
+                        cell = sheet1.CreateRow(RowIndex).CreateCell(y);
+                        cell.SetCellValue(Convert.ToInt32(DT.Rows[x][y]));
+                        cell.CellStyle = TableHeaderCS;
+                        continue;
+                    }
+
+                    if (t.Name == "String" || t.Name == "DBNull")
+                    {
+                        cell = sheet1.CreateRow(RowIndex).CreateCell(y);
+                        cell.SetCellValue(DT.Rows[x][y].ToString());
+                        cell.CellStyle = TableHeaderCS;
+                        continue;
+                    }
+                }
+
+                if (x + 1 <= DT.Rows.Count - 1)
+                {
+                    if (CType != Convert.ToInt32(DT.Rows[x + 1]["ColorType"]))
+                    {
+                        RowIndex++;
+                        for (int y = 0; y < DT.Columns.Count; y++)
+                        {
+                            if (DT.Columns[y].ColumnName == "ColorType" || DT.Columns[y].ColumnName == "Notes")
+                                continue;
+
+                            cell = sheet1.CreateRow(RowIndex).CreateCell(y);
+                            cell.SetCellValue(string.Empty);
+                            cell.CellStyle = TableHeaderCS;
+                            continue;
+                        }
+
+                        cell = sheet1.CreateRow(RowIndex).CreateCell(0);
+                        cell.SetCellValue("Итого:");
+                        cell.CellStyle = TableHeaderCS;
+
+                        cell = sheet1.CreateRow(RowIndex).CreateCell(5);
+                        cell.SetCellValue(TotalAmount);
+                        cell.CellStyle = TableHeaderCS;
+
+                        cell = sheet1.CreateRow(RowIndex).CreateCell(7);
+                        cell.SetCellValue(Convert.ToDouble(TotalSquare));
+                        cell.CellStyle = TableHeaderCS;
+
+                        CType = Convert.ToInt32(DT.Rows[x + 1]["ColorType"]);
+                        TotalAmount = 0;
+                        TotalSquare = 0;
+                        RowIndex++;
+                    }
+                }
+
+                if (x == DT.Rows.Count - 1)
+                {
+                    if (DifferentDecorCount > 1)
+                    {
+                        RowIndex++;
+                        for (int y = 0; y < DT.Columns.Count; y++)
+                        {
+                            if (DT.Columns[y].ColumnName == "ColorType" || DT.Columns[y].ColumnName == "Notes")
+                                continue;
+
+                            cell = sheet1.CreateRow(RowIndex).CreateCell(y);
+                            cell.SetCellValue(string.Empty);
+                            cell.CellStyle = TableHeaderCS;
+                            continue;
+                        }
+
+                        cell = sheet1.CreateRow(RowIndex).CreateCell(0);
+                        cell.SetCellValue("Итого:");
+                        cell.CellStyle = TableHeaderCS;
+
+                        cell = sheet1.CreateRow(RowIndex).CreateCell(5);
+                        cell.SetCellValue(TotalAmount);
+                        cell.CellStyle = TableHeaderCS;
+
+                        cell = sheet1.CreateRow(RowIndex).CreateCell(7);
+                        cell.SetCellValue(Convert.ToDouble(TotalSquare));
+                        cell.CellStyle = TableHeaderDecCS;
+                    }
+                    RowIndex++;
+
+                    for (int y = 0; y < DT.Columns.Count; y++)
+                    {
+                        if (DT.Columns[y].ColumnName == "ColorType" || DT.Columns[y].ColumnName == "Notes")
+                            continue;
+
+                        cell = sheet1.CreateRow(RowIndex).CreateCell(y);
+                        cell.SetCellValue(string.Empty);
+                        cell.CellStyle = TableHeaderCS;
+                        continue;
+                    }
+
+                    cell = sheet1.CreateRow(RowIndex).CreateCell(0);
+                    cell.SetCellValue("Всего:");
+                    cell.CellStyle = TableHeaderCS;
+
+                    cell = sheet1.CreateRow(RowIndex).CreateCell(5);
+                    cell.SetCellValue(AllTotalAmount);
+                    cell.CellStyle = TableHeaderCS;
+
+                    cell = sheet1.CreateRow(RowIndex).CreateCell(7);
+                    cell.SetCellValue(Convert.ToDouble(AllTotalSquare));
+                    cell.CellStyle = TableHeaderDecCS;
+                }
+                RowIndex++;
+            }
+        }
 
         public void DyeingMen2ToExcel(ref HSSFWorkbook hssfworkbook,
             HSSFCellStyle Calibri11CS, HSSFCellStyle CalibriBold11CS, HSSFFont CalibriBold11F, HSSFCellStyle TableHeaderCS, HSSFCellStyle TableHeaderDecCS,
@@ -9656,10 +10571,18 @@ namespace Infinium.Modules.WorkAssignments
         {
             HSSFCell cell = null;
 
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, "УТВЕРЖДАЮ_____________");
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, "УТВЕРЖДАЮ_____________");
             cell.CellStyle = Calibri11CS;
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, PageName);
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, _appovingUser);
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, PageName);
             cell.CellStyle = CalibriBold11CS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, $"План. отгрузка: {DateTime.Now.AddDays(14).ToShortDateString()}");
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 0, "Задание №" + WorkAssignmentID.ToString());
             cell.CellStyle = CalibriBold11CS;
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, BatchName);
@@ -9883,10 +10806,18 @@ namespace Infinium.Modules.WorkAssignments
 
             RowIndex++;
 
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, "УТВЕРЖДАЮ_____________");
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, "УТВЕРЖДАЮ_____________");
             cell.CellStyle = Calibri11CS;
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, PageName);
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, _appovingUser);
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, PageName);
             cell.CellStyle = CalibriBold11CS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, $"План. отгрузка: {DateTime.Now.AddDays(14).ToShortDateString()}");
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 0, "Задание №" + WorkAssignmentID.ToString());
             cell.CellStyle = CalibriBold11CS;
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, BatchName);
@@ -10085,10 +11016,18 @@ namespace Infinium.Modules.WorkAssignments
         {
             HSSFCell cell = null;
 
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, "УТВЕРЖДАЮ_____________");
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, "УТВЕРЖДАЮ_____________");
             cell.CellStyle = Calibri11CS;
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, PageName);
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, _appovingUser);
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, PageName);
             cell.CellStyle = CalibriBold11CS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, $"План. отгрузка: {DateTime.Now.AddDays(14).ToShortDateString()}");
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 0, "Задание №" + WorkAssignmentID.ToString());
             cell.CellStyle = CalibriBold11CS;
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, BatchName);
@@ -10287,10 +11226,18 @@ namespace Infinium.Modules.WorkAssignments
         {
             HSSFCell cell = null;
 
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, "УТВЕРЖДАЮ_____________");
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, "УТВЕРЖДАЮ_____________");
             cell.CellStyle = Calibri11CS;
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, PageName);
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, _appovingUser);
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, PageName);
             cell.CellStyle = CalibriBold11CS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, $"План. отгрузка: {DateTime.Now.AddDays(14).ToShortDateString()}");
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 0, "Задание №" + WorkAssignmentID.ToString());
             cell.CellStyle = CalibriBold11CS;
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, BatchName);
@@ -10514,10 +11461,18 @@ namespace Infinium.Modules.WorkAssignments
 
             RowIndex++;
 
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, "УТВЕРЖДАЮ_____________");
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, "УТВЕРЖДАЮ_____________");
             cell.CellStyle = Calibri11CS;
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, PageName);
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, _appovingUser);
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, PageName);
             cell.CellStyle = CalibriBold11CS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, $"План. отгрузка: {DateTime.Now.AddDays(14).ToShortDateString()}");
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 0, "Задание №" + WorkAssignmentID.ToString());
             cell.CellStyle = CalibriBold11CS;
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, BatchName);
@@ -10743,10 +11698,18 @@ namespace Infinium.Modules.WorkAssignments
 
             RowIndex++;
 
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, "УТВЕРЖДАЮ_____________");
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, "УТВЕРЖДАЮ_____________");
             cell.CellStyle = Calibri11CS;
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, PageName);
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, _appovingUser);
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, PageName);
             cell.CellStyle = CalibriBold11CS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, $"План. отгрузка: {DateTime.Now.AddDays(14).ToShortDateString()}");
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 0, "Задание №" + WorkAssignmentID.ToString());
             cell.CellStyle = CalibriBold11CS;
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, BatchName);
@@ -10941,11 +11904,11 @@ namespace Infinium.Modules.WorkAssignments
             HSSFCellStyle Calibri11CS, HSSFCellStyle CalibriBold11CS, HSSFFont CalibriBold11F, HSSFCellStyle TableHeaderCS, HSSFCellStyle TableHeaderDecCS,
             int WorkAssignmentID, string BatchName)
         {
-            if (LorenzoCurvedOrdersDT.Rows.Count == 0 && ElegantCurvedOrdersDT.Rows.Count == 0 && Patricia1CurvedOrdersDT.Rows.Count == 0 && KansasCurvedOrdersDT.Rows.Count == 0 && SofiaCurvedOrdersDT.Rows.Count == 0 && DakotaCurvedOrdersDT.Rows.Count == 0 && Turin1CurvedOrdersDT.Rows.Count == 0 && Turin1_1CurvedOrdersDT.Rows.Count == 0
+            if (LorenzoCurvedOrdersDT.Rows.Count == 0 && ElegantCurvedOrdersDT.Rows.Count == 0 && Patricia1CurvedOrdersDT.Rows.Count == 0 && ScandiaCurvedOrdersDT.Rows.Count == 0 && KansasCurvedOrdersDT.Rows.Count == 0 && SofiaCurvedOrdersDT.Rows.Count == 0 && DakotaCurvedOrdersDT.Rows.Count == 0 && Turin1CurvedOrdersDT.Rows.Count == 0 && Turin1_1CurvedOrdersDT.Rows.Count == 0
                 && Turin3CurvedOrdersDT.Rows.Count == 0 && InfinitiCurvedOrdersDT.Rows.Count == 0)
                 return;
 
-            DataTable DistMainOrdersDT = DistMainOrdersTable(LorenzoCurvedOrdersDT, ElegantCurvedOrdersDT, Patricia1CurvedOrdersDT, KansasCurvedOrdersDT, SofiaCurvedOrdersDT, Turin1CurvedOrdersDT, Turin1_1CurvedOrdersDT, Turin3CurvedOrdersDT, Turin3CurvedOrdersDT.Clone(), InfinitiCurvedOrdersDT, DakotaCurvedOrdersDT, true);
+            DataTable DistMainOrdersDT = DistMainOrdersTable(LorenzoCurvedOrdersDT, ElegantCurvedOrdersDT, Patricia1CurvedOrdersDT, ScandiaCurvedOrdersDT, KansasCurvedOrdersDT, SofiaCurvedOrdersDT, Turin1CurvedOrdersDT, Turin1_1CurvedOrdersDT, Turin3CurvedOrdersDT, Turin3CurvedOrdersDT.Clone(), InfinitiCurvedOrdersDT, DakotaCurvedOrdersDT, true);
             DataTable DT = KansasCurvedOrdersDT.Clone();
             DataTable ZOVOrdersNames = new DataTable();
             DataTable MarketOrdersNames = new DataTable();
@@ -10994,6 +11957,8 @@ namespace Infinium.Modules.WorkAssignments
                     DT.Rows.Add(item.ItemArray);
                 foreach (DataRow item in Patricia1CurvedOrdersDT.Select("GroupType=0"))
                     DT.Rows.Add(item.ItemArray);
+                foreach (DataRow item in ScandiaCurvedOrdersDT.Select("GroupType=0"))
+                    DT.Rows.Add(item.ItemArray);
                 foreach (DataRow item in KansasCurvedOrdersDT.Select("GroupType=0"))
                     DT.Rows.Add(item.ItemArray);
                 foreach (DataRow item in SofiaCurvedOrdersDT.Select("GroupType=0"))
@@ -11037,6 +12002,8 @@ namespace Infinium.Modules.WorkAssignments
                     foreach (DataRow item1 in ElegantCurvedOrdersDT.Select("MainOrderID=" + MainOrderID))
                         DT.Rows.Add(item1.ItemArray);
                     foreach (DataRow item1 in Patricia1CurvedOrdersDT.Select("MainOrderID=" + MainOrderID))
+                        DT.Rows.Add(item1.ItemArray);
+                    foreach (DataRow item1 in ScandiaCurvedOrdersDT.Select("MainOrderID=" + MainOrderID))
                         DT.Rows.Add(item1.ItemArray);
                     foreach (DataRow item1 in KansasCurvedOrdersDT.Select("MainOrderID=" + MainOrderID))
                         DT.Rows.Add(item1.ItemArray);
@@ -11118,6 +12085,8 @@ namespace Infinium.Modules.WorkAssignments
                     DT.Rows.Add(item.ItemArray);
                 foreach (DataRow item in Patricia1CurvedOrdersDT.Select("GroupType=1"))
                     DT.Rows.Add(item.ItemArray);
+                foreach (DataRow item in ScandiaCurvedOrdersDT.Select("GroupType=1"))
+                    DT.Rows.Add(item.ItemArray);
                 foreach (DataRow item in KansasCurvedOrdersDT.Select("GroupType=1"))
                     DT.Rows.Add(item.ItemArray);
                 foreach (DataRow item in SofiaCurvedOrdersDT.Select("GroupType=1"))
@@ -11161,6 +12130,8 @@ namespace Infinium.Modules.WorkAssignments
                     foreach (DataRow item1 in ElegantCurvedOrdersDT.Select("MainOrderID=" + MainOrderID))
                         DT.Rows.Add(item1.ItemArray);
                     foreach (DataRow item1 in Patricia1CurvedOrdersDT.Select("MainOrderID=" + MainOrderID))
+                        DT.Rows.Add(item1.ItemArray);
+                    foreach (DataRow item1 in ScandiaCurvedOrdersDT.Select("MainOrderID=" + MainOrderID))
                         DT.Rows.Add(item1.ItemArray);
                     foreach (DataRow item1 in KansasCurvedOrdersDT.Select("MainOrderID=" + MainOrderID))
                         DT.Rows.Add(item1.ItemArray);
@@ -11236,14 +12207,26 @@ namespace Infinium.Modules.WorkAssignments
 
             RowIndex++;
 
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, "УТВЕРЖДАЮ_____________");
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, "УТВЕРЖДАЮ_____________");
             cell.CellStyle = Calibri11CS;
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, PageName);
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, _appovingUser);
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, PageName);
             cell.CellStyle = CalibriBold11CS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, $"План. отгрузка: {DateTime.Now.AddDays(14).ToShortDateString()}");
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 0, "Задание №" + WorkAssignmentID.ToString());
             cell.CellStyle = CalibriBold11CS;
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, BatchName);
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, BatchName);
             cell.CellStyle = CalibriBold11CS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, $"План. отгрузка: {DateTime.Now.AddDays(14).ToShortDateString()}");
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 0, "Клиент:");
             cell.CellStyle = CalibriBold11CS;
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, ClientName);
@@ -11435,12 +12418,21 @@ namespace Infinium.Modules.WorkAssignments
 
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, "УТВЕРЖДАЮ_____________");
             cell.CellStyle = Calibri11CS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, _appovingUser);
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, PageName);
             cell.CellStyle = CalibriBold11CS;
+
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 0, "Задание №" + WorkAssignmentID.ToString());
             cell.CellStyle = CalibriBold11CS;
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, BatchName);
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, BatchName);
             cell.CellStyle = CalibriBold11CS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, $"План. отгрузка: {DateTime.Now.AddDays(14).ToShortDateString()}");
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 0, "Клиент:");
             cell.CellStyle = CalibriBold11CS;
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, ClientName);
@@ -11677,6 +12669,10 @@ namespace Infinium.Modules.WorkAssignments
                         BagetWithAngleAssemblyToExcelSingly(ref hssfworkbook, ref sheet1,
                             Calibri11CS, CalibriBold11CS, CalibriBold11F, TableHeaderCS, TableHeaderDecCS, BagetWithAngleAssemblyDT,
                             WorkAssignmentID, BatchName, ClientName, "ДУБЛЬ", OrderName, Notes, ref RowIndex);
+                        RowIndex++;
+                        BagetWithAngleAssemblyToExcelSingly(ref hssfworkbook, ref sheet1,
+                            Calibri11CS, CalibriBold11CS, CalibriBold11F, TableHeaderCS, TableHeaderDecCS, BagetWithAngleAssemblyDT,
+                            WorkAssignmentID, BatchName, ClientName, "ДУБЛЬ-2", OrderName, Notes, ref RowIndex);
                     }
                     RowIndex++;
                 }
@@ -11738,6 +12734,10 @@ namespace Infinium.Modules.WorkAssignments
                         BagetWithAngleAssemblyToExcelSingly(ref hssfworkbook, ref sheet1,
                             Calibri11CS, CalibriBold11CS, CalibriBold11F, TableHeaderCS, TableHeaderDecCS, BagetWithAngleAssemblyDT,
                             WorkAssignmentID, BatchName, ClientName, "ДУБЛЬ", OrderName, Notes, ref RowIndex);
+                        RowIndex++;
+                        BagetWithAngleAssemblyToExcelSingly(ref hssfworkbook, ref sheet1,
+                            Calibri11CS, CalibriBold11CS, CalibriBold11F, TableHeaderCS, TableHeaderDecCS, BagetWithAngleAssemblyDT,
+                            WorkAssignmentID, BatchName, ClientName, "ДУБЛЬ-2", OrderName, Notes, ref RowIndex);
                     }
                     RowIndex++;
                 }
@@ -11813,6 +12813,10 @@ namespace Infinium.Modules.WorkAssignments
                         NotArchDecorAssemblyToExcelSingly(ref hssfworkbook, ref sheet1,
                             Calibri11CS, CalibriBold11CS, CalibriBold11F, TableHeaderCS, TableHeaderDecCS, DecorAssemblyDT,
                             WorkAssignmentID, BatchName, ClientName, "ДУБЛЬ", OrderName, Notes, ref RowIndex);
+                        RowIndex++;
+                        NotArchDecorAssemblyToExcelSingly(ref hssfworkbook, ref sheet1,
+                            Calibri11CS, CalibriBold11CS, CalibriBold11F, TableHeaderCS, TableHeaderDecCS, DecorAssemblyDT,
+                            WorkAssignmentID, BatchName, ClientName, "ДУБЛЬ-2", OrderName, Notes, ref RowIndex);
                     }
                     RowIndex++;
                 }
@@ -11872,6 +12876,10 @@ namespace Infinium.Modules.WorkAssignments
                         NotArchDecorAssemblyToExcelSingly(ref hssfworkbook, ref sheet1,
                             Calibri11CS, CalibriBold11CS, CalibriBold11F, TableHeaderCS, TableHeaderDecCS, DecorAssemblyDT,
                             WorkAssignmentID, BatchName, ClientName, "ДУБЛЬ", OrderName, Notes, ref RowIndex);
+                        RowIndex++;
+                        NotArchDecorAssemblyToExcelSingly(ref hssfworkbook, ref sheet1,
+                            Calibri11CS, CalibriBold11CS, CalibriBold11F, TableHeaderCS, TableHeaderDecCS, DecorAssemblyDT,
+                            WorkAssignmentID, BatchName, ClientName, "ДУБЛЬ-2", OrderName, Notes, ref RowIndex);
                     }
                     RowIndex++;
                 }
@@ -11889,12 +12897,20 @@ namespace Infinium.Modules.WorkAssignments
 
             RowIndex++;
 
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, "УТВЕРЖДАЮ_____________");
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, "УТВЕРЖДАЮ_____________");
             cell.CellStyle = Calibri11CS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, _appovingUser);
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 0, "Задание №" + WorkAssignmentID.ToString());
             cell.CellStyle = CalibriBold11CS;
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, BatchName);
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, BatchName);
             cell.CellStyle = CalibriBold11CS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, $"План. отгрузка: {DateTime.Now.AddDays(14).ToShortDateString()}");
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 0, "Клиент:");
             cell.CellStyle = CalibriBold11CS;
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, ClientName);
@@ -12071,12 +13087,20 @@ namespace Infinium.Modules.WorkAssignments
 
             RowIndex++;
 
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, "УТВЕРЖДАЮ_____________");
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, "УТВЕРЖДАЮ_____________");
             cell.CellStyle = Calibri11CS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, _appovingUser);
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 0, "Задание №" + WorkAssignmentID.ToString());
             cell.CellStyle = CalibriBold11CS;
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, BatchName);
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, BatchName);
             cell.CellStyle = CalibriBold11CS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, $"План. отгрузка: {DateTime.Now.AddDays(14).ToShortDateString()}");
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 0, "Клиент:");
             cell.CellStyle = CalibriBold11CS;
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, ClientName);
@@ -12307,6 +13331,10 @@ namespace Infinium.Modules.WorkAssignments
                         ArchDecorAssemblyToExcelSingly(ref hssfworkbook, ref sheet1,
                             Calibri11CS, CalibriBold11CS, CalibriBold11F, TableHeaderCS, TableHeaderDecCS, DecorAssemblyDT,
                             WorkAssignmentID, BatchName, ClientName, "ДУБЛЬ", OrderName, Notes, ref RowIndex);
+                        RowIndex++;
+                        ArchDecorAssemblyToExcelSingly(ref hssfworkbook, ref sheet1,
+                            Calibri11CS, CalibriBold11CS, CalibriBold11F, TableHeaderCS, TableHeaderDecCS, DecorAssemblyDT,
+                            WorkAssignmentID, BatchName, ClientName, "ДУБЛЬ-2", OrderName, Notes, ref RowIndex);
                     }
                     RowIndex++;
                 }
@@ -12366,6 +13394,10 @@ namespace Infinium.Modules.WorkAssignments
                         ArchDecorAssemblyToExcelSingly(ref hssfworkbook, ref sheet1,
                             Calibri11CS, CalibriBold11CS, CalibriBold11F, TableHeaderCS, TableHeaderDecCS, DecorAssemblyDT,
                             WorkAssignmentID, BatchName, ClientName, "ДУБЛЬ", OrderName, Notes, ref RowIndex);
+                        RowIndex++;
+                        ArchDecorAssemblyToExcelSingly(ref hssfworkbook, ref sheet1,
+                            Calibri11CS, CalibriBold11CS, CalibriBold11F, TableHeaderCS, TableHeaderDecCS, DecorAssemblyDT,
+                            WorkAssignmentID, BatchName, ClientName, "ДУБЛЬ-2", OrderName, Notes, ref RowIndex);
                     }
                     RowIndex++;
                 }
@@ -12383,12 +13415,20 @@ namespace Infinium.Modules.WorkAssignments
 
             RowIndex++;
 
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, "УТВЕРЖДАЮ_____________");
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, "УТВЕРЖДАЮ_____________");
             cell.CellStyle = Calibri11CS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, _appovingUser);
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 0, "Задание №" + WorkAssignmentID.ToString());
             cell.CellStyle = CalibriBold11CS;
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, BatchName);
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, BatchName);
             cell.CellStyle = CalibriBold11CS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, $"План. отгрузка: {DateTime.Now.AddDays(14).ToShortDateString()}");
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 0, "Клиент:");
             cell.CellStyle = CalibriBold11CS;
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, ClientName);
@@ -12620,6 +13660,10 @@ namespace Infinium.Modules.WorkAssignments
                         GridsDecorAssemblyToExcelSingly(ref hssfworkbook, ref sheet1,
                             Calibri11CS, CalibriBold11CS, CalibriBold11F, TableHeaderCS, TableHeaderDecCS, DecorAssemblyDT,
                             WorkAssignmentID, BatchName, ClientName, "ДУБЛЬ", OrderName, Notes, ref RowIndex);
+                        RowIndex++;
+                        GridsDecorAssemblyToExcelSingly(ref hssfworkbook, ref sheet1,
+                            Calibri11CS, CalibriBold11CS, CalibriBold11F, TableHeaderCS, TableHeaderDecCS, DecorAssemblyDT,
+                            WorkAssignmentID, BatchName, ClientName, "ДУБЛЬ-2", OrderName, Notes, ref RowIndex);
                     }
                     RowIndex++;
                 }
@@ -12679,6 +13723,10 @@ namespace Infinium.Modules.WorkAssignments
                         GridsDecorAssemblyToExcelSingly(ref hssfworkbook, ref sheet1,
                             Calibri11CS, CalibriBold11CS, CalibriBold11F, TableHeaderCS, TableHeaderDecCS, DecorAssemblyDT,
                             WorkAssignmentID, BatchName, ClientName, "ДУБЛЬ", OrderName, Notes, ref RowIndex);
+                        RowIndex++;
+                        GridsDecorAssemblyToExcelSingly(ref hssfworkbook, ref sheet1,
+                            Calibri11CS, CalibriBold11CS, CalibriBold11F, TableHeaderCS, TableHeaderDecCS, DecorAssemblyDT,
+                            WorkAssignmentID, BatchName, ClientName, "ДУБЛЬ-2", OrderName, Notes, ref RowIndex);
                     }
                     RowIndex++;
                 }
@@ -12696,12 +13744,20 @@ namespace Infinium.Modules.WorkAssignments
 
             RowIndex++;
 
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, "УТВЕРЖДАЮ_____________");
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, "УТВЕРЖДАЮ_____________");
             cell.CellStyle = Calibri11CS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, _appovingUser);
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 0, "Задание №" + WorkAssignmentID.ToString());
             cell.CellStyle = CalibriBold11CS;
-            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, BatchName);
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, BatchName);
             cell.CellStyle = CalibriBold11CS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 3, $"План. отгрузка: {DateTime.Now.AddDays(14).ToShortDateString()}");
+            cell.CellStyle = Calibri11CS;
+            RowIndex++;
+
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 0, "Клиент:");
             cell.CellStyle = CalibriBold11CS;
             cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 1, ClientName);

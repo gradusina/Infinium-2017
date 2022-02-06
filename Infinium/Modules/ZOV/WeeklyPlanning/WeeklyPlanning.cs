@@ -11055,7 +11055,8 @@ namespace Infinium.Modules.ZOV.WeeklyPlanning
                     if (bImpost)
                     {
                         string Front2 = GetFront2Name(Convert.ToInt32(Row["TechnoProfileID"]));
-                        InsetType = InsetType + "/" + Front2;
+                        if (Front2.Length > 0)
+                            InsetType = InsetType + "/" + Front2;
                     }
                 }
                 InsetColor = GetInsetColorName(Convert.ToInt32(Row["InsetColorID"]));
@@ -11217,7 +11218,8 @@ namespace Infinium.Modules.ZOV.WeeklyPlanning
                     if (bImpost)
                     {
                         string Front2 = GetFront2Name(Convert.ToInt32(Row["TechnoProfileID"]));
-                        InsetType = InsetType + "/" + Front2;
+                        if (Front2.Length > 0)
+                            InsetType = InsetType + "/" + Front2;
                     }
                 }
                 NewRow["Front"] = GetFrontName(Convert.ToInt32(Row["FrontID"]));

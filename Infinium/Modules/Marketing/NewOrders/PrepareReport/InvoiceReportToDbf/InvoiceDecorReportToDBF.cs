@@ -11,9 +11,9 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.InvoiceReport
+namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.InvoiceReportToDbf
 {
-    public class InvoiceDecorReportToDBF
+    public class InvoiceDecorReportToDbf
     {
         decimal TransportCost = 0;
         decimal AdditionalCost = 0;
@@ -33,7 +33,7 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.InvoiceReport
         private DataTable DecorDataTable = null;
         private DataTable DecorParametersDataTable = null;
 
-        public InvoiceDecorReportToDBF()
+        public InvoiceDecorReportToDbf()
         {
             Create();
             CreateReportDataTable();

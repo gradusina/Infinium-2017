@@ -232,18 +232,12 @@ namespace Infinium
                 ShortName = dgvUsers.SelectedRows[0].Cells["ShortName"].Value.ToString();
             if (dgvUsers.SelectedRows.Count != 0 && dgvUsers.SelectedRows[0].Cells["Password"].Value != DBNull.Value)
                 Password = dgvUsers.SelectedRows[0].Cells["Password"].Value.ToString();
-            if (dgvUsers.SelectedRows.Count != 0 && dgvUsers.SelectedRows[0].Cells["Phone"].Value != DBNull.Value)
-                Phone = dgvUsers.SelectedRows[0].Cells["Phone"].Value.ToString();
-            if (dgvUsers.SelectedRows.Count != 0 && dgvUsers.SelectedRows[0].Cells["Email"].Value != DBNull.Value)
-                Email = dgvUsers.SelectedRows[0].Cells["Email"].Value.ToString();
-            if (dgvUsers.SelectedRows.Count != 0 && dgvUsers.SelectedRows[0].Cells["Skype"].Value != DBNull.Value)
-                Skype = dgvUsers.SelectedRows[0].Cells["Skype"].Value.ToString();
 
             int UserID = 0;
             if (dgvUsers.SelectedRows.Count != 0 && dgvUsers.SelectedRows[0].Cells["UserID"].Value != DBNull.Value)
                 UserID = Convert.ToInt32(dgvUsers.SelectedRows[0].Cells["UserID"].Value);
 
-            ClientsManagers.AddManager(UserID, Name, ShortName, Password, Phone, Email, Skype);
+            ClientsManagers.AddManager(UserID, Name, ShortName, Password);
         }
     }
 }

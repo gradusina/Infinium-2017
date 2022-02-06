@@ -2855,24 +2855,24 @@ namespace Infinium.Modules.WorkAssignments
             for (int i = 0; i < DT1.Rows.Count; i++)
             {
                 ProfileType++;
-                SizesASC = "Height ASC";
+                SizesASC = "Width ASC";
                 if (!OrderASC)
-                    SizesASC = "Height DESC";
+                    SizesASC = "Width DESC";
 
                 using (DataView DV = new DataView(SourceDT, "TechnoColorID=" + Convert.ToInt32(DT1.Rows[i]["TechnoColorID"]), SizesASC, DataViewRowState.CurrentRows))
                 {
-                    DT2 = DV.ToTable(true, new string[] { "Height" });
+                    DT2 = DV.ToTable(true, new string[] { "Width" });
                 }
                 for (int j = 0; j < DT2.Rows.Count; j++)
                 {
                     DataRow[] Srows = SourceDT.Select("TechnoColorID=" + Convert.ToInt32(DT1.Rows[i]["TechnoColorID"]) +
-                        " AND Height=" + Convert.ToInt32(DT2.Rows[j]["Height"]));
+                        " AND Width=" + Convert.ToInt32(DT2.Rows[j]["Width"]));
                     if (Srows.Count() == 0)
                         continue;
 
                     int Count = 0;
                     int iCount = 0;
-                    int Height = Convert.ToInt32(DT2.Rows[j]["Height"]) - WidthMargin;
+                    int Height = Convert.ToInt32(DT2.Rows[j]["Width"]) - WidthMargin;
                     string FrameColor = GetColorName(Convert.ToInt32(DT1.Rows[i]["TechnoColorID"]));
                     string Notes = string.Empty;
                     foreach (DataRow item in Srows)
@@ -3876,7 +3876,7 @@ namespace Infinium.Modules.WorkAssignments
                         DataRow NewRow = DestinationDT.NewRow();
                         if (!AlreadyExist)
                         {
-                            string profileName = ProfileName(Convert.ToInt32(Srows[0]["FrontConfigID"]), 2);
+                            string profileName = ProfileName(Convert.ToInt32(Srows[0]["FrontConfigID"]), 1);
                             if (profileName.Length > 0)
                             {
                                 if (profileName.Substring(0, 1).ToLower() == "г")
@@ -3992,7 +3992,7 @@ namespace Infinium.Modules.WorkAssignments
                         continue;
 
                     int Count = 0;
-                    int Height = (Convert.ToInt32(DistinctSizesDT.Rows[j]["Height"]) - 108 - 10) / 2;
+                    int Height = Convert.ToInt32(DistinctSizesDT.Rows[j]["Height"]) - WidthMargin;
                     string FrameColor = GetColorName(Convert.ToInt32(DT1.Rows[i]["TechnoColorID"]));
                     foreach (DataRow item in Srows)
                         Count += Convert.ToInt32(item["Count"]);
@@ -4019,7 +4019,7 @@ namespace Infinium.Modules.WorkAssignments
                             NewRow["Color"] = FrameColor;
                         }
                         NewRow["Height"] = Height;
-                        NewRow["Count"] = Count * 2;
+                        NewRow["Count"] = Count;
                         NewRow["ProfileType"] = ProfileType;
                         NewRow["IsBox"] = false;
                         NewRow["ColorType"] = Convert.ToInt32(DT1.Rows[i]["TechnoColorID"]);
@@ -4027,7 +4027,7 @@ namespace Infinium.Modules.WorkAssignments
                     }
                     else
                     {
-                        rows[0]["Count"] = Convert.ToInt32(rows[0]["Count"]) + Count * 2;
+                        rows[0]["Count"] = Convert.ToInt32(rows[0]["Count"]) + Count;
                     }
                 }
             }
@@ -7690,8 +7690,8 @@ namespace Infinium.Modules.WorkAssignments
             {
                 CollectRapidMarsel3Profil(Marsel3OrdersDT, ref DestinationDT, "Марсель-3 П-141", "Марсель-3 П-041",
                     Convert.ToInt32(FrontMargins.Marsel3Width), Convert.ToInt32(FrontMinSizes.Marsel3MinWidth), Convert.ToInt32(FrontMargins.Marsel3Height), false);
-                CollectRapidM3ImpostHeightProfil(Marsel3OrdersDT, ref DestinationDT, "Марсель-3 П-141", "Марсель-3 П-041",
-                    Convert.ToInt32(FrontMinSizes.Marsel3MinWidth), Convert.ToInt32(FrontMargins.Marsel3Height), false);
+                //CollectRapidM3ImpostHeightProfil(Marsel3OrdersDT, ref DestinationDT, "Марсель-3 П-141", "Марсель-3 П-041",
+                //    Convert.ToInt32(FrontMinSizes.Marsel3MinWidth), Convert.ToInt32(FrontMargins.Marsel3Height), false);
                 CollectRapidM3ImpostWidthProfil(Marsel3OrdersDT, ref DestinationDT, "Марсель-3 П-141", "Марсель-3 П-041",
                     Convert.ToInt32(FrontMargins.Marsel3Width), Convert.ToInt32(FrontMinSizes.Marsel3MinWidth), false);
             }
@@ -9845,8 +9845,8 @@ namespace Infinium.Modules.WorkAssignments
 
             if (Marsel3OrdersDT.Rows.Count > 0)
             {
-                CollectStemasM3ImpostHeightProfil16(Marsel3OrdersDT, ref DestinationDT, "Марсель-3 П-141",
-                    Convert.ToInt32(FrontMinSizes.Marsel3MinWidth), ProfileType++, true);
+                //CollectStemasM3ImpostHeightProfil16(Marsel3OrdersDT, ref DestinationDT, "Марсель-3 П-141",
+                //    Convert.ToInt32(FrontMinSizes.Marsel3MinWidth), ProfileType++, true);
                 CollectStemasM3ImpostWidthProfil16(Marsel3OrdersDT, ref DestinationDT, "Марсель-3 П-141",
                     Convert.ToInt32(FrontMargins.Marsel3Width), Convert.ToInt32(FrontMinSizes.Marsel3MinWidth), ProfileType++, true);
             }

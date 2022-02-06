@@ -4274,7 +4274,7 @@ namespace Infinium
             ProducedReport ProducedProducts = new ProducedReport(ref DecorCatalogOrder);
             ProducedProducts.GetDateRates(date, ref EURBYRCurrency);
             //ProducedProducts.CreateZOVReport(CalendarFrom.SelectionStart, CalendarTo.SelectionStart, FileName, EURBYRCurrency);
-            ProducedProducts.CreateMarketingReport(CalendarFrom.SelectionStart, CalendarTo.SelectionStart, cbSamples.Checked, cbNotSamples.Checked, FileName, EURBYRCurrency, MClients, MClientGroups);
+            ProducedProducts.CreateMarketingPackReport(CalendarFrom.SelectionStart, CalendarTo.SelectionStart, cbSamples.Checked, cbNotSamples.Checked, FileName, EURBYRCurrency, MClients, MClientGroups);
             NeedSplash = true;
             while (SplashWindow.bSmallCreated)
                 SmallWaitForm.CloseS = true;
@@ -4932,6 +4932,178 @@ namespace Infinium
             {
                 StatisticsReport.CreateReportOrderNumber(DateFrom, DateTo, FactoryID, ZOVOrdersStatistics.FrontsOrdersDataTable, ZOVOrdersStatistics.DecorOrdersDataTable, FileName, true);
             }
+            while (SplashWindow.bSmallCreated)
+                SmallWaitForm.CloseS = true;
+        }
+
+        private void OrderDateRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            PlanDispDateMenuItem.Enabled = false;
+            OnProdDateMenuItem.Enabled = false;
+            PackDateMenuItem.Enabled = false;
+            StoreDateMenuItem.Enabled = false;
+            ExpDateMenuItem.Enabled = false;
+            FactDispDateMenuItem.Enabled = false;
+            if (PlanDispDateRadioButton.Checked)
+            {
+                PlanDispDateMenuItem.Enabled = true;
+                OnProdDateMenuItem.Enabled = false;
+                PackDateMenuItem.Enabled = false;
+                StoreDateMenuItem.Enabled = false;
+                ExpDateMenuItem.Enabled = false;
+                FactDispDateMenuItem.Enabled = false;
+            }
+            if (OnProductionRadioButton.Checked)
+            {
+                PlanDispDateMenuItem.Enabled = false;
+                OnProdDateMenuItem.Enabled = true;
+                PackDateMenuItem.Enabled = false;
+                StoreDateMenuItem.Enabled = false;
+                ExpDateMenuItem.Enabled = false;
+                FactDispDateMenuItem.Enabled = false;
+            }
+            if (PackDateRadioButton.Checked)
+            {
+                PlanDispDateMenuItem.Enabled = false;
+                OnProdDateMenuItem.Enabled = false;
+                PackDateMenuItem.Enabled = true;
+                StoreDateMenuItem.Enabled = false;
+                ExpDateMenuItem.Enabled = false;
+                FactDispDateMenuItem.Enabled = false;
+            }
+            if (StoreDateRadioButton.Checked)
+            {
+                PlanDispDateMenuItem.Enabled = false;
+                OnProdDateMenuItem.Enabled = false;
+                PackDateMenuItem.Enabled = false;
+                StoreDateMenuItem.Enabled = true;
+                ExpDateMenuItem.Enabled = false;
+                FactDispDateMenuItem.Enabled = false;
+            }
+            if (ExpDateRadioButton.Checked)
+            {
+                PlanDispDateMenuItem.Enabled = false;
+                OnProdDateMenuItem.Enabled = false;
+                PackDateMenuItem.Enabled = false;
+                StoreDateMenuItem.Enabled = false;
+                ExpDateMenuItem.Enabled = true;
+                FactDispDateMenuItem.Enabled = false;
+            }
+            if (FactDispDateRadioButton.Checked)
+            {
+                PlanDispDateMenuItem.Enabled = false;
+                OnProdDateMenuItem.Enabled = false;
+                PackDateMenuItem.Enabled = false;
+                StoreDateMenuItem.Enabled = false;
+                ExpDateMenuItem.Enabled = false;
+                FactDispDateMenuItem.Enabled = true;
+            }
+        }
+
+        private void ExpDateMenuItem_Click(object sender, EventArgs e)
+        {
+            Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Создание отчета.\r\nПодождите..."); });
+            T.Start();
+
+            while (!SplashWindow.bSmallCreated) ;
+            NeedSplash = false;
+
+            decimal EURBYRCurrency = 1000000;
+            DateTime date = new DateTime(CalendarFrom.SelectionStart.Year, CalendarFrom.SelectionStart.Month, 1);
+            string FileName = "Экспедиция " + CalendarFrom.SelectionStart.ToString("dd.MM.yyyy");
+            if (CalendarFrom.SelectionStart != CalendarTo.SelectionStart)
+                FileName = "Принято на эксп-цию за период с " + CalendarFrom.SelectionStart.ToString("dd.MM.yyyy") + " по " + CalendarTo.SelectionStart.ToString("dd.MM.yyyy");
+
+            ArrayList MClients = AllProductsStatistics.SelectedMarketingClients;
+            ArrayList MClientGroups = AllProductsStatistics.SelectedMarketingClientGroups;
+            DecorCatalogOrder = new Modules.ZOV.DecorCatalogOrder();
+            ProducedReport ProducedProducts = new ProducedReport(ref DecorCatalogOrder);
+            ProducedProducts.GetDateRates(date, ref EURBYRCurrency);
+            //ProducedProducts.CreateZOVDispReport(CalendarFrom.SelectionStart, CalendarTo.SelectionStart, FileName, EURBYRCurrency);
+            ProducedProducts.CreateMarketingExpReport(CalendarFrom.SelectionStart, CalendarTo.SelectionStart, cbSamples.Checked, cbNotSamples.Checked,
+                FileName, EURBYRCurrency, MClients, MClientGroups);
+            NeedSplash = true;
+            while (SplashWindow.bSmallCreated)
+                SmallWaitForm.CloseS = true;
+        }
+
+        private void StoreDateMenuItem_Click(object sender, EventArgs e)
+        {
+            Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Создание отчета.\r\nПодождите..."); });
+            T.Start();
+
+            while (!SplashWindow.bSmallCreated) ;
+            NeedSplash = false;
+
+            decimal EURBYRCurrency = 1000000;
+            DateTime date = new DateTime(CalendarFrom.SelectionStart.Year, CalendarFrom.SelectionStart.Month, 1);
+            string FileName = "Склад " + CalendarFrom.SelectionStart.ToString("dd.MM.yyyy");
+            if (CalendarFrom.SelectionStart != CalendarTo.SelectionStart)
+                FileName = "Принято на склад за период с " + CalendarFrom.SelectionStart.ToString("dd.MM.yyyy") + " по " + CalendarTo.SelectionStart.ToString("dd.MM.yyyy");
+
+            ArrayList MClients = AllProductsStatistics.SelectedMarketingClients;
+            ArrayList MClientGroups = AllProductsStatistics.SelectedMarketingClientGroups;
+            DecorCatalogOrder = new Modules.ZOV.DecorCatalogOrder();
+            ProducedReport ProducedProducts = new ProducedReport(ref DecorCatalogOrder);
+            ProducedProducts.GetDateRates(date, ref EURBYRCurrency);
+            //ProducedProducts.CreateZOVDispReport(CalendarFrom.SelectionStart, CalendarTo.SelectionStart, FileName, EURBYRCurrency);
+            ProducedProducts.CreateMarketingStoreReport(CalendarFrom.SelectionStart, CalendarTo.SelectionStart, cbSamples.Checked, cbNotSamples.Checked,
+                FileName, EURBYRCurrency, MClients, MClientGroups);
+            NeedSplash = true;
+            while (SplashWindow.bSmallCreated)
+                SmallWaitForm.CloseS = true;
+        }
+
+        private void OnProdDateMenuItem_Click(object sender, EventArgs e)
+        {
+            Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Создание отчета.\r\nПодождите..."); });
+            T.Start();
+
+            while (!SplashWindow.bSmallCreated) ;
+            NeedSplash = false;
+
+            decimal EURBYRCurrency = 1000000;
+            DateTime date = new DateTime(CalendarFrom.SelectionStart.Year, CalendarFrom.SelectionStart.Month, 1);
+            string FileName = "Вошло на пр-во " + CalendarFrom.SelectionStart.ToString("dd.MM.yyyy");
+            if (CalendarFrom.SelectionStart != CalendarTo.SelectionStart)
+                FileName = "Вошло на пр-во за период с " + CalendarFrom.SelectionStart.ToString("dd.MM.yyyy") + " по " + CalendarTo.SelectionStart.ToString("dd.MM.yyyy");
+
+            ArrayList MClients = AllProductsStatistics.SelectedMarketingClients;
+            ArrayList MClientGroups = AllProductsStatistics.SelectedMarketingClientGroups;
+            DecorCatalogOrder = new Modules.ZOV.DecorCatalogOrder();
+            ProducedReport ProducedProducts = new ProducedReport(ref DecorCatalogOrder);
+            ProducedProducts.GetDateRates(date, ref EURBYRCurrency);
+            //ProducedProducts.CreateZOVDispReport(CalendarFrom.SelectionStart, CalendarTo.SelectionStart, FileName, EURBYRCurrency);
+            ProducedProducts.CreateMarketingOnProdReport(CalendarFrom.SelectionStart, CalendarTo.SelectionStart, cbSamples.Checked, cbNotSamples.Checked,
+                FileName, EURBYRCurrency, MClients, MClientGroups);
+            NeedSplash = true;
+            while (SplashWindow.bSmallCreated)
+                SmallWaitForm.CloseS = true;
+        }
+
+        private void PlanDispDateMenuItem_Click(object sender, EventArgs e)
+        {
+            Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Создание отчета.\r\nПодождите..."); });
+            T.Start();
+
+            while (!SplashWindow.bSmallCreated) ;
+            NeedSplash = false;
+
+            decimal EURBYRCurrency = 1000000;
+            DateTime date = new DateTime(CalendarFrom.SelectionStart.Year, CalendarFrom.SelectionStart.Month, 1);
+            string FileName = "Планово отгружено " + CalendarFrom.SelectionStart.ToString("dd.MM.yyyy");
+            if (CalendarFrom.SelectionStart != CalendarTo.SelectionStart)
+                FileName = "Планово отгружено за период с " + CalendarFrom.SelectionStart.ToString("dd.MM.yyyy") + " по " + CalendarTo.SelectionStart.ToString("dd.MM.yyyy");
+
+            ArrayList MClients = AllProductsStatistics.SelectedMarketingClients;
+            ArrayList MClientGroups = AllProductsStatistics.SelectedMarketingClientGroups;
+            DecorCatalogOrder = new Modules.ZOV.DecorCatalogOrder();
+            ProducedReport ProducedProducts = new ProducedReport(ref DecorCatalogOrder);
+            ProducedProducts.GetDateRates(date, ref EURBYRCurrency);
+            //ProducedProducts.CreateZOVDispReport(CalendarFrom.SelectionStart, CalendarTo.SelectionStart, FileName, EURBYRCurrency);
+            ProducedProducts.CreateMarketingPlanDispReport(CalendarFrom.SelectionStart, CalendarTo.SelectionStart, cbSamples.Checked, cbNotSamples.Checked,
+                FileName, EURBYRCurrency, MClients, MClientGroups);
+            NeedSplash = true;
             while (SplashWindow.bSmallCreated)
                 SmallWaitForm.CloseS = true;
         }

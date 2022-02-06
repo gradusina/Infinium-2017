@@ -48,7 +48,7 @@ namespace Infinium.Modules.ZOV.Orders
             zovPackagesDT = new DataTable();
             zovPackageDetailsDT = new DataTable();
 
-            DBFReport = new InvoiceReportToDbf();
+            DBFReport = new InvoiceReportToDbf(new Marketing.NewOrders.FrontsCatalogOrder(), new Marketing.NewOrders.DecorCatalogOrder());
             OrdersCalculate = new Marketing.NewOrders.OrdersCalculate();
         }
 

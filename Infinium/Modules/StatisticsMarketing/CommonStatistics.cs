@@ -344,7 +344,7 @@ namespace Infinium.Modules.StatisticsMarketing
                 ManagersDataTable.Rows[i]["Check"] = false;
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM ClientGroups",
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM ClientGroups ORDER BY ClientGroupName",
                 ConnectionStrings.MarketingReferenceConnectionString))
             {
                 DA.Fill(ClientGroupsDataTable);

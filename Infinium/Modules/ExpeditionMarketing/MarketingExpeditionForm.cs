@@ -73,6 +73,7 @@ namespace Infinium
         Form TopForm = null;
         LightStartForm LightStartForm;
 
+        FrontsCatalogOrder FrontsCatalogOrder;
         DecorCatalogOrder DecorCatalogOrder;
         DispatchReport DispatchReport;
         CabFurAssembleReport cabFurAssembleReport;
@@ -82,7 +83,7 @@ namespace Infinium
         private ColorInvoiceReportToDbf _colorInvoiceReportToDbf;
         private NotesInvoiceReportToDbf _notesInvoiceReportToDbf;
         Infinium.Modules.Marketing.Dispatch.DetailsReport DetailsReport;
-        Infinium.Modules.Marketing.NewOrders.InvoiceReportToDbf.InvoiceReportToDbf iDBFReport;
+        Infinium.Modules.Marketing.Orders.InvoiceReportToDbf.InvoiceReportToDbf iDBFReport;
         MarketingExpeditionManager MarketingExpeditionManager;
         OrdersCalculate OrdersCalculate;
 
@@ -408,7 +409,10 @@ namespace Infinium
             FilterClientsDataGrid.Columns["ClientID"].Visible = false;
 
             BatchDataGrid.DataSource = MarketingExpeditionManager.BatchDetailsBindingSource;
+            FrontsCatalogOrder = new FrontsCatalogOrder();
+            FrontsCatalogOrder.Initialize();
             DecorCatalogOrder = new DecorCatalogOrder();
+            DecorCatalogOrder.Initialize();
             DispatchReport = new DispatchReport();
             cabFurAssembleReport = new CabFurAssembleReport();
 
@@ -459,24 +463,21 @@ namespace Infinium
             cbxCabFurMonths.SelectedValue = DateTime.Now.Month;
             cbxCabFurYears.SelectedValue = DateTime.Now.Year;
 
-            _dispatchReportToDbf = new DispatchReportToDbf(ref DecorCatalogOrder);
-            _colorInvoiceReportToDbf = new ColorInvoiceReportToDbf(ref DecorCatalogOrder);
-            _notesInvoiceReportToDbf = new NotesInvoiceReportToDbf(ref DecorCatalogOrder);
+            kryptonMonthCalendar1.SelectionStart = DateTime.Now;
+
+            _dispatchReportToDbf = new DispatchReportToDbf(FrontsCatalogOrder, DecorCatalogOrder);
+            _colorInvoiceReportToDbf = new ColorInvoiceReportToDbf(FrontsCatalogOrder, DecorCatalogOrder);
+            _notesInvoiceReportToDbf = new NotesInvoiceReportToDbf(FrontsCatalogOrder, DecorCatalogOrder);
             OrdersCalculate = new OrdersCalculate();
-            DetailsReport = new Modules.Marketing.Dispatch.DetailsReport(ref DecorCatalogOrder, ref OrdersCalculate.FrontsCalculate);
+            DetailsReport = new Modules.Marketing.Dispatch.DetailsReport(FrontsCatalogOrder, DecorCatalogOrder, ref OrdersCalculate.FrontsCalculate);
             MarketingDispatchManager = new MarketingDispatch();
-            cabFurAssembleManager = new Modules.CabFurnitureAssignments.CabFurAssemble();
-            iDBFReport = new Modules.Marketing.NewOrders.InvoiceReportToDbf.InvoiceReportToDbf();
+            iDBFReport = new Modules.Marketing.Orders.InvoiceReportToDbf.InvoiceReportToDbf(FrontsCatalogOrder, DecorCatalogOrder);
 
             MarketingDispatchManager.Initialize();
-            cabFurAssembleManager.Initialize();
 
             dgvDispatchSetting();
             dgvDispatchDatesSetting();
-            dgvCabFurMegaOrdersSetting();
-            dgvCabFurDatesSetting();
             dgvMegaOrdersSetting();
-            dgvCabFurMainOrdersSetting();
             kryptonCheckSet1_CheckedButtonChanged(null, null);
         }
 
@@ -936,6 +937,8 @@ namespace Infinium
 
         private void kryptonButton1_Click_1(object sender, EventArgs e)
         {
+            if (MainOrdersDataGrid.SelectedRows.Count == 0)
+                return;
             CheckOrdersStatus.SetToDispatch(kryptonMonthCalendar1.SelectionStart, GetSelectedPackages(),
                 Convert.ToInt32(MainOrdersDataGrid.SelectedRows[0].Cells["MainOrderID"].Value));
         }
@@ -1710,6 +1713,8 @@ namespace Infinium
 
         private void UpdateCabFurDispatchDate()
         {
+            if (cabFurAssembleManager == null)
+                return;
             DateTime FilterDate = new DateTime(Convert.ToInt32(cbxCabFurYears.SelectedValue), Convert.ToInt32(cbxCabFurMonths.SelectedValue), 1);
             cabFurAssembleManager.ClearAssembleDates();
             cabFurAssembleManager.UpdateAssembleDates(FilterDate);
@@ -1857,6 +1862,7 @@ namespace Infinium
             {
                 return;
             }
+            int ClientID = Convert.ToInt32(dgvCabFurMegaOrders.SelectedRows[0].Cells["ClientID"].Value);
             int MegaOrderID = Convert.ToInt32(dgvCabFurMegaOrders.SelectedRows[0].Cells["MegaOrderID"].Value);
 
             if (NeedSplash)
@@ -1867,7 +1873,7 @@ namespace Infinium
                 while (!SplashWindow.bSmallCreated) ;
                 NeedSplash = false;
                 cabFurAssembleManager.FilterMainOrders(MegaOrderID);
-                cabFurAssembleManager.FillPercColumns(MegaOrderID);
+                cabFurAssembleManager.FillPercColumns(ClientID, MegaOrderID);
                 NeedSplash = true;
                 while (SplashWindow.bSmallCreated)
                     SmallWaitForm.CloseS = true;
@@ -1875,7 +1881,7 @@ namespace Infinium
             else
             {
                 cabFurAssembleManager.FilterMainOrders(MegaOrderID);
-                cabFurAssembleManager.FillPercColumns(MegaOrderID);
+                cabFurAssembleManager.FillPercColumns(ClientID, MegaOrderID);
             }
         }
 
@@ -4947,7 +4953,7 @@ namespace Infinium
             cabFurAssembleReport.GetDispatchInfo(ref CreationDateTime, ref PrepareDispDateTime);
             cabFurAssembleReport.CurrentClient = ClientID;
             cabFurAssembleReport.CurrentMegaOrders = MegaOrders;
-            cabFurAssembleReport.Initialize();
+            cabFurAssembleReport.FillPackagesByMegaOrders();
             cabFurAssembleReport.CreateCabFurReport(NeedProfilList, NeedTPSList, true, ref PackagesReportName);
 
             while (SplashWindow.bSmallCreated)
@@ -4960,15 +4966,22 @@ namespace Infinium
                 return;
 
             int MegaOrderID = 0;
+            int ClientID = 0;
+            if (dgvCabFurMegaOrders.SelectedRows.Count != 0 && dgvCabFurMegaOrders.SelectedRows[0].Cells["ClientID"].Value != DBNull.Value)
+                ClientID = Convert.ToInt32(dgvCabFurMegaOrders.SelectedRows[0].Cells["ClientID"].Value);
             if (dgvCabFurMegaOrders.SelectedRows.Count != 0 && dgvCabFurMegaOrders.SelectedRows[0].Cells["MegaOrderID"].Value != DBNull.Value)
                 MegaOrderID = Convert.ToInt32(dgvCabFurMegaOrders.SelectedRows[0].Cells["MegaOrderID"].Value);
+
+            int[] MegaOrders = new int[dgvCabFurMegaOrders.SelectedRows.Count];
+            for (int i = 0; i < dgvCabFurMegaOrders.SelectedRows.Count; i++)
+                MegaOrders[i] = Convert.ToInt32(dgvCabFurMegaOrders.SelectedRows[i].Cells["MegaOrderID"].Value);
 
             Thread T = new Thread(delegate () { SplashWindow.CreateSplash(); });
             T.Start();
 
             while (!SplashForm.bCreated) ;
 
-            CabFurAssembleForm cabFurAssembleForm = new CabFurAssembleForm(this, MegaOrderID);
+            CabFurAssembleForm cabFurAssembleForm = new CabFurAssembleForm(this, ClientID, MegaOrders);
 
             TopForm = cabFurAssembleForm;
 
@@ -4976,6 +4989,7 @@ namespace Infinium
 
             cabFurAssembleForm.Close();
             cabFurAssembleForm.Dispose();
+            dgvCabFurDates_SelectionChanged(null, null);
 
             TopForm = null;
         }
@@ -6087,5 +6101,26 @@ namespace Infinium
             }
         }
 
+        private void kryptonButton8_Click(object sender, EventArgs e)
+        {
+            Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Загрузка данных с сервера.\r\nПодождите..."); });
+            T.Start();
+
+            while (!SplashWindow.bSmallCreated) ;
+
+            NeedSplash = false;
+            cabFurAssembleManager = new Modules.CabFurnitureAssignments.CabFurAssemble();
+            cabFurAssembleManager.Initialize();
+            dgvCabFurMegaOrdersSetting();
+            dgvCabFurDatesSetting();
+            dgvCabFurMainOrdersSetting();
+            UpdateCabFurDispatchDate();
+
+            NeedSplash = true;
+
+            while (SplashWindow.bSmallCreated)
+                SmallWaitForm.CloseS = true;
+
+        }
     }
 }

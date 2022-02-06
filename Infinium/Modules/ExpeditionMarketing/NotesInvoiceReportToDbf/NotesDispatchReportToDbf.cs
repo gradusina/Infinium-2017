@@ -9,6 +9,7 @@ using System.Data.OleDb;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace Infinium.Modules.ExpeditionMarketing.NotesDispatchReportToDbf
 {
@@ -22,10 +23,10 @@ namespace Infinium.Modules.ExpeditionMarketing.NotesDispatchReportToDbf
         private DataTable temppackagesDtTable;
         private decimal VAT = 1.0m;
 
-        public NotesInvoiceReportToDbf(ref DecorCatalogOrder DecorCatalogOrder)
+        public NotesInvoiceReportToDbf(FrontsCatalogOrder FrontsCatalogOrder, DecorCatalogOrder DecorCatalogOrder)
         {
-            DispatchFrontsReport = new NotesDispatchFrontsReportToDbf();
-            DispatchDecorReport = new NotesDispatchDecorReportToDbf(ref DecorCatalogOrder);
+            DispatchFrontsReport = new NotesDispatchFrontsReportToDbf(FrontsCatalogOrder, DecorCatalogOrder);
+            DispatchDecorReport = new NotesDispatchDecorReportToDbf(DecorCatalogOrder);
 
             CreateProfilReportTable();
             temppackagesDtTable = new DataTable();
@@ -42,13 +43,13 @@ namespace Infinium.Modules.ExpeditionMarketing.NotesDispatchReportToDbf
 
         public static void DataSetIntoDBF(string path, string fileName, DataTable DT1, int FactoryID)
         {
-            if (File.Exists(path + fileName + ".dbf"))
+            if (File.Exists(path + "/" + fileName + ".dbf"))
             {
-                File.Delete(path + fileName + ".dbf");
+                File.Delete(path + "/" + fileName + ".dbf");
             }
 
             string createSql = $"create table { fileName } ([UNNP] varchar(20), [UNN] varchar(20), [CurrencyCode] varchar(20), " +
-                $"[InvNumber] varchar(20), [Notes] varchar(50), [Cvet] varchar(20), [Patina] varchar(20), [Amount] Double, [Price] Double, [NDS] varchar(10), [Weight] Double, [PackageCount] Integer)";
+                $"[InvNumber] varchar(20), [Cvet] varchar(20), [Patina] varchar(20), [Amount] Double, [Price] Double, [NDS] varchar(10), [Weight] Double, [PackageCount] Integer, [Notes] varchar(100))";
 
             OleDbConnection con = new OleDbConnection(GetConnection(path));
 
@@ -65,8 +66,8 @@ namespace Infinium.Modules.ExpeditionMarketing.NotesDispatchReportToDbf
             foreach (DataRow row in DT1.Rows)
             {
                 string insertSql = $"insert into { fileName } " +
-                    $"(UNNP, UNN, CurrencyCode, InvNumber, Notes, Cvet, Patina, Amount, Price, NDS, Weight, PackageCount) " +
-                    $"values(UNNP, UNN, CurrencyCode, InvNumber, Notes, Cvet, Patina, Amount, PriceWithTransport, NDS, Weight, PackageCount)";
+                    $"(UNNP, UNN, CurrencyCode, InvNumber, Cvet, Patina, Amount, Price, NDS, Weight, PackageCount, Notes) " +
+                    $"values(UNNP, UNN, CurrencyCode, InvNumber, Cvet, Patina, Amount, PriceWithTransport, NDS, Weight, PackageCount, Notes)";
                 decimal d = Decimal.Round(Convert.ToDecimal(row["Weight"]) / 1000, 3, MidpointRounding.AwayFromZero);
                 double Amount = Convert.ToDouble(row["Count"]);
                 double Price = Convert.ToDouble(row["PriceWithTransport"]);
@@ -95,14 +96,14 @@ namespace Infinium.Modules.ExpeditionMarketing.NotesDispatchReportToDbf
                 cmd.Parameters.Add("CurrencyCode", OleDbType.VarChar).Value = CurrencyCode;
                 //cmd.Parameters.Add("TPSCurCode", OleDbType.VarChar).Value = TPSCurCode;
                 cmd.Parameters.Add("InvNumber", OleDbType.VarChar).Value = InvNumber;
-                cmd.Parameters.Add("Notes", OleDbType.VarChar).Value = Notes;
                 cmd.Parameters.Add("Cvet", OleDbType.VarChar).Value = Cvet;
-                cmd.Parameters.Add("Patina", OleDbType.VarChar).Value = Patina;
+                cmd.Parameters.Add("Patina", OleDbType.VarChar).Value = Encoding.GetEncoding(866).GetString(Encoding.GetEncoding(1251).GetBytes(Patina));
                 cmd.Parameters.Add("Amount", OleDbType.Double).Value = Amount;
                 cmd.Parameters.Add("PriceWithTransport", OleDbType.Double).Value = Price;
                 cmd.Parameters.Add("NDS", OleDbType.VarChar).Value = NDS;
                 cmd.Parameters.Add("Weight", OleDbType.Double).Value = Weight;
                 cmd.Parameters.Add("PackageCount", OleDbType.Integer).Value = PackageCount;
+                cmd.Parameters.Add("Notes", OleDbType.VarChar).Value = Encoding.GetEncoding(866).GetString(Encoding.GetEncoding(1251).GetBytes(Notes));
                 cmd.ExecuteNonQuery();
             }
 
@@ -111,13 +112,13 @@ namespace Infinium.Modules.ExpeditionMarketing.NotesDispatchReportToDbf
 
         public static void DataSetIntoDBF(string path, string fileName, DataTable DT1, DataTable DT2, int FactoryID)
         {
-            if (File.Exists(path + fileName + ".dbf"))
+            if (File.Exists(path + "/" + fileName + ".dbf"))
             {
-                File.Delete(path + fileName + ".dbf");
+                File.Delete(path + "/" + fileName + ".dbf");
             }
 
             string createSql = $"create table { fileName } ([UNNP] varchar(20), [UNN] varchar(20), [CurrencyCode] varchar(20), " +
-                $"[InvNumber] varchar(20), [Notes] varchar(50), [Cvet] varchar(20), [Patina] varchar(20), [Amount] Double, [Price] Double, [NDS] varchar(10), [Weight] Double, [PackageCount] Integer)";
+                $"[InvNumber] varchar(20), [Cvet] varchar(20), [Patina] varchar(20), [Amount] Double, [Price] Double, [NDS] varchar(10), [Weight] Double, [PackageCount] Integer, [Notes] varchar(100))";
 
             OleDbConnection con = new OleDbConnection(GetConnection(path));
 
@@ -134,8 +135,8 @@ namespace Infinium.Modules.ExpeditionMarketing.NotesDispatchReportToDbf
             foreach (DataRow row in DT1.Rows)
             {
                 string insertSql = $"insert into { fileName } " +
-                    $"(UNNP, UNN, CurrencyCode, InvNumber, Notes, Cvet, Patina, Amount, Price, NDS, Weight, PackageCount) " +
-                    $"values(UNNP, UNN, CurrencyCode, InvNumber, Notes, Cvet, Patina, Amount, PriceWithTransport, NDS, Weight, PackageCount)";
+                    $"(UNNP, UNN, CurrencyCode, InvNumber, Cvet, Patina, Amount, Price, NDS, Weight, PackageCount, Notes) " +
+                    $"values(UNNP, UNN, CurrencyCode, InvNumber, Cvet, Patina, Amount, PriceWithTransport, NDS, Weight, PackageCount, Notes)";
                 decimal d = Decimal.Round(Convert.ToDecimal(row["Weight"]) / 1000, 3, MidpointRounding.AwayFromZero);
                 double Amount = Convert.ToDouble(row["Count"]);
                 double Price = Convert.ToDouble(row["PriceWithTransport"]);
@@ -164,14 +165,14 @@ namespace Infinium.Modules.ExpeditionMarketing.NotesDispatchReportToDbf
                 cmd.Parameters.Add("CurrencyCode", OleDbType.VarChar).Value = CurrencyCode;
                 //cmd.Parameters.Add("TPSCurCode", OleDbType.VarChar).Value = TPSCurCode;
                 cmd.Parameters.Add("InvNumber", OleDbType.VarChar).Value = InvNumber;
-                cmd.Parameters.Add("Notes", OleDbType.VarChar).Value = Notes;
                 cmd.Parameters.Add("Cvet", OleDbType.VarChar).Value = Cvet;
-                cmd.Parameters.Add("Patina", OleDbType.VarChar).Value = Patina;
+                cmd.Parameters.Add("Patina", OleDbType.VarChar).Value = Encoding.GetEncoding(866).GetString(Encoding.GetEncoding(1251).GetBytes(Patina));
                 cmd.Parameters.Add("Amount", OleDbType.Double).Value = Amount;
                 cmd.Parameters.Add("PriceWithTransport", OleDbType.Double).Value = Price;
                 cmd.Parameters.Add("NDS", OleDbType.VarChar).Value = NDS;
                 cmd.Parameters.Add("Weight", OleDbType.Double).Value = Weight;
                 cmd.Parameters.Add("PackageCount", OleDbType.Integer).Value = PackageCount;
+                cmd.Parameters.Add("Notes", OleDbType.VarChar).Value = Encoding.GetEncoding(866).GetString(Encoding.GetEncoding(1251).GetBytes(Notes));
                 cmd.ExecuteNonQuery();
             }
             foreach (DataRow row in DT2.Rows)
@@ -207,14 +208,14 @@ namespace Infinium.Modules.ExpeditionMarketing.NotesDispatchReportToDbf
                 cmd.Parameters.Add("CurrencyCode", OleDbType.VarChar).Value = CurrencyCode;
                 //cmd.Parameters.Add("TPSCurCode", OleDbType.VarChar).Value = TPSCurCode;
                 cmd.Parameters.Add("InvNumber", OleDbType.VarChar).Value = InvNumber;
-                cmd.Parameters.Add("Notes", OleDbType.VarChar).Value = Notes;
                 cmd.Parameters.Add("Cvet", OleDbType.VarChar).Value = Cvet;
-                cmd.Parameters.Add("Patina", OleDbType.VarChar).Value = Patina;
+                cmd.Parameters.Add("Patina", OleDbType.VarChar).Value = Encoding.GetEncoding(866).GetString(Encoding.GetEncoding(1251).GetBytes(Patina));
                 cmd.Parameters.Add("Amount", OleDbType.Double).Value = Amount;
                 cmd.Parameters.Add("PriceWithTransport", OleDbType.Double).Value = Price;
                 cmd.Parameters.Add("NDS", OleDbType.VarChar).Value = NDS;
                 cmd.Parameters.Add("Weight", OleDbType.Double).Value = Weight;
                 cmd.Parameters.Add("PackageCount", OleDbType.Integer).Value = PackageCount;
+                cmd.Parameters.Add("Notes", OleDbType.VarChar).Value = Encoding.GetEncoding(866).GetString(Encoding.GetEncoding(1251).GetBytes(Notes));
                 cmd.ExecuteNonQuery();
             }
 
@@ -374,7 +375,7 @@ namespace Infinium.Modules.ExpeditionMarketing.NotesDispatchReportToDbf
             using (DataView DV = new DataView(table2))
             {
                 DV.RowFilter = IsNonStandardFilter;
-                DistinctInvNumbersDT = DV.ToTable(true, new string[] { "AccountingName", "InvNumber", "Notes", "PaymentRate" });
+                DistinctInvNumbersDT = DV.ToTable(true, new string[] { "AccountingName", "InvNumber", "Notes", "Cvet", "Patina", "PaymentRate" });
             }
             IsNonStandardFilter = " AND " + IsNonStandardFilter;
             for (int i = 0; i < DistinctInvNumbersDT.Rows.Count; i++)
@@ -598,10 +599,10 @@ namespace Infinium.Modules.ExpeditionMarketing.NotesDispatchReportToDbf
             DataTable TempDT = new DataTable();
             DataTable dtDistPackageID = new DataTable();
             DataTable DistPackagesDT = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter($@"SELECT 
+            using (SqlDataAdapter DA = new SqlDataAdapter($@"SELECT
 CASE WHEN MainOrders.Notes = '' THEN CAST(MegaOrders.OrderNumber AS varchar(12)) + '_' + CAST(FrontsOrders.MainOrderID AS varchar(12)) ELSE CAST(MegaOrders.OrderNumber AS varchar(12))
                          + '_' + CAST(FrontsOrders.MainOrderID AS varchar(12)) + '_' + MainOrders.Notes END AS Notes,
-infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog.dbo.Patina.Patina, 
+infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog.dbo.Patina.Patina,
 PackageDetails.PackageID, infiniu2_catalog.dbo.FrontsConfig.InvNumber, infiniu2_catalog.dbo.FrontsConfig.FactoryID, Packages.DispatchID
                 FROM PackageDetails INNER JOIN
                 Packages ON PackageDetails.PackageID = Packages.PackageID AND ProductType = 0 AND DispatchID IN (" + string.Join(",", DispatchID) + @") INNER JOIN
@@ -611,7 +612,7 @@ PackageDetails.PackageID, infiniu2_catalog.dbo.FrontsConfig.InvNumber, infiniu2_
                 infiniu2_catalog.dbo.FrontsConfig ON FrontsOrders.FrontConfigID = infiniu2_catalog.dbo.FrontsConfig.FrontConfigID LEFT JOIN
                 infiniu2_catalog.dbo.TechStore ON infiniu2_catalog.dbo.FrontsConfig.ColorID = infiniu2_catalog.dbo.TechStore.TechStoreID LEFT JOIN
                 infiniu2_catalog.dbo.Patina ON infiniu2_catalog.dbo.FrontsConfig.PatinaID = infiniu2_catalog.dbo.Patina.PatinaID
-                GROUP BY PackageDetails.PackageID, infiniu2_catalog.dbo.FrontsConfig.InvNumber, 
+                GROUP BY PackageDetails.PackageID, infiniu2_catalog.dbo.FrontsConfig.InvNumber,
 CASE WHEN MainOrders.Notes = '' THEN CAST(MegaOrders.OrderNumber AS varchar(12)) + '_' + CAST(FrontsOrders.MainOrderID AS varchar(12)) ELSE CAST(MegaOrders.OrderNumber AS varchar(12))
                          + '_' + CAST(FrontsOrders.MainOrderID AS varchar(12)) + '_' + MainOrders.Notes END, Cvet, Patina, infiniu2_catalog.dbo.FrontsConfig.FactoryID, Packages.DispatchID",
                 ConnectionStrings.MarketingOrdersConnectionString))
@@ -622,10 +623,10 @@ CASE WHEN MainOrders.Notes = '' THEN CAST(MegaOrders.OrderNumber AS varchar(12))
                 DT = TempDT.Clone();
             foreach (DataRow item in TempDT.Rows)
                 DT.Rows.Add(item.ItemArray);
-            using (SqlDataAdapter DA = new SqlDataAdapter($@"SELECT 
+            using (SqlDataAdapter DA = new SqlDataAdapter($@"SELECT
 CASE WHEN MainOrders.Notes = '' THEN CAST(MegaOrders.OrderNumber AS varchar(12)) + '_' + CAST(DecorOrders.MainOrderID AS varchar(12)) ELSE CAST(MegaOrders.OrderNumber AS varchar(12))
                          + '_' + CAST(DecorOrders.MainOrderID AS varchar(12)) + '_' + MainOrders.Notes END AS Notes,
-infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog.dbo.Patina.Patina, 
+infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog.dbo.Patina.Patina,
 PackageDetails.PackageID, infiniu2_catalog.dbo.DecorConfig.InvNumber, infiniu2_catalog.dbo.DecorConfig.FactoryID, Packages.DispatchID
                 FROM PackageDetails INNER JOIN
                 Packages ON PackageDetails.PackageID = Packages.PackageID AND ProductType = 1 AND DispatchID IN (" + string.Join(",", DispatchID) + @") INNER JOIN
@@ -647,6 +648,11 @@ PackageDetails.PackageID, infiniu2_catalog.dbo.DecorConfig.InvNumber, infiniu2_c
             foreach (DataRow item in TempDT.Rows)
                 DT.Rows.Add(item.ItemArray);
 
+            foreach (DataRow item in DT.Rows)
+            {
+                if (item["Cvet"].ToString() == "")
+                    item["Cvet"] = "000";
+            }
             for (int z = 0; z < DispatchID.Count(); z++)
             {
                 using (DataView DV = new DataView(DT, "FactoryID=1 AND DispatchID=" + DispatchID[z], "PackageID, InvNumber", DataViewRowState.CurrentRows))
@@ -669,9 +675,22 @@ PackageDetails.PackageID, infiniu2_catalog.dbo.DecorConfig.InvNumber, infiniu2_c
                         string Notes = rows1[j]["Notes"].ToString();
                         string Cvet = rows1[j]["Cvet"].ToString();
                         string Patina = rows1[j]["Patina"].ToString();
-                        DataRow[] rows2 = ProfilReportTable.Select("InvNumber='" + InvNumber + "' AND Notes='" + Notes + "' AND Cvet='" + Cvet + "' AND Patina='" + Patina + "'");
+                        int packageCount = DispatchDecorReport.GetCubfurPackage(InvNumber);
+
+                        var filteredRows = ProfilReportTable
+                            .AsEnumerable()
+                            .Where(row => row.Field<string>("InvNumber") == InvNumber
+                                          && row.Field<string>("Notes") == Notes
+                                          && row.Field<string>("Cvet") == Cvet
+                                          && row.Field<string>("Patina") == Patina);
+                        DataRow[] rows2 = filteredRows.ToArray();
                         if (rows2.Count() > 0)
                         {
+                            if (packageCount != -1)
+                            {
+                                rows2[0]["PackageCount"] = Convert.ToInt32(rows2[0]["Count"]) * packageCount;
+                                continue;
+                            }
                             if (j == rows1.Count() - 1)
                             {
                                 rows2[0]["PackageCount"] = Convert.ToInt32(rows2[0]["PackageCount"]) + 1;
@@ -681,6 +700,10 @@ PackageDetails.PackageID, infiniu2_catalog.dbo.DecorConfig.InvNumber, infiniu2_c
                                 rows2[0]["PackageCount"] = 1;
                                 break;
                             }
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Найдено 0 упаковок. InvNumber={InvNumber} Notes={Notes} PackageID={PackageID}");
                         }
                     }
                 }
@@ -705,7 +728,14 @@ PackageDetails.PackageID, infiniu2_catalog.dbo.DecorConfig.InvNumber, infiniu2_c
                         string Notes = rows1[j]["Notes"].ToString();
                         string Cvet = rows1[j]["Cvet"].ToString();
                         string Patina = rows1[j]["Patina"].ToString();
-                        DataRow[] rows2 = TPSReportTable.Select("InvNumber='" + InvNumber + "' AND Notes='" + Notes + "' AND Cvet='" + Cvet + "' AND Patina='" + Patina + "'");
+
+                        var filteredRows = TPSReportTable
+                            .AsEnumerable()
+                            .Where(row => row.Field<string>("InvNumber") == InvNumber
+                                          && row.Field<string>("Notes") == Notes
+                                          && row.Field<string>("Cvet") == Cvet
+                                          && row.Field<string>("Patina") == Patina);
+                        DataRow[] rows2 = filteredRows.ToArray();
                         if (rows2.Count() > 0)
                         {
                             if (j == rows1.Count() - 1)
@@ -717,6 +747,10 @@ PackageDetails.PackageID, infiniu2_catalog.dbo.DecorConfig.InvNumber, infiniu2_c
                                 rows2[0]["PackageCount"] = 1;
                                 break;
                             }
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Найдено 0 упаковок. InvNumber={InvNumber} Notes={Notes} PackageID={PackageID}");
                         }
                     }
                 }
@@ -1090,7 +1124,7 @@ PackageDetails.PackageID, infiniu2_catalog.dbo.DecorConfig.InvNumber, infiniu2_c
                     Cell1 = sheet1.CreateRow(pos++).CreateCell(9);
                     Cell1.SetCellValue(Convert.ToDouble(TransportAndOtherProfil));
                     Cell1.CellStyle = SummaryWithoutBorderBelCS;
-                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(10);
+                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(11);
                     Cell1.SetCellValue(Convert.ToDouble(WeightProfil));
                     Cell1.CellStyle = SummaryWeightCS;
                 }
@@ -1108,7 +1142,7 @@ PackageDetails.PackageID, infiniu2_catalog.dbo.DecorConfig.InvNumber, infiniu2_c
                     Cell1 = sheet1.CreateRow(pos++).CreateCell(9);
                     Cell1.SetCellValue(Convert.ToDouble(TransportAndOtherProfil));
                     Cell1.CellStyle = SummaryWithoutBorderForeignCS;
-                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(10);
+                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(11);
                     Cell1.SetCellValue(Convert.ToDouble(WeightProfil));
                     Cell1.CellStyle = SummaryWeightCS;
                 }
@@ -1263,7 +1297,7 @@ PackageDetails.PackageID, infiniu2_catalog.dbo.DecorConfig.InvNumber, infiniu2_c
                     Cell1 = sheet1.CreateRow(pos++).CreateCell(9);
                     Cell1.SetCellValue(Convert.ToDouble(TransportAndOtherTPS));
                     Cell1.CellStyle = SummaryWithoutBorderBelCS;
-                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(10);
+                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(11);
                     Cell1.SetCellValue(Convert.ToDouble(WeightTPS));
                     Cell1.CellStyle = SummaryWeightCS;
                 }
@@ -1281,7 +1315,7 @@ PackageDetails.PackageID, infiniu2_catalog.dbo.DecorConfig.InvNumber, infiniu2_c
                     Cell1 = sheet1.CreateRow(pos++).CreateCell(9);
                     Cell1.SetCellValue(Convert.ToDouble(TransportAndOtherTPS));
                     Cell1.CellStyle = SummaryWithoutBorderForeignCS;
-                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(10);
+                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(11);
                     Cell1.SetCellValue(Convert.ToDouble(WeightTPS));
                     Cell1.CellStyle = SummaryWeightCS;
                 }
@@ -1846,7 +1880,7 @@ PackageDetails.PackageID, infiniu2_catalog.dbo.DecorConfig.InvNumber, infiniu2_c
                     Cell1 = sheet1.CreateRow(pos++).CreateCell(9);
                     Cell1.SetCellValue(Convert.ToDouble(TransportAndOtherProfil));
                     Cell1.CellStyle = SummaryWithoutBorderBelCS;
-                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(10);
+                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(11);
                     Cell1.SetCellValue(Convert.ToDouble(WeightProfil));
                     Cell1.CellStyle = SummaryWeightCS;
                 }
@@ -1855,7 +1889,7 @@ PackageDetails.PackageID, infiniu2_catalog.dbo.DecorConfig.InvNumber, infiniu2_c
                     Cell1 = sheet1.CreateRow(pos).CreateCell(0);
                     Cell1.SetCellValue("Заказ, " + Currency + ":");
                     Cell1.CellStyle = SummaryWithoutBorderForeignCS;
-                    Cell1 = sheet1.CreateRow(pos++).CreateCell(8);
+                    Cell1 = sheet1.CreateRow(pos++).CreateCell(9);
                     Cell1.SetCellValue(Convert.ToDouble(TotalProfil));
                     Cell1.CellStyle = SummaryWithoutBorderForeignCS;
                     Cell1 = sheet1.CreateRow(pos).CreateCell(0);
@@ -1864,7 +1898,7 @@ PackageDetails.PackageID, infiniu2_catalog.dbo.DecorConfig.InvNumber, infiniu2_c
                     Cell1 = sheet1.CreateRow(pos++).CreateCell(9);
                     Cell1.SetCellValue(Convert.ToDouble(TransportAndOtherProfil));
                     Cell1.CellStyle = SummaryWithoutBorderForeignCS;
-                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(10);
+                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(11);
                     Cell1.SetCellValue(Convert.ToDouble(WeightProfil));
                     Cell1.CellStyle = SummaryWeightCS;
                 }
@@ -2020,7 +2054,7 @@ PackageDetails.PackageID, infiniu2_catalog.dbo.DecorConfig.InvNumber, infiniu2_c
                     Cell1 = sheet1.CreateRow(pos++).CreateCell(9);
                     Cell1.SetCellValue(Convert.ToDouble(TransportAndOtherTPS));
                     Cell1.CellStyle = SummaryWithoutBorderBelCS;
-                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(10);
+                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(11);
                     Cell1.SetCellValue(Convert.ToDouble(WeightTPS));
                     Cell1.CellStyle = SummaryWeightCS;
                 }
@@ -2038,7 +2072,7 @@ PackageDetails.PackageID, infiniu2_catalog.dbo.DecorConfig.InvNumber, infiniu2_c
                     Cell1 = sheet1.CreateRow(pos++).CreateCell(9);
                     Cell1.SetCellValue(Convert.ToDouble(TransportAndOtherTPS));
                     Cell1.CellStyle = SummaryWithoutBorderForeignCS;
-                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(10);
+                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(11);
                     Cell1.SetCellValue(Convert.ToDouble(WeightTPS));
                     Cell1.CellStyle = SummaryWeightCS;
                 }
@@ -2282,10 +2316,10 @@ PackageDetails.PackageID, infiniu2_catalog.dbo.DecorConfig.InvNumber, infiniu2_c
             DataTable DistPackagesDT = new DataTable();
             if (IsSample)
             {
-                using (SqlDataAdapter DA = new SqlDataAdapter($@"SELECT 
+                using (SqlDataAdapter DA = new SqlDataAdapter($@"SELECT
 CASE WHEN MainOrders.Notes = '' THEN CAST(MegaOrders.OrderNumber AS varchar(12)) + '_' + CAST(FrontsOrders.MainOrderID AS varchar(12)) ELSE CAST(MegaOrders.OrderNumber AS varchar(12))
                          + '_' + CAST(FrontsOrders.MainOrderID AS varchar(12)) + '_' + MainOrders.Notes END AS Notes,
-infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog.dbo.Patina.Patina, 
+infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog.dbo.Patina.Patina,
 PackageDetails.PackageID, infiniu2_catalog.dbo.FrontsConfig.InvNumber, infiniu2_catalog.dbo.FrontsConfig.FactoryID, Packages.DispatchID
                 FROM PackageDetails INNER JOIN
                 Packages ON PackageDetails.PackageID = Packages.PackageID AND ProductType = 0 AND DispatchID IN (" + string.Join(",", DispatchID) + @") INNER JOIN
@@ -2305,10 +2339,10 @@ CASE WHEN MainOrders.Notes = '' THEN CAST(MegaOrders.OrderNumber AS varchar(12))
             }
             else
             {
-                using (SqlDataAdapter DA = new SqlDataAdapter($@"SELECT 
+                using (SqlDataAdapter DA = new SqlDataAdapter($@"SELECT
 CASE WHEN MainOrders.Notes = '' THEN CAST(MegaOrders.OrderNumber AS varchar(12)) + '_' + CAST(FrontsOrders.MainOrderID AS varchar(12)) ELSE CAST(MegaOrders.OrderNumber AS varchar(12))
                          + '_' + CAST(FrontsOrders.MainOrderID AS varchar(12)) + '_' + MainOrders.Notes END AS Notes,
-infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog.dbo.Patina.Patina, 
+infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog.dbo.Patina.Patina,
 PackageDetails.PackageID, infiniu2_catalog.dbo.FrontsConfig.InvNumber, infiniu2_catalog.dbo.FrontsConfig.FactoryID, Packages.DispatchID
                 FROM PackageDetails INNER JOIN
                 Packages ON PackageDetails.PackageID = Packages.PackageID AND ProductType = 0 AND DispatchID IN (" + string.Join(",", DispatchID) + @") INNER JOIN
@@ -2332,10 +2366,10 @@ CASE WHEN MainOrders.Notes = '' THEN CAST(MegaOrders.OrderNumber AS varchar(12))
                 DT.Rows.Add(item.ItemArray);
             if (IsSample)
             {
-                using (SqlDataAdapter DA = new SqlDataAdapter($@"SELECT 
+                using (SqlDataAdapter DA = new SqlDataAdapter($@"SELECT
 CASE WHEN MainOrders.Notes = '' THEN CAST(MegaOrders.OrderNumber AS varchar(12)) + '_' + CAST(DecorOrders.MainOrderID AS varchar(12)) ELSE CAST(MegaOrders.OrderNumber AS varchar(12))
                          + '_' + CAST(DecorOrders.MainOrderID AS varchar(12)) + '_' + MainOrders.Notes END AS Notes,
-infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog.dbo.Patina.Patina, 
+infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog.dbo.Patina.Patina,
 PackageDetails.PackageID, infiniu2_catalog.dbo.DecorConfig.InvNumber, infiniu2_catalog.dbo.DecorConfig.FactoryID, Packages.DispatchID
                 FROM PackageDetails INNER JOIN
                 Packages ON PackageDetails.PackageID = Packages.PackageID AND ProductType = 1 AND DispatchID IN (" + string.Join(",", DispatchID) + @") INNER JOIN
@@ -2356,10 +2390,10 @@ CASE WHEN MainOrders.Notes = '' THEN CAST(MegaOrders.OrderNumber AS varchar(12))
             }
             else
             {
-                using (SqlDataAdapter DA = new SqlDataAdapter($@"SELECT 
+                using (SqlDataAdapter DA = new SqlDataAdapter($@"SELECT
 CASE WHEN MainOrders.Notes = '' THEN CAST(MegaOrders.OrderNumber AS varchar(12)) + '_' + CAST(DecorOrders.MainOrderID AS varchar(12)) ELSE CAST(MegaOrders.OrderNumber AS varchar(12))
                          + '_' + CAST(DecorOrders.MainOrderID AS varchar(12)) + '_' + MainOrders.Notes END AS Notes,
-infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog.dbo.Patina.Patina, 
+infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog.dbo.Patina.Patina,
 PackageDetails.PackageID, infiniu2_catalog.dbo.DecorConfig.InvNumber, infiniu2_catalog.dbo.DecorConfig.FactoryID, Packages.DispatchID
                 FROM PackageDetails INNER JOIN
                 Packages ON PackageDetails.PackageID = Packages.PackageID AND ProductType = 1 AND DispatchID IN (" + string.Join(",", DispatchID) + @") INNER JOIN
@@ -2379,17 +2413,20 @@ CASE WHEN MainOrders.Notes = '' THEN CAST(MegaOrders.OrderNumber AS varchar(12))
                 }
             }
 
-            if (DT == null)
-                DT = TempDT.Clone();
             foreach (DataRow item in TempDT.Rows)
                 DT.Rows.Add(item.ItemArray);
 
+            foreach (DataRow item in DT.Rows)
+            {
+                if (item["Cvet"].ToString() == "")
+                    item["Cvet"] = "000";
+            }
             for (int z = 0; z < DispatchID.Count(); z++)
             {
                 using (DataView DV = new DataView(DT, "FactoryID=1 AND DispatchID=" + DispatchID[z], "PackageID, InvNumber", DataViewRowState.CurrentRows))
                 {
                     dtMainOrders.Clear();
-                    dtMainOrders = DV.ToTable(true, new string[] { "PackageID", "InvNumber", "Notes", "Cvet" , "Patina" });
+                    dtMainOrders = DV.ToTable(true, new string[] { "PackageID", "InvNumber", "Notes", "Cvet", "Patina" });
                 }
                 using (DataView DV = new DataView(dtMainOrders, string.Empty, string.Empty, DataViewRowState.CurrentRows))
                 {
@@ -2399,7 +2436,7 @@ CASE WHEN MainOrders.Notes = '' THEN CAST(MegaOrders.OrderNumber AS varchar(12))
                 for (int i = 0; i < DistPackagesDT.Rows.Count; i++)
                 {
                     int PackageID = Convert.ToInt32(DistPackagesDT.Rows[i]["PackageID"]);
-                    if (temppackagesDtTable.Select("FactoryID=1 AND PackageID=" + PackageID).Count() > 0)
+                    if (temppackagesDtTable.Select("FactoryID=1 AND PackageID=" + PackageID).Any())
                     {
                         continue;
                     }
@@ -2417,9 +2454,24 @@ CASE WHEN MainOrders.Notes = '' THEN CAST(MegaOrders.OrderNumber AS varchar(12))
                         string Notes = rows1[j]["Notes"].ToString();
                         string Cvet = rows1[j]["Cvet"].ToString();
                         string Patina = rows1[j]["Patina"].ToString();
-                        DataRow[] rows2 = ProfilReportTable.Select("InvNumber='" + InvNumber + "' AND Notes='" + Notes + "' AND Cvet='" + Cvet + "' AND Patina='" + Patina + "'");
-                        if (rows2.Count() > 0)
+                        int packageCount = DispatchDecorReport.GetCubfurPackage(InvNumber);
+
+                        var filteredRows = ProfilReportTable
+                            .AsEnumerable()
+                            .Where(row => row.Field<string>("InvNumber") == InvNumber
+                                          && row.Field<string>("Notes") == Notes
+                                          && row.Field<string>("Cvet") == Cvet
+                                          && row.Field<string>("Patina") == Patina);
+                        DataRow[] rows2 = filteredRows.ToArray();
+
+                        if (rows2.Length > 0)
                         {
+                            if (packageCount != -1)
+                            {
+                                rows2[0]["PackageCount"] = Convert.ToInt32(rows2[0]["Count"]) * packageCount;
+                                continue;
+                            }
+
                             if (j == rows1.Count() - 1)
                             {
                                 rows2[0]["PackageCount"] = Convert.ToInt32(rows2[0]["PackageCount"]) + 1;
@@ -2429,6 +2481,10 @@ CASE WHEN MainOrders.Notes = '' THEN CAST(MegaOrders.OrderNumber AS varchar(12))
                                 rows2[0]["PackageCount"] = 1;
                                 break;
                             }
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Найдено 0 упаковок. InvNumber={InvNumber} Notes={Notes} PackageID={PackageID}");
                         }
                     }
                 }
@@ -2464,7 +2520,14 @@ CASE WHEN MainOrders.Notes = '' THEN CAST(MegaOrders.OrderNumber AS varchar(12))
                         string Notes = rows1[j]["Notes"].ToString();
                         string Cvet = rows1[j]["Cvet"].ToString();
                         string Patina = rows1[j]["Patina"].ToString();
-                        DataRow[] rows2 = TPSReportTable.Select("InvNumber='" + InvNumber + "' AND Notes='" + Notes + "' AND Cvet='" + Cvet + "' AND Patina='" + Patina + "'");
+
+                        var filteredRows = TPSReportTable
+                            .AsEnumerable()
+                            .Where(row => row.Field<string>("InvNumber") == InvNumber
+                                          && row.Field<string>("Notes") == Notes
+                                          && row.Field<string>("Cvet") == Cvet
+                                          && row.Field<string>("Patina") == Patina);
+                        DataRow[] rows2 = filteredRows.ToArray();
                         if (rows2.Count() > 0)
                         {
                             if (j == rows1.Count() - 1)
@@ -2476,6 +2539,10 @@ CASE WHEN MainOrders.Notes = '' THEN CAST(MegaOrders.OrderNumber AS varchar(12))
                                 rows2[0]["PackageCount"] = 1;
                                 break;
                             }
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Найдено 0 упаковок. InvNumber={InvNumber} Notes={Notes} PackageID={PackageID}");
                         }
                     }
                 }

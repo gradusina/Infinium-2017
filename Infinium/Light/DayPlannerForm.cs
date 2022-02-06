@@ -919,10 +919,14 @@ namespace Infinium
 
         private void StartButton_Click(object sender, EventArgs e)
         {
+
             if (!LightWorkDay.IsTimesheetHoursSaved(Security.CurrentUserID))
             {
-                MessageBox.Show("Необходимо сохранить Табель в предыдущий рабочий день");
-                return;
+                if (!DayPlannerWorkTimeSheet.IsAbsenceVacation(CalendarFrom.SelectionStart))
+                {
+                    MessageBox.Show("Необходимо сохранить Табель в предыдущий рабочий день");
+                    return;
+                }
             }
 
             PhantomForm PhantomForm = new PhantomForm();

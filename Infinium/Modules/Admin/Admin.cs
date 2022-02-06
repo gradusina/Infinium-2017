@@ -3188,9 +3188,11 @@ namespace Infinium
     public class WorkTimeRegister
     {
         private DataTable WorkDaysDataTable;
+        private DataTable UsersDataTable;
 
         public BindingSource WorkDayDetailsBindingSource;
         public BindingSource WorkDaysBindingSource;
+        public BindingSource UsersBindingSource;
 
         int CurrentUserID = -1;
         int CurrentWorkDayID = -1;
@@ -3222,9 +3224,11 @@ namespace Infinium
         private void Create()
         {
             WorkDaysDataTable = new DataTable();
+            UsersDataTable = new DataTable();
 
             WorkDayDetailsBindingSource = new BindingSource();
             WorkDaysBindingSource = new BindingSource();
+            UsersBindingSource = new BindingSource();
         }
 
         private void Fill()
@@ -3242,6 +3246,11 @@ namespace Infinium
                 }
             }
 
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT UserID, ShortName FROM Users WHERE Fired <> 1 ORDER BY ShortName",
+                ConnectionStrings.UsersConnectionString))
+            {
+                DA.Fill(UsersDataTable);
+            }
             WorkDaysDataTable.Columns.Add(new DataColumn("FactHours", Type.GetType("System.Decimal")));
 
             for (int i = 0; i < WorkDaysDataTable.Rows.Count; i++)
@@ -3275,7 +3284,33 @@ namespace Infinium
         private void Binding()
         {
             WorkDaysBindingSource.DataSource = WorkDaysDataTable;
+            UsersBindingSource.DataSource = UsersDataTable;
 
+        }
+
+        public void CopyWorkDay(int WorkDayID, int UserID)
+        {
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM WorkDays WHERE WorkDayID = " + WorkDayID, ConnectionStrings.LightConnectionString))
+            {
+                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                {
+                    using (DataTable DT = new DataTable())
+                    {
+                        if (DA.Fill(DT) == 0)
+                            return;
+
+                        DataRow NewRow = DT.NewRow();
+                        NewRow.ItemArray = DT.Rows[0].ItemArray;
+                        NewRow["UserID"] = UserID;
+
+                        DT.Rows.Add(NewRow);
+
+                        DA.Update(DT);
+
+                        return;
+                    }
+                }
+            }
         }
 
         public void FilterWorkDays(DateTime Date)

@@ -2160,7 +2160,12 @@ namespace Infinium.Modules.Marketing.Orders
                     Count = Convert.ToInt32(AllDecorOrdersTable.Rows[i]["Count"]);
                     decimal MinBalanceOnStorage = 0;
                     string Name = string.Empty;
-                    GetTechStoreName(Convert.ToInt32(AllDecorOrdersTable.Rows[i]["DecorConfigID"]), ref Name, ref MinBalanceOnStorage);
+
+                    Tuple<string, decimal> tuple = TablesManager.GetTechStoreNameAndBalance(
+                        Convert.ToInt32(AllDecorOrdersTable.Rows[i]["DecorConfigID"]));
+                    Name = tuple.Item1;
+                    MinBalanceOnStorage = tuple.Item2;
+                    //GetTechStoreNameAndBalance(Convert.ToInt32(AllDecorOrdersTable.Rows[i]["DecorConfigID"]), ref Name, ref MinBalanceOnStorage);
                     if (Name.Length > 0)
                     {
                         if (MinBalanceOnStorage != 0)
@@ -2203,7 +2208,13 @@ namespace Infinium.Modules.Marketing.Orders
                     Count = Convert.ToInt32(AllDecorOrdersTable.Rows[i]["Count"]);
                     decimal MinBalanceOnStorage = 0;
                     string Name = string.Empty;
-                    GetTechStoreName(Convert.ToInt32(AllDecorOrdersTable.Rows[i]["DecorConfigID"]), ref Name, ref MinBalanceOnStorage);
+
+                    Tuple<string, decimal> tuple = TablesManager.GetTechStoreNameAndBalance(
+                        Convert.ToInt32(AllDecorOrdersTable.Rows[i]["DecorConfigID"]));
+                    Name = tuple.Item1;
+                    MinBalanceOnStorage = tuple.Item2;
+
+                    //GetTechStoreNameAndBalance(Convert.ToInt32(AllDecorOrdersTable.Rows[i]["DecorConfigID"]), ref Name, ref MinBalanceOnStorage);
                     if (Name.Length > 0)
                     {
                         if (MinBalanceOnStorage == 0)
@@ -2241,7 +2252,7 @@ namespace Infinium.Modules.Marketing.Orders
             return TotalVolume;
         }
 
-        private void GetTechStoreName(int DecorConfigID, ref string TechStoreName, ref decimal MinBalanceOnStorage)
+        private void GetTechStoreNameAndBalance(int DecorConfigID, ref string TechStoreName, ref decimal MinBalanceOnStorage)
         {
             using (SqlDataAdapter DA = new SqlDataAdapter(@"SELECT DecorConfig.MinBalanceOnStorage, Decor.TechStoreName FROM DecorConfig INNER JOIN
                 infiniu2_catalog.dbo.TechStore AS Decor ON DecorConfig.DecorID = Decor.TechStoreID WHERE DecorConfigID=" + DecorConfigID,
@@ -2298,7 +2309,9 @@ namespace Infinium.Modules.Marketing.Orders
                 MinBalanceOnStorage = Convert.ToDecimal(Rows[0]["MinBalanceOnStorage"]);
                 if (MinBalanceOnStorage != 0)
                     BaseProfile = true;
-                TechStoreName = GetTechStoreName(Convert.ToInt32(DecorOrderRow["DecorID"]));
+                TechStoreName = TablesManager.GetTechStoreNameByDecorID(Convert.ToInt32(DecorOrderRow["DecorID"]));
+
+                //TechStoreName = GetTechStoreName(Convert.ToInt32(DecorOrderRow["DecorID"]));
             }
             MeasureType = GetMeasureType(DecorOrderRow);
 

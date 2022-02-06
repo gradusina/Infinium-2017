@@ -11,22 +11,22 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.InvoiceReport
+namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.InvoiceReportToDbf
 {
-    public class InvoiceReportToDBF
+    public class InvoiceReportToDbf
     {
         decimal VAT = 1.0m;
-        public InvoiceFrontsReportToDBF FrontsReport;
-        public InvoiceDecorReportToDBF DecorReport = null;
+        public InvoiceFrontsReportToDbf FrontsReport;
+        public InvoiceDecorReportToDbf DecorReport = null;
         //HSSFWorkbook hssfworkbook;
         public DataTable CurrencyTypesDataTable = null;
         public DataTable ProfilReportTable = null;
         public DataTable TPSReportTable = null;
 
-        public InvoiceReportToDBF()
+        public InvoiceReportToDbf()
         {
-            FrontsReport = new InvoiceFrontsReportToDBF();
-            DecorReport = new InvoiceDecorReportToDBF();
+            FrontsReport = new InvoiceFrontsReportToDbf();
+            DecorReport = new InvoiceDecorReportToDbf();
 
             CreateProfilReportTable();
 
@@ -2257,9 +2257,9 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.InvoiceReport
 
         public static void DataSetIntoDBF(string path, string fileName, DataTable DT1, int FactoryID)
         {
-            if (File.Exists(path + fileName + ".dbf"))
+            if (File.Exists(path + "/"+ fileName + ".dbf"))
             {
-                File.Delete(path + fileName + ".dbf");
+                File.Delete(path + "/" + fileName + ".dbf");
             }
 
             string createSql = "create table " + fileName + " ([UNNP] varchar(20), [UNN] varchar(20), [CurrencyCode] varchar(20), [InvNumber] varchar(20), [Amount] Double, [Price] Double, [NDS] varchar(10), [Weight] Double, [PackageCount] Integer)";
@@ -2318,9 +2318,9 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.InvoiceReport
 
         public static void DataSetIntoDBF(string path, string fileName, DataTable DT1, DataTable DT2, int FactoryID)
         {
-            if (File.Exists(path + fileName + ".dbf"))
+            if (File.Exists(path + "/"+ fileName + ".dbf"))
             {
-                File.Delete(path + fileName + ".dbf");
+                File.Delete(path + "/" + fileName + ".dbf");
             }
 
             string createSql = "create table " + fileName + " ([UNNP] varchar(20), [UNN] varchar(20), [CurrencyCode] varchar(20), [InvNumber] varchar(20), [Amount] Double, [Price] Double, [NDS] varchar(10), [Weight] Double, [PackageCount] Integer)";

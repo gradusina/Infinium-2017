@@ -14,20 +14,8 @@ namespace Infinium.Modules.Marketing.NewOrders.InvoiceReportToDbf
         private decimal AdditionalCost = 0;
 
         private int ClientID = 0;
-
-        private DataTable CurrencyTypesDT;
-
-        private DataTable DecorConfigDataTable = null;
-
-        private DataTable DecorDataTable = null;
-
+        
         private DataTable DecorOrdersDataTable = null;
-
-        private DataTable DecorParametersDataTable = null;
-
-        private DataTable DecorProductsDataTable = null;
-
-        private DataTable MeasuresDataTable = null;
 
         private decimal PaymentRate = 1;
 
@@ -39,8 +27,11 @@ namespace Infinium.Modules.Marketing.NewOrders.InvoiceReportToDbf
 
         private string UNN = string.Empty;
 
-        public InvoiceDecorReportToDbf()
+        private DecorCatalogOrder decorCatalogOrder;
+
+        public InvoiceDecorReportToDbf(DecorCatalogOrder DecorCatalogOrder)
         {
+            decorCatalogOrder = DecorCatalogOrder;
             Create();
             CreateReportDataTable();
         }
@@ -99,7 +90,7 @@ namespace Infinium.Modules.Marketing.NewOrders.InvoiceReportToDbf
             }
             decimal Weight = 0;
 
-            DataRow[] Row = DecorConfigDataTable.Select("DecorConfigID = " + DecorOrderRow["DecorConfigID"].ToString());
+            DataRow[] Row = decorCatalogOrder.DecorConfigDataTable.Select("DecorConfigID = " + DecorOrderRow["DecorConfigID"].ToString());
 
             if (Row[0]["Weight"] == DBNull.Value)
             {
@@ -158,7 +149,7 @@ namespace Infinium.Modules.Marketing.NewOrders.InvoiceReportToDbf
                         if (DT.Rows[0]["CurrencyTypeID"] != DBNull.Value)
                             int.TryParse(DT.Rows[0]["CurrencyTypeID"].ToString(), out CurrencyTypeID);
 
-                        DataRow[] rows = CurrencyTypesDT.Select("CurrencyTypeID = " + CurrencyTypeID);
+                        DataRow[] rows = decorCatalogOrder.CurrencyTypesDT.Select("CurrencyTypeID = " + CurrencyTypeID);
                         if (rows.Count() > 0)
                         {
                             ProfilCurrencyCode = rows[0]["CurrencyCode"].ToString();
@@ -203,7 +194,7 @@ namespace Infinium.Modules.Marketing.NewOrders.InvoiceReportToDbf
                         if (DT.Rows[0]["CurrencyTypeID"] != DBNull.Value)
                             int.TryParse(DT.Rows[0]["CurrencyTypeID"].ToString(), out CurrencyTypeID);
 
-                        DataRow[] rows = CurrencyTypesDT.Select("CurrencyTypeID = " + CurrencyTypeID);
+                        DataRow[] rows = decorCatalogOrder.CurrencyTypesDT.Select("CurrencyTypeID = " + CurrencyTypeID);
                         if (rows.Count() > 0)
                         {
                             ProfilCurrencyCode = rows[0]["CurrencyCode"].ToString();
@@ -228,7 +219,7 @@ namespace Infinium.Modules.Marketing.NewOrders.InvoiceReportToDbf
 
         public bool HasParameter(int ProductID, String Parameter)
         {
-            DataRow[] Rows = DecorParametersDataTable.Select("ProductID = " + ProductID);
+            DataRow[] Rows = decorCatalogOrder.DecorParametersDataTable.Select("ProductID = " + ProductID);
 
             return Convert.ToBoolean(Rows[0][Parameter]);
         }
@@ -378,7 +369,7 @@ namespace Infinium.Modules.Marketing.NewOrders.InvoiceReportToDbf
                         DataTable ParamTableProfil = new DataTable();
                         DataTable ParamTableTPS = new DataTable();
 
-                        DataRow[] DCs = DecorConfigDataTable.Select("DecorConfigID = " +
+                        DataRow[] DCs = decorCatalogOrder.DecorConfigDataTable.Select("DecorConfigID = " +
                             ItemsRows[0]["DecorConfigID"].ToString());
 
                         CreateParamsTable(DCs[0]["ReportParam"].ToString(), ParamTableProfil);
@@ -403,48 +394,7 @@ namespace Infinium.Modules.Marketing.NewOrders.InvoiceReportToDbf
 
         private void Create()
         {
-            string SelectCommand = "SELECT * FROM CurrencyTypes";
-            CurrencyTypesDT = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
-            {
-                DA.Fill(CurrencyTypesDT);
-            }
             DecorOrdersDataTable = new DataTable();
-
-            SelectCommand = @"SELECT ProductID, ProductName, MeasureID, ReportParam FROM DecorProducts" +
-                " WHERE (ProductID IN (SELECT ProductID FROM DecorConfig WHERE (Enabled = 1))) ORDER BY ProductName ASC";
-            DecorProductsDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
-            {
-                DA.Fill(DecorProductsDataTable);
-            }
-            DecorDataTable = new DataTable();
-            SelectCommand = @"SELECT DISTINCT TechStore.TechStoreID AS DecorID, TechStore.TechStoreName AS Name, DecorConfig.ProductID FROM TechStore
-                INNER JOIN DecorConfig ON TechStore.TechStoreID = DecorConfig.DecorID ORDER BY TechStoreName";
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
-            {
-                DA.Fill(DecorDataTable);
-            }
-            MeasuresDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Measures",
-                ConnectionStrings.CatalogConnectionString))
-            {
-                DA.Fill(MeasuresDataTable);
-            }
-
-            DecorConfigDataTable = new DataTable();
-            //using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DecorConfig",
-            //    ConnectionStrings.CatalogConnectionString))
-            //{
-            //    DA.Fill(DecorConfigDataTable);
-            //}
-            DecorConfigDataTable = TablesManager.DecorConfigDataTable;
-
-            DecorParametersDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DecorParameters", ConnectionStrings.CatalogConnectionString))
-            {
-                DA.Fill(DecorParametersDataTable);
-            }
         }
 
         private void CreateReportDataTable()
@@ -467,7 +417,7 @@ namespace Infinium.Modules.Marketing.NewOrders.InvoiceReportToDbf
 
         private int GetMeasureTypeID(int DecorConfigID)
         {
-            DataRow[] Row = DecorConfigDataTable.Select("DecorConfigID = " + DecorConfigID);
+            DataRow[] Row = decorCatalogOrder.DecorConfigDataTable.Select("DecorConfigID = " + DecorConfigID);
 
             return Convert.ToInt32(Row[0]["MeasureID"]);//1 м.кв.  2 м.п. 3 шт.
         }
@@ -830,7 +780,7 @@ namespace Infinium.Modules.Marketing.NewOrders.InvoiceReportToDbf
 
         private int GetReportMeasureTypeID(int DecorConfigID)
         {
-            DataRow[] Row = DecorConfigDataTable.Select("DecorConfigID = " + DecorConfigID);
+            DataRow[] Row = decorCatalogOrder.DecorConfigDataTable.Select("DecorConfigID = " + DecorConfigID);
 
             return Convert.ToInt32(Row[0]["ReportMeasureID"]);//1 м.кв.  2 м.п. 3 шт.
         }
@@ -1273,7 +1223,7 @@ namespace Infinium.Modules.Marketing.NewOrders.InvoiceReportToDbf
 
         private bool IsProfil(int DecorConfigID)
         {
-            DataRow[] Rows = DecorConfigDataTable.Select("DecorConfigID = " + DecorConfigID.ToString());
+            DataRow[] Rows = decorCatalogOrder.DecorConfigDataTable.Select("DecorConfigID = " + DecorConfigID.ToString());
 
             if (Rows[0]["FactoryID"].ToString() == "1")
                 return true;

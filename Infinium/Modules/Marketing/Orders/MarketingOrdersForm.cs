@@ -182,6 +182,7 @@ namespace Infinium
         private void Initialize()
         {
             DecorCatalogOrder = new DecorCatalogOrder();
+            DecorCatalogOrder.Initialize();
 
             OrdersManager = new OrdersManager(ref MainOrdersDataGrid, ref MainOrdersFrontsOrdersDataGrid, ref MegaOrdersDataGrid,
                 ref MainOrdersDecorTabControl, ref MainOrdersTabControl, ref DecorCatalogOrder);
@@ -707,7 +708,8 @@ namespace Infinium
             if (!RateExist)
             {
                 OrdersManager.CBRDailyRates(Date, ref EURRUBCurrency, ref USDRUBCurrency);
-                OrdersManager.NBRBDailyRates(Date, ref EURBYRCurrency);
+                EURBYRCurrency = Infinium.Modules.Marketing.NewOrders.CurrencyConverter.NbrbDailyRates(DateTime.Now);
+                //OrdersManager.NBRBDailyRates(Date, ref EURBYRCurrency);
 
                 if (USDRUBCurrency != 0)
                     EURUSDCurrency = Decimal.Round(EURRUBCurrency / USDRUBCurrency, 4, MidpointRounding.AwayFromZero);

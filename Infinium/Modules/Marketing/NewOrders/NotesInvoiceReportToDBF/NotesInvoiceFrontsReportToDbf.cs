@@ -51,6 +51,36 @@ namespace Infinium.Modules.Marketing.NewOrders.NotesInvoiceReportToDbf
             _tPSReportDataTable.Clear();
         }
 
+        public string GetColorNameByCode(string Cvet)
+        {
+            string ColorName = string.Empty;
+            try
+            {
+                DataRow[] Rows = FrameColorsDataTable.Select($"Cvet = '{ Cvet } '");
+                ColorName = Rows[0]["ColorName"].ToString();
+            }
+            catch
+            {
+                return string.Empty;
+            }
+            return ColorName;
+        }
+
+        public string GetPatinaNameByCode(string Patina)
+        {
+            string PatinaName = string.Empty;
+            try
+            {
+                DataRow[] Rows = PatinaDataTable.Select($"Patina = '{ Patina } '");
+                PatinaName = Rows[0]["DisplayName"].ToString();
+            }
+            catch
+            {
+                return string.Empty;
+            }
+            return PatinaName;
+        }
+
         public void Report(int[] MainOrderIDs, bool IsSample)
         {
             ProfilFrontsOrdersDataTable.Clear();
@@ -368,6 +398,9 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
             DecorInvNumbersDT.Columns.Add(new DataColumn("FrontsOrdersID", Type.GetType("System.Int32")));
             DecorInvNumbersDT.Columns.Add(new DataColumn("DecorInvNumber", Type.GetType("System.String")));
             DecorInvNumbersDT.Columns.Add(new DataColumn("DecorAccountingName", Type.GetType("System.String")));
+            DecorInvNumbersDT.Columns.Add(new DataColumn("Cvet", Type.GetType("System.String")));
+            DecorInvNumbersDT.Columns.Add(new DataColumn("Notes", Type.GetType("System.String")));
+            DecorInvNumbersDT.Columns.Add(new DataColumn("Patina", Type.GetType("System.String")));
             DecorInvNumbersDT.Columns.Add(new DataColumn("FactoryID", Type.GetType("System.Int32")));
 
             _profilReportDataTable = new DataTable();
@@ -463,21 +496,6 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
             return ColorName;
         }
 
-        public string GetColorNameByCode(string Cvet)
-        {
-            string ColorName = string.Empty;
-            try
-            {
-                DataRow[] Rows = FrameColorsDataTable.Select($"Cvet = '{ Cvet } '");
-                ColorName = Rows[0]["ColorName"].ToString();
-            }
-            catch
-            {
-                return string.Empty;
-            }
-            return ColorName;
-        }
-
         private void GetColorsDT()
         {
             FrameColorsDataTable = new DataTable();
@@ -522,20 +540,20 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
         {
             string AccountingName = OrdersDataTable.Rows[0]["AccountingName"].ToString();
             string InvNumber = OrdersDataTable.Rows[0]["InvNumber"].ToString();
-            string Notes = OrdersDataTable.Rows[0]["Notes"].ToString();
             int fID = Convert.ToInt32(OrdersDataTable.Rows[0]["FactoryID"]);
             DataTable Fronts = new DataTable();
 
             using (DataView DV = new DataView(OrdersDataTable))
             {
-                Fronts = DV.ToTable(true, new string[] { "FrontID", "ColorID", "PatinaID" });
+                Fronts = DV.ToTable(true, new string[] { "FrontID", "Notes", "ColorID", "PatinaID" });
             }
 
             for (int i = 0; i < Fronts.Rows.Count; i++)
             {
                 DataRow[] Rows = OrdersDataTable.Select("ColorID = " + Fronts.Rows[i]["ColorID"].ToString() +
                     " AND PatinaID = " + Fronts.Rows[i]["PatinaID"].ToString() +
-                    " AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString() + " AND Width = -1");
+                    " AND Notes = '" + Fronts.Rows[i]["Notes"].ToString() +
+                    "' AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString() + " AND Width = -1");
 
                 if (Rows.Count() == 0)
                     continue;
@@ -722,7 +740,7 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
                     Row["UNN"] = UNN;
                     Row["Cvet"] = GetColorCode(Convert.ToInt32(Fronts.Rows[i]["ColorID"]));
                     Row["Patina"] = GetPatinaCode(Convert.ToInt32(Fronts.Rows[i]["PatinaID"]));
-                    Row["Notes"] = Notes;
+                    Row["Notes"] = Fronts.Rows[i]["Notes"].ToString();
                     Row["PaymentRate"] = PaymentRate;
                     Row["AccountingName"] = AccountingName;
                     Row["InvNumber"] = InvNumber;
@@ -749,7 +767,7 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
                     Row["PaymentRate"] = PaymentRate;
                     Row["AccountingName"] = AccountingName;
                     Row["InvNumber"] = InvNumber;
-                    Row["Notes"] = Notes;
+                    Row["Notes"] = Fronts.Rows[i]["Notes"].ToString();
                     Row["CurrencyCode"] = ProfilCurrencyCode;
                     if (fID == 2)
                         Row["TPSCurCode"] = TPSCurrencyCode;
@@ -773,7 +791,7 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
                     Row["PaymentRate"] = PaymentRate;
                     Row["AccountingName"] = AccountingName;
                     Row["InvNumber"] = InvNumber;
-                    Row["Notes"] = Notes;
+                    Row["Notes"] = Fronts.Rows[i]["Notes"].ToString();
                     Row["CurrencyCode"] = ProfilCurrencyCode;
                     if (fID == 2)
                         Row["TPSCurCode"] = TPSCurrencyCode;
@@ -797,7 +815,7 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
                     Row["PaymentRate"] = PaymentRate;
                     Row["AccountingName"] = AccountingName;
                     Row["InvNumber"] = InvNumber;
-                    Row["Notes"] = Notes;
+                    Row["Notes"] = Fronts.Rows[i]["Notes"].ToString();
                     Row["CurrencyCode"] = ProfilCurrencyCode;
                     if (fID == 2)
                         Row["TPSCurCode"] = TPSCurrencyCode;
@@ -820,7 +838,7 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
                     Row["Patina"] = GetPatinaCode(Convert.ToInt32(Fronts.Rows[i]["PatinaID"]));
                     Row["PaymentRate"] = PaymentRate;
                     Row["InvNumber"] = InvNumber;
-                    Row["Notes"] = Notes;
+                    Row["Notes"] = Fronts.Rows[i]["Notes"].ToString();
                     Row["CurrencyCode"] = ProfilCurrencyCode;
                     if (fID == 2)
                         Row["TPSCurCode"] = TPSCurrencyCode;
@@ -844,7 +862,7 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
                     Row["PaymentRate"] = PaymentRate;
                     Row["AccountingName"] = AccountingName;
                     Row["InvNumber"] = InvNumber;
-                    Row["Notes"] = Notes;
+                    Row["Notes"] = Fronts.Rows[i]["Notes"].ToString();
                     Row["CurrencyCode"] = ProfilCurrencyCode;
                     if (fID == 2)
                         Row["TPSCurCode"] = TPSCurrencyCode;
@@ -868,7 +886,7 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
                     Row["PaymentRate"] = PaymentRate;
                     Row["AccountingName"] = AccountingName;
                     Row["InvNumber"] = InvNumber;
-                    Row["Notes"] = Notes;
+                    Row["Notes"] = Fronts.Rows[i]["Notes"].ToString();
                     Row["CurrencyCode"] = ProfilCurrencyCode;
                     if (fID == 2)
                         Row["TPSCurCode"] = TPSCurrencyCode;
@@ -892,7 +910,7 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
                     Row["PaymentRate"] = PaymentRate;
                     Row["AccountingName"] = AccountingName;
                     Row["InvNumber"] = InvNumber;
-                    Row["Notes"] = Notes;
+                    Row["Notes"] = Fronts.Rows[i]["Notes"].ToString();
                     Row["CurrencyCode"] = ProfilCurrencyCode;
                     if (fID == 2)
                         Row["TPSCurCode"] = TPSCurrencyCode;
@@ -994,7 +1012,6 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
         {
             string AccountingName = OrdersDataTable.Rows[0]["AccountingName"].ToString();
             string InvNumber = OrdersDataTable.Rows[0]["InvNumber"].ToString();
-            string Notes = OrdersDataTable.Rows[0]["Notes"].ToString();
 
             int fID = Convert.ToInt32(OrdersDataTable.Rows[0]["FactoryID"]);
 
@@ -1025,7 +1042,8 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
             {
                 DataRow[] FRows = OrdersDataTable.Select("ColorID = " + Fronts.Rows[i]["ColorID"].ToString() +
                     " AND PatinaID = " + Fronts.Rows[i]["PatinaID"].ToString() +
-                    " AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString());
+                    " AND Notes = '" + Fronts.Rows[i]["Notes"].ToString() +
+                    "' AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString());
 
                 if (FRows.Count() > 0)
                 {
@@ -1064,7 +1082,6 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
                             NewRow["PaymentRate"] = PaymentRate;
                             NewRow["AccountingName"] = AccountingName;
                             NewRow["InvNumber"] = InvNumber;
-                            NewRow["Notes"] = Notes;
                             NewRow["CurrencyCode"] = ProfilCurrencyCode;
                             if (fID == 2)
                                 NewRow["TPSCurCode"] = TPSCurrencyCode;
@@ -1072,6 +1089,9 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
                             {
                                 NewRow["AccountingName"] = rows[0]["DecorAccountingName"].ToString();
                                 NewRow["InvNumber"] = rows[0]["DecorInvNumber"].ToString();
+                                NewRow["Cvet"] = rows[0]["Cvet"].ToString();
+                                NewRow["Patina"] = rows[0]["Patina"].ToString();
+                                NewRow["Notes"] = rows[0]["Notes"].ToString();
                             }
                             NewRow["Count"] = CountFlutes;
                             NewRow["Cost"] = Decimal.Round(Math.Ceiling(CountFlutes * PriceFlutes / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
@@ -1089,11 +1109,13 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
                             NewRow["PaymentRate"] = PaymentRate;
                             NewRow["AccountingName"] = AccountingName;
                             NewRow["InvNumber"] = InvNumber;
-                            NewRow["Notes"] = Notes;
                             if (rows.Count() > 0)
                             {
                                 NewRow["AccountingName"] = rows[0]["DecorAccountingName"].ToString();
                                 NewRow["InvNumber"] = rows[0]["DecorInvNumber"].ToString();
+                                NewRow["Cvet"] = rows[0]["Cvet"].ToString();
+                                NewRow["Patina"] = rows[0]["Patina"].ToString();
+                                NewRow["Notes"] = rows[0]["Notes"].ToString();
                             }
                             NewRow["CurrencyCode"] = ProfilCurrencyCode;
                             if (fID == 2)
@@ -1120,7 +1142,8 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
             {
                 DataRow[] LRows = OrdersDataTable.Select("ColorID = " + Fronts.Rows[i]["ColorID"].ToString() +
                     " AND PatinaID = " + Fronts.Rows[i]["PatinaID"].ToString() +
-                    " AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString());
+                    " AND Notes = '" + Fronts.Rows[i]["Notes"].ToString() +
+                    "' AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString());
 
                 if (LRows.Count() > 0)
                 {
@@ -1159,11 +1182,13 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
                             NewRow["PaymentRate"] = PaymentRate;
                             NewRow["AccountingName"] = AccountingName;
                             NewRow["InvNumber"] = InvNumber;
-                            NewRow["Notes"] = Notes;
                             if (rows.Count() > 0)
                             {
                                 NewRow["AccountingName"] = rows[0]["DecorAccountingName"].ToString();
                                 NewRow["InvNumber"] = rows[0]["DecorInvNumber"].ToString();
+                                NewRow["Cvet"] = rows[0]["Cvet"].ToString();
+                                NewRow["Patina"] = rows[0]["Patina"].ToString();
+                                NewRow["Notes"] = rows[0]["Notes"].ToString();
                             }
                             NewRow["CurrencyCode"] = ProfilCurrencyCode;
                             if (fID == 2)
@@ -1184,11 +1209,13 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
                             NewRow["PaymentRate"] = PaymentRate;
                             NewRow["AccountingName"] = AccountingName;
                             NewRow["InvNumber"] = InvNumber;
-                            NewRow["Notes"] = Notes;
                             if (rows.Count() > 0)
                             {
                                 NewRow["AccountingName"] = rows[0]["DecorAccountingName"].ToString();
                                 NewRow["InvNumber"] = rows[0]["DecorInvNumber"].ToString();
+                                NewRow["Cvet"] = rows[0]["Cvet"].ToString();
+                                NewRow["Patina"] = rows[0]["Patina"].ToString();
+                                NewRow["Notes"] = rows[0]["Notes"].ToString();
                             }
                             NewRow["CurrencyCode"] = ProfilCurrencyCode;
                             if (fID == 2)
@@ -1215,7 +1242,8 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
             {
                 DataRow[] KRows = OrdersDataTable.Select("ColorID = " + Fronts.Rows[i]["ColorID"].ToString() +
                     " AND PatinaID = " + Fronts.Rows[i]["PatinaID"].ToString() +
-                    " AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString());
+                    " AND Notes = '" + Fronts.Rows[i]["Notes"].ToString() +
+                    "' AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString());
 
                 if (KRows.Count() > 0)
                 {
@@ -1254,11 +1282,13 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
                             NewRow["PaymentRate"] = PaymentRate;
                             NewRow["AccountingName"] = AccountingName;
                             NewRow["InvNumber"] = InvNumber;
-                            NewRow["Notes"] = Notes;
                             if (rows.Count() > 0)
                             {
                                 NewRow["AccountingName"] = rows[0]["DecorAccountingName"].ToString();
                                 NewRow["InvNumber"] = rows[0]["DecorInvNumber"].ToString();
+                                NewRow["Cvet"] = rows[0]["Cvet"].ToString();
+                                NewRow["Patina"] = rows[0]["Patina"].ToString();
+                                NewRow["Notes"] = rows[0]["Notes"].ToString();
                             }
                             NewRow["CurrencyCode"] = ProfilCurrencyCode;
                             if (fID == 2)
@@ -1279,11 +1309,13 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
                             NewRow["PaymentRate"] = PaymentRate;
                             NewRow["AccountingName"] = AccountingName;
                             NewRow["InvNumber"] = InvNumber;
-                            NewRow["Notes"] = Notes;
                             if (rows.Count() > 0)
                             {
                                 NewRow["AccountingName"] = rows[0]["DecorAccountingName"].ToString();
                                 NewRow["InvNumber"] = rows[0]["DecorInvNumber"].ToString();
+                                NewRow["Cvet"] = rows[0]["Cvet"].ToString();
+                                NewRow["Patina"] = rows[0]["Patina"].ToString();
+                                NewRow["Notes"] = rows[0]["Notes"].ToString();
                             }
                             NewRow["CurrencyCode"] = ProfilCurrencyCode;
                             if (fID == 2)
@@ -1310,7 +1342,8 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
             {
                 DataRow[] ORows = OrdersDataTable.Select("ColorID = " + Fronts.Rows[i]["ColorID"].ToString() +
                     " AND PatinaID = " + Fronts.Rows[i]["PatinaID"].ToString() +
-                    " AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString());
+                    " AND Notes = '" + Fronts.Rows[i]["Notes"].ToString() +
+                    "' AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString());
 
                 if (ORows.Count() > 0)
                 {
@@ -1345,11 +1378,13 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
                             NewRow["PaymentRate"] = PaymentRate;
                             NewRow["AccountingName"] = AccountingName;
                             NewRow["InvNumber"] = InvNumber;
-                            NewRow["Notes"] = Notes;
                             if (rows.Count() > 0)
                             {
                                 NewRow["AccountingName"] = rows[0]["DecorAccountingName"].ToString();
                                 NewRow["InvNumber"] = rows[0]["DecorInvNumber"].ToString();
+                                NewRow["Cvet"] = rows[0]["Cvet"].ToString();
+                                NewRow["Patina"] = rows[0]["Patina"].ToString();
+                                NewRow["Notes"] = rows[0]["Notes"].ToString();
                             }
                             NewRow["CurrencyCode"] = ProfilCurrencyCode;
                             if (fID == 2)
@@ -1370,11 +1405,13 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
                             NewRow["PaymentRate"] = PaymentRate;
                             NewRow["AccountingName"] = AccountingName;
                             NewRow["InvNumber"] = InvNumber;
-                            NewRow["Notes"] = Notes;
                             if (rows.Count() > 0)
                             {
                                 NewRow["AccountingName"] = rows[0]["DecorAccountingName"].ToString();
                                 NewRow["InvNumber"] = rows[0]["DecorInvNumber"].ToString();
+                                NewRow["Cvet"] = rows[0]["Cvet"].ToString();
+                                NewRow["Patina"] = rows[0]["Patina"].ToString();
+                                NewRow["Notes"] = rows[0]["Notes"].ToString();
                             }
                             NewRow["CurrencyCode"] = ProfilCurrencyCode;
                             if (fID == 2)
@@ -1459,7 +1496,7 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
             using (DataView DV = new DataView(OrdersDataTable))
             {
                 DV.RowFilter = "InsetTypeID IN (685,686,687,688,29470,29471)";
-                Fronts = DV.ToTable(true, new string[] { "FrontID", "ColorID", "PatinaID" });
+                Fronts = DV.ToTable(true, new string[] { "FrontID", "Notes", "ColorID", "PatinaID" });
             }
 
             for (int i = 0; i < Fronts.Rows.Count; i++)
@@ -1470,7 +1507,8 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
 
                 DataRow[] Rows = OrdersDataTable.Select("ColorID = " + Fronts.Rows[i]["ColorID"].ToString() +
                     " AND PatinaID = " + Fronts.Rows[i]["PatinaID"].ToString() +
-                    " AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString());
+                    " AND Notes = '" + Fronts.Rows[i]["Notes"].ToString() +
+                    "' AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString());
 
                 decimal CountPP = 0;
                 decimal CostPP = 0;
@@ -1500,7 +1538,6 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
                         NewRow["PaymentRate"] = PaymentRate;
                         NewRow["AccountingName"] = OrdersDataTable.Rows[0]["AccountingName"].ToString();
                         NewRow["InvNumber"] = OrdersDataTable.Rows[0]["InvNumber"].ToString();
-                        NewRow["Notes"] = OrdersDataTable.Rows[0]["Notes"].ToString();
                         NewRow["CurrencyCode"] = ProfilCurrencyCode;
                         if (fID == 2)
                             NewRow["TPSCurCode"] = TPSCurrencyCode;
@@ -1513,6 +1550,9 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
                         {
                             NewRow["AccountingName"] = rows[0]["DecorAccountingName"].ToString();
                             NewRow["InvNumber"] = rows[0]["DecorInvNumber"].ToString();
+                            NewRow["Cvet"] = rows[0]["Cvet"].ToString();
+                            NewRow["Patina"] = rows[0]["Patina"].ToString();
+                            NewRow["Notes"] = rows[0]["Notes"].ToString();
                         }
                         ReportDataTable1.Rows.Add(NewRow);
                     }
@@ -1525,7 +1565,6 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
                         NewRow["PaymentRate"] = PaymentRate;
                         NewRow["AccountingName"] = OrdersDataTable.Rows[0]["AccountingName"].ToString();
                         NewRow["InvNumber"] = OrdersDataTable.Rows[0]["InvNumber"].ToString();
-                        NewRow["Notes"] = OrdersDataTable.Rows[0]["Notes"].ToString();
                         NewRow["CurrencyCode"] = ProfilCurrencyCode;
                         if (fID == 2)
                             NewRow["TPSCurCode"] = TPSCurrencyCode;
@@ -1538,6 +1577,9 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
                         {
                             NewRow["AccountingName"] = rows[0]["DecorAccountingName"].ToString();
                             NewRow["InvNumber"] = rows[0]["DecorInvNumber"].ToString();
+                            NewRow["Cvet"] = rows[0]["Cvet"].ToString();
+                            NewRow["Patina"] = rows[0]["Patina"].ToString();
+                            NewRow["Notes"] = rows[0]["Notes"].ToString();
                         }
                         ReportDataTable.Rows.Add(NewRow);
                     }
@@ -1625,6 +1667,8 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
                     {
                         NewRow["AccountingName"] = rows[0]["DecorAccountingName"].ToString();
                         NewRow["InvNumber"] = rows[0]["DecorInvNumber"].ToString();
+                        NewRow["Cvet"] = rows[0]["Cvet"].ToString();
+                        NewRow["Patina"] = rows[0]["Patina"].ToString();
                     }
                     ReportDataTable.Rows.Add(NewRow);
                 }
@@ -1840,21 +1884,6 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
             }
         }
 
-        public string GetPatinaNameByCode(string Patina)
-        {
-            string PatinaName = string.Empty;
-            try
-            {
-                DataRow[] Rows = PatinaDataTable.Select($"Patina = '{ Patina } '");
-                PatinaName = Rows[0]["DisplayName"].ToString();
-            }
-            catch
-            {
-                return string.Empty;
-            }
-            return PatinaName;
-        }
-
         private decimal GetProfileWeight(DataRow FrontsOrdersRow)
         {
             decimal FrontHeight = Convert.ToDecimal(FrontsOrdersRow["Height"]);
@@ -1896,7 +1925,6 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
             string DecorInvNumber = string.Empty;
             string AccountingName = OrdersDataTable.Rows[0]["AccountingName"].ToString();
             string InvNumber = OrdersDataTable.Rows[0]["InvNumber"].ToString();
-            string Notes = OrdersDataTable.Rows[0]["Notes"].ToString();
             int fID = Convert.ToInt32(OrdersDataTable.Rows[0]["FactoryID"]);
             DataTable Fronts = new DataTable();
             if (IsNonStandard)
@@ -1904,7 +1932,7 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
             using (DataView DV = new DataView(OrdersDataTable))
             {
                 DV.RowFilter = IsNonStandardFilter;
-                Fronts = DV.ToTable(true, new string[] { "FrontID", "ColorID", "PatinaID" });
+                Fronts = DV.ToTable(true, new string[] { "FrontID", "Notes", "ColorID", "PatinaID" });
             }
 
             for (int i = 0; i < Fronts.Rows.Count; i++)
@@ -1942,7 +1970,8 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
                     filter = " AND NOT (FrontID IN (3728,3731,3732,3739,3740,3741,3744,3745,3746) OR InsetTypeID IN (28961,3653,3654,3655)) AND (FrontID = 3729 OR InsetTypeID IN (" + filter.Substring(0, filter.Length - 1) + "))";
                 DataRow[] Rows = OrdersDataTable.Select("ColorID = " + Fronts.Rows[i]["ColorID"].ToString() +
                     " AND PatinaID = " + Fronts.Rows[i]["PatinaID"].ToString() +
-                    " AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString() + " AND (Width <> -1)" + filter + IsNonStandardFilter);
+                    " AND Notes = '" + Fronts.Rows[i]["Notes"].ToString() +
+                    "' AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString() + " AND (Width <> -1)" + filter + IsNonStandardFilter);
                 for (int r = 0; r < Rows.Count(); r++)
                 {
                     decimal DeductibleCost = 0;
@@ -1959,6 +1988,9 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
                             NewRow["FactoryID"] = FactoryID;
                             NewRow["DecorAccountingName"] = DecorAccountingName;
                             NewRow["DecorInvNumber"] = DecorInvNumber;
+                            NewRow["Cvet"] = GetColorCode(Convert.ToInt32(Fronts.Rows[i]["ColorID"]));
+                            NewRow["Patina"] = GetPatinaCode(Convert.ToInt32(Fronts.Rows[i]["PatinaID"]));
+                            NewRow["Notes"] = Fronts.Rows[i]["Notes"].ToString();
                             DecorInvNumbersDT.Rows.Add(NewRow);
                             DeductibleWeight = GetInsetWeight(Rows[r]);
 
@@ -1991,7 +2023,8 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
                 filter = " AND (FrontID IN (3728,3731,3732,3739,3740,3741,3744,3745,3746) OR InsetTypeID IN (28961,3653,3654,3655))";
                 Rows = OrdersDataTable.Select("ColorID = " + Fronts.Rows[i]["ColorID"].ToString() +
                     " AND PatinaID = " + Fronts.Rows[i]["PatinaID"].ToString() +
-                    " AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString() + " AND (Width <> -1)" + filter + IsNonStandardFilter);
+                    " AND Notes = '" + Fronts.Rows[i]["Notes"].ToString() +
+                    "' AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString() + " AND (Width <> -1)" + filter + IsNonStandardFilter);
                 for (int r = 0; r < Rows.Count(); r++)
                 {
                     if (Convert.ToInt32(Rows[r]["FrontID"]) == 3728 || Convert.ToInt32(Rows[r]["FrontID"]) == 3731 || Convert.ToInt32(Rows[r]["FrontID"]) == 3732 ||
@@ -2029,7 +2062,8 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
                 filter = " AND InsetTypeID IN (2069,2070,2071,2073,2075,2077,2233,3644,29043,29531)";
                 Rows = OrdersDataTable.Select("ColorID = " + Fronts.Rows[i]["ColorID"].ToString() +
                     " AND PatinaID = " + Fronts.Rows[i]["PatinaID"].ToString() +
-                    " AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString() + " AND (Width <> -1)" + filter + IsNonStandardFilter);
+                    " AND Notes = '" + Fronts.Rows[i]["Notes"].ToString() +
+                    "' AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString() + " AND (Width <> -1)" + filter + IsNonStandardFilter);
                 for (int r = 0; r < Rows.Count(); r++)
                 {
                     FilenkaCount += Convert.ToDecimal(Rows[r]["Square"]);
@@ -2049,7 +2083,8 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
                 filter = " AND InsetTypeID IN (1,2,685,686,687,688,29470,29471) AND FrontID <> 3729";
                 Rows = OrdersDataTable.Select("ColorID = " + Fronts.Rows[i]["ColorID"].ToString() +
                     " AND PatinaID = " + Fronts.Rows[i]["PatinaID"].ToString() +
-                    " AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString() + " AND (Width <> -1)" + filter + IsNonStandardFilter);
+                    " AND Notes = '" + Fronts.Rows[i]["Notes"].ToString() +
+                    "' AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString() + " AND (Width <> -1)" + filter + IsNonStandardFilter);
                 for (int r = 0; r < Rows.Count(); r++)
                 {
                     decimal DeductibleCount = 0;
@@ -2069,6 +2104,9 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
                             NewRow["FactoryID"] = FactoryID;
                             NewRow["DecorAccountingName"] = DecorAccountingName;
                             NewRow["DecorInvNumber"] = DecorInvNumber;
+                            NewRow["Cvet"] = GetColorCode(Convert.ToInt32(Fronts.Rows[i]["ColorID"]));
+                            NewRow["Patina"] = GetPatinaCode(Convert.ToInt32(Fronts.Rows[i]["PatinaID"]));
+                            NewRow["Notes"] = Fronts.Rows[i]["Notes"].ToString();
                             DecorInvNumbersDT.Rows.Add(NewRow);
 
                             decimal InsetSquare = GetInsetSquare(Convert.ToInt32(Rows[r]["FrontID"]), Convert.ToInt32(Rows[r]["Height"]), Convert.ToInt32(Rows[r]["Width"]));
@@ -2090,6 +2128,9 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
                             NewRow["FactoryID"] = FactoryID;
                             NewRow["DecorAccountingName"] = DecorAccountingName;
                             NewRow["DecorInvNumber"] = DecorInvNumber;
+                            NewRow["Cvet"] = GetColorCode(Convert.ToInt32(Fronts.Rows[i]["ColorID"]));
+                            NewRow["Patina"] = GetPatinaCode(Convert.ToInt32(Fronts.Rows[i]["PatinaID"]));
+                            NewRow["Notes"] = Fronts.Rows[i]["Notes"].ToString();
                             DecorInvNumbersDT.Rows.Add(NewRow);
                             DeductibleCount = Convert.ToDecimal(Rows[r]["Count"]) * GetInsetSquare(Convert.ToInt32(Rows[r]["FrontID"]), Convert.ToInt32(Rows[r]["Height"]), Convert.ToInt32(Rows[r]["Width"]));
                             DeductibleCost = Convert.ToDecimal(Rows[r]["InsetPrice"]) * DeductibleCount;
@@ -2123,7 +2164,8 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
                 filter = " AND InsetTypeID IN (860,862,4310)";
                 Rows = OrdersDataTable.Select("ColorID = " + Fronts.Rows[i]["ColorID"].ToString() +
                     " AND PatinaID = " + Fronts.Rows[i]["PatinaID"].ToString() +
-                    " AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString() + " AND (Width <> -1)" + filter + IsNonStandardFilter);
+                    " AND Notes = '" + Fronts.Rows[i]["Notes"].ToString() +
+                    "' AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString() + " AND (Width <> -1)" + filter + IsNonStandardFilter);
                 for (int r = 0; r < Rows.Count(); r++)
                 {
                     LuxMegaCount += Convert.ToDecimal(Rows[r]["Square"]);
@@ -2156,7 +2198,7 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
                     Row["Cvet"] = GetColorCode(Convert.ToInt32(Fronts.Rows[i]["ColorID"]));
                     Row["Patina"] = GetPatinaCode(Convert.ToInt32(Fronts.Rows[i]["PatinaID"]));
                     Row["AccountingName"] = AccountingName;
-                    Row["Notes"] = Notes;
+                    Row["Notes"] = Fronts.Rows[i]["Notes"].ToString();
                     Row["InvNumber"] = InvNumber;
                     Row["CurrencyCode"] = ProfilCurrencyCode;
                     if (fID == 2)
@@ -2184,7 +2226,7 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
                     Row["PaymentRate"] = PaymentRate;
                     Row["AccountingName"] = AccountingName;
                     Row["InvNumber"] = InvNumber;
-                    Row["Notes"] = Notes;
+                    Row["Notes"] = Fronts.Rows[i]["Notes"].ToString();
                     Row["CurrencyCode"] = ProfilCurrencyCode;
                     if (fID == 2)
                         Row["TPSCurCode"] = TPSCurrencyCode;
@@ -2211,7 +2253,7 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
                     Row["PaymentRate"] = PaymentRate;
                     Row["AccountingName"] = AccountingName;
                     Row["InvNumber"] = InvNumber;
-                    Row["Notes"] = Notes;
+                    Row["Notes"] = Fronts.Rows[i]["Notes"].ToString();
                     Row["CurrencyCode"] = ProfilCurrencyCode;
                     if (fID == 2)
                         Row["TPSCurCode"] = TPSCurrencyCode;
@@ -2238,7 +2280,7 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
                     Row["PaymentRate"] = PaymentRate;
                     Row["AccountingName"] = AccountingName;
                     Row["InvNumber"] = InvNumber;
-                    Row["Notes"] = Notes;
+                    Row["Notes"] = Fronts.Rows[i]["Notes"].ToString();
                     Row["CurrencyCode"] = ProfilCurrencyCode;
                     if (fID == 2)
                         Row["TPSCurCode"] = TPSCurrencyCode;
@@ -2262,7 +2304,7 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
             //get count of different covertypes
             using (DataView DV = new DataView(OrdersDataTable))
             {
-                InvCount = DV.ToTable(true, new string[] { "InvNumber", "Notes", "ColorID", "PatinaID" }).Rows.Count;
+                InvCount = DV.ToTable(true, new string[] { "InvNumber" }).Rows.Count;
             }
 
             //create DataTables
@@ -2292,10 +2334,7 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
                         continue;
                     }
 
-                    if (InvNumber == OrdersDataTable.DefaultView[r].Row["InvNumber"].ToString()
-                        && Notes == OrdersDataTable.DefaultView[r].Row["Notes"].ToString()
-                        && ColorID == Convert.ToInt32(OrdersDataTable.DefaultView[r].Row["ColorID"])
-                        && PatinaID == Convert.ToInt32(OrdersDataTable.DefaultView[r].Row["PatinaID"]))
+                    if (InvNumber == OrdersDataTable.DefaultView[r].Row["InvNumber"].ToString())
                     {
                         InvDataTables[i].ImportRow(OrdersDataTable.DefaultView[r].Row);
                     }

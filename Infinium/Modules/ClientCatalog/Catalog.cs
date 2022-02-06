@@ -425,7 +425,7 @@ namespace Infinium
         {
             DataTable Table = new DataTable();
 
-            using (DataView DV = new DataView(TempFrontsConfigDataTable))
+            using (DataView DV = new DataView(TempFrontsConfigDataTable, string.Empty, "PatinaID", DataViewRowState.CurrentRows))
             {
                 Table = DV.ToTable(true, new string[] { "PatinaID" });
             }
@@ -444,6 +444,13 @@ namespace Infinium
             {
                 foreach (DataRow Row in Table.Rows)
                 {
+                    if (Convert.ToInt32(Row["PatinaID"]) == -1)
+                    {
+                        DataRow NewRow = PatinaDataTable.NewRow();
+                        NewRow["PatinaID"] = Row["PatinaID"];
+                        NewRow["PatinaName"] = "-";
+                        PatinaDataTable.Rows.Add(NewRow);
+                    }
                     foreach (DataRow item in PatinaRALDataTable.Select("PatinaID=" + Convert.ToInt32(Row["PatinaID"])))
                     {
                         DataRow NewRow = PatinaDataTable.NewRow();
@@ -4282,6 +4289,13 @@ namespace Infinium
 
                 foreach (DataRow Row in ddd.Rows)
                 {
+                    if (Convert.ToInt32(Row["PatinaID"]) == -1)
+                    {
+                        DataRow NewRow = ItemPatinaDataTable.NewRow();
+                        NewRow["PatinaID"] = Convert.ToInt32(Row["PatinaID"]);
+                        NewRow["PatinaName"] = GetPatinaName(Convert.ToInt32(Row["PatinaID"]));
+                        ItemPatinaDataTable.Rows.Add(NewRow);
+                    }
                     foreach (DataRow item in PatinaRALDataTable.Select("PatinaID=" + Convert.ToInt32(Row["PatinaID"])))
                     {
                         DataRow NewRow = ItemPatinaDataTable.NewRow();

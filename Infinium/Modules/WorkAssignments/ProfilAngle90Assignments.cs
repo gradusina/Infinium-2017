@@ -29,6 +29,7 @@ namespace Infinium.Modules.WorkAssignments
         private bool bImpostMargin = false;
         private int ColorType = 0;
         private DataTable ComecDT;
+        private DataTable RapidTechnoInsetDT;
         private DateTime CurrentDate;
         private DataTable DecorAssemblyDT;
         private DataTable DecorDT;
@@ -5321,6 +5322,11 @@ namespace Infinium.Modules.WorkAssignments
         /// </summary>
         /// <param name="DestinationDT"></param>
         /// <param name="IsBox"></param>
+        private void RapidTechnoInsetSimple(ref DataTable DestinationDT)
+        {
+            RapidTechnoInset(Marsel5OrdersDT, ref DestinationDT);
+        }
+
         private void CombineComecSimple(ref DataTable DestinationDT)
         {
             string filter = @"TechnoProfileID<>-1";
@@ -5411,6 +5417,157 @@ namespace Infinium.Modules.WorkAssignments
                         }
                     }
                 }
+            }
+        }
+
+        private void RapidTechnoInset(DataTable SourceDT, ref DataTable DestinationDT)
+        {
+            DataTable DT2 = new DataTable();
+
+            using (DataView DV = new DataView(SourceDT, "TechnoInsetTypeID<>-1", "ColorID, TechnoProfileID, TechnoColorID, InsetTypeID, InsetColorID, TechnoInsetTypeID, TechnoInsetColorID, Height, Width", DataViewRowState.CurrentRows))
+            {
+                DT2 = DV.ToTable(true, new string[] { "ColorID", "TechnoProfileID", "TechnoColorID", "InsetTypeID", "InsetColorID", "TechnoInsetTypeID", "TechnoInsetColorID", "Height", "Width" });
+            }
+            for (int j = 0; j < DT2.Rows.Count; j++)
+            {
+                int Count = 0;
+                string InsetColor = string.Empty;
+                string TechnoColor = string.Empty;
+                //витрины
+                DataRow[] rows = SourceDT.Select("ColorID=" + Convert.ToInt32(DT2.Rows[j]["ColorID"]) + " AND TechnoProfileID=" + Convert.ToInt32(DT2.Rows[j]["TechnoProfileID"]) + " AND TechnoColorID=" + Convert.ToInt32(DT2.Rows[j]["TechnoColorID"]) + " AND InsetTypeID=" + Convert.ToInt32(DT2.Rows[j]["InsetTypeID"]) +
+                    " AND InsetColorID=" + Convert.ToInt32(DT2.Rows[j]["InsetColorID"]) + " AND TechnoInsetTypeID=" + Convert.ToInt32(DT2.Rows[j]["TechnoInsetTypeID"]) + " AND TechnoInsetColorID=" + Convert.ToInt32(DT2.Rows[j]["TechnoInsetColorID"]) + " AND Height=" + Convert.ToInt32(DT2.Rows[j]["Height"]) +
+                    " AND Width=" + Convert.ToInt32(DT2.Rows[j]["Width"]));
+                foreach (DataRow item in rows)
+                {
+                    Count += Convert.ToInt32(item["Count"]);
+                }
+
+                InsetColor = GetInsetTypeName(Convert.ToInt32(rows[0]["InsetTypeID"]));
+                if (Convert.ToInt32(rows[0]["InsetColorID"]) != -1)
+                    InsetColor += " " + GetInsetColorName(Convert.ToInt32(rows[0]["InsetColorID"]));
+
+                TechnoColor = GetInsetTypeName(Convert.ToInt32(rows[0]["TechnoInsetTypeID"]));
+                if (Convert.ToInt32(rows[0]["TechnoInsetColorID"]) != -1)
+                    TechnoColor += " " + GetInsetColorName(Convert.ToInt32(rows[0]["TechnoInsetColorID"]));
+
+                string Name = ProfileName(Convert.ToInt32(rows[0]["FrontConfigID"]), 1);
+                DataRow NewRow = DestinationDT.NewRow();
+                NewRow["Name"] = Name;
+                NewRow["FrameColor"] = GetColorName(Convert.ToInt32(rows[0]["ColorID"]));
+
+                if (Convert.ToInt32(rows[0]["TechnoProfileID"]) != -1)
+                {
+                    NewRow["Name"] = Name + " " + ProfileName(Convert.ToInt32(rows[0]["FrontConfigID"]), 2);
+                    NewRow["FrameColor"] = GetColorName(Convert.ToInt32(rows[0]["ColorID"])) + "/" + GetColorName(Convert.ToInt32(rows[0]["TechnoColorID"]));
+                }
+
+                NewRow["InsetColor"] = InsetColor;
+                NewRow["TechnoColor"] = TechnoColor;
+                NewRow["Height"] = rows[0]["Height"];
+                NewRow["Width"] = rows[0]["Width"];
+                NewRow["Count"] = Count;
+                DestinationDT.Rows.Add(NewRow);
+            }
+        }
+
+        public void RapidTechnoInsetToExcel(ref HSSFWorkbook hssfworkbook, ref HSSFSheet sheet1,
+            HSSFCellStyle Calibri11CS, HSSFCellStyle CalibriBold11CS, HSSFFont CalibriBold11F, HSSFCellStyle TableHeaderCS, HSSFCellStyle TableHeaderDecCS,
+            DataTable DT, int WorkAssignmentID, string SheetName, string DispatchDate, string BatchName, string ClientName, ref int RowIndex)
+        {
+            HSSFCell cell = null;
+            int DisplayIndex = 0;
+
+            if (DispatchDate.Length > 0)
+            {
+                cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 0, "Отгрузка: " + DispatchDate);
+                cell.CellStyle = CalibriBold11CS;
+            }
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 2, "УТВЕРЖДАЮ_____________");
+            cell.CellStyle = Calibri11CS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 2, SheetName);
+            cell.CellStyle = CalibriBold11CS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 0, "Задание №" + WorkAssignmentID.ToString());
+            cell.CellStyle = CalibriBold11CS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 2, BatchName);
+            cell.CellStyle = CalibriBold11CS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 0, "Клиент:");
+            cell.CellStyle = CalibriBold11CS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 2, ClientName);
+            cell.CellStyle = CalibriBold11CS;
+
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), DisplayIndex++, "Профиль");
+            cell.CellStyle = TableHeaderCS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), DisplayIndex++, "Цвет профиля");
+            cell.CellStyle = TableHeaderCS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), DisplayIndex++, "Цвет наполнителя");
+            cell.CellStyle = TableHeaderCS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), DisplayIndex++, "Цвет наполнителя-2");
+            cell.CellStyle = TableHeaderCS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), DisplayIndex++, "Высота");
+            cell.CellStyle = TableHeaderCS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), DisplayIndex++, "Ширина");
+            cell.CellStyle = TableHeaderCS;
+            cell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), DisplayIndex++, "Кол-во");
+            cell.CellStyle = TableHeaderCS;
+            RowIndex++;
+            
+            int TotalAmount = 0;
+
+            for (int x = 0; x < DT.Rows.Count; x++)
+            {
+                if (DT.Rows[x]["Count"] != DBNull.Value)
+                {
+                    TotalAmount += Convert.ToInt32(DT.Rows[x]["Count"]);
+                }
+
+                for (int y = 0; y < DT.Columns.Count; y++)
+                {
+                    Type t = DT.Rows[x][y].GetType();
+
+                    if (t.Name == "Decimal")
+                    {
+                        cell = sheet1.CreateRow(RowIndex).CreateCell(y);
+                        cell.SetCellValue(Convert.ToDouble(DT.Rows[x][y]));
+                        cell.CellStyle = TableHeaderDecCS;
+                        continue;
+                    }
+                    if (t.Name == "Int32")
+                    {
+                        cell = sheet1.CreateRow(RowIndex).CreateCell(y);
+                        cell.SetCellValue(Convert.ToInt32(DT.Rows[x][y]));
+                        cell.CellStyle = TableHeaderCS;
+                        continue;
+                    }
+
+                    if (t.Name == "String" || t.Name == "DBNull")
+                    {
+                        cell = sheet1.CreateRow(RowIndex).CreateCell(y);
+                        cell.SetCellValue(DT.Rows[x][y].ToString());
+                        cell.CellStyle = TableHeaderCS;
+                        continue;
+                    }
+                }
+
+                if (x == DT.Rows.Count - 1)
+                {
+                    RowIndex++;
+                    for (int y = 0; y < DT.Columns.Count; y++)
+                    {
+                        cell = sheet1.CreateRow(RowIndex).CreateCell(y);
+                        cell.SetCellValue(string.Empty);
+                        cell.CellStyle = TableHeaderCS;
+                        continue;
+                    }
+
+                    cell = sheet1.CreateRow(RowIndex).CreateCell(0);
+                    cell.SetCellValue("Итого:");
+                    cell.CellStyle = TableHeaderCS;
+
+                    cell = sheet1.CreateRow(RowIndex).CreateCell(6);
+                    cell.SetCellValue(TotalAmount);
+                    cell.CellStyle = TableHeaderCS;
+                }
+                RowIndex++;
             }
         }
 
@@ -5818,6 +5975,15 @@ namespace Infinium.Modules.WorkAssignments
             ComecDT.Columns.Add(new DataColumn("ProfileType", Type.GetType("System.Int32")));
             ComecDT.Columns.Add(new DataColumn("ColorType", Type.GetType("System.Int32")));
             ComecDT.Columns.Add(new DataColumn("FrontType", Type.GetType("System.Int32")));
+
+            RapidTechnoInsetDT = new DataTable();
+            RapidTechnoInsetDT.Columns.Add(new DataColumn("Name", Type.GetType("System.String")));
+            RapidTechnoInsetDT.Columns.Add(new DataColumn("FrameColor", Type.GetType("System.String")));
+            RapidTechnoInsetDT.Columns.Add(new DataColumn("InsetColor", Type.GetType("System.String")));
+            RapidTechnoInsetDT.Columns.Add(new DataColumn("TechnoColor", Type.GetType("System.String")));
+            RapidTechnoInsetDT.Columns.Add(new DataColumn("Height", Type.GetType("System.Int32")));
+            RapidTechnoInsetDT.Columns.Add(new DataColumn("Width", Type.GetType("System.Int32")));
+            RapidTechnoInsetDT.Columns.Add(new DataColumn("Count", Type.GetType("System.Int32")));
 
             StemasDT = new DataTable();
             StemasDT.Columns.Add(new DataColumn("Front", Type.GetType("System.String")));
@@ -16106,6 +16272,17 @@ namespace Infinium.Modules.WorkAssignments
             {
                 ComecToExcelSingly(ref hssfworkbook, ref sheet1,
                         Calibri11CS, CalibriBold11CS, CalibriBold11F, TableHeaderCS, TableHeaderDecCS, DT, WorkAssignmentID, "Comec", DispatchDate, BatchName, ClientName, ref RowIndex);
+                RowIndex++;
+                RowIndex++;
+            }
+
+            RapidTechnoInsetDT.Clear();
+            RapidTechnoInsetSimple(ref RapidTechnoInsetDT);
+
+            if (RapidTechnoInsetDT.Rows.Count > 0)
+            {
+                RapidTechnoInsetToExcel(ref hssfworkbook, ref sheet1,
+                    Calibri11CS, CalibriBold11CS, CalibriBold11F, TableHeaderCS, TableHeaderDecCS, RapidTechnoInsetDT, WorkAssignmentID, "Вставка-2", DispatchDate, BatchName, ClientName, ref RowIndex);
                 RowIndex++;
                 RowIndex++;
             }

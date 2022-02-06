@@ -1,4 +1,5 @@
-﻿
+﻿using Infinium.Modules.Marketing.Orders;
+
 using System;
 using System.Data;
 using System.Data.SqlClient;
@@ -15,188 +16,27 @@ namespace Infinium.Modules.ExpeditionMarketing.DispatchReportToDbf
         string UNN = string.Empty;
 
         DataTable DecorInvNumbersDT = null;
-        DataTable CurrencyTypesDT;
         DataTable ProfilFrontsOrdersDataTable = null;
         DataTable TPSFrontsOrdersDataTable = null;
-        public DataTable FrontsDataTable = null;
-        public DataTable FrameColorsDataTable = null;
-        public DataTable PatinaDataTable = null;
-        public DataTable InsetTypesDataTable = null;
-        public DataTable InsetColorsDataTable = null;
-        DataTable MeasuresDataTable = null;
-        DataTable FactoryDataTable = null;
-        DataTable GridSizesDataTable = null;
-        DataTable FrontsConfigDataTable = null;
-        DataTable DecorConfigDataTable = null;
-        DataTable TechStoreDataTable = null;
-        DataTable InsetPriceDataTable = null;
-        DataTable AluminiumFrontsDataTable = null;
 
         public DataTable ProfilReportDataTable = null;
         public DataTable TPSReportDataTable = null;
 
-        public DispatchFrontsReportToDbf()
+        private FrontsCatalogOrder frontsCatalogOrder;
+        private DecorCatalogOrder decorCatalogOrder;
+
+        public DispatchFrontsReportToDbf(FrontsCatalogOrder tFrontsCatalogOrder, DecorCatalogOrder tDecorCatalogOrder)
         {
+            frontsCatalogOrder = tFrontsCatalogOrder;
+            decorCatalogOrder = tDecorCatalogOrder;
             Create();
             CreateReportDataTables();
-        }
-
-        private void GetColorsDT()
-        {
-            FrameColorsDataTable.Columns.Add(new DataColumn("ColorID", Type.GetType("System.Int64")));
-            FrameColorsDataTable.Columns.Add(new DataColumn("ColorName", Type.GetType("System.String")));
-            string SelectCommand = @"SELECT TechStoreID, TechStoreName FROM TechStore
-                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)
-                ORDER BY TechStoreName";
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
-            {
-                using (DataTable DT = new DataTable())
-                {
-                    DA.Fill(DT);
-                    {
-                        DataRow NewRow = FrameColorsDataTable.NewRow();
-                        NewRow["ColorID"] = -1;
-                        NewRow["ColorName"] = "-";
-                        FrameColorsDataTable.Rows.Add(NewRow);
-                    }
-                    {
-                        DataRow NewRow = FrameColorsDataTable.NewRow();
-                        NewRow["ColorID"] = 0;
-                        NewRow["ColorName"] = "на выбор";
-                        FrameColorsDataTable.Rows.Add(NewRow);
-                    }
-                    for (int i = 0; i < DT.Rows.Count; i++)
-                    {
-                        DataRow NewRow = FrameColorsDataTable.NewRow();
-                        NewRow["ColorID"] = Convert.ToInt64(DT.Rows[i]["TechStoreID"]);
-                        NewRow["ColorName"] = DT.Rows[i]["TechStoreName"].ToString();
-                        FrameColorsDataTable.Rows.Add(NewRow);
-                    }
-                }
-            }
-        }
-
-        private void GetInsetColorsDT()
-        {
-            InsetColorsDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT InsetColors.InsetColorID, InsetColors.GroupID, infiniu2_catalog.dbo.TechStore.TechStoreName AS InsetColorName FROM InsetColors" +
-                " INNER JOIN infiniu2_catalog.dbo.TechStore ON InsetColors.InsetColorID = infiniu2_catalog.dbo.TechStore.TechStoreID ORDER BY TechStoreName", ConnectionStrings.CatalogConnectionString))
-            {
-                DA.Fill(InsetColorsDataTable);
-                {
-                    DataRow NewRow = InsetColorsDataTable.NewRow();
-                    NewRow["InsetColorID"] = -1;
-                    NewRow["GroupID"] = -1;
-                    NewRow["InsetColorName"] = "-";
-                    InsetColorsDataTable.Rows.Add(NewRow);
-                }
-                {
-                    DataRow NewRow = InsetColorsDataTable.NewRow();
-                    NewRow["InsetColorID"] = 0;
-                    NewRow["GroupID"] = -1;
-                    NewRow["InsetColorName"] = "на выбор";
-                    InsetColorsDataTable.Rows.Add(NewRow);
-                }
-            }
         }
 
         private void Create()
         {
             ProfilFrontsOrdersDataTable = new DataTable();
             TPSFrontsOrdersDataTable = new DataTable();
-
-            FrontsDataTable = new DataTable();
-            FrameColorsDataTable = new DataTable();
-            PatinaDataTable = new DataTable();
-            InsetTypesDataTable = new DataTable();
-            InsetColorsDataTable = new DataTable();
-            InsetPriceDataTable = new DataTable();
-            AluminiumFrontsDataTable = new DataTable();
-
-            string SelectCommand = "SELECT * FROM CurrencyTypes";
-            CurrencyTypesDT = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
-            {
-                DA.Fill(CurrencyTypesDT);
-            }
-
-            SelectCommand = @"SELECT TechStoreID AS FrontID, TechStoreName AS FrontName FROM TechStore 
-                WHERE TechStoreID IN (SELECT FrontID FROM FrontsConfig)
-                ORDER BY TechStoreName";
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
-            {
-                DA.Fill(FrontsDataTable);
-            }
-            GetColorsDT();
-            GetInsetColorsDT();
-            SelectCommand = @"SELECT * FROM Patina";
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
-            {
-                DA.Fill(PatinaDataTable);
-            }
-            SelectCommand = @"SELECT * FROM InsetTypes";
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
-            {
-                DA.Fill(InsetTypesDataTable);
-            }
-            MeasuresDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Measures",
-                ConnectionStrings.CatalogConnectionString))
-            {
-                DA.Fill(MeasuresDataTable);
-            }
-
-            InsetPriceDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM InsetPrice",
-                ConnectionStrings.MarketingReferenceConnectionString))
-            {
-                DA.Fill(InsetPriceDataTable);
-            }
-
-            AluminiumFrontsDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM AluminiumFronts",
-                ConnectionStrings.CatalogConnectionString))
-            {
-                DA.Fill(AluminiumFrontsDataTable);
-            }
-
-            FactoryDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Factory",
-                ConnectionStrings.CatalogConnectionString))
-            {
-                DA.Fill(FactoryDataTable);
-            }
-
-            GridSizesDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM GridSizes",
-                ConnectionStrings.CatalogConnectionString))
-            {
-                DA.Fill(GridSizesDataTable);
-            }
-
-            FrontsConfigDataTable = new DataTable();
-            //using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM FrontsConfig",
-            //    ConnectionStrings.CatalogConnectionString))
-            //{
-            //    DA.Fill(FrontsConfigDataTable);
-            //}
-            FrontsConfigDataTable = TablesManager.FrontsConfigDataTableAll;
-
-            DecorConfigDataTable = new DataTable();
-            //using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DecorConfig",
-            //    ConnectionStrings.CatalogConnectionString))
-            //{
-            //    DA.Fill(DecorConfigDataTable);
-            //}
-            DecorConfigDataTable = TablesManager.DecorConfigDataTableAll;
-
-            TechStoreDataTable = new DataTable();
-            //using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM TechStore",
-            //    ConnectionStrings.CatalogConnectionString))
-            //{
-            //    DA.Fill(TechStoreDataTable);
-            //}
-            TechStoreDataTable = TablesManager.TechStoreDataTable;
         }
 
         public void ClearReport()
@@ -235,7 +75,7 @@ namespace Infinium.Modules.ExpeditionMarketing.DispatchReportToDbf
 
         public string GetFrontName(int FrontID)
         {
-            DataRow[] Row = FrontsDataTable.Select("FrontID = " + FrontID);
+            DataRow[] Row = frontsCatalogOrder.ConstFrontsDataTable.Select("FrontID = " + FrontID);
 
             return Row[0]["FrontName"].ToString();
         }
@@ -245,7 +85,7 @@ namespace Infinium.Modules.ExpeditionMarketing.DispatchReportToDbf
         {
             for (int i = 0; i < FrontsOrdersDataTable.Rows.Count; i++)
             {
-                DataRow[] Rows = FrontsConfigDataTable.Select("FrontConfigID = " + FrontsOrdersDataTable.Rows[i]["FrontConfigID"].ToString());
+                DataRow[] Rows = frontsCatalogOrder.ConstFrontsConfigDataTable.Select("FrontConfigID = " + FrontsOrdersDataTable.Rows[i]["FrontConfigID"].ToString());
 
                 if (Rows[0]["FactoryID"].ToString() == "1")//profil
                 {
@@ -269,7 +109,7 @@ namespace Infinium.Modules.ExpeditionMarketing.DispatchReportToDbf
         //ALUMINIUM
         public int IsAluminium(int FrontID)
         {
-            DataRow[] Row = FrontsDataTable.Select("FrontID = " + FrontID);
+            DataRow[] Row = frontsCatalogOrder.ConstFrontsDataTable.Select("FrontID = " + FrontID);
 
             if (Row.Count() > 0 && Row[0]["FrontName"].ToString()[0] == 'Z')
             {
@@ -283,7 +123,7 @@ namespace Infinium.Modules.ExpeditionMarketing.DispatchReportToDbf
         public int IsAluminium(DataRow FrontsOrdersRow)
         {
             string str = FrontsOrdersRow["FrontID"].ToString();
-            DataRow[] Row = FrontsDataTable.Select("FrontID = " + FrontsOrdersRow["FrontID"].ToString());
+            DataRow[] Row = frontsCatalogOrder.ConstFrontsDataTable.Select("FrontID = " + FrontsOrdersRow["FrontID"].ToString());
 
             if (Row.Count() > 0 && Row[0]["FrontName"].ToString()[0] == 'Z')
             {
@@ -296,7 +136,7 @@ namespace Infinium.Modules.ExpeditionMarketing.DispatchReportToDbf
 
         private void GetGlassMarginAluminium(DataRow FrontsOrdersRow, ref int GlassMarginHeight, ref int GlassMarginWidth)
         {
-            DataRow[] Rows = TechStoreDataTable.Select("TechStoreID = " + Convert.ToInt32(FrontsOrdersRow["FrontID"]));
+            DataRow[] Rows = decorCatalogOrder.TechStoreDataTable.Select("TechStoreID = " + Convert.ToInt32(FrontsOrdersRow["FrontID"]));
             if (Rows.Count() > 0)
             {
                 if (Rows[0]["InsetHeightAdmission"] != DBNull.Value)
@@ -314,7 +154,7 @@ namespace Infinium.Modules.ExpeditionMarketing.DispatchReportToDbf
 
         private decimal GetJobPriceAluminium(DataRow FrontsOrdersRow)
         {
-            DataRow[] Rows = AluminiumFrontsDataTable.Select("FrontID = " + IsAluminium(FrontsOrdersRow));
+            DataRow[] Rows = frontsCatalogOrder.AluminiumFrontsDataTable.Select("FrontID = " + IsAluminium(FrontsOrdersRow));
             if (Rows.Count() == 0)
                 return 0;
             return Convert.ToDecimal(Rows[0]["JobPrice"]);
@@ -324,7 +164,7 @@ namespace Infinium.Modules.ExpeditionMarketing.DispatchReportToDbf
         {
             decimal Price = 0;
 
-            DataRow[] Rows = AluminiumFrontsDataTable.Select("FrontID = " + IsAluminium(FrontsOrdersRow));
+            DataRow[] Rows = frontsCatalogOrder.AluminiumFrontsDataTable.Select("FrontID = " + IsAluminium(FrontsOrdersRow));
             if (Rows.Count() > 0)
             {
                 Price = Convert.ToDecimal(Rows[0]["ProfilPrice"]);
@@ -338,7 +178,7 @@ namespace Infinium.Modules.ExpeditionMarketing.DispatchReportToDbf
         {
             decimal Price = 0;
 
-            DataRow[] Rows = InsetPriceDataTable.Select("InsetTypeID = " + FrontsOrdersRow["InsetColorID"].ToString());
+            DataRow[] Rows = frontsCatalogOrder.InsetPriceDataTable.Select("InsetTypeID = " + FrontsOrdersRow["InsetColorID"].ToString());
 
             if (Rows.Count() > 0)
                 Price = Convert.ToDecimal(Rows[0]["GlassZXPrice"]);
@@ -388,7 +228,7 @@ namespace Infinium.Modules.ExpeditionMarketing.DispatchReportToDbf
 
         public decimal GetAluminiumWeight(DataRow FrontsOrdersRow, bool WithGlass)
         {
-            DataRow[] Row = AluminiumFrontsDataTable.Select("FrontID = " + IsAluminium(FrontsOrdersRow));
+            DataRow[] Row = frontsCatalogOrder.AluminiumFrontsDataTable.Select("FrontID = " + IsAluminium(FrontsOrdersRow));
             if (Row.Count() == 0)
                 return 0;
             decimal FrontHeight = Convert.ToDecimal(FrontsOrdersRow["Height"]);
@@ -400,12 +240,12 @@ namespace Infinium.Modules.ExpeditionMarketing.DispatchReportToDbf
 
             GetGlassMarginAluminium(FrontsOrdersRow, ref MarginHeight, ref MarginWidth);
 
-            DataRow[] FrontsConfigRow = FrontsConfigDataTable.Select("FrontConfigID = " + FrontsOrdersRow["FrontConfigID"].ToString());
+            DataRow[] FrontsConfigRow = frontsCatalogOrder.ConstFrontsConfigDataTable.Select("FrontConfigID = " + FrontsOrdersRow["FrontConfigID"].ToString());
             if (FrontsConfigRow.Count() == 0)
                 return 0;
             int ProfileID = Convert.ToInt32(FrontsConfigRow[0]["ProfileID"]);
             decimal ProfileWeight = 0;
-            DataRow[] Rows = TechStoreDataTable.Select("TechStoreID = " + ProfileID);
+            DataRow[] Rows = decorCatalogOrder.TechStoreDataTable.Select("TechStoreID = " + ProfileID);
             if (Rows.Count() > 0)
             {
                 if (Rows[0]["Weight"] != DBNull.Value)
@@ -432,7 +272,7 @@ namespace Infinium.Modules.ExpeditionMarketing.DispatchReportToDbf
             int FrontID = 0;
             int InsetTypeID = 0;
             int InsetColorID = 0;
-            DataRow[] FRows = FrontsConfigDataTable.Select("FrontConfigID = " + FrontConfigID);
+            DataRow[] FRows = frontsCatalogOrder.ConstFrontsConfigDataTable.Select("FrontConfigID = " + FrontConfigID);
             if (FRows.Count() == 0)
                 return string.Empty;
 
@@ -441,7 +281,7 @@ namespace Infinium.Modules.ExpeditionMarketing.DispatchReportToDbf
             InsetColorID = Convert.ToInt32(FRows[0]["InsetColorID"]);
             if (IsAluminium(FrontID) != -1)
                 return string.Empty;
-            DataRow[] DRows = DecorConfigDataTable.Select("DecorID  = " + InsetColorID);
+            DataRow[] DRows = decorCatalogOrder.DecorConfigDataTable.Select("DecorID  = " + InsetColorID);
             if (DRows.Count() == 0)
                 return string.Empty;
             FactoryID = Convert.ToInt32(DRows[0]["FactoryID"]);
@@ -453,12 +293,12 @@ namespace Infinium.Modules.ExpeditionMarketing.DispatchReportToDbf
         {
             int InsetTypeID = 0;
             int InsetColorID = 0;
-            DataRow[] FRows = FrontsConfigDataTable.Select("FrontConfigID = " + FrontConfigID);
+            DataRow[] FRows = frontsCatalogOrder.ConstFrontsConfigDataTable.Select("FrontConfigID = " + FrontConfigID);
             if (FRows.Count() == 0)
                 return string.Empty;
             InsetTypeID = Convert.ToInt32(FRows[0]["InsetTypeID"]);
             InsetColorID = Convert.ToInt32(FRows[0]["InsetColorID"]);
-            DataRow[] DRows = DecorConfigDataTable.Select("DecorID  = " + InsetTypeID + " AND ColorID=" + InsetColorID);
+            DataRow[] DRows = decorCatalogOrder.DecorConfigDataTable.Select("DecorID  = " + InsetTypeID + " AND ColorID=" + InsetColorID);
             if (DRows.Count() == 0)
                 return string.Empty;
             FactoryID = Convert.ToInt32(DRows[0]["FactoryID"]);
@@ -468,14 +308,14 @@ namespace Infinium.Modules.ExpeditionMarketing.DispatchReportToDbf
 
         private int GetMeasureType(int FrontConfigID)
         {
-            return Convert.ToInt32(FrontsConfigDataTable.Select("FrontConfigID = " + FrontConfigID.ToString())[0]["MeasureID"]);
+            return Convert.ToInt32(frontsCatalogOrder.ConstFrontsConfigDataTable.Select("FrontConfigID = " + FrontConfigID.ToString())[0]["MeasureID"]);
         }
 
         private decimal GetInsetSquare(int FrontID, int Height, int Width)
         {
             decimal GridHeight = 0;
             decimal GridWidth = 0;
-            DataRow[] Rows = TechStoreDataTable.Select("TechStoreID = " + FrontID);
+            DataRow[] Rows = decorCatalogOrder.TechStoreDataTable.Select("TechStoreID = " + FrontID);
             if (Rows.Count() > 0)
             {
                 if (Rows[0]["InsetHeightAdmission"] != DBNull.Value)
@@ -494,7 +334,7 @@ namespace Infinium.Modules.ExpeditionMarketing.DispatchReportToDbf
         {
             decimal GridHeight = 0;
             decimal GridWidth = 0;
-            DataRow[] Rows = TechStoreDataTable.Select("TechStoreID = " + Convert.ToInt32(FrontsOrdersRow["FrontID"]));
+            DataRow[] Rows = decorCatalogOrder.TechStoreDataTable.Select("TechStoreID = " + Convert.ToInt32(FrontsOrdersRow["FrontID"]));
             if (Rows.Count() > 0)
             {
                 if (Rows[0]["InsetHeightAdmission"] != DBNull.Value)
@@ -511,7 +351,7 @@ namespace Infinium.Modules.ExpeditionMarketing.DispatchReportToDbf
 
         private decimal GetNonStandardMargin(int FrontConfigID)
         {
-            DataRow[] Rows = FrontsConfigDataTable.Select("FrontConfigID = " + FrontConfigID);
+            DataRow[] Rows = frontsCatalogOrder.ConstFrontsConfigDataTable.Select("FrontConfigID = " + FrontConfigID);
 
             return Convert.ToDecimal(Rows[0]["ZOVNonStandMargin"]);
         }
@@ -560,7 +400,7 @@ namespace Infinium.Modules.ExpeditionMarketing.DispatchReportToDbf
                 if (IsNonStandard)
                     IsNonStandardFilter = " AND IsNonStandard=1";
                 //ГЛУХИЕ, БЕЗ ВСТАВКИ, РЕШЕТКА ОВАЛ
-                DataRow[] rows = InsetTypesDataTable.Select("InsetTypeID=-1 OR GroupID = 3 OR GroupID = 4");
+                DataRow[] rows = frontsCatalogOrder.ConstInsetTypesDataTable.Select("InsetTypeID=-1 OR GroupID = 3 OR GroupID = 4");
                 string filter = string.Empty;
                 foreach (DataRow item in rows)
                     filter += item["InsetTypeID"].ToString() + ",";
@@ -923,7 +763,7 @@ namespace Infinium.Modules.ExpeditionMarketing.DispatchReportToDbf
                 {
                     if (Rows[r]["Height"].ToString() == "713")
                     {
-                        DataRow[] rows = InsetTypesDataTable.Select("GroupID = 3 OR GroupID = 4");
+                        DataRow[] rows = frontsCatalogOrder.ConstInsetTypesDataTable.Select("GroupID = 3 OR GroupID = 4");
                         foreach (DataRow item in rows)
                         {
                             if (Rows[r]["InsetTypeID"].ToString() == item["InsetTypeID"].ToString())
@@ -940,7 +780,7 @@ namespace Infinium.Modules.ExpeditionMarketing.DispatchReportToDbf
                                 Solid713Weight += Convert.ToDecimal(FrontWeight + InsetWeight);
                             }
                         }
-                        rows = InsetTypesDataTable.Select("InsetTypeID IN (2079,2080,2081,2082,2085,2086,2087,2088,2212,2213,29210,29211,27831,27832,29210,29211)");
+                        rows = frontsCatalogOrder.ConstInsetTypesDataTable.Select("InsetTypeID IN (2079,2080,2081,2082,2085,2086,2087,2088,2212,2213,29210,29211,27831,27832,29210,29211)");
                         foreach (DataRow item in rows)
                         {
                             if (Rows[r]["InsetTypeID"].ToString() == item["InsetTypeID"].ToString())
@@ -988,7 +828,7 @@ namespace Infinium.Modules.ExpeditionMarketing.DispatchReportToDbf
 
                     if (Rows[r]["Height"].ToString() == "910")
                     {
-                        DataRow[] rows = InsetTypesDataTable.Select("GroupID = 3 OR GroupID = 4");
+                        DataRow[] rows = frontsCatalogOrder.ConstInsetTypesDataTable.Select("GroupID = 3 OR GroupID = 4");
                         foreach (DataRow item in rows)
                         {
                             if (Rows[r]["InsetTypeID"].ToString() == item["InsetTypeID"].ToString())
@@ -1005,7 +845,7 @@ namespace Infinium.Modules.ExpeditionMarketing.DispatchReportToDbf
                                 Solid910Weight += Convert.ToDecimal(FrontWeight + InsetWeight);
                             }
                         }
-                        rows = InsetTypesDataTable.Select("InsetTypeID IN (2079,2080,2081,2082,2085,2086,2087,2088,2212,2213,29210,29211,27831,27832,29210,29211)");
+                        rows = frontsCatalogOrder.ConstInsetTypesDataTable.Select("InsetTypeID IN (2079,2080,2081,2082,2085,2086,2087,2088,2212,2213,29210,29211,27831,27832,29210,29211)");
                         foreach (DataRow item in rows)
                         {
                             if (Rows[r]["InsetTypeID"].ToString() == item["InsetTypeID"].ToString())
@@ -1713,7 +1553,7 @@ namespace Infinium.Modules.ExpeditionMarketing.DispatchReportToDbf
             if (InsetSquare <= 0)
                 return 0;
             decimal InsetWeight = 0;
-            DataRow[] Rows = TechStoreDataTable.Select("TechStoreID = " + InsetTypeID);
+            DataRow[] Rows = decorCatalogOrder.TechStoreDataTable.Select("TechStoreID = " + InsetTypeID);
             if (Rows.Count() > 0)
             {
                 if (Rows[0]["Weight"] != DBNull.Value)
@@ -1729,7 +1569,7 @@ namespace Infinium.Modules.ExpeditionMarketing.DispatchReportToDbf
             decimal FrontWidth = Convert.ToDecimal(FrontsOrdersRow["Width"]);
             decimal ProfileWeight = 0;
             decimal ProfileWidth = 0;
-            DataRow[] FrontsConfigRow = FrontsConfigDataTable.Select("FrontConfigID = " + FrontsOrdersRow["FrontConfigID"].ToString());
+            DataRow[] FrontsConfigRow = frontsCatalogOrder.ConstFrontsConfigDataTable.Select("FrontConfigID = " + FrontsOrdersRow["FrontConfigID"].ToString());
             if (FrontsConfigRow.Count() > 0)
                 ProfileWeight = Convert.ToDecimal(FrontsConfigRow[0]["Weight"]);
 
@@ -1746,7 +1586,7 @@ namespace Infinium.Modules.ExpeditionMarketing.DispatchReportToDbf
                 return FrontWidth * FrontHeight / 1000000 * ProfileWeight;
             else
             {
-                DataRow[] DecorConfigRow = TechStoreDataTable.Select("TechStoreID = " + FrontsConfigRow[0]["ProfileID"].ToString());
+                DataRow[] DecorConfigRow = decorCatalogOrder.TechStoreDataTable.Select("TechStoreID = " + FrontsConfigRow[0]["ProfileID"].ToString());
                 if (DecorConfigRow.Count() > 0)
                 {
                     ProfileWidth = Convert.ToDecimal(DecorConfigRow[0]["Width"]);
@@ -1760,7 +1600,7 @@ namespace Infinium.Modules.ExpeditionMarketing.DispatchReportToDbf
         public void GetFrontWeight(DataRow FrontsOrdersRow, ref decimal outFrontWeight, ref decimal outInsetWeight)
         {
             //decimal FrontsWeight = 0;
-            DataRow[] FrontsConfigRow = FrontsConfigDataTable.Select("FrontConfigID = " + FrontsOrdersRow["FrontConfigID"].ToString());
+            DataRow[] FrontsConfigRow = frontsCatalogOrder.ConstFrontsConfigDataTable.Select("FrontConfigID = " + FrontsOrdersRow["FrontConfigID"].ToString());
             decimal InsetWeight = Convert.ToDecimal(FrontsConfigRow[0]["InsetWeight"]);
             decimal FrontsOrderSquare = Convert.ToDecimal(FrontsOrdersRow["Square"]);
             decimal PackWeight = 0;
@@ -1782,7 +1622,7 @@ namespace Infinium.Modules.ExpeditionMarketing.DispatchReportToDbf
             }
             decimal ResultProfileWeight = GetProfileWeight(FrontsOrdersRow);
             decimal ResultInsetWeight = 0;
-            DataRow[] rows = InsetTypesDataTable.Select("GroupID = 2 OR GroupID = 3 OR GroupID = 4 OR GroupID = 7 OR GroupID = 12 OR GroupID = 13");
+            DataRow[] rows = frontsCatalogOrder.ConstInsetTypesDataTable.Select("GroupID = 2 OR GroupID = 3 OR GroupID = 4 OR GroupID = 7 OR GroupID = 12 OR GroupID = 13");
             foreach (DataRow item in rows)
             {
                 if (FrontsOrdersRow["InsetTypeID"].ToString() == item["InsetTypeID"].ToString())
@@ -1850,7 +1690,7 @@ namespace Infinium.Modules.ExpeditionMarketing.DispatchReportToDbf
             TPSFrontsOrdersDataTable.Clear();
             DecorInvNumbersDT.Clear();
 
-            DataRow[] rows = CurrencyTypesDT.Select("CurrencyTypeID = " + CurrencyTypeID);
+            DataRow[] rows = frontsCatalogOrder.CurrencyTypesDT.Select("CurrencyTypeID = " + CurrencyTypeID);
             if (rows.Count() > 0)
             {
                 ProfilCurrencyCode = rows[0]["CurrencyCode"].ToString();
@@ -1971,7 +1811,7 @@ namespace Infinium.Modules.ExpeditionMarketing.DispatchReportToDbf
             TPSFrontsOrdersDataTable.Clear();
             DecorInvNumbersDT.Clear();
 
-            DataRow[] rows = CurrencyTypesDT.Select("CurrencyTypeID = " + CurrencyTypeID);
+            DataRow[] rows = frontsCatalogOrder.CurrencyTypesDT.Select("CurrencyTypeID = " + CurrencyTypeID);
             if (rows.Count() > 0)
             {
                 ProfilCurrencyCode = rows[0]["CurrencyCode"].ToString();

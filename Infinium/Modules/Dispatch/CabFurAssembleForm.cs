@@ -20,7 +20,6 @@ namespace Infinium
         bool CanAction = true;
 
         int ClientID = 1;
-        int MegaOrderID = 1;
         int OrderNumber = 1;
 
         Form MainForm;
@@ -31,11 +30,11 @@ namespace Infinium
         [DllImport("user32.dll")]
         static extern IntPtr GetActiveWindow();
 
-        public CabFurAssembleForm(Form tMainForm, int iMegaOrderID)
+        public CabFurAssembleForm(Form tMainForm, int iClientID, int[] MegaOrders)
         {
             InitializeComponent();
-
-            MegaOrderID = iMegaOrderID;
+            
+            ClientID = iClientID;
 
             MainForm = tMainForm;
 
@@ -44,7 +43,7 @@ namespace Infinium
             assignmentsManager.Initialize();
 
             Initialize();
-            assemblePackagesManager.GetPackagesLabels(MegaOrderID);
+            assemblePackagesManager.GetPackagesLabels(MegaOrders);
 
             this.MaximumSize = Screen.PrimaryScreen.WorkingArea.Size;
 
@@ -179,12 +178,19 @@ namespace Infinium
         {
             assemblePackagesManager = new AssemblePackagesManager();
 
-            dgvStoragePackagesLabels.DataSource = assemblePackagesManager.PackageLabelsBS;
-            dgvStoragePackagesDetails.DataSource = assemblePackagesManager.PackageDetailsBS;
+            dgvNotScanedPackagesLabels.DataSource = assemblePackagesManager.NotScanedPackageLabelsBS;
+            dgvNotcanedPackagesDetails.DataSource = assemblePackagesManager.NotScanedPackageDetailsBS;
+
+            dgvAllScanedPackagesLabels.DataSource = assemblePackagesManager.AllScanedPackageLabelsBS;
+            dgvAllScanedPackagesDetails.DataSource = assemblePackagesManager.AllScanedPackageDetailsBS;
+
             dgvScanedStoragePackagesDetails.DataSource = assemblePackagesManager.ScanedPackageDetailsBS;
 
-            dgvPackagesLabelsSetting(ref dgvStoragePackagesLabels);
-            dgvPackagesDetailsSetting(ref dgvStoragePackagesDetails);
+            dgvPackagesLabelsSetting(ref dgvNotScanedPackagesLabels);
+            dgvPackagesDetailsSetting(ref dgvNotcanedPackagesDetails);
+            dgvPackagesLabelsSetting(ref dgvAllScanedPackagesLabels);
+            dgvPackagesDetailsSetting(ref dgvAllScanedPackagesDetails);
+
             dgvPackagesDetailsSetting(ref dgvScanedStoragePackagesDetails);
             assemblePackagesManager.Clear();
         }
@@ -433,22 +439,48 @@ namespace Infinium
             if (assemblePackagesManager == null)
                 return;
             int cabFurniturePackageID = 0;
-            if (dgvStoragePackagesLabels.SelectedRows.Count != 0 && dgvStoragePackagesLabels.SelectedRows[0].Cells["CabFurnitureComplementID"].Value != DBNull.Value)
-                cabFurniturePackageID = Convert.ToInt32(dgvStoragePackagesLabels.SelectedRows[0].Cells["CabFurnitureComplementID"].Value);
-            assemblePackagesManager.FilterPackagesDetails(cabFurniturePackageID);
+            if (dgvNotScanedPackagesLabels.SelectedRows.Count != 0 && dgvNotScanedPackagesLabels.SelectedRows[0].Cells["CabFurnitureComplementID"].Value != DBNull.Value)
+                cabFurniturePackageID = Convert.ToInt32(dgvNotScanedPackagesLabels.SelectedRows[0].Cells["CabFurnitureComplementID"].Value);
+            assemblePackagesManager.FilterNotScanedPackagesDetails(cabFurniturePackageID);
         }
 
         private void btnComplete_Click(object sender, EventArgs e)
         {
+            if (dgvAllScanedPackagesDetails.Rows.Count == 0)
+            {
+                InfiniumTips.ShowTip(this, 50, 85, "Упаковки не отсканированы", 2000);
+                return;
+            }
+
             Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref MainForm, "Обновление.\r\nПодождите..."); });
             T.Start();
             while (!SplashWindow.bSmallCreated) ;
 
-            assemblePackagesManager.AssemblePackages();
+            assemblePackagesManager.AssemblePackages(ClientID);
             InfiniumTips.ShowTip(this, 50, 85, "Упаковки подготовлены к отгрузке", 2000);
 
             while (SplashWindow.bSmallCreated)
                 SmallWaitForm.CloseS = true;
+        }
+
+        private void kryptonButton1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dgvExcessPackagesLabels_SelectionChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dgvAllScanedPackagesLabels_SelectionChanged(object sender, EventArgs e)
+        {
+            if (assemblePackagesManager == null)
+                return;
+            int cabFurniturePackageID = 0;
+            if (dgvAllScanedPackagesLabels.SelectedRows.Count != 0 && dgvAllScanedPackagesLabels.SelectedRows[0].Cells["CabFurnitureComplementID"].Value != DBNull.Value)
+                cabFurniturePackageID = Convert.ToInt32(dgvAllScanedPackagesLabels.SelectedRows[0].Cells["CabFurnitureComplementID"].Value);
+            assemblePackagesManager.FilterAllScanedPackagesDetails(cabFurniturePackageID);
         }
     }
 }

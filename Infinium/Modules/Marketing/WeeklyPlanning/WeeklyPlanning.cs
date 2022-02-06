@@ -14516,7 +14516,8 @@ namespace Infinium.Modules.Marketing.WeeklyPlanning
                     if (bImpost)
                     {
                         string Front2 = GetFront2Name(Convert.ToInt32(Row["TechnoProfileID"]));
-                        InsetType = InsetType + "/" + Front2;
+                        if (Front2.Length > 0)
+                            InsetType = InsetType + "/" + Front2;
                     }
                 }
                 NewRow["Front"] = GetFrontName(Convert.ToInt32(Row["FrontID"]));
@@ -14706,7 +14707,8 @@ namespace Infinium.Modules.Marketing.WeeklyPlanning
                     if (bImpost)
                     {
                         string Front2 = GetFront2Name(Convert.ToInt32(Row["TechnoProfileID"]));
-                        InsetType = InsetType + "/" + Front2;
+                        if (Front2.Length > 0)
+                            InsetType = InsetType + "/" + Front2;
                     }
                 }
                 InsetColor = GetInsetColorName(Convert.ToInt32(Row["InsetColorID"]));
@@ -15429,16 +15431,26 @@ namespace Infinium.Modules.Marketing.WeeklyPlanning
 
         private string GetFileName(string sDestFolder, string ExcelName)
         {
-            string sExtension = ".xls";
-            string sFileName = ExcelName;
 
+            FileInfo file = new FileInfo(sDestFolder + @"\" + ExcelName + ".xls");
             int j = 1;
-            while (FM.FileExist(sDestFolder + "/" + sFileName + sExtension, Configs.FTPType))
+            while (file.Exists == true)
             {
-                sFileName = ExcelName + "(" + j++ + ")";
+                file = new FileInfo(sDestFolder + @"\" + ExcelName + "(" + j++ + ").xls");
             }
-            sFileName = sFileName + sExtension;
-            return sFileName;
+
+            return file.Name;
+
+            //string sExtension = ".xls";
+            //string sFileName = ExcelName;
+
+            //int j = 1;
+            //while (FM.FileExist(sDestFolder + "/" + sFileName + sExtension, Configs.FTPType))
+            //{
+            //    sFileName = ExcelName + "(" + j++ + ")";
+            //}
+            //sFileName = sFileName + sExtension;
+            //return sFileName;
         }
 
         public bool UploadFile(string sSourceFileName, string sDestFileName, int FolderID, ref Int64 iFileSize)
@@ -16077,36 +16089,38 @@ namespace Infinium.Modules.Marketing.WeeklyPlanning
             Int64 iFileSize = 0;
             string sSourceFolder = System.Environment.GetEnvironmentVariable("TEMP");
             string sFolderPath = "Общие файлы/Производство/Недельное планирование (маркетинг)";
-            string sDestFolder = Configs.DocumentsPath + sFolderPath;
-            string sSourceFileName = GetFileName(sDestFolder, ExcelName);
+            //string sDestFolder = Configs.DocumentsPath + sFolderPath;
+            string sDestFolder = sSourceFolder + @"\" + sFolderPath;
+            //string sSourceFileName = GetFileName(sDestFolder, ExcelName);
+            string sSourceFileName = GetFileName(sSourceFolder + @"\", ExcelName);
 
             FileInfo file = new FileInfo(sSourceFolder + @"\" + sSourceFileName);
             FileStream NewFile = new FileStream(file.FullName, FileMode.Create);
             hssfworkbook.Write(NewFile);
             NewFile.Close();
 
-            try
-            {
-                int FolderID = GetFolderID(sFolderPath);
-                if (FolderID != -1)
-                    UploadFile(sSourceFolder + @"\" + sSourceFileName, sDestFolder + "/" + sSourceFileName, FolderID, ref iFileSize);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            //try
+            //{
+            //    int FolderID = GetFolderID(sFolderPath);
+            //    if (FolderID != -1)
+            //        UploadFile(sSourceFolder + @"\" + sSourceFileName, sDestFolder + "/" + sSourceFileName, FolderID, ref iFileSize);
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show(ex.Message);
+            //}
 
-            System.Threading.Thread T = new System.Threading.Thread(delegate ()
-            {
-                FM.DownloadFile(sDestFolder + "/" + sSourceFileName, sSourceFolder + @"\" + sSourceFileName, iFileSize, Configs.FTPType);
-            });
-            T.Start();
+            //System.Threading.Thread T = new System.Threading.Thread(delegate ()
+            //{
+            //    FM.DownloadFile(sDestFolder + "/" + sSourceFileName, sSourceFolder + @"\" + sSourceFileName, iFileSize, Configs.FTPType);
+            //});
+            //T.Start();
 
-            while (T.IsAlive)
-            {
-                T.Join(50);
-                Application.DoEvents();
-            }
+            //while (T.IsAlive)
+            //{
+            //    T.Join(50);
+            //    Application.DoEvents();
+            //}
             System.Diagnostics.Process.Start(sSourceFolder + @"\" + sSourceFileName);
         }
 
@@ -16685,36 +16699,38 @@ namespace Infinium.Modules.Marketing.WeeklyPlanning
             Int64 iFileSize = 0;
             string sSourceFolder = System.Environment.GetEnvironmentVariable("TEMP");
             string sFolderPath = "Общие файлы/Производство/Недельное планирование (маркетинг)";
-            string sDestFolder = Configs.DocumentsPath + sFolderPath;
-            string sSourceFileName = GetFileName(sDestFolder, ExcelName);
+            //string sDestFolder = Configs.DocumentsPath + sFolderPath;
+            string sDestFolder = sSourceFolder + @"\" + sFolderPath;
+            //string sSourceFileName = GetFileName(sDestFolder, ExcelName);
+            string sSourceFileName = GetFileName(sSourceFolder + @"\", ExcelName);
 
             FileInfo file = new FileInfo(sSourceFolder + @"\" + sSourceFileName);
             FileStream NewFile = new FileStream(file.FullName, FileMode.Create);
             hssfworkbook.Write(NewFile);
             NewFile.Close();
 
-            try
-            {
-                int FolderID = GetFolderID(sFolderPath);
-                if (FolderID != -1)
-                    UploadFile(sSourceFolder + @"\" + sSourceFileName, sDestFolder + "/" + sSourceFileName, FolderID, ref iFileSize);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            //try
+            //{
+            //    int FolderID = GetFolderID(sFolderPath);
+            //    if (FolderID != -1)
+            //        UploadFile(sSourceFolder + @"\" + sSourceFileName, sDestFolder + "/" + sSourceFileName, FolderID, ref iFileSize);
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show(ex.Message);
+            //}
 
-            System.Threading.Thread T = new System.Threading.Thread(delegate ()
-            {
-                FM.DownloadFile(sDestFolder + "/" + sSourceFileName, sSourceFolder + @"\" + sSourceFileName, iFileSize, Configs.FTPType);
-            });
-            T.Start();
+            //System.Threading.Thread T = new System.Threading.Thread(delegate ()
+            //{
+            //    FM.DownloadFile(sDestFolder + "/" + sSourceFileName, sSourceFolder + @"\" + sSourceFileName, iFileSize, Configs.FTPType);
+            //});
+            //T.Start();
 
-            while (T.IsAlive)
-            {
-                T.Join(50);
-                Application.DoEvents();
-            }
+            //while (T.IsAlive)
+            //{
+            //    T.Join(50);
+            //    Application.DoEvents();
+            //}
             System.Diagnostics.Process.Start(sSourceFolder + @"\" + sSourceFileName);
         }
 

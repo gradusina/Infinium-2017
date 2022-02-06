@@ -14,12 +14,9 @@ namespace Infinium
 {
     public partial class CabFurnitureModuleForm : Form
     {
-        const int iResponsibleRole = 58;
-        const int iTechnologyRole = 59;
-        const int iControlRole = 60;
-        const int iAgreementRole = 61;
-        const int iAdminRole = 62;
-        const int iWorkerRole = 63;
+        const int iAgreementRole = 98;
+        const int iAdminRole = 100;
+        const int iDispatchRole = 99;
 
         const int eHide = 2;
         const int eShow = 1;
@@ -58,18 +55,19 @@ namespace Infinium
         CabFurStorage cabFurStorage;
         CabFurStorageToExcel cabFurStorageToExcel;
         Infinium.Modules.CabFurnitureAssignments.CheckLabel CheckLabel;
-        //RoleTypes RoleType = RoleTypes.OrdinaryRole;
+        RoleTypes RoleType = RoleTypes.OrdinaryRole;
 
-        //public enum RoleTypes
-        //{
-        //    OrdinaryRole = 0,
-        //    AdminRole = 1,
-        //    ResponsibleRole = 2,
-        //    TechnologyRole = 3,
-        //    ControlRole = 4,
-        //    AgreementRole = 5,
-        //    WorkerRole = 6
-        //}
+        public enum RoleTypes
+        {
+            OrdinaryRole = 0,
+            AdminRole = 1,
+            ResponsibleRole = 2,
+            TechnologyRole = 3,
+            ControlRole = 4,
+            AgreementRole = 5,
+            WorkerRole = 6,
+            DispatchRole = 7
+        }
 
         public CabFurnitureModuleForm(LightStartForm tLightStartForm)
         {
@@ -95,60 +93,31 @@ namespace Infinium
 
             //Infinium.Classes.PictureToExcel PictureToExcel = new Classes.PictureToExcel();
 
-            //RolesDataTable = AssignmentsManager.GetPermissions(Security.CurrentUserID, this.Name);
+            assignmentsManager.GetPermissions(Security.CurrentUserID, this.Name);
 
-            //if (PermissionGranted(iResponsibleRole))
-            //{
-            //    RoleType = RoleTypes.ResponsibleRole;
-            //    cmiSaveAssignments.Visible = true;
-            //    kryptonContextMenuItem5.Visible = true;
-            //    kryptonContextMenuItem13.Visible = false;
-            //}
-            //if (PermissionGranted(iTechnologyRole))
-            //{
-            //    RoleType = RoleTypes.TechnologyRole;
-            //    cmiSaveAssignments.Visible = false;
-            //    kryptonContextMenuItem5.Visible = false;
-            //    kryptonContextMenuItem13.Visible = false;
-            //}
-            //if (PermissionGranted(iControlRole))
-            //{
-            //    RoleType = RoleTypes.ControlRole;
-            //    cmiSaveAssignments.Visible = false;
-            //    kryptonContextMenuItem5.Visible = false;
-            //    kryptonContextMenuItem13.Visible = false;
-            //}
-            //if (PermissionGranted(iAgreementRole))
-            //{
-            //    RoleType = RoleTypes.AgreementRole;
-            //    cmiSaveAssignments.Visible = false;
-            //    kryptonContextMenuItem5.Visible = false;
-            //    kryptonContextMenuItem13.Visible = true;
-            //}
-            //if (PermissionGranted(iAdminRole))
-            //{
-            //    RoleType = RoleTypes.AdminRole;
-            //    cmiSaveAssignments.Visible = true;
-            //    kryptonContextMenuItem5.Visible = true;
-            //    kryptonContextMenuItem13.Visible = true;
-            //}
-            //if (PermissionGranted(iWorkerRole))
-            //{
-            //    RoleType = RoleTypes.WorkerRole;
-            //    cmiSaveAssignments.Visible = true;
-            //    kryptonContextMenuItem5.Visible = true;
-            //    kryptonContextMenuItem13.Visible = false;
-            //}
+            if (assignmentsManager.PermissionGranted(iAgreementRole))
+            {
+                RoleType = RoleTypes.AgreementRole;
+                cmiSaveAssignments.Visible = false;
+                agreeAssignmentContextMenuItem.Visible = true;
+                setDispatchDateContextMenuItem.Visible = false;
+            }
+            if (assignmentsManager.PermissionGranted(iAdminRole))
+            {
+                RoleType = RoleTypes.AdminRole;
+                cmiSaveAssignments.Visible = true;
+                agreeAssignmentContextMenuItem.Visible = true;
+                setDispatchDateContextMenuItem.Visible = true;
+            }
+            if (assignmentsManager.PermissionGranted(iDispatchRole))
+            {
+                RoleType = RoleTypes.DispatchRole;
+                cmiSaveAssignments.Visible = true;
+                agreeAssignmentContextMenuItem.Visible = true;
+                setDispatchDateContextMenuItem.Visible = true;
+            }
 
             while (!SplashForm.bCreated) ;
-        }
-
-        private bool PermissionGranted(int RoleID)
-        {
-            //DataRow[] Rows = RolesDataTable.Select("RoleID = " + RoleID);
-
-            //return Rows.Count() > 0;
-            return false;
         }
 
         private void CabFurnitureModuleForm_Shown(object sender, EventArgs e)
@@ -261,6 +230,7 @@ namespace Infinium
             DateTime Today = DateTime.Now;
 
             DateTimePicker1.Value = FirstDay;
+            CreateDateTimePicker1.Value = FirstDay;
 
             complementLabel = new ComplementLabel();
             packageLabel = new PackageLabel();
@@ -365,10 +335,10 @@ namespace Infinium
             dgvNewAssignmentSetting(ref dgvNewAssignment);
             dgvNewAssignmentSetting(ref percentageDataGrid1);
             dgvAllAssignmentsSetting(ref dgvAllAssignments);
-
+            
             assignmentsManager.UpdateNewAssignment(0);
-            assignmentsManager.UpdateDocuments();
-            assignmentsManager.UpdateAllAssignments();
+            assignmentsManager.UpdateDocuments(FirstDay, DateTime.Now);
+            assignmentsManager.UpdateAllAssignments(FirstDay, DateTime.Now);
             assignmentsManager.FilterAllAssignments(true, true, true, true, true);
 
 
@@ -521,16 +491,25 @@ namespace Infinium
                 grid.Columns["DocsPrintedCount"].Visible = false;
             if (grid.Columns.Contains("ProductionUserID"))
                 grid.Columns["ProductionUserID"].Visible = false;
+            if (grid.Columns.Contains("OutProductionUserID"))
+                grid.Columns["OutProductionUserID"].Visible = false;
+            if (grid.Columns.Contains("PlanDispatchUserID"))
+                grid.Columns["PlanDispatchUserID"].Visible = false;
 
             grid.Columns["CreationDateTime"].DefaultCellStyle.Format = "dd.MM.yyyy";
+            grid.Columns["PlanDispatchDateTime"].DefaultCellStyle.Format = "dd.MM.yyyy";
             grid.Columns["AgreementDateTime"].DefaultCellStyle.Format = "dd.MM.yyyy";
             grid.Columns["ProductionDateTime"].DefaultCellStyle.Format = "dd.MM.yyyy";
+            grid.Columns["OutProductionDateTime"].DefaultCellStyle.Format = "dd.MM.yyyy";
 
             grid.Columns["CreationDateTime"].HeaderText = "Дата\r\nсоздания";
+            grid.Columns["PlanDispatchDateTime"].HeaderText = "Дата\r\nотгрузки";
             grid.Columns["AgreementDateTime"].HeaderText = "Дата\r\nсогласования";
             grid.Columns["ProductionDateTime"].HeaderText = "Дата\r\nзапуска";
+            grid.Columns["OutProductionDateTime"].HeaderText = "Дата\r\nвыхода";
             grid.Columns["CabFurAssignmentID"].HeaderText = "№ задания";
             grid.Columns["DocsCount"].HeaderText = "Всего заданий";
+            grid.Columns["ClientNotes"].HeaderText = "Клиент и № заказа";
             grid.Columns["Notes"].HeaderText = "Примечание";
             grid.Columns["PackagesCount"].HeaderText = "Упаковка, шт.";
             grid.Columns["DocsPrintedCount"].HeaderText = "Заданий распечатано";
@@ -541,19 +520,23 @@ namespace Infinium
                 Column.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             }
 
+            grid.Columns["ClientNotes"].ReadOnly = false;
             grid.Columns["Notes"].ReadOnly = false;
 
             int DisplayIndex = 0;
             grid.Columns["CabFurAssignmentID"].DisplayIndex = DisplayIndex++;
-            grid.Columns["Notes"].DisplayIndex = DisplayIndex++;
             grid.Columns["CreationUserColumn"].DisplayIndex = DisplayIndex++;
             grid.Columns["CreationDateTime"].DisplayIndex = DisplayIndex++;
+            grid.Columns["PlanDispatchDateTime"].DisplayIndex = DisplayIndex++;
             grid.Columns["AgreementUserColumn"].DisplayIndex = DisplayIndex++;
             grid.Columns["AgreementDateTime"].DisplayIndex = DisplayIndex++;
             grid.Columns["ProductionDateTime"].DisplayIndex = DisplayIndex++;
+            grid.Columns["OutProductionDateTime"].DisplayIndex = DisplayIndex++;
             grid.Columns["PackagesCount"].DisplayIndex = DisplayIndex++;
+            grid.Columns["ClientNotes"].DisplayIndex = DisplayIndex++;
             grid.Columns["Notes"].DisplayIndex = DisplayIndex++;
             grid.Columns["InProdColumn"].DisplayIndex = DisplayIndex++;
+            grid.Columns["OutProdColumn"].DisplayIndex = DisplayIndex++;
         }
 
         private void dgvNewAssignmentSetting(ref PercentageDataGrid grid)
@@ -1250,8 +1233,11 @@ namespace Infinium
             while (!SplashWindow.bSmallCreated) ;
             NeedSplash = false;
 
+            DateTime date1 = CreateDateTimePicker1.Value.Date;
+            DateTime date2 = CreateDateTimePicker2.Value.Date;
+
             assignmentsManager.SaveAllAssignments();
-            assignmentsManager.UpdateAllAssignments();
+            assignmentsManager.UpdateAllAssignments(date1, date2);
             assignmentsManager.MoveToAssignmentID(CabFurAssignmentID);
 
             NeedSplash = true;
@@ -1392,6 +1378,9 @@ namespace Infinium
             while (!SplashWindow.bSmallCreated) ;
             NeedSplash = false;
 
+            DateTime date1 = CreateDateTimePicker1.Value.Date;
+            DateTime date2 = CreateDateTimePicker2.Value.Date;
+
             if (assignmentsManager.NewAssignment)
             {
                 assignmentsManager.AddAssignment();
@@ -1403,11 +1392,10 @@ namespace Infinium
             {
                 assignmentsManager.SaveNewAssignment();
                 assignmentsManager.SaveAllAssignments();
-                assignmentsManager.UpdateAllAssignments();
             }
 
-            assignmentsManager.UpdateDocuments();
-            assignmentsManager.UpdateAllAssignments();
+            assignmentsManager.UpdateDocuments(date1, date2);
+            assignmentsManager.UpdateAllAssignments(date1, date2);
 
             if (assignmentsManager.NewAssignment)
             {
@@ -1650,6 +1638,10 @@ namespace Infinium
             bool bPrinted = cbPrintedAssingments.Checked;
             bool bNotPrinted = cbNotPrintedAssingments.Checked;
             bool bPartPrinted = cbPartPrintedAssingments.Checked;
+
+            DateTime date1 = CreateDateTimePicker1.Value.Date;
+            DateTime date2 = CreateDateTimePicker2.Value.Date;
+
             if (NeedSplash)
             {
                 Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Загрузка данных с сервера.\r\nПодождите..."); });
@@ -1657,8 +1649,8 @@ namespace Infinium
                 while (!SplashWindow.bSmallCreated) ;
                 NeedSplash = false;
 
-                assignmentsManager.UpdateDocuments();
-                assignmentsManager.UpdateAllAssignments();
+                assignmentsManager.UpdateDocuments(date1, date2);
+                assignmentsManager.UpdateAllAssignments(date1, date2);
                 assignmentsManager.FilterAllAssignments(bAgreed, bNotAgreed, bPrinted, bNotPrinted, bPartPrinted);
 
                 NeedSplash = true;
@@ -1667,8 +1659,8 @@ namespace Infinium
             }
             else
             {
-                assignmentsManager.UpdateDocuments();
-                assignmentsManager.UpdateAllAssignments();
+                assignmentsManager.UpdateDocuments(date1, date2);
+                assignmentsManager.UpdateAllAssignments(date1, date2);
                 assignmentsManager.FilterAllAssignments(bAgreed, bNotAgreed, bPrinted, bNotPrinted, bPartPrinted);
             }
         }
@@ -1833,27 +1825,33 @@ namespace Infinium
             if (e.RowIndex < 0)
                 return;
             PercentageDataGrid grid = (PercentageDataGrid)sender;
-            int PrintStatus = 0;
-            if (grid.Rows[e.RowIndex].Cells["PrintStatus"].Value != DBNull.Value)
-                PrintStatus = Convert.ToInt32(grid.Rows[e.RowIndex].Cells["PrintStatus"].Value);
+            bool InProd = false;
+            bool NotOutProd = false;
+            bool OutProd = false;
+            if (grid.Rows[e.RowIndex].Cells["ProductionDateTime"].Value == DBNull.Value && grid.Rows[e.RowIndex].Cells["OutProductionDateTime"].Value == DBNull.Value)
+                InProd = true;
+            if (grid.Rows[e.RowIndex].Cells["ProductionDateTime"].Value != DBNull.Value && grid.Rows[e.RowIndex].Cells["OutProductionDateTime"].Value == DBNull.Value)
+                NotOutProd = true;
+            if (grid.Rows[e.RowIndex].Cells["ProductionDateTime"].Value != DBNull.Value && grid.Rows[e.RowIndex].Cells["OutProductionDateTime"].Value != DBNull.Value)
+                OutProd = true;
 
-            if (PrintStatus == 1)
+            if (InProd)
             {
-                grid.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.Green;
+                grid.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.Red;
                 grid.Rows[e.RowIndex].DefaultCellStyle.ForeColor = Color.White;
-                grid.Rows[e.RowIndex].DefaultCellStyle.SelectionForeColor = Color.Green;
+                grid.Rows[e.RowIndex].DefaultCellStyle.SelectionForeColor = Color.Red;
             }
-            if (PrintStatus == 2)
+            if (NotOutProd)
             {
                 grid.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.Yellow;
                 grid.Rows[e.RowIndex].DefaultCellStyle.ForeColor = Color.Black;
                 grid.Rows[e.RowIndex].DefaultCellStyle.SelectionForeColor = Color.Yellow;
             }
-            if (PrintStatus == 0)
+            if (OutProd)
             {
-                grid.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.White;
-                grid.Rows[e.RowIndex].DefaultCellStyle.ForeColor = Color.Black;
-                grid.Rows[e.RowIndex].DefaultCellStyle.SelectionForeColor = Color.White;
+                grid.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.Green;
+                grid.Rows[e.RowIndex].DefaultCellStyle.ForeColor = Color.White;
+                grid.Rows[e.RowIndex].DefaultCellStyle.SelectionForeColor = Color.Green;
             }
         }
 
@@ -2013,12 +2011,17 @@ namespace Infinium
         {
             var senderGrid = (PercentageDataGrid)sender;
 
-            if (senderGrid.Columns[e.ColumnIndex] is KryptonDataGridViewButtonColumn &&
+            if (senderGrid.Columns[e.ColumnIndex] is KryptonDataGridViewButtonColumn && senderGrid.Columns[e.ColumnIndex].Name == "InProdColumn" &&
                 e.RowIndex >= 0)
             {
+                bool OKCancel = Infinium.LightMessageBox.Show(ref TopForm, true,
+                    "Подтведрите, что задание входит в производство",
+                    "Запуск в производство", "Подтвердить", "Отмена");
+                if (!OKCancel)
+                    return;
+
                 int FactoryID = 1;
                 bool bTPS = false;
-                bool OKCancel = false;
 
                 PhantomForm PhantomForm = new Infinium.PhantomForm();
                 PhantomForm.Show();
@@ -2043,21 +2046,46 @@ namespace Infinium
                     FactoryID = 2;
 
                 int CabFurAssignmentID = 0;
-                string FileName = string.Empty;
                 if (senderGrid.Rows[e.RowIndex].Cells["CabFurAssignmentID"].Value != DBNull.Value)
                     CabFurAssignmentID = Convert.ToInt32(senderGrid.Rows[e.RowIndex].Cells["CabFurAssignmentID"].Value);
-                //if (senderGrid.Rows[e.RowIndex].Cells["CabFurDocumentID"].Value != DBNull.Value)
-                //    CabFurDocumentID = Convert.ToInt32(senderGrid.Rows[e.RowIndex].Cells["CabFurDocumentID"].Value);
-                //if (senderGrid.Rows[e.RowIndex].Cells["FileName"].Value != DBNull.Value)
-                //    FileName = senderGrid.Rows[e.RowIndex].Cells["FileName"].Value.ToString();
 
                 var T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Сохранение данных.\r\nПодождите..."); });
                 T.Start();
                 while (!SplashWindow.bSmallCreated) ;
                 NeedSplash = false;
-
+                
                 assignmentsManager.CreatePackages(CabFurAssignmentID, FactoryID);
                 assignmentsManager.PrintAssignment(CabFurAssignmentID);
+                assignmentsManager.InProduction(CabFurAssignmentID);
+                assignmentsManager.SaveAllAssignments();
+                FilterAssignments();
+                assignmentsManager.MoveToAssignmentID(CabFurAssignmentID);
+
+                NeedSplash = true;
+                while (SplashWindow.bSmallCreated)
+                    SmallWaitForm.CloseS = true;
+            }
+
+            if (senderGrid.Columns[e.ColumnIndex] is KryptonDataGridViewButtonColumn && senderGrid.Columns[e.ColumnIndex].Name == "OutProdColumn" &&
+                e.RowIndex >= 0)
+            {
+                bool OKCancel = Infinium.LightMessageBox.Show(ref TopForm, true,
+                    "Подтвердите, что задание вышло из производства",
+                    "Выход из производства", "Подтвердить", "Отмена");
+                if (!OKCancel)
+                    return;
+
+                int CabFurAssignmentID = 0;
+                if (senderGrid.Rows[e.RowIndex].Cells["CabFurAssignmentID"].Value != DBNull.Value)
+                    CabFurAssignmentID = Convert.ToInt32(senderGrid.Rows[e.RowIndex].Cells["CabFurAssignmentID"].Value);
+
+                var T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Сохранение данных.\r\nПодождите..."); });
+                T.Start();
+                while (!SplashWindow.bSmallCreated) ;
+                NeedSplash = false;
+                
+                assignmentsManager.OutProduction(CabFurAssignmentID);
+                assignmentsManager.SaveAllAssignments();
                 FilterAssignments();
                 assignmentsManager.MoveToAssignmentID(CabFurAssignmentID);
 
@@ -2976,10 +3004,6 @@ namespace Infinium
                 SmallWaitForm.CloseS = true;
         }
 
-        private void btnRemoveWorkShop_Click(object sender, EventArgs e)
-        {
-        }
-
         private void btnAddRack_Click(object sender, EventArgs e)
         {
             if (cabFurStorage == null || !cabFurStorage.HasWorkShops || cabFurStorage.CurrentWorkShopId == -1)
@@ -3152,11 +3176,6 @@ namespace Infinium
                 SmallWaitForm.CloseS = true;
         }
 
-        private void btnRemoveCell_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void cmbxWorkShops_SelectedValueChanged(object sender, EventArgs e)
         {
             if (cabFurStorage == null)
@@ -3164,6 +3183,7 @@ namespace Infinium
             int workShopID = -1;
             if (cmbxWorkShops.SelectedItem != null && ((DataRowView)cmbxWorkShops.SelectedItem).Row["WorkShopID"] != DBNull.Value)
                 workShopID = Convert.ToInt32(((DataRowView)cmbxWorkShops.SelectedItem).Row["WorkShopID"]);
+            //NeedSplash = true;
             cabFurStorage.FilterRacksByWorkShop(workShopID);
         }
 
@@ -3174,6 +3194,7 @@ namespace Infinium
             int rackId = -1;
             if (cmbxRacks.SelectedItem != null && ((DataRowView)cmbxRacks.SelectedItem).Row["RackID"] != DBNull.Value)
                 rackId = Convert.ToInt32(((DataRowView)cmbxRacks.SelectedItem).Row["RackID"]);
+            //NeedSplash = true;
             cabFurStorage.FilterCellsByRack(rackId);
         }
 
@@ -3184,7 +3205,27 @@ namespace Infinium
             int cellId = 0;
             if (dgvCells.SelectedRows.Count != 0 && dgvCells.SelectedRows[0].Cells["CellID"].Value != DBNull.Value)
                 cellId = Convert.ToInt32(dgvCells.SelectedRows[0].Cells["CellID"].Value);
+
             storagePackagesManager.GetPackagesLabels(cellId);
+
+            //if (NeedSplash)
+            //{
+            //    Thread T = new Thread(delegate()
+            //    {
+            //        SplashWindow.CreateSmallSplash(ref TopForm, "Обновление.\r\nПодождите...");
+            //    });
+            //    T.Start();
+            //    while (!SplashWindow.bSmallCreated) ;
+            //    NeedSplash = false;
+
+            //    storagePackagesManager.GetPackagesLabels(cellId);
+
+            //    NeedSplash = true;
+            //    while (SplashWindow.bSmallCreated)
+            //        SmallWaitForm.CloseS = true;
+            //}
+            //else
+            //    storagePackagesManager.GetPackagesLabels(cellId);
         }
 
         private void dgvStoragePackagesLabels_SelectionChanged(object sender, EventArgs e)
@@ -3644,6 +3685,117 @@ namespace Infinium
             NeedSplash = true;
             while (SplashWindow.bSmallCreated)
                 SmallWaitForm.CloseS = true;
+        }
+
+        private void btnRemoveRack_Click(object sender, EventArgs e)
+        {
+            bool OKCancel = Infinium.LightMessageBox.Show(ref TopForm, true,
+                "Вы собираетесь удалить стеллаж. Продолжить?",
+                "Удаление");
+            if (!OKCancel)
+                return;
+
+            Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Удаление.\r\nПодождите..."); });
+            T.Start();
+            while (!SplashWindow.bSmallCreated) ;
+            NeedSplash = false;
+
+            int rackId = cabFurStorage.CurrentRackId;
+
+            cabFurStorage.RemoveRack(cabFurStorage.CurrentRackId);
+            cabFurStorage.SaveRacks();
+            cabFurStorage.SaveCells();
+            cabFurStorage.UpdateRacks();
+            cabFurStorage.SetRackPosition(rackId);
+
+            NeedSplash = true;
+            while (SplashWindow.bSmallCreated)
+                SmallWaitForm.CloseS = true;
+        }
+
+        private void btnRemoveWorkShop_Click(object sender, EventArgs e)
+        {
+            bool OKCancel = Infinium.LightMessageBox.Show(ref TopForm, true,
+                "Вы собираетесь удалить цех. Продолжить?",
+                "Удаление");
+            if (!OKCancel)
+                return;
+
+            Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Удаление.\r\nПодождите..."); });
+            T.Start();
+            while (!SplashWindow.bSmallCreated) ;
+            NeedSplash = false;
+
+            int workShopId = cabFurStorage.CurrentWorkShopId;
+
+            cabFurStorage.RemoveWorkShop(cabFurStorage.CurrentWorkShopId);
+            cabFurStorage.SaveWorkShops();
+            cabFurStorage.SaveRacks();
+            cabFurStorage.SaveCells();
+            cabFurStorage.UpdateWorkShops();
+            cabFurStorage.SetWorkShopPosition(workShopId);
+
+            NeedSplash = true;
+            while (SplashWindow.bSmallCreated)
+                SmallWaitForm.CloseS = true;
+        }
+
+        private void btnRemoveCell_Click(object sender, EventArgs e)
+        {
+            bool OKCancel = Infinium.LightMessageBox.Show(ref TopForm, true,
+                "Вы собираетесь удалить ячейку. Продолжить?",
+                "Удаление");
+            if (!OKCancel)
+                return;
+            if (cabFurStorage == null || !cabFurStorage.HasCells || cabFurStorage.CurrentCellId == -1)
+                return;
+
+            Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Удаление.\r\nПодождите..."); });
+            T.Start();
+            while (!SplashWindow.bSmallCreated) ;
+            NeedSplash = false;
+
+            cabFurStorage.RemoveCell(cabFurStorage.CurrentCellId);
+            cabFurStorage.SaveCells();
+            cabFurStorage.UpdateCells();
+
+            NeedSplash = true;
+            while (SplashWindow.bSmallCreated)
+                SmallWaitForm.CloseS = true;
+        }
+
+        private void kryptonContextMenuItem24_Click(object sender, EventArgs e)
+        {
+            popupControlContainer1.ShowPopup(barManager1, this.PointToScreen(new System.Drawing.Point(
+                MousePosition.X, MousePosition.Y)));
+        }
+
+        private void ChangeDateButton_Click(object sender, EventArgs e)
+        {
+            popupControlContainer1.HidePopup();
+               DateTime DispatchDate = kryptonMonthCalendar2.SelectionStart;
+            int CabFurAssignmentID = 0;
+            if (dgvAllAssignments.SelectedRows.Count != 0 && dgvAllAssignments.SelectedRows[0].Cells["CabFurAssignmentID"].Value != DBNull.Value)
+                CabFurAssignmentID = Convert.ToInt32(dgvAllAssignments.SelectedRows[0].Cells["CabFurAssignmentID"].Value);
+
+            var T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Сохранение данных.\r\nПодождите..."); });
+            T.Start();
+            while (!SplashWindow.bSmallCreated) ;
+            NeedSplash = false;
+
+            assignmentsManager.SetDispatchDate(CabFurAssignmentID, DispatchDate);
+            assignmentsManager.SaveAllAssignments();
+            FilterAssignments();
+            assignmentsManager.MoveToAssignmentID(CabFurAssignmentID);
+
+            NeedSplash = true;
+            while (SplashWindow.bSmallCreated)
+                SmallWaitForm.CloseS = true;
+        }
+
+        private void kryptonButton2_Click(object sender, EventArgs e)
+        {
+            FilterAssignments();
         }
     }
 }

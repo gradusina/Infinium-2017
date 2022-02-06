@@ -246,6 +246,8 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportT
             DecorInvNumbersDT.Columns.Add(new DataColumn("NewFrontsOrdersID", Type.GetType("System.Int32")));
             DecorInvNumbersDT.Columns.Add(new DataColumn("DecorInvNumber", Type.GetType("System.String")));
             DecorInvNumbersDT.Columns.Add(new DataColumn("DecorAccountingName", Type.GetType("System.String")));
+            DecorInvNumbersDT.Columns.Add(new DataColumn("Cvet", Type.GetType("System.String")));
+            DecorInvNumbersDT.Columns.Add(new DataColumn("Patina", Type.GetType("System.String")));
             DecorInvNumbersDT.Columns.Add(new DataColumn("FactoryID", Type.GetType("System.Int32")));
 
             _profilReportDataTable = new DataTable();
@@ -772,6 +774,8 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportT
                             NewRow["NewFrontsOrdersID"] = Convert.ToInt32(Rows[r]["FrontsOrdersID"]);
                             NewRow["FactoryID"] = FactoryID;
                             NewRow["DecorAccountingName"] = DecorAccountingName;
+                            NewRow["Cvet"] = GetColorCode(Convert.ToInt32(Fronts.Rows[i]["ColorID"]));
+                            NewRow["Patina"] = GetPatinaCode(Convert.ToInt32(Fronts.Rows[i]["PatinaID"]));
                             NewRow["DecorInvNumber"] = DecorInvNumber;
                             DecorInvNumbersDT.Rows.Add(NewRow);
                             DeductibleWeight = GetInsetWeight(Rows[r]);
@@ -881,6 +885,8 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportT
                             DataRow NewRow = DecorInvNumbersDT.NewRow();
                             NewRow["NewFrontsOrdersID"] = Convert.ToInt32(Rows[r]["FrontsOrdersID"]);
                             NewRow["FactoryID"] = FactoryID;
+                            NewRow["Cvet"] = GetColorCode(Convert.ToInt32(Fronts.Rows[i]["ColorID"]));
+                            NewRow["Patina"] = GetPatinaCode(Convert.ToInt32(Fronts.Rows[i]["PatinaID"]));
                             NewRow["DecorAccountingName"] = DecorAccountingName;
                             NewRow["DecorInvNumber"] = DecorInvNumber;
                             DecorInvNumbersDT.Rows.Add(NewRow);
@@ -902,6 +908,8 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportT
                             DataRow NewRow = DecorInvNumbersDT.NewRow();
                             NewRow["NewFrontsOrdersID"] = Convert.ToInt32(Rows[r]["FrontsOrdersID"]);
                             NewRow["FactoryID"] = FactoryID;
+                            NewRow["Cvet"] = GetColorCode(Convert.ToInt32(Fronts.Rows[i]["ColorID"]));
+                            NewRow["Patina"] = GetPatinaCode(Convert.ToInt32(Fronts.Rows[i]["PatinaID"]));
                             NewRow["DecorAccountingName"] = DecorAccountingName;
                             NewRow["DecorInvNumber"] = DecorInvNumber;
                             DecorInvNumbersDT.Rows.Add(NewRow);
@@ -1484,7 +1492,8 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportT
 
                 if (CountPP > 0)
                 {
-                    DataRow[] rows = DecorInvNumbersDT.Select("NewFrontsOrdersID = " + Convert.ToInt32(OrdersDataTable.Select("InsetTypeID IN (685,686,687,688,29470,29471)")[0]["FrontsOrdersID"]));
+                    DataRow[] rows = DecorInvNumbersDT.Select("NewFrontsOrdersID = " 
+                                                              + Convert.ToInt32(OrdersDataTable.Select("InsetTypeID IN (685,686,687,688,29470,29471)")[0]["FrontsOrdersID"]));
                     int FactoryID = 0;
                     if (rows.Count() > 0)
                         FactoryID = Convert.ToInt32(rows[0]["FactoryID"]);
@@ -1509,6 +1518,8 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportT
                         NewRow["Weight"] = Decimal.Round(Convert.ToDecimal(NewRow["Count"]) * Convert.ToDecimal(3.5), 3, MidpointRounding.AwayFromZero);
                         if (rows.Count() > 0)
                         {
+                            NewRow["Cvet"] = rows[0]["Cvet"].ToString();
+                            NewRow["Patina"] = rows[0]["Patina"].ToString();
                             NewRow["AccountingName"] = rows[0]["DecorAccountingName"].ToString();
                             NewRow["InvNumber"] = rows[0]["DecorInvNumber"].ToString();
                         }
@@ -1535,6 +1546,8 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportT
                         {
                             NewRow["AccountingName"] = rows[0]["DecorAccountingName"].ToString();
                             NewRow["InvNumber"] = rows[0]["DecorInvNumber"].ToString();
+                            NewRow["Cvet"] = rows[0]["Cvet"].ToString();
+                            NewRow["Patina"] = rows[0]["Patina"].ToString();
                         }
                         ReportDataTable.Rows.Add(NewRow);
                     }
@@ -1623,6 +1636,8 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportT
                             {
                                 NewRow["AccountingName"] = rows[0]["DecorAccountingName"].ToString();
                                 NewRow["InvNumber"] = rows[0]["DecorInvNumber"].ToString();
+                                NewRow["Cvet"] = rows[0]["Cvet"].ToString();
+                                NewRow["Patina"] = rows[0]["Patina"].ToString();
                             }
                             NewRow["Count"] = CountFlutes;
                             NewRow["Cost"] = Decimal.Round(Math.Ceiling(CountFlutes * PriceFlutes / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
@@ -1644,6 +1659,8 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportT
                             {
                                 NewRow["AccountingName"] = rows[0]["DecorAccountingName"].ToString();
                                 NewRow["InvNumber"] = rows[0]["DecorInvNumber"].ToString();
+                                NewRow["Cvet"] = rows[0]["Cvet"].ToString();
+                                NewRow["Patina"] = rows[0]["Patina"].ToString();
                             }
                             NewRow["CurrencyCode"] = ProfilCurrencyCode;
                             if (fID == 2)
@@ -1714,6 +1731,8 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportT
                             {
                                 NewRow["AccountingName"] = rows[0]["DecorAccountingName"].ToString();
                                 NewRow["InvNumber"] = rows[0]["DecorInvNumber"].ToString();
+                                NewRow["Cvet"] = rows[0]["Cvet"].ToString();
+                                NewRow["Patina"] = rows[0]["Patina"].ToString();
                             }
                             NewRow["CurrencyCode"] = ProfilCurrencyCode;
                             if (fID == 2)
@@ -1738,6 +1757,8 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportT
                             {
                                 NewRow["AccountingName"] = rows[0]["DecorAccountingName"].ToString();
                                 NewRow["InvNumber"] = rows[0]["DecorInvNumber"].ToString();
+                                NewRow["Cvet"] = rows[0]["Cvet"].ToString();
+                                NewRow["Patina"] = rows[0]["Patina"].ToString();
                             }
                             NewRow["CurrencyCode"] = ProfilCurrencyCode;
                             if (fID == 2)
@@ -1807,6 +1828,8 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportT
                             {
                                 NewRow["AccountingName"] = rows[0]["DecorAccountingName"].ToString();
                                 NewRow["InvNumber"] = rows[0]["DecorInvNumber"].ToString();
+                                NewRow["Cvet"] = rows[0]["Cvet"].ToString();
+                                NewRow["Patina"] = rows[0]["Patina"].ToString();
                             }
                             NewRow["CurrencyCode"] = ProfilCurrencyCode;
                             if (fID == 2)
@@ -1831,6 +1854,8 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportT
                             {
                                 NewRow["AccountingName"] = rows[0]["DecorAccountingName"].ToString();
                                 NewRow["InvNumber"] = rows[0]["DecorInvNumber"].ToString();
+                                NewRow["Cvet"] = rows[0]["Cvet"].ToString();
+                                NewRow["Patina"] = rows[0]["Patina"].ToString();
                             }
                             NewRow["CurrencyCode"] = ProfilCurrencyCode;
                             if (fID == 2)
@@ -1896,6 +1921,8 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportT
                             {
                                 NewRow["AccountingName"] = rows[0]["DecorAccountingName"].ToString();
                                 NewRow["InvNumber"] = rows[0]["DecorInvNumber"].ToString();
+                                NewRow["Cvet"] = rows[0]["Cvet"].ToString();
+                                NewRow["Patina"] = rows[0]["Patina"].ToString();
                             }
                             NewRow["CurrencyCode"] = ProfilCurrencyCode;
                             if (fID == 2)
@@ -1920,6 +1947,8 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportT
                             {
                                 NewRow["AccountingName"] = rows[0]["DecorAccountingName"].ToString();
                                 NewRow["InvNumber"] = rows[0]["DecorInvNumber"].ToString();
+                                NewRow["Cvet"] = rows[0]["Cvet"].ToString();
+                                NewRow["Patina"] = rows[0]["Patina"].ToString();
                             }
                             NewRow["CurrencyCode"] = ProfilCurrencyCode;
                             if (fID == 2)
@@ -1992,6 +2021,8 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportT
                     {
                         NewRow["AccountingName"] = rows[0]["DecorAccountingName"].ToString();
                         NewRow["InvNumber"] = rows[0]["DecorInvNumber"].ToString();
+                        NewRow["Cvet"] = rows[0]["Cvet"].ToString();
+                        NewRow["Patina"] = rows[0]["Patina"].ToString();
                     }
                     ReportDataTable.Rows.Add(NewRow);
 
@@ -2099,7 +2130,7 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportT
             //get count of different covertypes
             using (DataView DV = new DataView(OrdersDataTable))
             {
-                InvCount = DV.ToTable(true, new string[] { "InvNumber", "ColorID", "PatinaID" }).Rows.Count;
+                InvCount = DV.ToTable(true, new string[] { "InvNumber" }).Rows.Count;
             }
 
             //create DataTables
@@ -2127,9 +2158,7 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportT
                         continue;
                     }
 
-                    if (InvNumber == OrdersDataTable.DefaultView[r].Row["InvNumber"].ToString()
-                        && ColorID == Convert.ToInt32(OrdersDataTable.DefaultView[r].Row["ColorID"])
-                        && PatinaID == Convert.ToInt32(OrdersDataTable.DefaultView[r].Row["PatinaID"]))
+                    if (InvNumber == OrdersDataTable.DefaultView[r].Row["InvNumber"].ToString())
                     {
                         InvDataTables[i].ImportRow(OrdersDataTable.DefaultView[r].Row);
                     }

@@ -911,6 +911,14 @@ namespace Infinium.Modules.ZOV.Samples
                 ItemPatinaDataTable.AcceptChanges();
 
                 foreach (DataRow row in ddd.Rows)
+                {
+                    if (Convert.ToInt32(row["PatinaID"]) == -1)
+                    {
+                        DataRow NewRow = ItemPatinaDataTable.NewRow();
+                        NewRow["PatinaID"] = Convert.ToInt32(row["PatinaID"]);
+                        NewRow["PatinaName"] = GetPatinaName(Convert.ToInt32(row["PatinaID"]));
+                        ItemPatinaDataTable.Rows.Add(NewRow);
+                    }
                     foreach (var item in _patinaRalDataTable.Select("PatinaID=" + Convert.ToInt32(row["PatinaID"])))
                     {
                         var newRow = ItemPatinaDataTable.NewRow();
@@ -919,6 +927,7 @@ namespace Infinium.Modules.ZOV.Samples
                         newRow["DisplayName"] = item["DisplayName"];
                         ItemPatinaDataTable.Rows.Add(newRow);
                     }
+                }
             }
 
             ItemPatinaDataTable.DefaultView.Sort = "PatinaName ASC";

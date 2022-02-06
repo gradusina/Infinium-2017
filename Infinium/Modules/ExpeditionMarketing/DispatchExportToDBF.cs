@@ -32,62 +32,17 @@ namespace Infinium.Modules.Marketing.Dispatch
         private DataTable FrontsOrdersDataTable = null;
         private DataTable DecorOrdersDataTable = null;
 
-        public DataTable CurrencyTypesDataTable = null;
-        public DataTable FrontsDataTable = null;
-        public DataTable FrameColorsDataTable = null;
-        public DataTable PatinaDataTable = null;
-        public DataTable PatinaRALDataTable = null;
-        public DataTable InsetTypesDataTable = null;
-        public DataTable InsetColorsDataTable = null;
-        public DataTable TechnoInsetTypesDataTable = null;
-        public DataTable TechnoInsetColorsDataTable = null;
+        FrontsCatalogOrder frontsCatalogOrder = null;
+        DecorCatalogOrder decorCatalogOrder = null;
 
-        DecorCatalogOrder DecorCatalogOrder = null;
-
-        public DetailsReport(
-            ref DecorCatalogOrder tDecorCatalogOrder,
+        public DetailsReport(FrontsCatalogOrder FrontsCatalogOrder, DecorCatalogOrder DecorCatalogOrder,
             ref FrontsCalculate tFrontsCalculate)
         {
-            DecorCatalogOrder = tDecorCatalogOrder;
+            frontsCatalogOrder = FrontsCatalogOrder;
+            decorCatalogOrder = DecorCatalogOrder;
             FrontsCalculate = tFrontsCalculate;
 
             Create();
-            string SelectCommand = @"SELECT TechStoreID AS FrontID, TechStoreName AS FrontName FROM TechStore 
-                WHERE TechStoreID IN (SELECT FrontID FROM FrontsConfig)
-                ORDER BY TechStoreName";
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
-            {
-                DA.Fill(FrontsDataTable);
-            }
-            GetColorsDT();
-            GetInsetColorsDT();
-            SelectCommand = @"SELECT * FROM Patina";
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
-            {
-                DA.Fill(PatinaDataTable);
-            }
-            PatinaRALDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM PatinaRAL WHERE Enabled=1",
-                ConnectionStrings.CatalogConnectionString))
-            {
-                DA.Fill(PatinaRALDataTable);
-            }
-            foreach (DataRow item in PatinaRALDataTable.Rows)
-            {
-                DataRow NewRow = PatinaDataTable.NewRow();
-                NewRow["PatinaID"] = item["PatinaRALID"];
-                NewRow["PatinaName"] = item["PatinaRAL"];
-                NewRow["DisplayName"] = item["DisplayName"];
-                PatinaDataTable.Rows.Add(NewRow);
-            }
-            SelectCommand = @"SELECT * FROM InsetTypes";
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
-            {
-                DA.Fill(InsetTypesDataTable);
-            }
-            TechnoInsetTypesDataTable = InsetTypesDataTable.Copy();
-            TechnoInsetColorsDataTable = InsetColorsDataTable.Copy();
-
             ClientsDataTable = new DataTable();
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Clients",
                 ConnectionStrings.MarketingReferenceConnectionString))
@@ -101,80 +56,9 @@ namespace Infinium.Modules.Marketing.Dispatch
         private void Create()
         {
             FrontsOrdersDataTable = new DataTable();
-
-            FrontsDataTable = new DataTable();
-            FrameColorsDataTable = new DataTable();
-            PatinaDataTable = new DataTable();
-            InsetTypesDataTable = new DataTable();
-            InsetColorsDataTable = new DataTable();
-            TechnoInsetTypesDataTable = new DataTable();
-            TechnoInsetColorsDataTable = new DataTable();
-
             FrontsResultDataTable = new DataTable();
-            CurrencyTypesDataTable = new DataTable();
-            DecorResultDataTable = new DataTable[DecorCatalogOrder.DecorProductsCount];
+            DecorResultDataTable = new DataTable[decorCatalogOrder.DecorProductsCount];
             DecorOrdersDataTable = new DataTable();
-        }
-
-        private void GetColorsDT()
-        {
-            FrameColorsDataTable.Columns.Add(new DataColumn("ColorID", Type.GetType("System.Int64")));
-            FrameColorsDataTable.Columns.Add(new DataColumn("ColorName", Type.GetType("System.String")));
-            string SelectCommand = @"SELECT TechStoreID, TechStoreName FROM TechStore
-                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)
-                ORDER BY TechStoreName";
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
-            {
-                using (DataTable DT = new DataTable())
-                {
-                    DA.Fill(DT);
-                    {
-                        DataRow NewRow = FrameColorsDataTable.NewRow();
-                        NewRow["ColorID"] = -1;
-                        NewRow["ColorName"] = "-";
-                        FrameColorsDataTable.Rows.Add(NewRow);
-                    }
-                    {
-                        DataRow NewRow = FrameColorsDataTable.NewRow();
-                        NewRow["ColorID"] = 0;
-                        NewRow["ColorName"] = "на выбор";
-                        FrameColorsDataTable.Rows.Add(NewRow);
-                    }
-                    for (int i = 0; i < DT.Rows.Count; i++)
-                    {
-                        DataRow NewRow = FrameColorsDataTable.NewRow();
-                        NewRow["ColorID"] = Convert.ToInt64(DT.Rows[i]["TechStoreID"]);
-                        NewRow["ColorName"] = DT.Rows[i]["TechStoreName"].ToString();
-                        FrameColorsDataTable.Rows.Add(NewRow);
-                    }
-                }
-            }
-        }
-
-        private void GetInsetColorsDT()
-        {
-            InsetColorsDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT InsetColors.InsetColorID, InsetColors.GroupID, infiniu2_catalog.dbo.TechStore.TechStoreName AS InsetColorName FROM InsetColors" +
-                " INNER JOIN infiniu2_catalog.dbo.TechStore ON InsetColors.InsetColorID = infiniu2_catalog.dbo.TechStore.TechStoreID ORDER BY TechStoreName", ConnectionStrings.CatalogConnectionString))
-            {
-                DA.Fill(InsetColorsDataTable);
-                {
-                    DataRow NewRow = InsetColorsDataTable.NewRow();
-                    NewRow["InsetColorID"] = -1;
-                    NewRow["GroupID"] = -1;
-                    NewRow["InsetColorName"] = "-";
-                    InsetColorsDataTable.Rows.Add(NewRow);
-                }
-                {
-                    DataRow NewRow = InsetColorsDataTable.NewRow();
-                    NewRow["InsetColorID"] = 0;
-                    NewRow["GroupID"] = -1;
-                    NewRow["InsetColorName"] = "на выбор";
-                    InsetColorsDataTable.Rows.Add(NewRow);
-                }
-
-            }
-
         }
 
         private void CreateFrontsDataTable()
@@ -202,7 +86,7 @@ namespace Infinium.Modules.Marketing.Dispatch
 
         private void CreateDecorDataTable()
         {
-            for (int i = 0; i < DecorCatalogOrder.DecorProductsCount; i++)
+            for (int i = 0; i < decorCatalogOrder.DecorProductsCount; i++)
             {
                 DecorResultDataTable[i] = new DataTable();
 
@@ -284,7 +168,7 @@ namespace Infinium.Modules.Marketing.Dispatch
             string FrontName = "";
             try
             {
-                DataRow[] Rows = FrontsDataTable.Select("FrontID = " + FrontID);
+                DataRow[] Rows = frontsCatalogOrder.ConstFrontsDataTable.Select("FrontID = " + FrontID);
                 FrontName = Rows[0]["FrontName"].ToString();
             }
             catch
@@ -299,7 +183,7 @@ namespace Infinium.Modules.Marketing.Dispatch
             string ColorName = string.Empty;
             try
             {
-                DataRow[] Rows = FrameColorsDataTable.Select("ColorID = " + ColorID);
+                DataRow[] Rows = frontsCatalogOrder.ConstColorsDataTable.Select("ColorID = " + ColorID);
                 ColorName = Rows[0]["ColorName"].ToString();
             }
             catch
@@ -314,7 +198,7 @@ namespace Infinium.Modules.Marketing.Dispatch
             string PatinaName = string.Empty;
             try
             {
-                DataRow[] Rows = PatinaDataTable.Select("PatinaID = " + PatinaID);
+                DataRow[] Rows = frontsCatalogOrder.PatinaDataTable.Select("PatinaID = " + PatinaID);
                 PatinaName = Rows[0]["PatinaName"].ToString();
             }
             catch
@@ -329,7 +213,7 @@ namespace Infinium.Modules.Marketing.Dispatch
             string InsetType = string.Empty;
             try
             {
-                DataRow[] Rows = InsetTypesDataTable.Select("InsetTypeID = " + InsetTypeID);
+                DataRow[] Rows = frontsCatalogOrder.ConstInsetTypesDataTable.Select("InsetTypeID = " + InsetTypeID);
                 InsetType = Rows[0]["InsetTypeName"].ToString();
             }
             catch
@@ -344,7 +228,7 @@ namespace Infinium.Modules.Marketing.Dispatch
             string ColorName = string.Empty;
             try
             {
-                DataRow[] Rows = InsetColorsDataTable.Select("InsetColorID = " + ColorID);
+                DataRow[] Rows = frontsCatalogOrder.ConstInsetColorsDataTable.Select("InsetColorID = " + ColorID);
                 ColorName = Rows[0]["InsetColorName"].ToString();
             }
             catch
@@ -399,12 +283,12 @@ namespace Infinium.Modules.Marketing.Dispatch
 
         private void FillDecor()
         {
-            for (int i = 0; i < DecorCatalogOrder.DecorProductsCount; i++)
+            for (int i = 0; i < decorCatalogOrder.DecorProductsCount; i++)
             {
                 DecorResultDataTable[i].Clear();
                 DecorResultDataTable[i].AcceptChanges();
 
-                DataRow[] Rows = DecorOrdersDataTable.Select("ProductID = " + DecorCatalogOrder.DecorProductsDataTable.Rows[i]["ProductID"]);
+                DataRow[] Rows = DecorOrdersDataTable.Select("ProductID = " + decorCatalogOrder.DecorProductsDataTable.Rows[i]["ProductID"]);
 
                 if (Rows.Count() == 0)
                     continue;
@@ -413,8 +297,8 @@ namespace Infinium.Modules.Marketing.Dispatch
                 {
                     DataRow NewRow2 = DecorResultDataTable[i].NewRow();
 
-                    NewRow2["Name"] = DecorCatalogOrder.DecorProductsDataTable.Rows[i]["ProductName"].ToString() + " " +
-                                            DecorCatalogOrder.GetItemName(Convert.ToInt32(Row["DecorID"]));
+                    NewRow2["Name"] = decorCatalogOrder.DecorProductsDataTable.Rows[i]["ProductName"].ToString() + " " +
+                                            decorCatalogOrder.GetItemName(Convert.ToInt32(Row["DecorID"]));
 
                     if (Convert.ToInt32(Row["Height"]) != -1)
                         NewRow2["Height"] = Convert.ToInt32(Row["Height"]);
@@ -425,7 +309,7 @@ namespace Infinium.Modules.Marketing.Dispatch
                     if (Convert.ToInt32(Row["Width"]) != -1)
                         NewRow2["Width"] = Convert.ToInt32(Row["Width"]);
 
-                    if (DecorCatalogOrder.HasParameter(Convert.ToInt32(DecorCatalogOrder.DecorProductsDataTable.Rows[i]["ProductID"]), "ColorID"))
+                    if (decorCatalogOrder.HasParameter(Convert.ToInt32(decorCatalogOrder.DecorProductsDataTable.Rows[i]["ProductID"]), "ColorID"))
                         NewRow2["Color"] = GetColorName(Convert.ToInt32(Row["ColorID"]));
 
                     //if (DecorCatalogOrder.HasParameter(Convert.ToInt32(DecorCatalogOrder.DecorProductsDataTable.Rows[i]["ProductID"]), "PatinaID"))
@@ -676,7 +560,7 @@ namespace Infinium.Modules.Marketing.Dispatch
             decimal TotalWeight = 0;
 
             GetDispatchInfo(DispatchID, ref OrderNumbers, ref ComplaintProfilCost, ref ComplaintTPSCost, ref TransportCost, ref AdditionalCost, ref CurrencyTypeID, ref TotalWeight);
-            ClientReport = new ExpeditionMarketing.StandardReport.Report(ref DecorCatalogOrder, ref FrontsCalculate);
+            ClientReport = new ExpeditionMarketing.StandardReport.Report(ref decorCatalogOrder, ref FrontsCalculate);
 
             #region Create fonts and styles
 
@@ -809,15 +693,8 @@ namespace Infinium.Modules.Marketing.Dispatch
             int RowIndex = 0;
 
             string Currency = string.Empty;
-
-            CurrencyTypesDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM CurrencyTypes",
-                ConnectionStrings.CatalogConnectionString))
-            {
-                DA.Fill(CurrencyTypesDataTable);
-            }
-
-            DataRow[] Row = CurrencyTypesDataTable.Select("CurrencyTypeID = " + CurrencyTypeID);
+            
+            DataRow[] Row = frontsCatalogOrder.CurrencyTypesDT.Select("CurrencyTypeID = " + CurrencyTypeID);
 
             Currency = Row[0]["CurrencyType"].ToString();
 
@@ -1001,7 +878,7 @@ namespace Infinium.Modules.Marketing.Dispatch
 
                     DisplayIndex = 0;
                     //декор
-                    for (int c = 0; c < DecorCatalogOrder.DecorProductsCount; c++)
+                    for (int c = 0; c < decorCatalogOrder.DecorProductsCount; c++)
                     {
                         if (DecorResultDataTable[c].Rows.Count == 0)
                             continue;
@@ -1175,7 +1052,7 @@ namespace Infinium.Modules.Marketing.Dispatch
             decimal TotalWeight = 0;
 
             GetDispatchInfo(DispatchID, ref OrderNumbers, ref ComplaintProfilCost, ref ComplaintTPSCost, ref TransportCost, ref AdditionalCost, ref CurrencyTypeID, ref TotalWeight);
-            ClientReport = new ExpeditionMarketing.StandardReport.Report(ref DecorCatalogOrder, ref FrontsCalculate);
+            ClientReport = new ExpeditionMarketing.StandardReport.Report(ref decorCatalogOrder, ref FrontsCalculate);
 
             #region Create fonts and styles
 
@@ -1308,15 +1185,8 @@ namespace Infinium.Modules.Marketing.Dispatch
             int RowIndex = 0;
 
             string Currency = string.Empty;
-
-            CurrencyTypesDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM CurrencyTypes",
-                ConnectionStrings.CatalogConnectionString))
-            {
-                DA.Fill(CurrencyTypesDataTable);
-            }
-
-            DataRow[] Row = CurrencyTypesDataTable.Select("CurrencyTypeID = " + CurrencyTypeID);
+            
+            DataRow[] Row = frontsCatalogOrder.CurrencyTypesDT.Select("CurrencyTypeID = " + CurrencyTypeID);
 
             Currency = Row[0]["CurrencyType"].ToString();
 
@@ -1500,7 +1370,7 @@ namespace Infinium.Modules.Marketing.Dispatch
 
                     DisplayIndex = 0;
                     //декор
-                    for (int c = 0; c < DecorCatalogOrder.DecorProductsCount; c++)
+                    for (int c = 0; c < decorCatalogOrder.DecorProductsCount; c++)
                     {
                         if (DecorResultDataTable[c].Rows.Count == 0)
                             continue;
@@ -1664,7 +1534,7 @@ namespace Infinium.Modules.Marketing.Dispatch
         {
             FrontsResultDataTable.Clear();
 
-            for (int i = 0; i < DecorCatalogOrder.DecorProductsCount; i++)
+            for (int i = 0; i < decorCatalogOrder.DecorProductsCount; i++)
             {
                 DecorResultDataTable[i].Clear();
             }

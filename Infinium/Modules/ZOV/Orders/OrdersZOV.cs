@@ -592,7 +592,7 @@ namespace Infinium.Modules.ZOV
         {
             DataTable Table = new DataTable();
 
-            using (DataView DV = new DataView(TempFrontsConfigDataTable))
+            using (DataView DV = new DataView(TempFrontsConfigDataTable, string.Empty, "PatinaID", DataViewRowState.CurrentRows))
             {
                 Table = DV.ToTable(true, new string[] { "PatinaID" });
             }
@@ -610,6 +610,13 @@ namespace Infinium.Modules.ZOV
             {
                 foreach (DataRow Row in Table.Rows)
                 {
+                    if (Convert.ToInt32(Row["PatinaID"]) == -1)
+                    {
+                        DataRow NewRow = PatinaDataTable.NewRow();
+                        NewRow["PatinaID"] = Row["PatinaID"];
+                        NewRow["PatinaName"] = "-";
+                        PatinaDataTable.Rows.Add(NewRow);
+                    }
                     foreach (DataRow item in PatinaRALDataTable.Select("PatinaID=" + Convert.ToInt32(Row["PatinaID"])))
                     {
                         DataRow NewRow = PatinaDataTable.NewRow();
@@ -2250,6 +2257,13 @@ namespace Infinium.Modules.ZOV
 
                 foreach (DataRow Row in ddd.Rows)
                 {
+                    if (Convert.ToInt32(Row["PatinaID"]) == -1)
+                    {
+                        DataRow NewRow = ItemPatinaDataTable.NewRow();
+                        NewRow["PatinaID"] = Convert.ToInt32(Row["PatinaID"]);
+                        NewRow["PatinaName"] = GetPatinaName(Convert.ToInt32(Row["PatinaID"]));
+                        ItemPatinaDataTable.Rows.Add(NewRow);
+                    }
                     foreach (DataRow item in PatinaRALDataTable.Select("PatinaID=" + Convert.ToInt32(Row["PatinaID"])))
                     {
                         DataRow NewRow = ItemPatinaDataTable.NewRow();
@@ -8124,10 +8138,17 @@ namespace Infinium.Modules.ZOV
         public void AddDecorOrder(int MainOrderID, int ProductID, int DecorID, int ColorID, int PatinaID, int InsetTypeID, int InsetColorID,
             int Length, int Height, int Width, int Count, string Notes, bool IsSample)
         {
-
-            if ((Height < 50 || Width < 50) && (DecorID == 4012 || DecorID == 4013))
+            int[] insetTypes =
             {
-                MessageBox.Show("Высота и ширина вставки не могут быть меньше 50 мм", "Добавление вставки");
+                30455, 30456, 4008, 4009, 4010, 4011, 4012, 4013, 4014, 4015, 16617, 16616, 4027, 4028, 4029, 4030,
+                4031, 4032, 4033, 4034, 40798, 16179
+            };
+
+            bool isContained = insetTypes.Contains(DecorID);
+
+            if ((Height < 100 || Width < 100) && isContained)
+            {
+                MessageBox.Show("Высота и ширина вставки не могут быть меньше 100 мм", "Добавление вставки");
                 return;
             }
 
@@ -14170,7 +14191,8 @@ namespace Infinium.Modules.ZOV
                     if (bImpost)
                     {
                         string Front2 = GetFront2Name(Convert.ToInt32(Row["TechnoProfileID"]));
-                        InsetType = InsetType + "/" + Front2;
+                        if (Front2.Length > 0)
+                            InsetType = InsetType + "/" + Front2;
                     }
                 }
 
@@ -14350,7 +14372,8 @@ namespace Infinium.Modules.ZOV
                     if (bImpost)
                     {
                         string Front2 = GetFront2Name(Convert.ToInt32(Row["TechnoProfileID"]));
-                        InsetType = InsetType + "/" + Front2;
+                        if (Front2.Length > 0)
+                            InsetType = InsetType + "/" + Front2;
                     }
                 }
 
