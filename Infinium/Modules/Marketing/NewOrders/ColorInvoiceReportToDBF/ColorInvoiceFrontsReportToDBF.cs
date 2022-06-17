@@ -124,7 +124,7 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDbf
                 DA.Fill(PatinaDataTable);
             }
             PatinaRALDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM PatinaRAL WHERE Enabled=1",
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT PatinaRAL.*, Patina.Patina FROM PatinaRAL INNER JOIN Patina ON Patina.PatinaID=PatinaRAL.PatinaID WHERE PatinaRAL.Enabled=1",
                 ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(PatinaRALDataTable);
@@ -133,7 +133,7 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDbf
             {
                 DataRow NewRow = PatinaDataTable.NewRow();
                 NewRow["PatinaID"] = item["PatinaRALID"];
-                NewRow["PatinaName"] = item["PatinaRAL"];
+                NewRow["PatinaName"] = item["PatinaRAL"]; NewRow["Patina"] = item["Patina"];
                 NewRow["DisplayName"] = item["DisplayName"];
                 PatinaDataTable.Rows.Add(NewRow);
             }
@@ -213,7 +213,7 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDbf
             //{
             //    DA.Fill(FrontsConfigDataTable);
             //}
-            FrontsConfigDataTable = TablesManager.FrontsConfigDataTable;
+            FrontsConfigDataTable = TablesManager.FrontsConfigDataTableAll;
 
             DecorConfigDataTable = new DataTable();
             //using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DecorConfig",
@@ -842,7 +842,7 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDbf
                     NonStandardMargin = GetNonStandardMargin(Convert.ToInt32(Rows[r]["FrontConfigID"]));
                 }
                 //ФИЛЕНКА
-                filter = " AND InsetTypeID IN (2069,2070,2071,2073,2075,2077,2233,3644,29043,29531)";
+                filter = " AND InsetTypeID IN (2069,2070,2071,2073,2075,2077,2233,3644,29043,29531,41213)";
                 Rows = OrdersDataTable.Select("ColorID = " + Fronts.Rows[i]["ColorID"].ToString() + 
                     " AND PatinaID = " + Fronts.Rows[i]["PatinaID"].ToString() + 
                     " AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString() + " AND (Width <> -1)" + filter + IsNonStandardFilter);

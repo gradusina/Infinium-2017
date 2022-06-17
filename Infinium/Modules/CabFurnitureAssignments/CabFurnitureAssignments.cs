@@ -1807,11 +1807,12 @@ WHERE        CAST(CreateDateTime AS date) >= '2019-12-26 00:00' AND CAST(CreateD
                 rows[0]["AgreementDateTime"] = Security.GetCurrentDate();
         }
 
-        public void InProduction(int CabFurAssignmentID)
+        public void InProduction(int CabFurAssignmentID, int PackagesCount)
         {
             DataRow[] rows = AllAssignmentsDT.Select("CabFurAssignmentID=" + CabFurAssignmentID);
             if (rows.Count() == 0)
                 return;
+            rows[0]["PackagesCount"] = PackagesCount;
             if (rows[0]["ProductionUserID"] == DBNull.Value)
                 rows[0]["ProductionUserID"] = Security.CurrentUserID;
             if (rows[0]["ProductionDateTime"] == DBNull.Value)
@@ -2531,7 +2532,7 @@ WHERE        CAST(CreateDateTime AS date) >= '2019-12-26 00:00' AND CAST(CreateD
             }
         }
 
-        public void CreatePackages(int CabFurAssignmentID, int FactoryID)
+        public int CreatePackages(int CabFurAssignmentID, int FactoryID)
         {
             DataTable CabFurnitureAssignmentDetailsDT = new DataTable();
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT CabFurnitureAssignmentDetails.*, T.TechStoreSubGroupID FROM CabFurnitureAssignmentDetails " +
@@ -2608,9 +2609,10 @@ WHERE        CAST(CreateDateTime AS date) >= '2019-12-26 00:00' AND CAST(CreateD
                     }
                 }
             }
-            if (AllPackagesCount > 0)
-                SavePackagesCount(CabFurAssignmentID, AllPackagesCount);
+            //if (AllPackagesCount > 0)
+            //    SavePackagesCount(CabFurAssignmentID, AllPackagesCount);
             CabFurnitureAssignmentDetailsDT.Dispose();
+            return AllPackagesCount;
         }
 
         public void ClearCabFurnitureComplenents(int MainOrderID)
@@ -3265,7 +3267,7 @@ WHERE dbo.CabFurniturePackages.CabFurAssignmentDetailID = " + CabFurAssignmentDe
             ComplementDetailsDA = new SqlDataAdapter(SelectCommand, ConnectionStrings.StorageConnectionString);
             ComplementDetailsDA.Fill(ComplementDetailsDT);
 
-            SelectCommand = @"SELECT TOP 0 ClientID, OrderNumber FROM CabFurnitureComplements";
+            SelectCommand = @"SELECT TOP 0 ClientID, OrderNumber, MegaOrderID FROM CabFurnitureComplements";
             ComplementsDA = new SqlDataAdapter(SelectCommand, ConnectionStrings.StorageConnectionString);
             ComplementsDA.Fill(ComplementsDT);
             ComplementsDT.Columns.Add(new DataColumn("ComplementsCount", Type.GetType("System.Int32")));
@@ -3403,7 +3405,7 @@ INNER JOIN infiniu2_marketingorders.dbo.MainOrders AS M ON C.MainOrderID=M.MainO
                 " 00:00' AND CAST(CreateDateTime AS date) <= '" + date2.ToString("yyyy-MM-dd") + " 23:59'";
 
             ComplementsDT.Clear();
-            string SelectCommand = @"SELECT DISTINCT ClientID, OrderNumber FROM CabFurnitureComplements" + Filter;
+            string SelectCommand = @"SELECT DISTINCT ClientID, OrderNumber, MegaOrderID FROM CabFurnitureComplements" + Filter;
             ComplementsDA = new SqlDataAdapter(SelectCommand, ConnectionStrings.StorageConnectionString);
             ComplementsDA.Fill(ComplementsDT);
 
@@ -3879,73 +3881,6 @@ INNER JOIN infiniu2_marketingorders.dbo.MainOrders AS M ON C.MainOrderID=M.MainO
                                     DT.Rows[i]["PrintUserID"] = Security.CurrentUserID;
                                 if (DT.Rows[i]["PrintDateTime"] == DBNull.Value)
                                     DT.Rows[i]["PrintDateTime"] = PrintDateTime;
-                            }
-                            DA.Update(DT);
-                        }
-                    }
-                }
-            }
-        }
-
-        public void QualityControlIn(int[] packageIds)
-        {
-            string filter = string.Empty;
-            foreach (int item in packageIds)
-                filter += item.ToString() + ",";
-            if (filter.Length > 0)
-                filter = "SELECT CabFurniturePackageID, CellID, QualityControlInUserID, QualityControlInDateTime FROM CabFurniturePackages " +
-                    "WHERE CabFurniturePackageID IN (" + filter.Substring(0, filter.Length - 1) + ")";
-
-            using (SqlDataAdapter DA = new SqlDataAdapter(filter, ConnectionStrings.StorageConnectionString))
-            {
-                using (new SqlCommandBuilder(DA))
-                {
-                    using (DataTable DT = new DataTable())
-                    {
-                        if (DA.Fill(DT) > 0)
-                        {
-                            DateTime datetime = Security.GetCurrentDate();
-
-                            for (int i = 0; i < DT.Rows.Count; i++)
-                            {
-                                if (DT.Rows[i]["QualityControlInUserID"] == DBNull.Value)
-                                    DT.Rows[i]["QualityControlInUserID"] = Security.CurrentUserID;
-                                if (DT.Rows[i]["QualityControlInDateTime"] == DBNull.Value)
-                                    DT.Rows[i]["QualityControlInDateTime"] = datetime;
-                                DT.Rows[i]["CellID"] = -1;
-                            }
-                            DA.Update(DT);
-                        }
-                    }
-                }
-            }
-        }
-        public void QualityControlOut(int[] packageIds)
-        {
-            string filter = string.Empty;
-            foreach (int item in packageIds)
-                filter += item.ToString() + ",";
-            if (filter.Length > 0)
-                filter = "SELECT CabFurniturePackageID, QualityControlOutUserID, QualityControlOutDateTime, QualityControl FROM CabFurniturePackages " +
-                    "WHERE CabFurniturePackageID IN (" + filter.Substring(0, filter.Length - 1) + ")";
-
-            using (SqlDataAdapter DA = new SqlDataAdapter(filter, ConnectionStrings.StorageConnectionString))
-            {
-                using (new SqlCommandBuilder(DA))
-                {
-                    using (DataTable DT = new DataTable())
-                    {
-                        if (DA.Fill(DT) > 0)
-                        {
-                            DateTime datetime = Security.GetCurrentDate();
-
-                            for (int i = 0; i < DT.Rows.Count; i++)
-                            {
-                                if (DT.Rows[i]["QualityControlOutUserID"] == DBNull.Value)
-                                    DT.Rows[i]["QualityControlOutUserID"] = Security.CurrentUserID;
-                                if (DT.Rows[i]["QualityControlOutDateTime"] == DBNull.Value)
-                                    DT.Rows[i]["QualityControlOutDateTime"] = datetime;
-                                DT.Rows[i]["QualityControl"] = 1;
                             }
                             DA.Update(DT);
                         }

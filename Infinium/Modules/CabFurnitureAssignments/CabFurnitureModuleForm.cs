@@ -980,6 +980,8 @@ namespace Infinium
                 grid.Columns["QualityControlOutUserID"].Visible = false;
             if (grid.Columns.Contains("CellID"))
                 grid.Columns["CellID"].Visible = false;
+            if (grid.Columns.Contains("QualityControl"))
+                grid.Columns["QualityControl"].Visible = false;
 
             grid.Columns["CabFurniturePackageID"].HeaderText = "ID";
             grid.Columns["PackNumber"].HeaderText = "№ упаковки";
@@ -2014,6 +2016,15 @@ namespace Infinium
             if (senderGrid.Columns[e.ColumnIndex] is KryptonDataGridViewButtonColumn && senderGrid.Columns[e.ColumnIndex].Name == "InProdColumn" &&
                 e.RowIndex >= 0)
             {
+                object ProductionDateTime = senderGrid.SelectedRows[0].Cells["ProductionDateTime"].Value;
+                if (ProductionDateTime != DBNull.Value)
+                {
+                    Infinium.LightMessageBox.Show(ref TopForm, false,
+                    "Задание уже вошло в производство",
+                    "Запуск в производство");
+                    return;
+                }
+
                 bool OKCancel = Infinium.LightMessageBox.Show(ref TopForm, true,
                     "Подтведрите, что задание входит в производство",
                     "Запуск в производство", "Подтвердить", "Отмена");
@@ -2054,9 +2065,9 @@ namespace Infinium
                 while (!SplashWindow.bSmallCreated) ;
                 NeedSplash = false;
                 
-                assignmentsManager.CreatePackages(CabFurAssignmentID, FactoryID);
+                int AllPackagesCount = assignmentsManager.CreatePackages(CabFurAssignmentID, FactoryID);
                 assignmentsManager.PrintAssignment(CabFurAssignmentID);
-                assignmentsManager.InProduction(CabFurAssignmentID);
+                assignmentsManager.InProduction(CabFurAssignmentID, AllPackagesCount);
                 assignmentsManager.SaveAllAssignments();
                 FilterAssignments();
                 assignmentsManager.MoveToAssignmentID(CabFurAssignmentID);
@@ -3387,10 +3398,10 @@ namespace Infinium
             if (dgvPackages.SelectedRows.Count != 0 && dgvPackages.SelectedRows[0].Cells["CabFurAssignmentID"].Value != DBNull.Value)
                 CabFurAssignmentID = Convert.ToInt32(dgvPackages.SelectedRows[0].Cells["CabFurAssignmentID"].Value);
 
-            int[] CabFurniturePackageID = new int[dgvPackagesLabels.SelectedRows.Count];
+            int[] CabFurniturePackageIDs = new int[dgvPackagesLabels.SelectedRows.Count];
             for (int i = 0; i < dgvPackagesLabels.SelectedRows.Count; i++)
             {
-                CabFurniturePackageID[i] = Convert.ToInt32(dgvPackagesLabels.SelectedRows[i].Cells["CabFurniturePackageID"].Value);
+                CabFurniturePackageIDs[i] = Convert.ToInt32(dgvPackagesLabels.SelectedRows[i].Cells["CabFurniturePackageID"].Value);
             }
 
             bool OKCancel = Infinium.LightMessageBox.Show(ref TopForm, true,
@@ -3406,7 +3417,7 @@ namespace Infinium
                 while (!SplashWindow.bSmallCreated) ;
                 NeedSplash = false;
 
-                packagesManager.QualityControlIn(CabFurniturePackageID);
+                storagePackagesManager.QualityControlIn(CabFurniturePackageIDs);
                 packagesManager.FilterPackagesLabels(CabFurAssignmentID);
 
                 NeedSplash = true;
@@ -3440,7 +3451,7 @@ namespace Infinium
                 while (!SplashWindow.bSmallCreated) ;
                 NeedSplash = false;
 
-                packagesManager.QualityControlOut(CabFurniturePackageID);
+                storagePackagesManager.QualityControlOut(CabFurniturePackageID);
                 packagesManager.FilterPackagesLabels(CabFurAssignmentID);
 
                 NeedSplash = true;
@@ -3450,80 +3461,6 @@ namespace Infinium
             else
             {
                 packagesManager.FilterPackagesLabels(CabFurAssignmentID);
-            }
-        }
-
-        private void btnQualityControlOut_Click(object sender, EventArgs e)
-        {
-            if (dgvStoragePackagesLabels.SelectedRows.Count == 0)
-                return;
-            int cellId = 0;
-            if (dgvCells.SelectedRows.Count != 0 && dgvCells.SelectedRows[0].Cells["CellID"].Value != DBNull.Value)
-                cellId = Convert.ToInt32(dgvCells.SelectedRows[0].Cells["CellID"].Value);
-
-            int[] CabFurniturePackageID = new int[dgvStoragePackagesLabels.SelectedRows.Count];
-            for (int i = 0; i < dgvStoragePackagesLabels.SelectedRows.Count; i++)
-            {
-                CabFurniturePackageID[i] = Convert.ToInt32(dgvStoragePackagesLabels.SelectedRows[i].Cells["CabFurniturePackageID"].Value);
-            }
-
-            if (NeedSplash)
-            {
-                Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Загрузка данных с сервера.\r\nПодождите..."); });
-                T.Start();
-                while (!SplashWindow.bSmallCreated) ;
-                NeedSplash = false;
-
-                packagesManager.QualityControlOut(CabFurniturePackageID);
-                storagePackagesManager.GetPackagesLabels(cellId);
-
-                NeedSplash = true;
-                while (SplashWindow.bSmallCreated)
-                    SmallWaitForm.CloseS = true;
-            }
-            else
-            {
-                storagePackagesManager.GetPackagesLabels(cellId);
-            }
-        }
-
-        private void btnQualityControlIn_Click(object sender, EventArgs e)
-        {
-            if (dgvStoragePackagesLabels.SelectedRows.Count == 0)
-                return;
-            int cellId = 0;
-            if (dgvCells.SelectedRows.Count != 0 && dgvCells.SelectedRows[0].Cells["CellID"].Value != DBNull.Value)
-                cellId = Convert.ToInt32(dgvCells.SelectedRows[0].Cells["CellID"].Value);
-
-            int[] CabFurniturePackageID = new int[dgvStoragePackagesLabels.SelectedRows.Count];
-            for (int i = 0; i < dgvStoragePackagesLabels.SelectedRows.Count; i++)
-            {
-                CabFurniturePackageID[i] = Convert.ToInt32(dgvStoragePackagesLabels.SelectedRows[i].Cells["CabFurniturePackageID"].Value);
-            }
-
-            bool OKCancel = Infinium.LightMessageBox.Show(ref TopForm, true,
-                    "Вы собираетесь отправить упаковки на ОТК. Они будут отвязаны от ячейки. Продолжить?",
-                    "ОТК");
-            if (!OKCancel)
-                return;
-
-            if (NeedSplash)
-            {
-                Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Загрузка данных с сервера.\r\nПодождите..."); });
-                T.Start();
-                while (!SplashWindow.bSmallCreated) ;
-                NeedSplash = false;
-
-                packagesManager.QualityControlIn(CabFurniturePackageID);
-                storagePackagesManager.GetPackagesLabels(cellId);
-
-                NeedSplash = true;
-                while (SplashWindow.bSmallCreated)
-                    SmallWaitForm.CloseS = true;
-            }
-            else
-            {
-                storagePackagesManager.GetPackagesLabels(cellId);
             }
         }
 
@@ -3598,17 +3535,20 @@ namespace Infinium
 
             int ClientID = 0;
             int OrderNumber = 0;
+            int MegaOrderID = 0;
             if (dgvComplements.SelectedRows.Count != 0 && dgvComplements.SelectedRows[0].Cells["ClientID"].Value != DBNull.Value)
                 ClientID = Convert.ToInt32(dgvComplements.SelectedRows[0].Cells["ClientID"].Value);
             if (dgvComplements.SelectedRows.Count != 0 && dgvComplements.SelectedRows[0].Cells["OrderNumber"].Value != DBNull.Value)
                 OrderNumber = Convert.ToInt32(dgvComplements.SelectedRows[0].Cells["OrderNumber"].Value);
+            if (dgvComplements.SelectedRows.Count != 0 && dgvComplements.SelectedRows[0].Cells["MegaOrderID"].Value != DBNull.Value)
+                MegaOrderID = Convert.ToInt32(dgvComplements.SelectedRows[0].Cells["MegaOrderID"].Value);
 
             Thread T = new Thread(delegate () { SplashWindow.CreateSplash(); });
             T.Start();
 
             while (!SplashForm.bCreated) ;
 
-            CabFurAssembleForm cabFurDispatchForm = new CabFurAssembleForm(this, assignmentsManager, ClientID, OrderNumber);
+            CabFurAssembleForm cabFurDispatchForm = new CabFurAssembleForm(this, assignmentsManager, ClientID, MegaOrderID);
 
             TopForm = cabFurDispatchForm;
 
@@ -3796,6 +3736,134 @@ namespace Infinium
         private void kryptonButton2_Click(object sender, EventArgs e)
         {
             FilterAssignments();
+        }
+
+        private void btnQualityControlOut_Click(object sender, EventArgs e)
+        {
+            PhantomForm PhantomForm = new PhantomForm();
+            PhantomForm.Show();
+
+            QualityControlForm qualityControlForm = new QualityControlForm(this, storagePackagesManager, true);
+
+            TopForm = qualityControlForm;
+            qualityControlForm.ShowDialog();
+
+            PhantomForm.Close();
+
+            PhantomForm.Dispose();
+            qualityControlForm.Dispose();
+            TopForm = null;
+            GC.Collect();
+
+            Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Обновление.\r\nПодождите..."); });
+            T.Start();
+            while (!SplashWindow.bSmallCreated) ;
+            NeedSplash = false;
+
+            cabFurStorage.UpdateCells();
+
+            NeedSplash = true;
+            while (SplashWindow.bSmallCreated)
+                SmallWaitForm.CloseS = true;
+
+
+        }
+
+        private void btnQualityControlIn_Click(object sender, EventArgs e)
+        {
+            PhantomForm PhantomForm = new PhantomForm();
+            PhantomForm.Show();
+
+            QualityControlForm qualityControlForm = new QualityControlForm(this, storagePackagesManager, false);
+
+            TopForm = qualityControlForm;
+            qualityControlForm.ShowDialog();
+
+            PhantomForm.Close();
+
+            PhantomForm.Dispose();
+            qualityControlForm.Dispose();
+            TopForm = null;
+            GC.Collect();
+
+            Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Обновление.\r\nПодождите..."); });
+            T.Start();
+            while (!SplashWindow.bSmallCreated) ;
+            NeedSplash = false;
+
+            cabFurStorage.UpdateCells();
+
+            NeedSplash = true;
+            while (SplashWindow.bSmallCreated)
+                SmallWaitForm.CloseS = true;
+
+
+            //if (dgvStoragePackagesLabels.SelectedRows.Count == 0)
+            //    return;
+            //int cellId = 0;
+            //if (dgvCells.SelectedRows.Count != 0 && dgvCells.SelectedRows[0].Cells["CellID"].Value != DBNull.Value)
+            //    cellId = Convert.ToInt32(dgvCells.SelectedRows[0].Cells["CellID"].Value);
+
+            //int[] CabFurniturePackageIDs = new int[dgvStoragePackagesLabels.SelectedRows.Count];
+            //for (int i = 0; i < dgvStoragePackagesLabels.SelectedRows.Count; i++)
+            //{
+            //    CabFurniturePackageIDs[i] = Convert.ToInt32(dgvStoragePackagesLabels.SelectedRows[i].Cells["CabFurniturePackageID"].Value);
+            //}
+
+            //bool OKCancel = Infinium.LightMessageBox.Show(ref TopForm, true,
+            //        "Вы собираетесь отправить упаковки на ОТК. Они будут отвязаны от ячейки. Продолжить?",
+            //        "ОТК");
+            //if (!OKCancel)
+            //    return;
+
+            //if (NeedSplash)
+            //{
+            //    Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Загрузка данных с сервера.\r\nПодождите..."); });
+            //    T.Start();
+            //    while (!SplashWindow.bSmallCreated) ;
+            //    NeedSplash = false;
+
+            //    packagesManager.QualityControlIn(CabFurniturePackageIDs);
+            //    storagePackagesManager.GetPackagesLabels(cellId);
+
+            //    NeedSplash = true;
+            //    while (SplashWindow.bSmallCreated)
+            //        SmallWaitForm.CloseS = true;
+            //}
+            //else
+            //{
+            //    storagePackagesManager.GetPackagesLabels(cellId);
+            //}
+        }
+
+        private void btnShowQualityControl_Click(object sender, EventArgs e)
+        {
+            PhantomForm PhantomForm = new PhantomForm();
+            PhantomForm.Show();
+
+            AllQualityControlForm qualityControlForm = new AllQualityControlForm(this, storagePackagesManager);
+
+            TopForm = qualityControlForm;
+            qualityControlForm.ShowDialog();
+
+            PhantomForm.Close();
+
+            PhantomForm.Dispose();
+            qualityControlForm.Dispose();
+            TopForm = null;
+            GC.Collect();
+
+            Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Обновление.\r\nПодождите..."); });
+            T.Start();
+            while (!SplashWindow.bSmallCreated) ;
+            NeedSplash = false;
+
+            cabFurStorage.UpdateCells();
+
+            NeedSplash = true;
+            while (SplashWindow.bSmallCreated)
+                SmallWaitForm.CloseS = true;
+
         }
     }
 }

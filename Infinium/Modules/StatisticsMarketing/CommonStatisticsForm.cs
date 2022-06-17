@@ -207,7 +207,15 @@ namespace Infinium
             DateTime DispFirstDay = DateTime.Now.AddDays(-3);
             DateTime Today = DateTime.Now;
 
+            mcBatchFirstDate.TodayDate = DateTime.Now;
+            mcBatchSecondDate.TodayDate = DateTime.Now;
+            mcBatchFirstDate.SelectionStart = FirstDate;
+            mcBatchSecondDate.SelectionStart = FirstDay;
+
+            DispatchDateFrom.TodayDate = DateTime.Now;
+            DispatchDateTo.TodayDate = DateTime.Now;
             DispatchDateFrom.SelectionStart = DispFirstDay;
+            DispatchDateTo.SelectionStart = FirstDay;
 
             BatchStatistics = new Modules.StatisticsMarketing.MarketingBatchStatistics();
             dgvGeneralSummary.DataSource = BatchStatistics.MegaBatchBS;
@@ -1462,9 +1470,9 @@ namespace Infinium
 
             StorageStatistics.GetFrontsInfo(ref ExpFrontSquare, ref ExpFrontCost, ref ExpFrontsCount);
 
-            StoreFrontsSquareLabel.Text = ExpFrontSquare.ToString("N", nfi2);
-            StoreFrontsCostLabel.Text = ExpFrontCost.ToString("N", nfi2);
-            StoreFrontsCountLabel.Text = ExpFrontsCount.ToString();
+            StoreFrontsSquareLabel.Text = ExpFrontSquare.ToString("N", nfi2) + " м.кв.";
+            StoreFrontsCostLabel.Text = ExpFrontCost.ToString("N", nfi2) + " €";
+            StoreFrontsCountLabel.Text = ExpFrontsCount.ToString() + " шт.";
         }
 
         private void StoreCurvedFrontsInfo()
@@ -1477,8 +1485,8 @@ namespace Infinium
 
             StorageStatistics.GetCurvedFrontsInfo(ref ExpFrontCost, ref ExpCurvedCount);
 
-            StoreCurvedFrontsCostLabel.Text = ExpFrontCost.ToString("N", nfi2);
-            StoreCurvedCountLabel.Text = ExpCurvedCount.ToString();
+            StoreCurvedFrontsCostLabel.Text = ExpFrontCost.ToString("N", nfi2) + " €";
+            StoreCurvedCountLabel.Text = ExpCurvedCount.ToString() + " шт.";
         }
 
         private void StoreDecorInfo()
@@ -1493,9 +1501,9 @@ namespace Infinium
 
             StorageStatistics.GetDecorInfo(ref ExpDecorPogon, ref ExpDecorCost, ref ExpDecorCount);
 
-            StoreDecorPogonLabel.Text = ExpDecorPogon.ToString("N", nfi2);
-            StoreDecorCostLabel.Text = ExpDecorCost.ToString("N", nfi2);
-            StoreDecorCountLabel.Text = ExpDecorCount.ToString();
+            StoreDecorPogonLabel.Text = ExpDecorPogon.ToString("N", nfi2) + " м.п.";
+            StoreDecorCostLabel.Text = ExpDecorCost.ToString("N", nfi2) + " €";
+            StoreDecorCountLabel.Text = ExpDecorCount.ToString() + " шт.";
 
             StoreDecorProductsDataGrid_SelectionChanged(null, null);
         }
@@ -1514,10 +1522,10 @@ namespace Infinium
 
             DispatchStatistics.GetFrontsInfo(ref DispFrontSquare, ref DispFrontCost, ref DispFrontsCount, ref DispCurvedCount);
 
-            DispFrontsSquareLabel.Text = DispFrontSquare.ToString("N", nfi2);
-            DispFrontsCostLabel.Text = DispFrontCost.ToString("N", nfi2);
-            DispFrontsCountLabel.Text = DispFrontsCount.ToString();
-            DispCurvedCountLabel.Text = DispCurvedCount.ToString();
+            DispFrontsSquareLabel.Text = DispFrontSquare.ToString("N", nfi2) + " м.кв.";
+            DispFrontsCostLabel.Text = DispFrontCost.ToString("N", nfi2) + " €";
+            DispFrontsCountLabel.Text = DispFrontsCount.ToString() + " шт.";
+            DispCurvedCountLabel.Text = DispCurvedCount.ToString() + " шт.";
         }
 
         private void DispDecorInfo()
@@ -1532,9 +1540,9 @@ namespace Infinium
 
             DispatchStatistics.GetDecorInfo(ref DispDecorPogon, ref DispDecorCost, ref DispDecorCount);
 
-            DispDecorPogonLabel.Text = DispDecorPogon.ToString("N", nfi2);
-            DispDecorCostLabel.Text = DispDecorCost.ToString("N", nfi2);
-            DispDecorCountLabel.Text = DispDecorCount.ToString();
+            DispDecorPogonLabel.Text = DispDecorPogon.ToString("N", nfi2) + " м.п.";
+            DispDecorCostLabel.Text = DispDecorCost.ToString("N", nfi2) + " €";
+            DispDecorCountLabel.Text = DispDecorCount.ToString() + " шт.";
 
             DispDecorProductsDataGrid_SelectionChanged(null, null);
         }
@@ -1843,9 +1851,9 @@ namespace Infinium
             FrontCost = Decimal.Round(FrontCost, 3, MidpointRounding.AwayFromZero);
             FrontSquare = Decimal.Round(FrontSquare, 3, MidpointRounding.AwayFromZero);
 
-            FrontsSquareLabel.Text = FrontSquare.ToString("N", nfi2);
+            FrontsSquareLabel.Text = FrontSquare.ToString("N", nfi2) + " м.кв.";
             FrontsCostLabel.Text = FrontCost.ToString("N", nfi2) + " €";
-            FrontsCountLabel.Text = FrontsCount.ToString();
+            FrontsCountLabel.Text = FrontsCount.ToString() + " шт.";
             CurvedCountLabel.Text = CurvedCount.ToString() + " шт.";
         }
 
@@ -2120,9 +2128,9 @@ namespace Infinium
             DecorCost = Decimal.Round(DecorCost, 3, MidpointRounding.AwayFromZero);
             DecorPogon = Decimal.Round(DecorPogon, 3, MidpointRounding.AwayFromZero);
 
-            DecorPogonLabel.Text = DecorPogon.ToString("N", nfi2);
-            DecorCostLabel.Text = DecorCost.ToString("N", nfi2);
-            DecorCountLabel.Text = DecorCount.ToString();
+            DecorPogonLabel.Text = DecorPogon.ToString("N", nfi2) + " м.п.";
+            DecorCostLabel.Text = DecorCost.ToString("N", nfi2) + " €";
+            DecorCountLabel.Text = DecorCount.ToString() + " шт.";
         }
 
         private void DecorItemsDataGrid_SelectionChanged(object sender, EventArgs e)
@@ -2284,11 +2292,13 @@ namespace Infinium
 
             if (rbMarketing.Checked)
             {
-                StatisticsReport.CreateReport(DateFrom, DateTo, FactoryID, AllProductsStatistics.FrontsOrdersDataTable, AllProductsStatistics.DecorOrdersDataTable, FileName, false);
+                StatisticsReport.CreateReport(DateFrom, DateTo, FactoryID, AllProductsStatistics.FrontsOrdersDataTable, AllProductsStatistics.DecorOrdersDataTable, 
+                    FileName, false);
             }
             if (rbZOV.Checked)
             {
-                StatisticsReport.CreateReport(DateFrom, DateTo, FactoryID, ZOVOrdersStatistics.FrontsOrdersDataTable, ZOVOrdersStatistics.DecorOrdersDataTable, FileName, true);
+                StatisticsReport.CreateReport(DateFrom, DateTo, FactoryID, ZOVOrdersStatistics.FrontsOrdersDataTable, ZOVOrdersStatistics.DecorOrdersDataTable,
+                    FileName, true);
             }
             while (SplashWindow.bSmallCreated)
                 SmallWaitForm.CloseS = true;
@@ -2394,11 +2404,13 @@ namespace Infinium
 
             if (rbMarketing.Checked)
             {
-                StatisticsReport.CreateReport(DateFrom, DateTo, FactoryID, AllProductsStatistics.FrontsOrdersDataTable, AllProductsStatistics.DecorOrdersDataTable, FileName);
+                StatisticsReport.CreateReport(DateFrom, DateTo, FactoryID, AllProductsStatistics.FrontsOrdersDataTable, AllProductsStatistics.DecorOrdersDataTable, 
+                    FileName, false);
             }
             if (rbZOV.Checked)
             {
-                StatisticsReport.CreateReport(DateFrom, DateTo, FactoryID, ZOVOrdersStatistics.FrontsOrdersDataTable, ZOVOrdersStatistics.DecorOrdersDataTable, FileName);
+                StatisticsReport.CreateReport(DateFrom, DateTo, FactoryID, ZOVOrdersStatistics.FrontsOrdersDataTable, ZOVOrdersStatistics.DecorOrdersDataTable, 
+                    FileName, true);
             }
             while (SplashWindow.bSmallCreated)
                 SmallWaitForm.CloseS = true;
@@ -3030,6 +3042,7 @@ namespace Infinium
             bool AgreedOrders = rbtnAgreedOrders.Checked;
             bool OnProductionOrders = rbtnOnProduction.Checked;
             bool InProductionOrders = rbtnInProduction.Checked;
+            bool OutProductionOrders = rbtnOutProduction.Checked;
 
             decimal FrontCost = 0;
             decimal FrontSquare = 0;
@@ -3079,6 +3092,8 @@ namespace Infinium
                         ConditionOrdersStatistics.GetOnProductionOrders(Monday, FactoryID);
                     if (InProductionOrders)
                         ConditionOrdersStatistics.GetInProductionOrders(Monday, FactoryID);
+                    if (OutProductionOrders)
+                        ConditionOrdersStatistics.GetOutProductionOrders(Monday, FactoryID);
                 }
 
                 MondayFrontsDG.DataSource = new DataView(ConditionOrdersStatistics.FrontsSummaryDT.Copy());
@@ -3097,10 +3112,10 @@ namespace Infinium
                 MondayFrontsCountLabel.Text = string.Empty;
                 MondayCurvedCountLabel.Text = string.Empty;
                 ConditionOrdersStatistics.GetFrontsInfo(ref FrontSquare, ref FrontCost, ref FrontsCount, ref CurvedCount);
-                MondayFrontsSquareLabel.Text = FrontSquare.ToString("N", nfi2);
-                MondayFrontsCostLabel.Text = FrontCost.ToString("N", nfi2);
-                MondayFrontsCountLabel.Text = FrontsCount.ToString();
-                MondayCurvedCountLabel.Text = CurvedCount.ToString();
+                MondayFrontsSquareLabel.Text = FrontSquare.ToString("N", nfi2) + " м.кв.";
+                MondayFrontsCostLabel.Text = FrontCost.ToString("N", nfi2) + " €";
+                MondayFrontsCountLabel.Text = FrontsCount.ToString() + " шт.";
+                MondayCurvedCountLabel.Text = CurvedCount.ToString() + " шт.";
 
                 DecorPogon = 0;
                 DecorCost = 0;
@@ -3109,9 +3124,9 @@ namespace Infinium
                 MondayDecorCostLabel.Text = string.Empty;
                 MondayDecorCountLabel.Text = string.Empty;
                 ConditionOrdersStatistics.GetDecorInfo(ref DecorPogon, ref DecorCost, ref DecorCount);
-                MondayDecorPogonLabel.Text = DecorPogon.ToString("N", nfi2);
-                MondayDecorCostLabel.Text = DecorCost.ToString("N", nfi2);
-                MondayDecorCountLabel.Text = DecorCount.ToString();
+                MondayDecorPogonLabel.Text = DecorPogon.ToString("N", nfi2) + " м.п.";
+                MondayDecorCostLabel.Text = DecorCost.ToString("N", nfi2) + " €";
+                MondayDecorCountLabel.Text = DecorCount.ToString() + " шт.";
 
                 ConditionOrdersStatistics.ClearOrders();
                 if (Wednesday < DateTime.Now && WednesdayCB.Checked)
@@ -3124,6 +3139,8 @@ namespace Infinium
                         ConditionOrdersStatistics.GetOnProductionOrders(Wednesday, FactoryID);
                     if (InProductionOrders)
                         ConditionOrdersStatistics.GetInProductionOrders(Wednesday, FactoryID);
+                    if (OutProductionOrders)
+                        ConditionOrdersStatistics.GetOutProductionOrders(Wednesday, FactoryID);
                 }
 
                 WednesdayFrontsDG.DataSource = new DataView(ConditionOrdersStatistics.FrontsSummaryDT.Copy());
@@ -3142,10 +3159,10 @@ namespace Infinium
                 WednesdayFrontsCountLabel.Text = string.Empty;
                 WednesdayCurvedCountLabel.Text = string.Empty;
                 ConditionOrdersStatistics.GetFrontsInfo(ref FrontSquare, ref FrontCost, ref FrontsCount, ref CurvedCount);
-                WednesdayFrontsSquareLabel.Text = FrontSquare.ToString("N", nfi2);
-                WednesdayFrontsCostLabel.Text = FrontCost.ToString("N", nfi2);
-                WednesdayFrontsCountLabel.Text = FrontsCount.ToString();
-                WednesdayCurvedCountLabel.Text = CurvedCount.ToString();
+                WednesdayFrontsSquareLabel.Text = FrontSquare.ToString("N", nfi2) + " м.кв.";
+                WednesdayFrontsCostLabel.Text = FrontCost.ToString("N", nfi2) + " €";
+                WednesdayFrontsCountLabel.Text = FrontsCount.ToString() + " шт.";
+                WednesdayCurvedCountLabel.Text = CurvedCount.ToString() + " шт.";
 
                 DecorPogon = 0;
                 DecorCost = 0;
@@ -3154,9 +3171,9 @@ namespace Infinium
                 WednesdayDecorCostLabel.Text = string.Empty;
                 WednesdayDecorCountLabel.Text = string.Empty;
                 ConditionOrdersStatistics.GetDecorInfo(ref DecorPogon, ref DecorCost, ref DecorCount);
-                WednesdayDecorPogonLabel.Text = DecorPogon.ToString("N", nfi2);
-                WednesdayDecorCostLabel.Text = DecorCost.ToString("N", nfi2);
-                WednesdayDecorCountLabel.Text = DecorCount.ToString();
+                WednesdayDecorPogonLabel.Text = DecorPogon.ToString("N", nfi2) + " м.п.";
+                WednesdayDecorCostLabel.Text = DecorCost.ToString("N", nfi2) + " €";
+                WednesdayDecorCountLabel.Text = DecorCount.ToString() + " шт.";
 
                 ConditionOrdersStatistics.ClearOrders();
                 if (Friday < DateTime.Now && FridayCB.Checked)
@@ -3169,6 +3186,8 @@ namespace Infinium
                         ConditionOrdersStatistics.GetOnProductionOrders(Friday, FactoryID);
                     if (InProductionOrders)
                         ConditionOrdersStatistics.GetInProductionOrders(Friday, FactoryID);
+                    if (OutProductionOrders)
+                        ConditionOrdersStatistics.GetOutProductionOrders(Friday, FactoryID);
                 }
 
                 FridayFrontsDG.DataSource = new DataView(ConditionOrdersStatistics.FrontsSummaryDT.Copy());
@@ -3187,10 +3206,10 @@ namespace Infinium
                 FridayFrontsCountLabel.Text = string.Empty;
                 FridayCurvedCountLabel.Text = string.Empty;
                 ConditionOrdersStatistics.GetFrontsInfo(ref FrontSquare, ref FrontCost, ref FrontsCount, ref CurvedCount);
-                FridayFrontsSquareLabel.Text = FrontSquare.ToString("N", nfi2);
-                FridayFrontsCostLabel.Text = FrontCost.ToString("N", nfi2);
-                FridayFrontsCountLabel.Text = FrontsCount.ToString();
-                FridayCurvedCountLabel.Text = CurvedCount.ToString();
+                FridayFrontsSquareLabel.Text = FrontSquare.ToString("N", nfi2) + " м.кв.";
+                FridayFrontsCostLabel.Text = FrontCost.ToString("N", nfi2) + " €";
+                FridayFrontsCountLabel.Text = FrontsCount.ToString() + " шт.";
+                FridayCurvedCountLabel.Text = CurvedCount.ToString() + " шт.";
 
                 DecorPogon = 0;
                 DecorCost = 0;
@@ -3199,9 +3218,9 @@ namespace Infinium
                 FridayDecorCostLabel.Text = string.Empty;
                 FridayDecorCountLabel.Text = string.Empty;
                 ConditionOrdersStatistics.GetDecorInfo(ref DecorPogon, ref DecorCost, ref DecorCount);
-                FridayDecorPogonLabel.Text = DecorPogon.ToString("N", nfi2);
-                FridayDecorCostLabel.Text = DecorCost.ToString("N", nfi2);
-                FridayDecorCountLabel.Text = DecorCount.ToString();
+                FridayDecorPogonLabel.Text = DecorPogon.ToString("N", nfi2) + " м.п.";
+                FridayDecorCostLabel.Text = DecorCost.ToString("N", nfi2) + " €";
+                FridayDecorCountLabel.Text = DecorCount.ToString() + " шт.";
 
                 MondayDecorProductsDG_SelectionChanged(null, null);
                 WednesdayDecorProductsDG_SelectionChanged(null, null);
@@ -3751,10 +3770,10 @@ namespace Infinium
 
             ExpeditionStatistics.GetFrontsInfo(ref ExpFrontSquare, ref ExpFrontCost, ref ExpFrontsCount, ref ExpCurvedCount);
 
-            ExpFrontsSquareLabel.Text = ExpFrontSquare.ToString("N", nfi2);
-            ExpFrontsCostLabel.Text = ExpFrontCost.ToString("N", nfi2);
-            ExpFrontsCountLabel.Text = ExpFrontsCount.ToString();
-            ExpCurvedCountLabel.Text = ExpCurvedCount.ToString();
+            ExpFrontsSquareLabel.Text = ExpFrontSquare.ToString("N", nfi2) + " м.кв.";
+            ExpFrontsCostLabel.Text = ExpFrontCost.ToString("N", nfi2) + " €";
+            ExpFrontsCountLabel.Text = ExpFrontsCount.ToString() + " шт.";
+            ExpCurvedCountLabel.Text = ExpCurvedCount.ToString() + " шт.";
         }
 
         private void ExpDecorInfo()
@@ -3769,9 +3788,9 @@ namespace Infinium
 
             ExpeditionStatistics.GetDecorInfo(ref ExpDecorPogon, ref ExpDecorCost, ref ExpDecorCount);
 
-            ExpDecorPogonLabel.Text = ExpDecorPogon.ToString("N", nfi2);
-            ExpDecorCostLabel.Text = ExpDecorCost.ToString("N", nfi2);
-            ExpDecorCountLabel.Text = ExpDecorCount.ToString();
+            ExpDecorPogonLabel.Text = ExpDecorPogon.ToString("N", nfi2) + " м.п.";
+            ExpDecorCostLabel.Text = ExpDecorCost.ToString("N", nfi2) + " €";
+            ExpDecorCountLabel.Text = ExpDecorCount.ToString() + " шт.";
 
             ExpDecorProductsDataGrid_SelectionChanged(null, null);
         }
@@ -4926,11 +4945,13 @@ namespace Infinium
 
             if (rbMarketing.Checked)
             {
-                StatisticsReport.CreateReportOrderNumber(DateFrom, DateTo, FactoryID, AllProductsStatistics.FrontsOrdersDataTable, AllProductsStatistics.DecorOrdersDataTable, FileName, false);
+                StatisticsReport.CreateReportOrderNumber(DateFrom, DateTo, FactoryID, 
+                    AllProductsStatistics.FrontsOrdersDataTable, AllProductsStatistics.DecorOrdersDataTable, FileName, false);
             }
             if (rbZOV.Checked)
             {
-                StatisticsReport.CreateReportOrderNumber(DateFrom, DateTo, FactoryID, ZOVOrdersStatistics.FrontsOrdersDataTable, ZOVOrdersStatistics.DecorOrdersDataTable, FileName, true);
+                StatisticsReport.CreateReportOrderNumber(DateFrom, DateTo, FactoryID, 
+                    ZOVOrdersStatistics.FrontsOrdersDataTable, ZOVOrdersStatistics.DecorOrdersDataTable, FileName, true);
             }
             while (SplashWindow.bSmallCreated)
                 SmallWaitForm.CloseS = true;

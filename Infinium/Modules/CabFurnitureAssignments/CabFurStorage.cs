@@ -311,7 +311,7 @@ WHERE CellID=" + cellId;
                             DT.Rows[i]["QualityControlInUserID"] = DBNull.Value;
                             DT.Rows[i]["QualityControlOutDateTime"] = DBNull.Value;
                             DT.Rows[i]["QualityControlOutUserID"] = DBNull.Value;
-                            DT.Rows[i]["QualityControl"] = 0;
+                            DT.Rows[i]["QualityControl"] = -1;
                         }
                         DA.Update(DT);
                     }
@@ -351,7 +351,7 @@ WHERE CellID IN (" + filter.Substring(0, filter.Length - 1) + ")";
                             DT.Rows[i]["QualityControlInUserID"] = DBNull.Value;
                             DT.Rows[i]["QualityControlOutDateTime"] = DBNull.Value;
                             DT.Rows[i]["QualityControlOutUserID"] = DBNull.Value;
-                            DT.Rows[i]["QualityControl"] = 0;
+                            DT.Rows[i]["QualityControl"] = -1;
                         }
                         DA.Update(DT);
                     }
@@ -729,16 +729,22 @@ WHERE CellID IN (" + filter.Substring(0, filter.Length - 1) + ")";
     {
         DataTable PackageLabelsDT = null;
         DataTable BindPackageLabelsDT = null;
+        DataTable QualityControlDT = null;
+        DataTable AllQualityControlDT = null;
         //DataTable ExcessInvPackageLabelsDT = null;
         DataTable MissInvPackageLabelsDT = null;
         DataTable InvPackageLabelsDT = null;
         public BindingSource PackageLabelsBS = null;
         public BindingSource BindPackageLabelsBS = null;
+        public BindingSource QualityControlBS = null;
+        public BindingSource AllQualityControlBS = null;
         public BindingSource ExcessInvPackageLabelsBS = null;
         public BindingSource MissInvPackageLabelsBS = null;
         public BindingSource InvPackageLabelsBS = null;
         SqlDataAdapter PackageLabelsDA;
         SqlDataAdapter BindPackageLabelsDA;
+        SqlDataAdapter QualityControlDA;
+        SqlDataAdapter AllQualityControlDA;
         SqlDataAdapter InvPackageLabelsDA;
 
         DataTable PackageDetailsDT = null;
@@ -759,6 +765,8 @@ WHERE CellID IN (" + filter.Substring(0, filter.Length - 1) + ")";
         {
             PackageLabelsDT = new DataTable();
             BindPackageLabelsDT = new DataTable();
+            QualityControlDT = new DataTable();
+            AllQualityControlDT = new DataTable();
             //ExcessInvPackageLabelsDT = new DataTable();
             MissInvPackageLabelsDT = new DataTable();
             InvPackageLabelsDT = new DataTable();
@@ -769,6 +777,8 @@ WHERE CellID IN (" + filter.Substring(0, filter.Length - 1) + ")";
 
             PackageLabelsBS = new BindingSource();
             BindPackageLabelsBS = new BindingSource();
+            QualityControlBS = new BindingSource();
+            AllQualityControlBS = new BindingSource();
             ExcessInvPackageLabelsBS = new BindingSource();
             MissInvPackageLabelsBS = new BindingSource();
             InvPackageLabelsBS = new BindingSource();
@@ -787,6 +797,16 @@ WHERE CellID IN (" + filter.Substring(0, filter.Length - 1) + ")";
                 INNER JOIN Cells ON CabFurniturePackages.CellID=Cells.CellID";
             BindPackageLabelsDA = new SqlDataAdapter(SelectCommand, ConnectionStrings.StorageConnectionString);
             BindPackageLabelsDA.Fill(BindPackageLabelsDT);
+            
+            SelectCommand = @"SELECT TOP 0 CabFurniturePackageID, PackNumber, AddToStorageDateTime, RemoveFromStorageDateTime, QualityControlInDateTime, QualityControlOutDateTime, QualityControl, CabFurniturePackages.CellID, Cells.Name FROM CabFurniturePackages 
+                INNER JOIN Cells ON CabFurniturePackages.CellID=Cells.CellID";
+            QualityControlDA = new SqlDataAdapter(SelectCommand, ConnectionStrings.StorageConnectionString);
+            QualityControlDA.Fill(QualityControlDT);
+                        
+            SelectCommand = @"SELECT TOP 0 CabFurniturePackageID, PackNumber, AddToStorageDateTime, RemoveFromStorageDateTime, QualityControlInDateTime, QualityControlOutDateTime, QualityControl, CabFurniturePackages.CellID, Cells.Name FROM CabFurniturePackages 
+                INNER JOIN Cells ON CabFurniturePackages.CellID=Cells.CellID";
+            AllQualityControlDA = new SqlDataAdapter(SelectCommand, ConnectionStrings.StorageConnectionString);
+            AllQualityControlDA.Fill(AllQualityControlDT);
 
             SelectCommand = @"SELECT TOP 0 CabFurniturePackageID, PackNumber, AddToStorageDateTime, RemoveFromStorageDateTime, QualityControlInDateTime, QualityControlOutDateTime, QualityControl, CabFurniturePackages.CellID, Cells.Name as CellName, Racks.Name as RackName, Workshops.Name as WorkshopName, Workshops.WorkshopID FROM CabFurniturePackages 
                 INNER JOIN Cells ON CabFurniturePackages.CellID=Cells.CellID 
@@ -813,6 +833,8 @@ WHERE CellID IN (" + filter.Substring(0, filter.Length - 1) + ")";
 
             PackageLabelsBS.DataSource = PackageLabelsDT;
             BindPackageLabelsBS.DataSource = BindPackageLabelsDT;
+            QualityControlBS.DataSource = QualityControlDT;
+            AllQualityControlBS.DataSource = AllQualityControlDT;
             ExcessInvPackageLabelsBS.DataSource = new DataView(InvPackageLabelsDT);
             MissInvPackageLabelsBS.DataSource = MissInvPackageLabelsDT;
             InvPackageLabelsBS.DataSource = new DataView(InvPackageLabelsDT);
@@ -844,23 +866,39 @@ WHERE CellID IN (" + filter.Substring(0, filter.Length - 1) + ")";
             }
         }
 
-        public void ClearBindTables()
-        {
-            BindPackageLabelsDT.Clear();
-        }
-
         public bool GetBindPackagesLabels(int CabFurniturePackageID)
         {
-            DataTable dt = BindPackageLabelsDT.Clone();
+            BindPackageLabelsDT.Clear();
             string SelectCommand = @"SELECT CabFurniturePackageID, PackNumber, AddToStorageDateTime, RemoveFromStorageDateTime, QualityControlInDateTime, QualityControlOutDateTime, QualityControl, CabFurniturePackages.CellID, Cells.Name FROM CabFurniturePackages 
                 LEFT JOIN Cells ON CabFurniturePackages.CellID=Cells.CellID WHERE CabFurniturePackageID=" + CabFurniturePackageID;
             BindPackageLabelsDA = new SqlDataAdapter(SelectCommand, ConnectionStrings.StorageConnectionString);
             BindPackageLabelsDA.Fill(BindPackageLabelsDT);
-
-            foreach (DataRow dr in dt.Rows)
-                BindPackageLabelsDT.Rows.Add(dr.ItemArray);
-            dt.Dispose();
+            
             return BindPackageLabelsDT.Rows.Count > 0;
+        }
+
+        public bool GetQualityControl(int CabFurniturePackageID)
+        {
+            QualityControlDT.Clear();
+
+            string SelectCommand = $@"SELECT CabFurniturePackageID, PackNumber, AddToStorageDateTime, RemoveFromStorageDateTime, QualityControlInDateTime, QualityControlOutDateTime, QualityControl, CabFurniturePackages.CellID, Cells.Name FROM CabFurniturePackages 
+                LEFT JOIN Cells ON CabFurniturePackages.CellID=Cells.CellID WHERE CabFurniturePackageID={CabFurniturePackageID}";
+            QualityControlDA = new SqlDataAdapter(SelectCommand, ConnectionStrings.StorageConnectionString);
+            QualityControlDA.Fill(QualityControlDT);
+            
+            return QualityControlDT.Rows.Count > 0;
+        }
+        
+        public bool GetAllQualityControl()
+        {
+            AllQualityControlDT.Clear();
+
+            string SelectCommand = @"SELECT CabFurniturePackageID, PackNumber, AddToStorageDateTime, RemoveFromStorageDateTime, QualityControlInDateTime, QualityControlOutDateTime, QualityControl, CabFurniturePackages.CellID, Cells.Name FROM CabFurniturePackages 
+                LEFT JOIN Cells ON CabFurniturePackages.CellID=Cells.CellID WHERE QualityControl=0";
+            AllQualityControlDA = new SqlDataAdapter(SelectCommand, ConnectionStrings.StorageConnectionString);
+            AllQualityControlDA.Fill(AllQualityControlDT);
+            
+            return AllQualityControlDT.Rows.Count > 0;
         }
 
         public void GetExcessInvPackagesLabels(int workshopID)
@@ -1002,10 +1040,12 @@ WHERE CellID IN (" + filter.Substring(0, filter.Length - 1) + ")";
         {
             string filter = string.Empty;
             foreach (int item in packageIds)
-                filter += item.ToString() + ",";
+                filter += item + ",";
             if (filter.Length > 0)
-                filter = "SELECT CabFurniturePackageID, CellID, BindToCellUserID, BindToCellDateTime, AddToStorage, AddToStorageDateTime, AddToStorageUserID FROM CabFurniturePackages " +
-                    "WHERE CabFurniturePackageID IN (" + filter.Substring(0, filter.Length - 1) + ")";
+                filter = $@"SELECT CompleteClientID, CompleteMegaOrderID, CompleteStorage, CompleteUserID, CompleteDateTime, 
+CabFurniturePackageID, CellID, BindToCellUserID, BindToCellDateTime, AddToStorage, AddToStorageDateTime, AddToStorageUserID,
+QualityControlOutUserID, QualityControlOutDateTime, QualityControl FROM CabFurniturePackages 
+WHERE CabFurniturePackageID IN ({filter.Substring(0, filter.Length - 1)})";
 
             using (SqlDataAdapter DA = new SqlDataAdapter(filter, ConnectionStrings.StorageConnectionString))
             {
@@ -1019,7 +1059,18 @@ WHERE CellID IN (" + filter.Substring(0, filter.Length - 1) + ")";
 
                             for (int i = 0; i < DT.Rows.Count; i++)
                             {
+                                if (Convert.ToInt32(DT.Rows[i]["QualityControl"]) == 0) // если упаковка находится на ОТК, то принимаем её с ОТК
+                                {
+                                    DT.Rows[i]["QualityControl"] = 1;
+                                    DT.Rows[i]["QualityControlOutDateTime"] = dateTime;
+                                    DT.Rows[i]["QualityControlOutUserID"] = Security.CurrentUserID;
+                                }
                                 DT.Rows[i]["CellID"] = cellID;
+                                DT.Rows[i]["CompleteClientID"] = DBNull.Value;
+                                DT.Rows[i]["CompleteMegaOrderID"] = DBNull.Value;
+                                DT.Rows[i]["CompleteStorage"] = false;
+                                DT.Rows[i]["CompleteUserID"] = DBNull.Value;
+                                DT.Rows[i]["CompleteDateTime"] = DBNull.Value;
                                 DT.Rows[i]["BindToCellUserID"] = Security.CurrentUserID;
                                 DT.Rows[i]["BindToCellDateTime"] = dateTime;
                                 DT.Rows[i]["AddToStorage"] = 1;
@@ -1028,6 +1079,68 @@ WHERE CellID IN (" + filter.Substring(0, filter.Length - 1) + ")";
                             }
                             DA.Update(DT);
                         }
+                    }
+                }
+            }
+        }
+
+        public void QualityControlIn(int[] packageIds)
+        {
+            string filter = string.Empty;
+            foreach (int item in packageIds)
+                filter += item.ToString() + ",";
+            if (filter.Length > 0)
+                filter = "SELECT CabFurniturePackageID, QualityControlInUserID, QualityControlInDateTime, QualityControl FROM CabFurniturePackages " +
+                    "WHERE CabFurniturePackageID IN (" + filter.Substring(0, filter.Length - 1) + ")";
+
+            using (SqlDataAdapter da = new SqlDataAdapter(filter, ConnectionStrings.StorageConnectionString))
+            {
+                using (new SqlCommandBuilder(da))
+                {
+                    using (DataTable dt = new DataTable())
+                    {
+                        if (da.Fill(dt) <= 0) return;
+
+                        DateTime dateTime = Security.GetCurrentDate();
+
+                        for (int i = 0; i < dt.Rows.Count; i++)
+                        {
+                            dt.Rows[i]["QualityControlInDateTime"] = dateTime;
+                            dt.Rows[i]["QualityControlInUserID"] = Security.CurrentUserID;
+                            dt.Rows[i]["QualityControl"] = 0;
+                        }
+                        da.Update(dt);
+                    }
+                }
+            }
+        }
+        
+        public void QualityControlOut(int[] packageIds)
+        {
+            string filter = string.Empty;
+            foreach (int item in packageIds)
+                filter += item.ToString() + ",";
+            if (filter.Length > 0)
+                filter = "SELECT CabFurniturePackageID, QualityControlOutUserID, QualityControlOutDateTime, QualityControl FROM CabFurniturePackages " +
+                    "WHERE CabFurniturePackageID IN (" + filter.Substring(0, filter.Length - 1) + ")";
+
+            using (SqlDataAdapter da = new SqlDataAdapter(filter, ConnectionStrings.StorageConnectionString))
+            {
+                using (new SqlCommandBuilder(da))
+                {
+                    using (DataTable dt = new DataTable())
+                    {
+                        if (da.Fill(dt) <= 0) return;
+
+                        DateTime dateTime = Security.GetCurrentDate();
+
+                        for (int i = 0; i < dt.Rows.Count; i++)
+                        {
+                            dt.Rows[i]["QualityControlOutDateTime"] = dateTime;
+                            dt.Rows[i]["QualityControlOutUserID"] = Security.CurrentUserID;
+                            dt.Rows[i]["QualityControl"] = 1;
+                        }
+                        da.Update(dt);
                     }
                 }
             }
@@ -1124,7 +1237,9 @@ WHERE CellID IN (" + filter.Substring(0, filter.Length - 1) + ")";
             NotScanedPackageLabelsDA = new SqlDataAdapter(SelectCommand, ConnectionStrings.StorageConnectionString);
             NotScanedPackageLabelsDA.Fill(NotScanedPackageLabelsDT);
             NotScanedPackageLabelsDT.Columns.Add(new DataColumn("Index", Type.GetType("System.Int32")));
+            NotScanedPackageLabelsDT.Columns.Add(new DataColumn("CabFurniturePackageID", Type.GetType("System.Int32")));
             NotScanedPackageLabelsDT.Columns.Add(new DataColumn("Scan", Type.GetType("System.Boolean")));
+            NotScanedPackageLabelsDT.Columns["Scan"].DefaultValue = false;
 
             AllScanedPackageLabelsDT = NotScanedPackageLabelsDT.Clone();
 
@@ -1135,11 +1250,16 @@ WHERE CellID IN (" + filter.Substring(0, filter.Length - 1) + ")";
             ScanedPackageDetailsDA = new SqlDataAdapter(SelectCommand, ConnectionStrings.StorageConnectionString);
             ScanedPackageDetailsDA.Fill(ScanedPackageDetailsDT);
 
-            SelectCommand = @"SELECT TOP 0 C.PackNumber, C.TechStoreSubGroupID, C.TechStoreID AS CTechStoreID, C.CoverID, C.PatinaID, C.InsetColorID,
+            SelectCommand = @"SELECT TOP 0 C.PackNumber, C.MainOrderID, C.TechStoreSubGroupID, C.TechStoreID AS CTechStoreID, C.CoverID, C.PatinaID, C.InsetColorID,
                 CabFurnitureComplementDetails.* FROM CabFurnitureComplementDetails 
                 INNER JOIN CabFurnitureComplements AS C ON CabFurnitureComplementDetails.CabFurnitureComplementID=C.CabFurnitureComplementID";
-            NotScanedPackageDetailsDA = new SqlDataAdapter(SelectCommand, ConnectionStrings.StorageConnectionString);
-            NotScanedPackageDetailsDA.Fill(NotScanedPackageDetailsDT);
+            //NotScanedPackageDetailsDA = new SqlDataAdapter(SelectCommand, ConnectionStrings.StorageConnectionString);
+            //NotScanedPackageDetailsDA.Fill(NotScanedPackageDetailsDT);
+
+            NotScanedPackageDetailsDT = GetDataTableByAdapter(SelectCommand);
+            NotScanedPackageDetailsDT.Columns.Add(new DataColumn("Scan", Type.GetType("System.Boolean")));
+            NotScanedPackageDetailsDT.Columns.Add(new DataColumn("CabFurniturePackageID", Type.GetType("System.Int32")));
+            NotScanedPackageDetailsDT.Columns["Scan"].DefaultValue = false;
 
             AllScanedPackageDetailsDT = NotScanedPackageDetailsDT.Clone();
 
@@ -1163,26 +1283,83 @@ WHERE CellID IN (" + filter.Substring(0, filter.Length - 1) + ")";
             AllScanedPackageDetailsDT.Clear();
         }
 
-        public bool GetPackagesLabels(int[] MegaOrders)
+        public DataTable GetDataTableByAdapter(string query)
         {
-            string SelectCommand = @"SELECT C.PackNumber, C.TechStoreSubGroupID, C.TechStoreID AS CTechStoreID, C.CoverID, C.PatinaID, C.InsetColorID,
-                CabFurnitureComplementDetails.* FROM CabFurnitureComplementDetails 
+            DataTable dt = new DataTable();
+            using (SqlConnection sqlConn = new SqlConnection(ConnectionStrings.StorageConnectionString))
+            using (SqlCommand cmd = new SqlCommand(query, sqlConn))
+            {
+                DateTime start = DateTime.Now;
+                sqlConn.Open();
+                new SqlDataAdapter(query, sqlConn).Fill(dt);
+                TimeSpan ts = DateTime.Now.Subtract(start);
+                System.Diagnostics.Trace.Write("Time Elapsed in Adapter: " + ts.TotalMilliseconds);
+            }
+
+            return dt;
+        }
+
+        public DataTable GetDataTableFromDataReader(IDataReader dataReader)
+        {
+            DataTable schemaTable = dataReader.GetSchemaTable();
+            DataTable resultTable = new DataTable();
+
+            foreach (DataRow dataRow in schemaTable.Rows)
+            {
+                DataColumn dataColumn = new DataColumn();
+                dataColumn.ColumnName = dataRow["ColumnName"].ToString();
+                dataColumn.DataType = Type.GetType(dataRow["DataType"].ToString());
+                dataColumn.ReadOnly = (bool)dataRow["IsReadOnly"];
+                dataColumn.AutoIncrement = (bool)dataRow["IsAutoIncrement"];
+                dataColumn.Unique = (bool)dataRow["IsUnique"];
+
+                resultTable.Columns.Add(dataColumn);
+            }
+
+            while (dataReader.Read())
+            {
+                DataRow dataRow = resultTable.NewRow();
+                for (int i = 0; i < resultTable.Columns.Count - 1; i++)
+                {
+                    dataRow[i] = dataReader[i];
+                }
+                resultTable.Rows.Add(dataRow);
+            }
+
+            return resultTable;
+        }
+
+        public bool GetPackagesLabels(int MegaOrderID)
+        {
+            string SelectCommand = @"SELECT C.PackNumber, C.MainOrderID, C.TechStoreSubGroupID, C.TechStoreID AS CTechStoreID, C.CoverID, C.PatinaID, C.InsetColorID,
+                CabFurnitureComplementDetails.*, 0 as Scan, NULL as CabFurniturePackageID FROM CabFurnitureComplementDetails 
                 INNER JOIN CabFurnitureComplements AS C ON CabFurnitureComplementDetails.CabFurnitureComplementID=C.CabFurnitureComplementID
-                WHERE MainOrderID IN (SELECT MainOrderID FROM infiniu2_marketingorders.dbo.MainOrders WHERE MegaOrderID IN (" + string.Join(",", MegaOrders) + "))";
-            NotScanedPackageDetailsDA = new SqlDataAdapter(SelectCommand, ConnectionStrings.StorageConnectionString);
-            NotScanedPackageDetailsDA.Fill(NotScanedPackageDetailsDT);
+                WHERE MainOrderID IN (SELECT MainOrderID FROM infiniu2_marketingorders.dbo.MainOrders WHERE MegaOrderID = " + MegaOrderID + ")";
+            //NotScanedPackageDetailsDA = new SqlDataAdapter(SelectCommand, ConnectionStrings.StorageConnectionString);
+            //NotScanedPackageDetailsDA.Fill(NotScanedPackageDetailsDT);
+            NotScanedPackageDetailsDT = GetDataTableByAdapter(SelectCommand);
+            //NotScanedPackageDetailsDT.Columns.Add(new DataColumn("Scan", Type.GetType("System.Boolean")));
+            //NotScanedPackageDetailsDT.Columns.Add(new DataColumn("CabFurniturePackageID", Type.GetType("System.Int32")));
+            //NotScanedPackageDetailsDT.Columns["Scan"].DefaultValue = false;
+
+            //using (SqlConnection sqlConn = new SqlConnection(ConnectionStrings.StorageConnectionString))
+            //using (SqlCommand cmd = new SqlCommand(SelectCommand, sqlConn))
+            //{
+            //    sqlConn.Open();
+            //    NotScanedPackageDetailsDT.Load(cmd.ExecuteReader());
+            //}
 
             NotScanedPackageLabelsDT.Clear();
             DataTable dt = NotScanedPackageLabelsDT.Clone();
             SelectCommand = @"SELECT CabFurnitureComplementID, TechCatalogOperationsDetailID, TechStoreSubGroupID, TechStoreID, 
 CoverID, PatinaID, InsetColorID, PackNumber, MainOrderID, Notes FROM CabFurnitureComplements 
-WHERE MainOrderID IN (SELECT MainOrderID FROM infiniu2_marketingorders.dbo.MainOrders WHERE MegaOrderID IN (" + string.Join(",", MegaOrders) + "))";
+WHERE MainOrderID IN (SELECT MainOrderID FROM infiniu2_marketingorders.dbo.MainOrders WHERE MegaOrderID =" + MegaOrderID + ")";
             NotScanedPackageLabelsDA = new SqlDataAdapter(SelectCommand, ConnectionStrings.StorageConnectionString);
             NotScanedPackageLabelsDA.Fill(dt);
             
             for (int i = 0; i < dt.Rows.Count; i++)
             {
-                dt.Rows[i]["Scan"] = 0;
+                //dt.Rows[i]["Scan"] = 0;
                 dt.Rows[i]["Index"] = i + 1;
             }
 
@@ -1194,18 +1371,24 @@ WHERE MainOrderID IN (SELECT MainOrderID FROM infiniu2_marketingorders.dbo.MainO
             return NotScanedPackageLabelsDT.Rows.Count > 0;
         }
 
-        public bool GetPackagesLabels(int ClientID, int OrderNumber)
+        public bool GetPackagesLabels(int ClientID, int MegaOrderID)
         {
-            string SelectCommand = @"SELECT C.PackNumber, C.TechStoreSubGroupID, C.TechStoreID AS CTechStoreID, C.CoverID, C.PatinaID, C.InsetColorID,
-                CabFurnitureComplementDetails.* FROM CabFurnitureComplementDetails 
+            string SelectCommand = @"SELECT C.PackNumber, C.MainOrderID, C.TechStoreSubGroupID, C.TechStoreID AS CTechStoreID, C.CoverID, C.PatinaID, C.InsetColorID,
+                CabFurnitureComplementDetails.*, 0 as Scan, NULL as CabFurniturePackageID FROM CabFurnitureComplementDetails 
                 INNER JOIN CabFurnitureComplements AS C ON CabFurnitureComplementDetails.CabFurnitureComplementID=C.CabFurnitureComplementID
-                WHERE ClientID=" + ClientID + " AND OrderNumber=" + OrderNumber;
+                WHERE ClientID=" + ClientID + " AND MegaOrderID=" + MegaOrderID;
             NotScanedPackageDetailsDA = new SqlDataAdapter(SelectCommand, ConnectionStrings.StorageConnectionString);
             NotScanedPackageDetailsDA.Fill(NotScanedPackageDetailsDT);
-            
+
+            for (int i = 0; i < NotScanedPackageDetailsDT.Rows.Count; i++)
+            {
+                NotScanedPackageDetailsDT.Rows[i]["Scan"] = 0;
+            }
+
             NotScanedPackageLabelsDT.Clear();
             DataTable dt = NotScanedPackageLabelsDT.Clone();
-            SelectCommand = @"SELECT CabFurnitureComplementID, TechCatalogOperationsDetailID, TechStoreSubGroupID, TechStoreID, CoverID, PatinaID, InsetColorID, PackNumber, MainOrderID, Notes FROM CabFurnitureComplements WHERE ClientID=" + ClientID + " AND OrderNumber=" + OrderNumber;
+            SelectCommand = @"SELECT CabFurnitureComplementID, TechCatalogOperationsDetailID, TechStoreSubGroupID, TechStoreID, 
+CoverID, PatinaID, InsetColorID, PackNumber, MainOrderID, Notes FROM CabFurnitureComplements WHERE ClientID=" + ClientID + " AND MegaOrderID=" + MegaOrderID;
             NotScanedPackageLabelsDA = new SqlDataAdapter(SelectCommand, ConnectionStrings.StorageConnectionString);
             NotScanedPackageLabelsDA.Fill(dt);
             
@@ -1235,6 +1418,14 @@ WHERE MainOrderID IN (SELECT MainOrderID FROM infiniu2_marketingorders.dbo.MainO
             AllScanedPackageDetailsBS.MoveFirst();
         }
 
+        public DataTable ScanedPackagesToExport
+        {
+            get
+            {
+                return NotScanedPackageDetailsDT;
+            }
+        }
+
         /// <summary>
         /// Проверяет, сканировалась ли упаковка ранее
         /// </summary>
@@ -1253,6 +1444,13 @@ WHERE MainOrderID IN (SELECT MainOrderID FROM infiniu2_marketingorders.dbo.MainO
             ScanedPackagesDT.Rows.Add(NewRow);
         }
 
+        public class packInfo
+        {
+            public int CabFurnitureComplementID;
+            public bool Scan;
+            public int CabFurniturePackageID;
+        }
+
         /// <summary>
         /// Проверяет, соответствует ли упаковка продукту в заказе
         /// </summary>
@@ -1262,28 +1460,67 @@ WHERE MainOrderID IN (SELECT MainOrderID FROM infiniu2_marketingorders.dbo.MainO
         /// <param name="PatinaID"></param>
         /// <param name="InsetColorID"></param>
         /// <returns></returns>
-        public bool IsPackageMatch(int TechCatalogOperationsDetailID, int TechStoreID, int CoverID, int PatinaID, int InsetColorID)
+        public packInfo IsPackageMatch(int CabFurniturePackageID, int TechCatalogOperationsDetailID, int TechStoreID, int CoverID, int PatinaID, int InsetColorID)
         {
+            packInfo p = new packInfo();
             bool b = false;
-            DataRow[] rows = NotScanedPackageLabelsDT.Select("Scan=0" +
-                " AND TechCatalogOperationsDetailID=" + TechCatalogOperationsDetailID +
+            DataRow[] rows = NotScanedPackageLabelsDT.Select("Scan=0 AND TechCatalogOperationsDetailID=" + TechCatalogOperationsDetailID +
                 " AND TechStoreID=" + TechStoreID +
                 " AND CoverID=" + CoverID +
                 " AND PatinaID=" + PatinaID +
                 " AND InsetColorID=" + InsetColorID);
             if (rows.Count() > 0)
             {
-                foreach (DataRow dr in rows)
-                {
-                    foreach (DataRow dr1 in NotScanedPackageDetailsDT.Select("CabFurnitureComplementID=" + dr["CabFurnitureComplementID"]))
-                        AllScanedPackageDetailsDT.Rows.Add(dr1.ItemArray);
-                    AllScanedPackageLabelsDT.Rows.Add(dr.ItemArray);
-                }
+                int CabFurnitureComplementID = Convert.ToInt32(rows[0]["CabFurnitureComplementID"]);
+
+                //NotScanedPackageLabelsDT.Select("CabFurnitureComplementID=" + CabFurnitureComplementID)[0].SetField("Scan", 1);
+                //NotScanedPackageLabelsDT.Select("CabFurnitureComplementID=" + CabFurnitureComplementID)[0].SetField("CabFurniturePackageID", CabFurniturePackageID);
 
                 rows[0]["Scan"] = 1;
-                b = true;
+                rows[0]["CabFurniturePackageID"] = CabFurniturePackageID;
+                NotScanedPackageLabelsDT.AcceptChanges();
+                foreach (DataRow dr1 in NotScanedPackageDetailsDT.Select("CabFurnitureComplementID=" + CabFurnitureComplementID))
+                {
+                    dr1["Scan"] = 1;
+                    dr1["CabFurniturePackageID"] = CabFurniturePackageID;
+                    AllScanedPackageDetailsDT.Rows.Add(dr1.ItemArray);
+                }
+                AllScanedPackageLabelsDT.Rows.Add(rows[0].ItemArray);
+
+                //rows.AsEnumerable()
+                //    .Where(row => row.Field<Int64>("CabFurnitureComplementID") == CabFurnitureComplementID)
+                //    .ToList<DataRow>()
+                //    .ForEach(row => { row["CabFurniturePackageID"] = CabFurniturePackageID; row["Scan"] = 1; });
+
+                p.CabFurnitureComplementID = CabFurnitureComplementID;
+                p.Scan = true;
+                p.CabFurniturePackageID = CabFurniturePackageID;
+
             }
-            return b;
+
+            //foreach (DataRow dr in NotScanedPackageLabelsDT.Rows)
+            //{
+            //    if (Convert.ToInt32(dr["TechCatalogOperationsDetailID"]) == TechCatalogOperationsDetailID &&
+            //        Convert.ToInt32(dr["TechStoreID"]) == TechStoreID &&
+            //        Convert.ToInt32(dr["CoverID"]) == CoverID &&
+            //        Convert.ToInt32(dr["PatinaID"]) == PatinaID &&
+            //        Convert.ToInt32(dr["InsetColorID"]) == InsetColorID &&
+            //        Convert.ToBoolean(dr["Scan"]) == false)
+            //    {
+            //        int CabFurnitureComplementID = Convert.ToInt32(dr["CabFurnitureComplementID"]);
+
+            //        dr["Scan"] = 1;
+            //        dr["CabFurniturePackageID"] = CabFurniturePackageID;
+            //        foreach (DataRow dr1 in NotScanedPackageDetailsDT.Select("CabFurnitureComplementID=" + CabFurnitureComplementID))
+            //        {
+            //            AllScanedPackageDetailsDT.Rows.Add(dr1.ItemArray);
+            //        }
+            //        AllScanedPackageLabelsDT.Rows.Add(dr.ItemArray);
+            //        b = true;
+            //        break;
+            //    }
+            //}
+            return p;
         }
 
         /// <summary>
@@ -1295,7 +1532,9 @@ WHERE MainOrderID IN (SELECT MainOrderID FROM infiniu2_marketingorders.dbo.MainO
         {
             bool b = false;
 
-            string SelectCommand = @"SELECT CabFurniturePackageID, CabFurAssignmentID, CabFurAssignmentDetailID, TechCatalogOperationsDetailID, PackNumber, ClientName, TechStoreSubGroupID, TechStoreID, CoverID, PatinaID, InsetColorID, PackagesCount FROM CabFurniturePackages WHERE CabFurniturePackageID=" + CabFurniturePackageID;
+            string SelectCommand = @"SELECT CabFurniturePackageID, CabFurAssignmentID, CabFurAssignmentDetailID, 
+CompleteClientID, CompleteMegaOrderID,
+TechCatalogOperationsDetailID, PackNumber, ClientName, TechStoreSubGroupID, TechStoreID, CoverID, PatinaID, InsetColorID, PackagesCount FROM CabFurniturePackages WHERE CabFurniturePackageID=" + CabFurniturePackageID;
             using (SqlDataAdapter da = new SqlDataAdapter(SelectCommand, ConnectionStrings.StorageConnectionString))
             {
                 using (DataTable dt = new DataTable())
@@ -1308,7 +1547,9 @@ WHERE MainOrderID IN (SELECT MainOrderID FROM infiniu2_marketingorders.dbo.MainO
                         int PatinaID = Convert.ToInt32(dt.Rows[0]["PatinaID"]);
                         int InsetColorID = Convert.ToInt32(dt.Rows[0]["InsetColorID"]);
 
-                        if (IsPackageMatch(TechCatalogOperationsDetailID, TechStoreID, CoverID, PatinaID, InsetColorID))
+                        packInfo p = IsPackageMatch(CabFurniturePackageID, TechCatalogOperationsDetailID, TechStoreID, CoverID, PatinaID, InsetColorID);
+
+                        if (p.Scan)
                         {
                             iScanedPackages++;
                             b = true;
@@ -1351,16 +1592,48 @@ WHERE MainOrderID IN (SELECT MainOrderID FROM infiniu2_marketingorders.dbo.MainO
             return b;
         }
 
+        public void IsPackageCompleteToClient(int CompleteMegaOrderID)
+        {
+            string SelectCommand = @"SELECT * FROM CabFurniturePackages WHERE CompleteMegaOrderID=" + CompleteMegaOrderID;
+            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.StorageConnectionString))
+            {
+                using (DataTable dt = new DataTable())
+                {
+                    if (DA.Fill(dt) > 0)
+                    {
+                        for (int i = 0; i < dt.Rows.Count; i++)
+                        {
+                            int CabFurniturePackageID = Convert.ToInt32(dt.Rows[i]["CabFurniturePackageID"]);
+                            int TechCatalogOperationsDetailID = Convert.ToInt32(dt.Rows[i]["TechCatalogOperationsDetailID"]);
+                            int TechStoreID = Convert.ToInt32(dt.Rows[i]["TechStoreID"]);
+                            int CoverID = Convert.ToInt32(dt.Rows[i]["CoverID"]);
+                            int PatinaID = Convert.ToInt32(dt.Rows[i]["PatinaID"]);
+                            int InsetColorID = Convert.ToInt32(dt.Rows[i]["InsetColorID"]);
+
+                            packInfo p = IsPackageMatch(CabFurniturePackageID, TechCatalogOperationsDetailID, TechStoreID, CoverID, PatinaID, InsetColorID);
+                            if (p.Scan)
+                            {
+                                iScanedPackages++;
+                                AddToScaned(CabFurniturePackageID);
+                                //NotScanedPackageLabelsDT.Select("CabFurnitureComplementID=" + p.CabFurnitureComplementID)[0].SetField("Scan", p.Scan);
+                                //NotScanedPackageLabelsDT.Select("CabFurnitureComplementID=" + p.CabFurnitureComplementID)[0].SetField("CabFurniturePackageID", p.CabFurniturePackageID);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         /// <summary>
         /// упаковка собрана и готова к отгрузке
         /// </summary>
-        public void AssemblePackages(int CompleteClientID)
+        public void AssemblePackages(int CompleteClientID, int CompleteMegaOrderID)
         {
             string filter = string.Empty;
             foreach (DataRow item in ScanedPackagesDT.Rows)
                 filter += item["CabFurniturePackageID"].ToString() + ",";
             if (filter.Length > 0)
-                filter = "SELECT CellID, CabFurniturePackageID, CompleteStorage, CompleteClientID, CompleteUserID, CompleteDateTime FROM CabFurniturePackages " +
+                filter = "SELECT CellID, CabFurniturePackageID, CompleteStorage, CompleteClientID, CompleteMegaOrderID, CompleteUserID, CompleteDateTime FROM CabFurniturePackages " +
                     "WHERE CabFurniturePackageID IN (" + filter.Substring(0, filter.Length - 1) + ")";
 
             using (SqlDataAdapter DA = new SqlDataAdapter(filter, ConnectionStrings.StorageConnectionString))
@@ -1377,9 +1650,46 @@ WHERE MainOrderID IN (SELECT MainOrderID FROM infiniu2_marketingorders.dbo.MainO
                             {
                                 DT.Rows[i]["CellID"] = -1;
                                 DT.Rows[i]["CompleteClientID"] = CompleteClientID;
+                                DT.Rows[i]["CompleteMegaOrderID"] = CompleteMegaOrderID;
                                 DT.Rows[i]["CompleteStorage"] = 1;
                                 DT.Rows[i]["CompleteDateTime"] = dateTime;
                                 DT.Rows[i]["CompleteUserID"] = Security.CurrentUserID;
+                            }
+                            DA.Update(DT);
+                        }
+                    }
+                }
+            }
+        }
+
+        public void FF()
+        {
+            string filter1 = "SELECT CabFurnitureComplementID, MegaOrderID, MainOrderID FROM CabFurnitureComplements";
+            string filter2 = "SELECT distinct MainOrderID, MegaOrderID FROM infiniu2_marketingorders.dbo.NewMainOrders";
+
+            DataTable dt = new DataTable();
+
+            using (SqlDataAdapter DA = new SqlDataAdapter(filter2, ConnectionStrings.MarketingOrdersConnectionString))
+            {
+                DA.Fill(dt);
+            }
+
+            using (SqlDataAdapter DA = new SqlDataAdapter(filter1, ConnectionStrings.StorageConnectionString))
+            {
+                using (new SqlCommandBuilder(DA))
+                {
+                    using (DataTable DT = new DataTable())
+                    {
+                        if (DA.Fill(DT) > 0)
+                        {
+                            for (int i = 0; i < DT.Rows.Count; i++)
+                            {
+                                int MainOrderID = Convert.ToInt32(DT.Rows[i]["MainOrderID"]);
+                                int MegaOrderID = -1;
+                                DataRow[] rows = dt.Select("MainOrderID=" + MainOrderID);
+                                if (rows.Any())
+                                    MegaOrderID = Convert.ToInt32(rows[0]["MegaOrderID"]);
+                                DT.Rows[i]["MegaOrderID"] = MegaOrderID;
                             }
                             DA.Update(DT);
                         }
@@ -1397,6 +1707,7 @@ WHERE MainOrderID IN (SELECT MainOrderID FROM infiniu2_marketingorders.dbo.MainO
         DataTable AllMainOrdersDecorWeightDT;
         DataTable MegaOrdersDT;
         DataTable AssembleDatesDT;
+        DataTable AllMainOrdersDT;
         DataTable MainOrdersDT;
 
         DataTable CabFurOrdersDataTable;
@@ -1423,6 +1734,7 @@ WHERE MainOrderID IN (SELECT MainOrderID FROM infiniu2_marketingorders.dbo.MainO
         {
             CabFurOrdersDataTable = new DataTable();
             AllCabFurniturePackages = new DataTable();
+            AllMainOrdersDT = new DataTable();
 
             CabFurniturePackages = new DataTable();
             CabFurniturePackages.Columns.Add(new DataColumn(("CabFurniturePackageID"), System.Type.GetType("System.Int32")));
@@ -1626,7 +1938,19 @@ WHERE MainOrderID IN (SELECT MainOrderID FROM infiniu2_marketingorders.dbo.MainO
                 CabFurOrdersDataTable.Clear();
                 DA.Fill(CabFurOrdersDataTable);
             }
+            FilterMainOrders(MegaOrders);
             return CabFurOrdersDataTable.Rows.Count > 0;
+        }
+        
+        public bool FilterMainOrders(int[] MegaOrders)
+        {
+            string SelectCommand = @"SELECT MainOrderID, MegaOrderID FROM MainOrders WHERE MegaOrderID IN (" + string.Join(",", MegaOrders) + ") ORDER by MainOrderID";
+            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
+            {
+                AllMainOrdersDT.Clear();
+                DA.Fill(AllMainOrdersDT);
+            }
+            return AllMainOrdersDT.Rows.Count > 0;
         }
 
         private bool IsPackageMatch(int ClientID, int TechCatalogOperationsDetailID, int TechStoreID, int CoverID, int PatinaID, int InsetColorID)
@@ -1803,67 +2127,108 @@ WHERE MainOrderID IN (SELECT MainOrderID FROM infiniu2_marketingorders.dbo.MainO
         {
             int PackedCount = 0;
             int AllCount = 0;
+            DataRow[] mRows = AllMainOrdersDT.Select("MegaOrderID=" + MegaOrderID);
 
-            string SelectCommand = @"SELECT DISTINCT MainOrderID FROM MainOrders WHERE MegaOrderID = " + MegaOrderID;
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
+            for (int i = 0; i < mRows.Length; i++)
             {
-                using (DataTable DT = new DataTable())
+                int MainOrderID = Convert.ToInt32(mRows[i]["MainOrderID"]);
+
+                //DataTable dt = new DataTable();
+                //using (DataView DV = new DataView(CabFurOrdersDataTable, "MainOrderID = " + MainOrderID, string.Empty, DataViewRowState.CurrentRows))
+                //{
+                //    dt = DV.ToTable(true, new string[] { "CabFurnitureComplementID" });
+                //}
+
+                System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+                sw.Start();
+                //CabFurOrdersDataTable.DefaultView.RowFilter = "MainOrderID = " + MainOrderID;
+                //dt = CabFurOrdersDataTable.DefaultView.ToTable(true, "CabFurnitureComplementID");
+
+                sw.Stop();
+                double G1 = sw.Elapsed.TotalMilliseconds;
+                sw.Restart();
+                List<Int64> distCabFurnitureComplementIDs = CabFurOrdersDataTable.AsEnumerable()
+         .Where(r => r.Field<Int64>("MainOrderID") == MainOrderID) // filter rows by date
+         .Select(r => r.Field<Int64>("CabFurnitureComplementID")) // select only wellbore string value
+         .Distinct() // take only unique items
+         .ToList();
+
+                sw.Stop();
+                double G2 = sw.Elapsed.TotalMilliseconds;
+
+                //if (dt.Rows.Count > 0)
+                //{
+                //    int CabFurnitureComplementID = Convert.ToInt32(dt.Rows[0]["CabFurnitureComplementID"]);
+                //    DataRow[] r = CabFurOrdersDataTable.Select("CabFurnitureComplementID=" + CabFurnitureComplementID);
+                //    int TechCatalogOperationsDetailID = Convert.ToInt32(r[0]["TechCatalogOperationsDetailID"]);
+                //    if (IsPackageMatch(ClientID, Convert.ToInt32(r[0]["TechCatalogOperationsDetailID"]),
+                //        Convert.ToInt32(r[0]["CTechStoreID"]),
+                //        Convert.ToInt32(r[0]["CoverID"]),
+                //        Convert.ToInt32(r[0]["PatinaID"]),
+                //        Convert.ToInt32(r[0]["InsetColorID"])))
+                //        PackedCount++;
+
+                //    for (int j = 1; j < dt.Rows.Count; j++)
+                //    {
+                //        if (Convert.ToInt32(dt.Rows[j]["CabFurnitureComplementID"]) != CabFurnitureComplementID)
+                //        {
+                //            CabFurnitureComplementID = Convert.ToInt32(dt.Rows[j]["CabFurnitureComplementID"]);
+                //            r = CabFurOrdersDataTable.Select("CabFurnitureComplementID=" + CabFurnitureComplementID);
+
+                //            TechCatalogOperationsDetailID = Convert.ToInt32(r[0]["TechCatalogOperationsDetailID"]);
+                //            int TechStoreID = Convert.ToInt32(r[0]["CTechStoreID"]);
+                //            int CoverID = Convert.ToInt32(r[0]["CoverID"]);
+                //            int PatinaID = Convert.ToInt32(r[0]["PatinaID"]);
+                //            int InsetColorID = Convert.ToInt32(r[0]["InsetColorID"]);
+
+                //            bool b = IsPackageMatch(ClientID, TechCatalogOperationsDetailID, TechStoreID, CoverID, PatinaID, InsetColorID);
+                //            if (b)
+                //                PackedCount++;
+                //        }
+                //    }
+                //}
+                //AllCount += dt.Rows.Count;
+
+                if (distCabFurnitureComplementIDs.Count > 0)
                 {
-                    if (DA.Fill(DT) > 0)
+                    int CabFurnitureComplementID = Convert.ToInt32(distCabFurnitureComplementIDs[0]);
+                    DataRow[] r = CabFurOrdersDataTable.Select("CabFurnitureComplementID=" + CabFurnitureComplementID);
+                    int TechCatalogOperationsDetailID = Convert.ToInt32(r[0]["TechCatalogOperationsDetailID"]);
+                    if (IsPackageMatch(ClientID, Convert.ToInt32(r[0]["TechCatalogOperationsDetailID"]),
+                        Convert.ToInt32(r[0]["CTechStoreID"]),
+                        Convert.ToInt32(r[0]["CoverID"]),
+                        Convert.ToInt32(r[0]["PatinaID"]),
+                        Convert.ToInt32(r[0]["InsetColorID"])))
+                        PackedCount++;
+
+                    for (int j = 1; j < distCabFurnitureComplementIDs.Count; j++)
                     {
-                        for (int i = 0; i < DT.Rows.Count; i++)
+                        if (distCabFurnitureComplementIDs[j] != CabFurnitureComplementID)
                         {
+                            CabFurnitureComplementID = Convert.ToInt32(distCabFurnitureComplementIDs[j]);
+                            r = CabFurOrdersDataTable.Select("CabFurnitureComplementID=" + CabFurnitureComplementID);
 
-                            int MainOrderID = Convert.ToInt32(DT.Rows[i]["MainOrderID"]);
+                            TechCatalogOperationsDetailID = Convert.ToInt32(r[0]["TechCatalogOperationsDetailID"]);
+                            int TechStoreID = Convert.ToInt32(r[0]["CTechStoreID"]);
+                            int CoverID = Convert.ToInt32(r[0]["CoverID"]);
+                            int PatinaID = Convert.ToInt32(r[0]["PatinaID"]);
+                            int InsetColorID = Convert.ToInt32(r[0]["InsetColorID"]);
 
-                            DataTable dt = new DataTable();
-                            using (DataView DV = new DataView(CabFurOrdersDataTable, "MainOrderID = " + MainOrderID, string.Empty, DataViewRowState.CurrentRows))
-                            {
-                                dt = DV.ToTable(true, new string[] { "CabFurnitureComplementID" });
-                            }
-                            if (dt.Rows.Count > 0)
-                            {
-                                int CabFurnitureComplementID = Convert.ToInt32(dt.Rows[0]["CabFurnitureComplementID"]);
-                                DataRow[] r = CabFurOrdersDataTable.Select("CabFurnitureComplementID=" + CabFurnitureComplementID);
-                                int TechCatalogOperationsDetailID = Convert.ToInt32(r[0]["TechCatalogOperationsDetailID"]);
-                                if (IsPackageMatch(ClientID, Convert.ToInt32(r[0]["TechCatalogOperationsDetailID"]),
-                                    Convert.ToInt32(r[0]["CTechStoreID"]),
-                                    Convert.ToInt32(r[0]["CoverID"]),
-                                    Convert.ToInt32(r[0]["PatinaID"]),
-                                    Convert.ToInt32(r[0]["InsetColorID"])))
-                                    PackedCount++;
-
-                                for (int j = 1; j < dt.Rows.Count; j++)
-                                {
-                                    if (Convert.ToInt32(dt.Rows[j]["CabFurnitureComplementID"]) != CabFurnitureComplementID)
-                                    {
-                                        CabFurnitureComplementID = Convert.ToInt32(dt.Rows[j]["CabFurnitureComplementID"]);
-                                        r = CabFurOrdersDataTable.Select("CabFurnitureComplementID=" + CabFurnitureComplementID);
-
-                                        TechCatalogOperationsDetailID = Convert.ToInt32(r[0]["TechCatalogOperationsDetailID"]);
-                                        int TechStoreID = Convert.ToInt32(r[0]["CTechStoreID"]);
-                                        int CoverID = Convert.ToInt32(r[0]["CoverID"]);
-                                        int PatinaID = Convert.ToInt32(r[0]["PatinaID"]);
-                                        int InsetColorID = Convert.ToInt32(r[0]["InsetColorID"]);
-
-                                        bool b = IsPackageMatch(ClientID, TechCatalogOperationsDetailID, TechStoreID, CoverID, PatinaID, InsetColorID);
-                                        if (b)
-                                            PackedCount++;
-                                    }
-                                }
-                            }
-                            AllCount += dt.Rows.Count;
-
-                            decimal PackProgressVal = 0;
-
-                            if (AllCount > 0)
-                                PackProgressVal = Convert.ToDecimal(Convert.ToDecimal(PackedCount) / Convert.ToDecimal(AllCount));
-
-                            decimal d1 = PackProgressVal * 100;
-                            decimal PackPercentage = Decimal.Round(d1, 1, MidpointRounding.AwayFromZero);
+                            bool b = IsPackageMatch(ClientID, TechCatalogOperationsDetailID, TechStoreID, CoverID, PatinaID, InsetColorID);
+                            if (b)
+                                PackedCount++;
                         }
                     }
                 }
+                AllCount += distCabFurnitureComplementIDs.Count;
+
+                decimal PackProgressVal = 0;
+
+                if (AllCount > 0)
+                    PackProgressVal = Convert.ToDecimal(Convert.ToDecimal(PackedCount) / Convert.ToDecimal(AllCount));
+
+                decimal d1 = PackProgressVal * 100;
+                decimal PackPercentage = Decimal.Round(d1, 1, MidpointRounding.AwayFromZero);
             }
             Tuple<int, int> tuple = new Tuple<int, int>(PackedCount, AllCount);
             return tuple;
@@ -1998,6 +2363,18 @@ WHERE MainOrderID IN (SELECT MainOrderID FROM infiniu2_marketingorders.dbo.MainO
             }
         }
 
+        public void UpdateAllCabFurniturePackages()
+        {
+            string SelectCommand = "SELECT CabFurniturePackages.*, Cells.Name FROM CabFurniturePackages" +
+                " LEFT JOIN Cells ON CabFurniturePackages.CellID=Cells.CellID" +
+                " WHERE CabFurniturePackages.CompleteStorage=1 ORDER BY AddToStorageDateTime";
+            AllCabFurniturePackages.Clear();
+            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.StorageConnectionString))
+            {
+                DA.Fill(AllCabFurniturePackages);
+            }
+        }
+
         public void UpdateAssembleDates(DateTime Date)
         {
             string SelectCommand = "SELECT DISTINCT PrepareDateTime, DateName FROM CabFurDispatch" +
@@ -2045,7 +2422,7 @@ WHERE MainOrderID IN (SELECT MainOrderID FROM infiniu2_marketingorders.dbo.MainO
             return false;
         }
 
-        public void FilterAssembleByDate(int CabFurDispatchID)
+        public void FilterAssembleByID(int CabFurDispatchID)
         {
             DataTable dt = MegaOrdersDT.Clone();
 

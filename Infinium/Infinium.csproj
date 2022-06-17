@@ -107,22 +107,22 @@
       <HintPath>..\..\gradusina\Infinium\bin\Debug\NLog.dll</HintPath>
     </Reference>
     <Reference Include="NPOI">
-      <HintPath>..\..\gradusina\Infinium\bin\Debug\NPOI.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\InfiniumAgent\NPOI.dll</HintPath>
     </Reference>
     <Reference Include="NPOI.DDF">
-      <HintPath>..\..\gradusina\Infinium\bin\Debug\NPOI.DDF.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\InfiniumAgent\NPOI.DDF.dll</HintPath>
     </Reference>
     <Reference Include="NPOI.HPSF">
-      <HintPath>..\..\gradusina\Infinium\bin\Debug\NPOI.HPSF.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\InfiniumAgent\NPOI.HPSF.dll</HintPath>
     </Reference>
     <Reference Include="NPOI.HSSF">
-      <HintPath>..\..\gradusina\Infinium\bin\Debug\NPOI.HSSF.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\InfiniumAgent\NPOI.HSSF.dll</HintPath>
     </Reference>
     <Reference Include="NPOI.POIFS">
-      <HintPath>..\..\gradusina\Infinium\bin\Debug\NPOI.POIFS.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\InfiniumAgent\NPOI.POIFS.dll</HintPath>
     </Reference>
     <Reference Include="NPOI.Util">
-      <HintPath>..\..\gradusina\Infinium\bin\Debug\NPOI.Util.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\InfiniumAgent\NPOI.Util.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -570,6 +570,18 @@
     <Compile Include="Modules\Admin\WorkTimeRegisterForm.designer.cs">
       <DependentUpon>WorkTimeRegisterForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Modules\CabFurnitureAssignments\AllQualityControlForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modules\CabFurnitureAssignments\AllQualityControlForm.designer.cs">
+      <DependentUpon>AllQualityControlForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\CabFurnitureAssignments\QualityControlForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modules\CabFurnitureAssignments\QualityControlForm.designer.cs">
+      <DependentUpon>QualityControlForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Modules\CabFurnitureAssignments\BindPackagesToCellForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -762,6 +774,12 @@
     </Compile>
     <Compile Include="Modules\DyeingAssignments\DyeingAssignmentsCreateForm.designer.cs">
       <DependentUpon>DyeingAssignmentsCreateForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\DyeingAssignments\CopyDyeingAssignmentsMainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modules\DyeingAssignments\CopyDyeingAssignmentsMainForm.designer.cs">
+      <DependentUpon>CopyDyeingAssignmentsMainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Modules\DyeingAssignments\DyeingAssignmentsMainForm.cs">
       <SubType>Form</SubType>
@@ -2211,6 +2229,12 @@
     <EmbeddedResource Include="Modules\Admin\WorkTimeRegisterForm.resx">
       <DependentUpon>WorkTimeRegisterForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Modules\CabFurnitureAssignments\AllQualityControlForm.resx">
+      <DependentUpon>AllQualityControlForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modules\CabFurnitureAssignments\QualityControlForm.resx">
+      <DependentUpon>QualityControlForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Modules\CabFurnitureAssignments\BindPackagesToCellForm.resx">
       <DependentUpon>BindPackagesToCellForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -2303,6 +2327,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Modules\DyeingAssignments\DyeingAssignmentsCreateForm.resx">
       <DependentUpon>DyeingAssignmentsCreateForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modules\DyeingAssignments\CopyDyeingAssignmentsMainForm.resx">
+      <DependentUpon>CopyDyeingAssignmentsMainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Modules\DyeingAssignments\DyeingAssignmentsMainForm.resx">
       <DependentUpon>DyeingAssignmentsMainForm.cs</DependentUpon>

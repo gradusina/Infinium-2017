@@ -2427,7 +2427,7 @@ namespace Infinium.Modules.WorkAssignments
                 WorkAssignmentID, BatchName);
 
             string FileName = WorkAssignmentID + " " + BatchName + "  Угол 45";
-            string tempFolder = @"\\192.168.1.6\Public\USERS_2016\_ДЕЙСТВУЮЩИЕ\ПРОИЗВОДСТВО\ПРОФИЛЬ\инфиниум\";
+            string tempFolder = @"\\192.168.1.6\Public\_ДЕЙСТВУЮЩИЕ\ПРОИЗВОДСТВО\ПРОФИЛЬ\инфиниум\";
             //string tempFolder = System.Environment.GetEnvironmentVariable("TEMP");
 
             string CurrentMonthName = DateTime.Now.ToString("MMMM");
@@ -7210,7 +7210,7 @@ namespace Infinium.Modules.WorkAssignments
 
         private void CombineComecFilenka(ref DataTable DestinationDT)
         {
-            string filter = @"TechnoProfileID<>-1 AND InsetTypeID IN (2069,2070,2071,2073,2075,2077,2233,3644,29043,29531)";
+            string filter = @"TechnoProfileID<>-1 AND InsetTypeID IN (2069,2070,2071,2073,2075,2077,2233,3644,29043,29531,41213)";
 
             DataTable DT = AntaliaOrdersDT.Clone();
             DataRow[] rows = AntaliaOrdersDT.Select(filter +
@@ -7531,7 +7531,7 @@ namespace Infinium.Modules.WorkAssignments
         /// <param name="IsBox"></param>
         private void CombineComecSimple(ref DataTable DestinationDT, bool IsBox)
         {
-            string filter = @"TechnoProfileID<>-1 AND InsetTypeID NOT IN (2069,2070,2071,2073,2075,2077,2233,3644,29043,29531) AND InsetTypeID NOT IN (860) AND InsetTypeID NOT IN (685,686,687,688,29470,29471)";
+            string filter = @"TechnoProfileID<>-1 AND InsetTypeID NOT IN (2069,2070,2071,2073,2075,2077,2233,3644,29043,29531,41213) AND InsetTypeID NOT IN (860) AND InsetTypeID NOT IN (685,686,687,688,29470,29471)";
 
             DataTable DT = AntaliaOrdersDT.Clone();
             DataRow[] rows = AntaliaOrdersDT.Select(filter);
@@ -7803,7 +7803,7 @@ namespace Infinium.Modules.WorkAssignments
 
         private void CombineRapidBoxes(ref DataTable DestinationDT)
         {
-            string filter = @"InsetTypeID NOT IN (2069,2070,2071,2073,2075,2077,2233,3644,29043,29531) AND InsetTypeID NOT IN (860) AND InsetTypeID NOT IN (685,686,687,688,29470,29471)";
+            string filter = @"InsetTypeID NOT IN (2069,2070,2071,2073,2075,2077,2233,3644,29043,29531,41213) AND InsetTypeID NOT IN (860) AND InsetTypeID NOT IN (685,686,687,688,29470,29471)";
             DataTable DT = AntaliaOrdersDT.Clone();
             DataRow[] rows = TechnoNOrdersDT.Select(filter +
                 " AND Height<=" + (Convert.ToInt32(FrontMargins.TechnoNWidth)) + " OR Width<=" + (Convert.ToInt32(FrontMargins.TechnoNWidth)));
@@ -7815,7 +7815,7 @@ namespace Infinium.Modules.WorkAssignments
 
         private void CombineRapidFilenka(ref DataTable DestinationDT)
         {
-            string filter = @"InsetTypeID IN (2069,2070,2071,2073,2075,2077,2233,3644,29043,29531)";
+            string filter = @"InsetTypeID IN (2069,2070,2071,2073,2075,2077,2233,3644,29043,29531,41213)";
 
             DataTable DT = AntaliaOrdersDT.Clone();
             DataRow[] rows = AntaliaOrdersDT.Select(filter +
@@ -8089,7 +8089,7 @@ namespace Infinium.Modules.WorkAssignments
 
         private void CombineRapidFilenkaBoxes(ref DataTable DestinationDT)
         {
-            string filter = @"InsetTypeID IN (2069,2070,2071,2073,2075,2077,2233,3644,29043,29531)";
+            string filter = @"InsetTypeID IN (2069,2070,2071,2073,2075,2077,2233,3644,29043,29531,41213)";
             DataTable DT = AntaliaOrdersDT.Clone();
             DataRow[] rows = AntaliaOrdersDT.Select(filter +
                 " AND (Height<=" + (Convert.ToInt32(FrontMargins.AntaliaMargin) + 100) + " OR Width<=" + (Convert.ToInt32(FrontMargins.AntaliaMargin) + 100) + ")");
@@ -8594,7 +8594,7 @@ namespace Infinium.Modules.WorkAssignments
         /// <param name="IsBox"></param>
         private void CombineRapidImpostSimple(ref DataTable DestinationDT, bool IsBox)
         {
-            string filter = @"TechnoProfileID<>-1 AND InsetTypeID NOT IN (2069,2070,2071,2073,2075,2077,2233,3644,29043,29531) AND InsetTypeID NOT IN (860) AND InsetTypeID NOT IN (685,686,687,688,29470,29471)";
+            string filter = @"TechnoProfileID<>-1 AND InsetTypeID NOT IN (2069,2070,2071,2073,2075,2077,2233,3644,29043,29531,41213) AND InsetTypeID NOT IN (860) AND InsetTypeID NOT IN (685,686,687,688,29470,29471)";
 
             DataTable DT = AntaliaOrdersDT.Clone();
             DataRow[] rows = AntaliaOrdersDT.Select(filter);
@@ -8898,7 +8898,7 @@ namespace Infinium.Modules.WorkAssignments
 
         private void CombineRapidSimple(ref DataTable DestinationDT, bool IsBox)
         {
-            string filter = @"InsetTypeID NOT IN (2069,2070,2071,2073,2075,2077,2233,3644,29043,29531) AND InsetTypeID NOT IN (860) AND InsetTypeID NOT IN (685,686,687,688,29470,29471)";
+            string filter = @"InsetTypeID NOT IN (2069,2070,2071,2073,2075,2077,2233,3644,29043,29531,41213) AND InsetTypeID NOT IN (860) AND InsetTypeID NOT IN (685,686,687,688,29470,29471)";
 
             DataTable DT = AntaliaOrdersDT.Clone();
             DataRow[] rows = AntaliaOrdersDT.Select(filter);
@@ -10469,7 +10469,7 @@ namespace Infinium.Modules.WorkAssignments
                 DA.Fill(PatinaDataTable);
             }
             PatinaRALDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM PatinaRAL WHERE Enabled=1",
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT PatinaRAL.*, Patina.Patina FROM PatinaRAL INNER JOIN Patina ON Patina.PatinaID=PatinaRAL.PatinaID WHERE PatinaRAL.Enabled=1",
                 ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(PatinaRALDataTable);
@@ -10478,7 +10478,7 @@ namespace Infinium.Modules.WorkAssignments
             {
                 DataRow NewRow = PatinaDataTable.NewRow();
                 NewRow["PatinaID"] = item["PatinaRALID"];
-                NewRow["PatinaName"] = item["PatinaRAL"];
+                NewRow["PatinaName"] = item["PatinaRAL"]; NewRow["Patina"] = item["Patina"];
                 NewRow["DisplayName"] = item["DisplayName"];
                 PatinaDataTable.Rows.Add(NewRow);
             }
@@ -11299,7 +11299,7 @@ namespace Infinium.Modules.WorkAssignments
             DataTable DT3 = new DataTable();
             DataTable DT4 = new DataTable();
 
-            using (DataView DV = new DataView(SourceDT, "InsetTypeID IN (2069,2070,2071,2073,2075,2077,2233,3644,29043,29531)", "InsetTypeID", DataViewRowState.CurrentRows))
+            using (DataView DV = new DataView(SourceDT, "InsetTypeID IN (2069,2070,2071,2073,2075,2077,2233,3644,29043,29531,41213)", "InsetTypeID", DataViewRowState.CurrentRows))
             {
                 DT1 = DV.ToTable(true, new string[] { "InsetTypeID" });
             }

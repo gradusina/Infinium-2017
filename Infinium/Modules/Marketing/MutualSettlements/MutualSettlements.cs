@@ -428,7 +428,9 @@ INNER JOIN ClientsManagers ON Clients.ManagerID=ClientsManagers.ManagerID WHERE 
                 {
                     CalendarTodayDate = DateTime.Now
                 };
-                Column.DefaultCellStyle.Format = "dd.MM.yyyy HH:mm";
+                Column.Format = DateTimePickerFormat.Custom;
+                Column.CustomFormat = "dd.MM.yyyy";
+                //Column.DefaultCellStyle.Format = "dd.MM.yyyy HH:mm";
                 Column.Checked = false;
                 Column.DataPropertyName = "DispatchDateTime";
                 Column.HeaderText = "Дата отгрузки";
@@ -448,10 +450,12 @@ INNER JOIN ClientsManagers ON Clients.ManagerID=ClientsManagers.ManagerID WHERE 
                 {
                     CalendarTodayDate = DateTime.Now
                 };
-                Column.DefaultCellStyle.Format = "dd.MM.yyyy HH:mm";
+                Column.Format = DateTimePickerFormat.Custom;
+                Column.CustomFormat = "dd.MM.yyyy";
+                //Column.DefaultCellStyle.Format = "dd-MM-yyyy";
                 Column.Checked = false;
                 Column.DataPropertyName = "InvoiceDateTime";
-                Column.HeaderText = "Дата счета";
+                Column.HeaderText = "Дата счёта";
                 Column.Name = "InvoiceDateTimeColumn";
                 Column.SortMode = DataGridViewColumnSortMode.Automatic;
                 Column.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
@@ -468,7 +472,9 @@ INNER JOIN ClientsManagers ON Clients.ManagerID=ClientsManagers.ManagerID WHERE 
                 {
                     CalendarTodayDate = DateTime.Now
                 };
-                Column.DefaultCellStyle.Format = "dd.MM.yyyy HH:mm";
+                Column.Format = DateTimePickerFormat.Custom;
+                Column.CustomFormat = "dd.MM.yyyy";
+                //Column.DefaultCellStyle.Format = "dd.MM.yyyy HH:mm";
                 Column.Checked = false;
                 Column.DataPropertyName = "IncomeDateTime";
                 Column.HeaderText = "Дата поступления";

@@ -846,7 +846,8 @@ namespace Infinium
                         bCanDirectorDiscount = true;
 
                     DBFReport = new InvoiceReportToDbf(FrontsCatalogOrder, DecorCatalogOrder);
-                    CurrencyForm = new CurrencyForm(this, ref OrdersManager, ref OrdersCalculate, ref DBFReport, ClientID, ClientName, bCanDirectorDiscount);
+                    CurrencyForm = new CurrencyForm(this, ref OrdersManager, ref OrdersCalculate, ref DBFReport, 
+                        ClientID, ClientName, bCanDirectorDiscount, RoleType == RoleTypes.Admin);
 
                     CurrencyForm.SetParameters(
                             Convert.ToInt32(((DataRowView)OrdersManager.MegaOrdersBindingSource.Current).Row["TransportType"]),
@@ -963,7 +964,8 @@ namespace Infinium
                 bCanDirectorDiscount = true;
 
             InvoiceReportToDbf DBFReport = new InvoiceReportToDbf(FrontsCatalogOrder, DecorCatalogOrder);
-            CurrencyForm = new CurrencyForm(this, ref OrdersManager, ref OrdersCalculate, ref DBFReport, ClientID, ClientName, bCanDirectorDiscount);
+            CurrencyForm = new CurrencyForm(this, ref OrdersManager, ref OrdersCalculate, ref DBFReport, 
+                ClientID, ClientName, bCanDirectorDiscount, RoleType == RoleTypes.Admin);
 
             CurrencyForm.SetParameters(
                     Convert.ToInt32(((DataRowView)OrdersManager.MegaOrdersBindingSource.Current).Row["TransportType"]),

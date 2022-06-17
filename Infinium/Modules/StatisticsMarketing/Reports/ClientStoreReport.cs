@@ -13,6 +13,8 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
 {
     public class ClientStoreReport
     {
+        private DataTable PatinaDataTable = null;
+        private DataTable PatinaRALDataTable = null;
         private DataTable ZOVClientsDataTable = null;
         private DataTable FrontsDT = null;
         private DataTable FrontsProfilDT = null;
@@ -25,6 +27,41 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
         {
             FrontsDT = new DataTable();
             DecorDT = new DataTable();
+            GetPatina();
+        }
+
+        private void GetPatina()
+        {
+            PatinaDataTable = new DataTable();
+            PatinaRALDataTable = new DataTable();
+            string SelectCommand = @"SELECT * FROM Patina";
+            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
+            {
+                DA.Fill(PatinaDataTable);
+            }
+            PatinaRALDataTable = new DataTable();
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT PatinaRAL.*, Patina.Patina FROM PatinaRAL INNER JOIN Patina ON Patina.PatinaID=PatinaRAL.PatinaID WHERE PatinaRAL.Enabled=1",
+                       ConnectionStrings.CatalogConnectionString))
+            {
+                DA.Fill(PatinaRALDataTable);
+            }
+            foreach (DataRow item in PatinaRALDataTable.Rows)
+            {
+                DataRow NewRow = PatinaDataTable.NewRow();
+                NewRow["PatinaID"] = item["PatinaRALID"];
+                NewRow["PatinaName"] = item["PatinaRAL"]; NewRow["Patina"] = item["Patina"];
+                NewRow["DisplayName"] = item["DisplayName"];
+                PatinaDataTable.Rows.Add(NewRow);
+            }
+        }
+
+        private string GetPatinaName(int PatinaID)
+        {
+            string PatinaName = string.Empty;
+            DataRow[] Rows = PatinaDataTable.Select("PatinaID = " + PatinaID);
+            if (Rows.Count() > 0)
+                PatinaName = Rows[0]["PatinaName"].ToString();
+            return PatinaName;
         }
 
         public void FillTables(DateTime date1, ArrayList MClients, ArrayList MClientGroups)
@@ -58,7 +95,7 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
             string SelectCommand = @"SELECT infiniu2_marketingreference.dbo.Clients.ClientName, dbo.MegaOrders.OrderNumber, Packages.PackingDateTime, dbo.PackageDetails.PackageID, dbo.PackageDetails.PackNumber, dbo.FrontsOrders.FrontsOrdersID,
                         dbo.PackageDetails.Count, FrontsOrders.Square*dbo.PackageDetails.Count/FrontsOrders.Count as Square, FrontsOrders.FactoryID,
                          infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, infiniu2_catalog.dbo.Measures.Measure, Fronts.TechStoreName, Colors.TechStoreName AS Expr35,
-                         InsetTypes.TechStoreName AS Expr36, InsetColors.TechStoreName AS Expr37, TechnoInsetTypes.TechStoreName AS Expr38, TechnoInsetColors.TechStoreName AS Expr1, ZOVClientID
+                         InsetTypes.TechStoreName AS Expr36, InsetColors.TechStoreName AS Expr37, TechnoInsetTypes.TechStoreName AS Expr38, TechnoInsetColors.TechStoreName AS Expr1, ZOVClientID, FrontsOrders.PatinaID
 FROM dbo.PackageDetails INNER JOIN
                          dbo.FrontsOrders ON dbo.PackageDetails.OrderID = dbo.FrontsOrders.FrontsOrdersID INNER JOIN
                          dbo.Packages ON dbo.PackageDetails.PackageID = dbo.Packages.PackageID " + Filter + @" LEFT OUTER JOIN
@@ -90,7 +127,7 @@ ORDER BY infiniu2_marketingreference.dbo.Clients.ClientName, dbo.MegaOrders.Orde
             Filter = " AND Packages.ProductType = 1 AND Packages.PackingDateTime <  '" + date1.ToString("yyyy-MM-dd") +
                 " 23:59:59' AND (DispatchDateTime IS NULL OR Packages.DispatchDateTime >= '" + date1.ToString("yyyy-MM-dd") + " 23:59:59')";
             SelectCommand = @"SELECT infiniu2_marketingreference.dbo.Clients.ClientName, dbo.MegaOrders.OrderNumber, Packages.PackingDateTime, dbo.PackageDetails.PackageID, dbo.PackageDetails.PackNumber, dbo.DecorOrders.DecorOrderID,
-                         DecorOrders.FactoryID, infiniu2_catalog.dbo.DecorConfig.AccountingName, infiniu2_catalog.dbo.DecorConfig.InvNumber, infiniu2_catalog.dbo.Measures.Measure, Fronts.TechStoreName, Colors.TechStoreName AS Expr35, dbo.DecorOrders.Length, dbo.DecorOrders.Height, dbo.DecorOrders.Width, dbo.PackageDetails.Count, ZOVClientID
+                         DecorOrders.FactoryID, infiniu2_catalog.dbo.DecorConfig.AccountingName, infiniu2_catalog.dbo.DecorConfig.InvNumber, infiniu2_catalog.dbo.Measures.Measure, Fronts.TechStoreName, Colors.TechStoreName AS Expr35, dbo.DecorOrders.Length, dbo.DecorOrders.Height, dbo.DecorOrders.Width, dbo.PackageDetails.Count, ZOVClientID, DecorOrders.PatinaID
 FROM dbo.PackageDetails INNER JOIN
                          dbo.DecorOrders ON dbo.PackageDetails.OrderID = dbo.DecorOrders.DecorOrderID INNER JOIN
                          dbo.Packages ON dbo.PackageDetails.PackageID = dbo.Packages.PackageID " + Filter + @" LEFT OUTER JOIN
@@ -317,6 +354,9 @@ ORDER BY infiniu2_marketingreference.dbo.Clients.ClientName, dbo.MegaOrders.Orde
                 Cell1.SetCellValue("Цвет наполнителя");
                 Cell1.CellStyle = SimpleHeaderCS;
                 Cell1 = sheet1.CreateRow(pos).CreateCell(ColIndex++);
+                Cell1.SetCellValue("Патина");
+                Cell1.CellStyle = SimpleHeaderCS;
+                Cell1 = sheet1.CreateRow(pos).CreateCell(ColIndex++);
                 Cell1.SetCellValue("Вставка-2");
                 Cell1.CellStyle = SimpleHeaderCS;
                 Cell1 = sheet1.CreateRow(pos).CreateCell(ColIndex++);
@@ -372,6 +412,9 @@ ORDER BY infiniu2_marketingreference.dbo.Clients.ClientName, dbo.MegaOrders.Orde
                     Cell1.CellStyle = SimpleCS;
                     Cell1 = sheet1.CreateRow(pos).CreateCell(ColIndex++);
                     Cell1.SetCellValue(FrontsProfilDT.Rows[i]["Expr37"].ToString());
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(ColIndex++);
+                    Cell1.SetCellValue(GetPatinaName(Convert.ToInt32(FrontsProfilDT.Rows[i]["PatinaID"])));
                     Cell1.CellStyle = SimpleCS;
                     Cell1 = sheet1.CreateRow(pos).CreateCell(ColIndex++);
                     Cell1.SetCellValue(FrontsProfilDT.Rows[i]["Expr38"].ToString());
@@ -442,6 +485,9 @@ ORDER BY infiniu2_marketingreference.dbo.Clients.ClientName, dbo.MegaOrders.Orde
                 Cell1.SetCellValue("Цвет наполнителя");
                 Cell1.CellStyle = SimpleHeaderCS;
                 Cell1 = sheet1.CreateRow(pos).CreateCell(ColIndex++);
+                Cell1.SetCellValue("Патина");
+                Cell1.CellStyle = SimpleHeaderCS;
+                Cell1 = sheet1.CreateRow(pos).CreateCell(ColIndex++);
                 Cell1.SetCellValue("Вставка-2");
                 Cell1.CellStyle = SimpleHeaderCS;
                 Cell1 = sheet1.CreateRow(pos).CreateCell(ColIndex++);
@@ -497,6 +543,9 @@ ORDER BY infiniu2_marketingreference.dbo.Clients.ClientName, dbo.MegaOrders.Orde
                     Cell1.CellStyle = SimpleCS;
                     Cell1 = sheet1.CreateRow(pos).CreateCell(ColIndex++);
                     Cell1.SetCellValue(FrontsTPSDT.Rows[i]["Expr37"].ToString());
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(ColIndex++);
+                    Cell1.SetCellValue(GetPatinaName(Convert.ToInt32(FrontsTPSDT.Rows[i]["PatinaID"])));
                     Cell1.CellStyle = SimpleCS;
                     Cell1 = sheet1.CreateRow(pos).CreateCell(ColIndex++);
                     Cell1.SetCellValue(FrontsTPSDT.Rows[i]["Expr38"].ToString());
@@ -562,6 +611,9 @@ ORDER BY infiniu2_marketingreference.dbo.Clients.ClientName, dbo.MegaOrders.Orde
                 Cell1.SetCellValue("Цвет");
                 Cell1.CellStyle = SimpleHeaderCS;
                 Cell1 = sheet1.CreateRow(pos).CreateCell(ColIndex++);
+                Cell1.SetCellValue("Патина");
+                Cell1.CellStyle = SimpleHeaderCS;
+                Cell1 = sheet1.CreateRow(pos).CreateCell(ColIndex++);
                 Cell1.SetCellValue("Длина");
                 Cell1.CellStyle = SimpleHeaderCS;
                 Cell1 = sheet1.CreateRow(pos).CreateCell(ColIndex++);
@@ -611,6 +663,9 @@ ORDER BY infiniu2_marketingreference.dbo.Clients.ClientName, dbo.MegaOrders.Orde
                     Cell1.CellStyle = SimpleCS;
                     Cell1 = sheet1.CreateRow(pos).CreateCell(ColIndex++);
                     Cell1.SetCellValue(DecorProfilDT.Rows[i]["Expr35"].ToString());
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(ColIndex++);
+                    Cell1.SetCellValue(GetPatinaName(Convert.ToInt32(DecorProfilDT.Rows[i]["PatinaID"])));
                     Cell1.CellStyle = SimpleCS;
                     Cell1 = sheet1.CreateRow(pos).CreateCell(ColIndex++);
                     Cell1.SetCellValue(Convert.ToInt32(DecorProfilDT.Rows[i]["Length"]));
@@ -675,6 +730,9 @@ ORDER BY infiniu2_marketingreference.dbo.Clients.ClientName, dbo.MegaOrders.Orde
                 Cell1.SetCellValue("Цвет");
                 Cell1.CellStyle = SimpleHeaderCS;
                 Cell1 = sheet1.CreateRow(pos).CreateCell(ColIndex++);
+                Cell1.SetCellValue("Патина");
+                Cell1.CellStyle = SimpleHeaderCS;
+                Cell1 = sheet1.CreateRow(pos).CreateCell(ColIndex++);
                 Cell1.SetCellValue("Длина");
                 Cell1.CellStyle = SimpleHeaderCS;
                 Cell1 = sheet1.CreateRow(pos).CreateCell(ColIndex++);
@@ -724,6 +782,9 @@ ORDER BY infiniu2_marketingreference.dbo.Clients.ClientName, dbo.MegaOrders.Orde
                     Cell1.CellStyle = SimpleCS;
                     Cell1 = sheet1.CreateRow(pos).CreateCell(ColIndex++);
                     Cell1.SetCellValue(DecorTPSDT.Rows[i]["Expr35"].ToString());
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(ColIndex++);
+                    Cell1.SetCellValue(GetPatinaName(Convert.ToInt32(DecorTPSDT.Rows[i]["PatinaID"])));
                     Cell1.CellStyle = SimpleCS;
                     Cell1 = sheet1.CreateRow(pos).CreateCell(ColIndex++);
                     Cell1.SetCellValue(Convert.ToInt32(DecorTPSDT.Rows[i]["Length"]));

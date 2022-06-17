@@ -238,7 +238,7 @@ namespace Infinium
             FrameColorsDataTable = ConstColorsDataTable.Copy();
             PatinaDataTable = ConstPatinaDataTable.Copy();
             PatinaRALDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM PatinaRAL WHERE Enabled=1",
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT PatinaRAL.*, Patina.Patina FROM PatinaRAL INNER JOIN Patina ON Patina.PatinaID=PatinaRAL.PatinaID WHERE PatinaRAL.Enabled=1",
                 ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(PatinaRALDataTable);
@@ -247,7 +247,7 @@ namespace Infinium
             {
                 DataRow NewRow = PatinaDataTable.NewRow();
                 NewRow["PatinaID"] = item["PatinaRALID"];
-                NewRow["PatinaName"] = item["PatinaRAL"];
+                NewRow["PatinaName"] = item["PatinaRAL"]; NewRow["Patina"] = item["Patina"];
                 NewRow["DisplayName"] = item["DisplayName"];
                 PatinaDataTable.Rows.Add(NewRow);
             }
@@ -455,7 +455,7 @@ namespace Infinium
                     {
                         DataRow NewRow = PatinaDataTable.NewRow();
                         NewRow["PatinaID"] = item["PatinaRALID"];
-                        NewRow["PatinaName"] = item["PatinaRAL"];
+                        NewRow["PatinaName"] = item["PatinaRAL"]; NewRow["Patina"] = item["Patina"];
                         NewRow["DisplayName"] = item["DisplayName"];
                         PatinaDataTable.Rows.Add(NewRow);
                     }
@@ -3591,7 +3591,7 @@ namespace Infinium
                 DA.Fill(ConstPatinaDataTable);
             }
             PatinaRALDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM PatinaRAL WHERE Enabled=1",
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT PatinaRAL.*, Patina.Patina FROM PatinaRAL INNER JOIN Patina ON Patina.PatinaID=PatinaRAL.PatinaID WHERE PatinaRAL.Enabled=1",
                 ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(PatinaRALDataTable);
@@ -3600,7 +3600,7 @@ namespace Infinium
             {
                 DataRow NewRow = ConstPatinaDataTable.NewRow();
                 NewRow["PatinaID"] = item["PatinaRALID"];
-                NewRow["PatinaName"] = item["PatinaRAL"];
+                NewRow["PatinaName"] = item["PatinaRAL"]; NewRow["Patina"] = item["Patina"];
                 NewRow["DisplayName"] = item["DisplayName"];
                 ConstPatinaDataTable.Rows.Add(NewRow);
             }
@@ -4300,7 +4300,7 @@ namespace Infinium
                     {
                         DataRow NewRow = ItemPatinaDataTable.NewRow();
                         NewRow["PatinaID"] = item["PatinaRALID"];
-                        NewRow["PatinaName"] = item["PatinaRAL"];
+                        NewRow["PatinaName"] = item["PatinaRAL"]; NewRow["Patina"] = item["Patina"];
                         NewRow["DisplayName"] = item["DisplayName"];
                         ItemPatinaDataTable.Rows.Add(NewRow);
                     }

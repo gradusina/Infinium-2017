@@ -331,7 +331,7 @@ namespace Infinium.Modules.Marketing.NewOrders
             using (DataTable DT = new DataTable())
             {
                 using (SqlDataAdapter DA = new SqlDataAdapter(@"SELECT * FROM ClientRates WHERE CAST(Date AS Date) <= 
-                    '" + ConfirmDateTime.ToString("yyyy-MM-dd") + "' AND ClientID = " + ClientID + " ORDER BY Date DESC",
+                    '" + ConfirmDateTime.ToString("yyyy-MM-dd") + " ' AND ClientID = " + ClientID + " ORDER BY Date DESC",
                     ConnectionStrings.MarketingReferenceConnectionString))
                 {
                     DA.Fill(DT);
@@ -813,7 +813,7 @@ namespace Infinium.Modules.Marketing.NewOrders
             //{
             //    DA.Fill(FrontsConfigDataTable);
             //}
-            FrontsConfigDataTable = TablesManager.FrontsConfigDataTable;
+            FrontsConfigDataTable = TablesManager.FrontsConfigDataTableAll;
 
             DecorConfigDataTable = new DataTable();
             //using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DecorConfig",

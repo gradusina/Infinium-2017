@@ -800,7 +800,7 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
                         MarketingCost = GetMarketingCost(Convert.ToInt32(Rows[r]["FrontConfigID"]));
                 }
                 //ФИЛЕНКА
-                filter = " AND InsetTypeID IN (2069,2070,2071,2073,2075,2077,2233,3644,29043,29531)";
+                filter = " AND InsetTypeID IN (2069,2070,2071,2073,2075,2077,2233,3644,29043,29531,41213)";
                 Rows = OrdersDataTable.Select("ColorID = " + Fronts.Rows[i]["ColorID"].ToString() +
                                               " AND PatinaID = " + Fronts.Rows[i]["PatinaID"].ToString() +
                                               " AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString() + " AND (Width <> -1)" + filter);
@@ -2113,7 +2113,7 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
                         MarketingCost = GetMarketingCost(Convert.ToInt32(Rows[r]["FrontConfigID"]));
                 }
                 //ФИЛЕНКА
-                filter = " AND InsetTypeID IN (2069,2070,2071,2073,2075,2077,2233,3644,29043,29531)";
+                filter = " AND InsetTypeID IN (2069,2070,2071,2073,2075,2077,2233,3644,29043,29531,41213)";
                 Rows = OrdersDataTable.Select("FrontID = " + Fronts.Rows[i]["FrontID"].ToString() + " AND (Width <> -1)" + filter);
                 if (Rows.Count() > 0) MarketingCost = GetMarketingCost(Convert.ToInt32(Rows[0]["FrontConfigID"]));
                 for (int r = 0; r < Rows.Count(); r++)
@@ -5586,7 +5586,7 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
                 DA.Fill(PatinaDataTable);
             }
             PatinaRALDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM PatinaRAL WHERE Enabled=1",
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT PatinaRAL.*, Patina.Patina FROM PatinaRAL INNER JOIN Patina ON Patina.PatinaID=PatinaRAL.PatinaID WHERE PatinaRAL.Enabled=1",
                 ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(PatinaRALDataTable);
@@ -5595,7 +5595,7 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
             {
                 DataRow NewRow = PatinaDataTable.NewRow();
                 NewRow["PatinaID"] = item["PatinaRALID"];
-                NewRow["PatinaName"] = item["PatinaRAL"];
+                NewRow["PatinaName"] = item["PatinaRAL"]; NewRow["Patina"] = item["Patina"];
                 NewRow["DisplayName"] = item["DisplayName"];
                 PatinaDataTable.Rows.Add(NewRow);
             }
@@ -10611,7 +10611,8 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
             ClearReport();
         }
 
-        public void CreateMarketingPackReport(DateTime date1, DateTime date2, bool IsSample, bool IsNotSample, string FileName, decimal Rate, ArrayList MClients, ArrayList MClientGroups)
+        public void CreateMarketingPackReport(DateTime date1, DateTime date2, bool IsSample, bool IsNotSample, string FileName, 
+            decimal Rate, ArrayList MClients, ArrayList MClientGroups)
         {
             ClearReport();
 
@@ -10810,7 +10811,9 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
 
             #endregion Create fonts and styles
 
-            HSSFSheet sheet1 = hssfworkbook.CreateSheet("Отчет Маркетинг");
+            string sheetName = "Отчет Маркетинг";
+
+            HSSFSheet sheet1 = hssfworkbook.CreateSheet(sheetName);
             sheet1.PrintSetup.PaperSize = (short)PaperSizeType.A4;
 
             sheet1.SetMargin(HSSFSheet.LeftMargin, (double).12);
@@ -10963,7 +10966,163 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
                     pos++;
                 }
             }
-            pos++;
+
+
+            sheetName = "Отчет Маркетинг (с кодами)";
+
+            HSSFSheet sheet2 = hssfworkbook.CreateSheet(sheetName);
+            sheet2.PrintSetup.PaperSize = (short)PaperSizeType.A4;
+
+            sheet2.SetMargin(HSSFSheet.LeftMargin, (double).12);
+            sheet2.SetMargin(HSSFSheet.RightMargin, (double).07);
+            sheet2.SetMargin(HSSFSheet.TopMargin, (double).20);
+            sheet2.SetMargin(HSSFSheet.BottomMargin, (double).20);
+
+            displayIndex = 0;
+            pos = 0;
+
+            sheet2.SetColumnWidth(displayIndex++, 12 * 256);
+            sheet2.SetColumnWidth(displayIndex++, 61 * 256);
+            sheet2.SetColumnWidth(displayIndex++, 15 * 256);
+            sheet2.SetColumnWidth(displayIndex++, 12 * 256);
+            sheet2.SetColumnWidth(displayIndex++, 8 * 256);
+            sheet2.SetColumnWidth(displayIndex++, 8 * 256);
+            sheet2.SetColumnWidth(displayIndex, 14 * 256);
+            
+            if (ProfilReportTable.Rows.Count > 0)
+            {
+                //Профиль
+                pos += 2;
+                displayIndex = 0;
+
+                Cell1 = sheet2.CreateRow(pos++).CreateCell(0);
+                Cell1.SetCellValue("ЗОВ-Профиль:");
+                Cell1.CellStyle = SummaryWithoutBorderBelCS;
+
+                Cell1 = sheet2.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Инв.№");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet2.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Наименование");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet2.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Цвет");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet2.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Патина");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet2.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Ед.изм.");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet2.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Кол-во");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet2.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Себестоимость");
+                Cell1.CellStyle = SimpleHeaderCS;
+                pos++;
+
+                for (int i = 0; i < ProfilReportTable.Rows.Count; i++)
+                {
+                    displayIndex = 0;
+                    Cell1 = sheet2.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(ProfilReportTable.Rows[i]["InvNumber"].ToString());
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet2.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(ProfilReportTable.Rows[i]["AccountingName"].ToString());
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet2.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(ProfilReportTable.Rows[i]["Cvet"].ToString());
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet2.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(ProfilReportTable.Rows[i]["Patina"].ToString());
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet2.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(ProfilReportTable.Rows[i]["Measure"].ToString());
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet2.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["Count"]));
+                    Cell1.CellStyle = CountCS;
+                    Cell1 = sheet2.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["Price"]));
+                    Cell1.CellStyle = PriceBelCS;
+                    pos++;
+                }
+            }
+
+            if (TPSReportTable.Rows.Count > 0)
+            {
+                //ТПС
+                pos++;
+                displayIndex = 0;
+
+                Cell1 = sheet2.CreateRow(pos++).CreateCell(0);
+                Cell1.SetCellValue("ЗОВ-ТПС:");
+                Cell1.CellStyle = SummaryWithoutBorderBelCS;
+
+                Cell1 = sheet2.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Инв.№");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet2.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Наименование");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet2.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Цвет");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet2.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Патина");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet2.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Ед.изм.");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet2.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Кол-во");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet2.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Себестоимость");
+                Cell1.CellStyle = SimpleHeaderCS;
+                pos++;
+
+                for (int i = 0; i < TPSReportTable.Rows.Count; i++)
+                {
+                    displayIndex = 0;
+                    Cell1 = sheet2.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(TPSReportTable.Rows[i]["InvNumber"].ToString());
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet2.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(TPSReportTable.Rows[i]["AccountingName"].ToString());
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet2.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(TPSReportTable.Rows[i]["Cvet"].ToString());
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet2.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(TPSReportTable.Rows[i]["Patina"].ToString());
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet2.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(TPSReportTable.Rows[i]["Measure"].ToString());
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet2.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["Count"]));
+                    Cell1.CellStyle = CountCS;
+                    Cell1 = sheet2.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["Price"]));
+                    Cell1.CellStyle = PriceBelCS;
+                    pos++;
+                }
+            }
+
             FileName += " Маркетинг";
             string tempFolder = System.Environment.GetEnvironmentVariable("TEMP");
             FileInfo file = new FileInfo(tempFolder + @"\" + FileName + ".xls");

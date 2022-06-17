@@ -41,9 +41,21 @@
             this.btnComplete = new ComponentFactory.Krypton.Toolkit.KryptonButton();
             this.StandardButtonsPalette = new ComponentFactory.Krypton.Toolkit.KryptonPalette(this.components);
             this.panel3 = new System.Windows.Forms.Panel();
+            this.tabControl2 = new System.Windows.Forms.TabControl();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.label2 = new System.Windows.Forms.Label();
+            this.panel27 = new System.Windows.Forms.Panel();
+            this.label47 = new System.Windows.Forms.Label();
+            this.panel23 = new System.Windows.Forms.Panel();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.panel4 = new System.Windows.Forms.Panel();
+            this.label3 = new System.Windows.Forms.Label();
+            this.panel5 = new System.Windows.Forms.Panel();
+            this.label4 = new System.Windows.Forms.Label();
+            this.panel6 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel12 = new System.Windows.Forms.Panel();
-            this.dgvScanedStoragePackagesDetails = new Infinium.PercentageDataGrid();
             this.panel13 = new System.Windows.Forms.Panel();
             this.lbCellName = new System.Windows.Forms.Label();
             this.label20 = new System.Windows.Forms.Label();
@@ -58,46 +70,35 @@
             this.kryptonBorderEdge5 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge6 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.BarcodeLabel = new System.Windows.Forms.Label();
-            this.CheckPicture = new System.Windows.Forms.PictureBox();
             this.BarcodeTextBox = new ComponentFactory.Krypton.Toolkit.KryptonTextBox();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.label2 = new System.Windows.Forms.Label();
-            this.panel27 = new System.Windows.Forms.Panel();
-            this.dgvNotScanedPackagesLabels = new Infinium.PercentageDataGrid();
-            this.label47 = new System.Windows.Forms.Label();
-            this.panel23 = new System.Windows.Forms.Panel();
-            this.dgvNotcanedPackagesDetails = new Infinium.PercentageDataGrid();
             this.PanelSelectPalette = new ComponentFactory.Krypton.Toolkit.KryptonPalette(this.components);
-            this.tabControl2 = new System.Windows.Forms.TabControl();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.panel4 = new System.Windows.Forms.Panel();
-            this.label3 = new System.Windows.Forms.Label();
-            this.panel5 = new System.Windows.Forms.Panel();
+            this.CheckPicture = new System.Windows.Forms.PictureBox();
+            this.btnPrintScanReport = new ComponentFactory.Krypton.Toolkit.KryptonButton();
+            this.dgvNotScanedPackagesLabels = new Infinium.PercentageDataGrid();
+            this.dgvNotcanedPackagesDetails = new Infinium.PercentageDataGrid();
             this.dgvAllScanedPackagesLabels = new Infinium.PercentageDataGrid();
-            this.label4 = new System.Windows.Forms.Label();
-            this.panel6 = new System.Windows.Forms.Panel();
             this.dgvAllScanedPackagesDetails = new Infinium.PercentageDataGrid();
+            this.dgvScanedStoragePackagesDetails = new Infinium.PercentageDataGrid();
             this.NavigatePanel.SuspendLayout();
             this.panel3.SuspendLayout();
-            this.panel2.SuspendLayout();
-            this.panel12.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvScanedStoragePackagesDetails)).BeginInit();
-            this.panel13.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.CheckPicture)).BeginInit();
-            this.panel1.SuspendLayout();
-            this.panel27.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvNotScanedPackagesLabels)).BeginInit();
-            this.panel23.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvNotcanedPackagesDetails)).BeginInit();
             this.tabControl2.SuspendLayout();
             this.tabPage3.SuspendLayout();
+            this.panel1.SuspendLayout();
+            this.panel27.SuspendLayout();
+            this.panel23.SuspendLayout();
             this.tabPage4.SuspendLayout();
             this.panel4.SuspendLayout();
             this.panel5.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvAllScanedPackagesLabels)).BeginInit();
             this.panel6.SuspendLayout();
+            this.panel2.SuspendLayout();
+            this.panel12.SuspendLayout();
+            this.panel13.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.CheckPicture)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvNotScanedPackagesLabels)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvNotcanedPackagesDetails)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvAllScanedPackagesLabels)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAllScanedPackagesDetails)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvScanedStoragePackagesDetails)).BeginInit();
             this.SuspendLayout();
             // 
             // AnimateTimer
@@ -279,6 +280,7 @@
             // 
             // panel3
             // 
+            this.panel3.Controls.Add(this.btnPrintScanReport);
             this.panel3.Controls.Add(this.tabControl2);
             this.panel3.Controls.Add(this.panel2);
             this.panel3.Controls.Add(this.btnComplete);
@@ -290,6 +292,160 @@
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(1270, 686);
             this.panel3.TabIndex = 321;
+            // 
+            // tabControl2
+            // 
+            this.tabControl2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tabControl2.Controls.Add(this.tabPage3);
+            this.tabControl2.Controls.Add(this.tabPage4);
+            this.tabControl2.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.tabControl2.Location = new System.Drawing.Point(16, 332);
+            this.tabControl2.Margin = new System.Windows.Forms.Padding(0);
+            this.tabControl2.Name = "tabControl2";
+            this.tabControl2.SelectedIndex = 0;
+            this.tabControl2.Size = new System.Drawing.Size(1245, 345);
+            this.tabControl2.TabIndex = 479;
+            // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.panel1);
+            this.tabPage3.Location = new System.Drawing.Point(4, 29);
+            this.tabPage3.Margin = new System.Windows.Forms.Padding(0);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(1237, 312);
+            this.tabPage3.TabIndex = 0;
+            this.tabPage3.Text = "Еще не отсканировано";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // panel1
+            // 
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.label2);
+            this.panel1.Controls.Add(this.panel27);
+            this.panel1.Controls.Add(this.label47);
+            this.panel1.Controls.Add(this.panel23);
+            this.panel1.Location = new System.Drawing.Point(6, 6);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(1225, 300);
+            this.panel1.TabIndex = 322;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.label2.Location = new System.Drawing.Point(352, 2);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(103, 20);
+            this.label2.TabIndex = 422;
+            this.label2.Text = "Содержимое:";
+            // 
+            // panel27
+            // 
+            this.panel27.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.panel27.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel27.Controls.Add(this.dgvNotScanedPackagesLabels);
+            this.panel27.Location = new System.Drawing.Point(0, 27);
+            this.panel27.Name = "panel27";
+            this.panel27.Size = new System.Drawing.Size(343, 271);
+            this.panel27.TabIndex = 321;
+            // 
+            // label47
+            // 
+            this.label47.AutoSize = true;
+            this.label47.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.label47.Location = new System.Drawing.Point(3, 2);
+            this.label47.Name = "label47";
+            this.label47.Size = new System.Drawing.Size(78, 20);
+            this.label47.TabIndex = 421;
+            this.label47.Text = "Упаковки:";
+            // 
+            // panel23
+            // 
+            this.panel23.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel23.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel23.Controls.Add(this.dgvNotcanedPackagesDetails);
+            this.panel23.Location = new System.Drawing.Point(356, 27);
+            this.panel23.Name = "panel23";
+            this.panel23.Size = new System.Drawing.Size(867, 271);
+            this.panel23.TabIndex = 42;
+            // 
+            // tabPage4
+            // 
+            this.tabPage4.Controls.Add(this.panel4);
+            this.tabPage4.Location = new System.Drawing.Point(4, 29);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage4.Size = new System.Drawing.Size(1237, 312);
+            this.tabPage4.TabIndex = 1;
+            this.tabPage4.Text = "Отсканировано";
+            this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // panel4
+            // 
+            this.panel4.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel4.Controls.Add(this.label3);
+            this.panel4.Controls.Add(this.panel5);
+            this.panel4.Controls.Add(this.label4);
+            this.panel4.Controls.Add(this.panel6);
+            this.panel4.Location = new System.Drawing.Point(6, 6);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(1225, 300);
+            this.panel4.TabIndex = 323;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.label3.Location = new System.Drawing.Point(352, 2);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(103, 20);
+            this.label3.TabIndex = 422;
+            this.label3.Text = "Содержимое:";
+            // 
+            // panel5
+            // 
+            this.panel5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.panel5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel5.Controls.Add(this.dgvAllScanedPackagesLabels);
+            this.panel5.Location = new System.Drawing.Point(0, 27);
+            this.panel5.Name = "panel5";
+            this.panel5.Size = new System.Drawing.Size(343, 271);
+            this.panel5.TabIndex = 321;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.label4.Location = new System.Drawing.Point(3, 2);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(78, 20);
+            this.label4.TabIndex = 421;
+            this.label4.Text = "Упаковки:";
+            // 
+            // panel6
+            // 
+            this.panel6.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel6.Controls.Add(this.dgvAllScanedPackagesDetails);
+            this.panel6.Location = new System.Drawing.Point(356, 27);
+            this.panel6.Name = "panel6";
+            this.panel6.Size = new System.Drawing.Size(867, 271);
+            this.panel6.TabIndex = 42;
             // 
             // panel2
             // 
@@ -313,60 +469,6 @@
             this.panel12.Name = "panel12";
             this.panel12.Size = new System.Drawing.Size(871, 258);
             this.panel12.TabIndex = 42;
-            // 
-            // dgvScanedStoragePackagesDetails
-            // 
-            this.dgvScanedStoragePackagesDetails.AllowUserToAddRows = false;
-            this.dgvScanedStoragePackagesDetails.AllowUserToDeleteRows = false;
-            this.dgvScanedStoragePackagesDetails.AllowUserToResizeColumns = false;
-            this.dgvScanedStoragePackagesDetails.AllowUserToResizeRows = false;
-            this.dgvScanedStoragePackagesDetails.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgvScanedStoragePackagesDetails.BackText = "Нет данных";
-            this.dgvScanedStoragePackagesDetails.ColumnHeadersHeight = 40;
-            this.dgvScanedStoragePackagesDetails.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.dgvScanedStoragePackagesDetails.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvScanedStoragePackagesDetails.HideOuterBorders = true;
-            this.dgvScanedStoragePackagesDetails.Location = new System.Drawing.Point(0, 0);
-            this.dgvScanedStoragePackagesDetails.Name = "dgvScanedStoragePackagesDetails";
-            this.dgvScanedStoragePackagesDetails.PercentLineWidth = 0;
-            this.dgvScanedStoragePackagesDetails.ReadOnly = true;
-            this.dgvScanedStoragePackagesDetails.RowHeadersVisible = false;
-            this.dgvScanedStoragePackagesDetails.RowTemplate.Height = 30;
-            this.dgvScanedStoragePackagesDetails.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
-            this.dgvScanedStoragePackagesDetails.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvScanedStoragePackagesDetails.Size = new System.Drawing.Size(869, 256);
-            this.dgvScanedStoragePackagesDetails.StandardStyle = false;
-            this.dgvScanedStoragePackagesDetails.StateCommon.Background.Color1 = System.Drawing.Color.White;
-            this.dgvScanedStoragePackagesDetails.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.dgvScanedStoragePackagesDetails.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
-            this.dgvScanedStoragePackagesDetails.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
-            this.dgvScanedStoragePackagesDetails.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
-            this.dgvScanedStoragePackagesDetails.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.dgvScanedStoragePackagesDetails.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.dgvScanedStoragePackagesDetails.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
-            this.dgvScanedStoragePackagesDetails.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.dgvScanedStoragePackagesDetails.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
-            this.dgvScanedStoragePackagesDetails.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.dgvScanedStoragePackagesDetails.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
-            this.dgvScanedStoragePackagesDetails.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.dgvScanedStoragePackagesDetails.StateCommon.HeaderColumn.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)(((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.dgvScanedStoragePackagesDetails.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
-            this.dgvScanedStoragePackagesDetails.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.dgvScanedStoragePackagesDetails.StateDisabled.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
-            this.dgvScanedStoragePackagesDetails.StateDisabled.DataCell.Border.Color1 = System.Drawing.Color.DimGray;
-            this.dgvScanedStoragePackagesDetails.StateDisabled.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.dgvScanedStoragePackagesDetails.StateDisabled.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.dgvScanedStoragePackagesDetails.StateDisabled.DataCell.Content.Color1 = System.Drawing.Color.Gray;
-            this.dgvScanedStoragePackagesDetails.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(121)))), ((int)(((byte)(177)))), ((int)(((byte)(229)))));
-            this.dgvScanedStoragePackagesDetails.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.dgvScanedStoragePackagesDetails.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
-            this.dgvScanedStoragePackagesDetails.TabIndex = 74;
-            this.dgvScanedStoragePackagesDetails.UseCustomBackColor = true;
             // 
             // panel13
             // 
@@ -529,16 +631,6 @@
             this.BarcodeLabel.TabIndex = 329;
             this.BarcodeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // CheckPicture
-            // 
-            this.CheckPicture.Image = global::Infinium.Properties.Resources.cancel;
-            this.CheckPicture.Location = new System.Drawing.Point(242, 16);
-            this.CheckPicture.Name = "CheckPicture";
-            this.CheckPicture.Size = new System.Drawing.Size(48, 48);
-            this.CheckPicture.TabIndex = 328;
-            this.CheckPicture.TabStop = false;
-            this.CheckPicture.Visible = false;
-            // 
             // BarcodeTextBox
             // 
             this.BarcodeTextBox.Location = new System.Drawing.Point(16, 18);
@@ -551,173 +643,6 @@
             this.BarcodeTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.BarcodeTextBox_KeyDown);
             this.BarcodeTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.BarcodeTextBox_KeyPress);
             this.BarcodeTextBox.Leave += new System.EventHandler(this.BarcodeTextBox_Leave);
-            // 
-            // panel1
-            // 
-            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel1.Controls.Add(this.label2);
-            this.panel1.Controls.Add(this.panel27);
-            this.panel1.Controls.Add(this.label47);
-            this.panel1.Controls.Add(this.panel23);
-            this.panel1.Location = new System.Drawing.Point(6, 6);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1225, 300);
-            this.panel1.TabIndex = 322;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.label2.Location = new System.Drawing.Point(352, 2);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(103, 20);
-            this.label2.TabIndex = 422;
-            this.label2.Text = "Содержимое:";
-            // 
-            // panel27
-            // 
-            this.panel27.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.panel27.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel27.Controls.Add(this.dgvNotScanedPackagesLabels);
-            this.panel27.Location = new System.Drawing.Point(0, 27);
-            this.panel27.Name = "panel27";
-            this.panel27.Size = new System.Drawing.Size(343, 271);
-            this.panel27.TabIndex = 321;
-            // 
-            // dgvNotScanedPackagesLabels
-            // 
-            this.dgvNotScanedPackagesLabels.AllowUserToAddRows = false;
-            this.dgvNotScanedPackagesLabels.AllowUserToDeleteRows = false;
-            this.dgvNotScanedPackagesLabels.AllowUserToResizeColumns = false;
-            this.dgvNotScanedPackagesLabels.AllowUserToResizeRows = false;
-            this.dgvNotScanedPackagesLabels.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgvNotScanedPackagesLabels.BackText = "Нет данных";
-            this.dgvNotScanedPackagesLabels.ColumnHeadersHeight = 40;
-            this.dgvNotScanedPackagesLabels.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.dgvNotScanedPackagesLabels.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvNotScanedPackagesLabels.HideOuterBorders = true;
-            this.dgvNotScanedPackagesLabels.Location = new System.Drawing.Point(0, 0);
-            this.dgvNotScanedPackagesLabels.Name = "dgvNotScanedPackagesLabels";
-            this.dgvNotScanedPackagesLabels.PercentLineWidth = 0;
-            this.dgvNotScanedPackagesLabels.ReadOnly = true;
-            this.dgvNotScanedPackagesLabels.RowHeadersVisible = false;
-            this.dgvNotScanedPackagesLabels.RowTemplate.Height = 30;
-            this.dgvNotScanedPackagesLabels.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
-            this.dgvNotScanedPackagesLabels.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvNotScanedPackagesLabels.Size = new System.Drawing.Size(341, 269);
-            this.dgvNotScanedPackagesLabels.StandardStyle = false;
-            this.dgvNotScanedPackagesLabels.StateCommon.Background.Color1 = System.Drawing.Color.White;
-            this.dgvNotScanedPackagesLabels.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.dgvNotScanedPackagesLabels.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
-            this.dgvNotScanedPackagesLabels.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
-            this.dgvNotScanedPackagesLabels.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
-            this.dgvNotScanedPackagesLabels.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.dgvNotScanedPackagesLabels.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.dgvNotScanedPackagesLabels.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
-            this.dgvNotScanedPackagesLabels.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.dgvNotScanedPackagesLabels.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
-            this.dgvNotScanedPackagesLabels.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.dgvNotScanedPackagesLabels.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
-            this.dgvNotScanedPackagesLabels.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.dgvNotScanedPackagesLabels.StateCommon.HeaderColumn.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)(((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.dgvNotScanedPackagesLabels.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
-            this.dgvNotScanedPackagesLabels.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.dgvNotScanedPackagesLabels.StateDisabled.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
-            this.dgvNotScanedPackagesLabels.StateDisabled.DataCell.Border.Color1 = System.Drawing.Color.DimGray;
-            this.dgvNotScanedPackagesLabels.StateDisabled.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.dgvNotScanedPackagesLabels.StateDisabled.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.dgvNotScanedPackagesLabels.StateDisabled.DataCell.Content.Color1 = System.Drawing.Color.Gray;
-            this.dgvNotScanedPackagesLabels.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(121)))), ((int)(((byte)(177)))), ((int)(((byte)(229)))));
-            this.dgvNotScanedPackagesLabels.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.dgvNotScanedPackagesLabels.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
-            this.dgvNotScanedPackagesLabels.TabIndex = 74;
-            this.dgvNotScanedPackagesLabels.UseCustomBackColor = true;
-            this.dgvNotScanedPackagesLabels.SelectionChanged += new System.EventHandler(this.dgvPackagesLabels_SelectionChanged);
-            // 
-            // label47
-            // 
-            this.label47.AutoSize = true;
-            this.label47.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.label47.Location = new System.Drawing.Point(3, 2);
-            this.label47.Name = "label47";
-            this.label47.Size = new System.Drawing.Size(78, 20);
-            this.label47.TabIndex = 421;
-            this.label47.Text = "Упаковки:";
-            // 
-            // panel23
-            // 
-            this.panel23.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel23.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel23.Controls.Add(this.dgvNotcanedPackagesDetails);
-            this.panel23.Location = new System.Drawing.Point(356, 27);
-            this.panel23.Name = "panel23";
-            this.panel23.Size = new System.Drawing.Size(867, 271);
-            this.panel23.TabIndex = 42;
-            // 
-            // dgvNotcanedPackagesDetails
-            // 
-            this.dgvNotcanedPackagesDetails.AllowUserToAddRows = false;
-            this.dgvNotcanedPackagesDetails.AllowUserToDeleteRows = false;
-            this.dgvNotcanedPackagesDetails.AllowUserToResizeColumns = false;
-            this.dgvNotcanedPackagesDetails.AllowUserToResizeRows = false;
-            this.dgvNotcanedPackagesDetails.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgvNotcanedPackagesDetails.BackText = "Нет данных";
-            this.dgvNotcanedPackagesDetails.ColumnHeadersHeight = 40;
-            this.dgvNotcanedPackagesDetails.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.dgvNotcanedPackagesDetails.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvNotcanedPackagesDetails.HideOuterBorders = true;
-            this.dgvNotcanedPackagesDetails.Location = new System.Drawing.Point(0, 0);
-            this.dgvNotcanedPackagesDetails.Name = "dgvNotcanedPackagesDetails";
-            this.dgvNotcanedPackagesDetails.PercentLineWidth = 0;
-            this.dgvNotcanedPackagesDetails.ReadOnly = true;
-            this.dgvNotcanedPackagesDetails.RowHeadersVisible = false;
-            this.dgvNotcanedPackagesDetails.RowTemplate.Height = 30;
-            this.dgvNotcanedPackagesDetails.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
-            this.dgvNotcanedPackagesDetails.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvNotcanedPackagesDetails.Size = new System.Drawing.Size(865, 269);
-            this.dgvNotcanedPackagesDetails.StandardStyle = false;
-            this.dgvNotcanedPackagesDetails.StateCommon.Background.Color1 = System.Drawing.Color.White;
-            this.dgvNotcanedPackagesDetails.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.dgvNotcanedPackagesDetails.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
-            this.dgvNotcanedPackagesDetails.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
-            this.dgvNotcanedPackagesDetails.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
-            this.dgvNotcanedPackagesDetails.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.dgvNotcanedPackagesDetails.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.dgvNotcanedPackagesDetails.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
-            this.dgvNotcanedPackagesDetails.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.dgvNotcanedPackagesDetails.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
-            this.dgvNotcanedPackagesDetails.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.dgvNotcanedPackagesDetails.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
-            this.dgvNotcanedPackagesDetails.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.dgvNotcanedPackagesDetails.StateCommon.HeaderColumn.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)(((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.dgvNotcanedPackagesDetails.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
-            this.dgvNotcanedPackagesDetails.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.dgvNotcanedPackagesDetails.StateDisabled.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
-            this.dgvNotcanedPackagesDetails.StateDisabled.DataCell.Border.Color1 = System.Drawing.Color.DimGray;
-            this.dgvNotcanedPackagesDetails.StateDisabled.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.dgvNotcanedPackagesDetails.StateDisabled.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.dgvNotcanedPackagesDetails.StateDisabled.DataCell.Content.Color1 = System.Drawing.Color.Gray;
-            this.dgvNotcanedPackagesDetails.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(121)))), ((int)(((byte)(177)))), ((int)(((byte)(229)))));
-            this.dgvNotcanedPackagesDetails.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.dgvNotcanedPackagesDetails.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
-            this.dgvNotcanedPackagesDetails.TabIndex = 74;
-            this.dgvNotcanedPackagesDetails.UseCustomBackColor = true;
             // 
             // PanelSelectPalette
             // 
@@ -785,79 +710,143 @@
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.PanelSelectPalette.ButtonStyles.ButtonCommon.StateTracking.Border.Rounding = 0;
             // 
-            // tabControl2
+            // CheckPicture
             // 
-            this.tabControl2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tabControl2.Controls.Add(this.tabPage3);
-            this.tabControl2.Controls.Add(this.tabPage4);
-            this.tabControl2.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.tabControl2.Location = new System.Drawing.Point(16, 332);
-            this.tabControl2.Margin = new System.Windows.Forms.Padding(0);
-            this.tabControl2.Name = "tabControl2";
-            this.tabControl2.SelectedIndex = 0;
-            this.tabControl2.Size = new System.Drawing.Size(1245, 345);
-            this.tabControl2.TabIndex = 479;
+            this.CheckPicture.Image = global::Infinium.Properties.Resources.cancel;
+            this.CheckPicture.Location = new System.Drawing.Point(242, 16);
+            this.CheckPicture.Name = "CheckPicture";
+            this.CheckPicture.Size = new System.Drawing.Size(48, 48);
+            this.CheckPicture.TabIndex = 328;
+            this.CheckPicture.TabStop = false;
+            this.CheckPicture.Visible = false;
             // 
-            // tabPage3
+            // btnPrintScanReport
             // 
-            this.tabPage3.Controls.Add(this.panel1);
-            this.tabPage3.Location = new System.Drawing.Point(4, 29);
-            this.tabPage3.Margin = new System.Windows.Forms.Padding(0);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(1237, 312);
-            this.tabPage3.TabIndex = 0;
-            this.tabPage3.Text = "Еще не отсканировано";
-            this.tabPage3.UseVisualStyleBackColor = true;
+            this.btnPrintScanReport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnPrintScanReport.Location = new System.Drawing.Point(1076, 16);
+            this.btnPrintScanReport.Name = "btnPrintScanReport";
+            this.btnPrintScanReport.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.btnPrintScanReport.Size = new System.Drawing.Size(40, 40);
+            this.btnPrintScanReport.StateCommon.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.btnPrintScanReport.StateCommon.Content.Image.ImageH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.btnPrintScanReport.StateCommon.Content.Image.ImageV = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.btnPrintScanReport.TabIndex = 473;
+            this.btnPrintScanReport.TabStop = false;
+            this.btnPrintScanReport.Tag = "25";
+            this.btnPrintScanReport.Values.Image = global::Infinium.Properties.Resources.print_icon;
+            this.btnPrintScanReport.Values.Text = "";
+            this.btnPrintScanReport.Click += new System.EventHandler(this.btnPrintScanReport_Click);
             // 
-            // tabPage4
+            // dgvNotScanedPackagesLabels
             // 
-            this.tabPage4.Controls.Add(this.panel4);
-            this.tabPage4.Location = new System.Drawing.Point(4, 29);
-            this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(1237, 312);
-            this.tabPage4.TabIndex = 1;
-            this.tabPage4.Text = "Отсканировано";
-            this.tabPage4.UseVisualStyleBackColor = true;
+            this.dgvNotScanedPackagesLabels.AllowUserToAddRows = false;
+            this.dgvNotScanedPackagesLabels.AllowUserToDeleteRows = false;
+            this.dgvNotScanedPackagesLabels.AllowUserToResizeColumns = false;
+            this.dgvNotScanedPackagesLabels.AllowUserToResizeRows = false;
+            this.dgvNotScanedPackagesLabels.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvNotScanedPackagesLabels.BackText = "Нет данных";
+            this.dgvNotScanedPackagesLabels.ColumnHeadersHeight = 40;
+            this.dgvNotScanedPackagesLabels.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.dgvNotScanedPackagesLabels.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvNotScanedPackagesLabels.HideOuterBorders = true;
+            this.dgvNotScanedPackagesLabels.Location = new System.Drawing.Point(0, 0);
+            this.dgvNotScanedPackagesLabels.Name = "dgvNotScanedPackagesLabels";
+            this.dgvNotScanedPackagesLabels.PercentLineWidth = 0;
+            this.dgvNotScanedPackagesLabels.ReadOnly = true;
+            this.dgvNotScanedPackagesLabels.RowHeadersVisible = false;
+            this.dgvNotScanedPackagesLabels.RowTemplate.Height = 30;
+            this.dgvNotScanedPackagesLabels.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
+            this.dgvNotScanedPackagesLabels.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvNotScanedPackagesLabels.Size = new System.Drawing.Size(341, 269);
+            this.dgvNotScanedPackagesLabels.StandardStyle = false;
+            this.dgvNotScanedPackagesLabels.StateCommon.Background.Color1 = System.Drawing.Color.White;
+            this.dgvNotScanedPackagesLabels.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.dgvNotScanedPackagesLabels.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
+            this.dgvNotScanedPackagesLabels.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
+            this.dgvNotScanedPackagesLabels.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
+            this.dgvNotScanedPackagesLabels.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.dgvNotScanedPackagesLabels.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.dgvNotScanedPackagesLabels.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
+            this.dgvNotScanedPackagesLabels.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.dgvNotScanedPackagesLabels.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.dgvNotScanedPackagesLabels.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.dgvNotScanedPackagesLabels.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
+            this.dgvNotScanedPackagesLabels.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.dgvNotScanedPackagesLabels.StateCommon.HeaderColumn.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)(((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.dgvNotScanedPackagesLabels.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
+            this.dgvNotScanedPackagesLabels.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.dgvNotScanedPackagesLabels.StateDisabled.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
+            this.dgvNotScanedPackagesLabels.StateDisabled.DataCell.Border.Color1 = System.Drawing.Color.DimGray;
+            this.dgvNotScanedPackagesLabels.StateDisabled.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.dgvNotScanedPackagesLabels.StateDisabled.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.dgvNotScanedPackagesLabels.StateDisabled.DataCell.Content.Color1 = System.Drawing.Color.Gray;
+            this.dgvNotScanedPackagesLabels.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(121)))), ((int)(((byte)(177)))), ((int)(((byte)(229)))));
+            this.dgvNotScanedPackagesLabels.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.dgvNotScanedPackagesLabels.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
+            this.dgvNotScanedPackagesLabels.TabIndex = 74;
+            this.dgvNotScanedPackagesLabels.UseCustomBackColor = true;
+            this.dgvNotScanedPackagesLabels.SelectionChanged += new System.EventHandler(this.dgvPackagesLabels_SelectionChanged);
             // 
-            // panel4
+            // dgvNotcanedPackagesDetails
             // 
-            this.panel4.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel4.Controls.Add(this.label3);
-            this.panel4.Controls.Add(this.panel5);
-            this.panel4.Controls.Add(this.label4);
-            this.panel4.Controls.Add(this.panel6);
-            this.panel4.Location = new System.Drawing.Point(6, 6);
-            this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(1225, 300);
-            this.panel4.TabIndex = 323;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.label3.Location = new System.Drawing.Point(352, 2);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(103, 20);
-            this.label3.TabIndex = 422;
-            this.label3.Text = "Содержимое:";
-            // 
-            // panel5
-            // 
-            this.panel5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.panel5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel5.Controls.Add(this.dgvAllScanedPackagesLabels);
-            this.panel5.Location = new System.Drawing.Point(0, 27);
-            this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(343, 271);
-            this.panel5.TabIndex = 321;
+            this.dgvNotcanedPackagesDetails.AllowUserToAddRows = false;
+            this.dgvNotcanedPackagesDetails.AllowUserToDeleteRows = false;
+            this.dgvNotcanedPackagesDetails.AllowUserToResizeColumns = false;
+            this.dgvNotcanedPackagesDetails.AllowUserToResizeRows = false;
+            this.dgvNotcanedPackagesDetails.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvNotcanedPackagesDetails.BackText = "Нет данных";
+            this.dgvNotcanedPackagesDetails.ColumnHeadersHeight = 40;
+            this.dgvNotcanedPackagesDetails.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.dgvNotcanedPackagesDetails.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvNotcanedPackagesDetails.HideOuterBorders = true;
+            this.dgvNotcanedPackagesDetails.Location = new System.Drawing.Point(0, 0);
+            this.dgvNotcanedPackagesDetails.Name = "dgvNotcanedPackagesDetails";
+            this.dgvNotcanedPackagesDetails.PercentLineWidth = 0;
+            this.dgvNotcanedPackagesDetails.ReadOnly = true;
+            this.dgvNotcanedPackagesDetails.RowHeadersVisible = false;
+            this.dgvNotcanedPackagesDetails.RowTemplate.Height = 30;
+            this.dgvNotcanedPackagesDetails.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
+            this.dgvNotcanedPackagesDetails.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvNotcanedPackagesDetails.Size = new System.Drawing.Size(865, 269);
+            this.dgvNotcanedPackagesDetails.StandardStyle = false;
+            this.dgvNotcanedPackagesDetails.StateCommon.Background.Color1 = System.Drawing.Color.White;
+            this.dgvNotcanedPackagesDetails.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.dgvNotcanedPackagesDetails.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
+            this.dgvNotcanedPackagesDetails.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
+            this.dgvNotcanedPackagesDetails.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
+            this.dgvNotcanedPackagesDetails.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.dgvNotcanedPackagesDetails.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.dgvNotcanedPackagesDetails.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
+            this.dgvNotcanedPackagesDetails.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.dgvNotcanedPackagesDetails.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.dgvNotcanedPackagesDetails.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.dgvNotcanedPackagesDetails.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
+            this.dgvNotcanedPackagesDetails.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.dgvNotcanedPackagesDetails.StateCommon.HeaderColumn.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)(((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.dgvNotcanedPackagesDetails.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
+            this.dgvNotcanedPackagesDetails.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.dgvNotcanedPackagesDetails.StateDisabled.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
+            this.dgvNotcanedPackagesDetails.StateDisabled.DataCell.Border.Color1 = System.Drawing.Color.DimGray;
+            this.dgvNotcanedPackagesDetails.StateDisabled.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.dgvNotcanedPackagesDetails.StateDisabled.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.dgvNotcanedPackagesDetails.StateDisabled.DataCell.Content.Color1 = System.Drawing.Color.Gray;
+            this.dgvNotcanedPackagesDetails.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(121)))), ((int)(((byte)(177)))), ((int)(((byte)(229)))));
+            this.dgvNotcanedPackagesDetails.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.dgvNotcanedPackagesDetails.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
+            this.dgvNotcanedPackagesDetails.TabIndex = 74;
+            this.dgvNotcanedPackagesDetails.UseCustomBackColor = true;
             // 
             // dgvAllScanedPackagesLabels
             // 
@@ -914,28 +903,6 @@
             this.dgvAllScanedPackagesLabels.UseCustomBackColor = true;
             this.dgvAllScanedPackagesLabels.SelectionChanged += new System.EventHandler(this.dgvAllScanedPackagesLabels_SelectionChanged);
             // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.label4.Location = new System.Drawing.Point(3, 2);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(78, 20);
-            this.label4.TabIndex = 421;
-            this.label4.Text = "Упаковки:";
-            // 
-            // panel6
-            // 
-            this.panel6.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel6.Controls.Add(this.dgvAllScanedPackagesDetails);
-            this.panel6.Location = new System.Drawing.Point(356, 27);
-            this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(867, 271);
-            this.panel6.TabIndex = 42;
-            // 
             // dgvAllScanedPackagesDetails
             // 
             this.dgvAllScanedPackagesDetails.AllowUserToAddRows = false;
@@ -990,6 +957,60 @@
             this.dgvAllScanedPackagesDetails.TabIndex = 74;
             this.dgvAllScanedPackagesDetails.UseCustomBackColor = true;
             // 
+            // dgvScanedStoragePackagesDetails
+            // 
+            this.dgvScanedStoragePackagesDetails.AllowUserToAddRows = false;
+            this.dgvScanedStoragePackagesDetails.AllowUserToDeleteRows = false;
+            this.dgvScanedStoragePackagesDetails.AllowUserToResizeColumns = false;
+            this.dgvScanedStoragePackagesDetails.AllowUserToResizeRows = false;
+            this.dgvScanedStoragePackagesDetails.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvScanedStoragePackagesDetails.BackText = "Нет данных";
+            this.dgvScanedStoragePackagesDetails.ColumnHeadersHeight = 40;
+            this.dgvScanedStoragePackagesDetails.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.dgvScanedStoragePackagesDetails.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvScanedStoragePackagesDetails.HideOuterBorders = true;
+            this.dgvScanedStoragePackagesDetails.Location = new System.Drawing.Point(0, 0);
+            this.dgvScanedStoragePackagesDetails.Name = "dgvScanedStoragePackagesDetails";
+            this.dgvScanedStoragePackagesDetails.PercentLineWidth = 0;
+            this.dgvScanedStoragePackagesDetails.ReadOnly = true;
+            this.dgvScanedStoragePackagesDetails.RowHeadersVisible = false;
+            this.dgvScanedStoragePackagesDetails.RowTemplate.Height = 30;
+            this.dgvScanedStoragePackagesDetails.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
+            this.dgvScanedStoragePackagesDetails.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvScanedStoragePackagesDetails.Size = new System.Drawing.Size(869, 256);
+            this.dgvScanedStoragePackagesDetails.StandardStyle = false;
+            this.dgvScanedStoragePackagesDetails.StateCommon.Background.Color1 = System.Drawing.Color.White;
+            this.dgvScanedStoragePackagesDetails.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.dgvScanedStoragePackagesDetails.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
+            this.dgvScanedStoragePackagesDetails.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
+            this.dgvScanedStoragePackagesDetails.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
+            this.dgvScanedStoragePackagesDetails.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.dgvScanedStoragePackagesDetails.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.dgvScanedStoragePackagesDetails.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
+            this.dgvScanedStoragePackagesDetails.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.dgvScanedStoragePackagesDetails.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.dgvScanedStoragePackagesDetails.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.dgvScanedStoragePackagesDetails.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
+            this.dgvScanedStoragePackagesDetails.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.dgvScanedStoragePackagesDetails.StateCommon.HeaderColumn.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)(((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.dgvScanedStoragePackagesDetails.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
+            this.dgvScanedStoragePackagesDetails.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.dgvScanedStoragePackagesDetails.StateDisabled.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
+            this.dgvScanedStoragePackagesDetails.StateDisabled.DataCell.Border.Color1 = System.Drawing.Color.DimGray;
+            this.dgvScanedStoragePackagesDetails.StateDisabled.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.dgvScanedStoragePackagesDetails.StateDisabled.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.dgvScanedStoragePackagesDetails.StateDisabled.DataCell.Content.Color1 = System.Drawing.Color.Gray;
+            this.dgvScanedStoragePackagesDetails.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(121)))), ((int)(((byte)(177)))), ((int)(((byte)(229)))));
+            this.dgvScanedStoragePackagesDetails.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.dgvScanedStoragePackagesDetails.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
+            this.dgvScanedStoragePackagesDetails.TabIndex = 74;
+            this.dgvScanedStoragePackagesDetails.UseCustomBackColor = true;
+            // 
             // CabFurAssembleForm
             // 
             this.AccessibleName = "false";
@@ -1015,27 +1036,27 @@
             this.NavigatePanel.PerformLayout();
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
-            this.panel2.ResumeLayout(false);
-            this.panel12.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvScanedStoragePackagesDetails)).EndInit();
-            this.panel13.ResumeLayout(false);
-            this.panel13.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.CheckPicture)).EndInit();
+            this.tabControl2.ResumeLayout(false);
+            this.tabPage3.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panel27.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvNotScanedPackagesLabels)).EndInit();
             this.panel23.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvNotcanedPackagesDetails)).EndInit();
-            this.tabControl2.ResumeLayout(false);
-            this.tabPage3.ResumeLayout(false);
             this.tabPage4.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
             this.panel5.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvAllScanedPackagesLabels)).EndInit();
             this.panel6.ResumeLayout(false);
+            this.panel2.ResumeLayout(false);
+            this.panel12.ResumeLayout(false);
+            this.panel13.ResumeLayout(false);
+            this.panel13.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.CheckPicture)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvNotScanedPackagesLabels)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvNotcanedPackagesDetails)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvAllScanedPackagesLabels)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAllScanedPackagesDetails)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvScanedStoragePackagesDetails)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1090,5 +1111,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Panel panel6;
         private PercentageDataGrid dgvAllScanedPackagesDetails;
+        private ComponentFactory.Krypton.Toolkit.KryptonButton btnPrintScanReport;
     }
 }

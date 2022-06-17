@@ -54,6 +54,7 @@
             this.label139 = new System.Windows.Forms.Label();
             this.panel89 = new System.Windows.Forms.Panel();
             this.kryptonBorderEdge226 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
+            this.FridayFrontsDG = new Infinium.PercentageDataGrid();
             this.label140 = new System.Windows.Forms.Label();
             this.label141 = new System.Windows.Forms.Label();
             this.FridayCurvedCountLabel = new System.Windows.Forms.Label();
@@ -73,6 +74,7 @@
             this.label96 = new System.Windows.Forms.Label();
             this.panel86 = new System.Windows.Forms.Panel();
             this.kryptonBorderEdge197 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
+            this.WednesdayFrontsDG = new Infinium.PercentageDataGrid();
             this.label129 = new System.Windows.Forms.Label();
             this.label130 = new System.Windows.Forms.Label();
             this.WednesdayCurvedCountLabel = new System.Windows.Forms.Label();
@@ -94,6 +96,7 @@
             this.label106 = new System.Windows.Forms.Label();
             this.panel75 = new System.Windows.Forms.Panel();
             this.kryptonBorderEdge192 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
+            this.MondayFrontsDG = new Infinium.PercentageDataGrid();
             this.label108 = new System.Windows.Forms.Label();
             this.label109 = new System.Windows.Forms.Label();
             this.MondayCurvedCountLabel = new System.Windows.Forms.Label();
@@ -113,11 +116,13 @@
             this.kryptonBorderEdge241 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge242 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge243 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
+            this.FridayDecorItemsDG = new Infinium.PercentageDataGrid();
             this.kryptonBorderEdge244 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.panel98 = new System.Windows.Forms.Panel();
             this.kryptonBorderEdge237 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge238 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge239 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
+            this.WednesdayDecorItemsDG = new Infinium.PercentageDataGrid();
             this.kryptonBorderEdge240 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.panel95 = new System.Windows.Forms.Panel();
             this.panel96 = new System.Windows.Forms.Panel();
@@ -126,6 +131,7 @@
             this.label160 = new System.Windows.Forms.Label();
             this.panel97 = new System.Windows.Forms.Panel();
             this.kryptonBorderEdge232 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
+            this.FridayDecorProductsDG = new Infinium.PercentageDataGrid();
             this.label161 = new System.Windows.Forms.Label();
             this.FridayDecorCountLabel = new System.Windows.Forms.Label();
             this.label163 = new System.Windows.Forms.Label();
@@ -142,6 +148,7 @@
             this.label152 = new System.Windows.Forms.Label();
             this.panel94 = new System.Windows.Forms.Panel();
             this.kryptonBorderEdge202 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
+            this.WednesdayDecorProductsDG = new Infinium.PercentageDataGrid();
             this.label153 = new System.Windows.Forms.Label();
             this.WednesdayDecorCountLabel = new System.Windows.Forms.Label();
             this.label155 = new System.Windows.Forms.Label();
@@ -164,6 +171,7 @@
             this.label120 = new System.Windows.Forms.Label();
             this.panel82 = new System.Windows.Forms.Panel();
             this.kryptonBorderEdge206 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
+            this.MondayDecorProductsDG = new Infinium.PercentageDataGrid();
             this.label121 = new System.Windows.Forms.Label();
             this.MondayDecorCountLabel = new System.Windows.Forms.Label();
             this.label123 = new System.Windows.Forms.Label();
@@ -177,6 +185,7 @@
             this.kryptonBorderEdge211 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge212 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge213 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
+            this.MondayDecorItemsDG = new Infinium.PercentageDataGrid();
             this.kryptonBorderEdge214 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge215 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.ConditionMenuPanel = new System.Windows.Forms.Panel();
@@ -196,6 +205,7 @@
             this.kryptonBorderEdge222 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge223 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge224 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
+            this.ConditionGroupsDG = new Infinium.PercentageDataGrid();
             this.CTPSCheckBox = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
             this.kryptonBorderEdge217 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.CProfilCheckBox = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
@@ -211,16 +221,7 @@
             this.kryptonContextMenu9 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenu();
             this.kryptonContextMenuItems9 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItems();
             this.kryptonContextMenuItem6 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
-            this.ConditionGroupsDG = new Infinium.PercentageDataGrid();
-            this.FridayFrontsDG = new Infinium.PercentageDataGrid();
-            this.WednesdayFrontsDG = new Infinium.PercentageDataGrid();
-            this.MondayFrontsDG = new Infinium.PercentageDataGrid();
-            this.FridayDecorItemsDG = new Infinium.PercentageDataGrid();
-            this.WednesdayDecorItemsDG = new Infinium.PercentageDataGrid();
-            this.FridayDecorProductsDG = new Infinium.PercentageDataGrid();
-            this.WednesdayDecorProductsDG = new Infinium.PercentageDataGrid();
-            this.MondayDecorProductsDG = new Infinium.PercentageDataGrid();
-            this.MondayDecorItemsDG = new Infinium.PercentageDataGrid();
+            this.rbtnOutProduction = new ComponentFactory.Krypton.Toolkit.KryptonRadioButton();
             this.NavigatePanel.SuspendLayout();
             this.panel2.SuspendLayout();
             this.tabControl2.SuspendLayout();
@@ -231,43 +232,43 @@
             this.panel87.SuspendLayout();
             this.panel88.SuspendLayout();
             this.panel89.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.FridayFrontsDG)).BeginInit();
             this.panel69.SuspendLayout();
             this.panel76.SuspendLayout();
             this.panel86.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.WednesdayFrontsDG)).BeginInit();
             this.panel62.SuspendLayout();
             this.panel73.SuspendLayout();
             this.panel74.SuspendLayout();
             this.panel75.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.MondayFrontsDG)).BeginInit();
             this.tabPage4.SuspendLayout();
             this.tableLayoutPanel21.SuspendLayout();
             this.panel99.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.FridayDecorItemsDG)).BeginInit();
             this.panel98.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.WednesdayDecorItemsDG)).BeginInit();
             this.panel95.SuspendLayout();
             this.panel96.SuspendLayout();
             this.panel97.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.FridayDecorProductsDG)).BeginInit();
             this.panel92.SuspendLayout();
             this.panel93.SuspendLayout();
             this.panel94.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.WednesdayDecorProductsDG)).BeginInit();
             this.panel84.SuspendLayout();
             this.panel79.SuspendLayout();
             this.panel77.SuspendLayout();
             this.panel80.SuspendLayout();
             this.panel81.SuspendLayout();
             this.panel82.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.MondayDecorProductsDG)).BeginInit();
             this.panel83.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.MondayDecorItemsDG)).BeginInit();
             this.ConditionMenuPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cbxYears)).BeginInit();
             this.panel85.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ConditionGroupsDG)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.FridayFrontsDG)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.WednesdayFrontsDG)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.MondayFrontsDG)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.FridayDecorItemsDG)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.WednesdayDecorItemsDG)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.FridayDecorProductsDG)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.WednesdayDecorProductsDG)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.MondayDecorProductsDG)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.MondayDecorItemsDG)).BeginInit();
             this.SuspendLayout();
             // 
             // AnimateTimer
@@ -656,6 +657,59 @@
             this.kryptonBorderEdge226.StateCommon.Color1 = System.Drawing.Color.Black;
             this.kryptonBorderEdge226.Text = "kryptonBorderEdge226";
             // 
+            // FridayFrontsDG
+            // 
+            this.FridayFrontsDG.AllowUserToAddRows = false;
+            this.FridayFrontsDG.AllowUserToDeleteRows = false;
+            this.FridayFrontsDG.AllowUserToResizeColumns = false;
+            this.FridayFrontsDG.AllowUserToResizeRows = false;
+            this.FridayFrontsDG.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.FridayFrontsDG.BackText = "Нет данных";
+            this.FridayFrontsDG.ColumnHeadersHeight = 40;
+            this.FridayFrontsDG.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.FridayFrontsDG.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.FridayFrontsDG.Location = new System.Drawing.Point(0, 0);
+            this.FridayFrontsDG.MultiSelect = false;
+            this.FridayFrontsDG.Name = "FridayFrontsDG";
+            this.FridayFrontsDG.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.FridayFrontsDG.PercentLineWidth = 0;
+            this.FridayFrontsDG.ReadOnly = true;
+            this.FridayFrontsDG.RowHeadersVisible = false;
+            this.FridayFrontsDG.RowTemplate.Height = 30;
+            this.FridayFrontsDG.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.FridayFrontsDG.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Orange;
+            this.FridayFrontsDG.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.FridayFrontsDG.Size = new System.Drawing.Size(402, 473);
+            this.FridayFrontsDG.StandardStyle = false;
+            this.FridayFrontsDG.StateCommon.Background.Color1 = System.Drawing.Color.White;
+            this.FridayFrontsDG.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
+            this.FridayFrontsDG.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.FridayFrontsDG.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
+            this.FridayFrontsDG.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
+            this.FridayFrontsDG.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.FridayFrontsDG.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
+            this.FridayFrontsDG.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.FridayFrontsDG.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.FridayFrontsDG.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
+            this.FridayFrontsDG.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.FridayFrontsDG.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.FridayFrontsDG.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.FridayFrontsDG.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
+            this.FridayFrontsDG.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.FridayFrontsDG.StateCommon.HeaderColumn.Border.DrawBorders = ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom;
+            this.FridayFrontsDG.StateCommon.HeaderColumn.Border.Width = 1;
+            this.FridayFrontsDG.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
+            this.FridayFrontsDG.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.FridayFrontsDG.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(253)))), ((int)(((byte)(164)))), ((int)(((byte)(61)))));
+            this.FridayFrontsDG.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.FridayFrontsDG.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.FridayFrontsDG.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
+            this.FridayFrontsDG.TabIndex = 38;
+            this.FridayFrontsDG.UseCustomBackColor = false;
+            this.FridayFrontsDG.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.FridayFrontsDG_CellMouseDown);
+            // 
             // label140
             // 
             this.label140.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -890,6 +944,59 @@
             this.kryptonBorderEdge197.Size = new System.Drawing.Size(403, 1);
             this.kryptonBorderEdge197.StateCommon.Color1 = System.Drawing.Color.Black;
             this.kryptonBorderEdge197.Text = "kryptonBorderEdge197";
+            // 
+            // WednesdayFrontsDG
+            // 
+            this.WednesdayFrontsDG.AllowUserToAddRows = false;
+            this.WednesdayFrontsDG.AllowUserToDeleteRows = false;
+            this.WednesdayFrontsDG.AllowUserToResizeColumns = false;
+            this.WednesdayFrontsDG.AllowUserToResizeRows = false;
+            this.WednesdayFrontsDG.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.WednesdayFrontsDG.BackText = "Нет данных";
+            this.WednesdayFrontsDG.ColumnHeadersHeight = 40;
+            this.WednesdayFrontsDG.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.WednesdayFrontsDG.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.WednesdayFrontsDG.Location = new System.Drawing.Point(0, 0);
+            this.WednesdayFrontsDG.MultiSelect = false;
+            this.WednesdayFrontsDG.Name = "WednesdayFrontsDG";
+            this.WednesdayFrontsDG.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.WednesdayFrontsDG.PercentLineWidth = 0;
+            this.WednesdayFrontsDG.ReadOnly = true;
+            this.WednesdayFrontsDG.RowHeadersVisible = false;
+            this.WednesdayFrontsDG.RowTemplate.Height = 30;
+            this.WednesdayFrontsDG.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.WednesdayFrontsDG.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Orange;
+            this.WednesdayFrontsDG.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.WednesdayFrontsDG.Size = new System.Drawing.Size(403, 473);
+            this.WednesdayFrontsDG.StandardStyle = false;
+            this.WednesdayFrontsDG.StateCommon.Background.Color1 = System.Drawing.Color.White;
+            this.WednesdayFrontsDG.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
+            this.WednesdayFrontsDG.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.WednesdayFrontsDG.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
+            this.WednesdayFrontsDG.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
+            this.WednesdayFrontsDG.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.WednesdayFrontsDG.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
+            this.WednesdayFrontsDG.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.WednesdayFrontsDG.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.WednesdayFrontsDG.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
+            this.WednesdayFrontsDG.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.WednesdayFrontsDG.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.WednesdayFrontsDG.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.WednesdayFrontsDG.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
+            this.WednesdayFrontsDG.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.WednesdayFrontsDG.StateCommon.HeaderColumn.Border.DrawBorders = ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom;
+            this.WednesdayFrontsDG.StateCommon.HeaderColumn.Border.Width = 1;
+            this.WednesdayFrontsDG.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
+            this.WednesdayFrontsDG.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.WednesdayFrontsDG.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(253)))), ((int)(((byte)(164)))), ((int)(((byte)(61)))));
+            this.WednesdayFrontsDG.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.WednesdayFrontsDG.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.WednesdayFrontsDG.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
+            this.WednesdayFrontsDG.TabIndex = 38;
+            this.WednesdayFrontsDG.UseCustomBackColor = false;
+            this.WednesdayFrontsDG.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.WednesdayFrontsDG_CellMouseDown);
             // 
             // label129
             // 
@@ -1146,6 +1253,59 @@
             this.kryptonBorderEdge192.StateCommon.Color1 = System.Drawing.Color.Black;
             this.kryptonBorderEdge192.Text = "kryptonBorderEdge192";
             // 
+            // MondayFrontsDG
+            // 
+            this.MondayFrontsDG.AllowUserToAddRows = false;
+            this.MondayFrontsDG.AllowUserToDeleteRows = false;
+            this.MondayFrontsDG.AllowUserToResizeColumns = false;
+            this.MondayFrontsDG.AllowUserToResizeRows = false;
+            this.MondayFrontsDG.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.MondayFrontsDG.BackText = "Нет данных";
+            this.MondayFrontsDG.ColumnHeadersHeight = 40;
+            this.MondayFrontsDG.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.MondayFrontsDG.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.MondayFrontsDG.Location = new System.Drawing.Point(0, 0);
+            this.MondayFrontsDG.MultiSelect = false;
+            this.MondayFrontsDG.Name = "MondayFrontsDG";
+            this.MondayFrontsDG.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.MondayFrontsDG.PercentLineWidth = 0;
+            this.MondayFrontsDG.ReadOnly = true;
+            this.MondayFrontsDG.RowHeadersVisible = false;
+            this.MondayFrontsDG.RowTemplate.Height = 30;
+            this.MondayFrontsDG.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.MondayFrontsDG.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Orange;
+            this.MondayFrontsDG.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.MondayFrontsDG.Size = new System.Drawing.Size(403, 473);
+            this.MondayFrontsDG.StandardStyle = false;
+            this.MondayFrontsDG.StateCommon.Background.Color1 = System.Drawing.Color.White;
+            this.MondayFrontsDG.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
+            this.MondayFrontsDG.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.MondayFrontsDG.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
+            this.MondayFrontsDG.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
+            this.MondayFrontsDG.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.MondayFrontsDG.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
+            this.MondayFrontsDG.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.MondayFrontsDG.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.MondayFrontsDG.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
+            this.MondayFrontsDG.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.MondayFrontsDG.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.MondayFrontsDG.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.MondayFrontsDG.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
+            this.MondayFrontsDG.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.MondayFrontsDG.StateCommon.HeaderColumn.Border.DrawBorders = ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom;
+            this.MondayFrontsDG.StateCommon.HeaderColumn.Border.Width = 1;
+            this.MondayFrontsDG.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
+            this.MondayFrontsDG.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.MondayFrontsDG.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(253)))), ((int)(((byte)(164)))), ((int)(((byte)(61)))));
+            this.MondayFrontsDG.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.MondayFrontsDG.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.MondayFrontsDG.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
+            this.MondayFrontsDG.TabIndex = 38;
+            this.MondayFrontsDG.UseCustomBackColor = false;
+            this.MondayFrontsDG.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.MondayFrontsDG_CellMouseDown);
+            // 
             // label108
             // 
             this.label108.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -1383,6 +1543,58 @@
             this.kryptonBorderEdge243.StateCommon.Color1 = System.Drawing.Color.Black;
             this.kryptonBorderEdge243.Text = "kryptonBorderEdge243";
             // 
+            // FridayDecorItemsDG
+            // 
+            this.FridayDecorItemsDG.AllowUserToAddRows = false;
+            this.FridayDecorItemsDG.AllowUserToDeleteRows = false;
+            this.FridayDecorItemsDG.AllowUserToResizeColumns = false;
+            this.FridayDecorItemsDG.AllowUserToResizeRows = false;
+            this.FridayDecorItemsDG.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.FridayDecorItemsDG.BackText = "Нет данных";
+            this.FridayDecorItemsDG.ColumnHeadersHeight = 40;
+            this.FridayDecorItemsDG.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.FridayDecorItemsDG.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.FridayDecorItemsDG.Location = new System.Drawing.Point(1, 0);
+            this.FridayDecorItemsDG.MultiSelect = false;
+            this.FridayDecorItemsDG.Name = "FridayDecorItemsDG";
+            this.FridayDecorItemsDG.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.FridayDecorItemsDG.PercentLineWidth = 0;
+            this.FridayDecorItemsDG.ReadOnly = true;
+            this.FridayDecorItemsDG.RowHeadersVisible = false;
+            this.FridayDecorItemsDG.RowTemplate.Height = 30;
+            this.FridayDecorItemsDG.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.FridayDecorItemsDG.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
+            this.FridayDecorItemsDG.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.FridayDecorItemsDG.Size = new System.Drawing.Size(405, 206);
+            this.FridayDecorItemsDG.StandardStyle = false;
+            this.FridayDecorItemsDG.StateCommon.Background.Color1 = System.Drawing.Color.White;
+            this.FridayDecorItemsDG.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
+            this.FridayDecorItemsDG.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.FridayDecorItemsDG.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
+            this.FridayDecorItemsDG.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
+            this.FridayDecorItemsDG.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.FridayDecorItemsDG.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
+            this.FridayDecorItemsDG.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.FridayDecorItemsDG.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.FridayDecorItemsDG.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
+            this.FridayDecorItemsDG.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.FridayDecorItemsDG.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.FridayDecorItemsDG.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.FridayDecorItemsDG.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
+            this.FridayDecorItemsDG.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.FridayDecorItemsDG.StateCommon.HeaderColumn.Border.DrawBorders = ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom;
+            this.FridayDecorItemsDG.StateCommon.HeaderColumn.Border.Width = 1;
+            this.FridayDecorItemsDG.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
+            this.FridayDecorItemsDG.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.FridayDecorItemsDG.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(121)))), ((int)(((byte)(177)))), ((int)(((byte)(229)))));
+            this.FridayDecorItemsDG.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.FridayDecorItemsDG.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.FridayDecorItemsDG.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
+            this.FridayDecorItemsDG.TabIndex = 40;
+            this.FridayDecorItemsDG.UseCustomBackColor = false;
+            // 
             // kryptonBorderEdge244
             // 
             this.kryptonBorderEdge244.Dock = System.Windows.Forms.DockStyle.Left;
@@ -1434,6 +1646,58 @@
             this.kryptonBorderEdge239.Size = new System.Drawing.Size(1, 206);
             this.kryptonBorderEdge239.StateCommon.Color1 = System.Drawing.Color.Black;
             this.kryptonBorderEdge239.Text = "kryptonBorderEdge239";
+            // 
+            // WednesdayDecorItemsDG
+            // 
+            this.WednesdayDecorItemsDG.AllowUserToAddRows = false;
+            this.WednesdayDecorItemsDG.AllowUserToDeleteRows = false;
+            this.WednesdayDecorItemsDG.AllowUserToResizeColumns = false;
+            this.WednesdayDecorItemsDG.AllowUserToResizeRows = false;
+            this.WednesdayDecorItemsDG.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.WednesdayDecorItemsDG.BackText = "Нет данных";
+            this.WednesdayDecorItemsDG.ColumnHeadersHeight = 40;
+            this.WednesdayDecorItemsDG.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.WednesdayDecorItemsDG.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.WednesdayDecorItemsDG.Location = new System.Drawing.Point(1, 0);
+            this.WednesdayDecorItemsDG.MultiSelect = false;
+            this.WednesdayDecorItemsDG.Name = "WednesdayDecorItemsDG";
+            this.WednesdayDecorItemsDG.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.WednesdayDecorItemsDG.PercentLineWidth = 0;
+            this.WednesdayDecorItemsDG.ReadOnly = true;
+            this.WednesdayDecorItemsDG.RowHeadersVisible = false;
+            this.WednesdayDecorItemsDG.RowTemplate.Height = 30;
+            this.WednesdayDecorItemsDG.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.WednesdayDecorItemsDG.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
+            this.WednesdayDecorItemsDG.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.WednesdayDecorItemsDG.Size = new System.Drawing.Size(404, 206);
+            this.WednesdayDecorItemsDG.StandardStyle = false;
+            this.WednesdayDecorItemsDG.StateCommon.Background.Color1 = System.Drawing.Color.White;
+            this.WednesdayDecorItemsDG.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
+            this.WednesdayDecorItemsDG.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.WednesdayDecorItemsDG.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
+            this.WednesdayDecorItemsDG.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
+            this.WednesdayDecorItemsDG.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.WednesdayDecorItemsDG.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
+            this.WednesdayDecorItemsDG.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.WednesdayDecorItemsDG.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.WednesdayDecorItemsDG.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
+            this.WednesdayDecorItemsDG.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.WednesdayDecorItemsDG.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.WednesdayDecorItemsDG.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.WednesdayDecorItemsDG.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
+            this.WednesdayDecorItemsDG.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.WednesdayDecorItemsDG.StateCommon.HeaderColumn.Border.DrawBorders = ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom;
+            this.WednesdayDecorItemsDG.StateCommon.HeaderColumn.Border.Width = 1;
+            this.WednesdayDecorItemsDG.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
+            this.WednesdayDecorItemsDG.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.WednesdayDecorItemsDG.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(121)))), ((int)(((byte)(177)))), ((int)(((byte)(229)))));
+            this.WednesdayDecorItemsDG.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.WednesdayDecorItemsDG.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.WednesdayDecorItemsDG.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
+            this.WednesdayDecorItemsDG.TabIndex = 40;
+            this.WednesdayDecorItemsDG.UseCustomBackColor = false;
             // 
             // kryptonBorderEdge240
             // 
@@ -1532,6 +1796,60 @@
             this.kryptonBorderEdge232.Size = new System.Drawing.Size(404, 1);
             this.kryptonBorderEdge232.StateCommon.Color1 = System.Drawing.Color.Black;
             this.kryptonBorderEdge232.Text = "kryptonBorderEdge232";
+            // 
+            // FridayDecorProductsDG
+            // 
+            this.FridayDecorProductsDG.AllowUserToAddRows = false;
+            this.FridayDecorProductsDG.AllowUserToDeleteRows = false;
+            this.FridayDecorProductsDG.AllowUserToResizeColumns = false;
+            this.FridayDecorProductsDG.AllowUserToResizeRows = false;
+            this.FridayDecorProductsDG.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.FridayDecorProductsDG.BackText = "Нет данных";
+            this.FridayDecorProductsDG.ColumnHeadersHeight = 40;
+            this.FridayDecorProductsDG.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.FridayDecorProductsDG.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.FridayDecorProductsDG.Location = new System.Drawing.Point(0, 0);
+            this.FridayDecorProductsDG.MultiSelect = false;
+            this.FridayDecorProductsDG.Name = "FridayDecorProductsDG";
+            this.FridayDecorProductsDG.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.FridayDecorProductsDG.PercentLineWidth = 0;
+            this.FridayDecorProductsDG.ReadOnly = true;
+            this.FridayDecorProductsDG.RowHeadersVisible = false;
+            this.FridayDecorProductsDG.RowTemplate.Height = 30;
+            this.FridayDecorProductsDG.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.FridayDecorProductsDG.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
+            this.FridayDecorProductsDG.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.FridayDecorProductsDG.Size = new System.Drawing.Size(404, 256);
+            this.FridayDecorProductsDG.StandardStyle = false;
+            this.FridayDecorProductsDG.StateCommon.Background.Color1 = System.Drawing.Color.White;
+            this.FridayDecorProductsDG.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
+            this.FridayDecorProductsDG.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.FridayDecorProductsDG.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
+            this.FridayDecorProductsDG.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
+            this.FridayDecorProductsDG.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.FridayDecorProductsDG.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
+            this.FridayDecorProductsDG.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.FridayDecorProductsDG.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.FridayDecorProductsDG.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
+            this.FridayDecorProductsDG.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.FridayDecorProductsDG.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.FridayDecorProductsDG.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.FridayDecorProductsDG.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
+            this.FridayDecorProductsDG.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.FridayDecorProductsDG.StateCommon.HeaderColumn.Border.DrawBorders = ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom;
+            this.FridayDecorProductsDG.StateCommon.HeaderColumn.Border.Width = 1;
+            this.FridayDecorProductsDG.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
+            this.FridayDecorProductsDG.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.FridayDecorProductsDG.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(121)))), ((int)(((byte)(177)))), ((int)(((byte)(229)))));
+            this.FridayDecorProductsDG.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.FridayDecorProductsDG.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.FridayDecorProductsDG.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
+            this.FridayDecorProductsDG.TabIndex = 40;
+            this.FridayDecorProductsDG.UseCustomBackColor = false;
+            this.FridayDecorProductsDG.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.FridayFrontsDG_CellMouseDown);
+            this.FridayDecorProductsDG.SelectionChanged += new System.EventHandler(this.FridayDecorProductsDG_SelectionChanged);
             // 
             // label161
             // 
@@ -1723,6 +2041,60 @@
             this.kryptonBorderEdge202.Size = new System.Drawing.Size(403, 1);
             this.kryptonBorderEdge202.StateCommon.Color1 = System.Drawing.Color.Black;
             this.kryptonBorderEdge202.Text = "kryptonBorderEdge202";
+            // 
+            // WednesdayDecorProductsDG
+            // 
+            this.WednesdayDecorProductsDG.AllowUserToAddRows = false;
+            this.WednesdayDecorProductsDG.AllowUserToDeleteRows = false;
+            this.WednesdayDecorProductsDG.AllowUserToResizeColumns = false;
+            this.WednesdayDecorProductsDG.AllowUserToResizeRows = false;
+            this.WednesdayDecorProductsDG.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.WednesdayDecorProductsDG.BackText = "Нет данных";
+            this.WednesdayDecorProductsDG.ColumnHeadersHeight = 40;
+            this.WednesdayDecorProductsDG.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.WednesdayDecorProductsDG.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.WednesdayDecorProductsDG.Location = new System.Drawing.Point(0, 0);
+            this.WednesdayDecorProductsDG.MultiSelect = false;
+            this.WednesdayDecorProductsDG.Name = "WednesdayDecorProductsDG";
+            this.WednesdayDecorProductsDG.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.WednesdayDecorProductsDG.PercentLineWidth = 0;
+            this.WednesdayDecorProductsDG.ReadOnly = true;
+            this.WednesdayDecorProductsDG.RowHeadersVisible = false;
+            this.WednesdayDecorProductsDG.RowTemplate.Height = 30;
+            this.WednesdayDecorProductsDG.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.WednesdayDecorProductsDG.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
+            this.WednesdayDecorProductsDG.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.WednesdayDecorProductsDG.Size = new System.Drawing.Size(403, 256);
+            this.WednesdayDecorProductsDG.StandardStyle = false;
+            this.WednesdayDecorProductsDG.StateCommon.Background.Color1 = System.Drawing.Color.White;
+            this.WednesdayDecorProductsDG.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
+            this.WednesdayDecorProductsDG.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.WednesdayDecorProductsDG.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
+            this.WednesdayDecorProductsDG.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
+            this.WednesdayDecorProductsDG.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.WednesdayDecorProductsDG.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
+            this.WednesdayDecorProductsDG.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.WednesdayDecorProductsDG.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.WednesdayDecorProductsDG.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
+            this.WednesdayDecorProductsDG.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.WednesdayDecorProductsDG.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.WednesdayDecorProductsDG.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.WednesdayDecorProductsDG.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
+            this.WednesdayDecorProductsDG.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.WednesdayDecorProductsDG.StateCommon.HeaderColumn.Border.DrawBorders = ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom;
+            this.WednesdayDecorProductsDG.StateCommon.HeaderColumn.Border.Width = 1;
+            this.WednesdayDecorProductsDG.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
+            this.WednesdayDecorProductsDG.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.WednesdayDecorProductsDG.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(121)))), ((int)(((byte)(177)))), ((int)(((byte)(229)))));
+            this.WednesdayDecorProductsDG.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.WednesdayDecorProductsDG.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.WednesdayDecorProductsDG.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
+            this.WednesdayDecorProductsDG.TabIndex = 40;
+            this.WednesdayDecorProductsDG.UseCustomBackColor = false;
+            this.WednesdayDecorProductsDG.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.WednesdayFrontsDG_CellMouseDown);
+            this.WednesdayDecorProductsDG.SelectionChanged += new System.EventHandler(this.WednesdayDecorProductsDG_SelectionChanged);
             // 
             // label153
             // 
@@ -1975,6 +2347,60 @@
             this.kryptonBorderEdge206.StateCommon.Color1 = System.Drawing.Color.Black;
             this.kryptonBorderEdge206.Text = "kryptonBorderEdge206";
             // 
+            // MondayDecorProductsDG
+            // 
+            this.MondayDecorProductsDG.AllowUserToAddRows = false;
+            this.MondayDecorProductsDG.AllowUserToDeleteRows = false;
+            this.MondayDecorProductsDG.AllowUserToResizeColumns = false;
+            this.MondayDecorProductsDG.AllowUserToResizeRows = false;
+            this.MondayDecorProductsDG.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.MondayDecorProductsDG.BackText = "Нет данных";
+            this.MondayDecorProductsDG.ColumnHeadersHeight = 40;
+            this.MondayDecorProductsDG.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.MondayDecorProductsDG.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.MondayDecorProductsDG.Location = new System.Drawing.Point(0, 0);
+            this.MondayDecorProductsDG.MultiSelect = false;
+            this.MondayDecorProductsDG.Name = "MondayDecorProductsDG";
+            this.MondayDecorProductsDG.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.MondayDecorProductsDG.PercentLineWidth = 0;
+            this.MondayDecorProductsDG.ReadOnly = true;
+            this.MondayDecorProductsDG.RowHeadersVisible = false;
+            this.MondayDecorProductsDG.RowTemplate.Height = 30;
+            this.MondayDecorProductsDG.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.MondayDecorProductsDG.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
+            this.MondayDecorProductsDG.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.MondayDecorProductsDG.Size = new System.Drawing.Size(403, 256);
+            this.MondayDecorProductsDG.StandardStyle = false;
+            this.MondayDecorProductsDG.StateCommon.Background.Color1 = System.Drawing.Color.White;
+            this.MondayDecorProductsDG.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
+            this.MondayDecorProductsDG.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.MondayDecorProductsDG.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
+            this.MondayDecorProductsDG.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
+            this.MondayDecorProductsDG.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.MondayDecorProductsDG.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
+            this.MondayDecorProductsDG.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.MondayDecorProductsDG.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.MondayDecorProductsDG.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
+            this.MondayDecorProductsDG.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.MondayDecorProductsDG.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.MondayDecorProductsDG.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.MondayDecorProductsDG.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
+            this.MondayDecorProductsDG.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.MondayDecorProductsDG.StateCommon.HeaderColumn.Border.DrawBorders = ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom;
+            this.MondayDecorProductsDG.StateCommon.HeaderColumn.Border.Width = 1;
+            this.MondayDecorProductsDG.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
+            this.MondayDecorProductsDG.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.MondayDecorProductsDG.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(121)))), ((int)(((byte)(177)))), ((int)(((byte)(229)))));
+            this.MondayDecorProductsDG.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.MondayDecorProductsDG.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.MondayDecorProductsDG.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
+            this.MondayDecorProductsDG.TabIndex = 40;
+            this.MondayDecorProductsDG.UseCustomBackColor = false;
+            this.MondayDecorProductsDG.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.MondayFrontsDG_CellMouseDown);
+            this.MondayDecorProductsDG.SelectionChanged += new System.EventHandler(this.MondayDecorProductsDG_SelectionChanged);
+            // 
             // label121
             // 
             this.label121.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -2120,6 +2546,58 @@
             this.kryptonBorderEdge213.StateCommon.Color1 = System.Drawing.Color.Black;
             this.kryptonBorderEdge213.Text = "kryptonBorderEdge213";
             // 
+            // MondayDecorItemsDG
+            // 
+            this.MondayDecorItemsDG.AllowUserToAddRows = false;
+            this.MondayDecorItemsDG.AllowUserToDeleteRows = false;
+            this.MondayDecorItemsDG.AllowUserToResizeColumns = false;
+            this.MondayDecorItemsDG.AllowUserToResizeRows = false;
+            this.MondayDecorItemsDG.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.MondayDecorItemsDG.BackText = "Нет данных";
+            this.MondayDecorItemsDG.ColumnHeadersHeight = 40;
+            this.MondayDecorItemsDG.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.MondayDecorItemsDG.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.MondayDecorItemsDG.Location = new System.Drawing.Point(1, 0);
+            this.MondayDecorItemsDG.MultiSelect = false;
+            this.MondayDecorItemsDG.Name = "MondayDecorItemsDG";
+            this.MondayDecorItemsDG.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.MondayDecorItemsDG.PercentLineWidth = 0;
+            this.MondayDecorItemsDG.ReadOnly = true;
+            this.MondayDecorItemsDG.RowHeadersVisible = false;
+            this.MondayDecorItemsDG.RowTemplate.Height = 30;
+            this.MondayDecorItemsDG.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.MondayDecorItemsDG.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
+            this.MondayDecorItemsDG.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.MondayDecorItemsDG.Size = new System.Drawing.Size(404, 206);
+            this.MondayDecorItemsDG.StandardStyle = false;
+            this.MondayDecorItemsDG.StateCommon.Background.Color1 = System.Drawing.Color.White;
+            this.MondayDecorItemsDG.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
+            this.MondayDecorItemsDG.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.MondayDecorItemsDG.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
+            this.MondayDecorItemsDG.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
+            this.MondayDecorItemsDG.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.MondayDecorItemsDG.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
+            this.MondayDecorItemsDG.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.MondayDecorItemsDG.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.MondayDecorItemsDG.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
+            this.MondayDecorItemsDG.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.MondayDecorItemsDG.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.MondayDecorItemsDG.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.MondayDecorItemsDG.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
+            this.MondayDecorItemsDG.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.MondayDecorItemsDG.StateCommon.HeaderColumn.Border.DrawBorders = ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom;
+            this.MondayDecorItemsDG.StateCommon.HeaderColumn.Border.Width = 1;
+            this.MondayDecorItemsDG.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
+            this.MondayDecorItemsDG.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.MondayDecorItemsDG.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(121)))), ((int)(((byte)(177)))), ((int)(((byte)(229)))));
+            this.MondayDecorItemsDG.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.MondayDecorItemsDG.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.MondayDecorItemsDG.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
+            this.MondayDecorItemsDG.TabIndex = 40;
+            this.MondayDecorItemsDG.UseCustomBackColor = false;
+            // 
             // kryptonBorderEdge214
             // 
             this.kryptonBorderEdge214.Dock = System.Windows.Forms.DockStyle.Left;
@@ -2146,6 +2624,7 @@
             // 
             this.ConditionMenuPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.ConditionMenuPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(140)))), ((int)(((byte)(140)))), ((int)(((byte)(140)))));
+            this.ConditionMenuPanel.Controls.Add(this.rbtnOutProduction);
             this.ConditionMenuPanel.Controls.Add(this.rbtnAgreedOrders);
             this.ConditionMenuPanel.Controls.Add(this.cbxYears);
             this.ConditionMenuPanel.Controls.Add(this.FridayCB);
@@ -2164,9 +2643,9 @@
             this.ConditionMenuPanel.Controls.Add(this.kryptonBorderEdge218);
             this.ConditionMenuPanel.Controls.Add(this.kryptonBorderEdge219);
             this.ConditionMenuPanel.Controls.Add(this.kryptonBorderEdge220);
-            this.ConditionMenuPanel.Location = new System.Drawing.Point(739, 52);
+            this.ConditionMenuPanel.Location = new System.Drawing.Point(681, 52);
             this.ConditionMenuPanel.Name = "ConditionMenuPanel";
-            this.ConditionMenuPanel.Size = new System.Drawing.Size(533, 306);
+            this.ConditionMenuPanel.Size = new System.Drawing.Size(591, 306);
             this.ConditionMenuPanel.TabIndex = 277;
             this.ConditionMenuPanel.Visible = false;
             // 
@@ -2258,7 +2737,7 @@
             this.label83.AutoSize = true;
             this.label83.Font = new System.Drawing.Font("Segoe UI", 17.81F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.label83.ForeColor = System.Drawing.Color.White;
-            this.label83.Location = new System.Drawing.Point(293, 8);
+            this.label83.Location = new System.Drawing.Point(313, 8);
             this.label83.Name = "label83";
             this.label83.Size = new System.Drawing.Size(157, 25);
             this.label83.TabIndex = 443;
@@ -2266,7 +2745,7 @@
             // 
             // rbtnOnProduction
             // 
-            this.rbtnOnProduction.Location = new System.Drawing.Point(185, 32);
+            this.rbtnOnProduction.Location = new System.Drawing.Point(173, 32);
             this.rbtnOnProduction.Name = "rbtnOnProduction";
             this.rbtnOnProduction.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.rbtnOnProduction.Size = new System.Drawing.Size(91, 26);
@@ -2277,7 +2756,7 @@
             // 
             // rbtnInProduction
             // 
-            this.rbtnInProduction.Location = new System.Drawing.Point(185, 55);
+            this.rbtnInProduction.Location = new System.Drawing.Point(173, 55);
             this.rbtnInProduction.Name = "rbtnInProduction";
             this.rbtnInProduction.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.rbtnInProduction.Size = new System.Drawing.Size(81, 26);
@@ -2327,16 +2806,16 @@
             this.panel85.Controls.Add(this.kryptonBorderEdge223);
             this.panel85.Controls.Add(this.kryptonBorderEdge224);
             this.panel85.Controls.Add(this.ConditionGroupsDG);
-            this.panel85.Location = new System.Drawing.Point(298, 35);
+            this.panel85.Location = new System.Drawing.Point(318, 35);
             this.panel85.Margin = new System.Windows.Forms.Padding(10, 3, 3, 3);
             this.panel85.Name = "panel85";
-            this.panel85.Size = new System.Drawing.Size(219, 249);
+            this.panel85.Size = new System.Drawing.Size(255, 249);
             this.panel85.TabIndex = 415;
             // 
             // kryptonBorderEdge221
             // 
             this.kryptonBorderEdge221.Dock = System.Windows.Forms.DockStyle.Right;
-            this.kryptonBorderEdge221.Location = new System.Drawing.Point(218, 1);
+            this.kryptonBorderEdge221.Location = new System.Drawing.Point(254, 1);
             this.kryptonBorderEdge221.Name = "kryptonBorderEdge221";
             this.kryptonBorderEdge221.Orientation = System.Windows.Forms.Orientation.Vertical;
             this.kryptonBorderEdge221.Size = new System.Drawing.Size(1, 247);
@@ -2358,7 +2837,7 @@
             this.kryptonBorderEdge223.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.kryptonBorderEdge223.Location = new System.Drawing.Point(0, 248);
             this.kryptonBorderEdge223.Name = "kryptonBorderEdge223";
-            this.kryptonBorderEdge223.Size = new System.Drawing.Size(219, 1);
+            this.kryptonBorderEdge223.Size = new System.Drawing.Size(255, 1);
             this.kryptonBorderEdge223.StateCommon.Color1 = System.Drawing.Color.Black;
             this.kryptonBorderEdge223.Text = "kryptonBorderEdge223";
             // 
@@ -2367,16 +2846,72 @@
             this.kryptonBorderEdge224.Dock = System.Windows.Forms.DockStyle.Top;
             this.kryptonBorderEdge224.Location = new System.Drawing.Point(0, 0);
             this.kryptonBorderEdge224.Name = "kryptonBorderEdge224";
-            this.kryptonBorderEdge224.Size = new System.Drawing.Size(219, 1);
+            this.kryptonBorderEdge224.Size = new System.Drawing.Size(255, 1);
             this.kryptonBorderEdge224.StateCommon.Color1 = System.Drawing.Color.Black;
             this.kryptonBorderEdge224.Text = "kryptonBorderEdge224";
+            // 
+            // ConditionGroupsDG
+            // 
+            this.ConditionGroupsDG.AllowUserToAddRows = false;
+            this.ConditionGroupsDG.AllowUserToDeleteRows = false;
+            this.ConditionGroupsDG.AllowUserToResizeColumns = false;
+            this.ConditionGroupsDG.AllowUserToResizeRows = false;
+            this.ConditionGroupsDG.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.ConditionGroupsDG.BackText = "Нет данных";
+            this.ConditionGroupsDG.ColumnHeadersHeight = 40;
+            this.ConditionGroupsDG.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.ConditionGroupsDG.ColumnHeadersVisible = false;
+            this.ConditionGroupsDG.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ConditionGroupsDG.Location = new System.Drawing.Point(0, 0);
+            this.ConditionGroupsDG.MultiSelect = false;
+            this.ConditionGroupsDG.Name = "ConditionGroupsDG";
+            this.ConditionGroupsDG.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.ConditionGroupsDG.PercentLineWidth = 0;
+            this.ConditionGroupsDG.RowHeadersVisible = false;
+            this.ConditionGroupsDG.RowTemplate.Height = 30;
+            this.ConditionGroupsDG.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.ConditionGroupsDG.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Green;
+            this.ConditionGroupsDG.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.ConditionGroupsDG.Size = new System.Drawing.Size(255, 249);
+            this.ConditionGroupsDG.StandardStyle = false;
+            this.ConditionGroupsDG.StateCommon.Background.Color1 = System.Drawing.Color.White;
+            this.ConditionGroupsDG.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
+            this.ConditionGroupsDG.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.ConditionGroupsDG.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
+            this.ConditionGroupsDG.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
+            this.ConditionGroupsDG.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.ConditionGroupsDG.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
+            this.ConditionGroupsDG.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.ConditionGroupsDG.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.ConditionGroupsDG.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
+            this.ConditionGroupsDG.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 15.94F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.ConditionGroupsDG.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.ConditionGroupsDG.StateCommon.HeaderColumn.Back.Color2 = System.Drawing.Color.Transparent;
+            this.ConditionGroupsDG.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.ConditionGroupsDG.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
+            this.ConditionGroupsDG.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.ConditionGroupsDG.StateCommon.HeaderColumn.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.ConditionGroupsDG.StateCommon.HeaderColumn.Border.Width = 1;
+            this.ConditionGroupsDG.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
+            this.ConditionGroupsDG.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.ConditionGroupsDG.StateDisabled.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.ConditionGroupsDG.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(158)))), ((int)(((byte)(0)))));
+            this.ConditionGroupsDG.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.ConditionGroupsDG.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.ConditionGroupsDG.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
+            this.ConditionGroupsDG.TabIndex = 52;
+            this.ConditionGroupsDG.UseCustomBackColor = true;
             // 
             // CTPSCheckBox
             // 
             this.CTPSCheckBox.Checked = true;
             this.CTPSCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
             this.CTPSCheckBox.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalControl;
-            this.CTPSCheckBox.Location = new System.Drawing.Point(187, 8);
+            this.CTPSCheckBox.Location = new System.Drawing.Point(173, 8);
             this.CTPSCheckBox.Name = "CTPSCheckBox";
             this.CTPSCheckBox.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.CTPSCheckBox.Size = new System.Drawing.Size(93, 26);
@@ -2391,7 +2926,7 @@
             this.kryptonBorderEdge217.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.kryptonBorderEdge217.AutoSize = false;
-            this.kryptonBorderEdge217.Location = new System.Drawing.Point(531, 1);
+            this.kryptonBorderEdge217.Location = new System.Drawing.Point(589, 1);
             this.kryptonBorderEdge217.Name = "kryptonBorderEdge217";
             this.kryptonBorderEdge217.Orientation = System.Windows.Forms.Orientation.Vertical;
             this.kryptonBorderEdge217.Size = new System.Drawing.Size(1, 304);
@@ -2420,7 +2955,7 @@
             this.kryptonBorderEdge218.AutoSize = false;
             this.kryptonBorderEdge218.Location = new System.Drawing.Point(1, 304);
             this.kryptonBorderEdge218.Name = "kryptonBorderEdge218";
-            this.kryptonBorderEdge218.Size = new System.Drawing.Size(531, 1);
+            this.kryptonBorderEdge218.Size = new System.Drawing.Size(589, 1);
             this.kryptonBorderEdge218.StateCommon.Color1 = System.Drawing.Color.White;
             this.kryptonBorderEdge218.Text = "kryptonBorderEdge218";
             // 
@@ -2431,7 +2966,7 @@
             this.kryptonBorderEdge219.AutoSize = false;
             this.kryptonBorderEdge219.Location = new System.Drawing.Point(1, 1);
             this.kryptonBorderEdge219.Name = "kryptonBorderEdge219";
-            this.kryptonBorderEdge219.Size = new System.Drawing.Size(531, 1);
+            this.kryptonBorderEdge219.Size = new System.Drawing.Size(589, 1);
             this.kryptonBorderEdge219.StateCommon.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(123)))), ((int)(((byte)(97)))));
             this.kryptonBorderEdge219.Text = "kryptonBorderEdge219";
             // 
@@ -2496,538 +3031,16 @@
             this.kryptonContextMenuItem6.ImageTransparentColor = System.Drawing.Color.Transparent;
             this.kryptonContextMenuItem6.Text = "Экспорт в Excel";
             // 
-            // ConditionGroupsDG
+            // rbtnOutProduction
             // 
-            this.ConditionGroupsDG.AllowUserToAddRows = false;
-            this.ConditionGroupsDG.AllowUserToDeleteRows = false;
-            this.ConditionGroupsDG.AllowUserToResizeColumns = false;
-            this.ConditionGroupsDG.AllowUserToResizeRows = false;
-            this.ConditionGroupsDG.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.ConditionGroupsDG.BackText = "Нет данных";
-            this.ConditionGroupsDG.ColumnHeadersHeight = 40;
-            this.ConditionGroupsDG.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.ConditionGroupsDG.ColumnHeadersVisible = false;
-            this.ConditionGroupsDG.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ConditionGroupsDG.Location = new System.Drawing.Point(0, 0);
-            this.ConditionGroupsDG.MultiSelect = false;
-            this.ConditionGroupsDG.Name = "ConditionGroupsDG";
-            this.ConditionGroupsDG.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.ConditionGroupsDG.PercentLineWidth = 0;
-            this.ConditionGroupsDG.RowHeadersVisible = false;
-            this.ConditionGroupsDG.RowTemplate.Height = 30;
-            this.ConditionGroupsDG.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.ConditionGroupsDG.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Green;
-            this.ConditionGroupsDG.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.ConditionGroupsDG.Size = new System.Drawing.Size(219, 249);
-            this.ConditionGroupsDG.StandardStyle = false;
-            this.ConditionGroupsDG.StateCommon.Background.Color1 = System.Drawing.Color.White;
-            this.ConditionGroupsDG.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
-            this.ConditionGroupsDG.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.ConditionGroupsDG.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
-            this.ConditionGroupsDG.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
-            this.ConditionGroupsDG.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.ConditionGroupsDG.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
-            this.ConditionGroupsDG.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.ConditionGroupsDG.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.ConditionGroupsDG.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
-            this.ConditionGroupsDG.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 15.94F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.ConditionGroupsDG.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
-            this.ConditionGroupsDG.StateCommon.HeaderColumn.Back.Color2 = System.Drawing.Color.Transparent;
-            this.ConditionGroupsDG.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.ConditionGroupsDG.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
-            this.ConditionGroupsDG.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.ConditionGroupsDG.StateCommon.HeaderColumn.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.ConditionGroupsDG.StateCommon.HeaderColumn.Border.Width = 1;
-            this.ConditionGroupsDG.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
-            this.ConditionGroupsDG.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.ConditionGroupsDG.StateDisabled.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.ConditionGroupsDG.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(158)))), ((int)(((byte)(0)))));
-            this.ConditionGroupsDG.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.ConditionGroupsDG.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.ConditionGroupsDG.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
-            this.ConditionGroupsDG.TabIndex = 52;
-            this.ConditionGroupsDG.UseCustomBackColor = true;
-            // 
-            // FridayFrontsDG
-            // 
-            this.FridayFrontsDG.AllowUserToAddRows = false;
-            this.FridayFrontsDG.AllowUserToDeleteRows = false;
-            this.FridayFrontsDG.AllowUserToResizeColumns = false;
-            this.FridayFrontsDG.AllowUserToResizeRows = false;
-            this.FridayFrontsDG.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.FridayFrontsDG.BackText = "Нет данных";
-            this.FridayFrontsDG.ColumnHeadersHeight = 40;
-            this.FridayFrontsDG.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.FridayFrontsDG.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.FridayFrontsDG.Location = new System.Drawing.Point(0, 0);
-            this.FridayFrontsDG.MultiSelect = false;
-            this.FridayFrontsDG.Name = "FridayFrontsDG";
-            this.FridayFrontsDG.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.FridayFrontsDG.PercentLineWidth = 0;
-            this.FridayFrontsDG.ReadOnly = true;
-            this.FridayFrontsDG.RowHeadersVisible = false;
-            this.FridayFrontsDG.RowTemplate.Height = 30;
-            this.FridayFrontsDG.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.FridayFrontsDG.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Orange;
-            this.FridayFrontsDG.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.FridayFrontsDG.Size = new System.Drawing.Size(402, 473);
-            this.FridayFrontsDG.StandardStyle = false;
-            this.FridayFrontsDG.StateCommon.Background.Color1 = System.Drawing.Color.White;
-            this.FridayFrontsDG.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
-            this.FridayFrontsDG.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.FridayFrontsDG.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
-            this.FridayFrontsDG.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
-            this.FridayFrontsDG.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.FridayFrontsDG.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
-            this.FridayFrontsDG.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.FridayFrontsDG.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.FridayFrontsDG.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
-            this.FridayFrontsDG.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.FridayFrontsDG.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
-            this.FridayFrontsDG.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.FridayFrontsDG.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
-            this.FridayFrontsDG.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.FridayFrontsDG.StateCommon.HeaderColumn.Border.DrawBorders = ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom;
-            this.FridayFrontsDG.StateCommon.HeaderColumn.Border.Width = 1;
-            this.FridayFrontsDG.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
-            this.FridayFrontsDG.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.FridayFrontsDG.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(253)))), ((int)(((byte)(164)))), ((int)(((byte)(61)))));
-            this.FridayFrontsDG.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.FridayFrontsDG.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.FridayFrontsDG.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
-            this.FridayFrontsDG.TabIndex = 38;
-            this.FridayFrontsDG.UseCustomBackColor = false;
-            this.FridayFrontsDG.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.FridayFrontsDG_CellMouseDown);
-            // 
-            // WednesdayFrontsDG
-            // 
-            this.WednesdayFrontsDG.AllowUserToAddRows = false;
-            this.WednesdayFrontsDG.AllowUserToDeleteRows = false;
-            this.WednesdayFrontsDG.AllowUserToResizeColumns = false;
-            this.WednesdayFrontsDG.AllowUserToResizeRows = false;
-            this.WednesdayFrontsDG.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.WednesdayFrontsDG.BackText = "Нет данных";
-            this.WednesdayFrontsDG.ColumnHeadersHeight = 40;
-            this.WednesdayFrontsDG.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.WednesdayFrontsDG.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.WednesdayFrontsDG.Location = new System.Drawing.Point(0, 0);
-            this.WednesdayFrontsDG.MultiSelect = false;
-            this.WednesdayFrontsDG.Name = "WednesdayFrontsDG";
-            this.WednesdayFrontsDG.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.WednesdayFrontsDG.PercentLineWidth = 0;
-            this.WednesdayFrontsDG.ReadOnly = true;
-            this.WednesdayFrontsDG.RowHeadersVisible = false;
-            this.WednesdayFrontsDG.RowTemplate.Height = 30;
-            this.WednesdayFrontsDG.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.WednesdayFrontsDG.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Orange;
-            this.WednesdayFrontsDG.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.WednesdayFrontsDG.Size = new System.Drawing.Size(403, 473);
-            this.WednesdayFrontsDG.StandardStyle = false;
-            this.WednesdayFrontsDG.StateCommon.Background.Color1 = System.Drawing.Color.White;
-            this.WednesdayFrontsDG.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
-            this.WednesdayFrontsDG.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.WednesdayFrontsDG.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
-            this.WednesdayFrontsDG.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
-            this.WednesdayFrontsDG.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.WednesdayFrontsDG.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
-            this.WednesdayFrontsDG.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.WednesdayFrontsDG.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.WednesdayFrontsDG.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
-            this.WednesdayFrontsDG.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.WednesdayFrontsDG.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
-            this.WednesdayFrontsDG.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.WednesdayFrontsDG.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
-            this.WednesdayFrontsDG.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.WednesdayFrontsDG.StateCommon.HeaderColumn.Border.DrawBorders = ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom;
-            this.WednesdayFrontsDG.StateCommon.HeaderColumn.Border.Width = 1;
-            this.WednesdayFrontsDG.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
-            this.WednesdayFrontsDG.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.WednesdayFrontsDG.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(253)))), ((int)(((byte)(164)))), ((int)(((byte)(61)))));
-            this.WednesdayFrontsDG.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.WednesdayFrontsDG.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.WednesdayFrontsDG.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
-            this.WednesdayFrontsDG.TabIndex = 38;
-            this.WednesdayFrontsDG.UseCustomBackColor = false;
-            this.WednesdayFrontsDG.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.WednesdayFrontsDG_CellMouseDown);
-            // 
-            // MondayFrontsDG
-            // 
-            this.MondayFrontsDG.AllowUserToAddRows = false;
-            this.MondayFrontsDG.AllowUserToDeleteRows = false;
-            this.MondayFrontsDG.AllowUserToResizeColumns = false;
-            this.MondayFrontsDG.AllowUserToResizeRows = false;
-            this.MondayFrontsDG.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.MondayFrontsDG.BackText = "Нет данных";
-            this.MondayFrontsDG.ColumnHeadersHeight = 40;
-            this.MondayFrontsDG.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.MondayFrontsDG.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.MondayFrontsDG.Location = new System.Drawing.Point(0, 0);
-            this.MondayFrontsDG.MultiSelect = false;
-            this.MondayFrontsDG.Name = "MondayFrontsDG";
-            this.MondayFrontsDG.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.MondayFrontsDG.PercentLineWidth = 0;
-            this.MondayFrontsDG.ReadOnly = true;
-            this.MondayFrontsDG.RowHeadersVisible = false;
-            this.MondayFrontsDG.RowTemplate.Height = 30;
-            this.MondayFrontsDG.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.MondayFrontsDG.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Orange;
-            this.MondayFrontsDG.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.MondayFrontsDG.Size = new System.Drawing.Size(403, 473);
-            this.MondayFrontsDG.StandardStyle = false;
-            this.MondayFrontsDG.StateCommon.Background.Color1 = System.Drawing.Color.White;
-            this.MondayFrontsDG.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
-            this.MondayFrontsDG.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.MondayFrontsDG.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
-            this.MondayFrontsDG.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
-            this.MondayFrontsDG.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.MondayFrontsDG.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
-            this.MondayFrontsDG.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.MondayFrontsDG.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.MondayFrontsDG.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
-            this.MondayFrontsDG.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.MondayFrontsDG.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
-            this.MondayFrontsDG.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.MondayFrontsDG.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
-            this.MondayFrontsDG.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.MondayFrontsDG.StateCommon.HeaderColumn.Border.DrawBorders = ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom;
-            this.MondayFrontsDG.StateCommon.HeaderColumn.Border.Width = 1;
-            this.MondayFrontsDG.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
-            this.MondayFrontsDG.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.MondayFrontsDG.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(253)))), ((int)(((byte)(164)))), ((int)(((byte)(61)))));
-            this.MondayFrontsDG.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.MondayFrontsDG.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.MondayFrontsDG.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
-            this.MondayFrontsDG.TabIndex = 38;
-            this.MondayFrontsDG.UseCustomBackColor = false;
-            this.MondayFrontsDG.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.MondayFrontsDG_CellMouseDown);
-            // 
-            // FridayDecorItemsDG
-            // 
-            this.FridayDecorItemsDG.AllowUserToAddRows = false;
-            this.FridayDecorItemsDG.AllowUserToDeleteRows = false;
-            this.FridayDecorItemsDG.AllowUserToResizeColumns = false;
-            this.FridayDecorItemsDG.AllowUserToResizeRows = false;
-            this.FridayDecorItemsDG.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.FridayDecorItemsDG.BackText = "Нет данных";
-            this.FridayDecorItemsDG.ColumnHeadersHeight = 40;
-            this.FridayDecorItemsDG.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.FridayDecorItemsDG.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.FridayDecorItemsDG.Location = new System.Drawing.Point(1, 0);
-            this.FridayDecorItemsDG.MultiSelect = false;
-            this.FridayDecorItemsDG.Name = "FridayDecorItemsDG";
-            this.FridayDecorItemsDG.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.FridayDecorItemsDG.PercentLineWidth = 0;
-            this.FridayDecorItemsDG.ReadOnly = true;
-            this.FridayDecorItemsDG.RowHeadersVisible = false;
-            this.FridayDecorItemsDG.RowTemplate.Height = 30;
-            this.FridayDecorItemsDG.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.FridayDecorItemsDG.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
-            this.FridayDecorItemsDG.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.FridayDecorItemsDG.Size = new System.Drawing.Size(405, 206);
-            this.FridayDecorItemsDG.StandardStyle = false;
-            this.FridayDecorItemsDG.StateCommon.Background.Color1 = System.Drawing.Color.White;
-            this.FridayDecorItemsDG.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
-            this.FridayDecorItemsDG.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.FridayDecorItemsDG.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
-            this.FridayDecorItemsDG.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
-            this.FridayDecorItemsDG.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.FridayDecorItemsDG.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
-            this.FridayDecorItemsDG.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.FridayDecorItemsDG.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.FridayDecorItemsDG.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
-            this.FridayDecorItemsDG.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.FridayDecorItemsDG.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
-            this.FridayDecorItemsDG.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.FridayDecorItemsDG.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
-            this.FridayDecorItemsDG.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.FridayDecorItemsDG.StateCommon.HeaderColumn.Border.DrawBorders = ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom;
-            this.FridayDecorItemsDG.StateCommon.HeaderColumn.Border.Width = 1;
-            this.FridayDecorItemsDG.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
-            this.FridayDecorItemsDG.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.FridayDecorItemsDG.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(121)))), ((int)(((byte)(177)))), ((int)(((byte)(229)))));
-            this.FridayDecorItemsDG.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.FridayDecorItemsDG.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.FridayDecorItemsDG.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
-            this.FridayDecorItemsDG.TabIndex = 40;
-            this.FridayDecorItemsDG.UseCustomBackColor = false;
-            // 
-            // WednesdayDecorItemsDG
-            // 
-            this.WednesdayDecorItemsDG.AllowUserToAddRows = false;
-            this.WednesdayDecorItemsDG.AllowUserToDeleteRows = false;
-            this.WednesdayDecorItemsDG.AllowUserToResizeColumns = false;
-            this.WednesdayDecorItemsDG.AllowUserToResizeRows = false;
-            this.WednesdayDecorItemsDG.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.WednesdayDecorItemsDG.BackText = "Нет данных";
-            this.WednesdayDecorItemsDG.ColumnHeadersHeight = 40;
-            this.WednesdayDecorItemsDG.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.WednesdayDecorItemsDG.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.WednesdayDecorItemsDG.Location = new System.Drawing.Point(1, 0);
-            this.WednesdayDecorItemsDG.MultiSelect = false;
-            this.WednesdayDecorItemsDG.Name = "WednesdayDecorItemsDG";
-            this.WednesdayDecorItemsDG.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.WednesdayDecorItemsDG.PercentLineWidth = 0;
-            this.WednesdayDecorItemsDG.ReadOnly = true;
-            this.WednesdayDecorItemsDG.RowHeadersVisible = false;
-            this.WednesdayDecorItemsDG.RowTemplate.Height = 30;
-            this.WednesdayDecorItemsDG.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.WednesdayDecorItemsDG.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
-            this.WednesdayDecorItemsDG.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.WednesdayDecorItemsDG.Size = new System.Drawing.Size(404, 206);
-            this.WednesdayDecorItemsDG.StandardStyle = false;
-            this.WednesdayDecorItemsDG.StateCommon.Background.Color1 = System.Drawing.Color.White;
-            this.WednesdayDecorItemsDG.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
-            this.WednesdayDecorItemsDG.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.WednesdayDecorItemsDG.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
-            this.WednesdayDecorItemsDG.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
-            this.WednesdayDecorItemsDG.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.WednesdayDecorItemsDG.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
-            this.WednesdayDecorItemsDG.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.WednesdayDecorItemsDG.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.WednesdayDecorItemsDG.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
-            this.WednesdayDecorItemsDG.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.WednesdayDecorItemsDG.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
-            this.WednesdayDecorItemsDG.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.WednesdayDecorItemsDG.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
-            this.WednesdayDecorItemsDG.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.WednesdayDecorItemsDG.StateCommon.HeaderColumn.Border.DrawBorders = ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom;
-            this.WednesdayDecorItemsDG.StateCommon.HeaderColumn.Border.Width = 1;
-            this.WednesdayDecorItemsDG.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
-            this.WednesdayDecorItemsDG.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.WednesdayDecorItemsDG.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(121)))), ((int)(((byte)(177)))), ((int)(((byte)(229)))));
-            this.WednesdayDecorItemsDG.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.WednesdayDecorItemsDG.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.WednesdayDecorItemsDG.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
-            this.WednesdayDecorItemsDG.TabIndex = 40;
-            this.WednesdayDecorItemsDG.UseCustomBackColor = false;
-            // 
-            // FridayDecorProductsDG
-            // 
-            this.FridayDecorProductsDG.AllowUserToAddRows = false;
-            this.FridayDecorProductsDG.AllowUserToDeleteRows = false;
-            this.FridayDecorProductsDG.AllowUserToResizeColumns = false;
-            this.FridayDecorProductsDG.AllowUserToResizeRows = false;
-            this.FridayDecorProductsDG.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.FridayDecorProductsDG.BackText = "Нет данных";
-            this.FridayDecorProductsDG.ColumnHeadersHeight = 40;
-            this.FridayDecorProductsDG.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.FridayDecorProductsDG.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.FridayDecorProductsDG.Location = new System.Drawing.Point(0, 0);
-            this.FridayDecorProductsDG.MultiSelect = false;
-            this.FridayDecorProductsDG.Name = "FridayDecorProductsDG";
-            this.FridayDecorProductsDG.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.FridayDecorProductsDG.PercentLineWidth = 0;
-            this.FridayDecorProductsDG.ReadOnly = true;
-            this.FridayDecorProductsDG.RowHeadersVisible = false;
-            this.FridayDecorProductsDG.RowTemplate.Height = 30;
-            this.FridayDecorProductsDG.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.FridayDecorProductsDG.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
-            this.FridayDecorProductsDG.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.FridayDecorProductsDG.Size = new System.Drawing.Size(404, 256);
-            this.FridayDecorProductsDG.StandardStyle = false;
-            this.FridayDecorProductsDG.StateCommon.Background.Color1 = System.Drawing.Color.White;
-            this.FridayDecorProductsDG.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
-            this.FridayDecorProductsDG.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.FridayDecorProductsDG.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
-            this.FridayDecorProductsDG.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
-            this.FridayDecorProductsDG.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.FridayDecorProductsDG.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
-            this.FridayDecorProductsDG.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.FridayDecorProductsDG.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.FridayDecorProductsDG.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
-            this.FridayDecorProductsDG.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.FridayDecorProductsDG.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
-            this.FridayDecorProductsDG.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.FridayDecorProductsDG.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
-            this.FridayDecorProductsDG.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.FridayDecorProductsDG.StateCommon.HeaderColumn.Border.DrawBorders = ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom;
-            this.FridayDecorProductsDG.StateCommon.HeaderColumn.Border.Width = 1;
-            this.FridayDecorProductsDG.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
-            this.FridayDecorProductsDG.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.FridayDecorProductsDG.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(121)))), ((int)(((byte)(177)))), ((int)(((byte)(229)))));
-            this.FridayDecorProductsDG.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.FridayDecorProductsDG.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.FridayDecorProductsDG.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
-            this.FridayDecorProductsDG.TabIndex = 40;
-            this.FridayDecorProductsDG.UseCustomBackColor = false;
-            this.FridayDecorProductsDG.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.FridayFrontsDG_CellMouseDown);
-            this.FridayDecorProductsDG.SelectionChanged += new System.EventHandler(this.FridayDecorProductsDG_SelectionChanged);
-            // 
-            // WednesdayDecorProductsDG
-            // 
-            this.WednesdayDecorProductsDG.AllowUserToAddRows = false;
-            this.WednesdayDecorProductsDG.AllowUserToDeleteRows = false;
-            this.WednesdayDecorProductsDG.AllowUserToResizeColumns = false;
-            this.WednesdayDecorProductsDG.AllowUserToResizeRows = false;
-            this.WednesdayDecorProductsDG.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.WednesdayDecorProductsDG.BackText = "Нет данных";
-            this.WednesdayDecorProductsDG.ColumnHeadersHeight = 40;
-            this.WednesdayDecorProductsDG.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.WednesdayDecorProductsDG.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.WednesdayDecorProductsDG.Location = new System.Drawing.Point(0, 0);
-            this.WednesdayDecorProductsDG.MultiSelect = false;
-            this.WednesdayDecorProductsDG.Name = "WednesdayDecorProductsDG";
-            this.WednesdayDecorProductsDG.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.WednesdayDecorProductsDG.PercentLineWidth = 0;
-            this.WednesdayDecorProductsDG.ReadOnly = true;
-            this.WednesdayDecorProductsDG.RowHeadersVisible = false;
-            this.WednesdayDecorProductsDG.RowTemplate.Height = 30;
-            this.WednesdayDecorProductsDG.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.WednesdayDecorProductsDG.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
-            this.WednesdayDecorProductsDG.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.WednesdayDecorProductsDG.Size = new System.Drawing.Size(403, 256);
-            this.WednesdayDecorProductsDG.StandardStyle = false;
-            this.WednesdayDecorProductsDG.StateCommon.Background.Color1 = System.Drawing.Color.White;
-            this.WednesdayDecorProductsDG.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
-            this.WednesdayDecorProductsDG.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.WednesdayDecorProductsDG.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
-            this.WednesdayDecorProductsDG.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
-            this.WednesdayDecorProductsDG.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.WednesdayDecorProductsDG.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
-            this.WednesdayDecorProductsDG.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.WednesdayDecorProductsDG.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.WednesdayDecorProductsDG.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
-            this.WednesdayDecorProductsDG.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.WednesdayDecorProductsDG.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
-            this.WednesdayDecorProductsDG.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.WednesdayDecorProductsDG.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
-            this.WednesdayDecorProductsDG.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.WednesdayDecorProductsDG.StateCommon.HeaderColumn.Border.DrawBorders = ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom;
-            this.WednesdayDecorProductsDG.StateCommon.HeaderColumn.Border.Width = 1;
-            this.WednesdayDecorProductsDG.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
-            this.WednesdayDecorProductsDG.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.WednesdayDecorProductsDG.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(121)))), ((int)(((byte)(177)))), ((int)(((byte)(229)))));
-            this.WednesdayDecorProductsDG.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.WednesdayDecorProductsDG.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.WednesdayDecorProductsDG.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
-            this.WednesdayDecorProductsDG.TabIndex = 40;
-            this.WednesdayDecorProductsDG.UseCustomBackColor = false;
-            this.WednesdayDecorProductsDG.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.WednesdayFrontsDG_CellMouseDown);
-            this.WednesdayDecorProductsDG.SelectionChanged += new System.EventHandler(this.WednesdayDecorProductsDG_SelectionChanged);
-            // 
-            // MondayDecorProductsDG
-            // 
-            this.MondayDecorProductsDG.AllowUserToAddRows = false;
-            this.MondayDecorProductsDG.AllowUserToDeleteRows = false;
-            this.MondayDecorProductsDG.AllowUserToResizeColumns = false;
-            this.MondayDecorProductsDG.AllowUserToResizeRows = false;
-            this.MondayDecorProductsDG.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.MondayDecorProductsDG.BackText = "Нет данных";
-            this.MondayDecorProductsDG.ColumnHeadersHeight = 40;
-            this.MondayDecorProductsDG.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.MondayDecorProductsDG.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.MondayDecorProductsDG.Location = new System.Drawing.Point(0, 0);
-            this.MondayDecorProductsDG.MultiSelect = false;
-            this.MondayDecorProductsDG.Name = "MondayDecorProductsDG";
-            this.MondayDecorProductsDG.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.MondayDecorProductsDG.PercentLineWidth = 0;
-            this.MondayDecorProductsDG.ReadOnly = true;
-            this.MondayDecorProductsDG.RowHeadersVisible = false;
-            this.MondayDecorProductsDG.RowTemplate.Height = 30;
-            this.MondayDecorProductsDG.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.MondayDecorProductsDG.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
-            this.MondayDecorProductsDG.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.MondayDecorProductsDG.Size = new System.Drawing.Size(403, 256);
-            this.MondayDecorProductsDG.StandardStyle = false;
-            this.MondayDecorProductsDG.StateCommon.Background.Color1 = System.Drawing.Color.White;
-            this.MondayDecorProductsDG.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
-            this.MondayDecorProductsDG.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.MondayDecorProductsDG.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
-            this.MondayDecorProductsDG.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
-            this.MondayDecorProductsDG.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.MondayDecorProductsDG.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
-            this.MondayDecorProductsDG.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.MondayDecorProductsDG.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.MondayDecorProductsDG.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
-            this.MondayDecorProductsDG.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.MondayDecorProductsDG.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
-            this.MondayDecorProductsDG.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.MondayDecorProductsDG.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
-            this.MondayDecorProductsDG.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.MondayDecorProductsDG.StateCommon.HeaderColumn.Border.DrawBorders = ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom;
-            this.MondayDecorProductsDG.StateCommon.HeaderColumn.Border.Width = 1;
-            this.MondayDecorProductsDG.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
-            this.MondayDecorProductsDG.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.MondayDecorProductsDG.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(121)))), ((int)(((byte)(177)))), ((int)(((byte)(229)))));
-            this.MondayDecorProductsDG.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.MondayDecorProductsDG.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.MondayDecorProductsDG.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
-            this.MondayDecorProductsDG.TabIndex = 40;
-            this.MondayDecorProductsDG.UseCustomBackColor = false;
-            this.MondayDecorProductsDG.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.MondayFrontsDG_CellMouseDown);
-            this.MondayDecorProductsDG.SelectionChanged += new System.EventHandler(this.MondayDecorProductsDG_SelectionChanged);
-            // 
-            // MondayDecorItemsDG
-            // 
-            this.MondayDecorItemsDG.AllowUserToAddRows = false;
-            this.MondayDecorItemsDG.AllowUserToDeleteRows = false;
-            this.MondayDecorItemsDG.AllowUserToResizeColumns = false;
-            this.MondayDecorItemsDG.AllowUserToResizeRows = false;
-            this.MondayDecorItemsDG.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.MondayDecorItemsDG.BackText = "Нет данных";
-            this.MondayDecorItemsDG.ColumnHeadersHeight = 40;
-            this.MondayDecorItemsDG.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.MondayDecorItemsDG.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.MondayDecorItemsDG.Location = new System.Drawing.Point(1, 0);
-            this.MondayDecorItemsDG.MultiSelect = false;
-            this.MondayDecorItemsDG.Name = "MondayDecorItemsDG";
-            this.MondayDecorItemsDG.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.MondayDecorItemsDG.PercentLineWidth = 0;
-            this.MondayDecorItemsDG.ReadOnly = true;
-            this.MondayDecorItemsDG.RowHeadersVisible = false;
-            this.MondayDecorItemsDG.RowTemplate.Height = 30;
-            this.MondayDecorItemsDG.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.MondayDecorItemsDG.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
-            this.MondayDecorItemsDG.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.MondayDecorItemsDG.Size = new System.Drawing.Size(404, 206);
-            this.MondayDecorItemsDG.StandardStyle = false;
-            this.MondayDecorItemsDG.StateCommon.Background.Color1 = System.Drawing.Color.White;
-            this.MondayDecorItemsDG.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
-            this.MondayDecorItemsDG.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.MondayDecorItemsDG.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
-            this.MondayDecorItemsDG.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
-            this.MondayDecorItemsDG.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.MondayDecorItemsDG.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
-            this.MondayDecorItemsDG.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.MondayDecorItemsDG.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.MondayDecorItemsDG.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
-            this.MondayDecorItemsDG.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.MondayDecorItemsDG.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
-            this.MondayDecorItemsDG.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.MondayDecorItemsDG.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
-            this.MondayDecorItemsDG.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.MondayDecorItemsDG.StateCommon.HeaderColumn.Border.DrawBorders = ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom;
-            this.MondayDecorItemsDG.StateCommon.HeaderColumn.Border.Width = 1;
-            this.MondayDecorItemsDG.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
-            this.MondayDecorItemsDG.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.MondayDecorItemsDG.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(121)))), ((int)(((byte)(177)))), ((int)(((byte)(229)))));
-            this.MondayDecorItemsDG.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.MondayDecorItemsDG.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.MondayDecorItemsDG.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
-            this.MondayDecorItemsDG.TabIndex = 40;
-            this.MondayDecorItemsDG.UseCustomBackColor = false;
+            this.rbtnOutProduction.Location = new System.Drawing.Point(173, 78);
+            this.rbtnOutProduction.Name = "rbtnOutProduction";
+            this.rbtnOutProduction.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.rbtnOutProduction.Size = new System.Drawing.Size(145, 26);
+            this.rbtnOutProduction.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
+            this.rbtnOutProduction.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 15.94F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.rbtnOutProduction.TabIndex = 470;
+            this.rbtnOutProduction.Values.Text = "Вышло из пр-ва";
             // 
             // ConditionOrdersStatisticsForm
             // 
@@ -3066,12 +3079,14 @@
             this.panel88.PerformLayout();
             this.panel89.ResumeLayout(false);
             this.panel89.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.FridayFrontsDG)).EndInit();
             this.panel69.ResumeLayout(false);
             this.panel69.PerformLayout();
             this.panel76.ResumeLayout(false);
             this.panel76.PerformLayout();
             this.panel86.ResumeLayout(false);
             this.panel86.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.WednesdayFrontsDG)).EndInit();
             this.panel62.ResumeLayout(false);
             this.panel62.PerformLayout();
             this.panel73.ResumeLayout(false);
@@ -3080,24 +3095,29 @@
             this.panel74.PerformLayout();
             this.panel75.ResumeLayout(false);
             this.panel75.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.MondayFrontsDG)).EndInit();
             this.tabPage4.ResumeLayout(false);
             this.tableLayoutPanel21.ResumeLayout(false);
             this.panel99.ResumeLayout(false);
             this.panel99.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.FridayDecorItemsDG)).EndInit();
             this.panel98.ResumeLayout(false);
             this.panel98.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.WednesdayDecorItemsDG)).EndInit();
             this.panel95.ResumeLayout(false);
             this.panel95.PerformLayout();
             this.panel96.ResumeLayout(false);
             this.panel96.PerformLayout();
             this.panel97.ResumeLayout(false);
             this.panel97.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.FridayDecorProductsDG)).EndInit();
             this.panel92.ResumeLayout(false);
             this.panel92.PerformLayout();
             this.panel93.ResumeLayout(false);
             this.panel93.PerformLayout();
             this.panel94.ResumeLayout(false);
             this.panel94.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.WednesdayDecorProductsDG)).EndInit();
             this.panel84.ResumeLayout(false);
             this.panel84.PerformLayout();
             this.panel79.ResumeLayout(false);
@@ -3110,23 +3130,16 @@
             this.panel81.PerformLayout();
             this.panel82.ResumeLayout(false);
             this.panel82.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.MondayDecorProductsDG)).EndInit();
             this.panel83.ResumeLayout(false);
             this.panel83.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.MondayDecorItemsDG)).EndInit();
             this.ConditionMenuPanel.ResumeLayout(false);
             this.ConditionMenuPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cbxYears)).EndInit();
             this.panel85.ResumeLayout(false);
             this.panel85.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ConditionGroupsDG)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.FridayFrontsDG)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.WednesdayFrontsDG)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.MondayFrontsDG)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.FridayDecorItemsDG)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.WednesdayDecorItemsDG)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.FridayDecorProductsDG)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.WednesdayDecorProductsDG)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.MondayDecorProductsDG)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.MondayDecorItemsDG)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -3324,5 +3337,6 @@
         private ComponentFactory.Krypton.Toolkit.KryptonContextMenu kryptonContextMenu9;
         private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItems kryptonContextMenuItems9;
         private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem kryptonContextMenuItem6;
+        private ComponentFactory.Krypton.Toolkit.KryptonRadioButton rbtnOutProduction;
     }
 }

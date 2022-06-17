@@ -284,7 +284,7 @@ namespace Infinium.Modules.ZOV.Samples
             }
 
             _patinaRalDataTable = new DataTable();
-            using (var da = new SqlDataAdapter("SELECT * FROM PatinaRAL WHERE Enabled=1",
+            using (var da = new SqlDataAdapter("SELECT PatinaRAL.*, Patina.Patina FROM PatinaRAL INNER JOIN Patina ON Patina.PatinaID=PatinaRAL.PatinaID WHERE PatinaRAL.Enabled=1",
                 ConnectionStrings.CatalogConnectionString))
             {
                 da.Fill(_patinaRalDataTable);
@@ -294,7 +294,7 @@ namespace Infinium.Modules.ZOV.Samples
             {
                 var newRow = PatinaDataTable.NewRow();
                 newRow["PatinaID"] = item["PatinaRALID"];
-                newRow["PatinaName"] = item["PatinaRAL"];
+                newRow["PatinaName"] = item["PatinaRAL"]; newRow["Patina"] = item["Patina"];
                 newRow["DisplayName"] = item["DisplayName"];
                 PatinaDataTable.Rows.Add(newRow);
             }
@@ -923,7 +923,7 @@ namespace Infinium.Modules.ZOV.Samples
                     {
                         var newRow = ItemPatinaDataTable.NewRow();
                         newRow["PatinaID"] = item["PatinaRALID"];
-                        newRow["PatinaName"] = item["PatinaRAL"];
+                        newRow["PatinaName"] = item["PatinaRAL"]; newRow["Patina"] = item["Patina"];
                         newRow["DisplayName"] = item["DisplayName"];
                         ItemPatinaDataTable.Rows.Add(newRow);
                     }
@@ -2500,7 +2500,7 @@ namespace Infinium.Modules.ZOV.Samples
             }
 
             _patinaRalDataTable = new DataTable();
-            using (var da = new SqlDataAdapter("SELECT * FROM PatinaRAL WHERE Enabled=1",
+            using (var da = new SqlDataAdapter("SELECT PatinaRAL.*, Patina.Patina FROM PatinaRAL INNER JOIN Patina ON Patina.PatinaID=PatinaRAL.PatinaID WHERE PatinaRAL.Enabled=1",
                 ConnectionStrings.CatalogConnectionString))
             {
                 da.Fill(_patinaRalDataTable);
@@ -2510,7 +2510,7 @@ namespace Infinium.Modules.ZOV.Samples
             {
                 var newRow = _patinaDataTable.NewRow();
                 newRow["PatinaID"] = item["PatinaRALID"];
-                newRow["PatinaName"] = item["PatinaRAL"];
+                newRow["PatinaName"] = item["PatinaRAL"]; newRow["Patina"] = item["Patina"];
                 newRow["DisplayName"] = item["DisplayName"];
                 _patinaDataTable.Rows.Add(newRow);
             }
@@ -5568,7 +5568,7 @@ INNER JOIN JoinMainOrders ON SampleMainOrders.MainOrderID = JoinMainOrders.Marke
             }
 
             _patinaRalDataTable = new DataTable();
-            using (var da = new SqlDataAdapter("SELECT * FROM PatinaRAL WHERE Enabled=1",
+            using (var da = new SqlDataAdapter("SELECT PatinaRAL.*, Patina.Patina FROM PatinaRAL INNER JOIN Patina ON Patina.PatinaID=PatinaRAL.PatinaID WHERE PatinaRAL.Enabled=1",
                 ConnectionStrings.CatalogConnectionString))
             {
                 da.Fill(_patinaRalDataTable);
@@ -5578,7 +5578,7 @@ INNER JOIN JoinMainOrders ON SampleMainOrders.MainOrderID = JoinMainOrders.Marke
             {
                 var newRow = _patinaDataTable.NewRow();
                 newRow["PatinaID"] = item["PatinaRALID"];
-                newRow["PatinaName"] = item["PatinaRAL"];
+                newRow["PatinaName"] = item["PatinaRAL"]; newRow["Patina"] = item["Patina"];
                 newRow["DisplayName"] = item["DisplayName"];
                 _patinaDataTable.Rows.Add(newRow);
             }

@@ -1689,7 +1689,7 @@ namespace Infinium
                     NeedSplash = false;
                     //CabFurDispatchManager.GetMegaBatchNumbers(Convert.ToDateTime(Date));
                     cabFurAssembleManager.GetMainOrdersSquareAndWeight();
-                    cabFurAssembleManager.FilterAssembleByDate(-1);
+                    cabFurAssembleManager.FilterAssembleByID(-1);
 
                     NeedSplash = true;
                     while (SplashWindow.bSmallCreated)
@@ -1699,7 +1699,7 @@ namespace Infinium
                 {
                     //CabFurDispatchManager.GetMegaBatchNumbers(Convert.ToDateTime(Date));
                     cabFurAssembleManager.GetMainOrdersSquareAndWeight();
-                    cabFurAssembleManager.FilterAssembleByDate(-1);
+                    cabFurAssembleManager.FilterAssembleByID(-1);
                 }
             }
         }
@@ -4951,7 +4951,7 @@ namespace Infinium
             string PackagesReportName = string.Empty;
 
             cabFurAssembleReport.GetDispatchInfo(ref CreationDateTime, ref PrepareDispDateTime);
-            cabFurAssembleReport.CurrentClient = ClientID;
+            cabFurAssembleReport.CurrentClientID = ClientID;
             cabFurAssembleReport.CurrentMegaOrders = MegaOrders;
             cabFurAssembleReport.FillPackagesByMegaOrders();
             cabFurAssembleReport.CreateCabFurReport(NeedProfilList, NeedTPSList, true, ref PackagesReportName);
@@ -4967,21 +4967,23 @@ namespace Infinium
 
             int MegaOrderID = 0;
             int ClientID = 0;
+            int OrderNumber = 0;
             if (dgvCabFurMegaOrders.SelectedRows.Count != 0 && dgvCabFurMegaOrders.SelectedRows[0].Cells["ClientID"].Value != DBNull.Value)
                 ClientID = Convert.ToInt32(dgvCabFurMegaOrders.SelectedRows[0].Cells["ClientID"].Value);
             if (dgvCabFurMegaOrders.SelectedRows.Count != 0 && dgvCabFurMegaOrders.SelectedRows[0].Cells["MegaOrderID"].Value != DBNull.Value)
                 MegaOrderID = Convert.ToInt32(dgvCabFurMegaOrders.SelectedRows[0].Cells["MegaOrderID"].Value);
+            if (dgvCabFurMegaOrders.SelectedRows.Count != 0 && dgvCabFurMegaOrders.SelectedRows[0].Cells["OrderNumber"].Value != DBNull.Value)
+                OrderNumber = Convert.ToInt32(dgvCabFurMegaOrders.SelectedRows[0].Cells["OrderNumber"].Value);
 
-            int[] MegaOrders = new int[dgvCabFurMegaOrders.SelectedRows.Count];
-            for (int i = 0; i < dgvCabFurMegaOrders.SelectedRows.Count; i++)
-                MegaOrders[i] = Convert.ToInt32(dgvCabFurMegaOrders.SelectedRows[i].Cells["MegaOrderID"].Value);
+            object CreationDateTime = dgvCabFurMegaOrders.SelectedRows[0].Cells["OrderDate"].Value;
+            object PrepareDispDateTime = dgvCabFurAssembleDates.SelectedRows[0].Cells["PrepareDateTime"].Value;
 
             Thread T = new Thread(delegate () { SplashWindow.CreateSplash(); });
             T.Start();
 
             while (!SplashForm.bCreated) ;
 
-            CabFurAssembleForm cabFurAssembleForm = new CabFurAssembleForm(this, ClientID, MegaOrders);
+            CabFurAssembleForm cabFurAssembleForm = new CabFurAssembleForm(this, cabFurAssembleReport, ClientID, MegaOrderID, OrderNumber, CreationDateTime, PrepareDispDateTime);
 
             TopForm = cabFurAssembleForm;
 
@@ -4989,6 +4991,8 @@ namespace Infinium
 
             cabFurAssembleForm.Close();
             cabFurAssembleForm.Dispose();
+            cabFurAssembleManager.UpdateAllCabFurniturePackages();
+            UpdateCabFurDispatchDate();
             dgvCabFurDates_SelectionChanged(null, null);
 
             TopForm = null;

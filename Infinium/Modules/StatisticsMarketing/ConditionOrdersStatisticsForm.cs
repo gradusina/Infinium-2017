@@ -587,6 +587,7 @@ namespace Infinium
             bool AgreedOrders = rbtnAgreedOrders.Checked;
             bool OnProductionOrders = rbtnOnProduction.Checked;
             bool InProductionOrders = rbtnInProduction.Checked;
+            bool OutProductionOrders = rbtnOutProduction.Checked;
 
             decimal FrontCost = 0;
             decimal FrontSquare = 0;
@@ -636,6 +637,8 @@ namespace Infinium
                         ConditionOrdersStatistics.GetOnProductionOrders(Monday, FactoryID);
                     if (InProductionOrders)
                         ConditionOrdersStatistics.GetInProductionOrders(Monday, FactoryID);
+                    if (OutProductionOrders)
+                        ConditionOrdersStatistics.GetOutProductionOrders(Monday, FactoryID);
                 }
 
                 MondayFrontsDG.DataSource = new DataView(ConditionOrdersStatistics.FrontsSummaryDT.Copy());
@@ -681,6 +684,8 @@ namespace Infinium
                         ConditionOrdersStatistics.GetOnProductionOrders(Wednesday, FactoryID);
                     if (InProductionOrders)
                         ConditionOrdersStatistics.GetInProductionOrders(Wednesday, FactoryID);
+                    if (OutProductionOrders)
+                        ConditionOrdersStatistics.GetOutProductionOrders(Monday, FactoryID);
                 }
 
                 WednesdayFrontsDG.DataSource = new DataView(ConditionOrdersStatistics.FrontsSummaryDT.Copy());
@@ -726,6 +731,8 @@ namespace Infinium
                         ConditionOrdersStatistics.GetOnProductionOrders(Friday, FactoryID);
                     if (InProductionOrders)
                         ConditionOrdersStatistics.GetInProductionOrders(Friday, FactoryID);
+                    if (OutProductionOrders)
+                        ConditionOrdersStatistics.GetOutProductionOrders(Monday, FactoryID);
                 }
 
                 FridayFrontsDG.DataSource = new DataView(ConditionOrdersStatistics.FrontsSummaryDT.Copy());

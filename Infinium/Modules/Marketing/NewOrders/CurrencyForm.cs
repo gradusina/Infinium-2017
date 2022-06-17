@@ -1,4 +1,6 @@
-﻿using Infinium.Modules.Marketing.NewOrders;
+﻿using DevExpress.Data.Filtering.Helpers;
+
+using Infinium.Modules.Marketing.NewOrders;
 using Infinium.Modules.Marketing.NewOrders.InvoiceReportToDbf;
 using System;
 using System.Data;
@@ -13,6 +15,8 @@ namespace Infinium
         const int eShow = 1;
         const int eClose = 3;
         const int eMainMenu = 4;
+
+        private bool admin = false;
 
         bool RateExist = false;
         bool FixedPaymentRate = false;
@@ -40,11 +44,13 @@ namespace Infinium
 
         bool CanSetDirectorDiscount = false;
 
-        public CurrencyForm(Form tMainForm, ref OrdersManager tOrdersManager, ref OrdersCalculate tOrdersCalculate, ref InvoiceReportToDbf tDBFReport, int iClientID, string ClientName, bool bCanSetDirectorDiscount)
+        public CurrencyForm(Form tMainForm, ref OrdersManager tOrdersManager, ref OrdersCalculate tOrdersCalculate, ref InvoiceReportToDbf tDBFReport, 
+            int iClientID, string ClientName, bool bCanSetDirectorDiscount, bool bAdmin)
         {
             MainForm = tMainForm;
             ClientID = iClientID;
             CanSetDirectorDiscount = bCanSetDirectorDiscount;
+            admin = bAdmin;
             OrdersManager = tOrdersManager;
             OrdersCalculate = tOrdersCalculate;
             DBFReport = tDBFReport;
@@ -54,6 +60,10 @@ namespace Infinium
             if (bCanSetDirectorDiscount)
             {
                 panel7.Visible = true;
+            }
+            if (admin)
+            {
+                CurrencyDateTimePicker.Enabled = true;
             }
             label2.Text = "Расчет " + ClientName;
             CurrencyTypeComboBox.Items.Add("Евро - Евро");
@@ -324,6 +334,25 @@ namespace Infinium
             {
                 TransportCostTextEdit.Visible = false;
                 rbFCA.Checked = true;
+            }
+            
+            switch (CurrencyTypeID)
+            {
+                case 1:
+                    CurrencyTypeComboBox.SelectedIndex = 0;
+                    break;
+                case 2:
+                    CurrencyTypeComboBox.SelectedIndex = 1;
+                    break;
+                case 3:
+                    CurrencyTypeComboBox.SelectedIndex = 2;
+                    break;
+                case 5:
+                    CurrencyTypeComboBox.SelectedIndex = 3;
+                    break;
+                default:
+                    CurrencyTypeComboBox.SelectedIndex = 0;
+                    break;
             }
 
             if (Convert.ToInt32(((DataRowView)OrdersManager.MegaOrdersBindingSource.Current)["AgreementStatusID"]) == 2)

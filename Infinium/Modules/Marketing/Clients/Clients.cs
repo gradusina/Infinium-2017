@@ -635,7 +635,9 @@ namespace Infinium.Modules.Marketing.Clients
         private string SendNotifyToEmail(string ClientEmail, string Name, string Phone, string Email, string Skype)
         {
             string result = "Уведомление на почту клиента отправлено";
-            string AccountPassword = "3699PassWord14772588";
+
+            //string AccountPassword = "7026Gradus0462";
+            string AccountPassword = "onluenzbclnedqtt";
             string SenderEmail = "infiniumdevelopers@gmail.com";
 
 
@@ -765,9 +767,28 @@ namespace Infinium.Modules.Marketing.Clients
 
         public void SaveClientRates()
         {
+            CheckClientRateTime();
             ClientRatesDataAdapter.Update(ClientRatesDataTable);
             ClientRatesDataTable.Clear();
             ClientRatesDataAdapter.Fill(ClientRatesDataTable);
+        }
+
+        private void CheckClientRateTime()
+        {
+            for (int i = 0; i < ClientRatesDataTable.Rows.Count; i++)
+            {
+                if (ClientRatesDataTable.Rows[i]["Date"] != DBNull.Value)
+                {
+                    DateTime dateTime = Convert.ToDateTime(ClientRatesDataTable.Rows[i]["Date"]);
+                    string timeString = dateTime.ToShortTimeString();
+                    if (timeString == "0:00")
+                        continue;
+                    else
+                    {
+                        ClientRatesDataTable.Rows[i]["Date"] = dateTime.ToShortDateString() + " 00:00:00";
+                    }
+                }
+            }
         }
 
         public void GetCountries()
@@ -902,7 +923,8 @@ namespace Infinium.Modules.Marketing.Clients
 
         public void Send(int ClientID, string ClientEmail, string Login)
         {
-            string AccountPassword = "3699PassWord14772588";
+            //string AccountPassword = "7026Gradus0462";
+            string AccountPassword = "onluenzbclnedqtt";
             string SenderEmail = "infiniumdevelopers@gmail.com";
 
 
@@ -919,7 +941,7 @@ namespace Infinium.Modules.Marketing.Clients
             {
                 message.Subject = "InfiniumAgent";
                 message.Body = @"Здравствуйте. Отдел разработки программного обеспечения СООО «ЗОВ-Профиль» предлагает Вам установить десктоп-приложение Infinium.Agent, которое является частью корпоративной системы управления ресурсами предприятия Infinium. В этой программе Вы сможете видеть состояние заказов Ваших клиентов на нашей фабрике в производстве, на складе и отгрузке. Кроме того, можете обмениваться сообщениями с нашими сотрудниками, читать и комментировать новости нашего предприятия. В программе также имеется актуальный каталог продукции. База данных находится на облачном хостинге, поэтому работает круглосуточно и вероятность сбоев сведена к минимуму. Скачать приложение можете по ссылке:
-https://drive.google.com/file/d/0BzOa6U366p2pOFRESEdUN2hQSGc/view?usp=sharing
+https://drive.google.com/file/d/0BzOa6U366p2pOFRESEdUN2hQSGc/view?usp=sharing&resourcekey=0-RqX0UQ9MBdrHuonIV88MRQ
 Для входа в программу используйте логин " + Login + @" и пароль 1111. После авторизации рекомендуем сменить данные для входа.
 
 --
@@ -1129,6 +1151,8 @@ infiniumdevelopers@gmail.com";
                     using (DataTable dtTable = new DataTable())
                     {
                         da.Fill(dtTable);
+                        ClientsDataTable.Clear();
+                        ClientsDataAdapter.Fill(ClientsDataTable);
                     }
                 }
             }

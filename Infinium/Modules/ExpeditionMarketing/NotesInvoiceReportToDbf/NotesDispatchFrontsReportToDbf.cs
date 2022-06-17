@@ -1464,7 +1464,8 @@ PackageDetailID, PackageDetails.Count AS Count, (FrontsOrders.Square * PackageDe
                             NewRow["AccountingName"] = rows[0]["DecorAccountingName"].ToString();
                             NewRow["InvNumber"] = rows[0]["DecorInvNumber"].ToString();
                             NewRow["Cvet"] = rows[0]["Cvet"].ToString();
-                            NewRow["Patina"] = rows[0]["Patina"].ToString();
+                            //NewRow["Patina"] = rows[0]["Patina"].ToString();
+                            NewRow["Patina"] = "xxx-0";
                             NewRow["Notes"] = rows[0]["Notes"].ToString();
                         }
                         ReportDataTable1.Rows.Add(NewRow);
@@ -1491,7 +1492,8 @@ PackageDetailID, PackageDetails.Count AS Count, (FrontsOrders.Square * PackageDe
                             NewRow["AccountingName"] = rows[0]["DecorAccountingName"].ToString();
                             NewRow["InvNumber"] = rows[0]["DecorInvNumber"].ToString();
                             NewRow["Cvet"] = rows[0]["Cvet"].ToString();
-                            NewRow["Patina"] = rows[0]["Patina"].ToString();
+                            //NewRow["Patina"] = rows[0]["Patina"].ToString();
+                            NewRow["Patina"] = "xxx-0";
                             NewRow["Notes"] = rows[0]["Notes"].ToString();
                         }
                         ReportDataTable.Rows.Add(NewRow);
@@ -1557,7 +1559,8 @@ PackageDetailID, PackageDetails.Count AS Count, (FrontsOrders.Square * PackageDe
                         NewRow["AccountingName"] = rows[0]["DecorAccountingName"].ToString();
                         NewRow["InvNumber"] = rows[0]["DecorInvNumber"].ToString();
                         NewRow["Cvet"] = rows[0]["Cvet"].ToString();
-                        NewRow["Patina"] = rows[0]["Patina"].ToString();
+                        //NewRow["Patina"] = rows[0]["Patina"].ToString();
+                        NewRow["Patina"] = "xxx-0";
                         NewRow["Notes"] = rows[0]["Notes"].ToString();
                     }
                     ReportDataTable.Rows.Add(NewRow);
@@ -1831,7 +1834,7 @@ PackageDetailID, PackageDetails.Count AS Count, (FrontsOrders.Square * PackageDe
                     NonStandardMargin = GetNonStandardMargin(Convert.ToInt32(Rows[r]["FrontConfigID"]));
                 }
                 //ФИЛЕНКА
-                filter = " AND InsetTypeID IN (2069,2070,2071,2073,2075,2077,2233,3644,29043,29531)";
+                filter = " AND InsetTypeID IN (2069,2070,2071,2073,2075,2077,2233,3644,29043,29531,41213)";
                 Rows = OrdersDataTable.Select("ColorID = " + Fronts.Rows[i]["ColorID"].ToString() +
                     " AND PatinaID = " + Fronts.Rows[i]["PatinaID"].ToString() +
                     " AND Notes = '" + Fronts.Rows[i]["Notes"].ToString() +

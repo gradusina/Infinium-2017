@@ -541,16 +541,19 @@ namespace Infinium
             int ClientID = 0;
             int OrderNumber = 0;
             int MainOrderID = 0;
+            int MegaOrderID = 0;
             string Notes = string.Empty;
             if (MegaOrdersDataGrid.SelectedRows.Count > 0 && MegaOrdersDataGrid.SelectedRows[0].Cells["ClientID"].Value != DBNull.Value)
                 ClientID = Convert.ToInt32(MegaOrdersDataGrid.SelectedRows[0].Cells["ClientID"].Value);
             if (MegaOrdersDataGrid.SelectedRows.Count > 0 && MegaOrdersDataGrid.SelectedRows[0].Cells["OrderNumber"].Value != DBNull.Value)
                 OrderNumber = Convert.ToInt32(MegaOrdersDataGrid.SelectedRows[0].Cells["OrderNumber"].Value);
+            if (MegaOrdersDataGrid.SelectedRows.Count > 0 && MegaOrdersDataGrid.SelectedRows[0].Cells["MegaOrderID"].Value != DBNull.Value)
+                MegaOrderID = Convert.ToInt32(MegaOrdersDataGrid.SelectedRows[0].Cells["MegaOrderID"].Value);
             if (MainOrdersDataGrid.SelectedRows.Count > 0 && MainOrdersDataGrid.SelectedRows[0].Cells["MainOrderID"].Value != DBNull.Value)
                 MainOrderID = Convert.ToInt32(MainOrdersDataGrid.SelectedRows[0].Cells["MainOrderID"].Value);
             if (MainOrdersDataGrid.SelectedRows.Count > 0 && MainOrdersDataGrid.SelectedRows[0].Cells["Notes"].Value != DBNull.Value)
                 Notes = MainOrdersDataGrid.SelectedRows[0].Cells["Notes"].Value.ToString();
-            PackagesOrdersManager.SetCabFurParameters(ClientID, OrderNumber, MainOrderID, Notes);
+            PackagesOrdersManager.SetCabFurParameters(ClientID, OrderNumber, MegaOrderID, MainOrderID, Notes);
 
             PackagesOrdersManager.SavePackageDetails();
             PackagesOrdersManager.SetPackStatus();

@@ -59,6 +59,49 @@ namespace Infinium
         private static DataTable _positionsDataTable;
         private static DataTable _modulesDataTable;
 
+        public static DataTable GetDataTableByAdapter(string query, string connectionString)
+        {
+            DataTable dt = new DataTable();
+            using (SqlConnection sqlConn = new SqlConnection(connectionString))
+            using (SqlCommand cmd = new SqlCommand(query, sqlConn))
+            {
+                sqlConn.Open();
+                new SqlDataAdapter(query, sqlConn).Fill(dt);
+            }
+
+            return dt;
+        }
+
+        public static DataTable GetDataTableFromDataReader(IDataReader dataReader)
+        {
+            DataTable schemaTable = dataReader.GetSchemaTable();
+            DataTable resultTable = new DataTable();
+
+            foreach (DataRow dataRow in schemaTable.Rows)
+            {
+                DataColumn dataColumn = new DataColumn();
+                dataColumn.ColumnName = dataRow["ColumnName"].ToString();
+                dataColumn.DataType = Type.GetType(dataRow["DataType"].ToString());
+                dataColumn.ReadOnly = (bool)dataRow["IsReadOnly"];
+                dataColumn.AutoIncrement = (bool)dataRow["IsAutoIncrement"];
+                dataColumn.Unique = (bool)dataRow["IsUnique"];
+
+                resultTable.Columns.Add(dataColumn);
+            }
+
+            while (dataReader.Read())
+            {
+                DataRow dataRow = resultTable.NewRow();
+                for (int i = 0; i < resultTable.Columns.Count - 1; i++)
+                {
+                    dataRow[i] = dataReader[i];
+                }
+                resultTable.Rows.Add(dataRow);
+            }
+
+            return resultTable;
+        }
+
         public static DataTable FrontsConfigDataTableAll
         {
             get
@@ -66,14 +109,15 @@ namespace Infinium
                 if (FrontsAllConfigDT == null)
                 {
                     FrontsAllConfigDT = new DataTable();
-                    using (
-                        SqlDataAdapter DA =
-                            new SqlDataAdapter(
-                                "SELECT * FROM FrontsConfig WHERE AccountingName IS NOT NULL AND InvNumber IS NOT NULL",
-                                ConnectionStrings.CatalogConnectionString))
-                    {
-                        DA.Fill(FrontsAllConfigDT);
-                    }
+                    string SelectCommand = "SELECT * FROM FrontsConfig WHERE AccountingName IS NOT NULL AND InvNumber IS NOT NULL";
+                    //using (
+                    //    SqlDataAdapter DA =
+                    //        new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
+                    //{
+                    //    DA.Fill(FrontsAllConfigDT);
+                    //}
+                    FrontsAllConfigDT.Clear();
+                    FrontsAllConfigDT = TablesManager.GetDataTableByAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString);
                 }
                 if (FrontsAllConfigDT.Columns.Contains("Excluzive"))
                     FrontsAllConfigDT.Columns.Remove("Excluzive");
@@ -110,15 +154,17 @@ namespace Infinium
                 if (DecorAllConfigDT == null)
                 {
                     DecorAllConfigDT = new DataTable();
-                    using (
-                        SqlDataAdapter DA =
-                            new SqlDataAdapter(
-                                $@"SELECT *, Decor.TechStoreName FROM DecorConfig LEFT JOIN
-                    infiniu2_catalog.dbo.TechStore AS Decor ON DecorConfig.DecorID = Decor.TechStoreID WHERE AccountingName IS NOT NULL AND InvNumber IS NOT NULL",
-                                ConnectionStrings.CatalogConnectionString))
-                    {
-                        DA.Fill(DecorAllConfigDT);
-                    }
+                    string SelectCommand = $@"SELECT *, Decor.TechStoreName FROM DecorConfig LEFT JOIN
+                    infiniu2_catalog.dbo.TechStore AS Decor ON DecorConfig.DecorID = Decor.TechStoreID WHERE AccountingName IS NOT NULL AND InvNumber IS NOT NULL";
+                    //using (
+                    //    SqlDataAdapter DA =
+                    //        new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
+                    //{
+                    //    DecorAllConfigDT.Clear();
+                    //    DA.Fill(DecorAllConfigDT);
+                    //}
+                    DecorAllConfigDT.Clear();
+                    DecorAllConfigDT = TablesManager.GetDataTableByAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString);
                 }
                 if (DecorAllConfigDT.Columns.Contains("Excluzive"))
                     DecorAllConfigDT.Columns.Remove("Excluzive");
@@ -335,35 +381,64 @@ namespace Infinium
             return TechStoreName;
         }
 
-        //public static bool IsInsetTypePressed(int TechStoreID)
-        //{
-        //    int ConstTechStoreSubGroupID = 65;
-        //    int TechStoreSubGroupID = 0;
+        public static bool IsInsetTypePressed(int TechStoreID)
+        {
+            int ConstTechStoreSubGroupID = 65;
+            int TechStoreSubGroupID = 0;
 
-        //    DataRow[] Rows = TechStoreDT.Select("TechStoreID = " + TechStoreID);
-        //    if (Rows.Count() > 0)
-        //    {
-        //        TechStoreSubGroupID = Convert.ToInt32(Rows[0]["TechStoreSubGroupID"]);
-        //    }
+            DataRow[] Rows = TechStoreDT.Select("TechStoreID = " + TechStoreID);
+            if (Rows.Count() > 0)
+            {
+                TechStoreSubGroupID = Convert.ToInt32(Rows[0]["TechStoreSubGroupID"]);
+            }
 
-        //    if (TechStoreSubGroupID == ConstTechStoreSubGroupID)
-        //        return true;
-        //    else
-        //        return false;
-        //}
+            if (TechStoreSubGroupID == ConstTechStoreSubGroupID)
+                return true;
+            else
+                return false;
+        }
 
-        //public static decimal GetWidthMin(int TechStoreID)
-        //{
-        //    decimal WidthMin = 0;
+        public static decimal GetWidthMin(int TechStoreID)
+        {
+            decimal WidthMin = 0;
 
-        //    DataRow[] Rows = TechStoreDT.Select("TechStoreID = " + TechStoreID);
-        //    if (Rows.Count() > 0)
-        //    {
-        //        WidthMin = Convert.ToDecimal(Rows[0]["WidthMin"]);
-        //    }
+            DataRow[] Rows = TechStoreDT.Select("TechStoreID = " + TechStoreID);
+            if (Rows.Count() > 0)
+            {
+                WidthMin = Convert.ToDecimal(Rows[0]["WidthMin"]);
+            }
 
-        //    return WidthMin;
-        //}
+            return WidthMin;
+        }
+        
+        public static TechStoreDimensions GetTechStoreDimensions(int TechStoreID)
+        {
+            TechStoreDimensions dimensions = new TechStoreDimensions();
+
+            DataRow[] Rows = TechStoreDT.Select("TechStoreID = " + TechStoreID);
+            if (Rows.Count() > 0)
+            {
+                if (Rows[0]["HeightMin"] != DBNull.Value)
+                    dimensions.HeightMin = Convert.ToDecimal(Rows[0]["HeightMin"]);
+                if (Rows[0]["HeightMax"] != DBNull.Value)
+                    dimensions.HeightMax = Convert.ToDecimal(Rows[0]["HeightMax"]);
+                if (Rows[0]["WidthMin"] != DBNull.Value)
+                    dimensions.WidthMin = Convert.ToDecimal(Rows[0]["WidthMin"]);
+                if (Rows[0]["WidthMax"] != DBNull.Value)
+                    dimensions.WidthMax = Convert.ToDecimal(Rows[0]["WidthMax"]);
+            }
+
+            return dimensions;
+        }
+
+        public struct TechStoreDimensions
+        {
+            public int TechStoreID;
+            public decimal HeightMin;
+            public decimal HeightMax;
+            public decimal WidthMin;
+            public decimal WidthMax;
+        }
     }
 
 
@@ -412,6 +487,10 @@ namespace Infinium
         ManagementObjectCollection mObject;
 
         public static int[] CabFurIds;
+        public static int[] insetTypes = {
+            30455, 30456, 4008, 4009, 4010, 4011, 4012, 4013, 4014, 4015,
+            16617, 16616, 4027, 4028, 4029, 4030, 4031, 4032, 4033, 4034, 40798, 16179
+        };
 
         public Security()
         {

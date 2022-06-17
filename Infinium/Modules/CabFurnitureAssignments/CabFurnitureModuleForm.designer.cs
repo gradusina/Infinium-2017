@@ -308,6 +308,7 @@ namespace Infinium
             this.BarcodeTextBox = new ComponentFactory.Krypton.Toolkit.KryptonTextBox();
             this.tabPage7 = new System.Windows.Forms.TabPage();
             this.panel38 = new System.Windows.Forms.Panel();
+            this.btnShowQualityControl = new ComponentFactory.Krypton.Toolkit.KryptonButton();
             this.btnUpdateStorePackages = new ComponentFactory.Krypton.Toolkit.KryptonButton();
             this.panel40 = new System.Windows.Forms.Panel();
             this.btnSearchPackages = new ComponentFactory.Krypton.Toolkit.KryptonButton();
@@ -4865,6 +4866,7 @@ namespace Infinium
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel38.BackColor = System.Drawing.Color.Transparent;
+            this.panel38.Controls.Add(this.btnShowQualityControl);
             this.panel38.Controls.Add(this.btnUpdateStorePackages);
             this.panel38.Controls.Add(this.panel40);
             this.panel38.Controls.Add(this.label43);
@@ -4894,6 +4896,28 @@ namespace Infinium
             this.panel38.Name = "panel38";
             this.panel38.Size = new System.Drawing.Size(1262, 643);
             this.panel38.TabIndex = 478;
+            // 
+            // btnShowQualityControl
+            // 
+            this.btnShowQualityControl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnShowQualityControl.Location = new System.Drawing.Point(1029, 20);
+            this.btnShowQualityControl.Name = "btnShowQualityControl";
+            this.btnShowQualityControl.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.btnShowQualityControl.Size = new System.Drawing.Size(103, 49);
+            this.btnShowQualityControl.StateCommon.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.btnShowQualityControl.StateCommon.Content.Image.ImageH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.btnShowQualityControl.StateCommon.Content.Image.ImageV = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.btnShowQualityControl.StateCommon.Content.LongText.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.btnShowQualityControl.StateCommon.Content.LongText.TextV = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.btnShowQualityControl.StateCommon.Content.ShortText.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.btnShowQualityControl.StateCommon.Content.ShortText.TextV = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.btnShowQualityControl.TabIndex = 496;
+            this.btnShowQualityControl.TabStop = false;
+            this.btnShowQualityControl.Tag = "25";
+            this.btnShowQualityControl.Values.Text = "Вся продукция\r\n       на ОТК";
+            this.btnShowQualityControl.Click += new System.EventHandler(this.btnShowQualityControl_Click);
             // 
             // btnUpdateStorePackages
             // 
@@ -5336,10 +5360,10 @@ namespace Infinium
             // btnQualityControlOut
             // 
             this.btnQualityControlOut.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnQualityControlOut.Location = new System.Drawing.Point(1226, 20);
+            this.btnQualityControlOut.Location = new System.Drawing.Point(1200, 20);
             this.btnQualityControlOut.Name = "btnQualityControlOut";
             this.btnQualityControlOut.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.btnQualityControlOut.Size = new System.Drawing.Size(30, 30);
+            this.btnQualityControlOut.Size = new System.Drawing.Size(56, 49);
             this.btnQualityControlOut.StateCommon.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
@@ -5348,6 +5372,7 @@ namespace Infinium
             this.btnQualityControlOut.TabIndex = 474;
             this.btnQualityControlOut.TabStop = false;
             this.btnQualityControlOut.Tag = "25";
+            this.btnQualityControlOut.Values.ExtraText = "С\r\nОТК";
             this.btnQualityControlOut.Values.Image = global::Infinium.Properties.Resources.TimeDownCommon;
             this.btnQualityControlOut.Values.Text = "";
             this.btnQualityControlOut.Click += new System.EventHandler(this.btnQualityControlOut_Click);
@@ -5365,10 +5390,10 @@ namespace Infinium
             // btnQualityControlIn
             // 
             this.btnQualityControlIn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnQualityControlIn.Location = new System.Drawing.Point(1190, 20);
+            this.btnQualityControlIn.Location = new System.Drawing.Point(1138, 20);
             this.btnQualityControlIn.Name = "btnQualityControlIn";
             this.btnQualityControlIn.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.btnQualityControlIn.Size = new System.Drawing.Size(30, 30);
+            this.btnQualityControlIn.Size = new System.Drawing.Size(56, 49);
             this.btnQualityControlIn.StateCommon.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
@@ -5377,8 +5402,9 @@ namespace Infinium
             this.btnQualityControlIn.TabIndex = 473;
             this.btnQualityControlIn.TabStop = false;
             this.btnQualityControlIn.Tag = "25";
+            this.btnQualityControlIn.Values.ExtraText = "На\r\nОТК";
             this.btnQualityControlIn.Values.Image = global::Infinium.Properties.Resources.TimeUpCommon;
-            this.btnQualityControlIn.Values.Text = "";
+            this.btnQualityControlIn.Values.Text = "На\r\nОТК";
             this.btnQualityControlIn.Click += new System.EventHandler(this.btnQualityControlIn_Click);
             // 
             // label47
@@ -6472,5 +6498,6 @@ namespace Infinium
         private DevExpress.XtraBars.BarDockControl barDockControlRight;
         private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem setDispatchDateContextMenuItem;
         private ComponentFactory.Krypton.Toolkit.KryptonCheckButton MenuButton;
+        private ComponentFactory.Krypton.Toolkit.KryptonButton btnShowQualityControl;
     }
 }

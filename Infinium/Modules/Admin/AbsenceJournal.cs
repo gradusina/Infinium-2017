@@ -44,7 +44,9 @@ namespace Infinium.Modules.Admin
                 {
                     CalendarTodayDate = DateTime.Now
                 };
-                Column.DefaultCellStyle.Format = "dd.MM.yyyy";
+                Column.Format = DateTimePickerFormat.Custom;
+                Column.CustomFormat = "dd.MM.yyyy";
+                //Column.DefaultCellStyle.Format = "dd.MM.yyyy";
                 Column.Checked = false;
                 Column.DataPropertyName = "DateStart";
                 Column.HeaderText = "Дата начала";
@@ -65,7 +67,9 @@ namespace Infinium.Modules.Admin
                 {
                     CalendarTodayDate = DateTime.Now
                 };
-                Column.DefaultCellStyle.Format = "dd.MM.yyyy";
+                Column.Format = DateTimePickerFormat.Custom;
+                Column.CustomFormat = "dd.MM.yyyy";
+                //Column.DefaultCellStyle.Format = "dd.MM.yyyy";
                 Column.Checked = false;
                 Column.DataPropertyName = "DateFinish";
                 Column.HeaderText = "Дата окончания";

@@ -15,6 +15,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
+using static Infinium.TablesManager;
 
 namespace Infinium.Modules.ZOV
 {
@@ -62,19 +63,24 @@ namespace Infinium.Modules.ZOV
         public BindingSource TechnoInsetColorsBindingSource = null;
         public BindingSource FrontsConfigBindingSource = null;
 
-        public String FrontsBindingSourceDisplayMember = null;
-        public String FrameColorsBindingSourceDisplayMember = null;
-        public String TechnoProfilesBindingSourceDisplayMember = null;
-        public String PatinaBindingSourceDisplayMember = null;
-        public String InsetColorsBindingSourceDisplayMember = null;
-        public String InsetTypesBindingSourceDisplayMember = null;
+        public string FrontsBindingSourceDisplayMember = null;
+        public string FrameColorsBindingSourceDisplayMember = null;
+        public string TechnoProfilesBindingSourceDisplayMember = null;
+        public string PatinaBindingSourceDisplayMember = null;
+        public string InsetColorsBindingSourceDisplayMember = null;
+        public string InsetTypesBindingSourceDisplayMember = null;
 
-        public String FrontsBindingSourceValueMember = null;
-        public String FrameColorsBindingSourceValueMember = null;
-        public String TechnoProfilesBindingSourceValueMember = null;
-        public String PatinaBindingSourceValueMember = null;
-        public String InsetColorsBindingSourceValueMember = null;
-        public String InsetTypesBindingSourceValueMember = null;
+        public string FrontsBindingSourceValueMember = null;
+        public string FrameColorsBindingSourceValueMember = null;
+        public string TechnoProfilesBindingSourceValueMember = null;
+        public string PatinaBindingSourceValueMember = null;
+        public string InsetColorsBindingSourceValueMember = null;
+        public string InsetTypesBindingSourceValueMember = null;
+
+        public FrontsCatalogOrder()
+        {
+            Initialize();
+        }
 
         public FrontsCatalogOrder(
             ref ComponentFactory.Krypton.Toolkit.KryptonComboBox tHeightEdit,
@@ -256,7 +262,7 @@ namespace Infinium.Modules.ZOV
             FrameColorsDataTable = ConstColorsDataTable.Copy();
             PatinaDataTable = ConstPatinaDataTable.Copy();
             PatinaRALDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM PatinaRAL WHERE Enabled=1",
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT PatinaRAL.*, Patina.Patina FROM PatinaRAL INNER JOIN Patina ON Patina.PatinaID=PatinaRAL.PatinaID WHERE PatinaRAL.Enabled=1",
                 ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(PatinaRALDataTable);
@@ -265,7 +271,7 @@ namespace Infinium.Modules.ZOV
             {
                 DataRow NewRow = PatinaDataTable.NewRow();
                 NewRow["PatinaID"] = item["PatinaRALID"];
-                NewRow["PatinaName"] = item["PatinaRAL"];
+                NewRow["PatinaName"] = item["PatinaRAL"]; NewRow["Patina"] = item["Patina"];
                 NewRow["DisplayName"] = item["DisplayName"];
                 PatinaDataTable.Rows.Add(NewRow);
             }
@@ -621,7 +627,7 @@ namespace Infinium.Modules.ZOV
                     {
                         DataRow NewRow = PatinaDataTable.NewRow();
                         NewRow["PatinaID"] = item["PatinaRALID"];
-                        NewRow["PatinaName"] = item["PatinaRAL"];
+                        NewRow["PatinaName"] = item["PatinaRAL"]; NewRow["Patina"] = item["Patina"];
                         NewRow["DisplayName"] = item["DisplayName"];
                         PatinaDataTable.Rows.Add(NewRow);
                     }
@@ -1455,18 +1461,18 @@ namespace Infinium.Modules.ZOV
         public BindingSource ItemInsetTypesBindingSource = null;
         public BindingSource ItemInsetColorsBindingSource = null;
 
-        public String DecorProductsBindingSourceDisplayMember = null;
-        public String ItemsBindingSourceDisplayMember = null;
-        public String ItemColorsBindingSourceDisplayMember = null;
-        public String ItemPatinaBindingSourceDisplayMember = null;
-        public String ItemLengthBindingSourceDisplayMember = null;
-        public String ItemHeightBindingSourceDisplayMember = null;
-        public String ItemWidthBindingSourceDisplayMember = null;
+        public string DecorProductsBindingSourceDisplayMember = null;
+        public string ItemsBindingSourceDisplayMember = null;
+        public string ItemColorsBindingSourceDisplayMember = null;
+        public string ItemPatinaBindingSourceDisplayMember = null;
+        public string ItemLengthBindingSourceDisplayMember = null;
+        public string ItemHeightBindingSourceDisplayMember = null;
+        public string ItemWidthBindingSourceDisplayMember = null;
 
-        public String DecorProductsBindingSourceValueMember = null;
-        public String ItemsBindingSourceValueMember = null;
-        public String ItemColorsBindingSourceValueMember = null;
-        public String ItemPatinaBindingSourceValueMember = null;
+        public string DecorProductsBindingSourceValueMember = null;
+        public string ItemsBindingSourceValueMember = null;
+        public string ItemColorsBindingSourceValueMember = null;
+        public string ItemPatinaBindingSourceValueMember = null;
 
 
         public DecorCatalogOrder()
@@ -1632,7 +1638,7 @@ namespace Infinium.Modules.ZOV
                 PatinaDataTable.Columns.Add(new DataColumn("Excluzive", Type.GetType("System.Int32")));
             }
             PatinaRALDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM PatinaRAL WHERE Enabled=1",
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT PatinaRAL.*, Patina.Patina FROM PatinaRAL INNER JOIN Patina ON Patina.PatinaID=PatinaRAL.PatinaID WHERE PatinaRAL.Enabled=1",
                 ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(PatinaRALDataTable);
@@ -1641,7 +1647,7 @@ namespace Infinium.Modules.ZOV
             {
                 DataRow NewRow = PatinaDataTable.NewRow();
                 NewRow["PatinaID"] = item["PatinaRALID"];
-                NewRow["PatinaName"] = item["PatinaRAL"];
+                NewRow["PatinaName"] = item["PatinaRAL"]; NewRow["Patina"] = item["Patina"];
                 NewRow["DisplayName"] = item["DisplayName"];
                 PatinaDataTable.Rows.Add(NewRow);
             }
@@ -1731,7 +1737,7 @@ namespace Infinium.Modules.ZOV
         }
 
         //External
-        public bool HasParameter(int ProductID, String Parameter)
+        public bool HasParameter(int ProductID, string Parameter)
         {
             DataRow[] Rows = DecorParametersDataTable.Select("ProductID = " + ProductID);
 
@@ -2268,7 +2274,7 @@ namespace Infinium.Modules.ZOV
                     {
                         DataRow NewRow = ItemPatinaDataTable.NewRow();
                         NewRow["PatinaID"] = item["PatinaRALID"];
-                        NewRow["PatinaName"] = item["PatinaRAL"];
+                        NewRow["PatinaName"] = item["PatinaRAL"]; NewRow["Patina"] = item["Patina"];
                         NewRow["DisplayName"] = item["DisplayName"];
                         ItemPatinaDataTable.Rows.Add(NewRow);
                     }
@@ -3850,7 +3856,7 @@ namespace Infinium.Modules.ZOV
                 DA.Fill(PatinaDataTable);
             }
             PatinaRALDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM PatinaRAL WHERE Enabled=1",
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT PatinaRAL.*, Patina.Patina FROM PatinaRAL INNER JOIN Patina ON Patina.PatinaID=PatinaRAL.PatinaID WHERE PatinaRAL.Enabled=1",
                 ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(PatinaRALDataTable);
@@ -3859,7 +3865,7 @@ namespace Infinium.Modules.ZOV
             {
                 DataRow NewRow = PatinaDataTable.NewRow();
                 NewRow["PatinaID"] = item["PatinaRALID"];
-                NewRow["PatinaName"] = item["PatinaRAL"];
+                NewRow["PatinaName"] = item["PatinaRAL"]; NewRow["Patina"] = item["Patina"];
                 NewRow["DisplayName"] = item["DisplayName"];
                 PatinaDataTable.Rows.Add(NewRow);
             }
@@ -5839,7 +5845,7 @@ namespace Infinium.Modules.ZOV
                 DA.Fill(PatinaDataTable);
             }
             PatinaRALDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM PatinaRAL WHERE Enabled=1",
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT PatinaRAL.*, Patina.Patina FROM PatinaRAL INNER JOIN Patina ON Patina.PatinaID=PatinaRAL.PatinaID WHERE PatinaRAL.Enabled=1",
                 ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(PatinaRALDataTable);
@@ -5848,7 +5854,7 @@ namespace Infinium.Modules.ZOV
             {
                 DataRow NewRow = PatinaDataTable.NewRow();
                 NewRow["PatinaID"] = item["PatinaRALID"];
-                NewRow["PatinaName"] = item["PatinaRAL"];
+                NewRow["PatinaName"] = item["PatinaRAL"]; NewRow["Patina"] = item["Patina"];
                 NewRow["DisplayName"] = item["DisplayName"];
                 PatinaDataTable.Rows.Add(NewRow);
             }
@@ -6196,9 +6202,37 @@ namespace Infinium.Modules.ZOV
         public void AddFrontsOrder(int MainOrderID, int FrontID, int ColorID, int PatinaID, int InsetTypeID,
             int InsetColorID, int TechnoProfileID, int TechnoColorID, int TechnoInsetTypeID, int TechnoInsetColorID, int Height, int Width, int Count, decimal HandsSize, int FrontDrillTypeID, string Notes, bool IsSample, int ImpostMargin = 0)
         {
-            //int FactoryID = 1;
-            //FrontsCatalogOrder.GetFrontConfigID(FrontID, ColorID, PatinaID, InsetTypeID,
-            //       InsetColorID, TehcnoColorID, TechnoInsetTypeID, TechnoInsetColorID, Height, Width, ref FactoryID);
+            TechStoreDimensions dimensions = TablesManager.GetTechStoreDimensions(FrontID);
+
+            bool bNotCurved = Width != -1;
+            if (Height > 0 && Height < dimensions.HeightMin && bNotCurved)
+            {
+                MessageBox.Show($@"Высота фасада не может быть меньше мин. размера {dimensions.HeightMin} мм",
+                    "Добавление фасада");
+                return;
+            }
+
+            if (Height > 0 && Height > dimensions.HeightMax && bNotCurved)
+            {
+                MessageBox.Show($@"Высота фасада не может быть больше макс. размера {dimensions.HeightMax} мм",
+                    "Добавление фасада");
+                return;
+            }
+
+            if (Width > 0 && Width < dimensions.WidthMin)
+            {
+                MessageBox.Show($@"Ширина фасада не может быть меньше мин. размера {dimensions.WidthMin} мм",
+                    "Добавление фасада");
+                return;
+            }
+
+            if (Width > 0 && Width > dimensions.WidthMax)
+            {
+                MessageBox.Show($@"Ширина фасада не может быть больше макс. размера {dimensions.WidthMax} мм",
+                    "Добавление фасада");
+                return;
+            }
+
             if (Width != -1 && FrontID == 3630 && Width > 1478)
             {
                 MessageBox.Show("Ширина фасада Марсель 3 не может быть больше 1478 мм", "Добавление фасада");
@@ -6271,6 +6305,38 @@ namespace Infinium.Modules.ZOV
             int MainOrderID, int FrontID, int ColorID, int PatinaID, int InsetTypeID,
             int InsetColorID, int TechnoProfileID, int TechnoColorID, int TechnoInsetTypeID, int TechnoInsetColorID, int Height, int Width, int Count, bool IsSample)
         {
+            TechStoreDimensions dimensions = TablesManager.GetTechStoreDimensions(FrontID);
+
+            bool bNotCurved = Width != -1;
+            if (Height > 0 && Height < dimensions.HeightMin && bNotCurved)
+            {
+                MessageBox.Show($@"Высота фасада не может быть меньше мин. размера {dimensions.HeightMin} мм",
+                    "Добавление фасада");
+                return;
+            }
+
+            if (Height > 0 && Height > dimensions.HeightMax && bNotCurved)
+            {
+                MessageBox.Show($@"Высота фасада не может быть больше макс. размера {dimensions.HeightMax} мм",
+                    "Добавление фасада");
+                return;
+            }
+
+            if (Width > 0 && Width < dimensions.WidthMin)
+            {
+                MessageBox.Show($@"Ширина фасада не может быть меньше мин. размера {dimensions.WidthMin} мм",
+                    "Добавление фасада");
+                return;
+            }
+
+            if (Width > 0 &&
+                Width > dimensions.WidthMax)
+            {
+                MessageBox.Show($@"Ширина фасада не может быть больше макс. размера {dimensions.WidthMax} мм",
+                    "Добавление фасада");
+                return;
+            }
+
             DateTime CreateDateTime = Security.GetCurrentDate();
             for (int i = 0; i < CupboardsExportListBox.Items.Count; i++)
             {
@@ -6420,6 +6486,41 @@ namespace Infinium.Modules.ZOV
                 if (FrontID == -1)
                     return;
 
+                bool bNotCurved = Width != -1;
+                TechStoreDimensions dimensions = TablesManager.GetTechStoreDimensions(FrontID);
+
+                if (Height > 0 && Height < dimensions.HeightMin && bNotCurved)
+                {
+                    MessageBox.Show(
+                        $@"Высота фасада не может быть меньше мин. размера {dimensions.HeightMin} мм. Позиция {i + 1}",
+                        "Добавление фасада");
+                    return;
+                }
+
+                if (Height > 0 && Height > dimensions.HeightMax && bNotCurved)
+                {
+                    MessageBox.Show(
+                        $@"Высота фасада не может быть больше макс. размера {dimensions.HeightMax} мм. Позиция {i + 1}",
+                        "Добавление фасада");
+                    return;
+                }
+
+                if (Width > 0 && Width < dimensions.WidthMin)
+                {
+                    MessageBox.Show(
+                        $@"Ширина фасада не может быть меньше мин. размера {dimensions.WidthMin} мм. Позиция {i + 1}",
+                        "Добавление фасада");
+                    return;
+                }
+
+                if (Width > 0 && Width > dimensions.WidthMax)
+                {
+                    MessageBox.Show(
+                        $@"Ширина фасада не может быть больше макс. размера {dimensions.WidthMax} мм. Позиция {i + 1}",
+                        "Добавление фасада");
+                    return;
+                }
+
                 if (Width != -1 && FrontID == 3630 && Width > 1478)
                 {
                     MessageBox.Show("Ширина фасада Марсель 3 не может быть больше 1478 мм", "Добавление фасада");
@@ -6539,7 +6640,7 @@ namespace Infinium.Modules.ZOV
             IsNewCupboardsAdded = true;
         }
 
-        public void AddCupboard(String CupboardName)
+        public void AddCupboard(string CupboardName)
         {
             DataRow Row = CupboardsDataTable.NewRow();
             Row["CupboardName"] = CupboardName;
@@ -7022,7 +7123,7 @@ namespace Infinium.Modules.ZOV
                 }
             }
 
-            return Decimal.Round(S / 1000000, 3, MidpointRounding.AwayFromZero);
+            return decimal.Round(S / 1000000, 3, MidpointRounding.AwayFromZero);
         }
 
         //проверяет, внесены ли изменения (редактировались позиции, удалялись, добавлялись)
@@ -7076,7 +7177,7 @@ namespace Infinium.Modules.ZOV
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM PackageDetails" +
                 " WHERE PackageID IN (SELECT PackageID FROM Packages" +
                 " WHERE ProductType = 0 AND MainOrderID = " + MainOrderID + ")" +
-                " AND OrderID IN (" + String.Join(",", FrontsOrders.OfType<Int32>().ToArray()) + ")", ConnectionStrings.ZOVOrdersConnectionString))
+                " AND OrderID IN (" + string.Join(",", FrontsOrders.OfType<int>().ToArray()) + ")", ConnectionStrings.ZOVOrdersConnectionString))
             {
                 using (DataTable DT = new DataTable())
                 {
@@ -7097,7 +7198,7 @@ namespace Infinium.Modules.ZOV
                 return;
             //удалить нужно все позиции, которые лежат в одной упаковке вместе с измененной (даже если они не были затронуты)
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM PackageDetails" +
-                " WHERE PackageID IN (" + String.Join(",", Packages.OfType<Int32>().ToArray()) + ")", ConnectionStrings.ZOVOrdersConnectionString))
+                " WHERE PackageID IN (" + string.Join(",", Packages.OfType<int>().ToArray()) + ")", ConnectionStrings.ZOVOrdersConnectionString))
             {
                 using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
                 {
@@ -7120,7 +7221,7 @@ namespace Infinium.Modules.ZOV
                 return;
             //находим упаковки, в которых лежат фасады
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Packages" +
-                " WHERE PackageID IN (" + String.Join(",", Packages.OfType<Int32>().ToArray()) + ")", ConnectionStrings.ZOVOrdersConnectionString))
+                " WHERE PackageID IN (" + string.Join(",", Packages.OfType<int>().ToArray()) + ")", ConnectionStrings.ZOVOrdersConnectionString))
             {
                 using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
                 {
@@ -7162,15 +7263,15 @@ namespace Infinium.Modules.ZOV
                 //    "Height", "Width", "Count");
                 var countriesTable = FrontsOrdersDataTable.AsEnumerable().GroupBy(row => new
                 {
-                    FrontID = row.Field<Int64>("FrontID"),
-                    PatinaID = row.Field<Int64>("PatinaID"),
-                    InsetTypeID = row.Field<Int64>("InsetTypeID"),
-                    ColorID = row.Field<Int64>("ColorID"),
-                    InsetColorID = row.Field<Int64>("InsetColorID"),
-                    TechnoInsetTypeID = row.Field<Int64>("TechnoInsetTypeID"),
-                    TechnoInsetColorID = row.Field<Int64>("TechnoInsetColorID"),
-                    Height = row.Field<Int32>("Height"),
-                    Width = row.Field<Int32>("Width")
+                    FrontID = row.Field<long>("FrontID"),
+                    PatinaID = row.Field<long>("PatinaID"),
+                    InsetTypeID = row.Field<long>("InsetTypeID"),
+                    ColorID = row.Field<long>("ColorID"),
+                    InsetColorID = row.Field<long>("InsetColorID"),
+                    TechnoInsetTypeID = row.Field<long>("TechnoInsetTypeID"),
+                    TechnoInsetColorID = row.Field<long>("TechnoInsetColorID"),
+                    Height = row.Field<int>("Height"),
+                    Width = row.Field<int>("Width")
                 })
                              .Select(grp => new
                              {
@@ -7183,7 +7284,7 @@ namespace Infinium.Modules.ZOV
                                  grp.Key.TechnoInsetColorID,
                                  grp.Key.Height,
                                  grp.Key.Width,
-                                 Count = grp.Sum(r => r.Field<Int32>("Count"))
+                                 Count = grp.Sum(r => r.Field<int>("Count"))
                              });
                 foreach (var r in countriesTable)
                 {
@@ -8138,13 +8239,7 @@ namespace Infinium.Modules.ZOV
         public void AddDecorOrder(int MainOrderID, int ProductID, int DecorID, int ColorID, int PatinaID, int InsetTypeID, int InsetColorID,
             int Length, int Height, int Width, int Count, string Notes, bool IsSample)
         {
-            int[] insetTypes =
-            {
-                30455, 30456, 4008, 4009, 4010, 4011, 4012, 4013, 4014, 4015, 16617, 16616, 4027, 4028, 4029, 4030,
-                4031, 4032, 4033, 4034, 40798, 16179
-            };
-
-            bool isContained = insetTypes.Contains(DecorID);
+            bool isContained = Security.insetTypes.Contains(DecorID);
 
             if ((Height < 100 || Width < 100) && isContained)
             {
@@ -8474,7 +8569,7 @@ namespace Infinium.Modules.ZOV
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM PackageDetails" +
                 " WHERE PackageID IN (SELECT PackageID FROM Packages" +
                 " WHERE ProductType = 1 AND MainOrderID = " + MainOrderID + ")" +
-                " AND OrderID IN (" + String.Join(",", FrontsOrders.OfType<Int32>().ToArray()) + ")", ConnectionStrings.ZOVOrdersConnectionString))
+                " AND OrderID IN (" + string.Join(",", FrontsOrders.OfType<int>().ToArray()) + ")", ConnectionStrings.ZOVOrdersConnectionString))
             {
                 using (DataTable DT = new DataTable())
                 {
@@ -8495,7 +8590,7 @@ namespace Infinium.Modules.ZOV
                 return;
             //удалить нужно все позиции, которые лежат в одной упаковке вместе с измененной (даже если они не были затронуты)
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM PackageDetails" +
-                " WHERE PackageID IN (" + String.Join(",", Packages.OfType<Int32>().ToArray()) + ")", ConnectionStrings.ZOVOrdersConnectionString))
+                " WHERE PackageID IN (" + string.Join(",", Packages.OfType<int>().ToArray()) + ")", ConnectionStrings.ZOVOrdersConnectionString))
             {
                 using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
                 {
@@ -8518,7 +8613,7 @@ namespace Infinium.Modules.ZOV
                 return;
             //находим упаковки, в которых лежит декор
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Packages" +
-                " WHERE PackageID IN (" + String.Join(",", Packages.OfType<Int32>().ToArray()) + ")", ConnectionStrings.ZOVOrdersConnectionString))
+                " WHERE PackageID IN (" + string.Join(",", Packages.OfType<int>().ToArray()) + ")", ConnectionStrings.ZOVOrdersConnectionString))
             {
                 using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
                 {
@@ -8827,9 +8922,9 @@ namespace Infinium.Modules.ZOV
             decimal FrontsOrderWeight = 0;
             decimal DecorOrderWeight = 0;
 
-            FrontsOrderCost = Decimal.Round(FrontsCalculate.CalculateFronts(MainOrderID, ref FrontsOrderSquare, ref FrontsOrderWeight,
+            FrontsOrderCost = decimal.Round(FrontsCalculate.CalculateFronts(MainOrderID, ref FrontsOrderSquare, ref FrontsOrderWeight,
                                             PriceTypeID, IsSample, TechDrilling), 1, MidpointRounding.AwayFromZero);
-            DecorOrderCost = Decimal.Round(DecorCalculate.CalculateDecor(MainOrderID, ref DecorOrderWeight, IsSample), 1, MidpointRounding.AwayFromZero);
+            DecorOrderCost = decimal.Round(DecorCalculate.CalculateDecor(MainOrderID, ref DecorOrderWeight, IsSample), 1, MidpointRounding.AwayFromZero);
 
             for (int i = 0; i < 3; i++)
             {
@@ -8841,11 +8936,11 @@ namespace Infinium.Modules.ZOV
                         {
                             DA.Fill(DT);
 
-                            DT.Rows[0]["FrontsSquare"] = Decimal.Round(FrontsOrderSquare, 3, MidpointRounding.AwayFromZero);
-                            DT.Rows[0]["FrontsCost"] = Decimal.Round(FrontsOrderCost, 3, MidpointRounding.AwayFromZero);
-                            DT.Rows[0]["DecorCost"] = Decimal.Round(DecorOrderCost, 3, MidpointRounding.AwayFromZero);
-                            DT.Rows[0]["OrderCost"] = Decimal.Round(FrontsOrderCost + DecorOrderCost, 3, MidpointRounding.AwayFromZero);
-                            DT.Rows[0]["Weight"] = Decimal.Round(FrontsOrderWeight + DecorOrderWeight, 3, MidpointRounding.AwayFromZero);
+                            DT.Rows[0]["FrontsSquare"] = decimal.Round(FrontsOrderSquare, 3, MidpointRounding.AwayFromZero);
+                            DT.Rows[0]["FrontsCost"] = decimal.Round(FrontsOrderCost, 3, MidpointRounding.AwayFromZero);
+                            DT.Rows[0]["DecorCost"] = decimal.Round(DecorOrderCost, 3, MidpointRounding.AwayFromZero);
+                            DT.Rows[0]["OrderCost"] = decimal.Round(FrontsOrderCost + DecorOrderCost, 3, MidpointRounding.AwayFromZero);
+                            DT.Rows[0]["Weight"] = decimal.Round(FrontsOrderWeight + DecorOrderWeight, 3, MidpointRounding.AwayFromZero);
 
                             if (DT.Rows[0]["DebtTypeID"].ToString() != "0" && Convert.ToBoolean(DT.Rows[0]["NeedCalculate"]) == false)
                                 DT.Rows[0]["CalcDebtCost"] = DT.Rows[0]["OrderCost"];
@@ -9238,10 +9333,10 @@ namespace Infinium.Modules.ZOV
             decimal Count = Convert.ToInt32(FrontsOrdersRow["Count"]);
 
 
-            Perimeter = Decimal.Round((Height * 2 + Width * 2) / 1000 * Count, 3, MidpointRounding.AwayFromZero);
-            GlassSquare = Decimal.Round((Height - MarginHeight) * (Width - MarginWidth) / 1000000, 3, MidpointRounding.AwayFromZero);
+            Perimeter = decimal.Round((Height * 2 + Width * 2) / 1000 * Count, 3, MidpointRounding.AwayFromZero);
+            GlassSquare = decimal.Round((Height - MarginHeight) * (Width - MarginWidth) / 1000000, 3, MidpointRounding.AwayFromZero);
             GlassSquare = GlassSquare * Count;
-            Cost = Decimal.Round(JobPrice * Count + GlassPrice * GlassSquare + Perimeter * ProfilPrice, 3, MidpointRounding.AwayFromZero);
+            Cost = decimal.Round(JobPrice * Count + GlassPrice * GlassSquare + Perimeter * ProfilPrice, 3, MidpointRounding.AwayFromZero);
 
             decimal SampleSaleValue = Convert.ToDecimal(FrontsConfigDataTable.Select("FrontConfigID = " + FrontsOrdersRow["FrontConfigID"].ToString())[0]["SampleSaleValue"]);
             decimal SaleValue = Convert.ToDecimal(FrontsConfigDataTable.Select("FrontConfigID = " + FrontsOrdersRow["FrontConfigID"])[0]["SaleValue"]);
@@ -9335,7 +9430,7 @@ namespace Infinium.Modules.ZOV
             Cost = FrontCost + InsetCost;
 
             FrontsOrdersRow["Square"] = Square;
-            FrontsOrdersRow["Cost"] = Decimal.Round(Cost, 3, MidpointRounding.AwayFromZero);
+            FrontsOrdersRow["Cost"] = decimal.Round(Cost, 3, MidpointRounding.AwayFromZero);
 
             ItemSquare = Square;
 
@@ -9356,10 +9451,10 @@ namespace Infinium.Modules.ZOV
                     GridWidth = Convert.ToInt32(FrontsOrdersRow["Width"]) - Convert.ToInt32(Rows[0]["InsetWidthAdmission"]);
                 if (Convert.ToInt32(FrontsOrdersRow["FrontID"]) == 3729)
                 {
-                    return Decimal.Round(Convert.ToInt32(Rows[0]["InsetHeightAdmission"]) * GridWidth / 1000000, 3, MidpointRounding.AwayFromZero);
+                    return decimal.Round(Convert.ToInt32(Rows[0]["InsetHeightAdmission"]) * GridWidth / 1000000, 3, MidpointRounding.AwayFromZero);
                 }
             }
-            return Decimal.Round(GridHeight * GridWidth / 1000000, 3, MidpointRounding.AwayFromZero);
+            return decimal.Round(GridHeight * GridWidth / 1000000, 3, MidpointRounding.AwayFromZero);
         }
 
         private decimal GetInsetWeight(DataRow FrontsOrdersRow)
@@ -9444,11 +9539,11 @@ namespace Infinium.Modules.ZOV
             decimal GlassSquare = 0;
 
             if (FrontsOrdersRow["InsetColorID"].ToString() != "3946")//если не СТЕКЛО КЛИЕНТА
-                GlassSquare = Decimal.Round((FrontHeight - MarginHeight) * (FrontWidth - MarginWidth) / 1000000, 3, MidpointRounding.AwayFromZero);
+                GlassSquare = decimal.Round((FrontHeight - MarginHeight) * (FrontWidth - MarginWidth) / 1000000, 3, MidpointRounding.AwayFromZero);
 
             decimal GlassWeight = GlassSquare * 10;
 
-            decimal ResultProfileWeight = Decimal.Round((FrontWidth * 2 + FrontHeight * 2) / 1000, 3, MidpointRounding.AwayFromZero) * ProfileWeight;
+            decimal ResultProfileWeight = decimal.Round((FrontWidth * 2 + FrontHeight * 2) / 1000, 3, MidpointRounding.AwayFromZero) * ProfileWeight;
 
             if (WithGlass)
                 return (ResultProfileWeight + GlassWeight) * Count;
@@ -9615,11 +9710,11 @@ namespace Infinium.Modules.ZOV
             decimal Length = Convert.ToDecimal(DecorOrderRow["Length"]);
 
             if (IsSample)
-                Cost = Decimal.Round(Convert.ToInt32(DecorOrderRow["Count"]) * (Length / 1000 * Price + 25 * 1.2m), 3, MidpointRounding.AwayFromZero);
+                Cost = decimal.Round(Convert.ToInt32(DecorOrderRow["Count"]) * (Length / 1000 * Price + 25 * 1.2m), 3, MidpointRounding.AwayFromZero);
             else
             {
 
-                Cost = Decimal.Round(Convert.ToInt32(DecorOrderRow["Count"]) * (Length / 1000 * Price + 50 * 1.2m), 3, MidpointRounding.AwayFromZero);
+                Cost = decimal.Round(Convert.ToInt32(DecorOrderRow["Count"]) * (Length / 1000 * Price + 50 * 1.2m), 3, MidpointRounding.AwayFromZero);
             }
 
             return Cost;
@@ -9647,16 +9742,16 @@ namespace Infinium.Modules.ZOV
             decimal Length = Convert.ToDecimal(DecorOrderRow["Length"]);
 
             if (DecorOrderRow["DecorID"].ToString() == "2122")//бл-01
-                Cost = Decimal.Round(Length / 1000 * Price * Convert.ToInt32(DecorOrderRow["Count"]), 3, MidpointRounding.AwayFromZero);
+                Cost = decimal.Round(Length / 1000 * Price * Convert.ToInt32(DecorOrderRow["Count"]), 3, MidpointRounding.AwayFromZero);
 
             if (DecorOrderRow["DecorID"].ToString() == "2123")//бл-02
-                Cost = Decimal.Round(Length / 1000 * Price * Convert.ToInt32(DecorOrderRow["Count"]), 3, MidpointRounding.AwayFromZero);
+                Cost = decimal.Round(Length / 1000 * Price * Convert.ToInt32(DecorOrderRow["Count"]), 3, MidpointRounding.AwayFromZero);
 
             if (DecorOrderRow["DecorID"].ToString() == "14901" || DecorOrderRow["DecorID"].ToString() == "14902")//бл-03
-                Cost = Decimal.Round(Length / 1000 * Price * Convert.ToInt32(DecorOrderRow["Count"]), 3, MidpointRounding.AwayFromZero);
+                Cost = decimal.Round(Length / 1000 * Price * Convert.ToInt32(DecorOrderRow["Count"]), 3, MidpointRounding.AwayFromZero);
 
             if (DecorOrderRow["DecorID"].ToString() == "15446")//бл-04
-                Cost = Decimal.Round(Length / 1000 * Price * Convert.ToInt32(DecorOrderRow["Count"]), 3, MidpointRounding.AwayFromZero);
+                Cost = decimal.Round(Length / 1000 * Price * Convert.ToInt32(DecorOrderRow["Count"]), 3, MidpointRounding.AwayFromZero);
 
             return Cost;
         }
@@ -9718,7 +9813,7 @@ namespace Infinium.Modules.ZOV
 
             decimal SampleSaleValue = Convert.ToDecimal(DecorConfigDataTable.Select("DecorConfigID = " + DecorOrderRow["DecorConfigID"].ToString())[0]["SampleSaleValue"]);
             decimal SaleValue = Convert.ToDecimal(DecorConfigDataTable.Select("DecorConfigID = " + DecorOrderRow["DecorConfigID"])[0]["SaleValue"]);
-            Price = Decimal.Round(GetDecorPrice(DecorOrderRow), 2, MidpointRounding.AwayFromZero);
+            Price = decimal.Round(GetDecorPrice(DecorOrderRow), 2, MidpointRounding.AwayFromZero);
             MeasureType = GetMeasureType(DecorOrderRow);
             if (Sale)
             {
@@ -9877,7 +9972,7 @@ namespace Infinium.Modules.ZOV
                                         ItemCost += CalculateItem(Row, IsSample);
                                 }
                             }
-                            Row["Cost"] = Decimal.Round(ItemCost, 3, MidpointRounding.AwayFromZero);
+                            Row["Cost"] = decimal.Round(ItemCost, 3, MidpointRounding.AwayFromZero);
 
                             Cost += ItemCost;
                         }
@@ -10174,9 +10269,9 @@ namespace Infinium.Modules.ZOV
         public BindingSource SearchPartDocNumberBindingSource = null;
         public BindingSource DocNumbersBindingSource = null;
 
-        public String ClientsBindingSourceDisplayMember = null;
+        public string ClientsBindingSourceDisplayMember = null;
 
-        public String ClientsBindingSourceValueMember = null;
+        public string ClientsBindingSourceValueMember = null;
 
         private DataGridViewComboBoxColumn ProfilProductionStatusColumn = null;
         private DataGridViewComboBoxColumn ProfilStorageStatusColumn = null;
@@ -11447,9 +11542,9 @@ namespace Infinium.Modules.ZOV
         }
 
 
-        public String GetDocNumberFromExcel()
+        public string GetDocNumberFromExcel()
         {
-            String InputString = null;
+            string InputString = null;
             InputString = Clipboard.GetText();
 
             if (InputString.Length < 1)
@@ -11458,7 +11553,7 @@ namespace Infinium.Modules.ZOV
             if (InputString[0] != '№')
                 return "";
 
-            String Result = null;
+            string Result = null;
 
             for (int i = 0; i < InputString.Length; i++)
                 if (InputString[i] != '.')
@@ -11469,7 +11564,7 @@ namespace Infinium.Modules.ZOV
             return Result;
         }
 
-        public string ExportClient(String ClientName)
+        public string ExportClient(string ClientName)
         {
             ClientName = ClientName.Trim();
 
@@ -12772,7 +12867,7 @@ namespace Infinium.Modules.ZOV
 
             int MegaOrderID = Convert.ToInt32(((DataRowView)MegaOrdersBindingSource.Current)["MegaOrderID"]);
 
-            int[] MainOrders = new Int32[MainOrdersDataTable.Rows.Count];
+            int[] MainOrders = new int[MainOrdersDataTable.Rows.Count];
 
             for (int i = 0; i < MainOrdersDataTable.Rows.Count; i++)
                 MainOrders[i] = Convert.ToInt32(MainOrdersDataTable.Rows[i]["MainOrderID"]);
@@ -13771,7 +13866,7 @@ namespace Infinium.Modules.ZOV
                 DA.Fill(PatinaDataTable);
             }
             PatinaRALDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM PatinaRAL WHERE Enabled=1",
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT PatinaRAL.*, Patina.Patina FROM PatinaRAL INNER JOIN Patina ON Patina.PatinaID=PatinaRAL.PatinaID WHERE PatinaRAL.Enabled=1",
                 ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(PatinaRALDataTable);
@@ -13780,7 +13875,7 @@ namespace Infinium.Modules.ZOV
             {
                 DataRow NewRow = PatinaDataTable.NewRow();
                 NewRow["PatinaID"] = item["PatinaRALID"];
-                NewRow["PatinaName"] = item["PatinaRAL"];
+                NewRow["PatinaName"] = item["PatinaRAL"]; NewRow["Patina"] = item["Patina"];
                 NewRow["DisplayName"] = item["DisplayName"];
                 PatinaDataTable.Rows.Add(NewRow);
             }
@@ -15095,7 +15190,7 @@ namespace Infinium.Modules.ZOV
                         if (Square > 0)
                         {
                             HSSFCell cell20 = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 2,
-                                Decimal.Round(Square, 3, MidpointRounding.AwayFromZero) + " м.кв.");
+                                decimal.Round(Square, 3, MidpointRounding.AwayFromZero) + " м.кв.");
 
                             cell20.CellStyle = cellStyle1;
                         }
@@ -15731,7 +15826,7 @@ namespace Infinium.Modules.ZOV
                     if (Square > 0)
                     {
                         HSSFCell cell20 = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 2,
-                            Decimal.Round(Square, 3, MidpointRounding.AwayFromZero) + " м.кв.");
+                            decimal.Round(Square, 3, MidpointRounding.AwayFromZero) + " м.кв.");
 
                         cell20.CellStyle = cellStyle1;
                     }
@@ -16188,7 +16283,7 @@ namespace Infinium.Modules.ZOV
                         if (Square > 0)
                         {
                             HSSFCell cell20 = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 2,
-                                Decimal.Round(Square, 3, MidpointRounding.AwayFromZero) + " м.кв.");
+                                decimal.Round(Square, 3, MidpointRounding.AwayFromZero) + " м.кв.");
 
                             cell20.CellStyle = cellStyle1;
                         }
@@ -16467,7 +16562,7 @@ namespace Infinium.Modules.ZOV
                         if (Square > 0)
                         {
                             HSSFCell cell20 = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 2,
-                                Decimal.Round(Square, 3, MidpointRounding.AwayFromZero) + " м.кв.");
+                                decimal.Round(Square, 3, MidpointRounding.AwayFromZero) + " м.кв.");
 
                             cell20.CellStyle = cellStyle1;
                         }
@@ -16747,7 +16842,7 @@ namespace Infinium.Modules.ZOV
                         if (Square > 0)
                         {
                             HSSFCell cell20 = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 2,
-                                Decimal.Round(Square, 3, MidpointRounding.AwayFromZero) + " м.кв.");
+                                decimal.Round(Square, 3, MidpointRounding.AwayFromZero) + " м.кв.");
 
                             cell20.CellStyle = cellStyle1;
                         }
@@ -17726,7 +17821,7 @@ namespace Infinium.Modules.ZOV
             if (Square > 0)
             {
                 HSSFCell cell20 = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 2,
-                    Decimal.Round(Square, 3, MidpointRounding.AwayFromZero) + " м.кв.");
+                    decimal.Round(Square, 3, MidpointRounding.AwayFromZero) + " м.кв.");
 
                 cell20.CellStyle = cellStyle1;
             }
@@ -18759,7 +18854,7 @@ namespace Infinium.Modules.ZOV
 
                             foreach (DataRow Row in FRows)
                             {
-                                FrontsDebtCost += Decimal.Round(Convert.ToDecimal(Row["Cost"]) / Convert.ToDecimal(Row["Count"]) * Convert.ToDecimal(PFRow["Count"]),
+                                FrontsDebtCost += decimal.Round(Convert.ToDecimal(Row["Cost"]) / Convert.ToDecimal(Row["Count"]) * Convert.ToDecimal(PFRow["Count"]),
                                     1,
                                     MidpointRounding.AwayFromZero);
                             }
@@ -18774,7 +18869,7 @@ namespace Infinium.Modules.ZOV
 
                             foreach (DataRow Row in DRows)
                             {
-                                DecorDebtCost += Decimal.Round(Convert.ToDecimal(Row["Cost"]) / Convert.ToDecimal(Row["Count"]) * Convert.ToDecimal(DFRow["Count"]),
+                                DecorDebtCost += decimal.Round(Convert.ToDecimal(Row["Cost"]) / Convert.ToDecimal(Row["Count"]) * Convert.ToDecimal(DFRow["Count"]),
                                     1,
                                     MidpointRounding.AwayFromZero);
                             }
@@ -18989,7 +19084,7 @@ namespace Infinium.Modules.ZOV
 
                                 foreach (DataRow Row in FRows)
                                 {
-                                    FrontsDebtCost += Decimal.Round(Convert.ToDecimal(Row["Cost"]) / Convert.ToDecimal(Row["Count"]) * Convert.ToDecimal(PFRow["Count"]),
+                                    FrontsDebtCost += decimal.Round(Convert.ToDecimal(Row["Cost"]) / Convert.ToDecimal(Row["Count"]) * Convert.ToDecimal(PFRow["Count"]),
                                         1,
                                         MidpointRounding.AwayFromZero);
                                 }
@@ -19004,7 +19099,7 @@ namespace Infinium.Modules.ZOV
 
                                 foreach (DataRow Row in DRows)
                                 {
-                                    DecorDebtCost += Decimal.Round(Convert.ToDecimal(Row["Cost"]) / Convert.ToDecimal(Row["Count"]) * Convert.ToDecimal(DFRow["Count"]),
+                                    DecorDebtCost += decimal.Round(Convert.ToDecimal(Row["Cost"]) / Convert.ToDecimal(Row["Count"]) * Convert.ToDecimal(DFRow["Count"]),
                                         1,
                                         MidpointRounding.AwayFromZero);
                                 }

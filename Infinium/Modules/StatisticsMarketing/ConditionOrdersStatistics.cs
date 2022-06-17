@@ -352,6 +352,44 @@ namespace Infinium.Modules.StatisticsMarketing
             GetDecorItems();
         }
 
+        public void GetOutProductionOrders(DateTime FixingDate, int FactoryID)
+        {
+            ArrayList ClientGroups = IsMarketingSelect();
+
+            DataTable DT = new DataTable();
+
+            if (ClientGroups.Count > 0)
+            {
+                DT.Clear();
+                DT = MarketingOutProductionFronts(ClientGroups, FixingDate, FactoryID);
+                foreach (DataRow item in DT.Rows)
+                    FrontsOrdersDT.ImportRow(item);
+
+                DT.Clear();
+                DT = MarketingOutProductionDecor(ClientGroups, FixingDate, FactoryID);
+                foreach (DataRow item in DT.Rows)
+                    DecorOrdersDT.ImportRow(item);
+            }
+            if (IsZOVSelect())
+            {
+                DT.Clear();
+                DT = ZOVOutProductionFronts(FixingDate, FactoryID);
+                foreach (DataRow item in DT.Rows)
+                    FrontsOrdersDT.ImportRow(item);
+
+                DT.Clear();
+                DT = ZOVOutProductionDecor(FixingDate, FactoryID);
+                foreach (DataRow item in DT.Rows)
+                    DecorOrdersDT.ImportRow(item);
+            }
+
+            DT.Dispose();
+
+            GetFronts();
+            GetDecorProducts();
+            GetDecorItems();
+        }
+        
         public void GetInProductionOrders(DateTime FixingDate, int FactoryID)
         {
             ArrayList ClientGroups = IsMarketingSelect();
@@ -958,6 +996,148 @@ namespace Infinium.Modules.StatisticsMarketing
             return DT;
         }
 
+        /// <summary>
+        /// фасады из производства
+        /// </summary>
+        /// <param name="FactoryID"></param>
+        /// <returns></returns>
+        public DataTable MarketingOutProductionFronts(ArrayList ClientGroups, DateTime FixingDate, int FactoryID)
+        {
+            string ClientFilter = string.Empty;
+
+            string MainOrdersFilter = string.Empty;
+            string FrontsFactoryFilter = string.Empty;
+            string PackagesFilter = string.Empty;
+
+            string SelectCommand = string.Empty;
+
+            DataTable DT = new DataTable();
+
+            if (FactoryID == -1)
+            {
+                FrontsFactoryFilter = " FrontsOrders.FactoryID = " + FactoryID + " AND ";
+                MainOrdersFilter = " WHERE MainOrderID = -1";
+                PackagesFilter = " WHERE MainOrderID = -1";
+            }
+            if (FactoryID == 0)
+            {
+                MainOrdersFilter = " WHERE ((ProfilProductionDate < '" + FixingDate.ToString("yyyy-MM-dd HH:mm:ss") +
+                    "') OR (TPSProductionDate < '" + FixingDate.ToString("yyyy-MM-dd HH:mm:ss") + "'))";
+                PackagesFilter = " AND FrontsOrdersID IN (SELECT DISTINCT OrderID FROM PackageDetails WHERE PackageID IN (SELECT PackageID FROM Packages WHERE ProductType = 0 AND (PackingDateTime > '" + FixingDate.ToString("yyyy-MM-dd HH:mm:ss") + "' OR PackageStatusID = 1)))";
+            }
+            if (FactoryID == 1)
+            {
+                FrontsFactoryFilter = " FrontsOrders.FactoryID = " + FactoryID + " AND ";
+                MainOrdersFilter = " WHERE (ProfilProductionDate < '" + FixingDate.ToString("yyyy-MM-dd HH:mm:ss") + "')";
+                PackagesFilter = " AND FrontsOrdersID IN (SELECT DISTINCT OrderID FROM PackageDetails WHERE PackageID IN (SELECT PackageID FROM Packages WHERE FactoryID = " + FactoryID + " AND ProductType = 0 AND (PackingDateTime > '" + FixingDate.ToString("yyyy-MM-dd HH:mm:ss") + "' OR PackageStatusID = 1)))";
+            }
+            if (FactoryID == 2)
+            {
+                FrontsFactoryFilter = " FrontsOrders.FactoryID = " + FactoryID + " AND ";
+                MainOrdersFilter = " WHERE (TPSProductionDate < '" + FixingDate.ToString("yyyy-MM-dd HH:mm:ss") + "')";
+                PackagesFilter = " AND FrontsOrdersID IN (SELECT DISTINCT OrderID FROM PackageDetails WHERE PackageID IN (SELECT PackageID FROM Packages WHERE FactoryID = " + FactoryID + " AND ProductType = 0 AND (PackingDateTime > '" + FixingDate.ToString("yyyy-MM-dd HH:mm:ss") + "' OR PackageStatusID = 1)))";
+            }
+
+            if (ClientGroups.Count > 0)
+            {
+                ClientFilter = " WHERE ClientID IN" +
+                    " (SELECT ClientID FROM infiniu2_marketingreference.dbo.Clients" +
+                    " WHERE ClientGroupID IN (" + string.Join(",", ClientGroups.OfType<Int32>().ToArray()) + "))";
+            }
+            else
+                ClientFilter = " WHERE ClientID = -1";
+
+            SelectCommand = "SELECT FrontsOrders.FrontID, FrontsOrders.PatinaID, FrontsOrders.ColorID, FrontsOrders.InsetTypeID," +
+                " FrontsOrders.InsetColorID, FrontsOrders.TechnoColorID, FrontsOrders.TechnoInsetTypeID, FrontsOrders.TechnoInsetColorID, FrontsOrders.Height, FrontsOrders.Width, FrontsOrders.Count, FrontsOrders.Square, FrontsOrders.Cost, MeasureID, ClientID FROM FrontsOrders" +
+                " INNER JOIN MainOrders ON FrontsOrders.MainOrderID = MainOrders.MainOrderID" +
+                " INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID" +
+                " INNER JOIN infiniu2_catalog.dbo.FrontsConfig" +
+                " ON FrontsOrders.FrontConfigID=infiniu2_catalog.dbo.FrontsConfig.FrontConfigID" +
+                " WHERE " + FrontsFactoryFilter + " FrontsOrders.MainOrderID IN (SELECT MainOrderID FROM MainOrders " + MainOrdersFilter +
+                " AND MegaOrderID IN" +
+                " (SELECT MegaOrderID FROM MegaOrders " + ClientFilter + "))" + PackagesFilter;
+
+            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand,
+                ConnectionStrings.MarketingOrdersConnectionString))
+            {
+                DA.Fill(DT);
+            }
+
+            return DT;
+        }
+
+        /// <summary>
+        /// декор из производства
+        /// </summary>
+        /// <param name="FactoryID"></param>
+        /// <returns></returns>
+        public DataTable MarketingOutProductionDecor(ArrayList ClientGroups, DateTime FixingDate, int FactoryID)
+        {
+            string ClientFilter = string.Empty;
+
+            string MainOrdersFilter = string.Empty;
+            string DecorFactoryFilter = string.Empty;
+            string PackagesFilter = string.Empty;
+
+            string SelectCommand = string.Empty;
+
+            DataTable DT = new DataTable();
+
+            if (FactoryID == -1)
+            {
+                DecorFactoryFilter = " DecorOrders.FactoryID = " + FactoryID + " AND ";
+                MainOrdersFilter = " WHERE MainOrderID = -1";
+                PackagesFilter = " WHERE MainOrderID = -1";
+            }
+            if (FactoryID == 0)
+            {
+                MainOrdersFilter = " WHERE ((ProfilProductionDate < '" + FixingDate.ToString("yyyy-MM-dd HH:mm:ss") +
+                    "') OR (TPSProductionDate < '" + FixingDate.ToString("yyyy-MM-dd HH:mm:ss") + "'))";
+                PackagesFilter = " AND DecorOrderID IN (SELECT DISTINCT OrderID FROM PackageDetails WHERE PackageID IN (SELECT PackageID FROM Packages WHERE ProductType = 1 AND (PackingDateTime > '" + FixingDate.ToString("yyyy-MM-dd HH:mm:ss") + "' OR PackageStatusID = 1)))";
+            }
+            if (FactoryID == 1)
+            {
+                DecorFactoryFilter = " DecorOrders.FactoryID = " + FactoryID + " AND ";
+                MainOrdersFilter = " WHERE (ProfilProductionDate < '" + FixingDate.ToString("yyyy-MM-dd HH:mm:ss") + "')";
+                PackagesFilter = " AND DecorOrderID IN (SELECT DISTINCT OrderID FROM PackageDetails WHERE PackageID IN (SELECT PackageID FROM Packages WHERE FactoryID = " + FactoryID + " AND ProductType = 1 AND (PackingDateTime > '" + FixingDate.ToString("yyyy-MM-dd HH:mm:ss") + "' OR PackageStatusID = 1)))";
+            }
+            if (FactoryID == 2)
+            {
+                DecorFactoryFilter = " DecorOrders.FactoryID = " + FactoryID + " AND ";
+                MainOrdersFilter = " WHERE (TPSProductionDate < '" + FixingDate.ToString("yyyy-MM-dd HH:mm:ss") + "')";
+                PackagesFilter = " AND DecorOrderID IN (SELECT DISTINCT OrderID FROM PackageDetails WHERE PackageID IN (SELECT PackageID FROM Packages WHERE FactoryID = " + FactoryID + " AND ProductType = 1 AND (PackingDateTime > '" + FixingDate.ToString("yyyy-MM-dd HH:mm:ss") + "' OR PackageStatusID = 1)))";
+            }
+
+            if (ClientGroups.Count > 0)
+            {
+                ClientFilter = " WHERE ClientID IN" +
+                    " (SELECT ClientID FROM infiniu2_marketingreference.dbo.Clients" +
+                    " WHERE ClientGroupID IN (" + string.Join(",", ClientGroups.OfType<Int32>().ToArray()) + "))";
+            }
+            else
+                ClientFilter = " WHERE ClientID = -1";
+
+            //decor
+            SelectCommand = "SELECT DecorOrders.ProductID, DecorOrders.DecorID, DecorOrders.ColorID,DecorOrders.PatinaID," +
+                " DecorOrders.Height, DecorOrders.Length, DecorOrders.Width, DecorOrders.Count, DecorOrders.Cost, DecorOrders.DecorConfigID, " +
+                " MeasureID, ClientID FROM DecorOrders" +
+                " INNER JOIN MainOrders ON DecorOrders.MainOrderID = MainOrders.MainOrderID" +
+                " INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID" +
+                " INNER JOIN infiniu2_catalog.dbo.DecorConfig" +
+                " ON DecorOrders.DecorConfigID=infiniu2_catalog.dbo.DecorConfig.DecorConfigID" +
+                " WHERE " + DecorFactoryFilter + " DecorOrders.MainOrderID IN (SELECT MainOrderID FROM MainOrders " + MainOrdersFilter +
+                " AND MegaOrderID IN" +
+                " (SELECT MegaOrderID FROM MegaOrders " + ClientFilter + "))" + PackagesFilter;
+
+            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand,
+                ConnectionStrings.MarketingOrdersConnectionString))
+            {
+                DA.Fill(DT);
+            }
+
+            return DT;
+        }
+
         #endregion Marketing
 
         #region ZOV
@@ -1397,6 +1577,120 @@ namespace Infinium.Modules.StatisticsMarketing
                 DecorFactoryFilter = " DecorOrders.FactoryID = " + FactoryID + " AND ";
                 MainOrdersFilter = " WHERE (TPSProductionDate < '" + FixingDate.ToString("yyyy-MM-dd HH:mm:ss") + "')";
                 PackagesFilter = " AND DecorOrderID IN (SELECT DISTINCT OrderID FROM PackageDetails WHERE PackageID IN (SELECT PackageID FROM Packages WHERE FactoryID = " + FactoryID + " AND ProductType = 1 AND (PackingDateTime > '" + FixingDate.ToString("yyyy-MM-dd HH:mm:ss") + "' OR PackageStatusID = 0)))";
+            }
+
+            //decor
+            SelectCommand = "SELECT DecorOrders.ProductID, DecorOrders.DecorID, DecorOrders.ColorID,DecorOrders.PatinaID," +
+                " DecorOrders.Height, DecorOrders.Length, DecorOrders.Width, DecorOrders.Count, DecorOrders.Cost, DecorOrders.DecorConfigID, " +
+                " MeasureID FROM DecorOrders" +
+                " INNER JOIN infiniu2_catalog.dbo.DecorConfig" +
+                " ON DecorOrders.DecorConfigID=infiniu2_catalog.dbo.DecorConfig.DecorConfigID" +
+                " WHERE " + DecorFactoryFilter + " DecorOrders.MainOrderID IN (SELECT MainOrderID FROM MainOrders " + MainOrdersFilter + ")" + PackagesFilter;
+
+            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand,
+                ConnectionStrings.ZOVOrdersConnectionString))
+            {
+                DA.Fill(DT);
+            }
+
+            return DT;
+        }
+
+        /// <summary>
+        /// ЗОВ фасады из производства
+        /// </summary>
+        /// <param name="FactoryID"></param>
+        /// <returns></returns>
+        public DataTable ZOVOutProductionFronts(DateTime FixingDate, int FactoryID)
+        {
+            string ClientFilter = string.Empty;
+
+            string MainOrdersFilter = string.Empty;
+            string FrontsFactoryFilter = string.Empty;
+            string PackagesFilter = string.Empty;
+
+            string SelectCommand = string.Empty;
+
+            DataTable DT = new DataTable();
+
+            if (FactoryID == -1)
+            {
+                FrontsFactoryFilter = " FrontsOrders.FactoryID = " + FactoryID + " AND ";
+                MainOrdersFilter = " WHERE MainOrderID = -1";
+                PackagesFilter = " WHERE MainOrderID = -1";
+            }
+            if (FactoryID == 0)
+            {
+                MainOrdersFilter = " WHERE ((ProfilProductionDate < '" + FixingDate.ToString("yyyy-MM-dd HH:mm:ss") +
+                    "') OR (TPSProductionDate < '" + FixingDate.ToString("yyyy-MM-dd HH:mm:ss") + "'))";
+                PackagesFilter = " AND FrontsOrdersID IN (SELECT DISTINCT OrderID FROM PackageDetails WHERE PackageID IN (SELECT PackageID FROM Packages WHERE ProductType = 0 AND (PackingDateTime > '" + FixingDate.ToString("yyyy-MM-dd HH:mm:ss") + "' OR PackageStatusID = 1)))";
+            }
+            if (FactoryID == 1)
+            {
+                FrontsFactoryFilter = " FrontsOrders.FactoryID = " + FactoryID + " AND ";
+                MainOrdersFilter = " WHERE (ProfilProductionDate < '" + FixingDate.ToString("yyyy-MM-dd HH:mm:ss") + "')";
+                PackagesFilter = " AND FrontsOrdersID IN (SELECT DISTINCT OrderID FROM PackageDetails WHERE PackageID IN (SELECT PackageID FROM Packages WHERE FactoryID = " + FactoryID + " AND ProductType = 0 AND (PackingDateTime > '" + FixingDate.ToString("yyyy-MM-dd HH:mm:ss") + "' OR PackageStatusID = 1)))";
+            }
+            if (FactoryID == 2)
+            {
+                FrontsFactoryFilter = " FrontsOrders.FactoryID = " + FactoryID + " AND ";
+                MainOrdersFilter = " WHERE (TPSProductionDate < '" + FixingDate.ToString("yyyy-MM-dd HH:mm:ss") + "')";
+                PackagesFilter = " AND FrontsOrdersID IN (SELECT DISTINCT OrderID FROM PackageDetails WHERE PackageID IN (SELECT PackageID FROM Packages WHERE FactoryID = " + FactoryID + " AND ProductType = 0 AND (PackingDateTime > '" + FixingDate.ToString("yyyy-MM-dd HH:mm:ss") + "' OR PackageStatusID = 1)))";
+            }
+
+            SelectCommand = "SELECT FrontsOrders.FrontID, FrontsOrders.PatinaID, FrontsOrders.ColorID, FrontsOrders.InsetTypeID," +
+                " FrontsOrders.InsetColorID, FrontsOrders.TechnoColorID, FrontsOrders.TechnoInsetTypeID, FrontsOrders.TechnoInsetColorID, FrontsOrders.Height, FrontsOrders.Width, FrontsOrders.Count, FrontsOrders.Square, FrontsOrders.Cost, MeasureID FROM FrontsOrders" +
+                " INNER JOIN infiniu2_catalog.dbo.FrontsConfig" +
+                " ON FrontsOrders.FrontConfigID=infiniu2_catalog.dbo.FrontsConfig.FrontConfigID" +
+                " WHERE " + FrontsFactoryFilter + " FrontsOrders.MainOrderID IN (SELECT MainOrderID FROM MainOrders " + MainOrdersFilter + ")" + PackagesFilter;
+
+            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand,
+                ConnectionStrings.ZOVOrdersConnectionString))
+            {
+                DA.Fill(DT);
+            }
+
+            return DT;
+        }
+
+        /// <summary>
+        /// ЗОВ декор из производства
+        /// </summary>
+        /// <param name="FactoryID"></param>
+        /// <returns></returns>
+        public DataTable ZOVOutProductionDecor(DateTime FixingDate, int FactoryID)
+        {
+            string MainOrdersFilter = string.Empty;
+            string DecorFactoryFilter = string.Empty;
+            string PackagesFilter = string.Empty;
+
+            string SelectCommand = string.Empty;
+
+            DataTable DT = new DataTable();
+
+            if (FactoryID == -1)
+            {
+                DecorFactoryFilter = " DecorOrders.FactoryID = " + FactoryID + " AND ";
+                MainOrdersFilter = " WHERE MainOrderID = -1";
+                PackagesFilter = " WHERE MainOrderID = -1";
+            }
+            if (FactoryID == 0)
+            {
+                MainOrdersFilter = " WHERE ((ProfilProductionDate < '" + FixingDate.ToString("yyyy-MM-dd HH:mm:ss") +
+                    "') OR (TPSProductionDate < '" + FixingDate.ToString("yyyy-MM-dd HH:mm:ss") + "'))";
+                PackagesFilter = " AND DecorOrderID IN (SELECT DISTINCT OrderID FROM PackageDetails WHERE PackageID IN (SELECT PackageID FROM Packages WHERE ProductType = 1 AND (PackingDateTime > '" + FixingDate.ToString("yyyy-MM-dd HH:mm:ss") + "' OR PackageStatusID = 1)))";
+            }
+            if (FactoryID == 1)
+            {
+                DecorFactoryFilter = " DecorOrders.FactoryID = " + FactoryID + " AND ";
+                MainOrdersFilter = " WHERE (ProfilProductionDate < '" + FixingDate.ToString("yyyy-MM-dd HH:mm:ss") + "')";
+                PackagesFilter = " AND DecorOrderID IN (SELECT DISTINCT OrderID FROM PackageDetails WHERE PackageID IN (SELECT PackageID FROM Packages WHERE FactoryID = " + FactoryID + " AND ProductType = 1 AND (PackingDateTime > '" + FixingDate.ToString("yyyy-MM-dd HH:mm:ss") + "' OR PackageStatusID = 1)))";
+            }
+            if (FactoryID == 2)
+            {
+                DecorFactoryFilter = " DecorOrders.FactoryID = " + FactoryID + " AND ";
+                MainOrdersFilter = " WHERE (TPSProductionDate < '" + FixingDate.ToString("yyyy-MM-dd HH:mm:ss") + "')";
+                PackagesFilter = " AND DecorOrderID IN (SELECT DISTINCT OrderID FROM PackageDetails WHERE PackageID IN (SELECT PackageID FROM Packages WHERE FactoryID = " + FactoryID + " AND ProductType = 1 AND (PackingDateTime > '" + FixingDate.ToString("yyyy-MM-dd HH:mm:ss") + "' OR PackageStatusID = 1)))";
             }
 
             //decor

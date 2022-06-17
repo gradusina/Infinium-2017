@@ -6,7 +6,6 @@ using NPOI.HSSF.Util;
 using System;
 using System.Collections;
 using System.Data;
-using System.Data.OleDb;
 using System.Data.SqlClient;
 using System.Drawing;
 using System.Globalization;
@@ -19,9 +18,11 @@ using System.Text;
 using System.Windows.Forms;
 using System.Xml;
 
+using static Infinium.TablesManager;
+
 namespace Infinium.Modules.Marketing.Orders
 {
-    
+
 
 
 
@@ -185,7 +186,7 @@ namespace Infinium.Modules.Marketing.Orders
                 DA.Fill(PatinaDataTable);
             }
             PatinaRALDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM PatinaRAL WHERE Enabled=1",
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT PatinaRAL.*, Patina.Patina FROM PatinaRAL INNER JOIN Patina ON Patina.PatinaID=PatinaRAL.PatinaID WHERE PatinaRAL.Enabled=1",
                 ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(PatinaRALDataTable);
@@ -194,7 +195,7 @@ namespace Infinium.Modules.Marketing.Orders
             {
                 DataRow NewRow = PatinaDataTable.NewRow();
                 NewRow["PatinaID"] = item["PatinaRALID"];
-                NewRow["PatinaName"] = item["PatinaRAL"];
+                NewRow["PatinaName"] = item["PatinaRAL"]; NewRow["Patina"] = item["Patina"];
                 NewRow["DisplayName"] = item["DisplayName"];
                 PatinaDataTable.Rows.Add(NewRow);
             }
@@ -547,7 +548,37 @@ namespace Infinium.Modules.Marketing.Orders
         public void AddFrontsOrder(int MainOrderID, int FrontID, int ColorID, int PatinaID, int InsetTypeID,
             int InsetColorID, int TechnoColorID, int TechnoInsetTypeID, int TechnoInsetColorID, int Height, int Width, int Count, string Notes, int ImpostMargin = 0)
         {
-            //(3727,3728,3729,3730,3731,3732,3733,3734,3735,3736,3737,3739,3740,3741,3742,3743,3744,3745,3746,3747,3748)
+            TechStoreDimensions dimensions = TablesManager.GetTechStoreDimensions(FrontID);
+
+            bool bNotCurved = Width != -1;
+            if (Height > 0 && Height < dimensions.HeightMin && bNotCurved)
+            {
+                MessageBox.Show($@"Высота фасада не может быть меньше мин. размера {dimensions.HeightMin} мм",
+                    "Добавление фасада");
+                return;
+            }
+
+            if (Height > 0 && Height > dimensions.HeightMax && bNotCurved)
+            {
+                MessageBox.Show($@"Высота фасада не может быть больше макс. размера {dimensions.HeightMax} мм",
+                    "Добавление фасада");
+                return;
+            }
+
+            if (Width > 0 && Width < dimensions.WidthMin)
+            {
+                MessageBox.Show($@"Ширина фасада не может быть меньше мин. размера {dimensions.WidthMin} мм",
+                    "Добавление фасада");
+                return;
+            }
+
+            if (Width > 0 && Width > dimensions.WidthMax)
+            {
+                MessageBox.Show($@"Ширина фасада не может быть больше макс. размера {dimensions.WidthMax} мм",
+                    "Добавление фасада");
+                return;
+            }
+
             if (Width != -1 && FrontID == 3630 && Width > 1478)
             {
                 MessageBox.Show("Ширина фасада Марсель 3 не может быть больше 1478 мм", "Добавление фасада");
@@ -641,6 +672,41 @@ namespace Infinium.Modules.Marketing.Orders
                     InsetColorID, TechnoColorID, TechnoInsetTypeID, TechnoInsetColorID, Height, Width, ref FrontID, ref FactoryID, ref AreaID);
                 if (FrontID == -1)
                     return;
+
+                bool bNotCurved = Width != -1;
+                TechStoreDimensions dimensions = TablesManager.GetTechStoreDimensions(FrontID);
+
+                if (Height > 0 && Height < dimensions.HeightMin && bNotCurved)
+                {
+                    MessageBox.Show(
+                        $@"Высота фасада не может быть меньше мин. размера {dimensions.HeightMin} мм. Позиция {i + 1}",
+                        "Добавление фасада");
+                    return;
+                }
+
+                if (Height > 0 && Height > dimensions.HeightMax && bNotCurved)
+                {
+                    MessageBox.Show(
+                        $@"Высота фасада не может быть больше макс. размера {dimensions.HeightMax} мм. Позиция {i + 1}",
+                        "Добавление фасада");
+                    return;
+                }
+
+                if (Width > 0 && Width < dimensions.WidthMin)
+                {
+                    MessageBox.Show(
+                        $@"Ширина фасада не может быть меньше мин. размера {dimensions.WidthMin} мм. Позиция {i + 1}",
+                        "Добавление фасада");
+                    return;
+                }
+
+                if (Width > 0 && Width > dimensions.WidthMax)
+                {
+                    MessageBox.Show(
+                        $@"Ширина фасада не может быть больше макс. размера {dimensions.WidthMax} мм. Позиция {i + 1}",
+                        "Добавление фасада");
+                    return;
+                }
 
                 if (Width != -1 && FrontID == 3630 && Width > 1478)
                 {
@@ -1387,13 +1453,7 @@ namespace Infinium.Modules.Marketing.Orders
 
         public void AddDecorOrder(int MainOrderID, int ProductID, int DecorID, int ColorID, int PatinaID, int InsetTypeID, int InsetColorID, int Length, int Height, int Width, int Count, string Notes)
         {
-            int[] insetTypes =
-            {
-                30455, 30456, 4008, 4009, 4010, 4011, 4012, 4013, 4014, 4015, 16617, 16616, 4027, 4028, 4029, 4030,
-                4031, 4032, 4033, 4034, 40798, 16179
-            };
-
-            bool isContained = insetTypes.Contains(DecorID);
+            bool isContained = Security.insetTypes.Contains(DecorID);
 
             if ((Height < 100 || Width < 100) && isContained)
             {
@@ -1467,12 +1527,7 @@ namespace Infinium.Modules.Marketing.Orders
                 }
             }
 
-            int[] insetTypes =
-            {
-                30455, 30456, 4008, 4009, 4010, 4011, 4012, 4013, 4014, 4015, 16617, 16616, 4027, 4028, 4029, 4030,
-                4031, 4032, 4033, 4034, 40798, 16179
-            };
-            bool isContained = insetTypes.Contains(DecorID);
+            bool isContained = Security.insetTypes.Contains(DecorID);
 
             int Height = 0;
             int Width = 0;
@@ -1925,7 +1980,7 @@ namespace Infinium.Modules.Marketing.Orders
                 DA.Fill(PatinaDataTable);
             }
             PatinaRALDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM PatinaRAL WHERE Enabled=1",
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT PatinaRAL.*, Patina.Patina FROM PatinaRAL INNER JOIN Patina ON Patina.PatinaID=PatinaRAL.PatinaID WHERE PatinaRAL.Enabled=1",
                 ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(PatinaRALDataTable);
@@ -1934,7 +1989,7 @@ namespace Infinium.Modules.Marketing.Orders
             {
                 DataRow NewRow = PatinaDataTable.NewRow();
                 NewRow["PatinaID"] = item["PatinaRALID"];
-                NewRow["PatinaName"] = item["PatinaRAL"];
+                NewRow["PatinaName"] = item["PatinaRAL"]; NewRow["Patina"] = item["Patina"];
                 NewRow["DisplayName"] = item["DisplayName"];
                 PatinaDataTable.Rows.Add(NewRow);
             }
@@ -2856,14 +2911,14 @@ namespace Infinium.Modules.Marketing.Orders
         public BindingSource MegaOrdersBindingSource = null;
         public BindingSource ClientsMegaOrdersBindingSource = null;
 
-        public String ClientsBindingSourceDisplayMember = null;
-        public String CurrencyTypesBindingSourceDisplayMember = null;
+        public string ClientsBindingSourceDisplayMember = null;
+        public string CurrencyTypesBindingSourceDisplayMember = null;
 
-        public String ClientsBindingSourceValueMember = null;
-        public String CurrencyTypesBindingSourceValueMember = null;
+        public string ClientsBindingSourceValueMember = null;
+        public string CurrencyTypesBindingSourceValueMember = null;
 
-        public String ClientsMegaOrdersBindingSourceValueMember = null;
-        public String ClientsMegaOrdersBindingSourceDisplayMember = null;
+        public string ClientsMegaOrdersBindingSourceValueMember = null;
+        public string ClientsMegaOrdersBindingSourceDisplayMember = null;
 
         private DataGridViewComboBoxColumn OrderStatusColumn = null;
         private DataGridViewComboBoxColumn CurrencyTypeColumn = null;
@@ -4461,7 +4516,7 @@ namespace Infinium.Modules.Marketing.Orders
                 }
             }
 
-            return MainOrders.OfType<Int32>().ToArray();
+            return MainOrders.OfType<int>().ToArray();
         }
 
         public int[] GetSelectedMainOrders()
@@ -4737,8 +4792,8 @@ namespace Infinium.Modules.Marketing.Orders
                             {
                                 MegaDA.Fill(MegaDT);
 
-                                TotalWeight = Decimal.Round(TotalWeight, 3, MidpointRounding.AwayFromZero);
-                                TotalSquare = Decimal.Round(TotalSquare, 3, MidpointRounding.AwayFromZero);
+                                TotalWeight = decimal.Round(TotalWeight, 3, MidpointRounding.AwayFromZero);
+                                TotalSquare = decimal.Round(TotalSquare, 3, MidpointRounding.AwayFromZero);
 
                                 MegaDT.Rows[0]["ProfilTotalDiscount"] = ProfilTotalDiscount;
                                 MegaDT.Rows[0]["TPSTotalDiscount"] = TPSTotalDiscount;
@@ -5025,7 +5080,7 @@ namespace Infinium.Modules.Marketing.Orders
                         decimal CurrencyAdditionalCost = Convert.ToDecimal(DT.Rows[0]["CurrencyAdditionalCost"]);
                         decimal dPaymentCurrency = Convert.ToDecimal(DT.Rows[0]["PaymentRate"]);
 
-                        decimal CurrencyOrderCost = Decimal.Round((CurrencyTotalCost - CurrencyTransportCost - CurrencyAdditionalCost), 2, MidpointRounding.AwayFromZero);
+                        decimal CurrencyOrderCost = decimal.Round((CurrencyTotalCost - CurrencyTransportCost - CurrencyAdditionalCost), 2, MidpointRounding.AwayFromZero);
 
                         DT.Rows[0]["CurrencyTotalCost"] = CurrencyTotalCost;
                         DT.Rows[0]["CurrencyOrderCost"] = CurrencyOrderCost;
@@ -5425,10 +5480,10 @@ namespace Infinium.Modules.Marketing.Orders
                     GridWidth = Width - Convert.ToInt32(Rows[0]["InsetWidthAdmission"]);
                 if (FrontID == 3729)
                 {
-                    return Decimal.Round(Convert.ToInt32(Rows[0]["InsetHeightAdmission"]) * GridWidth / 1000000, 3, MidpointRounding.AwayFromZero);
+                    return decimal.Round(Convert.ToInt32(Rows[0]["InsetHeightAdmission"]) * GridWidth / 1000000, 3, MidpointRounding.AwayFromZero);
                 }
             }
-            return Decimal.Round(GridHeight * GridWidth / 1000000, 3, MidpointRounding.AwayFromZero);
+            return decimal.Round(GridHeight * GridWidth / 1000000, 3, MidpointRounding.AwayFromZero);
         }
 
         private decimal GetInsetSquare(DataRow FrontsOrdersRow)
@@ -5444,10 +5499,10 @@ namespace Infinium.Modules.Marketing.Orders
                     GridWidth = Convert.ToInt32(FrontsOrdersRow["Width"]) - Convert.ToInt32(Rows[0]["InsetWidthAdmission"]);
                 if (Convert.ToInt32(FrontsOrdersRow["FrontID"]) == 3729)
                 {
-                    return Decimal.Round(Convert.ToInt32(Rows[0]["InsetHeightAdmission"]) * GridWidth / 1000000, 3, MidpointRounding.AwayFromZero);
+                    return decimal.Round(Convert.ToInt32(Rows[0]["InsetHeightAdmission"]) * GridWidth / 1000000, 3, MidpointRounding.AwayFromZero);
                 }
             }
-            return Decimal.Round(GridHeight * GridWidth / 1000000, 3, MidpointRounding.AwayFromZero);
+            return decimal.Round(GridHeight * GridWidth / 1000000, 3, MidpointRounding.AwayFromZero);
         }
 
         private void GetGlassMarginAluminium(DataRow FrontsOrdersRow, ref int GlassMarginHeight, ref int GlassMarginWidth)
@@ -5583,11 +5638,11 @@ namespace Infinium.Modules.Marketing.Orders
                         int MarginWidth = 0;
                         GetGlassMarginAluminium(Rows[r], ref MarginHeight, ref MarginWidth);
                         decimal InsetSquare = MarginHeight * (Convert.ToDecimal(Rows[r]["Width"]) - MarginWidth) / 1000000;
-                        InsetSquare = Decimal.Round(InsetSquare, 3, MidpointRounding.AwayFromZero);
+                        InsetSquare = decimal.Round(InsetSquare, 3, MidpointRounding.AwayFromZero);
 
                         DeductibleCount = InsetSquare * Convert.ToDecimal(Rows[r]["Count"]);
                         DeductibleCost = Convert.ToDecimal(Rows[r]["InsetPrice"]) * InsetSquare * Convert.ToDecimal(Rows[r]["Count"]);
-                        DeductibleWeight = Decimal.Round(DeductibleCount * DeductibleWeight, 3, MidpointRounding.AwayFromZero);
+                        DeductibleWeight = decimal.Round(DeductibleCount * DeductibleWeight, 3, MidpointRounding.AwayFromZero);
                     }
 
                     TotalDiscount = Convert.ToDecimal(Rows[r]["TotalDiscount"]);
@@ -5650,7 +5705,7 @@ namespace Infinium.Modules.Marketing.Orders
                     NonStandardMargin = GetNonStandardMargin(Convert.ToInt32(Rows[r]["FrontConfigID"]));
                 }
                 //ФИЛЕНКА
-                filter = " AND InsetTypeID IN (2069,2070,2071,2073,2075,2077,2233,3644,29043,29531)";
+                filter = " AND InsetTypeID IN (2069,2070,2071,2073,2075,2077,2233,3644,29043,29531,41213)";
                 Rows = OrdersDataTable.Select("FrontID = " + Fronts.Rows[i]["FrontID"].ToString() + " AND (Width <> -1)" + filter + IsNonStandardFilter);
                 for (int r = 0; r < Rows.Count(); r++)
                 {
@@ -5686,17 +5741,17 @@ namespace Infinium.Modules.Marketing.Orders
                         Convert.ToInt32(Rows[r]["InsetTypeID"]) == 29470 || Convert.ToInt32(Rows[r]["InsetTypeID"]) == 29471)
                     {
                         decimal InsetSquare = GetInsetSquare(Convert.ToInt32(Rows[r]["FrontID"]), Convert.ToInt32(Rows[r]["Height"]), Convert.ToInt32(Rows[r]["Width"]));
-                        InsetSquare = Decimal.Round(InsetSquare, 3, MidpointRounding.AwayFromZero);
+                        InsetSquare = decimal.Round(InsetSquare, 3, MidpointRounding.AwayFromZero);
                         DeductibleCount = InsetSquare * Convert.ToDecimal(Rows[r]["Count"]);
                         DeductibleCost = Convert.ToDecimal(Rows[r]["InsetPrice"]) * InsetSquare * Convert.ToDecimal(Rows[r]["Count"]);
-                        DeductibleWeight = Decimal.Round(DeductibleCount * Convert.ToDecimal(3.5), 3, MidpointRounding.AwayFromZero);
+                        DeductibleWeight = decimal.Round(DeductibleCount * Convert.ToDecimal(3.5), 3, MidpointRounding.AwayFromZero);
                     }
                     //СТЕКЛО
                     if (Convert.ToInt32(Rows[r]["InsetTypeID"]) == 2)
                     {
                         DeductibleCount = Convert.ToDecimal(Rows[r]["Count"]) * GetInsetSquare(Convert.ToInt32(Rows[r]["FrontID"]), Convert.ToInt32(Rows[r]["Height"]), Convert.ToInt32(Rows[r]["Width"]));
                         DeductibleCost = Convert.ToDecimal(Rows[r]["InsetPrice"]) * DeductibleCount;
-                        DeductibleWeight = Decimal.Round(DeductibleCount * 10, 3, MidpointRounding.AwayFromZero);
+                        DeductibleWeight = decimal.Round(DeductibleCount * 10, 3, MidpointRounding.AwayFromZero);
                     }
 
                     VitrinaCount += Convert.ToDecimal(Rows[r]["Square"]);
@@ -5785,14 +5840,14 @@ namespace Infinium.Modules.Marketing.Orders
                         Row["TPSCurCode"] = TPSCurrencyCode;
                     Row["TotalDiscount"] = TotalDiscount;
                     Row["Name"] = GetFrontName(Convert.ToInt32(Fronts.Rows[i]["FrontID"])) + " глухой";
-                    Row["Count"] = Decimal.Round(SolidCount, 3, MidpointRounding.AwayFromZero);
+                    Row["Count"] = decimal.Round(SolidCount, 3, MidpointRounding.AwayFromZero);
                     Row["Measure"] = "м.кв.";
-                    Row["Price"] = Decimal.Round(SolidCost / SolidCount, 2, MidpointRounding.AwayFromZero);
-                    Row["OriginalPrice"] = Decimal.Round(OriginalSolidCost / SolidCount, 2, MidpointRounding.AwayFromZero);
-                    Row["PriceWithTransport"] = Decimal.Round(WithTransportSolidCost / SolidCount, 2, MidpointRounding.AwayFromZero);
-                    Row["CostWithTransport"] = Decimal.Round(Math.Ceiling(WithTransportSolidCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
-                    Row["Cost"] = Decimal.Round(Math.Ceiling(SolidCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
-                    Row["Weight"] = Decimal.Round(SolidWeight, 3, MidpointRounding.AwayFromZero);
+                    Row["Price"] = decimal.Round(SolidCost / SolidCount, 2, MidpointRounding.AwayFromZero);
+                    Row["OriginalPrice"] = decimal.Round(OriginalSolidCost / SolidCount, 2, MidpointRounding.AwayFromZero);
+                    Row["PriceWithTransport"] = decimal.Round(WithTransportSolidCost / SolidCount, 2, MidpointRounding.AwayFromZero);
+                    Row["CostWithTransport"] = decimal.Round(Math.Ceiling(WithTransportSolidCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                    Row["Cost"] = decimal.Round(Math.Ceiling(SolidCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                    Row["Weight"] = decimal.Round(SolidWeight, 3, MidpointRounding.AwayFromZero);
                     ReportDataTable.Rows.Add(Row);
                 }
 
@@ -5812,14 +5867,14 @@ namespace Infinium.Modules.Marketing.Orders
                         Row["TPSCurCode"] = TPSCurrencyCode;
                     Row["TotalDiscount"] = TotalDiscount;
                     Row["Name"] = GetFrontName(Convert.ToInt32(Fronts.Rows[i]["FrontID"])) + " филенка";
-                    Row["Count"] = Decimal.Round(FilenkaCount, 3, MidpointRounding.AwayFromZero);
+                    Row["Count"] = decimal.Round(FilenkaCount, 3, MidpointRounding.AwayFromZero);
                     Row["Measure"] = "м.кв.";
-                    Row["Price"] = Decimal.Round(FilenkaCost / FilenkaCount, 2, MidpointRounding.AwayFromZero);
-                    Row["OriginalPrice"] = Decimal.Round(OriginalFilenkaCost / FilenkaCount, 2, MidpointRounding.AwayFromZero);
-                    Row["PriceWithTransport"] = Decimal.Round(WithTransportFilenkaCost / FilenkaCount, 2, MidpointRounding.AwayFromZero);
-                    Row["CostWithTransport"] = Decimal.Round(Math.Ceiling(WithTransportFilenkaCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
-                    Row["Cost"] = Decimal.Round(Math.Ceiling(FilenkaCount / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
-                    Row["Weight"] = Decimal.Round(FilenkaWeight, 3, MidpointRounding.AwayFromZero);
+                    Row["Price"] = decimal.Round(FilenkaCost / FilenkaCount, 2, MidpointRounding.AwayFromZero);
+                    Row["OriginalPrice"] = decimal.Round(OriginalFilenkaCost / FilenkaCount, 2, MidpointRounding.AwayFromZero);
+                    Row["PriceWithTransport"] = decimal.Round(WithTransportFilenkaCost / FilenkaCount, 2, MidpointRounding.AwayFromZero);
+                    Row["CostWithTransport"] = decimal.Round(Math.Ceiling(WithTransportFilenkaCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                    Row["Cost"] = decimal.Round(Math.Ceiling(FilenkaCount / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                    Row["Weight"] = decimal.Round(FilenkaWeight, 3, MidpointRounding.AwayFromZero);
                     ReportDataTable.Rows.Add(Row);
                 }
 
@@ -5841,14 +5896,14 @@ namespace Infinium.Modules.Marketing.Orders
                         Row["TPSCurCode"] = TPSCurrencyCode;
                     Row["TotalDiscount"] = TotalDiscount;
                     Row["Name"] = GetFrontName(Convert.ToInt32(Fronts.Rows[i]["FrontID"])) + " витрина";
-                    Row["Count"] = Decimal.Round(VitrinaCount, 3, MidpointRounding.AwayFromZero);
+                    Row["Count"] = decimal.Round(VitrinaCount, 3, MidpointRounding.AwayFromZero);
                     Row["Measure"] = "м.кв.";
-                    Row["Price"] = Decimal.Round(VitrinaCost / VitrinaCount, 2, MidpointRounding.AwayFromZero);
-                    Row["OriginalPrice"] = Decimal.Round(OriginalVitrinaCost / VitrinaCount, 2, MidpointRounding.AwayFromZero);
-                    Row["PriceWithTransport"] = Decimal.Round(WithTransportVitrinaCost / VitrinaCount, 2, MidpointRounding.AwayFromZero);
-                    Row["CostWithTransport"] = Decimal.Round(Math.Ceiling(WithTransportVitrinaCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
-                    Row["Cost"] = Decimal.Round(Math.Ceiling(VitrinaCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
-                    Row["Weight"] = Decimal.Round(VitrinaWeight, 3, MidpointRounding.AwayFromZero);
+                    Row["Price"] = decimal.Round(VitrinaCost / VitrinaCount, 2, MidpointRounding.AwayFromZero);
+                    Row["OriginalPrice"] = decimal.Round(OriginalVitrinaCost / VitrinaCount, 2, MidpointRounding.AwayFromZero);
+                    Row["PriceWithTransport"] = decimal.Round(WithTransportVitrinaCost / VitrinaCount, 2, MidpointRounding.AwayFromZero);
+                    Row["CostWithTransport"] = decimal.Round(Math.Ceiling(WithTransportVitrinaCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                    Row["Cost"] = decimal.Round(Math.Ceiling(VitrinaCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                    Row["Weight"] = decimal.Round(VitrinaWeight, 3, MidpointRounding.AwayFromZero);
                     ReportDataTable.Rows.Add(Row);
                 }
 
@@ -5868,14 +5923,14 @@ namespace Infinium.Modules.Marketing.Orders
                         Row["TPSCurCode"] = TPSCurrencyCode;
                     Row["TotalDiscount"] = TotalDiscount;
                     Row["Name"] = GetFrontName(Convert.ToInt32(Fronts.Rows[i]["FrontID"])) + " люкс";
-                    Row["Count"] = Decimal.Round(LuxCount, 3, MidpointRounding.AwayFromZero);
+                    Row["Count"] = decimal.Round(LuxCount, 3, MidpointRounding.AwayFromZero);
                     Row["Measure"] = "м.кв.";
-                    Row["Price"] = Decimal.Round(LuxCost / LuxCount, 2, MidpointRounding.AwayFromZero);
-                    Row["OriginalPrice"] = Decimal.Round(OriginalLuxCost / LuxCount, 2, MidpointRounding.AwayFromZero);
-                    Row["PriceWithTransport"] = Decimal.Round(WithTransportLuxCost / LuxCount, 2, MidpointRounding.AwayFromZero);
-                    Row["CostWithTransport"] = Decimal.Round(Math.Ceiling(WithTransportLuxCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
-                    Row["Cost"] = Decimal.Round(Math.Ceiling(LuxCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
-                    Row["Weight"] = Decimal.Round(LuxWeight, 3, MidpointRounding.AwayFromZero);
+                    Row["Price"] = decimal.Round(LuxCost / LuxCount, 2, MidpointRounding.AwayFromZero);
+                    Row["OriginalPrice"] = decimal.Round(OriginalLuxCost / LuxCount, 2, MidpointRounding.AwayFromZero);
+                    Row["PriceWithTransport"] = decimal.Round(WithTransportLuxCost / LuxCount, 2, MidpointRounding.AwayFromZero);
+                    Row["CostWithTransport"] = decimal.Round(Math.Ceiling(WithTransportLuxCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                    Row["Cost"] = decimal.Round(Math.Ceiling(LuxCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                    Row["Weight"] = decimal.Round(LuxWeight, 3, MidpointRounding.AwayFromZero);
                     ReportDataTable.Rows.Add(Row);
                 }
 
@@ -5895,14 +5950,14 @@ namespace Infinium.Modules.Marketing.Orders
                         Row["TPSCurCode"] = TPSCurrencyCode;
                     Row["TotalDiscount"] = TotalDiscount;
                     Row["Name"] = GetFrontName(Convert.ToInt32(Fronts.Rows[i]["FrontID"])) + " мега";
-                    Row["Count"] = Decimal.Round(MegaCount, 3, MidpointRounding.AwayFromZero);
+                    Row["Count"] = decimal.Round(MegaCount, 3, MidpointRounding.AwayFromZero);
                     Row["Measure"] = "м.кв.";
-                    Row["Price"] = Decimal.Round(MegaCost / MegaCount, 2, MidpointRounding.AwayFromZero);
-                    Row["OriginalPrice"] = Decimal.Round(OriginalMegaCost / MegaCount, 2, MidpointRounding.AwayFromZero);
-                    Row["PriceWithTransport"] = Decimal.Round(WithTransportMegaCost / MegaCount, 2, MidpointRounding.AwayFromZero);
-                    Row["CostWithTransport"] = Decimal.Round(Math.Ceiling(WithTransportMegaCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
-                    Row["Cost"] = Decimal.Round(Math.Ceiling(MegaCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
-                    Row["Weight"] = Decimal.Round(MegaWeight, 3, MidpointRounding.AwayFromZero);
+                    Row["Price"] = decimal.Round(MegaCost / MegaCount, 2, MidpointRounding.AwayFromZero);
+                    Row["OriginalPrice"] = decimal.Round(OriginalMegaCost / MegaCount, 2, MidpointRounding.AwayFromZero);
+                    Row["PriceWithTransport"] = decimal.Round(WithTransportMegaCost / MegaCount, 2, MidpointRounding.AwayFromZero);
+                    Row["CostWithTransport"] = decimal.Round(Math.Ceiling(WithTransportMegaCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                    Row["Cost"] = decimal.Round(Math.Ceiling(MegaCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                    Row["Weight"] = decimal.Round(MegaWeight, 3, MidpointRounding.AwayFromZero);
                     ReportDataTable.Rows.Add(Row);
                 }
             }
@@ -6139,12 +6194,12 @@ namespace Infinium.Modules.Marketing.Orders
                     Row["Name"] = GetFrontName(Convert.ToInt32(Fronts.Rows[i]["FrontID"])) + " гнут. 713 глух.";
                     Row["Count"] = Solid713Count;
                     Row["Measure"] = "шт.";
-                    Row["Price"] = Decimal.Round(Solid713Price, 2, MidpointRounding.AwayFromZero);
-                    Row["OriginalPrice"] = Decimal.Round(Solid713OriginalPrice, 2, MidpointRounding.AwayFromZero);
-                    Row["PriceWithTransport"] = Decimal.Round(Solid713WithTransportCost / Solid713Count, 2, MidpointRounding.AwayFromZero);
-                    Row["CostWithTransport"] = Decimal.Round(Math.Ceiling(Solid713WithTransportCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
-                    Row["Cost"] = Decimal.Round(Math.Ceiling(Solid713Count * Solid713Price / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
-                    Row["Weight"] = Decimal.Round(Solid713Weight, 3, MidpointRounding.AwayFromZero);
+                    Row["Price"] = decimal.Round(Solid713Price, 2, MidpointRounding.AwayFromZero);
+                    Row["OriginalPrice"] = decimal.Round(Solid713OriginalPrice, 2, MidpointRounding.AwayFromZero);
+                    Row["PriceWithTransport"] = decimal.Round(Solid713WithTransportCost / Solid713Count, 2, MidpointRounding.AwayFromZero);
+                    Row["CostWithTransport"] = decimal.Round(Math.Ceiling(Solid713WithTransportCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                    Row["Cost"] = decimal.Round(Math.Ceiling(Solid713Count * Solid713Price / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                    Row["Weight"] = decimal.Round(Solid713Weight, 3, MidpointRounding.AwayFromZero);
                     ReportDataTable.Rows.Add(Row);
                 }
 
@@ -6164,12 +6219,12 @@ namespace Infinium.Modules.Marketing.Orders
                     Row["Name"] = GetFrontName(Convert.ToInt32(Fronts.Rows[i]["FrontID"])) + " гнут. 713 филенка";
                     Row["Count"] = Filenka713Count;
                     Row["Measure"] = "шт.";
-                    Row["Price"] = Decimal.Round(Filenka713Price, 2, MidpointRounding.AwayFromZero);
-                    Row["OriginalPrice"] = Decimal.Round(Filenka713OriginalPrice, 2, MidpointRounding.AwayFromZero);
-                    Row["PriceWithTransport"] = Decimal.Round(Filenka713WithTransportCost / Filenka713Count, 2, MidpointRounding.AwayFromZero);
-                    Row["CostWithTransport"] = Decimal.Round(Math.Ceiling(Filenka713WithTransportCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
-                    Row["Cost"] = Decimal.Round(Math.Ceiling(Filenka713Count * Filenka713Price / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
-                    Row["Weight"] = Decimal.Round(Filenka713Weight, 3, MidpointRounding.AwayFromZero);
+                    Row["Price"] = decimal.Round(Filenka713Price, 2, MidpointRounding.AwayFromZero);
+                    Row["OriginalPrice"] = decimal.Round(Filenka713OriginalPrice, 2, MidpointRounding.AwayFromZero);
+                    Row["PriceWithTransport"] = decimal.Round(Filenka713WithTransportCost / Filenka713Count, 2, MidpointRounding.AwayFromZero);
+                    Row["CostWithTransport"] = decimal.Round(Math.Ceiling(Filenka713WithTransportCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                    Row["Cost"] = decimal.Round(Math.Ceiling(Filenka713Count * Filenka713Price / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                    Row["Weight"] = decimal.Round(Filenka713Weight, 3, MidpointRounding.AwayFromZero);
                     ReportDataTable.Rows.Add(Row);
                 }
 
@@ -6189,12 +6244,12 @@ namespace Infinium.Modules.Marketing.Orders
                     Row["Name"] = GetFrontName(Convert.ToInt32(Fronts.Rows[i]["FrontID"])) + " гнут. 713 фрезер.";
                     Row["Count"] = NoInset713Count;
                     Row["Measure"] = "шт.";
-                    Row["Price"] = Decimal.Round(NoInset713Price, 2, MidpointRounding.AwayFromZero);
-                    Row["OriginalPrice"] = Decimal.Round(NoInset713OriginalPrice, 2, MidpointRounding.AwayFromZero);
-                    Row["PriceWithTransport"] = Decimal.Round(NoInset713WithTransportCost / NoInset713Count, 2, MidpointRounding.AwayFromZero);
-                    Row["CostWithTransport"] = Decimal.Round(Math.Ceiling(NoInset713WithTransportCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
-                    Row["Cost"] = Decimal.Round(Math.Ceiling(NoInset713Count * NoInset713Price / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
-                    Row["Weight"] = Decimal.Round(NoInset713Weight, 3, MidpointRounding.AwayFromZero);
+                    Row["Price"] = decimal.Round(NoInset713Price, 2, MidpointRounding.AwayFromZero);
+                    Row["OriginalPrice"] = decimal.Round(NoInset713OriginalPrice, 2, MidpointRounding.AwayFromZero);
+                    Row["PriceWithTransport"] = decimal.Round(NoInset713WithTransportCost / NoInset713Count, 2, MidpointRounding.AwayFromZero);
+                    Row["CostWithTransport"] = decimal.Round(Math.Ceiling(NoInset713WithTransportCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                    Row["Cost"] = decimal.Round(Math.Ceiling(NoInset713Count * NoInset713Price / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                    Row["Weight"] = decimal.Round(NoInset713Weight, 3, MidpointRounding.AwayFromZero);
                     ReportDataTable.Rows.Add(Row);
                 }
 
@@ -6214,12 +6269,12 @@ namespace Infinium.Modules.Marketing.Orders
                     Row["Name"] = GetFrontName(Convert.ToInt32(Fronts.Rows[i]["FrontID"])) + " гнут. 713 витрина";
                     Row["Count"] = Vitrina713Count;
                     Row["Measure"] = "шт.";
-                    Row["Price"] = Decimal.Round(Vitrina713Price, 2, MidpointRounding.AwayFromZero);
-                    Row["OriginalPrice"] = Decimal.Round(Vitrina713OriginalPrice, 2, MidpointRounding.AwayFromZero);
-                    Row["PriceWithTransport"] = Decimal.Round(Vitrina713WithTransportCost / Vitrina713Count, 2, MidpointRounding.AwayFromZero);
-                    Row["CostWithTransport"] = Decimal.Round(Math.Ceiling(Vitrina713WithTransportCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
-                    Row["Cost"] = Decimal.Round(Math.Ceiling(Vitrina713Count * Vitrina713Price / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
-                    Row["Weight"] = Decimal.Round(Vitrina713Weight, 3, MidpointRounding.AwayFromZero);
+                    Row["Price"] = decimal.Round(Vitrina713Price, 2, MidpointRounding.AwayFromZero);
+                    Row["OriginalPrice"] = decimal.Round(Vitrina713OriginalPrice, 2, MidpointRounding.AwayFromZero);
+                    Row["PriceWithTransport"] = decimal.Round(Vitrina713WithTransportCost / Vitrina713Count, 2, MidpointRounding.AwayFromZero);
+                    Row["CostWithTransport"] = decimal.Round(Math.Ceiling(Vitrina713WithTransportCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                    Row["Cost"] = decimal.Round(Math.Ceiling(Vitrina713Count * Vitrina713Price / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                    Row["Weight"] = decimal.Round(Vitrina713Weight, 3, MidpointRounding.AwayFromZero);
                     ReportDataTable.Rows.Add(Row);
                 }
 
@@ -6239,12 +6294,12 @@ namespace Infinium.Modules.Marketing.Orders
                     Row["Name"] = GetFrontName(Convert.ToInt32(Fronts.Rows[i]["FrontID"])) + " гнут. 910 глух.";
                     Row["Count"] = Solid910Count;
                     Row["Measure"] = "шт.";
-                    Row["Price"] = Decimal.Round(Solid910Price, 2, MidpointRounding.AwayFromZero);
-                    Row["OriginalPrice"] = Decimal.Round(Solid910OriginalPrice, 2, MidpointRounding.AwayFromZero);
-                    Row["PriceWithTransport"] = Decimal.Round(Solid910WithTransportCost / Solid910Count, 2, MidpointRounding.AwayFromZero);
-                    Row["CostWithTransport"] = Decimal.Round(Math.Ceiling(Solid910WithTransportCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
-                    Row["Cost"] = Decimal.Round(Math.Ceiling(Solid910Count * Solid910Price / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
-                    Row["Weight"] = Decimal.Round(Solid910Weight, 3, MidpointRounding.AwayFromZero);
+                    Row["Price"] = decimal.Round(Solid910Price, 2, MidpointRounding.AwayFromZero);
+                    Row["OriginalPrice"] = decimal.Round(Solid910OriginalPrice, 2, MidpointRounding.AwayFromZero);
+                    Row["PriceWithTransport"] = decimal.Round(Solid910WithTransportCost / Solid910Count, 2, MidpointRounding.AwayFromZero);
+                    Row["CostWithTransport"] = decimal.Round(Math.Ceiling(Solid910WithTransportCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                    Row["Cost"] = decimal.Round(Math.Ceiling(Solid910Count * Solid910Price / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                    Row["Weight"] = decimal.Round(Solid910Weight, 3, MidpointRounding.AwayFromZero);
                     ReportDataTable.Rows.Add(Row);
                 }
 
@@ -6264,12 +6319,12 @@ namespace Infinium.Modules.Marketing.Orders
                     Row["Name"] = GetFrontName(Convert.ToInt32(Fronts.Rows[i]["FrontID"])) + " гнут. 910 филенка";
                     Row["Count"] = Filenka910Count;
                     Row["Measure"] = "шт.";
-                    Row["Price"] = Decimal.Round(Filenka910Price, 2, MidpointRounding.AwayFromZero);
-                    Row["OriginalPrice"] = Decimal.Round(Filenka910OriginalPrice, 2, MidpointRounding.AwayFromZero);
-                    Row["PriceWithTransport"] = Decimal.Round(Filenka910WithTransportCost / Filenka910Count, 2, MidpointRounding.AwayFromZero);
-                    Row["CostWithTransport"] = Decimal.Round(Math.Ceiling(Filenka910WithTransportCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
-                    Row["Cost"] = Decimal.Round(Math.Ceiling(Filenka910Count * Filenka910Price / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
-                    Row["Weight"] = Decimal.Round(Filenka910Weight, 3, MidpointRounding.AwayFromZero);
+                    Row["Price"] = decimal.Round(Filenka910Price, 2, MidpointRounding.AwayFromZero);
+                    Row["OriginalPrice"] = decimal.Round(Filenka910OriginalPrice, 2, MidpointRounding.AwayFromZero);
+                    Row["PriceWithTransport"] = decimal.Round(Filenka910WithTransportCost / Filenka910Count, 2, MidpointRounding.AwayFromZero);
+                    Row["CostWithTransport"] = decimal.Round(Math.Ceiling(Filenka910WithTransportCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                    Row["Cost"] = decimal.Round(Math.Ceiling(Filenka910Count * Filenka910Price / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                    Row["Weight"] = decimal.Round(Filenka910Weight, 3, MidpointRounding.AwayFromZero);
                     ReportDataTable.Rows.Add(Row);
                 }
 
@@ -6289,12 +6344,12 @@ namespace Infinium.Modules.Marketing.Orders
                     Row["Name"] = GetFrontName(Convert.ToInt32(Fronts.Rows[i]["FrontID"])) + " гнут. 910 фрезер.";
                     Row["Count"] = NoInset910Count;
                     Row["Measure"] = "шт.";
-                    Row["Price"] = Decimal.Round(NoInset910Price, 3, MidpointRounding.AwayFromZero);
-                    Row["OriginalPrice"] = Decimal.Round(NoInset910OriginalPrice, 2, MidpointRounding.AwayFromZero);
-                    Row["PriceWithTransport"] = Decimal.Round(NoInset910WithTransportCost / NoInset910Count, 2, MidpointRounding.AwayFromZero);
-                    Row["CostWithTransport"] = Decimal.Round(Math.Ceiling(NoInset910WithTransportCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
-                    Row["Cost"] = Decimal.Round(Math.Ceiling(NoInset910Count * NoInset910Price / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
-                    Row["Weight"] = Decimal.Round(NoInset910Weight, 3, MidpointRounding.AwayFromZero);
+                    Row["Price"] = decimal.Round(NoInset910Price, 3, MidpointRounding.AwayFromZero);
+                    Row["OriginalPrice"] = decimal.Round(NoInset910OriginalPrice, 2, MidpointRounding.AwayFromZero);
+                    Row["PriceWithTransport"] = decimal.Round(NoInset910WithTransportCost / NoInset910Count, 2, MidpointRounding.AwayFromZero);
+                    Row["CostWithTransport"] = decimal.Round(Math.Ceiling(NoInset910WithTransportCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                    Row["Cost"] = decimal.Round(Math.Ceiling(NoInset910Count * NoInset910Price / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                    Row["Weight"] = decimal.Round(NoInset910Weight, 3, MidpointRounding.AwayFromZero);
                     ReportDataTable.Rows.Add(Row);
                 }
 
@@ -6314,12 +6369,12 @@ namespace Infinium.Modules.Marketing.Orders
                     Row["Name"] = GetFrontName(Convert.ToInt32(Fronts.Rows[i]["FrontID"])) + " гнут. 910 витрина";
                     Row["Count"] = Vitrina910Count;
                     Row["Measure"] = "шт.";
-                    Row["Price"] = Decimal.Round(Vitrina910Price, 2, MidpointRounding.AwayFromZero);
-                    Row["OriginalPrice"] = Decimal.Round(Vitrina910OriginalPrice, 2, MidpointRounding.AwayFromZero);
-                    Row["PriceWithTransport"] = Decimal.Round(Vitrina910WithTransportCost / Vitrina910Count, 2, MidpointRounding.AwayFromZero);
-                    Row["CostWithTransport"] = Decimal.Round(Math.Ceiling(Vitrina910WithTransportCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
-                    Row["Cost"] = Decimal.Round(Math.Ceiling(Vitrina910Count * Vitrina910Price / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
-                    Row["Weight"] = Decimal.Round(Vitrina910Weight, 3, MidpointRounding.AwayFromZero);
+                    Row["Price"] = decimal.Round(Vitrina910Price, 2, MidpointRounding.AwayFromZero);
+                    Row["OriginalPrice"] = decimal.Round(Vitrina910OriginalPrice, 2, MidpointRounding.AwayFromZero);
+                    Row["PriceWithTransport"] = decimal.Round(Vitrina910WithTransportCost / Vitrina910Count, 2, MidpointRounding.AwayFromZero);
+                    Row["CostWithTransport"] = decimal.Round(Math.Ceiling(Vitrina910WithTransportCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                    Row["Cost"] = decimal.Round(Math.Ceiling(Vitrina910Count * Vitrina910Price / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                    Row["Weight"] = decimal.Round(Vitrina910Weight, 3, MidpointRounding.AwayFromZero);
                     ReportDataTable.Rows.Add(Row);
                 }
             }
@@ -6360,13 +6415,13 @@ namespace Infinium.Modules.Marketing.Orders
                 if (fID == 2)
                     NewRow["TPSCurCode"] = TPSCurrencyCode;
                 NewRow["Name"] = "Решетка";
-                NewRow["Count"] = Decimal.Round(Count, 3, MidpointRounding.AwayFromZero);
+                NewRow["Count"] = decimal.Round(Count, 3, MidpointRounding.AwayFromZero);
                 NewRow["Measure"] = "м.кв.";
-                NewRow["Price"] = Decimal.Round(Cost / Count, 2, MidpointRounding.AwayFromZero);
-                NewRow["Cost"] = Decimal.Round(Math.Ceiling(Cost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
-                NewRow["PriceWithTransport"] = Decimal.Round(Cost / Count, 2, MidpointRounding.AwayFromZero);
-                NewRow["CostWithTransport"] = Decimal.Round(Math.Ceiling(Cost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
-                NewRow["Weight"] = Decimal.Round(Convert.ToDecimal(NewRow["Count"]) * Convert.ToDecimal(3.5), 3, MidpointRounding.AwayFromZero);
+                NewRow["Price"] = decimal.Round(Cost / Count, 2, MidpointRounding.AwayFromZero);
+                NewRow["Cost"] = decimal.Round(Math.Ceiling(Cost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                NewRow["PriceWithTransport"] = decimal.Round(Cost / Count, 2, MidpointRounding.AwayFromZero);
+                NewRow["CostWithTransport"] = decimal.Round(Math.Ceiling(Cost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                NewRow["Weight"] = decimal.Round(Convert.ToDecimal(NewRow["Count"]) * Convert.ToDecimal(3.5), 3, MidpointRounding.AwayFromZero);
                 ReportDataTable.Rows.Add(NewRow);
             }
         }
@@ -6416,7 +6471,7 @@ namespace Infinium.Modules.Marketing.Orders
                     CountFlutes += Convert.ToDecimal(FRows[i]["Count"]) * GetInsetSquare(Convert.ToInt32(FRows[i]["FrontID"]), Convert.ToInt32(FRows[i]["Height"]), Convert.ToInt32(FRows[i]["Width"]));
                 }
 
-                CountFlutes = Decimal.Round(CountFlutes, 3, MidpointRounding.AwayFromZero);
+                CountFlutes = decimal.Round(CountFlutes, 3, MidpointRounding.AwayFromZero);
 
                 if (CountFlutes > 0)
                 {
@@ -6432,11 +6487,11 @@ namespace Infinium.Modules.Marketing.Orders
                     NewRow["Name"] = "Стекло Флутес";
                     NewRow["Count"] = CountFlutes;
                     NewRow["Measure"] = "м.кв.";
-                    NewRow["Price"] = Decimal.Round(PriceFlutes, 2, MidpointRounding.AwayFromZero);
-                    NewRow["Cost"] = Decimal.Round(Math.Ceiling(CountFlutes * PriceFlutes / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
-                    NewRow["PriceWithTransport"] = Decimal.Round(PriceFlutes, 2, MidpointRounding.AwayFromZero);
-                    NewRow["CostWithTransport"] = Decimal.Round(Math.Ceiling(CountFlutes * PriceFlutes / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
-                    NewRow["Weight"] = Decimal.Round(CountFlutes * 10, 3, MidpointRounding.AwayFromZero);
+                    NewRow["Price"] = decimal.Round(PriceFlutes, 2, MidpointRounding.AwayFromZero);
+                    NewRow["Cost"] = decimal.Round(Math.Ceiling(CountFlutes * PriceFlutes / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                    NewRow["PriceWithTransport"] = decimal.Round(PriceFlutes, 2, MidpointRounding.AwayFromZero);
+                    NewRow["CostWithTransport"] = decimal.Round(Math.Ceiling(CountFlutes * PriceFlutes / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                    NewRow["Weight"] = decimal.Round(CountFlutes * 10, 3, MidpointRounding.AwayFromZero);
                     ReportDataTable.Rows.Add(NewRow);
                 }
             }
@@ -6460,7 +6515,7 @@ namespace Infinium.Modules.Marketing.Orders
 
                 }
 
-                CountLacomat = Decimal.Round(CountLacomat, 3, MidpointRounding.AwayFromZero);
+                CountLacomat = decimal.Round(CountLacomat, 3, MidpointRounding.AwayFromZero);
 
                 if (CountLacomat > 0)
                 {
@@ -6476,11 +6531,11 @@ namespace Infinium.Modules.Marketing.Orders
                     NewRow["Name"] = "Стекло Лакомат";
                     NewRow["Count"] = CountLacomat;
                     NewRow["Measure"] = "м.кв.";
-                    NewRow["Price"] = Decimal.Round(PriceLacomat, 2, MidpointRounding.AwayFromZero);
-                    NewRow["Cost"] = Decimal.Round(Math.Ceiling(CountLacomat * PriceLacomat / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
-                    NewRow["PriceWithTransport"] = Decimal.Round(PriceLacomat, 2, MidpointRounding.AwayFromZero);
-                    NewRow["CostWithTransport"] = Decimal.Round(Math.Ceiling(CountLacomat * PriceLacomat / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
-                    NewRow["Weight"] = Decimal.Round(CountLacomat * 10, 3, MidpointRounding.AwayFromZero);
+                    NewRow["Price"] = decimal.Round(PriceLacomat, 2, MidpointRounding.AwayFromZero);
+                    NewRow["Cost"] = decimal.Round(Math.Ceiling(CountLacomat * PriceLacomat / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                    NewRow["PriceWithTransport"] = decimal.Round(PriceLacomat, 2, MidpointRounding.AwayFromZero);
+                    NewRow["CostWithTransport"] = decimal.Round(Math.Ceiling(CountLacomat * PriceLacomat / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                    NewRow["Weight"] = decimal.Round(CountLacomat * 10, 3, MidpointRounding.AwayFromZero);
                     ReportDataTable.Rows.Add(NewRow);
                 }
             }
@@ -6502,7 +6557,7 @@ namespace Infinium.Modules.Marketing.Orders
                                               Convert.ToInt32(KRows[i]["Width"]));
                 }
 
-                CountKrizet = Decimal.Round(CountKrizet, 3, MidpointRounding.AwayFromZero);
+                CountKrizet = decimal.Round(CountKrizet, 3, MidpointRounding.AwayFromZero);
 
                 if (CountKrizet > 0)
                 {
@@ -6518,11 +6573,11 @@ namespace Infinium.Modules.Marketing.Orders
                     NewRow["Name"] = "Стекло Кризет";
                     NewRow["Count"] = CountKrizet;
                     NewRow["Measure"] = "м.кв.";
-                    NewRow["Price"] = Decimal.Round(PriceKrizet, 2, MidpointRounding.AwayFromZero);
-                    NewRow["Cost"] = Decimal.Round(Math.Ceiling(CountKrizet * PriceKrizet / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
-                    NewRow["PriceWithTransport"] = Decimal.Round(PriceKrizet, 2, MidpointRounding.AwayFromZero);
-                    NewRow["CostWithTransport"] = Decimal.Round(Math.Ceiling(CountKrizet * PriceKrizet / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
-                    NewRow["Weight"] = Decimal.Round(CountKrizet * 10, 3, MidpointRounding.AwayFromZero);
+                    NewRow["Price"] = decimal.Round(PriceKrizet, 2, MidpointRounding.AwayFromZero);
+                    NewRow["Cost"] = decimal.Round(Math.Ceiling(CountKrizet * PriceKrizet / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                    NewRow["PriceWithTransport"] = decimal.Round(PriceKrizet, 2, MidpointRounding.AwayFromZero);
+                    NewRow["CostWithTransport"] = decimal.Round(Math.Ceiling(CountKrizet * PriceKrizet / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                    NewRow["Weight"] = decimal.Round(CountKrizet * 10, 3, MidpointRounding.AwayFromZero);
                     ReportDataTable.Rows.Add(NewRow);
                 }
             }
@@ -6541,7 +6596,7 @@ namespace Infinium.Modules.Marketing.Orders
                                               Convert.ToInt32(ORows[i]["Width"]));
                 }
 
-                CountOther = Decimal.Round(CountOther, 3, MidpointRounding.AwayFromZero);
+                CountOther = decimal.Round(CountOther, 3, MidpointRounding.AwayFromZero);
 
                 DataRow NewRow = ReportDataTable.NewRow();
                 NewRow["UNN"] = UNN;
@@ -6558,7 +6613,7 @@ namespace Infinium.Modules.Marketing.Orders
                 NewRow["Cost"] = 0;
                 NewRow["PriceWithTransport"] = 0;
                 NewRow["CostWithTransport"] = 0;
-                NewRow["Weight"] = Decimal.Round(CountOther * 10, 3, MidpointRounding.AwayFromZero);
+                NewRow["Weight"] = decimal.Round(CountOther * 10, 3, MidpointRounding.AwayFromZero);
                 ReportDataTable.Rows.Add(NewRow);
             }
         }
@@ -6590,11 +6645,11 @@ namespace Infinium.Modules.Marketing.Orders
 
                 for (int i = 0; i < EGRows.Count(); i++)
                 {
-                    decimal dd = Decimal.Round(Convert.ToDecimal(EGRows[i]["Count"]) * MarginHeight * (Convert.ToDecimal(EGRows[i]["Width"]) - MarginWidth) / 1000000, 3, MidpointRounding.AwayFromZero);
+                    decimal dd = decimal.Round(Convert.ToDecimal(EGRows[i]["Count"]) * MarginHeight * (Convert.ToDecimal(EGRows[i]["Width"]) - MarginWidth) / 1000000, 3, MidpointRounding.AwayFromZero);
                     CountEllipseGrid += dd;
                 }
                 decimal Weight = GetInsetWeight(EGRows[0]);
-                Weight = Decimal.Round(CountEllipseGrid * Weight, 3, MidpointRounding.AwayFromZero);
+                Weight = decimal.Round(CountEllipseGrid * Weight, 3, MidpointRounding.AwayFromZero);
 
                 //decimal Cost = Math.Ceiling(CountEllipseGrid * PriceEllipseGrid / 0.01m) * 0.01m;
                 DataRow NewRow = ReportDataTable.NewRow();
@@ -6609,9 +6664,9 @@ namespace Infinium.Modules.Marketing.Orders
                 NewRow["Count"] = CountEllipseGrid;
                 NewRow["Measure"] = "м.кв.";
                 NewRow["Price"] = PriceEllipseGrid;
-                NewRow["Cost"] = Decimal.Round(Math.Ceiling(CountEllipseGrid * PriceEllipseGrid / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                NewRow["Cost"] = decimal.Round(Math.Ceiling(CountEllipseGrid * PriceEllipseGrid / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
                 NewRow["PriceWithTransport"] = PriceEllipseGrid;
-                NewRow["CostWithTransport"] = Decimal.Round(Math.Ceiling(CountEllipseGrid * PriceEllipseGrid / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                NewRow["CostWithTransport"] = decimal.Round(Math.Ceiling(CountEllipseGrid * PriceEllipseGrid / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
                 NewRow["Weight"] = Weight;
                 ReportDataTable.Rows.Add(NewRow);
             }
@@ -6640,9 +6695,9 @@ namespace Infinium.Modules.Marketing.Orders
                 NewRow["Count"] = CountApplic1R;
                 NewRow["Measure"] = "шт.";
                 NewRow["Price"] = PriceApplic1R;
-                NewRow["Cost"] = Decimal.Round(Math.Ceiling(CountApplic1R * PriceApplic1R / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                NewRow["Cost"] = decimal.Round(Math.Ceiling(CountApplic1R * PriceApplic1R / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
                 NewRow["PriceWithTransport"] = PriceApplic1R;
-                NewRow["CostWithTransport"] = Decimal.Round(Math.Ceiling(CountApplic1R * PriceApplic1R / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                NewRow["CostWithTransport"] = decimal.Round(Math.Ceiling(CountApplic1R * PriceApplic1R / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
                 NewRow["Weight"] = 0;
                 ReportDataTable.Rows.Add(NewRow);
             }
@@ -6671,9 +6726,9 @@ namespace Infinium.Modules.Marketing.Orders
                 NewRow["Count"] = CountApplic1L;
                 NewRow["Measure"] = "шт.";
                 NewRow["Price"] = PriceApplic1L;
-                NewRow["Cost"] = Decimal.Round(Math.Ceiling(CountApplic1L * PriceApplic1L / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                NewRow["Cost"] = decimal.Round(Math.Ceiling(CountApplic1L * PriceApplic1L / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
                 NewRow["PriceWithTransport"] = PriceApplic1L;
-                NewRow["CostWithTransport"] = Decimal.Round(Math.Ceiling(CountApplic1L * PriceApplic1L / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                NewRow["CostWithTransport"] = decimal.Round(Math.Ceiling(CountApplic1L * PriceApplic1L / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
                 NewRow["Weight"] = 0;
                 ReportDataTable.Rows.Add(NewRow);
             }
@@ -6702,9 +6757,9 @@ namespace Infinium.Modules.Marketing.Orders
                 NewRow["Count"] = CountApplic2;
                 NewRow["Measure"] = "шт.";
                 NewRow["Price"] = PriceApplic2;
-                NewRow["Cost"] = Decimal.Round(Math.Ceiling(CountApplic2 * PriceApplic2 / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                NewRow["Cost"] = decimal.Round(Math.Ceiling(CountApplic2 * PriceApplic2 / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
                 NewRow["PriceWithTransport"] = PriceApplic2;
-                NewRow["CostWithTransport"] = Decimal.Round(Math.Ceiling(CountApplic2 * PriceApplic2 / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                NewRow["CostWithTransport"] = decimal.Round(Math.Ceiling(CountApplic2 * PriceApplic2 / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
                 NewRow["Weight"] = 0;
                 ReportDataTable.Rows.Add(NewRow);
             }
@@ -6734,9 +6789,9 @@ namespace Infinium.Modules.Marketing.Orders
                 NewRow["Count"] = CountApplic2;
                 NewRow["Measure"] = "шт.";
                 NewRow["Price"] = PriceApplic2;
-                NewRow["Cost"] = Decimal.Round(Math.Ceiling(CountApplic2 * PriceApplic2 / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                NewRow["Cost"] = decimal.Round(Math.Ceiling(CountApplic2 * PriceApplic2 / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
                 NewRow["PriceWithTransport"] = PriceApplic2;
-                NewRow["CostWithTransport"] = Decimal.Round(Math.Ceiling(CountApplic2 * PriceApplic2 / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                NewRow["CostWithTransport"] = decimal.Round(Math.Ceiling(CountApplic2 * PriceApplic2 / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
                 NewRow["Weight"] = 0;
                 ReportDataTable.Rows.Add(NewRow);
             }
@@ -7358,14 +7413,14 @@ namespace Infinium.Modules.Marketing.Orders
                                 if (Convert.ToDecimal(Rows[r]["Height"]) != -1)
                                 {
                                     decimal d = Convert.ToDecimal(Rows[r]["Height"]) * Convert.ToDecimal(Rows[r]["Width"]) / 1000000;
-                                    d = Decimal.Round(d, 3, MidpointRounding.AwayFromZero);
+                                    d = decimal.Round(d, 3, MidpointRounding.AwayFromZero);
                                     decimal Square = d * Convert.ToDecimal(Rows[r]["Count"]);
                                     NewRow["Count"] = Square;
                                 }
                                 if (Convert.ToDecimal(Rows[r]["Length"]) != -1)
                                 {
                                     decimal d = Convert.ToDecimal(Rows[r]["Length"]) * Convert.ToDecimal(Rows[r]["Width"]) / 1000000;
-                                    d = Decimal.Round(d, 3, MidpointRounding.AwayFromZero);
+                                    d = decimal.Round(d, 3, MidpointRounding.AwayFromZero);
                                     decimal Square = d * Convert.ToDecimal(Rows[r]["Count"]);
                                     NewRow["Count"] = Square;
                                 }
@@ -7380,7 +7435,7 @@ namespace Infinium.Modules.Marketing.Orders
                                 if (L == -1)
                                     L = Convert.ToDecimal(Rows[r]["Height"]);
                                 decimal d = L * Convert.ToDecimal(Rows[r]["Width"]) / 1000000;
-                                d = Decimal.Round(d, 3, MidpointRounding.AwayFromZero);
+                                d = decimal.Round(d, 3, MidpointRounding.AwayFromZero);
                                 decimal Square = d * Convert.ToDecimal(Rows[r]["Count"]);
                                 NewRow["Count"] = Square;
                             }
@@ -7396,7 +7451,7 @@ namespace Infinium.Modules.Marketing.Orders
                                 if (Convert.ToDecimal(Rows[r]["Length"]) != -1)
                                     H = Convert.ToDecimal(Rows[r]["Length"]);
                                 decimal d = H * Convert.ToDecimal(Rows[r]["Width"]) / 1000000;
-                                d = Decimal.Round(d, 3, MidpointRounding.AwayFromZero);
+                                d = decimal.Round(d, 3, MidpointRounding.AwayFromZero);
                                 decimal Square = d * Convert.ToDecimal(Rows[r]["Count"]);
                                 NewRow["Count"] = Square;
                                 NewRow["CostWithTransport"] = Convert.ToDecimal(Rows[r]["PriceWithTransport"]);
@@ -7423,14 +7478,14 @@ namespace Infinium.Modules.Marketing.Orders
                                 if (Convert.ToDecimal(Rows[r]["Height"]) != -1)
                                 {
                                     decimal d = Convert.ToDecimal(Rows[r]["Height"]) * Convert.ToDecimal(Rows[r]["Width"]) / 1000000;
-                                    d = Decimal.Round(d, 3, MidpointRounding.AwayFromZero);
+                                    d = decimal.Round(d, 3, MidpointRounding.AwayFromZero);
                                     decimal Square = d * Convert.ToDecimal(Rows[r]["Count"]);
                                     PDT.Rows[0]["Count"] = Convert.ToDecimal(PDT.Rows[0]["Count"]) + Square;
                                 }
                                 if (Convert.ToDecimal(Rows[r]["Length"]) != -1)
                                 {
                                     decimal d = Convert.ToDecimal(Rows[r]["Length"]) * Convert.ToDecimal(Rows[r]["Width"]) / 1000000;
-                                    d = Decimal.Round(d, 3, MidpointRounding.AwayFromZero);
+                                    d = decimal.Round(d, 3, MidpointRounding.AwayFromZero);
                                     decimal Square = d * Convert.ToDecimal(Rows[r]["Count"]);
                                     PDT.Rows[0]["Count"] = Convert.ToDecimal(PDT.Rows[0]["Count"]) + Square;
                                 }
@@ -7446,7 +7501,7 @@ namespace Infinium.Modules.Marketing.Orders
                                     L = Convert.ToDecimal(Rows[r]["Height"]);
 
                                 decimal d = L * Convert.ToDecimal(Rows[r]["Width"]) / 1000000;
-                                d = Decimal.Round(d, 3, MidpointRounding.AwayFromZero);
+                                d = decimal.Round(d, 3, MidpointRounding.AwayFromZero);
                                 decimal Square = d * Convert.ToDecimal(Rows[r]["Count"]);
                                 PDT.Rows[0]["Count"] = Convert.ToDecimal(PDT.Rows[0]["Count"]) + Square;
                             }
@@ -7462,7 +7517,7 @@ namespace Infinium.Modules.Marketing.Orders
                                 if (Convert.ToDecimal(Rows[r]["Length"]) != -1)
                                     H = Convert.ToDecimal(Rows[r]["Length"]);
                                 decimal d = H * Convert.ToDecimal(Rows[r]["Width"]) / 1000000;
-                                d = Decimal.Round(d, 3, MidpointRounding.AwayFromZero);
+                                d = decimal.Round(d, 3, MidpointRounding.AwayFromZero);
                                 decimal Square = d * Convert.ToDecimal(Rows[r]["Count"]);
                                 PDT.Rows[0]["Count"] = Convert.ToDecimal(PDT.Rows[0]["Count"]) + Square;
                             }
@@ -7498,14 +7553,14 @@ namespace Infinium.Modules.Marketing.Orders
                                 if (Convert.ToDecimal(Rows[r]["Height"]) != -1)
                                 {
                                     decimal d = Convert.ToDecimal(Rows[r]["Height"]) * Convert.ToDecimal(Rows[r]["Width"]) / 1000000;
-                                    d = Decimal.Round(d, 3, MidpointRounding.AwayFromZero);
+                                    d = decimal.Round(d, 3, MidpointRounding.AwayFromZero);
                                     decimal Square = d * Convert.ToDecimal(Rows[r]["Count"]);
                                     NewRow["Count"] = Square;
                                 }
                                 if (Convert.ToDecimal(Rows[r]["Length"]) != -1)
                                 {
                                     decimal d = Convert.ToDecimal(Rows[r]["Length"]) * Convert.ToDecimal(Rows[r]["Width"]) / 1000000;
-                                    d = Decimal.Round(d, 3, MidpointRounding.AwayFromZero);
+                                    d = decimal.Round(d, 3, MidpointRounding.AwayFromZero);
                                     decimal Square = d * Convert.ToDecimal(Rows[r]["Count"]);
                                     NewRow["Count"] = Square;
                                 }
@@ -7520,7 +7575,7 @@ namespace Infinium.Modules.Marketing.Orders
                                 if (L == -1)
                                     L = Convert.ToDecimal(Rows[r]["Height"]);
                                 decimal d = L * Convert.ToDecimal(Rows[r]["Width"]) / 1000000;
-                                d = Decimal.Round(d, 3, MidpointRounding.AwayFromZero);
+                                d = decimal.Round(d, 3, MidpointRounding.AwayFromZero);
                                 decimal Square = d * Convert.ToDecimal(Rows[r]["Count"]);
                                 NewRow["Count"] = Square;
                             }
@@ -7536,7 +7591,7 @@ namespace Infinium.Modules.Marketing.Orders
                                 if (Convert.ToDecimal(Rows[r]["Length"]) != -1)
                                     H = Convert.ToDecimal(Rows[r]["Length"]);
                                 decimal d = H * Convert.ToDecimal(Rows[r]["Width"]) / 1000000;
-                                d = Decimal.Round(d, 3, MidpointRounding.AwayFromZero);
+                                d = decimal.Round(d, 3, MidpointRounding.AwayFromZero);
                                 decimal Square = d * Convert.ToDecimal(Rows[r]["Count"]);
                                 NewRow["Count"] = Square;
 
@@ -7563,14 +7618,14 @@ namespace Infinium.Modules.Marketing.Orders
                                 if (Convert.ToDecimal(Rows[r]["Height"]) != -1)
                                 {
                                     decimal d = Convert.ToDecimal(Rows[r]["Height"]) * Convert.ToDecimal(Rows[r]["Width"]) / 1000000;
-                                    d = Decimal.Round(d, 3, MidpointRounding.AwayFromZero);
+                                    d = decimal.Round(d, 3, MidpointRounding.AwayFromZero);
                                     decimal Square = d * Convert.ToDecimal(Rows[r]["Count"]);
                                     TDT.Rows[0]["Count"] = Convert.ToDecimal(TDT.Rows[0]["Count"]) + Square;
                                 }
                                 if (Convert.ToDecimal(Rows[r]["Length"]) != -1)
                                 {
                                     decimal d = Convert.ToDecimal(Rows[r]["Length"]) * Convert.ToDecimal(Rows[r]["Width"]) / 1000000;
-                                    d = Decimal.Round(d, 3, MidpointRounding.AwayFromZero);
+                                    d = decimal.Round(d, 3, MidpointRounding.AwayFromZero);
                                     decimal Square = d * Convert.ToDecimal(Rows[r]["Count"]);
                                     TDT.Rows[0]["Count"] = Convert.ToDecimal(TDT.Rows[0]["Count"]) + Square;
                                 }
@@ -7585,7 +7640,7 @@ namespace Infinium.Modules.Marketing.Orders
                                 if (L == -1)
                                     L = Convert.ToDecimal(Rows[r]["Height"]);
                                 decimal d = L * Convert.ToDecimal(Rows[r]["Width"]) / 1000000;
-                                d = Decimal.Round(d, 3, MidpointRounding.AwayFromZero);
+                                d = decimal.Round(d, 3, MidpointRounding.AwayFromZero);
                                 decimal Square = d * Convert.ToDecimal(Rows[r]["Count"]);
                                 TDT.Rows[0]["Count"] = Convert.ToDecimal(TDT.Rows[0]["Count"]) + Square;
                             }
@@ -7602,7 +7657,7 @@ namespace Infinium.Modules.Marketing.Orders
                                     H = Convert.ToDecimal(Rows[r]["Length"]);
 
                                 decimal d = H * Convert.ToDecimal(Rows[r]["Width"]) / 1000000;
-                                d = Decimal.Round(d, 3, MidpointRounding.AwayFromZero);
+                                d = decimal.Round(d, 3, MidpointRounding.AwayFromZero);
                                 decimal Square = d * Convert.ToDecimal(Rows[r]["Count"]);
                                 TDT.Rows[0]["Count"] = Convert.ToDecimal(TDT.Rows[0]["Count"]) + Square;
                             }
@@ -7645,16 +7700,16 @@ namespace Infinium.Modules.Marketing.Orders
                         NewRow["Name"] = GetProductName(Convert.ToInt32(PDT.Rows[i]["ProductID"])) + " " +
                             GetItemName(DecorID);
 
-                        NewRow["Count"] = Decimal.Round(Convert.ToDecimal(PDT.Rows[i]["Count"]) / 1000, 3, MidpointRounding.AwayFromZero);
+                        NewRow["Count"] = decimal.Round(Convert.ToDecimal(PDT.Rows[i]["Count"]) / 1000, 3, MidpointRounding.AwayFromZero);
                         NewRow["Measure"] = "м.п.";
                         NewRow["OriginalPrice"] = Convert.ToDecimal(PDT.Rows[i]["OriginalPrice"]);
                         NewRow["DiscountVolume"] = Convert.ToDecimal(PDT.Rows[i]["DiscountVolume"]);
                         NewRow["TotalDiscount"] = Convert.ToDecimal(PDT.Rows[i]["TotalDiscount"]);
-                        NewRow["Price"] = Decimal.Round(Convert.ToDecimal(PDT.Rows[i]["Cost"]) / (Convert.ToDecimal(PDT.Rows[i]["Count"]) / 1000), 2, MidpointRounding.AwayFromZero);
-                        NewRow["Cost"] = Decimal.Round(Convert.ToDecimal(PDT.Rows[i]["Cost"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["PriceWithTransport"] = Decimal.Round(Convert.ToDecimal(PDT.Rows[i]["CostWithTransport"]) / (Convert.ToDecimal(PDT.Rows[i]["Count"]) / 1000), 2, MidpointRounding.AwayFromZero);
-                        NewRow["CostWithTransport"] = Decimal.Round(Convert.ToDecimal(PDT.Rows[i]["CostWithTransport"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["Weight"] = Decimal.Round(Convert.ToDecimal(PDT.Rows[i]["Weight"]), 3, MidpointRounding.AwayFromZero);
+                        NewRow["Price"] = decimal.Round(Convert.ToDecimal(PDT.Rows[i]["Cost"]) / (Convert.ToDecimal(PDT.Rows[i]["Count"]) / 1000), 2, MidpointRounding.AwayFromZero);
+                        NewRow["Cost"] = decimal.Round(Convert.ToDecimal(PDT.Rows[i]["Cost"]), 2, MidpointRounding.AwayFromZero);
+                        NewRow["PriceWithTransport"] = decimal.Round(Convert.ToDecimal(PDT.Rows[i]["CostWithTransport"]) / (Convert.ToDecimal(PDT.Rows[i]["Count"]) / 1000), 2, MidpointRounding.AwayFromZero);
+                        NewRow["CostWithTransport"] = decimal.Round(Convert.ToDecimal(PDT.Rows[i]["CostWithTransport"]), 2, MidpointRounding.AwayFromZero);
+                        NewRow["Weight"] = decimal.Round(Convert.ToDecimal(PDT.Rows[i]["Weight"]), 3, MidpointRounding.AwayFromZero);
 
                         ProfilReportDataTable.Rows.Add(NewRow);
                     }
@@ -7674,16 +7729,16 @@ namespace Infinium.Modules.Marketing.Orders
                         NewRow["Name"] = GetProductName(Convert.ToInt32(TDT.Rows[i]["ProductID"])) + " " +
                             GetItemName(DecorID);
 
-                        NewRow["Count"] = Decimal.Round(Convert.ToDecimal(TDT.Rows[i]["Count"]) / 1000, 3, MidpointRounding.AwayFromZero);
+                        NewRow["Count"] = decimal.Round(Convert.ToDecimal(TDT.Rows[i]["Count"]) / 1000, 3, MidpointRounding.AwayFromZero);
                         NewRow["Measure"] = "м.п.";
                         NewRow["OriginalPrice"] = Convert.ToDecimal(TDT.Rows[i]["OriginalPrice"]);
-                        NewRow["PriceWithTransport"] = Decimal.Round(Convert.ToDecimal(TDT.Rows[i]["CostWithTransport"]) / (Convert.ToDecimal(TDT.Rows[i]["Count"]) / 1000), 2, MidpointRounding.AwayFromZero);
-                        NewRow["CostWithTransport"] = Decimal.Round(Convert.ToDecimal(TDT.Rows[i]["CostWithTransport"]), 2, MidpointRounding.AwayFromZero);
+                        NewRow["PriceWithTransport"] = decimal.Round(Convert.ToDecimal(TDT.Rows[i]["CostWithTransport"]) / (Convert.ToDecimal(TDT.Rows[i]["Count"]) / 1000), 2, MidpointRounding.AwayFromZero);
+                        NewRow["CostWithTransport"] = decimal.Round(Convert.ToDecimal(TDT.Rows[i]["CostWithTransport"]), 2, MidpointRounding.AwayFromZero);
                         NewRow["DiscountVolume"] = Convert.ToDecimal(TDT.Rows[i]["DiscountVolume"]);
                         NewRow["TotalDiscount"] = Convert.ToDecimal(TDT.Rows[i]["TotalDiscount"]);
-                        NewRow["Price"] = Decimal.Round(Convert.ToDecimal(TDT.Rows[i]["Cost"]) / (Convert.ToDecimal(TDT.Rows[i]["Count"]) / 1000), 2, MidpointRounding.AwayFromZero);
-                        NewRow["Cost"] = Decimal.Round(Convert.ToDecimal(TDT.Rows[i]["Cost"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["Weight"] = Decimal.Round(Convert.ToDecimal(TDT.Rows[i]["Weight"]), 3, MidpointRounding.AwayFromZero);
+                        NewRow["Price"] = decimal.Round(Convert.ToDecimal(TDT.Rows[i]["Cost"]) / (Convert.ToDecimal(TDT.Rows[i]["Count"]) / 1000), 2, MidpointRounding.AwayFromZero);
+                        NewRow["Cost"] = decimal.Round(Convert.ToDecimal(TDT.Rows[i]["Cost"]), 2, MidpointRounding.AwayFromZero);
+                        NewRow["Weight"] = decimal.Round(Convert.ToDecimal(TDT.Rows[i]["Weight"]), 3, MidpointRounding.AwayFromZero);
 
                         TPSReportDataTable.Rows.Add(NewRow);
                     }
@@ -7717,16 +7772,16 @@ namespace Infinium.Modules.Marketing.Orders
                             NewRow["Name"] = GetProductName(Convert.ToInt32(PDT.Rows[i]["ProductID"])) + " " +
                                              GetItemName(DecorID);
 
-                        NewRow["Count"] = Decimal.Round(Convert.ToDecimal(PDT.Rows[i]["Count"]), 3, MidpointRounding.AwayFromZero);
+                        NewRow["Count"] = decimal.Round(Convert.ToDecimal(PDT.Rows[i]["Count"]), 3, MidpointRounding.AwayFromZero);
                         NewRow["Measure"] = "м.кв.";
                         NewRow["OriginalPrice"] = Convert.ToDecimal(PDT.Rows[i]["OriginalPrice"]);
-                        NewRow["PriceWithTransport"] = Decimal.Round(Convert.ToDecimal(PDT.Rows[i]["CostWithTransport"]) / Convert.ToDecimal(PDT.Rows[i]["Count"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["CostWithTransport"] = Decimal.Round(Convert.ToDecimal(PDT.Rows[i]["CostWithTransport"]), 2, MidpointRounding.AwayFromZero);
+                        NewRow["PriceWithTransport"] = decimal.Round(Convert.ToDecimal(PDT.Rows[i]["CostWithTransport"]) / Convert.ToDecimal(PDT.Rows[i]["Count"]), 2, MidpointRounding.AwayFromZero);
+                        NewRow["CostWithTransport"] = decimal.Round(Convert.ToDecimal(PDT.Rows[i]["CostWithTransport"]), 2, MidpointRounding.AwayFromZero);
                         NewRow["DiscountVolume"] = Convert.ToDecimal(PDT.Rows[i]["DiscountVolume"]);
                         NewRow["TotalDiscount"] = Convert.ToDecimal(PDT.Rows[i]["TotalDiscount"]);
-                        NewRow["Price"] = Decimal.Round(Convert.ToDecimal(PDT.Rows[i]["Cost"]) / Convert.ToDecimal(PDT.Rows[i]["Count"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["Cost"] = Decimal.Round(Convert.ToDecimal(PDT.Rows[i]["Cost"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["Weight"] = Decimal.Round(Convert.ToDecimal(PDT.Rows[i]["Weight"]), 3, MidpointRounding.AwayFromZero);
+                        NewRow["Price"] = decimal.Round(Convert.ToDecimal(PDT.Rows[i]["Cost"]) / Convert.ToDecimal(PDT.Rows[i]["Count"]), 2, MidpointRounding.AwayFromZero);
+                        NewRow["Cost"] = decimal.Round(Convert.ToDecimal(PDT.Rows[i]["Cost"]), 2, MidpointRounding.AwayFromZero);
+                        NewRow["Weight"] = decimal.Round(Convert.ToDecimal(PDT.Rows[i]["Weight"]), 3, MidpointRounding.AwayFromZero);
 
                         ProfilReportDataTable.Rows.Add(NewRow);
                     }
@@ -7751,16 +7806,16 @@ namespace Infinium.Modules.Marketing.Orders
                             NewRow["Name"] = GetProductName(Convert.ToInt32(TDT.Rows[i]["ProductID"])) + " " +
                                              GetItemName(DecorID);
 
-                        NewRow["Count"] = Decimal.Round(Convert.ToDecimal(TDT.Rows[i]["Count"]), 3, MidpointRounding.AwayFromZero);
+                        NewRow["Count"] = decimal.Round(Convert.ToDecimal(TDT.Rows[i]["Count"]), 3, MidpointRounding.AwayFromZero);
                         NewRow["Measure"] = "м.кв.";
                         NewRow["OriginalPrice"] = Convert.ToDecimal(TDT.Rows[i]["OriginalPrice"]);
-                        NewRow["PriceWithTransport"] = Decimal.Round(Convert.ToDecimal(TDT.Rows[i]["CostWithTransport"]) / Convert.ToDecimal(TDT.Rows[i]["Count"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["CostWithTransport"] = Decimal.Round(Convert.ToDecimal(TDT.Rows[i]["CostWithTransport"]), 2, MidpointRounding.AwayFromZero);
+                        NewRow["PriceWithTransport"] = decimal.Round(Convert.ToDecimal(TDT.Rows[i]["CostWithTransport"]) / Convert.ToDecimal(TDT.Rows[i]["Count"]), 2, MidpointRounding.AwayFromZero);
+                        NewRow["CostWithTransport"] = decimal.Round(Convert.ToDecimal(TDT.Rows[i]["CostWithTransport"]), 2, MidpointRounding.AwayFromZero);
                         NewRow["DiscountVolume"] = Convert.ToDecimal(TDT.Rows[i]["DiscountVolume"]);
                         NewRow["TotalDiscount"] = Convert.ToDecimal(TDT.Rows[i]["TotalDiscount"]);
-                        NewRow["Price"] = Decimal.Round(Convert.ToDecimal(TDT.Rows[i]["Cost"]) / Convert.ToDecimal(TDT.Rows[i]["Count"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["Cost"] = Decimal.Round(Convert.ToDecimal(TDT.Rows[i]["Cost"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["Weight"] = Decimal.Round(Convert.ToDecimal(TDT.Rows[i]["Weight"]), 3, MidpointRounding.AwayFromZero);
+                        NewRow["Price"] = decimal.Round(Convert.ToDecimal(TDT.Rows[i]["Cost"]) / Convert.ToDecimal(TDT.Rows[i]["Count"]), 2, MidpointRounding.AwayFromZero);
+                        NewRow["Cost"] = decimal.Round(Convert.ToDecimal(TDT.Rows[i]["Cost"]), 2, MidpointRounding.AwayFromZero);
+                        NewRow["Weight"] = decimal.Round(Convert.ToDecimal(TDT.Rows[i]["Weight"]), 3, MidpointRounding.AwayFromZero);
 
                         TPSReportDataTable.Rows.Add(NewRow);
                     }
@@ -8131,11 +8186,11 @@ namespace Infinium.Modules.Marketing.Orders
                         NewRow["TotalDiscount"] = Convert.ToDecimal(PDT.Rows[g]["TotalDiscount"]);
                         NewRow["Count"] = PDT.Rows[g]["Count"];
                         NewRow["Measure"] = "шт.";
-                        NewRow["Price"] = Decimal.Round(Convert.ToDecimal(PDT.Rows[g]["Price"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["Cost"] = Decimal.Round(Convert.ToDecimal(PDT.Rows[g]["Cost"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["PriceWithTransport"] = Decimal.Round(Convert.ToDecimal(PDT.Rows[g]["CostWithTransport"]) / Convert.ToDecimal(PDT.Rows[g]["Count"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["CostWithTransport"] = Decimal.Round(Convert.ToDecimal(PDT.Rows[g]["CostWithTransport"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["Weight"] = Decimal.Round(Convert.ToDecimal(PDT.Rows[g]["Weight"]), 3, MidpointRounding.AwayFromZero);
+                        NewRow["Price"] = decimal.Round(Convert.ToDecimal(PDT.Rows[g]["Price"]), 2, MidpointRounding.AwayFromZero);
+                        NewRow["Cost"] = decimal.Round(Convert.ToDecimal(PDT.Rows[g]["Cost"]), 2, MidpointRounding.AwayFromZero);
+                        NewRow["PriceWithTransport"] = decimal.Round(Convert.ToDecimal(PDT.Rows[g]["CostWithTransport"]) / Convert.ToDecimal(PDT.Rows[g]["Count"]), 2, MidpointRounding.AwayFromZero);
+                        NewRow["CostWithTransport"] = decimal.Round(Convert.ToDecimal(PDT.Rows[g]["CostWithTransport"]), 2, MidpointRounding.AwayFromZero);
+                        NewRow["Weight"] = decimal.Round(Convert.ToDecimal(PDT.Rows[g]["Weight"]), 3, MidpointRounding.AwayFromZero);
 
                         ProfilReportDataTable.Rows.Add(NewRow);
                     }
@@ -8162,11 +8217,11 @@ namespace Infinium.Modules.Marketing.Orders
                         NewRow["TotalDiscount"] = Convert.ToDecimal(PDT.Rows[g]["TotalDiscount"]);
                         NewRow["Count"] = PDT.Rows[g]["Count"];
                         NewRow["Measure"] = "шт.";
-                        NewRow["Price"] = Decimal.Round(Convert.ToDecimal(PDT.Rows[g]["Price"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["Cost"] = Decimal.Round(Convert.ToDecimal(PDT.Rows[g]["Cost"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["PriceWithTransport"] = Decimal.Round(Convert.ToDecimal(PDT.Rows[g]["CostWithTransport"]) / Convert.ToDecimal(PDT.Rows[g]["Count"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["CostWithTransport"] = Decimal.Round(Convert.ToDecimal(PDT.Rows[g]["CostWithTransport"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["Weight"] = Decimal.Round(Convert.ToDecimal(PDT.Rows[g]["Weight"]), 3, MidpointRounding.AwayFromZero);
+                        NewRow["Price"] = decimal.Round(Convert.ToDecimal(PDT.Rows[g]["Price"]), 2, MidpointRounding.AwayFromZero);
+                        NewRow["Cost"] = decimal.Round(Convert.ToDecimal(PDT.Rows[g]["Cost"]), 2, MidpointRounding.AwayFromZero);
+                        NewRow["PriceWithTransport"] = decimal.Round(Convert.ToDecimal(PDT.Rows[g]["CostWithTransport"]) / Convert.ToDecimal(PDT.Rows[g]["Count"]), 2, MidpointRounding.AwayFromZero);
+                        NewRow["CostWithTransport"] = decimal.Round(Convert.ToDecimal(PDT.Rows[g]["CostWithTransport"]), 2, MidpointRounding.AwayFromZero);
+                        NewRow["Weight"] = decimal.Round(Convert.ToDecimal(PDT.Rows[g]["Weight"]), 3, MidpointRounding.AwayFromZero);
 
                         ProfilReportDataTable.Rows.Add(NewRow);
                     }
@@ -8191,11 +8246,11 @@ namespace Infinium.Modules.Marketing.Orders
                         NewRow["TotalDiscount"] = Convert.ToDecimal(PDT.Rows[g]["TotalDiscount"]);
                         NewRow["Count"] = PDT.Rows[g]["Count"];
                         NewRow["Measure"] = "шт.";
-                        NewRow["Price"] = Decimal.Round(Convert.ToDecimal(PDT.Rows[g]["Price"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["Cost"] = Decimal.Round(Convert.ToDecimal(PDT.Rows[g]["Cost"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["PriceWithTransport"] = Decimal.Round(Convert.ToDecimal(PDT.Rows[g]["CostWithTransport"]) / Convert.ToDecimal(PDT.Rows[g]["Count"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["CostWithTransport"] = Decimal.Round(Convert.ToDecimal(PDT.Rows[g]["CostWithTransport"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["Weight"] = Decimal.Round(Convert.ToDecimal(PDT.Rows[g]["Weight"]), 3, MidpointRounding.AwayFromZero);
+                        NewRow["Price"] = decimal.Round(Convert.ToDecimal(PDT.Rows[g]["Price"]), 2, MidpointRounding.AwayFromZero);
+                        NewRow["Cost"] = decimal.Round(Convert.ToDecimal(PDT.Rows[g]["Cost"]), 2, MidpointRounding.AwayFromZero);
+                        NewRow["PriceWithTransport"] = decimal.Round(Convert.ToDecimal(PDT.Rows[g]["CostWithTransport"]) / Convert.ToDecimal(PDT.Rows[g]["Count"]), 2, MidpointRounding.AwayFromZero);
+                        NewRow["CostWithTransport"] = decimal.Round(Convert.ToDecimal(PDT.Rows[g]["CostWithTransport"]), 2, MidpointRounding.AwayFromZero);
+                        NewRow["Weight"] = decimal.Round(Convert.ToDecimal(PDT.Rows[g]["Weight"]), 3, MidpointRounding.AwayFromZero);
 
                         ProfilReportDataTable.Rows.Add(NewRow);
                     }
@@ -8227,11 +8282,11 @@ namespace Infinium.Modules.Marketing.Orders
                         NewRow["TotalDiscount"] = Convert.ToDecimal(TDT.Rows[g]["TotalDiscount"]);
                         NewRow["Count"] = TDT.Rows[g]["Count"];
                         NewRow["Measure"] = "шт.";
-                        NewRow["Price"] = Decimal.Round(Convert.ToDecimal(TDT.Rows[g]["Price"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["Cost"] = Decimal.Round(Convert.ToDecimal(TDT.Rows[g]["Cost"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["PriceWithTransport"] = Decimal.Round(Convert.ToDecimal(TDT.Rows[g]["CostWithTransport"]) / Convert.ToDecimal(TDT.Rows[g]["Count"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["CostWithTransport"] = Decimal.Round(Convert.ToDecimal(TDT.Rows[g]["CostWithTransport"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["Weight"] = Decimal.Round(Convert.ToDecimal(TDT.Rows[g]["Weight"]), 3, MidpointRounding.AwayFromZero);
+                        NewRow["Price"] = decimal.Round(Convert.ToDecimal(TDT.Rows[g]["Price"]), 2, MidpointRounding.AwayFromZero);
+                        NewRow["Cost"] = decimal.Round(Convert.ToDecimal(TDT.Rows[g]["Cost"]), 2, MidpointRounding.AwayFromZero);
+                        NewRow["PriceWithTransport"] = decimal.Round(Convert.ToDecimal(TDT.Rows[g]["CostWithTransport"]) / Convert.ToDecimal(TDT.Rows[g]["Count"]), 2, MidpointRounding.AwayFromZero);
+                        NewRow["CostWithTransport"] = decimal.Round(Convert.ToDecimal(TDT.Rows[g]["CostWithTransport"]), 2, MidpointRounding.AwayFromZero);
+                        NewRow["Weight"] = decimal.Round(Convert.ToDecimal(TDT.Rows[g]["Weight"]), 3, MidpointRounding.AwayFromZero);
 
                         TPSReportDataTable.Rows.Add(NewRow);
                     }
@@ -8257,11 +8312,11 @@ namespace Infinium.Modules.Marketing.Orders
                         NewRow["TotalDiscount"] = Convert.ToDecimal(TDT.Rows[g]["TotalDiscount"]);
                         NewRow["Count"] = TDT.Rows[g]["Count"];
                         NewRow["Measure"] = "шт.";
-                        NewRow["Price"] = Decimal.Round(Convert.ToDecimal(TDT.Rows[g]["Price"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["Cost"] = Decimal.Round(Convert.ToDecimal(TDT.Rows[g]["Cost"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["PriceWithTransport"] = Decimal.Round(Convert.ToDecimal(TDT.Rows[g]["CostWithTransport"]) / Convert.ToDecimal(TDT.Rows[g]["Count"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["CostWithTransport"] = Decimal.Round(Convert.ToDecimal(TDT.Rows[g]["CostWithTransport"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["Weight"] = Decimal.Round(Convert.ToDecimal(TDT.Rows[g]["Weight"]), 3, MidpointRounding.AwayFromZero);
+                        NewRow["Price"] = decimal.Round(Convert.ToDecimal(TDT.Rows[g]["Price"]), 2, MidpointRounding.AwayFromZero);
+                        NewRow["Cost"] = decimal.Round(Convert.ToDecimal(TDT.Rows[g]["Cost"]), 2, MidpointRounding.AwayFromZero);
+                        NewRow["PriceWithTransport"] = decimal.Round(Convert.ToDecimal(TDT.Rows[g]["CostWithTransport"]) / Convert.ToDecimal(TDT.Rows[g]["Count"]), 2, MidpointRounding.AwayFromZero);
+                        NewRow["CostWithTransport"] = decimal.Round(Convert.ToDecimal(TDT.Rows[g]["CostWithTransport"]), 2, MidpointRounding.AwayFromZero);
+                        NewRow["Weight"] = decimal.Round(Convert.ToDecimal(TDT.Rows[g]["Weight"]), 3, MidpointRounding.AwayFromZero);
 
                         TPSReportDataTable.Rows.Add(NewRow);
                     }
@@ -8287,11 +8342,11 @@ namespace Infinium.Modules.Marketing.Orders
                         NewRow["TotalDiscount"] = Convert.ToDecimal(TDT.Rows[g]["TotalDiscount"]);
                         NewRow["Count"] = TDT.Rows[g]["Count"];
                         NewRow["Measure"] = "шт.";
-                        NewRow["Price"] = Decimal.Round(Convert.ToDecimal(TDT.Rows[g]["Price"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["Cost"] = Decimal.Round(Convert.ToDecimal(TDT.Rows[g]["Cost"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["PriceWithTransport"] = Decimal.Round(Convert.ToDecimal(TDT.Rows[g]["CostWithTransport"]) / Convert.ToDecimal(TDT.Rows[g]["Count"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["CostWithTransport"] = Decimal.Round(Convert.ToDecimal(TDT.Rows[g]["CostWithTransport"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["Weight"] = Decimal.Round(Convert.ToDecimal(TDT.Rows[g]["Weight"]), 3, MidpointRounding.AwayFromZero);
+                        NewRow["Price"] = decimal.Round(Convert.ToDecimal(TDT.Rows[g]["Price"]), 2, MidpointRounding.AwayFromZero);
+                        NewRow["Cost"] = decimal.Round(Convert.ToDecimal(TDT.Rows[g]["Cost"]), 2, MidpointRounding.AwayFromZero);
+                        NewRow["PriceWithTransport"] = decimal.Round(Convert.ToDecimal(TDT.Rows[g]["CostWithTransport"]) / Convert.ToDecimal(TDT.Rows[g]["Count"]), 2, MidpointRounding.AwayFromZero);
+                        NewRow["CostWithTransport"] = decimal.Round(Convert.ToDecimal(TDT.Rows[g]["CostWithTransport"]), 2, MidpointRounding.AwayFromZero);
+                        NewRow["Weight"] = decimal.Round(Convert.ToDecimal(TDT.Rows[g]["Weight"]), 3, MidpointRounding.AwayFromZero);
 
                         TPSReportDataTable.Rows.Add(NewRow);
                     }
@@ -8517,11 +8572,11 @@ namespace Infinium.Modules.Marketing.Orders
                     PriceWithTransport = PriceWithTransport / (ExtraPrice / 100 + 1);
                     ProfilReportTable.Rows[i]["NonStandardMargin"] = Convert.ToDecimal(ProfilReportTable.Rows[i]["NonStandardMargin"]);
                 }
-                ProfilReportTable.Rows[i]["OriginalPrice"] = Decimal.Round(OriginalPrice, DecCount, MidpointRounding.AwayFromZero);
-                ProfilReportTable.Rows[i]["PriceWithTransport"] = Decimal.Round(PriceWithTransport, DecCount, MidpointRounding.AwayFromZero);
-                ProfilReportTable.Rows[i]["CostWithTransport"] = Decimal.Round(CostWithTransport, DecCount, MidpointRounding.AwayFromZero);
-                ProfilReportTable.Rows[i]["Price"] = Decimal.Round(Price, DecCount, MidpointRounding.AwayFromZero);
-                ProfilReportTable.Rows[i]["Cost"] = Decimal.Round(Cost, DecCount, MidpointRounding.AwayFromZero);
+                ProfilReportTable.Rows[i]["OriginalPrice"] = decimal.Round(OriginalPrice, DecCount, MidpointRounding.AwayFromZero);
+                ProfilReportTable.Rows[i]["PriceWithTransport"] = decimal.Round(PriceWithTransport, DecCount, MidpointRounding.AwayFromZero);
+                ProfilReportTable.Rows[i]["CostWithTransport"] = decimal.Round(CostWithTransport, DecCount, MidpointRounding.AwayFromZero);
+                ProfilReportTable.Rows[i]["Price"] = decimal.Round(Price, DecCount, MidpointRounding.AwayFromZero);
+                ProfilReportTable.Rows[i]["Cost"] = decimal.Round(Cost, DecCount, MidpointRounding.AwayFromZero);
             }
 
             for (int i = 0; i < TPSReportTable.Rows.Count; i++)
@@ -8570,11 +8625,11 @@ namespace Infinium.Modules.Marketing.Orders
                     PriceWithTransport = PriceWithTransport / (ExtraPrice / 100 + 1);
                     TPSReportTable.Rows[i]["NonStandardMargin"] = ExtraPrice = Convert.ToDecimal(TPSReportTable.Rows[i]["NonStandardMargin"]);
                 }
-                TPSReportTable.Rows[i]["OriginalPrice"] = Decimal.Round(OriginalPrice, DecCount, MidpointRounding.AwayFromZero);
-                TPSReportTable.Rows[i]["PriceWithTransport"] = Decimal.Round(PriceWithTransport, DecCount, MidpointRounding.AwayFromZero);
-                TPSReportTable.Rows[i]["CostWithTransport"] = Decimal.Round(CostWithTransport, DecCount, MidpointRounding.AwayFromZero);
-                TPSReportTable.Rows[i]["Price"] = Decimal.Round(Price, DecCount, MidpointRounding.AwayFromZero);
-                TPSReportTable.Rows[i]["Cost"] = Decimal.Round(Cost, DecCount, MidpointRounding.AwayFromZero);
+                TPSReportTable.Rows[i]["OriginalPrice"] = decimal.Round(OriginalPrice, DecCount, MidpointRounding.AwayFromZero);
+                TPSReportTable.Rows[i]["PriceWithTransport"] = decimal.Round(PriceWithTransport, DecCount, MidpointRounding.AwayFromZero);
+                TPSReportTable.Rows[i]["CostWithTransport"] = decimal.Round(CostWithTransport, DecCount, MidpointRounding.AwayFromZero);
+                TPSReportTable.Rows[i]["Price"] = decimal.Round(Price, DecCount, MidpointRounding.AwayFromZero);
+                TPSReportTable.Rows[i]["Cost"] = decimal.Round(Cost, DecCount, MidpointRounding.AwayFromZero);
             }
         }
 
@@ -8728,11 +8783,11 @@ namespace Infinium.Modules.Marketing.Orders
                         NewRow["Name"] = "Решетка";
                         NewRow["Count"] = GridSquare;
                         NewRow["Measure"] = "м.кв.";
-                        NewRow["Price"] = Decimal.Round(GridCost / GridSquare, 2, MidpointRounding.AwayFromZero);
-                        NewRow["PriceWithTransport"] = Decimal.Round(GridCostWithTransport / GridSquare, 2, MidpointRounding.AwayFromZero);
+                        NewRow["Price"] = decimal.Round(GridCost / GridSquare, 2, MidpointRounding.AwayFromZero);
+                        NewRow["PriceWithTransport"] = decimal.Round(GridCostWithTransport / GridSquare, 2, MidpointRounding.AwayFromZero);
                         NewRow["Cost"] = GridCost;
                         NewRow["CostWithTransport"] = GridCostWithTransport;
-                        NewRow["Weight"] = Decimal.Round(GridWeight, 3, MidpointRounding.AwayFromZero);
+                        NewRow["Weight"] = decimal.Round(GridWeight, 3, MidpointRounding.AwayFromZero);
                         dt.Rows.Add(NewRow);
                     }
 
@@ -8757,7 +8812,7 @@ namespace Infinium.Modules.Marketing.Orders
                         NewRow["PriceWithTransport"] = LacomatPriceWithTransport;
                         NewRow["Cost"] = LacomatCost;
                         NewRow["CostWithTransport"] = LacomatCostWithTransport;
-                        NewRow["Weight"] = Decimal.Round(LacomatWeight, 3, MidpointRounding.AwayFromZero);
+                        NewRow["Weight"] = decimal.Round(LacomatWeight, 3, MidpointRounding.AwayFromZero);
                         dt.Rows.Add(NewRow);
                     }
 
@@ -8784,7 +8839,7 @@ namespace Infinium.Modules.Marketing.Orders
                         NewRow["PriceWithTransport"] = KrizetPriceWithTransport;
                         NewRow["Cost"] = KrizetCost;
                         NewRow["CostWithTransport"] = KrizetCostWithTransport;
-                        NewRow["Weight"] = Decimal.Round(KrizetWeight, 3, MidpointRounding.AwayFromZero);
+                        NewRow["Weight"] = decimal.Round(KrizetWeight, 3, MidpointRounding.AwayFromZero);
                         dt.Rows.Add(NewRow);
                     }
 
@@ -8811,7 +8866,7 @@ namespace Infinium.Modules.Marketing.Orders
                         NewRow["PriceWithTransport"] = FlutesPriceWithTransport;
                         NewRow["Cost"] = FlutesCost;
                         NewRow["CostWithTransport"] = FlutesCostWithTransport;
-                        NewRow["Weight"] = Decimal.Round(FlutesWeight, 3, MidpointRounding.AwayFromZero);
+                        NewRow["Weight"] = decimal.Round(FlutesWeight, 3, MidpointRounding.AwayFromZero);
                         dt.Rows.Add(NewRow);
                     }
 
@@ -8970,11 +9025,11 @@ namespace Infinium.Modules.Marketing.Orders
                         NewRow["Name"] = "Решетка";
                         NewRow["Count"] = GridSquare;
                         NewRow["Measure"] = "м.кв.";
-                        NewRow["Price"] = Decimal.Round(GridCost / GridSquare, 2, MidpointRounding.AwayFromZero);
-                        NewRow["PriceWithTransport"] = Decimal.Round(GridCostWithTransport / GridSquare, 2, MidpointRounding.AwayFromZero);
+                        NewRow["Price"] = decimal.Round(GridCost / GridSquare, 2, MidpointRounding.AwayFromZero);
+                        NewRow["PriceWithTransport"] = decimal.Round(GridCostWithTransport / GridSquare, 2, MidpointRounding.AwayFromZero);
                         NewRow["Cost"] = GridCost;
                         NewRow["CostWithTransport"] = GridCostWithTransport;
-                        NewRow["Weight"] = Decimal.Round(GridWeight, 3, MidpointRounding.AwayFromZero);
+                        NewRow["Weight"] = decimal.Round(GridWeight, 3, MidpointRounding.AwayFromZero);
                         dt.Rows.Add(NewRow);
                     }
 
@@ -8994,7 +9049,7 @@ namespace Infinium.Modules.Marketing.Orders
                         NewRow["PriceWithTransport"] = LacomatPriceWithTransport;
                         NewRow["Cost"] = LacomatCost;
                         NewRow["CostWithTransport"] = LacomatCostWithTransport;
-                        NewRow["Weight"] = Decimal.Round(LacomatWeight, 3, MidpointRounding.AwayFromZero);
+                        NewRow["Weight"] = decimal.Round(LacomatWeight, 3, MidpointRounding.AwayFromZero);
                         dt.Rows.Add(NewRow);
                     }
 
@@ -9014,7 +9069,7 @@ namespace Infinium.Modules.Marketing.Orders
                         NewRow["PriceWithTransport"] = KrizetPriceWithTransport;
                         NewRow["Cost"] = KrizetCost;
                         NewRow["CostWithTransport"] = KrizetCostWithTransport;
-                        NewRow["Weight"] = Decimal.Round(KrizetWeight, 3, MidpointRounding.AwayFromZero);
+                        NewRow["Weight"] = decimal.Round(KrizetWeight, 3, MidpointRounding.AwayFromZero);
                         dt.Rows.Add(NewRow);
                     }
 
@@ -9034,7 +9089,7 @@ namespace Infinium.Modules.Marketing.Orders
                         NewRow["PriceWithTransport"] = FlutesPriceWithTransport;
                         NewRow["Cost"] = FlutesCost;
                         NewRow["CostWithTransport"] = FlutesCostWithTransport;
-                        NewRow["Weight"] = Decimal.Round(FlutesWeight, 3, MidpointRounding.AwayFromZero);
+                        NewRow["Weight"] = decimal.Round(FlutesWeight, 3, MidpointRounding.AwayFromZero);
                         dt.Rows.Add(NewRow);
                     }
                 }
@@ -9084,8 +9139,8 @@ namespace Infinium.Modules.Marketing.Orders
             cProfil = Total / 100 * pProfil - ComplaintProfilCost;
             cTPS = Total / 100 * pTPS - ComplaintTPSCost;
 
-            TransportAndOtherProfil = Decimal.Round(cProfil, 1, MidpointRounding.AwayFromZero);
-            TransportAndOtherTPS = Decimal.Round(cTPS, 1, MidpointRounding.AwayFromZero);
+            TransportAndOtherProfil = decimal.Round(cProfil, 1, MidpointRounding.AwayFromZero);
+            TransportAndOtherTPS = decimal.Round(cTPS, 1, MidpointRounding.AwayFromZero);
             //return;
             //Profil
             for (int i = 0; i < ProfilReportTable.Rows.Count; i++)
@@ -9096,8 +9151,8 @@ namespace Infinium.Modules.Marketing.Orders
                 if (ItemCost == 0)
                     continue;
 
-                ProfilReportTable.Rows[i]["Cost"] = Decimal.Round(ItemCost + cProfil / 100 * pItem, 2, MidpointRounding.AwayFromZero);
-                ProfilReportTable.Rows[i]["Price"] = Decimal.Round(Convert.ToDecimal(ProfilReportTable.Rows[i]["Cost"]) /
+                ProfilReportTable.Rows[i]["Cost"] = decimal.Round(ItemCost + cProfil / 100 * pItem, 2, MidpointRounding.AwayFromZero);
+                ProfilReportTable.Rows[i]["Price"] = decimal.Round(Convert.ToDecimal(ProfilReportTable.Rows[i]["Cost"]) /
                                                      Convert.ToDecimal(ProfilReportTable.Rows[i]["Count"]), 2, MidpointRounding.AwayFromZero);
             }
 
@@ -9110,8 +9165,8 @@ namespace Infinium.Modules.Marketing.Orders
                 if (ItemCost == 0)
                     continue;
 
-                TPSReportTable.Rows[i]["Cost"] = Decimal.Round(ItemCost + cTPS / 100 * pItem, 2, MidpointRounding.AwayFromZero);
-                TPSReportTable.Rows[i]["Price"] = Decimal.Round(Convert.ToDecimal(TPSReportTable.Rows[i]["Cost"]) / Convert.ToDecimal(TPSReportTable.Rows[i]["Count"]), 2, MidpointRounding.AwayFromZero);
+                TPSReportTable.Rows[i]["Cost"] = decimal.Round(ItemCost + cTPS / 100 * pItem, 2, MidpointRounding.AwayFromZero);
+                TPSReportTable.Rows[i]["Price"] = decimal.Round(Convert.ToDecimal(TPSReportTable.Rows[i]["Cost"]) / Convert.ToDecimal(TPSReportTable.Rows[i]["Count"]), 2, MidpointRounding.AwayFromZero);
             }
         }
 
@@ -9328,11 +9383,11 @@ namespace Infinium.Modules.Marketing.Orders
             //AssignCost(ComplaintProfilCost, ComplaintTPSCost, TransportCost, AdditionalCost, WeightProfil, WeightTPS, TotalProfil, TotalTPS, ref TransportAndOtherProfil,
             //           ref TransportAndOtherTPS);
 
-            TotalProfil = Decimal.Round(TotalProfil, 3, MidpointRounding.AwayFromZero);
-            TotalTPS = Decimal.Round(TotalTPS, 3, MidpointRounding.AwayFromZero);
-            TransportCost = Decimal.Round(TransportCost, 3, MidpointRounding.AwayFromZero);
-            AdditionalCost = Decimal.Round(AdditionalCost, 3, MidpointRounding.AwayFromZero);
-            TotalCost = Decimal.Round(TotalCost, 3, MidpointRounding.AwayFromZero);
+            TotalProfil = decimal.Round(TotalProfil, 3, MidpointRounding.AwayFromZero);
+            TotalTPS = decimal.Round(TotalTPS, 3, MidpointRounding.AwayFromZero);
+            TransportCost = decimal.Round(TransportCost, 3, MidpointRounding.AwayFromZero);
+            AdditionalCost = decimal.Round(AdditionalCost, 3, MidpointRounding.AwayFromZero);
+            TotalCost = decimal.Round(TotalCost, 3, MidpointRounding.AwayFromZero);
 
             #region Create fonts and styles
 
@@ -10002,7 +10057,7 @@ namespace Infinium.Modules.Marketing.Orders
                 DA.Fill(PatinaDataTable);
             }
             PatinaRALDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM PatinaRAL WHERE Enabled=1",
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT PatinaRAL.*, Patina.Patina FROM PatinaRAL INNER JOIN Patina ON Patina.PatinaID=PatinaRAL.PatinaID WHERE PatinaRAL.Enabled=1",
                 ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(PatinaRALDataTable);
@@ -10011,7 +10066,7 @@ namespace Infinium.Modules.Marketing.Orders
             {
                 DataRow NewRow = PatinaDataTable.NewRow();
                 NewRow["PatinaID"] = item["PatinaRALID"];
-                NewRow["PatinaName"] = item["PatinaRAL"];
+                NewRow["PatinaName"] = item["PatinaRAL"]; NewRow["Patina"] = item["Patina"];
                 NewRow["DisplayName"] = item["DisplayName"];
                 PatinaDataTable.Rows.Add(NewRow);
             }
@@ -10398,9 +10453,9 @@ namespace Infinium.Modules.Marketing.Orders
                 NewRow["Height"] = Row["Height"];
                 NewRow["Width"] = Row["Width"];
                 NewRow["Count"] = Convert.ToInt32(Row["Count"]);
-                NewRow["FrontPrice"] = Decimal.Round(Convert.ToDecimal(Row["FrontPrice"]), 2, MidpointRounding.AwayFromZero);
-                NewRow["InsetPrice"] = Decimal.Round(Convert.ToDecimal(Row["InsetPrice"]), 2, MidpointRounding.AwayFromZero);
-                NewRow["Cost"] = Decimal.Round(Convert.ToDecimal(Row["Cost"]), 2, MidpointRounding.AwayFromZero);
+                NewRow["FrontPrice"] = decimal.Round(Convert.ToDecimal(Row["FrontPrice"]), 2, MidpointRounding.AwayFromZero);
+                NewRow["InsetPrice"] = decimal.Round(Convert.ToDecimal(Row["InsetPrice"]), 2, MidpointRounding.AwayFromZero);
+                NewRow["Cost"] = decimal.Round(Convert.ToDecimal(Row["Cost"]), 2, MidpointRounding.AwayFromZero);
                 NewRow["Rate"] = Row["PaymentRate"];
                 NewRow["Notes"] = Row["Notes"];
                 FrontsResultDataTable.Rows.Add(NewRow);
@@ -10441,8 +10496,8 @@ namespace Infinium.Modules.Marketing.Orders
                     NewRow2["Patina"] = GetPatinaName(Convert.ToInt32(Row["PatinaID"]));
                     int Count = Convert.ToInt32(Row["Count"]);
                     NewRow2["Count"] = Convert.ToInt32(Row["Count"]);
-                    NewRow2["Price"] = Decimal.Round(Convert.ToDecimal(Row["Price"]), 2, MidpointRounding.AwayFromZero);
-                    NewRow2["Cost"] = Decimal.Round(Convert.ToDecimal(Row["Cost"]), 2, MidpointRounding.AwayFromZero);
+                    NewRow2["Price"] = decimal.Round(Convert.ToDecimal(Row["Price"]), 2, MidpointRounding.AwayFromZero);
+                    NewRow2["Cost"] = decimal.Round(Convert.ToDecimal(Row["Cost"]), 2, MidpointRounding.AwayFromZero);
                     NewRow2["Rate"] = Row["PaymentRate"];
                     NewRow2["Notes"] = Row["Notes"];
                     NewRow2["Weight"] = Row["Weight"];
@@ -10990,7 +11045,7 @@ namespace Infinium.Modules.Marketing.Orders
                         //RowIndex++;
                     }
                     Cell1 = sheet1.CreateRow(RowIndex).CreateCell(0);
-                    Cell1.SetCellValue("Итого, EUR: " + Decimal.Round(OrderCost, 2, MidpointRounding.AwayFromZero));
+                    Cell1.SetCellValue("Итого, EUR: " + decimal.Round(OrderCost, 2, MidpointRounding.AwayFromZero));
                     Cell1.CellStyle = HeaderWithoutBorderCS;
                 }
 
@@ -11323,7 +11378,7 @@ namespace Infinium.Modules.Marketing.Orders
                             //else
                             //    Weight = Convert.ToDecimal(FrontsResultDataTable.Rows[x]["Weight"]);
 
-                            Weight = Decimal.Round(Weight, 3, MidpointRounding.AwayFromZero);
+                            Weight = decimal.Round(Weight, 3, MidpointRounding.AwayFromZero);
                             Cell1.SetCellValue(Convert.ToDouble(Weight));
                         }
                         Cell1.CellStyle = SimpleCS;
@@ -11471,7 +11526,7 @@ namespace Infinium.Modules.Marketing.Orders
                             Cell1.SetCellValue(Convert.ToInt32(DecorResultDataTable[c].Rows[x]["Count"]));
                             Cell1.CellStyle = SimpleCS;
                             Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
-                            decimal Weight = Decimal.Round(Convert.ToDecimal(DecorResultDataTable[c].Rows[x]["Weight"]), 3, MidpointRounding.AwayFromZero);
+                            decimal Weight = decimal.Round(Convert.ToDecimal(DecorResultDataTable[c].Rows[x]["Weight"]), 3, MidpointRounding.AwayFromZero);
                             Cell1.SetCellValue(Convert.ToDouble(Weight));
                             Cell1.CellStyle = SimpleCS;
                             Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
@@ -11494,7 +11549,7 @@ namespace Infinium.Modules.Marketing.Orders
                         //RowIndex++;
                     }
                     Cell1 = sheet1.CreateRow(RowIndex).CreateCell(0);
-                    Cell1.SetCellValue("Итого, EUR: " + Decimal.Round(OrderCost, 2, MidpointRounding.AwayFromZero));
+                    Cell1.SetCellValue("Итого, EUR: " + decimal.Round(OrderCost, 2, MidpointRounding.AwayFromZero));
                     Cell1.CellStyle = HeaderWithoutBorderCS;
                 }
 
@@ -11582,7 +11637,8 @@ namespace Infinium.Modules.Marketing.Orders
             //string AccountPassword = "1290qpalzm";
             //string SenderEmail = "zovprofilreport@mail.ru";
 
-            string AccountPassword = "3699PassWord14772588";
+            //string AccountPassword = "7026Gradus0462";
+            string AccountPassword = "onluenzbclnedqtt";
             string SenderEmail = "infiniumdevelopers@gmail.com";
 
             string to = GetClientEmail(ClientID);
@@ -11610,7 +11666,7 @@ namespace Infinium.Modules.Marketing.Orders
                     UseDefaultCredentials = false,
                     Credentials = new NetworkCredential(SenderEmail, AccountPassword),
                     DeliveryMethod = SmtpDeliveryMethod.Network,
-                    Port =  587
+                    Port = 587
                 };
                 string S = new UTF8Encoding().GetString(Encoding.Convert(Encoding.GetEncoding("UTF-16"), Encoding.UTF8,
                     Encoding.GetEncoding("UTF-16").GetBytes(FileName)));
@@ -11859,8 +11915,8 @@ namespace Infinium.Modules.Marketing.Orders
 
                     DataRow NewRow = FrontsResultDataTable.NewRow();
                     NewRow["Front"] = Front;
-                    NewRow["Square"] = Decimal.Round(FrontSquare, 3, MidpointRounding.AwayFromZero);
-                    NewRow["Cost"] = Decimal.Round(FrontCost, 3, MidpointRounding.AwayFromZero);
+                    NewRow["Square"] = decimal.Round(FrontSquare, 3, MidpointRounding.AwayFromZero);
+                    NewRow["Cost"] = decimal.Round(FrontCost, 3, MidpointRounding.AwayFromZero);
                     NewRow["Count"] = FrontCount;
                     FrontsResultDataTable.Rows.Add(NewRow);
 
@@ -11935,7 +11991,7 @@ namespace Infinium.Modules.Marketing.Orders
                 if (Row["Square"] != DBNull.Value)
                     S += Convert.ToDecimal(Row["Square"]);
             }
-            S = Decimal.Round(S, 2, MidpointRounding.AwayFromZero);
+            S = decimal.Round(S, 2, MidpointRounding.AwayFromZero);
             return S;
         }
 
@@ -11948,7 +12004,7 @@ namespace Infinium.Modules.Marketing.Orders
                 if (Row["Cost"] != DBNull.Value)
                     S += Convert.ToDecimal(Row["Cost"]);
             }
-            S = Decimal.Round(S, 2, MidpointRounding.AwayFromZero);
+            S = decimal.Round(S, 2, MidpointRounding.AwayFromZero);
             return S;
         }
 

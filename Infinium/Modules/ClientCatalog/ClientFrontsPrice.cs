@@ -48,7 +48,7 @@ namespace Infinium
                 DA.Fill(PatinaDataTable);
             }
             PatinaRALDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM PatinaRAL WHERE Enabled=1",
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT PatinaRAL.*, Patina.Patina FROM PatinaRAL INNER JOIN Patina ON Patina.PatinaID=PatinaRAL.PatinaID WHERE PatinaRAL.Enabled=1",
                 ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(PatinaRALDataTable);
@@ -57,7 +57,7 @@ namespace Infinium
             {
                 DataRow NewRow = PatinaDataTable.NewRow();
                 NewRow["PatinaID"] = item["PatinaRALID"];
-                NewRow["PatinaName"] = item["PatinaRAL"];
+                NewRow["PatinaName"] = item["PatinaRAL"]; NewRow["Patina"] = item["Patina"];
                 NewRow["DisplayName"] = item["DisplayName"];
                 PatinaDataTable.Rows.Add(NewRow);
             }
@@ -474,7 +474,7 @@ namespace Infinium
                 }
                 InsetType = 4;
                 //Фл
-                irows = InsetTypesDataTable.Select("InsetTypeID IN (2069,2070,2071,2073,2075,2077,2233,3644,29043,29531,29275,29279,2079,2080,2081,2082,2085,2086,2087,2088,2212,2213,29210,29211,27831,27832,29210,29211)");
+                irows = InsetTypesDataTable.Select("InsetTypeID IN (2069,2070,2071,2073,2075,2077,2233,3644,29043,29531,41213,29275,29279,2079,2080,2081,2082,2085,2086,2087,2088,2212,2213,29210,29211,27831,27832,29210,29211)");
                 filter = string.Empty;
                 foreach (DataRow item in irows)
                     filter += item["InsetTypeID"].ToString() + ",";

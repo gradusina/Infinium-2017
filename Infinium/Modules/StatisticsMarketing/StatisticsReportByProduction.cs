@@ -89,7 +89,7 @@ namespace Infinium.Modules.StatisticsMarketing
                 DA.Fill(PatinaDataTable);
             }
             PatinaRALDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM PatinaRAL WHERE Enabled=1",
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT PatinaRAL.*, Patina.Patina FROM PatinaRAL INNER JOIN Patina ON Patina.PatinaID=PatinaRAL.PatinaID WHERE PatinaRAL.Enabled=1",
                 ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(PatinaRALDataTable);
@@ -98,7 +98,7 @@ namespace Infinium.Modules.StatisticsMarketing
             {
                 DataRow NewRow = PatinaDataTable.NewRow();
                 NewRow["PatinaID"] = item["PatinaRALID"];
-                NewRow["PatinaName"] = item["PatinaRAL"];
+                NewRow["PatinaName"] = item["PatinaRAL"]; NewRow["Patina"] = item["Patina"];
                 NewRow["DisplayName"] = item["DisplayName"];
                 PatinaDataTable.Rows.Add(NewRow);
             }
@@ -463,7 +463,7 @@ namespace Infinium.Modules.StatisticsMarketing
             }
         }
 
-        private void FillDecor(DataTable DecorOrdersDataTable)
+        private void FillDecor(DataTable DecorOrdersDataTable, bool ZOV)
         {
             for (int i = 0; i < DecorCatalog.DecorProductsCount; i++)
             {
@@ -474,8 +474,10 @@ namespace Infinium.Modules.StatisticsMarketing
             if (DecorOrdersDataTable.Rows.Count < 1)
                 return;
 
-            FillMDecor(DecorOrdersDataTable);
-            FillZDecor(DecorOrdersDataTable);
+            if (!ZOV)
+                FillMDecor(DecorOrdersDataTable);
+            else
+                FillZDecor(DecorOrdersDataTable);
 
             for (int i = 0; i < DecorCatalog.DecorProductsCount; i++)
             {
@@ -848,7 +850,7 @@ namespace Infinium.Modules.StatisticsMarketing
         }
 
         public void CreateReport(DateTime DateFrom, DateTime DateTo, int FactoryID,
-            DataTable FrontsOrdersDataTable, DataTable DecorOrdersDataTable, string FileName)
+            DataTable FrontsOrdersDataTable, DataTable DecorOrdersDataTable, string FileName, bool ZOV)
         {
             if (FrontsOrdersDataTable.Rows.Count < 1 && DecorOrdersDataTable.Rows.Count < 1)
                 return;
@@ -1106,10 +1108,10 @@ namespace Infinium.Modules.StatisticsMarketing
             //ConfirmCell.CellStyle = TempStyle;
 
             if (FrontsOrdersDataTable.Rows.Count > 0)
-                FrontsReport(hssfworkbook, HeaderStyle, PackNumberFont, SimpleFont, SimpleCellStyle, cellStyle, FrontsOrdersDataTable);
+                FrontsReport(hssfworkbook, HeaderStyle, PackNumberFont, SimpleFont, SimpleCellStyle, cellStyle, FrontsOrdersDataTable, ZOV);
 
             if (DecorOrdersDataTable.Rows.Count > 0)
-                DecorReport(hssfworkbook, HeaderStyle, SimpleFont, SimpleCellStyle, cellStyle, DecorOrdersDataTable);
+                DecorReport(hssfworkbook, HeaderStyle, SimpleFont, SimpleCellStyle, cellStyle, DecorOrdersDataTable, ZOV);
 
             string ReportFilePath = string.Empty;
 
@@ -1153,7 +1155,7 @@ namespace Infinium.Modules.StatisticsMarketing
 
         private int FrontsReport(HSSFWorkbook hssfworkbook, HSSFCellStyle HeaderStyle, HSSFFont PackNumberFont,
             HSSFFont SimpleFont, HSSFCellStyle SimpleCellStyle, HSSFCellStyle cellStyle,
-            DataTable FrontsOrdersDataTable)
+            DataTable FrontsOrdersDataTable, bool ZOV)
         {
             int RowIndex = 0;
 
@@ -1299,7 +1301,7 @@ namespace Infinium.Modules.StatisticsMarketing
 
         private int DecorReport(HSSFWorkbook hssfworkbook, HSSFCellStyle HeaderStyle,
             HSSFFont SimpleFont, HSSFCellStyle SimpleCellStyle, HSSFCellStyle cellStyle,
-            DataTable DecorOrdersDataTable)
+            DataTable DecorOrdersDataTable, bool ZOV)
         {
             int RowIndex = 0;
 
@@ -1324,7 +1326,7 @@ namespace Infinium.Modules.StatisticsMarketing
             }
             //декор
 
-            FillDecor(DecorOrdersDataTable);
+            FillDecor(DecorOrdersDataTable, ZOV);
 
             for (int c = 0; c < DecorCatalog.DecorProductsCount; c++)
             {

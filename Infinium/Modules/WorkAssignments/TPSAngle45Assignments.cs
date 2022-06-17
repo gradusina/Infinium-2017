@@ -490,7 +490,7 @@ namespace Infinium.Modules.WorkAssignments
                 DA.Fill(PatinaDataTable);
             }
             PatinaRALDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM PatinaRAL WHERE Enabled=1",
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT PatinaRAL.*, Patina.Patina FROM PatinaRAL INNER JOIN Patina ON Patina.PatinaID=PatinaRAL.PatinaID WHERE PatinaRAL.Enabled=1",
                 ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(PatinaRALDataTable);
@@ -499,7 +499,7 @@ namespace Infinium.Modules.WorkAssignments
             {
                 DataRow NewRow = PatinaDataTable.NewRow();
                 NewRow["PatinaID"] = item["PatinaRALID"];
-                NewRow["PatinaName"] = item["PatinaRAL"];
+                NewRow["PatinaName"] = item["PatinaRAL"]; NewRow["Patina"] = item["Patina"];
                 NewRow["DisplayName"] = item["DisplayName"];
                 PatinaDataTable.Rows.Add(NewRow);
             }
@@ -1662,7 +1662,7 @@ namespace Infinium.Modules.WorkAssignments
                 DT2 = DV.ToTable(true, new string[] { "ColorID", "PatinaID", "InsetTypeID", "InsetColorID", "Height", "Width", "Notes" });
             }
 
-            //using (DataView DV = new DataView(SourceDT, "InsetTypeID IN (2069,2070,2071,2073,2075,2077,2233,3644,29043,29531) AND ColorID=" + ColorID, "ColorID, InsetColorID, Height, Width", DataViewRowState.CurrentRows))
+            //using (DataView DV = new DataView(SourceDT, "InsetTypeID IN (2069,2070,2071,2073,2075,2077,2233,3644,29043,29531,41213) AND ColorID=" + ColorID, "ColorID, InsetColorID, Height, Width", DataViewRowState.CurrentRows))
             //{
             //    DT2 = DV.ToTable(true, new string[] { "ColorID", "PatinaID", "InsetTypeID", "InsetColorID", "Height", "Width", "Notes" });
             //}
@@ -1810,7 +1810,7 @@ namespace Infinium.Modules.WorkAssignments
                 DT2 = DV.ToTable(true, new string[] { "ColorID", "PatinaID", "InsetTypeID", "InsetColorID", "Height", "Width", "Notes" });
             }
 
-            //using (DataView DV = new DataView(SourceDT, "InsetTypeID IN (2069,2070,2071,2073,2075,2077,2233,3644,29043,29531) AND ColorID=" + ColorID, "ColorID, InsetColorID, Height, Width", DataViewRowState.CurrentRows))
+            //using (DataView DV = new DataView(SourceDT, "InsetTypeID IN (2069,2070,2071,2073,2075,2077,2233,3644,29043,29531,41213) AND ColorID=" + ColorID, "ColorID, InsetColorID, Height, Width", DataViewRowState.CurrentRows))
             //{
             //    DT2 = DV.ToTable(true, new string[] { "ColorID", "PatinaID", "InsetTypeID", "InsetColorID", "Height", "Width", "Notes" });
             //}
@@ -1957,7 +1957,7 @@ namespace Infinium.Modules.WorkAssignments
                 DT2 = DV.ToTable(true, new string[] { "ColorID", "PatinaID", "InsetTypeID", "InsetColorID", "Height", "Width", "Notes" });
             }
 
-            //using (DataView DV = new DataView(SourceDT, "InsetTypeID IN (2069,2070,2071,2073,2075,2077,2233,3644,29043,29531) AND ColorID=" + ColorID, "ColorID, InsetColorID, Height, Width", DataViewRowState.CurrentRows))
+            //using (DataView DV = new DataView(SourceDT, "InsetTypeID IN (2069,2070,2071,2073,2075,2077,2233,3644,29043,29531,41213) AND ColorID=" + ColorID, "ColorID, InsetColorID, Height, Width", DataViewRowState.CurrentRows))
             //{
             //    DT2 = DV.ToTable(true, new string[] { "ColorID", "PatinaID", "InsetTypeID", "InsetColorID", "Height", "Width", "Notes" });
             //}
@@ -2599,14 +2599,8 @@ namespace Infinium.Modules.WorkAssignments
                 TrimmingSyngly(KansasSimpleDT, ref TempDT, Admission, 1, true, HeightASC, string.Empty);
 
             DataTable dt = DakotaSimpleDT.Clone();
-            DataRow[] rows = DakotaSimpleDT.Select("InsetTypeID=29272");
-            foreach (DataRow item in rows)
-                dt.Rows.Add(item.ItemArray);
 
-            if (dt.Rows.Count > 0)
-                TrimmingSyngly(dt, ref TempDT, Admission, 1, true, HeightASC, " РЕШ");
-            dt.Clear();
-            rows = DakotaSimpleDT.Select("InsetTypeID<>29272");
+            DataRow[] rows = DakotaSimpleDT.Select("InsetTypeID<>29272");
             foreach (DataRow item in rows)
                 dt.Rows.Add(item.ItemArray);
             if (dt.Rows.Count > 0)
@@ -2632,6 +2626,30 @@ namespace Infinium.Modules.WorkAssignments
                 TrimmingSyngly(LeonSimpleDT, ref TempDT, Admission, 1, true, HeightASC, string.Empty);
             if (InfinitiSimpleDT.Rows.Count > 0)
                 TrimmingSyngly(InfinitiSimpleDT, ref TempDT, Admission, 1, true, HeightASC, string.Empty);
+            for (int i = 1; i < TempDT.Rows.Count; i++)
+            {
+                if (Convert.ToInt32(TempDT.Rows[i]["FrontID"]) == Convert.ToInt32(TempDT.Rows[i - 1]["FrontID"]) &&
+                    Convert.ToInt32(TempDT.Rows[i]["ColorID"]) == Convert.ToInt32(TempDT.Rows[i - 1]["ColorID"]))
+                {
+                    TempDT.Rows[i]["Front"] = string.Empty;
+                    TempDT.Rows[i]["Color"] = string.Empty;
+                }
+            }
+            foreach (DataRow item in TempDT.Rows)
+                DestinationDT.Rows.Add(item.ItemArray);
+        }
+
+        private void TrimCollectDakotaFronts(ref DataTable DestinationDT, int Admission, bool HeightASC)
+        {
+            DataTable dt = DakotaSimpleDT.Clone();
+            DataRow[] rows = DakotaSimpleDT.Select("InsetTypeID=29272");
+            foreach (DataRow item in rows)
+                dt.Rows.Add(item.ItemArray);
+
+            DataTable TempDT = DestinationDT.Clone();
+            if (dt.Rows.Count > 0)
+                TrimmingSyngly(dt, ref TempDT, Admission, 1, true, HeightASC, " РЕШ");
+
             for (int i = 1; i < TempDT.Rows.Count; i++)
             {
                 if (Convert.ToInt32(TempDT.Rows[i]["FrontID"]) == Convert.ToInt32(TempDT.Rows[i - 1]["FrontID"]) &&
@@ -3379,7 +3397,7 @@ namespace Infinium.Modules.WorkAssignments
             if (filter.Length > 0)
                 filter = "InsetTypeID IN (" + filter.Substring(0, filter.Length - 1) + ")";
             //Нужно добавлять Id Новых филенок
-            using (DataView DV = new DataView(SourceDT, filter + " OR InsetTypeID IN (2069,2070,2071,2073,2075,2077,2233,3644,29043,29531) OR InsetTypeID IN (685,686,687,688,29470,29471) OR InsetTypeID IN (28961,3653,3654,3655)", string.Empty, DataViewRowState.CurrentRows))
+            using (DataView DV = new DataView(SourceDT, filter + " OR InsetTypeID IN (2069,2070,2071,2073,2075,2077,2233,3644,29043,29531,41213) OR InsetTypeID IN (685,686,687,688,29470,29471) OR InsetTypeID IN (28961,3653,3654,3655)", string.Empty, DataViewRowState.CurrentRows))
             {
                 DT1 = DV.ToTable(true, new string[] { "InsetTypeID" });
             }
@@ -3596,7 +3614,7 @@ namespace Infinium.Modules.WorkAssignments
             if (filter.Length > 0)
                 filter = "InsetTypeID IN (" + filter.Substring(0, filter.Length - 1) + ")";
 
-            using (DataView DV = new DataView(SourceDT, filter + " OR InsetTypeID IN (2069,2070,2071,2073,2075,2077,2233,3644,29043,29531) OR InsetTypeID IN (685,686,687,688,29470,29471) OR InsetTypeID IN (28961,3653,3654,3655)", string.Empty, DataViewRowState.CurrentRows))
+            using (DataView DV = new DataView(SourceDT, filter + " OR InsetTypeID IN (2069,2070,2071,2073,2075,2077,2233,3644,29043,29531,41213) OR InsetTypeID IN (685,686,687,688,29470,29471) OR InsetTypeID IN (28961,3653,3654,3655)", string.Empty, DataViewRowState.CurrentRows))
             {
                 DT1 = DV.ToTable(true, new string[] { "InsetTypeID" });
             }
@@ -3665,9 +3683,9 @@ namespace Infinium.Modules.WorkAssignments
                 SizeASC = "Height DESC, Width DESC";
             //InsetTypeID IN (685,686,687,688,29470,29471) РЕШЕТКИ
             //InsetTypeID IN (28961,3653,3654,3655) АПЛИКАЦИИ
-            //InsetTypeID IN (2069,2070,2071,2073,2075,2077,2233,3644,29043,29531) ФИЛЕНКИ
+            //InsetTypeID IN (2069,2070,2071,2073,2075,2077,2233,3644,29043,29531,41213) ФИЛЕНКИ
 
-            using (DataView DV = new DataView(SourceDT, "InsetTypeID IN (2069,2070,2071,2073,2075,2077,2233,3644,29043,29531) OR InsetTypeID IN (685,686,687,688,29470,29471) OR InsetTypeID IN (28961,3653,3654,3655)", string.Empty, DataViewRowState.CurrentRows))
+            using (DataView DV = new DataView(SourceDT, "InsetTypeID IN (2069,2070,2071,2073,2075,2077,2233,3644,29043,29531,41213) OR InsetTypeID IN (685,686,687,688,29470,29471) OR InsetTypeID IN (28961,3653,3654,3655)", string.Empty, DataViewRowState.CurrentRows))
             {
                 DT1 = DV.ToTable(true, new string[] { "InsetTypeID" });
             }
@@ -3927,7 +3945,7 @@ namespace Infinium.Modules.WorkAssignments
             GetCurvedFrontsOrders(ref ScandiaCurvedOrdersDT, WorkAssignmentID, FactoryID, @"(-1)");
             GetCurvedFrontsOrders(ref KansasCurvedOrdersDT, WorkAssignmentID, FactoryID, @"(1658,1659,1660,1661,1991,1992,1993,1994)");
             GetCurvedFrontsOrders(ref SofiaCurvedOrdersDT, WorkAssignmentID, FactoryID, @"(1654,1655,1656,1657,1987,1988,1989,1990)");
-            GetCurvedFrontsOrders(ref DakotaCurvedOrdersDT, WorkAssignmentID, FactoryID, @"(29212,29214,29215,29216)");
+            GetCurvedFrontsOrders(ref DakotaCurvedOrdersDT, WorkAssignmentID, FactoryID, @"(29212,29214,29215,29216,29217,29218,29219,29220)");
             GetCurvedFrontsOrders(ref Turin1_1CurvedOrdersDT, WorkAssignmentID, FactoryID, @"(-1)");
             GetCurvedFrontsOrders(ref Turin1CurvedOrdersDT, WorkAssignmentID, FactoryID, @"(1646,1647,1648,1649,1979,1980,1981,1982)");
             GetCurvedFrontsOrders(ref Turin3CurvedOrdersDT, WorkAssignmentID, FactoryID, @"(1650,1651,1652,1653,1983,1984,1985,1986)");
@@ -4461,7 +4479,7 @@ namespace Infinium.Modules.WorkAssignments
                         Calibri11CS, CalibriBold11CS, CalibriBold11F, TableHeaderCS, TableHeaderDecCS, WorkAssignmentID, BatchName);
 
             string FileName = WorkAssignmentID + " " + BatchName;
-            string tempFolder = @"\\192.168.1.6\Public\USERS_2016\_ДЕЙСТВУЮЩИЕ\ПРОИЗВОДСТВО\ТПС\инфиниум\";
+            string tempFolder = @"\\192.168.1.6\Public\_ДЕЙСТВУЮЩИЕ\ПРОИЗВОДСТВО\ТПС\инфиниум\";
             //string tempFolder = System.Environment.GetEnvironmentVariable("TEMP");
 
             string CurrentMonthName = DateTime.Now.ToString("MMMM");
@@ -6489,6 +6507,7 @@ namespace Infinium.Modules.WorkAssignments
         {
             TrimmingDT.Clear();
 
+            TrimCollectDakotaFronts(ref TrimmingDT, Admission, true);
             TrimCollectSimpleFronts(ref TrimmingDT, Admission, true);
             TrimCollectGridFronts(ref TrimmingDT, Admission, true);
             TrimCollectBoxFronts(ref TrimmingDT, BoxAdmission, true);

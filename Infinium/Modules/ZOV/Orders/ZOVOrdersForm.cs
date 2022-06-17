@@ -33,6 +33,7 @@ namespace Infinium
 
         DataTable RolePermissionsDataTable;
 
+        FrontsCatalogOrder FrontsCatalogOrder = null;
         DecorCatalogOrder DecorCatalogOrder = null;
         OrdersManager OrdersManager = null;
         OrdersCalculate OrdersCalculate = null;

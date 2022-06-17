@@ -68,6 +68,7 @@ namespace Infinium.Modules.Marketing.NewOrders
 
         public FrontsCatalogOrder()
         {
+            Initialize(true);
         }
 
 
@@ -289,7 +290,7 @@ namespace Infinium.Modules.Marketing.NewOrders
             TechnoProfilesDataTable = ConstTechnoProfilesDataTable.Copy();
             PatinaDataTable = ConstPatinaDataTable.Copy();
             PatinaRALDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM PatinaRAL",
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT PatinaRAL.*, Patina.Patina FROM PatinaRAL INNER JOIN Patina ON Patina.PatinaID=PatinaRAL.PatinaID",
                 ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(PatinaRALDataTable);
@@ -298,7 +299,7 @@ namespace Infinium.Modules.Marketing.NewOrders
             {
                 DataRow NewRow = PatinaDataTable.NewRow();
                 NewRow["PatinaID"] = item["PatinaRALID"];
-                NewRow["PatinaName"] = item["PatinaRAL"];
+                NewRow["PatinaName"] = item["PatinaRAL"]; NewRow["Patina"] = item["Patina"];
                 NewRow["DisplayName"] = item["DisplayName"];
                 PatinaDataTable.Rows.Add(NewRow);
             }
@@ -595,7 +596,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                     {
                         DataRow NewRow = PatinaDataTable.NewRow();
                         NewRow["PatinaID"] = item["PatinaRALID"];
-                        NewRow["PatinaName"] = item["PatinaRAL"];
+                        NewRow["PatinaName"] = item["PatinaRAL"]; NewRow["Patina"] = item["Patina"];
                         NewRow["DisplayName"] = item["DisplayName"];
                         PatinaDataTable.Rows.Add(NewRow);
                     }

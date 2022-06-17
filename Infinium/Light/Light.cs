@@ -12123,7 +12123,7 @@ namespace Infinium
                             return -1;//directory exists
 
                         if (res == 0)
-                            return 0;//error                            
+                            return 0;//error
 
                         DA.Update(DT);
 
@@ -13132,7 +13132,8 @@ namespace Infinium
             //string AccountPassword = "1290qpalzm";
             //string SenderEmail = "zovprofilreport@mail.ru";
 
-            string AccountPassword = "3699PassWord14772588";
+            //string AccountPassword = "7026Gradus0462";
+            string AccountPassword = "onluenzbclnedqtt";
             string SenderEmail = "infiniumdevelopers@gmail.com";
 
             string to = GetClientEmail(ClientID);

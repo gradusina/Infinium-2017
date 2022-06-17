@@ -2963,6 +2963,7 @@
             this.dgvCabFurMegaOrders.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvCabFurMegaOrders.HideOuterBorders = true;
             this.dgvCabFurMegaOrders.Location = new System.Drawing.Point(0, 0);
+            this.dgvCabFurMegaOrders.MultiSelect = false;
             this.dgvCabFurMegaOrders.Name = "dgvCabFurMegaOrders";
             this.dgvCabFurMegaOrders.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.dgvCabFurMegaOrders.PercentLineWidth = 0;

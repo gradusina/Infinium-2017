@@ -1,5 +1,5 @@
 ﻿using Infinium.Modules.CabFurnitureAssignments;
-
+using Infinium.Modules.Marketing.Expedition;
 using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
@@ -20,22 +20,29 @@ namespace Infinium
         bool CanAction = true;
 
         int ClientID = 1;
+        int MegaOrderID = 1;
         int OrderNumber = 1;
+        object CreationDateTime;
+        object PrepareDispDateTime;
 
         Form MainForm;
 
         AssemblePackagesManager assemblePackagesManager;
         AssignmentsManager assignmentsManager;
+        CabFurAssembleReport cabFurAssembleReport;
 
         [DllImport("user32.dll")]
         static extern IntPtr GetActiveWindow();
 
-        public CabFurAssembleForm(Form tMainForm, int iClientID, int[] MegaOrders)
+        public CabFurAssembleForm(Form tMainForm, CabFurAssembleReport tCabFurAssembleReport, 
+            int iClientID, int iMegaOrderID, int iOrderNumber, object CreationDateTime, object PrepareDispDateTime)
         {
             InitializeComponent();
-            
-            ClientID = iClientID;
 
+            cabFurAssembleReport = tCabFurAssembleReport;
+            OrderNumber = iOrderNumber;
+            ClientID = iClientID;
+            MegaOrderID = iMegaOrderID;
             MainForm = tMainForm;
 
             assignmentsManager = new AssignmentsManager();
@@ -43,23 +50,31 @@ namespace Infinium
             assignmentsManager.Initialize();
 
             Initialize();
-            assemblePackagesManager.GetPackagesLabels(MegaOrders);
-
+            assemblePackagesManager.GetPackagesLabels(MegaOrderID);
+            assemblePackagesManager.IsPackageCompleteToClient(MegaOrderID);
+            lbScaned.Text = assemblePackagesManager.ScanedPackages;
             this.MaximumSize = Screen.PrimaryScreen.WorkingArea.Size;
 
             while (!SplashForm.bCreated) ;
         }
-        public CabFurAssembleForm(Form tMainForm, AssignmentsManager tAssignmentsManager, int iClientID, int iOrderNumber)
+        public CabFurAssembleForm(Form tMainForm, AssignmentsManager tAssignmentsManager, int iClientID, int iMegaOrderID)
         {
             InitializeComponent();
 
             ClientID = iClientID;
-            OrderNumber = iOrderNumber;
-
+            MegaOrderID = iMegaOrderID;
             MainForm = tMainForm;
             assignmentsManager = tAssignmentsManager;
+            cabFurAssembleReport = new CabFurAssembleReport();
+
             Initialize();
-            assemblePackagesManager.GetPackagesLabels(ClientID, OrderNumber);
+
+            ToolTip ToolTip1 = new ToolTip();
+            ToolTip1.SetToolTip(btnPrintScanReport, "Ведомость в Excel");
+
+            assemblePackagesManager.GetPackagesLabels(ClientID, MegaOrderID);
+            assemblePackagesManager.IsPackageCompleteToClient(MegaOrderID);
+            lbScaned.Text = assemblePackagesManager.ScanedPackages;
 
             this.MaximumSize = Screen.PrimaryScreen.WorkingArea.Size;
 
@@ -220,6 +235,8 @@ namespace Infinium
             if (grid.Columns.Contains("Scan"))
                 grid.Columns["Scan"].Visible = false;
 
+            if (grid.Columns.Contains("CabFurniturePackageID"))
+                grid.Columns["CabFurniturePackageID"].HeaderText = "ID упаковки";
             if (grid.Columns.Contains("PackNumber"))
                 grid.Columns["PackNumber"].HeaderText = "№ упаковки";
             if (grid.Columns.Contains("Index"))
@@ -236,6 +253,8 @@ namespace Infinium
                 grid.Columns["Index"].DisplayIndex = DisplayIndex++;
             if (grid.Columns.Contains("PackNumber"))
                 grid.Columns["PackNumber"].DisplayIndex = DisplayIndex++;
+            if (grid.Columns.Contains("CabFurniturePackageID"))
+                grid.Columns["CabFurniturePackageID"].DisplayIndex = DisplayIndex++;
         }
 
         private void dgvPackagesDetailsSetting(ref PercentageDataGrid grid)
@@ -456,7 +475,7 @@ namespace Infinium
             T.Start();
             while (!SplashWindow.bSmallCreated) ;
 
-            assemblePackagesManager.AssemblePackages(ClientID);
+            assemblePackagesManager.AssemblePackages(ClientID, MegaOrderID);
             InfiniumTips.ShowTip(this, 50, 85, "Упаковки подготовлены к отгрузке", 2000);
 
             while (SplashWindow.bSmallCreated)
@@ -481,6 +500,35 @@ namespace Infinium
             if (dgvAllScanedPackagesLabels.SelectedRows.Count != 0 && dgvAllScanedPackagesLabels.SelectedRows[0].Cells["CabFurnitureComplementID"].Value != DBNull.Value)
                 cabFurniturePackageID = Convert.ToInt32(dgvAllScanedPackagesLabels.SelectedRows[0].Cells["CabFurnitureComplementID"].Value);
             assemblePackagesManager.FilterAllScanedPackagesDetails(cabFurniturePackageID);
+        }
+
+        private void kryptonButton1_Click_1(object sender, EventArgs e)
+        {
+            assemblePackagesManager.FF();
+        }
+
+        private void btnPrintScanReport_Click(object sender, EventArgs e)
+        {
+            string PackagesReportName = string.Empty;
+            OrderInfo orderInfo;
+            orderInfo.MegaOrderID = MegaOrderID;
+            orderInfo.OrderNumber = OrderNumber;
+            orderInfo.ClientID = ClientID;
+
+            Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref MainForm, "Создание ведомости.\r\nПодождите..."); });
+            T.Start();
+            while (!SplashWindow.bSmallCreated) ;
+
+            cabFurAssembleReport.GetDispatchInfo(ref CreationDateTime, ref PrepareDispDateTime);
+            cabFurAssembleReport.CurrentClientID = ClientID;
+            cabFurAssembleReport.CurrentOrderInfo = orderInfo;
+            cabFurAssembleReport.CurrentMegaOrders = new int[1] { MegaOrderID };
+            cabFurAssembleReport.FillPackagesByMegaOrders();
+            cabFurAssembleReport.CreateCabFurScanReport(assemblePackagesManager.ScanedPackagesToExport, true, ref PackagesReportName);
+
+            while (SplashWindow.bSmallCreated)
+                SmallWaitForm.CloseS = true;
+
         }
     }
 }
