@@ -388,7 +388,7 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDbf
             //{
             //    DA.Fill(DecorConfigDataTable);
             //}
-            DecorConfigDataTable = TablesManager.DecorConfigDataTable;
+            DecorConfigDataTable = TablesManager.DecorConfigDataTableAll;
 
             DecorParametersDataTable = new DataTable();
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DecorParameters", ConnectionStrings.CatalogConnectionString))

@@ -8380,7 +8380,8 @@ namespace Infinium.Modules.Marketing.Expedition
             try
             {
                 DataRow[] Rows = FrontsDataTable.Select("FrontID = " + FrontID);
-                FrontName = Rows[0]["FrontName"].ToString();
+                if (Rows.Any())
+                    FrontName = Rows[0]["FrontName"].ToString();
             }
             catch
             {
@@ -8395,7 +8396,8 @@ namespace Infinium.Modules.Marketing.Expedition
             try
             {
                 DataRow[] Rows = FrontsDataTable.Select("FrontID = " + TechnoProfileID);
-                FrontName = Rows[0]["FrontName"].ToString();
+                if (Rows.Any())
+                    FrontName = Rows[0]["FrontName"].ToString();
             }
             catch
             {
@@ -8410,7 +8412,8 @@ namespace Infinium.Modules.Marketing.Expedition
             try
             {
                 DataRow[] Rows = FrameColorsDataTable.Select("ColorID = " + ColorID);
-                ColorName = Rows[0]["ColorName"].ToString();
+                if (Rows.Any())
+                    ColorName = Rows[0]["ColorName"].ToString();
             }
             catch
             {
@@ -8425,7 +8428,8 @@ namespace Infinium.Modules.Marketing.Expedition
             try
             {
                 DataRow[] Rows = PatinaDataTable.Select("PatinaID = " + PatinaID);
-                PatinaName = Rows[0]["PatinaName"].ToString();
+                if (Rows.Any())
+                    PatinaName = Rows[0]["PatinaName"].ToString();
             }
             catch
             {
@@ -8440,7 +8444,8 @@ namespace Infinium.Modules.Marketing.Expedition
             try
             {
                 DataRow[] Rows = InsetTypesDataTable.Select("InsetTypeID = " + InsetTypeID);
-                InsetType = Rows[0]["InsetTypeName"].ToString();
+                if (Rows.Any())
+                    InsetType = Rows[0]["InsetTypeName"].ToString();
             }
             catch
             {
@@ -8455,7 +8460,8 @@ namespace Infinium.Modules.Marketing.Expedition
             try
             {
                 DataRow[] Rows = InsetColorsDataTable.Select("InsetColorID = " + ColorID);
-                ColorName = Rows[0]["InsetColorName"].ToString();
+                if (Rows.Any())
+                    ColorName = Rows[0]["InsetColorName"].ToString();
             }
             catch
             {

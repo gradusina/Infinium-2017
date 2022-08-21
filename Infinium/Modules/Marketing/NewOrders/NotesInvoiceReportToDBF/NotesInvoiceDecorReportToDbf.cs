@@ -317,7 +317,7 @@ DecorOrders.*, infiniu2_catalog.dbo.DecorConfig.AccountingName, infiniu2_catalog
             //{
             //    DA.Fill(DecorConfigDataTable);
             //}
-            DecorConfigDataTable = TablesManager.DecorConfigDataTable;
+            DecorConfigDataTable = TablesManager.DecorConfigDataTableAll;
 
             DecorParametersDataTable = new DataTable();
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DecorParameters", ConnectionStrings.CatalogConnectionString))
@@ -938,8 +938,12 @@ DecorOrders.*, infiniu2_catalog.dbo.DecorConfig.AccountingName, infiniu2_catalog
         private int GetReportMeasureTypeID(int DecorConfigID)
         {
             DataRow[] Row = DecorConfigDataTable.Select("DecorConfigID = " + DecorConfigID);
-
-            return Convert.ToInt32(Row[0]["ReportMeasureID"]);//1 м.кв.  2 м.п. 3 шт.
+            if (Row.Any())
+                return Convert.ToInt32(Row[0]["ReportMeasureID"]);//1 м.кв.  2 м.п. 3 шт.
+            else
+            {
+                return -1;
+            }
         }
 
         private void GroupCoverTypes(DataRow[] Rows, int MeasureTypeID)

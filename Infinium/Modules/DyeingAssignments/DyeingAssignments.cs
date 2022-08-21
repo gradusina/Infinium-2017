@@ -3590,7 +3590,7 @@ namespace Infinium.Modules.DyeingAssignments
             string SelectCommand = string.Empty;
             DataTable DT = new DataTable();
             SelectCommand = @"SELECT FrontsOrdersID, MainOrderID, FrontID, ColorID, TechnoProfileID, TechnoColorID, PatinaID, InsetTypeID, InsetColorID, TechnoInsetTypeID, TechnoInsetColorID, Height, Width, PlanCount, Square, FrontConfigID, Notes FROM DyeingAssignmentDetails
-                WHERE Width<>-1 AND FrontID IN (16269,28945,3727,3728,3729,3730,3731,3732,3733,3734,3735,3736,3737,3739,3740,3741,3742,3743,3744,3745,3746,3747,3748,15108,27914,29597,15760) AND DyeingCartID=" + DyeingCartID;
+                WHERE Width<>-1 AND FrontID IN (16269,28945,41327,41328,3727,3728,3729,3730,3731,3732,3733,3734,3735,3736,3737,3739,3740,3741,3742,3743,3744,3745,3746,3747,3748,15108,27914,29597,15760) AND DyeingCartID=" + DyeingCartID;
 
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.StorageConnectionString))
             {
@@ -3609,7 +3609,7 @@ namespace Infinium.Modules.DyeingAssignments
             string SelectCommand = string.Empty;
             DataTable DT = new DataTable();
             SelectCommand = @"SELECT FrontsOrdersID, MainOrderID, FrontID, ColorID, TechnoProfileID, TechnoColorID, PatinaID, InsetTypeID, InsetColorID, TechnoInsetTypeID, TechnoInsetColorID, Height, Width, PlanCount, Square, FrontConfigID, Notes FROM DyeingAssignmentDetails
-                WHERE Width<>-1 AND FrontID IN (28945,16269,3727,3728,3729,3730,3731,3732,3733,3734,3735,3736,3737,3739,3740,3741,3742,3743,3744,3745,3746,3747,3748,15108,27914,29597,15760) AND DyeingAssignmentID=" + DyeingAssignmentID;
+                WHERE Width<>-1 AND FrontID IN (16269,28945,41327,41328,3727,3728,3729,3730,3731,3732,3733,3734,3735,3736,3737,3739,3740,3741,3742,3743,3744,3745,3746,3747,3748,15108,27914,29597,15760) AND DyeingAssignmentID=" + DyeingAssignmentID;
 
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.StorageConnectionString))
             {

@@ -3377,5 +3377,6 @@ namespace Infinium
         {
             kryptonContextMenuItem2_Click(null, null);
         }
+        
     }
 }

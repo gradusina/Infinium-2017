@@ -296,7 +296,8 @@ namespace Infinium
         {
             //if (_usersDataTable == null)
             //    _usersDataTable = new DataTable();
-
+            if (_usersDataTable == null)
+                _usersDataTable = new DataTable();
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Users  WHERE Fired <> 1 ORDER BY Name", ConnectionStrings.UsersConnectionString))
             {
                 _usersDataTable.Clear();

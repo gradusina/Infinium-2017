@@ -11,6 +11,8 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Security.Policy;
 using System.Text;
 using System.Windows.Forms;
 
@@ -4319,6 +4321,88 @@ namespace Infinium.Modules.TechnologyCatalog
                     DA.Update(CabFurnitureDocumentTypesDT);
                     CabFurnitureDocumentTypesDT.Clear();
                     DA.Fill(CabFurnitureDocumentTypesDT);
+                }
+            }
+        }
+
+        public void SaveCoversFromExcel()
+        {
+            DataTable table = new DataTable();
+            table.Columns.Add(new DataColumn("TechStoreName", Type.GetType("System.String")));
+            table.Columns.Add(new DataColumn("SellerCode", Type.GetType("System.String")));
+            table.Columns.Add(new DataColumn("MeasureID", Type.GetType("System.Int32")));
+            table.Columns.Add(new DataColumn("Diameter", Type.GetType("System.Decimal")));
+            table.Columns.Add(new DataColumn("Thickness", Type.GetType("System.Decimal")));
+            table.Columns.Add(new DataColumn("Width", Type.GetType("System.Decimal")));
+            table.Columns.Add(new DataColumn("Weight", Type.GetType("System.Decimal")));
+            table.TableName = "ImportedTable";
+
+            string s = Clipboard.GetText();
+            string[] lines = s.Split('\n');
+            List<string> data = new List<string>(lines);
+
+            if (data.Count > 0 && string.IsNullOrWhiteSpace(data[data.Count - 1]))
+            {
+                data.RemoveAt(data.Count - 1);
+            }
+
+            foreach (string iterationRow in data)
+            {
+                string row = iterationRow;
+                if (row.EndsWith("\r"))
+                {
+                    row = row.Substring(0, row.Length - "\r".Length);
+                }
+
+                string[] rowData = row.Split(new char[] { '\r', '\x09' });
+                DataRow newRow = table.NewRow();
+
+                for (int i = 0; i < rowData.Length; i++)
+                {
+                    if (i >= table.Columns.Count) break;
+                    if (rowData[i].Length > 0)
+                        newRow[i] = rowData[i];
+                }
+                table.Rows.Add(newRow);
+            }
+
+            using (SqlDataAdapter DA = new SqlDataAdapter(@"SELECT TOP 0 * FROM TechStore",
+                ConnectionStrings.CatalogConnectionString))
+            {
+                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                {
+                    using (DataTable DT = new DataTable())
+                    {
+                        DA.Fill(DT);
+                        for (int i = 0; i < table.Rows.Count; i++)
+                        {
+                            string TechStoreName = "";
+                            string SellerCode = "";
+                            decimal Thickness = 0;
+                            decimal Diameter = 0;
+                            decimal Width = 0;
+                            decimal Weight = 0;
+
+                            TechStoreName = table.Rows[i]["TechStoreName"].ToString();
+                            SellerCode = table.Rows[i]["SellerCode"].ToString();
+                            Thickness = Convert.ToDecimal(table.Rows[i]["Thickness"]);
+                            Diameter = Convert.ToDecimal(table.Rows[i]["Diameter"]);
+                            Width = Convert.ToDecimal(table.Rows[i]["Width"]);
+                            Weight = Convert.ToDecimal(table.Rows[i]["Weight"]);
+                            
+                            DataRow NewRow = DT.NewRow();
+                            NewRow["TechStoreName"] = TechStoreName;
+                            NewRow["SellerCode"] = SellerCode;
+                            NewRow["TechStoreSubGroupID"] = 254;
+                            NewRow["MeasureID"] = 1;
+                            NewRow["Thickness"] = Thickness;
+                            NewRow["Diameter"] = Diameter;
+                            NewRow["Width"] = Width;
+                            NewRow["Weight"] = Weight;
+                            DT.Rows.Add(NewRow);
+                        }
+                        DA.Update(DT);
+                    }
                 }
             }
         }

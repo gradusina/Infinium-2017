@@ -401,9 +401,11 @@ namespace Infinium
 
         private void Initialize()
         {
+            MegaOrdersDataGrid.SelectionChanged -= MegaOrdersDataGrid_SelectionChanged;
             MarketingExpeditionManager = new Modules.Marketing.Expedition.MarketingExpeditionManager(
                 ref MegaOrdersDataGrid, ref MainOrdersDataGrid, ref PackagesDataGrid,
                 ref MainOrdersFrontsOrdersDataGrid, ref MainOrdersDecorOrdersDataGrid, ref MainOrdersTabControl);
+
 
             FilterClientsDataGrid.DataSource = MarketingExpeditionManager.FilterClientsBindingSource;
             FilterClientsDataGrid.Columns["ClientID"].Visible = false;
@@ -479,6 +481,8 @@ namespace Infinium
             dgvDispatchDatesSetting();
             dgvMegaOrdersSetting();
             kryptonCheckSet1_CheckedButtonChanged(null, null);
+
+            MegaOrdersDataGrid.SelectionChanged += MegaOrdersDataGrid_SelectionChanged;
         }
 
         private void MegaOrdersDataGrid_SelectionChanged(object sender, EventArgs e)

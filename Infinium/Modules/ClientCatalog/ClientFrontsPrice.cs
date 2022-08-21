@@ -19,6 +19,7 @@ namespace Infinium
         //string CatalogConnectionString = @"Data Source=v02.bizneshost.by, 32433;Initial Catalog=Catalog;Persist Security Info=True;Connection Timeout=1;User ID=hercules;Password=1q2w3e4r";
         //string CatalogConnectionString = @"Data Source=romanchuk\romanchuk;Initial Catalog=Catalog;Persist Security Info=True;Connection Timeout=1;User ID=sa;Password=1";
         DataTable FrontsConfigDataTable = null;
+        DataTable ProfileNamesDataTable = null;
         DataTable FrontsDataTable = null;
         DataTable FrameColorsDataTable = null;
         DataTable TechStoreDataTable = null;
@@ -39,6 +40,14 @@ namespace Infinium
             {
                 DA.Fill(FrontsDataTable);
                 FrontsDataTable.Columns.Add(new DataColumn("Excluzive", Type.GetType("System.Int32")));
+            }
+            SelectCommand = @"SELECT DISTINCT TechStoreID AS ProfileID, TechStoreName AS ProfileName FROM TechStore 
+                WHERE TechStoreID IN (SELECT ProfileID FROM FrontsConfig WHERE Enabled = 1 AND AccountingName IS NOT NULL AND InvNumber IS NOT NULL)
+OR TechStoreID IN (SELECT TechnoProfileID FROM FrontsConfig WHERE Enabled = 1 AND AccountingName IS NOT NULL AND InvNumber IS NOT NULL)
+                ORDER BY TechStoreName";
+            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
+            {
+                DA.Fill(ProfileNamesDataTable);
             }
 
             GetColorsDT();
@@ -72,59 +81,67 @@ namespace Infinium
         private void CreateTables()
         {
             FrontsDataTable = new System.Data.DataTable();
+            ProfileNamesDataTable = new System.Data.DataTable();
             PatinaDataTable = new System.Data.DataTable();
             FrontsConfigDataTable = new System.Data.DataTable();
             TechStoreDataTable = new DataTable();
             InsetTypesDataTable = new DataTable();
             ResultFrontsDataTable = new DataTable();
-            ResultFrontsDataTable.Columns.Add(new DataColumn(("NoPrint"), System.Type.GetType("System.Boolean")));
-            ResultFrontsDataTable.Columns.Add(new DataColumn(("FrontID"), System.Type.GetType("System.Int32")));
-            ResultFrontsDataTable.Columns.Add(new DataColumn(("ColorID"), System.Type.GetType("System.Int32")));
-            ResultFrontsDataTable.Columns.Add(new DataColumn(("InsetTypeID"), System.Type.GetType("System.Int32")));
-            ResultFrontsDataTable.Columns.Add(new DataColumn(("PatinaID"), System.Type.GetType("System.Int32")));
-            ResultFrontsDataTable.Columns.Add(new DataColumn(("Height"), System.Type.GetType("System.Int32")));
-            ResultFrontsDataTable.Columns.Add(new DataColumn(("Width"), System.Type.GetType("System.Int32")));
-            ResultFrontsDataTable.Columns.Add(new DataColumn(("InsetType"), System.Type.GetType("System.Int32")));
-            ResultFrontsDataTable.Columns.Add(new DataColumn(("ColorType"), System.Type.GetType("System.Int32")));
-            ResultFrontsDataTable.Columns.Add(new DataColumn(("FrontName"), System.Type.GetType("System.String")));
-            ResultFrontsDataTable.Columns.Add(new DataColumn(("Color"), System.Type.GetType("System.String")));
-            ResultFrontsDataTable.Columns.Add(new DataColumn(("Patina"), System.Type.GetType("System.String")));
-            ResultFrontsDataTable.Columns.Add(new DataColumn(("Measure"), System.Type.GetType("System.String")));
-            ResultFrontsDataTable.Columns.Add(new DataColumn(("ColorGroup"), System.Type.GetType("System.Boolean")));
-            ResultFrontsDataTable.Columns.Add(new DataColumn(("Cost0"), System.Type.GetType("System.Decimal")));
-            ResultFrontsDataTable.Columns.Add(new DataColumn(("Cost1"), System.Type.GetType("System.Decimal")));
-            ResultFrontsDataTable.Columns.Add(new DataColumn(("Cost2"), System.Type.GetType("System.Decimal")));
-            ResultFrontsDataTable.Columns.Add(new DataColumn(("Cost3"), System.Type.GetType("System.Decimal")));
-            ResultFrontsDataTable.Columns.Add(new DataColumn(("Cost4"), System.Type.GetType("System.Decimal")));
-            ResultFrontsDataTable.Columns.Add(new DataColumn(("Cost5"), System.Type.GetType("System.Decimal")));
-            ResultFrontsDataTable.Columns.Add(new DataColumn(("Cost6"), System.Type.GetType("System.Decimal")));
-            ResultFrontsDataTable.Columns.Add(new DataColumn(("Cost7"), System.Type.GetType("System.Decimal")));
-            ResultFrontsDataTable.Columns.Add(new DataColumn(("Cost8"), System.Type.GetType("System.Decimal")));
-            ResultFrontsDataTable.Columns.Add(new DataColumn(("Cost9"), System.Type.GetType("System.Decimal")));
-            ResultFrontsDataTable.Columns.Add(new DataColumn(("OriginalPrice"), System.Type.GetType("System.Decimal")));
+            ResultFrontsDataTable.Columns.Add(new DataColumn("NoPrint", System.Type.GetType("System.Boolean")));
+            ResultFrontsDataTable.Columns.Add(new DataColumn("FrontID", System.Type.GetType("System.Int32")));
+            ResultFrontsDataTable.Columns.Add(new DataColumn("ColorID", System.Type.GetType("System.Int32")));
+            ResultFrontsDataTable.Columns.Add(new DataColumn("ProfileID", System.Type.GetType("System.Int32")));
+            ResultFrontsDataTable.Columns.Add(new DataColumn("TechnoProfileID", System.Type.GetType("System.Int32")));
+            ResultFrontsDataTable.Columns.Add(new DataColumn("InsetTypeID", System.Type.GetType("System.Int32")));
+            ResultFrontsDataTable.Columns.Add(new DataColumn("PatinaID", System.Type.GetType("System.Int32")));
+            ResultFrontsDataTable.Columns.Add(new DataColumn("Height", System.Type.GetType("System.Int32")));
+            ResultFrontsDataTable.Columns.Add(new DataColumn("Width", System.Type.GetType("System.Int32")));
+            ResultFrontsDataTable.Columns.Add(new DataColumn("InsetType", System.Type.GetType("System.Int32")));
+            ResultFrontsDataTable.Columns.Add(new DataColumn("ColorType", System.Type.GetType("System.Int32")));
+            ResultFrontsDataTable.Columns.Add(new DataColumn("FrontName", System.Type.GetType("System.String")));
+            ResultFrontsDataTable.Columns.Add(new DataColumn("Color", System.Type.GetType("System.String")));
+            ResultFrontsDataTable.Columns.Add(new DataColumn("ProfileName", System.Type.GetType("System.String")));
+            ResultFrontsDataTable.Columns.Add(new DataColumn("TechnoProfileName", System.Type.GetType("System.String")));
+            ResultFrontsDataTable.Columns.Add(new DataColumn("Patina", System.Type.GetType("System.String")));
+            ResultFrontsDataTable.Columns.Add(new DataColumn("Measure", System.Type.GetType("System.String")));
+            ResultFrontsDataTable.Columns.Add(new DataColumn("ColorGroup", System.Type.GetType("System.Boolean")));
+            ResultFrontsDataTable.Columns.Add(new DataColumn("Cost0", System.Type.GetType("System.Decimal")));
+            ResultFrontsDataTable.Columns.Add(new DataColumn("Cost1", System.Type.GetType("System.Decimal")));
+            ResultFrontsDataTable.Columns.Add(new DataColumn("Cost2", System.Type.GetType("System.Decimal")));
+            ResultFrontsDataTable.Columns.Add(new DataColumn("Cost3", System.Type.GetType("System.Decimal")));
+            ResultFrontsDataTable.Columns.Add(new DataColumn("Cost4", System.Type.GetType("System.Decimal")));
+            ResultFrontsDataTable.Columns.Add(new DataColumn("Cost5", System.Type.GetType("System.Decimal")));
+            ResultFrontsDataTable.Columns.Add(new DataColumn("Cost6", System.Type.GetType("System.Decimal")));
+            ResultFrontsDataTable.Columns.Add(new DataColumn("Cost7", System.Type.GetType("System.Decimal")));
+            ResultFrontsDataTable.Columns.Add(new DataColumn("Cost8", System.Type.GetType("System.Decimal")));
+            ResultFrontsDataTable.Columns.Add(new DataColumn("Cost9", System.Type.GetType("System.Decimal")));
+            ResultFrontsDataTable.Columns.Add(new DataColumn("OriginalPrice", System.Type.GetType("System.Decimal")));
             ExcluziveTable = new DataTable();
-            ExcluziveTable.Columns.Add(new DataColumn(("Index"), System.Type.GetType("System.Int32")));
-            ExcluziveTable.Columns.Add(new DataColumn(("FrontName"), System.Type.GetType("System.String")));
-            ExcluziveTable.Columns.Add(new DataColumn(("Color"), System.Type.GetType("System.String")));
-            ExcluziveTable.Columns.Add(new DataColumn(("Patina"), System.Type.GetType("System.String")));
-            ExcluziveTable.Columns.Add(new DataColumn(("Measure"), System.Type.GetType("System.String")));
-            ExcluziveTable.Columns.Add(new DataColumn(("Cost1"), System.Type.GetType("System.String")));
-            ExcluziveTable.Columns.Add(new DataColumn(("Cost2"), System.Type.GetType("System.String")));
-            ExcluziveTable.Columns.Add(new DataColumn(("Cost3"), System.Type.GetType("System.String")));
-            ExcluziveTable.Columns.Add(new DataColumn(("Cost4"), System.Type.GetType("System.String")));
-            ExcluziveTable.Columns.Add(new DataColumn(("Cost5"), System.Type.GetType("System.String")));
-            ExcluziveTable.Columns.Add(new DataColumn(("Cost6"), System.Type.GetType("System.String")));
-            ExcluziveTable.Columns.Add(new DataColumn(("Cost7"), System.Type.GetType("System.String")));
-            ExcluziveTable.Columns.Add(new DataColumn(("Cost8"), System.Type.GetType("System.String")));
-            ExcluziveTable.Columns.Add(new DataColumn(("Cost9"), System.Type.GetType("System.String")));
-            ExcluziveTable.Columns.Add(new DataColumn(("OriginalPrice"), System.Type.GetType("System.String")));
-            ExcluziveTable.Columns.Add(new DataColumn(("ColorID"), System.Type.GetType("System.Int32")));
-            ExcluziveTable.Columns.Add(new DataColumn(("PatinaID"), System.Type.GetType("System.Int32")));
-            ExcluziveTable.Columns.Add(new DataColumn(("ItemGroup"), System.Type.GetType("System.Boolean")));
-            ExcluziveTable.Columns.Add(new DataColumn(("CostGroup"), System.Type.GetType("System.Boolean")));
-            ExcluziveTable.Columns.Add(new DataColumn(("Front"), System.Type.GetType("System.String")));
-            ExcluziveTable.Columns.Add(new DataColumn(("InsetType"), System.Type.GetType("System.Int32")));
-            ExcluziveTable.Columns.Add(new DataColumn(("ColorType"), System.Type.GetType("System.String")));
+            ExcluziveTable.Columns.Add(new DataColumn("Index", System.Type.GetType("System.Int32")));
+            ExcluziveTable.Columns.Add(new DataColumn("FrontName", System.Type.GetType("System.String")));
+            ExcluziveTable.Columns.Add(new DataColumn("Color", System.Type.GetType("System.String")));
+            ExcluziveTable.Columns.Add(new DataColumn("TechnoProfileName", System.Type.GetType("System.String")));
+            ExcluziveTable.Columns.Add(new DataColumn("Height", System.Type.GetType("System.Int32")));
+            ExcluziveTable.Columns.Add(new DataColumn("Patina", System.Type.GetType("System.String")));
+            ExcluziveTable.Columns.Add(new DataColumn("Measure", System.Type.GetType("System.String")));
+            ExcluziveTable.Columns.Add(new DataColumn("Cost1", System.Type.GetType("System.String")));
+            ExcluziveTable.Columns.Add(new DataColumn("Cost2", System.Type.GetType("System.String")));
+            ExcluziveTable.Columns.Add(new DataColumn("Cost3", System.Type.GetType("System.String")));
+            ExcluziveTable.Columns.Add(new DataColumn("Cost4", System.Type.GetType("System.String")));
+            ExcluziveTable.Columns.Add(new DataColumn("Cost5", System.Type.GetType("System.String")));
+            ExcluziveTable.Columns.Add(new DataColumn("Cost6", System.Type.GetType("System.String")));
+            ExcluziveTable.Columns.Add(new DataColumn("Cost7", System.Type.GetType("System.String")));
+            ExcluziveTable.Columns.Add(new DataColumn("Cost8", System.Type.GetType("System.String")));
+            ExcluziveTable.Columns.Add(new DataColumn("Cost9", System.Type.GetType("System.String")));
+            ExcluziveTable.Columns.Add(new DataColumn("OriginalPrice", System.Type.GetType("System.String")));
+            ExcluziveTable.Columns.Add(new DataColumn("TechnoProfileID", System.Type.GetType("System.Int32")));
+            ExcluziveTable.Columns.Add(new DataColumn("ColorID", System.Type.GetType("System.Int32")));
+            ExcluziveTable.Columns.Add(new DataColumn("PatinaID", System.Type.GetType("System.Int32")));
+            ExcluziveTable.Columns.Add(new DataColumn("ItemGroup", System.Type.GetType("System.Boolean")));
+            ExcluziveTable.Columns.Add(new DataColumn("CostGroup", System.Type.GetType("System.Boolean")));
+            ExcluziveTable.Columns.Add(new DataColumn("Front", System.Type.GetType("System.String")));
+            ExcluziveTable.Columns.Add(new DataColumn("InsetType", System.Type.GetType("System.Int32")));
+            ExcluziveTable.Columns.Add(new DataColumn("ColorType", System.Type.GetType("System.String")));
             NotExcluziveTable = ExcluziveTable.Clone();
         }
 
@@ -180,7 +197,7 @@ namespace Infinium
                 FrontsConfigDataTable.Clear();
                 DA.Fill(FrontsConfigDataTable);
                 if (!FrontsConfigDataTable.Columns.Contains("OriginalPrice"))
-                    FrontsConfigDataTable.Columns.Add(new DataColumn(("OriginalPrice"), System.Type.GetType("System.Decimal")));
+                    FrontsConfigDataTable.Columns.Add(new DataColumn("OriginalPrice", System.Type.GetType("System.Decimal")));
             }
             decimal MarketingCost = 0;//себестоимость
             decimal PriceRatio = 0;//ценовой коэффициент
@@ -306,7 +323,12 @@ namespace Infinium
                         rows = TempTable.Select("Front='" + FrontName + "' AND ColorType=" + ColorType);
                         if (rows.Count() > 0)
                         {
-                            TempTable.Rows[TempTable.Rows.IndexOf(rows[0])]["Cost1"] = DT2.Rows[0]["Cost0"].ToString();
+                            if (rows.Count() == 1)
+                            {
+                                TempTable.Rows[TempTable.Rows.IndexOf(rows[0])]["Cost1"] = DT2.Rows[0]["Cost0"].ToString();
+                            }
+                            else
+                                TempTable.Rows[TempTable.Rows.IndexOf(rows[0])]["Cost1"] = DT2.Rows[0]["Cost0"].ToString();
                         }
                     }
                     else
@@ -316,15 +338,19 @@ namespace Infinium
                             using (DataView DV = new DataView(ResultFrontsDataTable))
                             {
                                 DV.RowFilter = filter + " AND FrontName='" + FrontName + "' AND ColorType=" + ColorType + " AND Cost0='" + DT2.Rows[j]["Cost0"].ToString() + "'";
-                                DV.Sort = "FrontName, ColorType";
-                                DT3 = DV.ToTable(true, new string[] { "ColorID", "PatinaID" });
+                                DV.Sort = "FrontName, ColorType, TechnoProfileID, Height";
+                                DT3 = DV.ToTable(true, new string[] { "ColorID", "PatinaID", "TechnoProfileID", "Height" });
                             }
                             for (int x = 0; x < DT3.Rows.Count; x++)
                             {
                                 Color = GetColorName(Convert.ToInt32(DT3.Rows[x]["ColorID"]));
+                                int TechnoProfileID = Convert.ToInt32(DT3.Rows[x]["TechnoProfileID"]);
+                                int Height = Convert.ToInt32(DT3.Rows[x]["Height"]);
+                                string TechnoProfileName = GetProfileName(Convert.ToInt32(DT3.Rows[x]["TechnoProfileID"]));
                                 if (Convert.ToInt32(DT3.Rows[x]["PatinaID"]) != -1)
                                     Color += " " + GetPatinaName(Convert.ToInt32(DT3.Rows[x]["PatinaID"]));
-                                rows = TempTable.Select("InsetType<>" + InsetType + " AND Front='" + FrontName + "'" + " AND Color='" + Color + "'");
+                                rows = TempTable.Select("InsetType<>" + InsetType + " AND TechnoProfileID=" + TechnoProfileID + " AND Height=" + Height + 
+                                                        " AND Front='" + FrontName + "'" + " AND Color='" + Color + "'");
                                 if (rows.Count() > 0)
                                 {
                                     TempTable.Rows[TempTable.Rows.IndexOf(rows[0])]["Cost1"] = DT2.Rows[j]["Cost0"].ToString();
@@ -334,6 +360,10 @@ namespace Infinium
                                     DataRow NewRow = TempTable.NewRow();
                                     NewRow["Measure"] = Measure;
                                     NewRow["Front"] = FrontName;
+                                    NewRow["TechnoProfileID"] = TechnoProfileID;
+                                    if (Height != 0)
+                                        NewRow["Height"] = Height;
+                                    NewRow["TechnoProfileName"] = TechnoProfileName;
                                     NewRow["Color"] = Color;
                                     NewRow["ColorType"] = ColorType;
                                     NewRow["Patina"] = string.Empty;
@@ -379,15 +409,19 @@ namespace Infinium
                             using (DataView DV = new DataView(ResultFrontsDataTable))
                             {
                                 DV.RowFilter = filter + " AND FrontName='" + FrontName + "' AND ColorType=" + ColorType + " AND Cost0='" + DT2.Rows[j]["Cost0"].ToString() + "'";
-                                DV.Sort = "FrontName, ColorType";
-                                DT3 = DV.ToTable(true, new string[] { "ColorID", "PatinaID" });
+                                DV.Sort = "FrontName, ColorType, TechnoProfileID, Height";
+                                DT3 = DV.ToTable(true, new string[] { "ColorID", "PatinaID", "TechnoProfileID", "Height" });
                             }
                             for (int x = 0; x < DT3.Rows.Count; x++)
                             {
                                 Color = GetColorName(Convert.ToInt32(DT3.Rows[x]["ColorID"]));
+                                int TechnoProfileID = Convert.ToInt32(DT3.Rows[x]["TechnoProfileID"]);
+                                int Height = Convert.ToInt32(DT3.Rows[x]["Height"]);
+                                string TechnoProfileName = GetProfileName(Convert.ToInt32(DT3.Rows[x]["TechnoProfileID"]));
                                 if (Convert.ToInt32(DT3.Rows[x]["PatinaID"]) != -1)
                                     Color += " " + GetPatinaName(Convert.ToInt32(DT3.Rows[x]["PatinaID"]));
-                                rows = TempTable.Select("InsetType<>" + InsetType + " AND Front='" + FrontName + "'" + " AND Color='" + Color + "'");
+                                rows = TempTable.Select("InsetType<>" + InsetType + " AND TechnoProfileID=" + TechnoProfileID + " AND Height=" + Height + 
+                                                        " AND Front='" + FrontName + "'" + " AND Color='" + Color + "'");
                                 if (rows.Count() > 0)
                                 {
                                     TempTable.Rows[TempTable.Rows.IndexOf(rows[0])]["Cost2"] = DT2.Rows[j]["Cost0"].ToString();
@@ -397,6 +431,10 @@ namespace Infinium
                                     DataRow NewRow = TempTable.NewRow();
                                     NewRow["Measure"] = Measure;
                                     NewRow["Front"] = FrontName;
+                                    NewRow["TechnoProfileID"] = TechnoProfileID;
+                                    if (Height != 0)
+                                        NewRow["Height"] = Height;
+                                    NewRow["TechnoProfileName"] = TechnoProfileName;
                                     NewRow["Color"] = Color;
                                     NewRow["ColorType"] = ColorType;
                                     NewRow["Patina"] = string.Empty;
@@ -441,15 +479,19 @@ namespace Infinium
                             using (DataView DV = new DataView(ResultFrontsDataTable))
                             {
                                 DV.RowFilter = filter + " AND FrontName='" + FrontName + "' AND ColorType=" + ColorType + " AND Cost0='" + DT2.Rows[j]["Cost0"].ToString() + "'";
-                                DV.Sort = "FrontName, ColorType";
-                                DT3 = DV.ToTable(true, new string[] { "ColorID", "PatinaID" });
+                                DV.Sort = "FrontName, ColorType, TechnoProfileID, Height";
+                                DT3 = DV.ToTable(true, new string[] { "ColorID", "PatinaID", "TechnoProfileID", "Height" });
                             }
                             for (int x = 0; x < DT3.Rows.Count; x++)
                             {
                                 Color = GetColorName(Convert.ToInt32(DT3.Rows[x]["ColorID"]));
+                                int TechnoProfileID = Convert.ToInt32(DT3.Rows[x]["TechnoProfileID"]);
+                                int Height = Convert.ToInt32(DT3.Rows[x]["Height"]);
+                                string TechnoProfileName = GetProfileName(Convert.ToInt32(DT3.Rows[x]["TechnoProfileID"]));
                                 if (Convert.ToInt32(DT3.Rows[x]["PatinaID"]) != -1)
                                     Color += " " + GetPatinaName(Convert.ToInt32(DT3.Rows[x]["PatinaID"]));
-                                rows = TempTable.Select("InsetType<>" + InsetType + " AND Front='" + FrontName + "'" + " AND Color='" + Color + "'");
+                                rows = TempTable.Select("InsetType<>" + InsetType + " AND TechnoProfileID=" + TechnoProfileID + " AND Height=" + Height + 
+                                                        " AND Front='" + FrontName + "'" + " AND Color='" + Color + "'");
                                 if (rows.Count() > 0)
                                 {
                                     TempTable.Rows[TempTable.Rows.IndexOf(rows[0])]["Cost3"] = DT2.Rows[j]["Cost0"].ToString();
@@ -459,6 +501,10 @@ namespace Infinium
                                     DataRow NewRow = TempTable.NewRow();
                                     NewRow["Measure"] = Measure;
                                     NewRow["Front"] = FrontName;
+                                    NewRow["TechnoProfileID"] = TechnoProfileID;
+                                    if (Height != 0)
+                                        NewRow["Height"] = Height;
+                                    NewRow["TechnoProfileName"] = TechnoProfileName;
                                     NewRow["Color"] = Color;
                                     NewRow["ColorType"] = ColorType;
                                     NewRow["Patina"] = string.Empty;
@@ -503,15 +549,19 @@ namespace Infinium
                             using (DataView DV = new DataView(ResultFrontsDataTable))
                             {
                                 DV.RowFilter = filter + " AND FrontName='" + FrontName + "' AND ColorType=" + ColorType + " AND Cost0='" + DT2.Rows[j]["Cost0"].ToString() + "'";
-                                DV.Sort = "FrontName, ColorType";
-                                DT3 = DV.ToTable(true, new string[] { "ColorID", "PatinaID" });
+                                DV.Sort = "FrontName, ColorType, TechnoProfileID, Height";
+                                DT3 = DV.ToTable(true, new string[] { "ColorID", "PatinaID", "TechnoProfileID", "Height" });
                             }
                             for (int x = 0; x < DT3.Rows.Count; x++)
                             {
                                 Color = GetColorName(Convert.ToInt32(DT3.Rows[x]["ColorID"]));
+                                int TechnoProfileID = Convert.ToInt32(DT3.Rows[x]["TechnoProfileID"]);
+                                int Height = Convert.ToInt32(DT3.Rows[x]["Height"]);
+                                string TechnoProfileName = GetProfileName(Convert.ToInt32(DT3.Rows[x]["TechnoProfileID"]));
                                 if (Convert.ToInt32(DT3.Rows[x]["PatinaID"]) != -1)
                                     Color += " " + GetPatinaName(Convert.ToInt32(DT3.Rows[x]["PatinaID"]));
-                                rows = TempTable.Select("InsetType<>" + InsetType + " AND Front='" + FrontName + "'" + " AND Color='" + Color + "'");
+                                rows = TempTable.Select("InsetType<>" + InsetType + " AND TechnoProfileID=" + TechnoProfileID + " AND Height=" + Height + 
+                                                        " AND Front='" + FrontName + "'" + " AND Color='" + Color + "'");
                                 if (rows.Count() > 0)
                                 {
                                     TempTable.Rows[TempTable.Rows.IndexOf(rows[0])]["Cost4"] = DT2.Rows[j]["Cost0"].ToString();
@@ -521,6 +571,10 @@ namespace Infinium
                                     DataRow NewRow = TempTable.NewRow();
                                     NewRow["Measure"] = Measure;
                                     NewRow["Front"] = FrontName;
+                                    NewRow["TechnoProfileID"] = TechnoProfileID;
+                                    if (Height != 0)
+                                        NewRow["Height"] = Height;
+                                    NewRow["TechnoProfileName"] = TechnoProfileName;
                                     NewRow["Color"] = Color;
                                     NewRow["ColorType"] = ColorType;
                                     NewRow["Patina"] = string.Empty;
@@ -565,15 +619,19 @@ namespace Infinium
                             using (DataView DV = new DataView(ResultFrontsDataTable))
                             {
                                 DV.RowFilter = filter + " AND FrontName='" + FrontName + "' AND ColorType=" + ColorType + " AND Cost0='" + DT2.Rows[j]["Cost0"].ToString() + "'";
-                                DV.Sort = "FrontName, ColorType";
-                                DT3 = DV.ToTable(true, new string[] { "ColorID", "PatinaID" });
+                                DV.Sort = "FrontName, ColorType, TechnoProfileID, Height";
+                                DT3 = DV.ToTable(true, new string[] { "ColorID", "PatinaID", "TechnoProfileID", "Height" });
                             }
                             for (int x = 0; x < DT3.Rows.Count; x++)
                             {
                                 Color = GetColorName(Convert.ToInt32(DT3.Rows[x]["ColorID"]));
+                                int TechnoProfileID = Convert.ToInt32(DT3.Rows[x]["TechnoProfileID"]);
+                                int Height = Convert.ToInt32(DT3.Rows[x]["Height"]);
+                                string TechnoProfileName = GetProfileName(Convert.ToInt32(DT3.Rows[x]["TechnoProfileID"]));
                                 if (Convert.ToInt32(DT3.Rows[x]["PatinaID"]) != -1)
                                     Color += " " + GetPatinaName(Convert.ToInt32(DT3.Rows[x]["PatinaID"]));
-                                rows = TempTable.Select("InsetType<>" + InsetType + " AND Front='" + FrontName + "'" + " AND Color='" + Color + "'");
+                                rows = TempTable.Select("InsetType<>" + InsetType + " AND TechnoProfileID=" + TechnoProfileID + " AND Height=" + Height + 
+                                                        " AND Front='" + FrontName + "'" + " AND Color='" + Color + "'");
                                 if (rows.Count() > 0)
                                 {
                                     TempTable.Rows[TempTable.Rows.IndexOf(rows[0])]["Cost5"] = DT2.Rows[j]["Cost0"].ToString();
@@ -583,6 +641,10 @@ namespace Infinium
                                     DataRow NewRow = TempTable.NewRow();
                                     NewRow["Measure"] = Measure;
                                     NewRow["Front"] = FrontName;
+                                    NewRow["TechnoProfileID"] = TechnoProfileID;
+                                    if (Height != 0)
+                                        NewRow["Height"] = Height;
+                                    NewRow["TechnoProfileName"] = TechnoProfileName;
                                     NewRow["Color"] = Color;
                                     NewRow["ColorType"] = ColorType;
                                     NewRow["Patina"] = string.Empty;
@@ -627,15 +689,19 @@ namespace Infinium
                             using (DataView DV = new DataView(ResultFrontsDataTable))
                             {
                                 DV.RowFilter = filter + " AND FrontName='" + FrontName + "' AND ColorType=" + ColorType + " AND Cost0='" + DT2.Rows[j]["Cost0"].ToString() + "'";
-                                DV.Sort = "FrontName, ColorType";
-                                DT3 = DV.ToTable(true, new string[] { "ColorID", "PatinaID" });
+                                DV.Sort = "FrontName, ColorType, TechnoProfileID, Height";
+                                DT3 = DV.ToTable(true, new string[] { "ColorID", "PatinaID", "TechnoProfileID", "Height" });
                             }
                             for (int x = 0; x < DT3.Rows.Count; x++)
                             {
                                 Color = GetColorName(Convert.ToInt32(DT3.Rows[x]["ColorID"]));
+                                int TechnoProfileID = Convert.ToInt32(DT3.Rows[x]["TechnoProfileID"]);
+                                int Height = Convert.ToInt32(DT3.Rows[x]["Height"]);
+                                string TechnoProfileName = GetProfileName(Convert.ToInt32(DT3.Rows[x]["TechnoProfileID"]));
                                 if (Convert.ToInt32(DT3.Rows[x]["PatinaID"]) != -1)
                                     Color += " " + GetPatinaName(Convert.ToInt32(DT3.Rows[x]["PatinaID"]));
-                                rows = TempTable.Select("InsetType<>" + InsetType + " AND Front='" + FrontName + "'" + " AND Color='" + Color + "'");
+                                rows = TempTable.Select("InsetType<>" + InsetType + " AND TechnoProfileID=" + TechnoProfileID + " AND Height=" + Height + 
+                                                        " AND Front='" + FrontName + "'" + " AND Color='" + Color + "'");
                                 if (rows.Count() > 0)
                                 {
                                     TempTable.Rows[TempTable.Rows.IndexOf(rows[0])]["Cost6"] = DT2.Rows[j]["Cost0"].ToString();
@@ -645,6 +711,10 @@ namespace Infinium
                                     DataRow NewRow = TempTable.NewRow();
                                     NewRow["Measure"] = Measure;
                                     NewRow["Front"] = FrontName;
+                                    NewRow["TechnoProfileID"] = TechnoProfileID;
+                                    if (Height != 0)
+                                        NewRow["Height"] = Height;
+                                    NewRow["TechnoProfileName"] = TechnoProfileName;
                                     NewRow["Color"] = Color;
                                     NewRow["ColorType"] = ColorType;
                                     NewRow["Patina"] = string.Empty;
@@ -690,15 +760,19 @@ namespace Infinium
                             using (DataView DV = new DataView(ResultFrontsDataTable))
                             {
                                 DV.RowFilter = filter + " AND FrontName='" + FrontName + "' AND ColorType=" + ColorType + " AND Cost0='" + DT2.Rows[j]["Cost0"].ToString() + "'";
-                                DV.Sort = "FrontName, ColorType";
-                                DT3 = DV.ToTable(true, new string[] { "ColorID", "PatinaID" });
+                                DV.Sort = "FrontName, ColorType, TechnoProfileID, Height";
+                                DT3 = DV.ToTable(true, new string[] { "ColorID", "PatinaID", "TechnoProfileID", "Height" });
                             }
                             for (int x = 0; x < DT3.Rows.Count; x++)
                             {
                                 Color = GetColorName(Convert.ToInt32(DT3.Rows[x]["ColorID"]));
+                                int TechnoProfileID = Convert.ToInt32(DT3.Rows[x]["TechnoProfileID"]);
+                                int Height = Convert.ToInt32(DT3.Rows[x]["Height"]);
+                                string TechnoProfileName = GetProfileName(Convert.ToInt32(DT3.Rows[x]["TechnoProfileID"]));
                                 if (Convert.ToInt32(DT3.Rows[x]["PatinaID"]) != -1)
                                     Color += " " + GetPatinaName(Convert.ToInt32(DT3.Rows[x]["PatinaID"]));
-                                rows = TempTable.Select("InsetType<>" + InsetType + " AND Front='" + FrontName + "'" + " AND Color='" + Color + "'");
+                                rows = TempTable.Select("InsetType<>" + InsetType + " AND TechnoProfileID=" + TechnoProfileID + " AND Height=" + Height + 
+                                                        " AND Front='" + FrontName + "'" + " AND Color='" + Color + "'");
                                 if (rows.Count() > 0)
                                 {
                                     TempTable.Rows[TempTable.Rows.IndexOf(rows[0])]["Cost7"] = DT2.Rows[j]["Cost0"].ToString();
@@ -708,12 +782,86 @@ namespace Infinium
                                     DataRow NewRow = TempTable.NewRow();
                                     NewRow["Measure"] = Measure;
                                     NewRow["Front"] = FrontName;
+                                    NewRow["TechnoProfileID"] = TechnoProfileID;
+                                    if (Height != 0)
+                                        NewRow["Height"] = Height;
+                                    NewRow["TechnoProfileName"] = TechnoProfileName;
                                     NewRow["Color"] = Color;
                                     NewRow["ColorType"] = ColorType;
                                     NewRow["Patina"] = string.Empty;
                                     NewRow["Cost7"] = DT2.Rows[j]["Cost0"].ToString();
                                     NewRow["CostGroup"] = true;
                                     NewRow["InsetType"] = 7;
+                                    NewRow["Index"] = Index++;
+                                    TempTable.Rows.Add(NewRow);
+                                }
+                            }
+                        }
+                    }
+                }
+                InsetType = 8;
+                //МДФ-2(г/э)/ХХХХ
+                irows = InsetTypesDataTable.Select("InsetTypeID = 40649");
+                filter = string.Empty;
+                foreach (DataRow item in irows)
+                    filter += item["InsetTypeID"].ToString() + ",";
+                if (filter.Length > 0)
+                    filter = "InsetTypeID IN (" + filter.Substring(0, filter.Length - 1) + ")";
+                using (DataView DV = new DataView(ResultFrontsDataTable))
+                {
+                    DV.RowFilter = filter + " AND FrontName='" + FrontName + "' AND ColorType=" + ColorType;
+                    DV.Sort = "FrontName, ColorType";
+                    DT2 = DV.ToTable(true, new string[] { "Cost0" });
+                }
+                if (DT2.Rows.Count > 0)
+                {
+                    if (DT2.Rows.Count == 1)
+                    {
+                        rows = TempTable.Select("Front='" + FrontName + "' AND ColorType=" + ColorType);
+                        if (rows.Count() > 0)
+                        {
+                            TempTable.Rows[TempTable.Rows.IndexOf(rows[0])]["Cost8"] = DT2.Rows[0]["Cost0"].ToString();
+                        }
+                    }
+                    else
+                    {
+                        for (int j = 0; j < DT2.Rows.Count; j++)
+                        {
+                            using (DataView DV = new DataView(ResultFrontsDataTable))
+                            {
+                                DV.RowFilter = filter + " AND FrontName='" + FrontName + "' AND ColorType=" + ColorType + " AND Cost0='" + DT2.Rows[j]["Cost0"].ToString() + "'";
+                                DV.Sort = "FrontName, ColorType, TechnoProfileID, Height";
+                                DT3 = DV.ToTable(true, new string[] { "ColorID", "PatinaID", "TechnoProfileID", "Height" });
+                            }
+                            for (int x = 0; x < DT3.Rows.Count; x++)
+                            {
+                                Color = GetColorName(Convert.ToInt32(DT3.Rows[x]["ColorID"]));
+                                int TechnoProfileID = Convert.ToInt32(DT3.Rows[x]["TechnoProfileID"]);
+                                int Height = Convert.ToInt32(DT3.Rows[x]["Height"]);
+                                string TechnoProfileName = GetProfileName(Convert.ToInt32(DT3.Rows[x]["TechnoProfileID"]));
+                                if (Convert.ToInt32(DT3.Rows[x]["PatinaID"]) != -1)
+                                    Color += " " + GetPatinaName(Convert.ToInt32(DT3.Rows[x]["PatinaID"]));
+                                rows = TempTable.Select("InsetType<>" + InsetType + " AND Front='" + FrontName + " AND TechnoProfileID=" + TechnoProfileID + " AND Height=" + Height + 
+                                                        "'" + " AND Color='" + Color + "'");
+                                if (rows.Count() > 0)
+                                {
+                                    TempTable.Rows[TempTable.Rows.IndexOf(rows[0])]["Cost8"] = DT2.Rows[j]["Cost0"].ToString();
+                                }
+                                else
+                                {
+                                    DataRow NewRow = TempTable.NewRow();
+                                    NewRow["Measure"] = Measure;
+                                    NewRow["Front"] = FrontName;
+                                    NewRow["TechnoProfileID"] = TechnoProfileID;
+                                    if (Height != 0)
+                                        NewRow["Height"] = Height;
+                                    NewRow["TechnoProfileName"] = TechnoProfileName;
+                                    NewRow["Color"] = Color;
+                                    NewRow["ColorType"] = ColorType;
+                                    NewRow["Patina"] = string.Empty;
+                                    NewRow["Cost8"] = DT2.Rows[j]["Cost0"].ToString();
+                                    NewRow["CostGroup"] = true;
+                                    NewRow["InsetType"] = 8;
                                     NewRow["Index"] = Index++;
                                     TempTable.Rows.Add(NewRow);
                                 }
@@ -730,24 +878,30 @@ namespace Infinium
             using (DataView DV = new DataView(FrontsConfigDataTable))
             {
                 DV.RowFilter = "TechStoreSubGroupID=59 AND FrontID=" + FrontID;
-                DT2 = DV.ToTable(true, new string[] { "InsetTypeID", "OriginalPrice" });
+                DT2 = DV.ToTable(true, new string[] { "InsetTypeID", "TechnoProfileID", "Height", "OriginalPrice" });
             }
             for (int y = 0; y < DT2.Rows.Count; y++)
             {
-                DataRow[] fRows = FrontsConfigDataTable.Select("InsetTypeID=" + Convert.ToInt32(DT2.Rows[y]["InsetTypeID"]) + " AND FrontID=" + FrontID + " AND TechStoreSubGroupID=59 AND OriginalPrice='" + Convert.ToDecimal(DT2.Rows[y]["OriginalPrice"]) + "'");
+                DataRow[] fRows = FrontsConfigDataTable.Select("InsetTypeID=" + Convert.ToInt32(DT2.Rows[y]["InsetTypeID"]) +
+                                                               " AND Height=" + Convert.ToInt32(DT2.Rows[y]["Height"]) +
+                                                               " AND TechnoProfileID=" + Convert.ToInt32(DT2.Rows[y]["TechnoProfileID"]) + " AND FrontID=" + FrontID + " AND TechStoreSubGroupID=59 AND OriginalPrice='" + Convert.ToDecimal(DT2.Rows[y]["OriginalPrice"]) + "'");
                 for (int c = 0; c < fRows.Count(); c++)
                 {
-                    DataRow[] rows3 = ResultFrontsDataTable.Select("InsetTypeID=" + Convert.ToInt32(DT2.Rows[y]["InsetTypeID"]) + " AND FrontID=" + FrontID + " AND ColorID=" + Convert.ToInt32(fRows[c]["ColorID"]) + " AND Cost0='" + Convert.ToDecimal(fRows[c]["OriginalPrice"]) + "'");
+                    DataRow[] rows3 = ResultFrontsDataTable.Select("InsetTypeID=" + Convert.ToInt32(DT2.Rows[y]["InsetTypeID"]) +
+                                                                   " AND Height=" + Convert.ToInt32(DT2.Rows[y]["Height"]) +
+                                                                   " AND TechnoProfileID=" + Convert.ToInt32(DT2.Rows[y]["TechnoProfileID"]) + " AND FrontID=" + FrontID + " AND ColorID=" + Convert.ToInt32(fRows[c]["ColorID"]) + " AND Cost0='" + Convert.ToDecimal(fRows[c]["OriginalPrice"]) + "'");
                     if (rows3.Count() == 0)
                     {
                         DataRow NewRow = ResultFrontsDataTable.NewRow();
                         NewRow["Measure"] = fRows[c]["Measure"].ToString();
                         NewRow["FrontName"] = FrontName;
+                        NewRow["TechnoProfileName"] = GetProfileName(Convert.ToInt32(fRows[c]["TechnoProfileID"]));
+                        NewRow["TechnoProfileID"] = Convert.ToInt32(fRows[c]["TechnoProfileID"]);
                         NewRow["Color"] = GetColorName(Convert.ToInt32(fRows[c]["ColorID"]));
+                        NewRow["Height"] = Convert.ToInt32(fRows[c]["Height"]);
                         NewRow["FrontID"] = FrontID;
                         NewRow["ColorID"] = Convert.ToInt32(fRows[c]["ColorID"]);
                         NewRow["PatinaID"] = Convert.ToInt32(fRows[c]["PatinaID"]);
-                        NewRow["Height"] = -1;
                         NewRow["Width"] = -1;
                         NewRow["InsetTypeID"] = Convert.ToInt32(fRows[c]["InsetTypeID"]);
                         NewRow["ColorType"] = 1;
@@ -765,24 +919,30 @@ namespace Infinium
             using (DataView DV = new DataView(FrontsConfigDataTable))
             {
                 DV.RowFilter = "PatinaID=-1 AND TechStoreSubGroupID=60 AND FrontID=" + FrontID;
-                DT2 = DV.ToTable(true, new string[] { "InsetTypeID", "OriginalPrice" });
+                DT2 = DV.ToTable(true, new string[] { "InsetTypeID", "TechnoProfileID", "Height", "OriginalPrice" });
             }
             for (int y = 0; y < DT2.Rows.Count; y++)
             {
-                DataRow[] fRows = FrontsConfigDataTable.Select("InsetTypeID=" + Convert.ToInt32(DT2.Rows[y]["InsetTypeID"]) + " AND FrontID=" + FrontID + " AND PatinaID=-1 AND TechStoreSubGroupID=60 AND OriginalPrice='" + Convert.ToDecimal(DT2.Rows[y]["OriginalPrice"]) + "'");
+                DataRow[] fRows = FrontsConfigDataTable.Select("InsetTypeID=" + Convert.ToInt32(DT2.Rows[y]["InsetTypeID"]) +
+                                                               " AND Height=" + Convert.ToInt32(DT2.Rows[y]["Height"]) +
+                                                               " AND TechnoProfileID=" + Convert.ToInt32(DT2.Rows[y]["TechnoProfileID"]) + " AND FrontID=" + FrontID + " AND PatinaID=-1 AND TechStoreSubGroupID=60 AND OriginalPrice='" + Convert.ToDecimal(DT2.Rows[y]["OriginalPrice"]) + "'");
                 for (int c = 0; c < fRows.Count(); c++)
                 {
-                    DataRow[] rows3 = ResultFrontsDataTable.Select("InsetTypeID=" + Convert.ToInt32(DT2.Rows[y]["InsetTypeID"]) + " AND FrontID=" + FrontID + " AND ColorID=" + Convert.ToInt32(fRows[c]["ColorID"]) + " AND Cost0='" + Convert.ToDecimal(fRows[c]["OriginalPrice"]) + "'");
+                    DataRow[] rows3 = ResultFrontsDataTable.Select("InsetTypeID=" + Convert.ToInt32(DT2.Rows[y]["InsetTypeID"]) +
+                                                                   " AND Height=" + Convert.ToInt32(DT2.Rows[y]["Height"]) +
+                                                                   " AND TechnoProfileID=" + Convert.ToInt32(DT2.Rows[y]["TechnoProfileID"]) + " AND FrontID=" + FrontID + " AND ColorID=" + Convert.ToInt32(fRows[c]["ColorID"]) + " AND Cost0='" + Convert.ToDecimal(fRows[c]["OriginalPrice"]) + "'");
                     if (rows3.Count() == 0)
                     {
                         DataRow NewRow = ResultFrontsDataTable.NewRow();
                         NewRow["Measure"] = fRows[c]["Measure"].ToString();
                         NewRow["FrontName"] = FrontName;
+                        NewRow["TechnoProfileName"] = GetProfileName(Convert.ToInt32(fRows[c]["TechnoProfileID"]));
+                        NewRow["TechnoProfileID"] = Convert.ToInt32(fRows[c]["TechnoProfileID"]);
                         NewRow["Color"] = GetColorName(Convert.ToInt32(fRows[c]["ColorID"]));
+                        NewRow["Height"] = Convert.ToInt32(fRows[c]["Height"]);
                         NewRow["FrontID"] = FrontID;
                         NewRow["ColorID"] = Convert.ToInt32(fRows[c]["ColorID"]);
                         NewRow["PatinaID"] = Convert.ToInt32(fRows[c]["PatinaID"]);
-                        NewRow["Height"] = -1;
                         NewRow["Width"] = -1;
                         NewRow["InsetTypeID"] = Convert.ToInt32(fRows[c]["InsetTypeID"]);
                         NewRow["ColorType"] = 2;
@@ -796,24 +956,30 @@ namespace Infinium
             using (DataView DV = new DataView(FrontsConfigDataTable))
             {
                 DV.RowFilter = "PatinaID<>-1 AND TechStoreSubGroupID=60 AND FrontID=" + FrontID;
-                DT2 = DV.ToTable(true, new string[] { "InsetTypeID", "OriginalPrice" });
+                DT2 = DV.ToTable(true, new string[] { "InsetTypeID", "TechnoProfileID", "Height", "OriginalPrice" });
             }
             for (int y = 0; y < DT2.Rows.Count; y++)
             {
-                DataRow[] fRows = FrontsConfigDataTable.Select("InsetTypeID=" + Convert.ToInt32(DT2.Rows[y]["InsetTypeID"]) + " AND FrontID=" + FrontID + " AND PatinaID<>-1 AND TechStoreSubGroupID=60 AND OriginalPrice='" + Convert.ToDecimal(DT2.Rows[y]["OriginalPrice"]) + "'");
+                DataRow[] fRows = FrontsConfigDataTable.Select("InsetTypeID=" + Convert.ToInt32(DT2.Rows[y]["InsetTypeID"]) +
+                                                               " AND Height=" + Convert.ToInt32(DT2.Rows[y]["Height"]) +
+                                                               " AND TechnoProfileID=" + Convert.ToInt32(DT2.Rows[y]["TechnoProfileID"]) + " AND FrontID=" + FrontID + " AND PatinaID<>-1 AND TechStoreSubGroupID=60 AND OriginalPrice='" + Convert.ToDecimal(DT2.Rows[y]["OriginalPrice"]) + "'");
                 for (int c = 0; c < fRows.Count(); c++)
                 {
-                    DataRow[] rows3 = ResultFrontsDataTable.Select("InsetTypeID=" + Convert.ToInt32(DT2.Rows[y]["InsetTypeID"]) + " AND FrontID=" + FrontID + " AND ColorID=" + Convert.ToInt32(fRows[c]["ColorID"]) + " AND Cost0='" + Convert.ToDecimal(fRows[c]["OriginalPrice"]) + "'");
+                    DataRow[] rows3 = ResultFrontsDataTable.Select("InsetTypeID=" + Convert.ToInt32(DT2.Rows[y]["InsetTypeID"]) +
+                                                                   " AND Height=" + Convert.ToInt32(DT2.Rows[y]["Height"]) +
+                                                                   " AND TechnoProfileID=" + Convert.ToInt32(DT2.Rows[y]["TechnoProfileID"]) + " AND FrontID=" + FrontID + " AND ColorID=" + Convert.ToInt32(fRows[c]["ColorID"]) + " AND Cost0='" + Convert.ToDecimal(fRows[c]["OriginalPrice"]) + "'");
                     if (rows3.Count() == 0)
                     {
                         DataRow NewRow = ResultFrontsDataTable.NewRow();
                         NewRow["Measure"] = fRows[c]["Measure"].ToString();
                         NewRow["FrontName"] = FrontName;
+                        NewRow["TechnoProfileName"] = GetProfileName(Convert.ToInt32(fRows[c]["TechnoProfileID"]));
+                        NewRow["TechnoProfileID"] = Convert.ToInt32(fRows[c]["TechnoProfileID"]);
                         NewRow["Color"] = GetColorName(Convert.ToInt32(fRows[c]["ColorID"]));
+                        NewRow["Height"] = Convert.ToInt32(fRows[c]["Height"]);
                         NewRow["FrontID"] = FrontID;
                         NewRow["ColorID"] = Convert.ToInt32(fRows[c]["ColorID"]);
                         NewRow["PatinaID"] = Convert.ToInt32(fRows[c]["PatinaID"]);
-                        NewRow["Height"] = -1;
                         NewRow["Width"] = -1;
                         NewRow["InsetTypeID"] = Convert.ToInt32(fRows[c]["InsetTypeID"]);
                         NewRow["ColorType"] = 3;
@@ -831,24 +997,30 @@ namespace Infinium
             using (DataView DV = new DataView(FrontsConfigDataTable))
             {
                 DV.RowFilter = "PatinaID=-1 AND TechStoreSubGroupID=61 AND FrontID=" + FrontID;
-                DT2 = DV.ToTable(true, new string[] { "InsetTypeID", "OriginalPrice" });
+                DT2 = DV.ToTable(true, new string[] { "InsetTypeID", "TechnoProfileID", "Height", "OriginalPrice" });
             }
             for (int y = 0; y < DT2.Rows.Count; y++)
             {
-                DataRow[] fRows = FrontsConfigDataTable.Select("InsetTypeID=" + Convert.ToInt32(DT2.Rows[y]["InsetTypeID"]) + " AND FrontID=" + FrontID + " AND PatinaID=-1 AND TechStoreSubGroupID=61 AND OriginalPrice='" + Convert.ToDecimal(DT2.Rows[y]["OriginalPrice"]) + "'");
+                DataRow[] fRows = FrontsConfigDataTable.Select("InsetTypeID=" + Convert.ToInt32(DT2.Rows[y]["InsetTypeID"]) +
+                                                               " AND Height=" + Convert.ToInt32(DT2.Rows[y]["Height"]) +
+                                                               " AND TechnoProfileID=" + Convert.ToInt32(DT2.Rows[y]["TechnoProfileID"]) + " AND FrontID=" + FrontID + " AND PatinaID=-1 AND TechStoreSubGroupID=61 AND OriginalPrice='" + Convert.ToDecimal(DT2.Rows[y]["OriginalPrice"]) + "'");
                 for (int c = 0; c < fRows.Count(); c++)
                 {
-                    DataRow[] rows3 = ResultFrontsDataTable.Select("InsetTypeID=" + Convert.ToInt32(DT2.Rows[y]["InsetTypeID"]) + " AND FrontID=" + FrontID + " AND ColorID=" + Convert.ToInt32(fRows[c]["ColorID"]) + " AND Cost0='" + Convert.ToDecimal(fRows[c]["OriginalPrice"]) + "'");
+                    DataRow[] rows3 = ResultFrontsDataTable.Select("InsetTypeID=" + Convert.ToInt32(DT2.Rows[y]["InsetTypeID"]) +
+                                                                   " AND Height=" + Convert.ToInt32(DT2.Rows[y]["Height"]) +
+                                                                   " AND TechnoProfileID=" + Convert.ToInt32(DT2.Rows[y]["TechnoProfileID"]) + " AND FrontID=" + FrontID + " AND ColorID=" + Convert.ToInt32(fRows[c]["ColorID"]) + " AND Cost0='" + Convert.ToDecimal(fRows[c]["OriginalPrice"]) + "'");
                     if (rows3.Count() == 0)
                     {
                         DataRow NewRow = ResultFrontsDataTable.NewRow();
                         NewRow["Measure"] = fRows[c]["Measure"].ToString();
                         NewRow["FrontName"] = FrontName;
+                        NewRow["TechnoProfileName"] = GetProfileName(Convert.ToInt32(fRows[c]["TechnoProfileID"]));
+                        NewRow["TechnoProfileID"] = Convert.ToInt32(fRows[c]["TechnoProfileID"]);
                         NewRow["Color"] = GetColorName(Convert.ToInt32(fRows[c]["ColorID"]));
+                        NewRow["Height"] = Convert.ToInt32(fRows[c]["Height"]);
                         NewRow["FrontID"] = FrontID;
                         NewRow["ColorID"] = Convert.ToInt32(fRows[c]["ColorID"]);
                         NewRow["PatinaID"] = Convert.ToInt32(fRows[c]["PatinaID"]);
-                        NewRow["Height"] = -1;
                         NewRow["Width"] = -1;
                         NewRow["InsetTypeID"] = Convert.ToInt32(fRows[c]["InsetTypeID"]);
                         NewRow["ColorType"] = 4;
@@ -861,24 +1033,30 @@ namespace Infinium
             using (DataView DV = new DataView(FrontsConfigDataTable))
             {
                 DV.RowFilter = "PatinaID<>-1 AND TechStoreSubGroupID=61 AND FrontID=" + FrontID;
-                DT2 = DV.ToTable(true, new string[] { "InsetTypeID", "OriginalPrice" });
+                DT2 = DV.ToTable(true, new string[] { "InsetTypeID", "TechnoProfileID", "Height", "OriginalPrice" });
             }
             for (int y = 0; y < DT2.Rows.Count; y++)
             {
-                DataRow[] fRows = FrontsConfigDataTable.Select("InsetTypeID=" + Convert.ToInt32(DT2.Rows[y]["InsetTypeID"]) + " AND FrontID=" + FrontID + " AND PatinaID<>-1 AND TechStoreSubGroupID=61 AND OriginalPrice='" + Convert.ToDecimal(DT2.Rows[y]["OriginalPrice"]) + "'");
+                DataRow[] fRows = FrontsConfigDataTable.Select("InsetTypeID=" + Convert.ToInt32(DT2.Rows[y]["InsetTypeID"]) +
+                                                               " AND Height=" + Convert.ToInt32(DT2.Rows[y]["Height"]) +
+                                                               " AND TechnoProfileID=" + Convert.ToInt32(DT2.Rows[y]["TechnoProfileID"]) + " AND FrontID=" + FrontID + " AND PatinaID<>-1 AND TechStoreSubGroupID=61 AND OriginalPrice='" + Convert.ToDecimal(DT2.Rows[y]["OriginalPrice"]) + "'");
                 for (int c = 0; c < fRows.Count(); c++)
                 {
-                    DataRow[] rows3 = ResultFrontsDataTable.Select("InsetTypeID=" + Convert.ToInt32(DT2.Rows[y]["InsetTypeID"]) + " AND FrontID=" + FrontID + " AND ColorID=" + Convert.ToInt32(fRows[c]["ColorID"]) + " AND Cost0='" + Convert.ToDecimal(fRows[c]["OriginalPrice"]) + "'");
+                    DataRow[] rows3 = ResultFrontsDataTable.Select("InsetTypeID=" + Convert.ToInt32(DT2.Rows[y]["InsetTypeID"]) +
+                                                                   " AND Height=" + Convert.ToInt32(DT2.Rows[y]["Height"]) +
+                                                                   " AND TechnoProfileID=" + Convert.ToInt32(DT2.Rows[y]["TechnoProfileID"]) + " AND FrontID=" + FrontID + " AND ColorID=" + Convert.ToInt32(fRows[c]["ColorID"]) + " AND Cost0='" + Convert.ToDecimal(fRows[c]["OriginalPrice"]) + "'");
                     if (rows3.Count() == 0)
                     {
                         DataRow NewRow = ResultFrontsDataTable.NewRow();
                         NewRow["Measure"] = fRows[c]["Measure"].ToString();
                         NewRow["FrontName"] = FrontName;
+                        NewRow["TechnoProfileName"] = GetProfileName(Convert.ToInt32(fRows[c]["TechnoProfileID"]));
+                        NewRow["TechnoProfileID"] = Convert.ToInt32(fRows[c]["TechnoProfileID"]);
                         NewRow["Color"] = GetColorName(Convert.ToInt32(fRows[c]["ColorID"]));
+                        NewRow["Height"] = Convert.ToInt32(fRows[c]["Height"]);
                         NewRow["FrontID"] = FrontID;
                         NewRow["ColorID"] = Convert.ToInt32(fRows[c]["ColorID"]);
                         NewRow["PatinaID"] = Convert.ToInt32(fRows[c]["PatinaID"]);
-                        NewRow["Height"] = -1;
                         NewRow["Width"] = -1;
                         NewRow["InsetTypeID"] = Convert.ToInt32(fRows[c]["InsetTypeID"]);
                         NewRow["ColorType"] = 5;
@@ -896,24 +1074,30 @@ namespace Infinium
             using (DataView DV = new DataView(FrontsConfigDataTable))
             {
                 DV.RowFilter = "PatinaID=-1 AND TechStoreSubGroupID=63 AND FrontID=" + FrontID;
-                DT2 = DV.ToTable(true, new string[] { "InsetTypeID", "OriginalPrice" });
+                DT2 = DV.ToTable(true, new string[] { "InsetTypeID", "TechnoProfileID", "Height", "OriginalPrice" });
             }
             for (int y = 0; y < DT2.Rows.Count; y++)
             {
-                DataRow[] fRows = FrontsConfigDataTable.Select("InsetTypeID=" + Convert.ToInt32(DT2.Rows[y]["InsetTypeID"]) + " AND FrontID=" + FrontID + " AND PatinaID=-1 AND TechStoreSubGroupID=63 AND OriginalPrice='" + Convert.ToDecimal(DT2.Rows[y]["OriginalPrice"]) + "'");
+                DataRow[] fRows = FrontsConfigDataTable.Select("InsetTypeID=" + Convert.ToInt32(DT2.Rows[y]["InsetTypeID"]) +
+                                                               " AND Height=" + Convert.ToInt32(DT2.Rows[y]["Height"]) +
+                                                               " AND TechnoProfileID=" + Convert.ToInt32(DT2.Rows[y]["TechnoProfileID"]) + " AND FrontID=" + FrontID + " AND PatinaID=-1 AND TechStoreSubGroupID=63 AND OriginalPrice='" + Convert.ToDecimal(DT2.Rows[y]["OriginalPrice"]) + "'");
                 for (int c = 0; c < fRows.Count(); c++)
                 {
-                    DataRow[] rows3 = ResultFrontsDataTable.Select("InsetTypeID=" + Convert.ToInt32(DT2.Rows[y]["InsetTypeID"]) + " AND FrontID=" + FrontID + " AND ColorID=" + Convert.ToInt32(fRows[c]["ColorID"]) + " AND Cost0='" + Convert.ToDecimal(fRows[c]["OriginalPrice"]) + "'");
+                    DataRow[] rows3 = ResultFrontsDataTable.Select("InsetTypeID=" + Convert.ToInt32(DT2.Rows[y]["InsetTypeID"]) +
+                                                                   " AND Height=" + Convert.ToInt32(DT2.Rows[y]["Height"]) +
+                                                                   " AND TechnoProfileID=" + Convert.ToInt32(DT2.Rows[y]["TechnoProfileID"]) + " AND FrontID=" + FrontID + " AND ColorID=" + Convert.ToInt32(fRows[c]["ColorID"]) + " AND Cost0='" + Convert.ToDecimal(fRows[c]["OriginalPrice"]) + "'");
                     if (rows3.Count() == 0)
                     {
                         DataRow NewRow = ResultFrontsDataTable.NewRow();
                         NewRow["Measure"] = fRows[c]["Measure"].ToString();
                         NewRow["FrontName"] = FrontName;
                         NewRow["Color"] = GetColorName(Convert.ToInt32(fRows[c]["ColorID"]));
+                        NewRow["TechnoProfileName"] = GetProfileName(Convert.ToInt32(fRows[c]["TechnoProfileID"]));
+                        NewRow["TechnoProfileID"] = Convert.ToInt32(fRows[c]["TechnoProfileID"]);
+                        NewRow["Height"] = Convert.ToInt32(fRows[c]["Height"]);
                         NewRow["FrontID"] = FrontID;
                         NewRow["ColorID"] = Convert.ToInt32(fRows[c]["ColorID"]);
                         NewRow["PatinaID"] = Convert.ToInt32(fRows[c]["PatinaID"]);
-                        NewRow["Height"] = -1;
                         NewRow["Width"] = -1;
                         NewRow["InsetTypeID"] = Convert.ToInt32(fRows[c]["InsetTypeID"]);
                         NewRow["ColorType"] = 6;
@@ -926,24 +1110,30 @@ namespace Infinium
             using (DataView DV = new DataView(FrontsConfigDataTable))
             {
                 DV.RowFilter = "PatinaID<>-1 AND TechStoreSubGroupID=63 AND FrontID=" + FrontID;
-                DT2 = DV.ToTable(true, new string[] { "InsetTypeID", "OriginalPrice" });
+                DT2 = DV.ToTable(true, new string[] { "InsetTypeID", "TechnoProfileID", "Height", "OriginalPrice" });
             }
             for (int y = 0; y < DT2.Rows.Count; y++)
             {
-                DataRow[] fRows = FrontsConfigDataTable.Select("InsetTypeID=" + Convert.ToInt32(DT2.Rows[y]["InsetTypeID"]) + " AND FrontID=" + FrontID + " AND PatinaID<>-1 AND TechStoreSubGroupID=63 AND OriginalPrice='" + Convert.ToDecimal(DT2.Rows[y]["OriginalPrice"]) + "'");
+                DataRow[] fRows = FrontsConfigDataTable.Select("InsetTypeID=" + Convert.ToInt32(DT2.Rows[y]["InsetTypeID"]) +
+                                                               " AND Height=" + Convert.ToInt32(DT2.Rows[y]["Height"]) +
+                                                               " AND TechnoProfileID=" + Convert.ToInt32(DT2.Rows[y]["TechnoProfileID"]) + " AND FrontID=" + FrontID + " AND PatinaID<>-1 AND TechStoreSubGroupID=63 AND OriginalPrice='" + Convert.ToDecimal(DT2.Rows[y]["OriginalPrice"]) + "'");
                 for (int c = 0; c < fRows.Count(); c++)
                 {
-                    DataRow[] rows3 = ResultFrontsDataTable.Select("InsetTypeID=" + Convert.ToInt32(DT2.Rows[y]["InsetTypeID"]) + " AND FrontID=" + FrontID + " AND ColorID=" + Convert.ToInt32(fRows[c]["ColorID"]) + " AND Cost0='" + Convert.ToDecimal(fRows[c]["OriginalPrice"]) + "'");
+                    DataRow[] rows3 = ResultFrontsDataTable.Select("InsetTypeID=" + Convert.ToInt32(DT2.Rows[y]["InsetTypeID"]) +
+                                                                   " AND Height=" + Convert.ToInt32(DT2.Rows[y]["Height"]) +
+                                                                   " AND TechnoProfileID=" + Convert.ToInt32(DT2.Rows[y]["TechnoProfileID"]) + " AND FrontID=" + FrontID + " AND ColorID=" + Convert.ToInt32(fRows[c]["ColorID"]) + " AND Cost0='" + Convert.ToDecimal(fRows[c]["OriginalPrice"]) + "'");
                     if (rows3.Count() == 0)
                     {
                         DataRow NewRow = ResultFrontsDataTable.NewRow();
                         NewRow["Measure"] = fRows[c]["Measure"].ToString();
                         NewRow["FrontName"] = FrontName;
+                        NewRow["TechnoProfileName"] = GetProfileName(Convert.ToInt32(fRows[c]["TechnoProfileID"]));
+                        NewRow["TechnoProfileID"] = Convert.ToInt32(fRows[c]["TechnoProfileID"]);
                         NewRow["Color"] = GetColorName(Convert.ToInt32(fRows[c]["ColorID"]));
+                        NewRow["Height"] = Convert.ToInt32(fRows[c]["Height"]);
                         NewRow["FrontID"] = FrontID;
                         NewRow["ColorID"] = Convert.ToInt32(fRows[c]["ColorID"]);
                         NewRow["PatinaID"] = Convert.ToInt32(fRows[c]["PatinaID"]);
-                        NewRow["Height"] = -1;
                         NewRow["Width"] = -1;
                         NewRow["InsetTypeID"] = Convert.ToInt32(fRows[c]["InsetTypeID"]);
                         NewRow["ColorType"] = 7;
@@ -961,24 +1151,30 @@ namespace Infinium
             using (DataView DV = new DataView(FrontsConfigDataTable))
             {
                 DV.RowFilter = "TechStoreSubGroupID=62 AND FrontID=" + FrontID;
-                DT2 = DV.ToTable(true, new string[] { "InsetTypeID", "OriginalPrice" });
+                DT2 = DV.ToTable(true, new string[] { "InsetTypeID", "TechnoProfileID", "Height", "OriginalPrice" });
             }
             for (int y = 0; y < DT2.Rows.Count; y++)
             {
-                DataRow[] fRows = FrontsConfigDataTable.Select("InsetTypeID=" + Convert.ToInt32(DT2.Rows[y]["InsetTypeID"]) + " AND FrontID=" + FrontID + " AND TechStoreSubGroupID=62 AND OriginalPrice='" + Convert.ToDecimal(DT2.Rows[y]["OriginalPrice"]) + "'");
+                DataRow[] fRows = FrontsConfigDataTable.Select("InsetTypeID=" + Convert.ToInt32(DT2.Rows[y]["InsetTypeID"]) +
+                                                               " AND Height=" + Convert.ToInt32(DT2.Rows[y]["Height"]) +
+                                                               " AND TechnoProfileID=" + Convert.ToInt32(DT2.Rows[y]["TechnoProfileID"]) + " AND FrontID=" + FrontID + " AND TechStoreSubGroupID=62 AND OriginalPrice='" + Convert.ToDecimal(DT2.Rows[y]["OriginalPrice"]) + "'");
                 for (int c = 0; c < fRows.Count(); c++)
                 {
-                    DataRow[] rows3 = ResultFrontsDataTable.Select("InsetTypeID=" + Convert.ToInt32(DT2.Rows[y]["InsetTypeID"]) + " AND FrontID=" + FrontID + " AND ColorID=" + Convert.ToInt32(fRows[c]["ColorID"]) + " AND Cost0='" + Convert.ToDecimal(fRows[c]["OriginalPrice"]) + "'");
+                    DataRow[] rows3 = ResultFrontsDataTable.Select("InsetTypeID=" + Convert.ToInt32(DT2.Rows[y]["InsetTypeID"]) +
+                                                                   " AND Height=" + Convert.ToInt32(DT2.Rows[y]["Height"]) +
+                                                                   " AND TechnoProfileID=" + Convert.ToInt32(DT2.Rows[y]["TechnoProfileID"]) + " AND FrontID=" + FrontID + " AND ColorID=" + Convert.ToInt32(fRows[c]["ColorID"]) + " AND Cost0='" + Convert.ToDecimal(fRows[c]["OriginalPrice"]) + "'");
                     if (rows3.Count() == 0)
                     {
                         DataRow NewRow = ResultFrontsDataTable.NewRow();
                         NewRow["Measure"] = fRows[c]["Measure"].ToString();
                         NewRow["FrontName"] = FrontName;
+                        NewRow["TechnoProfileName"] = GetProfileName(Convert.ToInt32(fRows[c]["TechnoProfileID"]));
+                        NewRow["TechnoProfileID"] = Convert.ToInt32(fRows[c]["TechnoProfileID"]);
                         NewRow["Color"] = GetColorName(Convert.ToInt32(fRows[c]["ColorID"]));
+                        NewRow["Height"] = Convert.ToInt32(fRows[c]["Height"]);
                         NewRow["FrontID"] = FrontID;
                         NewRow["ColorID"] = Convert.ToInt32(fRows[c]["ColorID"]);
                         NewRow["PatinaID"] = Convert.ToInt32(fRows[c]["PatinaID"]);
-                        NewRow["Height"] = -1;
                         NewRow["Width"] = -1;
                         NewRow["InsetTypeID"] = Convert.ToInt32(fRows[c]["InsetTypeID"]);
                         NewRow["ColorType"] = 8;
@@ -996,27 +1192,35 @@ namespace Infinium
             using (DataView DV = new DataView(FrontsConfigDataTable))
             {
                 DV.RowFilter = "TechStoreSubGroupID IS NULL AND FrontID=" + FrontID;
-                DT2 = DV.ToTable(true, new string[] { "InsetTypeID", "OriginalPrice" });
+                DT2 = DV.ToTable(true, new string[] { "InsetTypeID", "TechnoProfileID", "Height", "OriginalPrice" });
             }
             for (int y = 0; y < DT2.Rows.Count; y++)
             {
-                DataRow[] fRows = FrontsConfigDataTable.Select("InsetTypeID=" + Convert.ToInt32(DT2.Rows[y]["InsetTypeID"]) + " AND FrontID=" + FrontID + " AND TechStoreSubGroupID IS NULL AND OriginalPrice='" + Convert.ToDecimal(DT2.Rows[y]["OriginalPrice"]) + "'");
+                DataRow[] fRows = FrontsConfigDataTable.Select("InsetTypeID=" + Convert.ToInt32(DT2.Rows[y]["InsetTypeID"]) +
+                                                               " AND TechnoProfileID=" + Convert.ToInt32(DT2.Rows[y]["TechnoProfileID"]) +
+                                                               " AND Height=" + Convert.ToInt32(DT2.Rows[y]["Height"]) + 
+                                                               " AND FrontID=" + FrontID + " AND TechStoreSubGroupID IS NULL AND OriginalPrice='" + Convert.ToDecimal(DT2.Rows[y]["OriginalPrice"]) + "'");
                 for (int c = 0; c < fRows.Count(); c++)
                 {
-                    DataRow[] rows3 = ResultFrontsDataTable.Select("InsetTypeID=" + Convert.ToInt32(DT2.Rows[y]["InsetTypeID"]) + " AND FrontID=" + FrontID + " AND ColorID=" + Convert.ToInt32(fRows[c]["ColorID"]) + " AND Cost0='" + Convert.ToDecimal(fRows[c]["OriginalPrice"]) + "'");
+                    DataRow[] rows3 = ResultFrontsDataTable.Select("InsetTypeID=" + Convert.ToInt32(DT2.Rows[y]["InsetTypeID"]) +
+                                                                   " AND TechnoProfileID=" + Convert.ToInt32(DT2.Rows[y]["TechnoProfileID"]) +
+                                                                   " AND Height=" + Convert.ToInt32(DT2.Rows[y]["Height"]) + 
+                                                                   " AND FrontID=" + FrontID + " AND ColorID=" + Convert.ToInt32(fRows[c]["ColorID"]) + " AND Cost0='" + Convert.ToDecimal(fRows[c]["OriginalPrice"]) + "'");
                     if (rows3.Count() == 0)
                     {
                         DataRow NewRow = ResultFrontsDataTable.NewRow();
                         NewRow["Measure"] = fRows[c]["Measure"].ToString();
                         NewRow["FrontName"] = FrontName;
+                        NewRow["TechnoProfileName"] = GetProfileName(Convert.ToInt32(fRows[c]["TechnoProfileID"]));
+                        NewRow["TechnoProfileID"] = Convert.ToInt32(fRows[c]["TechnoProfileID"]);
                         NewRow["Color"] = GetColorName(Convert.ToInt32(fRows[c]["ColorID"]));
+                        NewRow["Height"] = Convert.ToInt32(fRows[c]["Height"]);
                         NewRow["FrontID"] = FrontID;
                         NewRow["ColorID"] = Convert.ToInt32(fRows[c]["ColorID"]);
                         NewRow["PatinaID"] = Convert.ToInt32(fRows[c]["PatinaID"]);
-                        NewRow["Height"] = -1;
                         NewRow["Width"] = -1;
                         NewRow["InsetTypeID"] = Convert.ToInt32(fRows[c]["InsetTypeID"]);
-                        NewRow["ColorType"] = 8;
+                        NewRow["ColorType"] = 9;
                         NewRow["ColorGroup"] = 1;
                         NewRow["Cost0"] = Convert.ToDecimal(fRows[c]["OriginalPrice"]);
                         ResultFrontsDataTable.Rows.Add(NewRow);
@@ -1034,7 +1238,7 @@ namespace Infinium
             return name;
         }
 
-        public string GetColorName(int ColorID)
+        private string GetColorName(int ColorID)
         {
             string name = string.Empty;
             DataRow[] Rows = FrameColorsDataTable.Select("ColorID = " + ColorID);
@@ -1043,7 +1247,7 @@ namespace Infinium
             return name;
         }
 
-        public string GetPatinaName(int PatinaID)
+        private string GetPatinaName(int PatinaID)
         {
             string name = string.Empty;
             DataRow[] Rows = PatinaDataTable.Select("PatinaID = " + PatinaID);
@@ -1052,6 +1256,14 @@ namespace Infinium
             return name;
         }
 
+        private string GetProfileName(int ID)
+        {
+            string name = string.Empty;
+            DataRow[] rows = ProfileNamesDataTable.Select("ProfileID=" + ID);
+            if (rows.Count() > 0)
+                name = rows[0]["ProfileName"].ToString();
+            return name;
+        }
         public void CreateReport(ref HSSFWorkbook hssfworkbook, int ClientID, decimal PriceGroup)
         {
             bool HasExcluzive = false;
@@ -1074,17 +1286,19 @@ namespace Infinium
                 int RowIndex = 1;
                 sheet1.SetColumnWidth(DisplayIndex++, 25 * 256);
                 sheet1.SetColumnWidth(DisplayIndex++, 20 * 256);
+                sheet1.SetColumnWidth(DisplayIndex++, 15 * 256);
                 sheet1.SetColumnWidth(DisplayIndex++, 8 * 256);
-                //sheet1.SetColumnWidth(DisplayIndex++, 8 * 256);
+                sheet1.SetColumnWidth(DisplayIndex++, 8 * 256);
                 sheet1.SetColumnWidth(DisplayIndex++, 11 * 256);
                 sheet1.SetColumnWidth(DisplayIndex++, 11 * 256);
                 sheet1.SetColumnWidth(DisplayIndex++, 8 * 256);
+                sheet1.SetColumnWidth(DisplayIndex++, 8 * 256);
+                sheet1.SetColumnWidth(DisplayIndex++, 8 * 256);
+                sheet1.SetColumnWidth(DisplayIndex++, 8 * 256);
+                sheet1.SetColumnWidth(DisplayIndex++, 8 * 256);
+                sheet1.SetColumnWidth(DisplayIndex++, 8 * 256);
+                sheet1.SetColumnWidth(DisplayIndex++, 8 * 256);
                 sheet1.SetColumnWidth(DisplayIndex++, 11 * 256);
-                sheet1.SetColumnWidth(DisplayIndex++, 8 * 256);
-                sheet1.SetColumnWidth(DisplayIndex++, 8 * 256);
-                sheet1.SetColumnWidth(DisplayIndex++, 8 * 256);
-                sheet1.SetColumnWidth(DisplayIndex++, 8 * 256);
-                sheet1.SetColumnWidth(DisplayIndex++, 8 * 256);
 
                 HSSFFont HeaderF = hssfworkbook.CreateFont();
                 HeaderF.FontHeightInPoints = 11;
@@ -1104,8 +1318,10 @@ namespace Infinium
                 cell.CellStyle = HeaderCS;
                 cell = HSSFCellUtil.CreateCell(r, DisplayIndex++, "Цвет");
                 cell.CellStyle = HeaderCS;
-                //cell = HSSFCellUtil.CreateCell(r, DisplayIndex++, "Патина");
-                //cell.CellStyle = HeaderCS;
+                cell = HSSFCellUtil.CreateCell(r, DisplayIndex++, "Вид");
+                cell.CellStyle = HeaderCS;
+                cell = HSSFCellUtil.CreateCell(r, DisplayIndex++, "Высота");
+                cell.CellStyle = HeaderCS;
                 cell = HSSFCellUtil.CreateCell(r, DisplayIndex++, "Ед.изм.");
                 cell.CellStyle = HeaderCS;
                 cell = HSSFCellUtil.CreateCell(r, DisplayIndex++, "Витрина");
@@ -1124,10 +1340,12 @@ namespace Infinium
                 {
                     cell = HSSFCellUtil.CreateCell(r, DisplayIndex++, "Пн-10");
                     cell.CellStyle = HeaderCS;
-                    sheet1.CreateFreezePane(10, 2, 10, 2);
+                    sheet1.CreateFreezePane(13, 2, 13, 2);
                 }
                 else
-                    sheet1.CreateFreezePane(9, 2, 9, 2);
+                    sheet1.CreateFreezePane(12, 2, 12, 2);
+                cell = HSSFCellUtil.CreateCell(r, DisplayIndex++, "МДФ-2(г/э)/ХХХХ");
+                cell.CellStyle = HeaderCS;
                 RowIndex++;
 
                 ReportToExcel(ExcluziveTable, ref hssfworkbook, ref sheet1, ref RowIndex);
@@ -1154,17 +1372,20 @@ namespace Infinium
                 int RowIndex = 1;
                 sheet2.SetColumnWidth(DisplayIndex++, 25 * 256);
                 sheet2.SetColumnWidth(DisplayIndex++, 20 * 256);
+                sheet2.SetColumnWidth(DisplayIndex++, 15 * 256);
+                sheet2.SetColumnWidth(DisplayIndex++, 8 * 256);
                 sheet2.SetColumnWidth(DisplayIndex++, 8 * 256);
                 //sheet2.SetColumnWidth(DisplayIndex++, 8 * 256);
-                sheet2.SetColumnWidth(DisplayIndex++, 11 * 256);
-                sheet2.SetColumnWidth(DisplayIndex++, 11 * 256);
-                sheet2.SetColumnWidth(DisplayIndex++, 8 * 256);
-                sheet2.SetColumnWidth(DisplayIndex++, 11 * 256);
+                sheet2.SetColumnWidth(DisplayIndex++, 10 * 256);
+                sheet2.SetColumnWidth(DisplayIndex++, 10 * 256);
                 sheet2.SetColumnWidth(DisplayIndex++, 8 * 256);
                 sheet2.SetColumnWidth(DisplayIndex++, 8 * 256);
                 sheet2.SetColumnWidth(DisplayIndex++, 8 * 256);
                 sheet2.SetColumnWidth(DisplayIndex++, 8 * 256);
                 sheet2.SetColumnWidth(DisplayIndex++, 8 * 256);
+                sheet2.SetColumnWidth(DisplayIndex++, 8 * 256);
+                sheet2.SetColumnWidth(DisplayIndex++, 8 * 256);
+                sheet2.SetColumnWidth(DisplayIndex++, 10 * 256);
 
                 HSSFFont HeaderF = hssfworkbook.CreateFont();
                 HeaderF.FontHeightInPoints = 11;
@@ -1185,8 +1406,10 @@ namespace Infinium
                 cell.CellStyle = HeaderCS;
                 cell = HSSFCellUtil.CreateCell(r, DisplayIndex++, "Цвет");
                 cell.CellStyle = HeaderCS;
-                //cell = HSSFCellUtil.CreateCell(r, DisplayIndex++, "Патина");
-                //cell.CellStyle = HeaderCS;
+                cell = HSSFCellUtil.CreateCell(r, DisplayIndex++, "Вид");
+                cell.CellStyle = HeaderCS;
+                cell = HSSFCellUtil.CreateCell(r, DisplayIndex++, "Высота");
+                cell.CellStyle = HeaderCS;
                 cell = HSSFCellUtil.CreateCell(r, DisplayIndex++, "Ед.изм.");
                 cell.CellStyle = HeaderCS;
                 cell = HSSFCellUtil.CreateCell(r, DisplayIndex++, "Витрина");
@@ -1201,13 +1424,15 @@ namespace Infinium
                 cell.CellStyle = HeaderCS;
                 cell = HSSFCellUtil.CreateCell(r, DisplayIndex++, "Пн-03");
                 cell.CellStyle = HeaderCS;
+                cell = HSSFCellUtil.CreateCell(r, DisplayIndex++, "МДФ-2(г/э)/ХХХХ");
+                cell.CellStyle = HeaderCS;
                 //if (HasPlanka)
                 //{
                 //    cell = HSSFCellUtil.CreateCell(r, DisplayIndex++, "Пн-10");
                 //    cell.CellStyle = HeaderCS;
                 //}
                 RowIndex++;
-                sheet2.CreateFreezePane(9, 2, 9, 2);
+                sheet2.CreateFreezePane(12, 2, 12, 2);
 
                 ReportToExcel(NotExcluziveTable, ref hssfworkbook, ref sheet2, ref RowIndex);
                 RowIndex++;
@@ -1265,9 +1490,13 @@ namespace Infinium
                     cell.SetCellValue(TempTable.Rows[x]["Color"].ToString());
                     cell.CellStyle = SimpleRightAlignCS;
                 }
-                //cell = r.CreateCell(DisplayIndex++);
-                //cell.SetCellValue(TempTable.Rows[x]["Patina"].ToString());
-                //cell.CellStyle = SimpleCS;
+                cell = r.CreateCell(DisplayIndex++);
+                cell.SetCellValue(TempTable.Rows[x]["TechnoProfileName"].ToString());
+                cell.CellStyle = ItemCS;
+                cell = r.CreateCell(DisplayIndex++);
+                if (TempTable.Rows[x]["Height"] != DBNull.Value)
+                    cell.SetCellValue(Convert.ToInt32(TempTable.Rows[x]["Height"]));
+                cell.CellStyle = CostCS;
                 cell = r.CreateCell(DisplayIndex++);
                 cell.SetCellValue(TempTable.Rows[x]["Measure"].ToString());
                 cell.CellStyle = SimpleCS;
@@ -1302,6 +1531,10 @@ namespace Infinium
                         cell.SetCellValue(Convert.ToDouble(TempTable.Rows[x]["Cost7"]));
                     cell.CellStyle = CostCS;
                 }
+                cell = r.CreateCell(DisplayIndex++);
+                if (TempTable.Rows[x]["Cost8"] != DBNull.Value)
+                    cell.SetCellValue(Convert.ToDouble(TempTable.Rows[x]["Cost8"]));
+                cell.CellStyle = CostCS;
                 RowIndex++;
             }
 
