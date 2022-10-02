@@ -1655,7 +1655,7 @@ namespace Infinium.Store
             for (int i = 0; i < DT.Rows.Count; i++)
             {
                 if (Convert.ToInt32(DT.Rows[i]["FactoryID"]) == 1)
-                    DT.Rows[i]["Factory"] = "ЗОВ-Профиль";
+                    DT.Rows[i]["Factory"] = "ОМЦ-ПРОФИЛЬ";
                 if (Convert.ToInt32(DT.Rows[i]["FactoryID"]) == 2)
                     DT.Rows[i]["Factory"] = "ЗОВ-ТПС";
                 DT.Rows[i]["TechStoreGroupName"] = convertDefaultToDos(DT.Rows[i]["TechStoreGroupName"].ToString());
@@ -14314,7 +14314,7 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
             {
                 c = sheet1.CreateRow(RowIndex++).CreateCell(5);
                 c.CellStyle = DocHeaderStyle;
-                c.SetCellValue("Директор С ООО \"ЗОВ-Профиль\"");
+                c.SetCellValue("Директор С ООО \"ОМЦ-ПРОФИЛЬ\"");
                 c = sheet1.CreateRow(RowIndex++).CreateCell(5);
                 c.CellStyle = DocHeaderStyle;
                 c.SetCellValue("_____________________Ф.А. Авдей");
@@ -14508,7 +14508,7 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
 
 
             string FileName = string.Empty;
-            FileName = InventoryName + " ЗОВ-Профиль";
+            FileName = InventoryName + " ОМЦ-ПРОФИЛЬ";
             if (FactoryID == 2)
                 FileName = InventoryName + " ЗОВ-ТПС";
 
@@ -18924,7 +18924,7 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
             //}
 
             //if (FactoryID == 1)
-            //    ReportFilePath = Path.Combine(ReportFilePath, "ЗОВ-Профиль");
+            //    ReportFilePath = Path.Combine(ReportFilePath, "ОМЦ-ПРОФИЛЬ");
             //if (FactoryID == 2)
             //    ReportFilePath = Path.Combine(ReportFilePath, "ЗОВ-ТПС");
 
@@ -18948,7 +18948,7 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
             //FileInfo file = new FileInfo(FileName);
 
             string FileName = string.Empty;
-            FileName = InventoryName + " ЗОВ-Профиль";
+            FileName = InventoryName + " ОМЦ-ПРОФИЛЬ";
             if (FactoryID == 2)
                 FileName = InventoryName + " ЗОВ-ТПС";
 
@@ -19235,7 +19235,7 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
             //}
 
             //if (FactoryID == 1)
-            //    ReportFilePath = Path.Combine(ReportFilePath, "ЗОВ-Профиль");
+            //    ReportFilePath = Path.Combine(ReportFilePath, "ОМЦ-ПРОФИЛЬ");
             //if (FactoryID == 2)
             //    ReportFilePath = Path.Combine(ReportFilePath, "ЗОВ-ТПС");
 
@@ -19259,7 +19259,7 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
             //FileInfo file = new FileInfo(FileName);
 
             string FileName = string.Empty;
-            FileName = InventoryName + " ЗОВ-Профиль";
+            FileName = InventoryName + " ОМЦ-ПРОФИЛЬ";
             if (FactoryID == 2)
                 FileName = InventoryName + " ЗОВ-ТПС";
 
@@ -20128,7 +20128,7 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
             //}
 
             //if (FactoryID == 1)
-            //    ReportFilePath = Path.Combine(ReportFilePath, "ЗОВ-Профиль");
+            //    ReportFilePath = Path.Combine(ReportFilePath, "ОМЦ-ПРОФИЛЬ");
             //if (FactoryID == 2)
             //    ReportFilePath = Path.Combine(ReportFilePath, "ЗОВ-ТПС");
 
@@ -20152,7 +20152,7 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
             //FileInfo file = new FileInfo(FileName);
 
             string FileName = string.Empty;
-            FileName = InventoryName + " ЗОВ-Профиль";
+            FileName = InventoryName + " ОМЦ-ПРОФИЛЬ";
             if (FactoryID == 2)
                 FileName = InventoryName + " ЗОВ-ТПС";
 
@@ -20439,7 +20439,7 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
             //}
 
             //if (FactoryID == 1)
-            //    ReportFilePath = Path.Combine(ReportFilePath, "ЗОВ-Профиль");
+            //    ReportFilePath = Path.Combine(ReportFilePath, "ОМЦ-ПРОФИЛЬ");
             //if (FactoryID == 2)
             //    ReportFilePath = Path.Combine(ReportFilePath, "ЗОВ-ТПС");
 
@@ -20463,7 +20463,7 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
             //FileInfo file = new FileInfo(FileName);
 
             string FileName = string.Empty;
-            FileName = InventoryName + " ЗОВ-Профиль";
+            FileName = InventoryName + " ОМЦ-ПРОФИЛЬ";
             if (FactoryID == 2)
                 FileName = InventoryName + " ЗОВ-ТПС";
 
@@ -21298,7 +21298,7 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
             //}
 
             //if (FactoryID == 1)
-            //    ReportFilePath = Path.Combine(ReportFilePath, "ЗОВ-Профиль");
+            //    ReportFilePath = Path.Combine(ReportFilePath, "ОМЦ-ПРОФИЛЬ");
             //if (FactoryID == 2)
             //    ReportFilePath = Path.Combine(ReportFilePath, "ЗОВ-ТПС");
 
@@ -21322,7 +21322,7 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
             //FileInfo file = new FileInfo(FileName);
 
             string FileName = string.Empty;
-            FileName = InventoryName + " ЗОВ-Профиль";
+            FileName = InventoryName + " ОМЦ-ПРОФИЛЬ";
             if (FactoryID == 2)
                 FileName = InventoryName + " ЗОВ-ТПС";
 
@@ -21609,7 +21609,7 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
             //}
 
             //if (FactoryID == 1)
-            //    ReportFilePath = Path.Combine(ReportFilePath, "ЗОВ-Профиль");
+            //    ReportFilePath = Path.Combine(ReportFilePath, "ОМЦ-ПРОФИЛЬ");
             //if (FactoryID == 2)
             //    ReportFilePath = Path.Combine(ReportFilePath, "ЗОВ-ТПС");
 
@@ -21633,7 +21633,7 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
             //FileInfo file = new FileInfo(FileName);
 
             string FileName = string.Empty;
-            FileName = InventoryName + " ЗОВ-Профиль";
+            FileName = InventoryName + " ОМЦ-ПРОФИЛЬ";
             if (FactoryID == 2)
                 FileName = InventoryName + " ЗОВ-ТПС";
 
@@ -22468,7 +22468,7 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
             //}
 
             //if (FactoryID == 1)
-            //    ReportFilePath = Path.Combine(ReportFilePath, "ЗОВ-Профиль");
+            //    ReportFilePath = Path.Combine(ReportFilePath, "ОМЦ-ПРОФИЛЬ");
             //if (FactoryID == 2)
             //    ReportFilePath = Path.Combine(ReportFilePath, "ЗОВ-ТПС");
 
@@ -22492,7 +22492,7 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
             //FileInfo file = new FileInfo(FileName);
 
             string FileName = string.Empty;
-            FileName = InventoryName + " ЗОВ-Профиль";
+            FileName = InventoryName + " ОМЦ-ПРОФИЛЬ";
             if (FactoryID == 2)
                 FileName = InventoryName + " ЗОВ-ТПС";
 
@@ -22779,7 +22779,7 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
             //}
 
             //if (FactoryID == 1)
-            //    ReportFilePath = Path.Combine(ReportFilePath, "ЗОВ-Профиль");
+            //    ReportFilePath = Path.Combine(ReportFilePath, "ОМЦ-ПРОФИЛЬ");
             //if (FactoryID == 2)
             //    ReportFilePath = Path.Combine(ReportFilePath, "ЗОВ-ТПС");
 
@@ -22803,7 +22803,7 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
             //FileInfo file = new FileInfo(FileName);
 
             string FileName = string.Empty;
-            FileName = InventoryName + " ЗОВ-Профиль";
+            FileName = InventoryName + " ОМЦ-ПРОФИЛЬ";
             if (FactoryID == 2)
                 FileName = InventoryName + " ЗОВ-ТПС";
 
@@ -25438,7 +25438,7 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
             //}
 
             //if (FactoryID == 1)
-            //    ReportFilePath = Path.Combine(ReportFilePath, "ЗОВ-Профиль");
+            //    ReportFilePath = Path.Combine(ReportFilePath, "ОМЦ-ПРОФИЛЬ");
             //if (FactoryID == 2)
             //    ReportFilePath = Path.Combine(ReportFilePath, "ЗОВ-ТПС");
 
@@ -26026,7 +26026,7 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
             //}
 
             //if (FactoryID == 1)
-            //    ReportFilePath = Path.Combine(ReportFilePath, "ЗОВ-Профиль");
+            //    ReportFilePath = Path.Combine(ReportFilePath, "ОМЦ-ПРОФИЛЬ");
             //if (FactoryID == 2)
             //    ReportFilePath = Path.Combine(ReportFilePath, "ЗОВ-ТПС");
 
@@ -26806,7 +26806,7 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
             //}
 
             //if (FactoryID == 1)
-            //    ReportFilePath = Path.Combine(ReportFilePath, "ЗОВ-Профиль");
+            //    ReportFilePath = Path.Combine(ReportFilePath, "ОМЦ-ПРОФИЛЬ");
             //if (FactoryID == 2)
             //    ReportFilePath = Path.Combine(ReportFilePath, "ЗОВ-ТПС");
 
@@ -29350,7 +29350,7 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
             //}
 
             //if (FactoryID == 1)
-            //    ReportFilePath = Path.Combine(ReportFilePath, "ЗОВ-Профиль");
+            //    ReportFilePath = Path.Combine(ReportFilePath, "ОМЦ-ПРОФИЛЬ");
             //if (FactoryID == 2)
             //    ReportFilePath = Path.Combine(ReportFilePath, "ЗОВ-ТПС");
 
@@ -29938,7 +29938,7 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
             //}
 
             //if (FactoryID == 1)
-            //    ReportFilePath = Path.Combine(ReportFilePath, "ЗОВ-Профиль");
+            //    ReportFilePath = Path.Combine(ReportFilePath, "ОМЦ-ПРОФИЛЬ");
             //if (FactoryID == 2)
             //    ReportFilePath = Path.Combine(ReportFilePath, "ЗОВ-ТПС");
 
@@ -30756,7 +30756,7 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
             //}
 
             //if (FactoryID == 1)
-            //    ReportFilePath = Path.Combine(ReportFilePath, "ЗОВ-Профиль");
+            //    ReportFilePath = Path.Combine(ReportFilePath, "ОМЦ-ПРОФИЛЬ");
             //if (FactoryID == 2)
             //    ReportFilePath = Path.Combine(ReportFilePath, "ЗОВ-ТПС");
 
@@ -32788,9 +32788,9 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
             ev.Graphics.DrawString("ТУ РБ 100135477.422-2005", InfoFont, FontBrush, 305, 320);
 
             if (((GeneticsInfo)LabelInfo[CurrentLabelNumber]).FactoryID == 2)
-                ev.Graphics.DrawString("СООО \"ЗОВ-ТПС\"", InfoFont, FontBrush, 305, 332);
+                ev.Graphics.DrawString("ООО \"ЗОВ-ТПС\"", InfoFont, FontBrush, 305, 332);
             else
-                ev.Graphics.DrawString("СООО \"ЗОВ-Профиль\"", InfoFont, FontBrush, 305, 332);
+                ev.Graphics.DrawString("ООО \"ОМЦ-ПРОФИЛЬ\"", InfoFont, FontBrush, 305, 332);
 
             ev.Graphics.DrawString("Республика Беларусь, 230011", InfoFont, FontBrush, 305, 344);
             ev.Graphics.DrawString("г. Гродно, ул. Герасимовича, 1", InfoFont, FontBrush, 305, 356);

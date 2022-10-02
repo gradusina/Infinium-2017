@@ -2095,8 +2095,8 @@
             this.BatchProfilCheckBox.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
             this.BatchProfilCheckBox.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.BatchProfilCheckBox.TabIndex = 355;
-            this.BatchProfilCheckBox.Text = "ЗОВ-Профиль";
-            this.BatchProfilCheckBox.Values.Text = "ЗОВ-Профиль";
+            this.BatchProfilCheckBox.Text = "ОМЦ-ПРОФИЛЬ";
+            this.BatchProfilCheckBox.Values.Text = "ОМЦ-ПРОФИЛЬ";
             // 
             // kryptonBorderEdge77
             // 

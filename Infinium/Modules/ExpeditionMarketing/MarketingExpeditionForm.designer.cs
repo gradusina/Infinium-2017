@@ -61,6 +61,10 @@
             this.kryptonContextMenuItem15 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
             this.kryptonBorderEdge1 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.MenuPanel = new System.Windows.Forms.Panel();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.kryptonMonthCalendar4 = new ComponentFactory.Krypton.Toolkit.KryptonMonthCalendar();
+            this.kryptonMonthCalendar3 = new ComponentFactory.Krypton.Toolkit.KryptonMonthCalendar();
             this.btnShowAllOrders = new ComponentFactory.Krypton.Toolkit.KryptonButton();
             this.btnShowCabFurAssemble = new ComponentFactory.Krypton.Toolkit.KryptonButton();
             this.kryptonButton7 = new ComponentFactory.Krypton.Toolkit.KryptonButton();
@@ -215,6 +219,7 @@
             this.kryptonContextMenuItem23 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
             this.kryptonContextMenuItem20 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
             this.kryptonContextMenuItem21 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
+            this.btnFilterByDate = new ComponentFactory.Krypton.Toolkit.KryptonButton();
             this.NavigatePanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MainOrdersSplitContainer)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.MainOrdersSplitContainer.Panel1)).BeginInit();
@@ -1011,7 +1016,7 @@
             this.kryptonBorderEdge1.Location = new System.Drawing.Point(0, 0);
             this.kryptonBorderEdge1.Name = "kryptonBorderEdge1";
             this.kryptonBorderEdge1.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge1.Size = new System.Drawing.Size(1, 667);
+            this.kryptonBorderEdge1.Size = new System.Drawing.Size(1, 716);
             this.kryptonBorderEdge1.StateCommon.Color1 = System.Drawing.Color.White;
             this.kryptonBorderEdge1.Text = "kryptonBorderEdge1";
             // 
@@ -1019,6 +1024,11 @@
             // 
             this.MenuPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.MenuPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(140)))), ((int)(((byte)(140)))), ((int)(((byte)(140)))));
+            this.MenuPanel.Controls.Add(this.btnFilterByDate);
+            this.MenuPanel.Controls.Add(this.label3);
+            this.MenuPanel.Controls.Add(this.label2);
+            this.MenuPanel.Controls.Add(this.kryptonMonthCalendar4);
+            this.MenuPanel.Controls.Add(this.kryptonMonthCalendar3);
             this.MenuPanel.Controls.Add(this.btnShowAllOrders);
             this.MenuPanel.Controls.Add(this.btnShowCabFurAssemble);
             this.MenuPanel.Controls.Add(this.kryptonButton7);
@@ -1040,17 +1050,61 @@
             this.MenuPanel.Controls.Add(this.kryptonBorderEdge6);
             this.MenuPanel.Controls.Add(this.kryptonBorderEdge1);
             this.MenuPanel.Controls.Add(this.kryptonBorderEdge7);
-            this.MenuPanel.Location = new System.Drawing.Point(437, 52);
+            this.MenuPanel.Location = new System.Drawing.Point(192, 52);
             this.MenuPanel.Name = "MenuPanel";
-            this.MenuPanel.Size = new System.Drawing.Size(835, 668);
+            this.MenuPanel.Size = new System.Drawing.Size(1080, 717);
             this.MenuPanel.TabIndex = 38;
             this.MenuPanel.Visible = false;
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Segoe UI", 17.81F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.label3.ForeColor = System.Drawing.Color.White;
+            this.label3.Location = new System.Drawing.Point(822, 227);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(39, 25);
+            this.label3.TabIndex = 503;
+            this.label3.Text = "по:";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 17.81F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.label2.ForeColor = System.Drawing.Color.White;
+            this.label2.Location = new System.Drawing.Point(822, 9);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(99, 25);
+            this.label2.TabIndex = 502;
+            this.label2.Text = "Период с:";
+            // 
+            // kryptonMonthCalendar4
+            // 
+            this.kryptonMonthCalendar4.Location = new System.Drawing.Point(827, 255);
+            this.kryptonMonthCalendar4.MaxSelectionCount = 1;
+            this.kryptonMonthCalendar4.Name = "kryptonMonthCalendar4";
+            this.kryptonMonthCalendar4.SelectionEnd = new System.DateTime(2020, 6, 12, 0, 0, 0, 0);
+            this.kryptonMonthCalendar4.SelectionStart = new System.DateTime(2020, 6, 12, 0, 0, 0, 0);
+            this.kryptonMonthCalendar4.Size = new System.Drawing.Size(230, 184);
+            this.kryptonMonthCalendar4.TabIndex = 501;
+            this.kryptonMonthCalendar4.TodayDate = new System.DateTime(2020, 6, 12, 0, 0, 0, 0);
+            // 
+            // kryptonMonthCalendar3
+            // 
+            this.kryptonMonthCalendar3.Location = new System.Drawing.Point(827, 36);
+            this.kryptonMonthCalendar3.MaxSelectionCount = 1;
+            this.kryptonMonthCalendar3.Name = "kryptonMonthCalendar3";
+            this.kryptonMonthCalendar3.SelectionEnd = new System.DateTime(2020, 6, 12, 0, 0, 0, 0);
+            this.kryptonMonthCalendar3.SelectionStart = new System.DateTime(2020, 6, 12, 0, 0, 0, 0);
+            this.kryptonMonthCalendar3.Size = new System.Drawing.Size(230, 184);
+            this.kryptonMonthCalendar3.TabIndex = 500;
+            this.kryptonMonthCalendar3.TodayDate = new System.DateTime(2020, 6, 12, 0, 0, 0, 0);
+            // 
             // btnShowAllOrders
             // 
-            this.btnShowAllOrders.Location = new System.Drawing.Point(187, 389);
+            this.btnShowAllOrders.Location = new System.Drawing.Point(185, 444);
             this.btnShowAllOrders.Name = "btnShowAllOrders";
-            this.btnShowAllOrders.Size = new System.Drawing.Size(159, 58);
+            this.btnShowAllOrders.Size = new System.Drawing.Size(159, 52);
             this.btnShowAllOrders.TabIndex = 495;
             this.btnShowAllOrders.Tag = "1";
             this.btnShowAllOrders.Values.ExtraText = "Показать всё\r\n";
@@ -1059,9 +1113,9 @@
             // 
             // btnShowCabFurAssemble
             // 
-            this.btnShowCabFurAssemble.Location = new System.Drawing.Point(22, 389);
+            this.btnShowCabFurAssemble.Location = new System.Drawing.Point(20, 444);
             this.btnShowCabFurAssemble.Name = "btnShowCabFurAssemble";
-            this.btnShowCabFurAssemble.Size = new System.Drawing.Size(159, 58);
+            this.btnShowCabFurAssemble.Size = new System.Drawing.Size(159, 52);
             this.btnShowCabFurAssemble.TabIndex = 494;
             this.btnShowCabFurAssemble.Tag = "1";
             this.btnShowCabFurAssemble.Values.ExtraText = "Показать готовые заказы\r\nкорп. мебели\r\n";
@@ -1070,7 +1124,7 @@
             // 
             // kryptonButton7
             // 
-            this.kryptonButton7.Location = new System.Drawing.Point(472, 508);
+            this.kryptonButton7.Location = new System.Drawing.Point(464, 542);
             this.kryptonButton7.Name = "kryptonButton7";
             this.kryptonButton7.Size = new System.Drawing.Size(116, 25);
             this.kryptonButton7.TabIndex = 450;
@@ -1079,7 +1133,7 @@
             // 
             // kryptonButton6
             // 
-            this.kryptonButton6.Location = new System.Drawing.Point(472, 477);
+            this.kryptonButton6.Location = new System.Drawing.Point(464, 511);
             this.kryptonButton6.Name = "kryptonButton6";
             this.kryptonButton6.Size = new System.Drawing.Size(116, 25);
             this.kryptonButton6.TabIndex = 449;
@@ -1088,7 +1142,7 @@
             // 
             // kryptonButton3
             // 
-            this.kryptonButton3.Location = new System.Drawing.Point(472, 570);
+            this.kryptonButton3.Location = new System.Drawing.Point(464, 604);
             this.kryptonButton3.Name = "kryptonButton3";
             this.kryptonButton3.Size = new System.Drawing.Size(116, 25);
             this.kryptonButton3.TabIndex = 444;
@@ -1108,7 +1162,7 @@
             // 
             // kryptonButton4
             // 
-            this.kryptonButton4.Location = new System.Drawing.Point(472, 539);
+            this.kryptonButton4.Location = new System.Drawing.Point(464, 573);
             this.kryptonButton4.Name = "kryptonButton4";
             this.kryptonButton4.Size = new System.Drawing.Size(116, 25);
             this.kryptonButton4.TabIndex = 434;
@@ -1126,7 +1180,7 @@
             this.panel9.Location = new System.Drawing.Point(22, 332);
             this.panel9.Margin = new System.Windows.Forms.Padding(10, 3, 3, 3);
             this.panel9.Name = "panel9";
-            this.panel9.Size = new System.Drawing.Size(203, 52);
+            this.panel9.Size = new System.Drawing.Size(203, 106);
             this.panel9.TabIndex = 424;
             // 
             // kryptonBorderEdge18
@@ -1135,7 +1189,7 @@
             this.kryptonBorderEdge18.Location = new System.Drawing.Point(202, 1);
             this.kryptonBorderEdge18.Name = "kryptonBorderEdge18";
             this.kryptonBorderEdge18.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge18.Size = new System.Drawing.Size(1, 50);
+            this.kryptonBorderEdge18.Size = new System.Drawing.Size(1, 104);
             this.kryptonBorderEdge18.StateCommon.Color1 = System.Drawing.Color.White;
             this.kryptonBorderEdge18.Text = "kryptonBorderEdge18";
             // 
@@ -1145,14 +1199,14 @@
             this.kryptonBorderEdge19.Location = new System.Drawing.Point(0, 1);
             this.kryptonBorderEdge19.Name = "kryptonBorderEdge19";
             this.kryptonBorderEdge19.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge19.Size = new System.Drawing.Size(1, 50);
+            this.kryptonBorderEdge19.Size = new System.Drawing.Size(1, 104);
             this.kryptonBorderEdge19.StateCommon.Color1 = System.Drawing.Color.White;
             this.kryptonBorderEdge19.Text = "kryptonBorderEdge19";
             // 
             // kryptonBorderEdge20
             // 
             this.kryptonBorderEdge20.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.kryptonBorderEdge20.Location = new System.Drawing.Point(0, 51);
+            this.kryptonBorderEdge20.Location = new System.Drawing.Point(0, 105);
             this.kryptonBorderEdge20.Name = "kryptonBorderEdge20";
             this.kryptonBorderEdge20.Size = new System.Drawing.Size(203, 1);
             this.kryptonBorderEdge20.StateCommon.Color1 = System.Drawing.Color.White;
@@ -1194,7 +1248,7 @@
             this.panel8.Location = new System.Drawing.Point(22, 251);
             this.panel8.Margin = new System.Windows.Forms.Padding(10, 3, 3, 3);
             this.panel8.Name = "panel8";
-            this.panel8.Size = new System.Drawing.Size(203, 82);
+            this.panel8.Size = new System.Drawing.Size(203, 136);
             this.panel8.TabIndex = 423;
             // 
             // kryptonBorderEdge14
@@ -1203,7 +1257,7 @@
             this.kryptonBorderEdge14.Location = new System.Drawing.Point(202, 1);
             this.kryptonBorderEdge14.Name = "kryptonBorderEdge14";
             this.kryptonBorderEdge14.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge14.Size = new System.Drawing.Size(1, 80);
+            this.kryptonBorderEdge14.Size = new System.Drawing.Size(1, 134);
             this.kryptonBorderEdge14.StateCommon.Color1 = System.Drawing.Color.White;
             this.kryptonBorderEdge14.Text = "kryptonBorderEdge14";
             // 
@@ -1213,14 +1267,14 @@
             this.kryptonBorderEdge15.Location = new System.Drawing.Point(0, 1);
             this.kryptonBorderEdge15.Name = "kryptonBorderEdge15";
             this.kryptonBorderEdge15.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge15.Size = new System.Drawing.Size(1, 80);
+            this.kryptonBorderEdge15.Size = new System.Drawing.Size(1, 134);
             this.kryptonBorderEdge15.StateCommon.Color1 = System.Drawing.Color.White;
             this.kryptonBorderEdge15.Text = "kryptonBorderEdge15";
             // 
             // kryptonBorderEdge16
             // 
             this.kryptonBorderEdge16.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.kryptonBorderEdge16.Location = new System.Drawing.Point(0, 81);
+            this.kryptonBorderEdge16.Location = new System.Drawing.Point(0, 135);
             this.kryptonBorderEdge16.Name = "kryptonBorderEdge16";
             this.kryptonBorderEdge16.Size = new System.Drawing.Size(203, 1);
             this.kryptonBorderEdge16.StateCommon.Color1 = System.Drawing.Color.White;
@@ -1247,8 +1301,8 @@
             this.ProfilCheckBox.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
             this.ProfilCheckBox.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 17.81F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
             this.ProfilCheckBox.TabIndex = 346;
-            this.ProfilCheckBox.Text = "ЗОВ-Профиль";
-            this.ProfilCheckBox.Values.Text = "ЗОВ-Профиль";
+            this.ProfilCheckBox.Text = "ОМЦ-ПРОФИЛЬ";
+            this.ProfilCheckBox.Values.Text = "ОМЦ-ПРОФИЛЬ";
             this.ProfilCheckBox.CheckedChanged += new System.EventHandler(this.ProfilCheckBox_CheckedChanged);
             this.ProfilCheckBox.Click += new System.EventHandler(this.ProfilCheckBox_Click);
             // 
@@ -1427,7 +1481,7 @@
             this.panel5.Location = new System.Drawing.Point(623, 36);
             this.panel5.Margin = new System.Windows.Forms.Padding(10, 3, 3, 3);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(193, 348);
+            this.panel5.Size = new System.Drawing.Size(193, 403);
             this.panel5.TabIndex = 403;
             // 
             // kryptonBorderEdge2
@@ -1436,7 +1490,7 @@
             this.kryptonBorderEdge2.Location = new System.Drawing.Point(192, 1);
             this.kryptonBorderEdge2.Name = "kryptonBorderEdge2";
             this.kryptonBorderEdge2.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge2.Size = new System.Drawing.Size(1, 346);
+            this.kryptonBorderEdge2.Size = new System.Drawing.Size(1, 401);
             this.kryptonBorderEdge2.StateCommon.Color1 = System.Drawing.Color.Black;
             this.kryptonBorderEdge2.Text = "kryptonBorderEdge2";
             // 
@@ -1446,14 +1500,14 @@
             this.kryptonBorderEdge4.Location = new System.Drawing.Point(0, 1);
             this.kryptonBorderEdge4.Name = "kryptonBorderEdge4";
             this.kryptonBorderEdge4.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge4.Size = new System.Drawing.Size(1, 346);
+            this.kryptonBorderEdge4.Size = new System.Drawing.Size(1, 401);
             this.kryptonBorderEdge4.StateCommon.Color1 = System.Drawing.Color.Black;
             this.kryptonBorderEdge4.Text = "kryptonBorderEdge4";
             // 
             // kryptonBorderEdge5
             // 
             this.kryptonBorderEdge5.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.kryptonBorderEdge5.Location = new System.Drawing.Point(0, 347);
+            this.kryptonBorderEdge5.Location = new System.Drawing.Point(0, 402);
             this.kryptonBorderEdge5.Name = "kryptonBorderEdge5";
             this.kryptonBorderEdge5.Size = new System.Drawing.Size(193, 1);
             this.kryptonBorderEdge5.StateCommon.Color1 = System.Drawing.Color.Black;
@@ -1490,7 +1544,7 @@
             this.BatchDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.BatchDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Green;
             this.BatchDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.BatchDataGrid.Size = new System.Drawing.Size(193, 348);
+            this.BatchDataGrid.Size = new System.Drawing.Size(193, 403);
             this.BatchDataGrid.StandardStyle = false;
             this.BatchDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
             this.BatchDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
@@ -1540,7 +1594,7 @@
             // 
             // kryptonButton2
             // 
-            this.kryptonButton2.Location = new System.Drawing.Point(472, 636);
+            this.kryptonButton2.Location = new System.Drawing.Point(464, 670);
             this.kryptonButton2.Name = "kryptonButton2";
             this.kryptonButton2.Size = new System.Drawing.Size(116, 25);
             this.kryptonButton2.TabIndex = 397;
@@ -1549,7 +1603,7 @@
             // 
             // kryptonButton1
             // 
-            this.kryptonButton1.Location = new System.Drawing.Point(472, 601);
+            this.kryptonButton1.Location = new System.Drawing.Point(464, 635);
             this.kryptonButton1.Name = "kryptonButton1";
             this.kryptonButton1.Size = new System.Drawing.Size(116, 25);
             this.kryptonButton1.TabIndex = 396;
@@ -1558,7 +1612,7 @@
             // 
             // kryptonMonthCalendar1
             // 
-            this.kryptonMonthCalendar1.Location = new System.Drawing.Point(594, 477);
+            this.kryptonMonthCalendar1.Location = new System.Drawing.Point(586, 511);
             this.kryptonMonthCalendar1.Name = "kryptonMonthCalendar1";
             this.kryptonMonthCalendar1.SelectionEnd = new System.DateTime(2020, 6, 12, 0, 0, 0, 0);
             this.kryptonMonthCalendar1.SelectionStart = new System.DateTime(2020, 6, 12, 0, 0, 0, 0);
@@ -1593,7 +1647,7 @@
             this.panel7.Location = new System.Drawing.Point(244, 36);
             this.panel7.Margin = new System.Windows.Forms.Padding(10, 3, 3, 3);
             this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(362, 348);
+            this.panel7.Size = new System.Drawing.Size(362, 403);
             this.panel7.TabIndex = 334;
             // 
             // kryptonBorderEdge30
@@ -1602,7 +1656,7 @@
             this.kryptonBorderEdge30.Location = new System.Drawing.Point(361, 1);
             this.kryptonBorderEdge30.Name = "kryptonBorderEdge30";
             this.kryptonBorderEdge30.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge30.Size = new System.Drawing.Size(1, 346);
+            this.kryptonBorderEdge30.Size = new System.Drawing.Size(1, 401);
             this.kryptonBorderEdge30.StateCommon.Color1 = System.Drawing.Color.Black;
             this.kryptonBorderEdge30.Text = "kryptonBorderEdge30";
             // 
@@ -1612,14 +1666,14 @@
             this.kryptonBorderEdge31.Location = new System.Drawing.Point(0, 1);
             this.kryptonBorderEdge31.Name = "kryptonBorderEdge31";
             this.kryptonBorderEdge31.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge31.Size = new System.Drawing.Size(1, 346);
+            this.kryptonBorderEdge31.Size = new System.Drawing.Size(1, 401);
             this.kryptonBorderEdge31.StateCommon.Color1 = System.Drawing.Color.Black;
             this.kryptonBorderEdge31.Text = "kryptonBorderEdge31";
             // 
             // kryptonBorderEdge32
             // 
             this.kryptonBorderEdge32.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.kryptonBorderEdge32.Location = new System.Drawing.Point(0, 347);
+            this.kryptonBorderEdge32.Location = new System.Drawing.Point(0, 402);
             this.kryptonBorderEdge32.Name = "kryptonBorderEdge32";
             this.kryptonBorderEdge32.Size = new System.Drawing.Size(362, 1);
             this.kryptonBorderEdge32.StateCommon.Color1 = System.Drawing.Color.Black;
@@ -1656,7 +1710,7 @@
             this.FilterClientsDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.FilterClientsDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Green;
             this.FilterClientsDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.FilterClientsDataGrid.Size = new System.Drawing.Size(362, 348);
+            this.FilterClientsDataGrid.Size = new System.Drawing.Size(362, 403);
             this.FilterClientsDataGrid.StandardStyle = false;
             this.FilterClientsDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
             this.FilterClientsDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
@@ -1694,10 +1748,10 @@
             // 
             this.kryptonBorderEdge8.AutoSize = false;
             this.kryptonBorderEdge8.Dock = System.Windows.Forms.DockStyle.Right;
-            this.kryptonBorderEdge8.Location = new System.Drawing.Point(834, 0);
+            this.kryptonBorderEdge8.Location = new System.Drawing.Point(1079, 0);
             this.kryptonBorderEdge8.Name = "kryptonBorderEdge8";
             this.kryptonBorderEdge8.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge8.Size = new System.Drawing.Size(1, 667);
+            this.kryptonBorderEdge8.Size = new System.Drawing.Size(1, 716);
             this.kryptonBorderEdge8.StateCommon.Color1 = System.Drawing.Color.White;
             this.kryptonBorderEdge8.Text = "kryptonBorderEdge8";
             // 
@@ -1708,7 +1762,7 @@
             this.kryptonBorderEdge6.AutoSize = false;
             this.kryptonBorderEdge6.Location = new System.Drawing.Point(1, 1);
             this.kryptonBorderEdge6.Name = "kryptonBorderEdge6";
-            this.kryptonBorderEdge6.Size = new System.Drawing.Size(833, 1);
+            this.kryptonBorderEdge6.Size = new System.Drawing.Size(1078, 1);
             this.kryptonBorderEdge6.StateCommon.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(123)))), ((int)(((byte)(97)))));
             this.kryptonBorderEdge6.Text = "kryptonBorderEdge6";
             // 
@@ -1716,9 +1770,9 @@
             // 
             this.kryptonBorderEdge7.AutoSize = false;
             this.kryptonBorderEdge7.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.kryptonBorderEdge7.Location = new System.Drawing.Point(0, 667);
+            this.kryptonBorderEdge7.Location = new System.Drawing.Point(0, 716);
             this.kryptonBorderEdge7.Name = "kryptonBorderEdge7";
-            this.kryptonBorderEdge7.Size = new System.Drawing.Size(835, 1);
+            this.kryptonBorderEdge7.Size = new System.Drawing.Size(1080, 1);
             this.kryptonBorderEdge7.StateCommon.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(123)))), ((int)(((byte)(97)))));
             this.kryptonBorderEdge7.Text = "kryptonBorderEdge7";
             // 
@@ -2299,7 +2353,7 @@
             this.kryptonSplitContainer4.Panel2.StateCommon.Color1 = System.Drawing.Color.Transparent;
             this.kryptonSplitContainer4.SeparatorStyle = ComponentFactory.Krypton.Toolkit.SeparatorStyle.HighProfile;
             this.kryptonSplitContainer4.Size = new System.Drawing.Size(1010, 630);
-            this.kryptonSplitContainer4.SplitterDistance = 248;
+            this.kryptonSplitContainer4.SplitterDistance = 232;
             this.kryptonSplitContainer4.SplitterWidth = 6;
             this.kryptonSplitContainer4.StateCommon.Back.Color1 = System.Drawing.Color.Transparent;
             this.kryptonSplitContainer4.StateCommon.Back.Color2 = System.Drawing.Color.Transparent;
@@ -2319,7 +2373,7 @@
             this.panel13.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel13.Location = new System.Drawing.Point(0, 0);
             this.panel13.Name = "panel13";
-            this.panel13.Size = new System.Drawing.Size(1010, 248);
+            this.panel13.Size = new System.Drawing.Size(1010, 232);
             this.panel13.TabIndex = 59;
             // 
             // dgvDispatch
@@ -2344,7 +2398,7 @@
             this.dgvDispatch.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dgvDispatch.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Green;
             this.dgvDispatch.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvDispatch.Size = new System.Drawing.Size(1008, 246);
+            this.dgvDispatch.Size = new System.Drawing.Size(1008, 230);
             this.dgvDispatch.StandardStyle = false;
             this.dgvDispatch.StateCommon.Background.Color1 = System.Drawing.Color.White;
             this.dgvDispatch.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
@@ -2396,7 +2450,7 @@
             this.panel14.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel14.Location = new System.Drawing.Point(0, 0);
             this.panel14.Name = "panel14";
-            this.panel14.Size = new System.Drawing.Size(1010, 376);
+            this.panel14.Size = new System.Drawing.Size(1010, 392);
             this.panel14.TabIndex = 58;
             // 
             // dgvMainOrders
@@ -2421,7 +2475,7 @@
             this.dgvMainOrders.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dgvMainOrders.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Green;
             this.dgvMainOrders.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvMainOrders.Size = new System.Drawing.Size(1008, 374);
+            this.dgvMainOrders.Size = new System.Drawing.Size(1008, 390);
             this.dgvMainOrders.StandardStyle = false;
             this.dgvMainOrders.StateCommon.Background.Color1 = System.Drawing.Color.White;
             this.dgvMainOrders.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
@@ -3129,6 +3183,17 @@
             this.kryptonContextMenuItem21.Text = "Скомплектовать";
             this.kryptonContextMenuItem21.Click += new System.EventHandler(this.kryptonContextMenuItem21_Click);
             // 
+            // btnFilterByDate
+            // 
+            this.btnFilterByDate.Location = new System.Drawing.Point(827, 444);
+            this.btnFilterByDate.Name = "btnFilterByDate";
+            this.btnFilterByDate.Size = new System.Drawing.Size(230, 52);
+            this.btnFilterByDate.TabIndex = 508;
+            this.btnFilterByDate.Tag = "1";
+            this.btnFilterByDate.Values.ExtraText = "Поиск по дате создания заказа";
+            this.btnFilterByDate.Values.Text = "";
+            this.btnFilterByDate.Click += new System.EventHandler(this.btnFilterByDate_Click);
+            // 
             // MarketingExpeditionForm
             // 
             this.AccessibleName = "false";
@@ -3453,5 +3518,10 @@
         private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem kryptonContextMenuItem22;
         private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem kryptonContextMenuItem24;
         private ComponentFactory.Krypton.Toolkit.KryptonButton kryptonButton8;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label2;
+        private ComponentFactory.Krypton.Toolkit.KryptonMonthCalendar kryptonMonthCalendar4;
+        private ComponentFactory.Krypton.Toolkit.KryptonMonthCalendar kryptonMonthCalendar3;
+        private ComponentFactory.Krypton.Toolkit.KryptonButton btnFilterByDate;
     }
 }

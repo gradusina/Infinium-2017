@@ -1,13 +1,22 @@
-﻿using System;
+﻿using Infinium.Modules.WorkAssignments;
+
+using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using System.Xml.Linq;
 
 namespace Infinium.Modules.Marketing.Clients
 {
+    public enum Calculations
+    {
+        Min, 
+        Max
+    }
+
     public enum MachineFileTypes
     {
         MachineFoto = 1,
@@ -259,7 +268,7 @@ namespace Infinium.Modules.Marketing.Clients
             decimal CompressedAirConsumption = 0;
             decimal AspirationCapacity = 0;
 
-            DataRow[] Rows = MachinesDT.Select("MachineID IN (" + string.Join(",", Machines) + ") AND Firm='ЗОВ-Профиль'");
+            DataRow[] Rows = MachinesDT.Select("MachineID IN (" + string.Join(",", Machines) + ") AND Firm='ОМЦ-ПРОФИЛЬ'");
             if (Rows.Count() > 0)
             {
                 foreach (DataRow item in Rows)
@@ -277,7 +286,7 @@ namespace Infinium.Modules.Marketing.Clients
                 }
             }
             MachinesSummaryDT.Clear();
-            AddMachinesSummaryNewRow("ЗОВ-Профиль", string.Empty);
+            AddMachinesSummaryNewRow("ОМЦ-ПРОФИЛЬ", string.Empty);
             AddMachinesSummaryNewRow("  Мощность, кВт", ConsumedPower.ToString());
             AddMachinesSummaryNewRow("  Расход, л/мин", CompressedAirConsumption.ToString());
             AddMachinesSummaryNewRow("  Объём, м3/час", AspirationCapacity.ToString());
@@ -3655,5 +3664,88 @@ namespace Infinium.Modules.Marketing.Clients
             }
         }
 
+        public void AddMachineInHercules(int machineId)
+        {
+            string selectCommand =
+                $"SELECT * from MachinesInHercules where machineId={machineId}";
+
+            using (SqlDataAdapter da = new SqlDataAdapter(selectCommand,
+                       ConnectionStrings.CatalogConnectionString))
+            {
+                using (new SqlCommandBuilder(da))
+                {
+                    using (DataTable dt = new DataTable())
+                    {
+                        if (da.Fill(dt) > 0)
+                            return;
+
+                        DataRow newRow = dt.NewRow();
+                        newRow["machineId"] = machineId;
+                        dt.Rows.Add(newRow);
+                        da.Update(dt);
+                    }
+                }
+            }
+        }
+
+        public bool IsMachineInHercules(int machineId)
+        {
+            string selectCommand =
+                $"SELECT * from MachinesInHercules where machineId={machineId}";
+
+            using (SqlDataAdapter da = new SqlDataAdapter(selectCommand, ConnectionStrings.CatalogConnectionString))
+            {
+                using (DataTable dt = new DataTable())
+                {
+                    if (da.Fill(dt) > 0)
+                        return true;
+                }
+            }
+
+            return false;
+        }
+
+        public void AddMachineCalculations(int machineId, int calculation)
+        {
+            string selectCommand =
+                $"SELECT * from MachinesCalculations where machineId={machineId}";
+
+            using (SqlDataAdapter da = new SqlDataAdapter(selectCommand,
+                       ConnectionStrings.CatalogConnectionString))
+            {
+                using (new SqlCommandBuilder(da))
+                {
+                    using (DataTable dt = new DataTable())
+                    {
+                        if (da.Fill(dt) > 0)
+                        {
+                            dt.Rows[0]["calculation"] = calculation;
+                            da.Update(dt);
+                        }
+                    }
+                }
+            }
+        }
+
+        public int GetMachineCalculations(int machineId)
+        {
+            int calculation = 0;
+            string selectCommand =
+                $"SELECT * from MachinesCalculations where machineId={machineId}";
+
+            using (SqlDataAdapter da = new SqlDataAdapter(selectCommand,
+                       ConnectionStrings.CatalogConnectionString))
+            {
+                    using (DataTable dt = new DataTable())
+                    {
+                        if (da.Fill(dt) > 0)
+                        {
+                            int.TryParse(dt.Rows[0]["calculation"].ToString(), out calculation);
+                        }
+                    }
+            }
+
+            return calculation;
+        }
     }
 }

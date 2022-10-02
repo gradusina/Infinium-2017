@@ -296,6 +296,7 @@ namespace Infinium
             MainOrdersArray = new ArrayList();
 
             DecorCatalogOrder = new DecorCatalogOrder();
+            DecorCatalogOrder.Initialize(false);
 
             BatchManager = new BatchManager(
                 ref MegaBatchDataGrid, ref BatchDataGrid,

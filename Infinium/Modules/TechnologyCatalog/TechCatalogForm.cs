@@ -849,6 +849,8 @@ namespace Infinium
 
             TechStoreManager.FilterMachinesOperations(MachineID);
 
+            lbSectorName.Text = $@"{TechStoreManager.GetSectorName(MachineID)}; {TechStoreManager.GetSubSectorName(MachineID)}";
+
             if (MachinePhotoPictureBox.Image == null)
             {
                 ZoomButton.Visible = false;

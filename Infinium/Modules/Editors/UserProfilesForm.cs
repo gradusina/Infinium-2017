@@ -215,7 +215,7 @@ namespace Infinium
                 if (UsersPositionsDT.Rows[i]["Rate"].ToString().Length > 0)
                     Rate = Convert.ToDecimal(UsersPositionsDT.Rows[i]["Rate"]).ToString("G29");
                 text += UserProfile.PositionsDataTable.Select("PositionID=" + Convert.ToInt32(UsersPositionsDT.Rows[i]["PositionID"]))[0]["Position"].ToString() +
-                    " (" + Rate + " ЗОВ-Профиль)";
+                    " (" + Rate + " ОМЦ-ПРОФИЛЬ)";
                 if (FactoryID == 2)
                     text = UserProfile.PositionsDataTable.Select("PositionID=" + Convert.ToInt32(UsersPositionsDT.Rows[i]["PositionID"]))[0]["Position"].ToString() +
                         " (" + Rate + " ЗОВ-ТПС)";

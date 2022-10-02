@@ -702,7 +702,7 @@
             this.ZOVProfilCheckButton.TabIndex = 338;
             this.ZOVProfilCheckButton.ToWidth = true;
             this.ZOVProfilCheckButton.TrackingLineColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.ZOVProfilCheckButton.Values.Text = "ЗОВ-Профиль";
+            this.ZOVProfilCheckButton.Values.Text = "ОМЦ-ПРОФИЛЬ";
             // 
             // ZOVTPSCheckButton
             // 
@@ -6009,8 +6009,8 @@
             this.ZOVProfilCheckBox.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
             this.ZOVProfilCheckBox.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 15.81F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.ZOVProfilCheckBox.TabIndex = 387;
-            this.ZOVProfilCheckBox.Text = "ЗОВ-Профиль";
-            this.ZOVProfilCheckBox.Values.Text = "ЗОВ-Профиль";
+            this.ZOVProfilCheckBox.Text = "ОМЦ-ПРОФИЛЬ";
+            this.ZOVProfilCheckBox.Values.Text = "ОМЦ-ПРОФИЛЬ";
             // 
             // MoscowFilterCheckBox
             // 

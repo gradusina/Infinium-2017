@@ -768,6 +768,7 @@
             this.MainOrdersFrontsOrdersDataGrid.TabIndex = 54;
             this.MainOrdersFrontsOrdersDataGrid.UseCustomBackColor = true;
             this.MainOrdersFrontsOrdersDataGrid.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.MainOrdersFrontsOrdersDataGrid_CellMouseDown);
+            this.MainOrdersFrontsOrdersDataGrid.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.MainOrdersFrontsOrdersDataGrid_DataError);
             // 
             // xtraTabPage2
             // 
@@ -1081,6 +1082,7 @@
             this.OnAgreementCheckBox.TabIndex = 353;
             this.OnAgreementCheckBox.Text = "На согласовании";
             this.OnAgreementCheckBox.Values.Text = "На согласовании";
+            this.OnAgreementCheckBox.CheckedChanged += new System.EventHandler(this.OnAgreementCheckBox_CheckedChanged);
             // 
             // kryptonBorderEdge18
             // 

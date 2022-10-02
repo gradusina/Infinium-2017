@@ -994,9 +994,9 @@ WHERE LabelType=2 AND DecorAssignmentsLabels.DecorAssignmentID=" + iDecorAssignm
             //    ev.Graphics.DrawString("ТУ РБ 100135477.422-2005", InfoFont, FontBrush, 305, indent + 3);
 
             //    if (((ProfileAssignmentsLabelInfo)LabelInfo[CurrentLabelNumber]).FactoryType == 2)
-            //        ev.Graphics.DrawString("СООО \"ЗОВ-ТПС\"", InfoFont, FontBrush, 305, indent + 15);
+            //        ev.Graphics.DrawString("ООО \"ЗОВ-ТПС\"", InfoFont, FontBrush, 305, indent + 15);
             //    else
-            //        ev.Graphics.DrawString("СООО \"ЗОВ-Профиль\"", InfoFont, FontBrush, 305, indent + 15);
+            //        ev.Graphics.DrawString("ООО \"ОМЦ-ПРОФИЛЬ\"", InfoFont, FontBrush, 305, indent + 15);
             //    ev.Graphics.DrawString("Республика Беларусь, 230011", InfoFont, FontBrush, 305, indent + 27);
             //    ev.Graphics.DrawString("г. Гродно, ул. Герасимовича, 1", InfoFont, FontBrush, 305, indent + 39);
             //    ev.Graphics.DrawString("тел\\факс: (0152) 52-14-70", InfoFont, FontBrush, 305, indent + 51);
@@ -1042,9 +1042,9 @@ WHERE LabelType=2 AND DecorAssignmentsLabels.DecorAssignmentID=" + iDecorAssignm
             //        ev.Graphics.DrawString("ТУ РБ 100135477.422-2005", InfoFont, FontBrush, 305, indent + 3);
 
             //        if (((ProfileAssignmentsLabelInfo)LabelInfo[CurrentLabelNumber + 1]).FactoryType == 2)
-            //            ev.Graphics.DrawString("СООО \"ЗОВ-ТПС\"", InfoFont, FontBrush, 305, indent + 15);
+            //            ev.Graphics.DrawString("ООО \"ЗОВ-ТПС\"", InfoFont, FontBrush, 305, indent + 15);
             //        else
-            //            ev.Graphics.DrawString("СООО \"ЗОВ-Профиль\"", InfoFont, FontBrush, 305, indent + 15);
+            //            ev.Graphics.DrawString("ООО \"ОМЦ-ПРОФИЛЬ\"", InfoFont, FontBrush, 305, indent + 15);
             //        ev.Graphics.DrawString("Республика Беларусь, 230011", InfoFont, FontBrush, 305, indent + 27);
             //        ev.Graphics.DrawString("г. Гродно, ул. Герасимовича, 1", InfoFont, FontBrush, 305, indent + 39);
             //        ev.Graphics.DrawString("тел\\факс: (0152) 52-14-70", InfoFont, FontBrush, 305, indent + 51);
@@ -1093,9 +1093,9 @@ WHERE LabelType=2 AND DecorAssignmentsLabels.DecorAssignmentID=" + iDecorAssignm
                 ev.Graphics.DrawString("ТУ РБ 100135477.422-2005", InfoFont, FontBrush, 305, indent + 3);
 
                 if (((ProfileAssignmentsLabelInfo)LabelInfo[CurrentLabelNumber]).FactoryType == 2)
-                    ev.Graphics.DrawString("СООО \"ЗОВ-ТПС\"", InfoFont, FontBrush, 305, indent + 15);
+                    ev.Graphics.DrawString("ООО \"ЗОВ-ТПС\"", InfoFont, FontBrush, 305, indent + 15);
                 else
-                    ev.Graphics.DrawString("СООО \"ЗОВ-Профиль\"", InfoFont, FontBrush, 305, indent + 15);
+                    ev.Graphics.DrawString("ООО \"ОМЦ-ПРОФИЛЬ\"", InfoFont, FontBrush, 305, indent + 15);
                 ev.Graphics.DrawString("Республика Беларусь, 230011", InfoFont, FontBrush, 305, indent + 27);
                 ev.Graphics.DrawString("г. Гродно, ул. Герасимовича, 1", InfoFont, FontBrush, 305, indent + 39);
                 ev.Graphics.DrawString("тел\\факс: (0152) 52-14-70", InfoFont, FontBrush, 305, indent + 51);
@@ -1143,9 +1143,9 @@ WHERE LabelType=2 AND DecorAssignmentsLabels.DecorAssignmentID=" + iDecorAssignm
                     ev.Graphics.DrawString("ТУ РБ 100135477.422-2005", InfoFont, FontBrush, 305, indent + 3);
 
                     if (((ProfileAssignmentsLabelInfo)LabelInfo[CurrentLabelNumber + 1]).FactoryType == 2)
-                        ev.Graphics.DrawString("СООО \"ЗОВ-ТПС\"", InfoFont, FontBrush, 305, indent + 15);
+                        ev.Graphics.DrawString("ООО \"ЗОВ-ТПС\"", InfoFont, FontBrush, 305, indent + 15);
                     else
-                        ev.Graphics.DrawString("СООО \"ЗОВ-Профиль\"", InfoFont, FontBrush, 305, indent + 15);
+                        ev.Graphics.DrawString("ООО \"ОМЦ-ПРОФИЛЬ\"", InfoFont, FontBrush, 305, indent + 15);
                     ev.Graphics.DrawString("Республика Беларусь, 230011", InfoFont, FontBrush, 305, indent + 27);
                     ev.Graphics.DrawString("г. Гродно, ул. Герасимовича, 1", InfoFont, FontBrush, 305, indent + 39);
                     ev.Graphics.DrawString("тел\\факс: (0152) 52-14-70", InfoFont, FontBrush, 305, indent + 51);
@@ -1459,9 +1459,9 @@ WHERE LabelType=2 AND DecorAssignmentsLabels.DecorAssignmentID=" + iDecorAssignm
                 ev.Graphics.DrawLine(Pen, 235, 315, 235, 385);
                 ev.Graphics.DrawString("ТУ РБ 100135477.422-2005", InfoFont, FontBrush, 305, 320);
                 if (((ProfileAssignmentsLabelInfo)LabelInfo[CurrentLabelNumber]).FactoryType == 2)
-                    ev.Graphics.DrawString("СООО \"ЗОВ-ТПС\"", InfoFont, FontBrush, 305, 332);
+                    ev.Graphics.DrawString("ООО \"ЗОВ-ТПС\"", InfoFont, FontBrush, 305, 332);
                 else
-                    ev.Graphics.DrawString("СООО \"ЗОВ-Профиль\"", InfoFont, FontBrush, 305, 332);
+                    ev.Graphics.DrawString("ООО \"ОМЦ-ПРОФИЛЬ\"", InfoFont, FontBrush, 305, 332);
                 ev.Graphics.DrawString("Республика Беларусь, 230011", InfoFont, FontBrush, 305, 344);
                 ev.Graphics.DrawString("г. Гродно, ул. Герасимовича, 1", InfoFont, FontBrush, 305, 356);
                 ev.Graphics.DrawString("тел\\факс: (0152) 52-14-70", InfoFont, FontBrush, 305, 368);
@@ -1513,9 +1513,9 @@ WHERE LabelType=2 AND DecorAssignmentsLabels.DecorAssignmentID=" + iDecorAssignm
                 ev.Graphics.DrawString("ТУ РБ 100135477.422-2005", InfoFont, FontBrush, 305, 320);
 
                 if (((ProfileAssignmentsLabelInfo)LabelInfo[CurrentLabelNumber]).FactoryType == 2)
-                    ev.Graphics.DrawString("СООО \"ЗОВ-ТПС\"", InfoFont, FontBrush, 305, 332);
+                    ev.Graphics.DrawString("ООО \"ЗОВ-ТПС\"", InfoFont, FontBrush, 305, 332);
                 else
-                    ev.Graphics.DrawString("СООО \"ЗОВ-Профиль\"", InfoFont, FontBrush, 305, 332);
+                    ev.Graphics.DrawString("ООО \"ОМЦ-ПРОФИЛЬ\"", InfoFont, FontBrush, 305, 332);
                 ev.Graphics.DrawString("Республика Беларусь, 230011", InfoFont, FontBrush, 305, 344);
                 ev.Graphics.DrawString("г. Гродно, ул. Герасимовича, 1", InfoFont, FontBrush, 305, 356);
                 ev.Graphics.DrawString("тел\\факс: (0152) 52-14-70", InfoFont, FontBrush, 305, 368);

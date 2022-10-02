@@ -216,6 +216,7 @@
             this.kryptonContextMenuItem3 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
             this.kryptonContextMenuItem2 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
             this.PrintDialog = new System.Windows.Forms.PrintDialog();
+            this.lbSectorName = new System.Windows.Forms.Label();
             this.NavigatePanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.kryptonPanel1)).BeginInit();
             this.kryptonPanel1.SuspendLayout();
@@ -615,7 +616,7 @@
             this.panel21.Controls.Add(this.panel13);
             this.panel21.Location = new System.Drawing.Point(0, 0);
             this.panel21.Name = "panel21";
-            this.panel21.Size = new System.Drawing.Size(1854, 604);
+            this.panel21.Size = new System.Drawing.Size(1854, 587);
             this.panel21.TabIndex = 389;
             // 
             // panel26
@@ -732,7 +733,7 @@
             this.panel20.Controls.Add(this.TechStoreAttachDocumentsGrid);
             this.panel20.Location = new System.Drawing.Point(15, 384);
             this.panel20.Name = "panel20";
-            this.panel20.Size = new System.Drawing.Size(270, 170);
+            this.panel20.Size = new System.Drawing.Size(270, 153);
             this.panel20.TabIndex = 437;
             // 
             // TechStoreAttachDocumentsGrid
@@ -756,7 +757,7 @@
             this.TechStoreAttachDocumentsGrid.RowTemplate.Height = 30;
             this.TechStoreAttachDocumentsGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
             this.TechStoreAttachDocumentsGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.TechStoreAttachDocumentsGrid.Size = new System.Drawing.Size(268, 168);
+            this.TechStoreAttachDocumentsGrid.Size = new System.Drawing.Size(268, 151);
             this.TechStoreAttachDocumentsGrid.StandardStyle = true;
             this.TechStoreAttachDocumentsGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
             this.TechStoreAttachDocumentsGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
@@ -895,7 +896,7 @@
             this.panel1.Controls.Add(this.RemoveTechStoreAtStoreDetailButton);
             this.panel1.Controls.Add(this.RemoveTechCatalogToolsButton);
             this.panel1.Controls.Add(this.AddTechCatalogToolsButton);
-            this.panel1.Location = new System.Drawing.Point(22, 558);
+            this.panel1.Location = new System.Drawing.Point(22, 541);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1814, 44);
             this.panel1.TabIndex = 408;
@@ -1733,7 +1734,7 @@
             this.panel22.Controls.Add(this.TechCatalogToolsGrid);
             this.panel22.Location = new System.Drawing.Point(1418, 384);
             this.panel22.Name = "panel22";
-            this.panel22.Size = new System.Drawing.Size(418, 171);
+            this.panel22.Size = new System.Drawing.Size(418, 154);
             this.panel22.TabIndex = 402;
             // 
             // TechCatalogToolsGrid
@@ -1755,7 +1756,7 @@
             this.TechCatalogToolsGrid.RowTemplate.Height = 30;
             this.TechCatalogToolsGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
             this.TechCatalogToolsGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.TechCatalogToolsGrid.Size = new System.Drawing.Size(416, 169);
+            this.TechCatalogToolsGrid.Size = new System.Drawing.Size(416, 152);
             this.TechCatalogToolsGrid.StandardStyle = false;
             this.TechCatalogToolsGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
             this.TechCatalogToolsGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
@@ -1847,7 +1848,7 @@
             this.panel11.Controls.Add(this.TechCatalogStoreDetailGrid);
             this.panel11.Location = new System.Drawing.Point(563, 384);
             this.panel11.Name = "panel11";
-            this.panel11.Size = new System.Drawing.Size(849, 171);
+            this.panel11.Size = new System.Drawing.Size(849, 154);
             this.panel11.TabIndex = 379;
             // 
             // TechCatalogStoreDetailGrid
@@ -1869,7 +1870,7 @@
             this.TechCatalogStoreDetailGrid.RowTemplate.Height = 30;
             this.TechCatalogStoreDetailGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
             this.TechCatalogStoreDetailGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.TechCatalogStoreDetailGrid.Size = new System.Drawing.Size(847, 169);
+            this.TechCatalogStoreDetailGrid.Size = new System.Drawing.Size(847, 152);
             this.TechCatalogStoreDetailGrid.StandardStyle = false;
             this.TechCatalogStoreDetailGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
             this.TechCatalogStoreDetailGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
@@ -1967,7 +1968,7 @@
             this.panel13.Controls.Add(this.TechStoreGrid);
             this.panel13.Location = new System.Drawing.Point(293, 31);
             this.panel13.Name = "panel13";
-            this.panel13.Size = new System.Drawing.Size(265, 524);
+            this.panel13.Size = new System.Drawing.Size(265, 507);
             this.panel13.TabIndex = 377;
             // 
             // TechStoreGrid
@@ -1992,7 +1993,7 @@
             this.TechStoreGrid.RowTemplate.Height = 30;
             this.TechStoreGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
             this.TechStoreGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.TechStoreGrid.Size = new System.Drawing.Size(263, 522);
+            this.TechStoreGrid.Size = new System.Drawing.Size(263, 505);
             this.TechStoreGrid.StandardStyle = false;
             this.TechStoreGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
             this.TechStoreGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
@@ -2078,6 +2079,7 @@
             this.MachinesPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.MachinesPanel.Controls.Add(this.lbSectorName);
             this.MachinesPanel.Controls.Add(this.panel24);
             this.MachinesPanel.Controls.Add(this.EditMachinePhotoButton);
             this.MachinesPanel.Controls.Add(this.ZoomButton);
@@ -2371,7 +2373,7 @@
             this.panel10.Controls.Add(this.MachineValueParametrsGrid);
             this.panel10.Location = new System.Drawing.Point(342, 31);
             this.panel10.Name = "panel10";
-            this.panel10.Size = new System.Drawing.Size(294, 561);
+            this.panel10.Size = new System.Drawing.Size(294, 507);
             this.panel10.TabIndex = 388;
             // 
             // MachineValueParametrsGrid
@@ -2395,7 +2397,7 @@
             this.MachineValueParametrsGrid.RowTemplate.Height = 30;
             this.MachineValueParametrsGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
             this.MachineValueParametrsGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.MachineValueParametrsGrid.Size = new System.Drawing.Size(292, 559);
+            this.MachineValueParametrsGrid.Size = new System.Drawing.Size(292, 505);
             this.MachineValueParametrsGrid.StandardStyle = false;
             this.MachineValueParametrsGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
             this.MachineValueParametrsGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
@@ -4175,16 +4177,28 @@
             // 
             this.PrintDialog.UseEXDialog = true;
             // 
+            // lbSectorName
+            // 
+            this.lbSectorName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lbSectorName.AutoSize = true;
+            this.lbSectorName.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.lbSectorName.ForeColor = System.Drawing.Color.Black;
+            this.lbSectorName.Location = new System.Drawing.Point(342, 541);
+            this.lbSectorName.Name = "lbSectorName";
+            this.lbSectorName.Size = new System.Drawing.Size(151, 19);
+            this.lbSectorName.TabIndex = 412;
+            this.lbSectorName.Text = "Участок и подучасток:";
+            // 
             // TechCatalogForm
             // 
             this.AccessibleName = "false";
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1270, 740);
+            this.Controls.Add(this.MachinesPanel);
             this.Controls.Add(this.kryptonPanel1);
             this.Controls.Add(this.NavigatePanel);
             this.Controls.Add(this.StorePanel);
-            this.Controls.Add(this.MachinesPanel);
             this.Controls.Add(this.ToolsPanel);
             this.Controls.Add(this.OperationsPanel);
             this.DoubleBuffered = true;
@@ -4463,5 +4477,6 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
+        private System.Windows.Forms.Label lbSectorName;
     }
 }

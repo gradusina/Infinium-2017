@@ -360,7 +360,7 @@
             this.rbProfil.StateCommon.ShortText.Color1 = System.Drawing.Color.Black;
             this.rbProfil.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 14.81F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.rbProfil.TabIndex = 420;
-            this.rbProfil.Values.Text = "ЗОВ-Профиль";
+            this.rbProfil.Values.Text = "ОМЦ-ПРОФИЛЬ";
             // 
             // label9
             // 

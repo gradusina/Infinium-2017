@@ -1549,8 +1549,8 @@
             this.ExpProfilCheckBox.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
             this.ExpProfilCheckBox.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 15.94F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.ExpProfilCheckBox.TabIndex = 355;
-            this.ExpProfilCheckBox.Text = "ЗОВ-Профиль";
-            this.ExpProfilCheckBox.Values.Text = "ЗОВ-Профиль";
+            this.ExpProfilCheckBox.Text = "ОМЦ-ПРОФИЛЬ";
+            this.ExpProfilCheckBox.Values.Text = "ОМЦ-ПРОФИЛЬ";
             // 
             // kryptonBorderEdge117
             // 

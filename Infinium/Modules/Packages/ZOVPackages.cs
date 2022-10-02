@@ -1267,7 +1267,7 @@ namespace Infinium.Modules.Packages.ZOV
             DecorOrdersDataTable.Columns.Add(new DataColumn("PackNumber", Type.GetType("System.Int32")));
 
             string SelectCommand = @"SELECT ProductID, ProductName FROM DecorProducts" +
-                " WHERE (ProductID IN (SELECT ProductID FROM DecorConfig WHERE (Enabled = 1))) ORDER BY ProductName ASC";
+                " WHERE (ProductID IN (SELECT ProductID FROM DecorConfig)) ORDER BY ProductName ASC";
             ProductsDataTable = new DataTable();
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
@@ -1275,7 +1275,7 @@ namespace Infinium.Modules.Packages.ZOV
             }
             DecorDataTable = new DataTable();
             SelectCommand = @"SELECT DISTINCT TechStore.TechStoreID AS DecorID, TechStore.TechStoreName AS Name, DecorConfig.ProductID FROM TechStore 
-                INNER JOIN DecorConfig ON TechStore.TechStoreID = DecorConfig.DecorID AND Enabled = 1 ORDER BY TechStoreName";
+                INNER JOIN DecorConfig ON TechStore.TechStoreID = DecorConfig.DecorID ORDER BY TechStoreName";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(DecorDataTable);
@@ -4512,7 +4512,7 @@ namespace Infinium.Modules.Packages.ZOV
             DecorOrdersDataTable.Columns.Add(new DataColumn("PackNumber", Type.GetType("System.Int32")));
 
             string SelectCommand = @"SELECT ProductID, ProductName FROM DecorProducts" +
-                " WHERE (ProductID IN (SELECT ProductID FROM DecorConfig WHERE (Enabled = 1))) ORDER BY ProductName ASC";
+                " WHERE (ProductID IN (SELECT ProductID FROM DecorConfig)) ORDER BY ProductName ASC";
             ProductsDataTable = new DataTable();
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
@@ -4520,7 +4520,7 @@ namespace Infinium.Modules.Packages.ZOV
             }
             DecorDataTable = new DataTable();
             SelectCommand = @"SELECT DISTINCT TechStore.TechStoreID AS DecorID, TechStore.TechStoreName AS Name, DecorConfig.ProductID FROM TechStore 
-                INNER JOIN DecorConfig ON TechStore.TechStoreID = DecorConfig.DecorID AND Enabled = 1  ORDER BY TechStoreName";
+                INNER JOIN DecorConfig ON TechStore.TechStoreID = DecorConfig.DecorID ORDER BY TechStoreName";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(DecorDataTable);
@@ -6340,7 +6340,7 @@ namespace Infinium.Modules.Packages.ZOV
             }
 
             SelectCommand = @"SELECT ProductID, ProductName FROM DecorProducts" +
-                " WHERE (ProductID IN (SELECT ProductID FROM DecorConfig WHERE (Enabled = 1))) ORDER BY ProductName ASC";
+                " WHERE (ProductID IN (SELECT ProductID FROM DecorConfig)) ORDER BY ProductName ASC";
             ProductsDataTable = new DataTable();
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
@@ -6348,7 +6348,7 @@ namespace Infinium.Modules.Packages.ZOV
             }
             DecorDataTable = new DataTable();
             SelectCommand = @"SELECT DISTINCT TechStore.TechStoreID AS DecorID, TechStore.TechStoreName AS Name, DecorConfig.ProductID FROM TechStore 
-                INNER JOIN DecorConfig ON TechStore.TechStoreID = DecorConfig.DecorID AND Enabled = 1  ORDER BY TechStoreName";
+                INNER JOIN DecorConfig ON TechStore.TechStoreID = DecorConfig.DecorID ORDER BY TechStoreName";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(DecorDataTable);
@@ -8240,7 +8240,7 @@ namespace Infinium.Modules.Packages.ZOV
             }
 
             SelectCommand = @"SELECT ProductID, ProductName FROM DecorProducts" +
-                " WHERE (ProductID IN (SELECT ProductID FROM DecorConfig WHERE (Enabled = 1))) ORDER BY ProductName ASC";
+                " WHERE (ProductID IN (SELECT ProductID FROM DecorConfig)) ORDER BY ProductName ASC";
             ProductsDataTable = new DataTable();
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
@@ -8248,7 +8248,7 @@ namespace Infinium.Modules.Packages.ZOV
             }
             DecorDataTable = new DataTable();
             SelectCommand = @"SELECT DISTINCT TechStore.TechStoreID AS DecorID, TechStore.TechStoreName AS Name, DecorConfig.ProductID FROM TechStore 
-                INNER JOIN DecorConfig ON TechStore.TechStoreID = DecorConfig.DecorID AND Enabled = 1   ORDER BY TechStoreName";
+                INNER JOIN DecorConfig ON TechStore.TechStoreID = DecorConfig.DecorID ORDER BY TechStoreName";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(DecorDataTable);
@@ -9420,9 +9420,9 @@ namespace Infinium.Modules.Packages.ZOV
             ev.Graphics.DrawString("ТУ РБ 100135477.422-2005", InfoFont, FontBrush, 305, 320);
 
             if (((Info)LabelInfo[CurrentLabelNumber]).FactoryType == 2)
-                ev.Graphics.DrawString("СООО \"ЗОВ-ТПС\"", InfoFont, FontBrush, 305, 332);
+                ev.Graphics.DrawString("ООО \"ЗОВ-ТПС\"", InfoFont, FontBrush, 305, 332);
             else
-                ev.Graphics.DrawString("СООО \"ЗОВ-Профиль\"", InfoFont, FontBrush, 305, 332);
+                ev.Graphics.DrawString("ООО \"ОМЦ-ПРОФИЛЬ\"", InfoFont, FontBrush, 305, 332);
 
             ev.Graphics.DrawString("Республика Беларусь, 230011", InfoFont, FontBrush, 305, 344);
             ev.Graphics.DrawString("г. Гродно, ул. Герасимовича, 1", InfoFont, FontBrush, 305, 356);

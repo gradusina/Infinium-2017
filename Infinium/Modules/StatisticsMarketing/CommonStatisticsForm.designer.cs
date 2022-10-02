@@ -3026,8 +3026,8 @@
             this.ProfilCheckBox.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
             this.ProfilCheckBox.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.ProfilCheckBox.TabIndex = 355;
-            this.ProfilCheckBox.Text = "ЗОВ-Профиль";
-            this.ProfilCheckBox.Values.Text = "ЗОВ-Профиль";
+            this.ProfilCheckBox.Text = "ОМЦ-ПРОФИЛЬ";
+            this.ProfilCheckBox.Values.Text = "ОМЦ-ПРОФИЛЬ";
             // 
             // panel8
             // 
@@ -8417,8 +8417,8 @@
             this.BatchProfilCheckBox.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
             this.BatchProfilCheckBox.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 15.94F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.BatchProfilCheckBox.TabIndex = 355;
-            this.BatchProfilCheckBox.Text = "ЗОВ-Профиль";
-            this.BatchProfilCheckBox.Values.Text = "ЗОВ-Профиль";
+            this.BatchProfilCheckBox.Text = "ОМЦ-ПРОФИЛЬ";
+            this.BatchProfilCheckBox.Values.Text = "ОМЦ-ПРОФИЛЬ";
             // 
             // kryptonBorderEdge77
             // 
@@ -8711,8 +8711,8 @@
             this.StoreProfilCheckBox.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
             this.StoreProfilCheckBox.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 15.94F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.StoreProfilCheckBox.TabIndex = 355;
-            this.StoreProfilCheckBox.Text = "ЗОВ-Профиль";
-            this.StoreProfilCheckBox.Values.Text = "ЗОВ-Профиль";
+            this.StoreProfilCheckBox.Text = "ОМЦ-ПРОФИЛЬ";
+            this.StoreProfilCheckBox.Values.Text = "ОМЦ-ПРОФИЛЬ";
             // 
             // kryptonBorderEdge117
             // 
@@ -8937,8 +8937,8 @@
             this.DispProfilCheckBox.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
             this.DispProfilCheckBox.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 15.94F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.DispProfilCheckBox.TabIndex = 355;
-            this.DispProfilCheckBox.Text = "ЗОВ-Профиль";
-            this.DispProfilCheckBox.Values.Text = "ЗОВ-Профиль";
+            this.DispProfilCheckBox.Text = "ОМЦ-ПРОФИЛЬ";
+            this.DispProfilCheckBox.Values.Text = "ОМЦ-ПРОФИЛЬ";
             this.DispProfilCheckBox.CheckedChanged += new System.EventHandler(this.DispProfilCheckBox_CheckedChanged);
             // 
             // kryptonBorderEdge189
@@ -9313,8 +9313,8 @@
             this.CProfilCheckBox.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
             this.CProfilCheckBox.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 15.94F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.CProfilCheckBox.TabIndex = 355;
-            this.CProfilCheckBox.Text = "ЗОВ-Профиль";
-            this.CProfilCheckBox.Values.Text = "ЗОВ-Профиль";
+            this.CProfilCheckBox.Text = "ОМЦ-ПРОФИЛЬ";
+            this.CProfilCheckBox.Values.Text = "ОМЦ-ПРОФИЛЬ";
             // 
             // kryptonBorderEdge218
             // 
@@ -13641,8 +13641,8 @@
             this.ExpProfilCheckBox.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
             this.ExpProfilCheckBox.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 15.94F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.ExpProfilCheckBox.TabIndex = 355;
-            this.ExpProfilCheckBox.Text = "ЗОВ-Профиль";
-            this.ExpProfilCheckBox.Values.Text = "ЗОВ-Профиль";
+            this.ExpProfilCheckBox.Text = "ОМЦ-ПРОФИЛЬ";
+            this.ExpProfilCheckBox.Values.Text = "ОМЦ-ПРОФИЛЬ";
             // 
             // kryptonBorderEdge250
             // 

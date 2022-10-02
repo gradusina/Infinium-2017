@@ -10979,9 +10979,9 @@ WHERE dbo.TechCatalogOperationsDetail.TechCatalogOperationsGroupID IN
     //        ev.Graphics.DrawString("ТУ РБ 100135477.422-2005", InfoFont, FontBrush, 305, 320);
 
     //        if (((Info)LabelInfo[CurrentLabelNumber]).FactoryType == 2)
-    //            ev.Graphics.DrawString("СООО \"ЗОВ-ТПС\"", InfoFont, FontBrush, 305, 332);
+    //            ev.Graphics.DrawString("ООО \"ЗОВ-ТПС\"", InfoFont, FontBrush, 305, 332);
     //        else
-    //            ev.Graphics.DrawString("СООО \"ЗОВ-Профиль\"", InfoFont, FontBrush, 305, 332);
+    //            ev.Graphics.DrawString("ООО \"ОМЦ-ПРОФИЛЬ\"", InfoFont, FontBrush, 305, 332);
 
     //        ev.Graphics.DrawString("Республика Беларусь, 230011", InfoFont, FontBrush, 305, 344);
     //        ev.Graphics.DrawString("г. Гродно, ул.Весенняя, 19а-15,", InfoFont, FontBrush, 305, 356);

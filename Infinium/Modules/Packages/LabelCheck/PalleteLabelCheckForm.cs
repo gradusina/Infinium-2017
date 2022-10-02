@@ -339,7 +339,7 @@ namespace Infinium
                     lbWeekNumber.Text = CheckLabel.LabelInfo.WeekNumber.ToString();
                     lbDocDateTime.Text = CheckLabel.LabelInfo.DocDateTime;
                     if (CheckLabel.LabelInfo.FactoryType == 1)
-                        lbFactory.Text = "ЗОВ-Профиль";
+                        lbFactory.Text = "ОМЦ-ПРОФИЛЬ";
                     if (CheckLabel.LabelInfo.FactoryType == 2)
                         lbFactory.Text = "ЗОВ-ТПС";
                     lbGroup.Text = CheckLabel.LabelInfo.GroupType;

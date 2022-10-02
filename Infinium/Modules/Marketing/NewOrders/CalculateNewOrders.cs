@@ -356,7 +356,9 @@ namespace Infinium.Modules.Marketing.NewOrders
             return;
         }
 
-        public void CalculateOrder(int MegaOrderID, int MainOrderID, decimal ProfilDiscountDirector, decimal TPSDiscountDirector, decimal ProfilTotalDiscount, decimal TPSTotalDiscount, decimal DiscountPaymentCondition, int CurrencyTypeID, decimal Currency, object ConfirmDateTime)
+        public void CalculateOrder(int MegaOrderID, int MainOrderID, decimal ProfilDiscountDirector, decimal TPSDiscountDirector, 
+            decimal ProfilTotalDiscount, decimal TPSTotalDiscount, decimal DiscountPaymentCondition, 
+            int CurrencyTypeID, decimal Currency, object ConfirmDateTime)
         {
             int ClientID = GetClientID(MainOrderID);
             DecorCalculate.GetAllDecorOrders(MegaOrderID);
@@ -408,7 +410,9 @@ namespace Infinium.Modules.Marketing.NewOrders
 
                         Currency = Decimal.Round(Currency, 4, MidpointRounding.AwayFromZero);
                         bool TechDrilling = Convert.ToBoolean(DT.Rows[0]["TechDrilling"]);
-                        FrontsCalculate.CalculateFronts(ClientID, MainOrderID, ProfilDiscountDirector, TPSDiscountDirector, ProfilTotalDiscount, TPSTotalDiscount, CurrencyTypeID, Currency, TechDrilling,
+                        FrontsCalculate.CalculateFronts(ClientID, MainOrderID, 
+                            ProfilDiscountDirector, TPSDiscountDirector, ProfilTotalDiscount, TPSTotalDiscount,
+                            CurrencyTypeID, Currency, TechDrilling,
                             ref OriginalProfilFrontsOrderCost, ref OriginalTPSFrontsOrderCost, ref OriginalTotalFrontsOrderCost,
                             ref ProfilFrontsOrderCost, ref TPSFrontsOrderCost, ref TotalFrontsOrderCost, ref CurrencyOrderCost,
                             ref FrontsOrderSquare, ref FrontsOrderWeight, ConfirmDateTime);
@@ -461,8 +465,10 @@ namespace Infinium.Modules.Marketing.NewOrders
             }
         }
 
-        public void Recalculate(int MegaOrderID, decimal ComplaintProfilCost, decimal ComplaintTPSCost, int TransportType, decimal TransportCost, decimal AdditionalCost,
-            decimal ProfilDiscountDirector, decimal TPSDiscountDirector, decimal ProfilTotalDiscount, decimal TPSTotalDiscount, decimal DiscountPaymentCondition, int CurrencyTypeID, decimal PaymentRate,
+        public void Recalculate(int MegaOrderID, decimal ComplaintProfilCost, decimal ComplaintTPSCost, int 
+                TransportType, decimal TransportCost, decimal AdditionalCost,
+            decimal ProfilDiscountDirector, decimal TPSDiscountDirector, 
+            decimal ProfilTotalDiscount, decimal TPSTotalDiscount, decimal DiscountPaymentCondition, int CurrencyTypeID, decimal PaymentRate,
             object ConfirmDateTime)
         {
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT MainOrderID FROM NewMainOrders WHERE MegaOrderID = " + MegaOrderID,
@@ -474,7 +480,9 @@ namespace Infinium.Modules.Marketing.NewOrders
                     for (int i = 0; i < DT.Rows.Count; i++)
                     {
                         int MainOrderID = Convert.ToInt32(DT.Rows[i]["MainOrderID"]);
-                        CalculateOrder(MegaOrderID, MainOrderID, ProfilDiscountDirector, TPSDiscountDirector, ProfilTotalDiscount, TPSTotalDiscount, DiscountPaymentCondition, CurrencyTypeID, PaymentRate, ConfirmDateTime);
+                        CalculateOrder(MegaOrderID, MainOrderID,
+                            ProfilDiscountDirector, TPSDiscountDirector, ProfilTotalDiscount, TPSTotalDiscount,
+                            DiscountPaymentCondition, CurrencyTypeID, PaymentRate, ConfirmDateTime);
                     }
                 }
             }
@@ -1595,7 +1603,8 @@ namespace Infinium.Modules.Marketing.NewOrders
             FrontsOrdersRow["OriginalCost"] = OriginalCost;
             FrontsOrdersRow["CurrencyTypeID"] = CurrencyTypeID;
             FrontsOrdersRow["Cost"] = Cost;
-            CurrencyOrderCost = Decimal.Round(CurrencyOrderCost, 2, MidpointRounding.AwayFromZero);
+            CurrencyOrderCost = Math.Ceiling(CurrencyOrderCost / 0.01m) * 0.01m;
+            //CurrencyOrderCost = Decimal.Round(CurrencyOrderCost, 2, MidpointRounding.AwayFromZero);
             FrontsOrdersRow["CurrencyCost"] = CurrencyOrderCost;
 
             ItemSquare = Square;
@@ -1720,7 +1729,8 @@ namespace Infinium.Modules.Marketing.NewOrders
             FrontsOrdersRow["OriginalCost"] = OriginalCost;
             FrontsOrdersRow["CurrencyTypeID"] = CurrencyTypeID;
             FrontsOrdersRow["Cost"] = Cost;
-            CurrencyOrderCost = Decimal.Round(CurrencyOrderCost, 2, MidpointRounding.AwayFromZero);
+            CurrencyOrderCost = Math.Ceiling(CurrencyOrderCost / 0.01m) * 0.01m;
+            //CurrencyOrderCost = Decimal.Round(CurrencyOrderCost, 2, MidpointRounding.AwayFromZero);
             FrontsOrdersRow["CurrencyCost"] = CurrencyOrderCost;
 
             ItemSquare = Square;
@@ -1786,7 +1796,7 @@ namespace Infinium.Modules.Marketing.NewOrders
             if (FrontID == 30504 || FrontID == 30505 || FrontID == 30506 ||
                 FrontID == 30364 || FrontID == 30366 || FrontID == 30367 ||
                 FrontID == 30501 || FrontID == 30502 || FrontID == 30503 ||
-                FrontID == 16269 || FrontID == 28945 || FrontID == 41327 || FrontID == 41328 || FrontID == 27914 || FrontID == 29597 || FrontID == 3727 || FrontID == 3728 || FrontID == 3729 ||
+                FrontID == 16269 || FrontID == 28945 || FrontID == 41327 || FrontID == 41328 || FrontID == 41331 || FrontID == 27914 || FrontID == 29597 || FrontID == 3727 || FrontID == 3728 || FrontID == 3729 ||
                 FrontID == 3730 || FrontID == 3731 || FrontID == 3732 || FrontID == 3733 || FrontID == 3734 ||
                 FrontID == 3735 || FrontID == 3736 || FrontID == 3737 || FrontID == 3739 || FrontID == 3740 ||
                 FrontID == 3741 || FrontID == 3742 || FrontID == 3743 || FrontID == 3744 || FrontID == 3745 ||
@@ -1889,7 +1899,9 @@ namespace Infinium.Modules.Marketing.NewOrders
 
 
         //общий расчет фасадов в заказе
-        public void CalculateFronts(int ClientID, int MainOrderID, decimal ProfilDiscountDirector, decimal TPSDiscountDirector, decimal ProfilTotalDiscount, decimal TPSTotalDiscount, int CurrencyTypeID, decimal Currency, bool TechDrilling,
+        public void CalculateFronts(int ClientID, int MainOrderID, decimal ProfilDiscountDirector, decimal TPSDiscountDirector, 
+            decimal ProfilTotalDiscount, decimal TPSTotalDiscount, 
+            int CurrencyTypeID, decimal Currency, bool TechDrilling,
             ref decimal OriginalProfilCost, ref decimal OriginalTPSCost, ref decimal OriginalTotalCost,
             ref decimal ProfilCost, ref decimal TPSCost, ref decimal TotalCost, ref decimal TotalCurrencyCost,
             ref decimal OrderSquare, ref decimal FrontsWeight, object ConfirmDateTime)
@@ -2793,7 +2805,8 @@ namespace Infinium.Modules.Marketing.NewOrders
             DecorOrderRow["OriginalCost"] = OriginalCost;
             DecorOrderRow["Cost"] = Cost;
             DecorOrderRow["CurrencyTypeID"] = CurrencyTypeID;
-            CurrencyOrderCost = Decimal.Round(CurrencyOrderCost, 2, MidpointRounding.AwayFromZero);
+            CurrencyOrderCost = Math.Ceiling(CurrencyOrderCost / 0.01m) * 0.01m;
+            //CurrencyOrderCost = Decimal.Round(CurrencyOrderCost, 2, MidpointRounding.AwayFromZero);
             //if (CurrencyTypeID == 4)
             //{
             //    CurrencyOrderCost = Math.Ceiling(CurrencyOrderCost / 100m) * 100m;
@@ -3004,7 +3017,8 @@ namespace Infinium.Modules.Marketing.NewOrders
             DecorOrderRow["OriginalCost"] = OriginalCost;
             DecorOrderRow["Cost"] = Cost;
             DecorOrderRow["CurrencyTypeID"] = CurrencyTypeID;
-            CurrencyOrderCost = Decimal.Round(CurrencyOrderCost, 2, MidpointRounding.AwayFromZero);
+            CurrencyOrderCost = Math.Ceiling(CurrencyOrderCost / 0.01m) * 0.01m;
+            //CurrencyOrderCost = Decimal.Round(CurrencyOrderCost, 2, MidpointRounding.AwayFromZero);
             //if (CurrencyTypeID == 4)
             //{
             //    CurrencyOrderCost = Math.Ceiling(CurrencyOrderCost / 100m) * 100m;

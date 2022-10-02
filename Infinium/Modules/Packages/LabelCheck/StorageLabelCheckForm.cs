@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
@@ -319,7 +320,7 @@ namespace Infinium
                     if (Prefix == "001")
                     {
                         ScanEvents.AddEvent(EventsDataTable, "Отсканировано: этикетка упаковки №" + Convert.ToInt32(BarcodeLabel.Text.Substring(3, 9)) +
-                            ", пр-во ЗОВ-Профиль, отгрузка ЗОВ", 1, CheckLabel.UserID);
+                            ", пр-во ОМЦ-ПРОФИЛЬ, отгрузка ЗОВ", 1, CheckLabel.UserID);
                     }
                     if (Prefix == "002")
                     {
@@ -329,7 +330,7 @@ namespace Infinium
                     if (Prefix == "003")
                     {
                         ScanEvents.AddEvent(EventsDataTable, "Отсканировано: этикетка упаковки №" + Convert.ToInt32(BarcodeLabel.Text.Substring(3, 9)) +
-                            ", пр-во ЗОВ-Профиль, отгрузка Маркетинг", 2, CheckLabel.UserID);
+                            ", пр-во ОМЦ-ПРОФИЛЬ, отгрузка Маркетинг", 2, CheckLabel.UserID);
                     }
                     if (Prefix == "004")
                     {
@@ -341,6 +342,55 @@ namespace Infinium
                     CheckPicture.Image = Properties.Resources.OK;
                     BarcodeLabel.ForeColor = Color.FromArgb(82, 169, 24);
                     CheckLabel.GetLabelInfo(ref EventsDataTable, BarcodeLabel.Text);
+
+                    int packageId = Convert.ToInt32(BarcodeLabel.Text.Substring(3, 9));
+                    if (bManualInput)
+                    {
+                        if (CheckLabel.ExistPackageInRegisterManualInput(packageId))
+                        {
+                            BarcodeLabel.Text = "Упаковка уже в Регистраторе";
+                        }
+                        else
+                        {
+                            CheckLabel.RegisterManualInputOnStore(packageId, CheckLabel.LabelInfo.MainOrderID,
+                                CheckLabel.CheckProductType(BarcodeLabel.Text, CheckLabel.LabelInfo.Group), Prefix);
+                            ScanEvents.AddEvent(EventsDataTable,
+                                "Отсканировано ВРУЧНУЮ: этикетка упаковки №" +
+                                Convert.ToInt32(BarcodeLabel.Text.Substring(3, 9)) +
+                                ", пр-во ОМЦ-ПРОФИЛЬ, отгрузка Маркетинг", 2, CheckLabel.UserID);
+                        }
+                    }
+                    else
+                    {
+                        switch (Prefix)
+                        {
+                            case "001":
+                            case "002":
+                                CheckLabel.SetPacked(ref EventsDataTable, false, BarcodeLabel.Text);
+                                break;
+                            case "003":
+                            case "004":
+                                CheckLabel.SetPacked(ref EventsDataTable, true, BarcodeLabel.Text);
+                                break;
+                        }
+
+                        if (CheckLabel.LabelInfo.Group == "Маркетинг")
+                        {
+                            CheckOrdersStatus.SetStatusMarketingForMainOrder(
+                                Convert.ToInt32(CheckLabel.LabelInfo.MegaOrderID), CheckLabel.LabelInfo.MainOrderID);
+                            ScanEvents.AddEvent(EventsDataTable,
+                                "Выставлен статус для подзаказа №" + CheckLabel.LabelInfo.MainOrderID, 2,
+                                CheckLabel.UserID);
+                        }
+
+                        if (CheckLabel.LabelInfo.Group == "ЗОВ")
+                        {
+                            CheckOrdersStatus.SetStatusZOV(CheckLabel.LabelInfo.MainOrderID, false);
+                            ScanEvents.AddEvent(EventsDataTable,
+                                "Выставлен статус для подзаказа №" + CheckLabel.LabelInfo.MainOrderID, 1,
+                                CheckLabel.UserID);
+                        }
+                    }
 
                     ClientLabel.Text = CheckLabel.LabelInfo.ClientName;
                     MegaOrderNumberLabel.Text = CheckLabel.LabelInfo.MegaOrderNumber;
@@ -356,16 +406,6 @@ namespace Infinium
 
                     CheckLabel.SetGridColor(CheckLabel.LabelInfo.ProductType, true);
 
-                    if (CheckLabel.LabelInfo.Group == "Маркетинг")
-                    {
-                        CheckOrdersStatus.SetStatusMarketingForMainOrder(Convert.ToInt32(CheckLabel.LabelInfo.MegaOrderID), CheckLabel.LabelInfo.MainOrderID);
-                        ScanEvents.AddEvent(EventsDataTable, "Выставлен статус для подзаказа №" + CheckLabel.LabelInfo.MainOrderID, 2, CheckLabel.UserID);
-                    }
-                    if (CheckLabel.LabelInfo.Group == "ЗОВ")
-                    {
-                        CheckOrdersStatus.SetStatusZOV(CheckLabel.LabelInfo.MainOrderID, false);
-                        ScanEvents.AddEvent(EventsDataTable, "Выставлен статус для подзаказа №" + CheckLabel.LabelInfo.MainOrderID, 1, CheckLabel.UserID);
-                    }
                 }
                 else
                 {
@@ -419,5 +459,34 @@ namespace Infinium
             }
         }
 
+        private bool bManualInput;
+        private Stopwatch sw;
+        private int BarCodeSerialLength = 12;
+        private int TimeAHumanWouldTakeToType = 1500;
+        private void FirstCharacterEntered()
+        {
+            if (sw == null)
+                sw = new Stopwatch();
+            sw.Start();
+        }
+
+        private void BarcodeTextBox_TextChanged(object sender, EventArgs e)
+        {
+            if (BarcodeTextBox.Text.Length == 1)
+                FirstCharacterEntered();
+
+            if (BarcodeTextBox.Text.Length != BarCodeSerialLength) return;
+
+            sw.Stop();
+            if (sw.ElapsedMilliseconds < TimeAHumanWouldTakeToType)
+            {
+                //Input is from the BarCode Scanner
+                bManualInput = false;
+            }
+            else
+            {
+                bManualInput = true;
+            }
+        }
     }
 }

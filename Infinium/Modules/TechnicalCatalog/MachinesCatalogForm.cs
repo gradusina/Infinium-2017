@@ -258,6 +258,11 @@ namespace Infinium
             MachinesCatalogManager = new MachinesCatalog();
             MachinesCatalogManager.Initialize();
 
+
+            cmbCalculations.DataSource = Enum.GetValues(typeof(Calculations));
+            string DisplayMember = cmbCalculations.DisplayMember;
+            string ValueMember = cmbCalculations.ValueMember;
+
             DataBinding();
 
             GridSettings();
@@ -863,7 +868,7 @@ namespace Infinium
 
             if (MachinesCatalogManager == null || !MachinesCatalogManager.HasMachines
                 || dgvMachines.SelectedCells.Count == 0
-                || dgvMachines.CurrentRow.Cells["MachineID"].Value == DBNull.Value)
+                || dgvMachines.CurrentRow?.Cells["MachineID"].Value == DBNull.Value)
             {
                 return;
             }
@@ -884,8 +889,14 @@ namespace Infinium
             }
             else
                 GetMachineData();
-            MachineName = dgvMachines.CurrentRow.Cells["MachineName"].Value.ToString();
+            MachineName = dgvMachines.CurrentRow?.Cells["MachineName"].Value.ToString();
             lblMachineName.Text = MachineName;
+
+            int machineId = Convert.ToInt32(dgvMachines.CurrentRow?.Cells["MachineID"].Value);
+
+            cbAddToHercules.CheckState = MachinesCatalogManager.IsMachineInHercules(machineId) ? CheckState.Checked : CheckState.Unchecked;
+
+            cmbCalculations.SelectedItem = MachinesCatalogManager.GetMachineCalculations(machineId) == 1 ? Calculations.Max : Calculations.Min;
         }
 
         private void GetMachineData()
@@ -5084,6 +5095,35 @@ namespace Infinium
         private void kryptonButton32_Click(object sender, EventArgs e)
         {
             panel163.Visible = false;
+        }
+
+        private void cbAddToHercules_CheckedChanged(object sender, EventArgs e)
+        {
+            int machineId = Convert.ToInt32(dgvMachines.CurrentRow?.Cells["MachineID"].Value);
+            if (!cbAddToHercules.Checked)
+                return;
+
+            if (MachinesCatalogManager.IsMachineInHercules(machineId))
+                return;
+
+            bool okCancel = LightMessageBox.Show(ref TopForm, true,
+                "Вы добавляете станок в Геркулес. Продолжить?",
+                "Геркулес");
+
+            if (!okCancel)
+                return;
+
+            MachinesCatalogManager.AddMachineInHercules(machineId);
+        }
+
+        private void cmbCalculations_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+            int machineId = Convert.ToInt32(dgvMachines.CurrentRow?.Cells["MachineID"].Value);
+            Calculations calculation = Calculations.Min;
+            Enum.TryParse(cmbCalculations.SelectedValue.ToString(), out calculation);
+            if (machineId != 0)
+                MachinesCatalogManager.AddMachineCalculations(machineId, Convert.ToInt32(calculation));
         }
     }
 }

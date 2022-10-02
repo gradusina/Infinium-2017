@@ -3074,7 +3074,7 @@ namespace Infinium
                     if (sProfilPosition.Length > 0 && sTPSPosition.Length > 0)
                     {
                         e.Graphics.DrawString(sProfilPosition, fPositionItemFont, brPositionLabelBrush, iMarginForImageWidth, i * (iItemHeight) + 35 + y - iOffset * iItemHeight);
-                        //e.Graphics.DrawString("(" + sProfilRate + " ЗОВ-Профиль)", fPositionLabelFont, brPositionItemBrush, 10 + e.Graphics.MeasureString(sProfilPosition, fPositionItemFont).Width + iMarginForImageWidth, i * (iItemHeight) + 35 - iOffset * iItemHeight);
+                        //e.Graphics.DrawString("(" + sProfilRate + " ОМЦ-ПРОФИЛЬ)", fPositionLabelFont, brPositionItemBrush, 10 + e.Graphics.MeasureString(sProfilPosition, fPositionItemFont).Width + iMarginForImageWidth, i * (iItemHeight) + 35 - iOffset * iItemHeight);
                         e.Graphics.DrawString(sTPSPosition, fPositionItemFont, brPositionLabelBrush, iMarginForImageWidth, i * (iItemHeight) + 20 + 35 + y - iOffset * iItemHeight);
                         //e.Graphics.DrawString("(" + sTPSRate + " ЗОВ-ТПС)", fPositionLabelFont, brPositionItemBrush, 10 + e.Graphics.MeasureString(sTPSPosition, fPositionItemFont).Width + iMarginForImageWidth, i * (iItemHeight) + 55 - iOffset * iItemHeight);
                     }
@@ -3083,7 +3083,7 @@ namespace Infinium
                         if (sProfilPosition.Length > 0)
                         {
                             e.Graphics.DrawString(sProfilPosition, fPositionItemFont, brPositionLabelBrush, iMarginForImageWidth, i * (iItemHeight) + 35 + y - iOffset * iItemHeight);
-                            //e.Graphics.DrawString("(" + sProfilRate + " ЗОВ-Профиль)", fPositionLabelFont, brPositionItemBrush, 10 + e.Graphics.MeasureString(sProfilPosition, fPositionItemFont).Width + iMarginForImageWidth, i * (iItemHeight) + 35 - iOffset * iItemHeight);
+                            //e.Graphics.DrawString("(" + sProfilRate + " ОМЦ-ПРОФИЛЬ)", fPositionLabelFont, brPositionItemBrush, 10 + e.Graphics.MeasureString(sProfilPosition, fPositionItemFont).Width + iMarginForImageWidth, i * (iItemHeight) + 35 - iOffset * iItemHeight);
                         }
                         if (sTPSPosition.Length > 0)
                         {

@@ -66,7 +66,7 @@ namespace Infinium.Modules.Marketing.NewOrders
 
         public DecorCatalogOrder()
         {
-            Initialize(true);
+
         }
 
         public DecorCatalogOrder(ref ComponentFactory.Krypton.Toolkit.KryptonComboBox tLengthEdit,
@@ -214,7 +214,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                 INNER JOIN DecorConfig ON TechStore.TechStoreID = DecorConfig.DecorID AND Enabled = 1 AND AccountingName IS NOT NULL AND InvNumber IS NOT NULL ORDER BY TechStoreName";
             else
                 SelectCommand = @"SELECT DISTINCT TechStore.TechStoreID AS DecorID, TechStore.TechStoreName AS Name, DecorConfig.ProductID FROM TechStore 
-                INNER JOIN DecorConfig ON TechStore.TechStoreID = DecorConfig.DecorID AccountingName IS NOT NULL AND InvNumber IS NOT NULL ORDER BY TechStoreName";
+                INNER JOIN DecorConfig ON TechStore.TechStoreID = DecorConfig.DecorID AND AccountingName IS NOT NULL AND InvNumber IS NOT NULL ORDER BY TechStoreName";
 
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {

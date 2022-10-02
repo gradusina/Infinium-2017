@@ -589,7 +589,7 @@ namespace Infinium.Modules.Marketing.Orders
                      FrontID != 3735 && FrontID != 3736 && FrontID != 3737 && FrontID != 27914 && FrontID != 29597 && FrontID != 3739 && FrontID != 3740 &&
                      FrontID != 3741 && FrontID != 3742 && FrontID != 3743 && FrontID != 3744 && FrontID != 3745 &&
                      FrontID != 3746 && FrontID != 3747 && FrontID != 3748 && FrontID != 15108 && FrontID != 3662 && FrontID != 3663 && FrontID != 3664 &&
-                     FrontID != 16269 && FrontID != 28945 && FrontID != 41327 && FrontID != 41328 &&
+                     FrontID != 16269 && FrontID != 28945 && FrontID != 41327 && FrontID != 41328 && FrontID != 41331 &&
                      FrontID != 16579 && FrontID != 16580 && FrontID != 16581 && FrontID != 16582 && FrontID != 16583 && FrontID != 16584 &&
                      FrontID != 29277 && FrontID != 29278 &&
                      FrontID != 15107 && FrontID != 15759 && FrontID != 15760 && FrontID != 27437 && FrontID != 27913 && FrontID != 29598))
@@ -605,7 +605,7 @@ namespace Infinium.Modules.Marketing.Orders
                  FrontID == 30504 || FrontID == 30505 || FrontID == 30506 ||
                  FrontID == 30364 || FrontID == 30366 || FrontID == 30367 ||
                  FrontID == 30501 || FrontID == 30502 || FrontID == 30503 ||
-                 FrontID == 16269 || FrontID == 28945 || FrontID == 41327 || FrontID == 41328 || FrontID == 27914 || FrontID == 29597 ||
+                 FrontID == 16269 || FrontID == 28945 || FrontID == 41327 || FrontID == 41328 || FrontID == 41331 || FrontID == 27914 || FrontID == 29597 ||
                  FrontID == 16579 || FrontID == 16580 || FrontID == 16581 || FrontID == 16582 || FrontID == 16583 || FrontID == 16584 ||
                  FrontID == 29277 || FrontID == 29278 ||
                  FrontID == 15107 || FrontID == 15759 || FrontID == 15760 || FrontID == 27437 || FrontID == 27913 || FrontID == 29598))
@@ -718,7 +718,7 @@ namespace Infinium.Modules.Marketing.Orders
                      FrontID != 3735 && FrontID != 3736 && FrontID != 3737 && FrontID != 27914 && FrontID != 29597 && FrontID != 3739 && FrontID != 3740 &&
                      FrontID != 3741 && FrontID != 3742 && FrontID != 3743 && FrontID != 3744 && FrontID != 3745 &&
                      FrontID != 3746 && FrontID != 3747 && FrontID != 3748 && FrontID != 15108 && FrontID != 3662 && FrontID != 3663 && FrontID != 3664 &&
-                     FrontID != 16269 && FrontID != 28945 && FrontID != 41327 && FrontID != 41328 &&
+                     FrontID != 16269 && FrontID != 28945 && FrontID != 41327 && FrontID != 41328 && FrontID != 41331 &&
                      FrontID != 16579 && FrontID != 16580 && FrontID != 16581 && FrontID != 16582 && FrontID != 16583 && FrontID != 16584 &&
                      FrontID != 29277 && FrontID != 29278 &&
                      FrontID != 15107 && FrontID != 15759 && FrontID != 15760 && FrontID != 27437 && FrontID != 27913 && FrontID != 29598))
@@ -734,7 +734,7 @@ namespace Infinium.Modules.Marketing.Orders
                      FrontID == 30504 || FrontID == 30505 || FrontID == 30506 ||
                      FrontID == 30364 || FrontID == 30366 || FrontID == 30367 ||
                      FrontID == 30501 || FrontID == 30502 || FrontID == 30503 ||
-                     FrontID == 16269 || FrontID == 28945 || FrontID == 41327 || FrontID == 41328 || FrontID == 27914 || FrontID == 29597 ||
+                     FrontID == 16269 || FrontID == 28945 || FrontID == 41327 || FrontID == 41328 || FrontID == 41331 || FrontID == 27914 || FrontID == 29597 ||
                      FrontID == 16579 || FrontID == 16580 || FrontID == 16581 || FrontID == 16582 || FrontID == 16583 || FrontID == 16584 ||
                      FrontID == 29277 || FrontID == 29278 ||
                      FrontID == 15107 || FrontID == 15759 || FrontID == 15760 || FrontID == 27437 || FrontID == 27913 || FrontID == 29598))
@@ -6830,7 +6830,7 @@ namespace Infinium.Modules.Marketing.Orders
             if (FrontID == 30504 || FrontID == 30505 || FrontID == 30506 ||
                 FrontID == 30364 || FrontID == 30366 || FrontID == 30367 ||
                 FrontID == 30501 || FrontID == 30502 || FrontID == 30503 ||
-                FrontID == 16269 || FrontID == 28945 || FrontID == 41327 || FrontID == 41328 || FrontID == 27914 || FrontID == 29597 || FrontID == 3727 || FrontID == 3728 || FrontID == 3729 ||
+                FrontID == 16269 || FrontID == 28945 || FrontID == 41327 || FrontID == 41328 || FrontID == 41331 || FrontID == 27914 || FrontID == 29597 || FrontID == 3727 || FrontID == 3728 || FrontID == 3729 ||
                 FrontID == 3730 || FrontID == 3731 || FrontID == 3732 || FrontID == 3733 || FrontID == 3734 ||
                 FrontID == 3735 || FrontID == 3736 || FrontID == 3737 || FrontID == 3739 || FrontID == 3740 ||
                 FrontID == 3741 || FrontID == 3742 || FrontID == 3743 || FrontID == 3744 || FrontID == 3745 ||
@@ -9559,7 +9559,7 @@ namespace Infinium.Modules.Marketing.Orders
                 pos += 2;
 
                 Cell1 = sheet1.CreateRow(pos++).CreateCell(0);
-                Cell1.SetCellValue("ЗОВ-Профиль:");
+                Cell1.SetCellValue("ОМЦ-ПРОФИЛЬ:");
                 Cell1.CellStyle = SummaryWithoutBorderBelCS;
 
                 Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);

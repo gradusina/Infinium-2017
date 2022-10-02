@@ -3964,21 +3964,21 @@ namespace Infinium
             }
             if (ReportParameters.ReportType == 1)
             {
-                ExcelName = "Отчет в натуральных единицах, ЗОВ-Профиль, " + ReportName;
+                ExcelName = "Отчет в натуральных единицах, ОМЦ-ПРОФИЛЬ, " + ReportName;
                 if (FactoryID == 2)
                     ExcelName = "Отчет в натуральных единицах, ЗОВ-ТПС, " + ReportName;
                 MovementReport.NaturalUnitsReport(ExcelName);
             }
             if (ReportParameters.ReportType == 2)
             {
-                ExcelName = "Отчет в денежном выражении, ЗОВ-Профиль, " + ReportName;
+                ExcelName = "Отчет в денежном выражении, ОМЦ-ПРОФИЛЬ, " + ReportName;
                 if (FactoryID == 2)
                     ExcelName = "Отчет в денежном выражении, ЗОВ-ТПС, " + ReportName;
                 MovementReport.FinancialReport(ExcelName);
             }
             if (ReportParameters.ReportType == 3)
             {
-                ExcelName = "Отчет со всеми параметрами, ЗОВ-Профиль, " + ReportName;
+                ExcelName = "Отчет со всеми параметрами, ОМЦ-ПРОФИЛЬ, " + ReportName;
                 if (FactoryID == 2)
                     ExcelName = "Отчет со всеми параметрами, ЗОВ-ТПС, " + ReportName;
                 MovementReport.StoreParametersReport(ExcelName);
@@ -5491,21 +5491,21 @@ namespace Infinium
             }
             if (ReportParameters.ReportType == 1)
             {
-                ExcelName = "Склад пр-ва. Отчет в натуральных единицах, ЗОВ-Профиль, " + ReportName;
+                ExcelName = "Склад пр-ва. Отчет в натуральных единицах, ОМЦ-ПРОФИЛЬ, " + ReportName;
                 if (FactoryID == 2)
                     ExcelName = "Склад пр-ва. Отчет в натуральных единицах, ЗОВ-ТПС, " + ReportName;
                 MovementReport.NaturalUnitsReport(ExcelName);
             }
             if (ReportParameters.ReportType == 2)
             {
-                ExcelName = "Склад пр-ва. Отчет в денежном выражении, ЗОВ-Профиль, " + ReportName;
+                ExcelName = "Склад пр-ва. Отчет в денежном выражении, ОМЦ-ПРОФИЛЬ, " + ReportName;
                 if (FactoryID == 2)
                     ExcelName = "Склад пр-ва. Отчет в денежном выражении, ЗОВ-ТПС, " + ReportName;
                 MovementReport.FinancialReport(ExcelName);
             }
             if (ReportParameters.ReportType == 3)
             {
-                ExcelName = "Склад пр-ва. Отчет со всеми параметрами, ЗОВ-Профиль, " + ReportName;
+                ExcelName = "Склад пр-ва. Отчет со всеми параметрами, ОМЦ-ПРОФИЛЬ, " + ReportName;
                 if (FactoryID == 2)
                     ExcelName = "Склад пр-ва. Отчет со всеми параметрами, ЗОВ-ТПС, " + ReportName;
                 MovementReport.StoreParametersReport(ExcelName);

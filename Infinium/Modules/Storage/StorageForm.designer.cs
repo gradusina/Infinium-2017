@@ -687,7 +687,7 @@
             this.ProfilCheckButton.TabIndex = 200;
             this.ProfilCheckButton.ToWidth = true;
             this.ProfilCheckButton.TrackingLineColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.ProfilCheckButton.Values.Text = "ЗОВ-Профиль";
+            this.ProfilCheckButton.Values.Text = "ОМЦ-ПРОФИЛЬ";
             // 
             // kryptonBorderEdge3
             // 

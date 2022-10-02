@@ -1099,8 +1099,8 @@
             this.ProfilCheckBox.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
             this.ProfilCheckBox.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 17.81F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
             this.ProfilCheckBox.TabIndex = 387;
-            this.ProfilCheckBox.Text = "ЗОВ-Профиль";
-            this.ProfilCheckBox.Values.Text = "ЗОВ-Профиль";
+            this.ProfilCheckBox.Text = "ОМЦ-ПРОФИЛЬ";
+            this.ProfilCheckBox.Values.Text = "ОМЦ-ПРОФИЛЬ";
             this.ProfilCheckBox.CheckedChanged += new System.EventHandler(this.ProfilCheckBox_CheckedChanged);
             // 
             // kryptonBorderEdge8

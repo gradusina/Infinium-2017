@@ -672,7 +672,7 @@
             this.ZOVProfilCheckButton.TabIndex = 338;
             this.ZOVProfilCheckButton.ToWidth = true;
             this.ZOVProfilCheckButton.TrackingLineColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.ZOVProfilCheckButton.Values.Text = "ЗОВ-Профиль";
+            this.ZOVProfilCheckButton.Values.Text = "ОМЦ-ПРОФИЛЬ";
             // 
             // ZOVTPSCheckButton
             // 

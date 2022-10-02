@@ -37,7 +37,7 @@
 
         ep043ShervudWidth = 138,
 
-        ep112Width = 98,
+        ep112Width = 99,
 
         UrbanWidth = 136,
 
@@ -95,9 +95,9 @@
 
         ep043ShervudMargin = 138,
 
-        ep112Margin = 98,
+        ep112Margin = 99,
 
-        UrbanMargin = 114,
+        UrbanMargin = 116,
 
         AlbyMargin = 89,
 
@@ -279,7 +279,7 @@
 
         Turin3SimpleInsetHeight = 127,
 
-        LeonSimpleInsetHeight = 111,
+        LeonSimpleInsetHeight = 108,
 
         InfinitiSimpleInsetHeight = 134,
 
@@ -300,7 +300,7 @@
 
         Turin3BoxInsetHeight = 127,
 
-        LeonBoxInsetHeight = 111,
+        LeonBoxInsetHeight = 108,
 
         InfinitiBoxInsetHeight = 98,
 
@@ -314,7 +314,7 @@
 
         Turin3VitrinaInsetHeight = 127,
 
-        LeonVitrinaInsetHeight = 111,
+        LeonVitrinaInsetHeight = 108,
 
         InfinitiVitrinaInsetHeight = 134,
 
@@ -335,7 +335,7 @@
 
         Turin3GridInsetHeight = 127,
 
-        LeonGridInsetHeight = 111,
+        LeonGridInsetHeight = 108,
 
         InfinitiGridInsetHeight = 134,
 
@@ -356,7 +356,7 @@
 
         Turin3SimpleInsetWidth = 127,
 
-        LeonSimpleInsetWidth = 111,
+        LeonSimpleInsetWidth = 108,
 
         InfinitiSimpleInsetWidth = 134,
 
@@ -377,7 +377,7 @@
 
         Turin3BoxInsetWidth = 127,
 
-        LeonBoxInsetWidth = 111,
+        LeonBoxInsetWidth = 108,
 
         InfinitiBoxInsetWidth = 99,
 
@@ -391,7 +391,7 @@
 
         Turin3VitrinaInsetWidth = 127,
 
-        LeonVitrinaInsetWidth = 111,
+        LeonVitrinaInsetWidth = 108,
 
         InfinitiVitrinaInsetWidth = 134,
 
@@ -412,7 +412,7 @@
 
         Turin3GridInsetWidth = 127,
 
-        LeonGridInsetWidth = 111,
+        LeonGridInsetWidth = 108,
 
         InfinitiGridInsetWidth = 134
     }

@@ -417,7 +417,13 @@ namespace Infinium.Modules.Marketing.NewOrders
             FrontsOrdersDataGrid.Columns["CostWithTransport"].Visible = false;
             FrontsOrdersDataGrid.Columns["PriceWithTransport"].Visible = false;
             FrontsOrdersDataGrid.Columns["CurrencyCost"].Visible = false;
-            FrontsOrdersDataGrid.Columns["CurrencyTypeID"].Visible = false;
+            //FrontsOrdersDataGrid.Columns["CurrencyTypeID"].Visible = false
+            //
+            if (FrontsOrdersDataGrid.Columns.Contains("CurrencyTypeID"))
+            {
+                FrontsOrdersDataGrid.Columns["CurrencyTypeID"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                FrontsOrdersDataGrid.Columns["CurrencyTypeID"].Width = 85;
+            }
             if (FrontsOrdersDataGrid.Columns.Contains("PriceWithTransport"))
                 FrontsOrdersDataGrid.Columns["PriceWithTransport"].Visible = false;
             if (FrontsOrdersDataGrid.Columns.Contains("CostWithTransport"))
@@ -438,6 +444,7 @@ namespace Infinium.Modules.Marketing.NewOrders
             FrontsOrdersDataGrid.Columns["Count"].HeaderText = "Кол-во";
             FrontsOrdersDataGrid.Columns["IsNonStandard"].HeaderText = "Н\\С";
             FrontsOrdersDataGrid.Columns["IsSample"].HeaderText = "Образцы";
+            FrontsOrdersDataGrid.Columns["OnStorage"].HeaderText = "Склад";
             FrontsOrdersDataGrid.Columns["Notes"].HeaderText = "Примечание";
             FrontsOrdersDataGrid.Columns["ImpostMargin"].HeaderText = "Смещение\r\nимпоста";
 
@@ -472,6 +479,8 @@ namespace Infinium.Modules.Marketing.NewOrders
             FrontsOrdersDataGrid.Columns["IsNonStandard"].Width = 85;
             FrontsOrdersDataGrid.Columns["IsSample"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
             FrontsOrdersDataGrid.Columns["IsSample"].Width = 85;
+            FrontsOrdersDataGrid.Columns["OnStorage"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            FrontsOrdersDataGrid.Columns["OnStorage"].Width = 85;
             FrontsOrdersDataGrid.Columns["Notes"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             FrontsOrdersDataGrid.Columns["Notes"].MinimumWidth = 175;
             FrontsOrdersDataGrid.Columns["ImpostMargin"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
@@ -494,6 +503,7 @@ namespace Infinium.Modules.Marketing.NewOrders
             FrontsOrdersDataGrid.Columns["InsetPrice"].DisplayIndex = DisplayIndex++;
             FrontsOrdersDataGrid.Columns["Cost"].DisplayIndex = DisplayIndex++;
             FrontsOrdersDataGrid.Columns["ImpostMargin"].DisplayIndex = DisplayIndex++;
+            FrontsOrdersDataGrid.Columns["OnStorage"].DisplayIndex = DisplayIndex++;
             FrontsOrdersDataGrid.CellFormatting += FrontsOrdersDataGrid_CellFormatting;
         }
 
@@ -534,6 +544,7 @@ namespace Infinium.Modules.Marketing.NewOrders
 
         public void HasClientExcluzive(int iClientID)
         {
+
             string SelectCommand = string.Empty;
             ClientID = iClientID;
             ExcluziveDataTable = new DataTable();
@@ -675,7 +686,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                  FrontID != 3735 && FrontID != 3736 && FrontID != 3737 && FrontID != 27914 && FrontID != 29597 && FrontID != 3739 && FrontID != 3740 &&
                  FrontID != 3741 && FrontID != 3742 && FrontID != 3743 && FrontID != 3744 && FrontID != 3745 &&
                  FrontID != 3746 && FrontID != 3747 && FrontID != 3748 && FrontID != 15108 && FrontID != 3662 && FrontID != 3663 && FrontID != 3664 &&
-                 FrontID != 16269 && FrontID != 28945 && FrontID != 41327 && FrontID != 41328 &&
+                 FrontID != 16269 && FrontID != 28945 && FrontID != 41327 && FrontID != 41328 && FrontID != 41331 &&
                  FrontID != 16579 && FrontID != 16580 && FrontID != 16581 && FrontID != 16582 && FrontID != 16583 && FrontID != 16584 &&
                  FrontID != 29277 && FrontID != 29278 &&
                      FrontID != 15107 && FrontID != 15759 && FrontID != 15760 && FrontID != 27437 && FrontID != 27913 && FrontID != 29598))
@@ -691,7 +702,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                  FrontID == 30504 || FrontID == 30505 || FrontID == 30506 ||
                  FrontID == 30364 || FrontID == 30366 || FrontID == 30367 ||
                  FrontID == 30501 || FrontID == 30502 || FrontID == 30503 ||
-                 FrontID == 16269 || FrontID == 28945 || FrontID == 41327 || FrontID == 41328 || FrontID == 27914 || FrontID == 29597 ||
+                 FrontID == 16269 || FrontID == 28945 || FrontID == 41327 || FrontID == 41328 || FrontID == 41331 || FrontID == 27914 || FrontID == 29597 ||
                  FrontID == 16579 || FrontID == 16580 || FrontID == 16581 || FrontID == 16582 || FrontID == 16583 || FrontID == 16584 ||
                  FrontID == 29277 || FrontID == 29278 ||
                  FrontID == 15107 || FrontID == 15759 || FrontID == 15760 || FrontID == 27437 || FrontID == 27913 || FrontID == 29598))
@@ -973,7 +984,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                      FrontID != 3735 && FrontID != 3736 && FrontID != 3737 && FrontID != 27914 && FrontID != 29597 && FrontID != 3739 && FrontID != 3740 &&
                      FrontID != 3741 && FrontID != 3742 && FrontID != 3743 && FrontID != 3744 && FrontID != 3745 &&
                      FrontID != 3746 && FrontID != 3747 && FrontID != 3748 && FrontID != 15108 && FrontID != 3662 && FrontID != 3663 && FrontID != 3664 &&
-                     FrontID != 16269 && FrontID != 28945 && FrontID != 41327 && FrontID != 41328 &&
+                     FrontID != 16269 && FrontID != 28945 && FrontID != 41327 && FrontID != 41328 && FrontID != 41331 &&
                      FrontID != 16579 && FrontID != 16580 && FrontID != 16581 && FrontID != 16582 && FrontID != 16583 && FrontID != 16584 &&
                      FrontID != 29277 && FrontID != 29278 &&
                      FrontID != 15107 && FrontID != 15759 && FrontID != 15760 && FrontID != 27437 && FrontID != 27913 && FrontID != 29598))
@@ -989,7 +1000,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                      FrontID == 30504 || FrontID == 30505 || FrontID == 30506 ||
                      FrontID == 30364 || FrontID == 30366 || FrontID == 30367 ||
                      FrontID == 30501 || FrontID == 30502 || FrontID == 30503 ||
-                     FrontID == 16269 || FrontID == 28945 || FrontID == 41327 || FrontID == 41328 || FrontID == 27914 || FrontID == 29597 ||
+                     FrontID == 16269 || FrontID == 28945 || FrontID == 41327 || FrontID == 41328 || FrontID == 41331 || FrontID == 27914 || FrontID == 29597 ||
                      FrontID == 16579 || FrontID == 16580 || FrontID == 16581 || FrontID == 16582 || FrontID == 16583 || FrontID == 16584 ||
                      FrontID == 29277 || FrontID == 29278 ||
                      FrontID == 15107 || FrontID == 15759 || FrontID == 15760 || FrontID == 27437 || FrontID == 27913 || FrontID == 29598))
@@ -1857,6 +1868,8 @@ namespace Infinium.Modules.Marketing.NewOrders
                 DecorItemOrdersDataGrids[i].Columns["ItemColumn"].MinimumWidth = 120;
                 DecorItemOrdersDataGrids[i].Columns["DiscountVolume"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                 DecorItemOrdersDataGrids[i].Columns["DiscountVolume"].MinimumWidth = 60;
+                DecorItemOrdersDataGrids[i].Columns["OnStorage"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                DecorItemOrdersDataGrids[i].Columns["OnStorage"].MinimumWidth = 60;
 
                 //убирание лишних столбцов
                 if (DecorItemOrdersDataGrids[i].Columns.Contains("CreateDateTime"))
@@ -1931,6 +1944,7 @@ namespace Infinium.Modules.Marketing.NewOrders
 
                 DecorItemOrdersDataGrids[i].Columns["DiscountVolume"].HeaderText = "Объемный\r\nкоэф-нт";
                 DecorItemOrdersDataGrids[i].Columns["IsSample"].HeaderText = "Образцы";
+                DecorItemOrdersDataGrids[i].Columns["OnStorage"].HeaderText = "Склад";
                 DecorItemOrdersDataGrids[i].AutoGenerateColumns = false;
                 int DisplayIndex = 0;
                 DecorItemOrdersDataGrids[i].Columns["ItemColumn"].DisplayIndex = DisplayIndex++;
@@ -2891,10 +2905,24 @@ namespace Infinium.Modules.Marketing.NewOrders
             FrontsOrdersDataGrid.Columns["ItemWeight"].Visible = false;
             FrontsOrdersDataGrid.Columns["Weight"].Visible = false;
             FrontsOrdersDataGrid.Columns["FrontConfigID"].Visible = false;
-            FrontsOrdersDataGrid.Columns["CurrencyTypeID"].Visible = false;
-            FrontsOrdersDataGrid.Columns["CurrencyCost"].Visible = false;
+            //FrontsOrdersDataGrid.Columns["CurrencyTypeID"].Visible = false;
+            //FrontsOrdersDataGrid.Columns["CurrencyCost"].Visible = false;
+            if (FrontsOrdersDataGrid.Columns.Contains("CurrencyTypeID"))
+            {
+                FrontsOrdersDataGrid.Columns["CurrencyTypeID"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                FrontsOrdersDataGrid.Columns["CurrencyTypeID"].Width = 85;
+            }
+            if (FrontsOrdersDataGrid.Columns.Contains("CurrencyCost"))
+            {
+                FrontsOrdersDataGrid.Columns["CurrencyCost"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                FrontsOrdersDataGrid.Columns["CurrencyCost"].Width = 85;
+            }
             if (FrontsOrdersDataGrid.Columns.Contains("OriginalInsetPrice"))
                 FrontsOrdersDataGrid.Columns["OriginalInsetPrice"].Visible = false;
+            if (FrontsOrdersDataGrid.Columns.Contains("NeedCalcPrice"))
+                FrontsOrdersDataGrid.Columns["NeedCalcPrice"].Visible = false;
+            if (FrontsOrdersDataGrid.Columns.Contains("AreaID"))
+                FrontsOrdersDataGrid.Columns["AreaID"].Visible = false;
 
             if (!Security.PriceAccess || !ShowPrice)
             {
@@ -2942,6 +2970,7 @@ namespace Infinium.Modules.Marketing.NewOrders
             FrontsOrdersDataGrid.Columns["PriceWithTransport"].HeaderText = "Цена\r\n(с транспортом)";
             FrontsOrdersDataGrid.Columns["CurrencyCost"].HeaderText = "Стоимость\r\nв расчете";
             FrontsOrdersDataGrid.Columns["IsSample"].HeaderText = "Образцы";
+            FrontsOrdersDataGrid.Columns["OnStorage"].HeaderText = "Склад";
             FrontsOrdersDataGrid.Columns["TotalDiscount"].HeaderText = "Общая\r\nскидка, %";
 
             FrontsOrdersDataGrid.Columns["CupboardString"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
@@ -2972,6 +3001,7 @@ namespace Infinium.Modules.Marketing.NewOrders
             FrontsOrdersDataGrid.Columns["Notes"].MinimumWidth = 175;
             FrontsOrdersDataGrid.Columns["IsSample"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             FrontsOrdersDataGrid.Columns["TotalDiscount"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            FrontsOrdersDataGrid.Columns["OnStorage"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             //FrontsOrdersDataGrid.RowsDefaultCellStyle.WrapMode = DataGridViewTriState.True;
             //FrontsOrdersDataGrid.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCellsExceptHeaders;
             FrontsOrdersDataGrid.CellFormatting += FrontsOrdersDataGrid_CellFormatting;
@@ -3069,6 +3099,29 @@ namespace Infinium.Modules.Marketing.NewOrders
                 using (DataTable DT = new DataTable())
                 {
                     DA.Fill(DT);
+                }
+            }
+        }
+
+
+        public void SetOnStorage(int FrontsOrdersID)
+        {
+            string selectCommand =
+                $"SELECT FrontsOrdersID, OnStorage from NewFrontsOrders where FrontsOrdersID={FrontsOrdersID}";
+
+            using (SqlDataAdapter da = new SqlDataAdapter(selectCommand,
+                       ConnectionStrings.MarketingOrdersConnectionString))
+            {
+                using (new SqlCommandBuilder(da))
+                {
+                    using (DataTable dt = new DataTable())
+                    {
+                        if (da.Fill(dt) > 0)
+                        {
+                            dt.Rows[0]["OnStorage"] = !Convert.ToBoolean(dt.Rows[0]["OnStorage"]);
+                            da.Update(dt);
+                        }
+                    }
                 }
             }
         }
@@ -3320,6 +3373,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                 DecorItemOrdersDataGrids[i].StandardStyle = false;
                 DecorItemOrdersDataGrids[i].MultiSelect = true;
                 DecorItemOrdersDataGrids[i].CellMouseDown += new DataGridViewCellMouseEventHandler(MainOrdersDecorOrders_CellMouseDown);
+                DecorItemOrdersDataGrids[i].DataError += MainOrdersDecorOrders_DataError;
 
                 DecorItemOrdersDataGrids[i].Columns.Add(CreateInsetColorsColumn());
                 DecorItemOrdersDataGrids[i].Columns["InsetColorsColumn"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
@@ -3353,6 +3407,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                 DecorItemOrdersDataGrids[i].Columns["OriginalCost"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                 DecorItemOrdersDataGrids[i].Columns["CostWithTransport"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                 DecorItemOrdersDataGrids[i].Columns["PriceWithTransport"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                DecorItemOrdersDataGrids[i].Columns["OnStorage"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
 
                 //убирание лишних столбцов
                 if (DecorItemOrdersDataGrids[i].Columns.Contains("CreateDateTime"))
@@ -3410,6 +3465,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                 DecorItemOrdersDataGrids[i].Columns["CurrencyCost"].HeaderText = "Стоимость\r\nв расчете";
                 DecorItemOrdersDataGrids[i].Columns["DiscountVolume"].HeaderText = "Объемный\r\nкоэф-нт";
                 DecorItemOrdersDataGrids[i].Columns["IsSample"].HeaderText = "Образцы";
+                DecorItemOrdersDataGrids[i].Columns["OnStorage"].HeaderText = "Склад";
 
                 for (int j = 2; j < DecorItemOrdersDataGrids[i].Columns.Count; j++)
                 {
@@ -3470,8 +3526,15 @@ namespace Infinium.Modules.Marketing.NewOrders
                 DecorItemOrdersDataGrids[i].Columns["OriginalCost"].DisplayIndex = DisplayIndex++;
                 DecorItemOrdersDataGrids[i].Columns["Cost"].DisplayIndex = DisplayIndex++;
                 DecorItemOrdersDataGrids[i].Columns["CostWithTransport"].DisplayIndex = DisplayIndex++;
+                DecorItemOrdersDataGrids[i].Columns["OnStorage"].DisplayIndex = DisplayIndex++;
             }
         }
+
+        private void MainOrdersDecorOrders_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+            e.Cancel = true;
+        }
+
         int CurrentDecorOrderID = 0;
         Infinium.Modules.TechnologyCatalog.TestTechCatalog TestTechCatalogManager;
         void KryptonContextMenuItem_Click(object sender, EventArgs e)
@@ -3492,8 +3555,20 @@ namespace Infinium.Modules.Marketing.NewOrders
             if (e.Button == System.Windows.Forms.MouseButtons.Right)
             {
                 DecorItemOrdersBindingSources[SelectedGridIndex].Position = e.RowIndex;
-                ComponentFactory.Krypton.Toolkit.KryptonContextMenu kryptonContextMenu = new ComponentFactory.Krypton.Toolkit.KryptonContextMenu();
+
                 CurrentDecorOrderID = Convert.ToInt32(grid.SelectedRows[0].Cells["DecorOrderID"].Value);
+
+                ComponentFactory.Krypton.Toolkit.KryptonContextMenu kryptonContextMenu = new ComponentFactory.Krypton.Toolkit.KryptonContextMenu();
+                ComponentFactory.Krypton.Toolkit.KryptonContextMenuItems kryptonContextMenuItems = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItems();
+                ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem setOnStorage = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem()
+                {
+                    Text = "На склад"
+                };
+                setOnStorage.Click += (o, args) =>
+                {
+                    SetOnStorage(CurrentDecorOrderID);
+                };
+
                 int DecorID = Convert.ToInt32(grid.SelectedRows[0].Cells["DecorID"].Value);
 
                 if (TestTechCatalogManager == null)
@@ -3504,7 +3579,6 @@ namespace Infinium.Modules.Marketing.NewOrders
                 DataTable DT = TestTechCatalogManager.GetOperationsGroups(DecorID);
                 if (DT.Rows.Count > 0)
                 {
-                    ComponentFactory.Krypton.Toolkit.KryptonContextMenuItems kryptonContextMenuItems = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItems();
                     for (int i = 0; i < DT.Rows.Count; i++)
                     {
                         ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem kryptonContextMenuItem = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem()
@@ -3515,9 +3589,10 @@ namespace Infinium.Modules.Marketing.NewOrders
                         kryptonContextMenuItem.Click += KryptonContextMenuItem_Click;
                         kryptonContextMenuItems.Items.Add(kryptonContextMenuItem);
                     }
-                    kryptonContextMenu.Items.Add(kryptonContextMenuItems);
-                    kryptonContextMenu.Show(new Point(Cursor.Position.X - 212, Cursor.Position.Y - 10));
                 }
+                kryptonContextMenuItems.Items.Add(setOnStorage);
+                kryptonContextMenu.Items.Add(kryptonContextMenuItems);
+                kryptonContextMenu.Show(new Point(Cursor.Position.X - 212, Cursor.Position.Y - 10));
             }
         }
 
@@ -3909,6 +3984,29 @@ namespace Infinium.Modules.Marketing.NewOrders
             if (((DataRowView)(DecorItemOrdersBindingSources[SelectedGridIndex]).Current).Row["Width"] != DBNull.Value)
                 Width = Convert.ToInt32(((DataRowView)(DecorItemOrdersBindingSources[SelectedGridIndex]).Current).Row["Width"]);
             AddToRequest(CurrentClientID, MainOrderID, DecorOrderID, DecorConfigID, PlanCount, Height, Length, Width);
+        }
+
+
+        public void SetOnStorage(int DecorOrderID)
+        {
+            string selectCommand =
+                $"SELECT DecorOrderID, OnStorage from NewDecorOrders where DecorOrderID={DecorOrderID}";
+
+            using (SqlDataAdapter da = new SqlDataAdapter(selectCommand,
+                       ConnectionStrings.MarketingOrdersConnectionString))
+            {
+                using (new SqlCommandBuilder(da))
+                {
+                    using (DataTable dt = new DataTable())
+                    {
+                        if (da.Fill(dt) > 0)
+                        {
+                            dt.Rows[0]["OnStorage"] = !Convert.ToBoolean(dt.Rows[0]["OnStorage"]);
+                            da.Update(dt);
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -9470,7 +9568,7 @@ namespace Infinium.Modules.Marketing.NewOrders
             if (FrontID == 30504 || FrontID == 30505 || FrontID == 30506 ||
                 FrontID == 30364 || FrontID == 30366 || FrontID == 30367 ||
                 FrontID == 30501 || FrontID == 30502 || FrontID == 30503 ||
-                FrontID == 16269 || FrontID == 28945 || FrontID == 41327 || FrontID == 41328 || FrontID == 27914 || FrontID == 29597 || FrontID == 29597 || FrontID == 3727 || FrontID == 3728 || FrontID == 3729 ||
+                FrontID == 16269 || FrontID == 28945 || FrontID == 41327 || FrontID == 41328 || FrontID == 41331 || FrontID == 27914 || FrontID == 29597 || FrontID == 29597 || FrontID == 3727 || FrontID == 3728 || FrontID == 3729 ||
                 FrontID == 3730 || FrontID == 3731 || FrontID == 3732 || FrontID == 3733 || FrontID == 3734 ||
                 FrontID == 3735 || FrontID == 3736 || FrontID == 3737 || FrontID == 3739 || FrontID == 3740 ||
                 FrontID == 3741 || FrontID == 3742 || FrontID == 3743 || FrontID == 3744 || FrontID == 3745 ||
@@ -12313,7 +12411,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                 pos += 2;
 
                 Cell1 = sheet1.CreateRow(pos++).CreateCell(0);
-                Cell1.SetCellValue("ЗОВ-Профиль:");
+                Cell1.SetCellValue("ОМЦ-ПРОФИЛЬ:");
                 Cell1.CellStyle = SummaryWithoutBorderBelCS;
 
                 Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
@@ -13009,7 +13107,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                 pos += 2;
 
                 Cell1 = sheet1.CreateRow(pos++).CreateCell(0);
-                Cell1.SetCellValue("ЗОВ-Профиль:");
+                Cell1.SetCellValue("ОМЦ-ПРОФИЛЬ:");
                 Cell1.CellStyle = SummaryWithoutBorderBelCS;
 
                 Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
@@ -17843,13 +17941,13 @@ namespace Infinium.Modules.Marketing.NewOrders
                         if (NewRow["DecorID"] != DBNull.Value)
                             int.TryParse(NewRow["DecorID"].ToString(), out DecorID);
 
-                        bool isContained = Security.insetTypes.Contains(DecorID);
+                        //bool isContained = Security.insetTypes.Contains(DecorID);
 
-                        if ((Height < 100 || Width < 100) && isContained)
-                        {
-                            MessageBox.Show("Высота и ширина вставки не могут быть меньше 100 мм. Позиция не будет добавлена", "Добавление вставки");
-                            continue;
-                        }
+                        //if ((Height < 100 || Width < 100) && isContained)
+                        //{
+                        //    MessageBox.Show("Высота и ширина вставки не могут быть меньше 100 мм. Позиция не будет добавлена", "Добавление вставки");
+                        //    continue;
+                        //}
 
                         NewRow["CreateDateTime"] = DocDateTime;
                         NewRow["CreateUserTypeID"] = 0;
@@ -17923,40 +18021,40 @@ namespace Infinium.Modules.Marketing.NewOrders
                         if (NewRow["FrontID"] != DBNull.Value)
                             int.TryParse(NewRow["FrontID"].ToString(), out FrontID);
 
-                        TechStoreDimensions dimensions = TablesManager.GetTechStoreDimensions(FrontID);
+                        //TechStoreDimensions dimensions = TablesManager.GetTechStoreDimensions(FrontID);
 
-                        bool bNotCurved = Width != -1;
-                        if (Height > 0 && Height < dimensions.HeightMin && bNotCurved)
-                        {
-                            MessageBox.Show(
-                                $@"Высота фасада не может быть меньше мин. размера {dimensions.HeightMin} мм. Позиция {i + 1}",
-                                "Добавление фасада");
-                            return;
-                        }
+                        //bool bNotCurved = Width != -1;
+                        //if (Height > 0 && Height < dimensions.HeightMin && bNotCurved)
+                        //{
+                        //    MessageBox.Show(
+                        //        $@"Высота фасада не может быть меньше мин. размера {dimensions.HeightMin} мм. Позиция {i + 1}",
+                        //        "Добавление фасада");
+                        //    return;
+                        //}
 
-                        if (Height > 0 && Height > dimensions.HeightMax && bNotCurved)
-                        {
-                            MessageBox.Show(
-                                $@"Высота фасада не может быть больше макс. размера {dimensions.HeightMax} мм. Позиция {i + 1}",
-                                "Добавление фасада");
-                            return;
-                        }
+                        //if (Height > 0 && Height > dimensions.HeightMax && bNotCurved)
+                        //{
+                        //    MessageBox.Show(
+                        //        $@"Высота фасада не может быть больше макс. размера {dimensions.HeightMax} мм. Позиция {i + 1}",
+                        //        "Добавление фасада");
+                        //    return;
+                        //}
 
-                        if (Width > 0 && Width < dimensions.WidthMin)
-                        {
-                            MessageBox.Show(
-                                $@"Ширина фасада не может быть меньше мин. размера {dimensions.WidthMin} мм. Позиция {i + 1}",
-                                "Добавление фасада");
-                            return;
-                        }
+                        //if (Width > 0 && Width < dimensions.WidthMin)
+                        //{
+                        //    MessageBox.Show(
+                        //        $@"Ширина фасада не может быть меньше мин. размера {dimensions.WidthMin} мм. Позиция {i + 1}",
+                        //        "Добавление фасада");
+                        //    return;
+                        //}
 
-                        if (Width > 0 && Width > dimensions.WidthMax)
-                        {
-                            MessageBox.Show(
-                                $@"Ширина фасада не может быть больше макс. размера {dimensions.WidthMax} мм. Позиция {i + 1}",
-                                "Добавление фасада");
-                            return;
-                        }
+                        //if (Width > 0 && Width > dimensions.WidthMax)
+                        //{
+                        //    MessageBox.Show(
+                        //        $@"Ширина фасада не может быть больше макс. размера {dimensions.WidthMax} мм. Позиция {i + 1}",
+                        //        "Добавление фасада");
+                        //    return;
+                        //}
 
                         NewRow["Height"] = Height;
                         NewRow["Width"] = Width;

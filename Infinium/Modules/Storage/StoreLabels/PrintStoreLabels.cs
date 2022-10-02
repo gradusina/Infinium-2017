@@ -246,12 +246,12 @@ namespace Infinium.Modules.Storage.StoreLabels
 
                 int Admission = 35;
                 ev.Graphics.DrawString("Запасные ключи от дверей:", NotesFont, FontBrush, 10, Admission + 6);
-                ev.Graphics.DrawString("С ООО \"ЗОВ-ПРОФИЛЬ\"", NotesFont, FontBrush, 10, Admission + 46);
+                ev.Graphics.DrawString("С ООО \"ОМЦ-ПРОФИЛЬ\"", NotesFont, FontBrush, 10, Admission + 46);
                 ev.Graphics.DrawString("С ООО \"ТермоПрофильСистемы\"", NotesFont, FontBrush, 10, Admission + 86);
                 ev.Graphics.DrawString("Вскрытие ящика №1 производится", NotesFont, FontBrush, 10, Admission + 146);
                 ev.Graphics.DrawString("только при чрезвычайных", NotesFont, FontBrush, 10, Admission + 186);
                 ev.Graphics.DrawString("обстоятельствах или в присутствии", NotesFont, FontBrush, 10, Admission + 226);
-                ev.Graphics.DrawString("руководства С ООО \"ЗОВ-ПРОФИЛЬ\",", NotesFont, FontBrush, 10, Admission + 266);
+                ev.Graphics.DrawString("руководства С ООО \"ОМЦ-ПРОФИЛЬ\",", NotesFont, FontBrush, 10, Admission + 266);
                 ev.Graphics.DrawString("С ООО \"ТермоПрофильСистемы\"", NotesFont, FontBrush, 10, Admission + 306);
             }
         }

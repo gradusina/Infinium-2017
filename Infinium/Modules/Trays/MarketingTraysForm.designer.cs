@@ -226,7 +226,6 @@
             this.PackagesDataGrid.BackText = "Нет данных";
             this.PackagesDataGrid.ColumnHeadersHeight = 45;
             this.PackagesDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.PackagesDataGrid.HideOuterBorders = true;
             this.PackagesDataGrid.Location = new System.Drawing.Point(1, 1);
             this.PackagesDataGrid.MultiSelect = false;
             this.PackagesDataGrid.Name = "PackagesDataGrid";
@@ -239,7 +238,7 @@
             this.PackagesDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Green;
             this.PackagesDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.PackagesDataGrid.Size = new System.Drawing.Size(714, 289);
-            this.PackagesDataGrid.StandardStyle = true;
+            this.PackagesDataGrid.StandardStyle = false;
             this.PackagesDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
             this.PackagesDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
             this.PackagesDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
@@ -263,7 +262,7 @@
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.PackagesDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
             this.PackagesDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
-            this.PackagesDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.PackagesDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
             this.PackagesDataGrid.StateCommon.HeaderColumn.Content.MultiLine = ComponentFactory.Krypton.Toolkit.InheritBool.True;
             this.PackagesDataGrid.StateCommon.HeaderColumn.Content.MultiLineH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
             this.PackagesDataGrid.StateCommon.HeaderColumn.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
@@ -419,7 +418,7 @@
             this.MainOrdersDecorOrdersDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Green;
             this.MainOrdersDecorOrdersDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.MainOrdersDecorOrdersDataGrid.Size = new System.Drawing.Size(708, 277);
-            this.MainOrdersDecorOrdersDataGrid.StandardStyle = true;
+            this.MainOrdersDecorOrdersDataGrid.StandardStyle = false;
             this.MainOrdersDecorOrdersDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
             this.MainOrdersDecorOrdersDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
             this.MainOrdersDecorOrdersDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
@@ -444,7 +443,7 @@
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.MainOrdersDecorOrdersDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
             this.MainOrdersDecorOrdersDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
-            this.MainOrdersDecorOrdersDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.MainOrdersDecorOrdersDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
             this.MainOrdersDecorOrdersDataGrid.StateCommon.HeaderColumn.Content.MultiLine = ComponentFactory.Krypton.Toolkit.InheritBool.True;
             this.MainOrdersDecorOrdersDataGrid.StateCommon.HeaderColumn.Content.MultiLineH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
             this.MainOrdersDecorOrdersDataGrid.StateCommon.HeaderColumn.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
@@ -191,7 +192,6 @@ namespace Infinium
             }
             //CheckTimer.Enabled = false;
         }
-
         private void BarcodeTextBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (!CanAction)
@@ -245,51 +245,56 @@ namespace Infinium
                 string Prefix = BarcodeLabel.Text.Substring(0, 3);
 
                 //ScanEvents.AddEvent(EventsDataTable, "Сканируется этикетка " + BarcodeLabel.Text, 0);
+                
 
                 if (CheckLabel.IsPackageLabel(BarcodeLabel.Text))
                 {
-                    //if (Prefix == "001")
-                    //{
-                    //    ScanEvents.AddEvent(EventsDataTable, "Отсканировано: этикетка упаковки №" + Convert.ToInt32(BarcodeLabel.Text.Substring(3, 9)) +
-                    //        ", пр-во ЗОВ-Профиль, экспедиция ЗОВ", 1);
-                    //}
-                    //if (Prefix == "002")
-                    //{
-                    //    ScanEvents.AddEvent(EventsDataTable, "Отсканировано: этикетка упаковки №" + Convert.ToInt32(BarcodeLabel.Text.Substring(3, 9)) +
-                    //        ", пр-во ЗОВ-ТПС, экспедиция ЗОВ", 1);
-                    //}
-                    //if (Prefix == "003")
-                    //{
-                    //    ScanEvents.AddEvent(EventsDataTable, "Отсканировано: этикетка упаковки №" + Convert.ToInt32(BarcodeLabel.Text.Substring(3, 9)) +
-                    //        ", пр-во ЗОВ-Профиль, экспедиция Маркетинг", 2);
-                    //}
-                    //if (Prefix == "004")
-                    //{
-                    //    ScanEvents.AddEvent(EventsDataTable, "Отсканировано: этикетка упаковки №" + Convert.ToInt32(BarcodeLabel.Text.Substring(3, 9)) +
-                    //        ", пр-во ЗОВ-ТПС, экспедиция Маркетинг", 2);
-                    //}
-                    int PackageID = Convert.ToInt32(BarcodeLabel.Text.Substring(3, 9));
+                    int packageId = Convert.ToInt32(BarcodeLabel.Text.Substring(3, 9));
                     if (CheckLabel.HasPackages(BarcodeLabel.Text))
                     {
-                        string Message = string.Empty;
-                        CheckLabel.GetPackageInfo(PackageID);
-                        if (Prefix == "001" || Prefix == "002")
+                        string message = string.Empty;
+                        CheckLabel.GetPackageInfo(packageId);
+                        switch (Prefix)
                         {
-                            //CheckLabel.SetExp(ref EventsDataTable, false, PackageID, ref Message);
-                            ////int DebtMainOrderID = CheckLabel.GetDebtMainOrderID(CheckLabel.CurrentMainOrderID);
-                            ////if (DebtMainOrderID != -1)
-                            ////    CheckLabel.SetExpDebt(DebtMainOrderID);
-                            //CheckOrdersStatus.SetStatusZOV(CheckLabel.CurrentMainOrderID, false);
-                            //ScanEvents.AddEvent(EventsDataTable, "Выставлен статус для подзаказа №" + CheckLabel.CurrentMainOrderID +
-                            //    ", экспедиция ЗОВ", 1);
-
-
-                            if (CheckLabel.CanPackageExp(PackageID, ref Message))
+                            case "001":
+                            case "002":
                             {
-                                if (!CheckLabel.SetExp(ref EventsDataTable, false, PackageID, ref Message))
+                                if (CheckLabel.CanPackageExp(packageId, ref message))
+                                {
+                                    if (bManualInput)
+                                    {
+                                        CheckLabel.RegisterManualInputOnExp(packageId, CheckLabel.CurrentMainOrderID, CheckLabel.CurrentProductType, Prefix);
+                                        message = $"Этикетка отсканирована вручную. Требуется подтверждение в Регистраторе";
+                                        ErrorPackLabel.Visible = true;
+                                        ErrorPackLabel.Text = message;
+                                    }
+                                    else
+                                    {
+                                        if (!CheckLabel.SetExp(ref EventsDataTable, false, packageId, ref message))
+                                        {
+                                            ErrorPackLabel.Visible = true;
+                                            ErrorPackLabel.Text = message;
+                                            CheckPicture.Visible = true;
+                                            CheckPicture.Image = Properties.Resources.cancel;
+                                            BarcodeLabel.ForeColor = Color.FromArgb(240, 0, 0);
+                                            GroupLabel.Text = "";
+                                            OrderDateLabel.Text = "";
+                                            return;
+                                        }
+
+                                        if (message.Length > 0)
+                                        {
+                                            ErrorPackLabel.Visible = true;
+                                            ErrorPackLabel.Text = message;
+                                        }
+
+                                        CheckOrdersStatus.SetStatusZOV(CheckLabel.CurrentMainOrderID, false);
+                                    }
+                                }
+                                else
                                 {
                                     ErrorPackLabel.Visible = true;
-                                    ErrorPackLabel.Text = Message;
+                                    ErrorPackLabel.Text = message;
                                     CheckPicture.Visible = true;
                                     CheckPicture.Image = Properties.Resources.cancel;
                                     BarcodeLabel.ForeColor = Color.FromArgb(240, 0, 0);
@@ -297,71 +302,74 @@ namespace Infinium
                                     OrderDateLabel.Text = "";
                                     return;
                                 }
-                                if (Message.Length > 0)
+                                break;
+                            }
+                            case "003":
+                            case "004":
+                            {
+                                if (CheckLabel.CanPackageExp(packageId, ref message))
                                 {
-                                    ErrorPackLabel.Visible = true;
-                                    ErrorPackLabel.Text = Message;
+                                    if (bManualInput)
+                                    {
+                                        if (CheckLabel.ExistPackageInRegisterManualInput(packageId))
+                                        {
+                                            message = "Упаковка уже в Регистраторе";
+                                            ErrorPackLabel.Visible = true;
+                                            ErrorPackLabel.Text = message;
+                                        }
+                                        else
+                                        {
+                                            CheckLabel.RegisterManualInputOnExp(packageId,
+                                                CheckLabel.CurrentMainOrderID, CheckLabel.CurrentProductType, Prefix);
+                                            message =
+                                                $"Этикетка отсканирована вручную. Требуется подтверждение в Регистраторе";
+                                            ErrorPackLabel.Visible = true;
+                                            ErrorPackLabel.Text = message;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (!CheckLabel.SetExp(ref EventsDataTable, true, packageId, ref message))
+                                        {
+                                            ErrorPackLabel.Visible = true;
+                                            ErrorPackLabel.Text = message;
+                                            CheckPicture.Visible = true;
+                                            CheckPicture.Image = Properties.Resources.cancel;
+                                            BarcodeLabel.ForeColor = Color.FromArgb(240, 0, 0);
+                                            GroupLabel.Text = "";
+                                            OrderDateLabel.Text = "";
+                                            return;
+                                        }
+
+                                        if (message.Length > 0)
+                                        {
+                                            ErrorPackLabel.Visible = true;
+                                            ErrorPackLabel.Text = message;
+                                        }
+
+                                        CheckLabel.WriteOffFromStore(packageId);
+                                        CheckOrdersStatus.SetStatusMarketingForMainOrder(CheckLabel.CurrentMegaOrderID,
+                                            CheckLabel.CurrentMainOrderID);
+                                    }
                                 }
-
-                                CheckOrdersStatus.SetStatusZOV(CheckLabel.CurrentMainOrderID, false);
-                                //ScanEvents.AddEvent(EventsDataTable, "Выставлен статус для подзаказа №" + CheckLabel.CurrentMainOrderID +
-                                //    ", экспедиция ЗОВ", 1);
-                            }
-                            else
-                            {
-                                ErrorPackLabel.Visible = true;
-                                ErrorPackLabel.Text = Message;
-                                CheckPicture.Visible = true;
-                                CheckPicture.Image = Properties.Resources.cancel;
-                                BarcodeLabel.ForeColor = Color.FromArgb(240, 0, 0);
-                                GroupLabel.Text = "";
-                                OrderDateLabel.Text = "";
-                                //ScanEvents.AddEvent(EventsDataTable,
-                                //    "Упаковка №" + Convert.ToInt32(BarcodeLabel.Text.Substring(3, 9)) + " не принята на эксп-цию: запрет на эксп-цию, экспедиция Маркетинг", 2);
-                                return;
-                            }
-                        }
-
-                        if (Prefix == "003" || Prefix == "004")
-                        {
-                            if (CheckLabel.CanPackageExp(PackageID, ref Message))
-                            {
-                                if (!CheckLabel.SetExp(ref EventsDataTable, true, PackageID, ref Message))
+                                else
                                 {
                                     ErrorPackLabel.Visible = true;
-                                    ErrorPackLabel.Text = Message;
+                                    ErrorPackLabel.Text = message;
                                     CheckPicture.Visible = true;
                                     CheckPicture.Image = Properties.Resources.cancel;
                                     BarcodeLabel.ForeColor = Color.FromArgb(240, 0, 0);
                                     GroupLabel.Text = "";
                                     OrderDateLabel.Text = "";
+                                    //ScanEvents.AddEvent(EventsDataTable,
+                                    //    "Упаковка №" + Convert.ToInt32(BarcodeLabel.Text.Substring(3, 9)) + " не принята на эксп-цию: запрет на эксп-цию, экспедиция Маркетинг", 2);
                                     return;
                                 }
-                                if (Message.Length > 0)
-                                {
-                                    ErrorPackLabel.Visible = true;
-                                    ErrorPackLabel.Text = Message;
-                                }
 
-                                CheckLabel.WriteOffFromStore(PackageID);
-                                CheckOrdersStatus.SetStatusMarketingForMainOrder(CheckLabel.CurrentMegaOrderID, CheckLabel.CurrentMainOrderID);
-                                //ScanEvents.AddEvent(EventsDataTable, "Выставлен статус для подзаказа №" + CheckLabel.CurrentMainOrderID +
-                                //    ", экспедиция Маркетинг", 2);
-                            }
-                            else
-                            {
-                                ErrorPackLabel.Visible = true;
-                                ErrorPackLabel.Text = Message;
-                                CheckPicture.Visible = true;
-                                CheckPicture.Image = Properties.Resources.cancel;
-                                BarcodeLabel.ForeColor = Color.FromArgb(240, 0, 0);
-                                GroupLabel.Text = "";
-                                OrderDateLabel.Text = "";
-                                //ScanEvents.AddEvent(EventsDataTable,
-                                //    "Упаковка №" + Convert.ToInt32(BarcodeLabel.Text.Substring(3, 9)) + " не принята на эксп-цию: запрет на эксп-цию, экспедиция Маркетинг", 2);
-                                return;
+                                break;
                             }
                         }
+
                         CheckLabel.FilterByPackageID(BarcodeLabel.Text);
 
                         CheckPicture.Visible = true;
@@ -381,76 +389,69 @@ namespace Infinium
                 }
                 else
                 {
-                    //if (Prefix == "005" || Prefix == "006")
-                    //{
-                    //    ErrorPackLabel.Visible = true;
-                    //    ErrorPackLabel.Text = "На экспедицию принимаются только упаковки поштучно";
-                    //    CheckPicture.Visible = true;
-                    //    CheckPicture.Image = Properties.Resources.cancel;
-                    //    BarcodeLabel.ForeColor = Color.FromArgb(240, 0, 0);
-                    //    OrderDateLabel.Text = "";
-                    //    GroupLabel.Text = "";
-                    //    CheckLabel.Clear();
-                    //    return;
-                    //}
-                    //ErrorPackLabel.Visible = true;
-                    //ErrorPackLabel.Text = "Такой этикетки в упаковках не существует";
-                    //CheckPicture.Visible = true;
-                    //CheckPicture.Image = Properties.Resources.cancel;
-                    //BarcodeLabel.ForeColor = Color.FromArgb(240, 0, 0);
-                    //OrderDateLabel.Text = "";
-                    //GroupLabel.Text = "";
-                    //CheckLabel.Clear();
-                    //return;
                     if (CheckLabel.IsTrayLabel(BarcodeLabel.Text))
                     {
-                        //if (Prefix == "005")
-                        //{
-                        //    ScanEvents.AddEvent(EventsDataTable, "Отсканировано: этикетка поддона №" + Convert.ToInt32(BarcodeLabel.Text.Substring(3, 9)) +
-                        //        ", экспедиция ЗОВ", 1);
-                        //}
-                        //if (Prefix == "006")
-                        //{
-                        //    ScanEvents.AddEvent(EventsDataTable, "Отсканировано: этикетка поддона №" + Convert.ToInt32(BarcodeLabel.Text.Substring(3, 9)) +
-                        //        ", экспедиция Маркетинг", 2);
-                        //}
-
                         if (CheckLabel.HasTray(BarcodeLabel.Text))
                         {
-
-                            if (Prefix == "005")
+                            string message = string.Empty;
+                            int trayId = Convert.ToInt32(BarcodeLabel.Text.Substring(3, 9));
+                            switch (Prefix)
                             {
-                                CheckLabel.SetExp(BarcodeLabel.Text);
-                                CheckOrdersStatus.SetStatusZOV(Convert.ToInt32(BarcodeLabel.Text.Substring(3, 9)), true);
-                            }
+                                //ZOV
+                                case "005":
 
-                            if (Prefix == "006")
-                            {
-                                string Message = string.Empty;
+                                    if (bManualInput)
+                                    {
+                                        CheckLabel.AddTrayToRegisterManualInput(trayId, Prefix);
+                                        message = $"Этикетка отсканирована вручную. Требуется подтверждение в Регистраторе";
+                                    }
+                                    else
+                                    {
+                                        CheckLabel.SetExp(BarcodeLabel.Text);
+                                        CheckOrdersStatus.SetStatusZOV(Convert.ToInt32(BarcodeLabel.Text.Substring(3, 9)), true);
+                                    }
 
-                                if (CheckLabel.CanTrayExp(Convert.ToInt32(BarcodeLabel.Text.Substring(3, 9)), ref Message))
+                                    break;
+                                //Marketing
+                                case "006":
                                 {
-                                    CheckLabel.SetExp(BarcodeLabel.Text);
-                                    if (Message.Length > 0)
+                                    if (CheckLabel.CanTrayExp(Convert.ToInt32(BarcodeLabel.Text.Substring(3, 9)), ref message))
+                                    {
+                                        if (bManualInput)
+                                        {
+                                            CheckLabel.AddTrayToRegisterManualInput(trayId, Prefix);
+                                            message = "Этикетка отсканирована вручную. Требуется подтверждение в Регистраторе";
+                                        }
+                                        else
+                                        {
+                                            CheckLabel.SetExp(BarcodeLabel.Text);
+                                            if (message.Length > 0)
+                                            {
+                                                ErrorPackLabel.Visible = true;
+                                                ErrorPackLabel.Text = message;
+                                            }
+
+                                            CheckOrdersStatus.SetStatusMarketingForTray(
+                                                Convert.ToInt32(BarcodeLabel.Text.Substring(3, 9)));
+                                        }
+                                    }
+                                    else
                                     {
                                         ErrorPackLabel.Visible = true;
-                                        ErrorPackLabel.Text = Message;
+                                        ErrorPackLabel.Text = message;
+                                        CheckPicture.Visible = true;
+                                        CheckPicture.Image = Properties.Resources.cancel;
+                                        BarcodeLabel.ForeColor = Color.FromArgb(240, 0, 0);
+                                        OrderDateLabel.Text = "";
+                                        GroupLabel.Text = "";
+                                        CheckLabel.Clear();
+                                        return;
                                     }
-                                    CheckOrdersStatus.SetStatusMarketingForTray(Convert.ToInt32(BarcodeLabel.Text.Substring(3, 9)));
-                                }
-                                else
-                                {
-                                    ErrorPackLabel.Visible = true;
-                                    ErrorPackLabel.Text = Message;
-                                    CheckPicture.Visible = true;
-                                    CheckPicture.Image = Properties.Resources.cancel;
-                                    BarcodeLabel.ForeColor = Color.FromArgb(240, 0, 0);
-                                    OrderDateLabel.Text = "";
-                                    GroupLabel.Text = "";
-                                    CheckLabel.Clear();
-                                    return;
+
+                                    break;
                                 }
                             }
+
                             CheckLabel.FillPackages(BarcodeLabel.Text);
 
                             CheckPicture.Visible = true;
@@ -458,6 +459,12 @@ namespace Infinium
                             BarcodeLabel.ForeColor = Color.FromArgb(82, 169, 24);
                             GroupLabel.Text = CheckLabel.LabelInfo.Group;
                             OrderDateLabel.Text = CheckLabel.LabelInfo.OrderDate;
+
+                            if (bManualInput)
+                            {
+                                ErrorPackLabel.Visible = true;
+                                ErrorPackLabel.Text = message;
+                            }
                         }
                         else
                         {
@@ -522,6 +529,36 @@ namespace Infinium
             int PackageID = Convert.ToInt32(PackagesDataGrid.SelectedRows[0].Cells["PackageID"].Value);
             MainOrdersTabControl.TabPages[0].PageVisible = CheckLabel.FillFrontsPackContent(PackageID);
             MainOrdersTabControl.TabPages[1].PageVisible = CheckLabel.FillDecorPackContent(PackageID);
+        }
+
+        private bool bManualInput;
+        private Stopwatch sw;
+        private int BarCodeSerialLength = 12;
+        private int TimeAHumanWouldTakeToType = 1500;
+        private void FirstCharacterEntered()
+        {
+            if (sw == null)
+                sw = new Stopwatch();
+            sw.Start();
+        }
+
+        private void BarcodeTextBox_TextChanged(object sender, EventArgs e)
+        {
+            if (BarcodeTextBox.Text.Length == 1)
+                FirstCharacterEntered();
+
+            if (BarcodeTextBox.Text.Length != BarCodeSerialLength) return;
+
+            sw.Stop();
+            if (sw.ElapsedMilliseconds < TimeAHumanWouldTakeToType)
+            {
+                //Input is from the BarCode Scanner
+                bManualInput = false;
+            }
+            else
+            {
+                bManualInput = true;
+            }
         }
     }
 }

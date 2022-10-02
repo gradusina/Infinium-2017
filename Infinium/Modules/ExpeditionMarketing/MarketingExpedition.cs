@@ -1,4 +1,7 @@
-﻿using NPOI.HPSF;
+﻿using Infinium.Modules.Marketing.NewOrders;
+
+using NPOI.HPSF;
+using NPOI.HSSF.Record.Formula.Functions;
 using NPOI.HSSF.UserModel;
 using NPOI.HSSF.UserModel.Contrib;
 using NPOI.HSSF.Util;
@@ -1431,7 +1434,7 @@ namespace Infinium.Modules.Marketing.Expedition
         //string PackAllocStatusID = "ProfilPackAllocStatusID";
 
         public PercentageDataGrid MainOrdersDataGrid = null;
-        public PercentageDataGrid MegaOrdersDataGrid = null;
+        //public PercentageDataGrid MegaOrdersDataGrid = null;
         public PercentageDataGrid PackagesDataGrid = null;
         private DevExpress.XtraTab.XtraTabControl OrdersTabControl = null;
 
@@ -1439,11 +1442,11 @@ namespace Infinium.Modules.Marketing.Expedition
         private DataTable ClientsDataTable = null;
         private DataTable FilterClientsDataTable = null;
         public DataTable MainOrdersDataTable = null;
-        private DataTable FactoryTypesDataTable = null;
+        public DataTable FactoryTypesDataTable = null;
         public DataTable PackagesDataTable = null;
         private DataTable PackageStatusesDataTable = null;
 
-        private DataTable FirmOrderStatusesDataTable = null;
+        public DataTable FirmOrderStatusesDataTable = null;
         private DataTable ProductionStatusesDataTable = null;
         private DataTable StorageStatusesDataTable = null;
         private DataTable ExpeditionStatusesDataTable = null;
@@ -1463,7 +1466,7 @@ namespace Infinium.Modules.Marketing.Expedition
         private DataTable UsersDataTable = null;
         private DataTable CurrencyTypesDataTable = null;
 
-        private BindingSource CurrencyTypesBindingSource = null;
+        public BindingSource CurrencyTypesBindingSource = null;
         public BindingSource ClientsBindingSource = null;
         public BindingSource FilterClientsBindingSource = null;
         public BindingSource MainOrdersBindingSource = null;
@@ -1492,16 +1495,16 @@ namespace Infinium.Modules.Marketing.Expedition
         private DataGridViewComboBoxColumn TPSExpeditionStatusColumn = null;
         private DataGridViewComboBoxColumn TPSDispatchStatusColumn = null;
 
-        private DataGridViewComboBoxColumn MegaFactoryTypeColumn = null;
-        private DataGridViewComboBoxColumn ProfilOrderStatusColumn = null;
-        private DataGridViewComboBoxColumn TPSOrderStatusColumn = null;
-        private DataGridViewComboBoxColumn CurrencyTypeColumn = null;
+        //private DataGridViewComboBoxColumn MegaFactoryTypeColumn = null;
+        //private DataGridViewComboBoxColumn ProfilOrderStatusColumn = null;
+        //private DataGridViewComboBoxColumn TPSOrderStatusColumn = null;
+        //private DataGridViewComboBoxColumn CurrencyTypeColumn = null;
         private DataGridViewComboBoxColumn PackUsersColumn = null;
         private DataGridViewComboBoxColumn StoreUsersColumn = null;
         private DataGridViewComboBoxColumn ExpUsersColumn = null;
         private DataGridViewComboBoxColumn DispUsersColumn = null;
 
-        public MarketingExpeditionManager(ref PercentageDataGrid tMegaOrdersDataGrid,
+        public MarketingExpeditionManager(
             ref PercentageDataGrid tMainOrdersDataGrid,
             ref PercentageDataGrid tPackagesDataGrid,
             ref PercentageDataGrid tMainOrdersFrontsOrdersDataGrid,
@@ -1509,7 +1512,7 @@ namespace Infinium.Modules.Marketing.Expedition
             ref DevExpress.XtraTab.XtraTabControl tOrdersTabControl)
         {
             MainOrdersDataGrid = tMainOrdersDataGrid;
-            MegaOrdersDataGrid = tMegaOrdersDataGrid;
+            //MegaOrdersDataGrid = tMegaOrdersDataGrid;
             PackagesDataGrid = tPackagesDataGrid;
             OrdersTabControl = tOrdersTabControl;
 
@@ -1608,7 +1611,7 @@ namespace Infinium.Modules.Marketing.Expedition
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT MegaOrders.*, infiniu2_marketingreference.dbo.Clients.ClientName FROM MegaOrders" +
                 " INNER JOIN infiniu2_marketingreference.dbo.Clients ON MegaOrders.ClientID = infiniu2_marketingreference.dbo.Clients.ClientID" +
                 " WHERE MegaOrders.MegaOrderID IN (SELECT MegaOrderID FROM MainOrders" +
-                " WHERE ((ProfilProductionStatusID=2 OR TPSProductionStatusID=2) OR (ProfilStorageStatusID=2 OR TPSStorageStatusID=2) OR (ProfilExpeditionStatusID=2 OR TPSExpeditionStatusID=2)))" +
+                " WHERE CAST(MegaOrders.OrderDate AS Date) > '" + DateTime.Now.AddDays(-90).ToString("yyyy-MM-dd") + "' AND ((ProfilProductionStatusID=2 OR TPSProductionStatusID=2) OR (ProfilStorageStatusID=2 OR TPSStorageStatusID=2) OR (ProfilExpeditionStatusID=2 OR TPSExpeditionStatusID=2)))" +
                 " ORDER BY ClientName, OrderNumber",
                 ConnectionStrings.MarketingOrdersConnectionString))
             {
@@ -2180,7 +2183,7 @@ namespace Infinium.Modules.Marketing.Expedition
             MainOrdersBindingSource.DataSource = MainOrdersDataTable;
 
             MainOrdersDataGrid.DataSource = MainOrdersBindingSource;
-            MegaOrdersDataGrid.DataSource = MegaOrdersBindingSource;
+            //MegaOrdersDataGrid.DataSource = MegaOrdersBindingSource;
             PackagesDataGrid.DataSource = PackagesBindingSource;
 
             PackagesBindingSource.DataSource = PackagesDataTable;
@@ -2206,17 +2209,17 @@ namespace Infinium.Modules.Marketing.Expedition
                 DisplayStyle = DataGridViewComboBoxDisplayStyle.Nothing,
                 SortMode = DataGridViewColumnSortMode.Automatic
             };
-            ProfilOrderStatusColumn = new DataGridViewComboBoxColumn()
-            {
-                Name = "ProfilOrderStatusColumn",
-                HeaderText = "Статус заказа\n\rПрофиль",
-                DataPropertyName = "ProfilOrderStatusID",
-                DataSource = new DataView(FirmOrderStatusesDataTable),
-                ValueMember = "FirmOrderStatusID",
-                DisplayMember = "FirmOrderStatus",
-                DisplayStyle = DataGridViewComboBoxDisplayStyle.Nothing,
-                SortMode = DataGridViewColumnSortMode.Automatic
-            };
+            //ProfilOrderStatusColumn = new DataGridViewComboBoxColumn()
+            //{
+            //    Name = "ProfilOrderStatusColumn",
+            //    HeaderText = "Статус заказа\n\rПрофиль",
+            //    DataPropertyName = "ProfilOrderStatusID",
+            //    DataSource = new DataView(FirmOrderStatusesDataTable),
+            //    ValueMember = "FirmOrderStatusID",
+            //    DisplayMember = "FirmOrderStatus",
+            //    DisplayStyle = DataGridViewComboBoxDisplayStyle.Nothing,
+            //    SortMode = DataGridViewColumnSortMode.Automatic
+            //};
             ProfilProductionStatusColumn = new DataGridViewComboBoxColumn()
             {
                 Name = "ProfilProductionStatusColumn",
@@ -2261,17 +2264,17 @@ namespace Infinium.Modules.Marketing.Expedition
                 DisplayStyle = DataGridViewComboBoxDisplayStyle.Nothing,
                 SortMode = DataGridViewColumnSortMode.Automatic
             };
-            TPSOrderStatusColumn = new DataGridViewComboBoxColumn()
-            {
-                Name = "TPSOrderStatusColumn",
-                HeaderText = "Статус\n\rзаказа ТПС",
-                DataPropertyName = "TPSOrderStatusID",
-                DataSource = new DataView(FirmOrderStatusesDataTable),
-                ValueMember = "FirmOrderStatusID",
-                DisplayMember = "FirmOrderStatus",
-                DisplayStyle = DataGridViewComboBoxDisplayStyle.Nothing,
-                SortMode = DataGridViewColumnSortMode.Automatic
-            };
+            //TPSOrderStatusColumn = new DataGridViewComboBoxColumn()
+            //{
+            //    Name = "TPSOrderStatusColumn",
+            //    HeaderText = "Статус\n\rзаказа ТПС",
+            //    DataPropertyName = "TPSOrderStatusID",
+            //    DataSource = new DataView(FirmOrderStatusesDataTable),
+            //    ValueMember = "FirmOrderStatusID",
+            //    DisplayMember = "FirmOrderStatus",
+            //    DisplayStyle = DataGridViewComboBoxDisplayStyle.Nothing,
+            //    SortMode = DataGridViewColumnSortMode.Automatic
+            //};
             TPSProductionStatusColumn = new DataGridViewComboBoxColumn()
             {
                 Name = "TPSProductionStatusColumn",
@@ -2338,28 +2341,28 @@ namespace Infinium.Modules.Marketing.Expedition
                 DisplayStyle = DataGridViewComboBoxDisplayStyle.Nothing,
                 SortMode = DataGridViewColumnSortMode.Automatic
             };
-            MegaFactoryTypeColumn = new DataGridViewComboBoxColumn()
-            {
-                Name = "MegaFactoryTypeColumn",
-                HeaderText = "  Тип\n\rпр-ва",
-                DataPropertyName = "FactoryID",
-                DataSource = new DataView(FactoryTypesDataTable),
-                ValueMember = "FactoryID",
-                DisplayMember = "FactoryName",
-                DisplayStyle = DataGridViewComboBoxDisplayStyle.Nothing,
-                SortMode = DataGridViewColumnSortMode.Automatic
-            };
-            CurrencyTypeColumn = new DataGridViewComboBoxColumn()
-            {
-                Name = "CurrencyTypeColumn",
-                HeaderText = "Валюта",
-                DataPropertyName = "CurrencyTypeID",
-                DataSource = CurrencyTypesBindingSource,
-                ValueMember = "CurrencyTypeID",
-                DisplayMember = "CurrencyType",
-                DisplayStyle = DataGridViewComboBoxDisplayStyle.Nothing,
-                SortMode = DataGridViewColumnSortMode.Automatic
-            };
+            //MegaFactoryTypeColumn = new DataGridViewComboBoxColumn()
+            //{
+            //    Name = "MegaFactoryTypeColumn",
+            //    HeaderText = "  Тип\n\rпр-ва",
+            //    DataPropertyName = "FactoryID",
+            //    DataSource = new DataView(FactoryTypesDataTable),
+            //    ValueMember = "FactoryID",
+            //    DisplayMember = "FactoryName",
+            //    DisplayStyle = DataGridViewComboBoxDisplayStyle.Nothing,
+            //    SortMode = DataGridViewColumnSortMode.Automatic
+            //};
+            //CurrencyTypeColumn = new DataGridViewComboBoxColumn()
+            //{
+            //    Name = "CurrencyTypeColumn",
+            //    HeaderText = "Валюта",
+            //    DataPropertyName = "CurrencyTypeID",
+            //    DataSource = CurrencyTypesBindingSource,
+            //    ValueMember = "CurrencyTypeID",
+            //    DisplayMember = "CurrencyType",
+            //    DisplayStyle = DataGridViewComboBoxDisplayStyle.Nothing,
+            //    SortMode = DataGridViewColumnSortMode.Automatic
+            //};
             PackUsersColumn = new DataGridViewComboBoxColumn()
             {
                 Name = "PackUsersColumn",
@@ -2412,10 +2415,10 @@ namespace Infinium.Modules.Marketing.Expedition
                 AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
                 MinimumWidth = 40
             };
-            MegaOrdersDataGrid.Columns.Add(ProfilOrderStatusColumn);
-            MegaOrdersDataGrid.Columns.Add(TPSOrderStatusColumn);
-            MegaOrdersDataGrid.Columns.Add(MegaFactoryTypeColumn);
-            MegaOrdersDataGrid.Columns.Add(CurrencyTypeColumn);
+            //MegaOrdersDataGrid.Columns.Add(ProfilOrderStatusColumn);
+            //MegaOrdersDataGrid.Columns.Add(TPSOrderStatusColumn);
+            //MegaOrdersDataGrid.Columns.Add(MegaFactoryTypeColumn);
+            //MegaOrdersDataGrid.Columns.Add(CurrencyTypeColumn);
 
             MainOrdersDataGrid.Columns.Add(ProfilProductionStatusColumn);
             MainOrdersDataGrid.Columns.Add(ProfilStorageStatusColumn);
@@ -2435,170 +2438,170 @@ namespace Infinium.Modules.Marketing.Expedition
             PackagesDataGrid.Columns.Add(DispUsersColumn);
         }
 
-        private void ShowColumns(int FactoryID)
-        {
-            if (FactoryID == 0)
-            {
-                MainOrdersDataGrid.Columns["ProfilProductionStatusColumn"].Visible = true;
-                MainOrdersDataGrid.Columns["ProfilStorageStatusColumn"].Visible = true;
-                MainOrdersDataGrid.Columns["ProfilDispatchStatusColumn"].Visible = true;
-                MainOrdersDataGrid.Columns["ProfilPackPercentage"].Visible = true;
-                MainOrdersDataGrid.Columns["ProfilPackedCount"].Visible = true;
-                MainOrdersDataGrid.Columns["ProfilStorePercentage"].Visible = true;
-                MainOrdersDataGrid.Columns["ProfilStoreCount"].Visible = true;
-                MainOrdersDataGrid.Columns["ProfilExpPercentage"].Visible = true;
-                MainOrdersDataGrid.Columns["ProfilExpCount"].Visible = true;
-                MainOrdersDataGrid.Columns["ProfilDispPercentage"].Visible = true;
-                MainOrdersDataGrid.Columns["ProfilDispatchedCount"].Visible = true;
-                MainOrdersDataGrid.Columns["ProfilProductionDate"].Visible = true;
-                MainOrdersDataGrid.Columns["ProfilOnProductionDate"].Visible = true;
+        //private void ShowColumns(int FactoryID)
+        //{
+        //    if (FactoryID == 0)
+        //    {
+        //        MainOrdersDataGrid.Columns["ProfilProductionStatusColumn"].Visible = true;
+        //        MainOrdersDataGrid.Columns["ProfilStorageStatusColumn"].Visible = true;
+        //        MainOrdersDataGrid.Columns["ProfilDispatchStatusColumn"].Visible = true;
+        //        MainOrdersDataGrid.Columns["ProfilPackPercentage"].Visible = true;
+        //        MainOrdersDataGrid.Columns["ProfilPackedCount"].Visible = true;
+        //        MainOrdersDataGrid.Columns["ProfilStorePercentage"].Visible = true;
+        //        MainOrdersDataGrid.Columns["ProfilStoreCount"].Visible = true;
+        //        MainOrdersDataGrid.Columns["ProfilExpPercentage"].Visible = true;
+        //        MainOrdersDataGrid.Columns["ProfilExpCount"].Visible = true;
+        //        MainOrdersDataGrid.Columns["ProfilDispPercentage"].Visible = true;
+        //        MainOrdersDataGrid.Columns["ProfilDispatchedCount"].Visible = true;
+        //        MainOrdersDataGrid.Columns["ProfilProductionDate"].Visible = true;
+        //        MainOrdersDataGrid.Columns["ProfilOnProductionDate"].Visible = true;
 
-                MainOrdersDataGrid.Columns["TPSProductionStatusColumn"].Visible = true;
-                MainOrdersDataGrid.Columns["TPSStorageStatusColumn"].Visible = true;
-                MainOrdersDataGrid.Columns["TPSDispatchStatusColumn"].Visible = true;
-                MainOrdersDataGrid.Columns["TPSPackPercentage"].Visible = true;
-                MainOrdersDataGrid.Columns["TPSPackedCount"].Visible = true;
-                MainOrdersDataGrid.Columns["TPSStorePercentage"].Visible = true;
-                MainOrdersDataGrid.Columns["TPSStoreCount"].Visible = true;
-                MainOrdersDataGrid.Columns["TPSExpPercentage"].Visible = true;
-                MainOrdersDataGrid.Columns["TPSExpCount"].Visible = true;
-                MainOrdersDataGrid.Columns["TPSDispPercentage"].Visible = true;
-                MainOrdersDataGrid.Columns["TPSDispatchedCount"].Visible = true;
-                MainOrdersDataGrid.Columns["TPSProductionDate"].Visible = true;
-                MainOrdersDataGrid.Columns["TPSOnProductionDate"].Visible = true;
-
-
-                MegaOrdersDataGrid.Columns["ProfilPackPercentage"].Visible = true;
-                MegaOrdersDataGrid.Columns["ProfilPackedCount"].Visible = true;
-                MegaOrdersDataGrid.Columns["ProfilStorePercentage"].Visible = true;
-                MegaOrdersDataGrid.Columns["ProfilStoreCount"].Visible = true;
-                MegaOrdersDataGrid.Columns["ProfilExpPercentage"].Visible = true;
-                MegaOrdersDataGrid.Columns["ProfilExpCount"].Visible = true;
-                MegaOrdersDataGrid.Columns["ProfilDispPercentage"].Visible = true;
-                MegaOrdersDataGrid.Columns["ProfilDispatchedCount"].Visible = true;
-                MegaOrdersDataGrid.Columns["ProfilDispatchDate"].Visible = true;
-                MegaOrdersDataGrid.Columns["ProfilOrderStatusColumn"].Visible = true;
-
-                MegaOrdersDataGrid.Columns["TPSPackPercentage"].Visible = true;
-                MegaOrdersDataGrid.Columns["TPSPackedCount"].Visible = true;
-                MegaOrdersDataGrid.Columns["TPSStorePercentage"].Visible = true;
-                MegaOrdersDataGrid.Columns["TPSStoreCount"].Visible = true;
-                MegaOrdersDataGrid.Columns["TPSExpPercentage"].Visible = true;
-                MegaOrdersDataGrid.Columns["TPSExpCount"].Visible = true;
-                MegaOrdersDataGrid.Columns["TPSDispPercentage"].Visible = true;
-                MegaOrdersDataGrid.Columns["TPSDispatchedCount"].Visible = true;
-                MegaOrdersDataGrid.Columns["TPSDispatchDate"].Visible = true;
-                MegaOrdersDataGrid.Columns["TPSOrderStatusColumn"].Visible = true;
-            }
-
-            if (FactoryID == 1)
-            {
-                MainOrdersDataGrid.Columns["ProfilProductionStatusColumn"].Visible = true;
-                MainOrdersDataGrid.Columns["ProfilStorageStatusColumn"].Visible = true;
-                MainOrdersDataGrid.Columns["ProfilDispatchStatusColumn"].Visible = true;
-                MainOrdersDataGrid.Columns["ProfilPackPercentage"].Visible = true;
-                MainOrdersDataGrid.Columns["ProfilStorePercentage"].Visible = true;
-                MainOrdersDataGrid.Columns["ProfilStoreCount"].Visible = true;
-                MainOrdersDataGrid.Columns["ProfilExpPercentage"].Visible = true;
-                MainOrdersDataGrid.Columns["ProfilExpCount"].Visible = true;
-                MainOrdersDataGrid.Columns["ProfilPackedCount"].Visible = true;
-                MainOrdersDataGrid.Columns["ProfilDispPercentage"].Visible = true;
-                MainOrdersDataGrid.Columns["ProfilDispatchedCount"].Visible = true;
-                MainOrdersDataGrid.Columns["ProfilProductionDate"].Visible = true;
-                MainOrdersDataGrid.Columns["ProfilOnProductionDate"].Visible = true;
-
-                MainOrdersDataGrid.Columns["TPSProductionStatusColumn"].Visible = false;
-                MainOrdersDataGrid.Columns["TPSStorageStatusColumn"].Visible = false;
-                MainOrdersDataGrid.Columns["TPSDispatchStatusColumn"].Visible = false;
-                MainOrdersDataGrid.Columns["TPSPackPercentage"].Visible = false;
-                MainOrdersDataGrid.Columns["TPSPackedCount"].Visible = false;
-                MainOrdersDataGrid.Columns["TPSStorePercentage"].Visible = false;
-                MainOrdersDataGrid.Columns["TPSStoreCount"].Visible = false;
-                MainOrdersDataGrid.Columns["TPSExpPercentage"].Visible = false;
-                MainOrdersDataGrid.Columns["TPSExpCount"].Visible = false;
-                MainOrdersDataGrid.Columns["TPSDispPercentage"].Visible = false;
-                MainOrdersDataGrid.Columns["TPSDispatchedCount"].Visible = false;
-                MainOrdersDataGrid.Columns["TPSProductionDate"].Visible = false;
-                MainOrdersDataGrid.Columns["TPSOnProductionDate"].Visible = false;
+        //        MainOrdersDataGrid.Columns["TPSProductionStatusColumn"].Visible = true;
+        //        MainOrdersDataGrid.Columns["TPSStorageStatusColumn"].Visible = true;
+        //        MainOrdersDataGrid.Columns["TPSDispatchStatusColumn"].Visible = true;
+        //        MainOrdersDataGrid.Columns["TPSPackPercentage"].Visible = true;
+        //        MainOrdersDataGrid.Columns["TPSPackedCount"].Visible = true;
+        //        MainOrdersDataGrid.Columns["TPSStorePercentage"].Visible = true;
+        //        MainOrdersDataGrid.Columns["TPSStoreCount"].Visible = true;
+        //        MainOrdersDataGrid.Columns["TPSExpPercentage"].Visible = true;
+        //        MainOrdersDataGrid.Columns["TPSExpCount"].Visible = true;
+        //        MainOrdersDataGrid.Columns["TPSDispPercentage"].Visible = true;
+        //        MainOrdersDataGrid.Columns["TPSDispatchedCount"].Visible = true;
+        //        MainOrdersDataGrid.Columns["TPSProductionDate"].Visible = true;
+        //        MainOrdersDataGrid.Columns["TPSOnProductionDate"].Visible = true;
 
 
-                MegaOrdersDataGrid.Columns["ProfilPackPercentage"].Visible = true;
-                MegaOrdersDataGrid.Columns["ProfilPackedCount"].Visible = true;
-                MegaOrdersDataGrid.Columns["ProfilStorePercentage"].Visible = true;
-                MegaOrdersDataGrid.Columns["ProfilStoreCount"].Visible = true;
-                MegaOrdersDataGrid.Columns["ProfilExpPercentage"].Visible = true;
-                MegaOrdersDataGrid.Columns["ProfilExpCount"].Visible = true;
-                MegaOrdersDataGrid.Columns["ProfilDispPercentage"].Visible = true;
-                MegaOrdersDataGrid.Columns["ProfilDispatchedCount"].Visible = true;
-                MegaOrdersDataGrid.Columns["ProfilDispatchDate"].Visible = true;
-                MegaOrdersDataGrid.Columns["ProfilOrderStatusColumn"].Visible = true;
+        //        MegaOrdersDataGrid.Columns["ProfilPackPercentage"].Visible = true;
+        //        MegaOrdersDataGrid.Columns["ProfilPackedCount"].Visible = true;
+        //        MegaOrdersDataGrid.Columns["ProfilStorePercentage"].Visible = true;
+        //        MegaOrdersDataGrid.Columns["ProfilStoreCount"].Visible = true;
+        //        MegaOrdersDataGrid.Columns["ProfilExpPercentage"].Visible = true;
+        //        MegaOrdersDataGrid.Columns["ProfilExpCount"].Visible = true;
+        //        MegaOrdersDataGrid.Columns["ProfilDispPercentage"].Visible = true;
+        //        MegaOrdersDataGrid.Columns["ProfilDispatchedCount"].Visible = true;
+        //        MegaOrdersDataGrid.Columns["ProfilDispatchDate"].Visible = true;
+        //        MegaOrdersDataGrid.Columns["ProfilOrderStatusColumn"].Visible = true;
 
-                MegaOrdersDataGrid.Columns["TPSPackPercentage"].Visible = false;
-                MegaOrdersDataGrid.Columns["TPSPackedCount"].Visible = false;
-                MegaOrdersDataGrid.Columns["TPSStorePercentage"].Visible = false;
-                MegaOrdersDataGrid.Columns["TPSStoreCount"].Visible = false;
-                MegaOrdersDataGrid.Columns["TPSExpPercentage"].Visible = false;
-                MegaOrdersDataGrid.Columns["TPSExpCount"].Visible = false;
-                MegaOrdersDataGrid.Columns["TPSDispPercentage"].Visible = false;
-                MegaOrdersDataGrid.Columns["TPSDispatchedCount"].Visible = false;
-                MegaOrdersDataGrid.Columns["TPSDispatchDate"].Visible = false;
-                MegaOrdersDataGrid.Columns["TPSOrderStatusColumn"].Visible = false;
-            }
+        //        MegaOrdersDataGrid.Columns["TPSPackPercentage"].Visible = true;
+        //        MegaOrdersDataGrid.Columns["TPSPackedCount"].Visible = true;
+        //        MegaOrdersDataGrid.Columns["TPSStorePercentage"].Visible = true;
+        //        MegaOrdersDataGrid.Columns["TPSStoreCount"].Visible = true;
+        //        MegaOrdersDataGrid.Columns["TPSExpPercentage"].Visible = true;
+        //        MegaOrdersDataGrid.Columns["TPSExpCount"].Visible = true;
+        //        MegaOrdersDataGrid.Columns["TPSDispPercentage"].Visible = true;
+        //        MegaOrdersDataGrid.Columns["TPSDispatchedCount"].Visible = true;
+        //        MegaOrdersDataGrid.Columns["TPSDispatchDate"].Visible = true;
+        //        MegaOrdersDataGrid.Columns["TPSOrderStatusColumn"].Visible = true;
+        //    }
 
-            if (FactoryID == 2)
-            {
-                MainOrdersDataGrid.Columns["ProfilProductionStatusColumn"].Visible = false;
-                MainOrdersDataGrid.Columns["ProfilStorageStatusColumn"].Visible = false;
-                MainOrdersDataGrid.Columns["ProfilDispatchStatusColumn"].Visible = false;
-                MainOrdersDataGrid.Columns["ProfilPackPercentage"].Visible = false;
-                MainOrdersDataGrid.Columns["ProfilPackedCount"].Visible = false;
-                MainOrdersDataGrid.Columns["ProfilStorePercentage"].Visible = false;
-                MainOrdersDataGrid.Columns["ProfilStoreCount"].Visible = false;
-                MainOrdersDataGrid.Columns["ProfilExpPercentage"].Visible = false;
-                MainOrdersDataGrid.Columns["ProfilExpCount"].Visible = false;
-                MainOrdersDataGrid.Columns["ProfilDispPercentage"].Visible = false;
-                MainOrdersDataGrid.Columns["ProfilDispatchedCount"].Visible = false;
-                MainOrdersDataGrid.Columns["ProfilProductionDate"].Visible = false;
-                MainOrdersDataGrid.Columns["ProfilOnProductionDate"].Visible = false;
+        //    if (FactoryID == 1)
+        //    {
+        //        MainOrdersDataGrid.Columns["ProfilProductionStatusColumn"].Visible = true;
+        //        MainOrdersDataGrid.Columns["ProfilStorageStatusColumn"].Visible = true;
+        //        MainOrdersDataGrid.Columns["ProfilDispatchStatusColumn"].Visible = true;
+        //        MainOrdersDataGrid.Columns["ProfilPackPercentage"].Visible = true;
+        //        MainOrdersDataGrid.Columns["ProfilStorePercentage"].Visible = true;
+        //        MainOrdersDataGrid.Columns["ProfilStoreCount"].Visible = true;
+        //        MainOrdersDataGrid.Columns["ProfilExpPercentage"].Visible = true;
+        //        MainOrdersDataGrid.Columns["ProfilExpCount"].Visible = true;
+        //        MainOrdersDataGrid.Columns["ProfilPackedCount"].Visible = true;
+        //        MainOrdersDataGrid.Columns["ProfilDispPercentage"].Visible = true;
+        //        MainOrdersDataGrid.Columns["ProfilDispatchedCount"].Visible = true;
+        //        MainOrdersDataGrid.Columns["ProfilProductionDate"].Visible = true;
+        //        MainOrdersDataGrid.Columns["ProfilOnProductionDate"].Visible = true;
 
-                MainOrdersDataGrid.Columns["TPSProductionStatusColumn"].Visible = true;
-                MainOrdersDataGrid.Columns["TPSStorageStatusColumn"].Visible = true;
-                MainOrdersDataGrid.Columns["TPSDispatchStatusColumn"].Visible = true;
-                MainOrdersDataGrid.Columns["TPSPackPercentage"].Visible = true;
-                MainOrdersDataGrid.Columns["TPSPackedCount"].Visible = true;
-                MainOrdersDataGrid.Columns["TPSStorePercentage"].Visible = true;
-                MainOrdersDataGrid.Columns["TPSStoreCount"].Visible = true;
-                MainOrdersDataGrid.Columns["TPSExpPercentage"].Visible = true;
-                MainOrdersDataGrid.Columns["TPSExpCount"].Visible = true;
-                MainOrdersDataGrid.Columns["TPSDispPercentage"].Visible = true;
-                MainOrdersDataGrid.Columns["TPSDispatchedCount"].Visible = true;
-                MainOrdersDataGrid.Columns["TPSProductionDate"].Visible = true;
-                MainOrdersDataGrid.Columns["TPSOnProductionDate"].Visible = true;
+        //        MainOrdersDataGrid.Columns["TPSProductionStatusColumn"].Visible = false;
+        //        MainOrdersDataGrid.Columns["TPSStorageStatusColumn"].Visible = false;
+        //        MainOrdersDataGrid.Columns["TPSDispatchStatusColumn"].Visible = false;
+        //        MainOrdersDataGrid.Columns["TPSPackPercentage"].Visible = false;
+        //        MainOrdersDataGrid.Columns["TPSPackedCount"].Visible = false;
+        //        MainOrdersDataGrid.Columns["TPSStorePercentage"].Visible = false;
+        //        MainOrdersDataGrid.Columns["TPSStoreCount"].Visible = false;
+        //        MainOrdersDataGrid.Columns["TPSExpPercentage"].Visible = false;
+        //        MainOrdersDataGrid.Columns["TPSExpCount"].Visible = false;
+        //        MainOrdersDataGrid.Columns["TPSDispPercentage"].Visible = false;
+        //        MainOrdersDataGrid.Columns["TPSDispatchedCount"].Visible = false;
+        //        MainOrdersDataGrid.Columns["TPSProductionDate"].Visible = false;
+        //        MainOrdersDataGrid.Columns["TPSOnProductionDate"].Visible = false;
 
 
-                MegaOrdersDataGrid.Columns["ProfilPackPercentage"].Visible = false;
-                MegaOrdersDataGrid.Columns["ProfilPackedCount"].Visible = false;
-                MegaOrdersDataGrid.Columns["ProfilStorePercentage"].Visible = false;
-                MegaOrdersDataGrid.Columns["ProfilStoreCount"].Visible = false;
-                MegaOrdersDataGrid.Columns["ProfilExpPercentage"].Visible = false;
-                MegaOrdersDataGrid.Columns["ProfilExpCount"].Visible = false;
-                MegaOrdersDataGrid.Columns["ProfilDispPercentage"].Visible = false;
-                MegaOrdersDataGrid.Columns["ProfilDispatchedCount"].Visible = false;
-                MegaOrdersDataGrid.Columns["ProfilDispatchDate"].Visible = false;
-                MegaOrdersDataGrid.Columns["ProfilOrderStatusColumn"].Visible = false;
+        //        MegaOrdersDataGrid.Columns["ProfilPackPercentage"].Visible = true;
+        //        MegaOrdersDataGrid.Columns["ProfilPackedCount"].Visible = true;
+        //        MegaOrdersDataGrid.Columns["ProfilStorePercentage"].Visible = true;
+        //        MegaOrdersDataGrid.Columns["ProfilStoreCount"].Visible = true;
+        //        MegaOrdersDataGrid.Columns["ProfilExpPercentage"].Visible = true;
+        //        MegaOrdersDataGrid.Columns["ProfilExpCount"].Visible = true;
+        //        MegaOrdersDataGrid.Columns["ProfilDispPercentage"].Visible = true;
+        //        MegaOrdersDataGrid.Columns["ProfilDispatchedCount"].Visible = true;
+        //        MegaOrdersDataGrid.Columns["ProfilDispatchDate"].Visible = true;
+        //        MegaOrdersDataGrid.Columns["ProfilOrderStatusColumn"].Visible = true;
 
-                MegaOrdersDataGrid.Columns["TPSPackPercentage"].Visible = true;
-                MegaOrdersDataGrid.Columns["TPSPackedCount"].Visible = true;
-                MegaOrdersDataGrid.Columns["TPSStorePercentage"].Visible = true;
-                MegaOrdersDataGrid.Columns["TPSStoreCount"].Visible = true;
-                MegaOrdersDataGrid.Columns["TPSExpPercentage"].Visible = true;
-                MegaOrdersDataGrid.Columns["TPSExpCount"].Visible = true;
-                MegaOrdersDataGrid.Columns["TPSDispPercentage"].Visible = true;
-                MegaOrdersDataGrid.Columns["TPSDispatchedCount"].Visible = true;
-                MegaOrdersDataGrid.Columns["TPSDispatchDate"].Visible = true;
-                MegaOrdersDataGrid.Columns["TPSOrderStatusColumn"].Visible = true;
-            }
-        }
+        //        MegaOrdersDataGrid.Columns["TPSPackPercentage"].Visible = false;
+        //        MegaOrdersDataGrid.Columns["TPSPackedCount"].Visible = false;
+        //        MegaOrdersDataGrid.Columns["TPSStorePercentage"].Visible = false;
+        //        MegaOrdersDataGrid.Columns["TPSStoreCount"].Visible = false;
+        //        MegaOrdersDataGrid.Columns["TPSExpPercentage"].Visible = false;
+        //        MegaOrdersDataGrid.Columns["TPSExpCount"].Visible = false;
+        //        MegaOrdersDataGrid.Columns["TPSDispPercentage"].Visible = false;
+        //        MegaOrdersDataGrid.Columns["TPSDispatchedCount"].Visible = false;
+        //        MegaOrdersDataGrid.Columns["TPSDispatchDate"].Visible = false;
+        //        MegaOrdersDataGrid.Columns["TPSOrderStatusColumn"].Visible = false;
+        //    }
+
+        //    if (FactoryID == 2)
+        //    {
+        //        MainOrdersDataGrid.Columns["ProfilProductionStatusColumn"].Visible = false;
+        //        MainOrdersDataGrid.Columns["ProfilStorageStatusColumn"].Visible = false;
+        //        MainOrdersDataGrid.Columns["ProfilDispatchStatusColumn"].Visible = false;
+        //        MainOrdersDataGrid.Columns["ProfilPackPercentage"].Visible = false;
+        //        MainOrdersDataGrid.Columns["ProfilPackedCount"].Visible = false;
+        //        MainOrdersDataGrid.Columns["ProfilStorePercentage"].Visible = false;
+        //        MainOrdersDataGrid.Columns["ProfilStoreCount"].Visible = false;
+        //        MainOrdersDataGrid.Columns["ProfilExpPercentage"].Visible = false;
+        //        MainOrdersDataGrid.Columns["ProfilExpCount"].Visible = false;
+        //        MainOrdersDataGrid.Columns["ProfilDispPercentage"].Visible = false;
+        //        MainOrdersDataGrid.Columns["ProfilDispatchedCount"].Visible = false;
+        //        MainOrdersDataGrid.Columns["ProfilProductionDate"].Visible = false;
+        //        MainOrdersDataGrid.Columns["ProfilOnProductionDate"].Visible = false;
+
+        //        MainOrdersDataGrid.Columns["TPSProductionStatusColumn"].Visible = true;
+        //        MainOrdersDataGrid.Columns["TPSStorageStatusColumn"].Visible = true;
+        //        MainOrdersDataGrid.Columns["TPSDispatchStatusColumn"].Visible = true;
+        //        MainOrdersDataGrid.Columns["TPSPackPercentage"].Visible = true;
+        //        MainOrdersDataGrid.Columns["TPSPackedCount"].Visible = true;
+        //        MainOrdersDataGrid.Columns["TPSStorePercentage"].Visible = true;
+        //        MainOrdersDataGrid.Columns["TPSStoreCount"].Visible = true;
+        //        MainOrdersDataGrid.Columns["TPSExpPercentage"].Visible = true;
+        //        MainOrdersDataGrid.Columns["TPSExpCount"].Visible = true;
+        //        MainOrdersDataGrid.Columns["TPSDispPercentage"].Visible = true;
+        //        MainOrdersDataGrid.Columns["TPSDispatchedCount"].Visible = true;
+        //        MainOrdersDataGrid.Columns["TPSProductionDate"].Visible = true;
+        //        MainOrdersDataGrid.Columns["TPSOnProductionDate"].Visible = true;
+
+
+        //        MegaOrdersDataGrid.Columns["ProfilPackPercentage"].Visible = false;
+        //        MegaOrdersDataGrid.Columns["ProfilPackedCount"].Visible = false;
+        //        MegaOrdersDataGrid.Columns["ProfilStorePercentage"].Visible = false;
+        //        MegaOrdersDataGrid.Columns["ProfilStoreCount"].Visible = false;
+        //        MegaOrdersDataGrid.Columns["ProfilExpPercentage"].Visible = false;
+        //        MegaOrdersDataGrid.Columns["ProfilExpCount"].Visible = false;
+        //        MegaOrdersDataGrid.Columns["ProfilDispPercentage"].Visible = false;
+        //        MegaOrdersDataGrid.Columns["ProfilDispatchedCount"].Visible = false;
+        //        MegaOrdersDataGrid.Columns["ProfilDispatchDate"].Visible = false;
+        //        MegaOrdersDataGrid.Columns["ProfilOrderStatusColumn"].Visible = false;
+
+        //        MegaOrdersDataGrid.Columns["TPSPackPercentage"].Visible = true;
+        //        MegaOrdersDataGrid.Columns["TPSPackedCount"].Visible = true;
+        //        MegaOrdersDataGrid.Columns["TPSStorePercentage"].Visible = true;
+        //        MegaOrdersDataGrid.Columns["TPSStoreCount"].Visible = true;
+        //        MegaOrdersDataGrid.Columns["TPSExpPercentage"].Visible = true;
+        //        MegaOrdersDataGrid.Columns["TPSExpCount"].Visible = true;
+        //        MegaOrdersDataGrid.Columns["TPSDispPercentage"].Visible = true;
+        //        MegaOrdersDataGrid.Columns["TPSDispatchedCount"].Visible = true;
+        //        MegaOrdersDataGrid.Columns["TPSDispatchDate"].Visible = true;
+        //        MegaOrdersDataGrid.Columns["TPSOrderStatusColumn"].Visible = true;
+        //    }
+        //}
 
         private void MainGridSetting()
         {
@@ -2844,348 +2847,348 @@ namespace Infinium.Modules.Marketing.Expedition
             MainOrdersDataGrid.AddPercentageColumn("TPSDispPercentage");
         }
 
-        private void MegaGridSetting()
-        {
-            foreach (DataGridViewColumn Column in MegaOrdersDataGrid.Columns)
-            {
-                Column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            }
+        //private void MegaGridSetting()
+        //{
+        //    foreach (DataGridViewColumn Column in MegaOrdersDataGrid.Columns)
+        //    {
+        //        Column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+        //    }
 
-            if (MegaOrdersDataGrid.Columns.Contains("DelayOfPayment"))
-                MegaOrdersDataGrid.Columns["DelayOfPayment"].Visible = false;
-            if (MegaOrdersDataGrid.Columns.Contains("CreatedByClient"))
-                MegaOrdersDataGrid.Columns["CreatedByClient"].Visible = false;
-            if (MegaOrdersDataGrid.Columns.Contains("FixedPaymentRate"))
-                MegaOrdersDataGrid.Columns["FixedPaymentRate"].Visible = false;
-            if (MegaOrdersDataGrid.Columns.Contains("TransportType"))
-                MegaOrdersDataGrid.Columns["TransportType"].Visible = false;
-            MegaOrdersDataGrid.Columns["ClientID"].Visible = false;
-            MegaOrdersDataGrid.Columns["OrderStatusID"].Visible = false;
-            MegaOrdersDataGrid.Columns["ProfilOrderStatusID"].Visible = false;
-            MegaOrdersDataGrid.Columns["TPSOrderStatusID"].Visible = false;
-            MegaOrdersDataGrid.Columns["AgreementStatusID"].Visible = false;
-            MegaOrdersDataGrid.Columns["CurrencyTypeID"].Visible = false;
-            MegaOrdersDataGrid.Columns["FactoryID"].Visible = false;
-            MegaOrdersDataGrid.Columns["DesireDate"].Visible = false;
-            MegaOrdersDataGrid.Columns["LastCalcDate"].Visible = false;
-            if (MegaOrdersDataGrid.Columns.Contains("LastCalcUserID"))
-                MegaOrdersDataGrid.Columns["LastCalcUserID"].Visible = false;
-            MegaOrdersDataGrid.Columns["OrderDate"].Visible = false;
-            MegaOrdersDataGrid.Columns["ConfirmDateTime"].Visible = false;
-            MegaOrdersDataGrid.Columns["TPSPackAllocStatusID"].Visible = false;
-            MegaOrdersDataGrid.Columns["TPSPackCount"].Visible = false;
-            MegaOrdersDataGrid.Columns["ProfilPackAllocStatusID"].Visible = false;
-            MegaOrdersDataGrid.Columns["ProfilPackCount"].Visible = false;
-            if (MegaOrdersDataGrid.Columns.Contains("IsComplaint"))
-                MegaOrdersDataGrid.Columns["IsComplaint"].Visible = false;
+        //    if (MegaOrdersDataGrid.Columns.Contains("DelayOfPayment"))
+        //        MegaOrdersDataGrid.Columns["DelayOfPayment"].Visible = false;
+        //    if (MegaOrdersDataGrid.Columns.Contains("CreatedByClient"))
+        //        MegaOrdersDataGrid.Columns["CreatedByClient"].Visible = false;
+        //    if (MegaOrdersDataGrid.Columns.Contains("FixedPaymentRate"))
+        //        MegaOrdersDataGrid.Columns["FixedPaymentRate"].Visible = false;
+        //    if (MegaOrdersDataGrid.Columns.Contains("TransportType"))
+        //        MegaOrdersDataGrid.Columns["TransportType"].Visible = false;
+        //    MegaOrdersDataGrid.Columns["ClientID"].Visible = false;
+        //    MegaOrdersDataGrid.Columns["OrderStatusID"].Visible = false;
+        //    MegaOrdersDataGrid.Columns["ProfilOrderStatusID"].Visible = false;
+        //    MegaOrdersDataGrid.Columns["TPSOrderStatusID"].Visible = false;
+        //    MegaOrdersDataGrid.Columns["AgreementStatusID"].Visible = false;
+        //    MegaOrdersDataGrid.Columns["CurrencyTypeID"].Visible = false;
+        //    MegaOrdersDataGrid.Columns["FactoryID"].Visible = false;
+        //    MegaOrdersDataGrid.Columns["DesireDate"].Visible = false;
+        //    MegaOrdersDataGrid.Columns["LastCalcDate"].Visible = false;
+        //    if (MegaOrdersDataGrid.Columns.Contains("LastCalcUserID"))
+        //        MegaOrdersDataGrid.Columns["LastCalcUserID"].Visible = false;
+        //    MegaOrdersDataGrid.Columns["OrderDate"].Visible = false;
+        //    MegaOrdersDataGrid.Columns["ConfirmDateTime"].Visible = false;
+        //    MegaOrdersDataGrid.Columns["TPSPackAllocStatusID"].Visible = false;
+        //    MegaOrdersDataGrid.Columns["TPSPackCount"].Visible = false;
+        //    MegaOrdersDataGrid.Columns["ProfilPackAllocStatusID"].Visible = false;
+        //    MegaOrdersDataGrid.Columns["ProfilPackCount"].Visible = false;
+        //    if (MegaOrdersDataGrid.Columns.Contains("IsComplaint"))
+        //        MegaOrdersDataGrid.Columns["IsComplaint"].Visible = false;
 
-            if (!Security.PriceAccess)
-            {
-                if (MegaOrdersDataGrid.Columns.Contains("ComplaintProfilCost"))
-                    MegaOrdersDataGrid.Columns["ComplaintProfilCost"].Visible = false;
-                if (MegaOrdersDataGrid.Columns.Contains("ComplaintTPSCost"))
-                    MegaOrdersDataGrid.Columns["ComplaintTPSCost"].Visible = false;
-                if (MegaOrdersDataGrid.Columns.Contains("ComplaintNotes"))
-                    MegaOrdersDataGrid.Columns["ComplaintNotes"].Visible = false;
-                if (MegaOrdersDataGrid.Columns.Contains("CurrencyComplaintProfilCost"))
-                    MegaOrdersDataGrid.Columns["CurrencyComplaintProfilCost"].Visible = false;
-                if (MegaOrdersDataGrid.Columns.Contains("CurrencyComplaintTPSCost"))
-                    MegaOrdersDataGrid.Columns["CurrencyComplaintTPSCost"].Visible = false;
-                if (MegaOrdersDataGrid.Columns.Contains("DelayOfPayment"))
-                    MegaOrdersDataGrid.Columns["DelayOfPayment"].Visible = false;
-                MegaOrdersDataGrid.Columns["OrderCost"].Visible = false;
-                MegaOrdersDataGrid.Columns["TransportCost"].Visible = false;
-                MegaOrdersDataGrid.Columns["AdditionalCost"].Visible = false;
-                MegaOrdersDataGrid.Columns["CurrencyOrderCost"].Visible = false;
-                MegaOrdersDataGrid.Columns["CurrencyTotalCost"].Visible = false;
-                MegaOrdersDataGrid.Columns["CurrencyTransportCost"].Visible = false;
-                MegaOrdersDataGrid.Columns["CurrencyAdditionalCost"].Visible = false;
-                MegaOrdersDataGrid.Columns["TotalCost"].Visible = false;
-                MegaOrdersDataGrid.Columns["Rate"].Visible = false;
-                MegaOrdersDataGrid.Columns["CurrencyTypeColumn"].Visible = false;
-            }
+        //    if (!Security.PriceAccess)
+        //    {
+        //        if (MegaOrdersDataGrid.Columns.Contains("ComplaintProfilCost"))
+        //            MegaOrdersDataGrid.Columns["ComplaintProfilCost"].Visible = false;
+        //        if (MegaOrdersDataGrid.Columns.Contains("ComplaintTPSCost"))
+        //            MegaOrdersDataGrid.Columns["ComplaintTPSCost"].Visible = false;
+        //        if (MegaOrdersDataGrid.Columns.Contains("ComplaintNotes"))
+        //            MegaOrdersDataGrid.Columns["ComplaintNotes"].Visible = false;
+        //        if (MegaOrdersDataGrid.Columns.Contains("CurrencyComplaintProfilCost"))
+        //            MegaOrdersDataGrid.Columns["CurrencyComplaintProfilCost"].Visible = false;
+        //        if (MegaOrdersDataGrid.Columns.Contains("CurrencyComplaintTPSCost"))
+        //            MegaOrdersDataGrid.Columns["CurrencyComplaintTPSCost"].Visible = false;
+        //        if (MegaOrdersDataGrid.Columns.Contains("DelayOfPayment"))
+        //            MegaOrdersDataGrid.Columns["DelayOfPayment"].Visible = false;
+        //        MegaOrdersDataGrid.Columns["OrderCost"].Visible = false;
+        //        MegaOrdersDataGrid.Columns["TransportCost"].Visible = false;
+        //        MegaOrdersDataGrid.Columns["AdditionalCost"].Visible = false;
+        //        MegaOrdersDataGrid.Columns["CurrencyOrderCost"].Visible = false;
+        //        MegaOrdersDataGrid.Columns["CurrencyTotalCost"].Visible = false;
+        //        MegaOrdersDataGrid.Columns["CurrencyTransportCost"].Visible = false;
+        //        MegaOrdersDataGrid.Columns["CurrencyAdditionalCost"].Visible = false;
+        //        MegaOrdersDataGrid.Columns["TotalCost"].Visible = false;
+        //        MegaOrdersDataGrid.Columns["Rate"].Visible = false;
+        //        MegaOrdersDataGrid.Columns["CurrencyTypeColumn"].Visible = false;
+        //    }
 
-            if (MegaOrdersDataGrid.Columns.Contains("ProfilConfirmProduction"))
-                MegaOrdersDataGrid.Columns["ProfilConfirmProduction"].Visible = false;
-            if (MegaOrdersDataGrid.Columns.Contains("TPSConfirmProduction"))
-                MegaOrdersDataGrid.Columns["TPSConfirmProduction"].Visible = false;
-            if (MegaOrdersDataGrid.Columns.Contains("ProfilAllowDispatch"))
-                MegaOrdersDataGrid.Columns["ProfilAllowDispatch"].Visible = false;
-            if (MegaOrdersDataGrid.Columns.Contains("TPSAllowDispatch"))
-                MegaOrdersDataGrid.Columns["TPSAllowDispatch"].Visible = false;
-            if (MegaOrdersDataGrid.Columns.Contains("ProfilConfirmDispatch"))
-                MegaOrdersDataGrid.Columns["ProfilConfirmDispatch"].Visible = false;
-            if (MegaOrdersDataGrid.Columns.Contains("TPSConfirmDispatch"))
-                MegaOrdersDataGrid.Columns["TPSConfirmDispatch"].Visible = false;
+        //    if (MegaOrdersDataGrid.Columns.Contains("ProfilConfirmProduction"))
+        //        MegaOrdersDataGrid.Columns["ProfilConfirmProduction"].Visible = false;
+        //    if (MegaOrdersDataGrid.Columns.Contains("TPSConfirmProduction"))
+        //        MegaOrdersDataGrid.Columns["TPSConfirmProduction"].Visible = false;
+        //    if (MegaOrdersDataGrid.Columns.Contains("ProfilAllowDispatch"))
+        //        MegaOrdersDataGrid.Columns["ProfilAllowDispatch"].Visible = false;
+        //    if (MegaOrdersDataGrid.Columns.Contains("TPSAllowDispatch"))
+        //        MegaOrdersDataGrid.Columns["TPSAllowDispatch"].Visible = false;
+        //    if (MegaOrdersDataGrid.Columns.Contains("ProfilConfirmDispatch"))
+        //        MegaOrdersDataGrid.Columns["ProfilConfirmDispatch"].Visible = false;
+        //    if (MegaOrdersDataGrid.Columns.Contains("TPSConfirmDispatch"))
+        //        MegaOrdersDataGrid.Columns["TPSConfirmDispatch"].Visible = false;
 
-            if (MegaOrdersDataGrid.Columns.Contains("ProfilProductionDate"))
-                MegaOrdersDataGrid.Columns["ProfilProductionDate"].Visible = false;
-            if (MegaOrdersDataGrid.Columns.Contains("TPSProductionDate"))
-                MegaOrdersDataGrid.Columns["TPSProductionDate"].Visible = false;
+        //    if (MegaOrdersDataGrid.Columns.Contains("ProfilProductionDate"))
+        //        MegaOrdersDataGrid.Columns["ProfilProductionDate"].Visible = false;
+        //    if (MegaOrdersDataGrid.Columns.Contains("TPSProductionDate"))
+        //        MegaOrdersDataGrid.Columns["TPSProductionDate"].Visible = false;
 
-            MegaOrdersDataGrid.Columns["OrderCost"].HeaderText = "Стоимость\r\nзаказа, евро";
-            MegaOrdersDataGrid.Columns["TransportCost"].HeaderText = "Стоимость\r\nтранспорта, евро";
-            MegaOrdersDataGrid.Columns["AdditionalCost"].HeaderText = "Дополнительная\r\nстоимость, евро";
-            MegaOrdersDataGrid.Columns["ConfirmDateTime"].HeaderText = "Дата\r\nсогласования";
-            MegaOrdersDataGrid.Columns["CurrencyOrderCost"].HeaderText = "Стоимость\r\nзаказа, расчет";
-            MegaOrdersDataGrid.Columns["CurrencyTotalCost"].HeaderText = "Итого, расчет";
-            MegaOrdersDataGrid.Columns["CurrencyTransportCost"].HeaderText = "Стоимость \r\nтранспорта, расчет";
-            MegaOrdersDataGrid.Columns["CurrencyAdditionalCost"].HeaderText = "Дополнительная\r\nстоимость, расчет";
-            MegaOrdersDataGrid.Columns["TotalCost"].HeaderText = "Итого, евро";
-            MegaOrdersDataGrid.Columns["Rate"].HeaderText = "Курс";
+        //    MegaOrdersDataGrid.Columns["OrderCost"].HeaderText = "Стоимость\r\nзаказа, евро";
+        //    MegaOrdersDataGrid.Columns["TransportCost"].HeaderText = "Стоимость\r\nтранспорта, евро";
+        //    MegaOrdersDataGrid.Columns["AdditionalCost"].HeaderText = "Дополнительная\r\nстоимость, евро";
+        //    MegaOrdersDataGrid.Columns["ConfirmDateTime"].HeaderText = "Дата\r\nсогласования";
+        //    MegaOrdersDataGrid.Columns["CurrencyOrderCost"].HeaderText = "Стоимость\r\nзаказа, расчет";
+        //    MegaOrdersDataGrid.Columns["CurrencyTotalCost"].HeaderText = "Итого, расчет";
+        //    MegaOrdersDataGrid.Columns["CurrencyTransportCost"].HeaderText = "Стоимость \r\nтранспорта, расчет";
+        //    MegaOrdersDataGrid.Columns["CurrencyAdditionalCost"].HeaderText = "Дополнительная\r\nстоимость, расчет";
+        //    MegaOrdersDataGrid.Columns["TotalCost"].HeaderText = "Итого, евро";
+        //    MegaOrdersDataGrid.Columns["Rate"].HeaderText = "Курс";
 
-            MegaOrdersDataGrid.Columns["MegaOrderID"].HeaderText = "№ п\\п";
-            MegaOrdersDataGrid.Columns["ClientName"].HeaderText = "Клиент";
-            MegaOrdersDataGrid.Columns["OrderNumber"].HeaderText = "№\r\nзаказа";
-            MegaOrdersDataGrid.Columns["OrderDate"].HeaderText = "Дата\r\nсоздания";
-            MegaOrdersDataGrid.Columns["ProfilDispatchDate"].HeaderText = "Дата отгрузки\r\nПрофиль";
-            MegaOrdersDataGrid.Columns["TPSDispatchDate"].HeaderText = "Дата отгрузки\r\nТПС";
-            MegaOrdersDataGrid.Columns["AdditionalCost"].HeaderText = "Дополнительная\r\nстоимость, евро";
-            MegaOrdersDataGrid.Columns["ConfirmDateTime"].HeaderText = "Дата\r\nсогласования";
-            MegaOrdersDataGrid.Columns["Weight"].HeaderText = "Вес, кг.";
-            MegaOrdersDataGrid.Columns["Square"].HeaderText = "Площадь\r\nфасадов, м.кв.";
-            MegaOrdersDataGrid.Columns["DesireDate"].HeaderText = "Предварит.\r\nдата отгрузки";
+        //    MegaOrdersDataGrid.Columns["MegaOrderID"].HeaderText = "№ п\\п";
+        //    MegaOrdersDataGrid.Columns["ClientName"].HeaderText = "Клиент";
+        //    MegaOrdersDataGrid.Columns["OrderNumber"].HeaderText = "№\r\nзаказа";
+        //    MegaOrdersDataGrid.Columns["OrderDate"].HeaderText = "Дата\r\nсоздания";
+        //    MegaOrdersDataGrid.Columns["ProfilDispatchDate"].HeaderText = "Дата отгрузки\r\nПрофиль";
+        //    MegaOrdersDataGrid.Columns["TPSDispatchDate"].HeaderText = "Дата отгрузки\r\nТПС";
+        //    MegaOrdersDataGrid.Columns["AdditionalCost"].HeaderText = "Дополнительная\r\nстоимость, евро";
+        //    MegaOrdersDataGrid.Columns["ConfirmDateTime"].HeaderText = "Дата\r\nсогласования";
+        //    MegaOrdersDataGrid.Columns["Weight"].HeaderText = "Вес, кг.";
+        //    MegaOrdersDataGrid.Columns["Square"].HeaderText = "Площадь\r\nфасадов, м.кв.";
+        //    MegaOrdersDataGrid.Columns["DesireDate"].HeaderText = "Предварит.\r\nдата отгрузки";
 
-            MegaOrdersDataGrid.Columns["ProfilPackPercentage"].HeaderText = "Упаковано\r\nПрофиль, %";
-            MegaOrdersDataGrid.Columns["ProfilPackedCount"].HeaderText = "Упаковано\r\n Профиль, кол-во";
-            MegaOrdersDataGrid.Columns["ProfilStoreCount"].HeaderText = "Склад,\r\nПрофиль, кол-во";
-            MegaOrdersDataGrid.Columns["ProfilStorePercentage"].HeaderText = "Склад,\r\nПрофиль, %";
-            MegaOrdersDataGrid.Columns["ProfilExpCount"].HeaderText = "Экспедиция,\r\nПрофиль, кол-во";
-            MegaOrdersDataGrid.Columns["ProfilExpPercentage"].HeaderText = "Экспедиция,\r\nПрофиль, %";
-            MegaOrdersDataGrid.Columns["ProfilDispPercentage"].HeaderText = "Отгружено\r\nПрофиль, %";
-            MegaOrdersDataGrid.Columns["ProfilDispatchedCount"].HeaderText = "Отгружено\r\n Профиль, кол-во";
-            MegaOrdersDataGrid.Columns["TPSPackPercentage"].HeaderText = "Упаковано\r\nТПС, %";
-            MegaOrdersDataGrid.Columns["TPSPackedCount"].HeaderText = "Упаковано\r\nТПС, кол-во";
-            MegaOrdersDataGrid.Columns["TPSStoreCount"].HeaderText = "Склад,\r\nТПС, кол-во";
-            MegaOrdersDataGrid.Columns["TPSStorePercentage"].HeaderText = "Склад,\r\nТПС, %";
-            MegaOrdersDataGrid.Columns["TPSExpCount"].HeaderText = "Экспедиция,\r\nТПС, кол-во";
-            MegaOrdersDataGrid.Columns["TPSExpPercentage"].HeaderText = "Экспедиция,\r\nТПС, %";
-            MegaOrdersDataGrid.Columns["TPSDispPercentage"].HeaderText = "Отгружено\r\nТПС, %";
-            MegaOrdersDataGrid.Columns["TPSDispatchedCount"].HeaderText = " Отгружено\r\nТПС, кол-во";
-            MegaOrdersDataGrid.Columns["IsComplaint"].Visible = false;
-            MegaOrdersDataGrid.Columns["MegaBatchNumber"].HeaderText = "Группа\n\rпартий";
+        //    MegaOrdersDataGrid.Columns["ProfilPackPercentage"].HeaderText = "Упаковано\r\nПрофиль, %";
+        //    MegaOrdersDataGrid.Columns["ProfilPackedCount"].HeaderText = "Упаковано\r\n Профиль, кол-во";
+        //    MegaOrdersDataGrid.Columns["ProfilStoreCount"].HeaderText = "Склад,\r\nПрофиль, кол-во";
+        //    MegaOrdersDataGrid.Columns["ProfilStorePercentage"].HeaderText = "Склад,\r\nПрофиль, %";
+        //    MegaOrdersDataGrid.Columns["ProfilExpCount"].HeaderText = "Экспедиция,\r\nПрофиль, кол-во";
+        //    MegaOrdersDataGrid.Columns["ProfilExpPercentage"].HeaderText = "Экспедиция,\r\nПрофиль, %";
+        //    MegaOrdersDataGrid.Columns["ProfilDispPercentage"].HeaderText = "Отгружено\r\nПрофиль, %";
+        //    MegaOrdersDataGrid.Columns["ProfilDispatchedCount"].HeaderText = "Отгружено\r\n Профиль, кол-во";
+        //    MegaOrdersDataGrid.Columns["TPSPackPercentage"].HeaderText = "Упаковано\r\nТПС, %";
+        //    MegaOrdersDataGrid.Columns["TPSPackedCount"].HeaderText = "Упаковано\r\nТПС, кол-во";
+        //    MegaOrdersDataGrid.Columns["TPSStoreCount"].HeaderText = "Склад,\r\nТПС, кол-во";
+        //    MegaOrdersDataGrid.Columns["TPSStorePercentage"].HeaderText = "Склад,\r\nТПС, %";
+        //    MegaOrdersDataGrid.Columns["TPSExpCount"].HeaderText = "Экспедиция,\r\nТПС, кол-во";
+        //    MegaOrdersDataGrid.Columns["TPSExpPercentage"].HeaderText = "Экспедиция,\r\nТПС, %";
+        //    MegaOrdersDataGrid.Columns["TPSDispPercentage"].HeaderText = "Отгружено\r\nТПС, %";
+        //    MegaOrdersDataGrid.Columns["TPSDispatchedCount"].HeaderText = " Отгружено\r\nТПС, кол-во";
+        //    MegaOrdersDataGrid.Columns["IsComplaint"].Visible = false;
+        //    MegaOrdersDataGrid.Columns["MegaBatchNumber"].HeaderText = "Группа\n\rпартий";
 
-            MegaOrdersDataGrid.Columns["PlanDispDate"].HeaderText = "Плановая\r\nдата отгрузки";
-            MegaOrdersDataGrid.Columns["PlanDispDate"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            MegaOrdersDataGrid.Columns["PlanDispDate"].Width = 110;
-            NumberFormatInfo nfi1 = new NumberFormatInfo()
-            {
-                CurrencyGroupSeparator = " ",
-                CurrencySymbol = "",
-                CurrencyDecimalDigits = 1
-            };
-            NumberFormatInfo nfi2 = new NumberFormatInfo()
-            {
-                CurrencyGroupSeparator = " ",
-                CurrencySymbol = "",
-                CurrencyDecimalDigits = 4
-            };
-            NumberFormatInfo nfi3 = new NumberFormatInfo()
-            {
-                CurrencyGroupSeparator = " ",
-                CurrencySymbol = "",
-                CurrencyDecimalDigits = 2
-            };
-            MegaOrdersDataGrid.Columns["OrderCost"].DefaultCellStyle.Format = "C";
-            MegaOrdersDataGrid.Columns["OrderCost"].DefaultCellStyle.FormatProvider = nfi1;
+        //    MegaOrdersDataGrid.Columns["PlanDispDate"].HeaderText = "Плановая\r\nдата отгрузки";
+        //    MegaOrdersDataGrid.Columns["PlanDispDate"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+        //    MegaOrdersDataGrid.Columns["PlanDispDate"].Width = 110;
+        //    NumberFormatInfo nfi1 = new NumberFormatInfo()
+        //    {
+        //        CurrencyGroupSeparator = " ",
+        //        CurrencySymbol = "",
+        //        CurrencyDecimalDigits = 1
+        //    };
+        //    NumberFormatInfo nfi2 = new NumberFormatInfo()
+        //    {
+        //        CurrencyGroupSeparator = " ",
+        //        CurrencySymbol = "",
+        //        CurrencyDecimalDigits = 4
+        //    };
+        //    NumberFormatInfo nfi3 = new NumberFormatInfo()
+        //    {
+        //        CurrencyGroupSeparator = " ",
+        //        CurrencySymbol = "",
+        //        CurrencyDecimalDigits = 2
+        //    };
+        //    MegaOrdersDataGrid.Columns["OrderCost"].DefaultCellStyle.Format = "C";
+        //    MegaOrdersDataGrid.Columns["OrderCost"].DefaultCellStyle.FormatProvider = nfi1;
 
-            MegaOrdersDataGrid.Columns["TransportCost"].DefaultCellStyle.Format = "C";
-            MegaOrdersDataGrid.Columns["TransportCost"].DefaultCellStyle.FormatProvider = nfi1;
+        //    MegaOrdersDataGrid.Columns["TransportCost"].DefaultCellStyle.Format = "C";
+        //    MegaOrdersDataGrid.Columns["TransportCost"].DefaultCellStyle.FormatProvider = nfi1;
 
-            MegaOrdersDataGrid.Columns["AdditionalCost"].DefaultCellStyle.Format = "C";
-            MegaOrdersDataGrid.Columns["AdditionalCost"].DefaultCellStyle.FormatProvider = nfi1;
+        //    MegaOrdersDataGrid.Columns["AdditionalCost"].DefaultCellStyle.Format = "C";
+        //    MegaOrdersDataGrid.Columns["AdditionalCost"].DefaultCellStyle.FormatProvider = nfi1;
 
-            MegaOrdersDataGrid.Columns["TotalCost"].DefaultCellStyle.Format = "C";
-            MegaOrdersDataGrid.Columns["TotalCost"].DefaultCellStyle.FormatProvider = nfi1;
+        //    MegaOrdersDataGrid.Columns["TotalCost"].DefaultCellStyle.Format = "C";
+        //    MegaOrdersDataGrid.Columns["TotalCost"].DefaultCellStyle.FormatProvider = nfi1;
 
-            MegaOrdersDataGrid.Columns["CurrencyOrderCost"].DefaultCellStyle.Format = "C";
-            MegaOrdersDataGrid.Columns["CurrencyOrderCost"].DefaultCellStyle.FormatProvider = nfi1;
+        //    MegaOrdersDataGrid.Columns["CurrencyOrderCost"].DefaultCellStyle.Format = "C";
+        //    MegaOrdersDataGrid.Columns["CurrencyOrderCost"].DefaultCellStyle.FormatProvider = nfi1;
 
-            MegaOrdersDataGrid.Columns["CurrencyTransportCost"].DefaultCellStyle.Format = "C";
-            MegaOrdersDataGrid.Columns["CurrencyTransportCost"].DefaultCellStyle.FormatProvider = nfi1;
+        //    MegaOrdersDataGrid.Columns["CurrencyTransportCost"].DefaultCellStyle.Format = "C";
+        //    MegaOrdersDataGrid.Columns["CurrencyTransportCost"].DefaultCellStyle.FormatProvider = nfi1;
 
-            MegaOrdersDataGrid.Columns["CurrencyAdditionalCost"].DefaultCellStyle.Format = "C";
-            MegaOrdersDataGrid.Columns["CurrencyAdditionalCost"].DefaultCellStyle.FormatProvider = nfi1;
+        //    MegaOrdersDataGrid.Columns["CurrencyAdditionalCost"].DefaultCellStyle.Format = "C";
+        //    MegaOrdersDataGrid.Columns["CurrencyAdditionalCost"].DefaultCellStyle.FormatProvider = nfi1;
 
-            MegaOrdersDataGrid.Columns["CurrencyTotalCost"].DefaultCellStyle.Format = "C";
-            MegaOrdersDataGrid.Columns["CurrencyTotalCost"].DefaultCellStyle.FormatProvider = nfi1;
+        //    MegaOrdersDataGrid.Columns["CurrencyTotalCost"].DefaultCellStyle.Format = "C";
+        //    MegaOrdersDataGrid.Columns["CurrencyTotalCost"].DefaultCellStyle.FormatProvider = nfi1;
 
-            MegaOrdersDataGrid.Columns["Rate"].DefaultCellStyle.Format = "C";
-            MegaOrdersDataGrid.Columns["Rate"].DefaultCellStyle.FormatProvider = nfi2;
+        //    MegaOrdersDataGrid.Columns["Rate"].DefaultCellStyle.Format = "C";
+        //    MegaOrdersDataGrid.Columns["Rate"].DefaultCellStyle.FormatProvider = nfi2;
 
-            MegaOrdersDataGrid.Columns["Weight"].DefaultCellStyle.Format = "C";
-            MegaOrdersDataGrid.Columns["Weight"].DefaultCellStyle.FormatProvider = nfi1;
+        //    MegaOrdersDataGrid.Columns["Weight"].DefaultCellStyle.Format = "C";
+        //    MegaOrdersDataGrid.Columns["Weight"].DefaultCellStyle.FormatProvider = nfi1;
 
-            MegaOrdersDataGrid.Columns["Square"].DefaultCellStyle.Format = "C";
-            MegaOrdersDataGrid.Columns["Square"].DefaultCellStyle.FormatProvider = nfi3;
+        //    MegaOrdersDataGrid.Columns["Square"].DefaultCellStyle.Format = "C";
+        //    MegaOrdersDataGrid.Columns["Square"].DefaultCellStyle.FormatProvider = nfi3;
 
-            MegaOrdersDataGrid.Columns["ClientName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            MegaOrdersDataGrid.Columns["ClientName"].MinimumWidth = 150;
-            MegaOrdersDataGrid.Columns["MegaOrderID"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            MegaOrdersDataGrid.Columns["MegaOrderID"].Width = 70;
-            MegaOrdersDataGrid.Columns["OrderNumber"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            MegaOrdersDataGrid.Columns["OrderNumber"].Width = 70;
-            MegaOrdersDataGrid.Columns["OrderDate"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            MegaOrdersDataGrid.Columns["OrderDate"].Width = 150;
-            MegaOrdersDataGrid.Columns["ProfilDispatchDate"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            MegaOrdersDataGrid.Columns["ProfilDispatchDate"].Width = 140;
-            MegaOrdersDataGrid.Columns["TPSDispatchDate"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            MegaOrdersDataGrid.Columns["TPSDispatchDate"].Width = 140;
-            MegaOrdersDataGrid.Columns["DesireDate"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            MegaOrdersDataGrid.Columns["DesireDate"].Width = 130;
-            MegaOrdersDataGrid.Columns["ConfirmDateTime"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            MegaOrdersDataGrid.Columns["ConfirmDateTime"].Width = 130;
-            MegaOrdersDataGrid.Columns["ProfilOrderStatusColumn"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            MegaOrdersDataGrid.Columns["ProfilOrderStatusColumn"].Width = 160;
-            MegaOrdersDataGrid.Columns["TPSOrderStatusColumn"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            MegaOrdersDataGrid.Columns["TPSOrderStatusColumn"].Width = 160;
-            MegaOrdersDataGrid.Columns["Weight"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            MegaOrdersDataGrid.Columns["Weight"].Width = 110;
-            MegaOrdersDataGrid.Columns["Square"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            MegaOrdersDataGrid.Columns["Square"].Width = 140;
+        //    MegaOrdersDataGrid.Columns["ClientName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+        //    MegaOrdersDataGrid.Columns["ClientName"].MinimumWidth = 150;
+        //    MegaOrdersDataGrid.Columns["MegaOrderID"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+        //    MegaOrdersDataGrid.Columns["MegaOrderID"].Width = 70;
+        //    MegaOrdersDataGrid.Columns["OrderNumber"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+        //    MegaOrdersDataGrid.Columns["OrderNumber"].Width = 70;
+        //    MegaOrdersDataGrid.Columns["OrderDate"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+        //    MegaOrdersDataGrid.Columns["OrderDate"].Width = 150;
+        //    MegaOrdersDataGrid.Columns["ProfilDispatchDate"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+        //    MegaOrdersDataGrid.Columns["ProfilDispatchDate"].Width = 140;
+        //    MegaOrdersDataGrid.Columns["TPSDispatchDate"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+        //    MegaOrdersDataGrid.Columns["TPSDispatchDate"].Width = 140;
+        //    MegaOrdersDataGrid.Columns["DesireDate"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+        //    MegaOrdersDataGrid.Columns["DesireDate"].Width = 130;
+        //    MegaOrdersDataGrid.Columns["ConfirmDateTime"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+        //    MegaOrdersDataGrid.Columns["ConfirmDateTime"].Width = 130;
+        //    MegaOrdersDataGrid.Columns["ProfilOrderStatusColumn"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+        //    MegaOrdersDataGrid.Columns["ProfilOrderStatusColumn"].Width = 160;
+        //    MegaOrdersDataGrid.Columns["TPSOrderStatusColumn"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+        //    MegaOrdersDataGrid.Columns["TPSOrderStatusColumn"].Width = 160;
+        //    MegaOrdersDataGrid.Columns["Weight"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+        //    MegaOrdersDataGrid.Columns["Weight"].Width = 110;
+        //    MegaOrdersDataGrid.Columns["Square"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+        //    MegaOrdersDataGrid.Columns["Square"].Width = 140;
 
-            MegaOrdersDataGrid.Columns["OrderCost"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            MegaOrdersDataGrid.Columns["OrderCost"].Width = 130;
-            MegaOrdersDataGrid.Columns["TotalCost"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            MegaOrdersDataGrid.Columns["TotalCost"].Width = 130;
-            MegaOrdersDataGrid.Columns["TransportCost"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            MegaOrdersDataGrid.Columns["TransportCost"].Width = 150;
-            MegaOrdersDataGrid.Columns["AdditionalCost"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            MegaOrdersDataGrid.Columns["AdditionalCost"].Width = 150;
-            MegaOrdersDataGrid.Columns["CurrencyOrderCost"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            MegaOrdersDataGrid.Columns["CurrencyOrderCost"].Width = 130;
-            MegaOrdersDataGrid.Columns["CurrencyTotalCost"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            MegaOrdersDataGrid.Columns["CurrencyTotalCost"].Width = 130;
-            MegaOrdersDataGrid.Columns["CurrencyTransportCost"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            MegaOrdersDataGrid.Columns["CurrencyTransportCost"].Width = 190;
-            MegaOrdersDataGrid.Columns["CurrencyAdditionalCost"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            MegaOrdersDataGrid.Columns["CurrencyAdditionalCost"].Width = 170;
-            MegaOrdersDataGrid.Columns["CurrencyTypeColumn"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            MegaOrdersDataGrid.Columns["CurrencyTypeColumn"].Width = 90;
-            MegaOrdersDataGrid.Columns["Rate"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            MegaOrdersDataGrid.Columns["Rate"].Width = 100;
+        //    MegaOrdersDataGrid.Columns["OrderCost"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+        //    MegaOrdersDataGrid.Columns["OrderCost"].Width = 130;
+        //    MegaOrdersDataGrid.Columns["TotalCost"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+        //    MegaOrdersDataGrid.Columns["TotalCost"].Width = 130;
+        //    MegaOrdersDataGrid.Columns["TransportCost"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+        //    MegaOrdersDataGrid.Columns["TransportCost"].Width = 150;
+        //    MegaOrdersDataGrid.Columns["AdditionalCost"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+        //    MegaOrdersDataGrid.Columns["AdditionalCost"].Width = 150;
+        //    MegaOrdersDataGrid.Columns["CurrencyOrderCost"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+        //    MegaOrdersDataGrid.Columns["CurrencyOrderCost"].Width = 130;
+        //    MegaOrdersDataGrid.Columns["CurrencyTotalCost"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+        //    MegaOrdersDataGrid.Columns["CurrencyTotalCost"].Width = 130;
+        //    MegaOrdersDataGrid.Columns["CurrencyTransportCost"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+        //    MegaOrdersDataGrid.Columns["CurrencyTransportCost"].Width = 190;
+        //    MegaOrdersDataGrid.Columns["CurrencyAdditionalCost"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+        //    MegaOrdersDataGrid.Columns["CurrencyAdditionalCost"].Width = 170;
+        //    MegaOrdersDataGrid.Columns["CurrencyTypeColumn"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+        //    MegaOrdersDataGrid.Columns["CurrencyTypeColumn"].Width = 90;
+        //    MegaOrdersDataGrid.Columns["Rate"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+        //    MegaOrdersDataGrid.Columns["Rate"].Width = 100;
 
-            MegaOrdersDataGrid.Columns["ProfilPackPercentage"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            MegaOrdersDataGrid.Columns["ProfilPackPercentage"].Width = 155;
-            MegaOrdersDataGrid.Columns["ProfilPackedCount"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            MegaOrdersDataGrid.Columns["ProfilPackedCount"].Width = 155;
-            MegaOrdersDataGrid.Columns["TPSPackPercentage"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            MegaOrdersDataGrid.Columns["TPSPackPercentage"].Width = 125;
-            MegaOrdersDataGrid.Columns["TPSPackedCount"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            MegaOrdersDataGrid.Columns["TPSPackedCount"].Width = 125;
+        //    MegaOrdersDataGrid.Columns["ProfilPackPercentage"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+        //    MegaOrdersDataGrid.Columns["ProfilPackPercentage"].Width = 155;
+        //    MegaOrdersDataGrid.Columns["ProfilPackedCount"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+        //    MegaOrdersDataGrid.Columns["ProfilPackedCount"].Width = 155;
+        //    MegaOrdersDataGrid.Columns["TPSPackPercentage"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+        //    MegaOrdersDataGrid.Columns["TPSPackPercentage"].Width = 125;
+        //    MegaOrdersDataGrid.Columns["TPSPackedCount"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+        //    MegaOrdersDataGrid.Columns["TPSPackedCount"].Width = 125;
 
-            MegaOrdersDataGrid.Columns["ProfilStorePercentage"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            MegaOrdersDataGrid.Columns["ProfilStorePercentage"].Width = 155;
-            MegaOrdersDataGrid.Columns["ProfilStoreCount"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            MegaOrdersDataGrid.Columns["ProfilStoreCount"].Width = 155;
-            MegaOrdersDataGrid.Columns["TPSStorePercentage"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            MegaOrdersDataGrid.Columns["TPSStorePercentage"].Width = 125;
-            MegaOrdersDataGrid.Columns["TPSStoreCount"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            MegaOrdersDataGrid.Columns["TPSStoreCount"].Width = 125;
+        //    MegaOrdersDataGrid.Columns["ProfilStorePercentage"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+        //    MegaOrdersDataGrid.Columns["ProfilStorePercentage"].Width = 155;
+        //    MegaOrdersDataGrid.Columns["ProfilStoreCount"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+        //    MegaOrdersDataGrid.Columns["ProfilStoreCount"].Width = 155;
+        //    MegaOrdersDataGrid.Columns["TPSStorePercentage"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+        //    MegaOrdersDataGrid.Columns["TPSStorePercentage"].Width = 125;
+        //    MegaOrdersDataGrid.Columns["TPSStoreCount"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+        //    MegaOrdersDataGrid.Columns["TPSStoreCount"].Width = 125;
 
-            MegaOrdersDataGrid.Columns["ProfilExpPercentage"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            MegaOrdersDataGrid.Columns["ProfilExpPercentage"].Width = 155;
-            MegaOrdersDataGrid.Columns["ProfilExpCount"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            MegaOrdersDataGrid.Columns["ProfilExpCount"].Width = 155;
-            MegaOrdersDataGrid.Columns["TPSExpPercentage"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            MegaOrdersDataGrid.Columns["TPSExpPercentage"].Width = 125;
-            MegaOrdersDataGrid.Columns["TPSExpCount"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            MegaOrdersDataGrid.Columns["TPSExpCount"].Width = 125;
+        //    MegaOrdersDataGrid.Columns["ProfilExpPercentage"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+        //    MegaOrdersDataGrid.Columns["ProfilExpPercentage"].Width = 155;
+        //    MegaOrdersDataGrid.Columns["ProfilExpCount"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+        //    MegaOrdersDataGrid.Columns["ProfilExpCount"].Width = 155;
+        //    MegaOrdersDataGrid.Columns["TPSExpPercentage"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+        //    MegaOrdersDataGrid.Columns["TPSExpPercentage"].Width = 125;
+        //    MegaOrdersDataGrid.Columns["TPSExpCount"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+        //    MegaOrdersDataGrid.Columns["TPSExpCount"].Width = 125;
 
-            MegaOrdersDataGrid.Columns["ProfilDispPercentage"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            MegaOrdersDataGrid.Columns["ProfilDispPercentage"].Width = 155;
-            MegaOrdersDataGrid.Columns["ProfilDispatchedCount"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            MegaOrdersDataGrid.Columns["ProfilDispatchedCount"].Width = 155;
-            MegaOrdersDataGrid.Columns["TPSDispPercentage"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            MegaOrdersDataGrid.Columns["TPSDispPercentage"].Width = 125;
-            MegaOrdersDataGrid.Columns["TPSDispatchedCount"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            MegaOrdersDataGrid.Columns["TPSDispatchedCount"].Width = 125;
+        //    MegaOrdersDataGrid.Columns["ProfilDispPercentage"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+        //    MegaOrdersDataGrid.Columns["ProfilDispPercentage"].Width = 155;
+        //    MegaOrdersDataGrid.Columns["ProfilDispatchedCount"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+        //    MegaOrdersDataGrid.Columns["ProfilDispatchedCount"].Width = 155;
+        //    MegaOrdersDataGrid.Columns["TPSDispPercentage"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+        //    MegaOrdersDataGrid.Columns["TPSDispPercentage"].Width = 125;
+        //    MegaOrdersDataGrid.Columns["TPSDispatchedCount"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+        //    MegaOrdersDataGrid.Columns["TPSDispatchedCount"].Width = 125;
 
-            MegaOrdersDataGrid.Columns["MegaFactoryTypeColumn"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            MegaOrdersDataGrid.Columns["MegaFactoryTypeColumn"].Width = 130;
+        //    MegaOrdersDataGrid.Columns["MegaFactoryTypeColumn"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+        //    MegaOrdersDataGrid.Columns["MegaFactoryTypeColumn"].Width = 130;
 
-            MegaOrdersDataGrid.Columns["MegaBatchNumber"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            MegaOrdersDataGrid.Columns["MegaBatchNumber"].Width = 80;
+        //    MegaOrdersDataGrid.Columns["MegaBatchNumber"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+        //    MegaOrdersDataGrid.Columns["MegaBatchNumber"].Width = 80;
 
-            MegaOrdersDataGrid.AutoGenerateColumns = false;
+        //    MegaOrdersDataGrid.AutoGenerateColumns = false;
 
-            MegaOrdersDataGrid.Columns["ClientName"].DisplayIndex = 0;
-            MegaOrdersDataGrid.Columns["OrderNumber"].DisplayIndex = 1;
-            MegaOrdersDataGrid.Columns["MegaOrderID"].DisplayIndex = 2;
+        //    MegaOrdersDataGrid.Columns["ClientName"].DisplayIndex = 0;
+        //    MegaOrdersDataGrid.Columns["OrderNumber"].DisplayIndex = 1;
+        //    MegaOrdersDataGrid.Columns["MegaOrderID"].DisplayIndex = 2;
 
-            MegaOrdersDataGrid.Columns["ProfilPackPercentage"].DisplayIndex = 3;
-            MegaOrdersDataGrid.Columns["ProfilPackedCount"].DisplayIndex = 4;
-            MegaOrdersDataGrid.Columns["ProfilStorePercentage"].DisplayIndex = 5;
-            MegaOrdersDataGrid.Columns["ProfilStoreCount"].DisplayIndex = 6;
-            MegaOrdersDataGrid.Columns["ProfilDispPercentage"].DisplayIndex = 7;
-            MegaOrdersDataGrid.Columns["ProfilDispatchedCount"].DisplayIndex = 8;
+        //    MegaOrdersDataGrid.Columns["ProfilPackPercentage"].DisplayIndex = 3;
+        //    MegaOrdersDataGrid.Columns["ProfilPackedCount"].DisplayIndex = 4;
+        //    MegaOrdersDataGrid.Columns["ProfilStorePercentage"].DisplayIndex = 5;
+        //    MegaOrdersDataGrid.Columns["ProfilStoreCount"].DisplayIndex = 6;
+        //    MegaOrdersDataGrid.Columns["ProfilDispPercentage"].DisplayIndex = 7;
+        //    MegaOrdersDataGrid.Columns["ProfilDispatchedCount"].DisplayIndex = 8;
 
-            MegaOrdersDataGrid.Columns["TPSPackPercentage"].DisplayIndex = 9;
-            MegaOrdersDataGrid.Columns["TPSPackedCount"].DisplayIndex = 10;
-            MegaOrdersDataGrid.Columns["TPSStorePercentage"].DisplayIndex = 11;
-            MegaOrdersDataGrid.Columns["TPSStoreCount"].DisplayIndex = 12;
-            MegaOrdersDataGrid.Columns["TPSDispPercentage"].DisplayIndex = 13;
-            MegaOrdersDataGrid.Columns["TPSDispatchedCount"].DisplayIndex = 14;
+        //    MegaOrdersDataGrid.Columns["TPSPackPercentage"].DisplayIndex = 9;
+        //    MegaOrdersDataGrid.Columns["TPSPackedCount"].DisplayIndex = 10;
+        //    MegaOrdersDataGrid.Columns["TPSStorePercentage"].DisplayIndex = 11;
+        //    MegaOrdersDataGrid.Columns["TPSStoreCount"].DisplayIndex = 12;
+        //    MegaOrdersDataGrid.Columns["TPSDispPercentage"].DisplayIndex = 13;
+        //    MegaOrdersDataGrid.Columns["TPSDispatchedCount"].DisplayIndex = 14;
 
-            MegaOrdersDataGrid.Columns["ProfilDispatchDate"].DisplayIndex = 15;
-            MegaOrdersDataGrid.Columns["TPSDispatchDate"].DisplayIndex = 16;
+        //    MegaOrdersDataGrid.Columns["ProfilDispatchDate"].DisplayIndex = 15;
+        //    MegaOrdersDataGrid.Columns["TPSDispatchDate"].DisplayIndex = 16;
 
-            MegaOrdersDataGrid.Columns["MegaFactoryTypeColumn"].DisplayIndex = 17;
-            MegaOrdersDataGrid.Columns["ProfilOrderStatusColumn"].DisplayIndex = 18;
-            MegaOrdersDataGrid.Columns["TPSOrderStatusColumn"].DisplayIndex = 19;
-            MegaOrdersDataGrid.Columns["Square"].DisplayIndex = 20;
-            MegaOrdersDataGrid.Columns["Weight"].DisplayIndex = 21;
-            MegaOrdersDataGrid.Columns["OrderCost"].DisplayIndex = 22;
-            MegaOrdersDataGrid.Columns["TransportCost"].DisplayIndex = 23;
-            MegaOrdersDataGrid.Columns["AdditionalCost"].DisplayIndex = 24;
-            MegaOrdersDataGrid.Columns["TotalCost"].DisplayIndex = 25;
-            MegaOrdersDataGrid.Columns["CurrencyOrderCost"].DisplayIndex = 26;
-            MegaOrdersDataGrid.Columns["CurrencyTransportCost"].DisplayIndex = 27;
-            MegaOrdersDataGrid.Columns["CurrencyAdditionalCost"].DisplayIndex = 28;
-            MegaOrdersDataGrid.Columns["CurrencyTotalCost"].DisplayIndex = 29;
-            MegaOrdersDataGrid.Columns["CurrencyTypeColumn"].DisplayIndex = 30;
-            MegaOrdersDataGrid.Columns["Rate"].DisplayIndex = 31;
+        //    MegaOrdersDataGrid.Columns["MegaFactoryTypeColumn"].DisplayIndex = 17;
+        //    MegaOrdersDataGrid.Columns["ProfilOrderStatusColumn"].DisplayIndex = 18;
+        //    MegaOrdersDataGrid.Columns["TPSOrderStatusColumn"].DisplayIndex = 19;
+        //    MegaOrdersDataGrid.Columns["Square"].DisplayIndex = 20;
+        //    MegaOrdersDataGrid.Columns["Weight"].DisplayIndex = 21;
+        //    MegaOrdersDataGrid.Columns["OrderCost"].DisplayIndex = 22;
+        //    MegaOrdersDataGrid.Columns["TransportCost"].DisplayIndex = 23;
+        //    MegaOrdersDataGrid.Columns["AdditionalCost"].DisplayIndex = 24;
+        //    MegaOrdersDataGrid.Columns["TotalCost"].DisplayIndex = 25;
+        //    MegaOrdersDataGrid.Columns["CurrencyOrderCost"].DisplayIndex = 26;
+        //    MegaOrdersDataGrid.Columns["CurrencyTransportCost"].DisplayIndex = 27;
+        //    MegaOrdersDataGrid.Columns["CurrencyAdditionalCost"].DisplayIndex = 28;
+        //    MegaOrdersDataGrid.Columns["CurrencyTotalCost"].DisplayIndex = 29;
+        //    MegaOrdersDataGrid.Columns["CurrencyTypeColumn"].DisplayIndex = 30;
+        //    MegaOrdersDataGrid.Columns["Rate"].DisplayIndex = 31;
 
-            MegaOrdersDataGrid.Columns["MegaBatchNumber"].DisplayIndex = 3;
+        //    MegaOrdersDataGrid.Columns["MegaBatchNumber"].DisplayIndex = 3;
 
-            MegaOrdersDataGrid.Columns["ProfilExpPercentage"].DisplayIndex = 8;
-            MegaOrdersDataGrid.Columns["ProfilExpCount"].DisplayIndex = 8;
-            MegaOrdersDataGrid.Columns["TPSExpCount"].DisplayIndex = 16;
-            MegaOrdersDataGrid.Columns["TPSExpPercentage"].DisplayIndex = 16;
+        //    MegaOrdersDataGrid.Columns["ProfilExpPercentage"].DisplayIndex = 8;
+        //    MegaOrdersDataGrid.Columns["ProfilExpCount"].DisplayIndex = 8;
+        //    MegaOrdersDataGrid.Columns["TPSExpCount"].DisplayIndex = 16;
+        //    MegaOrdersDataGrid.Columns["TPSExpPercentage"].DisplayIndex = 16;
 
-            MegaOrdersDataGrid.Columns["ClientName"].Frozen = true;
-            MegaOrdersDataGrid.Columns["OrderNumber"].Frozen = true;
-            MegaOrdersDataGrid.RightToLeft = RightToLeft.No;
+        //    MegaOrdersDataGrid.Columns["ClientName"].Frozen = true;
+        //    MegaOrdersDataGrid.Columns["OrderNumber"].Frozen = true;
+        //    MegaOrdersDataGrid.RightToLeft = RightToLeft.No;
 
-            MegaOrdersDataGrid.Columns["Weight"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-            MegaOrdersDataGrid.Columns["Square"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+        //    MegaOrdersDataGrid.Columns["Weight"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+        //    MegaOrdersDataGrid.Columns["Square"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
 
-            MegaOrdersDataGrid.Columns["ProfilPackedCount"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            MegaOrdersDataGrid.Columns["ProfilPackPercentage"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            MegaOrdersDataGrid.AddPercentageColumn("ProfilPackPercentage");
-            MegaOrdersDataGrid.Columns["ProfilStoreCount"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            MegaOrdersDataGrid.Columns["ProfilStorePercentage"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            MegaOrdersDataGrid.AddPercentageColumn("ProfilStorePercentage");
-            MegaOrdersDataGrid.Columns["ProfilExpCount"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            MegaOrdersDataGrid.Columns["ProfilExpPercentage"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            MegaOrdersDataGrid.AddPercentageColumn("ProfilExpPercentage");
-            MegaOrdersDataGrid.Columns["ProfilDispatchedCount"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            MegaOrdersDataGrid.Columns["ProfilDispPercentage"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            MegaOrdersDataGrid.AddPercentageColumn("ProfilDispPercentage");
+        //    MegaOrdersDataGrid.Columns["ProfilPackedCount"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+        //    MegaOrdersDataGrid.Columns["ProfilPackPercentage"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+        //    MegaOrdersDataGrid.AddPercentageColumn("ProfilPackPercentage");
+        //    MegaOrdersDataGrid.Columns["ProfilStoreCount"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+        //    MegaOrdersDataGrid.Columns["ProfilStorePercentage"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+        //    MegaOrdersDataGrid.AddPercentageColumn("ProfilStorePercentage");
+        //    MegaOrdersDataGrid.Columns["ProfilExpCount"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+        //    MegaOrdersDataGrid.Columns["ProfilExpPercentage"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+        //    MegaOrdersDataGrid.AddPercentageColumn("ProfilExpPercentage");
+        //    MegaOrdersDataGrid.Columns["ProfilDispatchedCount"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+        //    MegaOrdersDataGrid.Columns["ProfilDispPercentage"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+        //    MegaOrdersDataGrid.AddPercentageColumn("ProfilDispPercentage");
 
-            MegaOrdersDataGrid.Columns["TPSPackedCount"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            MegaOrdersDataGrid.Columns["TPSPackPercentage"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            MegaOrdersDataGrid.AddPercentageColumn("TPSPackPercentage");
-            MegaOrdersDataGrid.Columns["TPSStoreCount"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            MegaOrdersDataGrid.Columns["TPSStorePercentage"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            MegaOrdersDataGrid.AddPercentageColumn("TPSStorePercentage");
-            MegaOrdersDataGrid.Columns["TPSExpCount"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            MegaOrdersDataGrid.Columns["TPSExpPercentage"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            MegaOrdersDataGrid.AddPercentageColumn("TPSExpPercentage");
-            MegaOrdersDataGrid.Columns["TPSDispatchedCount"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            MegaOrdersDataGrid.Columns["TPSDispPercentage"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            MegaOrdersDataGrid.AddPercentageColumn("TPSDispPercentage");
-        }
+        //    MegaOrdersDataGrid.Columns["TPSPackedCount"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+        //    MegaOrdersDataGrid.Columns["TPSPackPercentage"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+        //    MegaOrdersDataGrid.AddPercentageColumn("TPSPackPercentage");
+        //    MegaOrdersDataGrid.Columns["TPSStoreCount"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+        //    MegaOrdersDataGrid.Columns["TPSStorePercentage"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+        //    MegaOrdersDataGrid.AddPercentageColumn("TPSStorePercentage");
+        //    MegaOrdersDataGrid.Columns["TPSExpCount"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+        //    MegaOrdersDataGrid.Columns["TPSExpPercentage"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+        //    MegaOrdersDataGrid.AddPercentageColumn("TPSExpPercentage");
+        //    MegaOrdersDataGrid.Columns["TPSDispatchedCount"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+        //    MegaOrdersDataGrid.Columns["TPSDispPercentage"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+        //    MegaOrdersDataGrid.AddPercentageColumn("TPSDispPercentage");
+        //}
 
         public void ShowPackUsersColumn(bool bShow)
         {
@@ -3322,7 +3325,7 @@ namespace Infinium.Modules.Marketing.Expedition
             FillMegaBatchNumber();
             CreateColumns();
             MainGridSetting();
-            MegaGridSetting();
+            //MegaGridSetting();
             PackagesGridSetting();
         }
         #endregion
@@ -3537,7 +3540,8 @@ namespace Infinium.Modules.Marketing.Expedition
             BatchDetailsBindingSource.MoveFirst();
         }
 
-        public void Filter(bool ByClient,
+        public void Filter(DateTime firstDate, DateTime secondDate,
+            bool ByClient,
             bool ByMegaBatch,
             bool NotProduction,
             bool OnProduction,
@@ -3719,10 +3723,11 @@ namespace Infinium.Modules.Marketing.Expedition
             if (!NotProduction && !OnProduction && !InProduction && !OnStorage && !OnExpedition && !Dispatched)
                 OrdersProductionStatus = " WHERE MainOrderID = -1";
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT DISTINCT MegaOrders.*, infiniu2_marketingreference.dbo.Clients.ClientName FROM MegaOrders" +
-                " INNER JOIN infiniu2_marketingreference.dbo.Clients ON MegaOrders.ClientID = infiniu2_marketingreference.dbo.Clients.ClientID" +
-                " WHERE NOT (AgreementStatusID=0 AND CreatedByClient=1) AND " + FilterClient + " MegaOrders.MegaOrderID IN (SELECT MegaOrderID FROM MainOrders " + OrdersProductionStatus +
-                ") ORDER BY ClientName, OrderNumber",
+            using (SqlDataAdapter DA = new SqlDataAdapter($@"SELECT DISTINCT MegaOrders.*, infiniu2_marketingreference.dbo.Clients.ClientName FROM MegaOrders
+                INNER JOIN infiniu2_marketingreference.dbo.Clients ON MegaOrders.ClientID = infiniu2_marketingreference.dbo.Clients.ClientID
+                WHERE CAST(MegaOrders.OrderDate AS Date) >= '{firstDate.ToString("yyyy-MM-dd")}' AND 
+                CAST(MegaOrders.OrderDate AS Date) <= '{secondDate.ToString("yyyy-MM-dd")}' AND 
+                NOT (AgreementStatusID=0 AND CreatedByClient=1) AND {FilterClient} MegaOrders.MegaOrderID IN (SELECT MegaOrderID FROM MainOrders {OrdersProductionStatus}) ORDER BY ClientName, OrderNumber",
                 ConnectionStrings.MarketingOrdersConnectionString))
             {
                 MegaOrdersDataTable.Clear();
@@ -3731,15 +3736,16 @@ namespace Infinium.Modules.Marketing.Expedition
 
             BatchDetailsDataTable.Clear();
             TempBatchDetailsDataTable.Clear();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT Batch.MegaBatchID, BatchDetails.BatchID," +
-                " BatchDetails.MainOrderID, MainOrders.MegaOrderID, ClientID," +
-                " ProfilProductionStatusID, ProfilStorageStatusID, ProfilExpeditionStatusID, ProfilDispatchStatusID," +
-                " TPSProductionStatusID, TPSStorageStatusID, TPSExpeditionStatusID, TPSDispatchStatusID, MainOrders.FactoryID AS MFactoryID, BatchDetails.FactoryID AS BFactoryID" +
-                " FROM BatchDetails" +
-                " INNER JOIN Batch ON BatchDetails.BatchID = Batch.BatchID" +
-                " INNER JOIN MainOrders ON BatchDetails.MainOrderID = MainOrders.MainOrderID" + BatchOrdersProductionStatus +
-                " INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID" +
-                " ORDER BY Batch.MegaBatchID, BatchDetails.BatchID, BatchDetails.MainOrderID, ClientID",
+            using (SqlDataAdapter DA = new SqlDataAdapter($@"SELECT Batch.MegaBatchID, BatchDetails.BatchID,
+                BatchDetails.MainOrderID, MainOrders.MegaOrderID, ClientID,
+                ProfilProductionStatusID, ProfilStorageStatusID, ProfilExpeditionStatusID, ProfilDispatchStatusID
+                TPSProductionStatusID, TPSStorageStatusID, TPSExpeditionStatusID, TPSDispatchStatusID, MainOrders.FactoryID AS MFactoryID, BatchDetails.FactoryID AS BFactoryID
+                FROM BatchDetails
+                INNER JOIN Batch ON BatchDetails.BatchID = Batch.BatchID
+                INNER JOIN MainOrders ON BatchDetails.MainOrderID = MainOrders.MainOrderID {BatchOrdersProductionStatus}
+                INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID AND CAST(MegaOrders.OrderDate AS Date) >= '{firstDate.ToString("yyyy - MM - dd")}' AND 
+            CAST(MegaOrders.OrderDate AS Date) <= '{secondDate.ToString("yyyy-MM-dd")}' 
+                ORDER BY Batch.MegaBatchID, BatchDetails.BatchID, BatchDetails.MainOrderID, ClientID",
                 ConnectionStrings.MarketingOrdersConnectionString))
             {
                 DA.Fill(BatchDetailsDataTable);
@@ -3754,7 +3760,7 @@ namespace Infinium.Modules.Marketing.Expedition
             FillMegaPercentageColumn();
             if (!ByMegaBatch)
                 FillMegaBatchNumber();
-            ShowColumns(FactoryID);
+            //ShowColumns(FactoryID);
 
             MegaOrdersBindingSource.MoveFirst();
         }
@@ -4755,7 +4761,6 @@ namespace Infinium.Modules.Marketing.Expedition
             {
                 DA.Fill(ClientsIncomesDT);
             }
-
 
             ClientsDispatchesDT.Clear();
             DataTable DispDT = new DataTable();
@@ -11972,7 +11977,7 @@ namespace Infinium.Modules.Marketing.Expedition
                     FactoryID = 1;
                     if (Fill(ProfilMainOrders, FactoryID))
                     {
-                        CreateExcel(ref hssfworkbook, ProfilMainOrders, 1, "ЗОВ-Профиль", ClientName, ProfilOrderNumber);
+                        CreateExcel(ref hssfworkbook, ProfilMainOrders, 1, "ОМЦ-ПРОФИЛЬ", ClientName, ProfilOrderNumber);
                     }
 
                     FactoryID = 2;
@@ -11988,7 +11993,7 @@ namespace Infinium.Modules.Marketing.Expedition
                     FactoryID = 1;
                     if (Fill(ProfilMainOrders, FactoryID))
                     {
-                        CreateExcel(ref hssfworkbook, ProfilMainOrders, 1, "ЗОВ-Профиль", ClientName, ProfilOrderNumber);
+                        CreateExcel(ref hssfworkbook, ProfilMainOrders, 1, "ОМЦ-ПРОФИЛЬ", ClientName, ProfilOrderNumber);
                         PackingReport.CreateCabFurReport(ref hssfworkbook, excelFonts, OrdersID, MegaOrders, Dispatch, ClientName, ClientID, FactoryID);
                     }
                 }
@@ -12010,7 +12015,7 @@ namespace Infinium.Modules.Marketing.Expedition
                     FactoryID = 1;
                     if (Fill(ProfilMainOrders, FactoryID))
                     {
-                        CreateExcel(ref hssfworkbook, ProfilMainOrders, 1, "ЗОВ-Профиль", ClientName, ProfilOrderNumber);
+                        CreateExcel(ref hssfworkbook, ProfilMainOrders, 1, "ОМЦ-ПРОФИЛЬ", ClientName, ProfilOrderNumber);
                         PackingReport.CreateCabFurReport(ref hssfworkbook, excelFonts, OrdersID, MegaOrders, Dispatch, ClientName, ClientID, FactoryID);
                     }
                 }
@@ -12100,7 +12105,7 @@ namespace Infinium.Modules.Marketing.Expedition
                 TPSOrderNumber = TPSOrderNumber.Substring(0, TPSOrderNumber.Length - 2);
             }
 
-            string Firm = "ЗОВ-Профиль+ЗОВ-ТПС";
+            string Firm = "ОМЦ-ПРОФИЛЬ+ЗОВ-ТПС";
 
             ClientName = ClientName.Replace('/', '-');
 
@@ -12252,7 +12257,7 @@ namespace Infinium.Modules.Marketing.Expedition
                 FactoryID = 1;
                 if (Fill(ProfilMainOrders, FactoryID))
                 {
-                    CreateExcel(ref hssfworkbook, ProfilMainOrders, 1, "ЗОВ-Профиль", ClientName, ProfilOrderNumber);
+                    CreateExcel(ref hssfworkbook, ProfilMainOrders, 1, "ОМЦ-ПРОФИЛЬ", ClientName, ProfilOrderNumber);
                 }
 
                 FactoryID = 2;
@@ -12268,7 +12273,7 @@ namespace Infinium.Modules.Marketing.Expedition
                 FactoryID = 1;
                 if (Fill(ProfilMainOrders, FactoryID))
                 {
-                    CreateExcel(ref hssfworkbook, ProfilMainOrders, 1, "ЗОВ-Профиль", ClientName, ProfilOrderNumber);
+                    CreateExcel(ref hssfworkbook, ProfilMainOrders, 1, "ОМЦ-ПРОФИЛЬ", ClientName, ProfilOrderNumber);
                     PackingReport.CreateCabFurScanReport(ref hssfworkbook, excelFonts, orderInfo, OrdersID, MegaOrders, Dispatch, ClientName, ClientID, FactoryID);
                 }
             }
@@ -13039,7 +13044,7 @@ namespace Infinium.Modules.Marketing.Expedition
                 TPSOrderNumber = TPSOrderNumber.Substring(0, TPSOrderNumber.Length - 2);
             }
 
-            string Firm = "ЗОВ-Профиль+ЗОВ-ТПС";
+            string Firm = "ОМЦ-ПРОФИЛЬ+ЗОВ-ТПС";
 
             ClientName = ClientName.Replace('/', '-');
 
@@ -13195,7 +13200,7 @@ namespace Infinium.Modules.Marketing.Expedition
                         FactoryID = 1;
                         if (Fill(ProfilMainOrders, FactoryID))
                         {
-                            CreateExcel(ref hssfworkbook, ProfilMainOrders, 1, "ЗОВ-Профиль", ClientName, ProfilOrderNumber);
+                            CreateExcel(ref hssfworkbook, ProfilMainOrders, 1, "ОМЦ-ПРОФИЛЬ", ClientName, ProfilOrderNumber);
                         }
 
                         FactoryID = 2;
@@ -13211,7 +13216,7 @@ namespace Infinium.Modules.Marketing.Expedition
                         FactoryID = 1;
                         if (Fill(ProfilMainOrders, FactoryID))
                         {
-                            CreateExcel(ref hssfworkbook, ProfilMainOrders, 1, "ЗОВ-Профиль", ClientName, ProfilOrderNumber);
+                            CreateExcel(ref hssfworkbook, ProfilMainOrders, 1, "ОМЦ-ПРОФИЛЬ", ClientName, ProfilOrderNumber);
                             PackingReport.CreateReport(ref hssfworkbook, excelFonts, OrdersID, Dispatches, Dispatch, ClientName, ClientID, FactoryID);
                         }
                     }
@@ -13233,7 +13238,7 @@ namespace Infinium.Modules.Marketing.Expedition
                         FactoryID = 1;
                         if (Fill(ProfilMainOrders, FactoryID))
                         {
-                            CreateExcel(ref hssfworkbook, ProfilMainOrders, 1, "ЗОВ-Профиль", ClientName, ProfilOrderNumber);
+                            CreateExcel(ref hssfworkbook, ProfilMainOrders, 1, "ОМЦ-ПРОФИЛЬ", ClientName, ProfilOrderNumber);
                             PackingReport.CreateReport(ref hssfworkbook, excelFonts, OrdersID, Dispatches, Dispatch, ClientName, ClientID, FactoryID);
                         }
                     }
@@ -13444,7 +13449,7 @@ namespace Infinium.Modules.Marketing.Expedition
                 TPSOrderNumber = TPSOrderNumber.Substring(0, TPSOrderNumber.Length - 2);
             }
 
-            string Firm = "ЗОВ-Профиль+ЗОВ-ТПС";
+            string Firm = "ОМЦ-ПРОФИЛЬ+ЗОВ-ТПС";
 
             ClientName = ClientName.Replace('/', '-');
 
@@ -13599,7 +13604,7 @@ namespace Infinium.Modules.Marketing.Expedition
                         FactoryID = 1;
                         if (Fill(ProfilMainOrders, FactoryID))
                         {
-                            CreateExcel(ref hssfworkbook, ProfilMainOrders, 1, "ЗОВ-Профиль", ClientName, ProfilOrderNumber);
+                            CreateExcel(ref hssfworkbook, ProfilMainOrders, 1, "ОМЦ-ПРОФИЛЬ", ClientName, ProfilOrderNumber);
                         }
 
                         FactoryID = 2;
@@ -13615,7 +13620,7 @@ namespace Infinium.Modules.Marketing.Expedition
                         FactoryID = 1;
                         if (Fill(ProfilMainOrders, FactoryID))
                         {
-                            CreateExcel(ref hssfworkbook, ProfilMainOrders, 1, "ЗОВ-Профиль", ClientName, ProfilOrderNumber);
+                            CreateExcel(ref hssfworkbook, ProfilMainOrders, 1, "ОМЦ-ПРОФИЛЬ", ClientName, ProfilOrderNumber);
                             PackingReport.CreateCabFurReport(ref hssfworkbook, excelFonts, OrdersID, Dispatches, Dispatch, ClientName, ClientID, FactoryID);
                         }
                     }
@@ -13637,7 +13642,7 @@ namespace Infinium.Modules.Marketing.Expedition
                         FactoryID = 1;
                         if (Fill(ProfilMainOrders, FactoryID))
                         {
-                            CreateExcel(ref hssfworkbook, ProfilMainOrders, 1, "ЗОВ-Профиль", ClientName, ProfilOrderNumber);
+                            CreateExcel(ref hssfworkbook, ProfilMainOrders, 1, "ОМЦ-ПРОФИЛЬ", ClientName, ProfilOrderNumber);
                             PackingReport.CreateCabFurReport(ref hssfworkbook, excelFonts, OrdersID, Dispatches, Dispatch, ClientName, ClientID, FactoryID);
                         }
                     }
@@ -13986,7 +13991,7 @@ namespace Infinium.Modules.Marketing.Expedition
                         FactoryID = 1;
                         if (Fill(ProfilMainOrders, FactoryID))
                         {
-                            CreateExcel(ref hssfworkbook, ProfilMainOrders, 1, "ЗОВ-Профиль", ClientName, ProfilOrderNumber);
+                            CreateExcel(ref hssfworkbook, ProfilMainOrders, 1, "ОМЦ-ПРОФИЛЬ", ClientName, ProfilOrderNumber);
                         }
 
                         FactoryID = 2;
@@ -14002,7 +14007,7 @@ namespace Infinium.Modules.Marketing.Expedition
                         FactoryID = 1;
                         if (Fill(ProfilMainOrders, FactoryID))
                         {
-                            CreateExcel(ref hssfworkbook, ProfilMainOrders, 1, "ЗОВ-Профиль", ClientName, ProfilOrderNumber);
+                            CreateExcel(ref hssfworkbook, ProfilMainOrders, 1, "ОМЦ-ПРОФИЛЬ", ClientName, ProfilOrderNumber);
                             PackingReport.CreateReport(ref hssfworkbook, excelFonts, OrdersID, Dispatches, Dispatch, ClientName, ClientID, FactoryID);
                         }
                     }
@@ -14024,7 +14029,7 @@ namespace Infinium.Modules.Marketing.Expedition
                         FactoryID = 1;
                         if (Fill(ProfilMainOrders, FactoryID))
                         {
-                            CreateExcel(ref hssfworkbook, ProfilMainOrders, 1, "ЗОВ-Профиль", ClientName, ProfilOrderNumber);
+                            CreateExcel(ref hssfworkbook, ProfilMainOrders, 1, "ОМЦ-ПРОФИЛЬ", ClientName, ProfilOrderNumber);
                             PackingReport.CreateReport(ref hssfworkbook, excelFonts, OrdersID, Dispatches, Dispatch, ClientName, ClientID, FactoryID);
                         }
                     }
@@ -16186,7 +16191,7 @@ namespace Infinium.Modules.Marketing.Expedition
             si.Subject = "NPOI SDK Example";
             hssfworkbook1.SummaryInformation = si;
 
-            ZOVProfilCommonSheet = hssfworkbook1.CreateSheet("ЗОВ-Профиль");
+            ZOVProfilCommonSheet = hssfworkbook1.CreateSheet("ОМЦ-ПРОФИЛЬ");
             ZOVProfilCommonSheet.PrintSetup.PaperSize = (short)PaperSizeType.A4;
             ZOVProfilCommonSheet.SetMargin(HSSFSheet.LeftMargin, (double).12);
             ZOVProfilCommonSheet.SetMargin(HSSFSheet.RightMargin, (double).07);
@@ -16197,7 +16202,7 @@ namespace Infinium.Modules.Marketing.Expedition
             ZOVProfilCommonSheet.SetColumnWidth(2, 12 * 256);
             ZOVProfilCommonSheet.SetColumnWidth(3, 12 * 256);
 
-            ZOVProfilDetailsSheet = hssfworkbook1.CreateSheet("Ведомость ЗОВ-Профиль");
+            ZOVProfilDetailsSheet = hssfworkbook1.CreateSheet("Ведомость ОМЦ-ПРОФИЛЬ");
             ZOVProfilDetailsSheet.PrintSetup.PaperSize = (short)PaperSizeType.A4;
             ZOVProfilDetailsSheet.SetMargin(HSSFSheet.LeftMargin, (double).12);
             ZOVProfilDetailsSheet.SetMargin(HSSFSheet.RightMargin, (double).07);
@@ -16723,7 +16728,7 @@ namespace Infinium.Modules.Marketing.Expedition
             Cell = HSSFCellUtil.CreateCell(ZOVProfilCommonSheet.CreateRow(ZOVProfilCommonSheetRowIndex++), 0,
                 "Ведомость создана: " + Security.CurrentUserShortName + " " + Security.GetCurrentDate().ToString("dd.MM.yyyy HH:mm"));
             Cell.CellStyle = TempStyle1;
-            Cell = HSSFCellUtil.CreateCell(ZOVProfilCommonSheet.CreateRow(ZOVProfilCommonSheetRowIndex++), 0, "Участок: ЗОВ-Профиль");
+            Cell = HSSFCellUtil.CreateCell(ZOVProfilCommonSheet.CreateRow(ZOVProfilCommonSheetRowIndex++), 0, "Участок: ОМЦ-ПРОФИЛЬ");
             Cell.CellStyle = TempStyle1;
 
             Cell = HSSFCellUtil.CreateCell(ZOVProfilDetailsSheet.CreateRow(ZOVProfilDetailsSheetRowIndex++), 3, "«УТВЕРЖДАЮ»");
@@ -16731,7 +16736,7 @@ namespace Infinium.Modules.Marketing.Expedition
             Cell = HSSFCellUtil.CreateCell(ZOVProfilDetailsSheet.CreateRow(ZOVProfilDetailsSheetRowIndex++), 0,
                 "Ведомость создана: " + Security.CurrentUserShortName + " " + Security.GetCurrentDate().ToString("dd.MM.yyyy HH:mm"));
             Cell.CellStyle = TempStyle1;
-            Cell = HSSFCellUtil.CreateCell(ZOVProfilDetailsSheet.CreateRow(ZOVProfilDetailsSheetRowIndex++), 0, "Участок: ЗОВ-Профиль");
+            Cell = HSSFCellUtil.CreateCell(ZOVProfilDetailsSheet.CreateRow(ZOVProfilDetailsSheetRowIndex++), 0, "Участок: ОМЦ-ПРОФИЛЬ");
             Cell.CellStyle = TempStyle1;
 
 

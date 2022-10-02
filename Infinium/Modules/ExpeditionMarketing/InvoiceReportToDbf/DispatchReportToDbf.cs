@@ -825,7 +825,7 @@ namespace Infinium.Modules.ExpeditionMarketing.DispatchReportToDbf
                 pos += 2;
 
                 Cell1 = sheet1.CreateRow(pos++).CreateCell(0);
-                Cell1.SetCellValue("ЗОВ-Профиль:");
+                Cell1.SetCellValue("ОМЦ-ПРОФИЛЬ:");
                 Cell1.CellStyle = SummaryWithoutBorderBelCS;
 
                 Cell1 = sheet1.CreateRow(pos).CreateCell(0);
@@ -1530,7 +1530,7 @@ namespace Infinium.Modules.ExpeditionMarketing.DispatchReportToDbf
                 pos += 2;
 
                 Cell1 = sheet1.CreateRow(pos++).CreateCell(0);
-                Cell1.SetCellValue("ЗОВ-Профиль:");
+                Cell1.SetCellValue("ОМЦ-ПРОФИЛЬ:");
                 Cell1.CellStyle = SummaryWithoutBorderBelCS;
 
                 Cell1 = sheet1.CreateRow(pos).CreateCell(0);
@@ -2085,7 +2085,7 @@ namespace Infinium.Modules.ExpeditionMarketing.DispatchReportToDbf
             }
             if (ProfilReportTable.Rows.Count > 0 && TPSReportTable.Rows.Count == 0)
             {
-                ProfilDBFName = DBFName + " (ЗОВ-Профиль)";
+                ProfilDBFName = DBFName + " (ОМЦ-ПРОФИЛЬ)";
                 FileInfo f = new FileInfo(FilePath + @"\" + ProfilDBFName + ".DBF");
                 int x = 1;
                 while (f.Exists == true)
@@ -2139,9 +2139,9 @@ namespace Infinium.Modules.ExpeditionMarketing.DispatchReportToDbf
             }
             if (ProfilReportTable.Rows.Count > 0 && TPSReportTable.Rows.Count == 0)
             {
-                ProfilDBFName = DBFName + " (ЗОВ-Профиль)";
+                ProfilDBFName = DBFName + " (ОМЦ-ПРОФИЛЬ)";
                 if (IsSample)
-                    ProfilDBFName = DBFName + " (ЗОВ-Профиль), обр";
+                    ProfilDBFName = DBFName + " (ОМЦ-ПРОФИЛЬ), обр";
                 FileInfo f = new FileInfo(FilePath + @"\" + ProfilDBFName + ".DBF");
                 int x = 1;
                 while (f.Exists == true)

@@ -581,7 +581,7 @@ namespace Infinium
 
         private void PrintInventoryButton_Click(object sender, EventArgs e)
         {
-            string InventoryName = "Инвентаризационная опись, ЗОВ-Профиль, " + DateTimeFormatInfo.CurrentInfo.GetMonthName(Month) + " " + Year.ToString();
+            string InventoryName = "Инвентаризационная опись, ОМЦ-ПРОФИЛЬ, " + DateTimeFormatInfo.CurrentInfo.GetMonthName(Month) + " " + Year.ToString();
             if (CurrentFactoryID == 2)
                 InventoryName = "Инвентаризационная опись, ЗОВ-ТПС, " + DateTimeFormatInfo.CurrentInfo.GetMonthName(Month) + " " + Year.ToString();
 

@@ -275,7 +275,7 @@
             this.rbtn1.StateCommon.ShortText.Color1 = System.Drawing.Color.Black;
             this.rbtn1.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 15.94F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.rbtn1.TabIndex = 486;
-            this.rbtn1.Values.Text = "ЗОВ-Профиль";
+            this.rbtn1.Values.Text = "ОМЦ-ПРОФИЛЬ";
             // 
             // CabFurSelectFactoryForm
             // 

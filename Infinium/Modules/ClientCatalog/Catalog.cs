@@ -1,5 +1,7 @@
 ﻿using Infinium.Modules.Packages.ZOV;
 
+using NPOI.HSSF.Record;
+
 using System;
 using System.Collections;
 using System.Data;
@@ -421,6 +423,16 @@ namespace Infinium
             FrameColorsBindingSource.MoveFirst();
         }
 
+        private int GetPatinaIDByRal(int PatinaRALId)
+        {
+            int PatinaID = -1;
+
+            DataRow[] rows = PatinaRALDataTable.Select("PatinaRALID=" + PatinaRALId);
+            if (rows.Any())
+                PatinaID = Convert.ToInt32(rows[0]["PatinaID"]);
+            return PatinaID;
+        }
+
         public void GetPatina()
         {
             DataTable Table = new DataTable();
@@ -742,6 +754,9 @@ namespace Infinium
             else
                 filter = "FrontID <> - 1";
 
+            if (PatinaID > 1000)
+                PatinaID = GetPatinaIDByRal(PatinaID);
+
             DataTable DT = new DataTable();
             using (DataView DV = new DataView(ConstFrontsConfigDataTable,
                 filter + " AND " +
@@ -1045,6 +1060,8 @@ namespace Infinium
             else
                 filter = "FrontID <> - 1";
 
+            if (PatinaID > 1000)
+                PatinaID = GetPatinaIDByRal(PatinaID);
             DataTable DT = new DataTable();
             using (DataView DV = new DataView(ConstFrontsConfigDataTable,
                 filter + " AND " +
@@ -1289,6 +1306,8 @@ namespace Infinium
             else
                 filter = "FrontID <> - 1";
 
+            if (PatinaID > 1000)
+                PatinaID = GetPatinaIDByRal(PatinaID);
             DataTable DT = new DataTable();
             using (DataView DV = new DataView(ConstFrontsConfigDataTable,
                 filter + " AND " +
@@ -1340,6 +1359,8 @@ namespace Infinium
             else
                 filter = "FrontID <> - 1";
 
+            if (PatinaID > 1000)
+                PatinaID = GetPatinaIDByRal(PatinaID);
             DataTable DT = new DataTable();
             using (DataView DV = new DataView(ConstFrontsConfigDataTable,
                 filter + " AND " +
@@ -5054,7 +5075,7 @@ namespace Infinium
                     }
                     else
                     {
-                        DeleteClientsCatalogImage(ConfigID, ProductID);
+                        //DeleteClientsCatalogImage(ConfigID, ProductID);
                         return null;
                     }
                 }
@@ -6002,9 +6023,9 @@ namespace Infinium
             ev.Graphics.DrawString("ТУ РБ 100135477.422-2005", InfoFont, FontBrush, 305, 120 + margin);
 
             if (((SampleInfo)LabelInfo[CurrentLabelNumber]).FactoryType == 2)
-                ev.Graphics.DrawString("СООО \"ЗОВ-ТПС\"", InfoFont, FontBrush, 305, 132 + margin);
+                ev.Graphics.DrawString("ООО \"ЗОВ-ТПС\"", InfoFont, FontBrush, 305, 132 + margin);
             else
-                ev.Graphics.DrawString("СООО \"ЗОВ-Профиль\"", InfoFont, FontBrush, 305, 132 + margin);
+                ev.Graphics.DrawString("ООО \"ОМЦ-ПРОФИЛЬ\"", InfoFont, FontBrush, 305, 132 + margin);
 
             ev.Graphics.DrawString("Республика Беларусь, 230011", InfoFont, FontBrush, 305, 144 + margin);
             ev.Graphics.DrawString("г. Гродно, ул. Герасимовича, 1", InfoFont, FontBrush, 305, 156 + margin);
@@ -6038,9 +6059,9 @@ namespace Infinium
                 ev.Graphics.DrawString("ТУ РБ 100135477.422-2005", InfoFont, FontBrush, 305, 120 + margin);
 
                 if (((SampleInfo)LabelInfo[CurrentLabelNumber + 1]).FactoryType == 2)
-                    ev.Graphics.DrawString("СООО \"ЗОВ-ТПС\"", InfoFont, FontBrush, 305, 132 + margin);
+                    ev.Graphics.DrawString("ООО \"ЗОВ-ТПС\"", InfoFont, FontBrush, 305, 132 + margin);
                 else
-                    ev.Graphics.DrawString("СООО \"ЗОВ-Профиль\"", InfoFont, FontBrush, 305, 132 + margin);
+                    ev.Graphics.DrawString("ООО \"ОМЦ-ПРОФИЛЬ\"", InfoFont, FontBrush, 305, 132 + margin);
 
                 ev.Graphics.DrawString("Республика Беларусь, 230011", InfoFont, FontBrush, 305, 144 + margin);
                 ev.Graphics.DrawString("г. Гродно, Герасимовича, 1,", InfoFont, FontBrush, 305, 156 + margin);
@@ -6307,9 +6328,9 @@ namespace Infinium
             r = r + rowMargin;
             rect1 = new Rectangle(0, r - 3, 488, 20);
             if (((CabFurInfo)LabelInfo[CurrentLabelNumber]).FactoryType == 1)
-                ev.Graphics.DrawString("СООО \"ЗОВ-Профиль\"", NotesFont, FontBrush, rect1, stringFormat);
+                ev.Graphics.DrawString("ООО \"ОМЦ-ПРОФИЛЬ\"", NotesFont, FontBrush, rect1, stringFormat);
             else
-                ev.Graphics.DrawString("СООО \"ЗОВ-ТермоПрофильСистемы\"", NotesFont, FontBrush, rect1, stringFormat);
+                ev.Graphics.DrawString("ООО \"ЗОВ-ТермоПрофильСистемы\"", NotesFont, FontBrush, rect1, stringFormat);
             r = r + rowMargin;
             rect1 = new Rectangle(0, r, 488, rowHeight);
             ev.Graphics.DrawString("Республика Беларусь, 230011", HeaderFont, FontBrush, rect1, stringFormat);
@@ -6617,7 +6638,7 @@ namespace Infinium
             ev.Graphics.DrawString("ГОСТ 16371-2014", HeaderFont, FontBrush, rect1, stringFormat);
             r = r + rowMargin;
             rect1 = new Rectangle(0, r - 3, 488, 20);
-            ev.Graphics.DrawString("СООО \"ЗОВ-ТермоПрофильСистемы\"", NotesFont, FontBrush, rect1, stringFormat);
+            ev.Graphics.DrawString("ООО \"ЗОВ-ТермоПрофильСистемы\"", NotesFont, FontBrush, rect1, stringFormat);
             r = r + rowMargin;
             rect1 = new Rectangle(0, r, 488, rowHeight);
             ev.Graphics.DrawString("Республика Беларусь, 230011", HeaderFont, FontBrush, rect1, stringFormat);

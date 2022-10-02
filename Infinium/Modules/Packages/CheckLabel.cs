@@ -1,11 +1,17 @@
 ﻿using ComponentFactory.Krypton.Toolkit;
 
+using Infinium.Store;
+using Microsoft.VisualBasic.ApplicationServices;
+
+using NPOI.HSSF.Record.Formula.Functions;
+
 using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using DevExpress.XtraRichEdit.Layout.Engine;
 
 namespace Infinium
 {
@@ -240,7 +246,7 @@ namespace Infinium
             TechnoInsetColorsDataTable = InsetColorsDataTable.Copy();
 
             SelectCommand = @"SELECT ProductID, ProductName FROM DecorProducts" +
-                " WHERE ProductID IN (SELECT ProductID FROM DecorConfig WHERE Enabled = 1) ORDER BY ProductName ASC";
+                " WHERE ProductID IN (SELECT ProductID FROM DecorConfig) ORDER BY ProductName ASC";
             DecorProductsDataTable = new DataTable();
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
@@ -248,7 +254,7 @@ namespace Infinium
             }
             DecorDataTable = new DataTable();
             SelectCommand = @"SELECT DISTINCT TechStore.TechStoreID AS DecorID, TechStore.TechStoreName AS Name, DecorConfig.ProductID FROM TechStore 
-                INNER JOIN DecorConfig ON TechStore.TechStoreID = DecorConfig.DecorID AND Enabled = 1 ORDER BY TechStoreName";
+                INNER JOIN DecorConfig ON TechStore.TechStoreID = DecorConfig.DecorID ORDER BY TechStoreName";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(DecorDataTable);
@@ -1715,6 +1721,56 @@ namespace Infinium
             }
         }
 
+        public bool ExistPackageInRegisterManualInput(int packageId)
+        {
+            string connectionString = ConnectionStrings.MarketingOrdersConnectionString;
+            string selectCommandText = "SELECT * FROM RegisterManualInput WHERE packageID=" + packageId;
+
+            using (SqlDataAdapter da = new SqlDataAdapter(selectCommandText, connectionString))
+            {
+                using (DataTable dt = new DataTable())
+                {
+                    if (da.Fill(dt) > 0)
+                        return true;
+                }
+            }
+
+            return false;
+        }
+
+        public bool RegisterManualInputOnStore(int packageId, int mainOrderId, int productType, string barcodeType)
+        {
+            DateTime currentDate = Security.GetCurrentDate();
+            string connectionString = ConnectionStrings.MarketingOrdersConnectionString;
+            const string selectCommandText = "SELECT TOP 0 * FROM RegisterManualInput";
+
+            using (SqlDataAdapter da = new SqlDataAdapter(selectCommandText, connectionString))
+            {
+                using (new SqlCommandBuilder(da))
+                {
+                    using (DataTable dt = new DataTable())
+                    {
+                        da.Fill(dt);
+
+                        DataRow newRow = dt.NewRow();
+                        newRow["Store"] = true;
+                        newRow["PackageID"] = packageId;
+                        newRow["MainOrderID"] = mainOrderId;
+                        newRow["TrayID"] = 0;
+                        newRow["ProductType"] = productType;
+                        newRow["AddPackDateTime"] = currentDate;
+                        newRow["UserID"] = iUserID;
+                        newRow["BarcodeType"] = barcodeType;
+                        dt.Rows.Add(newRow);
+
+                        da.Update(dt);
+                        return true;
+                    }
+                }
+            }
+
+        }
+
         public void GetLabelInfo(ref DataTable EventsDataTable, string Barcode)
         {
             string BarType = Barcode.Substring(0, 3);
@@ -1747,7 +1803,7 @@ namespace Infinium
 
                                 int TotalPackCount = 0;
 
-                                SetPacked(ref EventsDataTable, false, Barcode);
+                                //SetPacked(ref EventsDataTable, false, Barcode);
 
                                 if (MegaDT.Rows[0]["DispatchDate"] != DBNull.Value)
                                     LabelInfo.DispatchDate = Convert.ToDateTime(MegaDT.Rows[0]["DispatchDate"]).ToString("dd.MM.yyyy");
@@ -1859,7 +1915,7 @@ namespace Infinium
 
                                 int TotalPackCount = 0;
 
-                                SetPacked(ref EventsDataTable, true, Barcode);
+                                //SetPacked(ref EventsDataTable, true, Barcode);
 
                                 if (LabelInfo.Factory == "Профиль")
                                 {
@@ -1976,7 +2032,7 @@ namespace Infinium
             return false;
         }
 
-        private void SetPacked(ref DataTable EventsDataTable, bool IsMarketing, string Barcode)
+        public void SetPacked(ref DataTable EventsDataTable, bool IsMarketing, string Barcode)
         {
             DateTime CurrentDate = Security.GetCurrentDate();
             string ConnectionString = ConnectionString = ConnectionStrings.MarketingOrdersConnectionString;
@@ -2181,7 +2237,7 @@ namespace Infinium
     {
         int iUserID = 0;
         int CurrentGroup = 0;
-        int CurrentProductType = 0;
+        public int CurrentProductType = 0;
         int CurrentClientID = 0;
         int CurrentFactoryID = 0;
         public int CurrentMainOrderID = 0;
@@ -3222,8 +3278,6 @@ namespace Infinium
                     }
                 }
             }
-
-            return;
         }
 
         #endregion
@@ -3653,81 +3707,108 @@ namespace Infinium
             }
         }
 
-        //        public bool PreExpPackage(bool IsMarketing, int PackageID, ref string Message)
-        //        {
-        //            string ConnectionString;
+        public bool ExistPackageInRegisterManualInput(int packageId)
+        {
+            string connectionString = ConnectionStrings.MarketingOrdersConnectionString;
+            string selectCommandText = "SELECT * FROM RegisterManualInput WHERE packageID=" + packageId;
 
-        //            if (CurrentGroup == 1)//ZOV
-        //                ConnectionString = ConnectionStrings.ZOVOrdersConnectionString;
-        //            else
-        //                ConnectionString = ConnectionStrings.MarketingOrdersConnectionString;
+            using (SqlDataAdapter da = new SqlDataAdapter(selectCommandText, connectionString))
+            {
+                using (DataTable dt = new DataTable())
+                {
+                    if (da.Fill(dt) > 0)
+                        return true;
+                }
+            }
 
-        //            using (SqlDataAdapter DA = new SqlDataAdapter(@"SELECT PackageID, PackageStatusID, 
-        //                PackingDateTime, StorageDateTime, ExpeditionDateTime, DispatchDateTime FROM Packages" +
-        //                " WHERE PackageID = " + PackageID, ConnectionString))
-        //            {
-        //                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
-        //                {
-        //                    using (DataTable DT = new DataTable())
-        //                    {
-        //                        if (DA.Fill(DT) > 0)
-        //                        {
-        //                            if (DT.Rows[0]["StorageDateTime"] == DBNull.Value)
-        //                            {
-        //                                Message = "Упаковка №" + DT.Rows[0]["PackageID"].ToString() + " не была принята на склад";
-        //                                return false;
-        //                            }
-        //                            else
-        //                                return true;
-        //                        }
-        //                        else
-        //                        {
-        //                            Message = "Упаковка №" + PackageID + " не существует";
-        //                            return false;
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //        }
+            return false;
+        }
 
-        //        public bool PreExpTray(bool IsMarketing, int TrayID, ref string Message)
-        //        {
-        //            string ConnectionString;
+        /// <summary>
+        /// Добавляет упаковку в Регистратор ручного ввода
+        /// </summary>
+        public bool RegisterManualInputOnExp(int packageId, int mainOrderId, int productType, string barcodeType)
+        {
+            DateTime currentDate = Security.GetCurrentDate();
+            string connectionString = ConnectionStrings.MarketingOrdersConnectionString;
+            const string selectCommandText = "SELECT TOP 0 * FROM RegisterManualInput";
 
-        //            if (CurrentGroup == 1)//ZOV
-        //                ConnectionString = ConnectionStrings.ZOVOrdersConnectionString;
-        //            else
-        //                ConnectionString = ConnectionStrings.MarketingOrdersConnectionString;
+            using (SqlDataAdapter da = new SqlDataAdapter(selectCommandText, connectionString))
+            {
+                using (new SqlCommandBuilder(da))
+                {
+                    using (DataTable dt = new DataTable())
+                    {
+                        da.Fill(dt);
+                        
+                        DataRow newRow = dt.NewRow();
+                        newRow["Exp"] = true;
+                        newRow["PackageID"] = packageId;
+                        newRow["MainOrderID"] = mainOrderId;
+                        newRow["TrayID"] = 0;
+                        newRow["ProductType"] = productType;
+                        newRow["AddPackDateTime"] = currentDate;
+                        newRow["UserID"] = iUserID;
+                        newRow["BarcodeType"] = barcodeType;
+                        dt.Rows.Add(newRow);
 
-        //            using (SqlDataAdapter DA = new SqlDataAdapter(@"SELECT PackageID, PackageStatusID, 
-        //                PackingDateTime, StorageDateTime, ExpeditionDateTime, DispatchDateTime FROM Packages" +
-        //                " WHERE TrayID = " + TrayID, ConnectionString))
-        //            {
-        //                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
-        //                {
-        //                    using (DataTable DT = new DataTable())
-        //                    {
-        //                        if (DA.Fill(DT) > 0)
-        //                        {
-        //                            for (int i = 0; i < DT.Rows.Count; i++)
-        //                            {
-        //                                if (DT.Rows[i]["StorageDateTime"] == DBNull.Value)
-        //                                {
-        //                                    Message = "Упаковка №" + DT.Rows[i]["PackageID"].ToString() + " не была принята на склад";
-        //                                    return false;
-        //                                }
-        //                            }
-        //                            return true;
-        //                        }
-        //                        else
-        //                        {
-        //                            Message = "На поддоне нет упаковок";
-        //                            return false;
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //        }
+                        da.Update(dt);
+                        return true;
+                    }
+                }
+            }
+
+        }
+        
+        /// <summary>
+        /// Добавляет поддон в Регистратор ручного ввода
+        /// </summary>
+        public bool AddTrayToRegisterManualInput(int trayId, string barcodeType)
+        {
+            DateTime currentDate = Security.GetCurrentDate();
+            string connectionString = ConnectionStrings.MarketingOrdersConnectionString;
+            DataTable packagesDt = new DataTable();
+            string selectCommandText = "SELECT PackageID,MainOrderID,ProductType FROM Packages WHERE TrayID = " + trayId;
+
+            using (SqlDataAdapter da = new SqlDataAdapter(selectCommandText, connectionString))
+            {
+                da.Fill(packagesDt);
+            }
+
+            selectCommandText = "SELECT TOP 0 * FROM RegisterManualInput";
+            using (SqlDataAdapter da = new SqlDataAdapter(selectCommandText, connectionString))
+            {
+                using (new SqlCommandBuilder(da))
+                {
+                    using (DataTable dt = new DataTable())
+                    {
+                        da.Fill(dt);
+
+                        for (int i = 0; i < packagesDt.Rows.Count; i++)
+                        {
+                            int packageId = Convert.ToInt32(packagesDt.Rows[i]["PackageID"]);
+                            int mainOrderId = Convert.ToInt32(packagesDt.Rows[i]["MainOrderID"]);
+                            int productType = Convert.ToInt32(packagesDt.Rows[i]["ProductType"]);
+
+                            DataRow newRow = dt.NewRow();
+                            newRow["Exp"] = true;
+                            newRow["PackageID"] = packageId;
+                            newRow["MainOrderID"] = mainOrderId;
+                            newRow["TrayID"] = trayId;
+                            newRow["ProductType"] = productType;
+                            newRow["AddPackDateTime"] = currentDate;
+                            newRow["UserID"] = iUserID;
+                            newRow["BarcodeType"] = barcodeType;
+                            dt.Rows.Add(newRow);
+                        }
+
+                        da.Update(dt);
+                        return true;
+                    }
+                }
+            }
+
+        }
 
         /// <summary>
         /// Выставляет статус "Экспедиция" для одной упаковки
@@ -4264,6 +4345,455 @@ namespace Infinium
     }
 
 
+    public class RegisterManualInput
+    {
+        public BindingSource PackagesOnExpBs;
+        public BindingSource PackagesOnStoreBs;
+
+        private DataTable clientsMarketingDt;
+        private DataTable clientsZovDt;
+        private DataTable usersDt;
+        private DataTable packagesOnExpDt;
+        private DataTable packagesOnStoreDt;
+        private DataTable rolePermissionsDt = null;
+
+        private struct ManualInput
+        {
+            public int Id;
+            public int PackageId;
+            public int TrayId;
+            public int MainOrderId;
+            public int MegaOrderID;
+            public int ProductType;
+            public string UserName;
+            public string OrderNumber;
+            public string BarcodeType;
+            public string ClientName;
+            public DateTime AddPackDateTime;
+        }
+
+        public void GetPermissions(int UserID, string FormName)
+        {
+            using (SqlDataAdapter DA = new SqlDataAdapter($@"SELECT * FROM UserRoles WHERE UserID = {UserID} 
+                AND RoleID IN (SELECT RoleID FROM Roles WHERE ModuleID IN (SELECT ModuleID FROM Modules WHERE FormName = '{FormName}'))", ConnectionStrings.UsersConnectionString))
+            {
+                DA.Fill(rolePermissionsDt);
+            }
+        }
+        public bool PermissionGranted(int RoleID)
+        {
+            DataRow[] Rows = rolePermissionsDt.Select("RoleID = " + RoleID);
+            return Rows.Count() > 0;
+        }
+
+        public RegisterManualInput()
+        {
+            clientsMarketingDt = new DataTable();
+            clientsZovDt = new DataTable();
+            usersDt = new DataTable();
+            rolePermissionsDt = new DataTable();
+
+            packagesOnExpDt = new DataTable();
+            packagesOnExpDt.Columns.Add(new DataColumn("PackageID", Type.GetType("System.Int64")));
+            packagesOnExpDt.Columns.Add(new DataColumn("TrayID", Type.GetType("System.Int64")));
+            packagesOnExpDt.Columns.Add(new DataColumn("ClientName", Type.GetType("System.String")));
+            packagesOnExpDt.Columns.Add(new DataColumn("OrderNumber", Type.GetType("System.String")));
+            packagesOnExpDt.Columns.Add(new DataColumn("MainOrderID", Type.GetType("System.Int64")));
+            packagesOnExpDt.Columns.Add(new DataColumn("MegaOrderID", Type.GetType("System.Int64")));
+            packagesOnExpDt.Columns.Add(new DataColumn("ProductType", Type.GetType("System.Int64")));
+            packagesOnExpDt.Columns.Add(new DataColumn("UserName", Type.GetType("System.String")));
+            packagesOnExpDt.Columns.Add(new DataColumn("AddPackDateTime", Type.GetType("System.DateTime")));
+            packagesOnExpDt.Columns.Add(new DataColumn("Id", Type.GetType("System.Int64")));
+            packagesOnExpDt.Columns.Add(new DataColumn("BarcodeType", Type.GetType("System.String")));
+
+            packagesOnStoreDt = packagesOnExpDt.Clone();
+
+            PackagesOnExpBs = new BindingSource
+            {
+                DataSource = packagesOnExpDt
+            };
+            PackagesOnStoreBs = new BindingSource
+            {
+                DataSource = packagesOnStoreDt
+            };
+
+            string selectCommand = @"SELECT ClientID, ClientName FROM Clients";
+            using (SqlDataAdapter da = new SqlDataAdapter(selectCommand, ConnectionStrings.MarketingReferenceConnectionString))
+            {
+                da.Fill(clientsMarketingDt);
+            }
+            selectCommand = @"SELECT ClientID, ClientName FROM Clients";
+            using (SqlDataAdapter da = new SqlDataAdapter(selectCommand, ConnectionStrings.ZOVReferenceConnectionString))
+            {
+                da.Fill(clientsZovDt);
+            }
+            selectCommand = @"SELECT UserID, ShortName FROM Users";
+            using (SqlDataAdapter da = new SqlDataAdapter(selectCommand, ConnectionStrings.UsersConnectionString))
+            {
+                da.Fill(usersDt);
+            }
+        }
+        
+        private string GetMarketingClientName(int id)
+        {
+            string name = "no_name";
+
+            DataRow[] rows = clientsMarketingDt.Select("ClientID=" + id);
+            if (rows.Any())
+                name = rows[0]["ClientName"].ToString();
+            return name;
+        }
+        
+        private string GetZovClientName(int id)
+        {
+            string name = "no_name";
+
+            DataRow[] rows = clientsZovDt.Select("ClientID=" + id);
+            if (rows.Any())
+                name = rows[0]["ClientName"].ToString();
+            return name;
+        }
+
+        private string GetUserName(int id)
+        {
+            string name = "no_name";
+
+            DataRow[] rows = usersDt.Select("UserID=" + id);
+            if (rows.Any())
+                name = rows[0]["ShortName"].ToString();
+            return name;
+        }
+
+        private Tuple<int, string, string> GetMarketingOrderInfo(int mainOrderId)
+        {
+            int orderNumber = 0;
+            int clientId = 0;
+            int megaOrderId = 0;
+
+            using (SqlDataAdapter da = new SqlDataAdapter(@"SELECT MainOrderID, M.MegaOrderID, M.OrderNumber, M.ClientID FROM MainOrders
+                INNER JOIN MegaOrders as M ON MainOrders.MegaOrderID = M.MegaOrderID
+                WHERE MainOrderID=" + mainOrderId, ConnectionStrings.MarketingOrdersConnectionString))
+            {
+                using (DataTable dt = new DataTable())
+                {
+                    if (da.Fill(dt) > 0)
+                    {
+                        orderNumber = Convert.ToInt32(dt.Rows[0]["OrderNumber"]);
+                        clientId = Convert.ToInt32(dt.Rows[0]["ClientID"]);
+                        megaOrderId = Convert.ToInt32(dt.Rows[0]["MegaOrderID"]);
+                    }
+                }
+            }
+
+            string clientName = GetMarketingClientName(clientId);
+
+            Tuple<int, string, string> tuple = new Tuple<int, string, string>(megaOrderId, orderNumber.ToString(), clientName);
+            return tuple;
+        }
+
+        private Tuple<int, string, string> GetZovOrderInfo(int mainOrderId)
+        {
+            string orderNumber = "";
+            int clientId = 0;
+            int megaOrderId = 0;
+
+            using (SqlDataAdapter da = new SqlDataAdapter(@"SELECT MainOrderID, MegaOrderID, DocNumber, ClientID FROM MainOrders
+                WHERE MainOrderID=" + mainOrderId, ConnectionStrings.ZOVOrdersConnectionString))
+            {
+                using (DataTable dt = new DataTable())
+                {
+                    if (da.Fill(dt) > 0)
+                    {
+                        orderNumber = dt.Rows[0]["DocNumber"].ToString();
+                        clientId = Convert.ToInt32(dt.Rows[0]["ClientID"]);
+                        megaOrderId = Convert.ToInt32(dt.Rows[0]["MegaOrderID"]);
+                    }
+                }
+            }
+
+            string clientName = GetZovClientName(clientId);
+
+            Tuple<int, string, string> tuple = new Tuple<int, string, string>(megaOrderId, orderNumber, clientName);
+            return tuple;
+        }
+
+        private void AddRowOnExp(ManualInput manualInput)
+        {
+            DataRow newRow = packagesOnExpDt.NewRow();
+            newRow["AddPackDateTime"] = manualInput.AddPackDateTime;
+            newRow["ClientName"] = manualInput.ClientName;
+            newRow["Id"] = manualInput.Id;
+            newRow["ProductType"] = manualInput.ProductType;
+            newRow["MainOrderID"] = manualInput.MainOrderId;
+            newRow["MegaOrderID"] = manualInput.MegaOrderID;
+            newRow["OrderNumber"] = manualInput.OrderNumber;
+            newRow["PackageID"] = manualInput.PackageId;
+            newRow["TrayID"] = manualInput.TrayId;
+            newRow["UserName"] = manualInput.UserName;
+            newRow["BarcodeType"] = manualInput.BarcodeType;
+            packagesOnExpDt.Rows.Add(newRow);
+        }
+        
+        private void AddRowOnStore(ManualInput manualInput)
+        {
+            DataRow newRow = packagesOnStoreDt.NewRow();
+            newRow["AddPackDateTime"] = manualInput.AddPackDateTime;
+            newRow["ClientName"] = manualInput.ClientName;
+            newRow["Id"] = manualInput.Id;
+            newRow["ProductType"] = manualInput.ProductType;
+            newRow["MainOrderID"] = manualInput.MainOrderId;
+            newRow["MegaOrderID"] = manualInput.MegaOrderID;
+            newRow["OrderNumber"] = manualInput.OrderNumber;
+            newRow["PackageID"] = manualInput.PackageId;
+            newRow["TrayID"] = manualInput.TrayId;
+            newRow["UserName"] = manualInput.UserName;
+            newRow["BarcodeType"] = manualInput.BarcodeType;
+            packagesOnStoreDt.Rows.Add(newRow);
+        }
+
+        public void SetEnable(int id, bool enable)
+        {
+            string selectCommand = @"SELECT * FROM RegisterManualInput WHERE Id=" + id;
+            using (SqlDataAdapter da = new SqlDataAdapter(selectCommand, ConnectionStrings.MarketingOrdersConnectionString))
+            {
+                using (new SqlCommandBuilder(da))
+                {
+                    using (DataTable dt = new DataTable())
+                    {
+                        if (da.Fill(dt) <= 0) return;
+
+                        dt.Rows[0]["Enable"] = enable;
+                        dt.Rows[0]["ConfirmUserID"] = Security.CurrentUserID;
+                        da.Update(dt);
+                    }
+                }
+            }
+        }
+        
+        public bool SetExp(int packageId)
+        {
+            DateTime currentDate = Security.GetCurrentDate();
+            string connectionString = ConnectionStrings.MarketingOrdersConnectionString;
+
+            using (SqlDataAdapter da = new SqlDataAdapter(@"SELECT * FROM Packages WHERE PackageID = " + packageId, connectionString))
+            {
+                using (new SqlCommandBuilder(da))
+                {
+                    using (DataTable dt = new DataTable())
+                    {
+                        da.Fill(dt);
+                        
+                        if (Convert.ToInt32(dt.Rows[0]["PackageStatusID"]) != 3)
+                        {
+                            dt.Rows[0]["PackageStatusID"] = 4;
+                        }
+                        if (dt.Rows[0]["PackingDateTime"] == DBNull.Value)
+                            dt.Rows[0]["PackingDateTime"] = currentDate;
+                        if (dt.Rows[0]["StorageDateTime"] == DBNull.Value)
+                            dt.Rows[0]["StorageDateTime"] = currentDate;
+                        if (dt.Rows[0]["ExpeditionDateTime"] == DBNull.Value)
+                            dt.Rows[0]["ExpeditionDateTime"] = currentDate;
+
+                        if (dt.Rows[0]["PackUserID"] == DBNull.Value)
+                            dt.Rows[0]["PackUserID"] = Security.CurrentUserID;
+                        if (dt.Rows[0]["StoreUserID"] == DBNull.Value)
+                            dt.Rows[0]["StoreUserID"] = Security.CurrentUserID;
+                        if (dt.Rows[0]["ExpUserID"] == DBNull.Value)
+                            dt.Rows[0]["ExpUserID"] = Security.CurrentUserID;
+
+                        da.Update(dt);
+                        return true;
+                    }
+                }
+            }
+        }
+
+        public void SetStore(int packageId)
+        {
+            DateTime currentDate = Security.GetCurrentDate();
+            string connectionString = ConnectionStrings.MarketingOrdersConnectionString;
+
+            using (SqlDataAdapter da = new SqlDataAdapter("SELECT * FROM Packages WHERE PackageID = " + packageId, connectionString))
+            {
+                using (new SqlCommandBuilder(da))
+                {
+                    using (DataTable dt = new DataTable())
+                    {
+                        if (da.Fill(dt) > 0)
+                        {
+                            //статус упаковки Склад
+                            //если упаковка не была отсканировна упаковщиками, то выставляем дату Упаковки PackingDateTime
+                            //выставляем дату Принятия на склад
+                            //убираем дату Дату экспедиции
+                            //убираем дату Отгрузки
+                            dt.Rows[0]["PackageStatusID"] = 2;
+                            if (dt.Rows[0]["PackingDateTime"] == DBNull.Value)
+                                dt.Rows[0]["PackingDateTime"] = currentDate;
+                            if (dt.Rows[0]["StorageDateTime"] == DBNull.Value)
+                                dt.Rows[0]["StorageDateTime"] = currentDate;
+
+                            if (dt.Rows[0]["PackUserID"] == DBNull.Value)
+                                dt.Rows[0]["PackUserID"] = Security.CurrentUserID;
+                            if (dt.Rows[0]["StoreUserID"] == DBNull.Value)
+                                dt.Rows[0]["StoreUserID"] = Security.CurrentUserID;
+
+                            da.Update(dt);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void ClearTable()
+        {
+            packagesOnExpDt.Clear();
+            packagesOnStoreDt.Clear();
+        }
+
+        public void RefreshData()
+        {
+            ClearTable();
+            FillPackagesOnExp();
+            FillPackagesOnStore();
+        }
+
+        private void FillPackagesOnStore()
+        {
+            DataTable dt = new DataTable();
+            const string selectCommand = @"SELECT * FROM RegisterManualInput WHERE Store=1 AND Enable=1";
+
+            using (SqlDataAdapter da = new SqlDataAdapter(selectCommand, ConnectionStrings.MarketingOrdersConnectionString))
+            {
+                da.Fill(dt);
+            }
+
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                int id = Convert.ToInt32(dt.Rows[i]["Id"]);
+                int packageId = Convert.ToInt32(dt.Rows[i]["PackageID"]);
+                int trayId = Convert.ToInt32(dt.Rows[i]["TrayID"]);
+                int mainOrderId = Convert.ToInt32(dt.Rows[i]["MainOrderID"]);
+                int productType = Convert.ToInt32(dt.Rows[i]["ProductType"]);
+                int userId = Convert.ToInt32(dt.Rows[i]["UserID"]);
+                string barcodeType = dt.Rows[i]["BarcodeType"].ToString();
+                DateTime addPackDateTime = Convert.ToDateTime(dt.Rows[i]["AddPackDateTime"]);
+
+                switch (barcodeType)
+                {
+                    case "001":
+                    case "002":
+                    case "005":
+                        Tuple<int, string, string> tuple1 = GetZovOrderInfo(mainOrderId);
+                        ManualInput manualInput1 = new ManualInput
+                        {
+                            Id = id,
+                            PackageId = packageId,
+                            TrayId = trayId,
+                            MainOrderId = mainOrderId,
+                            ProductType = productType,
+                            BarcodeType = barcodeType,
+                            UserName = GetUserName(userId),
+                            MegaOrderID = tuple1.Item1,
+                            OrderNumber = tuple1.Item2,
+                            ClientName = tuple1.Item3,
+                            AddPackDateTime = addPackDateTime
+                        };
+                        AddRowOnStore(manualInput1);
+                        break;
+                    case "003":
+                    case "004":
+                    case "006":
+                        Tuple<int, string, string> tuple2 = GetMarketingOrderInfo(mainOrderId);
+                        ManualInput manualInput2 = new ManualInput
+                        {
+                            Id = id,
+                            PackageId = packageId,
+                            TrayId = trayId,
+                            MainOrderId = mainOrderId,
+                            ProductType = productType,
+                            BarcodeType = barcodeType,
+                            UserName = GetUserName(userId),
+                            MegaOrderID = tuple2.Item1,
+                            OrderNumber = tuple2.Item2,
+                            ClientName = tuple2.Item3,
+                            AddPackDateTime = addPackDateTime
+                        };
+                        AddRowOnStore(manualInput2);
+                        break;
+                }
+            }
+            dt.Dispose();
+        }
+        
+        private void FillPackagesOnExp()
+        {
+            DataTable dt = new DataTable();
+            const string selectCommand = @"SELECT * FROM RegisterManualInput WHERE Exp=1 AND Enable=1";
+
+            using (SqlDataAdapter da = new SqlDataAdapter(selectCommand, ConnectionStrings.MarketingOrdersConnectionString))
+            {
+                da.Fill(dt);
+            }
+
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                int id = Convert.ToInt32(dt.Rows[i]["Id"]);
+                int packageId = Convert.ToInt32(dt.Rows[i]["PackageID"]);
+                int trayId = Convert.ToInt32(dt.Rows[i]["TrayID"]);
+                int mainOrderId = Convert.ToInt32(dt.Rows[i]["MainOrderID"]);
+                int productType = Convert.ToInt32(dt.Rows[i]["ProductType"]);
+                int userId = Convert.ToInt32(dt.Rows[i]["UserID"]);
+                string barcodeType = dt.Rows[i]["BarcodeType"].ToString();
+                DateTime addPackDateTime = Convert.ToDateTime(dt.Rows[i]["AddPackDateTime"]);
+
+                switch (barcodeType)
+                {
+                    case "001":
+                    case "002":
+                    case "005":
+                        Tuple<int, string, string> tuple1 = GetZovOrderInfo(mainOrderId);
+                        ManualInput manualInput1 = new ManualInput
+                        {
+                            Id = id,
+                            PackageId = packageId,
+                            TrayId = trayId,
+                            MainOrderId = mainOrderId,
+                            ProductType = productType,
+                            BarcodeType = barcodeType,
+                            UserName = GetUserName(userId),
+                            MegaOrderID = tuple1.Item1,
+                            OrderNumber = tuple1.Item2,
+                            ClientName = tuple1.Item3,
+                            AddPackDateTime = addPackDateTime
+                        };
+                        AddRowOnExp(manualInput1);
+                        break;
+                    case "003":
+                    case "004":
+                    case "006":
+                        Tuple<int, string, string> tuple2 = GetMarketingOrderInfo(mainOrderId);
+                        ManualInput manualInput2 = new ManualInput
+                        {
+                            Id = id,
+                            PackageId = packageId,
+                            TrayId = trayId,
+                            MainOrderId = mainOrderId,
+                            ProductType = productType,
+                            BarcodeType = barcodeType,
+                            UserName = GetUserName(userId),
+                            MegaOrderID = tuple2.Item1,
+                            OrderNumber = tuple2.Item2,
+                            ClientName = tuple2.Item3,
+                            AddPackDateTime = addPackDateTime
+                        };
+                        AddRowOnExp(manualInput2);
+                        break;
+                }
+            }
+            dt.Dispose();
+        }
+
+    }
 
     public enum PalleteTypeAction
     {

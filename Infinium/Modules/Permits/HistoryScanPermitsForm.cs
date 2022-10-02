@@ -606,7 +606,7 @@ namespace Infinium
             dgvDecorOrders.Columns["Count"].Width = 85;
             dgvDecorOrders.Columns["Length"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
             dgvDecorOrders.Columns["Length"].Width = 85;
-            dgvDecorOrders.Columns["Notes"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            dgvDecorOrders.Columns["Notes"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dgvDecorOrders.Columns["Notes"].MinimumWidth = 145;
 
             dgvDecorOrders.AutoGenerateColumns = false;

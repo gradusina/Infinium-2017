@@ -4723,7 +4723,7 @@ namespace Infinium
                     if (rows[i]["Rate"].ToString().Length > 0)
                         Rate = Convert.ToDecimal(rows[i]["Rate"]).ToString("G29");
                     ProfilPosition += rows[i]["Position"].ToString() +
-                        " (" + Rate + " ЗОВ-Профиль)";
+                        " (" + Rate + " ОМЦ-ПРОФИЛЬ)";
                     if (i != rows.Count() - 1)
                         ProfilPosition = ProfilPosition.Insert(ProfilPosition.Length, "\n");
                 }
@@ -10307,8 +10307,8 @@ namespace Infinium
     {
         string date = "";
         string totalProdHours = "";
-        string firm = "СООО \"ЗОВ-ПРОФИЛЬ\"";
-        string bossPosition = "Директор СООО \"ЗОВ-ПРОФИЛЬ\"";
+        string firm = "ООО \"ОМЦ-ПРОФИЛЬ\"";
+        string bossPosition = "Директор ООО \"ОМЦ-ПРОФИЛЬ\"";
         string bossName = "Ф.А. Авдей";
 
         string specialistPosition = "Составил: спец-т по кадрам";

@@ -247,7 +247,7 @@
             this.lbFactory.Name = "lbFactory";
             this.lbFactory.Size = new System.Drawing.Size(150, 28);
             this.lbFactory.TabIndex = 25;
-            this.lbFactory.Text = "ЗОВ-Профиль";
+            this.lbFactory.Text = "ОМЦ-ПРОФИЛЬ";
             // 
             // label16
             // 

@@ -852,7 +852,7 @@ namespace Infinium
                 if (Convert.ToBoolean(checkCell.Value) && FactoryID != 2 && ProfilPackAllocStatusID < 2)
                 {
                     Infinium.LightMessageBox.Show(ref TopForm, false,
-                           "Заказ не полностью распределен на фирме ЗОВ-Профиль",
+                           "Заказ не полностью распределен на фирме ОМЦ-ПРОФИЛЬ",
                            "Предупреждение");
                 }
                 if (Convert.ToBoolean(checkCell.Value) && FactoryID != 1 && TPSPackAllocStatusID < 2)
@@ -882,7 +882,7 @@ namespace Infinium
                 if (Convert.ToBoolean(checkCell.Value) && FactoryID != 2 && ProfilPackAllocStatusID < 2)
                 {
                     Infinium.LightMessageBox.Show(ref TopForm, false,
-                           "Подзаказ не полностью распределен на фирме ЗОВ-Профиль",
+                           "Подзаказ не полностью распределен на фирме ОМЦ-ПРОФИЛЬ",
                            "Предупреждение");
                 }
                 if (Convert.ToBoolean(checkCell.Value) && FactoryID != 1 && TPSPackAllocStatusID < 2)
@@ -1103,7 +1103,7 @@ namespace Infinium
                 if (Convert.ToBoolean(checkCell.Value) && FactoryID != 2 && ProfilPackAllocStatusID < 2)
                 {
                     Infinium.LightMessageBox.Show(ref TopForm, false,
-                           "Заказ не полностью распределен на фирме ЗОВ-Профиль",
+                           "Заказ не полностью распределен на фирме ОМЦ-ПРОФИЛЬ",
                            "Предупреждение");
                 }
                 if (Convert.ToBoolean(checkCell.Value) && FactoryID != 1 && TPSPackAllocStatusID < 2)

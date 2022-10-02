@@ -13,6 +13,8 @@ using System.Windows.Forms;
 using Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDbf;
 using Infinium.Modules.Marketing.NewOrders.InvoiceReportToDbf;
 using Infinium.Modules.Marketing.NewOrders.NotesInvoiceReportToDbf;
+using ComponentFactory.Krypton.Toolkit;
+using FrontsOrders = Infinium.Modules.Marketing.Orders.FrontsOrders;
 
 namespace Infinium
 {
@@ -233,9 +235,10 @@ namespace Infinium
             CreateOrdersFromExcel = new CreateOrdersFromExcel();
 
             FrontsCatalogOrder = new FrontsCatalogOrder();
-            FrontsCatalogOrder.Initialize(true);
+            FrontsCatalogOrder.Initialize(false);
+
             DecorCatalogOrder = new DecorCatalogOrder();
-            DecorCatalogOrder.Initialize(true);
+            DecorCatalogOrder.Initialize(false);
 
             OrdersManager = new OrdersManager(ref MainOrdersDataGrid, ref MainOrdersFrontsOrdersDataGrid, ref MegaOrdersDataGrid,
                 ref MainOrdersDecorTabControl, ref MainOrdersTabControl, ref DecorCatalogOrder);
@@ -3295,7 +3298,18 @@ namespace Infinium
         {
             if (e.Button == System.Windows.Forms.MouseButtons.Right)
             {
-                ComponentFactory.Krypton.Toolkit.KryptonContextMenu kryptonContextMenu = new ComponentFactory.Krypton.Toolkit.KryptonContextMenu();
+                int FrontsOrdersID = Convert.ToInt32(MainOrdersFrontsOrdersDataGrid.SelectedRows[0].Cells["FrontsOrdersID"].Value);
+                KryptonContextMenu kryptonContextMenu = new ComponentFactory.Krypton.Toolkit.KryptonContextMenu(); 
+                KryptonContextMenuItems kryptonContextMenuItems = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItems();
+                KryptonContextMenuItem setOnStorage = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem()
+                {
+                    Text = "На склад"
+                };
+                setOnStorage.Click += (o, args) =>
+                {
+                    OrdersManager.MainOrdersFrontsOrders.SetOnStorage(FrontsOrdersID);
+                };
+
                 int MainOrderID = Convert.ToInt32(MainOrdersDataGrid.SelectedRows[0].Cells["MainOrderID"].Value);
                 int FrontID = Convert.ToInt32(MainOrdersFrontsOrdersDataGrid.SelectedRows[0].Cells["FrontID"].Value);
 
@@ -3307,7 +3321,6 @@ namespace Infinium
                 DataTable DT = TestTechCatalogManager.GetOperationsGroups(FrontID);
                 if (DT.Rows.Count > 0)
                 {
-                    ComponentFactory.Krypton.Toolkit.KryptonContextMenuItems kryptonContextMenuItems = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItems();
                     for (int i = 0; i < DT.Rows.Count; i++)
                     {
                         ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem kryptonContextMenuItem = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem()
@@ -3318,9 +3331,10 @@ namespace Infinium
                         kryptonContextMenuItem.Click += kryptonContextMenuItem_Click;
                         kryptonContextMenuItems.Items.Add(kryptonContextMenuItem);
                     }
-                    kryptonContextMenu.Items.Add(kryptonContextMenuItems);
-                    kryptonContextMenu.Show(new Point(Cursor.Position.X - 212, Cursor.Position.Y - 10));
                 }
+                kryptonContextMenuItems.Items.Add(setOnStorage);
+                kryptonContextMenu.Items.Add(kryptonContextMenuItems);
+                kryptonContextMenu.Show(new Point(Cursor.Position.X - 212, Cursor.Position.Y - 10));
             }
         }
 
@@ -4587,6 +4601,18 @@ namespace Infinium
                 CheckOrdersStatus.GG(
                     Convert.ToInt32(Convert.ToInt32(MegaOrdersDataGrid.SelectedRows[i].Cells["MegaOrderID"].Value)));
             }
+        }
+
+        private void MainOrdersFrontsOrdersDataGrid_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+            //var dataGridViewRow = ((PercentageDataGrid)sender).CurrentRow;
+            //if (dataGridViewRow != null)
+            //    dataGridViewRow.Cells[e.ColumnIndex].Value = "Наименование удалено";
+        }
+
+        private void OnAgreementCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

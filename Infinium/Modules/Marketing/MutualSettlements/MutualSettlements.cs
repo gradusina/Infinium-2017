@@ -3737,7 +3737,7 @@ INNER JOIN ClientsManagers ON Clients.ManagerID=ClientsManagers.ManagerID WHERE 
             si.Subject = "NPOI SDK Example";
             hssfworkbook.SummaryInformation = si;
 
-            sheet1 = hssfworkbook.CreateSheet("ЗОВ-Профиль");
+            sheet1 = hssfworkbook.CreateSheet("ОМЦ-ПРОФИЛЬ");
             sheet1.PrintSetup.PaperSize = (short)PaperSizeType.A4;
 
             sheet1.SetMargin(HSSFSheet.LeftMargin, (double).12);
@@ -3896,7 +3896,7 @@ INNER JOIN ClientsManagers ON Clients.ManagerID=ClientsManagers.ManagerID WHERE 
             DisplayIndex = 0;
             HSSFCell Cell1;
             Cell1 = sheet1.CreateRow(pos++).CreateCell(0);
-            Cell1.SetCellValue("Отчет по фирме ЗОВ-Профиль");
+            Cell1.SetCellValue("Отчет по фирме ОМЦ-ПРОФИЛЬ");
             Cell1.CellStyle = HeaderCS;
 
             Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
@@ -4223,7 +4223,7 @@ INNER JOIN ClientsManagers ON Clients.ManagerID=ClientsManagers.ManagerID WHERE 
             si.Subject = "NPOI SDK Example";
             hssfworkbook.SummaryInformation = si;
 
-            sheet1 = hssfworkbook.CreateSheet("ЗОВ-Профиль");
+            sheet1 = hssfworkbook.CreateSheet("ОМЦ-ПРОФИЛЬ");
             sheet1.PrintSetup.PaperSize = (short)PaperSizeType.A4;
 
             sheet1.SetMargin(HSSFSheet.LeftMargin, (double).12);
@@ -4382,7 +4382,7 @@ INNER JOIN ClientsManagers ON Clients.ManagerID=ClientsManagers.ManagerID WHERE 
             DisplayIndex = 0;
             HSSFCell Cell1;
             Cell1 = sheet1.CreateRow(pos++).CreateCell(0);
-            Cell1.SetCellValue("Отчет по фирме ЗОВ-Профиль");
+            Cell1.SetCellValue("Отчет по фирме ОМЦ-ПРОФИЛЬ");
             Cell1.CellStyle = HeaderCS;
 
             Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
@@ -4709,7 +4709,7 @@ INNER JOIN ClientsManagers ON Clients.ManagerID=ClientsManagers.ManagerID WHERE 
             si.Subject = "NPOI SDK Example";
             hssfworkbook.SummaryInformation = si;
 
-            sheet1 = hssfworkbook.CreateSheet("ЗОВ-Профиль");
+            sheet1 = hssfworkbook.CreateSheet("ОМЦ-ПРОФИЛЬ");
             sheet1.PrintSetup.PaperSize = (short)PaperSizeType.A4;
 
             sheet1.SetMargin(HSSFSheet.LeftMargin, (double).12);
@@ -4870,7 +4870,7 @@ INNER JOIN ClientsManagers ON Clients.ManagerID=ClientsManagers.ManagerID WHERE 
             DisplayIndex = 0;
             HSSFCell Cell1;
             Cell1 = sheet1.CreateRow(pos++).CreateCell(0);
-            Cell1.SetCellValue("Отчет по фирме ЗОВ-Профиль");
+            Cell1.SetCellValue("Отчет по фирме ОМЦ-ПРОФИЛЬ");
             Cell1.CellStyle = HeaderCS;
 
             Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
@@ -5228,7 +5228,7 @@ INNER JOIN ClientsManagers ON Clients.ManagerID=ClientsManagers.ManagerID WHERE 
             si.Subject = "NPOI SDK Example";
             hssfworkbook.SummaryInformation = si;
 
-            sheet1 = hssfworkbook.CreateSheet("ЗОВ-Профиль");
+            sheet1 = hssfworkbook.CreateSheet("ОМЦ-ПРОФИЛЬ");
             sheet1.PrintSetup.PaperSize = (short)PaperSizeType.A4;
 
             sheet1.SetMargin(HSSFSheet.LeftMargin, (double).12);
@@ -5347,7 +5347,7 @@ INNER JOIN ClientsManagers ON Clients.ManagerID=ClientsManagers.ManagerID WHERE 
             DisplayIndex = 0;
             HSSFCell Cell1;
             Cell1 = sheet1.CreateRow(pos++).CreateCell(0);
-            Cell1.SetCellValue("Отчет по фирме ЗОВ-Профиль");
+            Cell1.SetCellValue("Отчет по фирме ОМЦ-ПРОФИЛЬ");
             Cell1.CellStyle = HeaderCS;
 
             Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);

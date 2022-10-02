@@ -1180,6 +1180,12 @@
     <Compile Include="Modules\Packages\LabelCheck\LabelCheckProfilForm.designer.cs">
       <DependentUpon>LabelCheckProfilForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Modules\Packages\LabelCheck\RegisterManualInputForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modules\Packages\LabelCheck\RegisterManualInputForm.designer.cs">
+      <DependentUpon>RegisterManualInputForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Modules\Packages\LabelCheck\PalleteLabelCheckForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -1341,6 +1347,19 @@
     </Compile>
     <Compile Include="Modules\ProfileAssignments\InputPackageInfoMenu.designer.cs">
       <DependentUpon>InputPackageInfoMenu.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\ProfileAssignments\Planning\MoldingsSectionPlanning.cs" />
+    <Compile Include="Modules\ProfileAssignments\Planning\MoldingsSectionPlanningForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modules\ProfileAssignments\Planning\MoldingsSectionPlanningForm.designer.cs">
+      <DependentUpon>MoldingsSectionPlanningForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\ProfileAssignments\Planning\UserControl1.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Modules\ProfileAssignments\Planning\UserControl1.Designer.cs">
+      <DependentUpon>UserControl1.cs</DependentUpon>
     </Compile>
     <Compile Include="Modules\ProfileAssignments\ProfileAssignments.cs" />
     <Compile Include="Modules\ProfileAssignments\ProfileAssignmentsForm.cs">
@@ -2502,6 +2521,9 @@
     <EmbeddedResource Include="Modules\Packages\LabelCheck\LabelCheckProfilForm.resx">
       <DependentUpon>LabelCheckProfilForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Modules\Packages\LabelCheck\RegisterManualInputForm.resx">
+      <DependentUpon>RegisterManualInputForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Modules\Packages\LabelCheck\PalleteLabelCheckForm.resx">
       <DependentUpon>PalleteLabelCheckForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -2579,6 +2601,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Modules\ProfileAssignments\InputPackageInfoMenu.resx">
       <DependentUpon>InputPackageInfoMenu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modules\ProfileAssignments\Planning\MoldingsSectionPlanningForm.resx">
+      <DependentUpon>MoldingsSectionPlanningForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modules\ProfileAssignments\Planning\UserControl1.resx">
+      <DependentUpon>UserControl1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Modules\ProfileAssignments\ProfileAssignmentsForm.resx">
       <DependentUpon>ProfileAssignmentsForm.cs</DependentUpon>

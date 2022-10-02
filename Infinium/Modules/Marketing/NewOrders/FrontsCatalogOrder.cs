@@ -68,9 +68,8 @@ namespace Infinium.Modules.Marketing.NewOrders
 
         public FrontsCatalogOrder()
         {
-            Initialize(true);
-        }
 
+        }
 
         public FrontsCatalogOrder(
             ref ComponentFactory.Krypton.Toolkit.KryptonComboBox tHeightEdit,

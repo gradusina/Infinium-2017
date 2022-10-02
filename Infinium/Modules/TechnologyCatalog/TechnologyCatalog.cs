@@ -4940,6 +4940,26 @@ WHERE StoreItemID IN (SELECT TechStoreID FROM infiniu2_catalog.dbo.TechStore WHE
             return string.Empty;
         }
 
+        public string GetSubSectorName(int id)
+        {
+            var name = "no_name";
+
+            var rows = TechSectorNamesDT.Select("MachineID=" + id);
+            if (rows.Any())
+                name = rows[0]["SubSectorName"].ToString();
+            return name;
+        }
+
+        public string GetSectorName(int id)
+        {
+            var name = "no_name";
+
+            var rows = TechSectorNamesDT.Select("MachineID=" + id);
+            if (rows.Any())
+                name = rows[0]["SectorName"].ToString();
+            return name;
+        }
+
         public void SetMachinePhoto(int MachineID, Image MachinePhoto)
         {
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT MachineID, MachinePhoto FROM Machines WHERE MachineID = " + MachineID, ConnectionStrings.CatalogConnectionString))
@@ -6816,7 +6836,7 @@ WHERE StoreItemID IN (SELECT TechStoreID FROM infiniu2_catalog.dbo.TechStore WHE
 
             UpdateMachines();
         }
-
+        
         public void EditMachineValueParametrs(int MachineID, string ValueParametrs)
         {
             DataRow EditRow = MachinesDT.Select("MachineID = " + MachineID)[0];

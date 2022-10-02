@@ -1035,7 +1035,7 @@ namespace Infinium.Modules.ExpeditionMarketing.StandardReport
                 pos += 2;
 
                 Cell1 = sheet1.CreateRow(pos++).CreateCell(0);
-                Cell1.SetCellValue("ЗОВ-Профиль:");
+                Cell1.SetCellValue("ОМЦ-ПРОФИЛЬ:");
                 Cell1.CellStyle = SummaryWithoutBorderBelCS;
 
                 Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
@@ -1712,7 +1712,7 @@ namespace Infinium.Modules.ExpeditionMarketing.StandardReport
                 pos += 2;
 
                 Cell1 = sheet1.CreateRow(pos++).CreateCell(0);
-                Cell1.SetCellValue("ЗОВ-Профиль:");
+                Cell1.SetCellValue("ОМЦ-ПРОФИЛЬ:");
                 Cell1.CellStyle = SummaryWithoutBorderBelCS;
 
                 Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);

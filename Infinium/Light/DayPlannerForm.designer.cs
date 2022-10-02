@@ -665,7 +665,7 @@
             this.cbtnProfilFunctions1.Size = new System.Drawing.Size(199, 34);
             this.cbtnProfilFunctions1.StateTracking.Back.Color1 = System.Drawing.Color.LimeGreen;
             this.cbtnProfilFunctions1.TabIndex = 439;
-            this.cbtnProfilFunctions1.Values.Text = "ЗОВ-Профиль";
+            this.cbtnProfilFunctions1.Values.Text = "ОМЦ-ПРОФИЛЬ";
             // 
             // PanelSelectPalette
             // 
@@ -2185,7 +2185,7 @@
             this.cbtnProfilFunctions.Size = new System.Drawing.Size(199, 34);
             this.cbtnProfilFunctions.StateTracking.Back.Color1 = System.Drawing.Color.LimeGreen;
             this.cbtnProfilFunctions.TabIndex = 439;
-            this.cbtnProfilFunctions.Values.Text = "ЗОВ-Профиль";
+            this.cbtnProfilFunctions.Values.Text = "ОМЦ-ПРОФИЛЬ";
             // 
             // cbtnTPSFunctions
             // 

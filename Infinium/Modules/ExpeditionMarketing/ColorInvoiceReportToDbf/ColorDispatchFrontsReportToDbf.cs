@@ -1419,65 +1419,88 @@ PackageDetailID, PackageDetails.Count AS Count, (FrontsOrders.Square * PackageDe
 
                 if (CountPP > 0)
                 {
-                    DataRow[] rows = DecorInvNumbersDT.Select("FrontsOrdersID = " + Convert.ToInt32(OrdersDataTable.Select("InsetTypeID IN (685,686,687,688,29470,29471)")[0]["FrontsOrdersID"]));
-                    int FactoryID = 0;
-                    if (rows.Count() > 0)
-                        FactoryID = Convert.ToInt32(rows[0]["FactoryID"]);
-                    if (FactoryID == 0)
-                        FactoryID = FactoryID1;
-                    if (FactoryID != FactoryID1)
+                    DataTable ddt = OrdersDataTable.Select("InsetTypeID IN (685,686,687,688,29470,29471)").CopyToDataTable();
+                    for (int x = 0; x < ddt.Rows.Count; x++)
                     {
-                        //CostPP = Math.Ceiling(CostPP / 0.01m) * 0.01m;
-                        DataRow NewRow = ReportDataTable1.NewRow();
-                        NewRow["OriginalPrice"] = CostPP / CountPP;
-                        NewRow["UNN"] = UNN;
-                        NewRow["PaymentRate"] = PaymentRate;
-                        NewRow["AccountingName"] = OrdersDataTable.Rows[0]["AccountingName"].ToString();
-                        NewRow["InvNumber"] = OrdersDataTable.Rows[0]["InvNumber"].ToString();
-                        NewRow["Notes"] = OrdersDataTable.Rows[0]["Notes"].ToString();
-                        NewRow["CurrencyCode"] = ProfilCurrencyCode;
-                        if (fID == 2)
-                            NewRow["TPSCurCode"] = TPSCurrencyCode;
-                        NewRow["Count"] = Decimal.Round(CountPP, 3, MidpointRounding.AwayFromZero);
-                        NewRow["Cost"] = Decimal.Round(Math.Ceiling(CostPP / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
-                        NewRow["PriceWithTransport"] = Decimal.Round(CostPP / CountPP, 2, MidpointRounding.AwayFromZero);
-                        NewRow["CostWithTransport"] = Decimal.Round(Math.Ceiling(CostPP / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
-                        NewRow["Weight"] = Decimal.Round(Convert.ToDecimal(NewRow["Count"]) * Convert.ToDecimal(3.5), 3, MidpointRounding.AwayFromZero);
+                        decimal d = GetInsetSquare(Convert.ToInt32(ddt.Rows[x]["FrontID"]), Convert.ToInt32(ddt.Rows[x]["Height"]),
+                            Convert.ToInt32(ddt.Rows[x]["Width"])) * Convert.ToDecimal(ddt.Rows[x]["Count"]);
+                        CountPP = d;
+                        CostPP = Math.Ceiling(Convert.ToDecimal(ddt.Rows[x]["InsetPrice"]) * d / 0.01m) * 0.01m;
+
+                        int FrontsOrdersID = Convert.ToInt32(ddt.Rows[x]["FrontsOrdersID"]);
+                        DataRow[] rows = DecorInvNumbersDT.Select("FrontsOrdersID = " + FrontsOrdersID);
+
+                        int FactoryID = 0;
                         if (rows.Count() > 0)
+                            FactoryID = Convert.ToInt32(rows[0]["FactoryID"]);
+                        if (FactoryID == 0)
+                            FactoryID = FactoryID1;
+                        if (FactoryID != FactoryID1)
                         {
-                            NewRow["AccountingName"] = rows[0]["DecorAccountingName"].ToString();
-                            NewRow["InvNumber"] = rows[0]["DecorInvNumber"].ToString();
-                            NewRow["Cvet"] = rows[0]["Cvet"].ToString();
-                            NewRow["Patina"] = rows[0]["Patina"].ToString();
+                            //CostPP = Math.Ceiling(CostPP / 0.01m) * 0.01m;
+                            DataRow NewRow = ReportDataTable1.NewRow();
+                            NewRow["OriginalPrice"] = CostPP / CountPP;
+                            NewRow["UNN"] = UNN;
+                            NewRow["PaymentRate"] = PaymentRate;
+                            NewRow["AccountingName"] = OrdersDataTable.Rows[0]["AccountingName"].ToString();
+                            NewRow["InvNumber"] = OrdersDataTable.Rows[0]["InvNumber"].ToString();
+                            NewRow["Notes"] = OrdersDataTable.Rows[0]["Notes"].ToString();
+                            NewRow["CurrencyCode"] = ProfilCurrencyCode;
+                            if (fID == 2)
+                                NewRow["TPSCurCode"] = TPSCurrencyCode;
+                            NewRow["Count"] = Decimal.Round(CountPP, 3, MidpointRounding.AwayFromZero);
+                            NewRow["Cost"] = Decimal.Round(Math.Ceiling(CostPP / 0.01m) * 0.01m, 2,
+                                MidpointRounding.AwayFromZero);
+                            NewRow["PriceWithTransport"] =
+                                Decimal.Round(CostPP / CountPP, 2, MidpointRounding.AwayFromZero);
+                            NewRow["CostWithTransport"] = Decimal.Round(Math.Ceiling(CostPP / 0.01m) * 0.01m, 2,
+                                MidpointRounding.AwayFromZero);
+                            NewRow["Weight"] =
+                                Decimal.Round(Convert.ToDecimal(NewRow["Count"]) * Convert.ToDecimal(3.5), 3,
+                                    MidpointRounding.AwayFromZero);
+                            if (rows.Count() > 0)
+                            {
+                                NewRow["AccountingName"] = rows[0]["DecorAccountingName"].ToString();
+                                NewRow["InvNumber"] = rows[0]["DecorInvNumber"].ToString();
+                                NewRow["Cvet"] = rows[0]["Cvet"].ToString();
+                                NewRow["Patina"] = rows[0]["Patina"].ToString();
+                            }
+
+                            ReportDataTable1.Rows.Add(NewRow);
                         }
-                        ReportDataTable1.Rows.Add(NewRow);
-                    }
-                    else
-                    {
-                        //CostPP = Math.Ceiling(CostPP / 0.01m) * 0.01m;
-                        DataRow NewRow = ReportDataTable.NewRow();
-                        NewRow["OriginalPrice"] = CostPP / CountPP;
-                        NewRow["UNN"] = UNN;
-                        NewRow["PaymentRate"] = PaymentRate;
-                        NewRow["AccountingName"] = OrdersDataTable.Rows[0]["AccountingName"].ToString();
-                        NewRow["InvNumber"] = OrdersDataTable.Rows[0]["InvNumber"].ToString();
-                        NewRow["Notes"] = OrdersDataTable.Rows[0]["Notes"].ToString();
-                        NewRow["CurrencyCode"] = ProfilCurrencyCode;
-                        if (fID == 2)
-                            NewRow["TPSCurCode"] = TPSCurrencyCode;
-                        NewRow["Count"] = Decimal.Round(CountPP, 3, MidpointRounding.AwayFromZero);
-                        NewRow["Cost"] = Decimal.Round(Math.Ceiling(CostPP / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
-                        NewRow["PriceWithTransport"] = Decimal.Round(CostPP / CountPP, 2, MidpointRounding.AwayFromZero);
-                        NewRow["CostWithTransport"] = Decimal.Round(Math.Ceiling(CostPP / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
-                        NewRow["Weight"] = Decimal.Round(Convert.ToDecimal(NewRow["Count"]) * Convert.ToDecimal(3.5), 3, MidpointRounding.AwayFromZero);
-                        if (rows.Count() > 0)
+                        else
                         {
-                            NewRow["AccountingName"] = rows[0]["DecorAccountingName"].ToString();
-                            NewRow["InvNumber"] = rows[0]["DecorInvNumber"].ToString();
-                            NewRow["Cvet"] = rows[0]["Cvet"].ToString();
-                            NewRow["Patina"] = rows[0]["Patina"].ToString();
+                            //CostPP = Math.Ceiling(CostPP / 0.01m) * 0.01m;
+                            DataRow NewRow = ReportDataTable.NewRow();
+                            NewRow["OriginalPrice"] = CostPP / CountPP;
+                            NewRow["UNN"] = UNN;
+                            NewRow["PaymentRate"] = PaymentRate;
+                            NewRow["AccountingName"] = OrdersDataTable.Rows[0]["AccountingName"].ToString();
+                            NewRow["InvNumber"] = OrdersDataTable.Rows[0]["InvNumber"].ToString();
+                            NewRow["Notes"] = OrdersDataTable.Rows[0]["Notes"].ToString();
+                            NewRow["CurrencyCode"] = ProfilCurrencyCode;
+                            if (fID == 2)
+                                NewRow["TPSCurCode"] = TPSCurrencyCode;
+                            NewRow["Count"] = Decimal.Round(CountPP, 3, MidpointRounding.AwayFromZero);
+                            NewRow["Cost"] = Decimal.Round(Math.Ceiling(CostPP / 0.01m) * 0.01m, 2,
+                                MidpointRounding.AwayFromZero);
+                            NewRow["PriceWithTransport"] =
+                                Decimal.Round(CostPP / CountPP, 2, MidpointRounding.AwayFromZero);
+                            NewRow["CostWithTransport"] = Decimal.Round(Math.Ceiling(CostPP / 0.01m) * 0.01m, 2,
+                                MidpointRounding.AwayFromZero);
+                            NewRow["Weight"] =
+                                Decimal.Round(Convert.ToDecimal(NewRow["Count"]) * Convert.ToDecimal(3.5), 3,
+                                    MidpointRounding.AwayFromZero);
+                            if (rows.Count() > 0)
+                            {
+                                NewRow["AccountingName"] = rows[0]["DecorAccountingName"].ToString();
+                                NewRow["InvNumber"] = rows[0]["DecorInvNumber"].ToString();
+                                NewRow["Cvet"] = rows[0]["Cvet"].ToString();
+                                NewRow["Patina"] = rows[0]["Patina"].ToString();
+                            }
+
+                            ReportDataTable.Rows.Add(NewRow);
                         }
-                        ReportDataTable.Rows.Add(NewRow);
                     }
                 }
             }
@@ -1653,7 +1676,7 @@ PackageDetailID, PackageDetails.Count AS Count, (FrontsOrders.Square * PackageDe
             if (FrontID == 30504 || FrontID == 30505 || FrontID == 30506 ||
                 FrontID == 30364 || FrontID == 30366 || FrontID == 30367 ||
                 FrontID == 30501 || FrontID == 30502 || FrontID == 30503 ||
-                FrontID == 16269 || FrontID == 28945 || FrontID == 41327 || FrontID == 41328 || FrontID == 27914 || FrontID == 29597 || FrontID == 3727 || FrontID == 3728 || FrontID == 3729 ||
+                FrontID == 16269 || FrontID == 28945 || FrontID == 41327 || FrontID == 41328 || FrontID == 41331 || FrontID == 27914 || FrontID == 29597 || FrontID == 3727 || FrontID == 3728 || FrontID == 3729 ||
                 FrontID == 3730 || FrontID == 3731 || FrontID == 3732 || FrontID == 3733 || FrontID == 3734 ||
                 FrontID == 3735 || FrontID == 3736 || FrontID == 3737 || FrontID == 3739 || FrontID == 3740 ||
                 FrontID == 3741 || FrontID == 3742 || FrontID == 3743 || FrontID == 3744 || FrontID == 3745 ||

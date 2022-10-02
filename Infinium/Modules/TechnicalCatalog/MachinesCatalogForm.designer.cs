@@ -1,4 +1,6 @@
-﻿namespace Infinium
+﻿using System.Windows.Forms;
+
+namespace Infinium
 {
     partial class MachinesCatalogForm
     {
@@ -40,6 +42,9 @@
             this.StandardButtonsPalette = new ComponentFactory.Krypton.Toolkit.KryptonPalette(this.components);
             this.MainMenuPalette = new ComponentFactory.Krypton.Toolkit.KryptonPalette(this.components);
             this.pnlMainPage = new System.Windows.Forms.Panel();
+            this.cmbCalculations = new System.Windows.Forms.ComboBox();
+            this.label71 = new System.Windows.Forms.Label();
+            this.cbAddToHercules = new System.Windows.Forms.CheckBox();
             this.btnAddMachine = new ComponentFactory.Krypton.Toolkit.KryptonButton();
             this.kryptonLinkLabel1 = new ComponentFactory.Krypton.Toolkit.KryptonLinkLabel();
             this.lbtnMechanics = new ComponentFactory.Krypton.Toolkit.KryptonLinkLabel();
@@ -1058,6 +1063,9 @@
             // 
             // pnlMainPage
             // 
+            this.pnlMainPage.Controls.Add(this.cmbCalculations);
+            this.pnlMainPage.Controls.Add(this.label71);
+            this.pnlMainPage.Controls.Add(this.cbAddToHercules);
             this.pnlMainPage.Controls.Add(this.btnAddMachine);
             this.pnlMainPage.Controls.Add(this.kryptonLinkLabel1);
             this.pnlMainPage.Controls.Add(this.lbtnMechanics);
@@ -1088,6 +1096,43 @@
             this.pnlMainPage.Name = "pnlMainPage";
             this.pnlMainPage.Size = new System.Drawing.Size(1270, 650);
             this.pnlMainPage.TabIndex = 390;
+            // 
+            // cmbCalculations
+            // 
+            this.cmbCalculations.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbCalculations.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbCalculations.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.cmbCalculations.FormattingEnabled = true;
+            this.cmbCalculations.Location = new System.Drawing.Point(1129, 456);
+            this.cmbCalculations.Name = "cmbCalculations";
+            this.cmbCalculations.Size = new System.Drawing.Size(121, 28);
+            this.cmbCalculations.TabIndex = 502;
+            this.cmbCalculations.SelectedIndexChanged += new System.EventHandler(this.cmbCalculations_SelectedIndexChanged);
+            // 
+            // label71
+            // 
+            this.label71.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.label71.AutoSize = true;
+            this.label71.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.label71.ForeColor = System.Drawing.Color.Black;
+            this.label71.Location = new System.Drawing.Point(1061, 460);
+            this.label71.Name = "label71";
+            this.label71.Size = new System.Drawing.Size(54, 20);
+            this.label71.TabIndex = 501;
+            this.label71.Text = "Расчёт";
+            // 
+            // cbAddToHercules
+            // 
+            this.cbAddToHercules.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbAddToHercules.AutoSize = true;
+            this.cbAddToHercules.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.cbAddToHercules.Location = new System.Drawing.Point(1149, 417);
+            this.cbAddToHercules.Name = "cbAddToHercules";
+            this.cbAddToHercules.Size = new System.Drawing.Size(101, 24);
+            this.cbAddToHercules.TabIndex = 500;
+            this.cbAddToHercules.Text = "в Геркулес";
+            this.cbAddToHercules.UseVisualStyleBackColor = true;
+            this.cbAddToHercules.CheckedChanged += new System.EventHandler(this.cbAddToHercules_CheckedChanged);
             // 
             // btnAddMachine
             // 
@@ -11607,6 +11652,11 @@
 
         }
 
+        private void CbAddToHercules_Click(object sender, System.EventArgs e)
+        {
+            throw new System.NotImplementedException();
+        }
+
         #endregion
 
         private System.Windows.Forms.Timer AnimateTimer;
@@ -12140,5 +12190,8 @@
         private PercentageDataGrid percentageDataGrid1;
         private ComponentFactory.Krypton.Toolkit.KryptonButton kryptonButton32;
         private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem kryptonContextMenuItem14;
+        private System.Windows.Forms.CheckBox cbAddToHercules;
+        private System.Windows.Forms.ComboBox cmbCalculations;
+        private System.Windows.Forms.Label label71;
     }
 }
