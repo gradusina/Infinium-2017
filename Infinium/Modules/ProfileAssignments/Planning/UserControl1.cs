@@ -7,8 +7,6 @@ namespace Infinium.Modules.ProfileAssignments.Planning
 {
     public partial class UserControl1 : UserControl
     {
-        private int pnlTopHeight = 25;
-
         public UserControl1()
         {
             InitializeComponent();

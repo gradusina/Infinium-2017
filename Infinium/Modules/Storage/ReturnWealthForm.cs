@@ -7,7 +7,7 @@ namespace Infinium
     {
         public bool ok = false;
 
-        Form TopForm = null;
+        private Form TopForm = null;
 
         public ReturnWealthForm()
         {

@@ -9,22 +9,22 @@ namespace Infinium
 {
     public partial class PlannedWorkForm : Form
     {
-        const int iAdmin = 89;
+        private const int iAdmin = 89;
 
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
 
-        int _formEvent = 0;
+        private int _formEvent = 0;
 
-        bool NeedSplash = false;
+        private bool NeedSplash = false;
 
-        Form _topForm = null;
-        LightStartForm _lightStartForm;
+        private Form _topForm = null;
+        private readonly LightStartForm _lightStartForm;
 
-        PlannedWork _plannedWorkManager;
+        private readonly PlannedWork _plannedWorkManager;
 
-        RoleTypes _roleType = RoleTypes.Ordinary;
+        private readonly RoleTypes _roleType = RoleTypes.Ordinary;
 
         public enum RoleTypes
         {

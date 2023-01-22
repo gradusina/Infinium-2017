@@ -1,11 +1,15 @@
-﻿namespace Infinium
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+using ComponentFactory.Krypton.Toolkit;
+
+namespace Infinium
 {
     partial class CreateOuterDocumentForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -775,46 +779,46 @@
 
         #endregion
 
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge20;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge21;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge22;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge23;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Label label2;
-        private ComponentFactory.Krypton.Toolkit.KryptonPalette StandardButtonsPalette;
-        private System.Windows.Forms.OpenFileDialog openFileDialog1;
-        private System.Windows.Forms.Timer AnimateTimer;
-        private System.Windows.Forms.Timer LoadTimer;
-        private ComponentFactory.Krypton.Toolkit.KryptonTextBox kryptonTextBox1;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton CancelsButton;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton CreateButton;
-        private ComponentFactory.Krypton.Toolkit.KryptonComboBox DocumentsTypeComboBox;
-        private System.Windows.Forms.Label HeaderCreateLabel;
-        private ComponentFactory.Krypton.Toolkit.KryptonRichTextBox DescriptionTextBox;
-        private System.Windows.Forms.Label label3;
-        private ComponentFactory.Krypton.Toolkit.KryptonComboBox RecipientComboBox;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.CheckBox RecipientCheckBox;
-        private System.Windows.Forms.Panel panel2;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton DetachButton;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton AttachButton;
-        private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.Label label4;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton CancelLoadingFilesButton;
-        private System.Windows.Forms.Label LoadLabel;
-        private System.Windows.Forms.Label DownloadLabel;
-        private System.Windows.Forms.Label SpeedLabel;
-        private System.Windows.Forms.Label PercentsLabel;
-        private System.Windows.Forms.ProgressBar ProgressBar;
-        private ComponentFactory.Krypton.Toolkit.KryptonComboBox DocumentsStatesComboBox;
-        private System.Windows.Forms.Label label6;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton AddCorrespondentButton;
-        private System.Windows.Forms.Label label7;
-        private ComponentFactory.Krypton.Toolkit.KryptonComboBox FactoryTypesComboBox;
+        private KryptonBorderEdge kryptonBorderEdge20;
+        private KryptonBorderEdge kryptonBorderEdge21;
+        private KryptonBorderEdge kryptonBorderEdge22;
+        private KryptonBorderEdge kryptonBorderEdge23;
+        private Panel panel1;
+        private Label label2;
+        private KryptonPalette StandardButtonsPalette;
+        private OpenFileDialog openFileDialog1;
+        private Timer AnimateTimer;
+        private Timer LoadTimer;
+        private KryptonTextBox kryptonTextBox1;
+        private KryptonButton CancelsButton;
+        private KryptonButton CreateButton;
+        private KryptonComboBox DocumentsTypeComboBox;
+        private Label HeaderCreateLabel;
+        private KryptonRichTextBox DescriptionTextBox;
+        private Label label3;
+        private KryptonComboBox RecipientComboBox;
+        private Label label5;
+        private CheckBox RecipientCheckBox;
+        private Panel panel2;
+        private KryptonButton DetachButton;
+        private KryptonButton AttachButton;
+        private Panel panel3;
+        private Label label4;
+        private KryptonButton CancelLoadingFilesButton;
+        private Label LoadLabel;
+        private Label DownloadLabel;
+        private Label SpeedLabel;
+        private Label PercentsLabel;
+        private ProgressBar ProgressBar;
+        private KryptonComboBox DocumentsStatesComboBox;
+        private Label label6;
+        private KryptonButton AddCorrespondentButton;
+        private Label label7;
+        private KryptonComboBox FactoryTypesComboBox;
         private InfiniumDocumentsSelectUsersList RecipientsList;
         private PercentageDataGrid AttachmentsGrid;
-        private ComponentFactory.Krypton.Toolkit.KryptonTextBox RegNumberTextBox;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.CheckBox CheckAll;
+        private KryptonTextBox RegNumberTextBox;
+        private Label label8;
+        private CheckBox CheckAll;
     }
 }

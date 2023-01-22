@@ -9,8 +9,8 @@ namespace Infinium.Modules.Marketing.Orders
 {
     public class FrontsCatalogOrder
     {
-        ComponentFactory.Krypton.Toolkit.KryptonComboBox HeightEdit;
-        ComponentFactory.Krypton.Toolkit.KryptonComboBox WidthEdit;
+        private ComponentFactory.Krypton.Toolkit.KryptonComboBox HeightEdit;
+        private ComponentFactory.Krypton.Toolkit.KryptonComboBox WidthEdit;
 
         private DataTable TempFrontsConfigDataTable = null;
         private DataTable TempFrontsDataTable = null;

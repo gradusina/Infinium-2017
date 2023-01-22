@@ -17,10 +17,10 @@ namespace Infinium.Modules.CabFurnitureAssignments
 {
     public class CoversManager
     {
-        DataTable CoversDT;
+        private readonly DataTable CoversDT;
         public BindingSource CoversBS;
-        SqlDataAdapter CoversDA;
-        SqlCommandBuilder CoversCB;
+        private readonly SqlDataAdapter CoversDA;
+        private SqlCommandBuilder CoversCB;
 
         public CoversManager()
         {
@@ -145,21 +145,21 @@ namespace Infinium.Modules.CabFurnitureAssignments
 
     public class CabFurStorageToExcel
     {
-        int pos01 = 0;
+        private int pos01 = 0;
 
-        HSSFWorkbook hssfworkbook;
+        private HSSFWorkbook hssfworkbook;
 
-        HSSFFont fConfirm;
-        HSSFFont fHeader;
-        HSSFFont fColumnName;
-        HSSFFont fMainContent;
-        HSSFFont fTotalInfo;
+        private HSSFFont fConfirm;
+        private HSSFFont fHeader;
+        private HSSFFont fColumnName;
+        private HSSFFont fMainContent;
+        private HSSFFont fTotalInfo;
 
-        HSSFCellStyle csConfirm;
-        HSSFCellStyle csHeader;
-        HSSFCellStyle csColumnName;
-        HSSFCellStyle csMainContent;
-        HSSFCellStyle csTotalInfo;
+        private HSSFCellStyle csConfirm;
+        private HSSFCellStyle csHeader;
+        private HSSFCellStyle csColumnName;
+        private HSSFCellStyle csMainContent;
+        private HSSFCellStyle csTotalInfo;
 
         public CabFurStorageToExcel()
         {
@@ -344,40 +344,40 @@ namespace Infinium.Modules.CabFurnitureAssignments
     {
         public FileManager FM = null;
 
-        bool bNewAssignment = false;
+        private bool bNewAssignment = false;
 
-        int iCabFurAssignmentID = 0;
+        private int iCabFurAssignmentID = 0;
 
-        DataTable CabFurnitureDocumentTypesDT;
-        DataTable ClientsDT;
+        private DataTable CabFurnitureDocumentTypesDT;
+        private DataTable ClientsDT;
 
-        DataTable TechStoreGroupsDT;
-        DataTable CabFurGroupsDT;
-        DataTable TechStoreSubGroupsDT;
-        DataTable TechStoreDT;
-        DataTable UsersDT;
-        DataTable MeasuresDT;
-        DataTable ColorsDT;
-        DataTable CoversDT;
-        DataTable PatinaDT;
-        DataTable InsetTypesDT;
-        DataTable InsetColorsDT;
-        DataTable StoreItemsDT;
-        DataTable StoreDetailTermsDT;
+        private DataTable TechStoreGroupsDT;
+        private DataTable CabFurGroupsDT;
+        private DataTable TechStoreSubGroupsDT;
+        private DataTable TechStoreDT;
+        private DataTable UsersDT;
+        private DataTable MeasuresDT;
+        private DataTable ColorsDT;
+        private DataTable CoversDT;
+        private DataTable PatinaDT;
+        private DataTable InsetTypesDT;
+        private DataTable InsetColorsDT;
+        private DataTable StoreItemsDT;
+        private DataTable StoreDetailTermsDT;
 
-        DataTable TempCoversDT;
-        DataTable TempPatinaDT;
+        private DataTable TempCoversDT;
+        private DataTable TempPatinaDT;
 
-        DataTable DocumentsDT = null;
-        DataTable AllAssignmentsDT = null;
-        DataTable NewAssignmentDetailsDT = null;
+        private DataTable DocumentsDT = null;
+        private DataTable AllAssignmentsDT = null;
+        private DataTable NewAssignmentDetailsDT = null;
 
-        DataTable NonAgreementDetailDT;
-        DataTable AgreedDetailDT;
-        DataTable OnProductionDetailDT;
-        DataTable InProductionDetailDT;
-        DataTable OnStorageDetailDT;
-        DataTable OnExpeditionDetailDT;
+        private DataTable NonAgreementDetailDT;
+        private DataTable AgreedDetailDT;
+        private DataTable OnProductionDetailDT;
+        private DataTable InProductionDetailDT;
+        private DataTable OnStorageDetailDT;
+        private DataTable OnExpeditionDetailDT;
 
         public DataSet TotalProductsCoversDs;
 
@@ -407,15 +407,15 @@ namespace Infinium.Modules.CabFurnitureAssignments
         public BindingSource DocumentsBS = null;
         public BindingSource NewAssignmentDetailsBS = null;
 
-        SqlCommandBuilder NewAssignmentCB;
-        SqlCommandBuilder AllAssignmentsCB;
+        private SqlCommandBuilder NewAssignmentCB;
+        private SqlCommandBuilder AllAssignmentsCB;
 
-        SqlDataAdapter NewAssignmentDA;
-        SqlDataAdapter AllAssignmentsDA;
+        private SqlDataAdapter NewAssignmentDA;
+        private SqlDataAdapter AllAssignmentsDA;
 
-        DataTable ComplementLabelDataDT = null;
-        DataTable PackageLabelDataDT = null;
-        DataTable RolesDataTable = null;
+        private DataTable ComplementLabelDataDT = null;
+        private DataTable PackageLabelDataDT = null;
+        private DataTable RolesDataTable = null;
 
         public bool NewAssignment
         {
@@ -3191,27 +3191,27 @@ WHERE dbo.CabFurniturePackages.CabFurAssignmentDetailID = " + CabFurAssignmentDe
 
     public class ComplementsManager
     {
-        DataTable ComplementsDT = null;
+        private readonly DataTable ComplementsDT = null;
         public BindingSource ComplementsBS = null;
-        SqlDataAdapter ComplementsDA;
+        private SqlDataAdapter ComplementsDA;
 
-        DataTable MainOrdersDT = null;
+        private readonly DataTable MainOrdersDT = null;
         public BindingSource MainOrdersBS = null;
-        SqlDataAdapter MainOrdersDA;
+        private SqlDataAdapter MainOrdersDA;
 
-        DataTable ComplementLabelsDT = null;
-        DataTable TempComplementLabelsDT = null;
+        private readonly DataTable ComplementLabelsDT = null;
+        private readonly DataTable TempComplementLabelsDT = null;
         public BindingSource ComplementLabelsBS = null;
-        SqlDataAdapter ComplementLabelsDA;
+        private SqlDataAdapter ComplementLabelsDA;
 
-        DataTable ComplementDetailsDT = null;
+        private readonly DataTable ComplementDetailsDT = null;
         public BindingSource ComplementDetailsBS = null;
-        SqlDataAdapter ComplementDetailsDA;
+        private SqlDataAdapter ComplementDetailsDA;
 
-        private DataTable ProductionStatusesDataTable = null;
-        private DataTable StorageStatusesDataTable = null;
-        private DataTable ExpeditionStatusesDataTable = null;
-        private DataTable DispatchStatusesDataTable = null;
+        private readonly DataTable ProductionStatusesDataTable = null;
+        private readonly DataTable StorageStatusesDataTable = null;
+        private readonly DataTable ExpeditionStatusesDataTable = null;
+        private readonly DataTable DispatchStatusesDataTable = null;
 
         public DataGridViewComboBoxColumn ProductionStatusColumn = null;
         public DataGridViewComboBoxColumn StorageStatusColumn = null;
@@ -3632,18 +3632,18 @@ INNER JOIN infiniu2_marketingorders.dbo.MainOrders AS M ON C.MainOrderID=M.MainO
 
     public class PackagesManager
     {
-        DataTable PackagesDT = null;
+        private readonly DataTable PackagesDT = null;
         public BindingSource PackagesBS = null;
-        SqlDataAdapter PackagesDA;
+        private SqlDataAdapter PackagesDA;
 
-        DataTable PackageLabelsDT = null;
-        DataTable TempPackageLabelsDT = null;
+        private readonly DataTable PackageLabelsDT = null;
+        private readonly DataTable TempPackageLabelsDT = null;
         public BindingSource PackageLabelsBS = null;
-        SqlDataAdapter PackageLabelsDA;
+        private SqlDataAdapter PackageLabelsDA;
 
-        DataTable PackageDetailsDT = null;
+        private readonly DataTable PackageDetailsDT = null;
         public BindingSource PackageDetailsBS = null;
-        SqlDataAdapter PackageDetailsDA;
+        private SqlDataAdapter PackageDetailsDA;
 
         public PackagesManager()
         {
@@ -3892,17 +3892,17 @@ INNER JOIN infiniu2_marketingorders.dbo.MainOrders AS M ON C.MainOrderID=M.MainO
 
     public class CheckLabel
     {
-        int CurrentCabFurniturePackageID = -1;
+        private int CurrentCabFurniturePackageID = -1;
 
-        DataTable ScanContentDT = null;
-        DataTable ScanComplementDetailsDT = null;
-        DataTable ScanPackageDetailsDT = null;
+        private readonly DataTable ScanContentDT = null;
+        private readonly DataTable ScanComplementDetailsDT = null;
+        private readonly DataTable ScanPackageDetailsDT = null;
 
         public BindingSource ScanContentBS = null;
 
         public DataTable StoreDT;
-        SqlDataAdapter StoreDA;
-        SqlCommandBuilder StoreCB;
+        private readonly SqlDataAdapter StoreDA;
+        private SqlCommandBuilder StoreCB;
 
         public struct LabelInfo
         {
@@ -4675,74 +4675,74 @@ INNER JOIN infiniu2_marketingorders.dbo.MainOrders AS M ON C.MainOrderID=M.MainO
 
     public class CalculateMaterial
     {
-        int TechStoreID, CoverID, PatinaID, Length, Height, Width = 0;
-        int ItemsCount = 0;
-        string TechStoreName, CoverName, PatinaName = string.Empty;
+        private int TechStoreID, CoverID, PatinaID, Length, Height, Width = 0;
+        private int ItemsCount = 0;
+        private string TechStoreName, CoverName, PatinaName = string.Empty;
 
-        DataTable OperationsGroups;
+        private DataTable OperationsGroups;
 
-        DataTable CubFurCoversDT;
-        DataTable FrontsOrdersDT;
-        DataTable FrontsConfigDT;
-        DataTable OperationsDetailDT;
-        DataTable StoreDetailDT;
-        DataTable SumOperationsDetailDT;
-        DataTable SumStoreDetailDT;
-        DataTable OperationsTermsDT;
-        DataTable StoreDetailTermsDT;
+        private DataTable CubFurCoversDT;
+        private DataTable FrontsOrdersDT;
+        private DataTable FrontsConfigDT;
+        private DataTable OperationsDetailDT;
+        private DataTable StoreDetailDT;
+        private DataTable SumOperationsDetailDT;
+        private DataTable SumStoreDetailDT;
+        private DataTable OperationsTermsDT;
+        private DataTable StoreDetailTermsDT;
 
-        DataTable Algorithm01DT;
-        DataTable Algorithm02_1DT;
-        DataTable Algorithm02_2DT;
-        DataTable Algorithm03_1DT;
-        DataTable Algorithm03_2DT;
-        DataTable Algorithm04DT;
-        DataTable Algorithm05DT;
-        DataTable Algorithm06DT;
-        DataTable Algorithm07DT;
-        DataTable Algorithm08DT;
-        DataTable Algorithm09DT;
-        DataTable Algorithm10DT;
-        DataTable Algorithm11DT;
-        DataTable Algorithm12DT;
-        DataTable Algorithm13_1DT;
-        DataTable Algorithm13_2DT;
-        DataTable Algorithm14_1DT;
-        DataTable Algorithm14_2DT;
-        DataTable Algorithm15DT;
-        DataTable Algorithm16DT;
-        DataTable Algorithm17DT;
-        DataTable Algorithm18DT;
+        private DataTable Algorithm01DT;
+        private DataTable Algorithm02_1DT;
+        private DataTable Algorithm02_2DT;
+        private DataTable Algorithm03_1DT;
+        private DataTable Algorithm03_2DT;
+        private DataTable Algorithm04DT;
+        private DataTable Algorithm05DT;
+        private DataTable Algorithm06DT;
+        private DataTable Algorithm07DT;
+        private DataTable Algorithm08DT;
+        private DataTable Algorithm09DT;
+        private DataTable Algorithm10DT;
+        private DataTable Algorithm11DT;
+        private DataTable Algorithm12DT;
+        private DataTable Algorithm13_1DT;
+        private DataTable Algorithm13_2DT;
+        private DataTable Algorithm14_1DT;
+        private DataTable Algorithm14_2DT;
+        private DataTable Algorithm15DT;
+        private DataTable Algorithm16DT;
+        private DataTable Algorithm17DT;
+        private DataTable Algorithm18DT;
 
-        DataTable Algorithm19DT;
+        private DataTable Algorithm19DT;
 
-        DataTable Algorithm20DT;
+        private DataTable Algorithm20DT;
 
-        DataTable Algorithm21DT;
-        DataTable Algorithm22DT;
-        DataTable Algorithm23DT;
-        DataTable Algorithm24DT;
+        private DataTable Algorithm21DT;
+        private DataTable Algorithm22DT;
+        private DataTable Algorithm23DT;
+        private DataTable Algorithm24DT;
 
-        DataTable Algorithm25DT;
+        private DataTable Algorithm25DT;
 
-        DataTable Algorithm26DT;
+        private DataTable Algorithm26DT;
 
-        DataTable Algorithm27DT;
-        DataTable Algorithm28DT;
-        DataTable Algorithm29DT;
-        DataTable Algorithm30DT;
+        private DataTable Algorithm27DT;
+        private DataTable Algorithm28DT;
+        private DataTable Algorithm29DT;
+        private DataTable Algorithm30DT;
 
-        DataTable Algorithm31DT;
+        private DataTable Algorithm31DT;
 
-        DataTable Algorithm32DT;
+        private DataTable Algorithm32DT;
 
-        DataTable Algorithm33DT;
+        private DataTable Algorithm33DT;
 
-        DataTable Algorithm34DT;
+        private DataTable Algorithm34DT;
 
-        DataTable Algorithm35DT;
+        private DataTable Algorithm35DT;
 
-        AssignmentsManager AssignmentsManager;
+        private readonly AssignmentsManager AssignmentsManager;
 
         public CalculateMaterial(AssignmentsManager tAssignmentsManager)
         {
@@ -9805,7 +9805,7 @@ INNER JOIN infiniu2_marketingorders.dbo.MainOrders AS M ON C.MainOrderID=M.MainO
             return false;
         }
 
-        int NestedLevel = 1;
+        private readonly int NestedLevel = 1;
 
         public void MainFunction(int iCabFurAssignmentID, string sTechStoreName, int iTechStoreID, int iCoverID, int iPatinaID, int iLength, int iHeight, int iWidth, string sCoverName, string sPatinaName, int iItemsCount)
         {
@@ -10606,50 +10606,50 @@ INNER JOIN infiniu2_marketingorders.dbo.MainOrders AS M ON C.MainOrderID=M.MainO
 
     public class ReportToExcel
     {
-        int pos01 = 0;
-        int pos02 = 0;
-        int pos03 = 0;
-        int pos04 = 0;
-        int pos05 = 0;
-        int pos06 = 0;
-        int pos07 = 0;
-        int pos08 = 0;
-        int pos09 = 0;
-        int pos10 = 0;
-        int pos11 = 0;
-        int pos12 = 0;
+        private int pos01 = 0;
+        private int pos02 = 0;
+        private int pos03 = 0;
+        private int pos04 = 0;
+        private int pos05 = 0;
+        private int pos06 = 0;
+        private int pos07 = 0;
+        private int pos08 = 0;
+        private int pos09 = 0;
+        private int pos10 = 0;
+        private int pos11 = 0;
+        private int pos12 = 0;
 
-        HSSFWorkbook hssfworkbook;
-        HSSFSheet sheet01;
-        HSSFSheet sheet02;
-        HSSFSheet sheet03;
-        HSSFSheet sheet04;
-        HSSFSheet sheet05;
-        HSSFSheet sheet06;
-        HSSFSheet sheet07;
-        HSSFSheet sheet08;
-        HSSFSheet sheet09;
-        HSSFSheet sheet10;
-        HSSFSheet sheet11;
-        HSSFSheet sheet12;
+        private readonly HSSFWorkbook hssfworkbook;
+        private readonly HSSFSheet sheet01;
+        private readonly HSSFSheet sheet02;
+        private readonly HSSFSheet sheet03;
+        private readonly HSSFSheet sheet04;
+        private readonly HSSFSheet sheet05;
+        private readonly HSSFSheet sheet06;
+        private readonly HSSFSheet sheet07;
+        private readonly HSSFSheet sheet08;
+        private readonly HSSFSheet sheet09;
+        private readonly HSSFSheet sheet10;
+        private readonly HSSFSheet sheet11;
+        private readonly HSSFSheet sheet12;
 
-        HSSFFont fConfirm;
-        HSSFFont fHeader;
-        HSSFFont fColumnName;
-        HSSFFont fMainContent;
-        HSSFFont fTotalInfo;
-        HSSFFont fSignatures;
+        private HSSFFont fConfirm;
+        private HSSFFont fHeader;
+        private HSSFFont fColumnName;
+        private HSSFFont fMainContent;
+        private HSSFFont fTotalInfo;
+        private HSSFFont fSignatures;
 
-        HSSFCellStyle csConfirm;
-        HSSFCellStyle csHeader;
-        HSSFCellStyle csColumnName;
-        HSSFCellStyle csMainContent;
-        HSSFCellStyle csMainContentDec;
-        HSSFCellStyle csMainContentWrap;
-        HSSFCellStyle csTotalInfo;
-        HSSFCellStyle csTotalValue;
-        HSSFCellStyle csTotalValueDec;
-        HSSFCellStyle csSignatures;
+        private HSSFCellStyle csConfirm;
+        private HSSFCellStyle csHeader;
+        private HSSFCellStyle csColumnName;
+        private HSSFCellStyle csMainContent;
+        private HSSFCellStyle csMainContentDec;
+        private HSSFCellStyle csMainContentWrap;
+        private HSSFCellStyle csTotalInfo;
+        private HSSFCellStyle csTotalValue;
+        private HSSFCellStyle csTotalValueDec;
+        private HSSFCellStyle csSignatures;
 
         public ReportToExcel()
         {
@@ -13212,27 +13212,27 @@ INNER JOIN infiniu2_marketingorders.dbo.MainOrders AS M ON C.MainOrderID=M.MainO
 
     public class TestAssignments
     {
-        int iPanelCounter = 0;
-        int InsetTypeID = 0;
-        int PatinaID = 0;
-        int Height = 0;
-        int Width = 0;
+        private int iPanelCounter = 0;
+        private readonly int InsetTypeID = 0;
+        private readonly int PatinaID = 0;
+        private readonly int Height = 0;
+        private readonly int Width = 0;
 
-        DataTable DataTable1;
-        DataTable ResultDT;
-        DataTable SummaryDT;
-        DataTable MaterialDT;
-        DataTable FixedMaterialDT;
+        private DataTable DataTable1;
+        private DataTable ResultDT;
+        private DataTable SummaryDT;
+        private DataTable MaterialDT;
+        private DataTable FixedMaterialDT;
 
-        DataTable FrontsOrdersDT;
-        DataTable FrontsConfigDT;
-        DataTable DecorConfigDT;
-        DataTable TechStore;
-        DataTable OperationsTermsDT;
+        private DataTable FrontsOrdersDT;
+        private DataTable FrontsConfigDT;
+        private DataTable DecorConfigDT;
+        private DataTable TechStore;
+        private DataTable OperationsTermsDT;
 
-        DataSet OperationsGroupsDS;
-        DataSet OperationsDetailDS;
-        DataSet StoreDetailDS;
+        private DataSet OperationsGroupsDS;
+        private DataSet OperationsDetailDS;
+        private DataSet StoreDetailDS;
 
         public BindingSource ResultBS;
         public BindingSource SummaryBS;
@@ -13766,7 +13766,7 @@ INNER JOIN infiniu2_marketingorders.dbo.MainOrders AS M ON C.MainOrderID=M.MainO
 
     public class DetailsReport
     {
-        List<ComplementLabelInfo> Labels;
+        private List<ComplementLabelInfo> Labels;
 
         public DetailsReport()
         {
@@ -14040,9 +14040,9 @@ INNER JOIN infiniu2_marketingorders.dbo.MainOrders AS M ON C.MainOrderID=M.MainO
 
     public class Barcode
     {
-        BarcodeLib.Barcode Barcod;
+        private readonly BarcodeLib.Barcode Barcod;
 
-        SolidBrush FontBrush;
+        private readonly SolidBrush FontBrush;
 
         public enum BarcodeLength { Short, Medium, Long };
 
@@ -14136,7 +14136,7 @@ INNER JOIN infiniu2_marketingorders.dbo.MainOrders AS M ON C.MainOrderID=M.MainO
 
     public class ComplementLabel
     {
-        Barcode Barcode;
+        private readonly Barcode Barcode;
         public PrintDocument PD;
 
         public int PaperHeight = 488;
@@ -14148,23 +14148,23 @@ INNER JOIN infiniu2_marketingorders.dbo.MainOrders AS M ON C.MainOrderID=M.MainO
 
         public bool Printed = false;
 
-        SolidBrush FontBrush;
+        private SolidBrush FontBrush;
 
-        Font ClientFont;
-        Font DocFont;
-        Font InfoFont;
-        Font NotesFont;
-        Font HeaderFont;
-        Font FrontOrderFont;
-        Font DecorOrderFont;
-        Font DispatchFont;
+        private Font ClientFont;
+        private Font DocFont;
+        private Font InfoFont;
+        private Font NotesFont;
+        private Font HeaderFont;
+        private Font FrontOrderFont;
+        private Font DecorOrderFont;
+        private Font DispatchFont;
 
-        Pen Pen;
+        private Pen Pen;
 
-        Image ZTTPS;
-        Image ZTProfil;
-        Image STB;
-        Image RST;
+        private readonly Image ZTTPS;
+        private readonly Image ZTProfil;
+        private readonly Image STB;
+        private Image RST;
 
         public ArrayList LabelInfo;
 
@@ -14399,7 +14399,7 @@ INNER JOIN infiniu2_marketingorders.dbo.MainOrders AS M ON C.MainOrderID=M.MainO
 
     public class PackageLabel
     {
-        Barcode Barcode;
+        private readonly Barcode Barcode;
         public PrintDocument PD;
 
         public int PaperHeight = 488;
@@ -14411,23 +14411,23 @@ INNER JOIN infiniu2_marketingorders.dbo.MainOrders AS M ON C.MainOrderID=M.MainO
 
         public bool Printed = false;
 
-        SolidBrush FontBrush;
+        private SolidBrush FontBrush;
 
-        Font ClientFont;
-        Font DocFont;
-        Font InfoFont;
-        Font NotesFont;
-        Font HeaderFont;
-        Font FrontOrderFont;
-        Font DecorOrderFont;
-        Font DispatchFont;
+        private Font ClientFont;
+        private Font DocFont;
+        private Font InfoFont;
+        private Font NotesFont;
+        private Font HeaderFont;
+        private Font FrontOrderFont;
+        private Font DecorOrderFont;
+        private Font DispatchFont;
 
-        Pen Pen;
+        private Pen Pen;
 
-        Image ZTTPS;
-        Image ZTProfil;
-        Image STB;
-        Image RST;
+        private readonly Image ZTTPS;
+        private readonly Image ZTProfil;
+        private readonly Image STB;
+        private Image RST;
 
         public ArrayList LabelInfo;
 

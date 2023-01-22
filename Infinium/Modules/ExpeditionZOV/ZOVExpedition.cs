@@ -21,10 +21,11 @@ namespace Infinium.Modules.ZOV.Expedition
 {
     public class ZOVExpeditionFrontsOrders
     {
-        private PercentageDataGrid FrontsOrdersDataGrid = null;
+        private readonly PercentageDataGrid FrontsOrdersDataGrid = null;
 
-        int CurrentMainOrder = 1;
-        int CurrentPackNumber = 1;
+        private int CurrentMainOrder = 1;
+
+        private int CurrentPackNumber = 1;
         //48215 47516
         public DataTable FrontsOrdersDataTable = null;
         public DataTable FrontsDataTable = null;
@@ -467,7 +468,7 @@ namespace Infinium.Modules.ZOV.Expedition
             FrontsOrdersDataGrid.CellFormatting += FrontsOrdersDataGrid_CellFormatting;
         }
 
-        void FrontsOrdersDataGrid_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        private void FrontsOrdersDataGrid_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             PercentageDataGrid grid = (PercentageDataGrid)sender;
             if (grid.Columns.Contains("PatinaColumn") && (e.ColumnIndex == grid.Columns["PatinaColumn"].Index)
@@ -761,10 +762,10 @@ namespace Infinium.Modules.ZOV.Expedition
 
     public class ZOVExpeditionDecorOrders
     {
-        int CurrentPackNumber = 1;
-        int CurrentMainOrder = 1;
+        private int CurrentPackNumber = 1;
+        private int CurrentMainOrder = 1;
 
-        private PercentageDataGrid MainOrdersDecorOrdersDataGrid = null;
+        private readonly PercentageDataGrid MainOrdersDecorOrdersDataGrid = null;
 
         private DataTable ColorsDataTable = null;
         public DataTable PatinaDataTable = null;
@@ -1356,7 +1357,7 @@ namespace Infinium.Modules.ZOV.Expedition
         public PercentageDataGrid MainOrdersDGV = null;
         public PercentageDataGrid MegaOrdersDGV = null;
         public PercentageDataGrid PackagesDGV = null;
-        private DevExpress.XtraTab.XtraTabControl OrdersTabControl = null;
+        private readonly DevExpress.XtraTab.XtraTabControl OrdersTabControl = null;
 
         private DataTable DocNumbersDT = null;
         private DataTable ClientsDataTable = null;
@@ -4419,13 +4420,13 @@ namespace Infinium.Modules.ZOV.Expedition
 
     public class ZOVDebtsDispatchManager
     {
-        int CurrentMainOrderID = -1;
+        private int CurrentMainOrderID = -1;
 
         public ZOVExpeditionFrontsOrders PackedMainOrdersFrontsOrders = null;
         public ZOVExpeditionDecorOrders PackedMainOrdersDecorOrders = null;
 
         public PercentageDataGrid PackagesDataGrid = null;
-        private DevExpress.XtraTab.XtraTabControl OrdersTabControl = null;
+        private readonly DevExpress.XtraTab.XtraTabControl OrdersTabControl = null;
 
         public DataTable PackagesDataTable = null;
         private DataTable PackageStatusesDataTable = null;
@@ -4684,21 +4685,21 @@ namespace Infinium.Modules.ZOV.Expedition
 
     public class ZOVDispatch
     {
-        DataTable AllDispatchFrontsWeightDT;
-        DataTable AllDispatchDecorWeightDT;
-        DataTable AllMainOrdersSquareDT;
-        DataTable AllMainOrdersFrontsWeightDT;
-        DataTable AllMainOrdersDecorWeightDT;
-        DataTable AllMegaBatchNumbersDT;
-        DataTable DispatchInfoDT;
-        DataTable RealDispTimeDT;
-        DataTable DispatchDT;
-        DataTable DispatchDatesDT;
-        DataTable DispatchContentDT;
+        private DataTable AllDispatchFrontsWeightDT;
+        private DataTable AllDispatchDecorWeightDT;
+        private DataTable AllMainOrdersSquareDT;
+        private DataTable AllMainOrdersFrontsWeightDT;
+        private DataTable AllMainOrdersDecorWeightDT;
+        private DataTable AllMegaBatchNumbersDT;
+        private DataTable DispatchInfoDT;
+        private DataTable RealDispTimeDT;
+        private DataTable DispatchDT;
+        private DataTable DispatchDatesDT;
+        private DataTable DispatchContentDT;
 
-        BindingSource DispatchBS;
-        BindingSource DispatchDatesBS;
-        BindingSource DispatchContentBS;
+        private BindingSource DispatchBS;
+        private BindingSource DispatchDatesBS;
+        private BindingSource DispatchContentBS;
 
         public ZOVDispatch()
         {
@@ -5873,7 +5874,7 @@ namespace Infinium.Modules.ZOV.Expedition
         private DataTable DecorOrdersDataTable = null;
 
         public DataTable FrontsDataTable = null;
-        DataTable PatinaRALDataTable = null;
+        private DataTable PatinaRALDataTable = null;
         public DataTable PatinaDataTable = null;
         public DataTable InsetTypesDataTable = null;
         public DataTable FrameColorsDataTable = null;
@@ -7318,25 +7319,25 @@ namespace Infinium.Modules.ZOV.Expedition
 
     public class DispatchReportZOV
     {
-        PackingReportZOV PackingReport;
+        private PackingReportZOV PackingReport;
 
-        PackagesCount PackagesCount;
+        private PackagesCount PackagesCount;
 
-        object CreationDateTime = DBNull.Value;
-        object ConfirmExpDateTime = DBNull.Value;
-        object ConfirmDispDateTime = DBNull.Value;
-        object PrepareDispatchDateTime = DBNull.Value;
-        object RealDispDateTime = DBNull.Value;
-        object ConfirmExpUserID = DBNull.Value;
-        object ConfirmDispUserID = DBNull.Value;
-        object RealDispUserID = DBNull.Value;
-        object MachineName = DBNull.Value;
-        object PermitNumber = DBNull.Value;
-        object SealNumber = DBNull.Value;
+        private object CreationDateTime = DBNull.Value;
+        private object ConfirmExpDateTime = DBNull.Value;
+        private object ConfirmDispDateTime = DBNull.Value;
+        private object PrepareDispatchDateTime = DBNull.Value;
+        private object RealDispDateTime = DBNull.Value;
+        private object ConfirmExpUserID = DBNull.Value;
+        private object ConfirmDispUserID = DBNull.Value;
+        private object RealDispUserID = DBNull.Value;
+        private object MachineName = DBNull.Value;
+        private object PermitNumber = DBNull.Value;
+        private object SealNumber = DBNull.Value;
 
-        DataTable SimpleResultDT = null;
-        DataTable AttachResultDT = null;
-        DataTable PackagesDT = null;
+        private DataTable SimpleResultDT = null;
+        private DataTable AttachResultDT = null;
+        private DataTable PackagesDT = null;
 
         public DispatchReportZOV()
         {
@@ -8224,7 +8225,7 @@ namespace Infinium.Modules.ZOV.Expedition
             //string SenderEmail = "zovprofilreport@mail.ru";
 
             //string AccountPassword = "7026Gradus0462";
-            string AccountPassword = "onluenzbclnedqtt";
+            string AccountPassword = "foqwsulbjiuslnue";
             string SenderEmail = "infiniumdevelopers@gmail.com";
 
             string from = SenderEmail;

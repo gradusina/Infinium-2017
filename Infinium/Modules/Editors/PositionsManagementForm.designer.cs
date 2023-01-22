@@ -56,6 +56,7 @@
             this.kryptonBorderEdge12 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge13 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.PositionsDataGrid = new Infinium.PercentageDataGrid();
+            this.SavePositionsButton = new ComponentFactory.Krypton.Toolkit.KryptonButton();
             this.NavigatePanel.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -387,7 +388,7 @@
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.UsersGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
-            this.UsersGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.UsersGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
             this.UsersGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(253)))), ((int)(((byte)(164)))), ((int)(((byte)(61)))));
             this.UsersGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
             this.UsersGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
@@ -424,7 +425,7 @@
             // 
             this.NewPositionTextBox.Location = new System.Drawing.Point(0, 9);
             this.NewPositionTextBox.Name = "NewPositionTextBox";
-            this.NewPositionTextBox.Size = new System.Drawing.Size(297, 30);
+            this.NewPositionTextBox.Size = new System.Drawing.Size(297, 33);
             this.NewPositionTextBox.StateCommon.Border.Draw = ComponentFactory.Krypton.Toolkit.InheritBool.False;
             this.NewPositionTextBox.StateCommon.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
@@ -513,7 +514,6 @@
             this.PositionsDataGrid.Name = "PositionsDataGrid";
             this.PositionsDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.PositionsDataGrid.PercentLineWidth = 0;
-            this.PositionsDataGrid.ReadOnly = true;
             this.PositionsDataGrid.RowHeadersVisible = false;
             this.PositionsDataGrid.RowTemplate.Height = 30;
             this.PositionsDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
@@ -554,12 +554,39 @@
             this.PositionsDataGrid.UseCustomBackColor = true;
             this.PositionsDataGrid.SelectionChanged += new System.EventHandler(this.DepartmentsDataGrid_SelectionChanged);
             // 
+            // SavePositionsButton
+            // 
+            this.SavePositionsButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.SavePositionsButton.Location = new System.Drawing.Point(535, 673);
+            this.SavePositionsButton.Name = "SavePositionsButton";
+            this.SavePositionsButton.OverrideDefault.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(158)))), ((int)(((byte)(0)))));
+            this.SavePositionsButton.OverrideDefault.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.SavePositionsButton.Palette = this.StandardButtonsPalette;
+            this.SavePositionsButton.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Custom;
+            this.SavePositionsButton.Size = new System.Drawing.Size(187, 49);
+            this.SavePositionsButton.StateCommon.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(158)))), ((int)(((byte)(0)))));
+            this.SavePositionsButton.StateCommon.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.SavePositionsButton.StateCommon.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.SavePositionsButton.StateCommon.Content.Image.ImageH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.SavePositionsButton.StateCommon.Content.Image.ImageV = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
+            this.SavePositionsButton.StateCommon.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.SavePositionsButton.StateCommon.Content.ShortText.TextV = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.SavePositionsButton.StateTracking.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(253)))), ((int)(((byte)(164)))), ((int)(((byte)(61)))));
+            this.SavePositionsButton.StateTracking.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.SavePositionsButton.TabIndex = 441;
+            this.SavePositionsButton.TabStop = false;
+            this.SavePositionsButton.Values.Text = "Сохранить изменения";
+            this.SavePositionsButton.Click += new System.EventHandler(this.SavePositionsButton_Click);
+            // 
             // PositionsManagementForm
             // 
             this.AccessibleName = "false";
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1270, 740);
+            this.Controls.Add(this.SavePositionsButton);
             this.Controls.Add(this.panel4);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.AddGroupButton);
@@ -622,5 +649,6 @@
         private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge12;
         private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge13;
         private PercentageDataGrid PositionsDataGrid;
+        private ComponentFactory.Krypton.Toolkit.KryptonButton SavePositionsButton;
     }
 }

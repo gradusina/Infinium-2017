@@ -7,7 +7,7 @@ namespace Infinium
     public partial class DateForm : Form
     {
         public static string SelectedDate = "";
-        Form TopForm = null;
+        private Form TopForm = null;
 
         public DateForm()
         {

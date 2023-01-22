@@ -55,6 +55,7 @@
             this.AdditionalCostTextEdit = new System.Windows.Forms.TextBox();
             this.panel3 = new System.Windows.Forms.Panel();
             this.panel9 = new System.Windows.Forms.Panel();
+            this.label14 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.CurrencyTextBox = new System.Windows.Forms.TextBox();
             this.CurrencyDateTimePicker = new ComponentFactory.Krypton.Toolkit.KryptonDateTimePicker();
@@ -66,6 +67,12 @@
             this.label1 = new System.Windows.Forms.Label();
             this.panel4 = new System.Windows.Forms.Panel();
             this.kryptonBorderEdge5 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
+            this.panel7 = new System.Windows.Forms.Panel();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.tbTPSDiscountDirector = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.tbProfilDiscountDirector = new System.Windows.Forms.TextBox();
             this.kryptonBorderEdge12 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.label3 = new System.Windows.Forms.Label();
             this.DispatchDateTimePicker = new ComponentFactory.Krypton.Toolkit.KryptonDateTimePicker();
@@ -86,30 +93,23 @@
             this.rbDelayOfPayment = new ComponentFactory.Krypton.Toolkit.KryptonRadioButton();
             this.rbFullPayment = new ComponentFactory.Krypton.Toolkit.KryptonRadioButton();
             this.rbHalfOfPayment = new ComponentFactory.Krypton.Toolkit.KryptonRadioButton();
-            this.panel7 = new System.Windows.Forms.Panel();
-            this.label10 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.tbTPSDiscountDirector = new System.Windows.Forms.TextBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.tbProfilDiscountDirector = new System.Windows.Forms.TextBox();
             this.kryptonBorderEdge13 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.label14 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel9.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CurrencyTypeComboBox)).BeginInit();
             this.panel4.SuspendLayout();
+            this.panel7.SuspendLayout();
             this.panel5.SuspendLayout();
             this.panel6.SuspendLayout();
             this.panel8.SuspendLayout();
-            this.panel7.SuspendLayout();
             this.SuspendLayout();
             // 
             // kryptonBorderEdge20
             // 
             this.kryptonBorderEdge20.Dock = System.Windows.Forms.DockStyle.Right;
-            this.kryptonBorderEdge20.Location = new System.Drawing.Point(1104, 0);
+            this.kryptonBorderEdge20.Location = new System.Drawing.Point(833, 0);
             this.kryptonBorderEdge20.Name = "kryptonBorderEdge20";
             this.kryptonBorderEdge20.Orientation = System.Windows.Forms.Orientation.Vertical;
             this.kryptonBorderEdge20.Size = new System.Drawing.Size(1, 294);
@@ -131,7 +131,7 @@
             this.kryptonBorderEdge22.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.kryptonBorderEdge22.Location = new System.Drawing.Point(1, 293);
             this.kryptonBorderEdge22.Name = "kryptonBorderEdge22";
-            this.kryptonBorderEdge22.Size = new System.Drawing.Size(1103, 1);
+            this.kryptonBorderEdge22.Size = new System.Drawing.Size(832, 1);
             this.kryptonBorderEdge22.StateCommon.Color1 = System.Drawing.Color.Black;
             this.kryptonBorderEdge22.Text = "kryptonBorderEdge22";
             // 
@@ -140,7 +140,7 @@
             this.kryptonBorderEdge23.Dock = System.Windows.Forms.DockStyle.Top;
             this.kryptonBorderEdge23.Location = new System.Drawing.Point(1, 0);
             this.kryptonBorderEdge23.Name = "kryptonBorderEdge23";
-            this.kryptonBorderEdge23.Size = new System.Drawing.Size(1103, 1);
+            this.kryptonBorderEdge23.Size = new System.Drawing.Size(832, 1);
             this.kryptonBorderEdge23.StateCommon.Color1 = System.Drawing.Color.Black;
             this.kryptonBorderEdge23.Text = "kryptonBorderEdge23";
             // 
@@ -192,7 +192,7 @@
             this.panel1.Controls.Add(this.label2);
             this.panel1.Location = new System.Drawing.Point(1, 1);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1104, 38);
+            this.panel1.Size = new System.Drawing.Size(833, 38);
             this.panel1.TabIndex = 239;
             // 
             // label2
@@ -233,9 +233,8 @@
             // 
             // panel2
             // 
-            this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.panel2.Controls.Add(this.rbFCA);
             this.panel2.Controls.Add(this.rbCpt);
             this.panel2.Controls.Add(this.label13);
@@ -401,7 +400,7 @@
             // panel3
             // 
             this.panel3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.panel3.Controls.Add(this.panel9);
             this.panel3.Controls.Add(this.kryptonBorderEdge14);
             this.panel3.Controls.Add(this.kryptonBorderEdge11);
@@ -424,6 +423,16 @@
             this.panel9.Name = "panel9";
             this.panel9.Size = new System.Drawing.Size(390, 124);
             this.panel9.TabIndex = 402;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.label14.Location = new System.Drawing.Point(12, 76);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(265, 38);
+            this.label14.TabIndex = 396;
+            this.label14.Text = "*при изменении расчетных курсов \r\n нужно выбрать валюту в списке заново";
             // 
             // label5
             // 
@@ -527,21 +536,22 @@
             // panel4
             // 
             this.panel4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.panel4.Controls.Add(this.kryptonBorderEdge5);
+            this.panel4.Controls.Add(this.panel7);
             this.panel4.Controls.Add(this.kryptonBorderEdge12);
             this.panel4.Controls.Add(this.label3);
             this.panel4.Controls.Add(this.DispatchDateTimePicker);
             this.panel4.Controls.Add(this.NoDateCheckBox);
             this.panel4.Location = new System.Drawing.Point(567, 39);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(302, 196);
+            this.panel4.Size = new System.Drawing.Size(267, 196);
             this.panel4.TabIndex = 394;
             // 
             // kryptonBorderEdge5
             // 
             this.kryptonBorderEdge5.Dock = System.Windows.Forms.DockStyle.Right;
-            this.kryptonBorderEdge5.Location = new System.Drawing.Point(301, 1);
+            this.kryptonBorderEdge5.Location = new System.Drawing.Point(266, 1);
             this.kryptonBorderEdge5.Name = "kryptonBorderEdge5";
             this.kryptonBorderEdge5.Orientation = System.Windows.Forms.Orientation.Vertical;
             this.kryptonBorderEdge5.Size = new System.Drawing.Size(1, 195);
@@ -551,13 +561,76 @@
             this.kryptonBorderEdge5.StateCommon.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Sigma;
             this.kryptonBorderEdge5.Text = "kryptonBorderEdge5";
             // 
+            // panel7
+            // 
+            this.panel7.Controls.Add(this.label10);
+            this.panel7.Controls.Add(this.label8);
+            this.panel7.Controls.Add(this.tbTPSDiscountDirector);
+            this.panel7.Controls.Add(this.label7);
+            this.panel7.Controls.Add(this.tbProfilDiscountDirector);
+            this.panel7.Location = new System.Drawing.Point(3, 126);
+            this.panel7.Name = "panel7";
+            this.panel7.Size = new System.Drawing.Size(237, 54);
+            this.panel7.TabIndex = 484;
+            this.panel7.Visible = false;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.label10.Location = new System.Drawing.Point(5, 28);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(70, 19);
+            this.label10.TabIndex = 486;
+            this.label10.Text = "Профиль:";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.label8.Location = new System.Drawing.Point(132, 28);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(38, 19);
+            this.label8.TabIndex = 485;
+            this.label8.Text = "ТПС:";
+            // 
+            // tbTPSDiscountDirector
+            // 
+            this.tbTPSDiscountDirector.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.tbTPSDiscountDirector.Location = new System.Drawing.Point(170, 24);
+            this.tbTPSDiscountDirector.Name = "tbTPSDiscountDirector";
+            this.tbTPSDiscountDirector.Size = new System.Drawing.Size(53, 26);
+            this.tbTPSDiscountDirector.TabIndex = 484;
+            this.tbTPSDiscountDirector.Text = "0";
+            this.tbTPSDiscountDirector.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.label7.Location = new System.Drawing.Point(5, 4);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(126, 19);
+            this.label7.TabIndex = 483;
+            this.label7.Text = "Скидка директора";
+            // 
+            // tbProfilDiscountDirector
+            // 
+            this.tbProfilDiscountDirector.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.tbProfilDiscountDirector.Location = new System.Drawing.Point(77, 25);
+            this.tbProfilDiscountDirector.Name = "tbProfilDiscountDirector";
+            this.tbProfilDiscountDirector.Size = new System.Drawing.Size(53, 26);
+            this.tbProfilDiscountDirector.TabIndex = 482;
+            this.tbProfilDiscountDirector.Text = "0";
+            this.tbProfilDiscountDirector.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
             // kryptonBorderEdge12
             // 
             this.kryptonBorderEdge12.Dock = System.Windows.Forms.DockStyle.Top;
             this.kryptonBorderEdge12.Location = new System.Drawing.Point(0, 0);
             this.kryptonBorderEdge12.Name = "kryptonBorderEdge12";
             this.kryptonBorderEdge12.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge12.Size = new System.Drawing.Size(302, 1);
+            this.kryptonBorderEdge12.Size = new System.Drawing.Size(267, 1);
             this.kryptonBorderEdge12.StateCommon.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(140)))), ((int)(((byte)(140)))), ((int)(((byte)(140)))));
             this.kryptonBorderEdge12.StateCommon.Color2 = System.Drawing.Color.Silver;
             this.kryptonBorderEdge12.StateCommon.ColorAngle = 90F;
@@ -614,7 +687,7 @@
             // ConfirmationOKButton
             // 
             this.ConfirmationOKButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.ConfirmationOKButton.Location = new System.Drawing.Point(435, 245);
+            this.ConfirmationOKButton.Location = new System.Drawing.Point(300, 245);
             this.ConfirmationOKButton.Name = "ConfirmationOKButton";
             this.ConfirmationOKButton.OverrideDefault.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(184)))), ((int)(((byte)(238)))));
             this.ConfirmationOKButton.OverrideDefault.Border.Color1 = System.Drawing.Color.White;
@@ -648,7 +721,7 @@
             // ConfirmationCancelButton
             // 
             this.ConfirmationCancelButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.ConfirmationCancelButton.Location = new System.Drawing.Point(568, 245);
+            this.ConfirmationCancelButton.Location = new System.Drawing.Point(433, 245);
             this.ConfirmationCancelButton.Name = "ConfirmationCancelButton";
             this.ConfirmationCancelButton.OverrideDefault.Back.Color1 = System.Drawing.Color.Silver;
             this.ConfirmationCancelButton.OverrideDefault.Border.Draw = ComponentFactory.Krypton.Toolkit.InheritBool.False;
@@ -683,11 +756,10 @@
             this.panel5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel5.Controls.Add(this.panel6);
-            this.panel5.Controls.Add(this.panel7);
             this.panel5.Controls.Add(this.kryptonBorderEdge13);
-            this.panel5.Location = new System.Drawing.Point(773, 39);
+            this.panel5.Location = new System.Drawing.Point(559, 79);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(328, 196);
+            this.panel5.Size = new System.Drawing.Size(265, 196);
             this.panel5.TabIndex = 480;
             // 
             // panel6
@@ -704,8 +776,9 @@
             this.panel6.Controls.Add(this.rbHalfOfPayment);
             this.panel6.Location = new System.Drawing.Point(0, 0);
             this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(328, 123);
+            this.panel6.Size = new System.Drawing.Size(265, 123);
             this.panel6.TabIndex = 481;
+            this.panel6.Visible = false;
             // 
             // kryptonRadioButton5
             // 
@@ -751,8 +824,9 @@
             this.panel8.Controls.Add(this.kryptonRadioButton4);
             this.panel8.Location = new System.Drawing.Point(0, 91);
             this.panel8.Name = "panel8";
-            this.panel8.Size = new System.Drawing.Size(328, 30);
+            this.panel8.Size = new System.Drawing.Size(265, 30);
             this.panel8.TabIndex = 485;
+            this.panel8.Visible = false;
             // 
             // kryptonRadioButton1
             // 
@@ -837,106 +911,31 @@
             this.rbHalfOfPayment.Values.Text = "50%-50%";
             this.rbHalfOfPayment.CheckedChanged += new System.EventHandler(this.rbHalfOfPayment_CheckedChanged);
             // 
-            // panel7
-            // 
-            this.panel7.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel7.Controls.Add(this.label10);
-            this.panel7.Controls.Add(this.label8);
-            this.panel7.Controls.Add(this.tbTPSDiscountDirector);
-            this.panel7.Controls.Add(this.label7);
-            this.panel7.Controls.Add(this.tbProfilDiscountDirector);
-            this.panel7.Location = new System.Drawing.Point(0, 122);
-            this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(328, 54);
-            this.panel7.TabIndex = 484;
-            this.panel7.Visible = false;
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.label10.Location = new System.Drawing.Point(5, 28);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(70, 19);
-            this.label10.TabIndex = 486;
-            this.label10.Text = "Профиль:";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.label8.Location = new System.Drawing.Point(132, 28);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(38, 19);
-            this.label8.TabIndex = 485;
-            this.label8.Text = "ТПС:";
-            // 
-            // tbTPSDiscountDirector
-            // 
-            this.tbTPSDiscountDirector.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.tbTPSDiscountDirector.Location = new System.Drawing.Point(170, 24);
-            this.tbTPSDiscountDirector.Name = "tbTPSDiscountDirector";
-            this.tbTPSDiscountDirector.Size = new System.Drawing.Size(53, 26);
-            this.tbTPSDiscountDirector.TabIndex = 484;
-            this.tbTPSDiscountDirector.Text = "0";
-            this.tbTPSDiscountDirector.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.label7.Location = new System.Drawing.Point(5, 4);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(126, 19);
-            this.label7.TabIndex = 483;
-            this.label7.Text = "Скидка директора";
-            // 
-            // tbProfilDiscountDirector
-            // 
-            this.tbProfilDiscountDirector.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.tbProfilDiscountDirector.Location = new System.Drawing.Point(77, 25);
-            this.tbProfilDiscountDirector.Name = "tbProfilDiscountDirector";
-            this.tbProfilDiscountDirector.Size = new System.Drawing.Size(53, 26);
-            this.tbProfilDiscountDirector.TabIndex = 482;
-            this.tbProfilDiscountDirector.Text = "0";
-            this.tbProfilDiscountDirector.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
             // kryptonBorderEdge13
             // 
             this.kryptonBorderEdge13.Dock = System.Windows.Forms.DockStyle.Top;
             this.kryptonBorderEdge13.Location = new System.Drawing.Point(0, 0);
             this.kryptonBorderEdge13.Name = "kryptonBorderEdge13";
             this.kryptonBorderEdge13.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge13.Size = new System.Drawing.Size(328, 1);
+            this.kryptonBorderEdge13.Size = new System.Drawing.Size(265, 1);
             this.kryptonBorderEdge13.StateCommon.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(140)))), ((int)(((byte)(140)))), ((int)(((byte)(140)))));
             this.kryptonBorderEdge13.StateCommon.Color2 = System.Drawing.Color.Silver;
             this.kryptonBorderEdge13.StateCommon.ColorAngle = 90F;
             this.kryptonBorderEdge13.StateCommon.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Sigma;
             this.kryptonBorderEdge13.Text = "kryptonBorderEdge13";
             // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.label14.Location = new System.Drawing.Point(12, 76);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(265, 38);
-            this.label14.TabIndex = 396;
-            this.label14.Text = "*при изменении расчетных курсов \r\n нужно выбрать валюту в списке заново";
-            // 
             // CurrencyForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1105, 294);
+            this.ClientSize = new System.Drawing.Size(834, 294);
             this.Controls.Add(this.kryptonBorderEdge4);
-            this.Controls.Add(this.panel5);
             this.Controls.Add(this.ConfirmationCancelButton);
             this.Controls.Add(this.ConfirmationOKButton);
             this.Controls.Add(this.panel4);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel2);
+            this.Controls.Add(this.panel5);
             this.Controls.Add(this.kryptonBorderEdge23);
             this.Controls.Add(this.kryptonBorderEdge22);
             this.Controls.Add(this.kryptonBorderEdge21);
@@ -960,14 +959,14 @@
             ((System.ComponentModel.ISupportInitialize)(this.CurrencyTypeComboBox)).EndInit();
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
+            this.panel7.ResumeLayout(false);
+            this.panel7.PerformLayout();
             this.panel5.ResumeLayout(false);
             this.panel5.PerformLayout();
             this.panel6.ResumeLayout(false);
             this.panel6.PerformLayout();
             this.panel8.ResumeLayout(false);
             this.panel8.PerformLayout();
-            this.panel7.ResumeLayout(false);
-            this.panel7.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 

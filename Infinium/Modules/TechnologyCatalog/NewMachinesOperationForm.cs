@@ -7,15 +7,15 @@ namespace Infinium
 {
     public partial class NewMachinesOperationForm : Form
     {
-        int MachineID;
-        int MachinesOperationID;
+        private int MachineID;
+        private int MachinesOperationID;
         public bool Ok = false;
-        bool Edit;
+        private bool Edit;
 
-        Form TopForm = null;
-        TechStoreManager TechStoreManager;
+        private Form TopForm = null;
+        private TechStoreManager TechStoreManager;
 
-        BindingSource MachinesOperationsBS;
+        private BindingSource MachinesOperationsBS;
 
         public NewMachinesOperationForm(int tMachineID, ref TechStoreManager tTechStoreManager)
         {

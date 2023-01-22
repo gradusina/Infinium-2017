@@ -1692,17 +1692,21 @@ PackageDetailID, PackageDetails.Count AS Count, (FrontsOrders.Square * PackageDe
             if (FrontsConfigRow.Count() > 0)
                 ProfileWeight = Convert.ToDecimal(FrontsConfigRow[0]["Weight"]);
 
-            //для Женевы и Тафеля глухой - вес квадрата профиля на площадь фасада
             int FrontID = Convert.ToInt32(FrontsOrdersRow["FrontID"]);
-            if (FrontID == 30504 || FrontID == 30505 || FrontID == 30506 ||
-                FrontID == 30364 || FrontID == 30366 || FrontID == 30367 ||
-                FrontID == 30501 || FrontID == 30502 || FrontID == 30503 ||
-                FrontID == 16269 || FrontID == 28945 || FrontID == 41327 || FrontID == 41328 || FrontID == 41331 || FrontID == 27914 || FrontID == 29597 || FrontID == 3727 || FrontID == 3728 || FrontID == 3729 ||
-                FrontID == 3730 || FrontID == 3731 || FrontID == 3732 || FrontID == 3733 || FrontID == 3734 ||
-                FrontID == 3735 || FrontID == 3736 || FrontID == 3737 || FrontID == 3739 || FrontID == 3740 ||
-                FrontID == 3741 || FrontID == 3742 || FrontID == 3743 || FrontID == 3744 || FrontID == 3745 ||
-                FrontID == 3746 || FrontID == 3747 || FrontID == 3748 || FrontID == 15108 || FrontID == 3662 || FrontID == 3663 || FrontID == 3664 || FrontID == 15760)
+            if (Security.IsFrontsSquareCalc(FrontID))
+            {
                 return FrontWidth * FrontHeight / 1000000 * ProfileWeight;
+            }
+            //if (FrontID == 30504 || FrontID == 30505 || FrontID == 30506 ||
+            //    FrontID == 30364 || FrontID == 30366 || FrontID == 30367 ||
+            //    FrontID == 30501 || FrontID == 30502 || FrontID == 30503 ||
+            //    FrontID == 16269 || FrontID == 28945 || FrontID == 41327 || FrontID == 41328 || FrontID == 41331 || 
+            //    FrontID == 27914 || FrontID == 29597 || FrontID == 3727 || FrontID == 3728 || FrontID == 3729 ||
+            //    FrontID == 3730 || FrontID == 3731 || FrontID == 3732 || FrontID == 3733 || FrontID == 3734 ||
+            //    FrontID == 3735 || FrontID == 3736 || FrontID == 3737 || FrontID == 3739 || FrontID == 3740 ||
+            //    FrontID == 3741 || FrontID == 3742 || FrontID == 3743 || FrontID == 3744 || FrontID == 3745 ||
+            //    FrontID == 3746 || FrontID == 3747 || FrontID == 3748 || FrontID == 15108 || FrontID == 3662 || FrontID == 3663 || FrontID == 3664 || FrontID == 15760)
+            //    return FrontWidth * FrontHeight / 1000000 * ProfileWeight;
             else
             {
                 DataRow[] DecorConfigRow = decorCatalogOrder.TechStoreDataTable.Select("TechStoreID = " + FrontsConfigRow[0]["ProfileID"].ToString());
@@ -1857,7 +1861,7 @@ PackageDetailID, PackageDetails.Count AS Count, (FrontsOrders.Square * PackageDe
                     NonStandardMargin = GetNonStandardMargin(Convert.ToInt32(Rows[r]["FrontConfigID"]));
                 }
                 //ФИЛЕНКА
-                filter = " AND InsetTypeID IN (2069,2070,2071,2073,2075,2077,2233,3644,29043,29531,41213)";
+                filter = " AND InsetTypeID IN (2069,2070,2071,2073,2075,42066,2077,2233,3644,29043,29531,41213)";
                 Rows = OrdersDataTable.Select("ColorID = " + Fronts.Rows[i]["ColorID"].ToString() +
                     " AND PatinaID = " + Fronts.Rows[i]["PatinaID"].ToString() +
                     " AND Notes = '" + Fronts.Rows[i]["Notes"].ToString() +
@@ -2200,18 +2204,18 @@ PackageDetailID, PackageDetails.Count AS Count, (FrontsOrders.Square * PackageDe
 
                 if (Rows[0]["FactoryID"].ToString() == "1")//profil
                 {
-                    if (ClientID != 145 && DiscountPaymentConditionID != 6 && !ProfilVerify)
-                    {
-                        FrontsOrdersDataTable.Rows[i]["PaymentRate"] = Convert.ToDecimal(FrontsOrdersDataTable.Rows[i]["Rate"]) * 1.05m;
-                    }
+                    //if (ClientID != 145 && DiscountPaymentConditionID != 6 && !ProfilVerify)
+                    //{
+                    //    FrontsOrdersDataTable.Rows[i]["PaymentRate"] = Convert.ToDecimal(FrontsOrdersDataTable.Rows[i]["Rate"]) * 1.05m;
+                    //}
                     ProfilDT.ImportRow(FrontsOrdersDataTable.Rows[i]);
                 }
                 if (Rows[0]["FactoryID"].ToString() == "2")//tps
                 {
-                    if (ClientID != 145 && DiscountPaymentConditionID != 6 && !TPSVerify)
-                    {
-                        FrontsOrdersDataTable.Rows[i]["PaymentRate"] = Convert.ToDecimal(FrontsOrdersDataTable.Rows[i]["Rate"]) * 1.05m;
-                    }
+                    //if (ClientID != 145 && DiscountPaymentConditionID != 6 && !TPSVerify)
+                    //{
+                    //    FrontsOrdersDataTable.Rows[i]["PaymentRate"] = Convert.ToDecimal(FrontsOrdersDataTable.Rows[i]["Rate"]) * 1.05m;
+                    //}
                     TPSDT.ImportRow(FrontsOrdersDataTable.Rows[i]);
                 }
             }

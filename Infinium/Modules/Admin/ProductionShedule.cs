@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace Infinium.Modules.Admin
 {
-    class ProductionShedule
+    internal class ProductionShedule
     {
         private DataTable _hoursDataTable;
         private DataTable _sourceDataTable;

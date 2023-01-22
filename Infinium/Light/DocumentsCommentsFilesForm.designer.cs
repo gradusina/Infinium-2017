@@ -1,11 +1,15 @@
-﻿namespace Infinium
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+using ComponentFactory.Krypton.Toolkit;
+
+namespace Infinium
 {
     partial class DocumentsCommentsFilesForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -388,20 +392,20 @@
 
         #endregion
 
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge20;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge21;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge22;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge23;
-        private ComponentFactory.Krypton.Toolkit.KryptonPalette StandardButtonsPalette;
-        private System.Windows.Forms.Timer AnimateTimer;
-        private ComponentFactory.Krypton.Toolkit.KryptonTextBox kryptonTextBox1;
-        private ComponentFactory.Krypton.Toolkit.KryptonPanel HeaderPanel;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton kryptonButton1;
-        private ComponentFactory.Krypton.Toolkit.KryptonPalette NavigateMenuButtonsPalette;
+        private KryptonBorderEdge kryptonBorderEdge20;
+        private KryptonBorderEdge kryptonBorderEdge21;
+        private KryptonBorderEdge kryptonBorderEdge22;
+        private KryptonBorderEdge kryptonBorderEdge23;
+        private KryptonPalette StandardButtonsPalette;
+        private Timer AnimateTimer;
+        private KryptonTextBox kryptonTextBox1;
+        private KryptonPanel HeaderPanel;
+        private KryptonButton kryptonButton1;
+        private KryptonPalette NavigateMenuButtonsPalette;
         private PercentageDataGrid FilesDataGrid;
-        private System.Windows.Forms.OpenFileDialog openFileDialog1;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton DetachButton;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton AttachButton;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton CreateButton;
+        private OpenFileDialog openFileDialog1;
+        private KryptonButton DetachButton;
+        private KryptonButton AttachButton;
+        private KryptonButton CreateButton;
     }
 }

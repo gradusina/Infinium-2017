@@ -5,18 +5,18 @@ namespace Infinium
 {
     public partial class PositionsManagementForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
 
-        int FormEvent = 0;
+        private int FormEvent = 0;
 
-        Form TopForm = null;
+        private Form TopForm = null;
 
-        LightStartForm LightStartForm;
+        private LightStartForm LightStartForm;
 
 
-        AdminPositionsEdit AdminPositionsEdit;
+        private AdminPositionsEdit AdminPositionsEdit;
 
         public PositionsManagementForm(LightStartForm tLightStartForm)
         {
@@ -171,6 +171,11 @@ namespace Infinium
                 AdminPositionsEdit.UsersBindingSource.Filter = "PositionID = " + Convert.ToInt32(PositionsDataGrid.SelectedRows[0].Cells["PositionID"].Value);
                 NameLabel.Text = (PositionsDataGrid.SelectedRows[0].Cells["Position"].Value.ToString());
             }
+        }
+
+        private void SavePositionsButton_Click(object sender, EventArgs e)
+        {
+            AdminPositionsEdit.SavePositions();
         }
     }
 }

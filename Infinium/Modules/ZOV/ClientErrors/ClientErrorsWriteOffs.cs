@@ -16,18 +16,18 @@ namespace Infinium.Modules.ZOV.ClientErrors
 {
     public class ClientErrorsWriteOffs
     {
-        DataTable SearchMainOrdersDT;
-        DataTable ClientErrorsDT;
-        DataTable ClientsDT;
-        DataTable ClientsColumnDT;
-        DataTable DocNumbersDT;
+        private DataTable SearchMainOrdersDT;
+        private DataTable ClientErrorsDT;
+        private DataTable ClientsDT;
+        private DataTable ClientsColumnDT;
+        private DataTable DocNumbersDT;
 
-        BindingSource SearchPartDocNumberBS;
+        private BindingSource SearchPartDocNumberBS;
 
-        BindingSource ClientErrorsBS;
-        BindingSource ClientsBS;
-        BindingSource ClientsColumnBS;
-        BindingSource DocNumbersBS;
+        private BindingSource ClientErrorsBS;
+        private BindingSource ClientsBS;
+        private BindingSource ClientsColumnBS;
+        private BindingSource DocNumbersBS;
         public DataGridViewComboBoxColumn ClientColumn = null;
         public KryptonDataGridViewDateTimePickerColumn DateTimeColumn = null;
 
@@ -250,15 +250,15 @@ namespace Infinium.Modules.ZOV.ClientErrors
 
     public class AssemblyOrders
     {
-        DataTable AssemblyOrdersDT;
-        DataTable ClientsDT;
-        DataTable ClientsColumnDT;
-        DataTable DocNumbersDT;
+        private DataTable AssemblyOrdersDT;
+        private DataTable ClientsDT;
+        private DataTable ClientsColumnDT;
+        private DataTable DocNumbersDT;
 
-        BindingSource AssemblyOrdersBS;
-        BindingSource ClientsBS;
-        BindingSource ClientsColumnBS;
-        BindingSource DocNumbersBS;
+        private BindingSource AssemblyOrdersBS;
+        private BindingSource ClientsBS;
+        private BindingSource ClientsColumnBS;
+        private BindingSource DocNumbersBS;
 
         public AssemblyOrders()
         {
@@ -310,7 +310,7 @@ namespace Infinium.Modules.ZOV.ClientErrors
             DocNumbersBS = new BindingSource();
         }
 
-        void AssemblyOrdersDT_ColumnChanged(object sender, DataColumnChangeEventArgs e)
+        private void AssemblyOrdersDT_ColumnChanged(object sender, DataColumnChangeEventArgs e)
         {
             string s = e.Row["PaymentDate"] + " " + e.Row["PaymentDate", DataRowVersion.Current];
         }
@@ -548,15 +548,15 @@ namespace Infinium.Modules.ZOV.ClientErrors
 
     public class NotPaidOrders
     {
-        DataTable NotPaidOrdersDT;
-        DataTable ClientsDT;
-        DataTable ClientsColumnDT;
-        DataTable DocNumbersDT;
+        private DataTable NotPaidOrdersDT;
+        private DataTable ClientsDT;
+        private DataTable ClientsColumnDT;
+        private DataTable DocNumbersDT;
 
-        BindingSource NotPaidOrdersBS;
-        BindingSource ClientsBS;
-        BindingSource ClientsColumnBS;
-        BindingSource DocNumbersBS;
+        private BindingSource NotPaidOrdersBS;
+        private BindingSource ClientsBS;
+        private BindingSource ClientsColumnBS;
+        private BindingSource DocNumbersBS;
 
         public NotPaidOrders()
         {
@@ -608,7 +608,7 @@ namespace Infinium.Modules.ZOV.ClientErrors
             DocNumbersBS = new BindingSource();
         }
 
-        void AssemblyOrdersDT_ColumnChanged(object sender, DataColumnChangeEventArgs e)
+        private void AssemblyOrdersDT_ColumnChanged(object sender, DataColumnChangeEventArgs e)
         {
             string s = e.Row["PaymentDate"] + " " + e.Row["PaymentDate", DataRowVersion.Current];
         }
@@ -845,19 +845,19 @@ namespace Infinium.Modules.ZOV.ClientErrors
 
     public class ReportCalculations
     {
-        DataTable ReportCalculationsDT;
-        DataTable ReportViewDT;
-        DataTable MegaOrdersDT;
-        DataTable MainOrdersDT;
-        DataTable FrontsOrdersDT;
-        DataTable DecorOrdersDT;
-        DataTable PackageDetailsDT;
-        DataTable ClientErrorsWriteOffsDT;
-        DataTable ToAssemblyOrdersDT;
-        DataTable FromAssemblyOrdersDT;
-        DataTable NotPaidOrdersDT;
+        private DataTable ReportCalculationsDT;
+        private DataTable ReportViewDT;
+        private DataTable MegaOrdersDT;
+        private DataTable MainOrdersDT;
+        private DataTable FrontsOrdersDT;
+        private DataTable DecorOrdersDT;
+        private DataTable PackageDetailsDT;
+        private DataTable ClientErrorsWriteOffsDT;
+        private DataTable ToAssemblyOrdersDT;
+        private DataTable FromAssemblyOrdersDT;
+        private DataTable NotPaidOrdersDT;
 
-        BindingSource ReportViewBS;
+        private BindingSource ReportViewBS;
 
         public ReportCalculations()
         {

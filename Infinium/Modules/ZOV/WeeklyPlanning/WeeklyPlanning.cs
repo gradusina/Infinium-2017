@@ -26,9 +26,9 @@ namespace Infinium.Modules.ZOV.WeeklyPlanning
         public int CurrentBatchMainOrderID = -1;
         public int CurrentBatchID = -1;
         public int CurrentMegaBatchID = -1;
-        int CurrentFrontID = 0;
-        int CurrentFrameColorID = 0;
-        int CurrentPatinaID = 0;
+        private int CurrentFrontID = 0;
+        private int CurrentFrameColorID = 0;
+        private int CurrentPatinaID = 0;
 
         public MainOrdersFrontsOrders MainOrdersFrontsOrders = null;
         public MainOrdersDecorOrders MainOrdersDecorOrders = null;
@@ -38,27 +38,27 @@ namespace Infinium.Modules.ZOV.WeeklyPlanning
         public PercentageDataGrid BatchDataGrid = null;
         public PercentageDataGrid MegaBatchDataGrid = null;
         public PercentageDataGrid MainOrdersDataGrid = null;
-        private DevExpress.XtraTab.XtraTabControl OrdersTabControl;
+        private readonly DevExpress.XtraTab.XtraTabControl OrdersTabControl;
         public PercentageDataGrid BatchMainOrdersDataGrid = null;
-        private DevExpress.XtraTab.XtraTabControl BatchOrdersTabControl;
+        private readonly DevExpress.XtraTab.XtraTabControl BatchOrdersTabControl;
 
-        PercentageDataGrid FrontsDataGrid = null;
-        PercentageDataGrid FrameColorsDataGrid = null;
-        PercentageDataGrid TechnoColorsDataGrid = null;
-        PercentageDataGrid InsetTypesDataGrid = null;
-        PercentageDataGrid InsetColorsDataGrid = null;
-        PercentageDataGrid TechnoInsetTypesDataGrid = null;
-        PercentageDataGrid TechnoInsetColorsDataGrid = null;
-        PercentageDataGrid SizesDataGrid = null;
+        private PercentageDataGrid FrontsDataGrid = null;
+        private PercentageDataGrid FrameColorsDataGrid = null;
+        private PercentageDataGrid TechnoColorsDataGrid = null;
+        private PercentageDataGrid InsetTypesDataGrid = null;
+        private PercentageDataGrid InsetColorsDataGrid = null;
+        private PercentageDataGrid TechnoInsetTypesDataGrid = null;
+        private PercentageDataGrid TechnoInsetColorsDataGrid = null;
+        private PercentageDataGrid SizesDataGrid = null;
 
-        PercentageDataGrid PreFrontsDataGrid = null;
-        PercentageDataGrid PreFrameColorsDataGrid = null;
-        PercentageDataGrid PreTechnoColorsDataGrid = null;
-        PercentageDataGrid PreInsetTypesDataGrid = null;
-        PercentageDataGrid PreInsetColorsDataGrid = null;
-        PercentageDataGrid PreTechnoInsetTypesDataGrid = null;
-        PercentageDataGrid PreTechnoInsetColorsDataGrid = null;
-        PercentageDataGrid PreSizesDataGrid = null;
+        private PercentageDataGrid PreFrontsDataGrid = null;
+        private PercentageDataGrid PreFrameColorsDataGrid = null;
+        private PercentageDataGrid PreTechnoColorsDataGrid = null;
+        private PercentageDataGrid PreInsetTypesDataGrid = null;
+        private PercentageDataGrid PreInsetColorsDataGrid = null;
+        private PercentageDataGrid PreTechnoInsetTypesDataGrid = null;
+        private PercentageDataGrid PreTechnoInsetColorsDataGrid = null;
+        private PercentageDataGrid PreSizesDataGrid = null;
 
         private PercentageDataGrid DecorProductsDataGrid = null;
         private PercentageDataGrid DecorItemsDataGrid = null;
@@ -85,23 +85,23 @@ namespace Infinium.Modules.ZOV.WeeklyPlanning
         private DataTable BatchMainOrdersDataTable = null;
         private DataTable BatchDetailsDataTable = null;
 
-        DataTable FrontsSummaryDataTable = null;
-        DataTable FrameColorsSummaryDataTable = null;
-        DataTable TechnoColorsSummaryDataTable = null;
-        DataTable InsetTypesSummaryDataTable = null;
-        DataTable InsetColorsSummaryDataTable = null;
-        DataTable TechnoInsetTypesSummaryDataTable = null;
-        DataTable TechnoInsetColorsSummaryDataTable = null;
-        DataTable SizesSummaryDataTable = null;
+        private DataTable FrontsSummaryDataTable = null;
+        private DataTable FrameColorsSummaryDataTable = null;
+        private DataTable TechnoColorsSummaryDataTable = null;
+        private DataTable InsetTypesSummaryDataTable = null;
+        private DataTable InsetColorsSummaryDataTable = null;
+        private DataTable TechnoInsetTypesSummaryDataTable = null;
+        private DataTable TechnoInsetColorsSummaryDataTable = null;
+        private DataTable SizesSummaryDataTable = null;
 
-        DataTable PreFrontsSummaryDataTable = null;
-        DataTable PreFrameColorsSummaryDataTable = null;
-        DataTable PreTechnoColorsSummaryDataTable = null;
-        DataTable PreInsetTypesSummaryDataTable = null;
-        DataTable PreInsetColorsSummaryDataTable = null;
-        DataTable PreTechnoInsetTypesSummaryDataTable = null;
-        DataTable PreTechnoInsetColorsSummaryDataTable = null;
-        DataTable PreSizesSummaryDataTable = null;
+        private DataTable PreFrontsSummaryDataTable = null;
+        private DataTable PreFrameColorsSummaryDataTable = null;
+        private DataTable PreTechnoColorsSummaryDataTable = null;
+        private DataTable PreInsetTypesSummaryDataTable = null;
+        private DataTable PreInsetColorsSummaryDataTable = null;
+        private DataTable PreTechnoInsetTypesSummaryDataTable = null;
+        private DataTable PreTechnoInsetColorsSummaryDataTable = null;
+        private DataTable PreSizesSummaryDataTable = null;
 
         private DataTable DecorProductsSummaryDataTable = null;
         private DataTable DecorItemsSummaryDataTable = null;
@@ -116,7 +116,7 @@ namespace Infinium.Modules.ZOV.WeeklyPlanning
 
         private DataTable FrontsDataTable = null;
         private DataTable PatinaDataTable = null;
-        DataTable PatinaRALDataTable = null;
+        private DataTable PatinaRALDataTable = null;
         private DataTable InsetTypesDataTable = null;
         private DataTable TechStoreDataTable = null;
         private DataTable ColorsDataTable = null;
@@ -10439,35 +10439,35 @@ namespace Infinium.Modules.ZOV.WeeklyPlanning
 
     public class BatchReport : IAllFrontParameterName, IIsMarsel
     {
-        object ResponsibleDateTime = DBNull.Value;
-        object TechnologyDateTime = DBNull.Value;
-        object ConfirmDateTime = DBNull.Value;
-        object CloseDateTime = DBNull.Value;
-        object PrintDateTime = DBNull.Value;
-        object ResponsibleUserID = DBNull.Value;
-        object TechnologyUserID = DBNull.Value;
-        object ConfirmUserID = DBNull.Value;
-        object CloseUserID = DBNull.Value;
-        object PrintUserID = DBNull.Value;
+        private object ResponsibleDateTime = DBNull.Value;
+        private object TechnologyDateTime = DBNull.Value;
+        private object ConfirmDateTime = DBNull.Value;
+        private object CloseDateTime = DBNull.Value;
+        private object PrintDateTime = DBNull.Value;
+        private object ResponsibleUserID = DBNull.Value;
+        private object TechnologyUserID = DBNull.Value;
+        private object ConfirmUserID = DBNull.Value;
+        private object CloseUserID = DBNull.Value;
+        private object PrintUserID = DBNull.Value;
 
-        FileManager FM = new FileManager();
+        private readonly FileManager FM = new FileManager();
 
-        DataTable FrontsResultDataTable = null;
-        DataTable[] DecorResultDataTable = null;
+        private DataTable FrontsResultDataTable = null;
+        private DataTable[] DecorResultDataTable = null;
 
         private DataTable FrontsOrdersDataTable = null;
         private DataTable DecorOrdersDataTable = null;
         private DataTable FrontsDataTable = null;
         private DataTable FrameColorsDataTable = null;
         private DataTable PatinaDataTable = null;
-        DataTable PatinaRALDataTable = null;
+        private readonly DataTable PatinaRALDataTable = null;
         private DataTable InsetTypesDataTable = null;
         private DataTable InsetColorsDataTable = null;
         private DataTable TechnoInsetTypesDataTable = null;
         private DataTable TechnoInsetColorsDataTable = null;
-        private DataTable TechnoProfilesDataTable = null;
+        private readonly DataTable TechnoProfilesDataTable = null;
 
-        Modules.ZOV.DecorCatalogOrder DecorCatalog = null;
+        private readonly Modules.ZOV.DecorCatalogOrder DecorCatalog = null;
 
         public BatchReport(ref Modules.ZOV.DecorCatalogOrder tDecorCatalog)
         {

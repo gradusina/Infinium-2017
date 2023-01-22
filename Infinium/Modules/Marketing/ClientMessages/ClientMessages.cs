@@ -10,16 +10,16 @@ namespace Infinium.Modules.Marketing.ClientMessages
     {
         public DataTable ClientDataTable;
         public BindingSource ClientBindingSource;
-        SqlDataAdapter ClientDA;
-        SqlCommandBuilder ClientCB;
+        private SqlDataAdapter ClientDA;
+        private SqlCommandBuilder ClientCB;
 
         public DataTable ChatDataTable;
         public BindingSource ChatBindingSource;
-        SqlDataAdapter ChatDA;
-        SqlCommandBuilder ChatCB;
+        private SqlDataAdapter ChatDA;
+        private SqlCommandBuilder ChatCB;
 
         public DataGridView ClientGrid, MessagersGrid;
-        DataTable UpdateMess;
+        private DataTable UpdateMess;
 
         public ConnectClient(ref PercentageDataGrid tClientGrid, ref PercentageDataGrid tMessagersGrid)
         {
@@ -109,8 +109,8 @@ namespace Infinium.Modules.Marketing.ClientMessages
 
         public DataTable ClientDataTable;
         public BindingSource ClientBindingSource;
-        SqlDataAdapter ClientDA;
-        SqlCommandBuilder ClientCB;
+        private SqlDataAdapter ClientDA;
+        private SqlCommandBuilder ClientCB;
 
         public string CurrentUserName;
 
@@ -120,8 +120,8 @@ namespace Infinium.Modules.Marketing.ClientMessages
 
         public DataTable MessagesDataTable, UsersDataTable;
 
-        ClientsMessagesDataGrid SelectedUsersGrid = null;
-        ClientsDataGrid UsersListDataGrid = null;
+        private ClientsMessagesDataGrid SelectedUsersGrid = null;
+        private ClientsDataGrid UsersListDataGrid = null;
 
         public ConnectClientMessage(ref ClientsMessagesDataGrid tSelectedUsersGrid, ref ClientsDataGrid tUsersListDataGrid)
         {

@@ -8,21 +8,21 @@ namespace Infinium
 {
     public partial class DocumentsForm : InfiniumForm
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
 
-        int FormEvent = 0;
+        private int FormEvent;
 
-        LightStartForm LightStartForm;
+        private LightStartForm LightStartForm;
 
-        Form TopForm = null;
+        private Form TopForm;
 
-        InfiniumDocuments InfiniumDocuments;
+        private InfiniumDocuments InfiniumDocuments;
 
-        bool bC = false;
+        private bool bC;
 
-        bool bNeedSplash = false;
+        private bool bNeedSplash;
 
         public int CurrentDocumenID = -1;
         public int CurrentDocumentCategoryID = -1;
@@ -33,7 +33,7 @@ namespace Infinium
 
             LightStartForm = tLightStartForm;
 
-            this.MaximumSize = Screen.PrimaryScreen.WorkingArea.Size;
+            MaximumSize = Screen.PrimaryScreen.WorkingArea.Size;
 
             Initialize();
 
@@ -50,7 +50,7 @@ namespace Infinium
         {
             if (!DatabaseConfigsManager.Animation)
             {
-                this.Opacity = 1;
+                Opacity = 1;
 
                 if (FormEvent == eClose || FormEvent == eHide)
                 {
@@ -83,8 +83,8 @@ namespace Infinium
 
             if (FormEvent == eClose || FormEvent == eHide)
             {
-                if (Convert.ToDecimal(this.Opacity) != Convert.ToDecimal(0.00))
-                    this.Opacity = Convert.ToDouble(Convert.ToDecimal(this.Opacity) - Convert.ToDecimal(0.05));
+                if (Convert.ToDecimal(Opacity) != Convert.ToDecimal(0.00))
+                    Opacity = Convert.ToDouble(Convert.ToDecimal(Opacity) - Convert.ToDecimal(0.05));
                 else
                 {
                     AnimateTimer.Enabled = false;
@@ -107,8 +107,8 @@ namespace Infinium
 
             if (FormEvent == eShow)
             {
-                if (this.Opacity != 1)
-                    this.Opacity += 0.05;
+                if (Opacity != 1)
+                    Opacity += 0.05;
                 else
                 {
                     bNeedSplash = true;
@@ -116,8 +116,6 @@ namespace Infinium
                     AnimateTimer.Enabled = false;
                     SplashForm.CloseS = true;
                 }
-
-                return;
             }
         }
 
@@ -550,7 +548,7 @@ namespace Infinium
 
             if (((InfiniumDocumentsUpdatesItem)sender).CurrentFilesDataTable.Rows.Count > 0)
                 ((InfiniumDocumentsUpdatesItem)sender).ControlPanel.CommentsTextBox.FilesLabel.Text =
-                    ((InfiniumDocumentsUpdatesItem)sender).CurrentFilesDataTable.Rows.Count.ToString() + " файлов";
+                    ((InfiniumDocumentsUpdatesItem)sender).CurrentFilesDataTable.Rows.Count + " файлов";
             else
                 ((InfiniumDocumentsUpdatesItem)sender).ControlPanel.CommentsTextBox.FilesLabel.Text = "Прикрепить файлы";
 
@@ -685,7 +683,7 @@ namespace Infinium
 
             if (((InfiniumDocumentsUpdatesItem)sender).CurrentFilesDataTable.Rows.Count > 0)
                 ((InfiniumDocumentsUpdatesItem)sender).ControlPanel.CommentsTextBox.FilesLabel.Text =
-                    ((InfiniumDocumentsUpdatesItem)sender).CurrentFilesDataTable.Rows.Count.ToString() + " файлов";
+                    ((InfiniumDocumentsUpdatesItem)sender).CurrentFilesDataTable.Rows.Count + " файлов";
             else
                 ((InfiniumDocumentsUpdatesItem)sender).ControlPanel.CommentsTextBox.FilesLabel.Text = "Прикрепить файлы";
         }

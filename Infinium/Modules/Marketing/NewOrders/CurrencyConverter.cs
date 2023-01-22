@@ -42,11 +42,11 @@ namespace Infinium.Modules.Marketing.NewOrders
                 myHttpWebRequest.CookieContainer = cookieContainer;
                 myHttpWebResponse = (HttpWebResponse)myHttpWebRequest.GetResponse();
             }
-            catch (NotSupportedException e)
+            catch (NotSupportedException)
             {
 
             }
-            catch (ProtocolViolationException e)
+            catch (ProtocolViolationException)
             {
 
             }
@@ -57,7 +57,7 @@ namespace Infinium.Modules.Marketing.NewOrders
 
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
 
             }

@@ -5,24 +5,24 @@ namespace Infinium
 {
     public partial class CabFurLabelInfoMenu : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
-        bool NeedLength = false;
-        bool NeedHeight = false;
-        bool NeedWidth = false;
-        public bool PressOK = false;
+        private bool NeedLength;
+        private bool NeedHeight;
+        private bool NeedWidth;
+        public bool PressOK;
         public int LabelsCount = 1;
         //public int LabelsLength = 0;
         //public int LabelsHeight = 0;
         //public int LabelsWidth = 0;
         public string DocDateTime = DateTime.Now.ToString("dd.MM.yyyy");
         public int PositionsCount = 1;
-        int FormEvent = 0;
+        private int FormEvent;
 
-        Form MainForm = null;
+        private Form MainForm;
 
         public CabFurLabelInfoMenu(Form tMainForm, bool bNeedLength, bool bNeedHeight, bool bNeedWidth)
         {

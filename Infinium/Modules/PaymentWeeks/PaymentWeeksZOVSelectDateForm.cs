@@ -7,18 +7,18 @@ namespace Infinium
 {
     public partial class PaymentWeeksZOVSelectDateForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
-        int FormEvent = 0;
+        private int FormEvent = 0;
 
-        Form MainForm = null;
-        PaymentWeeksZOVForm PaymentWeeksZOVForm = null;
-        Form TopForm = null;
+        private Form MainForm = null;
+        private PaymentWeeksZOVForm PaymentWeeksZOVForm = null;
+        private Form TopForm = null;
 
-        Modules.PaymentWeeks.SelectPaymentWeek SelectPaymentWeek = null;
+        private Modules.PaymentWeeks.SelectPaymentWeek SelectPaymentWeek = null;
 
         public PaymentWeeksZOVSelectDateForm(Form tMainForm)
         {

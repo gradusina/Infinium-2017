@@ -19,7 +19,7 @@ namespace Infinium.Modules.WorkAssignments
         private int ColorType = 0;
         private DataTable ComecDT;
         private DateTime CurrentDate;
-        private FileManager FM = new FileManager();
+        private readonly FileManager FM = new FileManager();
         private DataTable FrameColorsDataTable = null;
         private DataTable FrontsDataTable = null;
         private ArrayList FrontsID;
@@ -4712,7 +4712,7 @@ namespace Infinium.Modules.WorkAssignments
         /// <param name="IsBox"></param>
         private void CombineComecSimple(ref DataTable DestinationDT)
         {
-            string filter = @"TechnoProfileID<>-1 AND InsetTypeID NOT IN (2069,2070,2071,2073,2075,2077,2233,3644,29043,29531,41213) AND InsetTypeID NOT IN (860) AND InsetTypeID NOT IN (685,686,687,688,29470,29471)";
+            string filter = @"TechnoProfileID<>-1 AND InsetTypeID NOT IN (2069,2070,2071,2073,2075,42066,2077,2233,3644,29043,29531,41213) AND InsetTypeID NOT IN (860) AND InsetTypeID NOT IN (685,686,687,688,29470,29471)";
 
             DataTable DT = Marsel3OrdersDT.Clone();
             DataRow[] rows = Marsel3OrdersDT.Select(filter);
@@ -6263,7 +6263,7 @@ namespace Infinium.Modules.WorkAssignments
             DataTable DT3 = new DataTable();
             DataTable DT4 = new DataTable();
 
-            using (DataView DV = new DataView(SourceDT, "InsetTypeID IN (2069,2070,2071,2073,2075,2077,2233,3644,29043,29531,41213)", "InsetTypeID", DataViewRowState.CurrentRows))
+            using (DataView DV = new DataView(SourceDT, "InsetTypeID IN (2069,2070,2071,2073,2075,42066,2077,2233,3644,29043,29531,41213)", "InsetTypeID", DataViewRowState.CurrentRows))
             {
                 DT1 = DV.ToTable(true, new string[] { "InsetTypeID" });
             }

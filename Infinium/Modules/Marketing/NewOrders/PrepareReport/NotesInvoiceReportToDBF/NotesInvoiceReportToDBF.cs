@@ -14,7 +14,7 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.NotesInvoiceReportT
 {
     public class NotesInvoiceReportToDbf
     {
-        decimal VAT = 1.0m;
+        private decimal VAT = 1.0m;
         public NotesInvoiceFrontsReportToDbf FrontsReport;
         public NotesInvoiceDecorReportToDbf DecorReport = null;
         //HSSFWorkbook hssfworkbook;

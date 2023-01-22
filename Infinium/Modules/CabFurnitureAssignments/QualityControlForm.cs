@@ -8,17 +8,17 @@ namespace Infinium
 {
     public partial class QualityControlForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
-        
-        bool QualityControlFrom = false;
-        int FormEvent = 0;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
-        Form MainForm = null;
+        private bool QualityControlFrom = false;
+        private int FormEvent = 0;
 
-        StorePackagesManager storagePackagesManager;
+        private Form MainForm = null;
+
+        private StorePackagesManager storagePackagesManager;
 
         public QualityControlForm(Form tMainForm, StorePackagesManager SM, bool bQualityControlFrom)
         {

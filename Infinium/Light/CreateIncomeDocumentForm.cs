@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Data;
+using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -8,23 +9,23 @@ namespace Infinium
 {
     public partial class CreateIncomeDocumentForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
 
-        int FormEvent = 0;
+        private int FormEvent;
 
-        Form TopForm;
+        private Form TopForm;
 
-        InfiniumDocuments InfiniumDocuments;
+        private InfiniumDocuments InfiniumDocuments;
 
-        DataTable AttachmentsDataTable;
-        DataTable RecipientsDataTable;
+        private DataTable AttachmentsDataTable;
+        private DataTable RecipientsDataTable;
 
-        bool bEdit = false;
-        public bool bCanceled = false;
+        private bool bEdit;
+        public bool bCanceled;
 
-        public bool bStopTransfer = false;
+        public bool bStopTransfer;
 
         public int IncomeDocumentID = -1;
 
@@ -162,10 +163,10 @@ namespace Infinium
         {
             foreach (string FileName in openFileDialog1.FileNames)
             {
-                var fileInfo = new System.IO.FileInfo(FileName);
+                var fileInfo = new FileInfo(FileName);
 
                 DataRow NewRow = AttachmentsDataTable.NewRow();
-                NewRow["FileName"] = System.IO.Path.GetFileName(FileName);
+                NewRow["FileName"] = Path.GetFileName(FileName);
                 NewRow["Path"] = FileName;
                 NewRow["IsNew"] = true;
                 AttachmentsDataTable.Rows.Add(NewRow);
@@ -176,7 +177,7 @@ namespace Infinium
         {
             if (!DatabaseConfigsManager.Animation)
             {
-                this.Opacity = 1;
+                Opacity = 1;
 
                 if (FormEvent == eClose || FormEvent == eHide)
                 {
@@ -184,12 +185,12 @@ namespace Infinium
 
                     if (FormEvent == eClose)
                     {
-                        this.Close();
+                        Close();
                     }
 
                     if (FormEvent == eHide)
                     {
-                        this.Hide();
+                        Hide();
                     }
 
                     return;
@@ -206,20 +207,20 @@ namespace Infinium
 
             if (FormEvent == eClose || FormEvent == eHide)
             {
-                if (Convert.ToDecimal(this.Opacity) != Convert.ToDecimal(0.00))
-                    this.Opacity = Convert.ToDouble(Convert.ToDecimal(this.Opacity) - Convert.ToDecimal(0.05));
+                if (Convert.ToDecimal(Opacity) != Convert.ToDecimal(0.00))
+                    Opacity = Convert.ToDouble(Convert.ToDecimal(Opacity) - Convert.ToDecimal(0.05));
                 else
                 {
                     AnimateTimer.Enabled = false;
 
                     if (FormEvent == eClose)
                     {
-                        this.Close();
+                        Close();
                     }
 
                     if (FormEvent == eHide)
                     {
-                        this.Hide();
+                        Hide();
                     }
                 }
 
@@ -229,15 +230,13 @@ namespace Infinium
 
             if (FormEvent == eShow || FormEvent == eShow)
             {
-                if (this.Opacity != 1)
-                    this.Opacity += 0.05;
+                if (Opacity != 1)
+                    Opacity += 0.05;
                 else
                 {
                     AnimateTimer.Enabled = false;
                     SplashForm.CloseS = true;
                 }
-
-                return;
             }
         }
 
@@ -264,7 +263,7 @@ namespace Infinium
             SpeedLabel.Text = FileManager.GetIntegerWithThousands(Convert.ToInt32(InfiniumDocuments.FM.CurrentSpeed)) + " КБайт/c";
 
             ProgressBar.Value = Convert.ToInt32(100 * InfiniumDocuments.FM.Position / InfiniumDocuments.FM.TotalFileSize);
-            PercentsLabel.Text = ProgressBar.Value.ToString() + " %";
+            PercentsLabel.Text = ProgressBar.Value + " %";
         }
 
         private void CancelMessagesButton_Click(object sender, EventArgs e)
@@ -361,7 +360,7 @@ namespace Infinium
                 T.Start();
             }
 
-            this.Activate();
+            Activate();
             Application.DoEvents();
 
             while (T.IsAlive)
@@ -371,7 +370,7 @@ namespace Infinium
 
                 if (CurrentUploadedFile != LastUploadedFile)
                 {
-                    LoadLabel.Text = "Загрузка прикрепленных файлов(" + CurrentUploadedFile.ToString() + " из " + TotalFilesCount.ToString() + ")";
+                    LoadLabel.Text = "Загрузка прикрепленных файлов(" + CurrentUploadedFile + " из " + TotalFilesCount + ")";
                     LastUploadedFile = CurrentUploadedFile;
                 }
 
@@ -414,15 +413,11 @@ namespace Infinium
                 InfiniumTips.ShowTip(this, 50, 85, "Корреспондент уже существует в базе", 3800);
                 return;
             }
-            else
-            {
-                InfiniumTips.ShowTip(this, 50, 85, "Корреспондент добавлен в базу данных", 3800);
 
-                InfiniumDocuments.RefillCorrespondents();
-                RecipientComboBox.SelectedValue = Convert.ToInt32(InfiniumDocuments.CorrespondentsDataTable.Select("CorrespondentName = '" + CorName + "'")[0]["CorrespondentID"]);
+            InfiniumTips.ShowTip(this, 50, 85, "Корреспондент добавлен в базу данных", 3800);
 
-                return;
-            }
+            InfiniumDocuments.RefillCorrespondents();
+            RecipientComboBox.SelectedValue = Convert.ToInt32(InfiniumDocuments.CorrespondentsDataTable.Select("CorrespondentName = '" + CorName + "'")[0]["CorrespondentID"]);
         }
 
         private void AttachButton_Click(object sender, EventArgs e)
@@ -437,7 +432,7 @@ namespace Infinium
 
         private void DetachButton_Click(object sender, EventArgs e)
         {
-            AttachmentsDataTable.Select("FileName = '" + AttachmentsGrid.SelectedRows[0].Cells["FileName"].FormattedValue.ToString() + "'")[0].Delete();
+            AttachmentsDataTable.Select("FileName = '" + AttachmentsGrid.SelectedRows[0].Cells["FileName"].FormattedValue + "'")[0].Delete();
             AttachmentsDataTable.AcceptChanges();
         }
 

@@ -621,10 +621,10 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport
             decimal OrderCost = 0;
 
             foreach (DataRow rows1 in FrontsOrdersDataTable.Rows)
-                FrontsCost += Convert.ToDecimal(rows1["Cost"]);
+                FrontsCost += Convert.ToDecimal(rows1["CurrencyCost"]);
 
             foreach (DataRow rows2 in DecorOrdersDataTable.Rows)
-                DecorCost += Convert.ToDecimal(rows2["Cost"]);
+                DecorCost += Convert.ToDecimal(rows2["CurrencyCost"]);
 
             OrderCost = FrontsCost + DecorCost;
             return OrderCost;
@@ -1121,7 +1121,7 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport
                         //RowIndex++;
                     }
                     Cell1 = sheet1.CreateRow(RowIndex).CreateCell(0);
-                    Cell1.SetCellValue("Итого, EUR: " + Decimal.Round(OrderCost, 2, MidpointRounding.AwayFromZero));
+                    Cell1.SetCellValue($"Итого, {Currency}: " + Decimal.Round(OrderCost, 2, MidpointRounding.AwayFromZero));
                     Cell1.CellStyle = HeaderWithoutBorderCS;
                 }
 
@@ -1588,7 +1588,7 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport
                         //RowIndex++;
                     }
                     Cell1 = sheet1.CreateRow(RowIndex).CreateCell(0);
-                    Cell1.SetCellValue("Итого, EUR: " + Decimal.Round(OrderCost, 2, MidpointRounding.AwayFromZero));
+                    Cell1.SetCellValue($"Итого, {Currency}: " + Decimal.Round(OrderCost, 2, MidpointRounding.AwayFromZero));
                     Cell1.CellStyle = HeaderWithoutBorderCS;
                 }
 

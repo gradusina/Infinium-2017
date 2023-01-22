@@ -7,21 +7,21 @@ namespace Infinium
 {
     public partial class PalleteLabelCheckForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
-        int FormEvent = 0;
+        private int FormEvent = 0;
 
-        PalleteTypeAction TypeAction;
-        LightStartForm LightStartForm;
+        private PalleteTypeAction TypeAction;
+        private LightStartForm LightStartForm;
 
 
         public PalleteCheckLabel CheckLabel;
 
         [DllImport("user32.dll")]
-        static extern IntPtr GetActiveWindow();
+        private static extern IntPtr GetActiveWindow();
 
         public PalleteLabelCheckForm(LightStartForm tLightStartForm)
         {

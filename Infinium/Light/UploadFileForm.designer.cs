@@ -1,11 +1,15 @@
-﻿namespace Infinium
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+using ComponentFactory.Krypton.Toolkit;
+
+namespace Infinium
 {
     partial class UploadFileForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -292,24 +296,24 @@
 
         #endregion
 
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge20;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge21;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge22;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge23;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton CancelFilesButton;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge19;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Label label2;
-        private ComponentFactory.Krypton.Toolkit.KryptonPalette StandardButtonsPalette;
-        private System.Windows.Forms.OpenFileDialog openFileDialog1;
-        private System.Windows.Forms.Timer AnimateTimer;
-        private System.Windows.Forms.Timer LoadTimer;
-        private ComponentFactory.Krypton.Toolkit.KryptonTextBox kryptonTextBox1;
-        private System.Windows.Forms.ToolTip toolTip1;
-        private System.Windows.Forms.Label LoadLabel;
-        private System.Windows.Forms.Label DownloadLabel;
-        private System.Windows.Forms.Label SpeedLabel;
-        private System.Windows.Forms.Label PercentsLabel;
-        private System.Windows.Forms.ProgressBar ProgressBar;
+        private KryptonBorderEdge kryptonBorderEdge20;
+        private KryptonBorderEdge kryptonBorderEdge21;
+        private KryptonBorderEdge kryptonBorderEdge22;
+        private KryptonBorderEdge kryptonBorderEdge23;
+        private KryptonButton CancelFilesButton;
+        private KryptonBorderEdge kryptonBorderEdge19;
+        private Panel panel1;
+        private Label label2;
+        private KryptonPalette StandardButtonsPalette;
+        private OpenFileDialog openFileDialog1;
+        private Timer AnimateTimer;
+        private Timer LoadTimer;
+        private KryptonTextBox kryptonTextBox1;
+        private ToolTip toolTip1;
+        private Label LoadLabel;
+        private Label DownloadLabel;
+        private Label SpeedLabel;
+        private Label PercentsLabel;
+        private ProgressBar ProgressBar;
     }
 }

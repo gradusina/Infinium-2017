@@ -3697,26 +3697,26 @@ INNER JOIN ClientsManagers ON Clients.ManagerID=ClientsManagers.ManagerID WHERE 
 
     public class VATReportToExcel
     {
-        HSSFWorkbook hssfworkbook;
-        HSSFSheet sheet1;
-        HSSFSheet sheet2;
+        private HSSFWorkbook hssfworkbook;
+        private HSSFSheet sheet1;
+        private HSSFSheet sheet2;
 
-        HSSFFont CurrencyF;
-        HSSFFont HeaderF;
-        HSSFFont OverdueSimpleF;
-        HSSFFont SimpleF;
-        HSSFFont TotalCountF;
-        HSSFCellStyle CountCS;
-        HSSFCellStyle BelCountCS;
-        HSSFCellStyle CurrencyCS;
-        HSSFCellStyle HeaderCS;
-        HSSFCellStyle OverdueCountCS;
-        HSSFCellStyle BelOverdueCountCS;
-        HSSFCellStyle OverdueSimpleCS;
-        HSSFCellStyle SimpleCS;
-        HSSFCellStyle TotalCS;
-        HSSFCellStyle TotalCountCS;
-        HSSFCellStyle BelTotalCountCS;
+        private HSSFFont CurrencyF;
+        private HSSFFont HeaderF;
+        private HSSFFont OverdueSimpleF;
+        private HSSFFont SimpleF;
+        private HSSFFont TotalCountF;
+        private HSSFCellStyle CountCS;
+        private HSSFCellStyle BelCountCS;
+        private HSSFCellStyle CurrencyCS;
+        private HSSFCellStyle HeaderCS;
+        private HSSFCellStyle OverdueCountCS;
+        private HSSFCellStyle BelOverdueCountCS;
+        private HSSFCellStyle OverdueSimpleCS;
+        private HSSFCellStyle SimpleCS;
+        private HSSFCellStyle TotalCS;
+        private HSSFCellStyle TotalCountCS;
+        private HSSFCellStyle BelTotalCountCS;
 
         public VATReportToExcel()
         {
@@ -4183,26 +4183,26 @@ INNER JOIN ClientsManagers ON Clients.ManagerID=ClientsManagers.ManagerID WHERE 
 
     public class ICReportToExcel
     {
-        HSSFWorkbook hssfworkbook;
-        HSSFSheet sheet1;
-        HSSFSheet sheet2;
+        private HSSFWorkbook hssfworkbook;
+        private HSSFSheet sheet1;
+        private HSSFSheet sheet2;
 
-        HSSFFont CurrencyF;
-        HSSFFont HeaderF;
-        HSSFFont OverdueSimpleF;
-        HSSFFont SimpleF;
-        HSSFFont TotalCountF;
-        HSSFCellStyle CountCS;
-        HSSFCellStyle BelCountCS;
-        HSSFCellStyle CurrencyCS;
-        HSSFCellStyle HeaderCS;
-        HSSFCellStyle OverdueCountCS;
-        HSSFCellStyle BelOverdueCountCS;
-        HSSFCellStyle OverdueSimpleCS;
-        HSSFCellStyle SimpleCS;
-        HSSFCellStyle TotalCS;
-        HSSFCellStyle TotalCountCS;
-        HSSFCellStyle BelTotalCountCS;
+        private HSSFFont CurrencyF;
+        private HSSFFont HeaderF;
+        private HSSFFont OverdueSimpleF;
+        private HSSFFont SimpleF;
+        private HSSFFont TotalCountF;
+        private HSSFCellStyle CountCS;
+        private HSSFCellStyle BelCountCS;
+        private HSSFCellStyle CurrencyCS;
+        private HSSFCellStyle HeaderCS;
+        private HSSFCellStyle OverdueCountCS;
+        private HSSFCellStyle BelOverdueCountCS;
+        private HSSFCellStyle OverdueSimpleCS;
+        private HSSFCellStyle SimpleCS;
+        private HSSFCellStyle TotalCS;
+        private HSSFCellStyle TotalCountCS;
+        private HSSFCellStyle BelTotalCountCS;
 
         public ICReportToExcel()
         {
@@ -4669,26 +4669,26 @@ INNER JOIN ClientsManagers ON Clients.ManagerID=ClientsManagers.ManagerID WHERE 
 
     public class DelayOfPaymentReportToExcel
     {
-        HSSFWorkbook hssfworkbook;
-        HSSFSheet sheet1;
-        HSSFSheet sheet2;
+        private HSSFWorkbook hssfworkbook;
+        private HSSFSheet sheet1;
+        private HSSFSheet sheet2;
 
-        HSSFFont CurrencyF;
-        HSSFFont HeaderF;
-        HSSFFont OverdueSimpleF;
-        HSSFFont SimpleF;
-        HSSFFont TotalCountF;
-        HSSFCellStyle CountCS;
-        HSSFCellStyle BelCountCS;
-        HSSFCellStyle CurrencyCS;
-        HSSFCellStyle HeaderCS;
-        HSSFCellStyle OverdueCountCS;
-        HSSFCellStyle BelOverdueCountCS;
-        HSSFCellStyle OverdueSimpleCS;
-        HSSFCellStyle SimpleCS;
-        HSSFCellStyle TotalCS;
-        HSSFCellStyle TotalCountCS;
-        HSSFCellStyle BelTotalCountCS;
+        private HSSFFont CurrencyF;
+        private HSSFFont HeaderF;
+        private HSSFFont OverdueSimpleF;
+        private HSSFFont SimpleF;
+        private HSSFFont TotalCountF;
+        private HSSFCellStyle CountCS;
+        private HSSFCellStyle BelCountCS;
+        private HSSFCellStyle CurrencyCS;
+        private HSSFCellStyle HeaderCS;
+        private HSSFCellStyle OverdueCountCS;
+        private HSSFCellStyle BelOverdueCountCS;
+        private HSSFCellStyle OverdueSimpleCS;
+        private HSSFCellStyle SimpleCS;
+        private HSSFCellStyle TotalCS;
+        private HSSFCellStyle TotalCountCS;
+        private HSSFCellStyle BelTotalCountCS;
 
         public DelayOfPaymentReportToExcel()
         {
@@ -5193,21 +5193,21 @@ INNER JOIN ClientsManagers ON Clients.ManagerID=ClientsManagers.ManagerID WHERE 
 
     public class CashReportToExcel
     {
-        HSSFWorkbook hssfworkbook;
-        HSSFSheet sheet1;
-        HSSFSheet sheet2;
-        HSSFFont CurrencyF;
-        HSSFFont HeaderF;
-        HSSFFont SimpleF;
-        HSSFFont TotalCountF;
-        HSSFCellStyle CountCS;
-        HSSFCellStyle BelCountCS;
-        HSSFCellStyle CurrencyCS;
-        HSSFCellStyle HeaderCS;
-        HSSFCellStyle SimpleCS;
-        HSSFCellStyle TotalCS;
-        HSSFCellStyle TotalCountCS;
-        HSSFCellStyle BelTotalCountCS;
+        private HSSFWorkbook hssfworkbook;
+        private HSSFSheet sheet1;
+        private HSSFSheet sheet2;
+        private HSSFFont CurrencyF;
+        private HSSFFont HeaderF;
+        private HSSFFont SimpleF;
+        private HSSFFont TotalCountF;
+        private HSSFCellStyle CountCS;
+        private HSSFCellStyle BelCountCS;
+        private HSSFCellStyle CurrencyCS;
+        private HSSFCellStyle HeaderCS;
+        private HSSFCellStyle SimpleCS;
+        private HSSFCellStyle TotalCS;
+        private HSSFCellStyle TotalCountCS;
+        private HSSFCellStyle BelTotalCountCS;
 
         public CashReportToExcel()
         {

@@ -7,17 +7,17 @@ namespace Infinium
 {
     public partial class MarketingBatchSelectMenu : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
-        int FactoryID = 1;
-        int FormEvent = 0;
+        private int FactoryID = 1;
+        private int FormEvent = 0;
 
-        Form MainForm = null;
+        private Form MainForm = null;
 
-        BatchManager BatchManager;
+        private BatchManager BatchManager;
 
         public MarketingBatchSelectMenu(Form tMainForm,
             BatchManager tBatchManager, int iFactoryID)

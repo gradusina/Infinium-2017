@@ -9,20 +9,20 @@ namespace Infinium
     public partial class AddContractForm : Form
     {
         public bool Ok = false;
-        bool Add;
-        int FormEvent = 0;
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        Form TopForm = null;
+        private bool Add;
+        private int FormEvent = 0;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private Form TopForm = null;
 
-        string ClientID;
-        string DocNumber, Cost, CurrencyTypeID, ContractId, FirmID;
-        DateTime EndDateContract, StartDateContract;
+        private string ClientID;
+        private string DocNumber, Cost, CurrencyTypeID, ContractId, FirmID;
+        private DateTime EndDateContract, StartDateContract;
 
-        DataTable TableCurrency, TableClients, TableFactory;
+        private DataTable TableCurrency, TableClients, TableFactory;
 
-        ClientPayments ClientPayments;
+        private ClientPayments ClientPayments;
 
         public AddContractForm(string tClientID, ref ClientPayments tClientPayments, ref DataTable tTableCurrency, ref DataTable tTableClients, ref Form tTopForm, ref DataTable tTableFactory)
         {

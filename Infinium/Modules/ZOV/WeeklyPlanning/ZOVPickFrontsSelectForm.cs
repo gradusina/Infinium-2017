@@ -13,21 +13,21 @@ namespace Infinium
         public bool bFrontType = true;
         public bool bFrameColor = false;
 
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
-        int FormEvent = 0;
-        int FactoryID = 1;
+        private int FormEvent = 0;
+        private int FactoryID = 1;
 
-        DataTable Fronts;
+        private DataTable Fronts;
 
-        List<int> listBox1_selectionhistory;
+        private List<int> listBox1_selectionhistory;
 
-        ArrayList FrontIDs;
+        private ArrayList FrontIDs;
 
-        Form MainForm = null;
+        private Form MainForm = null;
 
         public ZOVPickFrontsSelectForm(int iFactoryID, ref ArrayList aFrontIDs)
         {

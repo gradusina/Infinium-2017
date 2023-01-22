@@ -10,22 +10,22 @@ namespace Infinium
 {
     public partial class ScaningDyeingAssignmentsForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
-        int FormEvent = 0;
-        string BarcodeText = string.Empty;
-        LightStartForm LightStartForm;
-        Form TopForm = null;
+        private int FormEvent = 0;
+        private string BarcodeText = string.Empty;
+        private LightStartForm LightStartForm;
+        private Form TopForm = null;
 
-        ScaningDyeingAssignments ScaningDyeingAssignmentsmanager;
-        RegistrationDyeingWorkMan RegistrationDyeingWorkM;
-        RegistrationDyeingWorkWoman RegistrationDyeingWorkW;
+        private ScaningDyeingAssignments ScaningDyeingAssignmentsmanager;
+        private RegistrationDyeingWorkMan RegistrationDyeingWorkM;
+        private RegistrationDyeingWorkWoman RegistrationDyeingWorkW;
 
         [DllImport("user32.dll")]
-        static extern IntPtr GetActiveWindow();
+        private static extern IntPtr GetActiveWindow();
 
         public ScaningDyeingAssignmentsForm(LightStartForm tLightStartForm)
         {

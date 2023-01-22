@@ -8,18 +8,18 @@ namespace Infinium
 {
     public partial class CabFurnitureOperationsForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
 
-        int FormEvent = 0;
-        int TechStoreID, CoverID, PatinaID, TechLength, TechHeight, TechWidth = 0;
-        string TechStoreName, CoverName, PatinaName = string.Empty;
-        int ItemsCount = 0;
-        Form MainForm = null;
-        Form TopForm = null;
+        private int FormEvent = 0;
+        private int TechStoreID, CoverID, PatinaID, TechLength, TechHeight, TechWidth = 0;
+        private string TechStoreName, CoverName, PatinaName = string.Empty;
+        private int ItemsCount = 0;
+        private Form MainForm = null;
+        private Form TopForm = null;
 
-        AssignmentsManager AssignmentsManager;
+        private AssignmentsManager AssignmentsManager;
 
         public CabFurnitureOperationsForm(Form tMainForm, string sTechStoreName, int iTechStoreID, int iCoverID, int iPatinaID, int iLength, int iHeight, int iWidth, string sCoverName, string sPatinaName, int iItemsCount, AssignmentsManager tAssignmentsManager)
         {

@@ -24,8 +24,8 @@ namespace Infinium.Modules.ZOV
 
     public class FrontsCatalogOrder
     {
-        ComponentFactory.Krypton.Toolkit.KryptonComboBox HeightEdit;
-        ComponentFactory.Krypton.Toolkit.KryptonComboBox WidthEdit;
+        private readonly ComponentFactory.Krypton.Toolkit.KryptonComboBox HeightEdit;
+        private readonly ComponentFactory.Krypton.Toolkit.KryptonComboBox WidthEdit;
 
         private DataTable TempFrontsConfigDataTable = null;
         private DataTable TempFrontsDataTable = null;
@@ -1420,9 +1420,9 @@ namespace Infinium.Modules.ZOV
 
     public class DecorCatalogOrder
     {
-        ComponentFactory.Krypton.Toolkit.KryptonComboBox LengthEdit;
-        ComponentFactory.Krypton.Toolkit.KryptonComboBox HeightEdit;
-        ComponentFactory.Krypton.Toolkit.KryptonComboBox WidthEdit;
+        private readonly ComponentFactory.Krypton.Toolkit.KryptonComboBox LengthEdit;
+        private readonly ComponentFactory.Krypton.Toolkit.KryptonComboBox HeightEdit;
+        private readonly ComponentFactory.Krypton.Toolkit.KryptonComboBox WidthEdit;
 
         public int DecorProductsCount = 0;
 
@@ -2752,7 +2752,7 @@ namespace Infinium.Modules.ZOV
         private BindingSource TechnoInsetTypesBindingSource = null;
         private BindingSource TechnoInsetColorsBindingSource = null;
 
-        FrontsCatalogOrder FrontsCatalogOrder;
+        private readonly FrontsCatalogOrder FrontsCatalogOrder;
 
         public DoubleFrontsOrders(ref FrontsCatalogOrder tFrontsCatalogOrder)
         {
@@ -3256,7 +3256,7 @@ namespace Infinium.Modules.ZOV
         private BindingSource DecorBS = null;
         private BindingSource ColorsBS = null;
 
-        DecorCatalogOrder DecorCatalogOrder;
+        private readonly DecorCatalogOrder DecorCatalogOrder;
 
         public DoubleDecorOrders(ref DecorCatalogOrder tDecorCatalogOrder)
         {
@@ -3669,9 +3669,9 @@ namespace Infinium.Modules.ZOV
     public class MainOrdersFrontsOrders
     {
         private PercentageDataGrid DoubleFrontsOrdersDataGrid = null;
-        private PercentageDataGrid FrontsOrdersDataGrid = null;
+        private readonly PercentageDataGrid FrontsOrdersDataGrid = null;
 
-        int CurrentMainOrderID = -1;
+        private int CurrentMainOrderID = -1;
 
         public bool Debts = false;
 
@@ -4523,15 +4523,15 @@ namespace Infinium.Modules.ZOV
 
     public class MainOrdersDecorOrders
     {
-        int CurrentMainOrderID = -1;
+        private int CurrentMainOrderID = -1;
 
         public bool Debts = false;
 
-        private DevExpress.XtraTab.XtraTabControl DecorTabControl = null;
+        private readonly DevExpress.XtraTab.XtraTabControl DecorTabControl = null;
 
-        DecorCatalogOrder DecorCatalogOrder = null;
+        private readonly DecorCatalogOrder DecorCatalogOrder = null;
 
-        PercentageDataGrid MainOrdersFrontsOrdersDataGrid;
+        private readonly PercentageDataGrid MainOrdersFrontsOrdersDataGrid;
 
         public DataTable DecorOrdersDataTable = null;
         public DataTable[] DecorItemOrdersDataTables = null;
@@ -5228,7 +5228,7 @@ namespace Infinium.Modules.ZOV
 
     public class Log
     {
-        private static object sync = new object();
+        private static readonly object sync = new object();
         public static void Write(Exception ex)
         {
             try
@@ -5257,8 +5257,8 @@ namespace Infinium.Modules.ZOV
     public class FrontsOrders
     {
         public bool HasExcluzive = false;
-        int SubClientID = 0;
-        private PercentageDataGrid FrontsOrdersDataGrid = null;
+        private int SubClientID = 0;
+        private readonly PercentageDataGrid FrontsOrdersDataGrid = null;
         private PercentageDataGrid CupboardsDataGrid = null;
 
         public FrontsCatalogOrder FrontsCatalogOrder = null;
@@ -5267,8 +5267,9 @@ namespace Infinium.Modules.ZOV
         public bool bSaveCupboards = false;
         public bool bCupboardExist = false;
 
-        DataTable OldFrontsTable;
-        DataTable NewFrontsTable;
+        private DataTable OldFrontsTable;
+
+        private DataTable NewFrontsTable;
         //DataTable DifferenceFrontsTable;
 
         public DataTable ExcluziveDataTable = null;
@@ -5338,7 +5339,7 @@ namespace Infinium.Modules.ZOV
             public int PatinaID { get; set; }
         }
 
-        List<ExcluziveCatalog> excluziveCatalogList;
+        private List<ExcluziveCatalog> excluziveCatalogList;
 
         public void ExcluziveCatalogList()
         {
@@ -6164,7 +6165,7 @@ namespace Infinium.Modules.ZOV
             FrontsOrdersDataGrid.CellFormatting += FrontsOrdersDataGrid_CellFormatting;
         }
 
-        void FrontsOrdersDataGrid_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        private void FrontsOrdersDataGrid_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             PercentageDataGrid grid = (PercentageDataGrid)sender;
             if (grid.Columns.Contains("PatinaColumn") && (e.ColumnIndex == grid.Columns["PatinaColumn"].Index)
@@ -7516,15 +7517,15 @@ namespace Infinium.Modules.ZOV
     public class DecorOrders
     {
         public bool HasExcluzive = false;
-        int SubClientID = 0;
-        private DevExpress.XtraTab.XtraTabControl DecorTabControl = null;
+        private int SubClientID = 0;
+        private readonly DevExpress.XtraTab.XtraTabControl DecorTabControl = null;
 
         public DecorCatalogOrder DecorCatalogOrder = null;
 
-        PercentageDataGrid MainOrdersFrontsOrdersDataGrid;
+        private readonly PercentageDataGrid MainOrdersFrontsOrdersDataGrid;
 
-        DataTable OldDecorTable;
-        DataTable NewDecorTable;
+        private DataTable OldDecorTable;
+        private DataTable NewDecorTable;
 
         public DataTable ExcluziveDataTable = null;
         public DataTable TempDecorOrdersDataTable = null;
@@ -7557,7 +7558,7 @@ namespace Infinium.Modules.ZOV
             public int DecorID { get; set; }
         }
 
-        List<ExcluziveCatalog> excluziveCatalogList;
+        private List<ExcluziveCatalog> excluziveCatalogList;
 
         public void ExcluziveCatalogList()
         {
@@ -8107,14 +8108,14 @@ namespace Infinium.Modules.ZOV
             DecorTabControl.Visible = false;
         }
 
-        void DecorOrders_CellValueNeeded(object sender, DataGridViewCellValueEventArgs e)
+        private void DecorOrders_CellValueNeeded(object sender, DataGridViewCellValueEventArgs e)
         {
             PercentageDataGrid grid = (PercentageDataGrid)sender;
             if (e.RowIndex >= 0 && grid.Columns[e.ColumnIndex].Name == "IndexNumber")
                 e.Value = e.RowIndex + 1;
         }
 
-        void DecorOrders_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        private void DecorOrders_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
         {
             if (e.Control is ComboBox)
             {
@@ -8976,18 +8977,18 @@ namespace Infinium.Modules.ZOV
 
     public class FrontsCalculate
     {
-        bool Sale = false;
+        private bool Sale = false;
 
-        DataTable FrontsConfigDataTable = null;
-        DataTable DecorConfigDataTable = null;
-        DataTable TechStoreDataTable = null;
-        DataTable StandardDataTable = null;
-        DataTable MeasuresDataTable = null;
-        DataTable InsetTypesDataTable = null;
-        DataTable InsetPriceDataTable = null;
-        DataTable FrontsDataTable = null;
-        DataTable AluminiumFrontsDataTable = null;
-        DataTable InsetMarginsDataTable = null;
+        private DataTable FrontsConfigDataTable = null;
+        private DataTable DecorConfigDataTable = null;
+        private DataTable TechStoreDataTable = null;
+        private DataTable StandardDataTable = null;
+        private DataTable MeasuresDataTable = null;
+        private DataTable InsetTypesDataTable = null;
+        private DataTable InsetPriceDataTable = null;
+        private DataTable FrontsDataTable = null;
+        private DataTable AluminiumFrontsDataTable = null;
+        private DataTable InsetMarginsDataTable = null;
 
         public FrontsCalculate()
         {
@@ -9486,17 +9487,21 @@ namespace Infinium.Modules.ZOV
             if (FrontsConfigRow.Count() > 0)
                 ProfileWeight = Convert.ToDecimal(FrontsConfigRow[0]["Weight"]);
 
-            //для Женевы и Тафеля глухой - вес квадрата профиля на площадь фасада
             int FrontID = Convert.ToInt32(FrontsOrdersRow["FrontID"]);
-            if (FrontID == 30504 || FrontID == 30505 || FrontID == 30506 ||
-                FrontID == 30364 || FrontID == 30366 || FrontID == 30367 ||
-                FrontID == 30501 || FrontID == 30502 || FrontID == 30503 ||
-                FrontID == 16269 || FrontID == 28945 || FrontID == 41327 || FrontID == 41328 || FrontID == 41331 || FrontID == 27914 || FrontID == 29597 || FrontID == 3727 || FrontID == 3728 || FrontID == 3729 ||
-                FrontID == 3730 || FrontID == 3731 || FrontID == 3732 || FrontID == 3733 || FrontID == 3734 ||
-                FrontID == 3735 || FrontID == 3736 || FrontID == 3737 || FrontID == 3739 || FrontID == 3740 ||
-                FrontID == 3741 || FrontID == 3742 || FrontID == 3743 || FrontID == 3744 || FrontID == 3745 ||
-                FrontID == 3746 || FrontID == 3747 || FrontID == 3748 || FrontID == 15108 || FrontID == 3662 || FrontID == 3663 || FrontID == 3664 || FrontID == 15760)
+            if (Security.IsFrontsSquareCalc(FrontID))
+            {
                 return FrontWidth * FrontHeight / 1000000 * ProfileWeight;
+            }
+            //if (FrontID == 30504 || FrontID == 30505 || FrontID == 30506 ||
+            //    FrontID == 30364 || FrontID == 30366 || FrontID == 30367 ||
+            //    FrontID == 30501 || FrontID == 30502 || FrontID == 30503 ||
+            //    FrontID == 16269 || FrontID == 28945 || FrontID == 41327 || FrontID == 41328 || FrontID == 41331 || 
+            //    FrontID == 27914 || FrontID == 29597 || FrontID == 3727 || FrontID == 3728 || FrontID == 3729 ||
+            //    FrontID == 3730 || FrontID == 3731 || FrontID == 3732 || FrontID == 3733 || FrontID == 3734 ||
+            //    FrontID == 3735 || FrontID == 3736 || FrontID == 3737 || FrontID == 3739 || FrontID == 3740 ||
+            //    FrontID == 3741 || FrontID == 3742 || FrontID == 3743 || FrontID == 3744 || FrontID == 3745 ||
+            //    FrontID == 3746 || FrontID == 3747 || FrontID == 3748 || FrontID == 15108 || FrontID == 3662 || FrontID == 3663 || FrontID == 3664 || FrontID == 15760)
+            //    return FrontWidth * FrontHeight / 1000000 * ProfileWeight;
             else
             {
                 DataRow[] DecorConfigRow = TechStoreDataTable.Select("TechStoreID = " + FrontsConfigRow[0]["ProfileID"].ToString());
@@ -9651,8 +9656,8 @@ namespace Infinium.Modules.ZOV
 
     public class DecorCalculate
     {
-        bool Sale = false;
-        DataTable DecorConfigDataTable = null;
+        private bool Sale = false;
+        private DataTable DecorConfigDataTable = null;
 
         public DecorCalculate()
         {
@@ -9997,10 +10002,10 @@ namespace Infinium.Modules.ZOV
         public MainOrdersFrontsOrders MainOrdersFrontsOrders = null;
         public MainOrdersDecorOrders MainOrdersDecorOrders = null;
 
-        PercentageDataGrid DebtsDatGrid = null;
-        PercentageDataGrid DispatchsDataGrid = null;
+        private readonly PercentageDataGrid DebtsDatGrid = null;
+        private readonly PercentageDataGrid DispatchsDataGrid = null;
 
-        private DevExpress.XtraTab.XtraTabControl OrdersTabControl = null;
+        private readonly DevExpress.XtraTab.XtraTabControl OrdersTabControl = null;
 
         public DataTable ClientsDataTable = null;
         public DataTable DispatchsDataTable = null;
@@ -10219,7 +10224,7 @@ namespace Infinium.Modules.ZOV
 
         public PercentageDataGrid MainOrdersDataGrid = null;
         public PercentageDataGrid MegaOrdersDataGrid = null;
-        private DevExpress.XtraTab.XtraTabControl OrdersTabControl = null;
+        private readonly DevExpress.XtraTab.XtraTabControl OrdersTabControl = null;
 
         public DataTable ManagersDataTable = null;
         public DataTable ClientsDataTable = null;
@@ -13758,10 +13763,10 @@ namespace Infinium.Modules.ZOV
 
     public class ZOVProductionReport : IAllFrontParameterName, IIsMarsel
     {
-        DataTable ClientsDataTable = null;
+        private readonly DataTable ClientsDataTable = null;
 
-        DataTable FrontsResultDataTable = null;
-        DataTable[] DecorResultDataTable = null;
+        private DataTable FrontsResultDataTable = null;
+        private DataTable[] DecorResultDataTable = null;
 
         private DataTable FrontsOrdersDataTable = null;
         private DataTable DecorOrdersDataTable = null;
@@ -13769,14 +13774,14 @@ namespace Infinium.Modules.ZOV
         private DataTable FrontsDataTable = null;
         private DataTable FrameColorsDataTable = null;
         private DataTable PatinaDataTable = null;
-        DataTable PatinaRALDataTable = null;
+        private readonly DataTable PatinaRALDataTable = null;
         private DataTable InsetTypesDataTable = null;
         private DataTable InsetColorsDataTable = null;
         private DataTable TechnoInsetTypesDataTable = null;
         private DataTable TechnoInsetColorsDataTable = null;
-        private DataTable FrontsDrillTypesDataTable = null;
+        private readonly DataTable FrontsDrillTypesDataTable = null;
 
-        Modules.ZOV.DecorCatalogOrder DecorCatalog = null;
+        private readonly Modules.ZOV.DecorCatalogOrder DecorCatalog = null;
 
         private void GetColorsDT()
         {
@@ -18090,36 +18095,36 @@ namespace Infinium.Modules.ZOV
 
     public class PaymentWeeks
     {
-        PercentageDataGrid PaymentWeeksDataGrid = null;
-        PercentageDataGrid TempPaymentDetailDataGrid = null;
-        PercentageDataGrid PaymentDetailDataGrid = null;
+        private readonly PercentageDataGrid PaymentWeeksDataGrid = null;
+        private readonly PercentageDataGrid TempPaymentDetailDataGrid = null;
+        private readonly PercentageDataGrid PaymentDetailDataGrid = null;
 
-        SqlDataAdapter PaymentWeeksDataAdapter = null;
-        SqlCommandBuilder PaymentWeeksCommandBuilder = null;
-        DataTable PaymentWeeksDataTable = null;
-        DataTable ClientsDataTable = null;
-        DataTable DebtsDataTable = null;
+        private SqlDataAdapter PaymentWeeksDataAdapter = null;
+        private SqlCommandBuilder PaymentWeeksCommandBuilder = null;
+        private DataTable PaymentWeeksDataTable = null;
+        private DataTable ClientsDataTable = null;
+        private DataTable DebtsDataTable = null;
 
-        BindingSource PaymentWeeksBindingSource = null;
-        BindingSource PaymentDetailBindingSource = null;
-        BindingSource TempPaymentDetailBindingSource = null;
-        BindingSource DebtTypesBindingSource = null;
+        private BindingSource PaymentWeeksBindingSource = null;
+        private BindingSource PaymentDetailBindingSource = null;
+        private BindingSource TempPaymentDetailBindingSource = null;
+        private BindingSource DebtTypesBindingSource = null;
 
-        SqlDataAdapter MegaOrdersDA = null;
-        SqlCommandBuilder MegaOrdersCB = null;
-        DataTable MegaOrdersDataTable = null;
+        private SqlDataAdapter MegaOrdersDA = null;
+        private SqlCommandBuilder MegaOrdersCB = null;
+        private DataTable MegaOrdersDataTable = null;
 
-        DataTable PaymentDetailDataTable = null;
-        SqlDataAdapter PaymentDetailDA = null;
-        SqlCommandBuilder PaymentDetailCB = null;
+        private DataTable PaymentDetailDataTable = null;
+        private SqlDataAdapter PaymentDetailDA = null;
+        private SqlCommandBuilder PaymentDetailCB = null;
 
-        SqlDataAdapter TempPaymentDetailDA = null;
-        SqlCommandBuilder TempPaymentDetailCB = null;
-        DataTable TempPaymentDetailDataTable = null;
+        private SqlDataAdapter TempPaymentDetailDA = null;
+        private SqlCommandBuilder TempPaymentDetailCB = null;
+        private DataTable TempPaymentDetailDataTable = null;
 
-        SqlDataAdapter MainOrdersDA = null;
-        SqlCommandBuilder MainOrdersCB = null;
-        DataTable MainOrdersDataTable = null;
+        private SqlDataAdapter MainOrdersDA = null;
+        private SqlCommandBuilder MainOrdersCB = null;
+        private DataTable MainOrdersDataTable = null;
 
         private DataGridViewComboBoxColumn TempDebtTypeColumn = null;
         private DataGridViewComboBoxColumn DebtTypeColumn = null;

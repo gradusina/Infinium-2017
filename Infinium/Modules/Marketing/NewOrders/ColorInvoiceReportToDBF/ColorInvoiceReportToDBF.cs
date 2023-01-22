@@ -13,7 +13,7 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDbf
 {
     public class ColorInvoiceReportToDbf
     {
-        decimal VAT = 1.0m;
+        private decimal VAT = 1.0m;
         public ColorInvoiceFrontsReportToDbf FrontsReport;
         public ColorInvoiceDecorReportToDbf DecorReport = null;
         //HSSFWorkbook hssfworkbook;
@@ -976,9 +976,9 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDbf
                 Cell1.SetCellValue("Стоимость с транс, " + Currency);
                 Cell1.CellStyle = SimpleHeaderCS;
 
-                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
-                Cell1.SetCellValue("Курс, " + Currency);
-                Cell1.CellStyle = SimpleHeaderCS;
+                //Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                //Cell1.SetCellValue("Курс, " + Currency);
+                //Cell1.CellStyle = SimpleHeaderCS;
 
                 Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                 Cell1.SetCellValue("Вес, кг. ");
@@ -1025,9 +1025,9 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDbf
                         Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                         Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["CostWithTransport"]));
                         Cell1.CellStyle = PriceBelCS;
-                        Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
-                        Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["PaymentRate"]));
-                        Cell1.CellStyle = CurrencyCS;
+                        //Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                        //Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["PaymentRate"]));
+                        //Cell1.CellStyle = CurrencyCS;
                     }
                     else
                     {
@@ -1043,9 +1043,9 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDbf
                         Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                         Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["CostWithTransport"]));
                         Cell1.CellStyle = PriceForeignCS;
-                        Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
-                        Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["PaymentRate"]));
-                        Cell1.CellStyle = CurrencyCS;
+                        //Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                        //Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["PaymentRate"]));
+                        //Cell1.CellStyle = CurrencyCS;
                     }
                     Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                     Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["Weight"]));
@@ -1073,7 +1073,7 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDbf
                     Cell1 = sheet1.CreateRow(pos++).CreateCell(8);
                     Cell1.SetCellValue(Convert.ToDouble(TransportAndOtherProfil));
                     Cell1.CellStyle = SummaryWithoutBorderBelCS;
-                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(10);
+                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(9);
                     Cell1.SetCellValue(Convert.ToDouble(WeightProfil));
                     Cell1.CellStyle = SummaryWeightCS;
                 }
@@ -1091,7 +1091,7 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDbf
                     Cell1 = sheet1.CreateRow(pos++).CreateCell(8);
                     Cell1.SetCellValue(Convert.ToDouble(TransportAndOtherProfil));
                     Cell1.CellStyle = SummaryWithoutBorderForeignCS;
-                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(10);
+                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(9);
                     Cell1.SetCellValue(Convert.ToDouble(WeightProfil));
                     Cell1.CellStyle = SummaryWeightCS;
                 }
@@ -1143,9 +1143,9 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDbf
                 Cell1.SetCellValue("Стоимость с транс, " + Currency);
                 Cell1.CellStyle = SimpleHeaderCS;
 
-                Cell1 = sheet1.CreateRow(pos).CreateCell(7);
-                Cell1.SetCellValue("Курс, " + Currency);
-                Cell1.CellStyle = SimpleHeaderCS;
+                //Cell1 = sheet1.CreateRow(pos).CreateCell(7);
+                //Cell1.SetCellValue("Курс, " + Currency);
+                //Cell1.CellStyle = SimpleHeaderCS;
 
                 Cell1 = sheet1.CreateRow(pos).CreateCell(8);
                 Cell1.SetCellValue("Вес, кг. ");
@@ -1158,7 +1158,8 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDbf
 
                 for (int i = 0; i < TPSReportTable.Rows.Count; i++)
                 {
-                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    displayIndex = 0;
+                       Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                     Cell1.SetCellValue(TPSReportTable.Rows[i]["UNN"].ToString());
                     Cell1.CellStyle = SimpleCS;
                     Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
@@ -1190,9 +1191,9 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDbf
                         Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                         Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["Cost"]));
                         Cell1.CellStyle = PriceBelCS;
-                        Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
-                        Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["PaymentRate"]));
-                        Cell1.CellStyle = CurrencyCS;
+                        //Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                        //Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["PaymentRate"]));
+                        //Cell1.CellStyle = CurrencyCS;
                     }
                     else
                     {
@@ -1208,9 +1209,9 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDbf
                         Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                         Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["CostWithTransport"]));
                         Cell1.CellStyle = PriceForeignCS;
-                        Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
-                        Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["PaymentRate"]));
-                        Cell1.CellStyle = CurrencyCS;
+                        //Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                        //Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["PaymentRate"]));
+                        //Cell1.CellStyle = CurrencyCS;
                     }
                     Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                     Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["Weight"]));
@@ -1238,7 +1239,7 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDbf
                     Cell1 = sheet1.CreateRow(pos++).CreateCell(8);
                     Cell1.SetCellValue(Convert.ToDouble(TransportAndOtherTPS));
                     Cell1.CellStyle = SummaryWithoutBorderBelCS;
-                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(10);
+                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(9);
                     Cell1.SetCellValue(Convert.ToDouble(WeightTPS));
                     Cell1.CellStyle = SummaryWeightCS;
                 }
@@ -1256,7 +1257,7 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDbf
                     Cell1 = sheet1.CreateRow(pos++).CreateCell(8);
                     Cell1.SetCellValue(Convert.ToDouble(TransportAndOtherTPS));
                     Cell1.CellStyle = SummaryWithoutBorderForeignCS;
-                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(10);
+                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(9);
                     Cell1.SetCellValue(Convert.ToDouble(WeightTPS));
                     Cell1.CellStyle = SummaryWeightCS;
                 }
@@ -1905,9 +1906,9 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDbf
                 Cell1.SetCellValue("Стоимость с транс, " + Currency);
                 Cell1.CellStyle = SimpleHeaderCS;
 
-                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
-                Cell1.SetCellValue("Курс, " + Currency);
-                Cell1.CellStyle = SimpleHeaderCS;
+                //Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                //Cell1.SetCellValue("Курс, " + Currency);
+                //Cell1.CellStyle = SimpleHeaderCS;
 
                 Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                 Cell1.SetCellValue("Вес, кг. ");
@@ -1954,9 +1955,9 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDbf
                         Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                         Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["CostWithTransport"]));
                         Cell1.CellStyle = PriceBelCS;
-                        Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
-                        Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["PaymentRate"]));
-                        Cell1.CellStyle = CurrencyCS;
+                        //Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                        //Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["PaymentRate"]));
+                        //Cell1.CellStyle = CurrencyCS;
                     }
                     else
                     {
@@ -1972,9 +1973,9 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDbf
                         Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                         Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["CostWithTransport"]));
                         Cell1.CellStyle = PriceForeignCS;
-                        Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
-                        Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["PaymentRate"]));
-                        Cell1.CellStyle = CurrencyCS;
+                        //Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                        //Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["PaymentRate"]));
+                        //Cell1.CellStyle = CurrencyCS;
                     }
                     Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                     Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["Weight"]));
@@ -2002,7 +2003,7 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDbf
                     Cell1 = sheet1.CreateRow(pos++).CreateCell(8);
                     Cell1.SetCellValue(Convert.ToDouble(TransportAndOtherProfil));
                     Cell1.CellStyle = SummaryWithoutBorderBelCS;
-                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(10);
+                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(9);
                     Cell1.SetCellValue(Convert.ToDouble(WeightProfil));
                     Cell1.CellStyle = SummaryWeightCS;
                 }
@@ -2020,7 +2021,7 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDbf
                     Cell1 = sheet1.CreateRow(pos++).CreateCell(8);
                     Cell1.SetCellValue(Convert.ToDouble(TransportAndOtherProfil));
                     Cell1.CellStyle = SummaryWithoutBorderForeignCS;
-                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(10);
+                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(9);
                     Cell1.SetCellValue(Convert.ToDouble(WeightProfil));
                     Cell1.CellStyle = SummaryWeightCS;
                 }
@@ -2072,9 +2073,9 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDbf
                 Cell1.SetCellValue("Стоимость с транс, " + Currency);
                 Cell1.CellStyle = SimpleHeaderCS;
 
-                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
-                Cell1.SetCellValue("Курс, " + Currency);
-                Cell1.CellStyle = SimpleHeaderCS;
+                //Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                //Cell1.SetCellValue("Курс, " + Currency);
+                //Cell1.CellStyle = SimpleHeaderCS;
 
                 Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                 Cell1.SetCellValue("Вес, кг. ");
@@ -2121,9 +2122,9 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDbf
                         Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                         Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["Cost"]));
                         Cell1.CellStyle = PriceBelCS;
-                        Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
-                        Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["PaymentRate"]));
-                        Cell1.CellStyle = CurrencyCS;
+                        //Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                        //Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["PaymentRate"]));
+                        //Cell1.CellStyle = CurrencyCS;
                     }
                     else
                     {
@@ -2139,9 +2140,9 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDbf
                         Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                         Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["CostWithTransport"]));
                         Cell1.CellStyle = PriceForeignCS;
-                        Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
-                        Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["PaymentRate"]));
-                        Cell1.CellStyle = CurrencyCS;
+                        //Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                        //Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["PaymentRate"]));
+                        //Cell1.CellStyle = CurrencyCS;
                     }
                     Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                     Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["Weight"]));
@@ -2169,7 +2170,7 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDbf
                     Cell1 = sheet1.CreateRow(pos++).CreateCell(8);
                     Cell1.SetCellValue(Convert.ToDouble(TransportAndOtherTPS));
                     Cell1.CellStyle = SummaryWithoutBorderBelCS;
-                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(10);
+                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(9);
                     Cell1.SetCellValue(Convert.ToDouble(WeightTPS));
                     Cell1.CellStyle = SummaryWeightCS;
                 }
@@ -2187,7 +2188,7 @@ namespace Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDbf
                     Cell1 = sheet1.CreateRow(pos++).CreateCell(8);
                     Cell1.SetCellValue(Convert.ToDouble(TransportAndOtherTPS));
                     Cell1.CellStyle = SummaryWithoutBorderForeignCS;
-                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(10);
+                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(9);
                     Cell1.SetCellValue(Convert.ToDouble(WeightTPS));
                     Cell1.CellStyle = SummaryWeightCS;
                 }

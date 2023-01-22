@@ -7,23 +7,23 @@ namespace Infinium
 {
     public partial class DocumentAttributesForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
 
-        int FormEvent = 0;
+        private int FormEvent;
 
-        Form TopForm;
+        private Form TopForm;
 
-        InfiniumFiles InfiniumDocuments;
+        private InfiniumFiles InfiniumDocuments;
 
-        bool bC = false;
+        private bool bC;
 
-        public bool bCanceled = false;
+        public bool bCanceled;
 
-        public bool bFirstSign = false;
+        public bool bFirstSign;
 
-        public DocumentAttributesForm(ref Infinium.InfiniumFiles tInfiniumDocuments, ref Form tTopForm)
+        public DocumentAttributesForm(ref InfiniumFiles tInfiniumDocuments, ref Form tTopForm)
         {
             InitializeComponent();
 
@@ -59,7 +59,7 @@ namespace Infinium
         {
             if (!DatabaseConfigsManager.Animation)
             {
-                this.Opacity = 1;
+                Opacity = 1;
 
                 if (FormEvent == eClose || FormEvent == eHide)
                 {
@@ -67,12 +67,12 @@ namespace Infinium
 
                     if (FormEvent == eClose)
                     {
-                        this.Close();
+                        Close();
                     }
 
                     if (FormEvent == eHide)
                     {
-                        this.Hide();
+                        Hide();
                     }
 
                     return;
@@ -89,20 +89,20 @@ namespace Infinium
 
             if (FormEvent == eClose || FormEvent == eHide)
             {
-                if (Convert.ToDecimal(this.Opacity) != Convert.ToDecimal(0.00))
-                    this.Opacity = Convert.ToDouble(Convert.ToDecimal(this.Opacity) - Convert.ToDecimal(0.05));
+                if (Convert.ToDecimal(Opacity) != Convert.ToDecimal(0.00))
+                    Opacity = Convert.ToDouble(Convert.ToDecimal(Opacity) - Convert.ToDecimal(0.05));
                 else
                 {
                     AnimateTimer.Enabled = false;
 
                     if (FormEvent == eClose)
                     {
-                        this.Close();
+                        Close();
                     }
 
                     if (FormEvent == eHide)
                     {
-                        this.Hide();
+                        Hide();
                     }
                 }
 
@@ -112,15 +112,13 @@ namespace Infinium
 
             if (FormEvent == eShow)
             {
-                if (this.Opacity != 1)
-                    this.Opacity += 0.05;
+                if (Opacity != 1)
+                    Opacity += 0.05;
                 else
                 {
                     AnimateTimer.Enabled = false;
                     SplashForm.CloseS = true;
                 }
-
-                return;
             }
         }
 

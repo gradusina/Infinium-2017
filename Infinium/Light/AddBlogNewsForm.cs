@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Data;
+using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -8,23 +9,23 @@ namespace Infinium
 {
     public partial class AddBlogNewsForm : Form
     {
-        Infinium.CoderBlog CoderBlog;
+        private CoderBlog CoderBlog;
 
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
 
-        bool bStopTransfer = false;
+        private bool bStopTransfer;
 
-        int FormEvent = 0;
+        private int FormEvent;
 
-        public bool Canceled = false;
+        public bool Canceled;
 
         public int iNewsIDEdit = -1;
 
-        public int AttachsCount = 0;
+        public int AttachsCount;
 
-        Form TopForm;
+        private Form TopForm;
 
         public DateTime DateTime;
 
@@ -37,7 +38,7 @@ namespace Infinium
             AttachmentsDataTable.Columns.Add(new DataColumn("FileName", Type.GetType("System.String")));
             AttachmentsDataTable.Columns.Add(new DataColumn("Path", Type.GetType("System.String")));
 
-            AttachmentsBindingSource = new BindingSource()
+            AttachmentsBindingSource = new BindingSource
             {
                 DataSource = AttachmentsDataTable
             };
@@ -66,7 +67,7 @@ namespace Infinium
             }
         }
 
-        public AddBlogNewsForm(ref Infinium.CoderBlog tCoderBlog, ref Form tTopForm)
+        public AddBlogNewsForm(ref CoderBlog tCoderBlog, ref Form tTopForm)
         {
             InitializeComponent();
 
@@ -76,7 +77,7 @@ namespace Infinium
             CreateAttachments();
         }
 
-        public AddBlogNewsForm(ref Infinium.CoderBlog tCoderBlog, int SenderTypeID, string HeaderText, string BodyText, int iNewsID, DateTime dDateTime, ref Form tTopForm)
+        public AddBlogNewsForm(ref CoderBlog tCoderBlog, int SenderTypeID, string HeaderText, string BodyText, int iNewsID, DateTime dDateTime, ref Form tTopForm)
         {
             InitializeComponent();
 
@@ -141,7 +142,7 @@ namespace Infinium
                     Thread T = new Thread(delegate () { Ok = CoderBlog.Attach(AttachmentsDataTable, Date, ref CurrentUploadedFile); });
                     T.Start();
 
-                    this.Activate();
+                    Activate();
                     Application.DoEvents();
 
                     while (T.IsAlive)
@@ -151,7 +152,7 @@ namespace Infinium
 
                         if (CurrentUploadedFile != LastUploadedFile)
                         {
-                            LoadLabel.Text = "Загрузка прикрепленых файлов(" + CurrentUploadedFile.ToString() + " из " + TotalFilesCount.ToString() + ")";
+                            LoadLabel.Text = "Загрузка прикрепленых файлов(" + CurrentUploadedFile + " из " + TotalFilesCount + ")";
                             LastUploadedFile = CurrentUploadedFile;
                         }
 
@@ -227,7 +228,7 @@ namespace Infinium
                     Thread T = new Thread(delegate () { Ok = CoderBlog.EditAttachments(iNewsIDEdit, AttachmentsDataTable, ref CurrentUploadedFile, ref TotalFilesCount); });
                     T.Start();
 
-                    this.Activate();
+                    Activate();
                     Application.DoEvents();
 
 
@@ -238,7 +239,7 @@ namespace Infinium
 
                         if (CurrentUploadedFile != LastUploadedFile)
                         {
-                            LoadLabel.Text = "Загрузка прикрепленых файлов(" + CurrentUploadedFile.ToString() + " из " + TotalFilesCount.ToString() + ")";
+                            LoadLabel.Text = "Загрузка прикрепленых файлов(" + CurrentUploadedFile + " из " + TotalFilesCount + ")";
                             LastUploadedFile = CurrentUploadedFile;
                         }
 
@@ -320,10 +321,10 @@ namespace Infinium
         {
             foreach (string FileName in openFileDialog1.FileNames)
             {
-                var fileInfo = new System.IO.FileInfo(FileName);
+                var fileInfo = new FileInfo(FileName);
 
                 DataRow NewRow = AttachmentsDataTable.NewRow();
-                NewRow["FileName"] = System.IO.Path.GetFileName(FileName);
+                NewRow["FileName"] = Path.GetFileName(FileName);
                 NewRow["Path"] = FileName;
                 AttachmentsDataTable.Rows.Add(NewRow);
             }
@@ -333,7 +334,7 @@ namespace Infinium
         {
             if (!DatabaseConfigsManager.Animation)
             {
-                this.Opacity = 1;
+                Opacity = 1;
 
                 if (FormEvent == eClose || FormEvent == eHide)
                 {
@@ -341,12 +342,12 @@ namespace Infinium
 
                     if (FormEvent == eClose)
                     {
-                        this.Close();
+                        Close();
                     }
 
                     if (FormEvent == eHide)
                     {
-                        this.Hide();
+                        Hide();
                     }
 
                     return;
@@ -363,20 +364,20 @@ namespace Infinium
 
             if (FormEvent == eClose || FormEvent == eHide)
             {
-                if (Convert.ToDecimal(this.Opacity) != Convert.ToDecimal(0.00))
-                    this.Opacity = Convert.ToDouble(Convert.ToDecimal(this.Opacity) - Convert.ToDecimal(0.05));
+                if (Convert.ToDecimal(Opacity) != Convert.ToDecimal(0.00))
+                    Opacity = Convert.ToDouble(Convert.ToDecimal(Opacity) - Convert.ToDecimal(0.05));
                 else
                 {
                     AnimateTimer.Enabled = false;
 
                     if (FormEvent == eClose)
                     {
-                        this.Close();
+                        Close();
                     }
 
                     if (FormEvent == eHide)
                     {
-                        this.Hide();
+                        Hide();
                     }
                 }
 
@@ -386,15 +387,13 @@ namespace Infinium
 
             if (FormEvent == eShow || FormEvent == eShow)
             {
-                if (this.Opacity != 1)
-                    this.Opacity += 0.05;
+                if (Opacity != 1)
+                    Opacity += 0.05;
                 else
                 {
                     AnimateTimer.Enabled = false;
                     SplashForm.CloseS = true;
                 }
-
-                return;
             }
         }
 
@@ -423,7 +422,7 @@ namespace Infinium
             SpeedLabel.Text = FileManager.GetIntegerWithThousands(Convert.ToInt32(CoderBlog.FM.CurrentSpeed)) + " КБайт/c";
 
             ProgressBar.Value = Convert.ToInt32(100 * CoderBlog.FM.Position / CoderBlog.FM.TotalFileSize);
-            PercentsLabel.Text = ProgressBar.Value.ToString() + " %";
+            PercentsLabel.Text = ProgressBar.Value + " %";
         }
 
         private void CancelLoadingFilesButton_Click(object sender, EventArgs e)

@@ -1,11 +1,15 @@
-﻿namespace Infinium
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+using ComponentFactory.Krypton.Toolkit;
+
+namespace Infinium
 {
     partial class PermitsForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -1207,54 +1211,54 @@
 
         #endregion
 
-        private System.Windows.Forms.Timer AnimateTimer;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton NavigateMenuCloseButton;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Panel NavigatePanel;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge3;
-        private ComponentFactory.Krypton.Toolkit.KryptonPalette StandardButtonsPalette;
-        private ComponentFactory.Krypton.Toolkit.KryptonPalette NavigateMenuButtonsPalette;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton MinimizeButton;
-        private ComponentFactory.Krypton.Toolkit.KryptonPalette MainMenuPalette;
-        private ComponentFactory.Krypton.Toolkit.KryptonPanel pnlDispatchMenu;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel3;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton btnRemovePermit;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton btnNewPermit;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton btnSignPermit;
-        private System.Windows.Forms.Panel pnlDispatch;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
-        private ComponentFactory.Krypton.Toolkit.KryptonSplitContainer kryptonSplitContainer2;
-        private System.Windows.Forms.Panel panel12;
-        private ComponentFactory.Krypton.Toolkit.KryptonSplitContainer kryptonSplitContainer4;
-        private System.Windows.Forms.Panel panel13;
+        private Timer AnimateTimer;
+        private KryptonButton NavigateMenuCloseButton;
+        private Label label1;
+        private Panel NavigatePanel;
+        private KryptonBorderEdge kryptonBorderEdge3;
+        private KryptonPalette StandardButtonsPalette;
+        private KryptonPalette NavigateMenuButtonsPalette;
+        private KryptonButton MinimizeButton;
+        private KryptonPalette MainMenuPalette;
+        private KryptonPanel pnlDispatchMenu;
+        private FlowLayoutPanel flowLayoutPanel3;
+        private KryptonButton btnRemovePermit;
+        private KryptonButton btnNewPermit;
+        private KryptonButton btnSignPermit;
+        private Panel pnlDispatch;
+        private TableLayoutPanel tableLayoutPanel2;
+        private KryptonSplitContainer kryptonSplitContainer2;
+        private Panel panel12;
+        private KryptonSplitContainer kryptonSplitContainer4;
+        private Panel panel13;
         private PercentageDataGrid dgvPermits;
-        private System.Windows.Forms.Panel panel14;
-        private ComponentFactory.Krypton.Toolkit.KryptonContextMenu kryptonContextMenu2;
-        private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItems kryptonContextMenuItems2;
-        private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem cmiSignPermit;
-        private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem cmiRemovePermit;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton btnBindPermit;
-        private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem cmiBindPermit;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
-        private System.Windows.Forms.Panel pnlVisitors;
-        private System.Windows.Forms.Panel pnlUnloads;
-        private System.Windows.Forms.Panel pnlZDispatch;
-        private System.Windows.Forms.Panel pnlMDispatch;
+        private Panel panel14;
+        private KryptonContextMenu kryptonContextMenu2;
+        private KryptonContextMenuItems kryptonContextMenuItems2;
+        private KryptonContextMenuItem cmiSignPermit;
+        private KryptonContextMenuItem cmiRemovePermit;
+        private KryptonButton btnBindPermit;
+        private KryptonContextMenuItem cmiBindPermit;
+        private FlowLayoutPanel flowLayoutPanel2;
+        private Panel pnlVisitors;
+        private Panel pnlUnloads;
+        private Panel pnlZDispatch;
+        private Panel pnlMDispatch;
         private PercentageDataGrid dgvUnloads;
         private PercentageDataGrid dgvZDispatch;
         private PercentageDataGrid dgvMDispatch;
-        private ComponentFactory.Krypton.Toolkit.KryptonCheckSet kryptonCheckSet1;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Panel panel10;
-        private ComponentFactory.Krypton.Toolkit.KryptonComboBox cbxYears;
-        private ComponentFactory.Krypton.Toolkit.KryptonComboBox cbxMonths;
-        private ComponentFactory.Krypton.Toolkit.KryptonCheckButton cbtnMDispatch;
-        private ComponentFactory.Krypton.Toolkit.KryptonPalette PanelSelectPalette;
-        private ComponentFactory.Krypton.Toolkit.KryptonCheckButton cbtnZDispatch;
-        private ComponentFactory.Krypton.Toolkit.KryptonCheckButton cbtnUnloads;
-        private ComponentFactory.Krypton.Toolkit.KryptonCheckButton cbtnVisitors;
-        private System.Windows.Forms.Panel panel1;
+        private KryptonCheckSet kryptonCheckSet1;
+        private Label label5;
+        private Label label2;
+        private Panel panel10;
+        private KryptonComboBox cbxYears;
+        private KryptonComboBox cbxMonths;
+        private KryptonCheckButton cbtnMDispatch;
+        private KryptonPalette PanelSelectPalette;
+        private KryptonCheckButton cbtnZDispatch;
+        private KryptonCheckButton cbtnUnloads;
+        private KryptonCheckButton cbtnVisitors;
+        private Panel panel1;
         private PercentageDataGrid dgvPermitsDates;
     }
 }

@@ -12,24 +12,24 @@ namespace Infinium
 {
     public partial class MarketingClientsForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
-        const int iMarket = 21;
-        const int iAdmin = 76;
-        const int iDirector = 77;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
+        private const int iMarket = 21;
+        private const int iAdmin = 76;
+        private const int iDirector = 77;
 
-        bool bPriceGroup = false;
+        private bool bPriceGroup = false;
 
-        int FormEvent = 0;
-        int CurrentRowIndex = 0;
-        int CurrentColumnIndex = 0;
+        private int FormEvent = 0;
+        private int CurrentRowIndex = 0;
+        private int CurrentColumnIndex = 0;
 
-        LightStartForm LightStartForm;
+        private LightStartForm LightStartForm;
 
-        Form TopForm = null;
-        Infinium.Modules.Marketing.Clients.Clients Clients;
+        private Form TopForm = null;
+        private Infinium.Modules.Marketing.Clients.Clients Clients;
 
         public MarketingClientsForm(LightStartForm tLightStartForm)
         {

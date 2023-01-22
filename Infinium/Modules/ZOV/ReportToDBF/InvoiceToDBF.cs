@@ -12,25 +12,25 @@ namespace Infinium.Modules.ZOV.ReportToDBF
 {
     public class InvoiceFrontsReportToDBF
     {
-        FrontsCalculate FC = null;
+        private readonly FrontsCalculate FC = null;
 
-        DataTable DecorInvNumbersDT = null;
-        DataTable CurrencyTypesDT;
-        DataTable ProfilFrontsOrdersDataTable = null;
-        DataTable TPSFrontsOrdersDataTable = null;
+        private DataTable DecorInvNumbersDT = null;
+        private DataTable CurrencyTypesDT;
+        private DataTable ProfilFrontsOrdersDataTable = null;
+        private DataTable TPSFrontsOrdersDataTable = null;
         public DataTable FrontsDataTable = null;
         public DataTable FrameColorsDataTable = null;
         public DataTable PatinaDataTable = null;
         public DataTable InsetTypesDataTable = null;
         public DataTable InsetColorsDataTable = null;
-        DataTable MeasuresDataTable = null;
-        DataTable FactoryDataTable = null;
-        DataTable GridSizesDataTable = null;
-        DataTable FrontsConfigDataTable = null;
-        DataTable DecorConfigDataTable = null;
-        DataTable TechStoreDataTable = null;
-        DataTable InsetPriceDataTable = null;
-        DataTable AluminiumFrontsDataTable = null;
+        private DataTable MeasuresDataTable = null;
+        private DataTable FactoryDataTable = null;
+        private DataTable GridSizesDataTable = null;
+        private DataTable FrontsConfigDataTable = null;
+        private DataTable DecorConfigDataTable = null;
+        private DataTable TechStoreDataTable = null;
+        private DataTable InsetPriceDataTable = null;
+        private DataTable AluminiumFrontsDataTable = null;
 
         public DataTable ProfilReportDataTable = null;
         public DataTable TPSReportDataTable = null;
@@ -650,7 +650,7 @@ namespace Infinium.Modules.ZOV.ReportToDBF
                     NonStandardMargin = GetNonStandardMargin(Convert.ToInt32(Rows[r]["FrontConfigID"]));
                 }
                 //ФИЛЕНКА
-                filter = " AND InsetTypeID IN (2069,2070,2071,2073,2075,2077,2233,3644,29043,29531,41213)";
+                filter = " AND InsetTypeID IN (2069,2070,2071,2073,2075,42066,2077,2233,3644,29043,29531,41213)";
                 Rows = OrdersDataTable.Select("FrontID = " + Fronts.Rows[i]["FrontID"].ToString() + " AND (Width <> -1)" + filter + IsNonStandardFilter);
                 for (int r = 0; r < Rows.Count(); r++)
                 {
@@ -1532,17 +1532,21 @@ namespace Infinium.Modules.ZOV.ReportToDBF
             if (FrontsConfigRow.Count() > 0)
                 ProfileWeight = Convert.ToDecimal(FrontsConfigRow[0]["Weight"]);
 
-            //для Женевы и Тафеля глухой - вес квадрата профиля на площадь фасада
             int FrontID = Convert.ToInt32(FrontsOrdersRow["FrontID"]);
-            if (FrontID == 30504 || FrontID == 30505 || FrontID == 30506 ||
-                FrontID == 30364 || FrontID == 30366 || FrontID == 30367 ||
-                FrontID == 30501 || FrontID == 30502 || FrontID == 30503 ||
-                FrontID == 16269 || FrontID == 28945 || FrontID == 41327 || FrontID == 41328 || FrontID == 41331 || FrontID == 27914 || FrontID == 29597 || FrontID == 3727 || FrontID == 3728 || FrontID == 3729 ||
-                FrontID == 3730 || FrontID == 3731 || FrontID == 3732 || FrontID == 3733 || FrontID == 3734 ||
-                FrontID == 3735 || FrontID == 3736 || FrontID == 3737 || FrontID == 3739 || FrontID == 3740 ||
-                FrontID == 3741 || FrontID == 3742 || FrontID == 3743 || FrontID == 3744 || FrontID == 3745 ||
-                FrontID == 3746 || FrontID == 3747 || FrontID == 3748 || FrontID == 15108 || FrontID == 3662 || FrontID == 3663 || FrontID == 3664 || FrontID == 15760)
+            if (Security.IsFrontsSquareCalc(FrontID))
+            {
                 return FrontWidth * FrontHeight / 1000000 * ProfileWeight;
+            }
+            //if (FrontID == 30504 || FrontID == 30505 || FrontID == 30506 ||
+            //    FrontID == 30364 || FrontID == 30366 || FrontID == 30367 ||
+            //    FrontID == 30501 || FrontID == 30502 || FrontID == 30503 ||
+            //    FrontID == 16269 || FrontID == 28945 || FrontID == 41327 || FrontID == 41328 || FrontID == 41331 || 
+            //    FrontID == 27914 || FrontID == 29597 || FrontID == 3727 || FrontID == 3728 || FrontID == 3729 ||
+            //    FrontID == 3730 || FrontID == 3731 || FrontID == 3732 || FrontID == 3733 || FrontID == 3734 ||
+            //    FrontID == 3735 || FrontID == 3736 || FrontID == 3737 || FrontID == 3739 || FrontID == 3740 ||
+            //    FrontID == 3741 || FrontID == 3742 || FrontID == 3743 || FrontID == 3744 || FrontID == 3745 ||
+            //    FrontID == 3746 || FrontID == 3747 || FrontID == 3748 || FrontID == 15108 || FrontID == 3662 || FrontID == 3663 || FrontID == 3664 || FrontID == 15760)
+            //    return FrontWidth * FrontHeight / 1000000 * ProfileWeight;
             else
             {
                 DataRow[] DecorConfigRow = TechStoreDataTable.Select("TechStoreID = " + FrontsConfigRow[0]["ProfileID"].ToString());
@@ -1725,9 +1729,9 @@ namespace Infinium.Modules.ZOV.ReportToDBF
 
     public class InvoiceDecorReportToDBF
     {
-        DecorCatalogOrder DecorCatalogOrder = null;
+        private readonly DecorCatalogOrder DecorCatalogOrder = null;
 
-        DataTable CurrencyTypesDT;
+        private DataTable CurrencyTypesDT;
         public DataTable ProfilReportDataTable = null;
         public DataTable TPSReportDataTable = null;
         private DataTable DecorProductsDataTable = null;
@@ -2697,7 +2701,7 @@ namespace Infinium.Modules.ZOV.ReportToDBF
 
     public class InvoiceReportToDBF
     {
-        decimal VAT = 1.2m;
+        private readonly decimal VAT = 1.2m;
         public InvoiceFrontsReportToDBF FrontsReport;
         public InvoiceDecorReportToDBF DecorReport = null;
         //HSSFWorkbook hssfworkbook;
@@ -3398,11 +3402,11 @@ namespace Infinium.Modules.ZOV.ReportToDBF
 
     public class FrontsReport
     {
-        FrontsCalculate FC = null;
+        private readonly FrontsCalculate FC = null;
 
-        DataTable CurrencyTypesDT;
-        DataTable ProfilFrontsOrdersDataTable = null;
-        DataTable TPSFrontsOrdersDataTable = null;
+        private DataTable CurrencyTypesDT;
+        private DataTable ProfilFrontsOrdersDataTable = null;
+        private DataTable TPSFrontsOrdersDataTable = null;
         public DataTable FrontsDataTable = null;
         public DataTable FrameColorsDataTable = null;
         public DataTable PatinaDataTable = null;
@@ -3411,11 +3415,11 @@ namespace Infinium.Modules.ZOV.ReportToDBF
         public DataTable TechnoInsetTypesDataTable = null;
         public DataTable TechnoInsetColorsDataTable = null;
         private DataTable TechnoProfilesDataTable = null;
-        DataTable MeasuresDataTable = null;
-        DataTable FactoryDataTable = null;
-        DataTable GridSizesDataTable = null;
-        DataTable FrontsConfigDataTable = null;
-        DataTable TechStoreDataTable = null;
+        private DataTable MeasuresDataTable = null;
+        private DataTable FactoryDataTable = null;
+        private DataTable GridSizesDataTable = null;
+        private DataTable FrontsConfigDataTable = null;
+        private DataTable TechStoreDataTable = null;
 
         public DataTable ProfilReportDataTable = null;
         public DataTable TPSReportDataTable = null;
@@ -3826,7 +3830,7 @@ namespace Infinium.Modules.ZOV.ReportToDBF
                     NonStandardMargin = GetNonStandardMargin(Convert.ToInt32(Rows[r]["FrontConfigID"]));
                 }
                 //ФИЛЕНКА
-                filter = " AND InsetTypeID IN (2069,2070,2071,2073,2075,2077,2233,3644,29043,29531,41213)";
+                filter = " AND InsetTypeID IN (2069,2070,2071,2073,2075,42066,2077,2233,3644,29043,29531,41213)";
                 Rows = OrdersDataTable.Select("FrontID = " + Fronts.Rows[i]["FrontID"].ToString() + " AND (Width <> -1)" + filter + IsNonStandardFilter);
                 for (int r = 0; r < Rows.Count(); r++)
                 {
@@ -4704,17 +4708,21 @@ namespace Infinium.Modules.ZOV.ReportToDBF
             if (FrontsConfigRow.Count() > 0)
                 ProfileWeight = Convert.ToDecimal(FrontsConfigRow[0]["Weight"]);
 
-            //для Женевы и Тафеля глухой - вес квадрата профиля на площадь фасада
             int FrontID = Convert.ToInt32(FrontsOrdersRow["FrontID"]);
-            if (FrontID == 30504 || FrontID == 30505 || FrontID == 30506 ||
-                FrontID == 30364 || FrontID == 30366 || FrontID == 30367 ||
-                FrontID == 30501 || FrontID == 30502 || FrontID == 30503 ||
-                FrontID == 16269 || FrontID == 28945 || FrontID == 41327 || FrontID == 41328 || FrontID == 41331 || FrontID == 27914 || FrontID == 29597 || FrontID == 3727 || FrontID == 3728 || FrontID == 3729 ||
-                FrontID == 3730 || FrontID == 3731 || FrontID == 3732 || FrontID == 3733 || FrontID == 3734 ||
-                FrontID == 3735 || FrontID == 3736 || FrontID == 3737 || FrontID == 3739 || FrontID == 3740 ||
-                FrontID == 3741 || FrontID == 3742 || FrontID == 3743 || FrontID == 3744 || FrontID == 3745 ||
-                FrontID == 3746 || FrontID == 3747 || FrontID == 3748 || FrontID == 15108 || FrontID == 3662 || FrontID == 3663 || FrontID == 3664 || FrontID == 15760)
+            if (Security.IsFrontsSquareCalc(FrontID))
+            {
                 return FrontWidth * FrontHeight / 1000000 * ProfileWeight;
+            }
+            //if (FrontID == 30504 || FrontID == 30505 || FrontID == 30506 ||
+            //    FrontID == 30364 || FrontID == 30366 || FrontID == 30367 ||
+            //    FrontID == 30501 || FrontID == 30502 || FrontID == 30503 ||
+            //    FrontID == 16269 || FrontID == 28945 || FrontID == 41327 || FrontID == 41328 || FrontID == 41331 || 
+            //    FrontID == 27914 || FrontID == 29597 || FrontID == 3727 || FrontID == 3728 || FrontID == 3729 ||
+            //    FrontID == 3730 || FrontID == 3731 || FrontID == 3732 || FrontID == 3733 || FrontID == 3734 ||
+            //    FrontID == 3735 || FrontID == 3736 || FrontID == 3737 || FrontID == 3739 || FrontID == 3740 ||
+            //    FrontID == 3741 || FrontID == 3742 || FrontID == 3743 || FrontID == 3744 || FrontID == 3745 ||
+            //    FrontID == 3746 || FrontID == 3747 || FrontID == 3748 || FrontID == 15108 || FrontID == 3662 || FrontID == 3663 || FrontID == 3664 || FrontID == 15760)
+            //    return FrontWidth * FrontHeight / 1000000 * ProfileWeight;
             else
             {
                 DataRow[] DecorConfigRow = TechStoreDataTable.Select("TechStoreID = " + FrontsConfigRow[0]["ProfileID"].ToString());
@@ -4838,7 +4846,7 @@ namespace Infinium.Modules.ZOV.ReportToDBF
     {
         public DataTable CurrencyTypesDT = null;
 
-        DecorCatalogOrder DecorCatalogOrder = null;
+        private readonly DecorCatalogOrder DecorCatalogOrder = null;
 
         public DataTable ProfilReportDataTable = null;
         public DataTable TPSReportDataTable = null;
@@ -5999,7 +6007,7 @@ namespace Infinium.Modules.ZOV.ReportToDBF
 
     public class Report
     {
-        decimal VAT = 1.2m;
+        private readonly decimal VAT = 1.2m;
         public FrontsReport FrontsReport = null;
         public DecorReport DecorReport = null;
 

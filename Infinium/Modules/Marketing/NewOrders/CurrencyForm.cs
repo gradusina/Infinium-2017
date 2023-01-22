@@ -1,7 +1,7 @@
-﻿using DevExpress.Data.Filtering.Helpers;
-
+﻿
 using Infinium.Modules.Marketing.NewOrders;
 using Infinium.Modules.Marketing.NewOrders.InvoiceReportToDbf;
+
 using System;
 using System.Data;
 using System.Drawing;
@@ -11,49 +11,50 @@ namespace Infinium
 {
     public partial class CurrencyForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int EHide = 2;
+        private const int EShow = 1;
+        private const int EClose = 3;
+        private const int EMainMenu = 4;
 
-        private bool admin = false;
+        private readonly bool _admin;
 
-        bool RateExist = false;
-        bool FixedPaymentRate = false;
-        bool CBRDailyRates = true;
-        bool NBRBDailyRates = true;
-        decimal EURRUBCurrency = 1000000;
-        decimal USDRUBCurrency = 1000000;
-        decimal EURUSDCurrency = 1000000;
-        decimal EURBYRCurrency = 1000000;
-        decimal CurrencyTotalCost = 0;
+        private bool _rateExist;
+        private bool _fixedPaymentRate;
+        private bool _cbrDailyRates = true;
+        private bool _nbrbDailyRates = true;
+        private decimal _eurrubCurrency = 1000000;
+        private decimal _usdrubCurrency = 1000000;
+        private decimal _eurusdCurrency = 1000000;
+        private decimal _eurbyrCurrency = 1000000;
+        private decimal BYN = 1000000;
+        private decimal _currencyTotalCost;
 
-        int FormEvent = 0;
-        int ClientID = 0;
-        int TransportType = 0;
-        decimal Weight = 0;
-        decimal TransportCost = 0;
-        decimal Rate = 1;
+        private int _formEvent;
+        private readonly int _clientId;
+        private int _transportType;
+        private decimal _weight;
+        private decimal _transportCost;
+        private decimal _rate = 1;
 
-        Form MainForm = null;
-        Form TopForm = null;
+        private readonly Form _mainForm;
+        private Form _topForm;
 
-        OrdersManager OrdersManager = null;
-        OrdersCalculate OrdersCalculate = null;
-        InvoiceReportToDbf DBFReport = null;
+        private readonly OrdersManager _ordersManager;
+        private readonly OrdersCalculate _ordersCalculate;
+        private readonly InvoiceReportToDbf _dbfReport;
 
-        bool CanSetDirectorDiscount = false;
+        private readonly bool _canSetDirectorDiscount;
 
-        public CurrencyForm(Form tMainForm, ref OrdersManager tOrdersManager, ref OrdersCalculate tOrdersCalculate, ref InvoiceReportToDbf tDBFReport, 
-            int iClientID, string ClientName, bool bCanSetDirectorDiscount, bool bAdmin)
+        public CurrencyForm(Form tMainForm, ref OrdersManager tOrdersManager, ref OrdersCalculate tOrdersCalculate, ref InvoiceReportToDbf tDbfReport,
+            int iClientId, string clientName, bool bCanSetDirectorDiscount, bool bAdmin)
         {
-            MainForm = tMainForm;
-            ClientID = iClientID;
-            CanSetDirectorDiscount = bCanSetDirectorDiscount;
-            admin = bAdmin;
-            OrdersManager = tOrdersManager;
-            OrdersCalculate = tOrdersCalculate;
-            DBFReport = tDBFReport;
+            _mainForm = tMainForm;
+            _clientId = iClientId;
+            _canSetDirectorDiscount = bCanSetDirectorDiscount;
+            _admin = bAdmin;
+            _ordersManager = tOrdersManager;
+            _ordersCalculate = tOrdersCalculate;
+            _dbfReport = tDbfReport;
 
             InitializeComponent();
             panel8.Visible = false;
@@ -61,11 +62,11 @@ namespace Infinium
             {
                 panel7.Visible = true;
             }
-            if (admin)
+            if (_admin)
             {
                 CurrencyDateTimePicker.Enabled = true;
             }
-            label2.Text = "Расчет " + ClientName;
+            label2.Text = "Расчет " + clientName;
             CurrencyTypeComboBox.Items.Add("Евро - Евро");
             CurrencyTypeComboBox.Items.Add("Евро - Доллар США");
             CurrencyTypeComboBox.Items.Add("Евро - Российский рубль");
@@ -76,12 +77,12 @@ namespace Infinium
 
         private void ConfirmationOKButton_Click(object sender, EventArgs e)
         {
-            if (!CanSetDirectorDiscount && Convert.ToInt32(((DataRowView)OrdersManager.MegaOrdersBindingSource.Current)["AgreementStatusID"]) == 2)
+            if (!_canSetDirectorDiscount && Convert.ToInt32(((DataRowView)_ordersManager.MegaOrdersBindingSource.Current)["AgreementStatusID"]) == 2)
             {
-                Infinium.LightMessageBox.Show(ref TopForm, false,
+                Infinium.LightMessageBox.Show(ref _topForm, false,
                         "Заказ согласован, пересчет запрещен. Звоните Директорату",
                         "Пересчет заказа");
-                FormEvent = eClose;
+                _formEvent = EClose;
                 AnimateTimer.Enabled = true;
                 return;
             }
@@ -98,158 +99,209 @@ namespace Infinium
             //    return;
             //}
 
-            if (Convert.ToInt32(((DataRowView)OrdersManager.MegaOrdersBindingSource.Current)["AgreementStatusID"]) != 2)
-                OrdersManager.SetNotConfirmOrder();
+            if (Convert.ToInt32(((DataRowView)_ordersManager.MegaOrdersBindingSource.Current)["AgreementStatusID"]) != 2)
+                _ordersManager.SetNotConfirmOrder();
 
-            if (FixedPaymentRate)
-            {
-                //if (rbCurrentFixedPaymentRate.Checked)
-                //    Rate = Convert.ToDecimal(tbCurrentFixedPaymentRate.Text);
-                //if (rbNewFixedPaymentRate.Checked)
-                //{
-                //    Rate = Convert.ToDecimal(tbNewFixedPaymentRate.Text);
-                //    OrdersManager.SaveClientPaymentRate(Convert.ToInt32(((DataRowView)OrdersManager.MegaOrdersBindingSource.Current)["ClientID"]), Rate);
-                //}
-                OrdersManager.SetFixedPaymentRate(Convert.ToInt32(((DataRowView)OrdersManager.MegaOrdersBindingSource.Current).Row["MegaOrderID"]), true);
-            }
-            else
-                OrdersManager.SetFixedPaymentRate(Convert.ToInt32(((DataRowView)OrdersManager.MegaOrdersBindingSource.Current).Row["MegaOrderID"]), false);
+            _ordersManager.SetFixedPaymentRate(
+                Convert.ToInt32(((DataRowView)_ordersManager.MegaOrdersBindingSource.Current).Row["MegaOrderID"]),
+                _fixedPaymentRate);
 
-            int CurrencyTypeID = CurrencyTypeComboBox.SelectedIndex + 1;
+            int currencyTypeId = CurrencyTypeComboBox.SelectedIndex + 1;
             if (CurrencyTypeComboBox.SelectedIndex == 3)
-                CurrencyTypeID = 5;
-            int DelayOfPayment = 0;
-            int DiscountFactoringID = 0;
-            int DiscountPaymentConditionID = 1;
-            if (rbHalfOfPayment.Checked)
-            {
-                DiscountPaymentConditionID = 2;
-                DelayOfPayment = 0;
-            }
-            if (rbFullPayment.Checked)
-            {
-                DiscountPaymentConditionID = 3;
-                DelayOfPayment = 0;
-            }
-            if (rbFullPayment.Checked)
-            {
-                DiscountPaymentConditionID = 3;
-                DelayOfPayment = 0;
-            }
-            if (kryptonRadioButton3.Checked)
-            {
-                DiscountPaymentConditionID = 5;
-                DelayOfPayment = 0;
-            }
-            if (kryptonRadioButton5.Checked)
-            {
-                DiscountPaymentConditionID = 6;
-                DelayOfPayment = 0;
-            }
-            if (rbFactoring.Checked)
-            {
-                DiscountPaymentConditionID = 4;
-            }
+                currencyTypeId = 5;
+            int delayOfPayment = 0;
+            int discountFactoringId = 0;
+            //int discountPaymentConditionId = 1;
+            int discountPaymentConditionId = 3;
+            //if (rbHalfOfPayment.Checked)
+            //{
+            //    discountPaymentConditionId = 2;
+            //    delayOfPayment = 0;
+            //}
+            //if (rbFullPayment.Checked)
+            //{
+            //    discountPaymentConditionId = 3;
+            //    delayOfPayment = 0;
+            //}
+            //if (rbFullPayment.Checked)
+            //{
+            //    discountPaymentConditionId = 3;
+            //    delayOfPayment = 0;
+            //}
+            //if (kryptonRadioButton3.Checked)
+            //{
+            //    discountPaymentConditionId = 5;
+            //    delayOfPayment = 0;
+            //}
+            //if (kryptonRadioButton5.Checked)
+            //{
+            //    discountPaymentConditionId = 6;
+            //    delayOfPayment = 0;
+            //}
+            //if (rbFactoring.Checked)
+            //{
+            //    discountPaymentConditionId = 4;
+            //}
 
-            if (DiscountPaymentConditionID == 1)
-                DelayOfPayment = Convert.ToInt32(tbDelayOfPayment.Text);
+            //if (discountPaymentConditionId == 1)
+            //    delayOfPayment = Convert.ToInt32(tbDelayOfPayment.Text);
 
-            decimal ProfilTotalSum = 0;
-            decimal TPSTotalSum = 0;
-            OrdersCalculate.GetMainOrderTotalSum(Convert.ToInt32(((DataRowView)OrdersManager.MegaOrdersBindingSource.Current).Row["MegaOrderID"]), ref ProfilTotalSum, ref TPSTotalSum);
+            decimal profilTotalSum = 0;
+            decimal tpsTotalSum = 0;
+            _ordersCalculate.GetMainOrderTotalSum(Convert.ToInt32(((DataRowView)_ordersManager.MegaOrdersBindingSource.Current).Row["MegaOrderID"]), ref profilTotalSum, ref tpsTotalSum);
 
-            if (ProfilTotalSum < Convert.ToDecimal(tbComplaintProfilCost.Text) || TPSTotalSum < Convert.ToDecimal(tbComplaintTPSCost.Text))
+            if (profilTotalSum < Convert.ToDecimal(tbComplaintProfilCost.Text) || tpsTotalSum < Convert.ToDecimal(tbComplaintTPSCost.Text))
             {
-                Infinium.LightMessageBox.Show(ref TopForm, false,
+                Infinium.LightMessageBox.Show(ref _topForm, false,
                        "Сумма рекламации не может быть больше стоимости заказа",
                        "Расчет заказа");
                 return;
             }
 
-            decimal DiscountPaymentCondition = OrdersManager.DiscountPaymentCondition(DiscountPaymentConditionID);
-            string FactoringName = string.Empty;
-            if (DiscountPaymentConditionID == 4)
+            decimal discountPaymentCondition = _ordersManager.DiscountPaymentCondition(discountPaymentConditionId);
+            string factoringName = string.Empty;
+            if (discountPaymentConditionId == 4)
             {
                 if (kryptonRadioButton2.Checked)
-                    FactoringName = kryptonRadioButton2.Text;
+                    factoringName = kryptonRadioButton2.Text;
                 if (kryptonRadioButton4.Checked)
-                    FactoringName = kryptonRadioButton4.Text;
+                    factoringName = kryptonRadioButton4.Text;
                 if (kryptonRadioButton1.Checked)
-                    FactoringName = kryptonRadioButton1.Text;
-                int DaysCount = 0;
-                DiscountPaymentCondition = OrdersManager.DiscountFactoring(ref DiscountFactoringID, ref DaysCount, CurrencyTypeID, FactoringName);
-                DelayOfPayment = DaysCount;
+                    factoringName = kryptonRadioButton1.Text;
+                int daysCount = 0;
+                discountPaymentCondition = _ordersManager.DiscountFactoring(ref discountFactoringId, ref daysCount, currencyTypeId, factoringName);
+                delayOfPayment = daysCount;
             }
-            decimal ProfilDiscountOrderSum = OrdersManager.DiscountOrderSum(ProfilTotalSum);
-            decimal TPSDiscountOrderSum = OrdersManager.DiscountOrderSum(TPSTotalSum);
-            decimal ProfilDiscountDirector = Convert.ToDecimal(tbProfilDiscountDirector.Text);
-            decimal TPSDiscountDirector = Convert.ToDecimal(tbTPSDiscountDirector.Text);
-            decimal ProfilTotalDiscount = 0;
-            decimal TPSTotalDiscount = 0;
-            decimal OriginalRate = Rate;
-            decimal PaymentRate = Rate;
-            int TransportType = 0;
-            object ConfirmDateTime = ((DataRowView)OrdersManager.MegaOrdersBindingSource.Current).Row["ConfirmDateTime"];
-            if (ClientID != 145 && DiscountPaymentConditionID == 1 && (CurrencyTypeID == 3 || CurrencyTypeID == 5))
-            {
-                PaymentRate = OriginalRate * 1.05m;
-            }
+            //decimal profilDiscountOrderSum = _ordersManager.DiscountOrderSum(profilTotalSum);
+            //decimal tpsDiscountOrderSum = _ordersManager.DiscountOrderSum(tpsTotalSum);
+            decimal profilDiscountOrderSum = 0;
+            decimal tpsDiscountOrderSum = 0;
+            decimal profilDiscountDirector = Convert.ToDecimal(tbProfilDiscountDirector.Text);
+            decimal tpsDiscountDirector = Convert.ToDecimal(tbTPSDiscountDirector.Text);
+            decimal profilTotalDiscount = 0;
+            decimal tpsTotalDiscount = 0;
+            int transportType = 0;
+            object confirmDateTime = ((DataRowView)_ordersManager.MegaOrdersBindingSource.Current).Row["ConfirmDateTime"];
 
-            if (DiscountPaymentConditionID == 1 || DiscountPaymentConditionID == 6)
+
+            if (discountPaymentConditionId == 1 || discountPaymentConditionId == 6)
             {
-                ProfilDiscountOrderSum = 0;
-                TPSDiscountOrderSum = 0;
+                profilDiscountOrderSum = 0;
+                tpsDiscountOrderSum = 0;
             }
-            decimal TransportCost = Convert.ToDecimal(TransportCostTextEdit.Text);
+            decimal transportCost = Convert.ToDecimal(TransportCostTextEdit.Text);
             if (rbFCA.Checked)
             {
-                TransportType = 1;
-                TransportCost = 0;
+                transportType = 1;
+                transportCost = 0;
             }
-            ProfilTotalDiscount = DiscountPaymentCondition + ProfilDiscountOrderSum + ProfilDiscountDirector;
-            TPSTotalDiscount = DiscountPaymentCondition + TPSDiscountOrderSum + TPSDiscountDirector;
+            profilTotalDiscount = discountPaymentCondition + profilDiscountOrderSum + profilDiscountDirector;
+            tpsTotalDiscount = discountPaymentCondition + tpsDiscountOrderSum + tpsDiscountDirector;
+            
+            _ordersManager.CurrencyTypeID = currencyTypeId;
 
-            OrdersCalculate.Recalculate(Convert.ToInt32(((DataRowView)OrdersManager.MegaOrdersBindingSource.Current).Row["MegaOrderID"]),
+            Tuple<bool, decimal, decimal, decimal> clientRates =
+                _ordersCalculate.GetFixedPaymentRate(_ordersManager.CurrentClientID, _ordersCalculate.ConfirmDateTime);
+
+            Tuple<bool, decimal, decimal, decimal, decimal> dateRates =
+                _ordersManager.GetDateRates(_ordersCalculate.ConfirmDateTime);
+
+            bool fixedClientRate = clientRates.Item1;
+
+            if (fixedClientRate)
+            {
+                switch (_ordersManager.CurrencyTypeID)
+                {
+                    case 1:
+                        if (dateRates.Item1)
+                            _ordersCalculate.Rate = clientRates.Item4 / dateRates.Item4;
+                        break;
+                    case 2:
+                        _ordersCalculate.Rate = clientRates.Item2;
+                        break;
+                    case 3:
+                        _ordersCalculate.Rate = clientRates.Item3;
+                        break;
+                    case 5:
+                        _ordersCalculate.Rate = clientRates.Item4;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            else
+            {
+                if (dateRates.Item1)
+                {
+                    switch (_ordersManager.CurrencyTypeID)
+                    {
+                        case 1:
+                            _ordersCalculate.Rate = 1;
+                            break;
+                        case 2:
+                            _ordersCalculate.Rate = dateRates.Item2;
+                            break;
+                        case 3:
+                            _ordersCalculate.Rate = dateRates.Item3;
+                            break;
+                        case 5:
+                            _ordersCalculate.Rate = dateRates.Item4;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+
+            }
+
+            decimal originalRate = _ordersCalculate.Rate;
+            decimal paymentRate = _ordersCalculate.Rate;
+            if (_clientId != 145 && discountPaymentConditionId == 1 && (currencyTypeId == 3 || currencyTypeId == 5))
+            {
+                paymentRate = originalRate * 1.05m;
+            }
+
+            _ordersCalculate.Recalculate(Convert.ToInt32(((DataRowView)_ordersManager.MegaOrdersBindingSource.Current).Row["MegaOrderID"]),
                 Convert.ToDecimal(tbComplaintProfilCost.Text), Convert.ToDecimal(tbComplaintTPSCost.Text),
-                TransportType, TransportCost, Convert.ToDecimal(AdditionalCostTextEdit.Text),
-                ProfilDiscountDirector, TPSDiscountDirector,
-                (DiscountPaymentCondition + ProfilDiscountOrderSum), (DiscountPaymentCondition + TPSDiscountOrderSum), DiscountPaymentCondition,
-                CurrencyTypeID, PaymentRate, ConfirmDateTime);
+                transportType, transportCost, Convert.ToDecimal(AdditionalCostTextEdit.Text),
+                profilDiscountDirector, tpsDiscountDirector,
+                (discountPaymentCondition + profilDiscountOrderSum), (discountPaymentCondition + tpsDiscountOrderSum), discountPaymentCondition,
+                currencyTypeId, paymentRate, confirmDateTime);
 
-            CurrencyTotalCost = DBFReport.CalcCurrencyCost(
-                Convert.ToInt32(((DataRowView)OrdersManager.MegaOrdersBindingSource.Current).Row["MegaOrderID"]),
-                Convert.ToInt32(((DataRowView)OrdersManager.MegaOrdersBindingSource.Current).Row["ClientID"]), PaymentRate);
-            OrdersManager.SetCurrencyCost(Convert.ToDecimal(tbComplaintProfilCost.Text), Convert.ToDecimal(tbComplaintTPSCost.Text), tbComplaintNotes.Text, IsComplaintCheckBox.Checked, DelayOfPayment,
-                TransportCost, Convert.ToDecimal(AdditionalCostTextEdit.Text),
-                CurrencyTypeID, OriginalRate, PaymentRate,
-                DiscountPaymentConditionID, DiscountFactoringID, ProfilDiscountOrderSum, TPSDiscountOrderSum, ProfilDiscountDirector, TPSDiscountDirector, CurrencyTotalCost);
+            _currencyTotalCost = _dbfReport.CalcCurrencyCost(
+                Convert.ToInt32(((DataRowView)_ordersManager.MegaOrdersBindingSource.Current).Row["MegaOrderID"]),
+                Convert.ToInt32(((DataRowView)_ordersManager.MegaOrdersBindingSource.Current).Row["ClientID"]), paymentRate);
+            _ordersManager.SetCurrencyCost(Convert.ToDecimal(tbComplaintProfilCost.Text), Convert.ToDecimal(tbComplaintTPSCost.Text), tbComplaintNotes.Text, IsComplaintCheckBox.Checked, delayOfPayment,
+                transportCost, Convert.ToDecimal(AdditionalCostTextEdit.Text),
+                currencyTypeId, originalRate, paymentRate,
+                discountPaymentConditionId, discountFactoringId, profilDiscountOrderSum, tpsDiscountOrderSum, profilDiscountDirector, tpsDiscountDirector, _currencyTotalCost);
 
             //change date
-            string DesireDate = "";
+            string desireDate = "";
 
             if (NoDateCheckBox.Checked == false)
-                DesireDate = DispatchDateTimePicker.Value.Date.ToString("yyyy-MM-dd");
+                desireDate = DispatchDateTimePicker.Value.Date.ToString("yyyy-MM-dd");
 
-            OrdersManager.LastCalcDate(Convert.ToInt32(((DataRowView)OrdersManager.MegaOrdersBindingSource.Current).Row["MegaOrderID"]));
-            OrdersManager.ChangeDate(DesireDate);
+            _ordersManager.LastCalcDate(Convert.ToInt32(((DataRowView)_ordersManager.MegaOrdersBindingSource.Current).Row["MegaOrderID"]));
+            _ordersManager.ChangeDate(desireDate);
 
-            if (CanSetDirectorDiscount || Convert.ToInt32(((DataRowView)OrdersManager.MegaOrdersBindingSource.Current)["AgreementStatusID"]) != 0)
+            if (_canSetDirectorDiscount || Convert.ToInt32(((DataRowView)_ordersManager.MegaOrdersBindingSource.Current)["AgreementStatusID"]) != 0)
             {
-                OrdersManager.MoveOrdersTo(Convert.ToInt32(((DataRowView)OrdersManager.MegaOrdersBindingSource.Current)["MegaOrderID"]),
-                    Convert.ToInt32(((DataRowView)OrdersManager.MegaOrdersBindingSource.Current)["AgreementStatusID"]));
+                _ordersManager.MoveOrdersTo(Convert.ToInt32(((DataRowView)_ordersManager.MegaOrdersBindingSource.Current)["MegaOrderID"]),
+                    Convert.ToInt32(((DataRowView)_ordersManager.MegaOrdersBindingSource.Current)["AgreementStatusID"]));
             }
 
-            OrdersManager.FixOrderEvent(Convert.ToInt32(((DataRowView)OrdersManager.MegaOrdersBindingSource.Current).Row["MegaOrderID"]), "Заказ рассчитан");
-            OrdersManager.SendReport = true;
+            _ordersManager.FixOrderEvent(Convert.ToInt32(((DataRowView)_ordersManager.MegaOrdersBindingSource.Current).Row["MegaOrderID"]), "Заказ рассчитан");
+            _ordersManager.SendReport = true;
 
-            FormEvent = eClose;
+            _formEvent = EClose;
             AnimateTimer.Enabled = true;
         }
 
         private void ConfirmationCancelButton_Click(object sender, EventArgs e)
         {
-            OrdersManager.SendReport = false;
-            FormEvent = eClose;
+            _ordersManager.SendReport = false;
+            _formEvent = EClose;
             AnimateTimer.Enabled = true;
         }
 
@@ -259,25 +311,25 @@ namespace Infinium
             {
                 this.Opacity = 1;
 
-                if (FormEvent == eClose || FormEvent == eHide)
+                if (_formEvent == EClose || _formEvent == EHide)
                 {
                     AnimateTimer.Enabled = false;
 
-                    if (FormEvent == eClose)
+                    if (_formEvent == EClose)
                     {
                         this.Close();
                     }
 
-                    if (FormEvent == eHide)
+                    if (_formEvent == EHide)
                     {
-                        MainForm.Activate();
+                        _mainForm.Activate();
                         this.Hide();
                     }
 
                     return;
                 }
 
-                if (FormEvent == eShow)
+                if (_formEvent == EShow)
                 {
                     AnimateTimer.Enabled = false;
                     SplashForm.CloseS = true;
@@ -286,7 +338,7 @@ namespace Infinium
 
             }
 
-            if (FormEvent == eClose || FormEvent == eHide)
+            if (_formEvent == EClose || _formEvent == EHide)
             {
                 if (Convert.ToDecimal(this.Opacity) != Convert.ToDecimal(0.00))
                     this.Opacity = Convert.ToDouble(Convert.ToDecimal(this.Opacity) - Convert.ToDecimal(0.05));
@@ -294,14 +346,14 @@ namespace Infinium
                 {
                     AnimateTimer.Enabled = false;
 
-                    if (FormEvent == eClose)
+                    if (_formEvent == EClose)
                     {
                         this.Close();
                     }
 
-                    if (FormEvent == eHide)
+                    if (_formEvent == EHide)
                     {
-                        MainForm.Activate();
+                        _mainForm.Activate();
                         this.Hide();
                     }
                 }
@@ -310,7 +362,7 @@ namespace Infinium
             }
 
 
-            if (FormEvent == eShow || FormEvent == eShow)
+            if (_formEvent == EShow || _formEvent == EShow)
             {
                 if (this.Opacity != 1)
                     this.Opacity += 0.05;
@@ -324,19 +376,19 @@ namespace Infinium
             }
         }
 
-        public void SetParameters(int iTransportType, int DelayOfPayment, object DesireDate, object ConfirmDate, int CurrencyTypeID, decimal OriginalRate, decimal PaymentRate, decimal ComplaintProfilCost, decimal ComplaintTPSCost, string ComplaintNotes,
-            decimal dTransportCost, decimal AdditionalCost, int DiscountPaymentConditionID, int DiscountFactoringID, decimal ProfilDiscountDirector, decimal TPSDiscountDirector, decimal dWeight)
+        public void SetParameters(int iTransportType, int delayOfPayment, object desireDate, object confirmDate, int currencyTypeId, decimal originalRate, decimal paymentRate, decimal complaintProfilCost, decimal complaintTpsCost, string complaintNotes,
+            decimal dTransportCost, decimal additionalCost, int discountPaymentConditionId, int discountFactoringId, decimal profilDiscountDirector, decimal tpsDiscountDirector, decimal dWeight)
         {
-            TransportType = iTransportType;
-            TransportCost = dTransportCost;
-            Weight = dWeight;
+            _transportType = iTransportType;
+            _transportCost = dTransportCost;
+            _weight = dWeight;
             if (iTransportType == 1)
             {
                 TransportCostTextEdit.Visible = false;
                 rbFCA.Checked = true;
             }
-            
-            switch (CurrencyTypeID)
+
+            switch (currencyTypeId)
             {
                 case 1:
                     CurrencyTypeComboBox.SelectedIndex = 0;
@@ -354,10 +406,10 @@ namespace Infinium
                     CurrencyTypeComboBox.SelectedIndex = 0;
                     break;
             }
-
-            if (Convert.ToInt32(((DataRowView)OrdersManager.MegaOrdersBindingSource.Current)["AgreementStatusID"]) == 2)
+            
+            if (Convert.ToInt32(((DataRowView)_ordersManager.MegaOrdersBindingSource.Current)["AgreementStatusID"]) == 2)
             {
-                if (!CanSetDirectorDiscount)
+                if (!_canSetDirectorDiscount)
                 {
                     CurrencyTypeComboBox.Enabled = false;
                     rbDelayOfPayment.Enabled = false;
@@ -388,140 +440,144 @@ namespace Infinium
             }
             else
             {
-                if (TransportType == 0)
+                if (_transportType == 0)
                 {
-                    decimal d = OrdersManager.TransportCost(dWeight);
-                    if (Convert.ToInt32(((DataRowView)OrdersManager.MegaOrdersBindingSource.Current)["AgreementStatusID"]) == 0
-                        || Convert.ToInt32(((DataRowView)OrdersManager.MegaOrdersBindingSource.Current)["AgreementStatusID"]) == 3)
-                        TransportCost = OrdersManager.TransportCost(dWeight);
+                    decimal d = _ordersManager.TransportCost(dWeight);
+                    if (Convert.ToInt32(((DataRowView)_ordersManager.MegaOrdersBindingSource.Current)["AgreementStatusID"]) == 0
+                        || Convert.ToInt32(((DataRowView)_ordersManager.MegaOrdersBindingSource.Current)["AgreementStatusID"]) == 3)
+                        _transportCost = _ordersManager.TransportCost(dWeight);
                     else
-                        TransportCost = dTransportCost;
+                        _transportCost = dTransportCost;
                 }
                 else
-                    TransportCost = 0;
+                    _transportCost = 0;
             }
 
-            if (Convert.ToInt32(((DataRowView)OrdersManager.MegaOrdersBindingSource.Current)["AgreementStatusID"]) == 0)
-                DelayOfPayment = OrdersManager.GetDelayOfPayment(Convert.ToInt32(((DataRowView)OrdersManager.MegaOrdersBindingSource.Current).Row["ClientID"]));
+            if (Convert.ToInt32(((DataRowView)_ordersManager.MegaOrdersBindingSource.Current)["AgreementStatusID"]) == 0)
+                delayOfPayment = OrdersManager.GetDelayOfPayment(Convert.ToInt32(((DataRowView)_ordersManager.MegaOrdersBindingSource.Current).Row["ClientID"]));
             else
-                DelayOfPayment = Convert.ToInt32(((DataRowView)OrdersManager.MegaOrdersBindingSource.Current).Row["DelayOfPayment"]);
+                delayOfPayment = Convert.ToInt32(((DataRowView)_ordersManager.MegaOrdersBindingSource.Current).Row["DelayOfPayment"]);
 
 
-            tbDelayOfPayment.Text = DelayOfPayment.ToString();
-            TransportCostTextEdit.Text = TransportCost.ToString();
-            AdditionalCostTextEdit.Text = AdditionalCost.ToString();
-            tbComplaintProfilCost.Text = ComplaintProfilCost.ToString();
-            tbComplaintTPSCost.Text = ComplaintTPSCost.ToString();
-            tbComplaintNotes.Text = ComplaintNotes.ToString();
-            tbProfilDiscountDirector.Text = ProfilDiscountDirector.ToString();
-            tbTPSDiscountDirector.Text = TPSDiscountDirector.ToString();
-
-            if (ConfirmDate != DBNull.Value)
-                OrdersManager.GetDateRates(Convert.ToDateTime(ConfirmDate), ref RateExist, ref EURUSDCurrency, ref EURRUBCurrency, ref EURBYRCurrency, ref USDRUBCurrency);
+            tbDelayOfPayment.Text = delayOfPayment.ToString();
+            TransportCostTextEdit.Text = _transportCost.ToString();
+            AdditionalCostTextEdit.Text = additionalCost.ToString();
+            tbComplaintProfilCost.Text = complaintProfilCost.ToString();
+            tbComplaintTPSCost.Text = complaintTpsCost.ToString();
+            tbComplaintNotes.Text = complaintNotes.ToString();
+            tbProfilDiscountDirector.Text = profilDiscountDirector.ToString();
+            tbTPSDiscountDirector.Text = tpsDiscountDirector.ToString();
+            
+            if (confirmDate != DBNull.Value)
+                _ordersManager.GetDateRates(Convert.ToDateTime(confirmDate), ref _rateExist, ref _eurusdCurrency, ref _eurrubCurrency, ref _eurbyrCurrency, ref _usdrubCurrency);
             else
-                OrdersManager.GetDateRates(CurrencyDateTimePicker.Value.Date, ref RateExist, ref EURUSDCurrency, ref EURRUBCurrency, ref EURBYRCurrency, ref USDRUBCurrency);
-            if (!RateExist)
+                _ordersManager.GetDateRates(CurrencyDateTimePicker.Value.Date, ref _rateExist, ref _eurusdCurrency, ref _eurrubCurrency, ref _eurbyrCurrency, ref _usdrubCurrency);
+
+            BYN = _eurbyrCurrency;
+            
+            if (!_rateExist)
             {
-                if (ConfirmDate != DBNull.Value)
+                if (confirmDate != DBNull.Value)
                 {
-                    CBRDailyRates = OrdersManager.CBRDailyRates(Convert.ToDateTime(ConfirmDate), ref EURRUBCurrency, ref USDRUBCurrency);
+                    _cbrDailyRates = OrdersManager.CBRDailyRates(Convert.ToDateTime(confirmDate), ref _eurrubCurrency, ref _usdrubCurrency);
 
-                    EURBYRCurrency = CurrencyConverter.NbrbDailyRates(DateTime.Now);
+                    _eurbyrCurrency = CurrencyConverter.NbrbDailyRates(DateTime.Now);
 
                     //NBRBDailyRates = OrdersManager.NBRBDailyRates(Convert.ToDateTime(ConfirmDate), ref EURBYRCurrency);
                 }
                 else
                 {
-                    CBRDailyRates = OrdersManager.CBRDailyRates(CurrencyDateTimePicker.Value.Date, ref EURRUBCurrency, ref USDRUBCurrency);
-                    EURBYRCurrency = CurrencyConverter.NbrbDailyRates(DateTime.Now);
+                    _cbrDailyRates = OrdersManager.CBRDailyRates(CurrencyDateTimePicker.Value.Date, ref _eurrubCurrency, ref _usdrubCurrency);
+                    _eurbyrCurrency = CurrencyConverter.NbrbDailyRates(DateTime.Now);
                     //NBRBDailyRates = OrdersManager.NBRBDailyRates(CurrencyDateTimePicker.Value.Date, ref EURBYRCurrency);
                 }
-                if (USDRUBCurrency != 0)
-                    EURUSDCurrency = Decimal.Round(EURRUBCurrency / USDRUBCurrency, 4, MidpointRounding.AwayFromZero);
+                if (_usdrubCurrency != 0)
+                    _eurusdCurrency = Decimal.Round(_eurrubCurrency / _usdrubCurrency, 4, MidpointRounding.AwayFromZero);
 
-                if (EURBYRCurrency == 1000000)
+                if (_eurbyrCurrency == 1000000)
                 {
 
-                    Infinium.LightMessageBox.Show(ref TopForm, false,
+                    Infinium.LightMessageBox.Show(ref _topForm, false,
                         "Курс не взят. Возможная причина - нет связи с банком без авторизации в kerio control. Войдите в kerio и повторите попытку",
                         "Расчет заказа");
                     return;
                 }
-                if (ConfirmDate != DBNull.Value)
-                    OrdersManager.SaveDateRates(Convert.ToDateTime(ConfirmDate), EURUSDCurrency, EURRUBCurrency, EURBYRCurrency, USDRUBCurrency);
-                else
-                    OrdersManager.SaveDateRates(CurrencyDateTimePicker.Value.Date, EURUSDCurrency, EURRUBCurrency, EURBYRCurrency, USDRUBCurrency);
-                RateExist = true;
+
+                OrdersManager.SaveDateRates(
+                    confirmDate != DBNull.Value ? Convert.ToDateTime(confirmDate) : CurrencyDateTimePicker.Value.Date,
+                    _eurusdCurrency, _eurrubCurrency, _eurbyrCurrency, _usdrubCurrency);
+                _rateExist = true;
             }
 
-            if (ConfirmDate != DBNull.Value)
+            if (confirmDate != DBNull.Value)
             {
-                OrdersCalculate.GetFixedPaymentRate(Convert.ToInt32(((DataRowView)OrdersManager.MegaOrdersBindingSource.Current).Row["ClientID"]),
-                    Convert.ToDateTime(ConfirmDate), ref FixedPaymentRate, ref EURUSDCurrency, ref EURRUBCurrency, ref EURBYRCurrency);
-                CurrencyDateTimePicker.Value = Convert.ToDateTime(ConfirmDate);
+                _ordersCalculate.GetFixedPaymentRate(Convert.ToInt32(((DataRowView)_ordersManager.MegaOrdersBindingSource.Current).Row["ClientID"]),
+                    Convert.ToDateTime(confirmDate), ref _fixedPaymentRate, ref _eurusdCurrency, ref _eurrubCurrency, ref _eurbyrCurrency);
+                CurrencyDateTimePicker.Value = Convert.ToDateTime(confirmDate);
             }
             else
-                OrdersCalculate.GetFixedPaymentRate(Convert.ToInt32(((DataRowView)OrdersManager.MegaOrdersBindingSource.Current).Row["ClientID"]),
-                    CurrencyDateTimePicker.Value.Date, ref FixedPaymentRate, ref EURUSDCurrency, ref EURRUBCurrency, ref EURBYRCurrency);
-            if (FixedPaymentRate)
+                _ordersCalculate.GetFixedPaymentRate(Convert.ToInt32(((DataRowView)_ordersManager.MegaOrdersBindingSource.Current).Row["ClientID"]),
+                    CurrencyDateTimePicker.Value.Date, ref _fixedPaymentRate, ref _eurusdCurrency, ref _eurrubCurrency, ref _eurbyrCurrency);
+            if (_fixedPaymentRate)
             {
-                USDRUBCurrency = 1;
+                _usdrubCurrency = 1;
                 NoConnectLabel.ForeColor = Color.FromArgb(187, 20, 20);
                 NoConnectLabel.Text = "Фиксированный курс";
-                CBRDailyRates = true;
-                NBRBDailyRates = true;
+                _cbrDailyRates = true;
+                _nbrbDailyRates = true;
             }
             else
             {
-                if (!RateExist)
+                if (!_rateExist)
                 {
-                    EURRUBCurrency = 0;
-                    USDRUBCurrency = 0;
-                    EURUSDCurrency = 0;
-                    EURBYRCurrency = 0;
-                    CBRDailyRates = OrdersManager.CBRDailyRates(CurrencyDateTimePicker.Value.Date, ref EURRUBCurrency, ref USDRUBCurrency);
-                    EURBYRCurrency = CurrencyConverter.NbrbDailyRates(DateTime.Now);
+                    _eurrubCurrency = 0;
+                    _usdrubCurrency = 0;
+                    _eurusdCurrency = 0;
+                    _eurbyrCurrency = 0;
+                    _cbrDailyRates = OrdersManager.CBRDailyRates(CurrencyDateTimePicker.Value.Date, ref _eurrubCurrency, ref _usdrubCurrency);
+                    _eurbyrCurrency = CurrencyConverter.NbrbDailyRates(DateTime.Now);
                     //NBRBDailyRates = OrdersManager.NBRBDailyRates(CurrencyDateTimePicker.Value.Date, ref EURBYRCurrency);
-                    if (USDRUBCurrency != 0)
-                        EURUSDCurrency = Decimal.Round(EURRUBCurrency / USDRUBCurrency, 4, MidpointRounding.AwayFromZero);
+                    if (_usdrubCurrency != 0)
+                        _eurusdCurrency = Decimal.Round(_eurrubCurrency / _usdrubCurrency, 4, MidpointRounding.AwayFromZero);
                 }
             }
 
-            if (CurrencyTypeID != 5)
-                CurrencyTypeComboBox.SelectedIndex = CurrencyTypeID - 1;
+            if (currencyTypeId != 5)
+                CurrencyTypeComboBox.SelectedIndex = currencyTypeId - 1;
             else
                 CurrencyTypeComboBox.SelectedIndex = 3;
 
-            if (DiscountPaymentConditionID == 1)
+            if (discountPaymentConditionId == 1)
                 rbDelayOfPayment.Checked = true;
-            if (DiscountPaymentConditionID == 2)
+            if (discountPaymentConditionId == 2)
                 rbHalfOfPayment.Checked = true;
-            if (DiscountPaymentConditionID == 3)
+            if (discountPaymentConditionId == 3)
                 rbFullPayment.Checked = true;
-            if (DiscountPaymentConditionID == 5)
+            if (discountPaymentConditionId == 5)
                 kryptonRadioButton3.Checked = true;
-            if (DiscountPaymentConditionID == 6)
+            if (discountPaymentConditionId == 6)
                 kryptonRadioButton5.Checked = true;
-            if (DiscountPaymentConditionID == 4)
+            if (discountPaymentConditionId == 4)
             {
                 panel8.Visible = true;
                 rbFactoring.Checked = true;
-                string FactoringName = OrdersManager.DiscountFactoringName(DiscountFactoringID);
-                if (FactoringName == kryptonRadioButton2.Text)
+                string factoringName = _ordersManager.DiscountFactoringName(discountFactoringId);
+                if (factoringName == kryptonRadioButton2.Text)
                     kryptonRadioButton2.Checked = true;
-                if (FactoringName == kryptonRadioButton4.Text)
+                if (factoringName == kryptonRadioButton4.Text)
                     kryptonRadioButton4.Checked = true;
-                if (FactoringName == kryptonRadioButton1.Text)
+                if (factoringName == kryptonRadioButton1.Text)
                     kryptonRadioButton1.Checked = true;
             }
-            Rate = OriginalRate;
-            CurrencyTextBox.Text = PaymentRate.ToString();
-            if (DesireDate != DBNull.Value)
-                DispatchDateTimePicker.Value = Convert.ToDateTime(DesireDate);
+            _rate = originalRate;
+            CurrencyTextBox.Text = paymentRate.ToString();
+            if (desireDate != DBNull.Value)
+                DispatchDateTimePicker.Value = Convert.ToDateTime(desireDate);
             else
             {
                 NoDateCheckBox.Checked = true;
             }
+            CurrencyTypeComboBox_SelectionChangeCommitted(null, null);
         }
 
         private void Initialize()
@@ -534,12 +590,12 @@ namespace Infinium
             CurrencyTypeComboBox.SelectedIndex = 0;
             rbDelayOfPayment.Checked = true;
             tbDelayOfPayment.Visible = true;
-            IsComplaintCheckBox.Checked = Convert.ToBoolean(((DataRowView)OrdersManager.MegaOrdersBindingSource.Current).Row["IsComplaint"]);
-            TransportCostTextEdit.Text = ((DataRowView)OrdersManager.MegaOrdersBindingSource.Current).Row["TransportCost"].ToString();
-            AdditionalCostTextEdit.Text = ((DataRowView)OrdersManager.MegaOrdersBindingSource.Current).Row["AdditionalCost"].ToString();
-            tbComplaintProfilCost.Text = ((DataRowView)OrdersManager.MegaOrdersBindingSource.Current).Row["ComplaintProfilCost"].ToString();
-            tbComplaintTPSCost.Text = ((DataRowView)OrdersManager.MegaOrdersBindingSource.Current).Row["ComplaintTPSCost"].ToString();
-            tbDelayOfPayment.Text = ((DataRowView)OrdersManager.MegaOrdersBindingSource.Current).Row["DelayOfPayment"].ToString();
+            IsComplaintCheckBox.Checked = Convert.ToBoolean(((DataRowView)_ordersManager.MegaOrdersBindingSource.Current).Row["IsComplaint"]);
+            TransportCostTextEdit.Text = ((DataRowView)_ordersManager.MegaOrdersBindingSource.Current).Row["TransportCost"].ToString();
+            AdditionalCostTextEdit.Text = ((DataRowView)_ordersManager.MegaOrdersBindingSource.Current).Row["AdditionalCost"].ToString();
+            tbComplaintProfilCost.Text = ((DataRowView)_ordersManager.MegaOrdersBindingSource.Current).Row["ComplaintProfilCost"].ToString();
+            tbComplaintTPSCost.Text = ((DataRowView)_ordersManager.MegaOrdersBindingSource.Current).Row["ComplaintTPSCost"].ToString();
+            tbDelayOfPayment.Text = ((DataRowView)_ordersManager.MegaOrdersBindingSource.Current).Row["DelayOfPayment"].ToString();
 
             if (TransportCostTextEdit.Text.Length == 0)
                 TransportCostTextEdit.Text = "0";
@@ -550,7 +606,7 @@ namespace Infinium
             if (tbComplaintTPSCost.Text.Length == 0)
                 tbComplaintTPSCost.Text = "0";
 
-            if (!CBRDailyRates && !NBRBDailyRates)
+            if (!_cbrDailyRates && !_nbrbDailyRates)
             {
                 NoConnectLabel.ForeColor = Color.FromArgb(187, 20, 20);
                 NoConnectLabel.Text = "Нет связи с банками";
@@ -558,13 +614,13 @@ namespace Infinium
             else
                 NoConnectLabel.Text = "Связь с банками установлена";
 
-            if (FixedPaymentRate)
+            if (_fixedPaymentRate)
             {
-                USDRUBCurrency = 1;
+                _usdrubCurrency = 1;
                 NoConnectLabel.ForeColor = Color.FromArgb(187, 20, 20);
                 NoConnectLabel.Text = "Фиксированный курс";
-                CBRDailyRates = true;
-                NBRBDailyRates = true;
+                _cbrDailyRates = true;
+                _nbrbDailyRates = true;
             }
             CurrencyTextBox.Text = "1";
         }
@@ -577,7 +633,7 @@ namespace Infinium
             //CbrBankData = OrdersManager.GetCbrBankData(CurrencyDateTimePicker.Value.Date);
             //NbrbBankData = OrdersManager.GetNbrbBankData(CurrencyDateTimePicker.Value.Date);
 
-            if (!CBRDailyRates && !NBRBDailyRates)
+            if (!_cbrDailyRates && !_nbrbDailyRates)
             {
                 NoConnectLabel.ForeColor = Color.FromArgb(187, 20, 20);
                 NoConnectLabel.Text = "Нет связи с банками";
@@ -585,13 +641,13 @@ namespace Infinium
             else
                 NoConnectLabel.Text = "Связь с банками установлена";
 
-            if (FixedPaymentRate)
+            if (_fixedPaymentRate)
             {
-                USDRUBCurrency = 1;
+                _usdrubCurrency = 1;
                 NoConnectLabel.ForeColor = Color.FromArgb(187, 20, 20);
                 NoConnectLabel.Text = "Фиксированный курс";
-                CBRDailyRates = true;
-                NBRBDailyRates = true;
+                _cbrDailyRates = true;
+                _nbrbDailyRates = true;
             }
             CurrencyTypeComboBox_SelectionChangeCommitted(null, null);
         }
@@ -600,21 +656,21 @@ namespace Infinium
         {
             if (CurrencyTypeComboBox.SelectedItem.ToString() == "Евро - Евро")
             {
-                Rate = 1;
-                CurrencyTextBox.Text = "1";
+                _rate = _eurbyrCurrency / BYN;
+                CurrencyTextBox.Text = _rate.ToString();
                 return;
             }
 
             if (CurrencyTypeComboBox.SelectedItem.ToString() == "Евро - Доллар США")
             {
-                if (EURRUBCurrency == 0 || USDRUBCurrency == 0)
+                if (_eurrubCurrency == 0 || _usdrubCurrency == 0)
                 {
                     NoConnectLabel.ForeColor = Color.FromArgb(187, 20, 20);
                     NoConnectLabel.Text = "Нет связи с банком";
                     return;
                 }
-                Rate = EURUSDCurrency;
-                CurrencyTextBox.Text = EURUSDCurrency.ToString();
+                _rate = _eurusdCurrency;
+                CurrencyTextBox.Text = _eurusdCurrency.ToString();
 
                 if (CurrencyTextBox.Text != "0")
                 {
@@ -630,10 +686,10 @@ namespace Infinium
 
             if (CurrencyTypeComboBox.SelectedItem.ToString() == "Евро - Российский рубль")
             {
-                Rate = EURRUBCurrency;
-                CurrencyTextBox.Text = EURRUBCurrency.ToString();
-                if (ClientID != 145 && rbDelayOfPayment.Checked)
-                    CurrencyTextBox.Text = (EURRUBCurrency * 1.05m).ToString();
+                _rate = _eurrubCurrency;
+                CurrencyTextBox.Text = _eurrubCurrency.ToString();
+                if (_clientId != 145 && rbDelayOfPayment.Checked)
+                    CurrencyTextBox.Text = (_eurrubCurrency * 1.05m).ToString();
 
                 if (CurrencyTextBox.Text != "0")
                 {
@@ -649,10 +705,10 @@ namespace Infinium
 
             if (CurrencyTypeComboBox.SelectedItem.ToString() == "Евро - Белорусский рубль")
             {
-                Rate = EURBYRCurrency;
-                CurrencyTextBox.Text = EURBYRCurrency.ToString();
-                if (ClientID != 145 && rbDelayOfPayment.Checked)
-                    CurrencyTextBox.Text = (EURBYRCurrency * 1.05m).ToString();
+                _rate = _eurbyrCurrency;
+                CurrencyTextBox.Text = _eurbyrCurrency.ToString();
+                if (_clientId != 145 && rbDelayOfPayment.Checked)
+                    CurrencyTextBox.Text = (_eurbyrCurrency * 1.05m).ToString();
 
                 if (CurrencyTextBox.Text != "0")
                 {
@@ -665,13 +721,13 @@ namespace Infinium
                     NoConnectLabel.Text = "Нет связи с банком";
                 }
             }
-            if (FixedPaymentRate)
+            if (_fixedPaymentRate)
             {
-                USDRUBCurrency = 1;
+                _usdrubCurrency = 1;
                 NoConnectLabel.ForeColor = Color.FromArgb(187, 20, 20);
                 NoConnectLabel.Text = "Фиксированный курс";
-                CBRDailyRates = true;
-                NBRBDailyRates = true;
+                _cbrDailyRates = true;
+                _nbrbDailyRates = true;
             }
         }
 
@@ -694,31 +750,31 @@ namespace Infinium
             tbDelayOfPayment.Visible = false;
             if (CurrencyTypeComboBox.SelectedItem.ToString() == "Евро - Евро")
             {
-                Rate = 1;
-                CurrencyTextBox.Text = "1";
+                _rate = _eurbyrCurrency / BYN;
+                CurrencyTextBox.Text = _rate.ToString();
                 return;
             }
 
             if (CurrencyTypeComboBox.SelectedItem.ToString() == "Евро - Доллар США")
             {
-                Rate = EURUSDCurrency;
-                CurrencyTextBox.Text = EURUSDCurrency.ToString();
+                _rate = _eurusdCurrency;
+                CurrencyTextBox.Text = _eurusdCurrency.ToString();
             }
 
             if (CurrencyTypeComboBox.SelectedItem.ToString() == "Евро - Российский рубль")
             {
-                Rate = EURRUBCurrency;
-                CurrencyTextBox.Text = EURRUBCurrency.ToString();
-                if (ClientID != 145 && rbDelayOfPayment.Checked)
-                    CurrencyTextBox.Text = (EURRUBCurrency * 1.05m).ToString();
+                _rate = _eurrubCurrency;
+                CurrencyTextBox.Text = _eurrubCurrency.ToString();
+                if (_clientId != 145 && rbDelayOfPayment.Checked)
+                    CurrencyTextBox.Text = (_eurrubCurrency * 1.05m).ToString();
             }
 
             if (CurrencyTypeComboBox.SelectedItem.ToString() == "Евро - Белорусский рубль")
             {
-                Rate = EURBYRCurrency;
-                CurrencyTextBox.Text = EURBYRCurrency.ToString();
-                if (ClientID != 145 && rbDelayOfPayment.Checked)
-                    CurrencyTextBox.Text = (EURBYRCurrency * 1.05m).ToString();
+                _rate = _eurbyrCurrency;
+                CurrencyTextBox.Text = _eurbyrCurrency.ToString();
+                if (_clientId != 145 && rbDelayOfPayment.Checked)
+                    CurrencyTextBox.Text = (_eurbyrCurrency * 1.05m).ToString();
             }
         }
 
@@ -728,31 +784,31 @@ namespace Infinium
             tbDelayOfPayment.Visible = true;
             if (CurrencyTypeComboBox.SelectedItem.ToString() == "Евро - Евро")
             {
-                Rate = 1;
-                CurrencyTextBox.Text = "1";
+                _rate = _eurbyrCurrency / BYN;
+                CurrencyTextBox.Text = _rate.ToString();
                 return;
             }
 
             if (CurrencyTypeComboBox.SelectedItem.ToString() == "Евро - Доллар США")
             {
-                Rate = EURUSDCurrency;
-                CurrencyTextBox.Text = EURUSDCurrency.ToString();
+                _rate = _eurusdCurrency;
+                CurrencyTextBox.Text = _eurusdCurrency.ToString();
             }
 
             if (CurrencyTypeComboBox.SelectedItem.ToString() == "Евро - Российский рубль")
             {
-                Rate = EURRUBCurrency;
-                CurrencyTextBox.Text = EURRUBCurrency.ToString();
-                if (ClientID != 145 && rbDelayOfPayment.Checked)
-                    CurrencyTextBox.Text = (EURRUBCurrency * 1.05m).ToString();
+                _rate = _eurrubCurrency;
+                CurrencyTextBox.Text = _eurrubCurrency.ToString();
+                if (_clientId != 145 && rbDelayOfPayment.Checked)
+                    CurrencyTextBox.Text = (_eurrubCurrency * 1.05m).ToString();
             }
 
             if (CurrencyTypeComboBox.SelectedItem.ToString() == "Евро - Белорусский рубль")
             {
-                Rate = EURBYRCurrency;
-                CurrencyTextBox.Text = EURBYRCurrency.ToString();
-                if (ClientID != 145 && rbDelayOfPayment.Checked)
-                    CurrencyTextBox.Text = (EURBYRCurrency * 1.05m).ToString();
+                _rate = _eurbyrCurrency;
+                CurrencyTextBox.Text = _eurbyrCurrency.ToString();
+                if (_clientId != 145 && rbDelayOfPayment.Checked)
+                    CurrencyTextBox.Text = (_eurbyrCurrency * 1.05m).ToString();
             }
         }
 
@@ -762,31 +818,31 @@ namespace Infinium
             tbDelayOfPayment.Visible = false;
             if (CurrencyTypeComboBox.SelectedItem.ToString() == "Евро - Евро")
             {
-                Rate = 1;
-                CurrencyTextBox.Text = "1";
+                _rate = _eurbyrCurrency / BYN;
+                CurrencyTextBox.Text = _rate.ToString();
                 return;
             }
 
             if (CurrencyTypeComboBox.SelectedItem.ToString() == "Евро - Доллар США")
             {
-                Rate = EURUSDCurrency;
-                CurrencyTextBox.Text = EURUSDCurrency.ToString();
+                _rate = _eurusdCurrency;
+                CurrencyTextBox.Text = _eurusdCurrency.ToString();
             }
 
             if (CurrencyTypeComboBox.SelectedItem.ToString() == "Евро - Российский рубль")
             {
-                Rate = EURRUBCurrency;
-                CurrencyTextBox.Text = EURRUBCurrency.ToString();
-                if (ClientID != 145 && rbDelayOfPayment.Checked)
-                    CurrencyTextBox.Text = (EURRUBCurrency * 1.05m).ToString();
+                _rate = _eurrubCurrency;
+                CurrencyTextBox.Text = _eurrubCurrency.ToString();
+                if (_clientId != 145 && rbDelayOfPayment.Checked)
+                    CurrencyTextBox.Text = (_eurrubCurrency * 1.05m).ToString();
             }
 
             if (CurrencyTypeComboBox.SelectedItem.ToString() == "Евро - Белорусский рубль")
             {
-                Rate = EURBYRCurrency;
-                CurrencyTextBox.Text = EURBYRCurrency.ToString();
-                if (ClientID != 145 && rbDelayOfPayment.Checked)
-                    CurrencyTextBox.Text = (EURBYRCurrency * 1.05m).ToString();
+                _rate = _eurbyrCurrency;
+                CurrencyTextBox.Text = _eurbyrCurrency.ToString();
+                if (_clientId != 145 && rbDelayOfPayment.Checked)
+                    CurrencyTextBox.Text = (_eurbyrCurrency * 1.05m).ToString();
             }
         }
 
@@ -796,31 +852,31 @@ namespace Infinium
             tbDelayOfPayment.Visible = false;
             if (CurrencyTypeComboBox.SelectedItem.ToString() == "Евро - Евро")
             {
-                Rate = 1;
-                CurrencyTextBox.Text = "1";
+                _rate = _eurbyrCurrency / BYN;
+                CurrencyTextBox.Text = _rate.ToString();
                 return;
             }
 
             if (CurrencyTypeComboBox.SelectedItem.ToString() == "Евро - Доллар США")
             {
-                Rate = EURUSDCurrency;
-                CurrencyTextBox.Text = EURUSDCurrency.ToString();
+                _rate = _eurusdCurrency;
+                CurrencyTextBox.Text = _eurusdCurrency.ToString();
             }
 
             if (CurrencyTypeComboBox.SelectedItem.ToString() == "Евро - Российский рубль")
             {
-                Rate = EURRUBCurrency;
-                CurrencyTextBox.Text = EURRUBCurrency.ToString();
-                if (ClientID != 145 && rbDelayOfPayment.Checked)
-                    CurrencyTextBox.Text = (EURRUBCurrency * 1.05m).ToString();
+                _rate = _eurrubCurrency;
+                CurrencyTextBox.Text = _eurrubCurrency.ToString();
+                if (_clientId != 145 && rbDelayOfPayment.Checked)
+                    CurrencyTextBox.Text = (_eurrubCurrency * 1.05m).ToString();
             }
 
             if (CurrencyTypeComboBox.SelectedItem.ToString() == "Евро - Белорусский рубль")
             {
-                Rate = EURBYRCurrency;
-                CurrencyTextBox.Text = EURBYRCurrency.ToString();
-                if (ClientID != 145 && rbDelayOfPayment.Checked)
-                    CurrencyTextBox.Text = (EURBYRCurrency * 1.05m).ToString();
+                _rate = _eurbyrCurrency;
+                CurrencyTextBox.Text = _eurbyrCurrency.ToString();
+                if (_clientId != 145 && rbDelayOfPayment.Checked)
+                    CurrencyTextBox.Text = (_eurbyrCurrency * 1.05m).ToString();
             }
         }
 
@@ -847,12 +903,12 @@ namespace Infinium
 
         private void rbCpt_CheckedChanged(object sender, EventArgs e)
         {
-            if (Convert.ToInt32(((DataRowView)OrdersManager.MegaOrdersBindingSource.Current)["AgreementStatusID"]) == 0
-                || Convert.ToInt32(((DataRowView)OrdersManager.MegaOrdersBindingSource.Current)["AgreementStatusID"]) == 3)
+            if (Convert.ToInt32(((DataRowView)_ordersManager.MegaOrdersBindingSource.Current)["AgreementStatusID"]) == 0
+                || Convert.ToInt32(((DataRowView)_ordersManager.MegaOrdersBindingSource.Current)["AgreementStatusID"]) == 3)
             {
-                TransportCost = OrdersManager.TransportCost(Weight);
+                _transportCost = _ordersManager.TransportCost(_weight);
             }
-            TransportCostTextEdit.Text = TransportCost.ToString();
+            TransportCostTextEdit.Text = _transportCost.ToString();
             TransportCostTextEdit.Visible = true;
         }
 
@@ -867,31 +923,31 @@ namespace Infinium
             tbDelayOfPayment.Visible = false;
             if (CurrencyTypeComboBox.SelectedItem.ToString() == "Евро - Евро")
             {
-                Rate = 1;
-                CurrencyTextBox.Text = "1";
+                _rate = _eurbyrCurrency / BYN;
+                CurrencyTextBox.Text = _rate.ToString();
                 return;
             }
 
             if (CurrencyTypeComboBox.SelectedItem.ToString() == "Евро - Доллар США")
             {
-                Rate = EURUSDCurrency;
-                CurrencyTextBox.Text = EURUSDCurrency.ToString();
+                _rate = _eurusdCurrency;
+                CurrencyTextBox.Text = _eurusdCurrency.ToString();
             }
 
             if (CurrencyTypeComboBox.SelectedItem.ToString() == "Евро - Российский рубль")
             {
-                Rate = EURRUBCurrency;
-                CurrencyTextBox.Text = EURRUBCurrency.ToString();
-                if (ClientID != 145 && rbDelayOfPayment.Checked)
-                    CurrencyTextBox.Text = (EURRUBCurrency * 1.05m).ToString();
+                _rate = _eurrubCurrency;
+                CurrencyTextBox.Text = _eurrubCurrency.ToString();
+                if (_clientId != 145 && rbDelayOfPayment.Checked)
+                    CurrencyTextBox.Text = (_eurrubCurrency * 1.05m).ToString();
             }
 
             if (CurrencyTypeComboBox.SelectedItem.ToString() == "Евро - Белорусский рубль")
             {
-                Rate = EURBYRCurrency;
-                CurrencyTextBox.Text = EURBYRCurrency.ToString();
-                if (ClientID != 145 && rbDelayOfPayment.Checked)
-                    CurrencyTextBox.Text = (EURBYRCurrency * 1.05m).ToString();
+                _rate = _eurbyrCurrency;
+                CurrencyTextBox.Text = _eurbyrCurrency.ToString();
+                if (_clientId != 145 && rbDelayOfPayment.Checked)
+                    CurrencyTextBox.Text = (_eurbyrCurrency * 1.05m).ToString();
             }
         }
 
@@ -901,31 +957,31 @@ namespace Infinium
             tbDelayOfPayment.Visible = false;
             if (CurrencyTypeComboBox.SelectedItem.ToString() == "Евро - Евро")
             {
-                Rate = 1;
-                CurrencyTextBox.Text = "1";
+                _rate = _eurbyrCurrency / BYN;
+                CurrencyTextBox.Text = _rate.ToString();
                 return;
             }
 
             if (CurrencyTypeComboBox.SelectedItem.ToString() == "Евро - Доллар США")
             {
-                Rate = EURUSDCurrency;
-                CurrencyTextBox.Text = EURUSDCurrency.ToString();
+                _rate = _eurusdCurrency;
+                CurrencyTextBox.Text = _eurusdCurrency.ToString();
             }
 
             if (CurrencyTypeComboBox.SelectedItem.ToString() == "Евро - Российский рубль")
             {
-                Rate = EURRUBCurrency;
-                CurrencyTextBox.Text = EURRUBCurrency.ToString();
-                if (ClientID != 145 && rbDelayOfPayment.Checked)
-                    CurrencyTextBox.Text = (EURRUBCurrency * 1.05m).ToString();
+                _rate = _eurrubCurrency;
+                CurrencyTextBox.Text = _eurrubCurrency.ToString();
+                if (_clientId != 145 && rbDelayOfPayment.Checked)
+                    CurrencyTextBox.Text = (_eurrubCurrency * 1.05m).ToString();
             }
 
             if (CurrencyTypeComboBox.SelectedItem.ToString() == "Евро - Белорусский рубль")
             {
-                Rate = EURBYRCurrency;
-                CurrencyTextBox.Text = EURBYRCurrency.ToString();
-                if (ClientID != 145 && rbDelayOfPayment.Checked)
-                    CurrencyTextBox.Text = (EURBYRCurrency * 1.05m).ToString();
+                _rate = _eurbyrCurrency;
+                CurrencyTextBox.Text = _eurbyrCurrency.ToString();
+                if (_clientId != 145 && rbDelayOfPayment.Checked)
+                    CurrencyTextBox.Text = (_eurbyrCurrency * 1.05m).ToString();
             }
         }
     }

@@ -17,28 +17,28 @@ namespace Infinium.Modules.Permits
 {
     public class Permits
     {
-        DataTable AllDispatchFrontsWeightDT;
-        DataTable AllDispatchDecorWeightDT;
-        DataTable AllMainOrdersFrontsWeightDT;
-        DataTable AllMainOrdersDecorWeightDT;
-        DataTable AllMegaBatchNumbersDT;
-        DataTable DispatchInfoDT;
-        DataTable RealDispTimeDT;
-        DataTable PermitsDatesDT;
+        private DataTable AllDispatchFrontsWeightDT;
+        private DataTable AllDispatchDecorWeightDT;
+        private DataTable AllMainOrdersFrontsWeightDT;
+        private DataTable AllMainOrdersDecorWeightDT;
+        private DataTable AllMegaBatchNumbersDT;
+        private DataTable DispatchInfoDT;
+        private DataTable RealDispTimeDT;
+        private DataTable PermitsDatesDT;
 
-        DataTable UnloadsDT;
-        DataTable MDispatchDT;
-        DataTable ZDispatchDT;
-        DataTable PermitsDT;
-        DataTable PermitDetailsDT;
-        DataTable UsersDT;
+        private DataTable UnloadsDT;
+        private DataTable MDispatchDT;
+        private DataTable ZDispatchDT;
+        private DataTable PermitsDT;
+        private DataTable PermitDetailsDT;
+        private DataTable UsersDT;
 
-        BindingSource UnloadsBS;
-        BindingSource MDispatchBS;
-        BindingSource ZDispatchBS;
-        BindingSource PermitsBS;
-        BindingSource UsersBS;
-        BindingSource PermitsDatesBS;
+        private BindingSource UnloadsBS;
+        private BindingSource MDispatchBS;
+        private BindingSource ZDispatchBS;
+        private BindingSource PermitsBS;
+        private BindingSource UsersBS;
+        private BindingSource PermitsDatesBS;
 
         public Permits()
         {
@@ -762,26 +762,26 @@ namespace Infinium.Modules.Permits
 
     public class VisitorsPermits
     {
-        int iVisitorPermitID = 0;
-        string AddresseeName = string.Empty;
-        string InputDeniedUserName = string.Empty;
-        string OutputAllowedUserName = string.Empty;
-        string OutputDeniedUserName = string.Empty;
-        string CreateUserName = string.Empty;
-        string PrintUserName = string.Empty;
-        string AgreedUserName = string.Empty;
-        string AprovedUserName = string.Empty;
+        private int iVisitorPermitID = 0;
+        private string AddresseeName = string.Empty;
+        private string InputDeniedUserName = string.Empty;
+        private string OutputAllowedUserName = string.Empty;
+        private string OutputDeniedUserName = string.Empty;
+        private string CreateUserName = string.Empty;
+        private string PrintUserName = string.Empty;
+        private string AgreedUserName = string.Empty;
+        private string AprovedUserName = string.Empty;
 
-        DataTable dtFilterMenu;
-        DataTable dtPermits;
-        DataTable dtPermitsDates;
-        DataTable dtRolePermissions;
-        DataTable dtUsers;
-        BindingSource bsPermits;
-        BindingSource bsPermitsDates;
-        BindingSource bsAddressees;
-        SqlDataAdapter daPermits;
-        SqlCommandBuilder cbPermits;
+        private DataTable dtFilterMenu;
+        private DataTable dtPermits;
+        private DataTable dtPermitsDates;
+        private DataTable dtRolePermissions;
+        private DataTable dtUsers;
+        private BindingSource bsPermits;
+        private BindingSource bsPermitsDates;
+        private BindingSource bsAddressees;
+        private SqlDataAdapter daPermits;
+        private SqlCommandBuilder cbPermits;
 
         public int CurrentVisitorPermitID
         {
@@ -2246,7 +2246,7 @@ namespace Infinium.Modules.Permits
             }
         }
 
-        DataTable PackagesDT;
+        private DataTable PackagesDT;
         private void FillPackages(int PermitID)
         {
             PackagesDT = new DataTable();
@@ -2541,7 +2541,7 @@ namespace Infinium.Modules.Permits
 
     public class PrintMachinesPermits
     {
-        Infinium.Modules.Packages.Marketing.Barcode Barcode;
+        private Infinium.Modules.Packages.Marketing.Barcode Barcode;
         public PrintDocument PD;
 
         public int PaperHeight = 488;
@@ -2553,17 +2553,17 @@ namespace Infinium.Modules.Permits
 
         public bool Printed = false;
 
-        SolidBrush FontBrush;
+        private SolidBrush FontBrush;
 
-        Font HeaderFont;
-        Font OrdinaryFont;
+        private Font HeaderFont;
+        private Font OrdinaryFont;
 
-        Pen Pen;
+        private Pen Pen;
 
-        Image ZTTPS;
-        Image ZTProfil;
-        Image STB;
-        Image RST;
+        private Image ZTTPS;
+        private Image ZTProfil;
+        private Image STB;
+        private Image RST;
 
         public ArrayList LabelInfo;
 
@@ -2708,7 +2708,7 @@ namespace Infinium.Modules.Permits
 
     public class PrintVisitorPermits
     {
-        Infinium.Modules.Packages.Marketing.Barcode Barcode;
+        private Infinium.Modules.Packages.Marketing.Barcode Barcode;
         public PrintDocument PD;
 
         public int PaperHeight = 488;
@@ -2720,17 +2720,17 @@ namespace Infinium.Modules.Permits
 
         public bool Printed = false;
 
-        SolidBrush FontBrush;
+        private SolidBrush FontBrush;
 
-        Font HeaderFont;
-        Font OrdinaryFont;
+        private Font HeaderFont;
+        private Font OrdinaryFont;
 
-        Pen Pen;
+        private Pen Pen;
 
-        Image ZTTPS;
-        Image ZTProfil;
-        Image STB;
-        Image RST;
+        private Image ZTTPS;
+        private Image ZTProfil;
+        private Image STB;
+        private Image RST;
 
         public ArrayList LabelInfo;
 
@@ -3249,17 +3249,17 @@ INNER JOIN infiniu2_catalog.dbo.Measures AS M ON G.MeasureID=M.MeasureID " + fil
         private DataTable ProductsDataTable = null;
         private DataTable DecorDataTable = null;
 
-        DataTable DispMainOrdersDT = null;
+        private DataTable DispMainOrdersDT = null;
 
-        DataTable MainOrdersDT;
-        DataTable PackagesDT;
-        DataTable FrontsOrdersDT;
-        DataTable DecorOrdersDT;
+        private DataTable MainOrdersDT;
+        private DataTable PackagesDT;
+        private DataTable FrontsOrdersDT;
+        private DataTable DecorOrdersDT;
 
-        BindingSource MainOrdersBS;
-        BindingSource PackagesBS;
-        BindingSource FrontsOrdersBS;
-        BindingSource DecorOrdersBS;
+        private BindingSource MainOrdersBS;
+        private BindingSource PackagesBS;
+        private BindingSource FrontsOrdersBS;
+        private BindingSource DecorOrdersBS;
 
         public HistoryDispatch()
         {
@@ -4074,7 +4074,7 @@ INNER JOIN infiniu2_marketingreference.dbo.Clients AS C ON MegaOrders.ClientID=C
 
     public class PackingReport : IAllFrontParameterName, IIsMarsel
     {
-        int ClientID = 0;
+        private int ClientID = 0;
         public bool ColorFullName = false;
         private DataTable ClientsDataTable = null;
         private DataTable FrontsResultDataTable = null;
@@ -4085,7 +4085,7 @@ INNER JOIN infiniu2_marketingreference.dbo.Clients AS C ON MegaOrders.ClientID=C
 
         public DataTable FrontsDataTable = null;
         public DataTable PatinaDataTable = null;
-        DataTable PatinaRALDataTable = null;
+        private DataTable PatinaRALDataTable = null;
         public DataTable InsetTypesDataTable = null;
         public DataTable FrameColorsDataTable = null;
         public DataTable InsetColorsDataTable = null;
@@ -4093,22 +4093,22 @@ INNER JOIN infiniu2_marketingreference.dbo.Clients AS C ON MegaOrders.ClientID=C
         private DataTable DecorDataTable = null;
         private DataTable DecorParametersDataTable = null;
 
-        HSSFWorkbook hssfworkbook;
-        HSSFFont MainFont;
-        HSSFCellStyle MainStyle;
-        HSSFFont HeaderFont;
-        HSSFCellStyle HeaderStyle;
-        HSSFFont ComplaintFont;
-        HSSFCellStyle ComplaintCellStyle;
-        HSSFCellStyle GreyComplaintCellStyle;
-        HSSFFont PackNumberFont;
-        HSSFCellStyle PackNumberStyle;
-        HSSFFont SimpleFont;
-        HSSFCellStyle SimpleCellStyle;
-        HSSFCellStyle GreyCellStyle;
-        HSSFFont TotalFont;
-        HSSFCellStyle TotalStyle;
-        HSSFCellStyle TempStyle;
+        private HSSFWorkbook hssfworkbook;
+        private HSSFFont MainFont;
+        private HSSFCellStyle MainStyle;
+        private HSSFFont HeaderFont;
+        private HSSFCellStyle HeaderStyle;
+        private HSSFFont ComplaintFont;
+        private HSSFCellStyle ComplaintCellStyle;
+        private HSSFCellStyle GreyComplaintCellStyle;
+        private HSSFFont PackNumberFont;
+        private HSSFCellStyle PackNumberStyle;
+        private HSSFFont SimpleFont;
+        private HSSFCellStyle SimpleCellStyle;
+        private HSSFCellStyle GreyCellStyle;
+        private HSSFFont TotalFont;
+        private HSSFCellStyle TotalStyle;
+        private HSSFCellStyle TempStyle;
 
         public PackingReport()
         {

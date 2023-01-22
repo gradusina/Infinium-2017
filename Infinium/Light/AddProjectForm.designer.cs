@@ -1,11 +1,15 @@
-﻿namespace Infinium
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+using ComponentFactory.Krypton.Toolkit;
+
+namespace Infinium
 {
     partial class AddProjectForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -436,33 +440,33 @@
 
         #endregion
 
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge20;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge21;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge22;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge23;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton OKNewsButton;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton CancelNewsButton;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge19;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
-        private ComponentFactory.Krypton.Toolkit.KryptonPalette StandardButtonsPalette;
-        private System.Windows.Forms.OpenFileDialog openFileDialog1;
-        private System.Windows.Forms.Timer AnimateTimer;
-        private System.Windows.Forms.Timer LoadTimer;
-        private System.Windows.Forms.Label PercentsLabel;
-        private System.Windows.Forms.Label LoadLabel;
-        private ComponentFactory.Krypton.Toolkit.KryptonRichTextBox ProjectDescriptionRichTextBox;
-        private ComponentFactory.Krypton.Toolkit.KryptonTextBox ProjectNameTextEdit;
-        private ComponentFactory.Krypton.Toolkit.KryptonTextBox kryptonTextBox1;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TreeView MembersTree;
-        private System.Windows.Forms.Label CreateLabel;
-        private System.Windows.Forms.Label SymbolCountText;
-        private ComponentFactory.Krypton.Toolkit.KryptonCheckBox AllUsersNotifyCheckBox;
-        private System.Windows.Forms.ToolTip toolTip1;
-        private System.Windows.Forms.Label DescCountLabel;
-        private ComponentFactory.Krypton.Toolkit.KryptonCheckBox ProposCheckBox;
+        private KryptonBorderEdge kryptonBorderEdge20;
+        private KryptonBorderEdge kryptonBorderEdge21;
+        private KryptonBorderEdge kryptonBorderEdge22;
+        private KryptonBorderEdge kryptonBorderEdge23;
+        private KryptonButton OKNewsButton;
+        private KryptonButton CancelNewsButton;
+        private KryptonBorderEdge kryptonBorderEdge19;
+        private Panel panel1;
+        private Label label2;
+        private Label label3;
+        private Label label4;
+        private KryptonPalette StandardButtonsPalette;
+        private OpenFileDialog openFileDialog1;
+        private Timer AnimateTimer;
+        private Timer LoadTimer;
+        private Label PercentsLabel;
+        private Label LoadLabel;
+        private KryptonRichTextBox ProjectDescriptionRichTextBox;
+        private KryptonTextBox ProjectNameTextEdit;
+        private KryptonTextBox kryptonTextBox1;
+        private Label label5;
+        private TreeView MembersTree;
+        private Label CreateLabel;
+        private Label SymbolCountText;
+        private KryptonCheckBox AllUsersNotifyCheckBox;
+        private ToolTip toolTip1;
+        private Label DescCountLabel;
+        private KryptonCheckBox ProposCheckBox;
     }
 }

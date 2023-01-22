@@ -5,21 +5,21 @@ namespace Infinium
 {
     public partial class TafelSplitMenu : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
-        int FormEvent = 0;
+        private int FormEvent = 0;
         //int SourceCount = 0;
         //int FirstCount = 0;
         //int SecondCount = 0;
         //int PosCount = 0;
 
-        Form MainForm = null;
-        Form TopForm = null;
+        private Form MainForm = null;
+        private Form TopForm = null;
 
-        Modules.WorkAssignments.TafelManager.SplitStruct TafelSplitStruct;
+        private Modules.WorkAssignments.TafelManager.SplitStruct TafelSplitStruct;
 
         public TafelSplitMenu(Form tMainForm, ref Modules.WorkAssignments.TafelManager.SplitStruct tTafelSplitStruct)
         {

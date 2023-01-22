@@ -8,126 +8,124 @@ namespace Infinium
 {
     public partial class UploadFileForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
+        private const int EHide = 2;
+        private const int EShow = 1;
+        private const int EClose = 3;
 
-        int FormEvent = 0;
+        private int _formEvent;
+        
+        private readonly Form _topForm;
 
-        public bool Canceled = false;
+        private InfiniumFiles _infiniumFiles;
 
-        Form TopForm;
-
-        Infinium.InfiniumFiles InfiniumFiles;
-
-        FileManager FM;
+        private readonly FileManager _fm;
 
         //InfiniumDocuments InfiniumDocuments;
 
-        int LastUploadedFile = 0;
-        int CurrentUploadedFile = 0;
-        int TotalFilesCount = 0;
+        private int _lastUploadedFile;
+        private int _currentUploadedFile;
+        private readonly int _totalFilesCount;
 
-        bool bStopTransfer = false;
+        private bool _bStopTransfer;
 
-        string[] FileNames;
-        string FileName = "";
+        private readonly string[] _fileNames;
+        private readonly string _fileName = "";
 
-        int FolderID = -1;
-        int FileID = -1;
+        private readonly int _folderId = -1;
+        private readonly int _fileId = -1;
 
-        bool bUpload = false;
-        bool bSave = false;
-        bool bDownload = false;
-        bool bMultiple = false;
-        bool bReplace = false;
+        private readonly bool _bUpload;
+        private readonly bool _bSave;
+        private readonly bool _bDownload;
+        private readonly bool _bMultiple;
+        private readonly bool _bReplace;
 
-        string SaveToPath = "";
+        private readonly string _saveToPath = "";
 
-        public int bOk = 5;
+        public int BOk = 5;
 
-        DataTable ItemsDataTable;
+        private readonly DataTable _itemsDataTable;
 
 
 
-        public UploadFileForm(ref FileManager tFM, ref Infinium.InfiniumFiles tInfiniumDocuments, string[] sFileNames, int iFolderID, ref Form tTopForm)//upload
+        public UploadFileForm(ref FileManager tFm, ref InfiniumFiles tInfiniumDocuments, string[] sFileNames, int iFolderId, ref Form tTopForm)//upload
         {
             InitializeComponent();
 
-            FM = tFM;
+            _fm = tFm;
 
-            FileNames = sFileNames;
+            _fileNames = sFileNames;
 
-            TotalFilesCount = sFileNames.Count();
+            _totalFilesCount = sFileNames.Count();
 
-            FolderID = iFolderID;
+            _folderId = iFolderId;
 
-            TopForm = tTopForm;
-            InfiniumFiles = tInfiniumDocuments;
+            _topForm = tTopForm;
+            _infiniumFiles = tInfiniumDocuments;
 
-            bUpload = true;
+            _bUpload = true;
         }
 
-        public UploadFileForm(ref FileManager tFM, ref Infinium.InfiniumFiles tInfiniumDocuments, string sFileName, int iFolderID, int iFileID,
-                              bool Save, string sSaveToPath, ref Form tTopForm)//download
+        public UploadFileForm(ref FileManager tFm, ref InfiniumFiles tInfiniumDocuments, string sFileName, int iFolderId, int iFileId,
+                              bool save, string sSaveToPath, ref Form tTopForm)//download
         {
             InitializeComponent();
 
-            FM = tFM;
+            _fm = tFm;
 
-            FileName = sFileName;
+            _fileName = sFileName;
 
-            TotalFilesCount = 1;
+            _totalFilesCount = 1;
 
-            FolderID = iFolderID;
-            FileID = iFileID;
+            _folderId = iFolderId;
+            _fileId = iFileId;
 
-            TopForm = tTopForm;
-            InfiniumFiles = tInfiniumDocuments;
+            _topForm = tTopForm;
+            _infiniumFiles = tInfiniumDocuments;
 
-            bDownload = true;
+            _bDownload = true;
 
-            bSave = Save;
-            SaveToPath = sSaveToPath;
-            bUpload = false;
+            _bSave = save;
+            _saveToPath = sSaveToPath;
+            _bUpload = false;
         }
 
-        public UploadFileForm(ref FileManager tFM, ref Infinium.InfiniumFiles tInfiniumDocuments, string sSaveToPath, DataTable dtItemsDataTable, ref Form tTopForm)//download multiple
+        public UploadFileForm(ref FileManager tFm, ref InfiniumFiles tInfiniumDocuments, string sSaveToPath, DataTable dtItemsDataTable, ref Form tTopForm)//download multiple
         {
             InitializeComponent();
 
-            FM = tFM;
+            _fm = tFm;
 
-            TotalFilesCount = 1;
+            _totalFilesCount = 1;
 
-            TopForm = tTopForm;
+            _topForm = tTopForm;
 
-            InfiniumFiles = tInfiniumDocuments;
+            _infiniumFiles = tInfiniumDocuments;
 
-            SaveToPath = sSaveToPath;
+            _saveToPath = sSaveToPath;
 
-            ItemsDataTable = dtItemsDataTable;
+            _itemsDataTable = dtItemsDataTable;
 
-            bUpload = false;
-            bMultiple = true;
+            _bUpload = false;
+            _bMultiple = true;
         }
 
-        public UploadFileForm(ref FileManager tFM, ref Infinium.InfiniumFiles tInfiniumDocuments, int iFileID, string sFileName, ref Form tTopForm)//replace upload
+        public UploadFileForm(ref FileManager tFm, ref InfiniumFiles tInfiniumDocuments, int iFileId, string sFileName, ref Form tTopForm)//replace upload
         {
             InitializeComponent();
 
-            FM = tFM;
+            _fm = tFm;
 
-            FileID = iFileID;
+            _fileId = iFileId;
 
-            TotalFilesCount = 1;
+            _totalFilesCount = 1;
 
-            FileName = sFileName;
+            _fileName = sFileName;
 
-            TopForm = tTopForm;
-            InfiniumFiles = tInfiniumDocuments;
+            _topForm = tTopForm;
+            _infiniumFiles = tInfiniumDocuments;
 
-            bReplace = true;
+            _bReplace = true;
         }
 
 
@@ -137,8 +135,8 @@ namespace Infinium
 
             if (m.Msg == 6 && m.WParam.ToInt32() == 1)
             {
-                if (TopForm != null)
-                    TopForm.Activate();
+                if (_topForm != null)
+                    _topForm.Activate();
             }
         }
 
@@ -146,40 +144,40 @@ namespace Infinium
         {
             if (!DatabaseConfigsManager.Animation)
             {
-                this.Opacity = 1;
+                Opacity = 1;
 
-                if (FormEvent == eClose || FormEvent == eHide)
+                if (_formEvent == EClose || _formEvent == EHide)
                 {
                     AnimateTimer.Enabled = false;
 
-                    if (FormEvent == eClose)
+                    if (_formEvent == EClose)
                     {
-                        this.Close();
+                        Close();
                     }
 
-                    if (FormEvent == eHide)
+                    if (_formEvent == EHide)
                     {
-                        this.Hide();
+                        Hide();
                     }
 
                     return;
                 }
 
-                if (FormEvent == eShow)
+                if (_formEvent == EShow)
                 {
                     AnimateTimer.Enabled = false;
                     SplashForm.CloseS = true;
 
-                    if (bUpload)
-                        bOk = StartLoading();
+                    if (_bUpload)
+                        BOk = StartLoading();
 
-                    if (bMultiple)
+                    if (_bMultiple)
                         StartDownloadMulti();
 
-                    if (bDownload)
-                        bOk = StartDownload();
+                    if (_bDownload)
+                        BOk = StartDownload();
 
-                    if (bReplace)
+                    if (_bReplace)
                         StartReplace();
 
                     return;
@@ -187,22 +185,22 @@ namespace Infinium
 
             }
 
-            if (FormEvent == eClose || FormEvent == eHide)
+            if (_formEvent == EClose || _formEvent == EHide)
             {
-                if (Convert.ToDecimal(this.Opacity) != Convert.ToDecimal(0.00))
-                    this.Opacity = Convert.ToDouble(Convert.ToDecimal(this.Opacity) - Convert.ToDecimal(0.05));
+                if (Convert.ToDecimal(Opacity) != Convert.ToDecimal(0.00))
+                    Opacity = Convert.ToDouble(Convert.ToDecimal(Opacity) - Convert.ToDecimal(0.05));
                 else
                 {
                     AnimateTimer.Enabled = false;
 
-                    if (FormEvent == eClose)
+                    if (_formEvent == EClose)
                     {
-                        this.Close();
+                        Close();
                     }
 
-                    if (FormEvent == eHide)
+                    if (_formEvent == EHide)
                     {
-                        this.Hide();
+                        Hide();
                     }
                 }
 
@@ -210,71 +208,68 @@ namespace Infinium
             }
 
 
-            if (FormEvent == eShow)
+            if (_formEvent == EShow)
             {
-                if (this.Opacity != 1)
-                    this.Opacity += 0.05;
+                if (Opacity != 1)
+                    Opacity += 0.05;
                 else
                 {
                     AnimateTimer.Enabled = false;
                     SplashForm.CloseS = true;
 
-                    if (bUpload)
-                        bOk = StartLoading();
+                    if (_bUpload)
+                        BOk = StartLoading();
 
-                    if (bMultiple)
+                    if (_bMultiple)
                         StartDownloadMulti();
 
-                    if (bDownload)
-                        bOk = StartDownload();
+                    if (_bDownload)
+                        BOk = StartDownload();
 
-                    if (bReplace)
+                    if (_bReplace)
                         StartReplace();
                 }
-
-                return;
             }
         }
 
         private void CreateFolderForm_Shown(object sender, EventArgs e)
         {
-            FormEvent = eShow;
+            _formEvent = EShow;
             AnimateTimer.Enabled = true;
         }
 
         private void CancelFolderButton_Click(object sender, EventArgs e)
         {
-            bStopTransfer = true;
-            Canceled = true;
+            _bStopTransfer = true;
 
-            FormEvent = eClose;
+            _formEvent = EClose;
             AnimateTimer.Enabled = true;
         }
 
         private void LoadTimer_Tick(object sender, EventArgs e)
         {
-            if (FM.TotalFileSize == 0)
+            if (_fm.TotalFileSize == 0)
                 return;
 
-            if (FM.Position == FM.TotalFileSize ||
-                FM.Position > FM.TotalFileSize)
+            if (_fm.Position == _fm.TotalFileSize ||
+                _fm.Position > _fm.TotalFileSize)
             {
                 ProgressBar.Value = 100;
                 return;
             }
 
 
-            DownloadLabel.Text = FileManager.GetIntegerWithThousands(Convert.ToInt32(FM.Position / 1024)) + " / " +
-                                   FileManager.GetIntegerWithThousands(Convert.ToInt32((FM.TotalFileSize / 1024))) + " КБайт";
+            DownloadLabel.Text = FileManager.GetIntegerWithThousands(Convert.ToInt32(_fm.Position / 1024)) + " / " +
+                                   FileManager.GetIntegerWithThousands(Convert.ToInt32((_fm.TotalFileSize / 1024))) + " КБайт";
 
-            ProgressBar.Value = Convert.ToInt32(100 * FM.Position / FM.TotalFileSize);
-            PercentsLabel.Text = ProgressBar.Value.ToString() + " %";
+            ProgressBar.Value = Convert.ToInt32(100 * _fm.Position / _fm.TotalFileSize);
+            PercentsLabel.Text = ProgressBar.Value + " %";
         }
 
         private int StartLoading()
         {
-            bStopTransfer = false;
-            FM.bStopTransfer = false;
+            _bStopTransfer = false;
+            _fm.bStopTransfer = false;
 
             LoadLabel.Visible = true;
             ProgressBar.Visible = true;
@@ -282,11 +277,11 @@ namespace Infinium
 
             bool bOk = false;
 
-            Thread T = new Thread(delegate () { bOk = InfiniumFiles.UploadFile(FileNames, FolderID, ref CurrentUploadedFile); });
+            Thread T = new Thread(delegate () { bOk = _infiniumFiles.UploadFile(_fileNames, _folderId, ref _currentUploadedFile); });
 
             T.Start();
 
-            this.Activate();
+            Activate();
             Application.DoEvents();
 
             while (T.IsAlive)
@@ -294,16 +289,16 @@ namespace Infinium
                 T.Join(50);
                 Application.DoEvents();
 
-                if (CurrentUploadedFile != LastUploadedFile)
+                if (_currentUploadedFile != _lastUploadedFile)
                 {
-                    LoadLabel.Text = "Загрузка файлов (" + CurrentUploadedFile.ToString() + " из " + TotalFilesCount.ToString() + ")";
-                    LastUploadedFile = CurrentUploadedFile;
+                    LoadLabel.Text = "Загрузка файлов (" + _currentUploadedFile + " из " + _totalFilesCount + ")";
+                    _lastUploadedFile = _currentUploadedFile;
                 }
 
-                if (bStopTransfer)
+                if (_bStopTransfer)
                 {
-                    FM.bStopTransfer = true;
-                    bStopTransfer = false;
+                    _fm.bStopTransfer = true;
+                    _bStopTransfer = false;
                     LoadTimer.Enabled = false;
                     ProgressBar.Visible = false;
                     LoadLabel.Text = "Отмена загрузки файлов...";
@@ -317,7 +312,7 @@ namespace Infinium
                     while (T.IsAlive)
                         Thread.Sleep(50);
 
-                    FormEvent = eClose;
+                    _formEvent = EClose;
                     AnimateTimer.Enabled = true;
 
                     return -1;
@@ -326,7 +321,7 @@ namespace Infinium
 
             LoadTimer.Enabled = false;
 
-            FormEvent = eClose;
+            _formEvent = EClose;
             AnimateTimer.Enabled = true;
 
             return Convert.ToInt32(bOk);
@@ -334,8 +329,8 @@ namespace Infinium
 
         private int StartDownload()
         {
-            bStopTransfer = false;
-            FM.bStopTransfer = false;
+            _bStopTransfer = false;
+            _fm.bStopTransfer = false;
 
             LoadLabel.Visible = true;
             ProgressBar.Visible = true;
@@ -345,14 +340,14 @@ namespace Infinium
 
             bool bOk = false;
 
-            if (bSave)
-                T = new Thread(delegate () { bOk = InfiniumFiles.SaveFile(FileID, SaveToPath); });
+            if (_bSave)
+                T = new Thread(delegate () { bOk = _infiniumFiles.SaveFile(_fileId, _saveToPath); });
             else
-                T = new Thread(delegate () { bOk = InfiniumFiles.OpenFile(FileID); });
+                T = new Thread(delegate () { bOk = _infiniumFiles.OpenFile(_fileId); });
 
             T.Start();
 
-            this.Activate();
+            Activate();
             Application.DoEvents();
 
             while (T.IsAlive)
@@ -360,16 +355,16 @@ namespace Infinium
                 T.Join(50);
                 Application.DoEvents();
 
-                if (CurrentUploadedFile != LastUploadedFile)
+                if (_currentUploadedFile != _lastUploadedFile)
                 {
-                    LoadLabel.Text = "Загрузка файлов (" + CurrentUploadedFile.ToString() + " из " + TotalFilesCount.ToString() + ")";
-                    LastUploadedFile = CurrentUploadedFile;
+                    LoadLabel.Text = "Загрузка файлов (" + _currentUploadedFile + " из " + _totalFilesCount + ")";
+                    _lastUploadedFile = _currentUploadedFile;
                 }
 
-                if (bStopTransfer)
+                if (_bStopTransfer)
                 {
-                    FM.bStopTransfer = true;
-                    bStopTransfer = false;
+                    _fm.bStopTransfer = true;
+                    _bStopTransfer = false;
                     LoadTimer.Enabled = false;
                     ProgressBar.Visible = false;
                     LoadLabel.Text = "Отмена загрузки файлов...";
@@ -383,7 +378,7 @@ namespace Infinium
                     while (T.IsAlive)
                         Thread.Sleep(50);
 
-                    FormEvent = eClose;
+                    _formEvent = EClose;
                     AnimateTimer.Enabled = true;
 
                     return -1;
@@ -392,7 +387,7 @@ namespace Infinium
 
             LoadTimer.Enabled = false;
 
-            FormEvent = eClose;
+            _formEvent = EClose;
             AnimateTimer.Enabled = true;
 
             return Convert.ToInt32(bOk);
@@ -400,8 +395,8 @@ namespace Infinium
 
         private void StartDownloadMulti()
         {
-            bStopTransfer = false;
-            FM.bStopTransfer = false;
+            _bStopTransfer = false;
+            _fm.bStopTransfer = false;
 
             LoadLabel.Visible = true;
             ProgressBar.Visible = true;
@@ -409,11 +404,11 @@ namespace Infinium
 
             Thread T;
 
-            T = new Thread(delegate () { InfiniumFiles.SaveFiles(ItemsDataTable, SaveToPath, ref CurrentUploadedFile); });
+            T = new Thread(delegate () { _infiniumFiles.SaveFiles(_itemsDataTable, _saveToPath, ref _currentUploadedFile); });
 
             T.Start();
 
-            this.Activate();
+            Activate();
             Application.DoEvents();
 
             while (T.IsAlive)
@@ -421,16 +416,16 @@ namespace Infinium
                 T.Join(50);
                 Application.DoEvents();
 
-                if (CurrentUploadedFile != LastUploadedFile)
+                if (_currentUploadedFile != _lastUploadedFile)
                 {
-                    LoadLabel.Text = "Загрузка файлов (" + CurrentUploadedFile.ToString() + " из " + TotalFilesCount.ToString() + ")";
-                    LastUploadedFile = CurrentUploadedFile;
+                    LoadLabel.Text = "Загрузка файлов (" + _currentUploadedFile + " из " + _totalFilesCount + ")";
+                    _lastUploadedFile = _currentUploadedFile;
                 }
 
-                if (bStopTransfer)
+                if (_bStopTransfer)
                 {
-                    FM.bStopTransfer = true;
-                    bStopTransfer = false;
+                    _fm.bStopTransfer = true;
+                    _bStopTransfer = false;
                     LoadTimer.Enabled = false;
                     ProgressBar.Visible = false;
                     LoadLabel.Text = "Отмена загрузки файлов...";
@@ -444,7 +439,7 @@ namespace Infinium
                     while (T.IsAlive)
                         Thread.Sleep(50);
 
-                    FormEvent = eClose;
+                    _formEvent = EClose;
                     AnimateTimer.Enabled = true;
 
                     return;
@@ -453,26 +448,26 @@ namespace Infinium
 
             LoadTimer.Enabled = false;
 
-            FormEvent = eClose;
+            _formEvent = EClose;
             AnimateTimer.Enabled = true;
         }
 
         private void StartReplace()
         {
-            bStopTransfer = false;
-            FM.bStopTransfer = false;
+            _bStopTransfer = false;
+            _fm.bStopTransfer = false;
 
             LoadLabel.Visible = true;
             ProgressBar.Visible = true;
             LoadTimer.Enabled = true;
 
-            bool Ok = false;
+            bool ok = false;
 
-            Thread T = new Thread(delegate () { Ok = InfiniumFiles.ReplaceFile(FileID, FileName); });
+            Thread T = new Thread(delegate () { ok = _infiniumFiles.ReplaceFile(_fileId, _fileName); });
 
             T.Start();
 
-            this.Activate();
+            Activate();
             Application.DoEvents();
 
             while (T.IsAlive)
@@ -480,16 +475,16 @@ namespace Infinium
                 T.Join(50);
                 Application.DoEvents();
 
-                if (CurrentUploadedFile != LastUploadedFile)
+                if (_currentUploadedFile != _lastUploadedFile)
                 {
-                    LoadLabel.Text = "Загрузка файлов (" + CurrentUploadedFile.ToString() + " из " + TotalFilesCount.ToString() + ")";
-                    LastUploadedFile = CurrentUploadedFile;
+                    LoadLabel.Text = "Загрузка файлов (" + _currentUploadedFile + " из " + _totalFilesCount + ")";
+                    _lastUploadedFile = _currentUploadedFile;
                 }
 
-                if (bStopTransfer)
+                if (_bStopTransfer)
                 {
-                    FM.bStopTransfer = true;
-                    bStopTransfer = false;
+                    _fm.bStopTransfer = true;
+                    _bStopTransfer = false;
                     LoadTimer.Enabled = false;
                     ProgressBar.Visible = false;
                     LoadLabel.Text = "Отмена загрузки файлов...";
@@ -503,7 +498,7 @@ namespace Infinium
                     while (T.IsAlive)
                         Thread.Sleep(50);
 
-                    FormEvent = eClose;
+                    _formEvent = EClose;
                     AnimateTimer.Enabled = true;
 
                     return;
@@ -512,13 +507,13 @@ namespace Infinium
 
             LoadTimer.Enabled = false;
 
-            if (!Ok)
+            if (!ok)
             {
                 MessageBox.Show("Один или несколько файлов не были найдены или отсутствовал доступ");
                 return;
             }
 
-            FormEvent = eClose;
+            _formEvent = EClose;
             AnimateTimer.Enabled = true;
         }
 

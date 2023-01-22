@@ -9,27 +9,27 @@ namespace Infinium
 {
     public partial class TrayCheckForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
         /// <summary>
         /// Этикетка поддона отсканирована успешно, ошибок нет
         /// </summary>
-        bool bCheckTray = false;
+        private bool bCheckTray = false;
 
-        int FormEvent = 0;
-        int TotalPackCount = 0;
-        int ScanTrayID = 0;
+        private int FormEvent = 0;
+        private int TotalPackCount = 0;
+        private int ScanTrayID = 0;
 
-        LightStartForm LightStartForm;
+        private LightStartForm LightStartForm;
 
-        Form TopForm;
+        private Form TopForm;
         public Modules.Packages.Trays.CheckTray CheckTray;
 
         [DllImport("user32.dll")]
-        static extern IntPtr GetActiveWindow();
+        private static extern IntPtr GetActiveWindow();
 
 
         public TrayCheckForm(LightStartForm tLightStartForm)

@@ -10,23 +10,23 @@ namespace Infinium
 {
     public partial class MarketingSplitOrdersForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
-        int MegaOrderID = 1;
-        int OldMainOrderID = 1;
-        int FactoryID = 1;
-        int FormEvent = 0;
-        int PackType = 0;
+        private int MegaOrderID = 1;
+        private int OldMainOrderID = 1;
+        private int FactoryID = 1;
+        private int FormEvent = 0;
+        private int PackType = 0;
 
-        SplitOrdersForm SplitOrdersForm = null;
-        Form MainForm = null;
-        Form TopForm = null;
+        private SplitOrdersForm SplitOrdersForm = null;
+        private Form MainForm = null;
+        private Form TopForm = null;
 
-        MarketingSplitMainOrders MarketingSplitMainOrders;
-        OrdersCalculate OrdersCalculate;
+        private MarketingSplitMainOrders MarketingSplitMainOrders;
+        private OrdersCalculate OrdersCalculate;
 
         public MarketingSplitOrdersForm(Form tMainForm, int iMegaOrderID, int iMainOrderID, int iFactoryID)
         {

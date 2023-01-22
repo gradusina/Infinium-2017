@@ -1,11 +1,15 @@
-﻿namespace Infinium
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+using ComponentFactory.Krypton.Toolkit;
+
+namespace Infinium
 {
     partial class ToolsSellerForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -1211,66 +1215,66 @@
 
         #endregion
 
-        private System.Windows.Forms.Timer AnimateTimer;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton NavigateMenuCloseButton;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Panel NavigatePanel;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge3;
-        private ComponentFactory.Krypton.Toolkit.KryptonPalette NavigateMenuButtonsPalette;
-        private ComponentFactory.Krypton.Toolkit.KryptonPalette StandardButtonsPalette;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton AddSellerButton;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton RemoveSellerButton;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton EditSellerButton;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Panel panel4;
+        private Timer AnimateTimer;
+        private KryptonButton NavigateMenuCloseButton;
+        private Label label1;
+        private Panel NavigatePanel;
+        private KryptonBorderEdge kryptonBorderEdge3;
+        private KryptonPalette NavigateMenuButtonsPalette;
+        private KryptonPalette StandardButtonsPalette;
+        private KryptonButton AddSellerButton;
+        private KryptonButton RemoveSellerButton;
+        private KryptonButton EditSellerButton;
+        private Label label9;
+        private Panel panel4;
         private PercentageDataGrid ToolsSellersGroupsDataGrid;
-        private System.Windows.Forms.Label label2;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge6;
-        private System.Windows.Forms.PictureBox pictureBox13;
-        private System.Windows.Forms.Label CountryLabel;
-        private System.Windows.Forms.Label label35;
-        private System.Windows.Forms.Label ContractDocNumberLabel;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.PictureBox pictureBox3;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge19;
-        private System.Windows.Forms.PictureBox pictureBox5;
-        private System.Windows.Forms.Label EmailLabel;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.LinkLabel SiteLabel;
-        private System.Windows.Forms.Label label5;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge5;
-        private System.Windows.Forms.PictureBox pictureBox2;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge4;
-        private ComponentFactory.Krypton.Toolkit.KryptonTextBox NotesTextBox;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.Label NameLabel;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge1;
-        private System.Windows.Forms.Label AddressLabel;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.PictureBox pictureBox1;
-        private ComponentFactory.Krypton.Toolkit.KryptonTextBox ToolsSellerGroupTextBox;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton EditGroupButton;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton RemoveGroupButton;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton AddGroupButton;
-        private ComponentFactory.Krypton.Toolkit.KryptonTextBox ToolsSellerSubGroupTextBox;
-        private System.Windows.Forms.Label label10;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton EditSubGroupButton;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton RemoveSubGroupButton;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton AddSubGroupButton;
-        private System.Windows.Forms.Panel panel5;
+        private Label label2;
+        private KryptonBorderEdge kryptonBorderEdge6;
+        private PictureBox pictureBox13;
+        private Label CountryLabel;
+        private Label label35;
+        private Label ContractDocNumberLabel;
+        private Label label4;
+        private PictureBox pictureBox3;
+        private KryptonBorderEdge kryptonBorderEdge19;
+        private PictureBox pictureBox5;
+        private Label EmailLabel;
+        private Label label7;
+        private LinkLabel SiteLabel;
+        private Label label5;
+        private KryptonBorderEdge kryptonBorderEdge5;
+        private PictureBox pictureBox2;
+        private KryptonBorderEdge kryptonBorderEdge4;
+        private KryptonTextBox NotesTextBox;
+        private Label label8;
+        private Label label6;
+        private Panel panel3;
+        private Label NameLabel;
+        private KryptonBorderEdge kryptonBorderEdge1;
+        private Label AddressLabel;
+        private Label label3;
+        private PictureBox pictureBox1;
+        private KryptonTextBox ToolsSellerGroupTextBox;
+        private KryptonButton EditGroupButton;
+        private KryptonButton RemoveGroupButton;
+        private KryptonButton AddGroupButton;
+        private KryptonTextBox ToolsSellerSubGroupTextBox;
+        private Label label10;
+        private KryptonButton EditSubGroupButton;
+        private KryptonButton RemoveSubGroupButton;
+        private KryptonButton AddSubGroupButton;
+        private Panel panel5;
         private PercentageDataGrid ToolsSellersSubGroupsDataGrid;
-        private System.Windows.Forms.Panel panel1;
+        private Panel panel1;
         private PercentageDataGrid ToolsSellersDataGrid;
-        private System.Windows.Forms.Panel panel2;
+        private Panel panel2;
         private PercentageDataGrid ToolsSellerInfoDataGrid;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.Panel panel10;
-        private System.Windows.Forms.Panel panel9;
-        private System.Windows.Forms.Panel panel8;
-        private System.Windows.Forms.Panel panel7;
-        private System.Windows.Forms.Panel panel6;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton MinimizeButton;
+        private TableLayoutPanel tableLayoutPanel1;
+        private Panel panel10;
+        private Panel panel9;
+        private Panel panel8;
+        private Panel panel7;
+        private Panel panel6;
+        private KryptonButton MinimizeButton;
     }
 }

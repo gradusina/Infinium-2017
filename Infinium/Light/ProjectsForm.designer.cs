@@ -1,11 +1,15 @@
-﻿namespace Infinium
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+using ComponentFactory.Krypton.Toolkit;
+
+namespace Infinium
 {
     partial class ProjectsForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -1241,72 +1245,72 @@
 
         #endregion
 
-        private System.Windows.Forms.Timer AnimateTimer;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton NavigateMenuCloseButton;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Panel NavigatePanel;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge3;
-        private ComponentFactory.Krypton.Toolkit.KryptonPalette ButtonsPalette;
-        private ComponentFactory.Krypton.Toolkit.KryptonPalette NavigateMenuButtonsPalette;
-        private ComponentFactory.Krypton.Toolkit.KryptonCheckButton PasswordButton;
-        private System.Windows.Forms.Panel panel2;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton kryptonButton1;
-        private System.Windows.Forms.Timer timer1;
+        private Timer AnimateTimer;
+        private KryptonButton NavigateMenuCloseButton;
+        private Label label1;
+        private Panel NavigatePanel;
+        private KryptonBorderEdge kryptonBorderEdge3;
+        private KryptonPalette ButtonsPalette;
+        private KryptonPalette NavigateMenuButtonsPalette;
+        private KryptonCheckButton PasswordButton;
+        private Panel panel2;
+        private KryptonButton kryptonButton1;
+        private Timer timer1;
         private InfiniumProjectsFilterGroups infiniumProjectsFilterGroups1;
         private InfiniumProjectsFilterStates infiniumProjectsFilterStates1;
-        private System.Windows.Forms.Panel panel1;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge1;
-        private System.Windows.Forms.Panel panel3;
+        private Panel panel1;
+        private KryptonBorderEdge kryptonBorderEdge1;
+        private Panel panel3;
         private InfiniumProjectsList infiniumProjectsList1;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge2;
-        private System.Windows.Forms.PictureBox AuthorPhotoBox;
-        private System.Windows.Forms.Label ProjectCaptionLabel;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label AuthorLabel;
+        private KryptonBorderEdge kryptonBorderEdge2;
+        private PictureBox AuthorPhotoBox;
+        private Label ProjectCaptionLabel;
+        private Label label2;
+        private Label AuthorLabel;
         private InfiniumProjectNewsContainer NewsContainer;
         private InfiniumProjectsDescriptionBox infiniumProjectsDescriptionBox1;
-        private System.Windows.Forms.Label AddNewsLabel;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge4;
-        private System.Windows.Forms.Label NoNewsLabel;
-        private System.Windows.Forms.PictureBox NoNewsPicture;
-        private System.Windows.Forms.Panel UpdatePanel;
-        private System.Windows.Forms.Label NewMessagesCountLabel;
-        private System.Windows.Forms.Label NewProjectsCountLabel;
-        private System.Windows.Forms.Label NewMessagesLabel;
-        private System.Windows.Forms.Label NewProjectsLabel;
-        private System.Windows.Forms.PictureBox MessagesInactivePicture;
-        private System.Windows.Forms.PictureBox MessagesActivePicture;
-        private System.Windows.Forms.PictureBox NewProjectsInactivePicture;
-        private System.Windows.Forms.PictureBox NewProjectsActivePicture;
-        private System.Windows.Forms.Label EndProjectDateLabel;
-        private System.Windows.Forms.Label CancelProjectDateLabel;
-        private System.Windows.Forms.Label PauseProjectDateLabel;
-        private System.Windows.Forms.Label StartProjectDateLabel;
-        private System.Windows.Forms.PictureBox StatusStartActivePicture;
-        private System.Windows.Forms.PictureBox StatusEndActivePicture;
-        private System.Windows.Forms.PictureBox StatusCanceledActivePicture;
-        private System.Windows.Forms.PictureBox StatusPauseActivePicture;
-        private System.Windows.Forms.ToolTip toolTip1;
-        private System.Windows.Forms.PictureBox DeleteProjectActivePicture;
-        private System.Windows.Forms.Label DeleteProjectLabel;
+        private Label AddNewsLabel;
+        private KryptonBorderEdge kryptonBorderEdge4;
+        private Label NoNewsLabel;
+        private PictureBox NoNewsPicture;
+        private Panel UpdatePanel;
+        private Label NewMessagesCountLabel;
+        private Label NewProjectsCountLabel;
+        private Label NewMessagesLabel;
+        private Label NewProjectsLabel;
+        private PictureBox MessagesInactivePicture;
+        private PictureBox MessagesActivePicture;
+        private PictureBox NewProjectsInactivePicture;
+        private PictureBox NewProjectsActivePicture;
+        private Label EndProjectDateLabel;
+        private Label CancelProjectDateLabel;
+        private Label PauseProjectDateLabel;
+        private Label StartProjectDateLabel;
+        private PictureBox StatusStartActivePicture;
+        private PictureBox StatusEndActivePicture;
+        private PictureBox StatusCanceledActivePicture;
+        private PictureBox StatusPauseActivePicture;
+        private ToolTip toolTip1;
+        private PictureBox DeleteProjectActivePicture;
+        private Label DeleteProjectLabel;
         private InfiniumProjectsMembersList ProjectMembersList;
-        private System.Windows.Forms.PictureBox EditProjectActivePicture;
-        private System.Windows.Forms.Label EditProjectLabel;
-        private ComponentFactory.Krypton.Toolkit.KryptonSplitContainer ProjectsSplitContainer;
-        private System.Windows.Forms.Label label3;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge5;
-        private System.Windows.Forms.Panel panel4;
-        private System.Windows.Forms.PictureBox AddNewsPicture;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge6;
-        private System.Windows.Forms.Label MoreNewsLabel;
-        private System.Windows.Forms.PictureBox SubscribeItPicture;
-        private System.Windows.Forms.Label SubscribeItLabel;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton MinimizeButton;
-        private System.Windows.Forms.PictureBox ProposInactivePicture;
-        private System.Windows.Forms.PictureBox ProposActivePicture;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge8;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge7;
-        private System.Windows.Forms.Label ProposLabel;
-        private System.Windows.Forms.Label ProposCountLabel;
+        private PictureBox EditProjectActivePicture;
+        private Label EditProjectLabel;
+        private KryptonSplitContainer ProjectsSplitContainer;
+        private Label label3;
+        private KryptonBorderEdge kryptonBorderEdge5;
+        private Panel panel4;
+        private PictureBox AddNewsPicture;
+        private KryptonBorderEdge kryptonBorderEdge6;
+        private Label MoreNewsLabel;
+        private PictureBox SubscribeItPicture;
+        private Label SubscribeItLabel;
+        private KryptonButton MinimizeButton;
+        private PictureBox ProposInactivePicture;
+        private PictureBox ProposActivePicture;
+        private KryptonBorderEdge kryptonBorderEdge8;
+        private KryptonBorderEdge kryptonBorderEdge7;
+        private Label ProposLabel;
+        private Label ProposCountLabel;
     }
 }

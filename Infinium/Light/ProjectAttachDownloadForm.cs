@@ -1,6 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace Infinium
@@ -9,11 +11,11 @@ namespace Infinium
     {
         public static int Result;//0 cancel, 1 open, 2 save
 
-        FileManager FM;
-        InfiniumProjects InfiniumProjects;
-        int NewsAttachID = -1;
+        private FileManager FM;
+        private InfiniumProjects InfiniumProjects;
+        private int NewsAttachID;
 
-        bool bStopTransfer = false;
+        private bool bStopTransfer;
 
         public ProjectAttachDownloadForm(int iNewsAttachID, ref FileManager tFM, ref InfiniumProjects tInfiniumProjects)
         {
@@ -25,7 +27,7 @@ namespace Infinium
 
         }
 
-        System.Threading.Thread T;
+        private Thread T;
 
         private void OpenButton_Click(object sender, EventArgs e)
         {
@@ -37,7 +39,7 @@ namespace Infinium
             string temppath = "";
 
             {
-                T = new System.Threading.Thread(delegate ()
+                T = new Thread(delegate ()
                 { temppath = InfiniumProjects.SaveFile(NewsAttachID); });
                 T.Start();
 
@@ -59,11 +61,11 @@ namespace Infinium
                 }
 
                 if (!bStopTransfer && temppath != null)
-                    System.Diagnostics.Process.Start(temppath);
+                    Process.Start(temppath);
             }
 
             timer1.Enabled = false;
-            this.Close();
+            Close();
         }
 
         private void CancelMessageButton_Click(object sender, EventArgs e)
@@ -76,7 +78,7 @@ namespace Infinium
             //while (T.IsAlive)
             //    System.Threading.Thread.Sleep(50);
 
-            this.Close();
+            Close();
         }
 
         private void SaveButton_Click(object sender, EventArgs e)
@@ -86,14 +88,14 @@ namespace Infinium
                 saveFileDialog1.Filter = "(*" + Path.GetExtension(FileName) + ")|*" + Path.GetExtension(FileName);
                 saveFileDialog1.FileName = FileName;
 
-                if (saveFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                if (saveFileDialog1.ShowDialog() == DialogResult.OK)
                 {
                     timer1.Enabled = true;
 
                     label1.Visible = false;
                     ProgressBar.Visible = true;
 
-                    T = new System.Threading.Thread(delegate ()
+                    T = new Thread(delegate ()
                     { InfiniumProjects.SaveFile(NewsAttachID, saveFileDialog1.FileName); });
                     T.Start();
 
@@ -115,13 +117,13 @@ namespace Infinium
                     }
 
                     timer1.Enabled = false;
-                    this.Close();
+                    Close();
                     return;
                 }
             }
 
             timer1.Enabled = false;
-            this.Close();
+            Close();
         }
 
 
@@ -143,7 +145,7 @@ namespace Infinium
             SpeedLabel.Text = FileManager.GetIntegerWithThousands(Convert.ToInt32(FM.CurrentSpeed)) + " КБайт/c";
 
             ProgressBar.Value = Convert.ToInt32(100 * FM.Position / FM.TotalFileSize);
-            PercentsLabel.Text = ProgressBar.Value.ToString() + " %";
+            PercentsLabel.Text = ProgressBar.Value + " %";
         }
 
         private void saveFileDialog1_FileOk(object sender, CancelEventArgs e)

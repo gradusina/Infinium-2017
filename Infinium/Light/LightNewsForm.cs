@@ -7,19 +7,19 @@ namespace Infinium
 {
     public partial class LightNewsForm : InfiniumForm
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
 
-        int FormEvent = 0;
+        private int FormEvent;
 
-        LightStartForm LightStartForm;
+        private LightStartForm LightStartForm;
 
-        Form TopForm;
+        private Form TopForm;
 
-        DataTable SDT = new DataTable();
+        private DataTable SDT = new DataTable();
 
-        Infinium.LightNews LightNews;
+        private LightNews LightNews;
 
 
         public LightNewsForm(LightStartForm tLightStartForm)
@@ -28,9 +28,9 @@ namespace Infinium
 
             LightStartForm = tLightStartForm;
 
-            this.MaximumSize = Screen.PrimaryScreen.WorkingArea.Size;
+            MaximumSize = Screen.PrimaryScreen.WorkingArea.Size;
 
-            LightNews = new Infinium.LightNews();
+            LightNews = new LightNews();
 
             //ActiveNotifySystem.ClearSubscribesRecords(Security.CurrentUserID, this.Name);
 
@@ -40,7 +40,7 @@ namespace Infinium
 
             //LightNewsContainer.PageChanged(null);
 
-            ActiveNotifySystem.ClearSubscribesRecords(Security.CurrentUserID, this.Name);
+            ActiveNotifySystem.ClearSubscribesRecords(Security.CurrentUserID, Name);
 
             //OnANSUpdate();
 
@@ -63,7 +63,7 @@ namespace Infinium
         {
             if (!DatabaseConfigsManager.Animation)
             {
-                this.Opacity = 1;
+                Opacity = 1;
 
                 if (FormEvent == eClose || FormEvent == eHide)
                 {
@@ -96,8 +96,8 @@ namespace Infinium
 
             if (FormEvent == eClose || FormEvent == eHide)
             {
-                if (Convert.ToDecimal(this.Opacity) != Convert.ToDecimal(0.00))
-                    this.Opacity = Convert.ToDouble(Convert.ToDecimal(this.Opacity) - Convert.ToDecimal(0.05));
+                if (Convert.ToDecimal(Opacity) != Convert.ToDecimal(0.00))
+                    Opacity = Convert.ToDouble(Convert.ToDecimal(Opacity) - Convert.ToDecimal(0.05));
                 else
                 {
                     AnimateTimer.Enabled = false;
@@ -120,8 +120,8 @@ namespace Infinium
 
             if (FormEvent == eShow)
             {
-                if (this.Opacity != 1)
-                    this.Opacity += 0.05;
+                if (Opacity != 1)
+                    Opacity += 0.05;
                 else
                 {
                     LightNewsContainer.CreateNews();
@@ -129,8 +129,6 @@ namespace Infinium
                     AnimateTimer.Enabled = false;
                     SplashForm.CloseS = true;
                 }
-
-                return;
             }
         }
 
@@ -197,7 +195,7 @@ namespace Infinium
 
             if (c > 0)
             {
-                UpdateNewsButton.Text = "Обновления: " + c.ToString();
+                UpdateNewsButton.Text = "Обновления: " + c;
                 UpdateNewsButton.Visible = true;
             }
 
@@ -211,7 +209,7 @@ namespace Infinium
             //LightNewsContainer.Visible = true;
         }
 
-        bool bC = false;
+        private bool bC;
 
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -271,10 +269,10 @@ namespace Infinium
 
         private void LightNewsContainer_RemoveNewsClicked(object sender, int NewsID)
         {
-            PhantomForm PhantomForm = new Infinium.PhantomForm();
+            PhantomForm PhantomForm = new PhantomForm();
             PhantomForm.Show();
 
-            LightMessageBoxForm LightMessageBoxForm = new Infinium.LightMessageBoxForm(true, "Сообщение будет удалено безвозвратно.\nПродолжить?",
+            LightMessageBoxForm LightMessageBoxForm = new LightMessageBoxForm(true, "Сообщение будет удалено безвозвратно.\nПродолжить?",
                                                                                     "Удаление сообщения");
 
             TopForm = LightMessageBoxForm;
@@ -344,10 +342,10 @@ namespace Infinium
         private void LightNewsContainer_RemoveCommentClicked(object sender, int NewsID, int NewsCommentID)
         {
 
-            PhantomForm PhantomForm = new Infinium.PhantomForm();
+            PhantomForm PhantomForm = new PhantomForm();
             PhantomForm.Show();
 
-            LightMessageBoxForm LightMessageBoxForm = new Infinium.LightMessageBoxForm(true, "Комментарий будет удален.\nПродолжить?",
+            LightMessageBoxForm LightMessageBoxForm = new LightMessageBoxForm(true, "Комментарий будет удален.\nПродолжить?",
                                                                                     "Удаление комментария");
 
             TopForm = LightMessageBoxForm;
@@ -429,7 +427,7 @@ namespace Infinium
 
         private void LightNewsContainer_Refreshed(object sender, EventArgs e)
         {
-            System.Threading.Thread.Sleep(100);
+            Thread.Sleep(100);
 
             while (SplashWindow.bSmallCreated)
                 CoverWaitForm.CloseS = true;
@@ -437,7 +435,7 @@ namespace Infinium
 
         private void LightNewsContainer_AttachClicked(object sender, int NewsAttachID)
         {
-            PhantomForm PhantomForm = new Infinium.PhantomForm();
+            PhantomForm PhantomForm = new PhantomForm();
             PhantomForm.Show();
 
             AttachDownloadForm AttachDownloadForm = new AttachDownloadForm(NewsAttachID, ref LightNews.FM, ref LightNews);
@@ -561,7 +559,7 @@ namespace Infinium
             LightNewsContainer.ScrollToTop();
             LightNewsContainer.Focus();
 
-            ActiveNotifySystem.ClearSubscribesRecords(Security.CurrentUserID, this.Name);
+            ActiveNotifySystem.ClearSubscribesRecords(Security.CurrentUserID, Name);
             //ActiveNotifySystem.ClearModuleUpdates(LightTile.Name);
             //ActiveNotifySystem.ClearCurrentOpenModuleUpdates(this.Name);
             //LightNews.ClearCommentsSubs(Security.CurrentUserID);

@@ -15,15 +15,15 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.StandardReport
 {
     public class DecorReport
     {
-        string ProfilCurrencyCode = "0";
-        string TPSCurrencyCode = "0";
-        decimal PaymentRate = 0;
-        string UNN = string.Empty;
-        int ClientID = 0;
+        private string ProfilCurrencyCode = "0";
+        private string TPSCurrencyCode = "0";
+        private decimal PaymentRate = 0;
+        private string UNN = string.Empty;
+        private int ClientID = 0;
 
         public DataTable CurrencyTypesDT = null;
 
-        DecorCatalogOrder DecorCatalogOrder = null;
+        private DecorCatalogOrder DecorCatalogOrder = null;
 
         public DataTable ProfilReportDataTable = null;
         public DataTable TPSReportDataTable = null;

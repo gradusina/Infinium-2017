@@ -1,11 +1,15 @@
-﻿namespace Infinium
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+using ComponentFactory.Krypton.Toolkit;
+
+namespace Infinium
 {
     partial class EditTimesheetForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -291,18 +295,18 @@
 
         #endregion
 
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge20;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge21;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge22;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge23;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Label label2;
-        private ComponentFactory.Krypton.Toolkit.KryptonPalette StandardButtonsPalette;
-        private System.Windows.Forms.Timer AnimateTimer;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton MenuCloseButton;
-        private ComponentFactory.Krypton.Toolkit.KryptonPalette NavigateMenuButtonsPalette;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton OKButton;
-        private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.TextBox textBox1;
+        private KryptonBorderEdge kryptonBorderEdge20;
+        private KryptonBorderEdge kryptonBorderEdge21;
+        private KryptonBorderEdge kryptonBorderEdge22;
+        private KryptonBorderEdge kryptonBorderEdge23;
+        private Panel panel1;
+        private Label label2;
+        private KryptonPalette StandardButtonsPalette;
+        private Timer AnimateTimer;
+        private KryptonButton MenuCloseButton;
+        private KryptonPalette NavigateMenuButtonsPalette;
+        private KryptonButton OKButton;
+        private Panel panel2;
+        private TextBox textBox1;
     }
 }

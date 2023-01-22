@@ -35,6 +35,7 @@
             this.NavigateMenuCloseButton = new ComponentFactory.Krypton.Toolkit.KryptonButton();
             this.label1 = new System.Windows.Forms.Label();
             this.NavigatePanel = new System.Windows.Forms.Panel();
+            this.MenuButton = new ComponentFactory.Krypton.Toolkit.KryptonCheckButton();
             this.MinimizeButton = new ComponentFactory.Krypton.Toolkit.KryptonButton();
             this.TPSCheckButton = new Infinium.MenuLabel();
             this.ProfilCheckButton = new Infinium.MenuLabel();
@@ -49,19 +50,11 @@
             this.panel23 = new System.Windows.Forms.Panel();
             this.cbDecorTechStore = new System.Windows.Forms.CheckBox();
             this.panel24 = new System.Windows.Forms.Panel();
-            this.kryptonBorderEdge46 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge47 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge48 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge49 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.pcbxDecorTechStore = new System.Windows.Forms.PictureBox();
             this.label11 = new System.Windows.Forms.Label();
             this.panel41 = new System.Windows.Forms.Panel();
             this.cbDecorImage = new System.Windows.Forms.CheckBox();
             this.panel42 = new System.Windows.Forms.Panel();
-            this.kryptonBorderEdge50 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge51 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge52 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge53 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.pcbxDecorImage = new System.Windows.Forms.PictureBox();
             this.label15 = new System.Windows.Forms.Label();
             this.DecorCatalogTableLayout = new System.Windows.Forms.TableLayoutPanel();
@@ -69,183 +62,95 @@
             this.label24 = new System.Windows.Forms.Label();
             this.panel50 = new System.Windows.Forms.Panel();
             this.DecorInsetColorsDataGrid = new Infinium.PercentageDataGrid();
-            this.kryptonBorderEdge62 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge63 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge64 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge65 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.panel47 = new System.Windows.Forms.Panel();
             this.label17 = new System.Windows.Forms.Label();
             this.panel48 = new System.Windows.Forms.Panel();
             this.DecorInsetTypesDataGrid = new Infinium.PercentageDataGrid();
-            this.kryptonBorderEdge58 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge59 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge60 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge61 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.panel33 = new System.Windows.Forms.Panel();
             this.label19 = new System.Windows.Forms.Label();
             this.panel34 = new System.Windows.Forms.Panel();
             this.DecorPatinaDataGrid = new Infinium.PercentageDataGrid();
-            this.kryptonBorderEdge86 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge87 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge88 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge89 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.panel31 = new System.Windows.Forms.Panel();
             this.label18 = new System.Windows.Forms.Label();
             this.panel32 = new System.Windows.Forms.Panel();
             this.ColorsDataGrid = new Infinium.PercentageDataGrid();
-            this.kryptonBorderEdge82 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge83 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge84 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge85 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.panel37 = new System.Windows.Forms.Panel();
             this.label21 = new System.Windows.Forms.Label();
             this.panel38 = new System.Windows.Forms.Panel();
             this.HeightDataGrid = new Infinium.PercentageDataGrid();
-            this.kryptonBorderEdge94 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge95 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge96 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge97 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.panel39 = new System.Windows.Forms.Panel();
             this.label22 = new System.Windows.Forms.Label();
             this.panel40 = new System.Windows.Forms.Panel();
             this.WidthDataGrid = new Infinium.PercentageDataGrid();
-            this.kryptonBorderEdge98 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge99 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge100 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge101 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.panel35 = new System.Windows.Forms.Panel();
             this.label20 = new System.Windows.Forms.Label();
             this.panel36 = new System.Windows.Forms.Panel();
             this.LengthDataGrid = new Infinium.PercentageDataGrid();
-            this.kryptonBorderEdge90 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge91 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge92 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge93 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.panel29 = new System.Windows.Forms.Panel();
             this.label10 = new System.Windows.Forms.Label();
             this.panel30 = new System.Windows.Forms.Panel();
             this.DecorDataGrid = new Infinium.PercentageDataGrid();
-            this.kryptonBorderEdge36 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge37 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge38 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge39 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.panel9 = new System.Windows.Forms.Panel();
             this.label12 = new System.Windows.Forms.Label();
             this.panel28 = new System.Windows.Forms.Panel();
             this.ProductsDataGrid = new Infinium.PercentageDataGrid();
-            this.kryptonBorderEdge78 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge79 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge80 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge81 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.StandardButtonsPalette = new ComponentFactory.Krypton.Toolkit.KryptonPalette(this.components);
             this.FrontsCatalogPanel = new System.Windows.Forms.Panel();
             this.panel43 = new System.Windows.Forms.Panel();
             this.cbVisualConfig = new System.Windows.Forms.CheckBox();
             this.panel44 = new System.Windows.Forms.Panel();
-            this.kryptonBorderEdge54 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge55 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge56 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge57 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.pcbxVisualConfig = new System.Windows.Forms.PictureBox();
             this.label23 = new System.Windows.Forms.Label();
             this.panel27 = new System.Windows.Forms.Panel();
             this.cbFrontTechStore = new System.Windows.Forms.CheckBox();
             this.panel222 = new System.Windows.Forms.Panel();
-            this.kryptonBorderEdge74 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge75 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge76 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge77 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.pcbxFrontTechStore = new System.Windows.Forms.PictureBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel12 = new System.Windows.Forms.Panel();
-            this.kryptonBorderEdge4 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge6 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge7 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge8 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.TechnoFrameColorsDataGrid = new Infinium.PercentageDataGrid();
             this.label14 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
             this.FrontsDataGrid = new Infinium.PercentageDataGrid();
-            this.kryptonBorderEdge1 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge2 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge5 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge9 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.panel4 = new System.Windows.Forms.Panel();
             this.panel5 = new System.Windows.Forms.Panel();
-            this.kryptonBorderEdge10 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge11 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge12 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge13 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.FrameColorsDataGrid = new Infinium.PercentageDataGrid();
             this.label5 = new System.Windows.Forms.Label();
             this.panel6 = new System.Windows.Forms.Panel();
             this.panel7 = new System.Windows.Forms.Panel();
-            this.kryptonBorderEdge14 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge15 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge16 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge17 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.PatinaDataGrid = new Infinium.PercentageDataGrid();
             this.label3 = new System.Windows.Forms.Label();
             this.panel11 = new System.Windows.Forms.Panel();
             this.label4 = new System.Windows.Forms.Label();
             this.panel13 = new System.Windows.Forms.Panel();
-            this.kryptonBorderEdge18 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge19 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge20 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge21 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.InsetTypesDataGrid = new Infinium.PercentageDataGrid();
             this.panel14 = new System.Windows.Forms.Panel();
             this.label6 = new System.Windows.Forms.Label();
             this.panel15 = new System.Windows.Forms.Panel();
-            this.kryptonBorderEdge22 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge23 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge24 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge25 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.InsetColorsDataGrid = new Infinium.PercentageDataGrid();
             this.panel16 = new System.Windows.Forms.Panel();
             this.label7 = new System.Windows.Forms.Label();
             this.panel17 = new System.Windows.Forms.Panel();
-            this.kryptonBorderEdge26 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge27 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge28 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.TechnoInsetTypesDataGrid = new Infinium.PercentageDataGrid();
-            this.kryptonBorderEdge29 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.panel18 = new System.Windows.Forms.Panel();
             this.label13 = new System.Windows.Forms.Label();
             this.panel19 = new System.Windows.Forms.Panel();
-            this.kryptonBorderEdge30 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge31 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.TechnoInsetColorsDataGrid = new Infinium.PercentageDataGrid();
-            this.kryptonBorderEdge40 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge41 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.panel20 = new System.Windows.Forms.Panel();
             this.label8 = new System.Windows.Forms.Label();
             this.panel21 = new System.Windows.Forms.Panel();
-            this.kryptonBorderEdge42 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.FrontsHeightDataGrid = new Infinium.PercentageDataGrid();
-            this.kryptonBorderEdge43 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge44 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge45 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.panel8 = new System.Windows.Forms.Panel();
             this.label9 = new System.Windows.Forms.Label();
             this.panel22 = new System.Windows.Forms.Panel();
             this.FrontsWidthDataGrid = new Infinium.PercentageDataGrid();
-            this.kryptonBorderEdge32 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge33 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge34 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge35 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.panel45 = new System.Windows.Forms.Panel();
             this.btnSetDescription = new ComponentFactory.Krypton.Toolkit.KryptonButton();
             this.panel25 = new System.Windows.Forms.Panel();
             this.cbFrontImage = new System.Windows.Forms.CheckBox();
             this.panel26 = new System.Windows.Forms.Panel();
-            this.kryptonBorderEdge73 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge72 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge71 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge70 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.pcbxFrontImage = new System.Windows.Forms.PictureBox();
             this.label16 = new System.Windows.Forms.Label();
             this.panel10 = new System.Windows.Forms.Panel();
@@ -281,6 +186,8 @@
             this.kryptonContextMenuItem24 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
             this.kryptonContextMenuItem25 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
             this.kryptonContextMenuItem26 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
+            this.kryptonContextMenuItem28 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
+            this.kryptonContextMenuItem29 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
             this.kryptonContextMenuItem27 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
             this.openFileDialog4 = new System.Windows.Forms.OpenFileDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
@@ -288,10 +195,14 @@
             this.openFileDialog3 = new System.Windows.Forms.OpenFileDialog();
             this.openFileDialog5 = new System.Windows.Forms.OpenFileDialog();
             this.openFileDialog6 = new System.Windows.Forms.OpenFileDialog();
+            this.panel55 = new System.Windows.Forms.Panel();
+            this.FilterClientsDataGrid = new Infinium.PercentageDataGrid();
+            this.cbClients = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
+            this.cbExcluzive = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
+            this.MenuPanel = new System.Windows.Forms.Panel();
+            this.btnFilterCatalog = new ComponentFactory.Krypton.Toolkit.KryptonButton();
             this.kryptonCheckSet1 = new ComponentFactory.Krypton.Toolkit.KryptonCheckSet(this.components);
             this.kryptonCheckSet2 = new ComponentFactory.Krypton.Toolkit.KryptonCheckSet(this.components);
-            this.kryptonContextMenuItem28 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
-            this.kryptonContextMenuItem29 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
             this.NavigatePanel.SuspendLayout();
             this.DecorCatalogPanel.SuspendLayout();
             this.panel46.SuspendLayout();
@@ -372,6 +283,9 @@
             this.panel26.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pcbxFrontImage)).BeginInit();
             this.panel10.SuspendLayout();
+            this.panel55.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.FilterClientsDataGrid)).BeginInit();
+            this.MenuPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.kryptonCheckSet1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.kryptonCheckSet2)).BeginInit();
             this.SuspendLayout();
@@ -455,6 +369,7 @@
             // NavigatePanel
             // 
             this.NavigatePanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(140)))), ((int)(((byte)(140)))), ((int)(((byte)(140)))));
+            this.NavigatePanel.Controls.Add(this.MenuButton);
             this.NavigatePanel.Controls.Add(this.MinimizeButton);
             this.NavigatePanel.Controls.Add(this.TPSCheckButton);
             this.NavigatePanel.Controls.Add(this.ProfilCheckButton);
@@ -468,6 +383,27 @@
             this.NavigatePanel.Name = "NavigatePanel";
             this.NavigatePanel.Size = new System.Drawing.Size(1270, 54);
             this.NavigatePanel.TabIndex = 34;
+            // 
+            // MenuButton
+            // 
+            this.MenuButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.MenuButton.Location = new System.Drawing.Point(1120, 8);
+            this.MenuButton.Name = "MenuButton";
+            this.MenuButton.Palette = this.NavigateMenuButtonsPalette;
+            this.MenuButton.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Custom;
+            this.MenuButton.Size = new System.Drawing.Size(41, 39);
+            this.MenuButton.TabIndex = 343;
+            this.MenuButton.TabStop = false;
+            this.MenuButton.Values.ImageStates.ImageCheckedNormal = global::Infinium.Properties.Resources.MenuUp;
+            this.MenuButton.Values.ImageStates.ImageCheckedPressed = global::Infinium.Properties.Resources.MenuUp;
+            this.MenuButton.Values.ImageStates.ImageCheckedTracking = global::Infinium.Properties.Resources.MenuUp;
+            this.MenuButton.Values.ImageStates.ImageDisabled = global::Infinium.Properties.Resources.MenuDown;
+            this.MenuButton.Values.ImageStates.ImageNormal = global::Infinium.Properties.Resources.MenuDown;
+            this.MenuButton.Values.ImageStates.ImagePressed = global::Infinium.Properties.Resources.MenuDown;
+            this.MenuButton.Values.ImageStates.ImageTracking = global::Infinium.Properties.Resources.MenuDown;
+            this.MenuButton.Values.ImageTransparentColor = System.Drawing.Color.Transparent;
+            this.MenuButton.Values.Text = "";
+            this.MenuButton.Click += new System.EventHandler(this.MenuButton_Click);
             // 
             // MinimizeButton
             // 
@@ -490,7 +426,7 @@
             this.TPSCheckButton.CommonLineColor = System.Drawing.Color.White;
             this.TPSCheckButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.TPSCheckButton.LineWidth = 4;
-            this.TPSCheckButton.Location = new System.Drawing.Point(978, 6);
+            this.TPSCheckButton.Location = new System.Drawing.Point(925, 6);
             this.TPSCheckButton.Name = "TPSCheckButton";
             this.TPSCheckButton.OverrideDefault.Back.Color1 = System.Drawing.Color.Transparent;
             this.TPSCheckButton.OverrideDefault.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
@@ -534,7 +470,7 @@
             this.ProfilCheckButton.CommonLineColor = System.Drawing.Color.White;
             this.ProfilCheckButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.ProfilCheckButton.LineWidth = 4;
-            this.ProfilCheckButton.Location = new System.Drawing.Point(798, 6);
+            this.ProfilCheckButton.Location = new System.Drawing.Point(745, 6);
             this.ProfilCheckButton.Name = "ProfilCheckButton";
             this.ProfilCheckButton.OverrideDefault.Back.Color1 = System.Drawing.Color.Transparent;
             this.ProfilCheckButton.OverrideDefault.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
@@ -577,7 +513,7 @@
             this.DecorCheckButton.CommonLineColor = System.Drawing.Color.White;
             this.DecorCheckButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.DecorCheckButton.LineWidth = 4;
-            this.DecorCheckButton.Location = new System.Drawing.Point(618, 6);
+            this.DecorCheckButton.Location = new System.Drawing.Point(565, 6);
             this.DecorCheckButton.Name = "DecorCheckButton";
             this.DecorCheckButton.OverrideDefault.Back.Color1 = System.Drawing.Color.Transparent;
             this.DecorCheckButton.OverrideDefault.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
@@ -621,7 +557,7 @@
             this.FrontsCheckButton.CommonLineColor = System.Drawing.Color.White;
             this.FrontsCheckButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.FrontsCheckButton.LineWidth = 4;
-            this.FrontsCheckButton.Location = new System.Drawing.Point(438, 6);
+            this.FrontsCheckButton.Location = new System.Drawing.Point(385, 6);
             this.FrontsCheckButton.Name = "FrontsCheckButton";
             this.FrontsCheckButton.OverrideDefault.Back.Color1 = System.Drawing.Color.Transparent;
             this.FrontsCheckButton.OverrideDefault.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
@@ -848,54 +784,12 @@
             this.panel24.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel24.Controls.Add(this.kryptonBorderEdge46);
-            this.panel24.Controls.Add(this.kryptonBorderEdge47);
-            this.panel24.Controls.Add(this.kryptonBorderEdge48);
-            this.panel24.Controls.Add(this.kryptonBorderEdge49);
+            this.panel24.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel24.Controls.Add(this.pcbxDecorTechStore);
             this.panel24.Location = new System.Drawing.Point(0, 27);
             this.panel24.Name = "panel24";
             this.panel24.Size = new System.Drawing.Size(245, 193);
             this.panel24.TabIndex = 70;
-            // 
-            // kryptonBorderEdge46
-            // 
-            this.kryptonBorderEdge46.Dock = System.Windows.Forms.DockStyle.Top;
-            this.kryptonBorderEdge46.Location = new System.Drawing.Point(1, 0);
-            this.kryptonBorderEdge46.Name = "kryptonBorderEdge46";
-            this.kryptonBorderEdge46.Size = new System.Drawing.Size(243, 1);
-            this.kryptonBorderEdge46.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge46.Text = "kryptonBorderEdge46";
-            // 
-            // kryptonBorderEdge47
-            // 
-            this.kryptonBorderEdge47.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.kryptonBorderEdge47.Location = new System.Drawing.Point(1, 192);
-            this.kryptonBorderEdge47.Name = "kryptonBorderEdge47";
-            this.kryptonBorderEdge47.Size = new System.Drawing.Size(243, 1);
-            this.kryptonBorderEdge47.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge47.Text = "kryptonBorderEdge47";
-            // 
-            // kryptonBorderEdge48
-            // 
-            this.kryptonBorderEdge48.Dock = System.Windows.Forms.DockStyle.Right;
-            this.kryptonBorderEdge48.Location = new System.Drawing.Point(244, 0);
-            this.kryptonBorderEdge48.Name = "kryptonBorderEdge48";
-            this.kryptonBorderEdge48.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge48.Size = new System.Drawing.Size(1, 193);
-            this.kryptonBorderEdge48.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge48.Text = "kryptonBorderEdge48";
-            // 
-            // kryptonBorderEdge49
-            // 
-            this.kryptonBorderEdge49.Dock = System.Windows.Forms.DockStyle.Left;
-            this.kryptonBorderEdge49.Location = new System.Drawing.Point(0, 0);
-            this.kryptonBorderEdge49.Margin = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.kryptonBorderEdge49.Name = "kryptonBorderEdge49";
-            this.kryptonBorderEdge49.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge49.Size = new System.Drawing.Size(1, 193);
-            this.kryptonBorderEdge49.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge49.Text = "kryptonBorderEdge49";
             // 
             // pcbxDecorTechStore
             // 
@@ -904,7 +798,7 @@
             this.pcbxDecorTechStore.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pcbxDecorTechStore.Location = new System.Drawing.Point(0, 0);
             this.pcbxDecorTechStore.Name = "pcbxDecorTechStore";
-            this.pcbxDecorTechStore.Size = new System.Drawing.Size(245, 193);
+            this.pcbxDecorTechStore.Size = new System.Drawing.Size(243, 191);
             this.pcbxDecorTechStore.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pcbxDecorTechStore.TabIndex = 443;
             this.pcbxDecorTechStore.TabStop = false;
@@ -951,54 +845,12 @@
             this.panel42.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel42.Controls.Add(this.kryptonBorderEdge50);
-            this.panel42.Controls.Add(this.kryptonBorderEdge51);
-            this.panel42.Controls.Add(this.kryptonBorderEdge52);
-            this.panel42.Controls.Add(this.kryptonBorderEdge53);
+            this.panel42.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel42.Controls.Add(this.pcbxDecorImage);
             this.panel42.Location = new System.Drawing.Point(0, 27);
             this.panel42.Name = "panel42";
             this.panel42.Size = new System.Drawing.Size(245, 193);
             this.panel42.TabIndex = 70;
-            // 
-            // kryptonBorderEdge50
-            // 
-            this.kryptonBorderEdge50.Dock = System.Windows.Forms.DockStyle.Left;
-            this.kryptonBorderEdge50.Location = new System.Drawing.Point(0, 1);
-            this.kryptonBorderEdge50.Margin = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.kryptonBorderEdge50.Name = "kryptonBorderEdge50";
-            this.kryptonBorderEdge50.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge50.Size = new System.Drawing.Size(1, 191);
-            this.kryptonBorderEdge50.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge50.Text = "kryptonBorderEdge50";
-            // 
-            // kryptonBorderEdge51
-            // 
-            this.kryptonBorderEdge51.Dock = System.Windows.Forms.DockStyle.Right;
-            this.kryptonBorderEdge51.Location = new System.Drawing.Point(244, 1);
-            this.kryptonBorderEdge51.Name = "kryptonBorderEdge51";
-            this.kryptonBorderEdge51.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge51.Size = new System.Drawing.Size(1, 191);
-            this.kryptonBorderEdge51.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge51.Text = "kryptonBorderEdge51";
-            // 
-            // kryptonBorderEdge52
-            // 
-            this.kryptonBorderEdge52.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.kryptonBorderEdge52.Location = new System.Drawing.Point(0, 192);
-            this.kryptonBorderEdge52.Name = "kryptonBorderEdge52";
-            this.kryptonBorderEdge52.Size = new System.Drawing.Size(245, 1);
-            this.kryptonBorderEdge52.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge52.Text = "kryptonBorderEdge52";
-            // 
-            // kryptonBorderEdge53
-            // 
-            this.kryptonBorderEdge53.Dock = System.Windows.Forms.DockStyle.Top;
-            this.kryptonBorderEdge53.Location = new System.Drawing.Point(0, 0);
-            this.kryptonBorderEdge53.Name = "kryptonBorderEdge53";
-            this.kryptonBorderEdge53.Size = new System.Drawing.Size(245, 1);
-            this.kryptonBorderEdge53.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge53.Text = "kryptonBorderEdge53";
             // 
             // pcbxDecorImage
             // 
@@ -1007,7 +859,7 @@
             this.pcbxDecorImage.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pcbxDecorImage.Location = new System.Drawing.Point(0, 0);
             this.pcbxDecorImage.Name = "pcbxDecorImage";
-            this.pcbxDecorImage.Size = new System.Drawing.Size(245, 193);
+            this.pcbxDecorImage.Size = new System.Drawing.Size(243, 191);
             this.pcbxDecorImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pcbxDecorImage.TabIndex = 442;
             this.pcbxDecorImage.TabStop = false;
@@ -1085,11 +937,8 @@
             this.panel50.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel50.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel50.Controls.Add(this.DecorInsetColorsDataGrid);
-            this.panel50.Controls.Add(this.kryptonBorderEdge62);
-            this.panel50.Controls.Add(this.kryptonBorderEdge63);
-            this.panel50.Controls.Add(this.kryptonBorderEdge64);
-            this.panel50.Controls.Add(this.kryptonBorderEdge65);
             this.panel50.Location = new System.Drawing.Point(0, 27);
             this.panel50.Name = "panel50";
             this.panel50.Size = new System.Drawing.Size(402, 193);
@@ -1107,7 +956,7 @@
             this.DecorInsetColorsDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.DecorInsetColorsDataGrid.ColumnHeadersVisible = false;
             this.DecorInsetColorsDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.DecorInsetColorsDataGrid.Location = new System.Drawing.Point(1, 1);
+            this.DecorInsetColorsDataGrid.Location = new System.Drawing.Point(0, 0);
             this.DecorInsetColorsDataGrid.MultiSelect = false;
             this.DecorInsetColorsDataGrid.Name = "DecorInsetColorsDataGrid";
             this.DecorInsetColorsDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -1149,45 +998,6 @@
             this.DecorInsetColorsDataGrid.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.DecorDataGrid_CellMouseDown);
             this.DecorInsetColorsDataGrid.SelectionChanged += new System.EventHandler(this.DecorInsetColorsDataGrid_SelectionChanged);
             // 
-            // kryptonBorderEdge62
-            // 
-            this.kryptonBorderEdge62.Dock = System.Windows.Forms.DockStyle.Top;
-            this.kryptonBorderEdge62.Location = new System.Drawing.Point(1, 0);
-            this.kryptonBorderEdge62.Name = "kryptonBorderEdge62";
-            this.kryptonBorderEdge62.Size = new System.Drawing.Size(400, 1);
-            this.kryptonBorderEdge62.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge62.Text = "kryptonBorderEdge62";
-            // 
-            // kryptonBorderEdge63
-            // 
-            this.kryptonBorderEdge63.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.kryptonBorderEdge63.Location = new System.Drawing.Point(1, 192);
-            this.kryptonBorderEdge63.Name = "kryptonBorderEdge63";
-            this.kryptonBorderEdge63.Size = new System.Drawing.Size(400, 1);
-            this.kryptonBorderEdge63.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge63.Text = "kryptonBorderEdge63";
-            // 
-            // kryptonBorderEdge64
-            // 
-            this.kryptonBorderEdge64.Dock = System.Windows.Forms.DockStyle.Right;
-            this.kryptonBorderEdge64.Location = new System.Drawing.Point(401, 0);
-            this.kryptonBorderEdge64.Name = "kryptonBorderEdge64";
-            this.kryptonBorderEdge64.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge64.Size = new System.Drawing.Size(1, 193);
-            this.kryptonBorderEdge64.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge64.Text = "kryptonBorderEdge64";
-            // 
-            // kryptonBorderEdge65
-            // 
-            this.kryptonBorderEdge65.Dock = System.Windows.Forms.DockStyle.Left;
-            this.kryptonBorderEdge65.Location = new System.Drawing.Point(0, 0);
-            this.kryptonBorderEdge65.Margin = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.kryptonBorderEdge65.Name = "kryptonBorderEdge65";
-            this.kryptonBorderEdge65.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge65.Size = new System.Drawing.Size(1, 193);
-            this.kryptonBorderEdge65.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge65.Text = "kryptonBorderEdge65";
-            // 
             // panel47
             // 
             this.panel47.Controls.Add(this.label17);
@@ -1215,11 +1025,8 @@
             this.panel48.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel48.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel48.Controls.Add(this.DecorInsetTypesDataGrid);
-            this.panel48.Controls.Add(this.kryptonBorderEdge58);
-            this.panel48.Controls.Add(this.kryptonBorderEdge59);
-            this.panel48.Controls.Add(this.kryptonBorderEdge60);
-            this.panel48.Controls.Add(this.kryptonBorderEdge61);
             this.panel48.Location = new System.Drawing.Point(0, 27);
             this.panel48.Name = "panel48";
             this.panel48.Size = new System.Drawing.Size(402, 193);
@@ -1237,7 +1044,7 @@
             this.DecorInsetTypesDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.DecorInsetTypesDataGrid.ColumnHeadersVisible = false;
             this.DecorInsetTypesDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.DecorInsetTypesDataGrid.Location = new System.Drawing.Point(1, 1);
+            this.DecorInsetTypesDataGrid.Location = new System.Drawing.Point(0, 0);
             this.DecorInsetTypesDataGrid.MultiSelect = false;
             this.DecorInsetTypesDataGrid.Name = "DecorInsetTypesDataGrid";
             this.DecorInsetTypesDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -1279,45 +1086,6 @@
             this.DecorInsetTypesDataGrid.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.DecorDataGrid_CellMouseDown);
             this.DecorInsetTypesDataGrid.SelectionChanged += new System.EventHandler(this.DecorInsetTypesDataGrid_SelectionChanged);
             // 
-            // kryptonBorderEdge58
-            // 
-            this.kryptonBorderEdge58.Dock = System.Windows.Forms.DockStyle.Top;
-            this.kryptonBorderEdge58.Location = new System.Drawing.Point(1, 0);
-            this.kryptonBorderEdge58.Name = "kryptonBorderEdge58";
-            this.kryptonBorderEdge58.Size = new System.Drawing.Size(400, 1);
-            this.kryptonBorderEdge58.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge58.Text = "kryptonBorderEdge58";
-            // 
-            // kryptonBorderEdge59
-            // 
-            this.kryptonBorderEdge59.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.kryptonBorderEdge59.Location = new System.Drawing.Point(1, 192);
-            this.kryptonBorderEdge59.Name = "kryptonBorderEdge59";
-            this.kryptonBorderEdge59.Size = new System.Drawing.Size(400, 1);
-            this.kryptonBorderEdge59.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge59.Text = "kryptonBorderEdge59";
-            // 
-            // kryptonBorderEdge60
-            // 
-            this.kryptonBorderEdge60.Dock = System.Windows.Forms.DockStyle.Right;
-            this.kryptonBorderEdge60.Location = new System.Drawing.Point(401, 0);
-            this.kryptonBorderEdge60.Name = "kryptonBorderEdge60";
-            this.kryptonBorderEdge60.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge60.Size = new System.Drawing.Size(1, 193);
-            this.kryptonBorderEdge60.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge60.Text = "kryptonBorderEdge60";
-            // 
-            // kryptonBorderEdge61
-            // 
-            this.kryptonBorderEdge61.Dock = System.Windows.Forms.DockStyle.Left;
-            this.kryptonBorderEdge61.Location = new System.Drawing.Point(0, 0);
-            this.kryptonBorderEdge61.Margin = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.kryptonBorderEdge61.Name = "kryptonBorderEdge61";
-            this.kryptonBorderEdge61.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge61.Size = new System.Drawing.Size(1, 193);
-            this.kryptonBorderEdge61.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge61.Text = "kryptonBorderEdge61";
-            // 
             // panel33
             // 
             this.panel33.Controls.Add(this.label19);
@@ -1345,11 +1113,8 @@
             this.panel34.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel34.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel34.Controls.Add(this.DecorPatinaDataGrid);
-            this.panel34.Controls.Add(this.kryptonBorderEdge86);
-            this.panel34.Controls.Add(this.kryptonBorderEdge87);
-            this.panel34.Controls.Add(this.kryptonBorderEdge88);
-            this.panel34.Controls.Add(this.kryptonBorderEdge89);
             this.panel34.Location = new System.Drawing.Point(0, 27);
             this.panel34.Name = "panel34";
             this.panel34.Size = new System.Drawing.Size(402, 193);
@@ -1367,7 +1132,7 @@
             this.DecorPatinaDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.DecorPatinaDataGrid.ColumnHeadersVisible = false;
             this.DecorPatinaDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.DecorPatinaDataGrid.Location = new System.Drawing.Point(1, 1);
+            this.DecorPatinaDataGrid.Location = new System.Drawing.Point(0, 0);
             this.DecorPatinaDataGrid.MultiSelect = false;
             this.DecorPatinaDataGrid.Name = "DecorPatinaDataGrid";
             this.DecorPatinaDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -1410,45 +1175,6 @@
             this.DecorPatinaDataGrid.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.DecorDataGrid_CellMouseDown);
             this.DecorPatinaDataGrid.SelectionChanged += new System.EventHandler(this.DecorPatinaDataGrid_SelectionChanged);
             // 
-            // kryptonBorderEdge86
-            // 
-            this.kryptonBorderEdge86.Dock = System.Windows.Forms.DockStyle.Top;
-            this.kryptonBorderEdge86.Location = new System.Drawing.Point(1, 0);
-            this.kryptonBorderEdge86.Name = "kryptonBorderEdge86";
-            this.kryptonBorderEdge86.Size = new System.Drawing.Size(400, 1);
-            this.kryptonBorderEdge86.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge86.Text = "kryptonBorderEdge86";
-            // 
-            // kryptonBorderEdge87
-            // 
-            this.kryptonBorderEdge87.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.kryptonBorderEdge87.Location = new System.Drawing.Point(1, 192);
-            this.kryptonBorderEdge87.Name = "kryptonBorderEdge87";
-            this.kryptonBorderEdge87.Size = new System.Drawing.Size(400, 1);
-            this.kryptonBorderEdge87.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge87.Text = "kryptonBorderEdge87";
-            // 
-            // kryptonBorderEdge88
-            // 
-            this.kryptonBorderEdge88.Dock = System.Windows.Forms.DockStyle.Right;
-            this.kryptonBorderEdge88.Location = new System.Drawing.Point(401, 0);
-            this.kryptonBorderEdge88.Name = "kryptonBorderEdge88";
-            this.kryptonBorderEdge88.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge88.Size = new System.Drawing.Size(1, 193);
-            this.kryptonBorderEdge88.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge88.Text = "kryptonBorderEdge88";
-            // 
-            // kryptonBorderEdge89
-            // 
-            this.kryptonBorderEdge89.Dock = System.Windows.Forms.DockStyle.Left;
-            this.kryptonBorderEdge89.Location = new System.Drawing.Point(0, 0);
-            this.kryptonBorderEdge89.Margin = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.kryptonBorderEdge89.Name = "kryptonBorderEdge89";
-            this.kryptonBorderEdge89.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge89.Size = new System.Drawing.Size(1, 193);
-            this.kryptonBorderEdge89.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge89.Text = "kryptonBorderEdge89";
-            // 
             // panel31
             // 
             this.panel31.Controls.Add(this.label18);
@@ -1476,11 +1202,8 @@
             this.panel32.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel32.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel32.Controls.Add(this.ColorsDataGrid);
-            this.panel32.Controls.Add(this.kryptonBorderEdge82);
-            this.panel32.Controls.Add(this.kryptonBorderEdge83);
-            this.panel32.Controls.Add(this.kryptonBorderEdge84);
-            this.panel32.Controls.Add(this.kryptonBorderEdge85);
             this.panel32.Location = new System.Drawing.Point(0, 27);
             this.panel32.Name = "panel32";
             this.panel32.Size = new System.Drawing.Size(402, 193);
@@ -1498,7 +1221,7 @@
             this.ColorsDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.ColorsDataGrid.ColumnHeadersVisible = false;
             this.ColorsDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ColorsDataGrid.Location = new System.Drawing.Point(1, 1);
+            this.ColorsDataGrid.Location = new System.Drawing.Point(0, 0);
             this.ColorsDataGrid.MultiSelect = false;
             this.ColorsDataGrid.Name = "ColorsDataGrid";
             this.ColorsDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -1541,45 +1264,6 @@
             this.ColorsDataGrid.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.ColorsDataGrid_CellMouseDown);
             this.ColorsDataGrid.SelectionChanged += new System.EventHandler(this.ColorsDataGrid_SelectionChanged);
             // 
-            // kryptonBorderEdge82
-            // 
-            this.kryptonBorderEdge82.Dock = System.Windows.Forms.DockStyle.Top;
-            this.kryptonBorderEdge82.Location = new System.Drawing.Point(1, 0);
-            this.kryptonBorderEdge82.Name = "kryptonBorderEdge82";
-            this.kryptonBorderEdge82.Size = new System.Drawing.Size(400, 1);
-            this.kryptonBorderEdge82.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge82.Text = "kryptonBorderEdge82";
-            // 
-            // kryptonBorderEdge83
-            // 
-            this.kryptonBorderEdge83.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.kryptonBorderEdge83.Location = new System.Drawing.Point(1, 192);
-            this.kryptonBorderEdge83.Name = "kryptonBorderEdge83";
-            this.kryptonBorderEdge83.Size = new System.Drawing.Size(400, 1);
-            this.kryptonBorderEdge83.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge83.Text = "kryptonBorderEdge83";
-            // 
-            // kryptonBorderEdge84
-            // 
-            this.kryptonBorderEdge84.Dock = System.Windows.Forms.DockStyle.Right;
-            this.kryptonBorderEdge84.Location = new System.Drawing.Point(401, 0);
-            this.kryptonBorderEdge84.Name = "kryptonBorderEdge84";
-            this.kryptonBorderEdge84.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge84.Size = new System.Drawing.Size(1, 193);
-            this.kryptonBorderEdge84.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge84.Text = "kryptonBorderEdge84";
-            // 
-            // kryptonBorderEdge85
-            // 
-            this.kryptonBorderEdge85.Dock = System.Windows.Forms.DockStyle.Left;
-            this.kryptonBorderEdge85.Location = new System.Drawing.Point(0, 0);
-            this.kryptonBorderEdge85.Margin = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.kryptonBorderEdge85.Name = "kryptonBorderEdge85";
-            this.kryptonBorderEdge85.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge85.Size = new System.Drawing.Size(1, 193);
-            this.kryptonBorderEdge85.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge85.Text = "kryptonBorderEdge85";
-            // 
             // panel37
             // 
             this.panel37.Controls.Add(this.label21);
@@ -1607,11 +1291,8 @@
             this.panel38.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel38.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel38.Controls.Add(this.HeightDataGrid);
-            this.panel38.Controls.Add(this.kryptonBorderEdge94);
-            this.panel38.Controls.Add(this.kryptonBorderEdge95);
-            this.panel38.Controls.Add(this.kryptonBorderEdge96);
-            this.panel38.Controls.Add(this.kryptonBorderEdge97);
             this.panel38.Location = new System.Drawing.Point(0, 27);
             this.panel38.Name = "panel38";
             this.panel38.Size = new System.Drawing.Size(195, 193);
@@ -1629,7 +1310,7 @@
             this.HeightDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.HeightDataGrid.ColumnHeadersVisible = false;
             this.HeightDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.HeightDataGrid.Location = new System.Drawing.Point(1, 1);
+            this.HeightDataGrid.Location = new System.Drawing.Point(0, 0);
             this.HeightDataGrid.MultiSelect = false;
             this.HeightDataGrid.Name = "HeightDataGrid";
             this.HeightDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -1671,45 +1352,6 @@
             this.HeightDataGrid.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.HeightDataGrid_CellClick);
             this.HeightDataGrid.SelectionChanged += new System.EventHandler(this.HeightDataGrid_SelectionChanged);
             // 
-            // kryptonBorderEdge94
-            // 
-            this.kryptonBorderEdge94.Dock = System.Windows.Forms.DockStyle.Top;
-            this.kryptonBorderEdge94.Location = new System.Drawing.Point(1, 0);
-            this.kryptonBorderEdge94.Name = "kryptonBorderEdge94";
-            this.kryptonBorderEdge94.Size = new System.Drawing.Size(193, 1);
-            this.kryptonBorderEdge94.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge94.Text = "kryptonBorderEdge94";
-            // 
-            // kryptonBorderEdge95
-            // 
-            this.kryptonBorderEdge95.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.kryptonBorderEdge95.Location = new System.Drawing.Point(1, 192);
-            this.kryptonBorderEdge95.Name = "kryptonBorderEdge95";
-            this.kryptonBorderEdge95.Size = new System.Drawing.Size(193, 1);
-            this.kryptonBorderEdge95.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge95.Text = "kryptonBorderEdge95";
-            // 
-            // kryptonBorderEdge96
-            // 
-            this.kryptonBorderEdge96.Dock = System.Windows.Forms.DockStyle.Right;
-            this.kryptonBorderEdge96.Location = new System.Drawing.Point(194, 0);
-            this.kryptonBorderEdge96.Name = "kryptonBorderEdge96";
-            this.kryptonBorderEdge96.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge96.Size = new System.Drawing.Size(1, 193);
-            this.kryptonBorderEdge96.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge96.Text = "kryptonBorderEdge96";
-            // 
-            // kryptonBorderEdge97
-            // 
-            this.kryptonBorderEdge97.Dock = System.Windows.Forms.DockStyle.Left;
-            this.kryptonBorderEdge97.Location = new System.Drawing.Point(0, 0);
-            this.kryptonBorderEdge97.Margin = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.kryptonBorderEdge97.Name = "kryptonBorderEdge97";
-            this.kryptonBorderEdge97.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge97.Size = new System.Drawing.Size(1, 193);
-            this.kryptonBorderEdge97.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge97.Text = "kryptonBorderEdge97";
-            // 
             // panel39
             // 
             this.panel39.Controls.Add(this.label22);
@@ -1737,11 +1379,8 @@
             this.panel40.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel40.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel40.Controls.Add(this.WidthDataGrid);
-            this.panel40.Controls.Add(this.kryptonBorderEdge98);
-            this.panel40.Controls.Add(this.kryptonBorderEdge99);
-            this.panel40.Controls.Add(this.kryptonBorderEdge100);
-            this.panel40.Controls.Add(this.kryptonBorderEdge101);
             this.panel40.Location = new System.Drawing.Point(0, 27);
             this.panel40.Name = "panel40";
             this.panel40.Size = new System.Drawing.Size(195, 193);
@@ -1759,7 +1398,7 @@
             this.WidthDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.WidthDataGrid.ColumnHeadersVisible = false;
             this.WidthDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.WidthDataGrid.Location = new System.Drawing.Point(1, 1);
+            this.WidthDataGrid.Location = new System.Drawing.Point(0, 0);
             this.WidthDataGrid.MultiSelect = false;
             this.WidthDataGrid.Name = "WidthDataGrid";
             this.WidthDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -1800,45 +1439,6 @@
             this.WidthDataGrid.UseCustomBackColor = false;
             this.WidthDataGrid.SelectionChanged += new System.EventHandler(this.WidthDataGrid_SelectionChanged);
             // 
-            // kryptonBorderEdge98
-            // 
-            this.kryptonBorderEdge98.Dock = System.Windows.Forms.DockStyle.Top;
-            this.kryptonBorderEdge98.Location = new System.Drawing.Point(1, 0);
-            this.kryptonBorderEdge98.Name = "kryptonBorderEdge98";
-            this.kryptonBorderEdge98.Size = new System.Drawing.Size(193, 1);
-            this.kryptonBorderEdge98.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge98.Text = "kryptonBorderEdge98";
-            // 
-            // kryptonBorderEdge99
-            // 
-            this.kryptonBorderEdge99.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.kryptonBorderEdge99.Location = new System.Drawing.Point(1, 192);
-            this.kryptonBorderEdge99.Name = "kryptonBorderEdge99";
-            this.kryptonBorderEdge99.Size = new System.Drawing.Size(193, 1);
-            this.kryptonBorderEdge99.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge99.Text = "kryptonBorderEdge99";
-            // 
-            // kryptonBorderEdge100
-            // 
-            this.kryptonBorderEdge100.Dock = System.Windows.Forms.DockStyle.Right;
-            this.kryptonBorderEdge100.Location = new System.Drawing.Point(194, 0);
-            this.kryptonBorderEdge100.Name = "kryptonBorderEdge100";
-            this.kryptonBorderEdge100.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge100.Size = new System.Drawing.Size(1, 193);
-            this.kryptonBorderEdge100.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge100.Text = "kryptonBorderEdge100";
-            // 
-            // kryptonBorderEdge101
-            // 
-            this.kryptonBorderEdge101.Dock = System.Windows.Forms.DockStyle.Left;
-            this.kryptonBorderEdge101.Location = new System.Drawing.Point(0, 0);
-            this.kryptonBorderEdge101.Margin = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.kryptonBorderEdge101.Name = "kryptonBorderEdge101";
-            this.kryptonBorderEdge101.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge101.Size = new System.Drawing.Size(1, 193);
-            this.kryptonBorderEdge101.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge101.Text = "kryptonBorderEdge101";
-            // 
             // panel35
             // 
             this.panel35.Controls.Add(this.label20);
@@ -1866,11 +1466,8 @@
             this.panel36.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel36.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel36.Controls.Add(this.LengthDataGrid);
-            this.panel36.Controls.Add(this.kryptonBorderEdge90);
-            this.panel36.Controls.Add(this.kryptonBorderEdge91);
-            this.panel36.Controls.Add(this.kryptonBorderEdge92);
-            this.panel36.Controls.Add(this.kryptonBorderEdge93);
             this.panel36.Location = new System.Drawing.Point(0, 27);
             this.panel36.Name = "panel36";
             this.panel36.Size = new System.Drawing.Size(195, 193);
@@ -1888,7 +1485,7 @@
             this.LengthDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.LengthDataGrid.ColumnHeadersVisible = false;
             this.LengthDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.LengthDataGrid.Location = new System.Drawing.Point(1, 1);
+            this.LengthDataGrid.Location = new System.Drawing.Point(0, 0);
             this.LengthDataGrid.MultiSelect = false;
             this.LengthDataGrid.Name = "LengthDataGrid";
             this.LengthDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -1930,45 +1527,6 @@
             this.LengthDataGrid.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.LengthDataGrid_CellClick);
             this.LengthDataGrid.SelectionChanged += new System.EventHandler(this.LengthDataGrid_SelectionChanged);
             // 
-            // kryptonBorderEdge90
-            // 
-            this.kryptonBorderEdge90.Dock = System.Windows.Forms.DockStyle.Top;
-            this.kryptonBorderEdge90.Location = new System.Drawing.Point(1, 0);
-            this.kryptonBorderEdge90.Name = "kryptonBorderEdge90";
-            this.kryptonBorderEdge90.Size = new System.Drawing.Size(193, 1);
-            this.kryptonBorderEdge90.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge90.Text = "kryptonBorderEdge90";
-            // 
-            // kryptonBorderEdge91
-            // 
-            this.kryptonBorderEdge91.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.kryptonBorderEdge91.Location = new System.Drawing.Point(1, 192);
-            this.kryptonBorderEdge91.Name = "kryptonBorderEdge91";
-            this.kryptonBorderEdge91.Size = new System.Drawing.Size(193, 1);
-            this.kryptonBorderEdge91.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge91.Text = "kryptonBorderEdge91";
-            // 
-            // kryptonBorderEdge92
-            // 
-            this.kryptonBorderEdge92.Dock = System.Windows.Forms.DockStyle.Right;
-            this.kryptonBorderEdge92.Location = new System.Drawing.Point(194, 0);
-            this.kryptonBorderEdge92.Name = "kryptonBorderEdge92";
-            this.kryptonBorderEdge92.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge92.Size = new System.Drawing.Size(1, 193);
-            this.kryptonBorderEdge92.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge92.Text = "kryptonBorderEdge92";
-            // 
-            // kryptonBorderEdge93
-            // 
-            this.kryptonBorderEdge93.Dock = System.Windows.Forms.DockStyle.Left;
-            this.kryptonBorderEdge93.Location = new System.Drawing.Point(0, 0);
-            this.kryptonBorderEdge93.Margin = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.kryptonBorderEdge93.Name = "kryptonBorderEdge93";
-            this.kryptonBorderEdge93.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge93.Size = new System.Drawing.Size(1, 193);
-            this.kryptonBorderEdge93.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge93.Text = "kryptonBorderEdge93";
-            // 
             // panel29
             // 
             this.panel29.Controls.Add(this.label10);
@@ -1996,11 +1554,8 @@
             this.panel30.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel30.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel30.Controls.Add(this.DecorDataGrid);
-            this.panel30.Controls.Add(this.kryptonBorderEdge36);
-            this.panel30.Controls.Add(this.kryptonBorderEdge37);
-            this.panel30.Controls.Add(this.kryptonBorderEdge38);
-            this.panel30.Controls.Add(this.kryptonBorderEdge39);
             this.panel30.Location = new System.Drawing.Point(0, 27);
             this.panel30.Name = "panel30";
             this.panel30.Size = new System.Drawing.Size(402, 193);
@@ -2018,7 +1573,7 @@
             this.DecorDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.DecorDataGrid.ColumnHeadersVisible = false;
             this.DecorDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.DecorDataGrid.Location = new System.Drawing.Point(1, 1);
+            this.DecorDataGrid.Location = new System.Drawing.Point(0, 0);
             this.DecorDataGrid.MultiSelect = false;
             this.DecorDataGrid.Name = "DecorDataGrid";
             this.DecorDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -2061,45 +1616,6 @@
             this.DecorDataGrid.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.DecorDataGrid_CellMouseDown);
             this.DecorDataGrid.SelectionChanged += new System.EventHandler(this.DecorDataGrid_SelectionChanged);
             // 
-            // kryptonBorderEdge36
-            // 
-            this.kryptonBorderEdge36.Dock = System.Windows.Forms.DockStyle.Top;
-            this.kryptonBorderEdge36.Location = new System.Drawing.Point(1, 0);
-            this.kryptonBorderEdge36.Name = "kryptonBorderEdge36";
-            this.kryptonBorderEdge36.Size = new System.Drawing.Size(400, 1);
-            this.kryptonBorderEdge36.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge36.Text = "kryptonBorderEdge36";
-            // 
-            // kryptonBorderEdge37
-            // 
-            this.kryptonBorderEdge37.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.kryptonBorderEdge37.Location = new System.Drawing.Point(1, 192);
-            this.kryptonBorderEdge37.Name = "kryptonBorderEdge37";
-            this.kryptonBorderEdge37.Size = new System.Drawing.Size(400, 1);
-            this.kryptonBorderEdge37.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge37.Text = "kryptonBorderEdge37";
-            // 
-            // kryptonBorderEdge38
-            // 
-            this.kryptonBorderEdge38.Dock = System.Windows.Forms.DockStyle.Right;
-            this.kryptonBorderEdge38.Location = new System.Drawing.Point(401, 0);
-            this.kryptonBorderEdge38.Name = "kryptonBorderEdge38";
-            this.kryptonBorderEdge38.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge38.Size = new System.Drawing.Size(1, 193);
-            this.kryptonBorderEdge38.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge38.Text = "kryptonBorderEdge38";
-            // 
-            // kryptonBorderEdge39
-            // 
-            this.kryptonBorderEdge39.Dock = System.Windows.Forms.DockStyle.Left;
-            this.kryptonBorderEdge39.Location = new System.Drawing.Point(0, 0);
-            this.kryptonBorderEdge39.Margin = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.kryptonBorderEdge39.Name = "kryptonBorderEdge39";
-            this.kryptonBorderEdge39.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge39.Size = new System.Drawing.Size(1, 193);
-            this.kryptonBorderEdge39.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge39.Text = "kryptonBorderEdge39";
-            // 
             // panel9
             // 
             this.panel9.Controls.Add(this.label12);
@@ -2127,11 +1643,8 @@
             this.panel28.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel28.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel28.Controls.Add(this.ProductsDataGrid);
-            this.panel28.Controls.Add(this.kryptonBorderEdge78);
-            this.panel28.Controls.Add(this.kryptonBorderEdge79);
-            this.panel28.Controls.Add(this.kryptonBorderEdge80);
-            this.panel28.Controls.Add(this.kryptonBorderEdge81);
             this.panel28.Location = new System.Drawing.Point(0, 27);
             this.panel28.Name = "panel28";
             this.panel28.Size = new System.Drawing.Size(402, 193);
@@ -2149,7 +1662,7 @@
             this.ProductsDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.ProductsDataGrid.ColumnHeadersVisible = false;
             this.ProductsDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ProductsDataGrid.Location = new System.Drawing.Point(1, 1);
+            this.ProductsDataGrid.Location = new System.Drawing.Point(0, 0);
             this.ProductsDataGrid.MultiSelect = false;
             this.ProductsDataGrid.Name = "ProductsDataGrid";
             this.ProductsDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -2191,45 +1704,6 @@
             this.ProductsDataGrid.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.ProductsDataGrid_CellClick);
             this.ProductsDataGrid.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.ProductsDataGrid_CellMouseDown);
             this.ProductsDataGrid.SelectionChanged += new System.EventHandler(this.ProductsDataGrid_SelectionChanged);
-            // 
-            // kryptonBorderEdge78
-            // 
-            this.kryptonBorderEdge78.Dock = System.Windows.Forms.DockStyle.Top;
-            this.kryptonBorderEdge78.Location = new System.Drawing.Point(1, 0);
-            this.kryptonBorderEdge78.Name = "kryptonBorderEdge78";
-            this.kryptonBorderEdge78.Size = new System.Drawing.Size(400, 1);
-            this.kryptonBorderEdge78.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge78.Text = "kryptonBorderEdge78";
-            // 
-            // kryptonBorderEdge79
-            // 
-            this.kryptonBorderEdge79.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.kryptonBorderEdge79.Location = new System.Drawing.Point(1, 192);
-            this.kryptonBorderEdge79.Name = "kryptonBorderEdge79";
-            this.kryptonBorderEdge79.Size = new System.Drawing.Size(400, 1);
-            this.kryptonBorderEdge79.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge79.Text = "kryptonBorderEdge79";
-            // 
-            // kryptonBorderEdge80
-            // 
-            this.kryptonBorderEdge80.Dock = System.Windows.Forms.DockStyle.Right;
-            this.kryptonBorderEdge80.Location = new System.Drawing.Point(401, 0);
-            this.kryptonBorderEdge80.Name = "kryptonBorderEdge80";
-            this.kryptonBorderEdge80.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge80.Size = new System.Drawing.Size(1, 193);
-            this.kryptonBorderEdge80.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge80.Text = "kryptonBorderEdge80";
-            // 
-            // kryptonBorderEdge81
-            // 
-            this.kryptonBorderEdge81.Dock = System.Windows.Forms.DockStyle.Left;
-            this.kryptonBorderEdge81.Location = new System.Drawing.Point(0, 0);
-            this.kryptonBorderEdge81.Margin = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.kryptonBorderEdge81.Name = "kryptonBorderEdge81";
-            this.kryptonBorderEdge81.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge81.Size = new System.Drawing.Size(1, 193);
-            this.kryptonBorderEdge81.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge81.Text = "kryptonBorderEdge81";
             // 
             // StandardButtonsPalette
             // 
@@ -2313,54 +1787,12 @@
             this.panel44.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel44.Controls.Add(this.kryptonBorderEdge54);
-            this.panel44.Controls.Add(this.kryptonBorderEdge55);
-            this.panel44.Controls.Add(this.kryptonBorderEdge56);
-            this.panel44.Controls.Add(this.kryptonBorderEdge57);
+            this.panel44.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel44.Controls.Add(this.pcbxVisualConfig);
             this.panel44.Location = new System.Drawing.Point(0, 33);
             this.panel44.Name = "panel44";
             this.panel44.Size = new System.Drawing.Size(245, 187);
             this.panel44.TabIndex = 70;
-            // 
-            // kryptonBorderEdge54
-            // 
-            this.kryptonBorderEdge54.Dock = System.Windows.Forms.DockStyle.Top;
-            this.kryptonBorderEdge54.Location = new System.Drawing.Point(1, 0);
-            this.kryptonBorderEdge54.Name = "kryptonBorderEdge54";
-            this.kryptonBorderEdge54.Size = new System.Drawing.Size(243, 1);
-            this.kryptonBorderEdge54.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge54.Text = "kryptonBorderEdge54";
-            // 
-            // kryptonBorderEdge55
-            // 
-            this.kryptonBorderEdge55.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.kryptonBorderEdge55.Location = new System.Drawing.Point(1, 186);
-            this.kryptonBorderEdge55.Name = "kryptonBorderEdge55";
-            this.kryptonBorderEdge55.Size = new System.Drawing.Size(243, 1);
-            this.kryptonBorderEdge55.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge55.Text = "kryptonBorderEdge55";
-            // 
-            // kryptonBorderEdge56
-            // 
-            this.kryptonBorderEdge56.Dock = System.Windows.Forms.DockStyle.Right;
-            this.kryptonBorderEdge56.Location = new System.Drawing.Point(244, 0);
-            this.kryptonBorderEdge56.Name = "kryptonBorderEdge56";
-            this.kryptonBorderEdge56.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge56.Size = new System.Drawing.Size(1, 187);
-            this.kryptonBorderEdge56.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge56.Text = "kryptonBorderEdge56";
-            // 
-            // kryptonBorderEdge57
-            // 
-            this.kryptonBorderEdge57.Dock = System.Windows.Forms.DockStyle.Left;
-            this.kryptonBorderEdge57.Location = new System.Drawing.Point(0, 0);
-            this.kryptonBorderEdge57.Margin = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.kryptonBorderEdge57.Name = "kryptonBorderEdge57";
-            this.kryptonBorderEdge57.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge57.Size = new System.Drawing.Size(1, 187);
-            this.kryptonBorderEdge57.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge57.Text = "kryptonBorderEdge57";
             // 
             // pcbxVisualConfig
             // 
@@ -2369,7 +1801,7 @@
             this.pcbxVisualConfig.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pcbxVisualConfig.Location = new System.Drawing.Point(0, 0);
             this.pcbxVisualConfig.Name = "pcbxVisualConfig";
-            this.pcbxVisualConfig.Size = new System.Drawing.Size(245, 187);
+            this.pcbxVisualConfig.Size = new System.Drawing.Size(243, 185);
             this.pcbxVisualConfig.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pcbxVisualConfig.TabIndex = 443;
             this.pcbxVisualConfig.TabStop = false;
@@ -2415,54 +1847,12 @@
             this.panel222.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel222.Controls.Add(this.kryptonBorderEdge74);
-            this.panel222.Controls.Add(this.kryptonBorderEdge75);
-            this.panel222.Controls.Add(this.kryptonBorderEdge76);
-            this.panel222.Controls.Add(this.kryptonBorderEdge77);
+            this.panel222.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel222.Controls.Add(this.pcbxFrontTechStore);
             this.panel222.Location = new System.Drawing.Point(0, 27);
             this.panel222.Name = "panel222";
             this.panel222.Size = new System.Drawing.Size(245, 192);
             this.panel222.TabIndex = 70;
-            // 
-            // kryptonBorderEdge74
-            // 
-            this.kryptonBorderEdge74.Dock = System.Windows.Forms.DockStyle.Top;
-            this.kryptonBorderEdge74.Location = new System.Drawing.Point(1, 0);
-            this.kryptonBorderEdge74.Name = "kryptonBorderEdge74";
-            this.kryptonBorderEdge74.Size = new System.Drawing.Size(243, 1);
-            this.kryptonBorderEdge74.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge74.Text = "kryptonBorderEdge74";
-            // 
-            // kryptonBorderEdge75
-            // 
-            this.kryptonBorderEdge75.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.kryptonBorderEdge75.Location = new System.Drawing.Point(1, 191);
-            this.kryptonBorderEdge75.Name = "kryptonBorderEdge75";
-            this.kryptonBorderEdge75.Size = new System.Drawing.Size(243, 1);
-            this.kryptonBorderEdge75.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge75.Text = "kryptonBorderEdge75";
-            // 
-            // kryptonBorderEdge76
-            // 
-            this.kryptonBorderEdge76.Dock = System.Windows.Forms.DockStyle.Right;
-            this.kryptonBorderEdge76.Location = new System.Drawing.Point(244, 0);
-            this.kryptonBorderEdge76.Name = "kryptonBorderEdge76";
-            this.kryptonBorderEdge76.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge76.Size = new System.Drawing.Size(1, 192);
-            this.kryptonBorderEdge76.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge76.Text = "kryptonBorderEdge76";
-            // 
-            // kryptonBorderEdge77
-            // 
-            this.kryptonBorderEdge77.Dock = System.Windows.Forms.DockStyle.Left;
-            this.kryptonBorderEdge77.Location = new System.Drawing.Point(0, 0);
-            this.kryptonBorderEdge77.Margin = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.kryptonBorderEdge77.Name = "kryptonBorderEdge77";
-            this.kryptonBorderEdge77.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge77.Size = new System.Drawing.Size(1, 192);
-            this.kryptonBorderEdge77.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge77.Text = "kryptonBorderEdge77";
             // 
             // pcbxFrontTechStore
             // 
@@ -2471,7 +1861,7 @@
             this.pcbxFrontTechStore.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pcbxFrontTechStore.Location = new System.Drawing.Point(0, 0);
             this.pcbxFrontTechStore.Name = "pcbxFrontTechStore";
-            this.pcbxFrontTechStore.Size = new System.Drawing.Size(245, 192);
+            this.pcbxFrontTechStore.Size = new System.Drawing.Size(243, 190);
             this.pcbxFrontTechStore.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pcbxFrontTechStore.TabIndex = 443;
             this.pcbxFrontTechStore.TabStop = false;
@@ -2525,54 +1915,12 @@
             this.panel12.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel12.Controls.Add(this.kryptonBorderEdge4);
-            this.panel12.Controls.Add(this.kryptonBorderEdge6);
-            this.panel12.Controls.Add(this.kryptonBorderEdge7);
-            this.panel12.Controls.Add(this.kryptonBorderEdge8);
+            this.panel12.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel12.Controls.Add(this.TechnoFrameColorsDataGrid);
             this.panel12.Location = new System.Drawing.Point(0, 27);
             this.panel12.Name = "panel12";
             this.panel12.Size = new System.Drawing.Size(266, 307);
             this.panel12.TabIndex = 70;
-            // 
-            // kryptonBorderEdge4
-            // 
-            this.kryptonBorderEdge4.Dock = System.Windows.Forms.DockStyle.Top;
-            this.kryptonBorderEdge4.Location = new System.Drawing.Point(1, 0);
-            this.kryptonBorderEdge4.Name = "kryptonBorderEdge4";
-            this.kryptonBorderEdge4.Size = new System.Drawing.Size(264, 1);
-            this.kryptonBorderEdge4.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge4.Text = "kryptonBorderEdge4";
-            // 
-            // kryptonBorderEdge6
-            // 
-            this.kryptonBorderEdge6.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.kryptonBorderEdge6.Location = new System.Drawing.Point(1, 306);
-            this.kryptonBorderEdge6.Name = "kryptonBorderEdge6";
-            this.kryptonBorderEdge6.Size = new System.Drawing.Size(264, 1);
-            this.kryptonBorderEdge6.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge6.Text = "kryptonBorderEdge6";
-            // 
-            // kryptonBorderEdge7
-            // 
-            this.kryptonBorderEdge7.Dock = System.Windows.Forms.DockStyle.Right;
-            this.kryptonBorderEdge7.Location = new System.Drawing.Point(265, 0);
-            this.kryptonBorderEdge7.Name = "kryptonBorderEdge7";
-            this.kryptonBorderEdge7.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge7.Size = new System.Drawing.Size(1, 307);
-            this.kryptonBorderEdge7.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge7.Text = "kryptonBorderEdge7";
-            // 
-            // kryptonBorderEdge8
-            // 
-            this.kryptonBorderEdge8.Dock = System.Windows.Forms.DockStyle.Left;
-            this.kryptonBorderEdge8.Location = new System.Drawing.Point(0, 0);
-            this.kryptonBorderEdge8.Margin = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.kryptonBorderEdge8.Name = "kryptonBorderEdge8";
-            this.kryptonBorderEdge8.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge8.Size = new System.Drawing.Size(1, 307);
-            this.kryptonBorderEdge8.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge8.Text = "kryptonBorderEdge8";
             // 
             // TechnoFrameColorsDataGrid
             // 
@@ -2597,7 +1945,7 @@
             this.TechnoFrameColorsDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.TechnoFrameColorsDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Green;
             this.TechnoFrameColorsDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.TechnoFrameColorsDataGrid.Size = new System.Drawing.Size(266, 307);
+            this.TechnoFrameColorsDataGrid.Size = new System.Drawing.Size(264, 305);
             this.TechnoFrameColorsDataGrid.StandardStyle = false;
             this.TechnoFrameColorsDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
             this.TechnoFrameColorsDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
@@ -2669,11 +2017,8 @@
             this.panel3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel3.Controls.Add(this.FrontsDataGrid);
-            this.panel3.Controls.Add(this.kryptonBorderEdge1);
-            this.panel3.Controls.Add(this.kryptonBorderEdge2);
-            this.panel3.Controls.Add(this.kryptonBorderEdge5);
-            this.panel3.Controls.Add(this.kryptonBorderEdge9);
             this.panel3.Location = new System.Drawing.Point(0, 27);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(266, 645);
@@ -2691,7 +2036,7 @@
             this.FrontsDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.FrontsDataGrid.ColumnHeadersVisible = false;
             this.FrontsDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.FrontsDataGrid.Location = new System.Drawing.Point(1, 1);
+            this.FrontsDataGrid.Location = new System.Drawing.Point(0, 0);
             this.FrontsDataGrid.MultiSelect = false;
             this.FrontsDataGrid.Name = "FrontsDataGrid";
             this.FrontsDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -2734,45 +2079,6 @@
             this.FrontsDataGrid.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.FrontsDataGrid_CellMouseDown);
             this.FrontsDataGrid.SelectionChanged += new System.EventHandler(this.FrontsDataGrid_SelectionChanged);
             // 
-            // kryptonBorderEdge1
-            // 
-            this.kryptonBorderEdge1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.kryptonBorderEdge1.Location = new System.Drawing.Point(1, 0);
-            this.kryptonBorderEdge1.Name = "kryptonBorderEdge1";
-            this.kryptonBorderEdge1.Size = new System.Drawing.Size(264, 1);
-            this.kryptonBorderEdge1.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge1.Text = "kryptonBorderEdge1";
-            // 
-            // kryptonBorderEdge2
-            // 
-            this.kryptonBorderEdge2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.kryptonBorderEdge2.Location = new System.Drawing.Point(1, 644);
-            this.kryptonBorderEdge2.Name = "kryptonBorderEdge2";
-            this.kryptonBorderEdge2.Size = new System.Drawing.Size(264, 1);
-            this.kryptonBorderEdge2.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge2.Text = "kryptonBorderEdge2";
-            // 
-            // kryptonBorderEdge5
-            // 
-            this.kryptonBorderEdge5.Dock = System.Windows.Forms.DockStyle.Right;
-            this.kryptonBorderEdge5.Location = new System.Drawing.Point(265, 0);
-            this.kryptonBorderEdge5.Name = "kryptonBorderEdge5";
-            this.kryptonBorderEdge5.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge5.Size = new System.Drawing.Size(1, 645);
-            this.kryptonBorderEdge5.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge5.Text = "kryptonBorderEdge5";
-            // 
-            // kryptonBorderEdge9
-            // 
-            this.kryptonBorderEdge9.Dock = System.Windows.Forms.DockStyle.Left;
-            this.kryptonBorderEdge9.Location = new System.Drawing.Point(0, 0);
-            this.kryptonBorderEdge9.Margin = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.kryptonBorderEdge9.Name = "kryptonBorderEdge9";
-            this.kryptonBorderEdge9.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge9.Size = new System.Drawing.Size(1, 645);
-            this.kryptonBorderEdge9.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge9.Text = "kryptonBorderEdge9";
-            // 
             // panel4
             // 
             this.panel4.Controls.Add(this.panel5);
@@ -2789,54 +2095,12 @@
             this.panel5.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel5.Controls.Add(this.kryptonBorderEdge10);
-            this.panel5.Controls.Add(this.kryptonBorderEdge11);
-            this.panel5.Controls.Add(this.kryptonBorderEdge12);
-            this.panel5.Controls.Add(this.kryptonBorderEdge13);
+            this.panel5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel5.Controls.Add(this.FrameColorsDataGrid);
             this.panel5.Location = new System.Drawing.Point(0, 27);
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(266, 305);
             this.panel5.TabIndex = 70;
-            // 
-            // kryptonBorderEdge10
-            // 
-            this.kryptonBorderEdge10.Dock = System.Windows.Forms.DockStyle.Top;
-            this.kryptonBorderEdge10.Location = new System.Drawing.Point(1, 0);
-            this.kryptonBorderEdge10.Name = "kryptonBorderEdge10";
-            this.kryptonBorderEdge10.Size = new System.Drawing.Size(264, 1);
-            this.kryptonBorderEdge10.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge10.Text = "kryptonBorderEdge10";
-            // 
-            // kryptonBorderEdge11
-            // 
-            this.kryptonBorderEdge11.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.kryptonBorderEdge11.Location = new System.Drawing.Point(1, 304);
-            this.kryptonBorderEdge11.Name = "kryptonBorderEdge11";
-            this.kryptonBorderEdge11.Size = new System.Drawing.Size(264, 1);
-            this.kryptonBorderEdge11.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge11.Text = "kryptonBorderEdge11";
-            // 
-            // kryptonBorderEdge12
-            // 
-            this.kryptonBorderEdge12.Dock = System.Windows.Forms.DockStyle.Right;
-            this.kryptonBorderEdge12.Location = new System.Drawing.Point(265, 0);
-            this.kryptonBorderEdge12.Name = "kryptonBorderEdge12";
-            this.kryptonBorderEdge12.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge12.Size = new System.Drawing.Size(1, 305);
-            this.kryptonBorderEdge12.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge12.Text = "kryptonBorderEdge12";
-            // 
-            // kryptonBorderEdge13
-            // 
-            this.kryptonBorderEdge13.Dock = System.Windows.Forms.DockStyle.Left;
-            this.kryptonBorderEdge13.Location = new System.Drawing.Point(0, 0);
-            this.kryptonBorderEdge13.Margin = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.kryptonBorderEdge13.Name = "kryptonBorderEdge13";
-            this.kryptonBorderEdge13.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge13.Size = new System.Drawing.Size(1, 305);
-            this.kryptonBorderEdge13.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge13.Text = "kryptonBorderEdge13";
             // 
             // FrameColorsDataGrid
             // 
@@ -2861,7 +2125,7 @@
             this.FrameColorsDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.FrameColorsDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Green;
             this.FrameColorsDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.FrameColorsDataGrid.Size = new System.Drawing.Size(266, 305);
+            this.FrameColorsDataGrid.Size = new System.Drawing.Size(264, 303);
             this.FrameColorsDataGrid.StandardStyle = false;
             this.FrameColorsDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
             this.FrameColorsDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
@@ -2920,54 +2184,12 @@
             this.panel7.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel7.Controls.Add(this.kryptonBorderEdge14);
-            this.panel7.Controls.Add(this.kryptonBorderEdge15);
-            this.panel7.Controls.Add(this.kryptonBorderEdge16);
-            this.panel7.Controls.Add(this.kryptonBorderEdge17);
+            this.panel7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel7.Controls.Add(this.PatinaDataGrid);
             this.panel7.Location = new System.Drawing.Point(0, 27);
             this.panel7.Name = "panel7";
             this.panel7.Size = new System.Drawing.Size(195, 136);
             this.panel7.TabIndex = 70;
-            // 
-            // kryptonBorderEdge14
-            // 
-            this.kryptonBorderEdge14.Dock = System.Windows.Forms.DockStyle.Top;
-            this.kryptonBorderEdge14.Location = new System.Drawing.Point(1, 0);
-            this.kryptonBorderEdge14.Name = "kryptonBorderEdge14";
-            this.kryptonBorderEdge14.Size = new System.Drawing.Size(193, 1);
-            this.kryptonBorderEdge14.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge14.Text = "kryptonBorderEdge14";
-            // 
-            // kryptonBorderEdge15
-            // 
-            this.kryptonBorderEdge15.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.kryptonBorderEdge15.Location = new System.Drawing.Point(1, 135);
-            this.kryptonBorderEdge15.Name = "kryptonBorderEdge15";
-            this.kryptonBorderEdge15.Size = new System.Drawing.Size(193, 1);
-            this.kryptonBorderEdge15.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge15.Text = "kryptonBorderEdge15";
-            // 
-            // kryptonBorderEdge16
-            // 
-            this.kryptonBorderEdge16.Dock = System.Windows.Forms.DockStyle.Right;
-            this.kryptonBorderEdge16.Location = new System.Drawing.Point(194, 0);
-            this.kryptonBorderEdge16.Name = "kryptonBorderEdge16";
-            this.kryptonBorderEdge16.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge16.Size = new System.Drawing.Size(1, 136);
-            this.kryptonBorderEdge16.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge16.Text = "kryptonBorderEdge16";
-            // 
-            // kryptonBorderEdge17
-            // 
-            this.kryptonBorderEdge17.Dock = System.Windows.Forms.DockStyle.Left;
-            this.kryptonBorderEdge17.Location = new System.Drawing.Point(0, 0);
-            this.kryptonBorderEdge17.Margin = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.kryptonBorderEdge17.Name = "kryptonBorderEdge17";
-            this.kryptonBorderEdge17.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge17.Size = new System.Drawing.Size(1, 136);
-            this.kryptonBorderEdge17.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge17.Text = "kryptonBorderEdge17";
             // 
             // PatinaDataGrid
             // 
@@ -2992,7 +2214,7 @@
             this.PatinaDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.PatinaDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Green;
             this.PatinaDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.PatinaDataGrid.Size = new System.Drawing.Size(195, 136);
+            this.PatinaDataGrid.Size = new System.Drawing.Size(193, 134);
             this.PatinaDataGrid.StandardStyle = false;
             this.PatinaDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
             this.PatinaDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
@@ -3062,54 +2284,12 @@
             this.panel13.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel13.Controls.Add(this.kryptonBorderEdge18);
-            this.panel13.Controls.Add(this.kryptonBorderEdge19);
-            this.panel13.Controls.Add(this.kryptonBorderEdge20);
-            this.panel13.Controls.Add(this.kryptonBorderEdge21);
+            this.panel13.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel13.Controls.Add(this.InsetTypesDataGrid);
             this.panel13.Location = new System.Drawing.Point(0, 27);
             this.panel13.Name = "panel13";
             this.panel13.Size = new System.Drawing.Size(266, 136);
             this.panel13.TabIndex = 70;
-            // 
-            // kryptonBorderEdge18
-            // 
-            this.kryptonBorderEdge18.Dock = System.Windows.Forms.DockStyle.Top;
-            this.kryptonBorderEdge18.Location = new System.Drawing.Point(1, 0);
-            this.kryptonBorderEdge18.Name = "kryptonBorderEdge18";
-            this.kryptonBorderEdge18.Size = new System.Drawing.Size(264, 1);
-            this.kryptonBorderEdge18.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge18.Text = "kryptonBorderEdge18";
-            // 
-            // kryptonBorderEdge19
-            // 
-            this.kryptonBorderEdge19.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.kryptonBorderEdge19.Location = new System.Drawing.Point(1, 135);
-            this.kryptonBorderEdge19.Name = "kryptonBorderEdge19";
-            this.kryptonBorderEdge19.Size = new System.Drawing.Size(264, 1);
-            this.kryptonBorderEdge19.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge19.Text = "kryptonBorderEdge19";
-            // 
-            // kryptonBorderEdge20
-            // 
-            this.kryptonBorderEdge20.Dock = System.Windows.Forms.DockStyle.Right;
-            this.kryptonBorderEdge20.Location = new System.Drawing.Point(265, 0);
-            this.kryptonBorderEdge20.Name = "kryptonBorderEdge20";
-            this.kryptonBorderEdge20.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge20.Size = new System.Drawing.Size(1, 136);
-            this.kryptonBorderEdge20.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge20.Text = "kryptonBorderEdge20";
-            // 
-            // kryptonBorderEdge21
-            // 
-            this.kryptonBorderEdge21.Dock = System.Windows.Forms.DockStyle.Left;
-            this.kryptonBorderEdge21.Location = new System.Drawing.Point(0, 0);
-            this.kryptonBorderEdge21.Margin = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.kryptonBorderEdge21.Name = "kryptonBorderEdge21";
-            this.kryptonBorderEdge21.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge21.Size = new System.Drawing.Size(1, 136);
-            this.kryptonBorderEdge21.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge21.Text = "kryptonBorderEdge21";
             // 
             // InsetTypesDataGrid
             // 
@@ -3134,7 +2314,7 @@
             this.InsetTypesDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.InsetTypesDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Green;
             this.InsetTypesDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.InsetTypesDataGrid.Size = new System.Drawing.Size(266, 136);
+            this.InsetTypesDataGrid.Size = new System.Drawing.Size(264, 134);
             this.InsetTypesDataGrid.StandardStyle = false;
             this.InsetTypesDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
             this.InsetTypesDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
@@ -3193,54 +2373,12 @@
             this.panel15.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel15.Controls.Add(this.kryptonBorderEdge22);
-            this.panel15.Controls.Add(this.kryptonBorderEdge23);
-            this.panel15.Controls.Add(this.kryptonBorderEdge24);
-            this.panel15.Controls.Add(this.kryptonBorderEdge25);
+            this.panel15.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel15.Controls.Add(this.InsetColorsDataGrid);
             this.panel15.Location = new System.Drawing.Point(0, 27);
             this.panel15.Name = "panel15";
             this.panel15.Size = new System.Drawing.Size(266, 136);
             this.panel15.TabIndex = 70;
-            // 
-            // kryptonBorderEdge22
-            // 
-            this.kryptonBorderEdge22.Dock = System.Windows.Forms.DockStyle.Top;
-            this.kryptonBorderEdge22.Location = new System.Drawing.Point(1, 0);
-            this.kryptonBorderEdge22.Name = "kryptonBorderEdge22";
-            this.kryptonBorderEdge22.Size = new System.Drawing.Size(264, 1);
-            this.kryptonBorderEdge22.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge22.Text = "kryptonBorderEdge22";
-            // 
-            // kryptonBorderEdge23
-            // 
-            this.kryptonBorderEdge23.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.kryptonBorderEdge23.Location = new System.Drawing.Point(1, 135);
-            this.kryptonBorderEdge23.Name = "kryptonBorderEdge23";
-            this.kryptonBorderEdge23.Size = new System.Drawing.Size(264, 1);
-            this.kryptonBorderEdge23.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge23.Text = "kryptonBorderEdge23";
-            // 
-            // kryptonBorderEdge24
-            // 
-            this.kryptonBorderEdge24.Dock = System.Windows.Forms.DockStyle.Right;
-            this.kryptonBorderEdge24.Location = new System.Drawing.Point(265, 0);
-            this.kryptonBorderEdge24.Name = "kryptonBorderEdge24";
-            this.kryptonBorderEdge24.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge24.Size = new System.Drawing.Size(1, 136);
-            this.kryptonBorderEdge24.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge24.Text = "kryptonBorderEdge24";
-            // 
-            // kryptonBorderEdge25
-            // 
-            this.kryptonBorderEdge25.Dock = System.Windows.Forms.DockStyle.Left;
-            this.kryptonBorderEdge25.Location = new System.Drawing.Point(0, 0);
-            this.kryptonBorderEdge25.Margin = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.kryptonBorderEdge25.Name = "kryptonBorderEdge25";
-            this.kryptonBorderEdge25.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge25.Size = new System.Drawing.Size(1, 136);
-            this.kryptonBorderEdge25.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge25.Text = "kryptonBorderEdge25";
             // 
             // InsetColorsDataGrid
             // 
@@ -3265,7 +2403,7 @@
             this.InsetColorsDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.InsetColorsDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Green;
             this.InsetColorsDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.InsetColorsDataGrid.Size = new System.Drawing.Size(266, 136);
+            this.InsetColorsDataGrid.Size = new System.Drawing.Size(264, 134);
             this.InsetColorsDataGrid.StandardStyle = false;
             this.InsetColorsDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
             this.InsetColorsDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
@@ -3324,43 +2462,12 @@
             this.panel17.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel17.Controls.Add(this.kryptonBorderEdge26);
-            this.panel17.Controls.Add(this.kryptonBorderEdge27);
-            this.panel17.Controls.Add(this.kryptonBorderEdge28);
+            this.panel17.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel17.Controls.Add(this.TechnoInsetTypesDataGrid);
-            this.panel17.Controls.Add(this.kryptonBorderEdge29);
             this.panel17.Location = new System.Drawing.Point(0, 27);
             this.panel17.Name = "panel17";
             this.panel17.Size = new System.Drawing.Size(266, 136);
             this.panel17.TabIndex = 70;
-            // 
-            // kryptonBorderEdge26
-            // 
-            this.kryptonBorderEdge26.Dock = System.Windows.Forms.DockStyle.Top;
-            this.kryptonBorderEdge26.Location = new System.Drawing.Point(1, 0);
-            this.kryptonBorderEdge26.Name = "kryptonBorderEdge26";
-            this.kryptonBorderEdge26.Size = new System.Drawing.Size(264, 1);
-            this.kryptonBorderEdge26.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge26.Text = "kryptonBorderEdge26";
-            // 
-            // kryptonBorderEdge27
-            // 
-            this.kryptonBorderEdge27.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.kryptonBorderEdge27.Location = new System.Drawing.Point(1, 135);
-            this.kryptonBorderEdge27.Name = "kryptonBorderEdge27";
-            this.kryptonBorderEdge27.Size = new System.Drawing.Size(264, 1);
-            this.kryptonBorderEdge27.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge27.Text = "kryptonBorderEdge27";
-            // 
-            // kryptonBorderEdge28
-            // 
-            this.kryptonBorderEdge28.Dock = System.Windows.Forms.DockStyle.Right;
-            this.kryptonBorderEdge28.Location = new System.Drawing.Point(265, 0);
-            this.kryptonBorderEdge28.Name = "kryptonBorderEdge28";
-            this.kryptonBorderEdge28.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge28.Size = new System.Drawing.Size(1, 136);
-            this.kryptonBorderEdge28.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge28.Text = "kryptonBorderEdge28";
             // 
             // TechnoInsetTypesDataGrid
             // 
@@ -3374,7 +2481,7 @@
             this.TechnoInsetTypesDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.TechnoInsetTypesDataGrid.ColumnHeadersVisible = false;
             this.TechnoInsetTypesDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.TechnoInsetTypesDataGrid.Location = new System.Drawing.Point(1, 0);
+            this.TechnoInsetTypesDataGrid.Location = new System.Drawing.Point(0, 0);
             this.TechnoInsetTypesDataGrid.MultiSelect = false;
             this.TechnoInsetTypesDataGrid.Name = "TechnoInsetTypesDataGrid";
             this.TechnoInsetTypesDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -3385,7 +2492,7 @@
             this.TechnoInsetTypesDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.TechnoInsetTypesDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Green;
             this.TechnoInsetTypesDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.TechnoInsetTypesDataGrid.Size = new System.Drawing.Size(265, 136);
+            this.TechnoInsetTypesDataGrid.Size = new System.Drawing.Size(264, 134);
             this.TechnoInsetTypesDataGrid.StandardStyle = false;
             this.TechnoInsetTypesDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
             this.TechnoInsetTypesDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
@@ -3417,17 +2524,6 @@
             this.TechnoInsetTypesDataGrid.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.FrontsDataGrid_CellMouseDown);
             this.TechnoInsetTypesDataGrid.SelectionChanged += new System.EventHandler(this.TechnoInsetTypesDataGrid_SelectionChanged);
             // 
-            // kryptonBorderEdge29
-            // 
-            this.kryptonBorderEdge29.Dock = System.Windows.Forms.DockStyle.Left;
-            this.kryptonBorderEdge29.Location = new System.Drawing.Point(0, 0);
-            this.kryptonBorderEdge29.Margin = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.kryptonBorderEdge29.Name = "kryptonBorderEdge29";
-            this.kryptonBorderEdge29.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge29.Size = new System.Drawing.Size(1, 136);
-            this.kryptonBorderEdge29.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge29.Text = "kryptonBorderEdge29";
-            // 
             // panel18
             // 
             this.panel18.Controls.Add(this.label13);
@@ -3455,33 +2551,12 @@
             this.panel19.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel19.Controls.Add(this.kryptonBorderEdge30);
-            this.panel19.Controls.Add(this.kryptonBorderEdge31);
+            this.panel19.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel19.Controls.Add(this.TechnoInsetColorsDataGrid);
-            this.panel19.Controls.Add(this.kryptonBorderEdge40);
-            this.panel19.Controls.Add(this.kryptonBorderEdge41);
             this.panel19.Location = new System.Drawing.Point(0, 27);
             this.panel19.Name = "panel19";
             this.panel19.Size = new System.Drawing.Size(266, 138);
             this.panel19.TabIndex = 70;
-            // 
-            // kryptonBorderEdge30
-            // 
-            this.kryptonBorderEdge30.Dock = System.Windows.Forms.DockStyle.Top;
-            this.kryptonBorderEdge30.Location = new System.Drawing.Point(1, 0);
-            this.kryptonBorderEdge30.Name = "kryptonBorderEdge30";
-            this.kryptonBorderEdge30.Size = new System.Drawing.Size(264, 1);
-            this.kryptonBorderEdge30.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge30.Text = "kryptonBorderEdge30";
-            // 
-            // kryptonBorderEdge31
-            // 
-            this.kryptonBorderEdge31.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.kryptonBorderEdge31.Location = new System.Drawing.Point(1, 137);
-            this.kryptonBorderEdge31.Name = "kryptonBorderEdge31";
-            this.kryptonBorderEdge31.Size = new System.Drawing.Size(264, 1);
-            this.kryptonBorderEdge31.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge31.Text = "kryptonBorderEdge31";
             // 
             // TechnoInsetColorsDataGrid
             // 
@@ -3495,7 +2570,7 @@
             this.TechnoInsetColorsDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.TechnoInsetColorsDataGrid.ColumnHeadersVisible = false;
             this.TechnoInsetColorsDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.TechnoInsetColorsDataGrid.Location = new System.Drawing.Point(1, 0);
+            this.TechnoInsetColorsDataGrid.Location = new System.Drawing.Point(0, 0);
             this.TechnoInsetColorsDataGrid.MultiSelect = false;
             this.TechnoInsetColorsDataGrid.Name = "TechnoInsetColorsDataGrid";
             this.TechnoInsetColorsDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -3506,7 +2581,7 @@
             this.TechnoInsetColorsDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.TechnoInsetColorsDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Green;
             this.TechnoInsetColorsDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.TechnoInsetColorsDataGrid.Size = new System.Drawing.Size(264, 138);
+            this.TechnoInsetColorsDataGrid.Size = new System.Drawing.Size(264, 136);
             this.TechnoInsetColorsDataGrid.StandardStyle = false;
             this.TechnoInsetColorsDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
             this.TechnoInsetColorsDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
@@ -3538,27 +2613,6 @@
             this.TechnoInsetColorsDataGrid.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.FrontsDataGrid_CellMouseDown);
             this.TechnoInsetColorsDataGrid.SelectionChanged += new System.EventHandler(this.TechnoInsetColorsDataGrid_SelectionChanged);
             // 
-            // kryptonBorderEdge40
-            // 
-            this.kryptonBorderEdge40.Dock = System.Windows.Forms.DockStyle.Right;
-            this.kryptonBorderEdge40.Location = new System.Drawing.Point(265, 0);
-            this.kryptonBorderEdge40.Name = "kryptonBorderEdge40";
-            this.kryptonBorderEdge40.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge40.Size = new System.Drawing.Size(1, 138);
-            this.kryptonBorderEdge40.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge40.Text = "kryptonBorderEdge40";
-            // 
-            // kryptonBorderEdge41
-            // 
-            this.kryptonBorderEdge41.Dock = System.Windows.Forms.DockStyle.Left;
-            this.kryptonBorderEdge41.Location = new System.Drawing.Point(0, 0);
-            this.kryptonBorderEdge41.Margin = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.kryptonBorderEdge41.Name = "kryptonBorderEdge41";
-            this.kryptonBorderEdge41.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge41.Size = new System.Drawing.Size(1, 138);
-            this.kryptonBorderEdge41.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge41.Text = "kryptonBorderEdge41";
-            // 
             // panel20
             // 
             this.panel20.Controls.Add(this.label8);
@@ -3586,24 +2640,12 @@
             this.panel21.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel21.Controls.Add(this.kryptonBorderEdge42);
+            this.panel21.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel21.Controls.Add(this.FrontsHeightDataGrid);
-            this.panel21.Controls.Add(this.kryptonBorderEdge43);
-            this.panel21.Controls.Add(this.kryptonBorderEdge44);
-            this.panel21.Controls.Add(this.kryptonBorderEdge45);
             this.panel21.Location = new System.Drawing.Point(0, 27);
             this.panel21.Name = "panel21";
             this.panel21.Size = new System.Drawing.Size(195, 136);
             this.panel21.TabIndex = 70;
-            // 
-            // kryptonBorderEdge42
-            // 
-            this.kryptonBorderEdge42.Dock = System.Windows.Forms.DockStyle.Top;
-            this.kryptonBorderEdge42.Location = new System.Drawing.Point(1, 0);
-            this.kryptonBorderEdge42.Name = "kryptonBorderEdge42";
-            this.kryptonBorderEdge42.Size = new System.Drawing.Size(193, 1);
-            this.kryptonBorderEdge42.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge42.Text = "kryptonBorderEdge42";
             // 
             // FrontsHeightDataGrid
             // 
@@ -3617,7 +2659,7 @@
             this.FrontsHeightDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.FrontsHeightDataGrid.ColumnHeadersVisible = false;
             this.FrontsHeightDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.FrontsHeightDataGrid.Location = new System.Drawing.Point(1, 0);
+            this.FrontsHeightDataGrid.Location = new System.Drawing.Point(0, 0);
             this.FrontsHeightDataGrid.MultiSelect = false;
             this.FrontsHeightDataGrid.Name = "FrontsHeightDataGrid";
             this.FrontsHeightDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -3628,7 +2670,7 @@
             this.FrontsHeightDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.FrontsHeightDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Green;
             this.FrontsHeightDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.FrontsHeightDataGrid.Size = new System.Drawing.Size(193, 135);
+            this.FrontsHeightDataGrid.Size = new System.Drawing.Size(193, 134);
             this.FrontsHeightDataGrid.StandardStyle = false;
             this.FrontsHeightDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
             this.FrontsHeightDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
@@ -3659,36 +2701,6 @@
             this.FrontsHeightDataGrid.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.FrontsHeightDataGrid_CellClick);
             this.FrontsHeightDataGrid.SelectionChanged += new System.EventHandler(this.FrontsHeightDataGrid_SelectionChanged);
             // 
-            // kryptonBorderEdge43
-            // 
-            this.kryptonBorderEdge43.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.kryptonBorderEdge43.Location = new System.Drawing.Point(1, 135);
-            this.kryptonBorderEdge43.Name = "kryptonBorderEdge43";
-            this.kryptonBorderEdge43.Size = new System.Drawing.Size(193, 1);
-            this.kryptonBorderEdge43.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge43.Text = "kryptonBorderEdge43";
-            // 
-            // kryptonBorderEdge44
-            // 
-            this.kryptonBorderEdge44.Dock = System.Windows.Forms.DockStyle.Right;
-            this.kryptonBorderEdge44.Location = new System.Drawing.Point(194, 0);
-            this.kryptonBorderEdge44.Name = "kryptonBorderEdge44";
-            this.kryptonBorderEdge44.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge44.Size = new System.Drawing.Size(1, 136);
-            this.kryptonBorderEdge44.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge44.Text = "kryptonBorderEdge44";
-            // 
-            // kryptonBorderEdge45
-            // 
-            this.kryptonBorderEdge45.Dock = System.Windows.Forms.DockStyle.Left;
-            this.kryptonBorderEdge45.Location = new System.Drawing.Point(0, 0);
-            this.kryptonBorderEdge45.Margin = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.kryptonBorderEdge45.Name = "kryptonBorderEdge45";
-            this.kryptonBorderEdge45.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge45.Size = new System.Drawing.Size(1, 136);
-            this.kryptonBorderEdge45.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge45.Text = "kryptonBorderEdge45";
-            // 
             // panel8
             // 
             this.panel8.Controls.Add(this.label9);
@@ -3716,11 +2728,8 @@
             this.panel22.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel22.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel22.Controls.Add(this.FrontsWidthDataGrid);
-            this.panel22.Controls.Add(this.kryptonBorderEdge32);
-            this.panel22.Controls.Add(this.kryptonBorderEdge33);
-            this.panel22.Controls.Add(this.kryptonBorderEdge34);
-            this.panel22.Controls.Add(this.kryptonBorderEdge35);
             this.panel22.Location = new System.Drawing.Point(0, 27);
             this.panel22.Name = "panel22";
             this.panel22.Size = new System.Drawing.Size(195, 136);
@@ -3738,7 +2747,7 @@
             this.FrontsWidthDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.FrontsWidthDataGrid.ColumnHeadersVisible = false;
             this.FrontsWidthDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.FrontsWidthDataGrid.Location = new System.Drawing.Point(1, 1);
+            this.FrontsWidthDataGrid.Location = new System.Drawing.Point(0, 0);
             this.FrontsWidthDataGrid.MultiSelect = false;
             this.FrontsWidthDataGrid.Name = "FrontsWidthDataGrid";
             this.FrontsWidthDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -3777,45 +2786,6 @@
             this.FrontsWidthDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
             this.FrontsWidthDataGrid.TabIndex = 68;
             this.FrontsWidthDataGrid.UseCustomBackColor = false;
-            // 
-            // kryptonBorderEdge32
-            // 
-            this.kryptonBorderEdge32.Dock = System.Windows.Forms.DockStyle.Top;
-            this.kryptonBorderEdge32.Location = new System.Drawing.Point(1, 0);
-            this.kryptonBorderEdge32.Name = "kryptonBorderEdge32";
-            this.kryptonBorderEdge32.Size = new System.Drawing.Size(193, 1);
-            this.kryptonBorderEdge32.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge32.Text = "kryptonBorderEdge32";
-            // 
-            // kryptonBorderEdge33
-            // 
-            this.kryptonBorderEdge33.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.kryptonBorderEdge33.Location = new System.Drawing.Point(1, 135);
-            this.kryptonBorderEdge33.Name = "kryptonBorderEdge33";
-            this.kryptonBorderEdge33.Size = new System.Drawing.Size(193, 1);
-            this.kryptonBorderEdge33.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge33.Text = "kryptonBorderEdge33";
-            // 
-            // kryptonBorderEdge34
-            // 
-            this.kryptonBorderEdge34.Dock = System.Windows.Forms.DockStyle.Right;
-            this.kryptonBorderEdge34.Location = new System.Drawing.Point(194, 0);
-            this.kryptonBorderEdge34.Name = "kryptonBorderEdge34";
-            this.kryptonBorderEdge34.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge34.Size = new System.Drawing.Size(1, 136);
-            this.kryptonBorderEdge34.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge34.Text = "kryptonBorderEdge34";
-            // 
-            // kryptonBorderEdge35
-            // 
-            this.kryptonBorderEdge35.Dock = System.Windows.Forms.DockStyle.Left;
-            this.kryptonBorderEdge35.Location = new System.Drawing.Point(0, 0);
-            this.kryptonBorderEdge35.Margin = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.kryptonBorderEdge35.Name = "kryptonBorderEdge35";
-            this.kryptonBorderEdge35.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge35.Size = new System.Drawing.Size(1, 136);
-            this.kryptonBorderEdge35.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge35.Text = "kryptonBorderEdge35";
             // 
             // panel45
             // 
@@ -3876,54 +2846,11 @@
             this.panel26.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel26.Controls.Add(this.kryptonBorderEdge73);
-            this.panel26.Controls.Add(this.kryptonBorderEdge72);
-            this.panel26.Controls.Add(this.kryptonBorderEdge71);
-            this.panel26.Controls.Add(this.kryptonBorderEdge70);
             this.panel26.Controls.Add(this.pcbxFrontImage);
             this.panel26.Location = new System.Drawing.Point(0, 27);
             this.panel26.Name = "panel26";
             this.panel26.Size = new System.Drawing.Size(245, 192);
             this.panel26.TabIndex = 70;
-            // 
-            // kryptonBorderEdge73
-            // 
-            this.kryptonBorderEdge73.Dock = System.Windows.Forms.DockStyle.Left;
-            this.kryptonBorderEdge73.Location = new System.Drawing.Point(0, 1);
-            this.kryptonBorderEdge73.Margin = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.kryptonBorderEdge73.Name = "kryptonBorderEdge73";
-            this.kryptonBorderEdge73.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge73.Size = new System.Drawing.Size(1, 190);
-            this.kryptonBorderEdge73.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge73.Text = "kryptonBorderEdge73";
-            // 
-            // kryptonBorderEdge72
-            // 
-            this.kryptonBorderEdge72.Dock = System.Windows.Forms.DockStyle.Right;
-            this.kryptonBorderEdge72.Location = new System.Drawing.Point(244, 1);
-            this.kryptonBorderEdge72.Name = "kryptonBorderEdge72";
-            this.kryptonBorderEdge72.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge72.Size = new System.Drawing.Size(1, 190);
-            this.kryptonBorderEdge72.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge72.Text = "kryptonBorderEdge72";
-            // 
-            // kryptonBorderEdge71
-            // 
-            this.kryptonBorderEdge71.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.kryptonBorderEdge71.Location = new System.Drawing.Point(0, 191);
-            this.kryptonBorderEdge71.Name = "kryptonBorderEdge71";
-            this.kryptonBorderEdge71.Size = new System.Drawing.Size(245, 1);
-            this.kryptonBorderEdge71.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge71.Text = "kryptonBorderEdge71";
-            // 
-            // kryptonBorderEdge70
-            // 
-            this.kryptonBorderEdge70.Dock = System.Windows.Forms.DockStyle.Top;
-            this.kryptonBorderEdge70.Location = new System.Drawing.Point(0, 0);
-            this.kryptonBorderEdge70.Name = "kryptonBorderEdge70";
-            this.kryptonBorderEdge70.Size = new System.Drawing.Size(245, 1);
-            this.kryptonBorderEdge70.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge70.Text = "kryptonBorderEdge70";
             // 
             // pcbxFrontImage
             // 
@@ -4160,6 +3087,16 @@
             this.kryptonContextMenuItem26.Visible = false;
             this.kryptonContextMenuItem26.Click += new System.EventHandler(this.kryptonContextMenuItem26_Click);
             // 
+            // kryptonContextMenuItem28
+            // 
+            this.kryptonContextMenuItem28.Text = "Распечатать ПАТРИЦИЯ-4.0 (С)";
+            this.kryptonContextMenuItem28.Click += new System.EventHandler(this.kryptonContextMenuItem26_Click);
+            // 
+            // kryptonContextMenuItem29
+            // 
+            this.kryptonContextMenuItem29.Text = "Распечатать КРИСМАР";
+            this.kryptonContextMenuItem29.Click += new System.EventHandler(this.kryptonContextMenuItem26_Click);
+            // 
             // kryptonContextMenuItem27
             // 
             this.kryptonContextMenuItem27.Text = "Этикетка на любой элемент (без параметров)";
@@ -4189,6 +3126,124 @@
             // 
             this.openFileDialog6.FileOk += new System.ComponentModel.CancelEventHandler(this.openFileDialog6_FileOk);
             // 
+            // panel55
+            // 
+            this.panel55.BackColor = System.Drawing.Color.Transparent;
+            this.panel55.Controls.Add(this.FilterClientsDataGrid);
+            this.panel55.Location = new System.Drawing.Point(20, 71);
+            this.panel55.Margin = new System.Windows.Forms.Padding(10, 3, 3, 3);
+            this.panel55.Name = "panel55";
+            this.panel55.Size = new System.Drawing.Size(362, 403);
+            this.panel55.TabIndex = 334;
+            // 
+            // FilterClientsDataGrid
+            // 
+            this.FilterClientsDataGrid.AllowUserToAddRows = false;
+            this.FilterClientsDataGrid.AllowUserToDeleteRows = false;
+            this.FilterClientsDataGrid.AllowUserToResizeColumns = false;
+            this.FilterClientsDataGrid.AllowUserToResizeRows = false;
+            this.FilterClientsDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.FilterClientsDataGrid.BackText = "Нет данных";
+            this.FilterClientsDataGrid.ColumnHeadersHeight = 35;
+            this.FilterClientsDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.FilterClientsDataGrid.ColumnHeadersVisible = false;
+            this.FilterClientsDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.FilterClientsDataGrid.Enabled = false;
+            this.FilterClientsDataGrid.Location = new System.Drawing.Point(0, 0);
+            this.FilterClientsDataGrid.Name = "FilterClientsDataGrid";
+            this.FilterClientsDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.FilterClientsDataGrid.PercentLineWidth = 0;
+            this.FilterClientsDataGrid.ReadOnly = true;
+            this.FilterClientsDataGrid.RowHeadersVisible = false;
+            this.FilterClientsDataGrid.RowTemplate.Height = 30;
+            this.FilterClientsDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.FilterClientsDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Green;
+            this.FilterClientsDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.FilterClientsDataGrid.Size = new System.Drawing.Size(362, 403);
+            this.FilterClientsDataGrid.StandardStyle = false;
+            this.FilterClientsDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
+            this.FilterClientsDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
+            this.FilterClientsDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.FilterClientsDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
+            this.FilterClientsDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
+            this.FilterClientsDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.FilterClientsDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
+            this.FilterClientsDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.FilterClientsDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.FilterClientsDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
+            this.FilterClientsDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.FilterClientsDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.FilterClientsDataGrid.StateCommon.HeaderColumn.Back.Color2 = System.Drawing.Color.Transparent;
+            this.FilterClientsDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.FilterClientsDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
+            this.FilterClientsDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.FilterClientsDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.FilterClientsDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
+            this.FilterClientsDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
+            this.FilterClientsDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.FilterClientsDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(158)))), ((int)(((byte)(0)))));
+            this.FilterClientsDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.FilterClientsDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.FilterClientsDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
+            this.FilterClientsDataGrid.TabIndex = 52;
+            this.FilterClientsDataGrid.UseCustomBackColor = false;
+            // 
+            // cbClients
+            // 
+            this.cbClients.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalControl;
+            this.cbClients.Location = new System.Drawing.Point(20, 41);
+            this.cbClients.Name = "cbClients";
+            this.cbClients.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.cbClients.Size = new System.Drawing.Size(89, 28);
+            this.cbClients.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
+            this.cbClients.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 17.81F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.cbClients.TabIndex = 335;
+            this.cbClients.Text = "Клиент";
+            this.cbClients.Values.Text = "Клиент";
+            this.cbClients.CheckedChanged += new System.EventHandler(this.cbClients_CheckedChanged);
+            // 
+            // cbExcluzive
+            // 
+            this.cbExcluzive.Enabled = false;
+            this.cbExcluzive.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalControl;
+            this.cbExcluzive.Location = new System.Drawing.Point(132, 41);
+            this.cbExcluzive.Name = "cbExcluzive";
+            this.cbExcluzive.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.cbExcluzive.Size = new System.Drawing.Size(124, 28);
+            this.cbExcluzive.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
+            this.cbExcluzive.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 17.81F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.cbExcluzive.TabIndex = 390;
+            this.cbExcluzive.Text = "Эксклюзив";
+            this.cbExcluzive.Values.Text = "Эксклюзив";
+            // 
+            // MenuPanel
+            // 
+            this.MenuPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.MenuPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(140)))), ((int)(((byte)(140)))), ((int)(((byte)(140)))));
+            this.MenuPanel.Controls.Add(this.btnFilterCatalog);
+            this.MenuPanel.Controls.Add(this.cbClients);
+            this.MenuPanel.Controls.Add(this.cbExcluzive);
+            this.MenuPanel.Controls.Add(this.panel55);
+            this.MenuPanel.Location = new System.Drawing.Point(869, 52);
+            this.MenuPanel.Name = "MenuPanel";
+            this.MenuPanel.Size = new System.Drawing.Size(403, 515);
+            this.MenuPanel.TabIndex = 67;
+            this.MenuPanel.Visible = false;
+            // 
+            // btnFilterCatalog
+            // 
+            this.btnFilterCatalog.Location = new System.Drawing.Point(262, 40);
+            this.btnFilterCatalog.Name = "btnFilterCatalog";
+            this.btnFilterCatalog.Size = new System.Drawing.Size(120, 28);
+            this.btnFilterCatalog.TabIndex = 508;
+            this.btnFilterCatalog.Tag = "1";
+            this.btnFilterCatalog.Values.Text = "Найти";
+            this.btnFilterCatalog.Click += new System.EventHandler(this.btnFilterCatalog_Click);
+            // 
             // kryptonCheckSet1
             // 
             this.kryptonCheckSet1.CheckButtons.Add(this.FrontsCheckButton);
@@ -4203,22 +3258,13 @@
             this.kryptonCheckSet2.CheckedButton = this.ProfilCheckButton;
             this.kryptonCheckSet2.CheckedButtonChanged += new System.EventHandler(this.kryptonCheckSet2_CheckedButtonChanged);
             // 
-            // kryptonContextMenuItem28
-            // 
-            this.kryptonContextMenuItem28.Text = "Распечатать ПАТРИЦИЯ-4.0 (С)";
-            this.kryptonContextMenuItem28.Click += new System.EventHandler(this.kryptonContextMenuItem26_Click);
-            // 
-            // kryptonContextMenuItem29
-            // 
-            this.kryptonContextMenuItem29.Text = "Распечатать КРИСМАР";
-            this.kryptonContextMenuItem29.Click += new System.EventHandler(this.kryptonContextMenuItem26_Click);
-            // 
             // CatalogForm
             // 
             this.AccessibleName = "false";
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1270, 740);
+            this.Controls.Add(this.MenuPanel);
             this.Controls.Add(this.panel10);
             this.Controls.Add(this.NavigatePanel);
             this.DoubleBuffered = true;
@@ -4240,128 +3286,108 @@
             this.panel23.ResumeLayout(false);
             this.panel23.PerformLayout();
             this.panel24.ResumeLayout(false);
-            this.panel24.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pcbxDecorTechStore)).EndInit();
             this.panel41.ResumeLayout(false);
             this.panel41.PerformLayout();
             this.panel42.ResumeLayout(false);
-            this.panel42.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pcbxDecorImage)).EndInit();
             this.DecorCatalogTableLayout.ResumeLayout(false);
             this.panel49.ResumeLayout(false);
             this.panel49.PerformLayout();
             this.panel50.ResumeLayout(false);
-            this.panel50.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DecorInsetColorsDataGrid)).EndInit();
             this.panel47.ResumeLayout(false);
             this.panel47.PerformLayout();
             this.panel48.ResumeLayout(false);
-            this.panel48.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DecorInsetTypesDataGrid)).EndInit();
             this.panel33.ResumeLayout(false);
             this.panel33.PerformLayout();
             this.panel34.ResumeLayout(false);
-            this.panel34.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DecorPatinaDataGrid)).EndInit();
             this.panel31.ResumeLayout(false);
             this.panel31.PerformLayout();
             this.panel32.ResumeLayout(false);
-            this.panel32.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ColorsDataGrid)).EndInit();
             this.panel37.ResumeLayout(false);
             this.panel37.PerformLayout();
             this.panel38.ResumeLayout(false);
-            this.panel38.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.HeightDataGrid)).EndInit();
             this.panel39.ResumeLayout(false);
             this.panel39.PerformLayout();
             this.panel40.ResumeLayout(false);
-            this.panel40.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.WidthDataGrid)).EndInit();
             this.panel35.ResumeLayout(false);
             this.panel35.PerformLayout();
             this.panel36.ResumeLayout(false);
-            this.panel36.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.LengthDataGrid)).EndInit();
             this.panel29.ResumeLayout(false);
             this.panel29.PerformLayout();
             this.panel30.ResumeLayout(false);
-            this.panel30.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DecorDataGrid)).EndInit();
             this.panel9.ResumeLayout(false);
             this.panel9.PerformLayout();
             this.panel28.ResumeLayout(false);
-            this.panel28.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ProductsDataGrid)).EndInit();
             this.FrontsCatalogPanel.ResumeLayout(false);
             this.panel43.ResumeLayout(false);
             this.panel43.PerformLayout();
             this.panel44.ResumeLayout(false);
-            this.panel44.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pcbxVisualConfig)).EndInit();
             this.panel27.ResumeLayout(false);
             this.panel27.PerformLayout();
             this.panel222.ResumeLayout(false);
-            this.panel222.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pcbxFrontTechStore)).EndInit();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panel12.ResumeLayout(false);
-            this.panel12.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TechnoFrameColorsDataGrid)).EndInit();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.panel3.ResumeLayout(false);
-            this.panel3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.FrontsDataGrid)).EndInit();
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
             this.panel5.ResumeLayout(false);
-            this.panel5.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.FrameColorsDataGrid)).EndInit();
             this.panel6.ResumeLayout(false);
             this.panel6.PerformLayout();
             this.panel7.ResumeLayout(false);
-            this.panel7.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PatinaDataGrid)).EndInit();
             this.panel11.ResumeLayout(false);
             this.panel11.PerformLayout();
             this.panel13.ResumeLayout(false);
-            this.panel13.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.InsetTypesDataGrid)).EndInit();
             this.panel14.ResumeLayout(false);
             this.panel14.PerformLayout();
             this.panel15.ResumeLayout(false);
-            this.panel15.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.InsetColorsDataGrid)).EndInit();
             this.panel16.ResumeLayout(false);
             this.panel16.PerformLayout();
             this.panel17.ResumeLayout(false);
-            this.panel17.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TechnoInsetTypesDataGrid)).EndInit();
             this.panel18.ResumeLayout(false);
             this.panel18.PerformLayout();
             this.panel19.ResumeLayout(false);
-            this.panel19.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TechnoInsetColorsDataGrid)).EndInit();
             this.panel20.ResumeLayout(false);
             this.panel20.PerformLayout();
             this.panel21.ResumeLayout(false);
-            this.panel21.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.FrontsHeightDataGrid)).EndInit();
             this.panel8.ResumeLayout(false);
             this.panel8.PerformLayout();
             this.panel22.ResumeLayout(false);
-            this.panel22.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.FrontsWidthDataGrid)).EndInit();
             this.panel45.ResumeLayout(false);
             this.panel25.ResumeLayout(false);
             this.panel25.PerformLayout();
             this.panel26.ResumeLayout(false);
-            this.panel26.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pcbxFrontImage)).EndInit();
             this.panel10.ResumeLayout(false);
+            this.panel55.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.FilterClientsDataGrid)).EndInit();
+            this.MenuPanel.ResumeLayout(false);
+            this.MenuPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.kryptonCheckSet1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.kryptonCheckSet2)).EndInit();
             this.ResumeLayout(false);
@@ -4429,64 +3455,24 @@
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Panel panel3;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge1;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge2;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge5;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge9;
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.Panel panel5;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge10;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge11;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge12;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge13;
         private System.Windows.Forms.Panel panel6;
         private System.Windows.Forms.Panel panel7;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge14;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge15;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge16;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge17;
         private System.Windows.Forms.Panel panel11;
         private System.Windows.Forms.Panel panel13;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge18;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge19;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge20;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge21;
         private System.Windows.Forms.Panel panel14;
         private System.Windows.Forms.Panel panel15;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge22;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge23;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge24;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge25;
         private System.Windows.Forms.Panel panel16;
         private System.Windows.Forms.Panel panel17;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge26;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge27;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge28;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge29;
         private System.Windows.Forms.Panel panel18;
         private System.Windows.Forms.Panel panel19;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge30;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge31;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge40;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge41;
         private System.Windows.Forms.Panel panel20;
         private System.Windows.Forms.Panel panel21;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge42;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge43;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge44;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge45;
         private System.Windows.Forms.Panel panel8;
         private System.Windows.Forms.Panel panel22;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge32;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge33;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge34;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge35;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel12;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge4;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge6;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge7;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge8;
         private PercentageDataGrid TechnoFrameColorsDataGrid;
         private System.Windows.Forms.Label label14;
         private PercentageDataGrid DecorPatinaDataGrid;
@@ -4494,17 +3480,9 @@
         private System.Windows.Forms.OpenFileDialog openFileDialog4;
         private System.Windows.Forms.Panel panel25;
         private System.Windows.Forms.Panel panel26;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge70;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge71;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge72;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge73;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Panel panel27;
         private System.Windows.Forms.Panel panel222;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge74;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge75;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge76;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge77;
         private System.Windows.Forms.PictureBox pcbxFrontImage;
         private System.Windows.Forms.CheckBox cbFrontImage;
         private System.Windows.Forms.CheckBox cbFrontTechStore;
@@ -4512,68 +3490,32 @@
         private System.Windows.Forms.Panel panel9;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Panel panel28;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge78;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge79;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge80;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge81;
         private System.Windows.Forms.Panel panel35;
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.Panel panel36;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge90;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge91;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge92;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge93;
         private System.Windows.Forms.Panel panel33;
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.Panel panel34;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge86;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge87;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge88;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge89;
         private System.Windows.Forms.Panel panel31;
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.Panel panel32;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge82;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge83;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge84;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge85;
         private System.Windows.Forms.Panel panel29;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Panel panel30;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge36;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge37;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge38;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge39;
         private System.Windows.Forms.Panel panel37;
         private System.Windows.Forms.Label label21;
         private System.Windows.Forms.Panel panel38;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge94;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge95;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge96;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge97;
         private System.Windows.Forms.Panel panel39;
         private System.Windows.Forms.Label label22;
         private System.Windows.Forms.Panel panel40;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge98;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge99;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge100;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge101;
         private System.Windows.Forms.Panel panel23;
         private System.Windows.Forms.CheckBox cbDecorTechStore;
         private System.Windows.Forms.Panel panel24;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge46;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge47;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge48;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge49;
         private System.Windows.Forms.PictureBox pcbxDecorTechStore;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Panel panel41;
         private System.Windows.Forms.CheckBox cbDecorImage;
         private System.Windows.Forms.Panel panel42;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge50;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge51;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge52;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge53;
         private System.Windows.Forms.PictureBox pcbxDecorImage;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
@@ -4584,10 +3526,6 @@
         private System.Windows.Forms.Panel panel43;
         private System.Windows.Forms.CheckBox cbVisualConfig;
         private System.Windows.Forms.Panel panel44;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge54;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge55;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge56;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge57;
         private System.Windows.Forms.PictureBox pcbxVisualConfig;
         private System.Windows.Forms.Label label23;
         private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem kryptonContextMenuItem12;
@@ -4614,23 +3552,22 @@
         private System.Windows.Forms.Label label24;
         private System.Windows.Forms.Panel panel50;
         private PercentageDataGrid DecorInsetColorsDataGrid;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge62;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge63;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge64;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge65;
         private System.Windows.Forms.Panel panel47;
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Panel panel48;
         private PercentageDataGrid DecorInsetTypesDataGrid;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge58;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge59;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge60;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge61;
         private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem kryptonContextMenuItem24;
         private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem kryptonContextMenuItem25;
         private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem kryptonContextMenuItem26;
         private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem kryptonContextMenuItem27;
         private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem kryptonContextMenuItem28;
         private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem kryptonContextMenuItem29;
+        private ComponentFactory.Krypton.Toolkit.KryptonCheckButton MenuButton;
+        private System.Windows.Forms.Panel panel55;
+        private PercentageDataGrid FilterClientsDataGrid;
+        private ComponentFactory.Krypton.Toolkit.KryptonCheckBox cbClients;
+        private ComponentFactory.Krypton.Toolkit.KryptonCheckBox cbExcluzive;
+        private System.Windows.Forms.Panel MenuPanel;
+        private ComponentFactory.Krypton.Toolkit.KryptonButton btnFilterCatalog;
     }
 }

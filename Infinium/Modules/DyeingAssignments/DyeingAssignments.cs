@@ -72,8 +72,8 @@ namespace Infinium.Modules.DyeingAssignments
         private DataTable TempBatchFrontsDT;
         private DataTable SavedFrontsOrdersDT;
 
-        BindingSource BatchFrontsBS = null;
-        BindingSource DyeingFrontsBS = null;
+        private BindingSource BatchFrontsBS = null;
+        private BindingSource DyeingFrontsBS = null;
 
         public BindingSource BatchFrontsList
         {
@@ -1213,35 +1213,35 @@ namespace Infinium.Modules.DyeingAssignments
     public class ControlAssignments
     {
         public ArrayList MainOrders = null;
-        Barcode Barcode;
+        private Barcode Barcode;
 
-        bool bNewAssignment = false;
+        private bool bNewAssignment = false;
 
-        int iDyeingAssignmentID = 0;
-        int iDyeingCartID = 0;
-        int iTechCatalogOperationsGroupID = 0;
-        int iGroupType = 0;
-        int iWorkAssignmentID = 0;
-        int iFactoryID = 1;
+        private int iDyeingAssignmentID = 0;
+        private int iDyeingCartID = 0;
+        private int iTechCatalogOperationsGroupID = 0;
+        private int iGroupType = 0;
+        private int iWorkAssignmentID = 0;
+        private int iFactoryID = 1;
 
-        DataTable BatchesDT = null;
-        DataTable BatchMainOrdersDT = null;
-        DataTable SavedBatchMainOrdersDT = null;
-        DataTable MegaBatchesDT = null;
+        private DataTable BatchesDT = null;
+        private DataTable BatchMainOrdersDT = null;
+        private DataTable SavedBatchMainOrdersDT = null;
+        private DataTable MegaBatchesDT = null;
 
-        DataTable UsersDT = null;
-        DataTable TechCatalogOperationsDetailDT = null;
-        DataTable DyeingAssignmentBarcodesDT = null;
-        DataTable DyeingAssignmentsDT = null;
-        DataTable PrintedDyeingAssignmentsDetailsDT = null;
-        DataTable DyeingCartsDT = null;
-        DataTable WorkAssignmentsDT = null;
+        private DataTable UsersDT = null;
+        private DataTable TechCatalogOperationsDetailDT = null;
+        private DataTable DyeingAssignmentBarcodesDT = null;
+        private DataTable DyeingAssignmentsDT = null;
+        private DataTable PrintedDyeingAssignmentsDetailsDT = null;
+        private DataTable DyeingCartsDT = null;
+        private DataTable WorkAssignmentsDT = null;
 
-        BindingSource BatchesBS = null;
-        BindingSource BatchMainOrdersBS = null;
-        BindingSource MegaBatchesBS = null;
-        BindingSource DyeingAssignmentsBS = null;
-        BindingSource WorkAssignmentsBS = null;
+        private BindingSource BatchesBS = null;
+        private BindingSource BatchMainOrdersBS = null;
+        private BindingSource MegaBatchesBS = null;
+        private BindingSource DyeingAssignmentsBS = null;
+        private BindingSource WorkAssignmentsBS = null;
 
         public bool NewAssignment
         {
@@ -3070,79 +3070,79 @@ namespace Infinium.Modules.DyeingAssignments
 
     public class PrintDyeingAssignments : IAllFrontParameterName
     {
-        ControlAssignments ControlAssignmentsManager;
+        private readonly ControlAssignments ControlAssignmentsManager;
 
-        int TechCatalogOperationsGroupID = 0;
-        string ShortName = string.Empty;
+        private int TechCatalogOperationsGroupID = 0;
+        private string ShortName = string.Empty;
 
-        object ResponsibleDateTime = DBNull.Value;
-        object TechnologyDateTime = DBNull.Value;
-        object ControlDateTime = DBNull.Value;
-        object AgreementDateTime = DBNull.Value;
-        object PrintDateTime = DBNull.Value;
-        object ResponsibleUserID = DBNull.Value;
-        object TechnologyUserID = DBNull.Value;
-        object ControlUserID = DBNull.Value;
-        object AgreementUserID = DBNull.Value;
-        object PrintUserID = DBNull.Value;
+        private object ResponsibleDateTime = DBNull.Value;
+        private object TechnologyDateTime = DBNull.Value;
+        private object ControlDateTime = DBNull.Value;
+        private object AgreementDateTime = DBNull.Value;
+        private object PrintDateTime = DBNull.Value;
+        private object ResponsibleUserID = DBNull.Value;
+        private object TechnologyUserID = DBNull.Value;
+        private object ControlUserID = DBNull.Value;
+        private object AgreementUserID = DBNull.Value;
+        private object PrintUserID = DBNull.Value;
 
-        HSSFWorkbook hssfworkbook;
-        HSSFSheet sheet1;
-        HSSFPatriarch patriarch;
-        HSSFClientAnchor anchor;
-        HSSFPicture picture;
+        private HSSFWorkbook hssfworkbook;
+        private HSSFSheet sheet1;
+        private HSSFPatriarch patriarch;
+        private HSSFClientAnchor anchor;
+        private HSSFPicture picture;
 
 
-        NeedPaintingMaterial NeedPaintingMaterialManager;
-        FileManager FM = new FileManager();
-        DateTime CurrentDate;
+        private NeedPaintingMaterial NeedPaintingMaterialManager;
+        private readonly FileManager FM = new FileManager();
+        private DateTime CurrentDate;
 
-        DataTable ImagesToDeleteDT;
-        DataTable DyeingAssignmentsDT;
-        DataTable DyeingCartsDT;
+        private DataTable ImagesToDeleteDT;
+        private DataTable DyeingAssignmentsDT;
+        private DataTable DyeingCartsDT;
 
-        DataTable DeyingDT;
+        private DataTable DeyingDT;
 
-        DataTable ProfileNamesDT;
+        private DataTable ProfileNamesDT;
 
         public DataTable FrontsDataTable = null;
         public DataTable FrameColorsDataTable = null;
         public DataTable PatinaDataTable = null;
-        DataTable PatinaRALDataTable = null;
+        private DataTable PatinaRALDataTable = null;
         public DataTable InsetTypesDataTable = null;
         public DataTable InsetColorsDataTable = null;
 
-        DataTable KansasBoxesDT;
-        DataTable LorenzoBoxesDT;
-        DataTable SofiaBoxesDT;
-        DataTable Turin1BoxesDT;
-        DataTable Turin3BoxesDT;
-        DataTable InfinitiBoxesDT;
+        private DataTable KansasBoxesDT;
+        private DataTable LorenzoBoxesDT;
+        private DataTable SofiaBoxesDT;
+        private DataTable Turin1BoxesDT;
+        private DataTable Turin3BoxesDT;
+        private DataTable InfinitiBoxesDT;
 
-        DataTable KansasGridsDT;
-        DataTable LorenzoGridsDT;
-        DataTable SofiaGridsDT;
-        DataTable Turin1GridsDT;
-        DataTable Turin3GridsDT;
-        DataTable InfinitiGridsDT;
+        private DataTable KansasGridsDT;
+        private DataTable LorenzoGridsDT;
+        private DataTable SofiaGridsDT;
+        private DataTable Turin1GridsDT;
+        private DataTable Turin3GridsDT;
+        private DataTable InfinitiGridsDT;
 
-        DataTable SofiaAppliqueDT;
+        private DataTable SofiaAppliqueDT;
 
-        DataTable KansasSimpleDT;
-        DataTable LorenzoSimpleDT;
-        DataTable SofiaSimpleDT;
-        DataTable Turin1SimpleDT;
-        DataTable Turin3SimpleDT;
-        DataTable InfinitiSimpleDT;
+        private DataTable KansasSimpleDT;
+        private DataTable LorenzoSimpleDT;
+        private DataTable SofiaSimpleDT;
+        private DataTable Turin1SimpleDT;
+        private DataTable Turin3SimpleDT;
+        private DataTable InfinitiSimpleDT;
 
-        DataTable KansasOrdersDT;
-        DataTable LorenzoOrdersDT;
-        DataTable SofiaOrdersDT;
-        DataTable Turin1OrdersDT;
-        DataTable Turin3OrdersDT;
-        DataTable InfinitiOrdersDT;
-        DataTable GenevaOrdersDT;
-        DataTable TafelOrdersDT;
+        private DataTable KansasOrdersDT;
+        private DataTable LorenzoOrdersDT;
+        private DataTable SofiaOrdersDT;
+        private DataTable Turin1OrdersDT;
+        private DataTable Turin3OrdersDT;
+        private DataTable InfinitiOrdersDT;
+        private DataTable GenevaOrdersDT;
+        private DataTable TafelOrdersDT;
 
         public PrintDyeingAssignments(ControlAssignments tControlAssignmentsManager)
         {
@@ -5940,21 +5940,21 @@ namespace Infinium.Modules.DyeingAssignments
 
     public class NeedPaintingMaterial
     {
-        ArrayList aFrontConfigID;
-        ArrayList aPatinaID;
+        private ArrayList aFrontConfigID;
+        private ArrayList aPatinaID;
 
-        DataTable OperationsGroupsDT = null;
-        DataTable OperationsDetailDT = null;
-        DataTable StoreDT = null;
-        DataTable StoreDetailDT = null;
-        DataTable SummaryStoreDetailDT = null;
-        DataTable TermsDT = null;
+        private DataTable OperationsGroupsDT = null;
+        private DataTable OperationsDetailDT = null;
+        private DataTable StoreDT = null;
+        private DataTable StoreDetailDT = null;
+        private DataTable SummaryStoreDetailDT = null;
+        private DataTable TermsDT = null;
 
-        BindingSource OperationsGroupsBS = null;
-        BindingSource OperationsDetailBS = null;
-        BindingSource StoreBS = null;
-        BindingSource StoreDetailBS = null;
-        BindingSource SummaryStoreDetailBS = null;
+        private BindingSource OperationsGroupsBS = null;
+        private BindingSource OperationsDetailBS = null;
+        private BindingSource StoreBS = null;
+        private BindingSource StoreDetailBS = null;
+        private BindingSource SummaryStoreDetailBS = null;
 
         public ArrayList FrontConfigID
         {
@@ -6414,9 +6414,9 @@ namespace Infinium.Modules.DyeingAssignments
 
     public class Barcode
     {
-        BarcodeLib.Barcode Barcod;
+        private readonly BarcodeLib.Barcode Barcod;
 
-        SolidBrush FontBrush;
+        private readonly SolidBrush FontBrush;
 
         public enum BarcodeLength { Short, Medium, Long };
 
@@ -6513,31 +6513,31 @@ namespace Infinium.Modules.DyeingAssignments
 
     public class ScaningDyeingAssignments
     {
-        bool bNewAssignment = false;
+        private bool bNewAssignment = false;
 
-        decimal iCartSquare = 0;
-        decimal iNorm = 0;
-        int iGroupType = 0;
-        int iOperationStatus = 0;
-        int iCartNumber = 0;
-        int iDyeingAssignmentID = 0;
-        int iDyeingCartID = 0;
-        int iDyeingAssignmentBarcodeID = 0;
-        int iTechCatalogOperationsGroupID = 0;
-        int iTechCatalogOperationsDetailID = 0;
-        int iWorkersInAssignment = 0;
-        object dStartDateTime = DBNull.Value;
-        object dFinishDateTime = DBNull.Value;
-        string sBatchName = string.Empty;
-        string sDocNumber = string.Empty;
-        string sOperationName = string.Empty;
+        private decimal iCartSquare = 0;
+        private decimal iNorm = 0;
+        private int iGroupType = 0;
+        private int iOperationStatus = 0;
+        private int iCartNumber = 0;
+        private int iDyeingAssignmentID = 0;
+        private int iDyeingCartID = 0;
+        private int iDyeingAssignmentBarcodeID = 0;
+        private int iTechCatalogOperationsGroupID = 0;
+        private int iTechCatalogOperationsDetailID = 0;
+        private int iWorkersInAssignment = 0;
+        private object dStartDateTime = DBNull.Value;
+        private object dFinishDateTime = DBNull.Value;
+        private string sBatchName = string.Empty;
+        private string sDocNumber = string.Empty;
+        private string sOperationName = string.Empty;
 
-        DataTable DyeingAssignmentsDT = null;
-        DataTable DyeingCartsDT = null;
-        DataTable DyeingAssignmentBarcodesDT = null;
-        DataTable DyeingAssignmentBarcodeDetailsDT = null;
-        DataTable TechCatalogOperationsDetailDT = null;
-        DataTable UsersDT = null;
+        private DataTable DyeingAssignmentsDT = null;
+        private DataTable DyeingCartsDT = null;
+        private DataTable DyeingAssignmentBarcodesDT = null;
+        private DataTable DyeingAssignmentBarcodeDetailsDT = null;
+        private DataTable TechCatalogOperationsDetailDT = null;
+        private DataTable UsersDT = null;
 
         public bool NewAssignment
         {
@@ -7041,31 +7041,31 @@ namespace Infinium.Modules.DyeingAssignments
 
     public class RegistrationDyeingWorkMan
     {
-        decimal AverageMonthlyCoef = 159;
-        decimal MonthlyCoef = 169.3m;
+        private readonly decimal AverageMonthlyCoef = 159;
+        private readonly decimal MonthlyCoef = 169.3m;
 
-        DataTable DyeingAssignmentBarcodesDT = null;
-        DataTable DyeingAssignmentBarcodeDetailsDT = null;
-        DataTable MonthsDT = null;
-        DataTable OperationsDT = null;
-        DataTable PositionsDT = null;
-        DataTable ReferenceDT = null;
-        DataTable UsersDT = null;
-        DataTable UsersTimeWorkDT = null;
-        DataTable WorkDaysDT = null;
-        DataTable YearsDT = null;
+        private DataTable DyeingAssignmentBarcodesDT = null;
+        private DataTable DyeingAssignmentBarcodeDetailsDT = null;
+        private DataTable MonthsDT = null;
+        private DataTable OperationsDT = null;
+        private DataTable PositionsDT = null;
+        private DataTable ReferenceDT = null;
+        private DataTable UsersDT = null;
+        private DataTable UsersTimeWorkDT = null;
+        private DataTable WorkDaysDT = null;
+        private DataTable YearsDT = null;
 
-        BindingSource MonthsBS = null;
-        BindingSource UsersBS = null;
-        BindingSource UsersTimeWorkBS = null;
-        BindingSource YearsBS = null;
+        private BindingSource MonthsBS = null;
+        private BindingSource UsersBS = null;
+        private BindingSource UsersTimeWorkBS = null;
+        private BindingSource YearsBS = null;
 
-        List<WorkerMonthStatistics> MonthStatistics;
-        WorkerMonthStatistics TotalMonthStatistics;
-        List<MonthWorkStatement> MonthStatement;
-        MonthWorkStatement TotalMonthStatement;
+        private List<WorkerMonthStatistics> MonthStatistics;
+        private WorkerMonthStatistics TotalMonthStatistics;
+        private List<MonthWorkStatement> MonthStatement;
+        private MonthWorkStatement TotalMonthStatement;
 
-        HSSFWorkbook hssfworkbook;
+        private HSSFWorkbook hssfworkbook;
 
         public BindingSource MonthsList
         {
@@ -9971,28 +9971,28 @@ namespace Infinium.Modules.DyeingAssignments
 
     public class RegistrationDyeingWorkWoman
     {
-        decimal MonthlyCoef = 169.3m;
+        private readonly decimal MonthlyCoef = 169.3m;
 
-        DataTable DyeingAssignmentBarcodesDT = null;
-        DataTable DyeingAssignmentBarcodeDetailsDT = null;
-        DataTable MonthsDT = null;
-        DataTable OperationsDT = null;
-        DataTable PositionsDT = null;
-        DataTable ReferenceDT = null;
-        DataTable UsersDT = null;
-        DataTable UsersTimeWorkDT = null;
-        DataTable WorkDaysDT = null;
-        DataTable YearsDT = null;
+        private DataTable DyeingAssignmentBarcodesDT = null;
+        private DataTable DyeingAssignmentBarcodeDetailsDT = null;
+        private DataTable MonthsDT = null;
+        private DataTable OperationsDT = null;
+        private DataTable PositionsDT = null;
+        private DataTable ReferenceDT = null;
+        private DataTable UsersDT = null;
+        private DataTable UsersTimeWorkDT = null;
+        private DataTable WorkDaysDT = null;
+        private DataTable YearsDT = null;
 
-        BindingSource MonthsBS = null;
-        BindingSource UsersBS = null;
-        BindingSource UsersTimeWorkBS = null;
-        BindingSource YearsBS = null;
+        private BindingSource MonthsBS = null;
+        private BindingSource UsersBS = null;
+        private BindingSource UsersTimeWorkBS = null;
+        private BindingSource YearsBS = null;
 
-        List<OperationsMainInfo> Operations;
-        List<FotoWorkDay> WorkDaysSummary;
+        private List<OperationsMainInfo> Operations;
+        private List<FotoWorkDay> WorkDaysSummary;
 
-        HSSFWorkbook hssfworkbook;
+        private HSSFWorkbook hssfworkbook;
 
         public BindingSource MonthsList
         {

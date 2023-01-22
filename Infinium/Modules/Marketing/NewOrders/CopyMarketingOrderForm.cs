@@ -8,20 +8,20 @@ namespace Infinium
 {
     public partial class CopyMarketingOrderForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
         public int ClientID = 1;
         public int MegaOrderID = 1;
         public int MainOrderID = 1;
-        int FormEvent = 0;
+        private int FormEvent = 0;
 
-        bool MoveMegaOrder = true;
-        Form MainForm = null;
+        private bool MoveMegaOrder = true;
+        private Form MainForm = null;
 
-        CopyMarketingOrders CopyMarketingOrders;
+        private CopyMarketingOrders CopyMarketingOrders;
 
         public CopyMarketingOrderForm(Form tMainForm, bool bMoveMegaOrder, int iClientID, int iMegaOrderID, int iMainOrderID)
         {

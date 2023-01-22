@@ -7,19 +7,19 @@ namespace Infinium
 {
     public partial class MessagesForm : InfiniumForm
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
 
-        int FormEvent = 0;
+        private int FormEvent;
 
-        Form TopForm;
+        private Form TopForm;
 
-        InfiniumMessages InfiniumMessages;
+        private InfiniumMessages InfiniumMessages;
 
-        bool bC = false;
+        private bool bC;
 
-        bool bNeedSplash = false;
+        private bool bNeedSplash;
 
         public MessagesForm(ref Form tTopForm)
         {
@@ -27,7 +27,7 @@ namespace Infinium
 
             Thread T = new Thread(delegate ()
             {
-                SplashWindow.CreateCoverSplash(true, (Screen.PrimaryScreen.WorkingArea.Height - this.Height) / 2, (Screen.PrimaryScreen.WorkingArea.Width - this.Width) / 2,
+                SplashWindow.CreateCoverSplash(true, (Screen.PrimaryScreen.WorkingArea.Height - Height) / 2, (Screen.PrimaryScreen.WorkingArea.Width - Width) / 2,
                                                 503, 1014);
             });
             T.Start();
@@ -91,7 +91,7 @@ namespace Infinium
         {
             if (!DatabaseConfigsManager.Animation)
             {
-                this.Opacity = 1;
+                Opacity = 1;
 
                 if (FormEvent == eClose || FormEvent == eHide)
                 {
@@ -99,12 +99,12 @@ namespace Infinium
 
                     if (FormEvent == eClose)
                     {
-                        this.Close();
+                        Close();
                     }
 
                     if (FormEvent == eHide)
                     {
-                        this.Hide();
+                        Hide();
                     }
 
                     return;
@@ -122,20 +122,20 @@ namespace Infinium
 
             if (FormEvent == eClose || FormEvent == eHide)
             {
-                if (Convert.ToDecimal(this.Opacity) != Convert.ToDecimal(0.00))
-                    this.Opacity = Convert.ToDouble(Convert.ToDecimal(this.Opacity) - Convert.ToDecimal(0.05));
+                if (Convert.ToDecimal(Opacity) != Convert.ToDecimal(0.00))
+                    Opacity = Convert.ToDouble(Convert.ToDecimal(Opacity) - Convert.ToDecimal(0.05));
                 else
                 {
                     AnimateTimer.Enabled = false;
 
                     if (FormEvent == eClose)
                     {
-                        this.Close();
+                        Close();
                     }
 
                     if (FormEvent == eHide)
                     {
-                        this.Hide();
+                        Hide();
                     }
                 }
 
@@ -145,16 +145,14 @@ namespace Infinium
 
             if (FormEvent == eShow || FormEvent == eShow)
             {
-                if (this.Opacity != 1)
-                    this.Opacity += 0.05;
+                if (Opacity != 1)
+                    Opacity += 0.05;
                 else
                 {
                     AnimateTimer.Enabled = false;
                     SplashForm.CloseS = true;
                     bNeedSplash = true;
                 }
-
-                return;
             }
         }
 
@@ -176,7 +174,7 @@ namespace Infinium
             {
                 Thread T = new Thread(delegate ()
                 {
-                    SplashWindow.CreateCoverSplash(true, this.Top + MessagesContainer.Top, this.Left + MessagesContainer.Left,
+                    SplashWindow.CreateCoverSplash(true, Top + MessagesContainer.Top, Left + MessagesContainer.Left,
                                                     MessagesContainer.Height, MessagesContainer.Width);
                 });
                 T.Start();
@@ -218,7 +216,7 @@ namespace Infinium
             {
                 Thread T = new Thread(delegate ()
                 {
-                    SplashWindow.CreateCoverSplash(true, this.Top + MessagesContainer.Top, this.Left + MessagesContainer.Left,
+                    SplashWindow.CreateCoverSplash(true, Top + MessagesContainer.Top, Left + MessagesContainer.Left,
                                                     MessagesContainer.Height, MessagesContainer.Width);
                 });
                 T.Start();
@@ -274,7 +272,7 @@ namespace Infinium
             {
                 Thread T = new Thread(delegate ()
                 {
-                    SplashWindow.CreateCoverSplash(true, this.Top + panel1.Top, this.Left + panel1.Left,
+                    SplashWindow.CreateCoverSplash(true, Top + panel1.Top, Left + panel1.Left,
                                                     panel1.Height, panel1.Width);
                 });
                 T.Start();
@@ -333,7 +331,7 @@ namespace Infinium
             {
                 Thread T = new Thread(delegate ()
                 {
-                    SplashWindow.CreateCoverSplash(true, this.Top + MessagesContainer.Top, this.Left + MessagesContainer.Left,
+                    SplashWindow.CreateCoverSplash(true, Top + MessagesContainer.Top, Left + MessagesContainer.Left,
                                                     MessagesContainer.Height, MessagesContainer.Width);
                 });
                 T.Start();

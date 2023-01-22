@@ -1,11 +1,15 @@
-﻿namespace Infinium
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+using ComponentFactory.Krypton.Toolkit;
+
+namespace Infinium
 {
     partial class NotifyForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -214,18 +218,18 @@
 
         #endregion
 
-        private System.Windows.Forms.Timer AnimateTimer;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge1;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge2;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge3;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge4;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Timer WatchTimer;
-        private System.Windows.Forms.PictureBox PictureBox;
-        private System.Windows.Forms.Label ModuleNameLabel;
-        private System.Windows.Forms.Label NewUpdatesLabel;
-        private System.Windows.Forms.Label MoreUpdatesLabel;
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private Timer AnimateTimer;
+        private KryptonBorderEdge kryptonBorderEdge1;
+        private KryptonBorderEdge kryptonBorderEdge2;
+        private KryptonBorderEdge kryptonBorderEdge3;
+        private KryptonBorderEdge kryptonBorderEdge4;
+        private Panel panel1;
+        private Label label2;
+        private Timer WatchTimer;
+        private PictureBox PictureBox;
+        private Label ModuleNameLabel;
+        private Label NewUpdatesLabel;
+        private Label MoreUpdatesLabel;
+        private PictureBox pictureBox1;
     }
 }

@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace Infinium.Modules.Admin
 {
-    class AbsenceJournal
+    internal class AbsenceJournal
     {
         private DataTable _absencesJournalDataTable;
         private DataTable _positionsDataTable;

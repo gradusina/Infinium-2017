@@ -13,40 +13,40 @@ namespace Infinium
         public int CurrentNotesID;
         public string CurrentNotesName;
 
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
 
-        int FormEvent = 0;
+        private int FormEvent;
 
-        LightStartForm LightStartForm;
-        Form TopForm = null;
+        private LightStartForm LightStartForm;
+        private Form TopForm;
 
-        InfiniumFunctionsContainer[] ProfilFunctionsContainers;
-        InfiniumFunctionsContainer[] TPSFunctionsContainers;
-        UsersResponsibilities AdminResponsibilities;
+        private InfiniumFunctionsContainer[] ProfilFunctionsContainers;
+        private InfiniumFunctionsContainer[] TPSFunctionsContainers;
+        private UsersResponsibilities AdminResponsibilities;
 
-        LightWorkDay LightWorkDay;
-        DayStatus DayStatus;
-        DayFactStatus DayFactStatus;
+        private LightWorkDay LightWorkDay;
+        private DayStatus DayStatus;
+        private DayFactStatus DayFactStatus;
 
-        DayPlannerTimesheet DayPlannerWorkTimeSheet;
-        InfiniumProjects InfiniumProjects;
+        private DayPlannerTimesheet DayPlannerWorkTimeSheet;
+        private InfiniumProjects InfiniumProjects;
 
-        int TimesheetMonth = 1;
-        int TimesheetYear = 1;
+        private int TimesheetMonth = 1;
+        private int TimesheetYear = 1;
 
-        bool bC = false;
-        int ProfilUserFunctionsContainerCount = 0;
-        int TPSUserFunctionsContainerCount = 0;
-        int ProfilUserFunctionsContainerCount1 = 0;
-        int TPSUserFunctionsContainerCount1 = 0;
-        bool bNeedSplash = false;
-        bool bNeedNewsSplash = false;
+        private bool bC;
+        private int ProfilUserFunctionsContainerCount;
+        private int TPSUserFunctionsContainerCount;
+        private int ProfilUserFunctionsContainerCount1;
+        private int TPSUserFunctionsContainerCount1;
+        private bool bNeedSplash;
+        private bool bNeedNewsSplash;
 
-        static TimeSpan DeltaTime;
+        private static TimeSpan DeltaTime;
 
-        CultureInfo CI = new CultureInfo("ru-RU");
+        private CultureInfo CI = new CultureInfo("ru-RU");
 
         private void AddProfilInfiniumFunctionsContainer(ref InfiniumFunctionsContainer FunctionsContainer, string Position)
         {
@@ -59,9 +59,9 @@ namespace Infinium
                 yMargin1 = 20;
             }
 
-            Label label1 = new Label()
+            Label label1 = new Label
             {
-                Anchor = ((AnchorStyles)((AnchorStyles.Top | AnchorStyles.Right))),
+                Anchor = AnchorStyles.Top | AnchorStyles.Right,
                 AutoSize = true,
                 Font = new Font("Segoe UI", 16F, FontStyle.Bold, GraphicsUnit.Pixel),
                 ForeColor = Color.Black,
@@ -71,7 +71,7 @@ namespace Infinium
                 Text = Position,
                 TextAlign = ContentAlignment.MiddleLeft
             };
-            FunctionsContainer = new InfiniumFunctionsContainer()
+            FunctionsContainer = new InfiniumFunctionsContainer
             {
                 Anchor = ((AnchorStyles.Top | AnchorStyles.Bottom)
                 | AnchorStyles.Left
@@ -84,7 +84,7 @@ namespace Infinium
                 TabIndex = 0,
                 TimePickersFont = new Font("Segoe UI", 24F, FontStyle.Regular, GraphicsUnit.Pixel)
             };
-            FunctionsContainer.TimeChanged += new InfiniumFunctionsContainer.TimeChangedEventHandler(FunctionsContainer_TimeChanged);
+            FunctionsContainer.TimeChanged += FunctionsContainer_TimeChanged;
             pnlProfilFunctions1.Controls.Add(label1);
             pnlProfilFunctions1.Controls.Add(FunctionsContainer);
         }
@@ -99,9 +99,9 @@ namespace Infinium
                 yMargin = 45;
                 yMargin1 = 20;
             }
-            Label label1 = new Label()
+            Label label1 = new Label
             {
-                Anchor = ((AnchorStyles)((AnchorStyles.Top | AnchorStyles.Right))),
+                Anchor = AnchorStyles.Top | AnchorStyles.Right,
                 AutoSize = true,
                 Font = new Font("Segoe UI", 16F, FontStyle.Bold, GraphicsUnit.Pixel),
                 ForeColor = Color.Black,
@@ -111,7 +111,7 @@ namespace Infinium
                 Text = Position,
                 TextAlign = ContentAlignment.MiddleLeft
             };
-            FunctionsContainer = new InfiniumFunctionsContainer()
+            FunctionsContainer = new InfiniumFunctionsContainer
             {
                 Anchor = ((AnchorStyles.Top | AnchorStyles.Bottom)
                 | AnchorStyles.Left
@@ -124,7 +124,7 @@ namespace Infinium
                 TabIndex = 0,
                 TimePickersFont = new Font("Segoe UI", 24F, FontStyle.Regular, GraphicsUnit.Pixel)
             };
-            FunctionsContainer.TimeChanged += new InfiniumFunctionsContainer.TimeChangedEventHandler(FunctionsContainer_TimeChanged);
+            FunctionsContainer.TimeChanged += FunctionsContainer_TimeChanged;
             pnlTPSFunctions1.Controls.Add(label1);
             pnlTPSFunctions1.Controls.Add(FunctionsContainer);
         }
@@ -133,7 +133,7 @@ namespace Infinium
         {
             if (ProfilUserFunctionsContainerCount != 0)
                 panel12.Size = new Size(panel12.Size.Width, panel12.Size.Height + 347);
-            UserFunctionsContainer userFunctionsContainer = new UserFunctionsContainer()
+            UserFunctionsContainer userFunctionsContainer = new UserFunctionsContainer
             {
                 Location = new Point(0, ProfilUserFunctionsContainerCount++ * 347),
                 Name = "ProfilUserFunctionsContainer" + ProfilUserFunctionsContainerCount,
@@ -157,7 +157,7 @@ namespace Infinium
         {
             if (TPSUserFunctionsContainerCount != 0)
                 panel27.Size = new Size(panel27.Size.Width, panel27.Size.Height + 347);
-            UserFunctionsContainer userFunctionsContainer = new UserFunctionsContainer()
+            UserFunctionsContainer userFunctionsContainer = new UserFunctionsContainer
             {
                 Location = new Point(0, TPSUserFunctionsContainerCount++ * 347),
                 Name = "TPSUserFunctionsContainer" + TPSUserFunctionsContainerCount,
@@ -392,8 +392,6 @@ namespace Infinium
                     bNeedSplash = true;
                     bNeedNewsSplash = true;
                 }
-
-                return;
             }
         }
 
@@ -452,7 +450,6 @@ namespace Infinium
             if (kryptonCheckSet1.CheckedButton.Name == "TimeSheetMenuButton")
             {
                 TimeSheetPanel.BringToFront();
-                return;
             }
         }
 
@@ -914,7 +911,7 @@ namespace Infinium
 
         private string MinToHHmm(int Minutes)
         {
-            return Convert.ToInt32(Minutes / 60).ToString() + " : " + (Minutes - Convert.ToInt32(Minutes / 60) * 60).ToString();
+            return Convert.ToInt32(Minutes / 60) + " : " + (Minutes - Convert.ToInt32(Minutes / 60) * 60);
         }
 
         private void StartButton_Click(object sender, EventArgs e)
@@ -1108,21 +1105,21 @@ namespace Infinium
                     M *= -1;
 
                 if (M > 9)
-                    NotAllocLabel.Text = " - " + H.ToString() + " : " + M.ToString();
+                    NotAllocLabel.Text = " - " + H + " : " + M;
                 else
-                    NotAllocLabel.Text = " - " + H.ToString() + " : 0" + M.ToString();
+                    NotAllocLabel.Text = " - " + H + " : 0" + M;
             }
             else
             {
                 if (M > 9)
-                    NotAllocLabel.Text = H.ToString() + " : " + M.ToString();
+                    NotAllocLabel.Text = H + " : " + M;
                 else
-                    NotAllocLabel.Text = H.ToString() + " : 0" + M.ToString();
+                    NotAllocLabel.Text = H + " : 0" + M;
 
                 if (M > 9)
-                    NotAllocHelpLabel.Text = "Нераспределённое рабочее время (" + H.ToString() + " ч : " + M.ToString() + " м)";
+                    NotAllocHelpLabel.Text = "Нераспределённое рабочее время (" + H + " ч : " + M + " м)";
                 else
-                    NotAllocHelpLabel.Text = "Нераспределённое рабочее время (" + H.ToString() + " ч : 0" + M.ToString() + " м)";
+                    NotAllocHelpLabel.Text = "Нераспределённое рабочее время (" + H + " ч : 0" + M + " м)";
             }
 
             DataRow[] Rows = infiniumFunctionsContainer1.dtFunctionsDataTable.Select("FunctionID1 = 0");
@@ -1794,7 +1791,7 @@ namespace Infinium
                 lbAbsenceHours.Text = "-";
             }
             lbPlanHours.Text = dayInfo.PlanHours.ToString();
-            lbRate.Text = dayInfo.StrRate.ToString();
+            lbRate.Text = dayInfo.StrRate;
             lbOverworkHours.Text = dayInfo.OverworkHours.ToString();
             lbOvertimeHours.Text = dayInfo.AllOvertimeHours.ToString();
             tbTimesheetHours.Text = dayInfo.TimesheetHours.ToString();
@@ -1985,7 +1982,7 @@ namespace Infinium
                 lbAbsenceHours.Text = "-";
             }
             lbPlanHours.Text = dayInfo.PlanHours.ToString();
-            lbRate.Text = dayInfo.StrRate.ToString();
+            lbRate.Text = dayInfo.StrRate;
             lbOverworkHours.Text = dayInfo.OverworkHours.ToString();
             lbOvertimeHours.Text = dayInfo.AllOvertimeHours.ToString();
             lbFactHours.Text = dayInfo.FactHours.ToString();
@@ -2127,7 +2124,7 @@ namespace Infinium
                 lbAbsenceHours.Text = "-";
             }
             lbPlanHours.Text = dayInfo.PlanHours.ToString();
-            lbRate.Text = dayInfo.StrRate.ToString();
+            lbRate.Text = dayInfo.StrRate;
             lbOverworkHours.Text = dayInfo.OverworkHours.ToString();
             lbOvertimeHours.Text = dayInfo.AllOvertimeHours.ToString();
             lbFactHours.Text = dayInfo.FactHours.ToString();

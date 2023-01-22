@@ -10,29 +10,29 @@ namespace Infinium
 {
     public partial class CabFurAssembleForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
-        int FormEvent = 0;
+        private int FormEvent = 0;
 
-        bool CanAction = true;
+        private bool CanAction = true;
 
-        int ClientID = 1;
-        int MegaOrderID = 1;
-        int OrderNumber = 1;
-        object CreationDateTime;
-        object PrepareDispDateTime;
+        private int ClientID = 1;
+        private int MegaOrderID = 1;
+        private int OrderNumber = 1;
+        private object CreationDateTime;
+        private object PrepareDispDateTime;
 
-        Form MainForm;
+        private Form MainForm;
 
-        AssemblePackagesManager assemblePackagesManager;
-        AssignmentsManager assignmentsManager;
-        CabFurAssembleReport cabFurAssembleReport;
+        private AssemblePackagesManager assemblePackagesManager;
+        private AssignmentsManager assignmentsManager;
+        private CabFurAssembleReport cabFurAssembleReport;
 
         [DllImport("user32.dll")]
-        static extern IntPtr GetActiveWindow();
+        private static extern IntPtr GetActiveWindow();
 
         public CabFurAssembleForm(Form tMainForm, CabFurAssembleReport tCabFurAssembleReport, 
             int iClientID, int iMegaOrderID, int iOrderNumber, object CreationDateTime, object PrepareDispDateTime)

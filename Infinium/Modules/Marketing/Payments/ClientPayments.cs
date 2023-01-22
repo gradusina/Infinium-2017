@@ -11,10 +11,10 @@ namespace Infinium.Modules.Marketing.Payments
     public class ClientPayments
     {
         public FileManager FM = new FileManager();
-        Excel Ex = null;
+        private Excel Ex = null;
 
-        PercentageDataGrid ClientsPaymentsDataGrid = null;
-        PercentageDataGrid ClientContractDataGrid = null;
+        private PercentageDataGrid ClientsPaymentsDataGrid = null;
+        private PercentageDataGrid ClientContractDataGrid = null;
 
         public DataTable ClientPaymentsTable;
         public DataTable ClientSummTable;

@@ -5,12 +5,12 @@ namespace Infinium
 {
     public partial class UserFunctionsContainer : UserControl
     {
-        int iFactoryID = -1;
-        int iDepartmentID = -1;
-        int iPositionID = -1;
+        private int iFactoryID = -1;
+        private int iDepartmentID = -1;
+        private int iPositionID = -1;
 
-        UsersResponsibilities tUsersResponsibilities;
-        Form TopForm;
+        private UsersResponsibilities tUsersResponsibilities;
+        private Form TopForm;
         public UserFunctionsContainer()
         {
             InitializeComponent();

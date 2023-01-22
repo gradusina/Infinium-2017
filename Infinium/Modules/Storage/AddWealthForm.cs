@@ -8,19 +8,19 @@ namespace Infinium
 {
     public partial class AddWealthForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
 
-        int FormEvent = 0;
+        private int FormEvent = 0;
 
-        DataTable TableMeasures, TableCurrency, TableUsers;
+        private DataTable TableMeasures, TableCurrency, TableUsers;
 
-        Form TopForm = null;
+        private Form TopForm = null;
 
-        ConnectUnloads ConnectUnloads;
+        private ConnectUnloads ConnectUnloads;
 
-        LightNotes LightNotes;
+        private LightNotes LightNotes;
 
         public AddWealthForm(ref Form tTopForm, ref ConnectUnloads tConnectUnloads, ref DataTable tTableMeasures, ref DataTable tTableCurrency, ref DataTable tTableUsers)
         {

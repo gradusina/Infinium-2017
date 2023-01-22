@@ -1,11 +1,16 @@
-﻿namespace Infinium
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+using ComponentFactory.Krypton.Toolkit;
+using DevExpress.XtraEditors;
+
+namespace Infinium
 {
     partial class AddNotesForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -330,22 +335,22 @@
 
         #endregion
 
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge20;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge21;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge22;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge23;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton OKDateButton;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton CancelDateButton;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge19;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
-        private DevExpress.XtraEditors.TextEdit HeaderTextEdit;
-        private ComponentFactory.Krypton.Toolkit.KryptonPalette StandardButtonsPalette;
-        private System.Windows.Forms.Timer AnimateTimer;
-        private ComponentFactory.Krypton.Toolkit.KryptonRadioButton High;
-        private ComponentFactory.Krypton.Toolkit.KryptonRadioButton Medium;
-        private ComponentFactory.Krypton.Toolkit.KryptonRadioButton Low;
-        private System.Windows.Forms.Label label1;
+        private KryptonBorderEdge kryptonBorderEdge20;
+        private KryptonBorderEdge kryptonBorderEdge21;
+        private KryptonBorderEdge kryptonBorderEdge22;
+        private KryptonBorderEdge kryptonBorderEdge23;
+        private KryptonButton OKDateButton;
+        private KryptonButton CancelDateButton;
+        private KryptonBorderEdge kryptonBorderEdge19;
+        private Panel panel1;
+        private Label label2;
+        private Label label3;
+        private TextEdit HeaderTextEdit;
+        private KryptonPalette StandardButtonsPalette;
+        private Timer AnimateTimer;
+        private KryptonRadioButton High;
+        private KryptonRadioButton Medium;
+        private KryptonRadioButton Low;
+        private Label label1;
     }
 }

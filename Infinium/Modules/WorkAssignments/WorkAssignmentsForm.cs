@@ -14,42 +14,42 @@ namespace Infinium
 {
     public partial class WorkAssignmentsForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
-        bool NeedSplash = false;
+        private bool NeedSplash = false;
 
-        int FactoryID = 1;
-        int FormEvent = 0;
+        private int FactoryID = 1;
+        private int FormEvent = 0;
 
-        ArrayList FrontsID;
+        private ArrayList FrontsID;
 
-        LightStartForm LightStartForm;
-        Form TopForm = null;
+        private LightStartForm LightStartForm;
+        private Form TopForm = null;
 
-        FileManager FM = new FileManager();
-        CreateAssignments CreationAssignmentsManager;
-        ControlAssignments ControlAssignmentsManager;
+        private FileManager FM = new FileManager();
+        private CreateAssignments CreationAssignmentsManager;
+        private ControlAssignments ControlAssignmentsManager;
 
-        FrontsOrdersManager MarketFrontsOrdersManager;
-        FrontsOrdersManager ZOVFrontsOrdersManager;
-        FrontsOrdersManager WFrontsOrdersManager;
+        private FrontsOrdersManager MarketFrontsOrdersManager;
+        private FrontsOrdersManager ZOVFrontsOrdersManager;
+        private FrontsOrdersManager WFrontsOrdersManager;
 
-        DecorOrdersManager MarketDecorOrdersManager;
-        DecorOrdersManager ZOVDecorOrdersManager;
-        DecorOrdersManager WDecorOrdersManager;
+        private DecorOrdersManager MarketDecorOrdersManager;
+        private DecorOrdersManager ZOVDecorOrdersManager;
+        private DecorOrdersManager WDecorOrdersManager;
 
         //Techno4DominoAssignments Techno4DominoAssignments;
-        ProfilAngle45Assignments ProfilAngle45Assignments;
-        ProfilAngle90Assignments ProfilAngle90Assignments;
-        ImpostAssignments ImpostAssignments;
-        DecorAssignments DecorAssignments;
-        TPSAngle45Assignments TPSAngle45Assignments;
-        GenevaAssignments GenevaAssignments;
-        TafelAssignments TafelAssignments;
-        Tafel1Assignments Tafel1Assignments;
+        private ProfilAngle45Assignments ProfilAngle45Assignments;
+        private ProfilAngle90Assignments ProfilAngle90Assignments;
+        private ImpostAssignments ImpostAssignments;
+        private DecorAssignments DecorAssignments;
+        private TPSAngle45Assignments TPSAngle45Assignments;
+        private GenevaAssignments GenevaAssignments;
+        private TafelAssignments TafelAssignments;
+        private Tafel1Assignments Tafel1Assignments;
 
         public WorkAssignmentsForm(LightStartForm tLightStartForm)
         {
@@ -2712,7 +2712,7 @@ namespace Infinium
                     FrontID == Convert.ToInt32(Fronts.Dakota) || FrontID == Convert.ToInt32(Fronts.DakotaPat) || FrontID == Convert.ToInt32(Fronts.Sofia) ||
                     FrontID == Convert.ToInt32(Fronts.SofiaNotColored) || FrontID == Convert.ToInt32(Fronts.Turin1) || FrontID == Convert.ToInt32(Fronts.Turin1_1) || 
                     FrontID == Convert.ToInt32(Fronts.Turin3) || FrontID == Convert.ToInt32(Fronts.Turin3NotColored) ||
-                    FrontID == Convert.ToInt32(Fronts.LeonTPS) || FrontID == Convert.ToInt32(Fronts.InfinitiPat))
+                    FrontID == Convert.ToInt32(Fronts.LeonTPS) || FrontID == Convert.ToInt32(Fronts.Bona) || FrontID == Convert.ToInt32(Fronts.InfinitiPat))
                     FrontsID.Add(Convert.ToInt32(dgvFrontsSummary.Rows[i].Cells["FrontID"].Value));
             }
             TPSAngle45Assignments.GetFrontsID = FrontsID;
@@ -3914,7 +3914,7 @@ namespace Infinium
                     FrontID == Convert.ToInt32(Fronts.Dakota) || FrontID == Convert.ToInt32(Fronts.DakotaPat) || FrontID == Convert.ToInt32(Fronts.Sofia) ||
                     FrontID == Convert.ToInt32(Fronts.SofiaNotColored) || FrontID == Convert.ToInt32(Fronts.Turin1) || FrontID == Convert.ToInt32(Fronts.Turin1_1) || 
                     FrontID == Convert.ToInt32(Fronts.Turin3) || FrontID == Convert.ToInt32(Fronts.Turin3NotColored) ||
-                    FrontID == Convert.ToInt32(Fronts.LeonTPS) || FrontID == Convert.ToInt32(Fronts.InfinitiPat))
+                    FrontID == Convert.ToInt32(Fronts.LeonTPS) || FrontID == Convert.ToInt32(Fronts.Bona) || FrontID == Convert.ToInt32(Fronts.InfinitiPat))
                     FrontsID.Add(Convert.ToInt32(dgvFrontsSummary.SelectedRows[i].Cells["FrontID"].Value));
             }
             TPSAngle45Assignments.GetFrontsID = FrontsID;

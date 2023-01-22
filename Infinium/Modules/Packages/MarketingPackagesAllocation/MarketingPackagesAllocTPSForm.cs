@@ -9,24 +9,24 @@ namespace Infinium
 {
     public partial class MarketingPackagesAllocTPSForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
-        const int FactoryID = 2;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
+        private const int FactoryID = 2;
 
-        const string PackCount = "TPSPackCount";
+        private const string PackCount = "TPSPackCount";
 
-        int FormEvent = 0;
-        int PackType = 0;
+        private int FormEvent = 0;
+        private int PackType = 0;
 
-        bool NeedRefresh = false;
-        bool NeedSplash = false;
+        private bool NeedRefresh = false;
+        private bool NeedSplash = false;
 
-        MarketingSplitOrdersForm MarketingSplitOrdersForm;
-        MarketingSplitPackagesForm SplitPackagesForm;
-        Form TopForm = null;
-        LightStartForm LightStartForm;
+        private MarketingSplitOrdersForm MarketingSplitOrdersForm;
+        private MarketingSplitPackagesForm SplitPackagesForm;
+        private Form TopForm = null;
+        private LightStartForm LightStartForm;
 
 
         private Modules.Packages.Marketing.MarketingPackagesAllocManager PackagesOrdersManager;

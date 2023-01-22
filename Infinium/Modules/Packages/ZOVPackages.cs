@@ -43,10 +43,10 @@ namespace Infinium.Modules.Packages.ZOV
     #region Упаковка
     public class ZOVPackagesAllocFrontsOrders
     {
-        private PercentageDataGrid FrontsOrdersDataGrid = null;
+        private readonly PercentageDataGrid FrontsOrdersDataGrid = null;
 
-        int CurrentMainOrderID = -1;
-        int FactoryID = 1;
+        private int CurrentMainOrderID = -1;
+        private int FactoryID = 1;
 
         public DataTable FrontsOrdersDataTable = null;
         public DataTable FrontsDataTable = null;
@@ -470,7 +470,7 @@ namespace Infinium.Modules.Packages.ZOV
             FrontsOrdersDataGrid.CellFormatting += FrontsOrdersDataGrid_CellFormatting;
         }
 
-        void FrontsOrdersDataGrid_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        private void FrontsOrdersDataGrid_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             PercentageDataGrid grid = (PercentageDataGrid)sender;
             if (grid.Columns.Contains("PatinaColumn") && (e.ColumnIndex == grid.Columns["PatinaColumn"].Index)
@@ -1159,11 +1159,11 @@ namespace Infinium.Modules.Packages.ZOV
 
     public class ZOVPackagesAllocDecorOrders
     {
-        int CurrentMainOrderID = -1;
-        int FactoryID = 1;
+        private int CurrentMainOrderID = -1;
+        private int FactoryID = 1;
 
         private PercentageDataGrid MainOrdersFrontsOrdersDataGrid = null;
-        private PercentageDataGrid MainOrdersDecorOrdersDataGrid = null;
+        private readonly PercentageDataGrid MainOrdersDecorOrdersDataGrid = null;
 
         public DataTable DecorOrdersDataTable = null;
 
@@ -2070,16 +2070,16 @@ namespace Infinium.Modules.Packages.ZOV
         public int CurrentMainOrderID = -1;
         public int CurrentMegaOrderID = -1;
 
-        private int FactoryID = 1;
-        private string PackAllocStatusID = "ProfilPackAllocStatusID";
-        private string PackCount = "ProfilPackCount";
+        private readonly int FactoryID = 1;
+        private readonly string PackAllocStatusID = "ProfilPackAllocStatusID";
+        private readonly string PackCount = "ProfilPackCount";
 
         public ZOVPackagesAllocFrontsOrders PackagesMainOrdersFrontsOrders = null;
         public ZOVPackagesAllocDecorOrders PackagesMainOrdersDecorOrders = null;
 
         public PercentageDataGrid MainOrdersDataGrid = null;
         public PercentageDataGrid MegaOrdersDataGrid = null;
-        private DevExpress.XtraTab.XtraTabControl OrdersTabControl = null;
+        private readonly DevExpress.XtraTab.XtraTabControl OrdersTabControl = null;
 
         public DataTable ClientsDataTable = null;
         public DataTable MainOrdersDataTable = null;
@@ -3728,11 +3728,11 @@ namespace Infinium.Modules.Packages.ZOV
     #region Печать
     public class ZOVPackagesPrintFrontsOrders
     {
-        private PercentageDataGrid FrontsOrdersDataGrid = null;
+        private readonly PercentageDataGrid FrontsOrdersDataGrid = null;
 
-        int CurrentMainOrderID = -1;
-        int FactoryID = 1;
-        int PackNumber = 1;
+        private int CurrentMainOrderID = -1;
+        private int FactoryID = 1;
+        private int PackNumber = 1;
 
         public DataTable FrontsOrdersDataTable = null;
         public DataTable FrontsDataTable = null;
@@ -4159,7 +4159,7 @@ namespace Infinium.Modules.Packages.ZOV
             FrontsOrdersDataGrid.CellFormatting += FrontsOrdersDataGrid_CellFormatting;
         }
 
-        void FrontsOrdersDataGrid_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        private void FrontsOrdersDataGrid_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             PercentageDataGrid grid = (PercentageDataGrid)sender;
             if (grid.Columns.Contains("PatinaColumn") && (e.ColumnIndex == grid.Columns["PatinaColumn"].Index)
@@ -4406,11 +4406,11 @@ namespace Infinium.Modules.Packages.ZOV
 
     public class ZOVPackagesPrintDecorOrders
     {
-        int CurrentMainOrderID = -1;
-        int FactoryID = 1;
-        int PackNumber = 1;
+        private int CurrentMainOrderID = -1;
+        private int FactoryID = 1;
+        private int PackNumber = 1;
 
-        private PercentageDataGrid MainOrdersDecorOrdersDataGrid = null;
+        private readonly PercentageDataGrid MainOrdersDecorOrdersDataGrid = null;
 
         private DataTable ColorsDataTable = null;
         public DataTable PatinaDataTable = null;
@@ -4930,12 +4930,12 @@ namespace Infinium.Modules.Packages.ZOV
 
         private int FactoryID = 1;
 
-        private string PackAllocStatusID = "ProfilPackAllocStatusID";
-        private string PackCount = "ProfilPackCount";
-        string ProductionDate = "ProfilProductionDate";
-        string ProductionStatus = "ProfilProductionStatusID";
-        string StorageStatus = "ProfilStorageStatusID";
-        string DispatchStatus = "ProfilDispatchStatusID";
+        private readonly string PackAllocStatusID = "ProfilPackAllocStatusID";
+        private readonly string PackCount = "ProfilPackCount";
+        private readonly string ProductionDate = "ProfilProductionDate";
+        private readonly string ProductionStatus = "ProfilProductionStatusID";
+        private readonly string StorageStatus = "ProfilStorageStatusID";
+        private readonly string DispatchStatus = "ProfilDispatchStatusID";
 
         public ZOVPackagesPrintFrontsOrders PackedMainOrdersFrontsOrders = null;
         public ZOVPackagesPrintDecorOrders PackedMainOrdersDecorOrders = null;
@@ -4943,7 +4943,7 @@ namespace Infinium.Modules.Packages.ZOV
         public PercentageDataGrid MainOrdersDataGrid = null;
         public PercentageDataGrid MegaOrdersDataGrid = null;
         public PercentageDataGrid PackagesDataGrid = null;
-        private DevExpress.XtraTab.XtraTabControl OrdersTabControl = null;
+        private readonly DevExpress.XtraTab.XtraTabControl OrdersTabControl = null;
 
         private DataTable ClientsDataTable = null;
         public DataTable MainOrdersDataTable = null;
@@ -6204,7 +6204,7 @@ namespace Infinium.Modules.Packages.ZOV
         private DataTable FrontsDataTable = null;
         private DataTable FrameColorsDataTable = null;
         private DataTable PatinaDataTable = null;
-        DataTable PatinaRALDataTable = null;
+        private DataTable PatinaRALDataTable = null;
         private DataTable InsetTypesDataTable = null;
         private DataTable InsetColorsDataTable = null;
         private DataTable ProductsDataTable = null;
@@ -8085,7 +8085,7 @@ namespace Infinium.Modules.Packages.ZOV
         private DataTable FrontsDataTable = null;
         private DataTable FrameColorsDataTable = null;
         private DataTable PatinaDataTable = null;
-        DataTable PatinaRALDataTable = null;
+        private DataTable PatinaRALDataTable = null;
         private DataTable InsetTypesDataTable = null;
         private DataTable InsetColorsDataTable = null;
         private DataTable ProductsDataTable = null;
@@ -8877,9 +8877,9 @@ namespace Infinium.Modules.Packages.ZOV
 
     public class Barcode
     {
-        BarcodeLib.Barcode Barcod;
+        private readonly BarcodeLib.Barcode Barcod;
 
-        SolidBrush FontBrush;
+        private readonly SolidBrush FontBrush;
 
         public enum BarcodeLength { Short, Medium, Long };
 
@@ -8998,7 +8998,7 @@ namespace Infinium.Modules.Packages.ZOV
 
     public class PackageLabel
     {
-        Barcode Barcode;
+        private readonly Barcode Barcode;
         public PrintDocument PD;
 
         public int PaperHeight = 488;
@@ -9010,24 +9010,24 @@ namespace Infinium.Modules.Packages.ZOV
 
         public bool Printed = false;
 
-        SolidBrush FontBrush;
+        private SolidBrush FontBrush;
 
-        Font ClientFont;
-        Font DocFont;
-        Font InfoFont;
-        Font NotesFont;
-        Font HeaderFont;
-        Font FrontOrderFont;
-        Font DecorOrderFont;
-        Font DispatchFont;
+        private Font ClientFont;
+        private Font DocFont;
+        private Font InfoFont;
+        private Font NotesFont;
+        private Font HeaderFont;
+        private Font FrontOrderFont;
+        private Font DecorOrderFont;
+        private Font DispatchFont;
 
-        Pen Pen;
+        private Pen Pen;
 
 
-        Image ZTTPS;
-        Image ZTProfil;
-        Image STB;
-        Image RST;
+        private readonly Image ZTTPS;
+        private readonly Image ZTProfil;
+        private readonly Image STB;
+        private readonly Image RST;
 
         public ArrayList LabelInfo;
 

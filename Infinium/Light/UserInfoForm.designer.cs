@@ -1,11 +1,15 @@
-﻿namespace Infinium
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+using ComponentFactory.Krypton.Toolkit;
+
+namespace Infinium
 {
     partial class UserInfoForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -1237,86 +1241,86 @@
 
         #endregion
 
-        private System.Windows.Forms.Timer AnimateTimer;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton NavigateMenuCloseButton;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Panel NavigatePanel;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge3;
-        private ComponentFactory.Krypton.Toolkit.KryptonPalette ButtonsPalette;
-        private ComponentFactory.Krypton.Toolkit.KryptonPalette NavigateMenuButtonsPalette;
-        private ComponentFactory.Krypton.Toolkit.KryptonCheckButton PasswordButton;
-        private ComponentFactory.Krypton.Toolkit.KryptonPalette PanelSelectPalette;
-        private System.Windows.Forms.PictureBox pictureBox4;
-        private System.Windows.Forms.Label label28;
-        private System.Windows.Forms.PictureBox pictureBox5;
-        private System.Windows.Forms.Label label30;
-        private System.Windows.Forms.PictureBox pictureBox6;
-        private System.Windows.Forms.Label label25;
-        private System.Windows.Forms.Label label39;
-        private System.Windows.Forms.Label label35;
-        private System.Windows.Forms.Label label33;
-        private System.Windows.Forms.Label label37;
+        private Timer AnimateTimer;
+        private KryptonButton NavigateMenuCloseButton;
+        private Label label1;
+        private Panel NavigatePanel;
+        private KryptonBorderEdge kryptonBorderEdge3;
+        private KryptonPalette ButtonsPalette;
+        private KryptonPalette NavigateMenuButtonsPalette;
+        private KryptonCheckButton PasswordButton;
+        private KryptonPalette PanelSelectPalette;
+        private PictureBox pictureBox4;
+        private Label label28;
+        private PictureBox pictureBox5;
+        private Label label30;
+        private PictureBox pictureBox6;
+        private Label label25;
+        private Label label39;
+        private Label label35;
+        private Label label33;
+        private Label label37;
         private PhotoBox PhotoBox;
-        private System.Windows.Forms.Label NameLabel;
-        private System.Windows.Forms.Label PositionLabel;
-        private System.Windows.Forms.Label DepartmentLabel;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label BirthDateLabel;
-        private System.Windows.Forms.Label EducationLabel;
-        private System.Windows.Forms.Label EduPlaceLabel;
-        private System.Windows.Forms.Label SkypeLabel;
-        private System.Windows.Forms.Label MailLabel;
-        private System.Windows.Forms.Label ICQLabel;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge2;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge5;
-        private System.Windows.Forms.Label MobilePersonalLabel;
-        private System.Windows.Forms.PictureBox pictureBox8;
-        private System.Windows.Forms.Label label22;
-        private System.Windows.Forms.PictureBox pictureBox2;
-        private System.Windows.Forms.Label MobileWorkLabel;
-        private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.PictureBox pictureBox9;
-        private System.Windows.Forms.Label CityWorkPhoneLabel;
-        private System.Windows.Forms.Label label24;
-        private System.Windows.Forms.PictureBox pictureBox3;
-        private System.Windows.Forms.Label WorkExtPhoneLabel;
-        private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.PictureBox pictureBox11;
-        private System.Windows.Forms.PictureBox pictureBox10;
-        private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.PictureBox pictureBox7;
-        private System.Windows.Forms.PictureBox pictureBox12;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge1;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge6;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge7;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge8;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge9;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge10;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge11;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge12;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge13;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge14;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge15;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge16;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge17;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.PictureBox pictureBox15;
-        private System.Windows.Forms.PictureBox pictureBox14;
-        private System.Windows.Forms.PictureBox pictureBox16;
-        private System.Windows.Forms.Label label41;
-        private System.Windows.Forms.Label label32;
-        private System.Windows.Forms.Label label36;
-        private System.Windows.Forms.Label MilitaryLabel;
-        private System.Windows.Forms.Label DriveLabel;
-        private System.Windows.Forms.Label LanguagesLabel;
-        private System.Windows.Forms.Label label20;
-        private System.Windows.Forms.Label AgeLabel;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge18;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge4;
+        private Label NameLabel;
+        private Label PositionLabel;
+        private Label DepartmentLabel;
+        private Label label5;
+        private Label BirthDateLabel;
+        private Label EducationLabel;
+        private Label EduPlaceLabel;
+        private Label SkypeLabel;
+        private Label MailLabel;
+        private Label ICQLabel;
+        private KryptonBorderEdge kryptonBorderEdge2;
+        private KryptonBorderEdge kryptonBorderEdge5;
+        private Label MobilePersonalLabel;
+        private PictureBox pictureBox8;
+        private Label label22;
+        private PictureBox pictureBox2;
+        private Label MobileWorkLabel;
+        private Label label13;
+        private PictureBox pictureBox9;
+        private Label CityWorkPhoneLabel;
+        private Label label24;
+        private PictureBox pictureBox3;
+        private Label WorkExtPhoneLabel;
+        private Label label14;
+        private PictureBox pictureBox11;
+        private PictureBox pictureBox10;
+        private PictureBox pictureBox1;
+        private PictureBox pictureBox7;
+        private PictureBox pictureBox12;
+        private KryptonBorderEdge kryptonBorderEdge1;
+        private KryptonBorderEdge kryptonBorderEdge6;
+        private KryptonBorderEdge kryptonBorderEdge7;
+        private KryptonBorderEdge kryptonBorderEdge8;
+        private KryptonBorderEdge kryptonBorderEdge9;
+        private KryptonBorderEdge kryptonBorderEdge10;
+        private KryptonBorderEdge kryptonBorderEdge11;
+        private KryptonBorderEdge kryptonBorderEdge12;
+        private KryptonBorderEdge kryptonBorderEdge13;
+        private KryptonBorderEdge kryptonBorderEdge14;
+        private KryptonBorderEdge kryptonBorderEdge15;
+        private KryptonBorderEdge kryptonBorderEdge16;
+        private KryptonBorderEdge kryptonBorderEdge17;
+        private Label label11;
+        private Label label12;
+        private Panel panel1;
+        private Panel panel2;
+        private Panel panel3;
+        private TableLayoutPanel tableLayoutPanel1;
+        private PictureBox pictureBox15;
+        private PictureBox pictureBox14;
+        private PictureBox pictureBox16;
+        private Label label41;
+        private Label label32;
+        private Label label36;
+        private Label MilitaryLabel;
+        private Label DriveLabel;
+        private Label LanguagesLabel;
+        private Label label20;
+        private Label AgeLabel;
+        private KryptonBorderEdge kryptonBorderEdge18;
+        private KryptonBorderEdge kryptonBorderEdge4;
     }
 }

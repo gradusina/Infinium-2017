@@ -5,23 +5,23 @@ namespace Infinium
 {
     public partial class ProductDescriptionForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
-        public bool PressOK = false;
+        public bool PressOK;
 
-        public bool ToSite = false;
-        public bool Latest = false;
+        public bool ToSite;
+        public bool Latest;
         public string Category = string.Empty;
         public string NameProd = string.Empty;
         public string Description = string.Empty;
         public string Sizes = string.Empty;
         public string Material = string.Empty;
-        int FormEvent = 0;
+        private int FormEvent;
 
-        Form MainForm = null;
+        private Form MainForm;
 
         public ProductDescriptionForm(Form tMainForm, bool bToSite, bool bLatest, string sCategory, string sName, string sDescription, string sSizes, string sMaterial)
         {

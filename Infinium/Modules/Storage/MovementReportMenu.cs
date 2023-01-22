@@ -10,24 +10,24 @@ namespace Infinium
 {
     public partial class MovementReportMenu : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
-        int StoreType = 0;
-        int FormEvent = 0;
-        int FactoryID = 1;
-        int TechStoreGroupID = -1;
+        private int StoreType = 0;
+        private int FormEvent = 0;
+        private int FactoryID = 1;
+        private int TechStoreGroupID = -1;
 
-        DataTable MonthsDT;
-        Form MainForm = null;
-        ReportParameters ReportMenu;
+        private DataTable MonthsDT;
+        private Form MainForm = null;
+        private ReportParameters ReportMenu;
 
-        DataTable GroupsDT;
-        DataTable SubGroupsDT;
-        BindingSource GroupsBS;
-        BindingSource SubGroupsBS;
+        private DataTable GroupsDT;
+        private DataTable SubGroupsDT;
+        private BindingSource GroupsBS;
+        private BindingSource SubGroupsBS;
 
         public MovementReportMenu(Form tMainForm, int iFactoryID, int iStoreType, ref ReportParameters tReportMenu)
         {

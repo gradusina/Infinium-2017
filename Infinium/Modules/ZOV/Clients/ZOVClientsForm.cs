@@ -1,31 +1,35 @@
-﻿using System;
+﻿using Infinium.Modules.CabFurnitureAssignments;
+
+using System;
 using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using Infinium.Modules.ZOV.Clients;
 
 namespace Infinium
 {
     public partial class ZOVClientsForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
-        const int iPriceGroup = 98;
-        bool bPriceGroup = false;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
+        private const int iPriceGroup = 98;
+        private bool bPriceGroup = false;
 
-        int FormEvent = 0;
-        int CurrentRowIndex = 0;
-        int CurrentColumnIndex = 0;
+        private int FormEvent = 0;
+        private int CurrentRowIndex = 0;
+        private int CurrentColumnIndex = 0;
 
-        DataTable RolePermissionsDataTable;
+        private DataTable RolePermissionsDataTable;
 
-        LightStartForm LightStartForm;
+        private LightStartForm LightStartForm;
 
-        Form TopForm = null;
-        Infinium.Modules.ZOV.Clients.Clients Clients;
+        private Form TopForm = null;
+        private Infinium.Modules.ZOV.Clients.ZOVClientsToExcel _clientsToExcel;
+        private Infinium.Modules.ZOV.Clients.Clients Clients;
 
         public ZOVClientsForm(LightStartForm tLightStartForm)
         {
@@ -167,7 +171,10 @@ namespace Infinium
 
         private void Initialize()
         {
-            Clients = new Modules.ZOV.Clients.Clients(ref ClientsDataGrid, ref ClientsContactsDataGrid, ref ShopAddressesDataGrid);
+            _clientsToExcel = new ZOVClientsToExcel();
+            Clients = new Modules.ZOV.Clients.Clients(ref ClientsDataGrid,
+                ref dgvClientsGroupsDataGrid, ref dgvManagers,
+                ref ClientsContactsDataGrid, ref ShopAddressesDataGrid);
         }
 
         private void ClientsDataGrid_SelectionChanged(object sender, EventArgs e)
@@ -322,6 +329,38 @@ namespace Infinium
                 dataGridView.Cursor = Cursors.Hand;
             else
                 dataGridView.Cursor = Cursors.Default;
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            Clients.SaveClientsGroups();
+        }
+
+        private void btnSaveClients_Click(object sender, EventArgs e)
+        {
+            Clients.SaveAllClients();
+        }
+
+        private void SaveClientsMenuItem_Click(object sender, EventArgs e)
+        {
+            Clients.SaveAllClients();
+        }
+
+        private void ExportToExcelButton_Click(object sender, EventArgs e)
+        {
+            _clientsToExcel.Export(Clients.AllClientsDataTable);
+            _clientsToExcel.SaveFile("Клиенты ЗОВ", true);
+        }
+
+        private void ExportToExcelMenuItem_Click(object sender, EventArgs e)
+        {
+            _clientsToExcel.Export(Clients.AllClientsDataTable);
+            _clientsToExcel.SaveFile("Клиенты ЗОВ", true);
+        }
+
+        private void btnSaveManagers_Click(object sender, EventArgs e)
+        {
+            Clients.SaveManagers();
         }
     }
 }

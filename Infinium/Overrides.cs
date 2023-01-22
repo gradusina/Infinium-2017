@@ -17,52 +17,52 @@ namespace Infinium
 {
     public class PercentageDataGrid : ComponentFactory.Krypton.Toolkit.KryptonDataGridView
     {
-        ArrayList ColumnsArray;
+        private ArrayList ColumnsArray;
 
-        Pen P100;//100 percent only
-        Pen P90;//90-99
-        Pen P80;//80-89
-        Pen P70;//70-79
-        Pen P60;//60-69
-        Pen P50;//50-59
-        Pen P40;//40-49
-        Pen P30;//30-39
-        Pen P20;//20-29
-        Pen P10;//0-20
+        private Pen P100;//100 percent only
+        private Pen P90;//90-99
+        private Pen P80;//80-89
+        private Pen P70;//70-79
+        private Pen P60;//60-69
+        private Pen P50;//50-59
+        private Pen P40;//40-49
+        private Pen P30;//30-39
+        private Pen P20;//20-29
+        private Pen P10;//0-20
 
-        SolidBrush S100;
-        SolidBrush S90;
-        SolidBrush S80;
-        SolidBrush S70;
-        SolidBrush S60;
-        SolidBrush S50;
-        SolidBrush S40;
-        SolidBrush S30;
-        SolidBrush S20;
-        SolidBrush S10;
+        private SolidBrush S100;
+        private SolidBrush S90;
+        private SolidBrush S80;
+        private SolidBrush S70;
+        private SolidBrush S60;
+        private SolidBrush S50;
+        private SolidBrush S40;
+        private SolidBrush S30;
+        private SolidBrush S20;
+        private SolidBrush S10;
 
-        SolidBrush CommonCellBackBrush;
-        SolidBrush SelectedCellBackBrush;
+        private SolidBrush CommonCellBackBrush;
+        private SolidBrush SelectedCellBackBrush;
 
-        Pen pCheckedRectPen;
-        Rectangle rCheckBoxRect;
+        private Pen pCheckedRectPen;
+        private Rectangle rCheckBoxRect;
 
-        bool NeedRefresh = false;
+        private bool NeedRefresh = false;
 
-        Font NoDataLabelFont;
-        SolidBrush NoDataLabelBrush;
+        private Font NoDataLabelFont;
+        private SolidBrush NoDataLabelBrush;
 
-        Bitmap CheckedBMPCommon = new Bitmap(Properties.Resources.checkblack);
-        Bitmap CheckedBMPSelected = new Bitmap(Properties.Resources.checkwhite);
+        private Bitmap CheckedBMPCommon = new Bitmap(Properties.Resources.checkblack);
+        private Bitmap CheckedBMPSelected = new Bitmap(Properties.Resources.checkwhite);
 
-        int iPercentLineWidth;
+        private int iPercentLineWidth;
 
-        int MpX = 0;
-        int MpY = 0;
+        private int MpX = 0;
+        private int MpY = 0;
 
-        bool bStandardStyle;
+        private bool bStandardStyle;
 
-        bool bUseCustomBackColor = false;
+        private bool bUseCustomBackColor = false;
 
         public enum ColorStyle { Green, Blue, Orange };
 
@@ -211,7 +211,7 @@ namespace Infinium
             ColumnsArray.Add(ColumnName);
         }
 
-        Pen GetPen(int Value)
+        private Pen GetPen(int Value)
         {
             if (Value == 100)
                 return P100;
@@ -237,7 +237,7 @@ namespace Infinium
             return null;
         }
 
-        int GetLength(int Value, int CellWidth, int CellHeight)
+        private int GetLength(int Value, int CellWidth, int CellHeight)
         {
             return Convert.ToInt32(Convert.ToDecimal(CellWidth - 10) * Convert.ToDecimal(Value) / 100);
         }
@@ -257,7 +257,7 @@ namespace Infinium
             //Checkbox
             if (this.Columns[e.ColumnIndex] is DataGridViewCheckBoxColumn)
             {
-                if (this.Rows[e.RowIndex].Selected)
+                if (this.Rows[e.RowIndex].Cells[e.ColumnIndex].Selected)
                 {
                     SelectedCellBackBrush.Color = StateSelected.DataCell.Back.Color1;
                     if (!this.Enabled)
@@ -274,7 +274,7 @@ namespace Infinium
 
                     try
                     {
-                        if (Convert.ToBoolean(e.Value) == true)
+                        if (e.Value != null && Convert.ToBoolean(e.Value) == true)
                             e.Graphics.DrawImage(CheckedBMPSelected, e.CellBounds.Left + ((e.CellBounds.Right - e.CellBounds.Left) / 2 - CheckedBMPCommon.Width / 2) + 1, e.CellBounds.Top + ((e.CellBounds.Bottom - e.CellBounds.Top) / 2 - CheckedBMPCommon.Height / 2) - 1, CheckedBMPCommon.Width, CheckedBMPCommon.Height);
                     }
                     catch
@@ -303,7 +303,7 @@ namespace Infinium
 
                     try
                     {
-                        if (Convert.ToBoolean(e.Value) == true)
+                        if (e.Value != null && Convert.ToBoolean(e.Value) == true)
                             e.Graphics.DrawImage(CheckedBMPCommon, e.CellBounds.Left + ((e.CellBounds.Right - e.CellBounds.Left) / 2 - CheckedBMPCommon.Width / 2) + 1, e.CellBounds.Top + ((e.CellBounds.Bottom - e.CellBounds.Top) / 2 - CheckedBMPCommon.Height / 2) - 1, CheckedBMPCommon.Width, CheckedBMPCommon.Height);
 
                     }
@@ -412,55 +412,55 @@ namespace Infinium
 
     public class UsersMessagesDataGrid : ComponentFactory.Krypton.Toolkit.KryptonDataGridView
     {
-        ArrayList ColumnsArray;
+        private ArrayList ColumnsArray;
 
-        Pen P100;//100 percent only
-        Pen P90;//90-99
-        Pen P80;//80-89
-        Pen P70;//70-79
-        Pen P60;//60-69
-        Pen P50;//50-59
-        Pen P40;//40-49
-        Pen P30;//30-39
-        Pen P20;//20-29
-        Pen P10;//0-20
+        private Pen P100;//100 percent only
+        private Pen P90;//90-99
+        private Pen P80;//80-89
+        private Pen P70;//70-79
+        private Pen P60;//60-69
+        private Pen P50;//50-59
+        private Pen P40;//40-49
+        private Pen P30;//30-39
+        private Pen P20;//20-29
+        private Pen P10;//0-20
 
-        SolidBrush S100;
-        SolidBrush S90;
-        SolidBrush S80;
-        SolidBrush S70;
-        SolidBrush S60;
-        SolidBrush S50;
-        SolidBrush S40;
-        SolidBrush S30;
-        SolidBrush S20;
-        SolidBrush S10;
+        private SolidBrush S100;
+        private SolidBrush S90;
+        private SolidBrush S80;
+        private SolidBrush S70;
+        private SolidBrush S60;
+        private SolidBrush S50;
+        private SolidBrush S40;
+        private SolidBrush S30;
+        private SolidBrush S20;
+        private SolidBrush S10;
 
-        SolidBrush CommonCellBackBrush;
-        SolidBrush SelectedCellBackBrush;
+        private SolidBrush CommonCellBackBrush;
+        private SolidBrush SelectedCellBackBrush;
 
-        Pen pCheckedRectPen;
+        private Pen pCheckedRectPen;
 
-        string sBackText = "Нет данных";
+        private string sBackText = "Нет данных";
 
-        Rectangle rCheckBoxRect;
+        private Rectangle rCheckBoxRect;
 
-        bool NeedRefresh = false;
+        private bool NeedRefresh = false;
 
-        Font NoDataLabelFont;
-        SolidBrush NoDataLabelBrush;
+        private Font NoDataLabelFont;
+        private SolidBrush NoDataLabelBrush;
 
-        Bitmap CheckedBMPCommon = new Bitmap(Properties.Resources.checkblack);
-        Bitmap CheckedBMPSelected = new Bitmap(Properties.Resources.checkwhite);
+        private Bitmap CheckedBMPCommon = new Bitmap(Properties.Resources.checkblack);
+        private Bitmap CheckedBMPSelected = new Bitmap(Properties.Resources.checkwhite);
 
-        int iPercentLineWidth;
+        private int iPercentLineWidth;
 
-        int MpX = 0;
-        int MpY = 0;
+        private int MpX = 0;
+        private int MpY = 0;
 
-        bool bStandardStyle;
+        private bool bStandardStyle;
         public bool bDrawOnlineImage = true;
-        bool bUseCustomBackColor = false;
+        private bool bUseCustomBackColor = false;
 
         public enum ColorStyle { Green, Blue, Orange };
 
@@ -495,8 +495,8 @@ namespace Infinium
         public string sOnlineStatusColumnName = "";
         public string sNewMessagesColumnName = "";
 
-        Bitmap OnlineBMP;
-        Bitmap OfflineBMP;
+        private Bitmap OnlineBMP;
+        private Bitmap OfflineBMP;
 
 
 
@@ -657,7 +657,7 @@ namespace Infinium
             ColumnsArray.Add(ColumnName);
         }
 
-        Pen GetPen(int Value)
+        private Pen GetPen(int Value)
         {
             if (Value == 100)
                 return P100;
@@ -683,7 +683,7 @@ namespace Infinium
             return null;
         }
 
-        int GetLength(int Value, int CellWidth, int CellHeight)
+        private int GetLength(int Value, int CellWidth, int CellHeight)
         {
             return Convert.ToInt32(Convert.ToDecimal(CellWidth - 10) * Convert.ToDecimal(Value) / 100);
         }
@@ -891,55 +891,55 @@ namespace Infinium
 
     public class ClientsMessagesDataGrid : ComponentFactory.Krypton.Toolkit.KryptonDataGridView
     {
-        ArrayList ColumnsArray;
+        private ArrayList ColumnsArray;
 
-        Pen P100;//100 percent only
-        Pen P90;//90-99
-        Pen P80;//80-89
-        Pen P70;//70-79
-        Pen P60;//60-69
-        Pen P50;//50-59
-        Pen P40;//40-49
-        Pen P30;//30-39
-        Pen P20;//20-29
-        Pen P10;//0-20
+        private Pen P100;//100 percent only
+        private Pen P90;//90-99
+        private Pen P80;//80-89
+        private Pen P70;//70-79
+        private Pen P60;//60-69
+        private Pen P50;//50-59
+        private Pen P40;//40-49
+        private Pen P30;//30-39
+        private Pen P20;//20-29
+        private Pen P10;//0-20
 
-        SolidBrush S100;
-        SolidBrush S90;
-        SolidBrush S80;
-        SolidBrush S70;
-        SolidBrush S60;
-        SolidBrush S50;
-        SolidBrush S40;
-        SolidBrush S30;
-        SolidBrush S20;
-        SolidBrush S10;
+        private SolidBrush S100;
+        private SolidBrush S90;
+        private SolidBrush S80;
+        private SolidBrush S70;
+        private SolidBrush S60;
+        private SolidBrush S50;
+        private SolidBrush S40;
+        private SolidBrush S30;
+        private SolidBrush S20;
+        private SolidBrush S10;
 
-        SolidBrush CommonCellBackBrush;
-        SolidBrush SelectedCellBackBrush;
+        private SolidBrush CommonCellBackBrush;
+        private SolidBrush SelectedCellBackBrush;
 
-        Pen pCheckedRectPen;
+        private Pen pCheckedRectPen;
 
-        string sBackText = "Нет данных";
+        private string sBackText = "Нет данных";
 
-        Rectangle rCheckBoxRect;
+        private Rectangle rCheckBoxRect;
 
-        bool NeedRefresh = false;
+        private bool NeedRefresh = false;
 
-        Font NoDataLabelFont;
-        SolidBrush NoDataLabelBrush;
+        private Font NoDataLabelFont;
+        private SolidBrush NoDataLabelBrush;
 
-        Bitmap CheckedBMPCommon = new Bitmap(Properties.Resources.checkblack);
-        Bitmap CheckedBMPSelected = new Bitmap(Properties.Resources.checkwhite);
+        private Bitmap CheckedBMPCommon = new Bitmap(Properties.Resources.checkblack);
+        private Bitmap CheckedBMPSelected = new Bitmap(Properties.Resources.checkwhite);
 
-        int iPercentLineWidth;
+        private int iPercentLineWidth;
 
-        int MpX = 0;
-        int MpY = 0;
+        private int MpX = 0;
+        private int MpY = 0;
 
-        bool bStandardStyle;
+        private bool bStandardStyle;
         public bool bDrawOnlineImage = true;
-        bool bUseCustomBackColor = false;
+        private bool bUseCustomBackColor = false;
 
         public enum ColorStyle { Green, Blue, Orange };
 
@@ -974,8 +974,8 @@ namespace Infinium
         public string sOnlineStatusColumnName = "";
         public string sNewMessagesColumnName = "";
 
-        Bitmap OnlineBMP;
-        Bitmap OfflineBMP;
+        private Bitmap OnlineBMP;
+        private Bitmap OfflineBMP;
 
 
 
@@ -1136,7 +1136,7 @@ namespace Infinium
             ColumnsArray.Add(ColumnName);
         }
 
-        Pen GetPen(int Value)
+        private Pen GetPen(int Value)
         {
             if (Value == 100)
                 return P100;
@@ -1162,7 +1162,7 @@ namespace Infinium
             return null;
         }
 
-        int GetLength(int Value, int CellWidth, int CellHeight)
+        private int GetLength(int Value, int CellWidth, int CellHeight)
         {
             return Convert.ToInt32(Convert.ToDecimal(CellWidth - 10) * Convert.ToDecimal(Value) / 100);
         }
@@ -1378,55 +1378,55 @@ namespace Infinium
 
     public class UsersDataGrid : ComponentFactory.Krypton.Toolkit.KryptonDataGridView
     {
-        ArrayList ColumnsArray;
+        private ArrayList ColumnsArray;
 
-        Pen P100;//100 percent only
-        Pen P90;//90-99
-        Pen P80;//80-89
-        Pen P70;//70-79
-        Pen P60;//60-69
-        Pen P50;//50-59
-        Pen P40;//40-49
-        Pen P30;//30-39
-        Pen P20;//20-29
-        Pen P10;//0-20
+        private Pen P100;//100 percent only
+        private Pen P90;//90-99
+        private Pen P80;//80-89
+        private Pen P70;//70-79
+        private Pen P60;//60-69
+        private Pen P50;//50-59
+        private Pen P40;//40-49
+        private Pen P30;//30-39
+        private Pen P20;//20-29
+        private Pen P10;//0-20
 
-        SolidBrush S100;
-        SolidBrush S90;
-        SolidBrush S80;
-        SolidBrush S70;
-        SolidBrush S60;
-        SolidBrush S50;
-        SolidBrush S40;
-        SolidBrush S30;
-        SolidBrush S20;
-        SolidBrush S10;
+        private SolidBrush S100;
+        private SolidBrush S90;
+        private SolidBrush S80;
+        private SolidBrush S70;
+        private SolidBrush S60;
+        private SolidBrush S50;
+        private SolidBrush S40;
+        private SolidBrush S30;
+        private SolidBrush S20;
+        private SolidBrush S10;
 
-        SolidBrush CommonCellBackBrush;
-        SolidBrush SelectedCellBackBrush;
+        private SolidBrush CommonCellBackBrush;
+        private SolidBrush SelectedCellBackBrush;
 
-        Pen pCheckedRectPen;
+        private Pen pCheckedRectPen;
 
-        string sBackText = "Нет данных";
+        private string sBackText = "Нет данных";
 
-        Rectangle rCheckBoxRect;
+        private Rectangle rCheckBoxRect;
 
-        bool NeedRefresh = false;
+        private bool NeedRefresh = false;
 
-        Font NoDataLabelFont;
-        SolidBrush NoDataLabelBrush;
+        private Font NoDataLabelFont;
+        private SolidBrush NoDataLabelBrush;
 
-        Bitmap CheckedBMPCommon = new Bitmap(Properties.Resources.checkblack);
-        Bitmap CheckedBMPSelected = new Bitmap(Properties.Resources.checkwhite);
+        private Bitmap CheckedBMPCommon = new Bitmap(Properties.Resources.checkblack);
+        private Bitmap CheckedBMPSelected = new Bitmap(Properties.Resources.checkwhite);
 
-        int iPercentLineWidth;
+        private int iPercentLineWidth;
 
-        int MpX = 0;
-        int MpY = 0;
+        private int MpX = 0;
+        private int MpY = 0;
 
-        bool bStandardStyle;
+        private bool bStandardStyle;
         public bool bDrawUpdatesImage = true;
-        bool bUseCustomBackColor = false;
+        private bool bUseCustomBackColor = false;
 
         public enum ColorStyle { Green, Blue, Orange };
 
@@ -1460,7 +1460,7 @@ namespace Infinium
 
         public string sOnlineStatusColumnName = "";
 
-        Bitmap OnlineBMP;
+        private Bitmap OnlineBMP;
 
 
 
@@ -1610,7 +1610,7 @@ namespace Infinium
             ColumnsArray.Add(ColumnName);
         }
 
-        Pen GetPen(int Value)
+        private Pen GetPen(int Value)
         {
             if (Value == 100)
                 return P100;
@@ -1636,7 +1636,7 @@ namespace Infinium
             return null;
         }
 
-        int GetLength(int Value, int CellWidth, int CellHeight)
+        private int GetLength(int Value, int CellWidth, int CellHeight)
         {
             return Convert.ToInt32(Convert.ToDecimal(CellWidth - 10) * Convert.ToDecimal(Value) / 100);
         }
@@ -1815,55 +1815,55 @@ namespace Infinium
 
     public class ClientsDataGrid : ComponentFactory.Krypton.Toolkit.KryptonDataGridView
     {
-        ArrayList ColumnsArray;
+        private ArrayList ColumnsArray;
 
-        Pen P100;//100 percent only
-        Pen P90;//90-99
-        Pen P80;//80-89
-        Pen P70;//70-79
-        Pen P60;//60-69
-        Pen P50;//50-59
-        Pen P40;//40-49
-        Pen P30;//30-39
-        Pen P20;//20-29
-        Pen P10;//0-20
+        private Pen P100;//100 percent only
+        private Pen P90;//90-99
+        private Pen P80;//80-89
+        private Pen P70;//70-79
+        private Pen P60;//60-69
+        private Pen P50;//50-59
+        private Pen P40;//40-49
+        private Pen P30;//30-39
+        private Pen P20;//20-29
+        private Pen P10;//0-20
 
-        SolidBrush S100;
-        SolidBrush S90;
-        SolidBrush S80;
-        SolidBrush S70;
-        SolidBrush S60;
-        SolidBrush S50;
-        SolidBrush S40;
-        SolidBrush S30;
-        SolidBrush S20;
-        SolidBrush S10;
+        private SolidBrush S100;
+        private SolidBrush S90;
+        private SolidBrush S80;
+        private SolidBrush S70;
+        private SolidBrush S60;
+        private SolidBrush S50;
+        private SolidBrush S40;
+        private SolidBrush S30;
+        private SolidBrush S20;
+        private SolidBrush S10;
 
-        SolidBrush CommonCellBackBrush;
-        SolidBrush SelectedCellBackBrush;
+        private SolidBrush CommonCellBackBrush;
+        private SolidBrush SelectedCellBackBrush;
 
-        Pen pCheckedRectPen;
+        private Pen pCheckedRectPen;
 
-        string sBackText = "Нет данных";
+        private string sBackText = "Нет данных";
 
-        Rectangle rCheckBoxRect;
+        private Rectangle rCheckBoxRect;
 
-        bool NeedRefresh = false;
+        private bool NeedRefresh = false;
 
-        Font NoDataLabelFont;
-        SolidBrush NoDataLabelBrush;
+        private Font NoDataLabelFont;
+        private SolidBrush NoDataLabelBrush;
 
-        Bitmap CheckedBMPCommon = new Bitmap(Properties.Resources.checkblack);
-        Bitmap CheckedBMPSelected = new Bitmap(Properties.Resources.checkwhite);
+        private Bitmap CheckedBMPCommon = new Bitmap(Properties.Resources.checkblack);
+        private Bitmap CheckedBMPSelected = new Bitmap(Properties.Resources.checkwhite);
 
-        int iPercentLineWidth;
+        private int iPercentLineWidth;
 
-        int MpX = 0;
-        int MpY = 0;
+        private int MpX = 0;
+        private int MpY = 0;
 
-        bool bStandardStyle;
+        private bool bStandardStyle;
         public bool bDrawUpdatesImage = true;
-        bool bUseCustomBackColor = false;
+        private bool bUseCustomBackColor = false;
 
         public enum ColorStyle { Green, Blue, Orange };
 
@@ -1897,7 +1897,7 @@ namespace Infinium
 
         public string sOnlineStatusColumnName = "";
 
-        Bitmap OnlineBMP;
+        private Bitmap OnlineBMP;
 
 
 
@@ -2047,7 +2047,7 @@ namespace Infinium
             ColumnsArray.Add(ColumnName);
         }
 
-        Pen GetPen(int Value)
+        private Pen GetPen(int Value)
         {
             if (Value == 100)
                 return P100;
@@ -2073,7 +2073,7 @@ namespace Infinium
             return null;
         }
 
-        int GetLength(int Value, int CellWidth, int CellHeight)
+        private int GetLength(int Value, int CellWidth, int CellHeight)
         {
             return Convert.ToInt32(Convert.ToDecimal(CellWidth - 10) * Convert.ToDecimal(Value) / 100);
         }
@@ -2254,32 +2254,32 @@ namespace Infinium
 
     public class CropImageEdit : PictureBox
     {
-        SolidBrush ResizeRectBrush;
+        private SolidBrush ResizeRectBrush;
 
-        Pen WhiteFramePen;
-        Pen BlackFramePen;
+        private Pen WhiteFramePen;
+        private Pen BlackFramePen;
 
 
-        SizeF InitialFrameSize;
-        SizeF CurrentFrameSize;
+        private SizeF InitialFrameSize;
+        private SizeF CurrentFrameSize;
 
-        bool bMove = false;
-        bool bResize = false;
+        private bool bMove = false;
+        private bool bResize = false;
 
-        struct Position
+        private struct Position
         {
             public int X;
             public int Y;
         }
 
-        float AspectRatio = 1.07f;
+        private float AspectRatio = 1.07f;
 
-        Position FramePosition;
-        Position MousePos;
+        private Position FramePosition;
+        private Position MousePos;
 
-        string RePosX = "";//T,L,R,B
-        string RePosY = "";
-        bool ReSiz = false;
+        private string RePosX = "";//T,L,R,B
+        private string RePosY = "";
+        private bool ReSiz = false;
 
 
 
@@ -2331,7 +2331,7 @@ namespace Infinium
 
         }
 
-        void DrawHorizFrame(Graphics G)
+        private void DrawHorizFrame(Graphics G)
         {
             bool b = true;
 
@@ -2360,7 +2360,7 @@ namespace Infinium
             }
         }
 
-        void DrawVertFrame(Graphics G)
+        private void DrawVertFrame(Graphics G)
         {
             bool b = false;
 
@@ -2599,19 +2599,19 @@ namespace Infinium
 
     public class PhotoBox : PictureBox
     {
-        Font NoImageFont;
+        private Font NoImageFont;
 
-        SolidBrush NoImageBrush;
+        private SolidBrush NoImageBrush;
 
-        Pen BorderCommonPen;
-        Pen BorderTrackingPen;
+        private Pen BorderCommonPen;
+        private Pen BorderTrackingPen;
 
-        bool bDrawBorder = false;
+        private bool bDrawBorder = false;
 
-        bool bTracking = false;
+        private bool bTracking = false;
 
-        Color cBorderColorCommon = Color.Black;
-        Color cBorderColorTracking = Color.FromArgb(253, 164, 61);
+        private Color cBorderColorCommon = Color.Black;
+        private Color cBorderColorTracking = Color.FromArgb(253, 164, 61);
 
         public PhotoBox()
         {
@@ -2698,17 +2698,17 @@ namespace Infinium
 
     public class MenuLabel : ComponentFactory.Krypton.Toolkit.KryptonCheckButton
     {
-        Color cCommonLineColor = Color.FromArgb(253, 164, 61);
-        Color cTrackingLineColor = Color.FromArgb(255, 217, 112);
+        private Color cCommonLineColor = Color.FromArgb(253, 164, 61);
+        private Color cTrackingLineColor = Color.FromArgb(255, 217, 112);
 
-        int iLineWidth = 3;
+        private int iLineWidth = 3;
 
-        Pen pLineCommonPen;
-        Pen pLineTrackingPen;
+        private Pen pLineCommonPen;
+        private Pen pLineTrackingPen;
 
-        bool bTracking = false;
+        private bool bTracking = false;
 
-        bool bToWidth = false;
+        private bool bToWidth = false;
 
         public MenuLabel()
         {
@@ -2803,56 +2803,56 @@ namespace Infinium
 
     public class LightUsersList : Control
     {
-        int iOffset = 0;
+        private int iOffset = 0;
 
-        int iItemHeight = 166;
-        int iMarginForImageWidth = 160;
+        private int iItemHeight = 166;
+        private int iMarginForImageWidth = 160;
 
-        bool bShortView = false;
-        int iTracking = -1;
+        private bool bShortView = false;
+        private int iTracking = -1;
 
-        int ShortItemHeight = 45;
+        private int ShortItemHeight = 45;
 
-        DataTable ItemsPositions;
+        private DataTable ItemsPositions;
 
-        Color cUserNameColor = Color.Black;
-        Color cPositionLabelColor = Color.Black;
-        Color cPositionItemColor = Color.Gray;
-        Color cInfoLabelColor = Color.Black;
-        Color cInfoItemColor = Color.Black;
-        Color cUserLineColor = Color.Black;
-        Color cInOfficeColor = Color.LimeGreen;
-        Color cItemLineColor = Color.Gray;
-        Color cVerticalScrollCommonShaftBackColor = Color.White;
-        Color cVerticalScrollCommonThumbButtonColor = Color.Gray;
+        private Color cUserNameColor = Color.Black;
+        private Color cPositionLabelColor = Color.Black;
+        private Color cPositionItemColor = Color.Gray;
+        private Color cInfoLabelColor = Color.Black;
+        private Color cInfoItemColor = Color.Black;
+        private Color cUserLineColor = Color.Black;
+        private Color cInOfficeColor = Color.LimeGreen;
+        private Color cItemLineColor = Color.Gray;
+        private Color cVerticalScrollCommonShaftBackColor = Color.White;
+        private Color cVerticalScrollCommonThumbButtonColor = Color.Gray;
 
-        Font fUserNameFont;
-        Font fPositionLabelFont;
-        Font fPositionItemFont;
-        Font fInfoLabelFont;
-        Font fInfoItemFont;
-        Font fInOfficeFont;
+        private Font fUserNameFont;
+        private Font fPositionLabelFont;
+        private Font fPositionItemFont;
+        private Font fInfoLabelFont;
+        private Font fInfoItemFont;
+        private Font fInOfficeFont;
 
-        SolidBrush brUserNameBrush;
-        SolidBrush brPositionLabelBrush;
-        SolidBrush brPositionItemBrush;
-        SolidBrush brInfoLabelBrush;
-        SolidBrush brInfoItemBrush;
-        SolidBrush brInOfficeBrush;
-        SolidBrush brVerticalScrollCommonShaftBackBrush;
-        SolidBrush brVerticalScrollCommonThumbButtonBrush;
+        private SolidBrush brUserNameBrush;
+        private SolidBrush brPositionLabelBrush;
+        private SolidBrush brPositionItemBrush;
+        private SolidBrush brInfoLabelBrush;
+        private SolidBrush brInfoItemBrush;
+        private SolidBrush brInOfficeBrush;
+        private SolidBrush brVerticalScrollCommonShaftBackBrush;
+        private SolidBrush brVerticalScrollCommonThumbButtonBrush;
 
-        Pen pImageRectPen;
-        Pen pUserLinePen;
-        Pen pItemLinePen;
+        private Pen pImageRectPen;
+        private Pen pUserLinePen;
+        private Pen pItemLinePen;
 
-        Rectangle VerticalScrollShaftRect;
+        private Rectangle VerticalScrollShaftRect;
 
-        Rectangle rImageRect;
+        private Rectangle rImageRect;
 
-        DataTable dUsersDataTable;
+        private DataTable dUsersDataTable;
 
-        Bitmap NoImageBitmap;
+        private Bitmap NoImageBitmap;
 
         public LightUsersList()
         {
@@ -3458,24 +3458,24 @@ namespace Infinium
 
     public class LightBackButton : Panel
     {
-        Bitmap bForwardImageBlack;
-        Bitmap bForwardImageWhite;
-        Bitmap bForwardImageBlue;
-        Bitmap bBackWardImageWhite;
-        Bitmap bBackWardImageBlue;
-        Bitmap bBackWardImageBlack;
+        private Bitmap bForwardImageBlack;
+        private Bitmap bForwardImageWhite;
+        private Bitmap bForwardImageBlue;
+        private Bitmap bBackWardImageWhite;
+        private Bitmap bBackWardImageBlue;
+        private Bitmap bBackWardImageBlack;
 
-        Pen Pen;
-        Rectangle Rect;
-        SolidBrush Brush;
+        private Pen Pen;
+        private Rectangle Rect;
+        private SolidBrush Brush;
 
-        bool bTracking = false;
+        private bool bTracking = false;
 
         public enum eDirectionAndColorTracking { WhiteForward, BlueForward, BlackForward, WhiteBackward, BlueBackward, BlackBackward };
         public enum eDirectionAndColorCommon { WhiteForward, BlueForward, BlackForward, WhiteBackward, BlueBackward, BlackBackward };
 
-        eDirectionAndColorTracking eDCT;
-        eDirectionAndColorCommon eDCC;
+        private eDirectionAndColorTracking eDCT;
+        private eDirectionAndColorCommon eDCC;
 
         public LightBackButton()
         {
@@ -3627,7 +3627,7 @@ namespace Infinium
     {
         //Bitmap Back;
 
-        bool bDrawImage = true;
+        private bool bDrawImage = true;
 
         public InfiniumLoginForm()
         {
@@ -3822,20 +3822,20 @@ namespace Infinium
     {
         public DataTable UpdatesDataTable;
 
-        int iCurrentRow = 0;
+        private int iCurrentRow = 0;
 
-        Font fNameFont = new Font("Segoe UI", 16.25f, FontStyle.Regular, GraphicsUnit.Pixel);
-        Font fUpdatesFont = new Font("Segoe UI", 13.75f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private Font fNameFont = new Font("Segoe UI", 16.25f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private Font fUpdatesFont = new Font("Segoe UI", 13.75f, FontStyle.Regular, GraphicsUnit.Pixel);
 
-        SolidBrush brNameFontBrush;
-        SolidBrush brUpdatesFontBrush;
-        SolidBrush brTileBackBrush;
+        private SolidBrush brNameFontBrush;
+        private SolidBrush brUpdatesFontBrush;
+        private SolidBrush brTileBackBrush;
 
-        Rectangle rTileRect;
+        private Rectangle rTileRect;
 
         public System.Timers.Timer NextNotifyTimer;
 
-        delegate void RefreshThis();
+        private delegate void RefreshThis();
 
         private RefreshThis RefreshPopup;
 
@@ -3954,20 +3954,20 @@ namespace Infinium
 
     public class MessagesContainer : RichTextBox
     {
-        Font fSenderFont = new Font("Segoe UI", 13.0f, FontStyle.Bold);
-        Font fMeFont = new Font("Segoe UI", 13.0f, FontStyle.Bold);
-        Font fTextFont = new Font("Segoe UI", 11.0f, FontStyle.Regular);
-        Font fDateTimeFont = new Font("Segoe UI", 9.0f, FontStyle.Regular);
-        Font fSpaceFont = new Font("Segoe UI", 2.0f, FontStyle.Regular);
+        private Font fSenderFont = new Font("Segoe UI", 13.0f, FontStyle.Bold);
+        private Font fMeFont = new Font("Segoe UI", 13.0f, FontStyle.Bold);
+        private Font fTextFont = new Font("Segoe UI", 11.0f, FontStyle.Regular);
+        private Font fDateTimeFont = new Font("Segoe UI", 9.0f, FontStyle.Regular);
+        private Font fSpaceFont = new Font("Segoe UI", 2.0f, FontStyle.Regular);
 
-        Color cSenderFontColor = Color.FromArgb(65, 124, 174);
-        Color cMeFontColor = Color.FromArgb(255, 15, 60);
-        Color cTextFontColor = Color.Black;
-        Color cDateTimeColor = Color.Gray;
+        private Color cSenderFontColor = Color.FromArgb(65, 124, 174);
+        private Color cMeFontColor = Color.FromArgb(255, 15, 60);
+        private Color cTextFontColor = Color.Black;
+        private Color cDateTimeColor = Color.Gray;
 
-        DataTable dtMessagesDataTable;
+        private DataTable dtMessagesDataTable;
 
-        ArrayList CurrentMessages;
+        private ArrayList CurrentMessages;
 
         public int CurrentSenderID;
 
@@ -4190,20 +4190,20 @@ namespace Infinium
 
     public class ClientsMessagesContainer : RichTextBox
     {
-        Font fSenderFont = new Font("Segoe UI", 13.0f, FontStyle.Bold);
-        Font fMeFont = new Font("Segoe UI", 13.0f, FontStyle.Bold);
-        Font fTextFont = new Font("Segoe UI", 11.0f, FontStyle.Regular);
-        Font fDateTimeFont = new Font("Segoe UI", 9.0f, FontStyle.Regular);
-        Font fSpaceFont = new Font("Segoe UI", 2.0f, FontStyle.Regular);
+        private Font fSenderFont = new Font("Segoe UI", 13.0f, FontStyle.Bold);
+        private Font fMeFont = new Font("Segoe UI", 13.0f, FontStyle.Bold);
+        private Font fTextFont = new Font("Segoe UI", 11.0f, FontStyle.Regular);
+        private Font fDateTimeFont = new Font("Segoe UI", 9.0f, FontStyle.Regular);
+        private Font fSpaceFont = new Font("Segoe UI", 2.0f, FontStyle.Regular);
 
-        Color cSenderFontColor = Color.FromArgb(65, 124, 174);
-        Color cMeFontColor = Color.FromArgb(255, 15, 60);
-        Color cTextFontColor = Color.Black;
-        Color cDateTimeColor = Color.Gray;
+        private Color cSenderFontColor = Color.FromArgb(65, 124, 174);
+        private Color cMeFontColor = Color.FromArgb(255, 15, 60);
+        private Color cTextFontColor = Color.Black;
+        private Color cDateTimeColor = Color.Gray;
 
-        DataTable dtMessagesDataTable;
+        private DataTable dtMessagesDataTable;
 
-        ArrayList CurrentMessages;
+        private ArrayList CurrentMessages;
 
         public int CurrentSenderID;
 
@@ -4475,20 +4475,20 @@ namespace Infinium
 
     public class ZOVMessagesContainer : RichTextBox
     {
-        Font fSenderFont = new Font("Segoe UI", 13.0f, FontStyle.Bold);
-        Font fMeFont = new Font("Segoe UI", 13.0f, FontStyle.Bold);
-        Font fTextFont = new Font("Segoe UI", 11.0f, FontStyle.Regular);
-        Font fDateTimeFont = new Font("Segoe UI", 9.0f, FontStyle.Regular);
-        Font fSpaceFont = new Font("Segoe UI", 2.0f, FontStyle.Regular);
+        private Font fSenderFont = new Font("Segoe UI", 13.0f, FontStyle.Bold);
+        private Font fMeFont = new Font("Segoe UI", 13.0f, FontStyle.Bold);
+        private Font fTextFont = new Font("Segoe UI", 11.0f, FontStyle.Regular);
+        private Font fDateTimeFont = new Font("Segoe UI", 9.0f, FontStyle.Regular);
+        private Font fSpaceFont = new Font("Segoe UI", 2.0f, FontStyle.Regular);
 
-        Color cSenderFontColor = Color.FromArgb(65, 124, 174);
-        Color cMeFontColor = Color.FromArgb(255, 15, 60);
-        Color cTextFontColor = Color.Black;
-        Color cDateTimeColor = Color.Gray;
+        private Color cSenderFontColor = Color.FromArgb(65, 124, 174);
+        private Color cMeFontColor = Color.FromArgb(255, 15, 60);
+        private Color cTextFontColor = Color.Black;
+        private Color cDateTimeColor = Color.Gray;
 
-        DataTable dtMessagesDataTable;
+        private DataTable dtMessagesDataTable;
 
-        ArrayList CurrentMessages;
+        private ArrayList CurrentMessages;
 
         public int CurrentSenderID;
 
@@ -4810,11 +4810,11 @@ namespace Infinium
 
     public class LightPanel : ComponentFactory.Krypton.Toolkit.KryptonPanel
     {
-        Color cBorderColor = Color.Black;
+        private Color cBorderColor = Color.Black;
 
-        Pen pBorderPen;
+        private Pen pBorderPen;
 
-        Rectangle rBorderRect;
+        private Rectangle rBorderRect;
 
         public LightPanel()
         {
@@ -4860,54 +4860,54 @@ namespace Infinium
 
     public class NotesList : Control
     {
-        int iOffset = 0;
+        private int iOffset = 0;
 
         //int iItemHeight = 40;
 
-        bool bScrollVisible = false;
+        private bool bScrollVisible = false;
 
-        Bitmap SimpleNoteBmp = Properties.Resources.SimpleNote;
-        Bitmap FavouriteNoteBmp = Properties.Resources.FavouriteNote;
+        private Bitmap SimpleNoteBmp = Properties.Resources.SimpleNote;
+        private Bitmap FavouriteNoteBmp = Properties.Resources.FavouriteNote;
 
         public int iSelected = -1;
         public int iClicked = -1;
 
-        int ItemHeight = 80;
-        int ImageSize = 55;
+        private int ItemHeight = 80;
+        private int ImageSize = 55;
 
-        Rectangle rItemRect;
-        Rectangle rBorderRect;
+        private Rectangle rItemRect;
+        private Rectangle rBorderRect;
 
-        Color cNotesNameColor = Color.Black;
-        Color cSelectedNotesNameColor = Color.Black;
-        Color cNotesTextSampleColor = Color.Black;
-        Color cSelectedNotesTextSampleColor = Color.Black;
-        Color cNotesDateColor = Color.Gray;
-        Color cSelectedNotesDateColor = Color.Gray;
-        Color cItemLineColor = Color.Gray;
-        Color cVerticalScrollCommonShaftBackColor = Color.White;
-        Color cVerticalScrollCommonThumbButtonColor = Color.Gray;
-        Color cSelectedBackColor = Color.Gray;
-        Color cBorderColor = Color.Gray;
+        private Color cNotesNameColor = Color.Black;
+        private Color cSelectedNotesNameColor = Color.Black;
+        private Color cNotesTextSampleColor = Color.Black;
+        private Color cSelectedNotesTextSampleColor = Color.Black;
+        private Color cNotesDateColor = Color.Gray;
+        private Color cSelectedNotesDateColor = Color.Gray;
+        private Color cItemLineColor = Color.Gray;
+        private Color cVerticalScrollCommonShaftBackColor = Color.White;
+        private Color cVerticalScrollCommonThumbButtonColor = Color.Gray;
+        private Color cSelectedBackColor = Color.Gray;
+        private Color cBorderColor = Color.Gray;
 
-        Font fNotesNameFont;
-        Font fNotesTextSampleFont;
-        Font fNotesDateFont;
+        private Font fNotesNameFont;
+        private Font fNotesTextSampleFont;
+        private Font fNotesDateFont;
 
-        SolidBrush brNotesNameBrush;
-        SolidBrush brSelectedNotesNameBrush;
-        SolidBrush brNotesTextSampleBrush;
-        SolidBrush brSelectedNotesTextSampleBrush;
-        SolidBrush brNotesDateBrush;
-        SolidBrush brSelectedNotesDateBrush;
-        SolidBrush brVerticalScrollCommonShaftBackBrush;
-        SolidBrush brVerticalScrollCommonThumbButtonBrush;
-        SolidBrush brSelectedBrush;
+        private SolidBrush brNotesNameBrush;
+        private SolidBrush brSelectedNotesNameBrush;
+        private SolidBrush brNotesTextSampleBrush;
+        private SolidBrush brSelectedNotesTextSampleBrush;
+        private SolidBrush brNotesDateBrush;
+        private SolidBrush brSelectedNotesDateBrush;
+        private SolidBrush brVerticalScrollCommonShaftBackBrush;
+        private SolidBrush brVerticalScrollCommonThumbButtonBrush;
+        private SolidBrush brSelectedBrush;
 
-        Pen pItemLinePen;
-        Pen pBorderPen;
+        private Pen pItemLinePen;
+        private Pen pBorderPen;
 
-        Rectangle VerticalScrollShaftRect;
+        private Rectangle VerticalScrollShaftRect;
 
         public DataTable NotesDataTable;
 
@@ -5545,22 +5545,22 @@ namespace Infinium
 
     public class NotifyLabel : Control
     {
-        System.Timers.Timer AnimateTimer;
-        System.Timers.Timer SVTimer;
+        private System.Timers.Timer AnimateTimer;
+        private System.Timers.Timer SVTimer;
 
-        Color cTextColor = Color.Black;
+        private Color cTextColor = Color.Black;
 
-        int iAlpha = 0;
+        private int iAlpha = 0;
 
-        SolidBrush Brush;
+        private SolidBrush Brush;
 
         //bool bShow = false;
-        int tAnimate = -1;
+        private int tAnimate = -1;
 
-        int AnimateSpeedInMs = 1;
-        int StayVisibleTimeInMs = 3000;
+        private int AnimateSpeedInMs = 1;
+        private int StayVisibleTimeInMs = 3000;
 
-        delegate void LabelRefresh();
+        private delegate void LabelRefresh();
         private LabelRefresh LabelRefreshT;
 
         public NotifyLabel()
@@ -5688,24 +5688,24 @@ namespace Infinium
 
     public class InfiniumProgressBar : Control
     {
-        SolidBrush Brush;
-        SolidBrush FontBrush;
-        int iValue = 0;
+        private SolidBrush Brush;
+        private SolidBrush FontBrush;
+        private int iValue = 0;
 
-        Rectangle Rect;
+        private Rectangle Rect;
 
-        Font fValueFont = new Font("SEGOE UI", 18, FontStyle.Regular, GraphicsUnit.Pixel);
+        private Font fValueFont = new Font("SEGOE UI", 18, FontStyle.Regular, GraphicsUnit.Pixel);
 
-        Color C100 = Color.FromArgb(64, 189, 44);
-        Color C90 = Color.FromArgb(81, 207, 60);
-        Color C80 = Color.FromArgb(255, 242, 0);
-        Color C70 = Color.FromArgb(255, 211, 0);
-        Color C60 = Color.FromArgb(255, 173, 0);
-        Color C50 = Color.FromArgb(255, 133, 0);
-        Color C40 = Color.FromArgb(255, 101, 0);
-        Color C30 = Color.FromArgb(255, 80, 0);
-        Color C20 = Color.FromArgb(255, 52, 0);
-        Color C10 = Color.FromArgb(255, 0, 0);
+        private Color C100 = Color.FromArgb(64, 189, 44);
+        private Color C90 = Color.FromArgb(81, 207, 60);
+        private Color C80 = Color.FromArgb(255, 242, 0);
+        private Color C70 = Color.FromArgb(255, 211, 0);
+        private Color C60 = Color.FromArgb(255, 173, 0);
+        private Color C50 = Color.FromArgb(255, 133, 0);
+        private Color C40 = Color.FromArgb(255, 101, 0);
+        private Color C30 = Color.FromArgb(255, 80, 0);
+        private Color C20 = Color.FromArgb(255, 52, 0);
+        private Color C10 = Color.FromArgb(255, 0, 0);
 
         public InfiniumProgressBar()
         {
@@ -5768,12 +5768,12 @@ namespace Infinium
 
     public class InfiniumTimeLabel : Control
     {
-        Color cLineColor;
+        private Color cLineColor;
 
         //Font fTextFont;
 
-        SolidBrush brFontBrush;
-        SolidBrush brLineBrush;
+        private SolidBrush brFontBrush;
+        private SolidBrush brLineBrush;
 
         public InfiniumTimeLabel()
         {
@@ -5950,31 +5950,31 @@ namespace Infinium
 
     public class InfiniumTimePicker : Control
     {
-        SolidBrush brTextFontBrush;
-        SolidBrush brLabelsFontBrush;
+        private SolidBrush brTextFontBrush;
+        private SolidBrush brLabelsFontBrush;
 
-        Font fLabelsFont;
+        private Font fLabelsFont;
 
         private bool bReadOnly = false;
 
-        Bitmap bmpTimeUpCommon = Properties.Resources.TimeUpCommon;
-        Bitmap bmpTimeDownCommon = Properties.Resources.TimeDownCommon;
-        Bitmap bmpTimeUpPressed = Properties.Resources.TimeUpPressed;
-        Bitmap bmpTimeDownPressed = Properties.Resources.TimeDownPressed;
-        Bitmap bmpTimeUpTracking = Properties.Resources.TimeUpTracking;
-        Bitmap bmpTimeDownTracking = Properties.Resources.TimeDownTracking;
+        private Bitmap bmpTimeUpCommon = Properties.Resources.TimeUpCommon;
+        private Bitmap bmpTimeDownCommon = Properties.Resources.TimeDownCommon;
+        private Bitmap bmpTimeUpPressed = Properties.Resources.TimeUpPressed;
+        private Bitmap bmpTimeDownPressed = Properties.Resources.TimeDownPressed;
+        private Bitmap bmpTimeUpTracking = Properties.Resources.TimeUpTracking;
+        private Bitmap bmpTimeDownTracking = Properties.Resources.TimeDownTracking;
 
-        InfiniumTimeTextBox MinutesTextBox;
-        InfiniumTimeTextBox HoursTextBox;
+        private InfiniumTimeTextBox MinutesTextBox;
+        private InfiniumTimeTextBox HoursTextBox;
 
-        int iHours = 0;
-        int iMinutes = 0;
+        private int iHours = 0;
+        private int iMinutes = 0;
 
-        bool bTracking;
-        bool bHrsUpBtnTracking = false;
-        bool bHrsDnBtnTracking = false;
-        bool bMinUpBtnTracking = false;
-        bool bMinDnBtnTracking = false;
+        private bool bTracking;
+        private bool bHrsUpBtnTracking = false;
+        private bool bHrsDnBtnTracking = false;
+        private bool bMinUpBtnTracking = false;
+        private bool bMinDnBtnTracking = false;
 
         public InfiniumTimePicker()
         {
@@ -6470,9 +6470,9 @@ namespace Infinium
     {
         public int Offset = 0;
 
-        int iMarginNameRow = 5;
-        int iMarginToNextItem = 10;
-        int iMarginForImageWidth = 92;
+        private int iMarginNameRow = 5;
+        private int iMarginToNextItem = 10;
+        private int iMarginForImageWidth = 92;
 
         private int iScrollWidth = 10;
         private int iMarginForPercents = 100;
@@ -6483,65 +6483,65 @@ namespace Infinium
 
         private bool bReadOnly = false;
 
-        int TotalY = 0;
+        private int TotalY = 0;
 
         public int iSelected = -1;
         public int iCompleteSelected = -1;
-        int iIncompleteX = -1;
-        int iIncompleteW = -1;
-        int iCompleteX = -1;
-        int iCompleteW = -1;
+        private int iIncompleteX = -1;
+        private int iIncompleteW = -1;
+        private int iCompleteX = -1;
+        private int iCompleteW = -1;
         public int TotalMin = 0;
         public int TotalAllocMin = 0;
 
-        bool bVertScrollVisible = false;
+        private bool bVertScrollVisible = false;
 
-        Rectangle rVerticalScrollShaftRect;
-        Rectangle rVerticalScrollThumbRect;
-        Rectangle rSelectedRectangle;
-        Rectangle rPercentsEllipseRectangle;
-        Rectangle rPercentsPieRectangle;
+        private Rectangle rVerticalScrollShaftRect;
+        private Rectangle rVerticalScrollThumbRect;
+        private Rectangle rSelectedRectangle;
+        private Rectangle rPercentsEllipseRectangle;
+        private Rectangle rPercentsPieRectangle;
 
-        Color cCaptionFontColor;
-        Color cDepartmentFontColor;
-        Color cExecTypeFontColor;
-        Color cVerticalScrollCommonShaftBackColor = Color.White;
-        Color cVerticalScrollCommonThumbButtonColor = Color.Gray;
-        Color cSelectedBackColor = Color.White;
-        Color cTimePickerFontColor = Color.FromArgb(70, 70, 70);
+        private Color cCaptionFontColor;
+        private Color cDepartmentFontColor;
+        private Color cExecTypeFontColor;
+        private Color cVerticalScrollCommonShaftBackColor = Color.White;
+        private Color cVerticalScrollCommonThumbButtonColor = Color.Gray;
+        private Color cSelectedBackColor = Color.White;
+        private Color cTimePickerFontColor = Color.FromArgb(70, 70, 70);
 
-        SolidBrush brCaptionFontBrush;
-        SolidBrush brDepartmentFontBrush;
-        SolidBrush brExecTypeFontBrush;
-        SolidBrush brVerticalScrollCommonShaftBackBrush;
-        SolidBrush brVerticalScrollCommonThumbButtonBrush;
-        SolidBrush brSelectedBackBrush;
-        SolidBrush brTimePickerBrush;
-        SolidBrush brCompleteFontBrush;
-        SolidBrush brIncompleteFontBrush;
-        SolidBrush brNoDataFontBrush;
+        private SolidBrush brCaptionFontBrush;
+        private SolidBrush brDepartmentFontBrush;
+        private SolidBrush brExecTypeFontBrush;
+        private SolidBrush brVerticalScrollCommonShaftBackBrush;
+        private SolidBrush brVerticalScrollCommonThumbButtonBrush;
+        private SolidBrush brSelectedBackBrush;
+        private SolidBrush brTimePickerBrush;
+        private SolidBrush brCompleteFontBrush;
+        private SolidBrush brIncompleteFontBrush;
+        private SolidBrush brNoDataFontBrush;
 
-        Font fPositionFont;
-        Font fCaptionFont;
-        Font fDepartmentFont;
-        Font fExecTypeFont;
-        Font fTimePickerFont;
-        Font fCompleteFont;
-        Font fPercentsFont;
-        Font fNoDataFont;
+        private Font fPositionFont;
+        private Font fCaptionFont;
+        private Font fDepartmentFont;
+        private Font fExecTypeFont;
+        private Font fTimePickerFont;
+        private Font fCompleteFont;
+        private Font fPercentsFont;
+        private Font fNoDataFont;
 
-        Pen pSplitterPen;
-        Pen pPercentEllipsePen;
+        private Pen pSplitterPen;
+        private Pen pPercentEllipsePen;
 
-        InfiniumTimePicker[] InfiniumTimePickers;
+        private InfiniumTimePicker[] InfiniumTimePickers;
 
         public DataTable dtFunctionsDataTable;
 
-        Bitmap bmpExecQuery = Properties.Resources.ExecQuery;
-        Bitmap bmpExecEvent = Properties.Resources.ExecEvent;
-        Bitmap bmpExecWeekly = Properties.Resources.ExecWeek;
-        Bitmap bmpExecDaily = Properties.Resources.ExecDaily;
-        Bitmap bmpTaskComplete = Properties.Resources.TaskComplete;
+        private Bitmap bmpExecQuery = Properties.Resources.ExecQuery;
+        private Bitmap bmpExecEvent = Properties.Resources.ExecEvent;
+        private Bitmap bmpExecWeekly = Properties.Resources.ExecWeek;
+        private Bitmap bmpExecDaily = Properties.Resources.ExecDaily;
+        private Bitmap bmpTaskComplete = Properties.Resources.TaskComplete;
 
         public InfiniumFunctionsContainer()
         {
@@ -7484,13 +7484,13 @@ namespace Infinium
         public int iSeconds = 0;
         public int iHours = 0;
 
-        Pen pMinutesPen;
-        Pen pSecondsPen;
-        Pen pHoursPen;
+        private Pen pMinutesPen;
+        private Pen pSecondsPen;
+        private Pen pHoursPen;
 
-        int iMarginLines = 0;
+        private int iMarginLines = 0;
 
-        Image iImage;
+        private Image iImage;
 
         public InfiniumClock()
         {
@@ -7584,7 +7584,7 @@ namespace Infinium
 
     public class InfiniumDayTimeClock : Control
     {
-        Bitmap bmpClock = Properties.Resources.Clock44;
+        private Bitmap bmpClock = Properties.Resources.Clock44;
 
         public DateTime dtStartDate;
         public DateTime dtEndDate;
@@ -7600,10 +7600,10 @@ namespace Infinium
 
         public int iBreakMinutes = 0;
 
-        Rectangle rFillRect;
+        private Rectangle rFillRect;
 
-        SolidBrush brWorkdayBrush;
-        SolidBrush brBreakBrush;
+        private SolidBrush brWorkdayBrush;
+        private SolidBrush brBreakBrush;
 
         public InfiniumDayTimeClock()
         {
@@ -7721,7 +7721,7 @@ namespace Infinium
     public class InfiniumTipsLabel : Control
     {
         private int iMaxWidth;
-        SolidBrush bFontBrush;
+        private SolidBrush bFontBrush;
 
         public InfiniumTipsLabel()
         {

@@ -5,7 +5,7 @@ namespace Infinium
 {
     public partial class LightMessageBoxForm : Form
     {
-        public static bool OKCancel = false;
+        public static bool OKCancel;
 
         public LightMessageBoxForm(bool ShowCancelButton, string Text, string Header)
         {
@@ -16,7 +16,7 @@ namespace Infinium
             CancelMessageButton.Visible = ShowCancelButton;
 
             if (ShowCancelButton == false)
-                OKMessageButton.Left = (this.Width - OKMessageButton.Width) / 2;
+                OKMessageButton.Left = (Width - OKMessageButton.Width) / 2;
 
             label2.Text = Header;
         }
@@ -31,7 +31,7 @@ namespace Infinium
             CancelMessageButton.Visible = ShowCancelButton;
 
             if (ShowCancelButton == false)
-                OKMessageButton.Left = (this.Width - OKMessageButton.Width) / 2;
+                OKMessageButton.Left = (Width - OKMessageButton.Width) / 2;
 
             label2.Text = Header;
         }
@@ -40,14 +40,14 @@ namespace Infinium
         {
             OKCancel = true;
 
-            this.Close();
+            Close();
         }
 
         private void CancelMessageButton_Click(object sender, EventArgs e)
         {
             OKCancel = false;
 
-            this.Close();
+            Close();
         }
 
         private void LightMessageBoxForm_KeyDown(object sender, KeyEventArgs e)

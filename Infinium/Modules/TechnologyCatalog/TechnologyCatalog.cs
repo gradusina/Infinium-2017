@@ -56,12 +56,12 @@ namespace Infinium.Modules.TechnologyCatalog
 
         public BindingSource PatinaBS;
         public BindingSource PatinaRalBS;
-        private DataTable PatinaDT;
-        private DataTable PatinaRalDT;
+        private readonly DataTable PatinaDT;
+        private readonly DataTable PatinaRalDT;
         private SqlCommandBuilder PatinaRalSCB;
-        private SqlDataAdapter PatinaRalSDA;
+        private readonly SqlDataAdapter PatinaRalSDA;
         private SqlCommandBuilder PatinaSCB;
-        private SqlDataAdapter PatinaSDA;
+        private readonly SqlDataAdapter PatinaSDA;
 
         #endregion Fields
 
@@ -1298,7 +1298,7 @@ namespace Infinium.Modules.TechnologyCatalog
         private DataTable CoversDT;
         private SqlCommandBuilder GroupsCB;
         private SqlDataAdapter GroupsDA;
-        private PercentageDataGrid GroupsDG;
+        private readonly PercentageDataGrid GroupsDG;
         private DataTable GroupsDT;
         private DataGridViewComboBoxColumn InsetColorColumn = new DataGridViewComboBoxColumn();
         private DataGridViewComboBoxColumn InsetColorColumn1 = new DataGridViewComboBoxColumn();
@@ -1308,7 +1308,7 @@ namespace Infinium.Modules.TechnologyCatalog
         private DataTable InsetTypesDT;
         private SqlCommandBuilder ItemsCB;
         private SqlDataAdapter ItemsDA;
-        private PercentageDataGrid ItemsDG;
+        private readonly PercentageDataGrid ItemsDG;
         private DataTable ItemsDT;
         private DataGridViewComboBoxColumn MeasureColumn = new DataGridViewComboBoxColumn();
         private DataGridViewComboBoxColumn MeasureColumn1 = new DataGridViewComboBoxColumn();
@@ -1325,7 +1325,7 @@ namespace Infinium.Modules.TechnologyCatalog
         private SqlCommandBuilder SubGroupsCB;
 
         private SqlDataAdapter SubGroupsDA;
-        private PercentageDataGrid SubGroupsDG;
+        private readonly PercentageDataGrid SubGroupsDG;
         private DataTable SubGroupsDT;
         private DataGridViewComboBoxColumn TechnoInsetColorColumn = new DataGridViewComboBoxColumn();
         private DataGridViewComboBoxColumn TechnoInsetColorColumn1 = new DataGridViewComboBoxColumn();

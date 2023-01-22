@@ -1,11 +1,17 @@
-﻿namespace Infinium
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+using ComponentFactory.Krypton.Toolkit;
+using DevExpress.XtraEditors;
+using DevExpress.XtraTab;
+
+namespace Infinium
 {
     partial class DateCorrectForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -639,34 +645,34 @@
 
         #endregion
 
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge20;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge21;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge22;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge23;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge19;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Label label2;
-        private ComponentFactory.Krypton.Toolkit.KryptonPalette StandardButtonsPalette;
-        private System.Windows.Forms.Timer AnimateTimer;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton MenuCloseButton;
-        private ComponentFactory.Krypton.Toolkit.KryptonPalette NavigateMenuButtonsPalette;
-        private DevExpress.XtraTab.XtraTabControl MainOrdersTabControl;
-        private DevExpress.XtraTab.XtraTabPage xtraTabPage1;
-        private System.Windows.Forms.Label label1;
-        private DevExpress.XtraTab.XtraTabPage xtraTabPage2;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton StartButton;
-        private DevExpress.XtraEditors.TimeEdit timeEdit1;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge1;
-        private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.RichTextBox richTextBox1;
-        private System.Windows.Forms.Label label3;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton StopButton;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton StopButtonChanged;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton BreakButtonChanged;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton BreakButton;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton ContinueButton;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton ContinueButtonChanged;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton StartButtonChanged;
-        private System.Windows.Forms.Label OverduedDateLabel;
+        private KryptonBorderEdge kryptonBorderEdge20;
+        private KryptonBorderEdge kryptonBorderEdge21;
+        private KryptonBorderEdge kryptonBorderEdge22;
+        private KryptonBorderEdge kryptonBorderEdge23;
+        private KryptonBorderEdge kryptonBorderEdge19;
+        private Panel panel1;
+        private Label label2;
+        private KryptonPalette StandardButtonsPalette;
+        private Timer AnimateTimer;
+        private KryptonButton MenuCloseButton;
+        private KryptonPalette NavigateMenuButtonsPalette;
+        private XtraTabControl MainOrdersTabControl;
+        private XtraTabPage xtraTabPage1;
+        private Label label1;
+        private XtraTabPage xtraTabPage2;
+        private KryptonButton StartButton;
+        private TimeEdit timeEdit1;
+        private KryptonBorderEdge kryptonBorderEdge1;
+        private Panel panel2;
+        private RichTextBox richTextBox1;
+        private Label label3;
+        private KryptonButton StopButton;
+        private KryptonButton StopButtonChanged;
+        private KryptonButton BreakButtonChanged;
+        private KryptonButton BreakButton;
+        private KryptonButton ContinueButton;
+        private KryptonButton ContinueButtonChanged;
+        private KryptonButton StartButtonChanged;
+        private Label OverduedDateLabel;
     }
 }

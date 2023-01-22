@@ -1,35 +1,35 @@
-﻿using Infinium.Modules.Permits;
-
-using System;
+﻿using System;
+using System.Collections;
 using System.Data;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
+using Infinium.Modules.Permits;
 
 namespace Infinium
 {
     public partial class PermitsForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
-        bool NeedSplash = false;
-        bool CallFromLightStartForm = true;
-        public bool BindingOk = false;
+        private bool NeedSplash;
+        private bool CallFromLightStartForm = true;
+        public bool BindingOk;
 
-        int FormEvent = 0;
-        int BindType = 0;
-        int[] Dispatches = new int[1];
-        int UnloadID = -1;
-        object ZOVDispatchDate = null;
+        private int FormEvent;
+        private int BindType;
+        private int[] Dispatches = new int[1];
+        private int UnloadID = -1;
+        private object ZOVDispatchDate;
 
-        Form MainForm;
-        Form TopForm;
-        LightStartForm LightStartForm;
+        private Form MainForm;
+        private Form TopForm;
+        private LightStartForm LightStartForm;
 
         //RoleTypes RoleType = RoleTypes.OrdinaryRole;
 
@@ -42,15 +42,15 @@ namespace Infinium
             DispatchRole = 4
         }
 
-        DataTable RolePermissionsDataTable;
-        Permits PermitsManager;
+        private DataTable RolePermissionsDataTable;
+        private Permits PermitsManager;
 
         public PermitsForm(LightStartForm tLightStartForm)
         {
             InitializeComponent();
             LightStartForm = tLightStartForm;
 
-            this.MaximumSize = Screen.PrimaryScreen.WorkingArea.Size;
+            MaximumSize = Screen.PrimaryScreen.WorkingArea.Size;
 
             RolePermissionsDataTable = RolesAndPermissionsManager.GetPermissions(Security.CurrentUserID);
 
@@ -72,7 +72,7 @@ namespace Infinium
             if (BindType == 2)
                 ZOVDispatchDate = oZOVDispatchDate;
 
-            this.MaximumSize = Screen.PrimaryScreen.WorkingArea.Size;
+            MaximumSize = Screen.PrimaryScreen.WorkingArea.Size;
 
             RolePermissionsDataTable = RolesAndPermissionsManager.GetPermissions(Security.CurrentUserID);
 
@@ -94,7 +94,7 @@ namespace Infinium
             Dispatches = new int[iDispatches.Count()];
             Dispatches = iDispatches;
 
-            this.MaximumSize = Screen.PrimaryScreen.WorkingArea.Size;
+            MaximumSize = Screen.PrimaryScreen.WorkingArea.Size;
 
             RolePermissionsDataTable = RolesAndPermissionsManager.GetPermissions(Security.CurrentUserID);
 
@@ -115,7 +115,7 @@ namespace Infinium
             CallFromLightStartForm = false;
             UnloadID = ID;
 
-            this.MaximumSize = Screen.PrimaryScreen.WorkingArea.Size;
+            MaximumSize = Screen.PrimaryScreen.WorkingArea.Size;
 
             RolePermissionsDataTable = RolesAndPermissionsManager.GetPermissions(Security.CurrentUserID);
 
@@ -138,7 +138,7 @@ namespace Infinium
         {
             if (!DatabaseConfigsManager.Animation)
             {
-                this.Opacity = 1;
+                Opacity = 1;
 
                 if (FormEvent == eClose || FormEvent == eHide)
                 {
@@ -148,7 +148,7 @@ namespace Infinium
                     {
                         if (CallFromLightStartForm)
                             LightStartForm.CloseForm(this);
-                        this.Close();
+                        Close();
                     }
 
                     if (FormEvent == eHide)
@@ -159,7 +159,7 @@ namespace Infinium
                         else
                         {
                             MainForm.Activate();
-                            this.Hide();
+                            Hide();
                         }
                     }
 
@@ -179,8 +179,8 @@ namespace Infinium
 
             if (FormEvent == eClose || FormEvent == eHide)
             {
-                if (Convert.ToDecimal(this.Opacity) != Convert.ToDecimal(0.00))
-                    this.Opacity = Convert.ToDouble(Convert.ToDecimal(this.Opacity) - Convert.ToDecimal(0.05));
+                if (Convert.ToDecimal(Opacity) != Convert.ToDecimal(0.00))
+                    Opacity = Convert.ToDouble(Convert.ToDecimal(Opacity) - Convert.ToDecimal(0.05));
                 else
                 {
                     AnimateTimer.Enabled = false;
@@ -189,7 +189,7 @@ namespace Infinium
                     {
                         if (CallFromLightStartForm)
                             LightStartForm.CloseForm(this);
-                        this.Close();
+                        Close();
                     }
 
                     if (FormEvent == eHide)
@@ -200,7 +200,7 @@ namespace Infinium
                         else
                         {
                             MainForm.Activate();
-                            this.Hide();
+                            Hide();
                         }
                     }
 
@@ -212,16 +212,14 @@ namespace Infinium
 
             if (FormEvent == eShow || FormEvent == eShow)
             {
-                if (this.Opacity != 1)
-                    this.Opacity += 0.05;
+                if (Opacity != 1)
+                    Opacity += 0.05;
                 else
                 {
                     NeedSplash = true;
                     AnimateTimer.Enabled = false;
                     SplashForm.CloseS = true;
                 }
-
-                return;
             }
         }
 
@@ -263,15 +261,15 @@ namespace Infinium
             {
                 DataRow NewRow = MonthsDT.NewRow();
                 NewRow["MonthID"] = i;
-                NewRow["MonthName"] = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(i).ToString();
+                NewRow["MonthName"] = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(i);
                 MonthsDT.Rows.Add(NewRow);
             }
             cbxMonths.DataSource = MonthsDT.DefaultView;
             cbxMonths.ValueMember = "MonthID";
             cbxMonths.DisplayMember = "MonthName";
 
-            DateTime LastDay = new System.DateTime(DateTime.Now.Year, 12, 31);
-            System.Collections.ArrayList Years = new System.Collections.ArrayList();
+            DateTime LastDay = new DateTime(DateTime.Now.Year, 12, 31);
+            ArrayList Years = new ArrayList();
             for (int i = 2013; i <= LastDay.Year; i++)
             {
                 DataRow NewRow = YearsDT.NewRow();
@@ -510,7 +508,7 @@ namespace Infinium
             object Name = DBNull.Value;
             object Purpose = DBNull.Value;
 
-            PhantomForm PhantomForm = new Infinium.PhantomForm();
+            PhantomForm PhantomForm = new PhantomForm();
             PhantomForm.Show();
 
             NewPermitMenu NewPermitMenu = new NewPermitMenu(this);
@@ -612,7 +610,7 @@ namespace Infinium
 
         private void dgvPermits_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
         {
-            if (e.RowIndex > -1 && e.Button == System.Windows.Forms.MouseButtons.Right)
+            if (e.RowIndex > -1 && e.Button == MouseButtons.Right)
             {
                 dgvPermits.Rows[e.RowIndex].Selected = true;
                 kryptonContextMenu2.Show(new Point(Cursor.Position.X - 212, Cursor.Position.Y - 10));
@@ -624,7 +622,7 @@ namespace Infinium
             if (dgvPermits.SelectedRows.Count == 0)
                 return;
 
-            bool OKCancel = Infinium.LightMessageBox.Show(ref TopForm, true,
+            bool OKCancel = LightMessageBox.Show(ref TopForm, true,
                     "Пропуск будет удален. Продолжить?",
                     "Удаление пропуска");
 
@@ -762,8 +760,8 @@ namespace Infinium
                     cbtnVisitors.Visible = true;
                     pnlVisitors.Visible = true;
                     cbtnVisitors.Checked = true;
-                    label2.Text = "Посетитель: " + dgvPermits.SelectedRows[0].Cells["Name"].Value.ToString();
-                    label5.Text = "Цель: " + dgvPermits.SelectedRows[0].Cells["Purpose"].Value.ToString();
+                    label2.Text = "Посетитель: " + dgvPermits.SelectedRows[0].Cells["Name"].Value;
+                    label5.Text = "Цель: " + dgvPermits.SelectedRows[0].Cells["Purpose"].Value;
                 }
                 else
                 {
@@ -817,8 +815,8 @@ namespace Infinium
                     cbtnVisitors.Visible = true;
                     pnlVisitors.Visible = true;
                     cbtnVisitors.Checked = true;
-                    label2.Text = "Посетитель: " + dgvPermits.SelectedRows[0].Cells["Name"].Value.ToString();
-                    label5.Text = "Цель: " + dgvPermits.SelectedRows[0].Cells["Purpose"].Value.ToString();
+                    label2.Text = "Посетитель: " + dgvPermits.SelectedRows[0].Cells["Name"].Value;
+                    label5.Text = "Цель: " + dgvPermits.SelectedRows[0].Cells["Purpose"].Value;
                 }
                 else
                 {

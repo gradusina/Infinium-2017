@@ -22,8 +22,8 @@ namespace Infinium.Store
 {
     public class StoreInvoiceManager
     {
-        DataTable GroupsDataTable;
-        DataTable SubGroupsDataTable;
+        private DataTable GroupsDataTable;
+        private DataTable SubGroupsDataTable;
         public DataTable MeasuresDataTable;
         public DataTable ColorsDT;
         public DataTable CoversDataTable;
@@ -35,21 +35,21 @@ namespace Infinium.Store
         public DataTable ParamsDataTable;
         public DataTable SellersDataTable;
         public DataTable FactoryDataTable;
-        DataTable InsetColorsDataTable = null;
-        DataTable dtInsetTypes = null;
+        private DataTable InsetColorsDataTable = null;
+        private DataTable dtInsetTypes = null;
 
-        SqlDataAdapter StoreDA;
-        SqlCommandBuilder StoreCB;
+        private SqlDataAdapter StoreDA;
+        private SqlCommandBuilder StoreCB;
 
-        BindingSource ManufacturersBS;
-        BindingSource StoreBS;
-        BindingSource StoreItemsBS;
-        BindingSource GroupsBS;
-        BindingSource SubGroupsBS;
+        private BindingSource ManufacturersBS;
+        private BindingSource StoreBS;
+        private BindingSource StoreItemsBS;
+        private BindingSource GroupsBS;
+        private BindingSource SubGroupsBS;
 
-        PercentageDataGrid GroupsDataGrid;
-        PercentageDataGrid SubGroupsDataGrid;
-        PercentageDataGrid StoreDataGrid;
+        private readonly PercentageDataGrid GroupsDataGrid;
+        private readonly PercentageDataGrid SubGroupsDataGrid;
+        private readonly PercentageDataGrid StoreDataGrid;
 
         public StoreInvoiceManager(ref PercentageDataGrid tGroupsDataGrid,
             ref PercentageDataGrid tSubGroupsDataGrid, ref PercentageDataGrid tStoreDataGrid)
@@ -2158,54 +2158,54 @@ namespace Infinium.Store
 
     public class MainStoreManager
     {
-        int CurrentStoreSubGroupID = -1;
-        int CurrentInventoryID = -1;
+        private int CurrentStoreSubGroupID = -1;
+        private int CurrentInventoryID = -1;
 
-        DataTable allItemsTable;
+        private DataTable allItemsTable;
 
-        DataTable TechStoreNamesDT;
-        DataTable GroupsDT;
-        DataTable SubGroupsDT;
-        DataTable InvoicesDT;
-        DataTable InvoiceItemsDT;
-        DataTable MovementInvoicesDT;
-        DataTable MovementInvoiceItemsDT;
-        DataTable MeasuresDT;
-        DataTable ColorsDT;
-        DataTable CoversDT;
-        DataTable PatinaDT;
+        private DataTable TechStoreNamesDT;
+        private DataTable GroupsDT;
+        private DataTable SubGroupsDT;
+        private DataTable InvoicesDT;
+        private DataTable InvoiceItemsDT;
+        private DataTable MovementInvoicesDT;
+        private DataTable MovementInvoiceItemsDT;
+        private DataTable MeasuresDT;
+        private DataTable ColorsDT;
+        private DataTable CoversDT;
+        private DataTable PatinaDT;
         private DataTable PatinaRALDataTable = null;
-        DataTable StoreDT;
-        DataTable CurrencyTypesDT;
-        DataTable SellersDT;
-        DataTable FilterSellersDT;
-        DataTable FilterMovSellersDT;
-        DataTable StoreAllocDT;
+        private DataTable StoreDT;
+        private DataTable CurrencyTypesDT;
+        private DataTable SellersDT;
+        private DataTable FilterSellersDT;
+        private DataTable FilterMovSellersDT;
+        private DataTable StoreAllocDT;
 
-        DataTable ArrivalCountDT;
-        DataTable ArrivelFromStoreCountDT;
-        DataTable ExpenseCountDT;
-        DataTable SellingCountDT;
-        DataTable StartRemainsDT;
-        DataTable EndRemainsDT;
+        private DataTable ArrivalCountDT;
+        private DataTable ArrivelFromStoreCountDT;
+        private DataTable ExpenseCountDT;
+        private DataTable SellingCountDT;
+        private DataTable StartRemainsDT;
+        private DataTable EndRemainsDT;
 
-        DataTable SectorsDataTable;
-        DataTable StoreAllocDataTable;
-        DataTable UsersDataTable;
-        DataTable ClientsDT;
+        private DataTable SectorsDataTable;
+        private DataTable StoreAllocDataTable;
+        private DataTable UsersDataTable;
+        private DataTable ClientsDT;
 
-        BindingSource GroupsBS;
-        BindingSource SubGroupsBS;
-        BindingSource InvoicesBS;
-        BindingSource InvoiceItemsBS;
-        BindingSource MovementInvoicesBS;
-        BindingSource MovementInvoiceItemsBS;
-        BindingSource StoreBS;
-        BindingSource SectorsBS;
-        BindingSource StoreAllocFromBS;
-        BindingSource StoreAllocToBS;
-        BindingSource UsersBS;
-        BindingSource ClientsBS;
+        private BindingSource GroupsBS;
+        private BindingSource SubGroupsBS;
+        private BindingSource InvoicesBS;
+        private BindingSource InvoiceItemsBS;
+        private BindingSource MovementInvoicesBS;
+        private BindingSource MovementInvoiceItemsBS;
+        private BindingSource StoreBS;
+        private BindingSource SectorsBS;
+        private BindingSource StoreAllocFromBS;
+        private BindingSource StoreAllocToBS;
+        private BindingSource UsersBS;
+        private BindingSource ClientsBS;
 
         public MainStoreManager()
         {
@@ -3625,47 +3625,47 @@ dbo.TechStoreGroups AS G ON SG.TechStoreGroupID = G.TechStoreGroupID ORDER BY Te
 
     public class ManufactureStoreManager
     {
-        int CurrentStoreSubGroupID = -1;
-        int CurrentInventoryID = -1;
+        private int CurrentStoreSubGroupID = -1;
+        private int CurrentInventoryID = -1;
 
         private DataTable PatinaRALDataTable = null;
-        DataTable GroupsDT;
-        DataTable SubGroupsDT;
-        DataTable MovementInvoicesDT;
-        DataTable MovementInvoiceItemsDT;
-        DataTable MeasuresDT;
-        DataTable ColorsDT;
-        DataTable CoversDT;
-        DataTable PatinaDT;
-        DataTable StoreDT;
-        DataTable CurrencyTypesDT;
-        DataTable SellersDT;
-        DataTable FilterSellersDT;
-        DataTable FilterMovSellersDT;
-        DataTable StoreAllocDT;
+        private DataTable GroupsDT;
+        private DataTable SubGroupsDT;
+        private DataTable MovementInvoicesDT;
+        private DataTable MovementInvoiceItemsDT;
+        private DataTable MeasuresDT;
+        private DataTable ColorsDT;
+        private DataTable CoversDT;
+        private DataTable PatinaDT;
+        private DataTable StoreDT;
+        private DataTable CurrencyTypesDT;
+        private DataTable SellersDT;
+        private DataTable FilterSellersDT;
+        private DataTable FilterMovSellersDT;
+        private DataTable StoreAllocDT;
 
-        DataTable ArrivalCountDT;
-        DataTable ArrivelFromStoreCountDT;
-        DataTable ExpenseCountDT;
-        DataTable SellingCountDT;
-        DataTable StartRemainsDT;
-        DataTable EndRemainsDT;
+        private DataTable ArrivalCountDT;
+        private DataTable ArrivelFromStoreCountDT;
+        private DataTable ExpenseCountDT;
+        private DataTable SellingCountDT;
+        private DataTable StartRemainsDT;
+        private DataTable EndRemainsDT;
 
-        DataTable SectorsDataTable;
-        DataTable StoreAllocDataTable;
-        DataTable UsersDataTable;
-        DataTable ClientsDT;
+        private DataTable SectorsDataTable;
+        private DataTable StoreAllocDataTable;
+        private DataTable UsersDataTable;
+        private DataTable ClientsDT;
 
-        BindingSource GroupsBS;
-        BindingSource SubGroupsBS;
-        BindingSource MovementInvoicesBS;
-        BindingSource MovementInvoiceItemsBS;
-        BindingSource StoreBS;
-        BindingSource SectorsBS;
-        BindingSource StoreAllocFromBS;
-        BindingSource StoreAllocToBS;
-        BindingSource UsersBS;
-        BindingSource ClientsBS;
+        private BindingSource GroupsBS;
+        private BindingSource SubGroupsBS;
+        private BindingSource MovementInvoicesBS;
+        private BindingSource MovementInvoiceItemsBS;
+        private BindingSource StoreBS;
+        private BindingSource SectorsBS;
+        private BindingSource StoreAllocFromBS;
+        private BindingSource StoreAllocToBS;
+        private BindingSource UsersBS;
+        private BindingSource ClientsBS;
 
         public ManufactureStoreManager()
         {
@@ -4738,47 +4738,47 @@ dbo.TechStoreGroups AS G ON SG.TechStoreGroupID = G.TechStoreGroupID ORDER BY Te
 
     public class ReadyStoreManager
     {
-        int CurrentStoreSubGroupID = -1;
-        int CurrentInventoryID = -1;
+        private int CurrentStoreSubGroupID = -1;
+        private int CurrentInventoryID = -1;
 
-        DataTable GroupsDT;
-        DataTable SubGroupsDT;
-        DataTable MovementInvoicesDT;
-        DataTable MovementInvoiceItemsDT;
-        DataTable MeasuresDT;
-        DataTable ColorsDT;
-        DataTable CoversDT;
-        DataTable PatinaDT;
+        private DataTable GroupsDT;
+        private DataTable SubGroupsDT;
+        private DataTable MovementInvoicesDT;
+        private DataTable MovementInvoiceItemsDT;
+        private DataTable MeasuresDT;
+        private DataTable ColorsDT;
+        private DataTable CoversDT;
+        private DataTable PatinaDT;
         private DataTable PatinaRALDataTable = null;
-        DataTable StoreDT;
-        DataTable CurrencyTypesDT;
-        DataTable SellersDT;
-        DataTable FilterSellersDT;
-        DataTable FilterMovSellersDT;
-        DataTable StoreAllocDT;
+        private DataTable StoreDT;
+        private DataTable CurrencyTypesDT;
+        private DataTable SellersDT;
+        private DataTable FilterSellersDT;
+        private DataTable FilterMovSellersDT;
+        private DataTable StoreAllocDT;
 
-        DataTable ArrivalCountDT;
-        DataTable ArrivelFromStoreCountDT;
-        DataTable ExpenseCountDT;
-        DataTable SellingCountDT;
-        DataTable StartRemainsDT;
-        DataTable EndRemainsDT;
+        private DataTable ArrivalCountDT;
+        private DataTable ArrivelFromStoreCountDT;
+        private DataTable ExpenseCountDT;
+        private DataTable SellingCountDT;
+        private DataTable StartRemainsDT;
+        private DataTable EndRemainsDT;
 
-        DataTable SectorsDataTable;
-        DataTable StoreAllocDataTable;
-        DataTable UsersDataTable;
-        DataTable ClientsDT;
+        private DataTable SectorsDataTable;
+        private DataTable StoreAllocDataTable;
+        private DataTable UsersDataTable;
+        private DataTable ClientsDT;
 
-        BindingSource GroupsBS;
-        BindingSource SubGroupsBS;
-        BindingSource MovementInvoicesBS;
-        BindingSource MovementInvoiceItemsBS;
-        BindingSource StoreBS;
-        BindingSource SectorsBS;
-        BindingSource StoreAllocFromBS;
-        BindingSource StoreAllocToBS;
-        BindingSource UsersBS;
-        BindingSource ClientsBS;
+        private BindingSource GroupsBS;
+        private BindingSource SubGroupsBS;
+        private BindingSource MovementInvoicesBS;
+        private BindingSource MovementInvoiceItemsBS;
+        private BindingSource StoreBS;
+        private BindingSource SectorsBS;
+        private BindingSource StoreAllocFromBS;
+        private BindingSource StoreAllocToBS;
+        private BindingSource UsersBS;
+        private BindingSource ClientsBS;
 
         public ReadyStoreManager()
         {
@@ -5721,47 +5721,47 @@ dbo.TechStoreGroups AS G ON SG.TechStoreGroupID = G.TechStoreGroupID ORDER BY Te
 
     public class WriteOffStoreManager
     {
-        int CurrentStoreSubGroupID = -1;
-        int CurrentInventoryID = -1;
+        private int CurrentStoreSubGroupID = -1;
+        private int CurrentInventoryID = -1;
 
-        DataTable GroupsDT;
-        DataTable SubGroupsDT;
-        DataTable MovementInvoicesDT;
-        DataTable MovementInvoiceItemsDT;
-        DataTable MeasuresDT;
-        DataTable ColorsDT;
-        DataTable CoversDT;
+        private DataTable GroupsDT;
+        private DataTable SubGroupsDT;
+        private DataTable MovementInvoicesDT;
+        private DataTable MovementInvoiceItemsDT;
+        private DataTable MeasuresDT;
+        private DataTable ColorsDT;
+        private DataTable CoversDT;
         private DataTable PatinaRALDataTable = null;
-        DataTable PatinaDT;
-        DataTable StoreDT;
-        DataTable CurrencyTypesDT;
-        DataTable SellersDT;
-        DataTable FilterSellersDT;
-        DataTable FilterMovSellersDT;
-        DataTable StoreAllocDT;
+        private DataTable PatinaDT;
+        private DataTable StoreDT;
+        private DataTable CurrencyTypesDT;
+        private DataTable SellersDT;
+        private DataTable FilterSellersDT;
+        private DataTable FilterMovSellersDT;
+        private DataTable StoreAllocDT;
 
-        DataTable ArrivalCountDT;
-        DataTable ArrivelFromStoreCountDT;
-        DataTable ExpenseCountDT;
-        DataTable SellingCountDT;
-        DataTable StartRemainsDT;
-        DataTable EndRemainsDT;
+        private DataTable ArrivalCountDT;
+        private DataTable ArrivelFromStoreCountDT;
+        private DataTable ExpenseCountDT;
+        private DataTable SellingCountDT;
+        private DataTable StartRemainsDT;
+        private DataTable EndRemainsDT;
 
-        DataTable SectorsDataTable;
-        DataTable StoreAllocDataTable;
-        DataTable UsersDataTable;
-        DataTable ClientsDT;
+        private DataTable SectorsDataTable;
+        private DataTable StoreAllocDataTable;
+        private DataTable UsersDataTable;
+        private DataTable ClientsDT;
 
-        BindingSource GroupsBS;
-        BindingSource SubGroupsBS;
-        BindingSource MovementInvoicesBS;
-        BindingSource MovementInvoiceItemsBS;
-        BindingSource StoreBS;
-        BindingSource SectorsBS;
-        BindingSource StoreAllocFromBS;
-        BindingSource StoreAllocToBS;
-        BindingSource UsersBS;
-        BindingSource ClientsBS;
+        private BindingSource GroupsBS;
+        private BindingSource SubGroupsBS;
+        private BindingSource MovementInvoicesBS;
+        private BindingSource MovementInvoiceItemsBS;
+        private BindingSource StoreBS;
+        private BindingSource SectorsBS;
+        private BindingSource StoreAllocFromBS;
+        private BindingSource StoreAllocToBS;
+        private BindingSource UsersBS;
+        private BindingSource ClientsBS;
 
         public WriteOffStoreManager()
         {
@@ -6719,39 +6719,39 @@ dbo.TechStoreGroups AS G ON SG.TechStoreGroupID = G.TechStoreGroupID ORDER BY Te
 
     public class PersonalStorageManager
     {
-        int CurrentStoreGroupID = -1;
-        int CurrentStoreSubGroupID = -1;
+        private int CurrentStoreGroupID = -1;
+        private int CurrentStoreSubGroupID = -1;
 
-        DataTable ArrivalCountDT;
-        DataTable ExpenseCountDT;
-        DataTable SellingCountDT;
-        DataTable StartRemainsDT;
-        DataTable EndRemainsDT;
+        private DataTable ArrivalCountDT;
+        private DataTable ExpenseCountDT;
+        private DataTable SellingCountDT;
+        private DataTable StartRemainsDT;
+        private DataTable EndRemainsDT;
 
         private DataTable PatinaRALDataTable = null;
-        DataTable GroupsDataTable;
-        DataTable SubGroupsDataTable;
-        DataTable InvoiceItemsDataTable;
-        DataTable MeasuresDataTable;
-        DataTable ColorsDataTable;
-        DataTable CoversDataTable;
-        DataTable PatinaDataTable;
-        DataTable StoreDataTable;
-        DataTable CurrencyTypesDataTable;
-        DataTable SellersDataTable;
-        DataTable FactoryDataTable;
-        DataTable InvoicesDataTable;
-        DataTable FilterPersonsDataTable;
-        DataTable FilterOtherPersonsDataTable;
-        DataTable StoreAllocDataTable;
+        private DataTable GroupsDataTable;
+        private DataTable SubGroupsDataTable;
+        private DataTable InvoiceItemsDataTable;
+        private DataTable MeasuresDataTable;
+        private DataTable ColorsDataTable;
+        private DataTable CoversDataTable;
+        private DataTable PatinaDataTable;
+        private DataTable StoreDataTable;
+        private DataTable CurrencyTypesDataTable;
+        private DataTable SellersDataTable;
+        private DataTable FactoryDataTable;
+        private DataTable InvoicesDataTable;
+        private DataTable FilterPersonsDataTable;
+        private DataTable FilterOtherPersonsDataTable;
+        private DataTable StoreAllocDataTable;
 
         public BindingSource GroupsBindingSource;
         public BindingSource SubGroupsBindingSource;
         public BindingSource InvoicesBindingSource;
         public BindingSource InvoiceItemsBindingSource;
         public BindingSource StoreBindingSource;
-        BindingSource FilterPersonsBindingSource;
-        BindingSource FilterOtherPersonsBindingSource;
+        private BindingSource FilterPersonsBindingSource;
+        private BindingSource FilterOtherPersonsBindingSource;
 
         public DataGridViewComboBoxColumn ColorsColumn;
         public DataGridViewComboBoxColumn CoversColumn;
@@ -7974,52 +7974,53 @@ dbo.TechStoreGroups AS G ON SG.TechStoreGroupID = G.TechStoreGroupID ORDER BY Te
 
     public class StoreMovementManager
     {
-        bool bNewInvoice = false;
-        int iFactoryID = -1;
-        int iMovementInvoiceID = 0;
+        private bool bNewInvoice = false;
+        private int iFactoryID = -1;
+        private int iMovementInvoiceID = 0;
 
-        string sStoreName = "Store";
+        private string sStoreName = "Store";
 
-        DataTable StoreGroupsDT;
-        DataTable StoreSubGroupsDT;
-        DataTable StoreItemsDT;
-        DataTable MeasuresDT;
-        DataTable ColorsDT;
-        DataTable CoversDT;
-        DataTable PatinaDT;
-        DataTable CurrencyTypesDT;
-        DataTable ManufactureStoreDT;
+        private DataTable StoreGroupsDT;
+        private DataTable StoreSubGroupsDT;
+        private DataTable StoreItemsDT;
+        private DataTable MeasuresDT;
+        private DataTable ColorsDT;
+        private DataTable CoversDT;
+        private DataTable PatinaDT;
+        private DataTable CurrencyTypesDT;
+
+        private DataTable ManufactureStoreDT;
         //DataTable TempManufactureStoreDT;
-        DataTable MainStoreDT;
+        private DataTable MainStoreDT;
         //DataTable TempMainStoreDT;
-        DataTable ReadyStoreDT;
+        private DataTable ReadyStoreDT;
         //DataTable TempReadyStoreDT;
-        DataTable WriteOffStoreDT;
+        private DataTable WriteOffStoreDT;
         //DataTable TempWriteOffStoreDT;
-        DataTable PersonalStoreDT;
+        private DataTable PersonalStoreDT;
         //DataTable TempPersonalStoreDT;
-        DataTable SellersDT;
+        private DataTable SellersDT;
 
-        SqlDataAdapter ManufactureStoreDA;
-        SqlCommandBuilder ManufactureStoreCB;
-        SqlDataAdapter MainStoreDA;
-        SqlCommandBuilder MainStoreCB;
-        SqlDataAdapter ReadyStoreDA;
-        SqlCommandBuilder ReadyStoreCB;
-        SqlDataAdapter WriteOffStoreDA;
-        SqlCommandBuilder WriteOffStoreCB;
-        SqlDataAdapter PersonalStoreDA;
-        SqlCommandBuilder PersonalStoreCB;
+        private SqlDataAdapter ManufactureStoreDA;
+        private SqlCommandBuilder ManufactureStoreCB;
+        private SqlDataAdapter MainStoreDA;
+        private SqlCommandBuilder MainStoreCB;
+        private SqlDataAdapter ReadyStoreDA;
+        private SqlCommandBuilder ReadyStoreCB;
+        private SqlDataAdapter WriteOffStoreDA;
+        private SqlCommandBuilder WriteOffStoreCB;
+        private SqlDataAdapter PersonalStoreDA;
+        private SqlCommandBuilder PersonalStoreCB;
 
-        BindingSource StoreItemsBS;
-        BindingSource ManufactureStoreBS;
-        BindingSource MainStoreBS;
-        BindingSource ReadyStoreBS;
-        BindingSource WriteOffStoreBS;
-        BindingSource PersonalStoreBS;
-        BindingSource GroupsBS;
-        BindingSource SubGroupsBS;
-        BindingSource CurrencyTypesBS;
+        private BindingSource StoreItemsBS;
+        private BindingSource ManufactureStoreBS;
+        private BindingSource MainStoreBS;
+        private BindingSource ReadyStoreBS;
+        private BindingSource WriteOffStoreBS;
+        private BindingSource PersonalStoreBS;
+        private BindingSource GroupsBS;
+        private BindingSource SubGroupsBS;
+        private BindingSource CurrencyTypesBS;
         private DataTable PatinaRALDataTable = null;
 
         public StoreMovementManager()
@@ -11203,28 +11204,28 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
 
     public class MovementInvoices
     {
-        int iMovementInvoiceID = -1;
+        private int iMovementInvoiceID = -1;
 
-        DataTable ManufactureStoreDT;
-        DataTable MovementInvoicesDT;
-        DataTable MovementInvoiceDetailsDT;
-        DataTable MainStoreDT;
-        DataTable ReadyStoreDT;
-        DataTable WriteOffStoreDT;
+        private DataTable ManufactureStoreDT;
+        private DataTable MovementInvoicesDT;
+        private DataTable MovementInvoiceDetailsDT;
+        private DataTable MainStoreDT;
+        private DataTable ReadyStoreDT;
+        private DataTable WriteOffStoreDT;
 
-        SqlDataAdapter ManufactureStoreDA;
-        SqlDataAdapter MovementInvoicesDA;
-        SqlDataAdapter MovementInvoiceDetailsDA;
-        SqlDataAdapter MainStoreDA;
-        SqlDataAdapter ReadyStoreDA;
-        SqlDataAdapter WriteOffStoreDA;
+        private SqlDataAdapter ManufactureStoreDA;
+        private SqlDataAdapter MovementInvoicesDA;
+        private SqlDataAdapter MovementInvoiceDetailsDA;
+        private SqlDataAdapter MainStoreDA;
+        private SqlDataAdapter ReadyStoreDA;
+        private SqlDataAdapter WriteOffStoreDA;
 
-        SqlCommandBuilder ManufactureStoreCB;
-        SqlCommandBuilder MovementInvoicesCB;
-        SqlCommandBuilder MovementInvoiceDetailsCB;
-        SqlCommandBuilder MainStoreCB;
-        SqlCommandBuilder ReadyStoreCB;
-        SqlCommandBuilder WriteOffStoreCB;
+        private SqlCommandBuilder ManufactureStoreCB;
+        private SqlCommandBuilder MovementInvoicesCB;
+        private SqlCommandBuilder MovementInvoiceDetailsCB;
+        private SqlCommandBuilder MainStoreCB;
+        private SqlCommandBuilder ReadyStoreCB;
+        private SqlCommandBuilder WriteOffStoreCB;
 
         public MovementInvoices()
         {
@@ -11709,31 +11710,31 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
 
     public class SellersManager
     {
-        int CurrentSellerID = -1;
-        int CurrentSellerGroupID = -1;
-        int CurrentSellerSubGroupID = -1;
+        private int CurrentSellerID = -1;
+        private int CurrentSellerGroupID = -1;
+        private int CurrentSellerSubGroupID = -1;
 
-        DataTable SellersDataTable;
-        DataTable SellersGroupsDataTable;
-        DataTable SellersSubGroupsDataTable;
-        DataTable SellersInfoDataTable;
+        private DataTable SellersDataTable;
+        private DataTable SellersGroupsDataTable;
+        private DataTable SellersSubGroupsDataTable;
+        private DataTable SellersInfoDataTable;
 
-        BindingSource SellersBindingSource;
-        BindingSource SellersGroupsBindingSource;
-        BindingSource SellersSubGroupsBindingSource;
+        private BindingSource SellersBindingSource;
+        private BindingSource SellersGroupsBindingSource;
+        private BindingSource SellersSubGroupsBindingSource;
 
-        PercentageDataGrid SellersDataGrid;
-        PercentageDataGrid SellersGroupsDataGrid;
-        PercentageDataGrid SellersSubGroupsDataGrid;
-        PercentageDataGrid SellersInfoDataGrid;
+        private readonly PercentageDataGrid SellersDataGrid;
+        private readonly PercentageDataGrid SellersGroupsDataGrid;
+        private readonly PercentageDataGrid SellersSubGroupsDataGrid;
+        private readonly PercentageDataGrid SellersInfoDataGrid;
 
-        SqlDataAdapter SellersDA;
-        SqlDataAdapter SellersGroupsDA;
-        SqlDataAdapter SellersSubGroupsDA;
+        private SqlDataAdapter SellersDA;
+        private SqlDataAdapter SellersGroupsDA;
+        private SqlDataAdapter SellersSubGroupsDA;
 
-        SqlCommandBuilder SellersCB;
-        SqlCommandBuilder SellersGroupsCB;
-        SqlCommandBuilder SellersSubGroupsCB;
+        private SqlCommandBuilder SellersCB;
+        private SqlCommandBuilder SellersGroupsCB;
+        private SqlCommandBuilder SellersSubGroupsCB;
 
         public SellersManager(
             ref PercentageDataGrid tSellersDataGrid,
@@ -12338,9 +12339,9 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
 
     public class PurchaseInvoiceToExcel
     {
-        private DataTable PurchaseInvoiceDT;
-        private DataTable PurchaseInvoiceDTOption;
-        Excel Ex = null;
+        private readonly DataTable PurchaseInvoiceDT;
+        private readonly DataTable PurchaseInvoiceDTOption;
+        private readonly Excel Ex = null;
 
         public PurchaseInvoiceToExcel(int PurchaseInvoiceID)
         {
@@ -12526,9 +12527,9 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
 
     public class Barcode
     {
-        BarcodeLib.Barcode Barcod;
+        private readonly BarcodeLib.Barcode Barcod;
 
-        SolidBrush FontBrush;
+        private readonly SolidBrush FontBrush;
 
         public enum BarcodeLength { Short, Medium, Long };
 
@@ -12628,8 +12629,8 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
     {
         public DataTable StoreDataTable;
         public BindingSource StoreBindingSource;
-        SqlDataAdapter StoreDA;
-        SqlCommandBuilder StoreCB;
+        private SqlDataAdapter StoreDA;
+        private SqlCommandBuilder StoreCB;
 
         public ConnectUnloads()
         {
@@ -12759,7 +12760,7 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
     public class ViewConnectUnloads
     {
         public DataGridView UnloadDataGrid, GoodGrid;
-        DataTable Good;
+        private readonly DataTable Good;
 
 
         public ViewConnectUnloads(ref PercentageDataGrid tUnloadDataGrid, ref PercentageDataGrid tGoodGrid)
@@ -12932,33 +12933,33 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
 
     public class PersonalInventoryManager
     {
-        int iInventoryID = -1;
-        int iFactoryID = -1;
-        int iPersonID = -1;
-        int Month = 0;
-        int Year = 0;
-        DateTime InventoryDate;
+        private int iInventoryID = -1;
+        private int iFactoryID = -1;
+        private int iPersonID = -1;
+        private readonly int Month = 0;
+        private readonly int Year = 0;
+        private DateTime InventoryDate;
 
-        DataTable MeasuresDT;
-        DataTable ColorsDT;
-        DataTable CoversDT;
-        DataTable PatinaDT;
-        DataTable StoreItemsDT;
-        DataTable StoreDT;
-        DataTable StoreGroupsDT;
-        DataTable StoreSubGroupsDT;
+        private DataTable MeasuresDT;
+        private DataTable ColorsDT;
+        private DataTable CoversDT;
+        private DataTable PatinaDT;
+        private DataTable StoreItemsDT;
+        private DataTable StoreDT;
+        private DataTable StoreGroupsDT;
+        private DataTable StoreSubGroupsDT;
         private DataTable PatinaRALDataTable = null;
-        DataTable InventoryDT;
-        DataTable InventoryDetailsDT;
+        private DataTable InventoryDT;
+        private DataTable InventoryDetailsDT;
 
-        BindingSource StoreBS;
-        BindingSource SubGroupsBS;
-        BindingSource GroupsBS;
+        private BindingSource StoreBS;
+        private BindingSource SubGroupsBS;
+        private BindingSource GroupsBS;
 
-        SqlDataAdapter InventoryDA;
-        SqlDataAdapter StoreDA;
-        SqlCommandBuilder InventoryCB;
-        SqlCommandBuilder StoreCB;
+        private SqlDataAdapter InventoryDA;
+        private SqlDataAdapter StoreDA;
+        private SqlCommandBuilder InventoryCB;
+        private SqlCommandBuilder StoreCB;
 
         public DataGridViewComboBoxColumn ColorsColumn
         {
@@ -14701,32 +14702,31 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
 
     public class MainStoreInventoryManager
     {
+        private int iInventoryID = -1;
+        private int iStoreGroupID = -1;
+        private int iFactoryID = -1;
+        private readonly int Month = 0;
+        private readonly int Year = 0;
+        private DateTime InventoryDate;
 
-        int iInventoryID = -1;
-        int iStoreGroupID = -1;
-        int iFactoryID = -1;
-        int Month = 0;
-        int Year = 0;
-        DateTime InventoryDate;
-
-        DataTable MeasuresDT;
-        DataTable ColorsDT;
-        DataTable CoversDT;
-        DataTable PatinaDT;
-        DataTable StoreItemsDT;
-        DataTable StoreDT;
-        DataTable StoreSubGroupsDT;
-        DataTable InventoryDT;
-        DataTable InventoryDetailsDT;
+        private DataTable MeasuresDT;
+        private DataTable ColorsDT;
+        private DataTable CoversDT;
+        private DataTable PatinaDT;
+        private DataTable StoreItemsDT;
+        private DataTable StoreDT;
+        private DataTable StoreSubGroupsDT;
+        private DataTable InventoryDT;
+        private DataTable InventoryDetailsDT;
         private DataTable PatinaRALDataTable = null;
 
-        BindingSource StoreBS;
-        BindingSource SubGroupsBS;
+        private BindingSource StoreBS;
+        private BindingSource SubGroupsBS;
 
-        SqlDataAdapter InventoryDA;
-        SqlDataAdapter StoreDA;
-        SqlCommandBuilder InventoryCB;
-        SqlCommandBuilder StoreCB;
+        private SqlDataAdapter InventoryDA;
+        private SqlDataAdapter StoreDA;
+        private SqlCommandBuilder InventoryCB;
+        private SqlCommandBuilder StoreCB;
 
         public DataGridViewComboBoxColumn ColorsColumn
         {
@@ -15919,31 +15919,31 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
 
     public class ManufactureInventoryManager
     {
-        int iInventoryID = -1;
-        int iStoreGroupID = -1;
-        int iFactoryID = -1;
-        int Month = 0;
-        int Year = 0;
-        DateTime InventoryDate;
+        private int iInventoryID = -1;
+        private int iStoreGroupID = -1;
+        private int iFactoryID = -1;
+        private readonly int Month = 0;
+        private readonly int Year = 0;
+        private DateTime InventoryDate;
 
-        DataTable MeasuresDT;
-        DataTable ColorsDT;
-        DataTable CoversDT;
-        DataTable PatinaDT;
+        private DataTable MeasuresDT;
+        private DataTable ColorsDT;
+        private DataTable CoversDT;
+        private DataTable PatinaDT;
         private DataTable PatinaRALDataTable = null;
-        DataTable StoreItemsDT;
-        DataTable StoreDT;
-        DataTable StoreSubGroupsDT;
-        DataTable InventoryDT;
-        DataTable InventoryDetailsDT;
+        private DataTable StoreItemsDT;
+        private DataTable StoreDT;
+        private DataTable StoreSubGroupsDT;
+        private DataTable InventoryDT;
+        private DataTable InventoryDetailsDT;
 
-        BindingSource StoreBS;
-        BindingSource SubGroupsBS;
+        private BindingSource StoreBS;
+        private BindingSource SubGroupsBS;
 
-        SqlDataAdapter InventoryDA;
-        SqlDataAdapter StoreDA;
-        SqlCommandBuilder InventoryCB;
-        SqlCommandBuilder StoreCB;
+        private SqlDataAdapter InventoryDA;
+        private SqlDataAdapter StoreDA;
+        private SqlCommandBuilder InventoryCB;
+        private SqlCommandBuilder StoreCB;
 
         public DataGridViewComboBoxColumn ColorsColumn
         {
@@ -16997,31 +16997,31 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
 
     public class ReadyInventoryManager
     {
-        int iInventoryID = -1;
-        int iStoreGroupID = -1;
-        int iFactoryID = -1;
-        int Month = 0;
-        int Year = 0;
-        DateTime InventoryDate;
+        private int iInventoryID = -1;
+        private int iStoreGroupID = -1;
+        private int iFactoryID = -1;
+        private readonly int Month = 0;
+        private readonly int Year = 0;
+        private DateTime InventoryDate;
 
-        DataTable MeasuresDT;
-        DataTable ColorsDT;
-        DataTable CoversDT;
-        DataTable PatinaDT;
+        private DataTable MeasuresDT;
+        private DataTable ColorsDT;
+        private DataTable CoversDT;
+        private DataTable PatinaDT;
         private DataTable PatinaRALDataTable = null;
-        DataTable StoreItemsDT;
-        DataTable StoreDT;
-        DataTable StoreSubGroupsDT;
-        DataTable InventoryDT;
-        DataTable InventoryDetailsDT;
+        private DataTable StoreItemsDT;
+        private DataTable StoreDT;
+        private DataTable StoreSubGroupsDT;
+        private DataTable InventoryDT;
+        private DataTable InventoryDetailsDT;
 
-        BindingSource StoreBS;
-        BindingSource SubGroupsBS;
+        private BindingSource StoreBS;
+        private BindingSource SubGroupsBS;
 
-        SqlDataAdapter InventoryDA;
-        SqlDataAdapter StoreDA;
-        SqlCommandBuilder InventoryCB;
-        SqlCommandBuilder StoreCB;
+        private SqlDataAdapter InventoryDA;
+        private SqlDataAdapter StoreDA;
+        private SqlCommandBuilder InventoryCB;
+        private SqlCommandBuilder StoreCB;
 
         public DataGridViewComboBoxColumn ColorsColumn
         {
@@ -18046,25 +18046,25 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
 
     public class MainStoreInventoryList
     {
-        DateTime InventoryDate;
+        private DateTime InventoryDate;
 
-        int FactoryID = 0;
-        int Month = 0;
-        int Year = 0;
+        private readonly int FactoryID = 0;
+        private readonly int Month = 0;
+        private readonly int Year = 0;
 
-        DataTable MeasuresDT;
-        DataTable ColorsDT;
-        DataTable CoversDT;
-        DataTable PatinaDT;
+        private DataTable MeasuresDT;
+        private DataTable ColorsDT;
+        private DataTable CoversDT;
+        private DataTable PatinaDT;
         private DataTable PatinaRALDataTable = null;
-        DataTable StoreItemsDT;
-        DataTable StoreDT;
-        DataTable StoreGroupsDT;
-        DataTable StoreSubGroupsDT;
+        private DataTable StoreItemsDT;
+        private DataTable StoreDT;
+        private DataTable StoreGroupsDT;
+        private DataTable StoreSubGroupsDT;
 
-        DataTable[] StoreCategoryDT;
+        private DataTable[] StoreCategoryDT;
 
-        ArrayList[] HeaderNames;
+        private ArrayList[] HeaderNames;
 
         public MainStoreInventoryList(int iFactoryID, string InventoryName,
             int iMonth, int iYear)
@@ -19282,25 +19282,25 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
 
     public class ManufactureStoreInventoryList
     {
-        DateTime InventoryDate;
+        private DateTime InventoryDate;
 
-        int FactoryID = 0;
-        int Month = 0;
-        int Year = 0;
+        private readonly int FactoryID = 0;
+        private readonly int Month = 0;
+        private readonly int Year = 0;
 
-        DataTable MeasuresDT;
-        DataTable ColorsDT;
-        DataTable CoversDT;
-        DataTable PatinaDT;
+        private DataTable MeasuresDT;
+        private DataTable ColorsDT;
+        private DataTable CoversDT;
+        private DataTable PatinaDT;
         private DataTable PatinaRALDataTable = null;
-        DataTable StoreItemsDT;
-        DataTable StoreDT;
-        DataTable StoreGroupsDT;
-        DataTable StoreSubGroupsDT;
+        private DataTable StoreItemsDT;
+        private DataTable StoreDT;
+        private DataTable StoreGroupsDT;
+        private DataTable StoreSubGroupsDT;
 
-        DataTable[] StoreCategoryDT;
+        private DataTable[] StoreCategoryDT;
 
-        ArrayList[] HeaderNames;
+        private ArrayList[] HeaderNames;
 
         public ManufactureStoreInventoryList(int iFactoryID, string InventoryName,
             int iMonth, int iYear)
@@ -20486,25 +20486,25 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
 
     public class ReadyStoreInventoryList
     {
-        DateTime InventoryDate;
+        private DateTime InventoryDate;
 
-        int FactoryID = 0;
-        int Month = 0;
-        int Year = 0;
+        private readonly int FactoryID = 0;
+        private readonly int Month = 0;
+        private readonly int Year = 0;
 
-        DataTable MeasuresDT;
-        DataTable ColorsDT;
-        DataTable CoversDT;
-        DataTable PatinaDT;
+        private DataTable MeasuresDT;
+        private DataTable ColorsDT;
+        private DataTable CoversDT;
+        private DataTable PatinaDT;
         private DataTable PatinaRALDataTable = null;
-        DataTable StoreItemsDT;
-        DataTable StoreDT;
-        DataTable StoreGroupsDT;
-        DataTable StoreSubGroupsDT;
+        private DataTable StoreItemsDT;
+        private DataTable StoreDT;
+        private DataTable StoreGroupsDT;
+        private DataTable StoreSubGroupsDT;
 
-        DataTable[] StoreCategoryDT;
+        private DataTable[] StoreCategoryDT;
 
-        ArrayList[] HeaderNames;
+        private ArrayList[] HeaderNames;
 
         public ReadyStoreInventoryList(int iFactoryID, string InventoryName,
             int iMonth, int iYear)
@@ -21656,25 +21656,25 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
 
     public class PersonalStoreInventoryList
     {
-        DateTime InventoryDate;
+        private DateTime InventoryDate;
 
-        int FactoryID = 0;
-        int Month = 0;
-        int Year = 0;
+        private readonly int FactoryID = 0;
+        private readonly int Month = 0;
+        private readonly int Year = 0;
 
-        DataTable MeasuresDT;
-        DataTable ColorsDT;
-        DataTable CoversDT;
-        DataTable PatinaDT;
+        private DataTable MeasuresDT;
+        private DataTable ColorsDT;
+        private DataTable CoversDT;
+        private DataTable PatinaDT;
         private DataTable PatinaRALDataTable = null;
-        DataTable StoreItemsDT;
-        DataTable StoreDT;
-        DataTable StoreGroupsDT;
-        DataTable StoreSubGroupsDT;
+        private DataTable StoreItemsDT;
+        private DataTable StoreDT;
+        private DataTable StoreGroupsDT;
+        private DataTable StoreSubGroupsDT;
 
-        DataTable[] StoreCategoryDT;
+        private DataTable[] StoreCategoryDT;
 
-        ArrayList[] HeaderNames;
+        private ArrayList[] HeaderNames;
 
         public PersonalStoreInventoryList(int iFactoryID, string InventoryName,
             int iMonth, int iYear)
@@ -22880,17 +22880,17 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
 
     public class MovementInvoiceToExcel
     {
-        int MovementInvoiceID = 0;
-        DataTable MeasuresDT;
-        DataTable ColorsDT;
-        DataTable CoversDT;
-        DataTable PatinaDT;
+        private readonly int MovementInvoiceID = 0;
+        private DataTable MeasuresDT;
+        private DataTable ColorsDT;
+        private DataTable CoversDT;
+        private DataTable PatinaDT;
         private DataTable PatinaRALDataTable = null;
-        DataTable StoreItemsDT;
-        DataTable StoreDT;
+        private DataTable StoreItemsDT;
+        private DataTable StoreDT;
 
-        DataTable MovementInvoicesDT;
-        DataTable ResultTableDT;
+        private DataTable MovementInvoicesDT;
+        private DataTable ResultTableDT;
 
         public MovementInvoiceToExcel(int iMovementInvoiceID)
         {
@@ -23674,28 +23674,28 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
 
     public class ReportToExcel
     {
-        ReportParameters ReportParameters;
-        int FactoryID = 0;
+        private readonly ReportParameters ReportParameters;
+        private readonly int FactoryID = 0;
 
-        DataTable MeasuresDT;
-        DataTable ColorsDT;
-        DataTable CoversDT;
-        DataTable PatinaDT;
-        DataTable StoreItemsDT;
-        DataTable StoreDT;
+        private DataTable MeasuresDT;
+        private DataTable ColorsDT;
+        private DataTable CoversDT;
+        private DataTable PatinaDT;
+        private DataTable StoreItemsDT;
+        private DataTable StoreDT;
         private DataTable PatinaRALDataTable = null;
-        DataTable StoreGroupsDT;
-        DataTable StoreSubGroupsDT;
-        DataTable ArrivalCountDT;
-        DataTable ExpenseCountDT;
-        DataTable SellingCountDT;
-        DataTable StartCountDT;
-        DataTable EndCountDT;
+        private DataTable StoreGroupsDT;
+        private DataTable StoreSubGroupsDT;
+        private DataTable ArrivalCountDT;
+        private DataTable ExpenseCountDT;
+        private DataTable SellingCountDT;
+        private DataTable StartCountDT;
+        private DataTable EndCountDT;
 
-        DataTable CurrencyDT;
-        DataTable NaturalUnitsDT;
-        DataTable FinancialDT;
-        DataTable StoreParametersDT;
+        private DataTable CurrencyDT;
+        private DataTable NaturalUnitsDT;
+        private DataTable FinancialDT;
+        private DataTable StoreParametersDT;
 
         public ReportToExcel(int iFactoryID, ReportParameters tReportParameters)
         {
@@ -27567,28 +27567,28 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
 
     public class ManufactureReportToExcel
     {
-        ReportParameters ReportParameters;
-        int FactoryID = 0;
+        private readonly ReportParameters ReportParameters;
+        private readonly int FactoryID = 0;
 
-        DataTable MeasuresDT;
-        DataTable ColorsDT;
-        DataTable CoversDT;
-        DataTable PatinaDT;
+        private DataTable MeasuresDT;
+        private DataTable ColorsDT;
+        private DataTable CoversDT;
+        private DataTable PatinaDT;
         private DataTable PatinaRALDataTable = null;
-        DataTable StoreItemsDT;
-        DataTable StoreDT;
-        DataTable StoreGroupsDT;
-        DataTable StoreSubGroupsDT;
-        DataTable ArrivalCountDT;
-        DataTable ExpenseCountDT;
-        DataTable SellingCountDT;
-        DataTable StartCountDT;
-        DataTable EndCountDT;
+        private DataTable StoreItemsDT;
+        private DataTable StoreDT;
+        private DataTable StoreGroupsDT;
+        private DataTable StoreSubGroupsDT;
+        private DataTable ArrivalCountDT;
+        private DataTable ExpenseCountDT;
+        private DataTable SellingCountDT;
+        private DataTable StartCountDT;
+        private DataTable EndCountDT;
 
-        DataTable CurrencyDT;
-        DataTable NaturalUnitsDT;
-        DataTable FinancialDT;
-        DataTable StoreParametersDT;
+        private DataTable CurrencyDT;
+        private DataTable NaturalUnitsDT;
+        private DataTable FinancialDT;
+        private DataTable StoreParametersDT;
 
         public ManufactureReportToExcel(int iFactoryID, ReportParameters tReportParameters)
         {
@@ -31559,18 +31559,18 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
 
     public class CuttingToolsClass
     {
-        PercentageDataGrid DecorProductDataGrid;
-        PercentageDataGrid DecorDataGrid;
+        private readonly PercentageDataGrid DecorProductDataGrid;
+        private readonly PercentageDataGrid DecorDataGrid;
         public PercentageDataGrid HeadsDataGrid;
 
-        DataTable DecorProductDT;
-        DataTable DecorDT;
-        DataTable DecorDTresult;
-        DataTable HeadsDT;
-        DataTable HeadsDTresult;
-        DataTable HeadTypesDT;
-        DataTable HeadNumbersDT;
-        DataTable HeadNumbersDTresult;
+        private DataTable DecorProductDT;
+        private DataTable DecorDT;
+        private DataTable DecorDTresult;
+        private DataTable HeadsDT;
+        private DataTable HeadsDTresult;
+        private DataTable HeadTypesDT;
+        private DataTable HeadNumbersDT;
+        private DataTable HeadNumbersDTresult;
 
         public BindingSource HeadsBS;
         public BindingSource HeadTypesBS;
@@ -31881,17 +31881,17 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
 
     public class GeneticsManager
     {
-        DataTable ColorsDT;
-        DataTable CoversDT;
-        DataTable PatinaDT;
+        private DataTable ColorsDT;
+        private DataTable CoversDT;
+        private DataTable PatinaDT;
         private DataTable PatinaRALDataTable = null;
-        DataTable PurchaseInvoicesDT;
-        DataTable SellersDT;
-        DataTable StoreDT;
-        DataTable StoreGeneticsDT;
-        DataTable TechStoreDT;
+        private DataTable PurchaseInvoicesDT;
+        private DataTable SellersDT;
+        private DataTable StoreDT;
+        private DataTable StoreGeneticsDT;
+        private DataTable TechStoreDT;
 
-        GeneticsInfo GeneticsInfo;
+        private GeneticsInfo GeneticsInfo;
 
         public GeneticsManager()
         {
@@ -32509,7 +32509,7 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
 
     public class StoreGeneticsLabel
     {
-        Infinium.Modules.Packages.Marketing.Barcode Barcode;
+        private readonly Infinium.Modules.Packages.Marketing.Barcode Barcode;
         public PrintDocument PD;
 
         public int PaperHeight = 488;
@@ -32521,23 +32521,23 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
 
         public bool Printed = false;
 
-        SolidBrush FontBrush;
+        private SolidBrush FontBrush;
 
-        Font TechGroupNameFont;
-        Font TechStoreNameFont;
-        Font TechStoreNameSmallFont;
-        Font InfoFont;
-        Font HeaderFont;
-        Font SimpleFont;
-        Font DispatchFont;
+        private Font TechGroupNameFont;
+        private Font TechStoreNameFont;
+        private Font TechStoreNameSmallFont;
+        private Font InfoFont;
+        private Font HeaderFont;
+        private Font SimpleFont;
+        private Font DispatchFont;
 
-        Pen Pen;
+        private Pen Pen;
 
 
-        Image ZTTPS;
-        Image ZTProfil;
-        Image STB;
-        Image RST;
+        private readonly Image ZTTPS;
+        private readonly Image ZTProfil;
+        private readonly Image STB;
+        private readonly Image RST;
 
         public ArrayList LabelInfo;
 
@@ -32835,17 +32835,17 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
 
     public class FacingRollersStocks
     {
-        HSSFWorkbook hssfworkbook;
-        HSSFSheet ZOVProfilCommonSheet;
-        HSSFFont HeaderFont;
-        HSSFFont SimpleFont;
-        HSSFCellStyle HeaderStyle;
-        HSSFCellStyle SimpleCellStyle;
-        HSSFCellStyle EmptyCellStyle;
+        private readonly HSSFWorkbook hssfworkbook;
+        private readonly HSSFSheet ZOVProfilCommonSheet;
+        private readonly HSSFFont HeaderFont;
+        private readonly HSSFFont SimpleFont;
+        private readonly HSSFCellStyle HeaderStyle;
+        private readonly HSSFCellStyle SimpleCellStyle;
+        private readonly HSSFCellStyle EmptyCellStyle;
 
-        DataTable dtSubGroups;
-        DataTable dtStoreItems;
-        DataTable dtManufactureStore;
+        private readonly DataTable dtSubGroups;
+        private readonly DataTable dtStoreItems;
+        private readonly DataTable dtManufactureStore;
 
         public FacingRollersStocks()
         {

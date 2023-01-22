@@ -9,23 +9,24 @@ using System.Linq;
 
 namespace Infinium
 {
-    class ClientDecorPrice
+    internal class ClientDecorPrice
     {
-        private decimal _rate = 1;
+        private readonly decimal _rate = 1;
         //HSSFWorkbook hssfworkbook;
-        HSSFSheet sheet1;
-        HSSFSheet sheet2;
+        private HSSFSheet sheet1;
+
+        private HSSFSheet sheet2;
         //string CatalogConnectionString = @"Data Source=v02.bizneshost.by, 32433;Initial Catalog=Catalog;Persist Security Info=True;Connection Timeout=1;User ID=hercules;Password=1q2w3e4r";
         //string CatalogConnectionString = @"Data Source=romanchuk\romanchuk;Initial Catalog=Catalog;Persist Security Info=True;Connection Timeout=1;User ID=sa;Password=1";
-        DataTable FrameColorsDataTable = null;
-        DataTable DecorDataTable = null;
-        DataTable PatinaDataTable = null;
-        DataTable PatinaRALDataTable = null;
-        DataTable DecorConfigDataTable = null;
-        DataTable ProductsDataTable = null;
-        DataTable ResultDecorDataTable = null;
-        DataTable ExcluziveTable = null;
-        DataTable NotExcluziveTable = null;
+        private DataTable FrameColorsDataTable;
+        private DataTable DecorDataTable;
+        private DataTable PatinaDataTable;
+        private readonly DataTable PatinaRALDataTable;
+        private DataTable DecorConfigDataTable;
+        private DataTable ProductsDataTable;
+        private DataTable ResultDecorDataTable;
+        private DataTable ExcluziveTable;
+        private DataTable NotExcluziveTable;
         public ClientDecorPrice(decimal rate)
         {
             _rate = rate;

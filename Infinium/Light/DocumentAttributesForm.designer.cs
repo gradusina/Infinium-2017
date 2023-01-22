@@ -1,11 +1,15 @@
-﻿namespace Infinium
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+using ComponentFactory.Krypton.Toolkit;
+
+namespace Infinium
 {
     partial class DocumentAttributesForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -358,23 +362,23 @@
 
         #endregion
 
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge20;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge21;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge22;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge23;
-        private ComponentFactory.Krypton.Toolkit.KryptonPalette StandardButtonsPalette;
-        private System.Windows.Forms.Timer AnimateTimer;
-        private ComponentFactory.Krypton.Toolkit.KryptonTextBox kryptonTextBox1;
-        private System.Windows.Forms.Timer timer1;
+        private KryptonBorderEdge kryptonBorderEdge20;
+        private KryptonBorderEdge kryptonBorderEdge21;
+        private KryptonBorderEdge kryptonBorderEdge22;
+        private KryptonBorderEdge kryptonBorderEdge23;
+        private KryptonPalette StandardButtonsPalette;
+        private Timer AnimateTimer;
+        private KryptonTextBox kryptonTextBox1;
+        private Timer timer1;
         private InfiniumFilesAttributesList InfiniumDocumentsAttributesList;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton CancButton;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton OKButton;
-        private ComponentFactory.Krypton.Toolkit.KryptonComboBox UsersComboBox;
-        private System.Windows.Forms.PictureBox AddUserButton;
+        private KryptonButton CancButton;
+        private KryptonButton OKButton;
+        private KryptonComboBox UsersComboBox;
+        private PictureBox AddUserButton;
         private InfiniumFilesUsersList InfiniumDocumentsUsersList;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge1;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge19;
-        private ComponentFactory.Krypton.Toolkit.KryptonCheckBox FirstSignCheckBox;
-        private System.Windows.Forms.Label label1;
+        private KryptonBorderEdge kryptonBorderEdge1;
+        private KryptonBorderEdge kryptonBorderEdge19;
+        private KryptonCheckBox FirstSignCheckBox;
+        private Label label1;
     }
 }

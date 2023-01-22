@@ -7,14 +7,14 @@ namespace Infinium.Modules.Storage.StoreLabels
 {
     public class StoreLabelsManager
     {
-        DataTable dtColors;
-        DataTable dtCovers;
-        DataTable dtPatina;
+        private DataTable dtColors;
+        private DataTable dtCovers;
+        private DataTable dtPatina;
 
-        DataTable dtStoreLabels;
-        DataTable dtStore;
-        BindingSource bsStoreLabels;
-        BindingSource bsStore;
+        private DataTable dtStoreLabels;
+        private DataTable dtStore;
+        private BindingSource bsStoreLabels;
+        private BindingSource bsStore;
 
         public DataGridViewComboBoxColumn ColorsColumn;
         public DataGridViewComboBoxColumn CoversColumn;

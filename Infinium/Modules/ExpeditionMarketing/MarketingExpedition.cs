@@ -25,10 +25,10 @@ namespace Infinium.Modules.Marketing.Expedition
 {
     public class MarketingExpeditionFrontsOrders
     {
-        private PercentageDataGrid FrontsOrdersDataGrid = null;
+        private readonly PercentageDataGrid FrontsOrdersDataGrid = null;
 
-        int CurrentPackNumber = 1;
-        int CurrentMainOrder = 1;
+        private int CurrentPackNumber = 1;
+        private int CurrentMainOrder = 1;
 
         public DataTable FrontsOrdersDataTable = null;
         public DataTable FrontsDataTable = null;
@@ -453,7 +453,7 @@ namespace Infinium.Modules.Marketing.Expedition
             FrontsOrdersDataGrid.CellFormatting += FrontsOrdersDataGrid_CellFormatting;
         }
 
-        void FrontsOrdersDataGrid_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        private void FrontsOrdersDataGrid_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             PercentageDataGrid grid = (PercentageDataGrid)sender;
             if (grid.Columns.Contains("PatinaColumn") && (e.ColumnIndex == grid.Columns["PatinaColumn"].Index)
@@ -746,10 +746,10 @@ namespace Infinium.Modules.Marketing.Expedition
 
     public class MarketingExpeditionDecorOrders
     {
-        int CurrentPackNumber = 1;
-        int CurrentMainOrder = 1;
+        private int CurrentPackNumber = 1;
+        private int CurrentMainOrder = 1;
 
-        private PercentageDataGrid MainOrdersDecorOrdersDataGrid = null;
+        private readonly PercentageDataGrid MainOrdersDecorOrdersDataGrid = null;
 
         private DataTable ColorsDataTable = null;
         public DataTable PatinaDataTable = null;
@@ -1436,7 +1436,7 @@ namespace Infinium.Modules.Marketing.Expedition
         public PercentageDataGrid MainOrdersDataGrid = null;
         //public PercentageDataGrid MegaOrdersDataGrid = null;
         public PercentageDataGrid PackagesDataGrid = null;
-        private DevExpress.XtraTab.XtraTabControl OrdersTabControl = null;
+        private readonly DevExpress.XtraTab.XtraTabControl OrdersTabControl = null;
 
         private DataTable dtRolePermissions = null;
         private DataTable ClientsDataTable = null;
@@ -4448,23 +4448,23 @@ namespace Infinium.Modules.Marketing.Expedition
     public class MarketingDispatch
     {
         //DataTable PaidDispatchesDT;
-        DataTable AllDispatchFrontsWeightDT;
-        DataTable AllDispatchDecorWeightDT;
-        DataTable AllMainOrdersSquareDT;
-        DataTable AllMainOrdersFrontsWeightDT;
-        DataTable AllMainOrdersDecorWeightDT;
-        DataTable AllMegaBatchNumbersDT;
-        DataTable DispatchInfoDT;
-        DataTable RealDispTimeDT;
-        DataTable DispatchDT;
-        DataTable DispatchDatesDT;
-        DataTable DispatchContentDT;
-        DataTable ClientsDispatchesDT;
-        DataTable ClientsIncomesDT;
+        private DataTable AllDispatchFrontsWeightDT;
+        private DataTable AllDispatchDecorWeightDT;
+        private DataTable AllMainOrdersSquareDT;
+        private DataTable AllMainOrdersFrontsWeightDT;
+        private DataTable AllMainOrdersDecorWeightDT;
+        private DataTable AllMegaBatchNumbersDT;
+        private DataTable DispatchInfoDT;
+        private DataTable RealDispTimeDT;
+        private DataTable DispatchDT;
+        private DataTable DispatchDatesDT;
+        private DataTable DispatchContentDT;
+        private DataTable ClientsDispatchesDT;
+        private DataTable ClientsIncomesDT;
 
-        BindingSource DispatchBS;
-        BindingSource DispatchDatesBS;
-        BindingSource DispatchContentBS;
+        private BindingSource DispatchBS;
+        private BindingSource DispatchDatesBS;
+        private BindingSource DispatchContentBS;
 
         public MarketingDispatch()
         {
@@ -4716,7 +4716,7 @@ namespace Infinium.Modules.Marketing.Expedition
 
             return Weight;
         }
-
+        
         public void GetMegaBatchNumbers(DateTime PrepareDispatchDateTime)
         {
             string SelectCommand = @"SELECT Batch.MegaBatchID, BatchDetails.MainOrderID FROM BatchDetails 
@@ -5216,6 +5216,7 @@ namespace Infinium.Modules.Marketing.Expedition
 
             for (int i = 0; i < DispatchDT.Rows.Count; i++)
             {
+                int DispatchID = Convert.ToInt32(DispatchDT.Rows[i]["DispatchID"]);
                 DispPackagesCount = 0;
                 PackagesCount = 0;
                 if (DispatchDT.Rows[i]["ConfirmExpDateTime"] != DBNull.Value)
@@ -5226,7 +5227,7 @@ namespace Infinium.Modules.Marketing.Expedition
                     IsDispConfirm = true;
                 else
                     IsDispConfirm = false;
-                GetDispPackagesInfo(Convert.ToInt32(DispatchDT.Rows[i]["DispatchID"]), ref DispPackagesCount, ref PackagesCount);
+                GetDispPackagesInfo(DispatchID, ref DispPackagesCount, ref PackagesCount);
                 if (PackagesCount > 0)
                 {
                     if (IsExpConfirm)
@@ -5893,8 +5894,8 @@ namespace Infinium.Modules.Marketing.Expedition
 
     public class NewMarketingDispatch
     {
-        int ClientID = 0;
-        int DispatchID = 0;
+        private int ClientID = 0;
+        private int DispatchID = 0;
 
         private DataTable FrontsDataTable = null;
         private DataTable FrameColorsDataTable = null;
@@ -5906,26 +5907,26 @@ namespace Infinium.Modules.Marketing.Expedition
         private DataTable ProductsDataTable = null;
         private DataTable DecorDataTable = null;
 
-        DataTable PackMainOrdersDT = null;
-        DataTable PackMegaOrdersDT = null;
-        DataTable StoreMainOrdersDT = null;
-        DataTable StoreMegaOrdersDT = null;
-        DataTable ExpMainOrdersDT = null;
-        DataTable ExpMegaOrdersDT = null;
-        DataTable DispMainOrdersDT = null;
-        DataTable DispMegaOrdersDT = null;
+        private DataTable PackMainOrdersDT = null;
+        private DataTable PackMegaOrdersDT = null;
+        private DataTable StoreMainOrdersDT = null;
+        private DataTable StoreMegaOrdersDT = null;
+        private DataTable ExpMainOrdersDT = null;
+        private DataTable ExpMegaOrdersDT = null;
+        private DataTable DispMainOrdersDT = null;
+        private DataTable DispMegaOrdersDT = null;
 
-        DataTable MegaOrdersDT;
-        DataTable MainOrdersDT;
-        DataTable PackagesDT;
-        DataTable FrontsOrdersDT;
-        DataTable DecorOrdersDT;
+        private DataTable MegaOrdersDT;
+        private DataTable MainOrdersDT;
+        private DataTable PackagesDT;
+        private DataTable FrontsOrdersDT;
+        private DataTable DecorOrdersDT;
 
-        BindingSource MegaOrdersBS;
-        BindingSource MainOrdersBS;
-        BindingSource PackagesBS;
-        BindingSource FrontsOrdersBS;
-        BindingSource DecorOrdersBS;
+        private BindingSource MegaOrdersBS;
+        private BindingSource MainOrdersBS;
+        private BindingSource PackagesBS;
+        private BindingSource FrontsOrdersBS;
+        private BindingSource DecorOrdersBS;
 
         public NewMarketingDispatch()
         {
@@ -7960,7 +7961,7 @@ namespace Infinium.Modules.Marketing.Expedition
 
     public class PackingReport : IAllFrontParameterName, IIsMarsel
     {
-        int ClientID = 0;
+        private int ClientID = 0;
         public bool ColorFullName = false;
         private DataTable ClientsDataTable = null;
         private DataTable FrontsResultDataTable = null;
@@ -7973,7 +7974,7 @@ namespace Infinium.Modules.Marketing.Expedition
 
         public DataTable FrontsDataTable = null;
         public DataTable PatinaDataTable = null;
-        DataTable PatinaRALDataTable = null;
+        private DataTable PatinaRALDataTable = null;
         public DataTable InsetTypesDataTable = null;
         public DataTable FrameColorsDataTable = null;
         public DataTable InsetColorsDataTable = null;
@@ -9968,7 +9969,7 @@ namespace Infinium.Modules.Marketing.Expedition
 
     public class CabFurPackingReport : IAllFrontParameterName, IIsMarsel
     {
-        int ClientID = 0;
+        private int ClientID = 0;
         public bool ColorFullName = false;
         private DataTable ClientsDataTable = null;
         private DataTable FrontsResultDataTable = null;
@@ -9982,7 +9983,7 @@ namespace Infinium.Modules.Marketing.Expedition
 
         public DataTable FrontsDataTable = null;
         public DataTable PatinaDataTable = null;
-        DataTable PatinaRALDataTable = null;
+        private DataTable PatinaRALDataTable = null;
         public DataTable InsetTypesDataTable = null;
         public DataTable FrameColorsDataTable = null;
         public DataTable InsetColorsDataTable = null;
@@ -11487,19 +11488,19 @@ namespace Infinium.Modules.Marketing.Expedition
 
     public class CabFurAssembleReport
     {
-        CabFurPackingReport PackingReport;
-        PackagesCount PackagesCount;
+        private CabFurPackingReport PackingReport;
+        private PackagesCount PackagesCount;
 
-        OrderInfo orderInfo;
-        int ClientID = 0;
-        int[] MegaOrders;
+        private OrderInfo orderInfo;
+        private int ClientID = 0;
+        private int[] MegaOrders;
 
-        object CreationDateTime = DBNull.Value;
-        object PrepareDateTime = DBNull.Value;
+        private object CreationDateTime = DBNull.Value;
+        private object PrepareDateTime = DBNull.Value;
 
-        DataTable SimpleResultDT = null;
-        DataTable AttachResultDT = null;
-        DataTable PackagesDT = null;
+        private DataTable SimpleResultDT = null;
+        private DataTable AttachResultDT = null;
+        private DataTable PackagesDT = null;
 
         public CabFurAssembleReport()
         {
@@ -12593,29 +12594,29 @@ namespace Infinium.Modules.Marketing.Expedition
 
     public class DispatchReport
     {
-        PackingReport PackingReport;
+        private PackingReport PackingReport;
 
-        PackagesCount PackagesCount;
+        private PackagesCount PackagesCount;
 
-        int ClientID = 0;
-        int PermitID = -1;
-        int[] Dispatches;
+        private int ClientID = 0;
+        private int PermitID = -1;
+        private int[] Dispatches;
 
-        object CreationDateTime = DBNull.Value;
-        object ConfirmExpDateTime = DBNull.Value;
-        object ConfirmDispDateTime = DBNull.Value;
-        object PrepareDispatchDateTime = DBNull.Value;
-        object RealDispDateTime = DBNull.Value;
-        object ConfirmExpUserID = DBNull.Value;
-        object ConfirmDispUserID = DBNull.Value;
-        object RealDispUserID = DBNull.Value;
-        object MachineName = DBNull.Value;
-        object PermitNumber = DBNull.Value;
-        object SealNumber = DBNull.Value;
+        private object CreationDateTime = DBNull.Value;
+        private object ConfirmExpDateTime = DBNull.Value;
+        private object ConfirmDispDateTime = DBNull.Value;
+        private object PrepareDispatchDateTime = DBNull.Value;
+        private object RealDispDateTime = DBNull.Value;
+        private object ConfirmExpUserID = DBNull.Value;
+        private object ConfirmDispUserID = DBNull.Value;
+        private object RealDispUserID = DBNull.Value;
+        private object MachineName = DBNull.Value;
+        private object PermitNumber = DBNull.Value;
+        private object SealNumber = DBNull.Value;
 
-        DataTable SimpleResultDT = null;
-        DataTable AttachResultDT = null;
-        DataTable PackagesDT = null;
+        private DataTable SimpleResultDT = null;
+        private DataTable AttachResultDT = null;
+        private DataTable PackagesDT = null;
 
         public DispatchReport()
         {
@@ -14192,7 +14193,7 @@ namespace Infinium.Modules.Marketing.Expedition
             //string SenderEmail = "zovprofilreport@mail.ru";
 
             //string AccountPassword = "7026Gradus0462";
-            string AccountPassword = "onluenzbclnedqtt";
+            string AccountPassword = "foqwsulbjiuslnue";
             string SenderEmail = "infiniumdevelopers@gmail.com";
 
             string from = SenderEmail;
@@ -14705,9 +14706,9 @@ namespace Infinium.Modules.Marketing.Expedition
 
     public class Barcode
     {
-        BarcodeLib.Barcode Barcod;
+        private readonly BarcodeLib.Barcode Barcod;
 
-        SolidBrush FontBrush;
+        private readonly SolidBrush FontBrush;
 
         public enum BarcodeLength { Short, Medium, Long };
 
@@ -14801,8 +14802,8 @@ namespace Infinium.Modules.Marketing.Expedition
 
     public class NotReadyProductsDetails : IAllFrontParameterName, IIsMarsel
     {
-        int ClientID = 0;
-        string ClientName = string.Empty;
+        private int ClientID = 0;
+        private string ClientName = string.Empty;
 
         private DataTable ClientsDataTable = null;
         private DataTable FrontsResultDataTable = null;
@@ -14814,7 +14815,7 @@ namespace Infinium.Modules.Marketing.Expedition
         private DataTable FrontsDataTable = null;
         private DataTable FrameColorsDataTable = null;
         private DataTable PatinaDataTable = null;
-        DataTable PatinaRALDataTable = null;
+        private DataTable PatinaRALDataTable = null;
         private DataTable InsetTypesDataTable = null;
         private DataTable InsetColorsDataTable = null;
         private DataTable ProductsDataTable = null;
@@ -16132,51 +16133,51 @@ namespace Infinium.Modules.Marketing.Expedition
 
     public static class NotReadyProducts
     {
-        static HSSFWorkbook hssfworkbook1;
-        static HSSFWorkbook hssfworkbook2;
-        static HSSFSheet OrdersNumbersSheet;
-        static HSSFSheet ZOVProfilCommonSheet;
-        static HSSFSheet ZOVTPSCommonSheet;
-        static HSSFSheet ZOVProfilDetailsSheet;
-        static HSSFSheet ZOVTPSDetailsSheet;
+        private static HSSFWorkbook hssfworkbook1;
+        private static HSSFWorkbook hssfworkbook2;
+        private static HSSFSheet OrdersNumbersSheet;
+        private static HSSFSheet ZOVProfilCommonSheet;
+        private static HSSFSheet ZOVTPSCommonSheet;
+        private static HSSFSheet ZOVProfilDetailsSheet;
+        private static HSSFSheet ZOVTPSDetailsSheet;
 
-        static HSSFFont HeaderFont1;
-        static HSSFFont HeaderFont2;
-        static HSSFFont NotesFont;
-        static HSSFFont SimpleFont1;
-        static HSSFFont SimpleFont2;
-        static HSSFFont TempFont1;
-        static HSSFFont TempFont2;
-        static HSSFFont TotalFont;
+        private static HSSFFont HeaderFont1;
+        private static HSSFFont HeaderFont2;
+        private static HSSFFont NotesFont;
+        private static HSSFFont SimpleFont1;
+        private static HSSFFont SimpleFont2;
+        private static HSSFFont TempFont1;
+        private static HSSFFont TempFont2;
+        private static HSSFFont TotalFont;
 
-        static HSSFCellStyle EmptyCellStyle;
-        static HSSFCellStyle ConfirmStyle;
-        static HSSFCellStyle HeaderStyle1;
-        static HSSFCellStyle HeaderStyle2;
-        static HSSFCellStyle MainOrderCellStyle;
-        static HSSFCellStyle MainOrderCellStyle1;
-        static HSSFCellStyle MainOrderCellStyle2;
-        static HSSFCellStyle NotesCellStyle;
-        static HSSFCellStyle SimpleCellStyle;
-        static HSSFCellStyle SimpleCellStyle1;
-        static HSSFCellStyle TempStyle1;
-        static HSSFCellStyle TempStyle2;
-        static HSSFCellStyle TotalStyle;
+        private static HSSFCellStyle EmptyCellStyle;
+        private static HSSFCellStyle ConfirmStyle;
+        private static HSSFCellStyle HeaderStyle1;
+        private static HSSFCellStyle HeaderStyle2;
+        private static HSSFCellStyle MainOrderCellStyle;
+        private static HSSFCellStyle MainOrderCellStyle1;
+        private static HSSFCellStyle MainOrderCellStyle2;
+        private static HSSFCellStyle NotesCellStyle;
+        private static HSSFCellStyle SimpleCellStyle;
+        private static HSSFCellStyle SimpleCellStyle1;
+        private static HSSFCellStyle TempStyle1;
+        private static HSSFCellStyle TempStyle2;
+        private static HSSFCellStyle TotalStyle;
 
-        static NotReadyProductsDetails PackingReport;
+        private static NotReadyProductsDetails PackingReport;
 
-        static NotReadyPackagesCount PackagesCount;
+        private static NotReadyPackagesCount PackagesCount;
 
-        static ArrayList Dispatches;
-        static int CurrentDispatchID = 0;
-        static string sFileName = string.Empty;
+        private static ArrayList Dispatches;
+        private static int CurrentDispatchID = 0;
+        private static string sFileName = string.Empty;
 
-        static object PrepareDispatchDateTime = DBNull.Value;
+        private static object PrepareDispatchDateTime = DBNull.Value;
 
-        static DataTable SimpleResultDT = null;
-        static DataTable AttachResultDT = null;
-        static DataTable PackagesDT = null;
-        static DataTable OrdersDT = null;
+        private static DataTable SimpleResultDT = null;
+        private static DataTable AttachResultDT = null;
+        private static DataTable PackagesDT = null;
+        private static DataTable OrdersDT = null;
 
         public static void Initialize1()
         {

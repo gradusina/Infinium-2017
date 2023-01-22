@@ -9,20 +9,20 @@ namespace Infinium
 {
     public partial class CabFurInventoryForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
-        int workshopId = -1;
+        private int workshopId = -1;
 
-        bool bb = true;
-        int FormEvent = 0;
+        private bool bb = true;
+        private int FormEvent = 0;
 
-        Form MainForm = null;
+        private Form MainForm = null;
 
-        AssignmentsManager assignmentsStoreManager;
-        StorePackagesManager storagePackagesManager;
+        private AssignmentsManager assignmentsStoreManager;
+        private StorePackagesManager storagePackagesManager;
 
         public CabFurInventoryForm(Form tMainForm, AssignmentsManager AM, StorePackagesManager SM, int iworkshopId)
         {

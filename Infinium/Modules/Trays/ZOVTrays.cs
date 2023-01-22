@@ -421,7 +421,7 @@ namespace Infinium.Modules.Packages.Trays
             FrontsOrdersDataGrid.CellFormatting += FrontsOrdersDataGrid_CellFormatting;
         }
 
-        void FrontsOrdersDataGrid_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        private void FrontsOrdersDataGrid_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             PercentageDataGrid grid = (PercentageDataGrid)sender;
             if (grid.Columns.Contains("PatinaColumn") && (e.ColumnIndex == grid.Columns["PatinaColumn"].Index)

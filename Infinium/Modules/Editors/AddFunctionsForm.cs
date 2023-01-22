@@ -5,12 +5,12 @@ namespace Infinium
 {
     public partial class AddFunctionsForm : Form
     {
-        int FunctionID = 0;
-        bool Edit = false;
+        private int FunctionID = 0;
+        private bool Edit = false;
 
-        Form TopForm = null;
+        private Form TopForm = null;
 
-        AdminFunctionsEdit AdminFunctionsEdit;
+        private AdminFunctionsEdit AdminFunctionsEdit;
 
         public AddFunctionsForm(ref AdminFunctionsEdit tAdminFunctionsEdit)
         {

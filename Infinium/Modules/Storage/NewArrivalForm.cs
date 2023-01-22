@@ -11,17 +11,17 @@ namespace Infinium
 {
     public partial class NewArrivalForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
 
-        int FormEvent = 0;
+        private int FormEvent = 0;
 
-        int PurchaseInvoiceID = -1;
+        private int PurchaseInvoiceID = -1;
 
-        Form TopForm = null;
+        private Form TopForm = null;
 
-        StoreInvoiceManager StoreInvoiceManager;
+        private StoreInvoiceManager StoreInvoiceManager;
 
         //BindingSource GroupsBS;
         //BindingSource SubGroupsBS;
@@ -55,16 +55,16 @@ namespace Infinium
             while (!SplashForm.bCreated) ;
         }
 
-        DataGridViewComboBoxColumn MeasuresColumn1;
-        DataGridViewComboBoxColumn ColorsColumn1;
-        DataGridViewComboBoxColumn CoversColumn1;
-        DataGridViewComboBoxColumn PatinaColumn1;
+        private DataGridViewComboBoxColumn MeasuresColumn1;
+        private DataGridViewComboBoxColumn ColorsColumn1;
+        private DataGridViewComboBoxColumn CoversColumn1;
+        private DataGridViewComboBoxColumn PatinaColumn1;
 
-        DataGridViewComboBoxColumn ColorsColumn;
-        DataGridViewComboBoxColumn CoversColumn;
-        DataGridViewComboBoxColumn PatinaColumn;
-        DataGridViewComboBoxColumn StoreItemColumn;
-        DataGridViewComboBoxColumn CurrencyColumn;
+        private DataGridViewComboBoxColumn ColorsColumn;
+        private DataGridViewComboBoxColumn CoversColumn;
+        private DataGridViewComboBoxColumn PatinaColumn;
+        private DataGridViewComboBoxColumn StoreItemColumn;
+        private DataGridViewComboBoxColumn CurrencyColumn;
 
         private void EditData(int PurchaseInvoiceID)
         {

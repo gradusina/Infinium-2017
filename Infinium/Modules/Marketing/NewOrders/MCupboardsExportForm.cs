@@ -7,16 +7,16 @@ namespace Infinium
 {
     public partial class MCupboardsExportForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
-        int FormEvent = 0;
+        private int FormEvent = 0;
 
-        AddMarketingNewOrdersForm MainForm = null;
+        private AddMarketingNewOrdersForm MainForm = null;
 
-        int ImportType = 0;
+        private int ImportType = 0;
 
         /// <summary>
         /// 0 - импорт шкафов, 1 - импорт размеров
@@ -27,7 +27,7 @@ namespace Infinium
             ImportType = iImportType;
         }
 
-        FrontsOrders FrontsOrders = null;
+        private FrontsOrders FrontsOrders = null;
 
         public MCupboardsExportForm(AddMarketingNewOrdersForm tMainForm, ref FrontsOrders cFrontsOrders)
         {

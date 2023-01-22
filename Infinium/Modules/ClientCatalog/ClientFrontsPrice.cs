@@ -9,26 +9,27 @@ using System.Linq;
 
 namespace Infinium
 {
-    class ClientFrontsPrice : IFirstProfilName
+    internal class ClientFrontsPrice : IFirstProfilName
     {
-        private decimal _rate = 1;
+        private readonly decimal _rate = 1;
 
-        HSSFSheet sheet1;
-        HSSFSheet sheet2;
-        bool HasPlanka = false;
+        private HSSFSheet sheet1;
+        private HSSFSheet sheet2;
+
+        private bool HasPlanka;
         //string CatalogConnectionString = @"Data Source=v02.bizneshost.by, 32433;Initial Catalog=Catalog;Persist Security Info=True;Connection Timeout=1;User ID=hercules;Password=1q2w3e4r";
         //string CatalogConnectionString = @"Data Source=romanchuk\romanchuk;Initial Catalog=Catalog;Persist Security Info=True;Connection Timeout=1;User ID=sa;Password=1";
-        DataTable FrontsConfigDataTable = null;
-        DataTable ProfileNamesDataTable = null;
-        DataTable FrontsDataTable = null;
-        DataTable FrameColorsDataTable = null;
-        DataTable TechStoreDataTable = null;
-        DataTable InsetTypesDataTable = null;
-        DataTable PatinaDataTable = null;
-        DataTable PatinaRALDataTable = null;
-        DataTable ResultFrontsDataTable = null;
-        DataTable ExcluziveTable = null;
-        DataTable NotExcluziveTable = null;
+        private DataTable FrontsConfigDataTable;
+        private DataTable ProfileNamesDataTable;
+        private DataTable FrontsDataTable;
+        private DataTable FrameColorsDataTable;
+        private DataTable TechStoreDataTable;
+        private DataTable InsetTypesDataTable;
+        private DataTable PatinaDataTable;
+        private readonly DataTable PatinaRALDataTable;
+        private DataTable ResultFrontsDataTable;
+        private DataTable ExcluziveTable;
+        private DataTable NotExcluziveTable;
         public ClientFrontsPrice(decimal rate)
         {
             _rate = rate;
@@ -520,7 +521,7 @@ OR TechStoreID IN (SELECT TechnoProfileID FROM FrontsConfig WHERE Enabled = 1 AN
                 }
                 InsetType = 4;
                 //Фл
-                irows = InsetTypesDataTable.Select("InsetTypeID IN (2069,2070,2071,2073,2075,2077,2233,3644,29043,29531,41213,29275,29279,2079,2080,2081,2082,2085,2086,2087,2088,2212,2213,29210,29211,27831,27832,29210,29211)");
+                irows = InsetTypesDataTable.Select("InsetTypeID IN (2069,2070,2071,2073,2075,42066,2077,2233,3644,29043,29531,41213,29275,29279,2079,2080,2081,2082,2085,2086,2087,2088,2212,2213,29210,29211,27831,27832,29210,29211)");
                 filter = string.Empty;
                 foreach (DataRow item in irows)
                     filter += item["InsetTypeID"].ToString() + ",";

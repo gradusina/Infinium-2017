@@ -2,28 +2,29 @@
 using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
+using Infinium.Properties;
 
 namespace Infinium
 {
     public partial class PictureViewForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
 
-        int FormEvent = 0;
+        private int FormEvent;
 
-        Form TopForm;
+        private Form TopForm;
 
-        InfiniumPictures InfiniumPictures;
-        InfiniumPicturesContainer PicturesContainer;
+        private InfiniumPictures InfiniumPictures;
+        private InfiniumPicturesContainer PicturesContainer;
 
-        int iAlbumID = -1;
-        int iPictureID = -1;
+        private int iAlbumID = -1;
+        private int iPictureID = -1;
 
-        bool bC = false;
+        private bool bC;
 
-        public PictureViewForm(ref Infinium.InfiniumPictures tInfiniumPictures,
+        public PictureViewForm(ref InfiniumPictures tInfiniumPictures,
                                ref InfiniumPicturesContainer tPicturesContainer, int AlbumID, int PictureID, ref Form tTopForm)
         {
             InitializeComponent();
@@ -56,12 +57,12 @@ namespace Infinium
 
             if (Count > 0)
             {
-                PictureLikeButton.Image = Properties.Resources.LikePicBigActive;
+                PictureLikeButton.Image = Resources.LikePicBigActive;
                 PictureLikeButton.Caption = Count.ToString();
             }
             else
             {
-                PictureLikeButton.Image = Properties.Resources.LikePicBigInactive;
+                PictureLikeButton.Image = Resources.LikePicBigInactive;
                 PictureLikeButton.Caption = "";
             }
 
@@ -85,7 +86,7 @@ namespace Infinium
         {
             if (!DatabaseConfigsManager.Animation)
             {
-                this.Opacity = 1;
+                Opacity = 1;
 
                 if (FormEvent == eClose || FormEvent == eHide)
                 {
@@ -93,12 +94,12 @@ namespace Infinium
 
                     if (FormEvent == eClose)
                     {
-                        this.Close();
+                        Close();
                     }
 
                     if (FormEvent == eHide)
                     {
-                        this.Hide();
+                        Hide();
                     }
 
                     return;
@@ -116,20 +117,20 @@ namespace Infinium
 
             if (FormEvent == eClose || FormEvent == eHide)
             {
-                if (Convert.ToDecimal(this.Opacity) != Convert.ToDecimal(0.00))
-                    this.Opacity = Convert.ToDouble(Convert.ToDecimal(this.Opacity) - Convert.ToDecimal(0.05));
+                if (Convert.ToDecimal(Opacity) != Convert.ToDecimal(0.00))
+                    Opacity = Convert.ToDouble(Convert.ToDecimal(Opacity) - Convert.ToDecimal(0.05));
                 else
                 {
                     AnimateTimer.Enabled = false;
 
                     if (FormEvent == eClose)
                     {
-                        this.Close();
+                        Close();
                     }
 
                     if (FormEvent == eHide)
                     {
-                        this.Hide();
+                        Hide();
                     }
                 }
 
@@ -139,16 +140,14 @@ namespace Infinium
 
             if (FormEvent == eShow || FormEvent == eShow)
             {
-                if (this.Opacity != 1)
-                    this.Opacity += 0.05;
+                if (Opacity != 1)
+                    Opacity += 0.05;
                 else
                 {
                     AnimateTimer.Enabled = false;
                     SplashForm.CloseS = true;
                     LoadPic();
                 }
-
-                return;
             }
         }
 
@@ -210,12 +209,12 @@ namespace Infinium
 
             if (Count > 0)
             {
-                PictureLikeButton.Image = Properties.Resources.LikePicBigActive;
+                PictureLikeButton.Image = Resources.LikePicBigActive;
                 PictureLikeButton.Caption = Count.ToString();
             }
             else
             {
-                PictureLikeButton.Image = Properties.Resources.LikePicBigInactive;
+                PictureLikeButton.Image = Resources.LikePicBigInactive;
                 PictureLikeButton.Caption = "";
             }
 

@@ -11,28 +11,28 @@ namespace Infinium
 {
     public partial class DyeingAssignmentsMainForm : Form
     {
-        const int iResponsibleRole = 58;
-        const int iTechnologyRole = 59;
-        const int iControlRole = 60;
-        const int iAgreementRole = 61;
-        const int iAdminRole = 62;
-        const int iWorkerRole = 63;
+        private const int iResponsibleRole = 58;
+        private const int iTechnologyRole = 59;
+        private const int iControlRole = 60;
+        private const int iAgreementRole = 61;
+        private const int iAdminRole = 62;
+        private const int iWorkerRole = 63;
 
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
-        int FormEvent = 0;
+        private int FormEvent = 0;
 
-        DataTable RolesDataTable;
-        Form TopForm = null;
-        LightStartForm LightStartForm;
+        private DataTable RolesDataTable;
+        private Form TopForm = null;
+        private LightStartForm LightStartForm;
 
-        ControlAssignments ControlAssignmentsManager;
-        PrintDyeingAssignments PrintDyeingAssignmentsManager;
+        private ControlAssignments ControlAssignmentsManager;
+        private PrintDyeingAssignments PrintDyeingAssignmentsManager;
 
-        RoleTypes RoleType = RoleTypes.OrdinaryRole;
+        private RoleTypes RoleType = RoleTypes.OrdinaryRole;
 
         public enum RoleTypes
         {

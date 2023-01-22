@@ -1,12 +1,11 @@
 ﻿
-using NPOI.HSSF.UserModel;
-using NPOI.HSSF.Util;
-
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
@@ -15,6 +14,11 @@ using System.Net.Mail;
 using System.Net.Mime;
 using System.Text;
 using System.Windows.Forms;
+using Infinium.Properties;
+using NPOI.HSSF.UserModel;
+using NPOI.HSSF.Util;
+using Encoder = System.Drawing.Imaging.Encoder;
+using Region = NPOI.HSSF.Util.Region;
 
 namespace Infinium
 {
@@ -24,7 +28,7 @@ namespace Infinium
         public DataTable ModulesDataTable;
         public DataTable FullModulesDataTable;
 
-        public static void RotateFlipEXIF(ref System.Drawing.Image img)
+        public static void RotateFlipEXIF(ref Image img)
         {
             if (Array.IndexOf(img.PropertyIdList, 274) > -1)
             {
@@ -236,11 +240,11 @@ namespace Infinium
 
             DepartmentsBindingSource = new BindingSource();
 
-            DepartmentsDataTable = new DataView(TablesManager.DepartmentsDataTable).ToTable(true, new string[] { "DepartmentID", "DepartmentName", "Photo" });
+            DepartmentsDataTable = new DataView(TablesManager.DepartmentsDataTable).ToTable(true, "DepartmentID", "DepartmentName", "Photo");
 
             DepartmentsBindingSource.DataSource = DepartmentsDataTable;
 
-            UsersDataTable = new DataView(TablesManager.UsersDataTable).ToTable(true, new string[] { "UserID", "Name", "DepartmentID", "Photo" });
+            UsersDataTable = new DataView(TablesManager.UsersDataTable).ToTable(true, "UserID", "Name", "DepartmentID", "Photo");
 
             if (UsersDataTable.Columns["SenderTypeID"] == null)
                 UsersDataTable.Columns.Add(new DataColumn("SenderTypeID", Type.GetType("System.Int32")));
@@ -707,7 +711,7 @@ namespace Infinium
                         try
                         {
                             if (FM.UploadFile(Row["Path"].ToString(), Configs.DocumentsZOVTPSPath +
-                                          FileManager.GetPath("LightNews") + "/" + Row["FileName"].ToString(), Configs.FTPType) == false)
+                                          FileManager.GetPath("LightNews") + "/" + Row["FileName"], Configs.FTPType) == false)
                             {
                                 break;
                             }
@@ -744,7 +748,7 @@ namespace Infinium
                         {
                             if (AttachmentsDataTable.Select("FileName = '" + Row["FileName"] + "'").Count() == 0)
                             {
-                                FM.DeleteFile(Configs.DocumentsZOVTPSPath + FileManager.GetPath("LightNews") + "/" + Row["FileName"].ToString(), Configs.FTPType);
+                                FM.DeleteFile(Configs.DocumentsZOVTPSPath + FileManager.GetPath("LightNews") + "/" + Row["FileName"], Configs.FTPType);
                                 Row.Delete();
                             }
                         }
@@ -814,7 +818,7 @@ namespace Infinium
                         try
                         {
                             if (FM.UploadFile(Row["Path"].ToString(), Configs.DocumentsZOVTPSPath +
-                                         FileManager.GetPath("LightNews") + "/" + Row["FileName"].ToString(), Configs.FTPType) == false)
+                                         FileManager.GetPath("LightNews") + "/" + Row["FileName"], Configs.FTPType) == false)
                                 break;
                         }
                         catch
@@ -871,7 +875,7 @@ namespace Infinium
 
         public static string TempPath()
         {
-            return System.Environment.GetEnvironmentVariable("TEMP");
+            return Environment.GetEnvironmentVariable("TEMP");
         }
 
         public int GetNewsUpdatesCount()
@@ -993,7 +997,7 @@ namespace Infinium
                     {
                         foreach (DataRow Row in DT.Rows)
                         {
-                            FM.DeleteFile(Configs.DocumentsZOVTPSPath + FileManager.GetPath("LightNews") + "/" + Row["FileName"].ToString(), Configs.FTPType);
+                            FM.DeleteFile(Configs.DocumentsZOVTPSPath + FileManager.GetPath("LightNews") + "/" + Row["FileName"], Configs.FTPType);
                         }
                     }
                     catch
@@ -1047,9 +1051,9 @@ namespace Infinium
                             if (Row["Path"].ToString() == "server")
                                 continue;
 
-                            FM.DeleteFile(Configs.DocumentsZOVTPSPath + FileManager.GetPath("LightNews") + "/" + Row["FileName"].ToString(), Configs.FTPType);
+                            FM.DeleteFile(Configs.DocumentsZOVTPSPath + FileManager.GetPath("LightNews") + "/" + Row["FileName"], Configs.FTPType);
 
-                            DT.Select("FileName = '" + Row["FileName"].ToString() + "'")[0].Delete();
+                            DT.Select("FileName = '" + Row["FileName"] + "'")[0].Delete();
                         }
 
                         DA.Update(DT);
@@ -1108,7 +1112,7 @@ namespace Infinium
 
         public string SaveFile(int NewsAttachID)//temp folder
         {
-            string tempFolder = System.Environment.GetEnvironmentVariable("TEMP");
+            string tempFolder = Environment.GetEnvironmentVariable("TEMP");
 
             string FileName = "";
 
@@ -1173,7 +1177,6 @@ namespace Infinium
                     }
                     catch
                     {
-                        return;
                     }
                 }
             }
@@ -1199,7 +1202,7 @@ namespace Infinium
 
         private string GetNewFileName(string path, string FileName)
         {
-            FileInfo fileInfo = new System.IO.FileInfo(path + "\\" + FileName);
+            FileInfo fileInfo = new FileInfo(path + "\\" + FileName);
 
             if (!fileInfo.Exists)
                 return FileName;
@@ -1209,12 +1212,12 @@ namespace Infinium
 
             while (!Ok)
             {
-                fileInfo = new System.IO.FileInfo(path + "\\" + SetNumber(FileName, n));
+                fileInfo = new FileInfo(path + "\\" + SetNumber(FileName, n));
 
                 if (!fileInfo.Exists)
                     return SetNumber(FileName, n);
-                else
-                    n++;
+
+                n++;
             }
 
             return "";
@@ -1296,11 +1299,11 @@ namespace Infinium
 
             DepartmentsBindingSource = new BindingSource();
 
-            DepartmentsDataTable = new DataView(TablesManager.DepartmentsDataTable).ToTable(true, new string[] { "DepartmentID", "DepartmentName", "Photo" });
+            DepartmentsDataTable = new DataView(TablesManager.DepartmentsDataTable).ToTable(true, "DepartmentID", "DepartmentName", "Photo");
 
             DepartmentsBindingSource.DataSource = DepartmentsDataTable;
 
-            UsersDataTable = new DataView(TablesManager.UsersDataTable).ToTable(true, new string[] { "UserID", "Name", "DepartmentID", "Photo" });
+            UsersDataTable = new DataView(TablesManager.UsersDataTable).ToTable(true, "UserID", "Name", "DepartmentID", "Photo");
 
             if (UsersDataTable.Columns["SenderTypeID"] == null)
                 UsersDataTable.Columns.Add(new DataColumn("SenderTypeID", Type.GetType("System.Int32")));
@@ -1899,7 +1902,7 @@ namespace Infinium
                         {
                             if (FM.UploadFile(Row["Path"].ToString(), Configs.DocumentsPath +
                                           FileManager.GetPath("CoderBlog") + "/" +
-                                          DT.Select("FileName = '" + Row["FileName"].ToString() + "'")[0]["NewsAttachID"] + ".idf", Configs.FTPType) == false)
+                                          DT.Select("FileName = '" + Row["FileName"] + "'")[0]["NewsAttachID"] + ".idf", Configs.FTPType) == false)
                                 break;
                         }
                         catch
@@ -1935,7 +1938,7 @@ namespace Infinium
                             if (AttachmentsDataTable.Select("FileName = '" + Row["FileName"] + "'").Count() == 0)
                             {
                                 FM.DeleteFile(Configs.DocumentsPath + FileManager.GetPath("CoderBlog") + "/" +
-                                              DT.Select("FileName = '" + Row["FileName"].ToString() + "'")[0]["NewsAttachID"] + ".idf", Configs.FTPType);
+                                              DT.Select("FileName = '" + Row["FileName"] + "'")[0]["NewsAttachID"] + ".idf", Configs.FTPType);
                                 Row.Delete();
                             }
                         }
@@ -2006,7 +2009,7 @@ namespace Infinium
                         {
                             if (FM.UploadFile(Row["Path"].ToString(), Configs.DocumentsPath +
                                          FileManager.GetPath("CoderBlog") + "/" +
-                                         DT.Select("FileName = '" + Row["FileName"].ToString() + "'")[0]["NewsAttachID"] + ".idf", Configs.FTPType) == false)
+                                         DT.Select("FileName = '" + Row["FileName"] + "'")[0]["NewsAttachID"] + ".idf", Configs.FTPType) == false)
                                 break;
                         }
                         catch
@@ -2063,7 +2066,7 @@ namespace Infinium
 
         public static string TempPath()
         {
-            return System.Environment.GetEnvironmentVariable("TEMP");
+            return Environment.GetEnvironmentVariable("TEMP");
         }
 
         public int GetNewsUpdatesCount()
@@ -2184,7 +2187,7 @@ namespace Infinium
                     foreach (DataRow Row in DT.Rows)
                     {
                         FM.DeleteFile(Configs.DocumentsPath + FileManager.GetPath("CoderBlog") + "/" +
-                                      DT.Select("FileName = '" + Row["FileName"].ToString() + "'")[0]["NewsAttachID"] + ".idf", Configs.FTPType);
+                                      DT.Select("FileName = '" + Row["FileName"] + "'")[0]["NewsAttachID"] + ".idf", Configs.FTPType);
                     }
                 }
             }
@@ -2221,9 +2224,9 @@ namespace Infinium
                                 continue;
 
                             FM.DeleteFile(Configs.DocumentsPath + FileManager.GetPath("CoderBlog") + "/" +
-                                      DT.Select("FileName = '" + Row["FileName"].ToString() + "'")[0]["NewsAttachID"] + ".idf", Configs.FTPType);
+                                      DT.Select("FileName = '" + Row["FileName"] + "'")[0]["NewsAttachID"] + ".idf", Configs.FTPType);
 
-                            DT.Select("FileName = '" + Row["FileName"].ToString() + "'")[0].Delete();
+                            DT.Select("FileName = '" + Row["FileName"] + "'")[0].Delete();
                         }
 
                         DA.Update(DT);
@@ -2282,7 +2285,7 @@ namespace Infinium
 
         public string SaveFile(int NewsAttachID)//temp folder
         {
-            string tempFolder = System.Environment.GetEnvironmentVariable("TEMP");
+            string tempFolder = Environment.GetEnvironmentVariable("TEMP");
 
             string FileName = "";
 
@@ -2347,7 +2350,6 @@ namespace Infinium
                     }
                     catch
                     {
-                        return;
                     }
                 }
             }
@@ -2373,7 +2375,7 @@ namespace Infinium
 
         private string GetNewFileName(string path, string FileName)
         {
-            FileInfo fileInfo = new System.IO.FileInfo(path + "\\" + FileName);
+            FileInfo fileInfo = new FileInfo(path + "\\" + FileName);
 
             if (!fileInfo.Exists)
                 return FileName;
@@ -2383,12 +2385,12 @@ namespace Infinium
 
             while (!Ok)
             {
-                fileInfo = new System.IO.FileInfo(path + "\\" + SetNumber(FileName, n));
+                fileInfo = new FileInfo(path + "\\" + SetNumber(FileName, n));
 
                 if (!fileInfo.Exists)
                     return SetNumber(FileName, n);
-                else
-                    n++;
+
+                n++;
             }
 
             return "";
@@ -2572,9 +2574,9 @@ namespace Infinium
             foreach (DataRow Row in ProjectSubsRecordsDataTable.Rows)
             {
                 if (FillExpr.Length == 0)
-                    FillExpr += " ProjectID = " + Row["TableItemID"].ToString();
+                    FillExpr += " ProjectID = " + Row["TableItemID"];
                 else
-                    FillExpr += " OR ProjectID = " + Row["TableItemID"].ToString();
+                    FillExpr += " OR ProjectID = " + Row["TableItemID"];
             }
 
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Projects WHERE " + FillExpr + " AND Pending = 0 AND IsProposition = 0", ConnectionStrings.LightConnectionString))
@@ -2602,17 +2604,17 @@ namespace Infinium
             foreach (DataRow Row in ProjectNewsSubsRecordsDataTable.Rows)
             {
                 if (FillExpr.Length == 0)
-                    FillExpr += " ProjectID = " + Row["ProjectID"].ToString();
+                    FillExpr += " ProjectID = " + Row["ProjectID"];
                 else
-                    FillExpr += " OR ProjectID = " + Row["ProjectID"].ToString();
+                    FillExpr += " OR ProjectID = " + Row["ProjectID"];
             }
 
             foreach (DataRow Row in ProjectNewsCommentsSubsRecordsDataTable.Rows)
             {
                 if (FillExpr.Length == 0)
-                    FillExpr += " ProjectID = " + Row["ProjectID"].ToString();
+                    FillExpr += " ProjectID = " + Row["ProjectID"];
                 else
-                    FillExpr += " OR ProjectID = " + Row["ProjectID"].ToString();
+                    FillExpr += " OR ProjectID = " + Row["ProjectID"];
             }
 
 
@@ -3446,7 +3448,7 @@ namespace Infinium
                             if (AttachmentsDataTable.Select("FileName = '" + Row["FileName"] + "'").Count() == 0)
                             {
                                 FM.DeleteFile(Configs.DocumentsPath + FileManager.GetPath("ProjectNews") + "/" +
-                                              DT.Select("FileName = '" + Row["FileName"].ToString() + "'")[0]["NewsAttachID"] + ".idf", Configs.FTPType);
+                                              DT.Select("FileName = '" + Row["FileName"] + "'")[0]["NewsAttachID"] + ".idf", Configs.FTPType);
                                 Row.Delete();
                             }
                         }
@@ -3518,7 +3520,7 @@ namespace Infinium
                         {
                             if (FM.UploadFile(Row["Path"].ToString(), Configs.DocumentsPath +
                                          FileManager.GetPath("ProjectNews") + "/" +
-                                         DT.Select("FileName = '" + Row["FileName"].ToString() + "'")[0]["NewsAttachID"] + ".idf", Configs.FTPType) == false)
+                                         DT.Select("FileName = '" + Row["FileName"] + "'")[0]["NewsAttachID"] + ".idf", Configs.FTPType) == false)
                                 break;
                         }
                         catch
@@ -3668,9 +3670,9 @@ namespace Infinium
                                 continue;
 
                             FM.DeleteFile(Configs.DocumentsPath + FileManager.GetPath("ProjectNews") + "/" +
-                                      DT.Select("FileName = '" + Row["FileName"].ToString() + "'")[0]["NewsAttachID"] + ".idf", Configs.FTPType);
+                                      DT.Select("FileName = '" + Row["FileName"] + "'")[0]["NewsAttachID"] + ".idf", Configs.FTPType);
 
-                            DT.Select("FileName = '" + Row["FileName"].ToString() + "'")[0].Delete();
+                            DT.Select("FileName = '" + Row["FileName"] + "'")[0].Delete();
                         }
 
                         DA.Update(DT);
@@ -3773,7 +3775,7 @@ namespace Infinium
                     foreach (DataRow Row in DT.Rows)
                     {
                         FM.DeleteFile(Configs.DocumentsPath + FileManager.GetPath("ProjectNews") + "/" +
-                                      DT.Select("FileName = '" + Row["FileName"].ToString() + "'")[0]["NewsAttachID"] + ".idf", Configs.FTPType);
+                                      DT.Select("FileName = '" + Row["FileName"] + "'")[0]["NewsAttachID"] + ".idf", Configs.FTPType);
                     }
                 }
             }
@@ -3995,7 +3997,7 @@ namespace Infinium
                         {
                             if (FM.UploadFile(Row["Path"].ToString(), Configs.DocumentsPath +
                                           FileManager.GetPath("ProjectNews") + "/" +
-                                          DT.Select("FileName = '" + Row["FileName"].ToString() + "'")[0]["NewsAttachID"] + ".idf", Configs.FTPType) == false)
+                                          DT.Select("FileName = '" + Row["FileName"] + "'")[0]["NewsAttachID"] + ".idf", Configs.FTPType) == false)
                             {
                                 break;
                             }
@@ -4423,7 +4425,7 @@ namespace Infinium
 
         public string SaveFile(int NewsAttachID)//temp folder
         {
-            string tempFolder = System.Environment.GetEnvironmentVariable("TEMP");
+            string tempFolder = Environment.GetEnvironmentVariable("TEMP");
 
             string FileName = "";
 
@@ -4468,7 +4470,6 @@ namespace Infinium
                     }
                     catch
                     {
-                        return;
                     }
                 }
             }
@@ -4722,7 +4723,7 @@ namespace Infinium
                     string Rate = string.Empty;
                     if (rows[i]["Rate"].ToString().Length > 0)
                         Rate = Convert.ToDecimal(rows[i]["Rate"]).ToString("G29");
-                    ProfilPosition += rows[i]["Position"].ToString() +
+                    ProfilPosition += rows[i]["Position"] +
                         " (" + Rate + " ОМЦ-ПРОФИЛЬ)";
                     if (i != rows.Count() - 1)
                         ProfilPosition = ProfilPosition.Insert(ProfilPosition.Length, "\n");
@@ -4738,7 +4739,7 @@ namespace Infinium
                     string Rate = string.Empty;
                     if (rows[i]["Rate"].ToString().Length > 0)
                         Rate = Convert.ToDecimal(rows[i]["Rate"]).ToString("G29");
-                    TPSPosition += rows[i]["Position"].ToString() +
+                    TPSPosition += rows[i]["Position"] +
                         " (" + Rate + " ЗОВ-ТПС)";
                     if (i != rows.Count() - 1)
                         TPSPosition = TPSPosition.Insert(TPSPosition.Length, "\n");
@@ -5007,11 +5008,9 @@ namespace Infinium
 
                     if (Convert.ToInt32(DT.Rows[0]["SubscribesRecordID"]) == iCurrentUpdateID)
                         return false;
-                    else
-                    {
-                        iCurrentUpdateID = Convert.ToInt32(DT.Rows[0]["SubscribesRecordID"]);
-                        return true;
-                    }
+
+                    iCurrentUpdateID = Convert.ToInt32(DT.Rows[0]["SubscribesRecordID"]);
+                    return true;
                 }
             }
         }
@@ -6552,8 +6551,8 @@ namespace Infinium
                             ActDateTime = Convert.ToDateTime(DT.Rows[0]["DayStartDateTime"]);
                             return true;
                         }
-                        else
-                            return false;
+
+                        return false;
                     }
                 }
             }
@@ -6598,8 +6597,6 @@ namespace Infinium
                         DT.Rows[0]["DayEndFactDateTime"] = DT.Rows[0]["DayEndDateTime"];
 
                         DA.Update(DT);
-
-                        return;
                     }
                 }
             }
@@ -6621,8 +6618,6 @@ namespace Infinium
                         DT.Rows[0]["DayEndFactDateTime"] = Security.GetCurrentDate();
                         DT.Rows[0]["DayEndNotes"] = Notes;
                         DA.Update(DT);
-
-                        return;
                     }
                 }
             }
@@ -6644,8 +6639,6 @@ namespace Infinium
                         DT.Rows[0]["DayEndFactDateTime"] = Security.GetCurrentDate();
                         DT.Rows[0]["DayEndNotes"] = Notes;
                         DA.Update(DT);
-
-                        return;
                     }
                 }
             }
@@ -6669,8 +6662,6 @@ namespace Infinium
                         DT.Rows[0]["Saved"] = false;
 
                         DA.Update(DT);
-
-                        return;
                     }
                 }
             }
@@ -6691,8 +6682,6 @@ namespace Infinium
                         DT.Rows[0]["DayBreakEndFactDateTime"] = DT.Rows[0]["DayBreakEndDateTime"];
 
                         DA.Update(DT);
-
-                        return;
                     }
                 }
             }
@@ -6714,8 +6703,6 @@ namespace Infinium
                         DT.Rows[0]["DayContinueNotes"] = Notes;
 
                         DA.Update(DT);
-
-                        return;
                     }
                 }
             }
@@ -6737,8 +6724,6 @@ namespace Infinium
                         DT.Rows[0]["DayContinueNotes"] = Notes;
 
                         DA.Update(DT);
-
-                        return;
                     }
                 }
             }
@@ -7152,31 +7137,31 @@ namespace Infinium
                             {
                                 case 1:
                                     MonTimeSheetlabel.ForeColor = Color.ForestGreen;
-                                    MonTimeSheetlabel.Text = TimeWork.Hours.ToString() + " ч : " + TimeWork.Minutes.ToString("D2") + " м";
+                                    MonTimeSheetlabel.Text = TimeWork.Hours + " ч : " + TimeWork.Minutes.ToString("D2") + " м";
                                     break;
                                 case 2:
                                     TueTimeSheetlabel.ForeColor = Color.ForestGreen;
-                                    TueTimeSheetlabel.Text = TimeWork.Hours.ToString() + " ч : " + TimeWork.Minutes.ToString("D2") + " м";
+                                    TueTimeSheetlabel.Text = TimeWork.Hours + " ч : " + TimeWork.Minutes.ToString("D2") + " м";
                                     break;
                                 case 3:
                                     WedTimeSheetlabel.ForeColor = Color.ForestGreen;
-                                    WedTimeSheetlabel.Text = TimeWork.Hours.ToString() + " ч : " + TimeWork.Minutes.ToString("D2") + " м";
+                                    WedTimeSheetlabel.Text = TimeWork.Hours + " ч : " + TimeWork.Minutes.ToString("D2") + " м";
                                     break;
                                 case 4:
                                     ThuTimeSheetlabel.ForeColor = Color.ForestGreen;
-                                    ThuTimeSheetlabel.Text = TimeWork.Hours.ToString() + " ч : " + TimeWork.Minutes.ToString("D2") + " м";
+                                    ThuTimeSheetlabel.Text = TimeWork.Hours + " ч : " + TimeWork.Minutes.ToString("D2") + " м";
                                     break;
                                 case 5:
                                     FriTimeSheetlabel.ForeColor = Color.ForestGreen;
-                                    FriTimeSheetlabel.Text = TimeWork.Hours.ToString() + " ч : " + TimeWork.Minutes.ToString("D2") + " м";
+                                    FriTimeSheetlabel.Text = TimeWork.Hours + " ч : " + TimeWork.Minutes.ToString("D2") + " м";
                                     break;
                                 case 6:
                                     SatTimeSheetlabel.ForeColor = Color.ForestGreen;
-                                    SatTimeSheetlabel.Text = TimeWork.Hours.ToString() + " ч : " + TimeWork.Minutes.ToString("D2") + " м";
+                                    SatTimeSheetlabel.Text = TimeWork.Hours + " ч : " + TimeWork.Minutes.ToString("D2") + " м";
                                     break;
                                 case 7:
                                     SunTimeSheetlabel.ForeColor = Color.ForestGreen;
-                                    SunTimeSheetlabel.Text = TimeWork.Hours.ToString() + " ч : " + TimeWork.Minutes.ToString("D2") + " м";
+                                    SunTimeSheetlabel.Text = TimeWork.Hours + " ч : " + TimeWork.Minutes.ToString("D2") + " м";
                                     break;
                             }
                         }
@@ -7306,9 +7291,9 @@ namespace Infinium
         public SqlDataAdapter SelectedFunctionsDA;
         public SqlCommandBuilder SelectedFunctionsCB;
 
-        public int CurrentPercents = 0;
+        public int CurrentPercents;
         private DataTable SelectedFunctionsDataTable;
-        private int UserID;
+        private readonly int UserID;
         private int DepartmentID = -1;
 
         public LightFunctions(int iUserID)
@@ -7367,11 +7352,11 @@ namespace Infinium
         private void Binding()
         {
             DepartmentFunctionsBindingSource.DataSource = DepartmentFunctionsDataTable;
-            UserFunctionsBindingSource = new BindingSource()
+            UserFunctionsBindingSource = new BindingSource
             {
                 DataSource = UserFunctionsDataTable
             };
-            SelectedFunctionsBindingSource = new BindingSource()
+            SelectedFunctionsBindingSource = new BindingSource
             {
                 DataSource = SelectedFunctionsDataTable
             };
@@ -7392,7 +7377,7 @@ namespace Infinium
 
         public void SetGrid(ref PercentageDataGrid Grid, bool Image)
         {
-            DataGridViewComboBoxColumn FunctionsColumn = new DataGridViewComboBoxColumn()
+            DataGridViewComboBoxColumn FunctionsColumn = new DataGridViewComboBoxColumn
             {
                 Name = "FunctionsColumn",
                 HeaderText = "Обязанность",
@@ -7415,12 +7400,12 @@ namespace Infinium
 
             if (Image)
             {
-                DataGridViewImageColumn ImageColumn = new DataGridViewImageColumn()
+                DataGridViewImageColumn ImageColumn = new DataGridViewImageColumn
                 {
                     AutoSizeMode = DataGridViewAutoSizeColumnMode.None,
                     Width = 40,
                     Name = "ImageColumn",
-                    Image = global::Infinium.Properties.Resources.CancelGrid
+                    Image = Resources.CancelGrid
                 };
                 ImageColumn.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 Grid.Columns.Add(ImageColumn);
@@ -7525,7 +7510,7 @@ namespace Infinium
     {
         private DataTable FunctionsDataTable;
         public BindingSource FunctionsBindingSource;
-        private PercentageDataGrid FunctionsGrid;
+        private readonly PercentageDataGrid FunctionsGrid;
 
         public LightAddFunctions(ref PercentageDataGrid tFunctionsGrid)
         {
@@ -7564,12 +7549,12 @@ namespace Infinium
             {
                 FunctionsGrid.AutoGenerateColumns = false;
 
-                DataGridViewImageColumn ImageColumn = new DataGridViewImageColumn()
+                DataGridViewImageColumn ImageColumn = new DataGridViewImageColumn
                 {
                     AutoSizeMode = DataGridViewAutoSizeColumnMode.None,
                     Width = 40,
                     Name = "ImageColumn",
-                    Image = global::Infinium.Properties.Resources.CancelGrid
+                    Image = Resources.CancelGrid
                 };
                 ImageColumn.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 FunctionsGrid.Columns.Add(ImageColumn);
@@ -7620,8 +7605,8 @@ namespace Infinium
 
         public int CurrentUserID = Security.CurrentUserID;
         public string CurrentUserName;
-        private UsersMessagesDataGrid SelectedUsersGrid = null;
-        private UsersDataGrid UsersListDataGrid = null;
+        private readonly UsersMessagesDataGrid SelectedUsersGrid;
+        private readonly UsersDataGrid UsersListDataGrid;
 
         public LightMessage(ref UsersMessagesDataGrid tSelectedUsersGrid, ref UsersDataGrid tUsersListDataGrid)
         {
@@ -7641,7 +7626,7 @@ namespace Infinium
 
             MessagesDataTable = new DataTable();
 
-            UsersBindingSource = new BindingSource()
+            UsersBindingSource = new BindingSource
             {
                 DataSource = UsersDataTable,
                 Filter = "UserID <> " + CurrentUserID
@@ -7653,7 +7638,7 @@ namespace Infinium
             SelectedUsersGrid = tSelectedUsersGrid;
             UsersListDataGrid = tUsersListDataGrid;
 
-            SelectedUsersBindingSource = new BindingSource()
+            SelectedUsersBindingSource = new BindingSource
             {
                 DataSource = SelectedUsersDataTable
             };
@@ -8001,11 +7986,9 @@ namespace Infinium
                     {
                         if (g > 0)
                             break;
-                        else
-                        {
-                            NewName += Name[i];
-                            g++;
-                        }
+
+                        NewName += Name[i];
+                        g++;
                     }
                 }
 
@@ -8210,7 +8193,7 @@ namespace Infinium
     public class LightNotes
     {
         public DataTable NotesDataTable;
-        private int CurrentUserID;
+        private readonly int CurrentUserID;
 
         public LightNotes(int UserID)
         {
@@ -8321,10 +8304,10 @@ namespace Infinium
         private BindingSource ToolsSellersBindingSource;
         private BindingSource ToolsSellersGroupsBindingSource;
         private BindingSource ToolsSellersSubGroupsBindingSource;
-        private PercentageDataGrid ToolsSellersDataGrid;
-        private PercentageDataGrid ToolsSellerInfoDataGrid;
-        private PercentageDataGrid ToolsSellersGroupsDataGrid;
-        private PercentageDataGrid ToolsSellersSubGroupsDataGrid;
+        private readonly PercentageDataGrid ToolsSellersDataGrid;
+        private readonly PercentageDataGrid ToolsSellerInfoDataGrid;
+        private readonly PercentageDataGrid ToolsSellersGroupsDataGrid;
+        private readonly PercentageDataGrid ToolsSellersSubGroupsDataGrid;
         private SqlDataAdapter ToolsSellersDA;
         private SqlDataAdapter ToolsSellersGroupsDA;
         private SqlDataAdapter ToolsSellersSubGroupsDA;
@@ -8645,8 +8628,8 @@ namespace Infinium
             }
             if (((DataRowView)ToolsSellersBindingSource.Current).Row["ToolsSellerID"] == DBNull.Value)
                 return;
-            else
-                CurrentToolsSellerID = Convert.ToInt32(((DataRowView)ToolsSellersBindingSource.Current).Row["ToolsSellerID"]);
+
+            CurrentToolsSellerID = Convert.ToInt32(((DataRowView)ToolsSellersBindingSource.Current).Row["ToolsSellerID"]);
         }
 
         public void GetCurrentSellerGroup()
@@ -8659,8 +8642,8 @@ namespace Infinium
 
             if (((DataRowView)ToolsSellersGroupsBindingSource.Current).Row["ToolsSellerGroupID"] == DBNull.Value)
                 return;
-            else
-                CurrentToolsSellerGroupID = Convert.ToInt32(((DataRowView)ToolsSellersGroupsBindingSource.Current).Row["ToolsSellerGroupID"]);
+
+            CurrentToolsSellerGroupID = Convert.ToInt32(((DataRowView)ToolsSellersGroupsBindingSource.Current).Row["ToolsSellerGroupID"]);
         }
 
         public void GetCurrentSellerSubGroup()
@@ -8672,8 +8655,8 @@ namespace Infinium
             }
             if (((DataRowView)ToolsSellersSubGroupsBindingSource.Current).Row["ToolsSellerSubGroupID"] == DBNull.Value)
                 return;
-            else
-                CurrentToolsSellerSubGroupID = Convert.ToInt32(((DataRowView)ToolsSellersSubGroupsBindingSource.Current).Row["ToolsSellerSubGroupID"]);
+
+            CurrentToolsSellerSubGroupID = Convert.ToInt32(((DataRowView)ToolsSellersSubGroupsBindingSource.Current).Row["ToolsSellerSubGroupID"]);
         }
 
         public void GetToolsSellerInfo()
@@ -8893,7 +8876,8 @@ namespace Infinium
 
         //private SqlCommandBuilder CB;
         //private SqlDataAdapter DA;
-        private PercentageDataGrid DevelopmentPlanDataGrid, DepartmentDataGrid;
+        private readonly PercentageDataGrid DevelopmentPlanDataGrid;
+        private readonly PercentageDataGrid DepartmentDataGrid;
 
         public LightDevelopmentPlan(ref PercentageDataGrid tDevelopmentPlanDataGrid, ref PercentageDataGrid tDepartmentDataGrid)
         {
@@ -8921,13 +8905,13 @@ namespace Infinium
 
         public void Binding()
         {
-            DevelopmentBindingSource = new BindingSource()
+            DevelopmentBindingSource = new BindingSource
             {
                 DataSource = DevelopmentDataTable
             };
             DevelopmentPlanDataGrid.DataSource = DevelopmentBindingSource;
 
-            DepartmentBindingSource = new BindingSource()
+            DepartmentBindingSource = new BindingSource
             {
                 DataSource = DepartmentTable
             };
@@ -9111,7 +9095,7 @@ namespace Infinium
         public BindingSource TasksBindingSource;
         private SqlCommandBuilder TasksCB;
         private SqlDataAdapter TasksDA;
-        private PercentageDataGrid TasksDataGrid;
+        private readonly PercentageDataGrid TasksDataGrid;
 
         public Tasks(ref PercentageDataGrid tTasksDataGrid)
         {
@@ -9140,7 +9124,7 @@ namespace Infinium
 
         private void Binding()
         {
-            TasksBindingSource = new BindingSource()
+            TasksBindingSource = new BindingSource
             {
                 DataSource = TasksDataTable
             };
@@ -9403,7 +9387,7 @@ namespace Infinium
 
     public class DayPlannerTimesheet
     {
-        private decimal Rate = 0;
+        private decimal Rate;
         private string StrRate = "0";
 
         public DataTable _timesheetDataTable;
@@ -9411,7 +9395,7 @@ namespace Infinium
         private DataTable _absTypesTable;
         private DataTable _prodSheduleDataTable;
         private DataTable _absDayDataTable;
-        private Excel Ex = null;
+        private Excel Ex;
 
         public DayPlannerTimesheet()
         {
@@ -9830,7 +9814,7 @@ namespace Infinium
                     if (da.Fill(dt) == 2)
                     {
                         Rate = Convert.ToDecimal(dt.Rows[0]["Rate"]) + Convert.ToDecimal(dt.Rows[1]["Rate"]);
-                        StrRate = dt.Rows[0]["Rate"].ToString() + "+" + dt.Rows[1]["Rate"].ToString();
+                        StrRate = dt.Rows[0]["Rate"] + "+" + dt.Rows[1]["Rate"];
                     }
                 }
             }
@@ -9941,7 +9925,7 @@ namespace Infinium
             _usersDataTable.Clear();
             using (DataView DV = new DataView(_timesheetDataTable, string.Empty, "ShortName", DataViewRowState.CurrentRows))
             {
-                _usersDataTable = DV.ToTable(true, new string[] { "UserID", "ShortName" });
+                _usersDataTable = DV.ToTable(true, "UserID", "ShortName");
             }
         }
 
@@ -10187,7 +10171,7 @@ namespace Infinium
                 if (timesheetHours > 0)
                     newRow["IsWorkday"] = true;
                 newRow["IsAbsence"] = isAbsence;
-                newRow["TimesheetHoursExp"] = AbsenceFullName + " " + timesheetHours.ToString();
+                newRow["TimesheetHoursExp"] = AbsenceFullName + " " + timesheetHours;
                 newRow["TimesheetHours"] = timesheetHours;
                 newRow["FactHours"] = factHours;
                 newRow["OverworkHours"] = OverworkHours;
@@ -10305,32 +10289,27 @@ namespace Infinium
 
     public class TimesheetReport
     {
-        string date = "";
-        string totalProdHours = "";
-        string firm = "ООО \"ОМЦ-ПРОФИЛЬ\"";
-        string bossPosition = "Директор ООО \"ОМЦ-ПРОФИЛЬ\"";
-        string bossName = "Ф.А. Авдей";
+        private string date = "";
+        private string totalProdHours = "";
+        private readonly string firm = "ООО \"ОМЦ-ПРОФИЛЬ\"";
+        private readonly string bossPosition = "Директор ООО \"ОМЦ-ПРОФИЛЬ\"";
+        private readonly string bossName = "Ф.А. Авдей";
 
-        string specialistPosition = "Составил: спец-т по кадрам";
-        string specialistName = "Т.И. Козловская";
+        private readonly string specialistPosition = "Составил: спец-т по кадрам";
+        private readonly string specialistName = "Т.И. Козловская";
 
-        string assert = "УТВЕРЖДАЮ";
-        string approve = "Согласовано:";
+        private readonly string assert = "УТВЕРЖДАЮ";
+        private readonly string approve = "Согласовано:";
 
-        string monthHeader = "ГРАФИК/ТАБЕЛЬ РАБОТЫ ЗА ЯНВАРЬ 2021г.:";
+        private string monthHeader = "ГРАФИК/ТАБЕЛЬ РАБОТЫ ЗА ЯНВАРЬ 2021г.:";
 
-        string user1 = "А.В. Литвиненко";
-        string user2 = "Р.П. Егорченко";
-        string user3 = "Д.М. Яблоков";
-        string user4 = "Ю.К. Янкойть";
-        string user5 = "А.А. Иоскевич";
+        private readonly string user1 = "А.В. Литвиненко";
+        private readonly string user2 = "Р.П. Егорченко";
+        private readonly string user3 = "Д.М. Яблоков";
+        private readonly string user4 = "Ю.К. Янкойть";
+        private readonly string user5 = "А.А. Иоскевич";
 
         private OneMonthTimesheet monthTimesheet;
-
-        public TimesheetReport()
-        {
-
-        }
 
         public void CreateReport(int Yearint, int Monthint, ResultTimesheet resultTimesheet)
         {
@@ -10504,9 +10483,9 @@ namespace Infinium
             OutputTopBorderCS.RightBorderColor = HSSFColor.BLACK.index;
             OutputTopBorderCS.BorderTop = HSSFCellStyle.BORDER_MEDIUM;
             OutputTopBorderCS.TopBorderColor = HSSFColor.BLACK.index;
-            OutputTopBorderCS.FillForegroundColor = NPOI.HSSF.Util.HSSFColor.YELLOW.index;
+            OutputTopBorderCS.FillForegroundColor = HSSFColor.YELLOW.index;
             OutputTopBorderCS.FillPattern = HSSFCellStyle.SOLID_FOREGROUND;
-            OutputTopBorderCS.FillBackgroundColor = NPOI.HSSF.Util.HSSFColor.YELLOW.index;
+            OutputTopBorderCS.FillBackgroundColor = HSSFColor.YELLOW.index;
             OutputTopBorderCS.SetFont(SimpleF);
 
             HSSFCellStyle OutputBottomBorderCS = hssfworkbook.CreateCellStyle();
@@ -10521,9 +10500,9 @@ namespace Infinium
             OutputBottomBorderCS.RightBorderColor = HSSFColor.BLACK.index;
             OutputBottomBorderCS.BorderTop = HSSFCellStyle.BORDER_THIN;
             OutputBottomBorderCS.TopBorderColor = HSSFColor.BLACK.index;
-            OutputBottomBorderCS.FillForegroundColor = NPOI.HSSF.Util.HSSFColor.YELLOW.index;
+            OutputBottomBorderCS.FillForegroundColor = HSSFColor.YELLOW.index;
             OutputBottomBorderCS.FillPattern = HSSFCellStyle.SOLID_FOREGROUND;
-            OutputBottomBorderCS.FillBackgroundColor = NPOI.HSSF.Util.HSSFColor.YELLOW.index;
+            OutputBottomBorderCS.FillBackgroundColor = HSSFColor.YELLOW.index;
             OutputBottomBorderCS.WrapText = true;
             OutputBottomBorderCS.SetFont(SimpleBoldF);
 
@@ -10538,9 +10517,9 @@ namespace Infinium
             AbsenceTopBorderCS.RightBorderColor = HSSFColor.BLACK.index;
             AbsenceTopBorderCS.BorderTop = HSSFCellStyle.BORDER_MEDIUM;
             AbsenceTopBorderCS.TopBorderColor = HSSFColor.BLACK.index;
-            AbsenceTopBorderCS.FillForegroundColor = NPOI.HSSF.Util.HSSFColor.RED.index;
+            AbsenceTopBorderCS.FillForegroundColor = HSSFColor.RED.index;
             AbsenceTopBorderCS.FillPattern = HSSFCellStyle.SOLID_FOREGROUND;
-            AbsenceTopBorderCS.FillBackgroundColor = NPOI.HSSF.Util.HSSFColor.YELLOW.index;
+            AbsenceTopBorderCS.FillBackgroundColor = HSSFColor.YELLOW.index;
             AbsenceTopBorderCS.SetFont(SimpleF);
 
             HSSFCellStyle AbsenceBottomBorderCS = hssfworkbook.CreateCellStyle();
@@ -10555,9 +10534,9 @@ namespace Infinium
             AbsenceBottomBorderCS.RightBorderColor = HSSFColor.BLACK.index;
             AbsenceBottomBorderCS.BorderTop = HSSFCellStyle.BORDER_THIN;
             AbsenceBottomBorderCS.TopBorderColor = HSSFColor.BLACK.index;
-            AbsenceBottomBorderCS.FillForegroundColor = NPOI.HSSF.Util.HSSFColor.RED.index;
+            AbsenceBottomBorderCS.FillForegroundColor = HSSFColor.RED.index;
             AbsenceBottomBorderCS.FillPattern = HSSFCellStyle.SOLID_FOREGROUND;
-            AbsenceBottomBorderCS.FillBackgroundColor = NPOI.HSSF.Util.HSSFColor.YELLOW.index;
+            AbsenceBottomBorderCS.FillBackgroundColor = HSSFColor.YELLOW.index;
             AbsenceBottomBorderCS.WrapText = true;
             AbsenceBottomBorderCS.SetFont(SimpleBoldF);
 
@@ -10572,9 +10551,9 @@ namespace Infinium
             OutputHeaderTopBorderCS.RightBorderColor = HSSFColor.BLACK.index;
             OutputHeaderTopBorderCS.BorderTop = HSSFCellStyle.BORDER_MEDIUM;
             OutputHeaderTopBorderCS.TopBorderColor = HSSFColor.BLACK.index;
-            OutputHeaderTopBorderCS.FillForegroundColor = NPOI.HSSF.Util.HSSFColor.YELLOW.index;
+            OutputHeaderTopBorderCS.FillForegroundColor = HSSFColor.YELLOW.index;
             OutputHeaderTopBorderCS.FillPattern = HSSFCellStyle.SOLID_FOREGROUND;
-            OutputHeaderTopBorderCS.FillBackgroundColor = NPOI.HSSF.Util.HSSFColor.YELLOW.index;
+            OutputHeaderTopBorderCS.FillBackgroundColor = HSSFColor.YELLOW.index;
             OutputHeaderTopBorderCS.SetFont(SimpleF);
 
             HSSFCellStyle OutputHeaderBottomBorderCS = hssfworkbook.CreateCellStyle();
@@ -10588,9 +10567,9 @@ namespace Infinium
             OutputHeaderBottomBorderCS.RightBorderColor = HSSFColor.BLACK.index;
             OutputHeaderBottomBorderCS.BorderTop = HSSFCellStyle.BORDER_THIN;
             OutputHeaderBottomBorderCS.TopBorderColor = HSSFColor.BLACK.index;
-            OutputHeaderBottomBorderCS.FillForegroundColor = NPOI.HSSF.Util.HSSFColor.YELLOW.index;
+            OutputHeaderBottomBorderCS.FillForegroundColor = HSSFColor.YELLOW.index;
             OutputHeaderBottomBorderCS.FillPattern = HSSFCellStyle.SOLID_FOREGROUND;
-            OutputHeaderBottomBorderCS.FillBackgroundColor = NPOI.HSSF.Util.HSSFColor.YELLOW.index;
+            OutputHeaderBottomBorderCS.FillBackgroundColor = HSSFColor.YELLOW.index;
             OutputHeaderBottomBorderCS.WrapText = true;
             OutputHeaderBottomBorderCS.SetFont(SimpleBoldF);
 
@@ -10665,10 +10644,10 @@ namespace Infinium
                 HSSFSheet sheet1 = hssfworkbook.CreateSheet(sheetName);
                 sheet1.PrintSetup.PaperSize = (short)PaperSizeType.A4;
                 sheet1.SetZoom(85, 100);
-                sheet1.SetMargin(HSSFSheet.LeftMargin, (double).12);
-                sheet1.SetMargin(HSSFSheet.RightMargin, (double).07);
-                sheet1.SetMargin(HSSFSheet.TopMargin, (double).20);
-                sheet1.SetMargin(HSSFSheet.BottomMargin, (double).20);
+                sheet1.SetMargin(HSSFSheet.LeftMargin, .12);
+                sheet1.SetMargin(HSSFSheet.RightMargin, .07);
+                sheet1.SetMargin(HSSFSheet.TopMargin, .20);
+                sheet1.SetMargin(HSSFSheet.BottomMargin, .20);
 
                 int DisplayIndex = 1;
                 int RowIndex = 0;
@@ -10718,7 +10697,7 @@ namespace Infinium
                     HeaderCell.SetCellValue("");
                     HeaderCell.CellStyle = MainWithBorderCS;
                 }
-                sheet1.AddMergedRegion(new NPOI.HSSF.Util.Region(RowIndex + 6, DisplayIndex + 10, RowIndex + 6, DisplayIndex + 20));
+                sheet1.AddMergedRegion(new Region(RowIndex + 6, DisplayIndex + 10, RowIndex + 6, DisplayIndex + 20));
 
                 DisplayIndex = 0;
                 RowIndex = 7;
@@ -10729,7 +10708,7 @@ namespace Infinium
                 HeaderCell = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex);
                 HeaderCell.SetCellValue("№ п/п");
                 HeaderCell.CellStyle = SimpleHeaderCS;
-                sheet1.AddMergedRegion(new NPOI.HSSF.Util.Region(RowIndex, DisplayIndex, RowIndex + 1, DisplayIndex));
+                sheet1.AddMergedRegion(new Region(RowIndex, DisplayIndex, RowIndex + 1, DisplayIndex));
                 DisplayIndex++;
 
                 HeaderCell = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex);
@@ -10738,7 +10717,7 @@ namespace Infinium
                 HeaderCell = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex);
                 HeaderCell.SetCellValue("Ф.И.О.");
                 HeaderCell.CellStyle = SimpleHeaderCS;
-                sheet1.AddMergedRegion(new NPOI.HSSF.Util.Region(RowIndex, DisplayIndex, RowIndex + 1, DisplayIndex));
+                sheet1.AddMergedRegion(new Region(RowIndex, DisplayIndex, RowIndex + 1, DisplayIndex));
                 DisplayIndex++;
 
                 HeaderCell = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex);
@@ -10747,7 +10726,7 @@ namespace Infinium
                 HeaderCell = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex);
                 HeaderCell.SetCellValue("Разряд Ставка");
                 HeaderCell.CellStyle = SimpleHeaderCS;
-                sheet1.AddMergedRegion(new NPOI.HSSF.Util.Region(RowIndex, DisplayIndex, RowIndex + 1, DisplayIndex));
+                sheet1.AddMergedRegion(new Region(RowIndex, DisplayIndex, RowIndex + 1, DisplayIndex));
                 DisplayIndex++;
 
                 for (int i = 0; i < monthTimesheet.userTimesheets[0].WorkDaysDT.Rows.Count; i++)
@@ -10784,7 +10763,7 @@ namespace Infinium
                 HeaderCell = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex);
                 HeaderCell.SetCellValue("Отраб Дни");
                 HeaderCell.CellStyle = SimpleHeaderCS;
-                sheet1.AddMergedRegion(new NPOI.HSSF.Util.Region(RowIndex, DisplayIndex, RowIndex + 1, DisplayIndex));
+                sheet1.AddMergedRegion(new Region(RowIndex, DisplayIndex, RowIndex + 1, DisplayIndex));
                 DisplayIndex++;
 
                 HeaderCell = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex);
@@ -10793,7 +10772,7 @@ namespace Infinium
                 HeaderCell = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex);
                 HeaderCell.SetCellValue("Отраб Табель Часы");
                 HeaderCell.CellStyle = SimpleHeaderCS;
-                sheet1.AddMergedRegion(new NPOI.HSSF.Util.Region(RowIndex, DisplayIndex, RowIndex + 1, DisplayIndex));
+                sheet1.AddMergedRegion(new Region(RowIndex, DisplayIndex, RowIndex + 1, DisplayIndex));
                 DisplayIndex++;
 
                 HeaderCell = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex);
@@ -10802,7 +10781,7 @@ namespace Infinium
                 HeaderCell = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex);
                 HeaderCell.SetCellValue("Перераб Табель");
                 HeaderCell.CellStyle = SimpleHeaderCS;
-                sheet1.AddMergedRegion(new NPOI.HSSF.Util.Region(RowIndex, DisplayIndex, RowIndex + 1, DisplayIndex));
+                sheet1.AddMergedRegion(new Region(RowIndex, DisplayIndex, RowIndex + 1, DisplayIndex));
                 DisplayIndex++;
 
                 HeaderCell = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex);
@@ -10811,7 +10790,7 @@ namespace Infinium
                 HeaderCell = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex);
                 HeaderCell.SetCellValue("Отраб Факт Часы");
                 HeaderCell.CellStyle = SimpleHeaderCS;
-                sheet1.AddMergedRegion(new NPOI.HSSF.Util.Region(RowIndex, DisplayIndex, RowIndex + 1, DisplayIndex));
+                sheet1.AddMergedRegion(new Region(RowIndex, DisplayIndex, RowIndex + 1, DisplayIndex));
                 DisplayIndex++;
 
                 HeaderCell = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex);
@@ -10820,7 +10799,7 @@ namespace Infinium
                 HeaderCell = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex);
                 HeaderCell.SetCellValue("Перераб Факт");
                 HeaderCell.CellStyle = SimpleHeaderCS;
-                sheet1.AddMergedRegion(new NPOI.HSSF.Util.Region(RowIndex, DisplayIndex, RowIndex + 1, DisplayIndex));
+                sheet1.AddMergedRegion(new Region(RowIndex, DisplayIndex, RowIndex + 1, DisplayIndex));
                 DisplayIndex++;
 
                 RowIndex++;
@@ -10837,7 +10816,7 @@ namespace Infinium
                     Cell1.SetCellValue("");
                     Cell1.CellStyle = SerialNumberCS;
 
-                    sheet1.AddMergedRegion(new NPOI.HSSF.Util.Region(RowIndex, DisplayIndex, RowIndex + 1, DisplayIndex));
+                    sheet1.AddMergedRegion(new Region(RowIndex, DisplayIndex, RowIndex + 1, DisplayIndex));
 
                     DisplayIndex++;
 
@@ -10963,7 +10942,7 @@ namespace Infinium
                         Cell1.SetCellValue(monthTimesheet.userTimesheets[i].AllTimesheetDays.ToString());
 
                     Cell1.CellStyle = SimpleCS;
-                    sheet1.AddMergedRegion(new NPOI.HSSF.Util.Region(RowIndex, DisplayIndex, RowIndex + 1, DisplayIndex));
+                    sheet1.AddMergedRegion(new Region(RowIndex, DisplayIndex, RowIndex + 1, DisplayIndex));
 
                     Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex);
                     Cell1.CellStyle = SimpleDecCS;
@@ -10982,7 +10961,7 @@ namespace Infinium
 
                     Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex);
                     Cell1.CellStyle = SimpleDecCS;
-                    sheet1.AddMergedRegion(new NPOI.HSSF.Util.Region(RowIndex, DisplayIndex, RowIndex + 1, DisplayIndex));
+                    sheet1.AddMergedRegion(new Region(RowIndex, DisplayIndex, RowIndex + 1, DisplayIndex));
 
                     DisplayIndex++;
 
@@ -10998,7 +10977,7 @@ namespace Infinium
 
                     Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex);
                     Cell1.CellStyle = SimpleDecCS;
-                    sheet1.AddMergedRegion(new NPOI.HSSF.Util.Region(RowIndex, DisplayIndex, RowIndex + 1, DisplayIndex));
+                    sheet1.AddMergedRegion(new Region(RowIndex, DisplayIndex, RowIndex + 1, DisplayIndex));
 
                     DisplayIndex++;
 
@@ -11014,7 +10993,7 @@ namespace Infinium
 
                     Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex);
                     Cell1.CellStyle = SimpleDecCS;
-                    sheet1.AddMergedRegion(new NPOI.HSSF.Util.Region(RowIndex, DisplayIndex, RowIndex + 1, DisplayIndex));
+                    sheet1.AddMergedRegion(new Region(RowIndex, DisplayIndex, RowIndex + 1, DisplayIndex));
 
                     DisplayIndex++;
 
@@ -11030,7 +11009,7 @@ namespace Infinium
 
                     Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex);
                     Cell1.CellStyle = SimpleDecCS;
-                    sheet1.AddMergedRegion(new NPOI.HSSF.Util.Region(RowIndex, DisplayIndex, RowIndex + 1, DisplayIndex));
+                    sheet1.AddMergedRegion(new Region(RowIndex, DisplayIndex, RowIndex + 1, DisplayIndex));
 
                     DisplayIndex++;
 
@@ -11079,16 +11058,16 @@ namespace Infinium
                 sheet1.SetColumnWidth(DisplayIndex++, 9 * 256);
 
 
-                sheet1.GetRow(8).Height = (short)3 * 256;
+                sheet1.GetRow(8).Height = 3 * 256;
                 sheet1.CreateFreezePane(3, 9, 3, 9);
             }
 
-            string FileName = "Профиль-" + monthTimesheet.Year.ToString();
-            string tempFolder = System.Environment.GetEnvironmentVariable("TEMP");
+            string FileName = "Профиль-" + monthTimesheet.Year;
+            string tempFolder = Environment.GetEnvironmentVariable("TEMP");
             FileInfo file = new FileInfo(tempFolder + @"\" + FileName + ".xls");
 
             int y = 1;
-            while (file.Exists == true)
+            while (file.Exists)
             {
                 file = new FileInfo(tempFolder + @"\" + FileName + "(" + y++ + ").xls");
             }
@@ -11096,7 +11075,7 @@ namespace Infinium
             FileStream NewFile = new FileStream(file.FullName, FileMode.Create);
             hssfworkbook.Write(NewFile);
             NewFile.Close();
-            System.Diagnostics.Process.Start(file.FullName);
+            Process.Start(file.FullName);
         }
     }
 
@@ -11254,7 +11233,7 @@ namespace Infinium
 
         public DataTable AlbumsItemsDataTable;
         public DataTable PicturesItemsDataTable;
-        private FileManager FM;
+        private readonly FileManager FM;
 
         public InfiniumPictures()
         {
@@ -11332,9 +11311,9 @@ namespace Infinium
             //resize using proportions
             using (Graphics gr = Graphics.FromImage(resImage))
             {
-                gr.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-                gr.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                gr.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
+                gr.SmoothingMode = SmoothingMode.HighQuality;
+                gr.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                gr.PixelOffsetMode = PixelOffsetMode.HighQuality;
                 gr.DrawImage(SourceImage, new Rectangle(0, 0, iNewWidth, iNewHeight));
             }
 
@@ -11350,9 +11329,9 @@ namespace Infinium
             //resize using proportions
             using (Graphics gr = Graphics.FromImage(resImage))
             {
-                gr.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-                gr.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                gr.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
+                gr.SmoothingMode = SmoothingMode.HighQuality;
+                gr.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                gr.PixelOffsetMode = PixelOffsetMode.HighQuality;
                 gr.DrawImage(SourceImage, new Rectangle(0, 0, iNewWidth, Height));
             }
 
@@ -11397,7 +11376,7 @@ namespace Infinium
                                 try
                                 {
                                     using (MemoryStream ms = new MemoryStream(
-                                            FM.ReadFile(Configs.DocumentsPath + "Pictures/" + DT.Rows[i]["PictureID"].ToString() + ".jpg",
+                                            FM.ReadFile(Configs.DocumentsPath + "Pictures/" + DT.Rows[i]["PictureID"] + ".jpg",
                                                                           Convert.ToInt64(DT.Rows[i]["FileSize"]), Configs.FTPType)))
                                     {
                                         Bitmap bmp = (Bitmap)Image.FromStream(ms);
@@ -11409,7 +11388,7 @@ namespace Infinium
                                         MemoryStream nms = new MemoryStream();
 
                                         ImageCodecInfo ImageCodecInfo = UserProfile.GetEncoderInfo("image/jpeg");
-                                        System.Drawing.Imaging.Encoder eEncoder1 = System.Drawing.Imaging.Encoder.Quality;
+                                        Encoder eEncoder1 = Encoder.Quality;
 
                                         EncoderParameter myEncoderParameter1 = new EncoderParameter(eEncoder1, 100L);
                                         EncoderParameters myEncoderParameters = new EncoderParameters(1);
@@ -11434,7 +11413,7 @@ namespace Infinium
                                 try
                                 {
                                     using (MemoryStream ms = new MemoryStream(
-                                            FM.ReadFile(Configs.DocumentsPath + "Pictures/" + DT.Rows[i]["PictureID"].ToString() + ".jpg",
+                                            FM.ReadFile(Configs.DocumentsPath + "Pictures/" + DT.Rows[i]["PictureID"] + ".jpg",
                                                                           Convert.ToInt64(DT.Rows[i]["FileSize"]), Configs.FTPType)))
                                     {
                                         Bitmap bmp = (Bitmap)Image.FromStream(ms);
@@ -11444,7 +11423,7 @@ namespace Infinium
                                         MemoryStream nms = new MemoryStream();
 
                                         ImageCodecInfo ImageCodecInfo = UserProfile.GetEncoderInfo("image/jpeg");
-                                        System.Drawing.Imaging.Encoder eEncoder1 = System.Drawing.Imaging.Encoder.Quality;
+                                        Encoder eEncoder1 = Encoder.Quality;
 
                                         EncoderParameter myEncoderParameter1 = new EncoderParameter(eEncoder1, 100L);
                                         EncoderParameters myEncoderParameters = new EncoderParameters(1);
@@ -11453,7 +11432,7 @@ namespace Infinium
 
                                         resultBMP.Save(nms, ImageCodecInfo, myEncoderParameters);
 
-                                        NewRow["SmallSample" + i.ToString()] = nms.ToArray();
+                                        NewRow["SmallSample" + i] = nms.ToArray();
                                         nms.Dispose();
                                         resultBMP.Dispose();
                                         bmp.Dispose();
@@ -11499,7 +11478,7 @@ namespace Infinium
 
                     for (int i = 0; i < c; i++)
                     {
-                        NewRow["ActiveUser" + (i + 1).ToString()] = (byte[])UsersDataTable.Select("UserID = " + ActiveUsers.DefaultView[i]["UserID"])[0]["Photo"];
+                        NewRow["ActiveUser" + (i + 1)] = (byte[])UsersDataTable.Select("UserID = " + ActiveUsers.DefaultView[i]["UserID"])[0]["Photo"];
                     }
                 }
             }
@@ -11541,7 +11520,7 @@ namespace Infinium
                         NewRow["FileSize"] = Row["FileSize"];
 
                         using (MemoryStream ms = new MemoryStream(
-                                            FM.ReadFile(Configs.DocumentsPath + "Pictures/" + Row["PictureID"].ToString() + ".jpg",
+                                            FM.ReadFile(Configs.DocumentsPath + "Pictures/" + Row["PictureID"] + ".jpg",
                                                                           Convert.ToInt64(Row["FileSize"]), Configs.FTPType)))
                         {
                             Bitmap bmp = (Bitmap)Image.FromStream(ms);
@@ -11553,7 +11532,7 @@ namespace Infinium
                             MemoryStream nms = new MemoryStream();
 
                             ImageCodecInfo ImageCodecInfo = UserProfile.GetEncoderInfo("image/jpeg");
-                            System.Drawing.Imaging.Encoder eEncoder1 = System.Drawing.Imaging.Encoder.Quality;
+                            Encoder eEncoder1 = Encoder.Quality;
 
                             EncoderParameter myEncoderParameter1 = new EncoderParameter(eEncoder1, 100L);
                             EncoderParameters myEncoderParameters = new EncoderParameters(1);
@@ -11695,7 +11674,7 @@ namespace Infinium
         public Image GetPicture(int PictureID)
         {
             using (MemoryStream ms = new MemoryStream(
-                   FM.ReadFile(Configs.DocumentsPath + "Pictures/" + PictureID.ToString() + ".jpg",
+                   FM.ReadFile(Configs.DocumentsPath + "Pictures/" + PictureID + ".jpg",
                                Convert.ToInt64(PicturesItemsDataTable.Select("PictureID = " + PictureID)[0]["FileSize"]), Configs.FTPType)))
             {
                 Image I = Image.FromStream(ms);
@@ -11785,7 +11764,7 @@ namespace Infinium
 
         public DataTable UsersDataTable;
 
-        public bool bFirstSign = false;
+        public bool bFirstSign;
 
         public InfiniumFiles()
         {
@@ -12082,7 +12061,7 @@ namespace Infinium
                         DataRow NewRow = DT.NewRow();
                         NewRow["RootFolderID"] = FolderID;
                         NewRow["FolderName"] = FolderName;
-                        NewRow["FolderPath"] = DT.Rows[0]["FolderPath"].ToString() + "/" + FolderName;
+                        NewRow["FolderPath"] = DT.Rows[0]["FolderPath"] + "/" + FolderName;
                         NewRow["Author"] = Security.CurrentUserID;
 
                         DateTime Date = Security.GetCurrentDate();
@@ -12117,7 +12096,7 @@ namespace Infinium
                             FTPType = Configs.FTPType;
                         }
 
-                        int res = FM.CreateFolder(sPath + DT.Rows[0]["FolderPath"].ToString() + "/", FolderName, FTPType);
+                        int res = FM.CreateFolder(sPath + DT.Rows[0]["FolderPath"] + "/", FolderName, FTPType);
 
                         if (res == -1)
                             return -1;//directory exists
@@ -12188,8 +12167,8 @@ namespace Infinium
                 {
                     if (DA.Fill(DT) > 0)
                         return true;
-                    else
-                        return false;
+
+                    return false;
                 }
             }
         }
@@ -12227,8 +12206,8 @@ namespace Infinium
                 {
                     if (DA.Fill(DT) > 0)
                         return true;
-                    else
-                        return false;
+
+                    return false;
                 }
             }
         }//for rename and delete folder
@@ -12266,8 +12245,8 @@ namespace Infinium
                 {
                     if (DA.Fill(DT) > 0)
                         return true;
-                    else
-                        return false;
+
+                    return false;
                 }
             }
         }//for upload, rename, delete folder content
@@ -12314,7 +12293,7 @@ namespace Infinium
 
         public static int CheckPersonalFolder(int UserID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Folders WHERE FolderName = '" + UserID.ToString() + "'", ConnectionStrings.LightConnectionString))
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Folders WHERE FolderName = '" + UserID + "'", ConnectionStrings.LightConnectionString))
             {
                 using (DataTable DT = new DataTable())
                 {
@@ -12375,7 +12354,7 @@ namespace Infinium
 
                         DataRow NewRow = DT.NewRow();
                         NewRow["FolderName"] = UserID.ToString();
-                        NewRow["FolderPath"] = "Личные файлы/" + UserID.ToString();
+                        NewRow["FolderPath"] = "Личные файлы/" + UserID;
                         NewRow["RootFolderID"] = 3;
                         NewRow["ParentFolderID"] = 3;
                         NewRow["Author"] = Security.CurrentUserID;
@@ -12425,14 +12404,12 @@ namespace Infinium
                             {
                                 return false;
                             }
-                            else
-                            {
-                                if (Convert.ToDateTime(fDT.Rows[fDT.Rows.Count - 1]["DateTime"]) >
-                                        Convert.ToDateTime(DT.Rows[0]["LastModifiedDateTime"]))//ok
-                                    return true;
-                                else
-                                    return false;//someone replaced file after this user download it
-                            }
+
+                            if (Convert.ToDateTime(fDT.Rows[fDT.Rows.Count - 1]["DateTime"]) >
+                                Convert.ToDateTime(DT.Rows[0]["LastModifiedDateTime"]))//ok
+                                return true;
+
+                            return false;//someone replaced file after this user download it
 
                         }
                     }
@@ -12474,11 +12451,11 @@ namespace Infinium
 
                                 return false;
                             }
-                            else
-                                return true;
+
+                            return true;
                         }
-                        else
-                            return false;
+
+                        return false;
                     }
                 }
             }
@@ -12782,16 +12759,16 @@ namespace Infinium
                                 FTPType = Configs.FTPType;
                             }
 
-                            bOK = FM.DownloadFile(sPath + DT.Rows[0]["FolderPath"].ToString() + "/" + fDT.Rows[0]["FileName"].ToString(),
-                                            System.Environment.GetEnvironmentVariable("TEMP") + "/" +
-                                            fDT.Rows[0]["FileName"].ToString(), Convert.ToInt64(fDT.Rows[0]["FileSize"]), FTPType);
+                            bOK = FM.DownloadFile(sPath + DT.Rows[0]["FolderPath"] + "/" + fDT.Rows[0]["FileName"],
+                                            Environment.GetEnvironmentVariable("TEMP") + "/" +
+                                            fDT.Rows[0]["FileName"], Convert.ToInt64(fDT.Rows[0]["FileSize"]), FTPType);
 
                             if (bOK)
                             {
-                                System.Diagnostics.Process myProcess = new System.Diagnostics.Process();
+                                Process myProcess = new Process();
                                 myProcess.StartInfo.UseShellExecute = true;
-                                myProcess.StartInfo.FileName = System.Environment.GetEnvironmentVariable("TEMP") + "/" +
-                                        fDT.Rows[0]["FileName"].ToString();
+                                myProcess.StartInfo.FileName = Environment.GetEnvironmentVariable("TEMP") + "/" +
+                                        fDT.Rows[0]["FileName"];
                                 myProcess.StartInfo.CreateNoWindow = true;
                                 myProcess.Start();
                             }
@@ -13111,16 +13088,14 @@ namespace Infinium
                             }
                         }
                     }
-                    else
-                    {
-                        using (SqlDataAdapter fDA = new SqlDataAdapter("SELECT ClientID, ClientName FROM Clients WHERE ClientFolderName = '" + DT.Rows[0]["FolderName"] + "'", ConnectionStrings.MarketingReferenceConnectionString))
-                        {
-                            using (DataTable fDT = new DataTable())
-                            {
-                                fDA.Fill(fDT);
 
-                                return Convert.ToInt32(fDT.Rows[0]["ClientID"]);
-                            }
+                    using (SqlDataAdapter fDA = new SqlDataAdapter("SELECT ClientID, ClientName FROM Clients WHERE ClientFolderName = '" + DT.Rows[0]["FolderName"] + "'", ConnectionStrings.MarketingReferenceConnectionString))
+                    {
+                        using (DataTable fDT = new DataTable())
+                        {
+                            fDA.Fill(fDT);
+
+                            return Convert.ToInt32(fDT.Rows[0]["ClientID"]);
                         }
                     }
                 }
@@ -13133,7 +13108,7 @@ namespace Infinium
             //string SenderEmail = "zovprofilreport@mail.ru";
 
             //string AccountPassword = "7026Gradus0462";
-            string AccountPassword = "onluenzbclnedqtt";
+            string AccountPassword = "foqwsulbjiuslnue";
             string SenderEmail = "infiniumdevelopers@gmail.com";
 
             string to = GetClientEmail(ClientID);
@@ -13300,7 +13275,7 @@ namespace Infinium
                                 FTPType = Configs.FTPType;
                             }
 
-                            bOk = FM.DownloadFile(sPath + DT.Rows[0]["FolderPath"].ToString() + "/" + fDT.Rows[0]["FileName"],
+                            bOk = FM.DownloadFile(sPath + DT.Rows[0]["FolderPath"] + "/" + fDT.Rows[0]["FileName"],
                                             SaveToPath, Convert.ToInt64(fDT.Rows[0]["FileSize"]), FTPType);
 
                             WriteDownloadLog(FileID, Security.CurrentUserID);
@@ -13319,7 +13294,7 @@ namespace Infinium
             {
                 CurrentFile++;
 
-                SaveFile(Convert.ToInt32(Row["FileID"]), Path + Row["ItemName"].ToString());
+                SaveFile(Convert.ToInt32(Row["FileID"]), Path + Row["ItemName"]);
             }
         }
 
@@ -13349,12 +13324,9 @@ namespace Infinium
                                     iF = iR;
                                     continue;
                                 }
-                                else
-                                {
-                                    //SetRootFolderID(iR, Date, UserID);
+                                //SetRootFolderID(iR, Date, UserID);
 
-                                    break;
-                                }
+                                break;
                             }
                         }
 
@@ -13459,7 +13431,7 @@ namespace Infinium
                     {
                         DA.Fill(DT);
 
-                        if (Convert.ToBoolean(DocumentAttributesDataTable.Select("AttributeName = 'Бумага'")[0]["Value"]) == true)
+                        if (Convert.ToBoolean(DocumentAttributesDataTable.Select("AttributeName = 'Бумага'")[0]["Value"]))
                             DT.Rows[0]["NeedPrint"] = true;
                         else
                             DT.Rows[0]["NeedPrint"] = false;
@@ -13535,7 +13507,7 @@ namespace Infinium
                             {
                                 fDA.Fill(fDT);
 
-                                if (Convert.ToBoolean(fDT.Rows[0]["FirstSign"]) == true)
+                                if (Convert.ToBoolean(fDT.Rows[0]["FirstSign"]))
                                 {
                                     using (SqlDataAdapter sDA = new SqlDataAdapter("DELETE FROM DocumentsSigns WHERE SignType = 0 AND FileID = " + FileID + " AND UserID <> " + UserID, ConnectionStrings.LightConnectionString))
                                     {
@@ -13665,7 +13637,7 @@ namespace Infinium
         {
             UsersDataTable.Clear();
 
-            UsersDataTable = new DataView(TablesManager.UsersDataTable).ToTable(true, new string[] { "UserID", "Name", "Photo" });
+            UsersDataTable = new DataView(TablesManager.UsersDataTable).ToTable(true, "UserID", "Name", "Photo");
 
             if (UsersDataTable.Columns["SenderTypeID"] == null)
                 UsersDataTable.Columns.Add(new DataColumn("SenderTypeID", Type.GetType("System.Int32")));
@@ -14166,7 +14138,7 @@ namespace Infinium
                         {
                             if (FM.UploadFile(Row["Path"].ToString(), Configs.DocumentsPath +
                                           FileManager.GetPath("ZOVNews") + "/" +
-                                          DT.Select("FileName = '" + Row["FileName"].ToString() + "'")[0]["NewsAttachID"] + ".idf", Configs.FTPType) == false)
+                                          DT.Select("FileName = '" + Row["FileName"] + "'")[0]["NewsAttachID"] + ".idf", Configs.FTPType) == false)
                             {
                                 break;
                             }
@@ -14204,7 +14176,7 @@ namespace Infinium
                             if (AttachmentsDataTable.Select("FileName = '" + Row["FileName"] + "'").Count() == 0)
                             {
                                 FM.DeleteFile(Configs.DocumentsPath + FileManager.GetPath("ZOVNews") + "/" +
-                                              DT.Select("FileName = '" + Row["FileName"].ToString() + "'")[0]["NewsAttachID"] + ".idf", Configs.FTPType);
+                                              DT.Select("FileName = '" + Row["FileName"] + "'")[0]["NewsAttachID"] + ".idf", Configs.FTPType);
                                 Row.Delete();
                             }
                         }
@@ -14275,7 +14247,7 @@ namespace Infinium
                         {
                             if (FM.UploadFile(Row["Path"].ToString(), Configs.DocumentsPath +
                                          FileManager.GetPath("ZOVNews") + "/" +
-                                         DT.Select("FileName = '" + Row["FileName"].ToString() + "'")[0]["NewsAttachID"] + ".idf", Configs.FTPType) == false)
+                                         DT.Select("FileName = '" + Row["FileName"] + "'")[0]["NewsAttachID"] + ".idf", Configs.FTPType) == false)
                                 break;
                         }
                         catch
@@ -14330,7 +14302,7 @@ namespace Infinium
 
         public static string TempPath()
         {
-            return System.Environment.GetEnvironmentVariable("TEMP");
+            return Environment.GetEnvironmentVariable("TEMP");
         }
 
         public int GetNewsUpdatesCount()
@@ -14453,7 +14425,7 @@ namespace Infinium
                         foreach (DataRow Row in DT.Rows)
                         {
                             FM.DeleteFile(Configs.DocumentsPath + FileManager.GetPath("ZOVNews") + "/" +
-                                          DT.Select("FileName = '" + Row["FileName"].ToString() + "'")[0]["NewsAttachID"] + ".idf", Configs.FTPType);
+                                          DT.Select("FileName = '" + Row["FileName"] + "'")[0]["NewsAttachID"] + ".idf", Configs.FTPType);
                         }
                     }
                     catch
@@ -14508,9 +14480,9 @@ namespace Infinium
                                 continue;
 
                             FM.DeleteFile(Configs.DocumentsPath + FileManager.GetPath("ZOVNews") + "/" +
-                                      DT.Select("FileName = '" + Row["FileName"].ToString() + "'")[0]["NewsAttachID"] + ".idf", Configs.FTPType);
+                                      DT.Select("FileName = '" + Row["FileName"] + "'")[0]["NewsAttachID"] + ".idf", Configs.FTPType);
 
-                            DT.Select("FileName = '" + Row["FileName"].ToString() + "'")[0].Delete();
+                            DT.Select("FileName = '" + Row["FileName"] + "'")[0].Delete();
                         }
 
                         DA.Update(DT);
@@ -14569,7 +14541,7 @@ namespace Infinium
 
         public string SaveFile(int NewsAttachID)//temp folder
         {
-            string tempFolder = System.Environment.GetEnvironmentVariable("TEMP");
+            string tempFolder = Environment.GetEnvironmentVariable("TEMP");
 
             string FileName = "";
 
@@ -14634,7 +14606,6 @@ namespace Infinium
                     }
                     catch
                     {
-                        return;
                     }
                 }
             }
@@ -14660,7 +14631,7 @@ namespace Infinium
 
         private string GetNewFileName(string path, string FileName)
         {
-            FileInfo fileInfo = new System.IO.FileInfo(path + "\\" + FileName);
+            FileInfo fileInfo = new FileInfo(path + "\\" + FileName);
 
             if (!fileInfo.Exists)
                 return FileName;
@@ -14670,12 +14641,12 @@ namespace Infinium
 
             while (!Ok)
             {
-                fileInfo = new System.IO.FileInfo(path + "\\" + SetNumber(FileName, n));
+                fileInfo = new FileInfo(path + "\\" + SetNumber(FileName, n));
 
                 if (!fileInfo.Exists)
                     return SetNumber(FileName, n);
-                else
-                    n++;
+
+                n++;
             }
 
             return "";
@@ -14779,8 +14750,8 @@ namespace Infinium
         public BindingSource UsersBindingSource;
 
         public DataTable MessagesDataTable, UsersDataTable;
-        private ClientsMessagesDataGrid SelectedUsersGrid = null;
-        private ClientsDataGrid UsersListDataGrid = null;
+        private readonly ClientsMessagesDataGrid SelectedUsersGrid;
+        private readonly ClientsDataGrid UsersListDataGrid;
 
         public ZOVMessages(ref ClientsMessagesDataGrid tSelectedUsersGrid, ref ClientsDataGrid tUsersListDataGrid)
         {
@@ -14807,7 +14778,7 @@ namespace Infinium
             SelectedUsersGrid = tSelectedUsersGrid;
             UsersListDataGrid = tUsersListDataGrid;
 
-            SelectedUsersBindingSource = new BindingSource()
+            SelectedUsersBindingSource = new BindingSource
             {
                 DataSource = SelectedUsersDataTable
             };
@@ -14829,7 +14800,7 @@ namespace Infinium
 
         private void Binding()
         {
-            ManagersBindingSource = new BindingSource() { DataSource = ManagersDataTable };
+            ManagersBindingSource = new BindingSource { DataSource = ManagersDataTable };
         }
 
         public void SetSelectedUsersGrid()
@@ -15106,7 +15077,7 @@ namespace Infinium
         {
             UsersDataTable.Clear();
 
-            UsersDataTable = new DataView(TablesManager.UsersDataTable).ToTable(true, new string[] { "UserID", "Name", "Photo" });
+            UsersDataTable = new DataView(TablesManager.UsersDataTable).ToTable(true, "UserID", "Name", "Photo");
 
             if (UsersDataTable.Columns["SenderTypeID"] == null)
                 UsersDataTable.Columns.Add(new DataColumn("SenderTypeID", Type.GetType("System.Int32")));
@@ -15741,7 +15712,7 @@ namespace Infinium
                         {
                             if (FM.UploadFile(Row["Path"].ToString(), Configs.DocumentsPath +
                                           FileManager.GetPath("MarketingNews") + "/" +
-                                          DT.Select("FileName = '" + Row["FileName"].ToString() + "'")[0]["NewsAttachID"] + ".idf", Configs.FTPType) == false)
+                                          DT.Select("FileName = '" + Row["FileName"] + "'")[0]["NewsAttachID"] + ".idf", Configs.FTPType) == false)
                             {
                                 break;
                             }
@@ -15779,7 +15750,7 @@ namespace Infinium
                             if (AttachmentsDataTable.Select("FileName = '" + Row["FileName"] + "'").Count() == 0)
                             {
                                 FM.DeleteFile(Configs.DocumentsPath + FileManager.GetPath("MarketingNews") + "/" +
-                                              DT.Select("FileName = '" + Row["FileName"].ToString() + "'")[0]["NewsAttachID"] + ".idf", Configs.FTPType);
+                                              DT.Select("FileName = '" + Row["FileName"] + "'")[0]["NewsAttachID"] + ".idf", Configs.FTPType);
                                 Row.Delete();
                             }
                         }
@@ -15850,7 +15821,7 @@ namespace Infinium
                         {
                             if (FM.UploadFile(Row["Path"].ToString(), Configs.DocumentsPath +
                                          FileManager.GetPath("MarketingNews") + "/" +
-                                         DT.Select("FileName = '" + Row["FileName"].ToString() + "'")[0]["NewsAttachID"] + ".idf", Configs.FTPType) == false)
+                                         DT.Select("FileName = '" + Row["FileName"] + "'")[0]["NewsAttachID"] + ".idf", Configs.FTPType) == false)
                                 break;
                         }
                         catch
@@ -15903,7 +15874,7 @@ namespace Infinium
 
         public static string TempPath()
         {
-            return System.Environment.GetEnvironmentVariable("TEMP");
+            return Environment.GetEnvironmentVariable("TEMP");
         }
 
         public int GetNewsUpdatesCount()
@@ -16026,7 +15997,7 @@ namespace Infinium
                         foreach (DataRow Row in DT.Rows)
                         {
                             FM.DeleteFile(Configs.DocumentsPath + FileManager.GetPath("MarketingNews") + "/" +
-                                          DT.Select("FileName = '" + Row["FileName"].ToString() + "'")[0]["NewsAttachID"] + ".idf", Configs.FTPType);
+                                          DT.Select("FileName = '" + Row["FileName"] + "'")[0]["NewsAttachID"] + ".idf", Configs.FTPType);
                         }
                     }
                     catch
@@ -16081,9 +16052,9 @@ namespace Infinium
                                 continue;
 
                             FM.DeleteFile(Configs.DocumentsPath + FileManager.GetPath("MarketingNews") + "/" +
-                                      DT.Select("FileName = '" + Row["FileName"].ToString() + "'")[0]["NewsAttachID"] + ".idf", Configs.FTPType);
+                                      DT.Select("FileName = '" + Row["FileName"] + "'")[0]["NewsAttachID"] + ".idf", Configs.FTPType);
 
-                            DT.Select("FileName = '" + Row["FileName"].ToString() + "'")[0].Delete();
+                            DT.Select("FileName = '" + Row["FileName"] + "'")[0].Delete();
                         }
 
                         DA.Update(DT);
@@ -16142,7 +16113,7 @@ namespace Infinium
 
         public string SaveFile(int NewsAttachID)//temp folder
         {
-            string tempFolder = System.Environment.GetEnvironmentVariable("TEMP");
+            string tempFolder = Environment.GetEnvironmentVariable("TEMP");
 
             string FileName = "";
 
@@ -16207,7 +16178,6 @@ namespace Infinium
                     }
                     catch
                     {
-                        return;
                     }
                 }
             }
@@ -16233,7 +16203,7 @@ namespace Infinium
 
         private string GetNewFileName(string path, string FileName)
         {
-            FileInfo fileInfo = new System.IO.FileInfo(path + "\\" + FileName);
+            FileInfo fileInfo = new FileInfo(path + "\\" + FileName);
 
             if (!fileInfo.Exists)
                 return FileName;
@@ -16243,12 +16213,12 @@ namespace Infinium
 
             while (!Ok)
             {
-                fileInfo = new System.IO.FileInfo(path + "\\" + SetNumber(FileName, n));
+                fileInfo = new FileInfo(path + "\\" + SetNumber(FileName, n));
 
                 if (!fileInfo.Exists)
                     return SetNumber(FileName, n);
-                else
-                    n++;
+
+                n++;
             }
 
             return "";
@@ -16409,7 +16379,7 @@ namespace Infinium
                 NewRow["Count"] = 0;
 
                 MemoryStream ms = new MemoryStream();
-                Properties.Resources.DocumentsMenuUpdates.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                Resources.DocumentsMenuUpdates.Save(ms, ImageFormat.Png);
 
                 NewRow["Image"] = ms.ToArray();
                 DocumentsMenuDataTable.Rows.Add(NewRow);
@@ -16421,7 +16391,7 @@ namespace Infinium
                 NewRow["Name"] = "Все документы";
                 NewRow["Count"] = 0;
                 MemoryStream ms = new MemoryStream();
-                Properties.Resources.DocumentsMenuAllDocs.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                Resources.DocumentsMenuAllDocs.Save(ms, ImageFormat.Png);
 
                 NewRow["Image"] = ms.ToArray();
                 DocumentsMenuDataTable.Rows.Add(NewRow);
@@ -16433,7 +16403,7 @@ namespace Infinium
                 NewRow["Name"] = "Мои документы";
                 NewRow["Count"] = 0;
                 MemoryStream ms = new MemoryStream();
-                Properties.Resources.DocumentsMenuUser.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                Resources.DocumentsMenuUser.Save(ms, ImageFormat.Png);
 
                 NewRow["Image"] = ms.ToArray();
                 DocumentsMenuDataTable.Rows.Add(NewRow);
@@ -16445,7 +16415,7 @@ namespace Infinium
                 NewRow["Name"] = "Согласование";
                 NewRow["Count"] = 0;
                 MemoryStream ms = new MemoryStream();
-                Properties.Resources.DocumentsMenuConfirms.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                Resources.DocumentsMenuConfirms.Save(ms, ImageFormat.Png);
 
                 NewRow["Image"] = ms.ToArray();
                 DocumentsMenuDataTable.Rows.Add(NewRow);
@@ -17847,7 +17817,7 @@ namespace Infinium
                             if (Size == 0)
                                 Size = 1;
 
-                            NewRow["FileSizeText"] = Size.ToString() + " КБ";
+                            NewRow["FileSizeText"] = Size + " КБ";
 
                             NewRow["FileSize"] = Row["FileSize"];
                             NewRow["IsNew"] = false;
@@ -17880,7 +17850,7 @@ namespace Infinium
             foreach (DataRow Row in GetCommentFiles(DocumentCommentID).Rows)
             {
                 FM.DeleteFile(Configs.DocumentsPath + "/Документооборот/Комментарии" +
-                                    "/" + Row["FileName"].ToString(), Configs.FTPType);
+                                    "/" + Row["FileName"], Configs.FTPType);
             }
 
             using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM DocumentsCommentsFiles WHERE DocumentCommentID = " + DocumentCommentID, ConnectionStrings.LightConnectionString))
@@ -18060,7 +18030,7 @@ namespace Infinium
                 if (FilesDataTable.Select("IsNew is null AND FileName = '" + Row["FileName"] + "'").Count() == 0)
                 {
                     FM.DeleteFile(Configs.DocumentsPath + "/Документооборот/Комментарии" +
-                                    "/" + Row["FileName"].ToString(), Configs.FTPType);
+                                    "/" + Row["FileName"], Configs.FTPType);
 
 
                     using (SqlDataAdapter dDA = new SqlDataAdapter("DELETE FROM DocumentsCommentsFiles WHERE DocumentCommentID = " + DocumentCommentID + " AND FileName = '" + Row["FileName"] + "'", ConnectionStrings.LightConnectionString))
@@ -18436,7 +18406,7 @@ namespace Infinium
                             if (FilesDT.Select("IsNew is null" + " AND FileName = '" + Row["FileName"] + "'").Count() == 0)//deleted
                             {
                                 FM.DeleteFile(Configs.DocumentsPath + "/Документооборот/Документы" +
-                                            "/" + Row["FileName"].ToString(), Configs.FTPType);
+                                            "/" + Row["FileName"], Configs.FTPType);
 
                                 Row.Delete();
                             }
@@ -18802,7 +18772,7 @@ namespace Infinium
                             if (FilesDT.Select("IsNew is null" + " AND FileName = '" + Row["FileName"] + "'").Count() == 0)//deleted
                             {
                                 FM.DeleteFile(Configs.DocumentsPath + "/Документооборот/Документы" +
-                                            "/" + Row["FileName"].ToString(), Configs.FTPType);
+                                            "/" + Row["FileName"], Configs.FTPType);
 
                                 Row.Delete();
                             }
@@ -19171,7 +19141,7 @@ namespace Infinium
                             if (FilesDT.Select("IsNew is null" + " AND FileName = '" + Row["FileName"] + "'").Count() == 0)//deleted
                             {
                                 FM.DeleteFile(Configs.DocumentsPath + "/Документооборот/Документы" +
-                                            "/" + Row["FileName"].ToString(), Configs.FTPType);
+                                            "/" + Row["FileName"], Configs.FTPType);
 
                                 Row.Delete();
                             }
@@ -19417,7 +19387,7 @@ namespace Infinium
 
         public bool OpenFile(int DocumentFileID)
         {
-            string tempFolder = System.Environment.GetEnvironmentVariable("TEMP");
+            string tempFolder = Environment.GetEnvironmentVariable("TEMP");
 
             bool bOK = false;
 
@@ -19427,28 +19397,28 @@ namespace Infinium
                 {
                     fDA.Fill(fDT);
 
-                    bOK = FM.DownloadFile(Configs.DocumentsPath + "Документооборот/Документы/" + fDT.Rows[0]["FileName"].ToString(),
+                    bOK = FM.DownloadFile(Configs.DocumentsPath + "Документооборот/Документы/" + fDT.Rows[0]["FileName"],
                                     tempFolder + "//" +
-                                    fDT.Rows[0]["FileName"].ToString(), Convert.ToInt64(fDT.Rows[0]["FileSize"]), Configs.FTPType);
+                                    fDT.Rows[0]["FileName"], Convert.ToInt64(fDT.Rows[0]["FileSize"]), Configs.FTPType);
 
                     if (bOK)
                         try
                         {
-                            System.Diagnostics.Process myProcess = new System.Diagnostics.Process();
+                            Process myProcess = new Process();
                             myProcess.StartInfo.UseShellExecute = true;
                             myProcess.StartInfo.FileName = tempFolder + "//" +
-                                                                fDT.Rows[0]["FileName"].ToString();
+                                                                fDT.Rows[0]["FileName"];
                             myProcess.StartInfo.CreateNoWindow = true;
                             myProcess.Start();
                         }
                         catch (Exception ex)
                         {
-                            InfiniumMessages.SendMessage("Ошибка скачивания файла документов UserID = " + Security.CurrentUserID + ", ID = " + DocumentFileID + ", Name = " + fDT.Rows[0]["FileName"].ToString() + " exception = " + ex.Message, 321);
+                            InfiniumMessages.SendMessage("Ошибка скачивания файла документов UserID = " + Security.CurrentUserID + ", ID = " + DocumentFileID + ", Name = " + fDT.Rows[0]["FileName"] + " exception = " + ex.Message, 321);
                             return false;
                         }
                     else
                     {
-                        InfiniumMessages.SendMessage("Ошибка скачивания файла документов UserID = " + Security.CurrentUserID + ", ID = " + DocumentFileID + ", Name = " + fDT.Rows[0]["FileName"].ToString(), 321);
+                        InfiniumMessages.SendMessage("Ошибка скачивания файла документов UserID = " + Security.CurrentUserID + ", ID = " + DocumentFileID + ", Name = " + fDT.Rows[0]["FileName"], 321);
                         MessageBox.Show("Ошибка скачивания файла. Отчет отправлен разработчикам. Приносим извинения за неудобства.");
                     }
                 }
@@ -19460,7 +19430,7 @@ namespace Infinium
 
         public bool OpenCommentFile(int DocumentCommentFileID)
         {
-            string tempFolder = System.Environment.GetEnvironmentVariable("TEMP");
+            string tempFolder = Environment.GetEnvironmentVariable("TEMP");
 
 
             bool bOK = false;
@@ -19471,18 +19441,18 @@ namespace Infinium
                 {
                     fDA.Fill(fDT);
 
-                    bOK = FM.DownloadFile(Configs.DocumentsPath + "Документооборот/Комментарии/" + fDT.Rows[0]["FileName"].ToString(),
+                    bOK = FM.DownloadFile(Configs.DocumentsPath + "Документооборот/Комментарии/" + fDT.Rows[0]["FileName"],
                                     tempFolder + "//" +
-                                    fDT.Rows[0]["FileName"].ToString(), Convert.ToInt64(fDT.Rows[0]["FileSize"]), Configs.FTPType);
+                                    fDT.Rows[0]["FileName"], Convert.ToInt64(fDT.Rows[0]["FileSize"]), Configs.FTPType);
 
                     if (bOK)
                     {
-                        System.Diagnostics.Process.Start(tempFolder + "//" +
-                                                            fDT.Rows[0]["FileName"].ToString());
+                        Process.Start(tempFolder + "//" +
+                                      fDT.Rows[0]["FileName"]);
                     }
                     else
                     {
-                        InfiniumMessages.SendMessage("Ошибка скачивания файла комментария документов UserID = " + Security.CurrentUserID + ", ID = " + DocumentCommentFileID + ", Name = " + fDT.Rows[0]["FileName"].ToString(), 321);
+                        InfiniumMessages.SendMessage("Ошибка скачивания файла комментария документов UserID = " + Security.CurrentUserID + ", ID = " + DocumentCommentFileID + ", Name = " + fDT.Rows[0]["FileName"], 321);
                         MessageBox.Show("Ошибка скачивания файла. Отчет отправлен разработчикам. Приносим извинения за неудобства.");
                     }
                 }
@@ -19528,7 +19498,7 @@ namespace Infinium
 
                         foreach (DataRow Row in DT.Rows)
                         {
-                            FM.DeleteFile(Configs.DocumentsPath + "Документооборот/Документы/" + Row["FileName"].ToString(), Configs.FTPType);
+                            FM.DeleteFile(Configs.DocumentsPath + "Документооборот/Документы/" + Row["FileName"], Configs.FTPType);
                             Row.Delete();
                         }
 
@@ -19571,7 +19541,7 @@ namespace Infinium
 
                         foreach (DataRow Row in DT.Rows)
                         {
-                            FM.DeleteFile(Configs.DocumentsPath + "Документооборот/Комментарии/" + Row["FileName"].ToString(), Configs.FTPType);
+                            FM.DeleteFile(Configs.DocumentsPath + "Документооборот/Комментарии/" + Row["FileName"], Configs.FTPType);
                             Row.Delete();
                         }
 
@@ -19609,7 +19579,7 @@ namespace Infinium
 
                         foreach (DataRow Row in DT.Rows)
                         {
-                            FM.DeleteFile(Configs.DocumentsPath + "Документооборот/Документы/" + Row["FileName"].ToString(), Configs.FTPType);
+                            FM.DeleteFile(Configs.DocumentsPath + "Документооборот/Документы/" + Row["FileName"], Configs.FTPType);
                             Row.Delete();
                         }
 
@@ -19654,7 +19624,7 @@ namespace Infinium
 
                         foreach (DataRow Row in DT.Rows)
                         {
-                            FM.DeleteFile(Configs.DocumentsPath + "Документооборот/Комментарии/" + Row["FileName"].ToString(), Configs.FTPType);
+                            FM.DeleteFile(Configs.DocumentsPath + "Документооборот/Комментарии/" + Row["FileName"], Configs.FTPType);
                             Row.Delete();
                         }
 
@@ -19692,7 +19662,7 @@ namespace Infinium
 
                         foreach (DataRow Row in DT.Rows)
                         {
-                            FM.DeleteFile(Configs.DocumentsPath + "Документооборот/Документы/" + Row["FileName"].ToString(), Configs.FTPType);
+                            FM.DeleteFile(Configs.DocumentsPath + "Документооборот/Документы/" + Row["FileName"], Configs.FTPType);
                             Row.Delete();
                         }
 
@@ -19735,7 +19705,7 @@ namespace Infinium
 
                         foreach (DataRow Row in DT.Rows)
                         {
-                            FM.DeleteFile(Configs.DocumentsPath + "Документооборот/Комментарии/" + Row["FileName"].ToString(), Configs.FTPType);
+                            FM.DeleteFile(Configs.DocumentsPath + "Документооборот/Комментарии/" + Row["FileName"], Configs.FTPType);
                             Row.Delete();
                         }
 

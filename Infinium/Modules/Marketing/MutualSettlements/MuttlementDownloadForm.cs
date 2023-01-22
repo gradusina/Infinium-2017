@@ -11,12 +11,12 @@ namespace Infinium
     {
         public static int Result;//0 cancel, 1 open, 2 save
 
-        FileManager FM;
-        MutualSettlements MutualSettlementsManager;
-        int MutualSettlementDocumentID = -1;
-        string FileName = string.Empty;
+        private FileManager FM;
+        private MutualSettlements MutualSettlementsManager;
+        private int MutualSettlementDocumentID = -1;
+        private string FileName = string.Empty;
 
-        bool bStopTransfer = false;
+        private bool bStopTransfer = false;
 
         public MuttlementDownloadForm(int iMutualSettlementDocumentID, string sFileName, ref MutualSettlements tMutualSettlementsManager)
         {
@@ -28,7 +28,7 @@ namespace Infinium
             FM = new FileManager();
         }
 
-        System.Threading.Thread T;
+        private System.Threading.Thread T;
 
         private void OpenButton_Click(object sender, EventArgs e)
         {

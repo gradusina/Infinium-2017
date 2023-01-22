@@ -7,31 +7,31 @@ namespace Infinium
 {
     public partial class DocumentsUploadForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
 
-        int FormEvent = 0;
+        private int FormEvent;
 
-        Form TopForm;
+        private Form TopForm;
 
-        InfiniumDocuments InfiniumDocuments;
+        private InfiniumDocuments InfiniumDocuments;
 
-        public bool bStopTransfer = false;
+        public bool bStopTransfer;
 
         public int InnerDocumentID = -1;
 
-        public long TotalSize = 0;
-        public long Position = 0;
+        public long TotalSize;
+        public long Position;
 
         public int DocumentID = -1;
         public int DocumentCategoryID = -1;
-        DataTable FilesDataTable = null;
+        private DataTable FilesDataTable;
 
-        int CurrentFile = 0;
-        int DocumentFileID = -1;
+        private int CurrentFile;
+        private int DocumentFileID = -1;
         public string sCommentsText = "";
-        int DocumentCommentFileID = -1;
+        private int DocumentCommentFileID = -1;
         public DataTable CurrentFilesDataTable = null;
 
         public static bool bOK = true;
@@ -105,7 +105,7 @@ namespace Infinium
         {
             if (!DatabaseConfigsManager.Animation)
             {
-                this.Opacity = 1;
+                Opacity = 1;
 
                 if (FormEvent == eClose || FormEvent == eHide)
                 {
@@ -113,12 +113,12 @@ namespace Infinium
 
                     if (FormEvent == eClose)
                     {
-                        this.Close();
+                        Close();
                     }
 
                     if (FormEvent == eHide)
                     {
-                        this.Hide();
+                        Hide();
                     }
 
                     return;
@@ -135,20 +135,20 @@ namespace Infinium
 
             if (FormEvent == eClose || FormEvent == eHide)
             {
-                if (Convert.ToDecimal(this.Opacity) != Convert.ToDecimal(0.00))
-                    this.Opacity = Convert.ToDouble(Convert.ToDecimal(this.Opacity) - Convert.ToDecimal(0.05));
+                if (Convert.ToDecimal(Opacity) != Convert.ToDecimal(0.00))
+                    Opacity = Convert.ToDouble(Convert.ToDecimal(Opacity) - Convert.ToDecimal(0.05));
                 else
                 {
                     AnimateTimer.Enabled = false;
 
                     if (FormEvent == eClose)
                     {
-                        this.Close();
+                        Close();
                     }
 
                     if (FormEvent == eHide)
                     {
-                        this.Hide();
+                        Hide();
                     }
                 }
 
@@ -158,15 +158,13 @@ namespace Infinium
 
             if (FormEvent == eShow || FormEvent == eShow)
             {
-                if (this.Opacity != 1)
-                    this.Opacity += 0.05;
+                if (Opacity != 1)
+                    Opacity += 0.05;
                 else
                 {
                     AnimateTimer.Enabled = false;
                     SplashForm.CloseS = true;
                 }
-
-                return;
             }
         }
 
@@ -182,7 +180,7 @@ namespace Infinium
             AnimateTimer.Enabled = true;
         }
 
-        Thread LoadThread;
+        private Thread LoadThread;
 
 
         public void StartUpload()
@@ -255,8 +253,8 @@ namespace Infinium
         }
 
 
-        long CurPosition = 0;
-        int iCur = 0;
+        private long CurPosition;
+        private int iCur;
 
         private void UploadTimer_Tick(object sender, EventArgs e)
         {
@@ -292,7 +290,7 @@ namespace Infinium
             if (TotalSize == 0)
             {
                 UploadTimer.Enabled = false;
-                this.Close();
+                Close();
                 return;
             }
 
@@ -310,7 +308,7 @@ namespace Infinium
             {
                 ProgressBar.Value = 100;
                 UploadTimer.Enabled = false;
-                this.Close();
+                Close();
                 return;
             }
 
@@ -347,7 +345,7 @@ namespace Infinium
             if (InfiniumDocuments.FM.TotalFileSize == 0)
             {
                 DownloadTimer.Enabled = false;
-                this.Close();
+                Close();
                 return;
             }
 
@@ -355,7 +353,7 @@ namespace Infinium
             {
                 ProgressBar.Value = 100;
                 DownloadTimer.Enabled = false;
-                this.Close();
+                Close();
                 return;
             }
 

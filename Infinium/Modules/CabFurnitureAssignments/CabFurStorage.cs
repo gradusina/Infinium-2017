@@ -11,24 +11,24 @@ using System.Windows.Forms;
 
 namespace Infinium.Modules.CabFurnitureAssignments
 {
-    class CabFurStorage
+    internal class CabFurStorage
     {
-        DataTable workShopsDt = null;
-        DataTable racksDt = null;
-        DataTable cellsDt = null;
+        private DataTable workShopsDt = null;
+        private DataTable racksDt = null;
+        private DataTable cellsDt = null;
 
         public BindingSource workShopsBs = null;
         public BindingSource racksBs = null;
         public BindingSource cellsBs = null;
 
-        SqlDataAdapter workShopsDa = null;
-        SqlCommandBuilder workShopsCb = null;
+        private SqlDataAdapter workShopsDa = null;
+        private SqlCommandBuilder workShopsCb = null;
 
-        SqlDataAdapter racksDa = null;
-        SqlCommandBuilder racksCb = null;
+        private SqlDataAdapter racksDa = null;
+        private SqlCommandBuilder racksCb = null;
 
-        SqlDataAdapter cellsDa = null;
-        SqlCommandBuilder cellsCb = null;
+        private SqlDataAdapter cellsDa = null;
+        private SqlCommandBuilder cellsCb = null;
 
         public CabFurStorage()
         {
@@ -283,7 +283,7 @@ namespace Infinium.Modules.CabFurnitureAssignments
         }
         #endregion
 
-        private void UnbindPackagesFromCell(int cellId)
+        public void UnbindPackagesFromCell(int cellId)
         {
             string filter = @"SELECT CabFurniturePackageID, CellID, 
 AddToStorage, AddToStorageDateTime, AddToStorageUserID, 
@@ -319,7 +319,47 @@ WHERE CellID=" + cellId;
             }
         }
         
-        private void UnbindPackagesFromCell(int[] cellsIds)
+        public void UnbindPackages(int[] packagesIds)
+        {
+            string filter = string.Empty;
+            foreach (int item in packagesIds)
+                filter += item.ToString() + ",";
+            if (filter.Length > 0)
+                filter = @"SELECT CabFurniturePackageID, CellID, 
+AddToStorage, AddToStorageDateTime, AddToStorageUserID, 
+BindToCellUserID, BindToCellDateTime, QualityControlInUserID, QualityControlInDateTime, 
+QualityControlOutUserID, QualityControlOutDateTime, QualityControl FROM CabFurniturePackages 
+WHERE CabFurniturePackageID IN (" + filter.Substring(0, filter.Length - 1) + ")";
+
+            using (SqlDataAdapter DA = new SqlDataAdapter(filter, ConnectionStrings.StorageConnectionString))
+            {
+                using (new SqlCommandBuilder(DA))
+                {
+                    using (DataTable DT = new DataTable())
+                    {
+                        if (DA.Fill(DT) <= 0) return;
+
+                        for (int i = 0; i < DT.Rows.Count; i++)
+                        {
+                            DT.Rows[i]["CellID"] = -1;
+                            DT.Rows[i]["BindToCellUserID"] = DBNull.Value;
+                            DT.Rows[i]["BindToCellDateTime"] = DBNull.Value;
+                            DT.Rows[i]["AddToStorage"] = 0;
+                            DT.Rows[i]["AddToStorageDateTime"] = DBNull.Value;
+                            DT.Rows[i]["AddToStorageUserID"] = DBNull.Value;
+                            DT.Rows[i]["QualityControlInDateTime"] = DBNull.Value;
+                            DT.Rows[i]["QualityControlInUserID"] = DBNull.Value;
+                            DT.Rows[i]["QualityControlOutDateTime"] = DBNull.Value;
+                            DT.Rows[i]["QualityControlOutUserID"] = DBNull.Value;
+                            DT.Rows[i]["QualityControl"] = -1;
+                        }
+                        DA.Update(DT);
+                    }
+                }
+            }
+        }
+
+        public void UnbindPackagesFromCell(int[] cellsIds)
         {
             string filter = string.Empty;
             foreach (int item in cellsIds)
@@ -556,7 +596,7 @@ WHERE CellID IN (" + filter.Substring(0, filter.Length - 1) + ")";
 
     public class CellLabel
     {
-        Barcode Barcode;
+        private Barcode Barcode;
         public PrintDocument PD;
 
         public int PaperHeight = 488;
@@ -568,18 +608,18 @@ WHERE CellID IN (" + filter.Substring(0, filter.Length - 1) + ")";
 
         public bool Printed = false;
 
-        SolidBrush FontBrush;
+        private SolidBrush FontBrush;
 
-        Font ClientFont;
-        Font DocFont;
-        Font InfoFont;
+        private Font ClientFont;
+        private Font DocFont;
+        private Font InfoFont;
 
-        Pen Pen;
+        private Pen Pen;
 
-        Image ZTTPS;
-        Image ZTProfil;
-        Image STB;
-        Image RST;
+        private Image ZTTPS;
+        private Image ZTProfil;
+        private Image STB;
+        private Image RST;
 
         public ArrayList LabelInfo;
 
@@ -727,13 +767,14 @@ WHERE CellID IN (" + filter.Substring(0, filter.Length - 1) + ")";
 
     public class StorePackagesManager
     {
-        DataTable PackageLabelsDT = null;
-        DataTable BindPackageLabelsDT = null;
-        DataTable QualityControlDT = null;
-        DataTable AllQualityControlDT = null;
+        private DataTable PackageLabelsDT = null;
+        private DataTable BindPackageLabelsDT = null;
+        private DataTable QualityControlDT = null;
+
+        private DataTable AllQualityControlDT = null;
         //DataTable ExcessInvPackageLabelsDT = null;
-        DataTable MissInvPackageLabelsDT = null;
-        DataTable InvPackageLabelsDT = null;
+        private DataTable MissInvPackageLabelsDT = null;
+        private DataTable InvPackageLabelsDT = null;
         public BindingSource PackageLabelsBS = null;
         public BindingSource BindPackageLabelsBS = null;
         public BindingSource QualityControlBS = null;
@@ -741,25 +782,25 @@ WHERE CellID IN (" + filter.Substring(0, filter.Length - 1) + ")";
         public BindingSource ExcessInvPackageLabelsBS = null;
         public BindingSource MissInvPackageLabelsBS = null;
         public BindingSource InvPackageLabelsBS = null;
-        SqlDataAdapter PackageLabelsDA;
-        SqlDataAdapter BindPackageLabelsDA;
-        SqlDataAdapter QualityControlDA;
-        SqlDataAdapter AllQualityControlDA;
-        SqlDataAdapter InvPackageLabelsDA;
+        private SqlDataAdapter PackageLabelsDA;
+        private SqlDataAdapter BindPackageLabelsDA;
+        private SqlDataAdapter QualityControlDA;
+        private SqlDataAdapter AllQualityControlDA;
+        private SqlDataAdapter InvPackageLabelsDA;
 
-        DataTable PackageDetailsDT = null;
+        private DataTable PackageDetailsDT = null;
         public BindingSource PackageDetailsBS = null;
-        SqlDataAdapter PackageDetailsDA;
+        private SqlDataAdapter PackageDetailsDA;
 
         //DataTable ExcessInvPackageDetailsDT = null;
         public BindingSource ExcessInvPackageDetailsBS = null;
 
-        DataTable MissInvPackageDetailsDT = null;
+        private DataTable MissInvPackageDetailsDT = null;
         public BindingSource MissInvPackageDetailsBS = null;
 
-        DataTable InvPackageDetailsDT = null;
+        private DataTable InvPackageDetailsDT = null;
         public BindingSource InvPackageDetailsBS = null;
-        SqlDataAdapter InvPackageDetailsDA;
+        private SqlDataAdapter InvPackageDetailsDA;
 
         public StorePackagesManager()
         {
@@ -866,9 +907,13 @@ WHERE CellID IN (" + filter.Substring(0, filter.Length - 1) + ")";
             }
         }
 
-        public bool GetBindPackagesLabels(int CabFurniturePackageID)
+        public void ClearBindTables()
         {
             BindPackageLabelsDT.Clear();
+        }
+
+        public bool GetBindPackagesLabels(int CabFurniturePackageID)
+        {
             string SelectCommand = @"SELECT CabFurniturePackageID, PackNumber, AddToStorageDateTime, RemoveFromStorageDateTime, QualityControlInDateTime, QualityControlOutDateTime, QualityControl, CabFurniturePackages.CellID, Cells.Name FROM CabFurniturePackages 
                 LEFT JOIN Cells ON CabFurniturePackages.CellID=Cells.CellID WHERE CabFurniturePackageID=" + CabFurniturePackageID;
             BindPackageLabelsDA = new SqlDataAdapter(SelectCommand, ConnectionStrings.StorageConnectionString);
@@ -1194,23 +1239,23 @@ WHERE CabFurniturePackageID IN ({filter.Substring(0, filter.Length - 1)})";
         private string sRackName = string.Empty;
         private string sCellName = string.Empty;
 
-        DataTable ScanedPackagesDT = null;
+        private DataTable ScanedPackagesDT = null;
 
-        DataTable NotScanedPackageLabelsDT = null;
-        DataTable AllScanedPackageLabelsDT = null;
+        private DataTable NotScanedPackageLabelsDT = null;
+        private DataTable AllScanedPackageLabelsDT = null;
         public BindingSource NotScanedPackageLabelsBS = null;
         public BindingSource AllScanedPackageLabelsBS = null;
-        SqlDataAdapter NotScanedPackageLabelsDA;
+        private SqlDataAdapter NotScanedPackageLabelsDA;
 
-        DataTable NotScanedPackageDetailsDT = null;
-        DataTable AllScanedPackageDetailsDT = null;
+        private DataTable NotScanedPackageDetailsDT = null;
+        private DataTable AllScanedPackageDetailsDT = null;
         public BindingSource NotScanedPackageDetailsBS = null;
         public BindingSource AllScanedPackageDetailsBS = null;
-        SqlDataAdapter NotScanedPackageDetailsDA;
+        private SqlDataAdapter NotScanedPackageDetailsDA;
 
-        DataTable ScanedPackageDetailsDT = null;
+        private DataTable ScanedPackageDetailsDT = null;
         public BindingSource ScanedPackageDetailsBS = null;
-        SqlDataAdapter ScanedPackageDetailsDA;
+        private SqlDataAdapter ScanedPackageDetailsDA;
 
         public string ScanedPackages { get => iScanedPackages + "/" + iAllPackages; }
         public string CellName { get => sCellName; set => sCellName = value; }
@@ -1463,12 +1508,11 @@ CoverID, PatinaID, InsetColorID, PackNumber, MainOrderID, Notes FROM CabFurnitur
         public packInfo IsPackageMatch(int CabFurniturePackageID, int TechCatalogOperationsDetailID, int TechStoreID, int CoverID, int PatinaID, int InsetColorID)
         {
             packInfo p = new packInfo();
-            bool b = false;
             DataRow[] rows = NotScanedPackageLabelsDT.Select("Scan=0 AND TechCatalogOperationsDetailID=" + TechCatalogOperationsDetailID +
-                " AND TechStoreID=" + TechStoreID +
-                " AND CoverID=" + CoverID +
-                " AND PatinaID=" + PatinaID +
-                " AND InsetColorID=" + InsetColorID);
+                                                             " AND TechStoreID=" + TechStoreID +
+                                                             " AND CoverID=" + CoverID +
+                                                             " AND PatinaID=" + PatinaID +
+                                                             " AND InsetColorID=" + InsetColorID);
             if (rows.Count() > 0)
             {
                 int CabFurnitureComplementID = Convert.ToInt32(rows[0]["CabFurnitureComplementID"]);
@@ -1703,20 +1747,20 @@ TechCatalogOperationsDetailID, PackNumber, ClientName, TechStoreSubGroupID, Tech
 
     public class CabFurAssemble
     {
-        DataTable AllMegaOrdersDecorWeightDT;
-        DataTable AllMainOrdersDecorWeightDT;
-        DataTable MegaOrdersDT;
-        DataTable AssembleDatesDT;
-        DataTable AllMainOrdersDT;
-        DataTable MainOrdersDT;
+        private DataTable AllMegaOrdersDecorWeightDT;
+        private DataTable AllMainOrdersDecorWeightDT;
+        private DataTable MegaOrdersDT;
+        private DataTable AssembleDatesDT;
+        private DataTable AllMainOrdersDT;
+        private DataTable MainOrdersDT;
 
-        DataTable CabFurOrdersDataTable;
-        DataTable AllCabFurniturePackages;
-        DataTable CabFurniturePackages;
+        private DataTable CabFurOrdersDataTable;
+        private DataTable AllCabFurniturePackages;
+        private DataTable CabFurniturePackages;
 
-        BindingSource MegaOrdersBS;
-        BindingSource AssembleDatesBS;
-        BindingSource MainOrdersBS;
+        private BindingSource MegaOrdersBS;
+        private BindingSource AssembleDatesBS;
+        private BindingSource MainOrdersBS;
 
         public CabFurAssemble()
         {
@@ -2148,8 +2192,8 @@ TechCatalogOperationsDetailID, PackNumber, ClientName, TechStoreSubGroupID, Tech
                 double G1 = sw.Elapsed.TotalMilliseconds;
                 sw.Restart();
                 List<Int64> distCabFurnitureComplementIDs = CabFurOrdersDataTable.AsEnumerable()
-         .Where(r => r.Field<Int64>("MainOrderID") == MainOrderID) // filter rows by date
-         .Select(r => r.Field<Int64>("CabFurnitureComplementID")) // select only wellbore string value
+         .Where(r => r.Field<Int64>("MainOrderID") == MainOrderID) // filter rows by MainOrderID
+         .Select(r => r.Field<Int64>("CabFurnitureComplementID")) // select only CabFurnitureComplementID
          .Distinct() // take only unique items
          .ToList();
 

@@ -9,23 +9,23 @@ namespace Infinium
 {
     public partial class MarketingTraysForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
-        int BarcodeType = 6; // Маркетинг
+        private int BarcodeType = 6; // Маркетинг
 
-        int FormEvent = 0;
-        int CurrentRowIndex = 0;
+        private int FormEvent = 0;
+        private int CurrentRowIndex = 0;
 
-        Form TopForm = null;
-        LightStartForm LightStartForm;
+        private Form TopForm = null;
+        private LightStartForm LightStartForm;
 
 
-        Infinium.Modules.Packages.Trays.MarketingTraysManager MarketingTraysManager;
-        Infinium.Modules.Packages.Trays.TrayLabel TrayLabel;
-        Infinium.Modules.Dispatch.MarketingTrayList MarketingTrayList;
+        private Infinium.Modules.Packages.Trays.MarketingTraysManager MarketingTraysManager;
+        private Infinium.Modules.Packages.Trays.TrayLabel TrayLabel;
+        private Infinium.Modules.Dispatch.MarketingTrayList MarketingTrayList;
 
         public MarketingTraysForm(LightStartForm tLightStartForm)
         {

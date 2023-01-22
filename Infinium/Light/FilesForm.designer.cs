@@ -1,11 +1,15 @@
-﻿namespace Infinium
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+using ComponentFactory.Krypton.Toolkit;
+
+namespace Infinium.Light
 {
     partial class FilesForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -792,52 +796,52 @@
 
         #endregion
 
-        private System.Windows.Forms.Timer AnimateTimer;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton NavigateMenuCloseButton;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Panel NavigatePanel;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge3;
-        private ComponentFactory.Krypton.Toolkit.KryptonPalette ButtonsPalette;
-        private ComponentFactory.Krypton.Toolkit.KryptonPalette NavigateMenuButtonsPalette;
-        private ComponentFactory.Krypton.Toolkit.KryptonCheckButton PasswordButton;
-        private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Panel panel1;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge1;
-        private System.Windows.Forms.Panel UpdatePanel;
-        private System.Windows.Forms.ToolTip toolTip1;
+        private Timer AnimateTimer;
+        private KryptonButton NavigateMenuCloseButton;
+        private Label label1;
+        private Panel NavigatePanel;
+        private KryptonBorderEdge kryptonBorderEdge3;
+        private KryptonPalette ButtonsPalette;
+        private KryptonPalette NavigateMenuButtonsPalette;
+        private KryptonCheckButton PasswordButton;
+        private Panel panel2;
+        private Panel panel1;
+        private KryptonBorderEdge kryptonBorderEdge1;
+        private Panel UpdatePanel;
+        private ToolTip toolTip1;
         private InfiniumFileList InfiniumFileList;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge2;
+        private KryptonBorderEdge kryptonBorderEdge2;
         private InfiniumLightButton AddFolderButton;
         private InfiniumLightButton RemoveButton;
         private InfiniumLightButton UploadFileIButton;
-        private System.Windows.Forms.OpenFileDialog UploadFileDialog;
-        private ComponentFactory.Krypton.Toolkit.KryptonContextMenu FileContextMenu;
-        private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItems kryptonContextMenuItems1;
-        private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem MenuFileOpenFile;
-        private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem MenuFileSaveFile;
-        private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem kryptonContextMenuItem3;
-        private ComponentFactory.Krypton.Toolkit.KryptonPalette ContextMenuPalette;
-        private System.Windows.Forms.SaveFileDialog SaveFileDialog;
-        private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem MenuFileReplaceFile;
+        private OpenFileDialog UploadFileDialog;
+        private KryptonContextMenu FileContextMenu;
+        private KryptonContextMenuItems kryptonContextMenuItems1;
+        private KryptonContextMenuItem MenuFileOpenFile;
+        private KryptonContextMenuItem MenuFileSaveFile;
+        private KryptonContextMenuItem kryptonContextMenuItem3;
+        private KryptonPalette ContextMenuPalette;
+        private SaveFileDialog SaveFileDialog;
+        private KryptonContextMenuItem MenuFileReplaceFile;
         private InfiniumLightButton CheckMultipleButton;
         private InfiniumLightButton UncheckMultipleButton;
-        private System.Windows.Forms.FolderBrowserDialog FolderBrowserDialog;
-        private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem MenuFileDeleteFile;
-        private System.Windows.Forms.Panel HeaderPanel;
-        private System.Windows.Forms.Label HeaderLastModifiedLabel;
-        private System.Windows.Forms.Label HeaderCreateLabel;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge4;
-        private System.Windows.Forms.Timer timer1;
+        private FolderBrowserDialog FolderBrowserDialog;
+        private KryptonContextMenuItem MenuFileDeleteFile;
+        private Panel HeaderPanel;
+        private Label HeaderLastModifiedLabel;
+        private Label HeaderCreateLabel;
+        private KryptonBorderEdge kryptonBorderEdge4;
+        private Timer timer1;
         private InfiniumLightButton LoadWithSampleButton;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge5;
+        private KryptonBorderEdge kryptonBorderEdge5;
         private InfiniumFilesAttributesView InfiniumDocumentAttributesView;
-        private ComponentFactory.Krypton.Toolkit.KryptonSplitContainer kryptonSplitContainer1;
+        private KryptonSplitContainer kryptonSplitContainer1;
         private InfiniumFilesPermissionsUsersList DocumentsPermissionsUsersList;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge6;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton MinimizeButton;
+        private KryptonBorderEdge kryptonBorderEdge6;
+        private KryptonButton MinimizeButton;
         private InfiniumFilesMenu InfiniumDocumentsMenu;
         private InfiniumLightButton SendMailButton;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private Button button1;
+        private OpenFileDialog openFileDialog1;
     }
 }

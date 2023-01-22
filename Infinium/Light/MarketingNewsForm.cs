@@ -7,21 +7,21 @@ namespace Infinium
 {
     public partial class MarketingNewsForm : InfiniumForm
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
 
-        int FormEvent = 0;
+        private int FormEvent;
 
-        LightStartForm LightStartForm;
+        private LightStartForm LightStartForm;
 
-        Form TopForm;
+        private Form TopForm;
 
-        DataTable SDT = new DataTable();
+        private DataTable SDT = new DataTable();
 
-        MarketingNews MarketingNews;
+        private MarketingNews MarketingNews;
 
-        bool bNeedSplash = false;
+        private bool bNeedSplash;
 
         public MarketingNewsForm(LightStartForm tLightStartForm)
         {
@@ -29,9 +29,9 @@ namespace Infinium
 
             LightStartForm = tLightStartForm;
 
-            this.MaximumSize = Screen.PrimaryScreen.WorkingArea.Size;
+            MaximumSize = Screen.PrimaryScreen.WorkingArea.Size;
 
-            MarketingNews = new Infinium.MarketingNews();
+            MarketingNews = new MarketingNews();
             MarketingNews.FillLikes();
 
             Initialize();
@@ -66,23 +66,19 @@ namespace Infinium
                     ClientsManagersMenu.Height = panel4.Height;
                     return;
                 }
-                else
-                {
-                    NewClientsManagersMenu.Selected = 0;
-                    cbtnManagers.Checked = true;
-                    ClientsManagersMenu.Top = 239;
-                    ClientsManagersMenu.Height = panel4.Height - ClientsManagersMenu.Top;
-                    ActiveNotifySystem.ClearSubscribesRecords(Security.CurrentUserID, this.Name);
-                }
+
+                NewClientsManagersMenu.Selected = 0;
+                cbtnManagers.Checked = true;
+                ClientsManagersMenu.Top = 239;
+                ClientsManagersMenu.Height = panel4.Height - ClientsManagersMenu.Top;
+                ActiveNotifySystem.ClearSubscribesRecords(Security.CurrentUserID, Name);
                 return;
             }
-            else
-            {
-                ClientsMenu.Top = 239;
-                ClientsMenu.Height = panel1.Height - ClientsMenu.Top;
-                NewClientsMenu.Selected = 0;
-                ActiveNotifySystem.ClearSubscribesRecords(Security.CurrentUserID, this.Name);
-            }
+
+            ClientsMenu.Top = 239;
+            ClientsMenu.Height = panel1.Height - ClientsMenu.Top;
+            NewClientsMenu.Selected = 0;
+            ActiveNotifySystem.ClearSubscribesRecords(Security.CurrentUserID, Name);
 
 
             while (!SplashForm.bCreated) ;
@@ -102,7 +98,7 @@ namespace Infinium
         {
             if (!DatabaseConfigsManager.Animation)
             {
-                this.Opacity = 1;
+                Opacity = 1;
 
                 if (FormEvent == eClose || FormEvent == eHide)
                 {
@@ -138,8 +134,8 @@ namespace Infinium
 
             if (FormEvent == eClose || FormEvent == eHide)
             {
-                if (Convert.ToDecimal(this.Opacity) != Convert.ToDecimal(0.00))
-                    this.Opacity = Convert.ToDouble(Convert.ToDecimal(this.Opacity) - Convert.ToDecimal(0.05));
+                if (Convert.ToDecimal(Opacity) != Convert.ToDecimal(0.00))
+                    Opacity = Convert.ToDouble(Convert.ToDecimal(Opacity) - Convert.ToDecimal(0.05));
                 else
                 {
                     AnimateTimer.Enabled = false;
@@ -166,8 +162,8 @@ namespace Infinium
 
             if (FormEvent == eShow)
             {
-                if (this.Opacity != 1)
-                    this.Opacity += 0.05;
+                if (Opacity != 1)
+                    Opacity += 0.05;
                 else
                 {
                     LightNewsContainer.CreateNews();
@@ -176,8 +172,6 @@ namespace Infinium
                     SplashForm.CloseS = true;
                     bNeedSplash = true;
                 }
-
-                return;
             }
         }
 
@@ -227,14 +221,14 @@ namespace Infinium
 
             if (c > 0)
             {
-                UpdateNewsButton.Text = "Обновления: " + c.ToString();
+                UpdateNewsButton.Text = "Обновления: " + c;
                 UpdateNewsButton.Visible = true;
             }
 
             //ActiveNotifySystem.ClearNewUpdates("LightNewsButton");
         }
 
-        bool bC = false;
+        private bool bC;
 
         private void timer1_Tick(object sender, EventArgs e)
         {
@@ -303,10 +297,10 @@ namespace Infinium
 
         private void LightNewsContainer_RemoveNewsClicked(object sender, int NewsID)
         {
-            PhantomForm PhantomForm = new Infinium.PhantomForm();
+            PhantomForm PhantomForm = new PhantomForm();
             PhantomForm.Show();
 
-            LightMessageBoxForm LightMessageBoxForm = new Infinium.LightMessageBoxForm(true, "Сообщение будет удалено безвозвратно.\nПродолжить?",
+            LightMessageBoxForm LightMessageBoxForm = new LightMessageBoxForm(true, "Сообщение будет удалено безвозвратно.\nПродолжить?",
                                                                                     "Удаление сообщения");
 
             TopForm = LightMessageBoxForm;
@@ -410,10 +404,10 @@ namespace Infinium
 
         private void LightNewsContainer_RemoveCommentClicked(object sender, int NewsID, int NewsCommentID)
         {
-            PhantomForm PhantomForm = new Infinium.PhantomForm();
+            PhantomForm PhantomForm = new PhantomForm();
             PhantomForm.Show();
 
-            LightMessageBoxForm LightMessageBoxForm = new Infinium.LightMessageBoxForm(true, "Комментарий будет удален.\nПродолжить?",
+            LightMessageBoxForm LightMessageBoxForm = new LightMessageBoxForm(true, "Комментарий будет удален.\nПродолжить?",
                                                                                     "Удаление комментария");
 
             TopForm = LightMessageBoxForm;
@@ -505,7 +499,7 @@ namespace Infinium
 
         private void LightNewsContainer_Refreshed(object sender, EventArgs e)
         {
-            System.Threading.Thread.Sleep(100);
+            Thread.Sleep(100);
 
             while (SplashWindow.bSmallCreated)
                 CoverWaitForm.CloseS = true;
@@ -513,7 +507,7 @@ namespace Infinium
 
         private void LightNewsContainer_AttachClicked(object sender, int NewsAttachID)
         {
-            PhantomForm PhantomForm = new Infinium.PhantomForm();
+            PhantomForm PhantomForm = new PhantomForm();
             PhantomForm.Show();
 
             MarketingNewsAttachDownloadForm AttachDownloadForm = new MarketingNewsAttachDownloadForm(NewsAttachID, ref MarketingNews.FM, ref MarketingNews);
@@ -679,7 +673,7 @@ namespace Infinium
                         ClientsManagersMenu.Top = 239;
                         ClientsManagersMenu.Height = panel1.Height - ClientsManagersMenu.Top;
                         NewClientsManagersMenu.Selected = 0;
-                        ActiveNotifySystem.ClearSubscribesRecords(Security.CurrentUserID, this.Name);
+                        ActiveNotifySystem.ClearSubscribesRecords(Security.CurrentUserID, Name);
                     }
                 }
                 else
@@ -687,7 +681,7 @@ namespace Infinium
                     ClientsMenu.Top = 239;
                     ClientsMenu.Height = panel1.Height - ClientsMenu.Top;
                     NewClientsMenu.Selected = 0;
-                    ActiveNotifySystem.ClearSubscribesRecords(Security.CurrentUserID, this.Name);
+                    ActiveNotifySystem.ClearSubscribesRecords(Security.CurrentUserID, Name);
                 }
             }
             if (cbtnManagers.Checked)
@@ -716,7 +710,7 @@ namespace Infinium
                         ClientsMenu.Top = 239;
                         ClientsMenu.Height = panel1.Height - ClientsMenu.Top;
                         NewClientsMenu.Selected = 0;
-                        ActiveNotifySystem.ClearSubscribesRecords(Security.CurrentUserID, this.Name);
+                        ActiveNotifySystem.ClearSubscribesRecords(Security.CurrentUserID, Name);
                     }
                 }
                 else
@@ -724,7 +718,7 @@ namespace Infinium
                     ClientsManagersMenu.Top = 239;
                     ClientsManagersMenu.Height = panel1.Height - ClientsManagersMenu.Top;
                     NewClientsManagersMenu.Selected = 0;
-                    ActiveNotifySystem.ClearSubscribesRecords(Security.CurrentUserID, this.Name);
+                    ActiveNotifySystem.ClearSubscribesRecords(Security.CurrentUserID, Name);
                 }
             }
 
@@ -907,7 +901,7 @@ namespace Infinium
                     ClientsMenu.Top = 239;
                     ClientsMenu.Height = panel1.Height - ClientsMenu.Top;
                     NewClientsMenu.Selected = 0;
-                    ActiveNotifySystem.ClearSubscribesRecords(Security.CurrentUserID, this.Name);
+                    ActiveNotifySystem.ClearSubscribesRecords(Security.CurrentUserID, Name);
                 }
                 panel1.BringToFront();
             }
@@ -937,7 +931,7 @@ namespace Infinium
                     ClientsManagersMenu.Top = 239;
                     ClientsManagersMenu.Height = panel4.Height - ClientsManagersMenu.Top;
                     NewClientsManagersMenu.Selected = 0;
-                    ActiveNotifySystem.ClearSubscribesRecords(Security.CurrentUserID, this.Name);
+                    ActiveNotifySystem.ClearSubscribesRecords(Security.CurrentUserID, Name);
                 }
                 panel4.BringToFront();
             }

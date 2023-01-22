@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Media;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
+using Infinium.Properties;
 
 namespace Infinium
 {
@@ -12,7 +14,7 @@ namespace Infinium
     {
         //NotifyForm NotifyForm = null;
 
-        public Form TopForm = null;
+        public Form TopForm;
         private LoginForm LoginForm;
         private const int eHide = 2;
         private const int eShow = 1;
@@ -20,14 +22,14 @@ namespace Infinium
         private const int eMainMenu = 4;
 
         public static bool NotifyShowed = false;
-        private int FormEvent = 0;
-        private bool bC = false;
-        private bool bNeedSplash = false;
+        private int FormEvent;
+        private bool bC;
+        private bool bNeedSplash;
         private ActiveNotifySystem ActiveNotifySystem;
         private InfiniumStart InfiniumStart;
-        private bool Logout = false;
+        private bool Logout;
         private bool FirstLoad = true;
-        private System.Globalization.CultureInfo CI = new System.Globalization.CultureInfo("ru-RU");
+        private CultureInfo CI = new CultureInfo("ru-RU");
 
         [DllImport("user32.dll")]
         private static extern IntPtr GetActiveWindow();
@@ -56,12 +58,12 @@ namespace Infinium
 
             PhotoBox.Image = UserProfile.GetUserPhoto();
 
-            InfiniumStart = new Infinium.InfiniumStart();
+            InfiniumStart = new InfiniumStart();
             InfiniumTilesContainer.ItemsDataTable = InfiniumStart.ModulesDataTable;
             InfiniumTilesContainer.MenuItemID = 0;
             InfiniumTilesContainer.InitializeItems();
 
-            ActiveNotifySystem = new Infinium.ActiveNotifySystem();
+            ActiveNotifySystem = new ActiveNotifySystem();
             InfiniumNotifyList.ModulesDataTable = InfiniumStart.FullModulesDataTable;
 
             InfiniumStartMenu.ItemsDataTable = InfiniumStart.MenuItemsDataTable;
@@ -81,8 +83,8 @@ namespace Infinium
 
             OnLineControl.SetOffline();
 
-            NotifyRefreshT = new NotifyRefresh(FuckingNotify);
-            OnlineFuck = new OnlineFuckingDelegate(GetTopMostAndModuleName);
+            NotifyRefreshT = FuckingNotify;
+            OnlineFuck = GetTopMostAndModuleName;
 
             NotifyThread = new Thread(delegate () { NotifyCheck(); });
             NotifyThread.Start();
@@ -111,7 +113,7 @@ namespace Infinium
             {
                 if (TopForm.Name == "MessagesForm")
                 {
-                    using (Stream str = Properties.Resources.MESSAGENOTIFY)
+                    using (Stream str = Resources.MESSAGENOTIFY)
                     {
                         using (SoundPlayer snd = new SoundPlayer(str))
                         {
@@ -121,7 +123,7 @@ namespace Infinium
                 }
                 else
                 {
-                    using (Stream str = Properties.Resources._01_01)
+                    using (Stream str = Resources._01_01)
                     {
                         using (SoundPlayer snd = new SoundPlayer(str))
                         {
@@ -131,7 +133,7 @@ namespace Infinium
                 }
             }
             else
-                using (Stream str = Properties.Resources._01_01)
+                using (Stream str = Resources._01_01)
                 {
                     using (SoundPlayer snd = new SoundPlayer(str))
                     {
@@ -159,7 +161,7 @@ namespace Infinium
             }
 
             //показываем всплывающее окно
-            if (NotifyForm.bShowed == true)
+            if (NotifyForm.bShowed)
             {
                 if (NotifyForm != null)
                     NotifyForm.Close();
@@ -224,7 +226,7 @@ namespace Infinium
                 }
                 else
                 {
-                    Type CAType = Type.GetType("Infinium." + InfiniumStart.FullModulesDataTable.Select("ModuleID = " + ModuleID)[0]["FormName"].ToString());
+                    Type CAType = Type.GetType("Infinium." + InfiniumStart.FullModulesDataTable.Select("ModuleID = " + ModuleID)[0]["FormName"]);
                     ModuleForm = (Form)Activator.CreateInstance(CAType, this);
                     TopForm = ModuleForm;
                     ModuleForm.ShowDialog();
@@ -488,7 +490,7 @@ namespace Infinium
 
             if (m.Msg == 6 && m.WParam.ToInt32() == 1)
             {
-                if (Control.FromHandle(m.LParam) == null)
+                if (FromHandle(m.LParam) == null)
                 {
                     if (TopForm != null)
                         TopForm.Activate();
@@ -601,11 +603,8 @@ namespace Infinium
                 InfiniumTips.ShowTip(this, 50, 85, "Модуль уже был добавлен ранее", 4000);
                 return;
             }
-            else
-            {
-                InfiniumTips.ShowTip(this, 50, 85, "Модуль добавлен", 2500);
-                return;
-            }
+
+            InfiniumTips.ShowTip(this, 50, 85, "Модуль добавлен", 2500);
         }
 
         private void MenuRemoveFromFavorite_Click(object sender, EventArgs e)

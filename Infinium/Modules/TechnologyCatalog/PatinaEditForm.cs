@@ -9,16 +9,16 @@ namespace Infinium
 {
     public partial class PatinaEditForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
 
-        int FormEvent = 0;
+        private int FormEvent = 0;
 
-        Form TopForm = null;
-        LightStartForm LightStartForm;
+        private Form TopForm = null;
+        private LightStartForm LightStartForm;
 
-        PatinaManager PManager;
+        private PatinaManager PManager;
 
         public PatinaEditForm(LightStartForm tLightStartForm)
         {
@@ -266,7 +266,7 @@ namespace Infinium
             }
         }
 
-        int CurrentPatinaIDRALID = 0;
+        private int CurrentPatinaIDRALID = 0;
         private Rectangle dragBoxFromMouseDown;
         private object valueFromMouseDown;
         private void dgvPatinaRal_MouseMove(object sender, MouseEventArgs e)

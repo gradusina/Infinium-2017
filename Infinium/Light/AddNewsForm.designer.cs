@@ -1,11 +1,15 @@
-﻿namespace Infinium
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+using ComponentFactory.Krypton.Toolkit;
+
+namespace Infinium
 {
     partial class AddNewsForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -572,37 +576,37 @@
 
         #endregion
 
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge20;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge21;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge22;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge23;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton OKNewsButton;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton CancelNewsButton;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge19;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge1;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge3;
-        private ComponentFactory.Krypton.Toolkit.KryptonPalette StandardButtonsPalette;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Panel panel2;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton AttachButton;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton DetachButton;
-        private System.Windows.Forms.OpenFileDialog openFileDialog1;
-        private System.Windows.Forms.Timer AnimateTimer;
-        private System.Windows.Forms.ProgressBar ProgressBar;
-        private System.Windows.Forms.Timer LoadTimer;
-        private System.Windows.Forms.Label PercentsLabel;
-        private System.Windows.Forms.Label SpeedLabel;
-        private System.Windows.Forms.Label DownloadLabel;
-        private System.Windows.Forms.Label LoadLabel;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton CancelLoadingFilesButton;
-        private ComponentFactory.Krypton.Toolkit.KryptonRichTextBox BodyTextEdit;
-        private ComponentFactory.Krypton.Toolkit.KryptonTextBox HeaderTextEdit;
-        private ComponentFactory.Krypton.Toolkit.KryptonTextBox kryptonTextBox1;
+        private KryptonBorderEdge kryptonBorderEdge20;
+        private KryptonBorderEdge kryptonBorderEdge21;
+        private KryptonBorderEdge kryptonBorderEdge22;
+        private KryptonBorderEdge kryptonBorderEdge23;
+        private KryptonButton OKNewsButton;
+        private KryptonButton CancelNewsButton;
+        private KryptonBorderEdge kryptonBorderEdge19;
+        private Panel panel1;
+        private Label label2;
+        private Label label3;
+        private Label label4;
+        private KryptonBorderEdge kryptonBorderEdge1;
+        private KryptonBorderEdge kryptonBorderEdge3;
+        private KryptonPalette StandardButtonsPalette;
+        private Label label5;
+        private Panel panel2;
+        private KryptonButton AttachButton;
+        private KryptonButton DetachButton;
+        private OpenFileDialog openFileDialog1;
+        private Timer AnimateTimer;
+        private ProgressBar ProgressBar;
+        private Timer LoadTimer;
+        private Label PercentsLabel;
+        private Label SpeedLabel;
+        private Label DownloadLabel;
+        private Label LoadLabel;
+        private KryptonButton CancelLoadingFilesButton;
+        private KryptonRichTextBox BodyTextEdit;
+        private KryptonTextBox HeaderTextEdit;
+        private KryptonTextBox kryptonTextBox1;
         private PercentageDataGrid AttachmentsGrid;
-        private System.Windows.Forms.Label label1;
+        private Label label1;
     }
 }

@@ -8,16 +8,16 @@ namespace Infinium
 {
     public partial class SelectMovementMenu : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
-        int FormEvent = 0;
+        private int FormEvent = 0;
 
-        MainStoreManager StorageManager;
-        NewMovementParameters Parameters;
-        Form MainForm = null;
+        private MainStoreManager StorageManager;
+        private NewMovementParameters Parameters;
+        private Form MainForm = null;
 
         public SelectMovementMenu(Form tMainForm, MainStoreManager tStorageManager, ref NewMovementParameters tParameters)
         {

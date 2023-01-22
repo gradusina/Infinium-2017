@@ -9,25 +9,25 @@ namespace Infinium
 {
     public partial class DyeingAssignmentsMaterialForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
-        bool NeedSplash = false;
+        private bool NeedSplash = false;
         //decimal Square = 0;
-        int FormEvent = 0;
+        private int FormEvent = 0;
 
         //ArrayList FrontConfigID;
 
-        Form MainForm;
-        Form TopForm = null;
-        DateTime From = DateTime.Now;
-        DateTime To = DateTime.Now;
+        private Form MainForm;
+        private Form TopForm = null;
+        private DateTime From = DateTime.Now;
+        private DateTime To = DateTime.Now;
 
-        ControlAssignments ControlAssignmentsManager;
-        FrontsOrdersManager FrontsOrdersManager;
-        NeedPaintingMaterial NeedPaintingMaterialManager;
+        private ControlAssignments ControlAssignmentsManager;
+        private FrontsOrdersManager FrontsOrdersManager;
+        private NeedPaintingMaterial NeedPaintingMaterialManager;
 
         public DyeingAssignmentsMaterialForm(Form tMainForm, ref ControlAssignments tControlAssignmentsManager, ref FrontsOrdersManager tFrontsOrdersManager,
             DateTime dFrom, DateTime dTo)

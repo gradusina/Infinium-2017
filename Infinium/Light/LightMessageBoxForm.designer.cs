@@ -1,11 +1,16 @@
-﻿namespace Infinium
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+using ComponentFactory.Krypton.Toolkit;
+using ToolTipController = DevExpress.Utils.ToolTipController;
+
+namespace Infinium
 {
     partial class LightMessageBoxForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -298,19 +303,19 @@
 
         #endregion
 
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge20;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge21;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge22;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge23;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge19;
-        private DevExpress.Utils.ToolTipController toolTipController1;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Label label2;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge2;
-        private ComponentFactory.Krypton.Toolkit.KryptonPalette StandardButtonsPalette;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton CancelMessageButton;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton OKMessageButton;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge1;
+        private KryptonBorderEdge kryptonBorderEdge20;
+        private KryptonBorderEdge kryptonBorderEdge21;
+        private KryptonBorderEdge kryptonBorderEdge22;
+        private KryptonBorderEdge kryptonBorderEdge23;
+        private KryptonBorderEdge kryptonBorderEdge19;
+        private ToolTipController toolTipController1;
+        private Label label1;
+        private Panel panel1;
+        private Label label2;
+        private KryptonBorderEdge kryptonBorderEdge2;
+        private KryptonPalette StandardButtonsPalette;
+        private KryptonButton CancelMessageButton;
+        private KryptonButton OKMessageButton;
+        private KryptonBorderEdge kryptonBorderEdge1;
     }
 }

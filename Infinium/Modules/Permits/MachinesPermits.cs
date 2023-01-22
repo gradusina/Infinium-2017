@@ -20,23 +20,23 @@ namespace Infinium.Modules.Permits
 
     public class MachinesPermits
     {
-        int iVisitorPermitID = 0;
-        string OutputDeniedUserName = string.Empty;
-        string CreateUserName = string.Empty;
-        string PrintUserName = string.Empty;
-        string AgreedUserName = string.Empty;
+        private int iVisitorPermitID = 0;
+        private string OutputDeniedUserName = string.Empty;
+        private string CreateUserName = string.Empty;
+        private string PrintUserName = string.Empty;
+        private string AgreedUserName = string.Empty;
 
-        DataTable dtPermits;
-        DataTable dtPermitsDates;
-        DataTable dtRolePermissions;
-        DataTable dtUsers;
-        BindingSource bsPermits;
-        BindingSource bsPermitsDates;
-        SqlDataAdapter daPermits;
-        SqlCommandBuilder cbPermits;
+        private DataTable dtPermits;
+        private DataTable dtPermitsDates;
+        private DataTable dtRolePermissions;
+        private DataTable dtUsers;
+        private BindingSource bsPermits;
+        private BindingSource bsPermitsDates;
+        private SqlDataAdapter daPermits;
+        private SqlCommandBuilder cbPermits;
 
-        DataTable MonthsDT;
-        DataTable YearsDT;
+        private DataTable MonthsDT;
+        private DataTable YearsDT;
 
         public BindingSource MonthsBS
         {

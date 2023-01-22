@@ -1,11 +1,15 @@
-﻿namespace Infinium
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+using ComponentFactory.Krypton.Toolkit;
+
+namespace Infinium
 {
     partial class MarketingNewsAttachDownloadForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -331,24 +335,24 @@
 
         #endregion
 
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge20;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge21;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge22;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge23;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton OpenButton;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge19;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Label label2;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge2;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton CancelMessageButton;
-        private ComponentFactory.Krypton.Toolkit.KryptonPalette StandardButtonsPalette;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton SaveButton;
-        private System.Windows.Forms.ProgressBar ProgressBar;
-        private System.Windows.Forms.Timer timer1;
-        private System.Windows.Forms.Label SpeedLabel;
-        private System.Windows.Forms.Label DownloadedLabel;
-        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
-        private System.Windows.Forms.Label PercentsLabel;
-        private System.Windows.Forms.Label label1;
+        private KryptonBorderEdge kryptonBorderEdge20;
+        private KryptonBorderEdge kryptonBorderEdge21;
+        private KryptonBorderEdge kryptonBorderEdge22;
+        private KryptonBorderEdge kryptonBorderEdge23;
+        private KryptonButton OpenButton;
+        private KryptonBorderEdge kryptonBorderEdge19;
+        private Panel panel1;
+        private Label label2;
+        private KryptonBorderEdge kryptonBorderEdge2;
+        private KryptonButton CancelMessageButton;
+        private KryptonPalette StandardButtonsPalette;
+        private KryptonButton SaveButton;
+        private ProgressBar ProgressBar;
+        private Timer timer1;
+        private Label SpeedLabel;
+        private Label DownloadedLabel;
+        private SaveFileDialog saveFileDialog1;
+        private Label PercentsLabel;
+        private Label label1;
     }
 }

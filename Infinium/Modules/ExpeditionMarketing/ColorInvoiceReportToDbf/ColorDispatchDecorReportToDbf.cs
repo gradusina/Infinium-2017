@@ -148,14 +148,14 @@ PackageDetailID, PackageDetails.Count AS Count, (DecorOrders.Cost * PackageDetai
                 {
                     if (ClientID != 145 && DiscountPaymentConditionID != 6 && !ProfilVerify)
                     {
-                        DecorOrdersDataTable.Rows[i]["PaymentRate"] = Convert.ToDecimal(DecorOrdersDataTable.Rows[i]["Rate"]) * 1.05m;
+                        //DecorOrdersDataTable.Rows[i]["PaymentRate"] = Convert.ToDecimal(DecorOrdersDataTable.Rows[i]["Rate"]) * 1.05m;
                     }
                 }
                 if (DecorOrdersDataTable.Rows[i]["FactoryID"].ToString() == "2")//tps
                 {
                     if (ClientID != 145 && DiscountPaymentConditionID != 6 && !TPSVerify)
                     {
-                        DecorOrdersDataTable.Rows[i]["PaymentRate"] = Convert.ToDecimal(DecorOrdersDataTable.Rows[i]["Rate"]) * 1.05m;
+                        //DecorOrdersDataTable.Rows[i]["PaymentRate"] = Convert.ToDecimal(DecorOrdersDataTable.Rows[i]["Rate"]) * 1.05m;
                     }
                 }
             }

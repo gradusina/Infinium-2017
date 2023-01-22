@@ -1,30 +1,31 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace Infinium
+namespace Infinium.Light
 {
     public partial class FilesForm : InfiniumForm
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
 
-        int FormEvent = 0;
+        private int FormEvent;
 
-        LightStartForm LightStartForm;
+        private LightStartForm LightStartForm;
 
-        Form TopForm = null;
+        private Form TopForm;
 
-        InfiniumFiles InfiniumFiles;
+        private InfiniumFiles InfiniumFiles;
 
-        bool bC = false;
+        private bool bC;
 
-        bool bNeedSplash = false;
+        private bool bNeedSplash;
 
         //bool bNeedNewsSplash = false;
 
@@ -37,7 +38,7 @@ namespace Infinium
 
             LightStartForm = tLightStartForm;
 
-            this.MaximumSize = Screen.PrimaryScreen.WorkingArea.Size;
+            MaximumSize = Screen.PrimaryScreen.WorkingArea.Size;
 
             Initialize();
 
@@ -49,7 +50,7 @@ namespace Infinium
 
             ProjectsForm_ANSUpdate(this);
 
-            ActiveNotifySystem.ClearSubscribesRecords(Security.CurrentUserID, this.Name);
+            Infinium.ActiveNotifySystem.ClearSubscribesRecords(Security.CurrentUserID, Name);
 
 
             while (!SplashForm.bCreated) ;
@@ -67,7 +68,7 @@ namespace Infinium
         {
             if (!DatabaseConfigsManager.Animation)
             {
-                this.Opacity = 1;
+                Opacity = 1;
 
                 if (FormEvent == eClose || FormEvent == eHide)
                 {
@@ -101,8 +102,8 @@ namespace Infinium
 
             if (FormEvent == eClose || FormEvent == eHide)
             {
-                if (Convert.ToDecimal(this.Opacity) != Convert.ToDecimal(0.00))
-                    this.Opacity = Convert.ToDouble(Convert.ToDecimal(this.Opacity) - Convert.ToDecimal(0.05));
+                if (Convert.ToDecimal(Opacity) != Convert.ToDecimal(0.00))
+                    Opacity = Convert.ToDouble(Convert.ToDecimal(Opacity) - Convert.ToDecimal(0.05));
                 else
                 {
                     AnimateTimer.Enabled = false;
@@ -127,16 +128,14 @@ namespace Infinium
 
             if (FormEvent == eShow)
             {
-                if (this.Opacity != 1)
-                    this.Opacity += 0.05;
+                if (Opacity != 1)
+                    Opacity += 0.05;
                 else
                 {
                     AnimateTimer.Enabled = false;
                     SplashForm.CloseS = true;
                     bNeedSplash = true;
                 }
-
-                return;
             }
         }
 
@@ -195,7 +194,7 @@ namespace Infinium
             else
                 InfiniumDocumentsMenu.GetItemByFolderID(-2).Count = 0;
 
-            ActiveNotifySystem.ClearSubscribesRecords(Security.CurrentUserID, this.Name);
+            Infinium.ActiveNotifySystem.ClearSubscribesRecords(Security.CurrentUserID, Name);
         }
 
 
@@ -216,7 +215,7 @@ namespace Infinium
 
                 UploadFileForm.ShowDialog();
 
-                if (UploadFileForm.bOk == 0)
+                if (UploadFileForm.BOk == 0)
                 {
                     InfiniumTips.ShowTip(this, 50, 85, "Отсутствует файл либо нет доступа к интернет", 5000);
                 }
@@ -459,9 +458,9 @@ namespace Infinium
 
             UploadFileDialog.Multiselect = true;
 
-            if (UploadFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            if (UploadFileDialog.ShowDialog() == DialogResult.OK)
             {
-                if (InfiniumFiles.CheckFileExist(UploadFileDialog.FileNames, InfiniumFileList.Entered) == true)//file exist
+                if (InfiniumFiles.CheckFileExist(UploadFileDialog.FileNames, InfiniumFileList.Entered))//file exist
                 {
                     InfiniumTips.ShowTip(this, 50, 85, "Один или несколько файлов уже существуют в папке", 2600);
                     return;
@@ -477,7 +476,7 @@ namespace Infinium
 
                 UploadFileForm.ShowDialog();
 
-                if (UploadFileForm.bOk == 0)
+                if (UploadFileForm.BOk == 0)
                 {
                     InfiniumTips.ShowTip(this, 50, 85, "Отсутствует файл либо нет доступа к интернет", 5000);
                 }
@@ -537,7 +536,7 @@ namespace Infinium
 
                 UploadFileForm.ShowDialog();
 
-                if (UploadFileForm.bOk == 0)
+                if (UploadFileForm.BOk == 0)
                 {
                     InfiniumTips.ShowTip(this, 50, 85, "Отсутствует файл либо нет доступа к интернет", 5000);
                 }
@@ -558,7 +557,7 @@ namespace Infinium
                                                Path.GetExtension(InfiniumFileList.FileItems[InfiniumFileList.Selected].Caption);
                 SaveFileDialog.FileName = InfiniumFileList.FileItems[InfiniumFileList.Selected].Caption;
 
-                if (SaveFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                if (SaveFileDialog.ShowDialog() == DialogResult.OK)
                 {
 
                     PhantomForm PhantomForm = new PhantomForm();
@@ -574,7 +573,7 @@ namespace Infinium
 
                     UploadFileForm.ShowDialog();
 
-                    if (UploadFileForm.bOk == 0)
+                    if (UploadFileForm.BOk == 0)
                     {
                         InfiniumTips.ShowTip(this, 50, 85, "Отсутствует файл либо нет доступа к интернет", 5000);
                     }
@@ -616,7 +615,7 @@ namespace Infinium
 
 
 
-                if (FolderBrowserDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                if (FolderBrowserDialog.ShowDialog() == DialogResult.OK)
                 {
                     if (InfiniumFiles.CheckFilesExists(InfiniumFileList.ItemsDataTable, FolderBrowserDialog.SelectedPath))
                     {
@@ -669,7 +668,7 @@ namespace Infinium
                 return;
             }
 
-            if (UploadFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            if (UploadFileDialog.ShowDialog() == DialogResult.OK)
             {
                 PhantomForm PhantomForm = new PhantomForm();
                 PhantomForm.Show();
@@ -777,9 +776,9 @@ namespace Infinium
 
             UploadFileDialog.Multiselect = false;
 
-            if (UploadFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            if (UploadFileDialog.ShowDialog() == DialogResult.OK)
             {
-                if (InfiniumFiles.CheckFileExist(UploadFileDialog.FileNames, InfiniumFileList.Entered) == true)//file exist
+                if (InfiniumFiles.CheckFileExist(UploadFileDialog.FileNames, InfiniumFileList.Entered))//file exist
                 {
                     InfiniumTips.ShowTip(this, 50, 85, "Один или несколько файлов уже существуют в папке", 2600);
                     return;
@@ -873,7 +872,7 @@ namespace Infinium
 
         private void InfiniumDocumentAttributesView_SignButtonClicked(object sender, int UserID, int FileID)
         {
-            if (Security.CheckAuthNull() == true)
+            if (Security.CheckAuthNull())
             {
                 InfiniumTips.ShowTip(this, 50, 85, "Авторизационный код отсутствует. Создайте авторизационный\n" +
                                                     "код на вкладке \"Сменить пароль\" в настройках Infinium", 10000);
@@ -924,7 +923,7 @@ namespace Infinium
 
         private void InfiniumDocumentAttributesView_ReadButtonClicked(object sender, int UserID, int FileID)
         {
-            if (Security.CheckAuthNull() == true)
+            if (Security.CheckAuthNull())
             {
                 InfiniumTips.ShowTip(this, 50, 85, "Авторизационный код отсутствует. Создайте авторизационный\n" +
                                                     "код на вкладке \"Сменить пароль\" в настройках Infinium", 10000);
@@ -1090,9 +1089,9 @@ namespace Infinium
 
         private void button1_Click_3(object sender, EventArgs e)
         {
-            using (System.Data.SqlClient.SqlDataAdapter DA = new System.Data.SqlClient.SqlDataAdapter("SELECT * FROM Folders WHERE FolderID > 85", ConnectionStrings.LightConnectionString))
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Folders WHERE FolderID > 85", ConnectionStrings.LightConnectionString))
             {
-                using (System.Data.SqlClient.SqlCommandBuilder CB = new System.Data.SqlClient.SqlCommandBuilder(DA))
+                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
                 {
                     using (DataTable DT = new DataTable())
                     {
@@ -1141,10 +1140,10 @@ namespace Infinium
             }
 
 
-            PhantomForm PhantomForm = new Infinium.PhantomForm();
+            PhantomForm PhantomForm = new PhantomForm();
             PhantomForm.Show();
 
-            LightMessageBoxForm LightMessageBoxForm = new Infinium.LightMessageBoxForm(true, "Прикрепить к уведомлению файлы?",
+            LightMessageBoxForm LightMessageBoxForm = new LightMessageBoxForm(true, "Прикрепить к уведомлению файлы?",
                                                                                     "Уведомление клиенту");
 
             TopForm = LightMessageBoxForm;
@@ -1182,36 +1181,29 @@ namespace Infinium
                 //InfiniumTips.ShowTip(this, 50, 85, "У клиента не указан Email", 3000);
                 return;
             }
-            else
-                if (r == "1")
+
+            if (r == "1")
             {
                 LightMessageBox.Show(ref TopForm, false, "Уведомление успешно отправлено", "Уведомление");
                 //InfiniumTips.ShowTip(this, 50, 85, "Уведомление успешно отправлено", 3000);
                 return;
             }
-            else
-            {
-                LightMessageBox.Show(ref TopForm, false, r, "Уведомление");
-                //InfiniumTips.ShowTip(this, 50, 85, "Не подключения к интернет", 3000);
-                return;
-            }
 
-
-
-
+            LightMessageBox.Show(ref TopForm, false, r, "Уведомление");
+            //InfiniumTips.ShowTip(this, 50, 85, "Не подключения к интернет", 3000);
         }
 
         private void button1_Click_5(object sender, EventArgs e)
         {
-            using (System.Data.SqlClient.SqlDataAdapter DA = new System.Data.SqlClient.SqlDataAdapter("SELECT FolderID FROM Folders WHERE FolderID > 192 AND FolderID < 1080", ConnectionStrings.LightConnectionString))
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT FolderID FROM Folders WHERE FolderID > 192 AND FolderID < 1080", ConnectionStrings.LightConnectionString))
             {
                 using (DataTable DT = new DataTable())
                 {
                     DA.Fill(DT);
 
-                    using (System.Data.SqlClient.SqlDataAdapter sDA = new System.Data.SqlClient.SqlDataAdapter("SELECT TOP 0 * FROM DocumentsPermissions", ConnectionStrings.LightConnectionString))
+                    using (SqlDataAdapter sDA = new SqlDataAdapter("SELECT TOP 0 * FROM DocumentsPermissions", ConnectionStrings.LightConnectionString))
                     {
-                        using (System.Data.SqlClient.SqlCommandBuilder CB = new System.Data.SqlClient.SqlCommandBuilder(sDA))
+                        using (SqlCommandBuilder CB = new SqlCommandBuilder(sDA))
                         {
                             using (DataTable sDT = new DataTable())
                             {
@@ -1252,9 +1244,9 @@ namespace Infinium
             //    }
             //}
 
-            using (System.Data.SqlClient.SqlDataAdapter DA = new System.Data.SqlClient.SqlDataAdapter("SELECT * FROM Folders", ConnectionStrings.LightConnectionString))
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Folders", ConnectionStrings.LightConnectionString))
             {
-                using (System.Data.SqlClient.SqlCommandBuilder CB = new System.Data.SqlClient.SqlCommandBuilder(DA))
+                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
                 {
                     using (DataTable DT = new DataTable())
                     {
@@ -1278,12 +1270,10 @@ namespace Infinium
                                         iF = iR;
                                         continue;
                                     }
-                                    else
-                                    {
-                                        Row["ParentFolderID"] = iF;
 
-                                        break;
-                                    }
+                                    Row["ParentFolderID"] = iF;
+
+                                    break;
                                 }
                             }
                         }

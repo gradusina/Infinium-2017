@@ -8,11 +8,11 @@ namespace Infinium.Modules.Editors
     {
         public BindingSource ParamsBS;
 
-        DataTable ParamsDT;
+        private DataTable ParamsDT;
 
-        SqlCommandBuilder ParamsCB;
+        private SqlCommandBuilder ParamsCB;
 
-        SqlDataAdapter ParamsDA;
+        private SqlDataAdapter ParamsDA;
 
         public LabelParamsManager()
         {

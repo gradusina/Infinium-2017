@@ -7,29 +7,29 @@ namespace Infinium
 {
     public partial class UserInfoForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
 
-        int FormEvent = 0;
+        private int FormEvent;
 
-        Form TopForm = null;
+        private Form TopForm = null;
 
-        UserProfile UserProfile;
+        private UserProfile UserProfile;
 
-        UserProfile.Contacts Contacts;
-        UserProfile.PersonalInform PersonalInform;
+        private UserProfile.Contacts Contacts;
+        private UserProfile.PersonalInform PersonalInform;
 
-        string CurrentName;
-        int CurrentUserID = -1;
+        private string CurrentName;
+        private int CurrentUserID = -1;
 
         public UserInfoForm(string UserName)
         {
             InitializeComponent();
 
-            this.MaximumSize = Screen.PrimaryScreen.WorkingArea.Size;
+            MaximumSize = Screen.PrimaryScreen.WorkingArea.Size;
 
-            UserProfile = new Infinium.UserProfile();
+            UserProfile = new UserProfile();
 
             CurrentUserID = UserProfile.GetUserByName(UserName);
             Contacts = UserProfile.GetContacts(CurrentUserID);
@@ -47,9 +47,9 @@ namespace Infinium
             if (text.Length == 0)
                 return "";
 
-            Graphics G = this.CreateGraphics();
+            Graphics G = CreateGraphics();
 
-            if (G.MeasureString(text, this.PositionLabel.Font).Width > kryptonBorderEdge1.Width)
+            if (G.MeasureString(text, PositionLabel.Font).Width > kryptonBorderEdge1.Width)
             {
                 int LastSpace = GetLastSpace(text);
 
@@ -94,17 +94,17 @@ namespace Infinium
             if (UsersPositionsDT.Rows.Count == 0)
                 return "";
 
-            Graphics G = this.CreateGraphics();
+            Graphics G = CreateGraphics();
             string text = string.Empty;
             for (int i = 0; i < UsersPositionsDT.Rows.Count; i++)
             {
                 string Rate = string.Empty;
                 if (UsersPositionsDT.Rows[i]["Rate"].ToString().Length > 0)
                     Rate = Convert.ToDecimal(UsersPositionsDT.Rows[i]["Rate"]).ToString("G29");
-                text += UserProfile.PositionsDataTable.Select("PositionID=" + Convert.ToInt32(UsersPositionsDT.Rows[i]["PositionID"]))[0]["Position"].ToString() +
+                text += UserProfile.PositionsDataTable.Select("PositionID=" + Convert.ToInt32(UsersPositionsDT.Rows[i]["PositionID"]))[0]["Position"] +
                     " (" + Rate + " ОМЦ-ПРОФИЛЬ)";
                 if (FactoryID == 2)
-                    text = UserProfile.PositionsDataTable.Select("PositionID=" + Convert.ToInt32(UsersPositionsDT.Rows[i]["PositionID"]))[0]["Position"].ToString() +
+                    text = UserProfile.PositionsDataTable.Select("PositionID=" + Convert.ToInt32(UsersPositionsDT.Rows[i]["PositionID"]))[0]["Position"] +
                         " (" + Rate + " ЗОВ-ТПС)";
                 if (i != UsersPositionsDT.Rows.Count - 1)
                     text = text.Insert(text.Length, "\n");
@@ -122,7 +122,7 @@ namespace Infinium
 
             int CurrentSize = 0;
 
-            Graphics G = this.CreateGraphics();
+            Graphics G = CreateGraphics();
 
             string temp = "";
             string res = "";
@@ -226,7 +226,7 @@ namespace Infinium
 
             string res = "";
 
-            Graphics G = this.CreateGraphics();
+            Graphics G = CreateGraphics();
 
             if (G.MeasureString(CombatArm, MilitaryLabel.Font).Width > kryptonBorderEdge1.Width)
             {
@@ -310,7 +310,7 @@ namespace Infinium
             else
                 BirthDateLabel.Text = PersonalInform.BirthDate;
 
-            AgeLabel.Text = GetAge(PersonalInform.BirthDate).ToString();
+            AgeLabel.Text = GetAge(PersonalInform.BirthDate);
 
             if (PersonalInform.Language.Length == 0)
                 LanguagesLabel.Text = "нет\\не указано";
@@ -356,19 +356,19 @@ namespace Infinium
         {
             if (!DatabaseConfigsManager.Animation)
             {
-                this.Opacity = 1;
+                Opacity = 1;
 
                 if (FormEvent == eClose || FormEvent == eHide)
                 {
                     AnimateTimer.Enabled = false;
                     if (FormEvent == eClose)
                     {
-                        this.Close();
+                        Close();
                     }
 
                     if (FormEvent == eHide)
                     {
-                        this.Hide();
+                        Hide();
                     }
 
                     return;
@@ -385,20 +385,20 @@ namespace Infinium
 
             if (FormEvent == eClose || FormEvent == eHide)
             {
-                if (Convert.ToDecimal(this.Opacity) != Convert.ToDecimal(0.00))
-                    this.Opacity = Convert.ToDouble(Convert.ToDecimal(this.Opacity) - Convert.ToDecimal(0.05));
+                if (Convert.ToDecimal(Opacity) != Convert.ToDecimal(0.00))
+                    Opacity = Convert.ToDouble(Convert.ToDecimal(Opacity) - Convert.ToDecimal(0.05));
                 else
                 {
                     AnimateTimer.Enabled = false;
 
                     if (FormEvent == eClose)
                     {
-                        this.Close();
+                        Close();
                     }
 
                     if (FormEvent == eHide)
                     {
-                        this.Hide();
+                        Hide();
                     }
                 }
 
@@ -408,15 +408,13 @@ namespace Infinium
 
             if (FormEvent == eShow || FormEvent == eShow)
             {
-                if (this.Opacity != 1)
-                    this.Opacity += 0.05;
+                if (Opacity != 1)
+                    Opacity += 0.05;
                 else
                 {
                     AnimateTimer.Enabled = false;
                     SplashForm.CloseS = true;
                 }
-
-                return;
             }
         }
 

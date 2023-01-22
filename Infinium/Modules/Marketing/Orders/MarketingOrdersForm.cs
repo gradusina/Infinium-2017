@@ -11,35 +11,35 @@ namespace Infinium
 {
     public partial class MarketingOrdersForm : Form
     {
-        const int iAdmin = 79;
-        const int iMarketing = 78;
+        private const int iAdmin = 79;
+        private const int iMarketing = 78;
 
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
-        bool NeedRefresh = false;
-        bool NeedSplash = false;
+        private bool NeedRefresh = false;
+        private bool NeedSplash = false;
 
-        int CurrentRowIndex = -1;
-        int FormEvent = 0;
+        private int CurrentRowIndex = -1;
+        private int FormEvent = 0;
 
-        LightStartForm LightStartForm;
+        private LightStartForm LightStartForm;
 
-        Form TopForm = null;
-        AddMarketingOrdersForm AddMainOrdersForm;
-        ClientReportMenu ClientReportMenu;
-        Report Report;
-        DetailsReport DetailsReport;
-        SendEmail SendEmail;
+        private Form TopForm = null;
+        private AddMarketingOrdersForm AddMainOrdersForm;
+        private ClientReportMenu ClientReportMenu;
+        private Report Report;
+        private DetailsReport DetailsReport;
+        private SendEmail SendEmail;
 
-        DataTable RolePermissionsDataTable;
+        private DataTable RolePermissionsDataTable;
 
         public OrdersManager OrdersManager;
         public DecorCatalogOrder DecorCatalogOrder;
         public OrdersCalculate OrdersCalculate;
-        RoleTypes RoleType = RoleTypes.Ordinary;
+        private RoleTypes RoleType = RoleTypes.Ordinary;
         public enum RoleTypes
         {
             Ordinary = 0,

@@ -633,7 +633,7 @@ namespace Infinium.Modules.WorkAssignments
         {
             int Count = 0;
             int PrintingStatus = 0;
-            int[] FrontsID = new int[18];
+            int[] FrontsID = new int[19];
             FrontsID[0] = Convert.ToInt32(Fronts.KansasPat);
             FrontsID[1] = Convert.ToInt32(Fronts.Turin1);
             FrontsID[2] = Convert.ToInt32(Fronts.Turin3);
@@ -652,6 +652,7 @@ namespace Infinium.Modules.WorkAssignments
             FrontsID[15] = Convert.ToInt32(Fronts.Scandia);
             FrontsID[16] = Convert.ToInt32(Fronts.SofiaNotColored);
             FrontsID[17] = Convert.ToInt32(Fronts.Turin3NotColored);
+            FrontsID[18] = Convert.ToInt32(Fronts.Bona);
             string SelectCommand = @"SELECT * FROM AssignmentsInWork WHERE WorkAssignmentID=" + WorkAssignmentID;
             DataTable DT1 = new DataTable();
             DataTable DT2 = new DataTable();

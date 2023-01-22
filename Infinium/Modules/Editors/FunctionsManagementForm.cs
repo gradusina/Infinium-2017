@@ -6,22 +6,22 @@ namespace Infinium
 {
     public partial class FunctionsManagementForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
 
-        int FormEvent = 0;
-        int CurrentFunctionID = 0;
+        private int FormEvent = 0;
+        private int CurrentFunctionID = 0;
 
-        Form TopForm = null;
-        LightStartForm LightStartForm;
+        private Form TopForm = null;
+        private LightStartForm LightStartForm;
 
-        bool bFromStartMenu = true;
+        private bool bFromStartMenu = true;
         public bool bAddUserResponsibility = false;
         public int StaffListID = -1;
         public int UserID = -1;
 
-        AdminFunctionsEdit AdminFunctionsEdit;
+        private AdminFunctionsEdit AdminFunctionsEdit;
 
         public FunctionsManagementForm(LightStartForm tLightStartForm)
         {

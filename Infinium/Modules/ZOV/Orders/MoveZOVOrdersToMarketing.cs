@@ -17,18 +17,18 @@ namespace Infinium.Modules.ZOV.Orders
         private DataTable zovMainOrdersInfoDT;
         private object zovDocDateTime = DBNull.Value;
 
-        DataTable marketingFrontsOrdersDT = null;
-        DataTable marketingDecorOrdersDT = null;
-        DataTable marketingPackagesDT = null;
-        DataTable marketingPackageDetailsDT = null;
-        DataTable zovFrontsOrdersDT = null;
-        DataTable zovDecorOrdersDT = null;
-        DataTable zovMainOrdersDT = null;
-        DataTable zovPackagesDT = null;
-        DataTable zovPackageDetailsDT = null;
+        private DataTable marketingFrontsOrdersDT = null;
+        private DataTable marketingDecorOrdersDT = null;
+        private DataTable marketingPackagesDT = null;
+        private DataTable marketingPackageDetailsDT = null;
+        private DataTable zovFrontsOrdersDT = null;
+        private DataTable zovDecorOrdersDT = null;
+        private DataTable zovMainOrdersDT = null;
+        private DataTable zovPackagesDT = null;
+        private DataTable zovPackageDetailsDT = null;
 
-        InvoiceReportToDbf DBFReport = null;
-        Infinium.Modules.Marketing.NewOrders.OrdersCalculate OrdersCalculate = null;
+        private InvoiceReportToDbf DBFReport = null;
+        private Infinium.Modules.Marketing.NewOrders.OrdersCalculate OrdersCalculate = null;
 
         public MoveZOVOrdersToMarketing()
         {

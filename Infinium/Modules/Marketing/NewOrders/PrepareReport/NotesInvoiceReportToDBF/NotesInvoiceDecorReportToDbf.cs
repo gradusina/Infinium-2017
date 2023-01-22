@@ -9,13 +9,13 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.NotesInvoiceReportT
 {
     public class NotesInvoiceDecorReportToDbf
     {
-        decimal PaymentRate = 1;
-        int ClientID = 0;
-        string ProfilCurrencyCode = "0";
-        string TPSCurrencyCode = "0";
-        string UNN = string.Empty;
+        private decimal PaymentRate = 1;
+        private int ClientID = 0;
+        private string ProfilCurrencyCode = "0";
+        private string TPSCurrencyCode = "0";
+        private string UNN = string.Empty;
 
-        DataTable CurrencyTypesDT;
+        private DataTable CurrencyTypesDT;
         private DataTable _profilReportDataTable = null;
         private DataTable _tPSReportDataTable = null;
         private DataTable FrameColorsDataTable = null;

@@ -10,27 +10,27 @@ namespace Infinium
 {
     public partial class ZOVPackagesPrintTPSForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
-        const int FactoryID = 2;//ТПС
-        const int BarcodeType = 2;//Упаковка. ЗОВ. ТПС
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
+        private const int FactoryID = 2;//ТПС
+        private const int BarcodeType = 2;//Упаковка. ЗОВ. ТПС
 
-        int FormEvent = 0;
-        int CurrentRowIndex = 0;
-        int CurrentColumnIndex = 0;
-        int CurrentPackNumber = 0;
+        private int FormEvent = 0;
+        private int CurrentRowIndex = 0;
+        private int CurrentColumnIndex = 0;
+        private int CurrentPackNumber = 0;
 
-        bool NeedRefresh = false;
-        bool NeedSplash = false;
+        private bool NeedRefresh = false;
+        private bool NeedSplash = false;
 
-        ArrayList FrontIDs;
-        ArrayList ProductIDs;
+        private ArrayList FrontIDs;
+        private ArrayList ProductIDs;
 
-        Form TopForm = null;
-        ZOVFilterProductsForm ZOVFilterProductsForm;
-        LightStartForm LightStartForm;
+        private Form TopForm = null;
+        private ZOVFilterProductsForm ZOVFilterProductsForm;
+        private LightStartForm LightStartForm;
 
 
         public Modules.Packages.ZOV.ZOVPackagesPrintManager ZOVPackagesPrintManager;

@@ -36,7 +36,7 @@ namespace Infinium.Modules.WorkAssignments
         private DataTable DecorParametersDT;
         private DataTable DeyingDT;
         private DataTable DistMainOrdersDT;
-        private FileManager FM = new FileManager();
+        private readonly FileManager FM = new FileManager();
         private DataTable FrameColorsDataTable = null;
         private DataTable FrontsDataTable = null;
         private ArrayList FrontsID;
@@ -9267,7 +9267,7 @@ namespace Infinium.Modules.WorkAssignments
             DataTable DT3 = new DataTable();
             DataTable DT4 = new DataTable();
 
-            using (DataView DV = new DataView(SourceDT, "InsetTypeID IN (2069,2070,2071,2073,2075,2077,2233,3644,29043,29531,41213)", "InsetTypeID", DataViewRowState.CurrentRows))
+            using (DataView DV = new DataView(SourceDT, "InsetTypeID IN (2069,2070,2071,2073,2075,42066,2077,2233,3644,29043,29531,41213)", "InsetTypeID", DataViewRowState.CurrentRows))
             {
                 DT1 = DV.ToTable(true, new string[] { "InsetTypeID" });
             }

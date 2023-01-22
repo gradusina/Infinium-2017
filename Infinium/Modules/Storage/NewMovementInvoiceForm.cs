@@ -9,19 +9,19 @@ namespace Infinium
 {
     public partial class NewMovementInvoiceForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
 
-        int FormEvent = 0;
+        private int FormEvent = 0;
 
         //bool EditMode = false;
 
-        Form TopForm = null;
+        private Form TopForm = null;
 
-        NewMovementParameters Parameters;
-        StoreMovementManager StoreMovementManager;
-        MovementInvoices MovementInvoices;
+        private NewMovementParameters Parameters;
+        private StoreMovementManager StoreMovementManager;
+        private MovementInvoices MovementInvoices;
 
         public NewMovementInvoiceForm(NewMovementParameters tParameters)
         {

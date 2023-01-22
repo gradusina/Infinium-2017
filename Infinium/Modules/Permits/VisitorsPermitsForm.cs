@@ -12,32 +12,32 @@ namespace Infinium
 {
     public partial class VisitorsPermitsForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
-        const int iAdminRole = 70;
-        const int iAgreedRole = 71;
-        const int iApprovedRole = 72;
+        private const int iAdminRole = 70;
+        private const int iAgreedRole = 71;
+        private const int iApprovedRole = 72;
 
-        bool bC;
+        private bool bC;
 
-        bool bSearchVisitor = false;
-        string SearchVisitorName = string.Empty;
-        bool bSearchAddressee = false;
-        string SearchAddresseeName = string.Empty;
+        private bool bSearchVisitor = false;
+        private string SearchVisitorName = string.Empty;
+        private bool bSearchAddressee = false;
+        private string SearchAddresseeName = string.Empty;
 
-        int FormEvent = 0;
+        private int FormEvent = 0;
 
-        Form TopForm;
-        LightStartForm LightStartForm;
-        NewPermit NewPermit;
+        private Form TopForm;
+        private LightStartForm LightStartForm;
+        private NewPermit NewPermit;
 
         [DllImport("user32.dll")]
-        static extern IntPtr GetActiveWindow();
+        private static extern IntPtr GetActiveWindow();
 
-        RoleTypes RoleType = RoleTypes.OrdinaryRole;
+        private RoleTypes RoleType = RoleTypes.OrdinaryRole;
         public enum RoleTypes
         {
             OrdinaryRole = 0,
@@ -46,7 +46,7 @@ namespace Infinium
             ApprovedRole = 3
         }
 
-        ScanTypes ScanType = ScanTypes.Input;
+        private ScanTypes ScanType = ScanTypes.Input;
         public enum ScanTypes
         {
             Input = 0,
@@ -56,8 +56,8 @@ namespace Infinium
             Machines = 4
         }
 
-        PrintVisitorPermits PrintPermitsManager;
-        VisitorsPermits PermitsManager;
+        private PrintVisitorPermits PrintPermitsManager;
+        private VisitorsPermits PermitsManager;
 
         public VisitorsPermitsForm(LightStartForm tLightStartForm)
         {
@@ -1091,7 +1091,7 @@ namespace Infinium
             }
         }
 
-        void dgvPermits_Paint(object sender, System.Windows.Forms.PaintEventArgs e)
+        private void dgvPermits_Paint(object sender, System.Windows.Forms.PaintEventArgs e)
         {
             base.OnPaint(e);
 

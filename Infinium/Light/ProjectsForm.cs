@@ -7,33 +7,33 @@ namespace Infinium
 {
     public partial class ProjectsForm : InfiniumForm
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
 
-        int FormEvent = 0;
+        private int FormEvent;
 
-        LightStartForm LightStartForm;
+        private LightStartForm LightStartForm;
 
-        Form TopForm = null;
+        private Form TopForm;
 
-        InfiniumProjects InfiniumProjects;
+        private InfiniumProjects InfiniumProjects;
 
-        bool bC = false;
+        private bool bC;
 
-        bool bNeedSplash = false;
-        bool bNeedNewsSplash = false;
+        private bool bNeedSplash;
+        private bool bNeedNewsSplash;
 
-        bool bNewProjectsSelected = false;
-        bool bNewMessagesSelected = false;
-        bool bProposSelected = false;
+        private bool bNewProjectsSelected;
+        private bool bNewMessagesSelected;
+        private bool bProposSelected;
 
         public ProjectsForm(LightStartForm tLightStartForm)
         {
             InitializeComponent();
 
             LightStartForm = tLightStartForm;
-            this.MaximumSize = Screen.PrimaryScreen.WorkingArea.Size;
+            MaximumSize = Screen.PrimaryScreen.WorkingArea.Size;
 
             Initialize();
 
@@ -146,7 +146,7 @@ namespace Infinium
         {
             if (!DatabaseConfigsManager.Animation)
             {
-                this.Opacity = 1;
+                Opacity = 1;
 
                 if (FormEvent == eClose || FormEvent == eHide)
                 {
@@ -165,7 +165,7 @@ namespace Infinium
 
                     InfiniumProjects.ClearAllSubs();//clear news and comments subs
 
-                    ActiveNotifySystem.ClearSubscribesRecords(Security.CurrentUserID, this.Name);
+                    ActiveNotifySystem.ClearSubscribesRecords(Security.CurrentUserID, Name);
 
                     return;
                 }
@@ -186,8 +186,8 @@ namespace Infinium
 
             if (FormEvent == eClose || FormEvent == eHide)
             {
-                if (Convert.ToDecimal(this.Opacity) != Convert.ToDecimal(0.00))
-                    this.Opacity = Convert.ToDouble(Convert.ToDecimal(this.Opacity) - Convert.ToDecimal(0.05));
+                if (Convert.ToDecimal(Opacity) != Convert.ToDecimal(0.00))
+                    Opacity = Convert.ToDouble(Convert.ToDecimal(Opacity) - Convert.ToDecimal(0.05));
                 else
                 {
                     AnimateTimer.Enabled = false;
@@ -206,7 +206,7 @@ namespace Infinium
 
                     InfiniumProjects.ClearAllSubs();//clear news and comments subs
 
-                    ActiveNotifySystem.ClearSubscribesRecords(Security.CurrentUserID, this.Name);
+                    ActiveNotifySystem.ClearSubscribesRecords(Security.CurrentUserID, Name);
                 }
 
                 return;
@@ -215,8 +215,8 @@ namespace Infinium
 
             if (FormEvent == eShow)
             {
-                if (this.Opacity != 1)
-                    this.Opacity += 0.05;
+                if (Opacity != 1)
+                    Opacity += 0.05;
                 else
                 {
                     bNeedSplash = true;
@@ -227,8 +227,6 @@ namespace Infinium
 
                     infiniumProjectsList1_SelectedChanged(null, null);
                 }
-
-                return;
             }
         }
 
@@ -777,10 +775,10 @@ namespace Infinium
 
         private void NewsContainer_RemoveNewsClicked(object sender, int NewsID)
         {
-            PhantomForm PhantomForm = new Infinium.PhantomForm();
+            PhantomForm PhantomForm = new PhantomForm();
             PhantomForm.Show();
 
-            LightMessageBoxForm LightMessageBoxForm = new Infinium.LightMessageBoxForm(true, "Сообщение будет удалено безвозвратно.\nПродолжить?",
+            LightMessageBoxForm LightMessageBoxForm = new LightMessageBoxForm(true, "Сообщение будет удалено безвозвратно.\nПродолжить?",
                                                                                     "Удаление сообщения");
 
             TopForm = LightMessageBoxForm;
@@ -836,7 +834,7 @@ namespace Infinium
 
         private void NewsContainer_AttachClicked(object sender, int NewsAttachID)
         {
-            PhantomForm PhantomForm = new Infinium.PhantomForm();
+            PhantomForm PhantomForm = new PhantomForm();
             PhantomForm.Show();
 
             ProjectAttachDownloadForm ProjectAttachDownloadForm = new ProjectAttachDownloadForm(NewsAttachID, ref InfiniumProjects.FM, ref InfiniumProjects);
@@ -946,10 +944,10 @@ namespace Infinium
 
         private void NewsContainer_RemoveCommentClicked(object sender, int NewsID, int NewsCommentID)
         {
-            PhantomForm PhantomForm = new Infinium.PhantomForm();
+            PhantomForm PhantomForm = new PhantomForm();
             PhantomForm.Show();
 
-            LightMessageBoxForm LightMessageBoxForm = new Infinium.LightMessageBoxForm(true, "Комментарий будет удален.\nПродолжить?",
+            LightMessageBoxForm LightMessageBoxForm = new LightMessageBoxForm(true, "Комментарий будет удален.\nПродолжить?",
                                                                                     "Удаление комментария");
 
             TopForm = LightMessageBoxForm;
@@ -1337,7 +1335,7 @@ namespace Infinium
             if (InfiniumProjects.GetProjectStatus(infiniumProjectsList1.ProjectID) == 0)
                 return;
 
-            if (InfiniumProjects.IsProposition(infiniumProjectsList1.ProjectID) == true)
+            if (InfiniumProjects.IsProposition(infiniumProjectsList1.ProjectID))
             {
                 InfiniumProjects.StartProject(infiniumProjectsList1.ProjectID, true);
             }
@@ -1410,7 +1408,7 @@ namespace Infinium
             if (InfiniumProjects.GetProjectStatus(infiniumProjectsList1.ProjectID) == 1)
                 return;
 
-            if (InfiniumProjects.IsProposition(infiniumProjectsList1.ProjectID) == true)
+            if (InfiniumProjects.IsProposition(infiniumProjectsList1.ProjectID))
                 return;
 
             if (InfiniumProjects.CanChangeStatusProject(infiniumProjectsList1.ProjectID) == false)//only members and author can edit projects
@@ -1479,7 +1477,7 @@ namespace Infinium
             if (InfiniumProjects.GetProjectStatus(infiniumProjectsList1.ProjectID) == 2)
                 return;
 
-            if (InfiniumProjects.IsProposition(infiniumProjectsList1.ProjectID) == true)
+            if (InfiniumProjects.IsProposition(infiniumProjectsList1.ProjectID))
                 return;
 
             if (InfiniumProjects.CanChangeStatusProject(infiniumProjectsList1.ProjectID) == false)//only members and author can edit projects
@@ -1547,7 +1545,7 @@ namespace Infinium
             if (InfiniumProjects.GetProjectStatus(infiniumProjectsList1.ProjectID) == 3)
                 return;
 
-            if (InfiniumProjects.IsProposition(infiniumProjectsList1.ProjectID) == true)
+            if (InfiniumProjects.IsProposition(infiniumProjectsList1.ProjectID))
                 return;
 
             if (InfiniumProjects.CanChangeStatusProject(infiniumProjectsList1.ProjectID) == false)//only members and author can edit projects

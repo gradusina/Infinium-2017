@@ -9,21 +9,21 @@ namespace Infinium
     public partial class AddPaymentsForm : Form
     {
         public bool Ok = false;
-        bool Add;
-        int FormEvent = 0;
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        Form TopForm = null;
+        private bool Add;
+        private int FormEvent = 0;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private Form TopForm = null;
 
-        string ClientID;
-        string TypePayments, DocNumber, Cost, CurrencyTypeID, ClientPaymentsID, FirmID;
-        DateTime dataTime;
+        private string ClientID;
+        private string TypePayments, DocNumber, Cost, CurrencyTypeID, ClientPaymentsID, FirmID;
+        private DateTime dataTime;
 
-        DataTable TableCurrency, TableClients, TableContract, TableFactory;
-        BindingSource tClientContractBindingSource;
+        private DataTable TableCurrency, TableClients, TableContract, TableFactory;
+        private BindingSource tClientContractBindingSource;
 
-        ClientPayments ClientPayments;
+        private ClientPayments ClientPayments;
 
         public AddPaymentsForm(string tClientID, ref ClientPayments tClientPayments, ref DataTable tTableCurrency, ref DataTable tTableClients, ref Form tTopForm, ref DataTable tTableContract, ref DataTable tTableFactory)
         {

@@ -22,37 +22,37 @@ namespace Infinium
 {
     public partial class MarketingExpeditionForm : Form
     {
-        const int iLogisticRole = 41;
-        const int iAdminRole = 48;
-        const int iApprovedRole = 49;
-        const int iDispatchRole = 50;
-        const int iProduction = 80;
+        private const int iLogisticRole = 41;
+        private const int iAdminRole = 48;
+        private const int iApprovedRole = 49;
+        private const int iDispatchRole = 50;
+        private const int iProduction = 80;
 
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
-        int FormEvent = 0;
-        int CurrentFactoryID = 0;
-        int CurrentMainOrder = 0;
-        int CurrentPackNumber = 0;
-        int MDispatchID = 0;
+        private int FormEvent = 0;
+        private int CurrentFactoryID = 0;
+        private int CurrentMainOrder = 0;
+        private int CurrentPackNumber = 0;
+        private readonly int MDispatchID = 0;
 
-        bool CanEditDispatch = false;
+        private bool CanEditDispatch = false;
         //bool bCreateDispatch = false;
         //bool bSetDispatchDate = false;
         //bool bConfirmDispatch = false;
         //bool bPrintDispReport = false;
 
-        bool MoveFromPermits = false;
-        bool NeedRefresh = false;
-        bool NeedSplash = false;
+        private readonly bool MoveFromPermits = false;
+        private bool NeedRefresh = false;
+        private bool NeedSplash = false;
 
-        Form MainForm;
-        SaveDBFReportMenu SaveDBFReportMenu;
-        InputNewDecorCountForm InputNewDecorCountForm;
-        RoleTypes RoleType = RoleTypes.OrdinaryRole;
+        private readonly Form MainForm;
+        private SaveDBFReportMenu SaveDBFReportMenu;
+        private InputNewDecorCountForm InputNewDecorCountForm;
+        private readonly RoleTypes RoleType = RoleTypes.OrdinaryRole;
 
         public enum RoleTypes
         {
@@ -64,28 +64,28 @@ namespace Infinium
             Production = 5
         }
 
-        DateTime PrepareDispatchDateTime;
+        private readonly DateTime PrepareDispatchDateTime;
 
-        DataTable MonthsDT;
-        DataTable YearsDT;
-        DataTable RolePermissionsDataTable;
+        private DataTable MonthsDT;
+        private DataTable YearsDT;
+        private readonly DataTable RolePermissionsDataTable;
 
-        Form TopForm = null;
-        LightStartForm LightStartForm;
+        private Form TopForm = null;
+        private readonly LightStartForm LightStartForm;
 
-        FrontsCatalogOrder FrontsCatalogOrder;
-        DecorCatalogOrder DecorCatalogOrder;
-        DispatchReport DispatchReport;
-        CabFurAssembleReport cabFurAssembleReport;
-        Modules.CabFurnitureAssignments.CabFurAssemble cabFurAssembleManager;
-        MarketingDispatch MarketingDispatchManager;
+        private FrontsCatalogOrder FrontsCatalogOrder;
+        private DecorCatalogOrder DecorCatalogOrder;
+        private DispatchReport DispatchReport;
+        private CabFurAssembleReport cabFurAssembleReport;
+        private Modules.CabFurnitureAssignments.CabFurAssemble cabFurAssembleManager;
+        private MarketingDispatch MarketingDispatchManager;
         private DispatchReportToDbf _dispatchReportToDbf;
         private ColorInvoiceReportToDbf _colorInvoiceReportToDbf;
         private NotesInvoiceReportToDbf _notesInvoiceReportToDbf;
-        Infinium.Modules.Marketing.Dispatch.DetailsReport DetailsReport;
-        Infinium.Modules.Marketing.Orders.InvoiceReportToDbf.InvoiceReportToDbf iDBFReport;
-        MarketingExpeditionManager MarketingExpeditionManager;
-        OrdersCalculate OrdersCalculate;
+        private Infinium.Modules.Marketing.Dispatch.DetailsReport DetailsReport;
+        private Infinium.Modules.Marketing.Orders.InvoiceReportToDbf.InvoiceReportToDbf iDBFReport;
+        private MarketingExpeditionManager MarketingExpeditionManager;
+        private OrdersCalculate OrdersCalculate;
 
         public MarketingExpeditionForm(LightStartForm tLightStartForm)
         {
@@ -4267,7 +4267,7 @@ namespace Infinium
                     m.DiscountPaymentConditionID = 1;
                 if (ClientID != 145 && m.DiscountPaymentConditionID == 1 && (CurrencyTypeID == 3 || CurrencyTypeID == 5))
                 {
-                    m.PaymentRate = m.OriginalRate * 1.05m;
+                    //m.PaymentRate = m.OriginalRate * 1.05m;
                 }
 
                 if (Verify)
@@ -4303,7 +4303,7 @@ namespace Infinium
                     m.DiscountPaymentConditionID = 1;
                 if (ClientID != 145 && m.DiscountPaymentConditionID == 1 && (CurrencyTypeID == 3 || CurrencyTypeID == 5))
                 {
-                    m.PaymentRate = m.OriginalRate * 1.05m;
+                    //m.PaymentRate = m.OriginalRate * 1.05m;
                 }
 
                 if (Verify)
@@ -4339,7 +4339,7 @@ namespace Infinium
                     m.DiscountPaymentConditionID = 1;
                 if (ClientID != 145 && m.DiscountPaymentConditionID == 1 && (CurrencyTypeID == 3 || CurrencyTypeID == 5))
                 {
-                    m.PaymentRate = m.OriginalRate * 1.05m;
+                    //m.PaymentRate = m.OriginalRate * 1.05m;
                 }
 
                 if (Verify)
@@ -4375,7 +4375,7 @@ namespace Infinium
                     m.DiscountPaymentConditionID = 1;
                 if (ClientID != 145 && m.DiscountPaymentConditionID == 1 && (CurrencyTypeID == 3 || CurrencyTypeID == 5))
                 {
-                    m.PaymentRate = m.OriginalRate * 1.05m;
+                    //m.PaymentRate = m.OriginalRate * 1.05m;
                 }
 
                 if (Verify)
@@ -4921,7 +4921,7 @@ namespace Infinium
                             DiscountPaymentConditionID = 1;
                         if (ClientID != 145 && DiscountPaymentConditionID == 1 && (CurrencyTypeID == 3 || CurrencyTypeID == 5))
                         {
-                            m.PaymentRate = m.OriginalRate * 1.05m;
+                            //m.PaymentRate = m.OriginalRate * 1.05m;
                         }
 
                         if (bProfilVerify)
@@ -4962,7 +4962,7 @@ namespace Infinium
                             DiscountPaymentConditionID = 1;
                         if (ClientID != 145 && DiscountPaymentConditionID == 1 && (CurrencyTypeID == 3 || CurrencyTypeID == 5))
                         {
-                            m.PaymentRate = m.OriginalRate * 1.05m;
+                            //m.PaymentRate = m.OriginalRate * 1.05m;
                         }
                         if (bTPSVerify)
                         {
@@ -6077,6 +6077,8 @@ namespace Infinium
                         FileStream NewFile = new FileStream(file.FullName, FileMode.Create);
                         hssfworkbook.Write(NewFile);
                         NewFile.Close();
+
+                        //System.Diagnostics.Process.Start(file.FullName);
 
                         ReportName = file.FullName;
 

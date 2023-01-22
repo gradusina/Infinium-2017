@@ -5,17 +5,17 @@ namespace Infinium
 {
     public partial class MarketingSplitPackagesForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
-        Infinium.Modules.Packages.Marketing.SplitStruct SS;
+        private Infinium.Modules.Packages.Marketing.SplitStruct SS;
 
-        int FormEvent = 0;
-        int TotalCount = 0;
-        Form TopForm = null;
-        Form MainForm = null;
+        private int FormEvent = 0;
+        private int TotalCount = 0;
+        private Form TopForm = null;
+        private Form MainForm = null;
 
         public MarketingSplitPackagesForm()
         {

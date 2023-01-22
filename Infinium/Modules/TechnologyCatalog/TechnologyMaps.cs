@@ -11,36 +11,36 @@ namespace Infinium.Modules.TechnologyCatalog
 {
     public class TechnologyMaps : IPatinaName, IColorName, IInsetTypeName, IInsetColorName
     {
-        int OrderNumber = 1;
+        private int OrderNumber = 1;
 
 
-        DataTable ColorsDT;
-        DataTable CoversDT;
-        DataTable PatinaDT;
-        DataTable PatinaRALDT;
-        DataTable InsetTypesDT;
-        DataTable InsetColorsDT;
+        private DataTable ColorsDT;
+        private DataTable CoversDT;
+        private DataTable PatinaDT;
+        private DataTable PatinaRALDT;
+        private DataTable InsetTypesDT;
+        private DataTable InsetColorsDT;
 
-        DataTable OperationsGroups;
+        private DataTable OperationsGroups;
 
-        DataTable CubFurCoversDT;
-        DataTable FrontsOrdersDT;
-        DataTable FrontsConfigDT;
-        DataTable OperationsDetailDT;
-        DataTable StoreDetailDT;
-        DataTable ToolsDT;
-        DataTable TotalOperationsDetailDT;
-        DataTable TotalStoreDetailDT;
-        DataTable OperationsTermsDT;
-        DataTable StoreDetailTermsDT;
+        private DataTable CubFurCoversDT;
+        private DataTable FrontsOrdersDT;
+        private DataTable FrontsConfigDT;
+        private DataTable OperationsDetailDT;
+        private DataTable StoreDetailDT;
+        private DataTable ToolsDT;
+        private DataTable TotalOperationsDetailDT;
+        private DataTable TotalStoreDetailDT;
+        private DataTable OperationsTermsDT;
+        private DataTable StoreDetailTermsDT;
 
-        DataTable SummaryMachinesDT;
-        DataTable SummaryMaterialsDT;
-        DataTable SummaryLaborCostsDT;
+        private DataTable SummaryMachinesDT;
+        private DataTable SummaryMaterialsDT;
+        private DataTable SummaryLaborCostsDT;
 
-        DataTable ToExcelDT;
+        private DataTable ToExcelDT;
 
-        ReportToExcel r;
+        private ReportToExcel r;
 
         public TechnologyMaps()
         {
@@ -962,29 +962,29 @@ namespace Infinium.Modules.TechnologyCatalog
 
     public class ReportToExcel
     {
-        int pos13 = 0;
+        private int pos13 = 0;
 
-        HSSFWorkbook hssfworkbook;
-        HSSFSheet sheet13;
-        HSSFSheet sheet14;
-        HSSFSheet sheet15;
-        HSSFSheet sheet16;
+        private HSSFWorkbook hssfworkbook;
+        private HSSFSheet sheet13;
+        private HSSFSheet sheet14;
+        private HSSFSheet sheet15;
+        private HSSFSheet sheet16;
 
-        HSSFFont fConfirm;
-        HSSFFont fHeader;
-        HSSFFont fColumnName;
-        HSSFFont fMainContent;
-        HSSFFont fTotalInfo;
-        HSSFFont fSignatures;
+        private HSSFFont fConfirm;
+        private HSSFFont fHeader;
+        private HSSFFont fColumnName;
+        private HSSFFont fMainContent;
+        private HSSFFont fTotalInfo;
+        private HSSFFont fSignatures;
 
-        HSSFCellStyle csConfirm;
-        HSSFCellStyle csHeader;
-        HSSFCellStyle csColumnName;
-        HSSFCellStyle csMainContent;
-        HSSFCellStyle csMainContentRot;
-        HSSFCellStyle csMainContentDec;
-        HSSFCellStyle csMainContentWrap;
-        HSSFCellStyle csTotalInfo;
+        private HSSFCellStyle csConfirm;
+        private HSSFCellStyle csHeader;
+        private HSSFCellStyle csColumnName;
+        private HSSFCellStyle csMainContent;
+        private HSSFCellStyle csMainContentRot;
+        private HSSFCellStyle csMainContentDec;
+        private HSSFCellStyle csMainContentWrap;
+        private HSSFCellStyle csTotalInfo;
 
         public ReportToExcel()
         {

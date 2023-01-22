@@ -7,17 +7,17 @@ namespace Infinium
 {
     public partial class DepartmentPhotoEditForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
 
-        int FormEvent = 0;
+        private int FormEvent = 0;
 
-        Form TopForm = null;
+        private Form TopForm = null;
 
-        AdminDepartmentEdit AdminDepartmentsEdit;
+        private AdminDepartmentEdit AdminDepartmentsEdit;
 
-        int iDepartmentID = -1;
+        private int iDepartmentID = -1;
 
         public DepartmentPhotoEditForm(ref AdminDepartmentEdit tAdminDepartmentsEdit, int DepartmentID)
         {

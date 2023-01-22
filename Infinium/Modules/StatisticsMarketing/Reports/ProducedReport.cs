@@ -19,10 +19,10 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
         //decimal Rate = 1;
         //int ClientID = 0;
         //int CurrencyCode = 0;
-        private string ProfilCurrencyCode = "0";
+        private readonly string ProfilCurrencyCode = "0";
 
-        private string TPSCurrencyCode = "0";
-        private string UNN = string.Empty;
+        private readonly string TPSCurrencyCode = "0";
+        private readonly string UNN = string.Empty;
 
         private DataTable DecorInvNumbersDT = null;
         private DataTable CurrencyTypesDT;
@@ -800,7 +800,7 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
                         MarketingCost = GetMarketingCost(Convert.ToInt32(Rows[r]["FrontConfigID"]));
                 }
                 //ФИЛЕНКА
-                filter = " AND InsetTypeID IN (2069,2070,2071,2073,2075,2077,2233,3644,29043,29531,41213)";
+                filter = " AND InsetTypeID IN (2069,2070,2071,2073,2075,42066,2077,2233,3644,29043,29531,41213)";
                 Rows = OrdersDataTable.Select("ColorID = " + Fronts.Rows[i]["ColorID"].ToString() +
                                               " AND PatinaID = " + Fronts.Rows[i]["PatinaID"].ToString() +
                                               " AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString() + " AND (Width <> -1)" + filter);
@@ -845,6 +845,7 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
                         Convert.ToInt32(Rows[r]["InsetTypeID"]) == 29470 || Convert.ToInt32(Rows[r]["InsetTypeID"]) == 29471)
                     {
                         int FactoryID = 0;
+                        int FrontConfigID = Convert.ToInt32(Rows[r]["FrontConfigID"]);
                         DecorInvNumber = GetGridInvNumber(Convert.ToInt32(Rows[r]["FrontConfigID"]), ref FactoryID, ref DecorAccountingName);
                         if (DecorInvNumber.Length > 0)
                         {
@@ -859,6 +860,10 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
                             DeductibleCount = GetInsetSquare(Convert.ToInt32(Rows[r]["FrontID"]), Convert.ToInt32(Rows[r]["Height"]),
                                                         Convert.ToInt32(Rows[r]["Width"])) * Convert.ToDecimal(Rows[r]["Count"]);
                             DeductibleWeight = Decimal.Round(DeductibleCount * Convert.ToDecimal(3.5), 3, MidpointRounding.AwayFromZero);
+                        }
+                        else
+                        {
+
                         }
                     }
                     //СТЕКЛО
@@ -2182,7 +2187,7 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
                         MarketingCost = GetMarketingCost(Convert.ToInt32(Rows[r]["FrontConfigID"]));
                 }
                 //ФИЛЕНКА
-                filter = " AND InsetTypeID IN (2069,2070,2071,2073,2075,2077,2233,3644,29043,29531,41213)";
+                filter = " AND InsetTypeID IN (2069,2070,2071,2073,2075,42066,2077,2233,3644,29043,29531,41213)";
                 Rows = OrdersDataTable.Select("FrontID = " + Fronts.Rows[i]["FrontID"].ToString() + " AND (Width <> -1)" + filter);
                 if (Rows.Count() > 0) MarketingCost = GetMarketingCost(Convert.ToInt32(Rows[0]["FrontConfigID"]));
                 for (int r = 0; r < Rows.Count(); r++)
@@ -3284,17 +3289,21 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
             if (FrontsConfigRow.Count() > 0)
                 ProfileWeight = Convert.ToDecimal(FrontsConfigRow[0]["Weight"]);
 
-            //для Женевы и Тафеля глухой - вес квадрата профиля на площадь фасада
             int FrontID = Convert.ToInt32(FrontsOrdersRow["FrontID"]);
-            if (FrontID == 30504 || FrontID == 30505 || FrontID == 30506 ||
-                FrontID == 30364 || FrontID == 30366 || FrontID == 30367 ||
-                FrontID == 30501 || FrontID == 30502 || FrontID == 30503 ||
-                FrontID == 16269 || FrontID == 28945 || FrontID == 41327 || FrontID == 41328 || FrontID == 41331 || FrontID == 27914 || FrontID == 29597 || FrontID == 3727 || FrontID == 3728 || FrontID == 3729 ||
-                FrontID == 3730 || FrontID == 3731 || FrontID == 3732 || FrontID == 3733 || FrontID == 3734 ||
-                FrontID == 3735 || FrontID == 3736 || FrontID == 3737 || FrontID == 3739 || FrontID == 3740 ||
-                FrontID == 3741 || FrontID == 3742 || FrontID == 3743 || FrontID == 3744 || FrontID == 3745 ||
-                FrontID == 3746 || FrontID == 3747 || FrontID == 3748 || FrontID == 15108 || FrontID == 3662 || FrontID == 3663 || FrontID == 3664 || FrontID == 15760)
+            if (Security.IsFrontsSquareCalc(FrontID))
+            {
                 return FrontWidth * FrontHeight / 1000000 * ProfileWeight;
+            }
+            //if (FrontID == 30504 || FrontID == 30505 || FrontID == 30506 ||
+            //    FrontID == 30364 || FrontID == 30366 || FrontID == 30367 ||
+            //    FrontID == 30501 || FrontID == 30502 || FrontID == 30503 ||
+            //    FrontID == 16269 || FrontID == 28945 || FrontID == 41327 || FrontID == 41328 || FrontID == 41331 || 
+            //    FrontID == 27914 || FrontID == 29597 || FrontID == 3727 || FrontID == 3728 || FrontID == 3729 ||
+            //    FrontID == 3730 || FrontID == 3731 || FrontID == 3732 || FrontID == 3733 || FrontID == 3734 ||
+            //    FrontID == 3735 || FrontID == 3736 || FrontID == 3737 || FrontID == 3739 || FrontID == 3740 ||
+            //    FrontID == 3741 || FrontID == 3742 || FrontID == 3743 || FrontID == 3744 || FrontID == 3745 ||
+            //    FrontID == 3746 || FrontID == 3747 || FrontID == 3748 || FrontID == 15108 || FrontID == 3662 || FrontID == 3663 || FrontID == 3664 || FrontID == 15760)
+            //    return FrontWidth * FrontHeight / 1000000 * ProfileWeight;
             else
             {
                 DataRow[] DecorConfigRow = TechStoreDataTable.Select("TechStoreID = " + FrontsConfigRow[0]["ProfileID"].ToString());
@@ -5317,12 +5326,12 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
         //decimal AdditionalCost = 0;
         //decimal Rate = 1;
         //int ClientID = 0;
-        private string ProfilCurrencyCode = "0";
+        private readonly string ProfilCurrencyCode = "0";
 
-        private string TPSCurrencyCode = "0";
-        private string UNN = string.Empty;
+        private readonly string TPSCurrencyCode = "0";
+        private readonly string UNN = string.Empty;
 
-        private Infinium.Modules.ZOV.DecorCatalogOrder DecorCatalogOrder = null;
+        private readonly Infinium.Modules.ZOV.DecorCatalogOrder DecorCatalogOrder = null;
 
         private DataTable CurrencyTypesDT;
         public DataTable ProfilReportDataTable = null;
@@ -8568,7 +8577,7 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
 
     public class ProducedReport
     {
-        private decimal VAT = 1.0m;
+        private readonly decimal VAT = 1.0m;
         public ProducedFrontsReport FrontsReport;
         public ProducedDecorReport DecorReport = null;
 

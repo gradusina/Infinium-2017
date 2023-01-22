@@ -7,12 +7,12 @@ namespace Infinium
 {
     public partial class NewToolsGroupForm : Form
     {
-        int ToolsGroupID;
+        private int ToolsGroupID;
         public bool Ok = false;
-        bool IsNew;
+        private bool IsNew;
 
-        Form TopForm = null;
-        TechStoreManager TechStoreManager;
+        private Form TopForm = null;
+        private TechStoreManager TechStoreManager;
 
         public NewToolsGroupForm(string Factory, int tToolsGroupID, ref TechStoreManager tTechStoreManager)
         {

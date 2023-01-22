@@ -14,32 +14,32 @@ namespace Infinium
 {
     public partial class ZOVBatchForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
-        const int iConfirmBatch = 65;
-        const int iCreateBatch = 36;
-        const int iAddToBatch = 37;
-        const int iInProduction = 23;
-        const int iCloseBatch = 39;
+        private const int iConfirmBatch = 65;
+        private const int iCreateBatch = 36;
+        private const int iAddToBatch = 37;
+        private const int iInProduction = 23;
+        private const int iCloseBatch = 39;
 
-        bool NeedRefresh = false;
-        bool NeedSplash = false;
-        bool bFrontType = false;
-        bool bFrameColor = false;
+        private bool NeedRefresh = false;
+        private bool NeedSplash = false;
+        private bool bFrontType = false;
+        private bool bFrameColor = false;
 
-        bool ConfirmBatch = false;
-        bool CreateBatch = false;
-        bool AddToBatch = false;
-        bool InProduction = false;
-        bool CloseBatch = false;
+        private bool ConfirmBatch = false;
+        private bool CreateBatch = false;
+        private bool AddToBatch = false;
+        private bool InProduction = false;
+        private bool CloseBatch = false;
 
-        int FactoryID = 1;
-        int FormEvent = 0;
+        private int FactoryID = 1;
+        private int FormEvent = 0;
 
-        RoleTypes RoleType = RoleTypes.Ordinary;
+        private RoleTypes RoleType = RoleTypes.Ordinary;
 
         public enum RoleTypes
         {
@@ -53,19 +53,19 @@ namespace Infinium
         }
 
 
-        ArrayList BatchArray = null;
-        ArrayList FrontIDs;
-        ArrayList MainOrdersArray = null;
+        private ArrayList BatchArray = null;
+        private ArrayList FrontIDs;
+        private ArrayList MainOrdersArray = null;
 
-        Bitmap Lock_BW = new Bitmap(Properties.Resources.LockSmallBlack);
-        Bitmap Unlock_BW = new Bitmap(Properties.Resources.UnlockSmallBlack);
+        private Bitmap Lock_BW = new Bitmap(Properties.Resources.LockSmallBlack);
+        private Bitmap Unlock_BW = new Bitmap(Properties.Resources.UnlockSmallBlack);
 
-        LightStartForm LightStartForm;
+        private LightStartForm LightStartForm;
 
-        Form TopForm = null;
-        ZOVPickFrontsSelectForm PickFrontsSelectForm;
+        private Form TopForm = null;
+        private ZOVPickFrontsSelectForm PickFrontsSelectForm;
 
-        DataTable RolePermissionsDataTable;
+        private DataTable RolePermissionsDataTable;
 
         public BatchManager BatchManager;
         public Modules.ZOV.DecorCatalogOrder DecorCatalogOrder;

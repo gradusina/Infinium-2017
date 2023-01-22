@@ -20,43 +20,43 @@ namespace Infinium
 {
     public partial class MarketingNewOrdersForm : Form
     {
-        const int iAdmin = 74;
-        const int iMarketing = 20;
-        const int iDirector = 75;
+        private const int iAdmin = 74;
+        private const int iMarketing = 20;
+        private const int iDirector = 75;
 
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
-        bool NeedRefresh = false;
-        bool NeedSplash = false;
+        private bool NeedRefresh = false;
+        private bool NeedSplash = false;
 
-        int CurrentRowIndex = -1;
-        int FormEvent = 0;
+        private int CurrentRowIndex = -1;
+        private int FormEvent = 0;
 
-        LightStartForm LightStartForm;
+        private LightStartForm LightStartForm;
 
-        Form TopForm = null;
-        AddMarketingNewOrdersForm AddMainOrdersForm;
-        CurrencyForm CurrencyForm;
-        SaveDBFReportMenu SaveDBFReportMenu;
-        ClientReportMenu ClientReportMenu;
-        Report Report;
-        DetailsReport DetailsReport;
-        Modules.Marketing.NewOrders.PrepareReport.DetailsReport PrepareReport;
-        SendEmail SendEmail;
-        Infinium.Modules.TechnologyCatalog.TestTechCatalog TestTechCatalogManager;
-        CreateOrdersFromExcel CreateOrdersFromExcel;
+        private Form TopForm = null;
+        private AddMarketingNewOrdersForm AddMainOrdersForm;
+        private CurrencyForm CurrencyForm;
+        private SaveDBFReportMenu SaveDBFReportMenu;
+        private ClientReportMenu ClientReportMenu;
+        private Report Report;
+        private DetailsReport DetailsReport;
+        private Modules.Marketing.NewOrders.PrepareReport.DetailsReport PrepareReport;
+        private SendEmail SendEmail;
+        private Infinium.Modules.TechnologyCatalog.TestTechCatalog TestTechCatalogManager;
+        private CreateOrdersFromExcel CreateOrdersFromExcel;
 
-        DataTable RolePermissionsDataTable;
+        private DataTable RolePermissionsDataTable;
 
         public OrdersManager OrdersManager;
         public FrontsCatalogOrder FrontsCatalogOrder;
         public DecorCatalogOrder DecorCatalogOrder;
         public OrdersCalculate OrdersCalculate;
 
-        RoleTypes RoleType = RoleTypes.Ordinary;
+        private RoleTypes RoleType = RoleTypes.Ordinary;
         public enum RoleTypes
         {
             Ordinary = 0,
@@ -585,6 +585,8 @@ namespace Infinium
 
             if (OrdersManager.MegaOrdersBindingSource.Count > 0)
                 OrdersManager.CurrentClientID = Convert.ToInt32(((DataRowView)OrdersManager.MegaOrdersBindingSource.Current).Row["ClientID"]);
+            OrdersManager.CurrentDiscountPaymentConditionID = 1;
+            OrdersManager.CurrencyTypeID = 1;
             AddMainOrdersForm = new AddMarketingNewOrdersForm(ref OrdersManager, false, false, ref TopForm, ref OrdersCalculate);
 
             TopForm = AddMainOrdersForm;
@@ -852,6 +854,9 @@ namespace Infinium
                     CurrencyForm = new CurrencyForm(this, ref OrdersManager, ref OrdersCalculate, ref DBFReport, 
                         ClientID, ClientName, bCanDirectorDiscount, RoleType == RoleTypes.Admin);
 
+                    OrdersManager.CurrentClientID = ClientID;
+                    OrdersManager.CurrencyTypeID = Convert.ToInt32(((DataRowView)OrdersManager.MegaOrdersBindingSource.Current).Row["CurrencyTypeID"]);
+
                     CurrencyForm.SetParameters(
                             Convert.ToInt32(((DataRowView)OrdersManager.MegaOrdersBindingSource.Current).Row["TransportType"]),
                             Convert.ToInt32(((DataRowView)OrdersManager.MegaOrdersBindingSource.Current).Row["DelayOfPayment"]),
@@ -961,10 +966,15 @@ namespace Infinium
 
             int MegaOrderID = Convert.ToInt32(((DataRowView)OrdersManager.MegaOrdersBindingSource.Current).Row["MegaOrderID"]);
             int ClientID = Convert.ToInt32(((DataRowView)OrdersManager.MegaOrdersBindingSource.Current).Row["ClientID"]);
+            int CurrencyTypeID = Convert.ToInt32(((DataRowView)OrdersManager.MegaOrdersBindingSource.Current).Row["CurrencyTypeID"]);
             string ClientName = OrdersManager.GetClientName(ClientID);
             bool bCanDirectorDiscount = false;
             if (RoleType == RoleTypes.Admin || RoleType == RoleTypes.Director)
                 bCanDirectorDiscount = true;
+
+            OrdersManager.ConfirmDateTime = ((DataRowView)OrdersManager.MegaOrdersBindingSource.Current).Row["ConfirmDateTime"];
+            OrdersManager.CurrentClientID = ClientID;
+            OrdersManager.CurrencyTypeID = CurrencyTypeID;
 
             InvoiceReportToDbf DBFReport = new InvoiceReportToDbf(FrontsCatalogOrder, DecorCatalogOrder);
             CurrencyForm = new CurrencyForm(this, ref OrdersManager, ref OrdersCalculate, ref DBFReport, 
@@ -1031,7 +1041,7 @@ namespace Infinium
                 decimal TransportCost = Convert.ToDecimal(((DataRowView)OrdersManager.MegaOrdersBindingSource.Current).Row["CurrencyTransportCost"]);
                 decimal AdditionalCost = Convert.ToDecimal(((DataRowView)OrdersManager.MegaOrdersBindingSource.Current).Row["CurrencyAdditionalCost"]);
                 decimal TotalCost = Convert.ToDecimal(((DataRowView)OrdersManager.MegaOrdersBindingSource.Current).Row["CurrencyTotalCost"]);
-                int CurrencyTypeID = Convert.ToInt32(((DataRowView)OrdersManager.MegaOrdersBindingSource.Current).Row["CurrencyTypeID"]);
+                CurrencyTypeID = Convert.ToInt32(((DataRowView)OrdersManager.MegaOrdersBindingSource.Current).Row["CurrencyTypeID"]);
                 decimal Rate = Convert.ToDecimal(((DataRowView)OrdersManager.MegaOrdersBindingSource.Current).Row["PaymentRate"]);
                 int OrderNumber = Convert.ToInt32(((DataRowView)OrdersManager.MegaOrdersBindingSource.Current).Row["OrderNumber"]);
 
@@ -3308,6 +3318,9 @@ namespace Infinium
                 setOnStorage.Click += (o, args) =>
                 {
                     OrdersManager.MainOrdersFrontsOrders.SetOnStorage(FrontsOrdersID);
+
+                    bool onStorage = Convert.ToBoolean(MainOrdersFrontsOrdersDataGrid.SelectedRows[0].Cells["onStorage"].Value);
+                    MainOrdersFrontsOrdersDataGrid.SelectedRows[0].Cells["onStorage"].Value = !onStorage;
                 };
 
                 int MainOrderID = Convert.ToInt32(MainOrdersDataGrid.SelectedRows[0].Cells["MainOrderID"].Value);
@@ -3338,7 +3351,7 @@ namespace Infinium
             }
         }
 
-        void kryptonContextMenuItem_Click(object sender, EventArgs e)
+        private void kryptonContextMenuItem_Click(object sender, EventArgs e)
         {
             TestTechCatalogManager.GetFrontsOrders(
                 Convert.ToInt32(MainOrdersFrontsOrdersDataGrid.SelectedRows[0].Cells["FrontsOrdersID"].Value),
@@ -3349,7 +3362,7 @@ namespace Infinium
                 Convert.ToInt32(((ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem)sender).Tag));
         }
 
-        bool Func1(DataTable DT1, int TechCatalogOperationsDetailID,
+        private bool Func1(DataTable DT1, int TechCatalogOperationsDetailID,
             ref ComponentFactory.Krypton.Toolkit.KryptonContextMenu kryptonContextMenu,
             ref ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem kryptonContextMenuItem)
         {
@@ -3367,7 +3380,7 @@ namespace Infinium
             return true;
         }
 
-        void Func2(DataTable DT1, DataTable DT2, int TechCatalogOperationsDetailID, ref ComponentFactory.Krypton.Toolkit.KryptonContextMenu kryptonContextMenu,
+        private void Func2(DataTable DT1, DataTable DT2, int TechCatalogOperationsDetailID, ref ComponentFactory.Krypton.Toolkit.KryptonContextMenu kryptonContextMenu,
             ref ComponentFactory.Krypton.Toolkit.KryptonContextMenuItems kryptonContextMenuItems)
         {
             for (int j = 0; j < DT2.Rows.Count; j++)

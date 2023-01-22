@@ -8,19 +8,19 @@ namespace Infinium
 {
     public partial class CabFurnitureCoversForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
-        bool bb = true;
-        int FormEvent = 0;
+        private bool bb = true;
+        private int FormEvent = 0;
 
-        Form MainForm = null;
-        Form TopForm = null;
+        private Form MainForm = null;
+        private Form TopForm = null;
 
-        AssignmentsManager AssignmentsManager;
-        CoversManager CoversManager;
+        private AssignmentsManager AssignmentsManager;
+        private CoversManager CoversManager;
 
         public CabFurnitureCoversForm(Form tMainForm, AssignmentsManager tAssignmentsManager)
         {

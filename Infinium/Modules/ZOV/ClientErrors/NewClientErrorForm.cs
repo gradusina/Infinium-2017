@@ -9,15 +9,15 @@ namespace Infinium
     {
         public static bool IsOKPress = true;
 
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
-        int FormEvent = 0;
+        private int FormEvent = 0;
 
-        Form MainForm = null;
-        ClientErrorsWriteOffs ClientErrorsWriteOffs;
+        private Form MainForm = null;
+        private ClientErrorsWriteOffs ClientErrorsWriteOffs;
 
         public NewClientErrorForm(Form tMainForm, ref ClientErrorsWriteOffs tClientErrorsWriteOffs)
         {

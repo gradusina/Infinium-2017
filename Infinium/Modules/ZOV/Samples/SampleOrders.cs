@@ -4988,8 +4988,8 @@ INNER JOIN JoinMainOrders ON SampleMainOrders.MainOrderID = JoinMainOrders.Marke
 
     public class samplesReport
     {
-        DataTable samplesDt = null;
-        DataTable samplesFrontsDt = null;
+        private DataTable samplesDt = null;
+        private DataTable samplesFrontsDt = null;
 
         public samplesReport()
         {

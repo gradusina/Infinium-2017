@@ -9,27 +9,27 @@ namespace Infinium
 {
     public partial class AddNewTechStoreItemForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
 
-        bool bEdit = false;
-        bool bPrintLabels = false;
-        string TechStoreName = string.Empty;
-        string TechStoreSubGroupName = string.Empty;
-        string SubGroupNotes = string.Empty;
-        string SubGroupNotes1 = string.Empty;
-        string SubGroupNotes2 = string.Empty;
-        string DocDateTime = string.Empty;
-        int FormEvent = 0;
+        private bool bEdit = false;
+        private bool bPrintLabels = false;
+        private string TechStoreName = string.Empty;
+        private string TechStoreSubGroupName = string.Empty;
+        private string SubGroupNotes = string.Empty;
+        private string SubGroupNotes1 = string.Empty;
+        private string SubGroupNotes2 = string.Empty;
+        private string DocDateTime = string.Empty;
+        private int FormEvent = 0;
 
-        Form TopForm = null;
+        private Form TopForm = null;
 
-        TechStoreItemsManager StorageItemsManager;
-        CabFurLabel CabFurLabelLabelManager = null;
-        SampleLabel SampleLabelManager = null;
-        DataTable DecorDT;
-        DataTable CabFurDT;
+        private TechStoreItemsManager StorageItemsManager;
+        private CabFurLabel CabFurLabelLabelManager = null;
+        private SampleLabel SampleLabelManager = null;
+        private DataTable DecorDT;
+        private DataTable CabFurDT;
 
         public AddNewTechStoreItemForm(ref TechStoreItemsManager tStorageItemsManager)
         {

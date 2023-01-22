@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Infinium.Modules.Marketing.Expedition;
+
+using System;
 using System.Data;
 using System.Drawing;
 using System.IO;
@@ -10,34 +12,34 @@ namespace Infinium
 {
     public partial class CatalogForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
-        const int iEditor = 93;
+        private const int EHide = 2;
+        private const int EShow = 1;
+        private const int EClose = 3;
+        private const int EMainMenu = 4;
+        private const int IEditor = 93;
 
-        int FormEvent = 0;
+        private int _formEvent;
 
-        bool bCanEdit = false;
-        bool NeedSplash = false;
+        private bool _bCanEdit;
+        private bool _needSplash;
 
-        LightStartForm LightStartForm;
+        private LightStartForm _lightStartForm;
 
-        Form TopForm = null;
-        Infinium.FrontsCatalog FrontsCatalog = null;
-        Infinium.DecorCatalog DecorCatalog = null;
-        CabFurLabel CabFurLabelManager = null;
-        CubeLabel CubeLabelManager = null;
-        SampleLabel SampleLabelManager = null;
-        DataTable AttachmentsDT = null;
-        DataTable FrontsDT = null;
-        DataTable DecorDT = null;
-        DataTable CabFurDT;
+        private Form _topForm;
+        private Infinium.FrontsCatalog _frontsCatalog;
+        private Infinium.DecorCatalog _decorCatalog;
+        private CabFurLabel _cabFurLabelManager;
+        private CubeLabel _cubeLabelManager;
+        private SampleLabel _sampleLabelManager;
+        private DataTable _attachmentsDt;
+        private DataTable _frontsDt;
+        private DataTable _decorDt;
+        private DataTable _cabFurDt;
 
         public CatalogForm(LightStartForm tLightStartForm)
         {
             InitializeComponent();
-            LightStartForm = tLightStartForm;
+            _lightStartForm = tLightStartForm;
             this.MaximumSize = Screen.PrimaryScreen.WorkingArea.Size;
 
             Initialize();
@@ -50,14 +52,14 @@ namespace Infinium
 
         private void SetPermissions()
         {
-            DataTable DT = RolesAndPermissionsManager.GetPermissions(Security.CurrentUserID);
+            DataTable dt = RolesAndPermissionsManager.GetPermissions(Security.CurrentUserID);
 
-            if (DT.Rows.Count == 0)
+            if (dt.Rows.Count == 0)
                 return;
 
-            if (DT.Select("RoleID = 12").Count() == 0)
+            if (!dt.Select("RoleID = 12").Any())
                 return;
-            bCanEdit = true;
+            _bCanEdit = true;
             btnSetDescription.Enabled = true;
             kryptonButton1.Enabled = true;
             //kryptonContextMenuItem7.Enabled = true;
@@ -70,9 +72,9 @@ namespace Infinium
         {
             FrontsCatalogPanel.BringToFront();
             while (!SplashForm.bCreated) ;
-            FormEvent = eShow;
+            _formEvent = EShow;
             AnimateTimer.Enabled = true;
-            NeedSplash = true;
+            _needSplash = true;
         }
 
         private void AnimateTimer_Tick(object sender, EventArgs e)
@@ -81,27 +83,27 @@ namespace Infinium
             {
                 this.Opacity = 1;
 
-                if (FormEvent == eClose || FormEvent == eHide)
+                if (_formEvent == EClose || _formEvent == EHide)
                 {
                     AnimateTimer.Enabled = false;
 
-                    if (FormEvent == eClose)
+                    if (_formEvent == EClose)
                     {
 
-                        LightStartForm.CloseForm(this);
+                        _lightStartForm.CloseForm(this);
                     }
 
-                    if (FormEvent == eHide)
+                    if (_formEvent == EHide)
                     {
-                        NeedSplash = false;
-                        LightStartForm.HideForm(this);
+                        _needSplash = false;
+                        _lightStartForm.HideForm(this);
                     }
 
 
                     return;
                 }
 
-                if (FormEvent == eShow)
+                if (_formEvent == EShow)
                 {
                     AnimateTimer.Enabled = false;
                     SplashForm.CloseS = true;
@@ -110,7 +112,7 @@ namespace Infinium
 
             }
 
-            if (FormEvent == eClose || FormEvent == eHide)
+            if (_formEvent == EClose || _formEvent == EHide)
             {
                 if (Convert.ToDecimal(this.Opacity) != Convert.ToDecimal(0.00))
                     this.Opacity = Convert.ToDouble(Convert.ToDecimal(this.Opacity) - Convert.ToDecimal(0.05));
@@ -118,15 +120,15 @@ namespace Infinium
                 {
                     AnimateTimer.Enabled = false;
 
-                    if (FormEvent == eClose)
+                    if (_formEvent == EClose)
                     {
-                        LightStartForm.CloseForm(this);
+                        _lightStartForm.CloseForm(this);
                     }
 
-                    if (FormEvent == eHide)
+                    if (_formEvent == EHide)
                     {
-                        NeedSplash = false;
-                        LightStartForm.HideForm(this);
+                        _needSplash = false;
+                        _lightStartForm.HideForm(this);
                     }
 
                 }
@@ -135,7 +137,7 @@ namespace Infinium
             }
 
 
-            if (FormEvent == eShow || FormEvent == eShow)
+            if (_formEvent == EShow || _formEvent == EShow)
             {
                 if (this.Opacity != 1)
                     this.Opacity += 0.05;
@@ -151,80 +153,87 @@ namespace Infinium
 
         private void NavigateMenuCloseButton_Click(object sender, EventArgs e)
         {
-            FormEvent = eClose;
+            _formEvent = EClose;
             AnimateTimer.Enabled = true;
         }
 
+/*
         private void NavigateMenuBackButton_Click(object sender, EventArgs e)
         {
-            FormEvent = eHide;
+            _formEvent = EHide;
             AnimateTimer.Enabled = true;
         }
+*/
 
+/*
         private void NavigateMenuHerculesButton_Click(object sender, EventArgs e)
         {
-            FormEvent = eMainMenu;
+            _formEvent = EMainMenu;
             AnimateTimer.Enabled = true;
         }
+*/
 
 
         private void Initialize()
         {
-            CabFurLabelManager = new CabFurLabel();
-            CubeLabelManager = new CubeLabel();
-            CabFurDT = new DataTable();
-            CabFurDT.Columns.Add(new DataColumn("TechStoreName", Type.GetType("System.String")));
-            CabFurDT.Columns.Add(new DataColumn("TechStoreSubGroupName", Type.GetType("System.String")));
-            CabFurDT.Columns.Add(new DataColumn("SubGroupNotes", Type.GetType("System.String")));
-            CabFurDT.Columns.Add(new DataColumn("SubGroupNotes1", Type.GetType("System.String")));
-            CabFurDT.Columns.Add(new DataColumn("SubGroupNotes2", Type.GetType("System.String")));
-            CabFurDT.Columns.Add(new DataColumn("Color", Type.GetType("System.String")));
-            CabFurDT.Columns.Add(new DataColumn("Color2", Type.GetType("System.String")));
-            CabFurDT.Columns.Add(new DataColumn("Height", Type.GetType("System.String")));
-            CabFurDT.Columns.Add(new DataColumn("Width", Type.GetType("System.String")));
-            CabFurDT.Columns.Add(new DataColumn("Length", Type.GetType("System.String")));
-            CabFurDT.Columns.Add(new DataColumn("PositionsCount", Type.GetType("System.String")));
-            CabFurDT.Columns.Add(new DataColumn("LabelsCount", Type.GetType("System.Int32")));
-            CabFurDT.Columns.Add(new DataColumn("FactoryType", Type.GetType("System.Int32")));
-            CabFurDT.Columns.Add(new DataColumn("DecorConfigID", Type.GetType("System.Int32")));
+            _cabFurLabelManager = new CabFurLabel();
+            _cubeLabelManager = new CubeLabel();
+            _cabFurDt = new DataTable();
+            _cabFurDt.Columns.Add(new DataColumn("TechStoreName", Type.GetType("System.String")));
+            _cabFurDt.Columns.Add(new DataColumn("TechStoreSubGroupName", Type.GetType("System.String")));
+            _cabFurDt.Columns.Add(new DataColumn("SubGroupNotes", Type.GetType("System.String")));
+            _cabFurDt.Columns.Add(new DataColumn("SubGroupNotes1", Type.GetType("System.String")));
+            _cabFurDt.Columns.Add(new DataColumn("SubGroupNotes2", Type.GetType("System.String")));
+            _cabFurDt.Columns.Add(new DataColumn("Color", Type.GetType("System.String")));
+            _cabFurDt.Columns.Add(new DataColumn("Color2", Type.GetType("System.String")));
+            _cabFurDt.Columns.Add(new DataColumn("Height", Type.GetType("System.String")));
+            _cabFurDt.Columns.Add(new DataColumn("Width", Type.GetType("System.String")));
+            _cabFurDt.Columns.Add(new DataColumn("Length", Type.GetType("System.String")));
+            _cabFurDt.Columns.Add(new DataColumn("PositionsCount", Type.GetType("System.String")));
+            _cabFurDt.Columns.Add(new DataColumn("LabelsCount", Type.GetType("System.Int32")));
+            _cabFurDt.Columns.Add(new DataColumn("FactoryType", Type.GetType("System.Int32")));
+            _cabFurDt.Columns.Add(new DataColumn("DecorConfigID", Type.GetType("System.Int32")));
 
-            AttachmentsDT = new DataTable();
-            AttachmentsDT.Columns.Add(new DataColumn("FileName", Type.GetType("System.String")));
-            AttachmentsDT.Columns.Add(new DataColumn("Extension", Type.GetType("System.String")));
-            AttachmentsDT.Columns.Add(new DataColumn("Path", Type.GetType("System.String")));
-            if (FrontsDT == null)
+            _attachmentsDt = new DataTable();
+            _attachmentsDt.Columns.Add(new DataColumn("FileName", Type.GetType("System.String")));
+            _attachmentsDt.Columns.Add(new DataColumn("Extension", Type.GetType("System.String")));
+            _attachmentsDt.Columns.Add(new DataColumn("Path", Type.GetType("System.String")));
+            if (_frontsDt == null)
             {
-                FrontsDT = new DataTable();
-                FrontsDT.Columns.Add(new DataColumn("Front", Type.GetType("System.String")));
-                FrontsDT.Columns.Add(new DataColumn("FrameColor", Type.GetType("System.String")));
-                FrontsDT.Columns.Add(new DataColumn("InsetType", Type.GetType("System.String")));
-                FrontsDT.Columns.Add(new DataColumn("InsetColor", Type.GetType("System.String")));
-                FrontsDT.Columns.Add(new DataColumn("PositionsCount", Type.GetType("System.String")));
-                FrontsDT.Columns.Add(new DataColumn("LabelsCount", Type.GetType("System.Int32")));
-                FrontsDT.Columns.Add(new DataColumn("FactoryType", Type.GetType("System.Int32")));
-                FrontsDT.Columns.Add(new DataColumn("FrontConfigID", Type.GetType("System.Int32")));
-                FrontsDT.Columns.Add(new DataColumn("FrontID", Type.GetType("System.Int32")));
-                FrontsDT.Columns.Add(new DataColumn("ColorID", Type.GetType("System.Int32")));
-                FrontsDT.Columns.Add(new DataColumn("TechnoColorID", Type.GetType("System.Int32")));
+                _frontsDt = new DataTable();
+                _frontsDt.Columns.Add(new DataColumn("Front", Type.GetType("System.String")));
+                _frontsDt.Columns.Add(new DataColumn("FrameColor", Type.GetType("System.String")));
+                _frontsDt.Columns.Add(new DataColumn("InsetType", Type.GetType("System.String")));
+                _frontsDt.Columns.Add(new DataColumn("InsetColor", Type.GetType("System.String")));
+                _frontsDt.Columns.Add(new DataColumn("PositionsCount", Type.GetType("System.String")));
+                _frontsDt.Columns.Add(new DataColumn("LabelsCount", Type.GetType("System.Int32")));
+                _frontsDt.Columns.Add(new DataColumn("FactoryType", Type.GetType("System.Int32")));
+                _frontsDt.Columns.Add(new DataColumn("FrontConfigID", Type.GetType("System.Int32")));
+                _frontsDt.Columns.Add(new DataColumn("FrontID", Type.GetType("System.Int32")));
+                _frontsDt.Columns.Add(new DataColumn("ColorID", Type.GetType("System.Int32")));
+                _frontsDt.Columns.Add(new DataColumn("TechnoColorID", Type.GetType("System.Int32")));
             }
-            if (DecorDT == null)
+            if (_decorDt == null)
             {
-                DecorDT = new DataTable();
-                DecorDT.Columns.Add(new DataColumn("Product", Type.GetType("System.String")));
-                DecorDT.Columns.Add(new DataColumn("Decor", Type.GetType("System.String")));
-                DecorDT.Columns.Add(new DataColumn("Color", Type.GetType("System.String")));
-                DecorDT.Columns.Add(new DataColumn("Length", Type.GetType("System.String")));
-                DecorDT.Columns.Add(new DataColumn("Height", Type.GetType("System.String")));
-                DecorDT.Columns.Add(new DataColumn("Width", Type.GetType("System.String")));
-                DecorDT.Columns.Add(new DataColumn("PositionsCount", Type.GetType("System.String")));
-                DecorDT.Columns.Add(new DataColumn("LabelsCount", Type.GetType("System.Int32")));
-                DecorDT.Columns.Add(new DataColumn("FactoryType", Type.GetType("System.Int32")));
-                DecorDT.Columns.Add(new DataColumn("DecorConfigID", Type.GetType("System.Int32")));
+                _decorDt = new DataTable();
+                _decorDt.Columns.Add(new DataColumn("Product", Type.GetType("System.String")));
+                _decorDt.Columns.Add(new DataColumn("Decor", Type.GetType("System.String")));
+                _decorDt.Columns.Add(new DataColumn("Color", Type.GetType("System.String")));
+                _decorDt.Columns.Add(new DataColumn("Length", Type.GetType("System.String")));
+                _decorDt.Columns.Add(new DataColumn("Height", Type.GetType("System.String")));
+                _decorDt.Columns.Add(new DataColumn("Width", Type.GetType("System.String")));
+                _decorDt.Columns.Add(new DataColumn("PositionsCount", Type.GetType("System.String")));
+                _decorDt.Columns.Add(new DataColumn("LabelsCount", Type.GetType("System.Int32")));
+                _decorDt.Columns.Add(new DataColumn("FactoryType", Type.GetType("System.Int32")));
+                _decorDt.Columns.Add(new DataColumn("DecorConfigID", Type.GetType("System.Int32")));
             }
-            SampleLabelManager = new SampleLabel();
+            _sampleLabelManager = new SampleLabel();
 
-            FrontsCatalog = new FrontsCatalog(1);
-            DecorCatalog = new DecorCatalog(1);
+            _frontsCatalog = new FrontsCatalog(1);
+            _decorCatalog = new DecorCatalog(1);
+
+            FilterClientsDataGrid.DataSource = _frontsCatalog.FilterClientsBindingSource;
+            FilterClientsDataGrid.Columns["ClientID"].Visible = false;
 
             FrontsCatalogBinding();
             DecorCatalogBinding();
@@ -245,18 +254,18 @@ namespace Infinium
             PatinaDataGrid.SelectionChanged -= PatinaDataGrid_SelectionChanged;
             FrontsHeightDataGrid.SelectionChanged -= FrontsHeightDataGrid_SelectionChanged;
 
-            FrontsDataGrid.DataSource = FrontsCatalog.FrontsBindingSource;
-            FrameColorsDataGrid.DataSource = FrontsCatalog.FrameColorsBindingSource;
-            TechnoFrameColorsDataGrid.DataSource = FrontsCatalog.TechnoFrameColorsBindingSource;
-            PatinaDataGrid.DataSource = FrontsCatalog.PatinaBindingSource;
-            InsetTypesDataGrid.DataSource = FrontsCatalog.InsetTypesBindingSource;
-            InsetColorsDataGrid.DataSource = FrontsCatalog.InsetColorsBindingSource;
-            TechnoInsetTypesDataGrid.DataSource = FrontsCatalog.TechnoInsetTypesBindingSource;
-            TechnoInsetColorsDataGrid.DataSource = FrontsCatalog.TechnoInsetColorsBindingSource;
-            FrontsHeightDataGrid.DataSource = FrontsCatalog.HeightBindingSource;
-            FrontsWidthDataGrid.DataSource = FrontsCatalog.WidthBindingSource;
+            FrontsDataGrid.DataSource = _frontsCatalog.FrontsBindingSource;
+            FrameColorsDataGrid.DataSource = _frontsCatalog.FrameColorsBindingSource;
+            TechnoFrameColorsDataGrid.DataSource = _frontsCatalog.TechnoFrameColorsBindingSource;
+            PatinaDataGrid.DataSource = _frontsCatalog.PatinaBindingSource;
+            InsetTypesDataGrid.DataSource = _frontsCatalog.InsetTypesBindingSource;
+            InsetColorsDataGrid.DataSource = _frontsCatalog.InsetColorsBindingSource;
+            TechnoInsetTypesDataGrid.DataSource = _frontsCatalog.TechnoInsetTypesBindingSource;
+            TechnoInsetColorsDataGrid.DataSource = _frontsCatalog.TechnoInsetColorsBindingSource;
+            FrontsHeightDataGrid.DataSource = _frontsCatalog.HeightBindingSource;
+            FrontsWidthDataGrid.DataSource = _frontsCatalog.WidthBindingSource;
 
-            FrontsCatalog.FilterFronts();
+            _frontsCatalog.FilterFronts();
             GetFrameColors();
             GetTechnoFrameColors();
             GetInsetTypes();
@@ -306,219 +315,226 @@ namespace Infinium
 
         public void GetFrameColors()
         {
-            if (FrontsCatalog == null)
+            if (_frontsCatalog == null)
                 return;
-            string FrontName = "";
+            string frontName = "";
             if (FrontsDataGrid.SelectedRows.Count > 0 && FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value != DBNull.Value)
-                FrontName = FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value.ToString();
+                frontName = FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value.ToString();
 
-            FrontsCatalog.FilterCatalogFrameColors(FrontName);
+            int ClientID = -1;
+            if (cbClients.Checked && FilterClientsDataGrid.SelectedRows.Count > 0)
+                ClientID = Convert.ToInt32(FilterClientsDataGrid.SelectedRows[0].Cells["ClientID"].Value);
+
+            if (cbClients.Checked)
+                _frontsCatalog.FilterCatalogFrameColors(ClientID, frontName);
+            else
+                _frontsCatalog.FilterCatalogFrameColors(frontName);
         }
 
         public void GetTechnoFrameColors()
         {
-            if (FrontsCatalog == null)
+            if (_frontsCatalog == null)
                 return;
-            string FrontName = "";
-            int ColorID = -1;
+            string frontName = "";
+            int colorId = -1;
 
             if (FrontsDataGrid.SelectedRows.Count > 0 && FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value != DBNull.Value)
-                FrontName = FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value.ToString();
+                frontName = FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value.ToString();
             if (FrameColorsDataGrid.SelectedRows.Count > 0 && FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value != DBNull.Value)
-                ColorID = Convert.ToInt32(FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
+                colorId = Convert.ToInt32(FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
 
-            FrontsCatalog.FilterCatalogTechnoFrameColors(FrontName, ColorID);
+            _frontsCatalog.FilterCatalogTechnoFrameColors(frontName, colorId);
         }
 
         public void GetPatina()
         {
-            if (FrontsCatalog == null)
+            if (_frontsCatalog == null)
                 return;
-            string FrontName = "";
-            int ColorID = -1;
-            int TechnoColorID = -1;
-            int PatinaID = -1;
-            int InsetTypeID = -1;
-            int InsetColorID = -1;
-            int TechnoInsetTypeID = -1;
-            int TechnoInsetColorID = -1;
+            string frontName = "";
+            int colorId = -1;
+            int technoColorId = -1;
+            int patinaId = -1;
+            int insetTypeId = -1;
+            int insetColorId = -1;
+            int technoInsetTypeId = -1;
+            int technoInsetColorId = -1;
 
             if (FrontsDataGrid.SelectedRows.Count > 0 && FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value != DBNull.Value)
-                FrontName = FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value.ToString();
+                frontName = FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value.ToString();
             if (FrameColorsDataGrid.SelectedRows.Count > 0 && FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value != DBNull.Value)
-                ColorID = Convert.ToInt32(FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
+                colorId = Convert.ToInt32(FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
             if (TechnoFrameColorsDataGrid.SelectedRows.Count > 0 && TechnoFrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value != DBNull.Value)
-                TechnoColorID = Convert.ToInt32(TechnoFrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
+                technoColorId = Convert.ToInt32(TechnoFrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
             if (PatinaDataGrid.SelectedRows.Count > 0 && PatinaDataGrid.SelectedRows[0].Cells["PatinaID"].Value != DBNull.Value)
-                PatinaID = Convert.ToInt32(PatinaDataGrid.SelectedRows[0].Cells["PatinaID"].Value);
+                patinaId = Convert.ToInt32(PatinaDataGrid.SelectedRows[0].Cells["PatinaID"].Value);
             if (InsetTypesDataGrid.SelectedRows.Count > 0 && InsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value != DBNull.Value)
-                InsetTypeID = Convert.ToInt32(InsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
+                insetTypeId = Convert.ToInt32(InsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
             if (InsetColorsDataGrid.SelectedRows.Count > 0 && InsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value != DBNull.Value)
-                InsetColorID = Convert.ToInt32(InsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
+                insetColorId = Convert.ToInt32(InsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
             if (TechnoInsetTypesDataGrid.SelectedRows.Count > 0 && TechnoInsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value != DBNull.Value)
-                TechnoInsetTypeID = Convert.ToInt32(TechnoInsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
+                technoInsetTypeId = Convert.ToInt32(TechnoInsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
             if (TechnoInsetColorsDataGrid.SelectedRows.Count > 0 && TechnoInsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value != DBNull.Value)
-                TechnoInsetColorID = Convert.ToInt32(TechnoInsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
+                technoInsetColorId = Convert.ToInt32(TechnoInsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
 
-            FrontsCatalog.FilterCatalogPatina(FrontName, ColorID, TechnoColorID, InsetTypeID, InsetColorID, TechnoInsetTypeID, TechnoInsetColorID);
+            _frontsCatalog.FilterCatalogPatina(frontName, colorId, technoColorId, insetTypeId, insetColorId, technoInsetTypeId, technoInsetColorId);
         }
 
         public void GetInsetTypes()
         {
-            if (FrontsCatalog == null)
+            if (_frontsCatalog == null)
                 return;
-            string FrontName = "";
-            int ColorID = -1;
-            int TechnoColorID = -1;
-            int PatinaID = -1;
+            string frontName = "";
+            int colorId = -1;
+            int technoColorId = -1;
+            int patinaId = -1;
 
             if (FrontsDataGrid.SelectedRows.Count > 0 && FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value != DBNull.Value)
-                FrontName = FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value.ToString();
+                frontName = FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value.ToString();
             if (FrameColorsDataGrid.SelectedRows.Count > 0 && FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value != DBNull.Value)
-                ColorID = Convert.ToInt32(FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
+                colorId = Convert.ToInt32(FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
             if (TechnoFrameColorsDataGrid.SelectedRows.Count > 0 && TechnoFrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value != DBNull.Value)
-                TechnoColorID = Convert.ToInt32(TechnoFrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
+                technoColorId = Convert.ToInt32(TechnoFrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
             if (PatinaDataGrid.SelectedRows.Count > 0 && PatinaDataGrid.SelectedRows[0].Cells["PatinaID"].Value != DBNull.Value)
-                PatinaID = Convert.ToInt32(PatinaDataGrid.SelectedRows[0].Cells["PatinaID"].Value);
+                patinaId = Convert.ToInt32(PatinaDataGrid.SelectedRows[0].Cells["PatinaID"].Value);
 
-            FrontsCatalog.FilterCatalogInsetTypes(FrontName, ColorID, TechnoColorID);
+            _frontsCatalog.FilterCatalogInsetTypes(frontName, colorId, technoColorId);
         }
 
         public void GetInsetColors()
         {
-            if (FrontsCatalog == null)
+            if (_frontsCatalog == null)
                 return;
-            string FrontName = "";
-            int ColorID = -1;
-            int TechnoColorID = -1;
-            int PatinaID = -1;
-            int InsetTypeID = -1;
+            string frontName = "";
+            int colorId = -1;
+            int technoColorId = -1;
+            int patinaId = -1;
+            int insetTypeId = -1;
 
             if (FrontsDataGrid.SelectedRows.Count > 0 && FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value != DBNull.Value)
-                FrontName = FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value.ToString();
+                frontName = FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value.ToString();
             if (FrameColorsDataGrid.SelectedRows.Count > 0 && FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value != DBNull.Value)
-                ColorID = Convert.ToInt32(FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
+                colorId = Convert.ToInt32(FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
             if (TechnoFrameColorsDataGrid.SelectedRows.Count > 0 && TechnoFrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value != DBNull.Value)
-                TechnoColorID = Convert.ToInt32(TechnoFrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
+                technoColorId = Convert.ToInt32(TechnoFrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
             if (PatinaDataGrid.SelectedRows.Count > 0 && PatinaDataGrid.SelectedRows[0].Cells["PatinaID"].Value != DBNull.Value)
-                PatinaID = Convert.ToInt32(PatinaDataGrid.SelectedRows[0].Cells["PatinaID"].Value);
+                patinaId = Convert.ToInt32(PatinaDataGrid.SelectedRows[0].Cells["PatinaID"].Value);
             if (InsetTypesDataGrid.SelectedRows.Count > 0 && InsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value != DBNull.Value)
-                InsetTypeID = Convert.ToInt32(InsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
+                insetTypeId = Convert.ToInt32(InsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
 
-            FrontsCatalog.FilterCatalogInsetColors(FrontName, ColorID, TechnoColorID, InsetTypeID);
+            _frontsCatalog.FilterCatalogInsetColors(frontName, colorId, technoColorId, insetTypeId);
         }
 
         public void GetTechnoInsetTypes()
         {
-            if (FrontsCatalog == null)
+            if (_frontsCatalog == null)
                 return;
-            string FrontName = "";
-            int ColorID = -1;
-            int TechnoColorID = -1;
-            int PatinaID = -1;
-            int InsetTypeID = -1;
-            int InsetColorID = -1;
+            string frontName = "";
+            int colorId = -1;
+            int technoColorId = -1;
+            int patinaId = -1;
+            int insetTypeId = -1;
+            int insetColorId = -1;
 
             if (FrontsDataGrid.SelectedRows.Count > 0 && FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value != DBNull.Value)
-                FrontName = FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value.ToString();
+                frontName = FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value.ToString();
             if (FrameColorsDataGrid.SelectedRows.Count > 0 && FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value != DBNull.Value)
-                ColorID = Convert.ToInt32(FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
+                colorId = Convert.ToInt32(FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
             if (TechnoFrameColorsDataGrid.SelectedRows.Count > 0 && TechnoFrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value != DBNull.Value)
-                TechnoColorID = Convert.ToInt32(TechnoFrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
+                technoColorId = Convert.ToInt32(TechnoFrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
             if (PatinaDataGrid.SelectedRows.Count > 0 && PatinaDataGrid.SelectedRows[0].Cells["PatinaID"].Value != DBNull.Value)
-                PatinaID = Convert.ToInt32(PatinaDataGrid.SelectedRows[0].Cells["PatinaID"].Value);
+                patinaId = Convert.ToInt32(PatinaDataGrid.SelectedRows[0].Cells["PatinaID"].Value);
             if (InsetTypesDataGrid.SelectedRows.Count > 0 && InsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value != DBNull.Value)
-                InsetTypeID = Convert.ToInt32(InsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
+                insetTypeId = Convert.ToInt32(InsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
             if (InsetColorsDataGrid.SelectedRows.Count > 0 && InsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value != DBNull.Value)
-                InsetColorID = Convert.ToInt32(InsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
+                insetColorId = Convert.ToInt32(InsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
 
-            FrontsCatalog.FilterCatalogTechnoInsetTypes(FrontName, ColorID, TechnoColorID, InsetTypeID, InsetColorID);
+            _frontsCatalog.FilterCatalogTechnoInsetTypes(frontName, colorId, technoColorId, insetTypeId, insetColorId);
 
         }
 
         public void GetTechnoInsetColors()
         {
-            if (FrontsCatalog == null)
+            if (_frontsCatalog == null)
                 return;
-            string FrontName = "";
-            int ColorID = -1;
-            int TechnoColorID = -1;
-            int PatinaID = -1;
-            int InsetTypeID = -1;
-            int InsetColorID = -1;
-            int TechnoInsetTypeID = -1;
+            string frontName = "";
+            int colorId = -1;
+            int technoColorId = -1;
+            int patinaId = -1;
+            int insetTypeId = -1;
+            int insetColorId = -1;
+            int technoInsetTypeId = -1;
 
             if (FrontsDataGrid.SelectedRows.Count > 0 && FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value != DBNull.Value)
-                FrontName = FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value.ToString();
+                frontName = FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value.ToString();
             if (FrameColorsDataGrid.SelectedRows.Count > 0 && FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value != DBNull.Value)
-                ColorID = Convert.ToInt32(FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
+                colorId = Convert.ToInt32(FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
             if (TechnoFrameColorsDataGrid.SelectedRows.Count > 0 && TechnoFrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value != DBNull.Value)
-                TechnoColorID = Convert.ToInt32(TechnoFrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
+                technoColorId = Convert.ToInt32(TechnoFrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
             if (PatinaDataGrid.SelectedRows.Count > 0 && PatinaDataGrid.SelectedRows[0].Cells["PatinaID"].Value != DBNull.Value)
-                PatinaID = Convert.ToInt32(PatinaDataGrid.SelectedRows[0].Cells["PatinaID"].Value);
+                patinaId = Convert.ToInt32(PatinaDataGrid.SelectedRows[0].Cells["PatinaID"].Value);
             if (InsetTypesDataGrid.SelectedRows.Count > 0 && InsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value != DBNull.Value)
-                InsetTypeID = Convert.ToInt32(InsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
+                insetTypeId = Convert.ToInt32(InsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
             if (InsetColorsDataGrid.SelectedRows.Count > 0 && InsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value != DBNull.Value)
-                InsetColorID = Convert.ToInt32(InsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
+                insetColorId = Convert.ToInt32(InsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
             if (TechnoInsetTypesDataGrid.SelectedRows.Count > 0 && TechnoInsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value != DBNull.Value)
-                TechnoInsetTypeID = Convert.ToInt32(TechnoInsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
+                technoInsetTypeId = Convert.ToInt32(TechnoInsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
 
-            FrontsCatalog.FilterCatalogTechnoInsetColors(FrontName, ColorID, TechnoColorID, InsetTypeID, InsetColorID, TechnoInsetTypeID);
+            _frontsCatalog.FilterCatalogTechnoInsetColors(frontName, colorId, technoColorId, insetTypeId, insetColorId, technoInsetTypeId);
 
         }
 
-        Bitmap layer;
-        Bitmap backgr;
-        Bitmap backgr2;
-        Bitmap newBitmap;
-        Bitmap newBitmap2;
+        private Bitmap _layer;
+        private Bitmap _backgr;
+        private Bitmap _backgr2;
+        private Bitmap _newBitmap;
+        private Bitmap _newBitmap2;
 
         public void GetFrontHeight()
         {
-            if (FrontsCatalog == null)
+            if (_frontsCatalog == null)
                 return;
-            string FrontName = "";
-            int ColorID = -1;
-            int TechnoColorID = -1;
-            int PatinaID = -1;
-            int InsetTypeID = -1;
-            int InsetColorID = -1;
-            int TechnoInsetTypeID = -1;
-            int TechnoInsetColorID = -1;
+            string frontName = "";
+            int colorId = -1;
+            int technoColorId = -1;
+            int patinaId = -1;
+            int insetTypeId = -1;
+            int insetColorId = -1;
+            int technoInsetTypeId = -1;
+            int technoInsetColorId = -1;
 
             if (FrontsDataGrid.SelectedRows.Count > 0 && FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value != DBNull.Value)
-                FrontName = FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value.ToString();
+                frontName = FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value.ToString();
             if (FrameColorsDataGrid.SelectedRows.Count > 0 && FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value != DBNull.Value)
-                ColorID = Convert.ToInt32(FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
+                colorId = Convert.ToInt32(FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
             if (TechnoFrameColorsDataGrid.SelectedRows.Count > 0 && TechnoFrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value != DBNull.Value)
-                TechnoColorID = Convert.ToInt32(TechnoFrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
+                technoColorId = Convert.ToInt32(TechnoFrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
             if (PatinaDataGrid.SelectedRows.Count > 0 && PatinaDataGrid.SelectedRows[0].Cells["PatinaID"].Value != DBNull.Value)
-                PatinaID = Convert.ToInt32(PatinaDataGrid.SelectedRows[0].Cells["PatinaID"].Value);
+                patinaId = Convert.ToInt32(PatinaDataGrid.SelectedRows[0].Cells["PatinaID"].Value);
             if (InsetTypesDataGrid.SelectedRows.Count > 0 && InsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value != DBNull.Value)
-                InsetTypeID = Convert.ToInt32(InsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
+                insetTypeId = Convert.ToInt32(InsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
             if (InsetColorsDataGrid.SelectedRows.Count > 0 && InsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value != DBNull.Value)
-                InsetColorID = Convert.ToInt32(InsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
+                insetColorId = Convert.ToInt32(InsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
             if (TechnoInsetTypesDataGrid.SelectedRows.Count > 0 && TechnoInsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value != DBNull.Value)
-                TechnoInsetTypeID = Convert.ToInt32(TechnoInsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
+                technoInsetTypeId = Convert.ToInt32(TechnoInsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
             if (TechnoInsetColorsDataGrid.SelectedRows.Count > 0 && TechnoInsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value != DBNull.Value)
-                TechnoInsetColorID = Convert.ToInt32(TechnoInsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
+                technoInsetColorId = Convert.ToInt32(TechnoInsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
 
-            FrontsCatalog.FilterCatalogHeight(FrontName, ColorID, TechnoColorID, InsetTypeID, InsetColorID, TechnoInsetTypeID, TechnoInsetColorID, PatinaID);
+            _frontsCatalog.FilterCatalogHeight(frontName, colorId, technoColorId, insetTypeId, insetColorId, technoInsetTypeId, technoInsetColorId, patinaId);
 
             pcbxFrontImage.Image = null;
-            if (NeedSplash)
+            if (_needSplash)
             {
-                Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Загрузка данных с сервера.\r\nПодождите..."); });
+                Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref _topForm, "Загрузка данных с сервера.\r\nПодождите..."); });
                 T.Start();
 
                 while (!SplashWindow.bSmallCreated) ;
 
-                int ConfigID = -1;
+                int configId = -1;
                 if (cbFrontImage.Checked)
                 {
-                    ConfigID = FrontsCatalog.GetFrontAttachments(FrontName, ColorID, TechnoColorID, InsetTypeID, InsetColorID, TechnoInsetTypeID, TechnoInsetColorID, PatinaID);
-                    if (ConfigID != -1)
-                        pcbxFrontImage.Image = FrontsCatalog.GetFrontConfigImage(ConfigID);
+                    configId = _frontsCatalog.GetFrontAttachments(frontName, colorId, technoColorId, insetTypeId, insetColorId, technoInsetTypeId, technoInsetColorId, patinaId);
+                    if (configId != -1)
+                        pcbxFrontImage.Image = _frontsCatalog.GetFrontConfigImage(configId);
 
                     if (pcbxFrontImage.Image == null)
                         pcbxFrontImage.Cursor = Cursors.Default;
@@ -528,11 +544,11 @@ namespace Infinium
                 pcbxFrontTechStore.Image = null;
                 if (cbFrontTechStore.Checked)
                 {
-                    if (FrontName.Length > 0)
+                    if (frontName.Length > 0)
                     {
-                        int FrontID = FrontsCatalog.GetFrontID(FrontName, ColorID, TechnoColorID, InsetTypeID, InsetColorID, TechnoInsetTypeID, TechnoInsetColorID, PatinaID);
-                        if (FrontID != -1)
-                            pcbxFrontTechStore.Image = FrontsCatalog.GetTechStoreImage(FrontID);
+                        int frontId = _frontsCatalog.GetFrontID(frontName, colorId, technoColorId, insetTypeId, insetColorId, technoInsetTypeId, technoInsetColorId, patinaId);
+                        if (frontId != -1)
+                            pcbxFrontTechStore.Image = _frontsCatalog.GetTechStoreImage(frontId);
                     }
 
                     if (pcbxFrontTechStore.Image == null)
@@ -543,74 +559,74 @@ namespace Infinium
                 pcbxVisualConfig.Image = null;
                 if (cbVisualConfig.Checked)
                 {
-                    if (FrontName.Length > 0)
+                    if (frontName.Length > 0)
                     {
-                        layer = null;
-                        backgr = null;
-                        backgr2 = null;
-                        newBitmap = null;
-                        newBitmap2 = null;
-                        ConfigID = FrontsCatalog.GetInsetTypesConfig(FrontName, ColorID, TechnoColorID);
-                        Image img = FrontsCatalog.GetInsetTypeImage(ConfigID);
-                        if (ConfigID != -1 && img != null)
-                            layer = new Bitmap(img);
-                        ConfigID = FrontsCatalog.GetInsetColorConfig(FrontName, ColorID, TechnoColorID, InsetTypeID, InsetColorID, TechnoInsetTypeID, TechnoInsetColorID);
-                        img = FrontsCatalog.GetInsetColorImage(ConfigID);
-                        if (ConfigID != -1 && img != null)
-                            backgr = new Bitmap(img);
+                        _layer = null;
+                        _backgr = null;
+                        _backgr2 = null;
+                        _newBitmap = null;
+                        _newBitmap2 = null;
+                        configId = _frontsCatalog.GetInsetTypesConfig(frontName, colorId, technoColorId);
+                        Image img = _frontsCatalog.GetInsetTypeImage(configId);
+                        if (configId != -1 && img != null)
+                            _layer = new Bitmap(img);
+                        configId = _frontsCatalog.GetInsetColorConfig(frontName, colorId, technoColorId, insetTypeId, insetColorId, technoInsetTypeId, technoInsetColorId);
+                        img = _frontsCatalog.GetInsetColorImage(configId);
+                        if (configId != -1 && img != null)
+                            _backgr = new Bitmap(img);
 
-                        ConfigID = FrontsCatalog.GetTechnoInsetColorConfig(FrontName, ColorID, TechnoColorID, InsetTypeID, InsetColorID, TechnoInsetTypeID, TechnoInsetColorID);
-                        img = FrontsCatalog.GetTechnoInsetColorImage(ConfigID);
-                        if (ConfigID != -1 && img != null)
-                            backgr2 = new Bitmap(img);
+                        configId = _frontsCatalog.GetTechnoInsetColorConfig(frontName, colorId, technoColorId, insetTypeId, insetColorId, technoInsetTypeId, technoInsetColorId);
+                        img = _frontsCatalog.GetTechnoInsetColorImage(configId);
+                        if (configId != -1 && img != null)
+                            _backgr2 = new Bitmap(img);
 
-                        if (layer != null)
+                        if (_layer != null)
                         {
-                            if (backgr != null)
+                            if (_backgr != null)
                             {
-                                if (backgr2 != null)
+                                if (_backgr2 != null)
                                 {
-                                    int width = layer.Width;
-                                    int height = layer.Height;
-                                    int width1 = backgr.Width;
-                                    int height1 = backgr.Height;
-                                    int width2 = backgr2.Width;
-                                    int height2 = backgr2.Height;
-                                    newBitmap = new Bitmap(width, height);
-                                    newBitmap2 = new Bitmap(width1, height1);
-                                    using (var canvas = Graphics.FromImage(newBitmap2))
+                                    int width = _layer.Width;
+                                    int height = _layer.Height;
+                                    int width1 = _backgr.Width;
+                                    int height1 = _backgr.Height;
+                                    int width2 = _backgr2.Width;
+                                    int height2 = _backgr2.Height;
+                                    _newBitmap = new Bitmap(width, height);
+                                    _newBitmap2 = new Bitmap(width1, height1);
+                                    using (var canvas = Graphics.FromImage(_newBitmap2))
                                     {
                                         if (height2 >= height1)
                                         {
                                             canvas.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                                            canvas.DrawImage(backgr2, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, backgr.Width, backgr.Height), GraphicsUnit.Pixel);
-                                            canvas.DrawImage(backgr, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, backgr.Width, backgr.Height), GraphicsUnit.Pixel);
+                                            canvas.DrawImage(_backgr2, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, _backgr.Width, _backgr.Height), GraphicsUnit.Pixel);
+                                            canvas.DrawImage(_backgr, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, _backgr.Width, _backgr.Height), GraphicsUnit.Pixel);
                                             canvas.Save();
                                         }
                                         else
                                         {
                                             canvas.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                                            canvas.DrawImage(backgr2, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, backgr2.Width, backgr2.Height), GraphicsUnit.Pixel);
-                                            canvas.DrawImage(backgr, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, backgr.Width, backgr.Height), GraphicsUnit.Pixel);
+                                            canvas.DrawImage(_backgr2, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, _backgr2.Width, _backgr2.Height), GraphicsUnit.Pixel);
+                                            canvas.DrawImage(_backgr, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, _backgr.Width, _backgr.Height), GraphicsUnit.Pixel);
                                             canvas.Save();
                                         }
 
-                                        int width3 = newBitmap2.Width;
-                                        int height3 = newBitmap2.Height;
-                                        using (var canvas1 = Graphics.FromImage(newBitmap))
+                                        int width3 = _newBitmap2.Width;
+                                        int height3 = _newBitmap2.Height;
+                                        using (var canvas1 = Graphics.FromImage(_newBitmap))
                                         {
                                             if (height3 >= height)
                                             {
                                                 canvas1.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                                                canvas1.DrawImage(newBitmap2, new Rectangle(0, 0, width, height), new Rectangle(0, 0, layer.Width, layer.Height), GraphicsUnit.Pixel);
-                                                canvas1.DrawImage(layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, layer.Width, layer.Height), GraphicsUnit.Pixel);
+                                                canvas1.DrawImage(_newBitmap2, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _layer.Width, _layer.Height), GraphicsUnit.Pixel);
+                                                canvas1.DrawImage(_layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _layer.Width, _layer.Height), GraphicsUnit.Pixel);
                                                 canvas1.Save();
                                             }
                                             else
                                             {
                                                 canvas1.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                                                canvas1.DrawImage(newBitmap2, new Rectangle(0, 0, width, height), new Rectangle(0, 0, newBitmap2.Width, newBitmap2.Height), GraphicsUnit.Pixel);
-                                                canvas1.DrawImage(layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, layer.Width, layer.Height), GraphicsUnit.Pixel);
+                                                canvas1.DrawImage(_newBitmap2, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _newBitmap2.Width, _newBitmap2.Height), GraphicsUnit.Pixel);
+                                                canvas1.DrawImage(_layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _layer.Width, _layer.Height), GraphicsUnit.Pixel);
                                                 canvas1.Save();
                                             }
                                         }
@@ -618,49 +634,49 @@ namespace Infinium
 
                                     try
                                     {
-                                        pcbxVisualConfig.Image = newBitmap;
+                                        pcbxVisualConfig.Image = _newBitmap;
                                     }
                                     catch (Exception ex) { MessageBox.Show(ex.Message); }
                                 }
                                 else
                                 {
-                                    int width = layer.Width;
-                                    int height = layer.Height;
-                                    int width1 = backgr.Width;
-                                    int height1 = backgr.Height;
-                                    newBitmap = new Bitmap(width, height);
-                                    using (var canvas = Graphics.FromImage(newBitmap))
+                                    int width = _layer.Width;
+                                    int height = _layer.Height;
+                                    int width1 = _backgr.Width;
+                                    int height1 = _backgr.Height;
+                                    _newBitmap = new Bitmap(width, height);
+                                    using (var canvas = Graphics.FromImage(_newBitmap))
                                     {
                                         if (height1 >= height)
                                         {
                                             canvas.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                                            canvas.DrawImage(backgr, new Rectangle(0, 0, width, height), new Rectangle(0, 0, layer.Width, layer.Height), GraphicsUnit.Pixel);
-                                            canvas.DrawImage(layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, layer.Width, layer.Height), GraphicsUnit.Pixel);
+                                            canvas.DrawImage(_backgr, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _layer.Width, _layer.Height), GraphicsUnit.Pixel);
+                                            canvas.DrawImage(_layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _layer.Width, _layer.Height), GraphicsUnit.Pixel);
                                             canvas.Save();
                                         }
                                         else
                                         {
                                             canvas.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                                            canvas.DrawImage(backgr, new Rectangle(0, 0, width, height), new Rectangle(0, 0, backgr.Width, backgr.Height), GraphicsUnit.Pixel);
-                                            canvas.DrawImage(layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, layer.Width, layer.Height), GraphicsUnit.Pixel);
+                                            canvas.DrawImage(_backgr, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _backgr.Width, _backgr.Height), GraphicsUnit.Pixel);
+                                            canvas.DrawImage(_layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _layer.Width, _layer.Height), GraphicsUnit.Pixel);
                                             canvas.Save();
                                         }
                                     }
 
                                     try
                                     {
-                                        pcbxVisualConfig.Image = newBitmap;
+                                        pcbxVisualConfig.Image = _newBitmap;
                                     }
                                     catch (Exception ex) { MessageBox.Show(ex.Message); }
                                 }
                             }
                             else
-                                pcbxVisualConfig.Image = layer;
+                                pcbxVisualConfig.Image = _layer;
                         }
                         else
                         {
-                            if (backgr != null)
-                                pcbxVisualConfig.Image = backgr;
+                            if (_backgr != null)
+                                pcbxVisualConfig.Image = _backgr;
                         }
                         if (pcbxVisualConfig.Image == null)
                             pcbxVisualConfig.Cursor = Cursors.Default;
@@ -677,13 +693,13 @@ namespace Infinium
             }
             else
             {
-                int ConfigID = -1;
+                int configId = -1;
 
                 if (cbFrontImage.Checked)
                 {
-                    ConfigID = FrontsCatalog.GetFrontAttachments(FrontName, ColorID, TechnoColorID, InsetTypeID, InsetColorID, TechnoInsetTypeID, TechnoInsetColorID, PatinaID);
-                    if (ConfigID != -1)
-                        pcbxFrontImage.Image = FrontsCatalog.GetFrontConfigImage(ConfigID);
+                    configId = _frontsCatalog.GetFrontAttachments(frontName, colorId, technoColorId, insetTypeId, insetColorId, technoInsetTypeId, technoInsetColorId, patinaId);
+                    if (configId != -1)
+                        pcbxFrontImage.Image = _frontsCatalog.GetFrontConfigImage(configId);
 
                     if (pcbxFrontImage.Image == null)
                         pcbxFrontImage.Cursor = Cursors.Default;
@@ -693,11 +709,11 @@ namespace Infinium
                 pcbxFrontTechStore.Image = null;
                 if (cbFrontTechStore.Checked)
                 {
-                    if (FrontName.Length > 0)
+                    if (frontName.Length > 0)
                     {
-                        int FrontID = FrontsCatalog.GetFrontID(FrontName, ColorID, TechnoColorID, InsetTypeID, InsetColorID, TechnoInsetTypeID, TechnoInsetColorID, PatinaID);
-                        if (FrontID != -1)
-                            pcbxFrontTechStore.Image = FrontsCatalog.GetTechStoreImage(FrontID);
+                        int frontId = _frontsCatalog.GetFrontID(frontName, colorId, technoColorId, insetTypeId, insetColorId, technoInsetTypeId, technoInsetColorId, patinaId);
+                        if (frontId != -1)
+                            pcbxFrontTechStore.Image = _frontsCatalog.GetTechStoreImage(frontId);
                     }
 
                     if (pcbxFrontTechStore.Image == null)
@@ -708,74 +724,74 @@ namespace Infinium
                 pcbxVisualConfig.Image = null;
                 if (cbVisualConfig.Checked)
                 {
-                    if (FrontName.Length > 0)
+                    if (frontName.Length > 0)
                     {
-                        layer = null;
-                        backgr = null;
-                        backgr2 = null;
-                        newBitmap = null;
-                        newBitmap2 = null;
-                        ConfigID = FrontsCatalog.GetInsetTypesConfig(FrontName, ColorID, TechnoColorID);
-                        Image img = FrontsCatalog.GetInsetTypeImage(ConfigID);
-                        if (ConfigID != -1 && img != null)
-                            layer = new Bitmap(img);
-                        ConfigID = FrontsCatalog.GetInsetColorConfig(FrontName, ColorID, TechnoColorID, InsetTypeID, InsetColorID, TechnoInsetTypeID, TechnoInsetColorID);
-                        img = FrontsCatalog.GetInsetColorImage(ConfigID);
-                        if (ConfigID != -1 && img != null)
-                            backgr = new Bitmap(img);
+                        _layer = null;
+                        _backgr = null;
+                        _backgr2 = null;
+                        _newBitmap = null;
+                        _newBitmap2 = null;
+                        configId = _frontsCatalog.GetInsetTypesConfig(frontName, colorId, technoColorId);
+                        Image img = _frontsCatalog.GetInsetTypeImage(configId);
+                        if (configId != -1 && img != null)
+                            _layer = new Bitmap(img);
+                        configId = _frontsCatalog.GetInsetColorConfig(frontName, colorId, technoColorId, insetTypeId, insetColorId, technoInsetTypeId, technoInsetColorId);
+                        img = _frontsCatalog.GetInsetColorImage(configId);
+                        if (configId != -1 && img != null)
+                            _backgr = new Bitmap(img);
 
-                        ConfigID = FrontsCatalog.GetTechnoInsetColorConfig(FrontName, ColorID, TechnoColorID, InsetTypeID, InsetColorID, TechnoInsetTypeID, TechnoInsetColorID);
-                        img = FrontsCatalog.GetTechnoInsetColorImage(ConfigID);
-                        if (ConfigID != -1 && img != null)
-                            backgr2 = new Bitmap(img);
+                        configId = _frontsCatalog.GetTechnoInsetColorConfig(frontName, colorId, technoColorId, insetTypeId, insetColorId, technoInsetTypeId, technoInsetColorId);
+                        img = _frontsCatalog.GetTechnoInsetColorImage(configId);
+                        if (configId != -1 && img != null)
+                            _backgr2 = new Bitmap(img);
 
-                        if (layer != null)
+                        if (_layer != null)
                         {
-                            if (backgr != null)
+                            if (_backgr != null)
                             {
-                                if (backgr2 != null)
+                                if (_backgr2 != null)
                                 {
-                                    int width = layer.Width;
-                                    int height = layer.Height;
-                                    int width1 = backgr.Width;
-                                    int height1 = backgr.Height;
-                                    int width2 = backgr2.Width;
-                                    int height2 = backgr2.Height;
-                                    newBitmap = new Bitmap(width, height);
-                                    newBitmap2 = new Bitmap(width1, height1);
-                                    using (var canvas = Graphics.FromImage(newBitmap2))
+                                    int width = _layer.Width;
+                                    int height = _layer.Height;
+                                    int width1 = _backgr.Width;
+                                    int height1 = _backgr.Height;
+                                    int width2 = _backgr2.Width;
+                                    int height2 = _backgr2.Height;
+                                    _newBitmap = new Bitmap(width, height);
+                                    _newBitmap2 = new Bitmap(width1, height1);
+                                    using (var canvas = Graphics.FromImage(_newBitmap2))
                                     {
                                         if (height2 >= height1)
                                         {
                                             canvas.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                                            canvas.DrawImage(backgr2, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, backgr.Width, backgr.Height), GraphicsUnit.Pixel);
-                                            canvas.DrawImage(backgr, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, backgr.Width, backgr.Height), GraphicsUnit.Pixel);
+                                            canvas.DrawImage(_backgr2, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, _backgr.Width, _backgr.Height), GraphicsUnit.Pixel);
+                                            canvas.DrawImage(_backgr, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, _backgr.Width, _backgr.Height), GraphicsUnit.Pixel);
                                             canvas.Save();
                                         }
                                         else
                                         {
                                             canvas.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                                            canvas.DrawImage(backgr2, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, backgr2.Width, backgr2.Height), GraphicsUnit.Pixel);
-                                            canvas.DrawImage(backgr, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, backgr.Width, backgr.Height), GraphicsUnit.Pixel);
+                                            canvas.DrawImage(_backgr2, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, _backgr2.Width, _backgr2.Height), GraphicsUnit.Pixel);
+                                            canvas.DrawImage(_backgr, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, _backgr.Width, _backgr.Height), GraphicsUnit.Pixel);
                                             canvas.Save();
                                         }
 
-                                        int width3 = newBitmap2.Width;
-                                        int height3 = newBitmap2.Height;
-                                        using (var canvas1 = Graphics.FromImage(newBitmap))
+                                        int width3 = _newBitmap2.Width;
+                                        int height3 = _newBitmap2.Height;
+                                        using (var canvas1 = Graphics.FromImage(_newBitmap))
                                         {
                                             if (height3 >= height)
                                             {
                                                 canvas1.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                                                canvas1.DrawImage(newBitmap2, new Rectangle(0, 0, width, height), new Rectangle(0, 0, layer.Width, layer.Height), GraphicsUnit.Pixel);
-                                                canvas1.DrawImage(layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, layer.Width, layer.Height), GraphicsUnit.Pixel);
+                                                canvas1.DrawImage(_newBitmap2, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _layer.Width, _layer.Height), GraphicsUnit.Pixel);
+                                                canvas1.DrawImage(_layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _layer.Width, _layer.Height), GraphicsUnit.Pixel);
                                                 canvas1.Save();
                                             }
                                             else
                                             {
                                                 canvas1.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                                                canvas1.DrawImage(newBitmap2, new Rectangle(0, 0, width, height), new Rectangle(0, 0, newBitmap2.Width, newBitmap2.Height), GraphicsUnit.Pixel);
-                                                canvas1.DrawImage(layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, layer.Width, layer.Height), GraphicsUnit.Pixel);
+                                                canvas1.DrawImage(_newBitmap2, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _newBitmap2.Width, _newBitmap2.Height), GraphicsUnit.Pixel);
+                                                canvas1.DrawImage(_layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _layer.Width, _layer.Height), GraphicsUnit.Pixel);
                                                 canvas1.Save();
                                             }
                                         }
@@ -783,49 +799,49 @@ namespace Infinium
 
                                     try
                                     {
-                                        pcbxVisualConfig.Image = newBitmap;
+                                        pcbxVisualConfig.Image = _newBitmap;
                                     }
                                     catch (Exception ex) { MessageBox.Show(ex.Message); }
                                 }
                                 else
                                 {
-                                    int width = layer.Width;
-                                    int height = layer.Height;
-                                    int width1 = backgr.Width;
-                                    int height1 = backgr.Height;
-                                    newBitmap = new Bitmap(width, height);
-                                    using (var canvas = Graphics.FromImage(newBitmap))
+                                    int width = _layer.Width;
+                                    int height = _layer.Height;
+                                    int width1 = _backgr.Width;
+                                    int height1 = _backgr.Height;
+                                    _newBitmap = new Bitmap(width, height);
+                                    using (var canvas = Graphics.FromImage(_newBitmap))
                                     {
                                         if (height1 >= height)
                                         {
                                             canvas.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                                            canvas.DrawImage(backgr, new Rectangle(0, 0, width, height), new Rectangle(0, 0, layer.Width, layer.Height), GraphicsUnit.Pixel);
-                                            canvas.DrawImage(layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, layer.Width, layer.Height), GraphicsUnit.Pixel);
+                                            canvas.DrawImage(_backgr, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _layer.Width, _layer.Height), GraphicsUnit.Pixel);
+                                            canvas.DrawImage(_layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _layer.Width, _layer.Height), GraphicsUnit.Pixel);
                                             canvas.Save();
                                         }
                                         else
                                         {
                                             canvas.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                                            canvas.DrawImage(backgr, new Rectangle(0, 0, width, height), new Rectangle(0, 0, backgr.Width, backgr.Height), GraphicsUnit.Pixel);
-                                            canvas.DrawImage(layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, layer.Width, layer.Height), GraphicsUnit.Pixel);
+                                            canvas.DrawImage(_backgr, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _backgr.Width, _backgr.Height), GraphicsUnit.Pixel);
+                                            canvas.DrawImage(_layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _layer.Width, _layer.Height), GraphicsUnit.Pixel);
                                             canvas.Save();
                                         }
                                     }
 
                                     try
                                     {
-                                        pcbxVisualConfig.Image = newBitmap;
+                                        pcbxVisualConfig.Image = _newBitmap;
                                     }
                                     catch (Exception ex) { MessageBox.Show(ex.Message); }
                                 }
                             }
                             else
-                                pcbxVisualConfig.Image = layer;
+                                pcbxVisualConfig.Image = _layer;
                         }
                         else
                         {
-                            if (backgr != null)
-                                pcbxVisualConfig.Image = backgr;
+                            if (_backgr != null)
+                                pcbxVisualConfig.Image = _backgr;
                         }
                     }
                     if (pcbxVisualConfig.Image == null)
@@ -839,37 +855,37 @@ namespace Infinium
 
         public void GetFrontWidth()
         {
-            if (FrontsCatalog == null)
+            if (_frontsCatalog == null)
                 return;
-            string FrontName = "";
-            int ColorID = -1;
-            int TechnoColorID = -1;
-            int PatinaID = -1;
-            int InsetTypeID = -1;
-            int InsetColorID = -1;
-            int TechnoInsetTypeID = -1;
-            int TechnoInsetColorID = -1;
-            int Height = 0;
+            string frontName = "";
+            int colorId = -1;
+            int technoColorId = -1;
+            int patinaId = -1;
+            int insetTypeId = -1;
+            int insetColorId = -1;
+            int technoInsetTypeId = -1;
+            int technoInsetColorId = -1;
+            int height = 0;
             if (FrontsDataGrid.SelectedRows.Count > 0 && FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value != DBNull.Value)
-                FrontName = FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value.ToString();
+                frontName = FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value.ToString();
             if (FrameColorsDataGrid.SelectedRows.Count > 0 && FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value != DBNull.Value)
-                ColorID = Convert.ToInt32(FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
+                colorId = Convert.ToInt32(FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
             if (TechnoFrameColorsDataGrid.SelectedRows.Count > 0 && TechnoFrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value != DBNull.Value)
-                TechnoColorID = Convert.ToInt32(TechnoFrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
+                technoColorId = Convert.ToInt32(TechnoFrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
             if (PatinaDataGrid.SelectedRows.Count > 0 && PatinaDataGrid.SelectedRows[0].Cells["PatinaID"].Value != DBNull.Value)
-                PatinaID = Convert.ToInt32(PatinaDataGrid.SelectedRows[0].Cells["PatinaID"].Value);
+                patinaId = Convert.ToInt32(PatinaDataGrid.SelectedRows[0].Cells["PatinaID"].Value);
             if (InsetTypesDataGrid.SelectedRows.Count > 0 && InsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value != DBNull.Value)
-                InsetTypeID = Convert.ToInt32(InsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
+                insetTypeId = Convert.ToInt32(InsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
             if (InsetColorsDataGrid.SelectedRows.Count > 0 && InsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value != DBNull.Value)
-                InsetColorID = Convert.ToInt32(InsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
+                insetColorId = Convert.ToInt32(InsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
             if (TechnoInsetTypesDataGrid.SelectedRows.Count > 0 && TechnoInsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value != DBNull.Value)
-                TechnoInsetTypeID = Convert.ToInt32(TechnoInsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
+                technoInsetTypeId = Convert.ToInt32(TechnoInsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
             if (TechnoInsetColorsDataGrid.SelectedRows.Count > 0 && TechnoInsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value != DBNull.Value)
-                TechnoInsetColorID = Convert.ToInt32(TechnoInsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
+                technoInsetColorId = Convert.ToInt32(TechnoInsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
             if (FrontsHeightDataGrid.SelectedRows.Count > 0 && FrontsHeightDataGrid.SelectedRows[0].Cells["Height"].Value != DBNull.Value)
-                Height = Convert.ToInt32(FrontsHeightDataGrid.SelectedRows[0].Cells["Height"].Value);
+                height = Convert.ToInt32(FrontsHeightDataGrid.SelectedRows[0].Cells["Height"].Value);
 
-            FrontsCatalog.FilterCatalogWidth(FrontName, ColorID, TechnoColorID, InsetTypeID, InsetColorID, TechnoInsetTypeID, TechnoInsetColorID, PatinaID, Height);
+            _frontsCatalog.FilterCatalogWidth(frontName, colorId, technoColorId, insetTypeId, insetColorId, technoInsetTypeId, technoInsetColorId, patinaId, height);
         }
 
         #endregion
@@ -887,15 +903,15 @@ namespace Infinium
             WidthDataGrid.SelectionChanged -= WidthDataGrid_SelectionChanged;
             LengthDataGrid.SelectionChanged -= LengthDataGrid_SelectionChanged;
 
-            ProductsDataGrid.DataSource = DecorCatalog.DecorProductsBindingSource;
-            DecorDataGrid.DataSource = DecorCatalog.DecorItemBindingSource;
-            ColorsDataGrid.DataSource = DecorCatalog.ItemColorsBindingSource;
-            DecorPatinaDataGrid.DataSource = DecorCatalog.ItemPatinaBindingSource;
-            DecorInsetTypesDataGrid.DataSource = DecorCatalog.ItemInsetTypesBindingSource;
-            DecorInsetColorsDataGrid.DataSource = DecorCatalog.ItemInsetColorsBindingSource;
-            LengthDataGrid.DataSource = DecorCatalog.LengthBindingSource;
-            HeightDataGrid.DataSource = DecorCatalog.HeightBindingSource;
-            WidthDataGrid.DataSource = DecorCatalog.WidthBindingSource;
+            ProductsDataGrid.DataSource = _decorCatalog.DecorProductsBindingSource;
+            DecorDataGrid.DataSource = _decorCatalog.DecorItemBindingSource;
+            ColorsDataGrid.DataSource = _decorCatalog.ItemColorsBindingSource;
+            DecorPatinaDataGrid.DataSource = _decorCatalog.ItemPatinaBindingSource;
+            DecorInsetTypesDataGrid.DataSource = _decorCatalog.ItemInsetTypesBindingSource;
+            DecorInsetColorsDataGrid.DataSource = _decorCatalog.ItemInsetColorsBindingSource;
+            LengthDataGrid.DataSource = _decorCatalog.LengthBindingSource;
+            HeightDataGrid.DataSource = _decorCatalog.HeightBindingSource;
+            WidthDataGrid.DataSource = _decorCatalog.WidthBindingSource;
 
             GetDecorItems();
             GetDecorColors();
@@ -944,111 +960,111 @@ namespace Infinium
 
         public void GetDecorItems()
         {
-            if (DecorCatalog != null)
-                if (DecorCatalog.DecorProductsBindingSource.Count > 0)
+            if (_decorCatalog != null)
+                if (_decorCatalog.DecorProductsBindingSource.Count > 0)
                 {
-                    if (((DataRowView)DecorCatalog.DecorProductsBindingSource.Current)["ProductID"] != DBNull.Value)
+                    if (((DataRowView)_decorCatalog.DecorProductsBindingSource.Current)["ProductID"] != DBNull.Value)
                     {
-                        DecorCatalog.FilterItems(Convert.ToInt32(((DataRowView)DecorCatalog.DecorProductsBindingSource.Current)["ProductID"]));
-                        DecorCatalog.DecorItemBindingSource.MoveFirst();
+                        _decorCatalog.FilterItems(Convert.ToInt32(((DataRowView)_decorCatalog.DecorProductsBindingSource.Current)["ProductID"]));
+                        _decorCatalog.DecorItemBindingSource.MoveFirst();
                     }
                 }
         }
 
         public void GetDecorColors()
         {
-            if (DecorCatalog.DecorItemBindingSource.Current == null)
+            if (_decorCatalog.DecorItemBindingSource.Current == null)
                 return;
-            if (DecorCatalog.DecorItemBindingSource.Count > 0)
+            if (_decorCatalog.DecorItemBindingSource.Count > 0)
             {
-                DecorCatalog.FilterColors(((DataRowView)DecorCatalog.DecorItemBindingSource.Current)["Name"].ToString());
+                _decorCatalog.FilterColors(((DataRowView)_decorCatalog.DecorItemBindingSource.Current)["Name"].ToString());
             }
         }
 
         public void GetDecorPatina()
         {
-            if (DecorCatalog.DecorItemBindingSource.Current == null)
+            if (_decorCatalog.DecorItemBindingSource.Current == null)
                 return;
-            if (DecorCatalog.ItemColorsBindingSource.Count > 0)
+            if (_decorCatalog.ItemColorsBindingSource.Count > 0)
             {
-                DecorCatalog.FilterPatina(((DataRowView)DecorCatalog.DecorItemBindingSource.Current)["Name"].ToString(),
-                    Convert.ToInt32(((DataRowView)DecorCatalog.ItemColorsBindingSource.Current)["ColorID"]));
+                _decorCatalog.FilterPatina(((DataRowView)_decorCatalog.DecorItemBindingSource.Current)["Name"].ToString(),
+                    Convert.ToInt32(((DataRowView)_decorCatalog.ItemColorsBindingSource.Current)["ColorID"]));
             }
         }
 
         public void GetDecorInsetTypes()
         {
-            if (DecorCatalog.DecorItemBindingSource.Current == null)
+            if (_decorCatalog.DecorItemBindingSource.Current == null)
                 return;
-            if (DecorCatalog.ItemPatinaBindingSource.Count > 0)
+            if (_decorCatalog.ItemPatinaBindingSource.Count > 0)
             {
-                DecorCatalog.FilterInsetType(((DataRowView)DecorCatalog.DecorItemBindingSource.Current)["Name"].ToString(),
-                    Convert.ToInt32(((DataRowView)DecorCatalog.ItemColorsBindingSource.Current)["ColorID"]),
-                    Convert.ToInt32(((DataRowView)DecorCatalog.ItemPatinaBindingSource.Current)["PatinaID"]));
+                _decorCatalog.FilterInsetType(((DataRowView)_decorCatalog.DecorItemBindingSource.Current)["Name"].ToString(),
+                    Convert.ToInt32(((DataRowView)_decorCatalog.ItemColorsBindingSource.Current)["ColorID"]),
+                    Convert.ToInt32(((DataRowView)_decorCatalog.ItemPatinaBindingSource.Current)["PatinaID"]));
             }
         }
 
         public void GetDecorInsetColors()
         {
-            if (DecorCatalog.DecorItemBindingSource.Current == null)
+            if (_decorCatalog.DecorItemBindingSource.Current == null)
                 return;
-            if (DecorCatalog.ItemInsetTypesBindingSource.Count > 0)
+            if (_decorCatalog.ItemInsetTypesBindingSource.Count > 0)
             {
-                DecorCatalog.FilterInsetColor(((DataRowView)DecorCatalog.DecorItemBindingSource.Current)["Name"].ToString(),
-                    Convert.ToInt32(((DataRowView)DecorCatalog.ItemColorsBindingSource.Current)["ColorID"]),
-                    Convert.ToInt32(((DataRowView)DecorCatalog.ItemPatinaBindingSource.Current)["PatinaID"]),
-                    Convert.ToInt32(((DataRowView)DecorCatalog.ItemInsetTypesBindingSource.Current)["InsetTypeID"]));
+                _decorCatalog.FilterInsetColor(((DataRowView)_decorCatalog.DecorItemBindingSource.Current)["Name"].ToString(),
+                    Convert.ToInt32(((DataRowView)_decorCatalog.ItemColorsBindingSource.Current)["ColorID"]),
+                    Convert.ToInt32(((DataRowView)_decorCatalog.ItemPatinaBindingSource.Current)["PatinaID"]),
+                    Convert.ToInt32(((DataRowView)_decorCatalog.ItemInsetTypesBindingSource.Current)["InsetTypeID"]));
             }
         }
 
         public void GetDecorLength()
         {
-            if (DecorCatalog.DecorItemBindingSource.Current == null)
+            if (_decorCatalog.DecorItemBindingSource.Current == null)
                 return;
-            if (DecorCatalog.ItemInsetColorsBindingSource.Count > 0)
+            if (_decorCatalog.ItemInsetColorsBindingSource.Count > 0)
             {
 
-                DecorCatalog.FilterLength(((DataRowView)DecorCatalog.DecorItemBindingSource.Current)["Name"].ToString(),
-                    Convert.ToInt32(((DataRowView)DecorCatalog.ItemColorsBindingSource.Current)["ColorID"]),
-                    Convert.ToInt32(((DataRowView)DecorCatalog.ItemPatinaBindingSource.Current)["PatinaID"]),
-                    Convert.ToInt32(((DataRowView)DecorCatalog.ItemInsetTypesBindingSource.Current)["InsetTypeID"]),
-                    Convert.ToInt32(((DataRowView)DecorCatalog.ItemInsetColorsBindingSource.Current)["InsetColorID"]));
+                _decorCatalog.FilterLength(((DataRowView)_decorCatalog.DecorItemBindingSource.Current)["Name"].ToString(),
+                    Convert.ToInt32(((DataRowView)_decorCatalog.ItemColorsBindingSource.Current)["ColorID"]),
+                    Convert.ToInt32(((DataRowView)_decorCatalog.ItemPatinaBindingSource.Current)["PatinaID"]),
+                    Convert.ToInt32(((DataRowView)_decorCatalog.ItemInsetTypesBindingSource.Current)["InsetTypeID"]),
+                    Convert.ToInt32(((DataRowView)_decorCatalog.ItemInsetColorsBindingSource.Current)["InsetColorID"]));
             }
         }
 
         public void GetDecorHeight()
         {
-            if (DecorCatalog.DecorProductsBindingSource.Current == null || DecorCatalog.DecorItemBindingSource.Current == null)
+            if (_decorCatalog.DecorProductsBindingSource.Current == null || _decorCatalog.DecorItemBindingSource.Current == null)
                 return;
-            if (DecorCatalog.LengthBindingSource.Count > 0)
+            if (_decorCatalog.LengthBindingSource.Count > 0)
             {
-                int Length = Convert.ToInt32(((DataRowView)DecorCatalog.LengthBindingSource.Current)["Length"]);
-                DecorCatalog.FilterHeight(((DataRowView)DecorCatalog.DecorItemBindingSource.Current)["Name"].ToString(),
-                    Convert.ToInt32(((DataRowView)DecorCatalog.ItemColorsBindingSource.Current)["ColorID"]),
-                    Convert.ToInt32(((DataRowView)DecorCatalog.ItemPatinaBindingSource.Current)["PatinaID"]),
-                    Convert.ToInt32(((DataRowView)DecorCatalog.ItemInsetTypesBindingSource.Current)["InsetTypeID"]),
-                    Convert.ToInt32(((DataRowView)DecorCatalog.ItemInsetColorsBindingSource.Current)["InsetColorID"]), Length);
+                int length = Convert.ToInt32(((DataRowView)_decorCatalog.LengthBindingSource.Current)["Length"]);
+                _decorCatalog.FilterHeight(((DataRowView)_decorCatalog.DecorItemBindingSource.Current)["Name"].ToString(),
+                    Convert.ToInt32(((DataRowView)_decorCatalog.ItemColorsBindingSource.Current)["ColorID"]),
+                    Convert.ToInt32(((DataRowView)_decorCatalog.ItemPatinaBindingSource.Current)["PatinaID"]),
+                    Convert.ToInt32(((DataRowView)_decorCatalog.ItemInsetTypesBindingSource.Current)["InsetTypeID"]),
+                    Convert.ToInt32(((DataRowView)_decorCatalog.ItemInsetColorsBindingSource.Current)["InsetColorID"]), length);
             }
 
-            int ProductID = -1;
-            string DecorName = string.Empty;
-            int ColorID = -1;
-            int PatinaID = -1;
-            int InsetTypeID = -1;
-            int InsetColorID = -1;
+            int productId = -1;
+            string decorName = string.Empty;
+            int colorId = -1;
+            int patinaId = -1;
+            int insetTypeId = -1;
+            int insetColorId = -1;
 
-            if ((DataRowView)DecorCatalog.DecorProductsBindingSource.Current != null)
-                ProductID = Convert.ToInt32(((DataRowView)DecorCatalog.DecorProductsBindingSource.Current)["ProductID"]);
-            if ((DataRowView)DecorCatalog.DecorItemBindingSource.Current != null)
-                DecorName = ((DataRowView)DecorCatalog.DecorItemBindingSource.Current)["Name"].ToString();
-            if ((DataRowView)DecorCatalog.ItemColorsBindingSource.Current != null)
-                ColorID = Convert.ToInt32(((DataRowView)DecorCatalog.ItemColorsBindingSource.Current)["ColorID"]);
-            if ((DataRowView)DecorCatalog.ItemPatinaBindingSource.Current != null)
-                PatinaID = Convert.ToInt32(((DataRowView)DecorCatalog.ItemPatinaBindingSource.Current)["PatinaID"]);
-            if ((DataRowView)DecorCatalog.ItemInsetTypesBindingSource.Current != null)
-                InsetTypeID = Convert.ToInt32(((DataRowView)DecorCatalog.ItemInsetTypesBindingSource.Current)["InsetTypeID"]);
-            if ((DataRowView)DecorCatalog.ItemInsetColorsBindingSource.Current != null)
-                InsetColorID = Convert.ToInt32(((DataRowView)DecorCatalog.ItemInsetColorsBindingSource.Current)["InsetColorID"]);
+            if ((DataRowView)_decorCatalog.DecorProductsBindingSource.Current != null)
+                productId = Convert.ToInt32(((DataRowView)_decorCatalog.DecorProductsBindingSource.Current)["ProductID"]);
+            if ((DataRowView)_decorCatalog.DecorItemBindingSource.Current != null)
+                decorName = ((DataRowView)_decorCatalog.DecorItemBindingSource.Current)["Name"].ToString();
+            if ((DataRowView)_decorCatalog.ItemColorsBindingSource.Current != null)
+                colorId = Convert.ToInt32(((DataRowView)_decorCatalog.ItemColorsBindingSource.Current)["ColorID"]);
+            if ((DataRowView)_decorCatalog.ItemPatinaBindingSource.Current != null)
+                patinaId = Convert.ToInt32(((DataRowView)_decorCatalog.ItemPatinaBindingSource.Current)["PatinaID"]);
+            if ((DataRowView)_decorCatalog.ItemInsetTypesBindingSource.Current != null)
+                insetTypeId = Convert.ToInt32(((DataRowView)_decorCatalog.ItemInsetTypesBindingSource.Current)["InsetTypeID"]);
+            if ((DataRowView)_decorCatalog.ItemInsetColorsBindingSource.Current != null)
+                insetColorId = Convert.ToInt32(((DataRowView)_decorCatalog.ItemInsetColorsBindingSource.Current)["InsetColorID"]);
 
             if (cbDecorTechStore.Checked)
             {
@@ -1064,9 +1080,9 @@ namespace Infinium
                 //while (SplashWindow.bSmallCreated)
                 //    SmallWaitForm.CloseS = true;
 
-                int DecorID = DecorCatalog.GetDecorID(ProductID, DecorName, ColorID, PatinaID, InsetTypeID, InsetColorID);
-                if (DecorID != -1)
-                    pcbxDecorTechStore.Image = DecorCatalog.GetTechStoreImage(DecorID);
+                int decorId = _decorCatalog.GetDecorID(productId, decorName, colorId, patinaId, insetTypeId, insetColorId);
+                if (decorId != -1)
+                    pcbxDecorTechStore.Image = _decorCatalog.GetTechStoreImage(decorId);
 
                 if (pcbxDecorTechStore.Image == null)
                     pcbxDecorTechStore.Cursor = Cursors.Default;
@@ -1088,9 +1104,9 @@ namespace Infinium
                 //while (SplashWindow.bSmallCreated)
                 //    SmallWaitForm.CloseS = true;
 
-                int ConfigID = DecorCatalog.GetDecorAttachments(ProductID, DecorName, ColorID, PatinaID, InsetTypeID, InsetColorID);
-                if (ConfigID != -1)
-                    pcbxDecorImage.Image = DecorCatalog.GetDecorConfigImage(ConfigID, ProductID);
+                int configId = _decorCatalog.GetDecorAttachments(productId, decorName, colorId, patinaId, insetTypeId, insetColorId);
+                if (configId != -1)
+                    pcbxDecorImage.Image = _decorCatalog.GetDecorConfigImage(configId, productId);
 
                 if (pcbxDecorImage.Image == null)
                     pcbxDecorImage.Cursor = Cursors.Default;
@@ -1101,18 +1117,18 @@ namespace Infinium
 
         public void GetDecorWidth()
         {
-            if (DecorCatalog.DecorItemBindingSource.Current == null)
+            if (_decorCatalog.DecorItemBindingSource.Current == null)
                 return;
-            if (DecorCatalog.HeightBindingSource.Count > 0)
+            if (_decorCatalog.HeightBindingSource.Count > 0)
             {
-                int Length = Convert.ToInt32(((DataRowView)DecorCatalog.LengthBindingSource.Current)["Length"]);
-                int Height = Convert.ToInt32(((DataRowView)DecorCatalog.HeightBindingSource.Current)["Height"]);
+                int length = Convert.ToInt32(((DataRowView)_decorCatalog.LengthBindingSource.Current)["Length"]);
+                int height = Convert.ToInt32(((DataRowView)_decorCatalog.HeightBindingSource.Current)["Height"]);
 
-                DecorCatalog.FilterWidth(((DataRowView)DecorCatalog.DecorItemBindingSource.Current)["Name"].ToString(),
-                    Convert.ToInt32(((DataRowView)DecorCatalog.ItemColorsBindingSource.Current)["ColorID"]),
-                    Convert.ToInt32(((DataRowView)DecorCatalog.ItemPatinaBindingSource.Current)["PatinaID"]),
-                    Convert.ToInt32(((DataRowView)DecorCatalog.ItemInsetTypesBindingSource.Current)["InsetTypeID"]),
-                    Convert.ToInt32(((DataRowView)DecorCatalog.ItemInsetColorsBindingSource.Current)["InsetColorID"]), Length, Height);
+                _decorCatalog.FilterWidth(((DataRowView)_decorCatalog.DecorItemBindingSource.Current)["Name"].ToString(),
+                    Convert.ToInt32(((DataRowView)_decorCatalog.ItemColorsBindingSource.Current)["ColorID"]),
+                    Convert.ToInt32(((DataRowView)_decorCatalog.ItemPatinaBindingSource.Current)["PatinaID"]),
+                    Convert.ToInt32(((DataRowView)_decorCatalog.ItemInsetTypesBindingSource.Current)["InsetTypeID"]),
+                    Convert.ToInt32(((DataRowView)_decorCatalog.ItemInsetColorsBindingSource.Current)["InsetColorID"]), length, height);
             }
 
         }
@@ -1149,7 +1165,7 @@ namespace Infinium
 
         private void kryptonCheckSet1_CheckedButtonChanged(object sender, EventArgs e)
         {
-            if (FrontsCatalog == null || DecorCatalog == null)
+            if (_frontsCatalog == null || _decorCatalog == null)
                 return;
 
             if (kryptonCheckSet1.CheckedButton.Name == "DecorCheckButton")
@@ -1163,7 +1179,7 @@ namespace Infinium
                 LengthDataGrid.SelectionChanged -= LengthDataGrid_SelectionChanged;
                 HeightDataGrid.SelectionChanged -= HeightDataGrid_SelectionChanged;
                 WidthDataGrid.SelectionChanged -= WidthDataGrid_SelectionChanged;
-                DecorCatalog.FilterProducts();
+                _decorCatalog.FilterProducts();
                 GetDecorItems();
                 GetDecorColors();
                 GetDecorPatina();
@@ -1195,7 +1211,15 @@ namespace Infinium
                 PatinaDataGrid.SelectionChanged -= PatinaDataGrid_SelectionChanged;
                 FrontsHeightDataGrid.SelectionChanged -= FrontsHeightDataGrid_SelectionChanged;
 
-                FrontsCatalog.FilterFronts();
+                int ClientID = -1;
+
+                if (cbClients.Checked && FilterClientsDataGrid.SelectedRows.Count > 0)
+                    ClientID = Convert.ToInt32(FilterClientsDataGrid.SelectedRows[0].Cells["ClientID"].Value);
+
+                if (cbClients.Checked)
+                    _frontsCatalog.FilterFronts(ClientID);
+                else
+                    _frontsCatalog.FilterFronts();
                 GetFrameColors();
                 GetTechnoFrameColors();
                 GetInsetTypes();
@@ -1221,18 +1245,20 @@ namespace Infinium
 
         private void kryptonCheckSet2_CheckedButtonChanged(object sender, EventArgs e)
         {
-            if (FrontsCatalog == null || DecorCatalog == null)
+            if (_frontsCatalog == null || _decorCatalog == null)
                 return;
+
+            int ClientID = -1;
 
             if (kryptonCheckSet2.CheckedButton.Name == "ProfilCheckButton")
             {
-                Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Загрузка данных с сервера.\r\nПодождите..."); });
+                Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref _topForm, "Загрузка данных с сервера.\r\nПодождите..."); });
                 T.Start();
 
                 while (!SplashWindow.bSmallCreated) ;
 
-                FrontsCatalog.FilterCatalog(1);
-                DecorCatalog.FilterCatalog(1);
+                _frontsCatalog.FilterCatalog(1);
+                _decorCatalog.FilterCatalog(1);
 
                 FrontsDataGrid.SelectionChanged -= FrontsDataGrid_SelectionChanged;
                 FrameColorsDataGrid.SelectionChanged -= FrameColorsDataGrid_SelectionChanged;
@@ -1243,7 +1269,15 @@ namespace Infinium
                 TechnoInsetColorsDataGrid.SelectionChanged -= TechnoInsetColorsDataGrid_SelectionChanged;
                 PatinaDataGrid.SelectionChanged -= PatinaDataGrid_SelectionChanged;
                 FrontsHeightDataGrid.SelectionChanged -= FrontsHeightDataGrid_SelectionChanged;
-                FrontsCatalog.FilterFronts();
+
+                if (cbClients.Checked && FilterClientsDataGrid.SelectedRows.Count > 0)
+                    ClientID = Convert.ToInt32(FilterClientsDataGrid.SelectedRows[0].Cells["ClientID"].Value);
+
+                if (cbClients.Checked)
+                    _frontsCatalog.FilterFronts(ClientID);
+                else
+                    _frontsCatalog.FilterFronts();
+
                 GetFrameColors();
                 GetTechnoFrameColors();
                 GetInsetTypes();
@@ -1272,7 +1306,7 @@ namespace Infinium
                 HeightDataGrid.SelectionChanged -= HeightDataGrid_SelectionChanged;
                 WidthDataGrid.SelectionChanged -= WidthDataGrid_SelectionChanged;
                 LengthDataGrid.SelectionChanged -= LengthDataGrid_SelectionChanged;
-                DecorCatalog.FilterProducts();
+                _decorCatalog.FilterProducts();
                 GetDecorItems();
                 GetDecorColors();
                 GetDecorPatina();
@@ -1296,13 +1330,13 @@ namespace Infinium
             }
             else
             {
-                Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Загрузка данных с сервера.\r\nПодождите..."); });
+                Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref _topForm, "Загрузка данных с сервера.\r\nПодождите..."); });
                 T.Start();
 
                 while (!SplashWindow.bSmallCreated) ;
 
-                FrontsCatalog.FilterCatalog(2);
-                DecorCatalog.FilterCatalog(2);
+                _frontsCatalog.FilterCatalog(2);
+                _decorCatalog.FilterCatalog(2);
 
                 FrontsDataGrid.SelectionChanged -= FrontsDataGrid_SelectionChanged;
                 FrameColorsDataGrid.SelectionChanged -= FrameColorsDataGrid_SelectionChanged;
@@ -1313,7 +1347,15 @@ namespace Infinium
                 TechnoInsetColorsDataGrid.SelectionChanged -= TechnoInsetColorsDataGrid_SelectionChanged;
                 PatinaDataGrid.SelectionChanged -= PatinaDataGrid_SelectionChanged;
                 FrontsHeightDataGrid.SelectionChanged -= FrontsHeightDataGrid_SelectionChanged;
-                FrontsCatalog.FilterFronts();
+
+                if (cbClients.Checked && FilterClientsDataGrid.SelectedRows.Count > 0)
+                    ClientID = Convert.ToInt32(FilterClientsDataGrid.SelectedRows[0].Cells["ClientID"].Value);
+
+                if (cbClients.Checked)
+                    _frontsCatalog.FilterFronts(ClientID);
+                else
+                    _frontsCatalog.FilterFronts();
+
                 GetFrameColors();
                 GetTechnoFrameColors();
                 GetInsetTypes();
@@ -1342,7 +1384,7 @@ namespace Infinium
                 HeightDataGrid.SelectionChanged -= HeightDataGrid_SelectionChanged;
                 WidthDataGrid.SelectionChanged -= WidthDataGrid_SelectionChanged;
                 LengthDataGrid.SelectionChanged -= LengthDataGrid_SelectionChanged;
-                DecorCatalog.FilterProducts();
+                _decorCatalog.FilterProducts();
                 GetDecorItems();
                 GetDecorColors();
                 GetDecorPatina();
@@ -1372,8 +1414,8 @@ namespace Infinium
 
             if (m.Msg == 6 && m.WParam.ToInt32() == 1)
             {
-                if (TopForm != null)
-                    TopForm.Activate();
+                if (_topForm != null)
+                    _topForm.Activate();
             }
         }
 
@@ -1382,173 +1424,173 @@ namespace Infinium
             if (DecorDataGrid.SelectedRows.Count == 0)
                 return;
 
-            PictureEditForm PictureEditForm = new PictureEditForm(ref DecorCatalog, Convert.ToInt32(DecorDataGrid.SelectedRows[0].Cells["DecorID"].Value));
+            PictureEditForm pictureEditForm = new PictureEditForm(ref _decorCatalog, Convert.ToInt32(DecorDataGrid.SelectedRows[0].Cells["DecorID"].Value));
 
-            TopForm = PictureEditForm;
+            _topForm = pictureEditForm;
 
-            PictureEditForm.ShowDialog();
+            pictureEditForm.ShowDialog();
 
-            TopForm = null;
+            _topForm = null;
 
-            PictureEditForm.Dispose();
+            pictureEditForm.Dispose();
         }
 
         private void PrintPackageContextMenuItem_Click(object sender, EventArgs e)
         {
-            bool PressOK = false;
-            int LabelsCount = 0;
-            int PositionsCount = 0;
-            PhantomForm PhantomForm = new Infinium.PhantomForm();
-            PhantomForm.Show();
-            SampleFrontsLabelInfoMenu SampleLabelInfoMenu = new SampleFrontsLabelInfoMenu(this);
-            TopForm = SampleLabelInfoMenu;
-            SampleLabelInfoMenu.ShowDialog();
-            PressOK = SampleLabelInfoMenu.PressOK;
-            LabelsCount = SampleLabelInfoMenu.LabelsCount;
-            PositionsCount = SampleLabelInfoMenu.PositionsCount;
-            PhantomForm.Close();
-            PhantomForm.Dispose();
-            SampleLabelInfoMenu.Dispose();
-            TopForm = null;
+            bool pressOk = false;
+            int labelsCount = 0;
+            int positionsCount = 0;
+            PhantomForm phantomForm = new Infinium.PhantomForm();
+            phantomForm.Show();
+            SampleFrontsLabelInfoMenu sampleLabelInfoMenu = new SampleFrontsLabelInfoMenu(this);
+            _topForm = sampleLabelInfoMenu;
+            sampleLabelInfoMenu.ShowDialog();
+            pressOk = sampleLabelInfoMenu.PressOK;
+            labelsCount = sampleLabelInfoMenu.LabelsCount;
+            positionsCount = sampleLabelInfoMenu.PositionsCount;
+            phantomForm.Close();
+            phantomForm.Dispose();
+            sampleLabelInfoMenu.Dispose();
+            _topForm = null;
 
-            if (!PressOK)
+            if (!pressOk)
                 return;
 
-            int FrontID = -1;
-            int FactoryID = -1;
-            string Front = FrontsDataGrid.SelectedRows[0].Cells["FrontName"].FormattedValue.ToString();
-            string FrameColor = FrameColorsDataGrid.SelectedRows[0].Cells["ColorName"].FormattedValue.ToString();
-            string Patina = PatinaDataGrid.SelectedRows[0].Cells["PatinaName"].FormattedValue.ToString();
-            string InsetType = InsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeName"].FormattedValue.ToString();
-            string InsetColor = InsetColorsDataGrid.SelectedRows[0].Cells["InsetColorName"].FormattedValue.ToString();
-            string TechnoInsetType = TechnoInsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeName"].FormattedValue.ToString();
-            string TechnoInsetColor = TechnoInsetColorsDataGrid.SelectedRows[0].Cells["InsetColorName"].FormattedValue.ToString();
+            int frontId = -1;
+            int factoryId = -1;
+            string front = FrontsDataGrid.SelectedRows[0].Cells["FrontName"].FormattedValue.ToString();
+            string frameColor = FrameColorsDataGrid.SelectedRows[0].Cells["ColorName"].FormattedValue.ToString();
+            string patina = PatinaDataGrid.SelectedRows[0].Cells["PatinaName"].FormattedValue.ToString();
+            string insetType = InsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeName"].FormattedValue.ToString();
+            string insetColor = InsetColorsDataGrid.SelectedRows[0].Cells["InsetColorName"].FormattedValue.ToString();
+            string technoInsetType = TechnoInsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeName"].FormattedValue.ToString();
+            string technoInsetColor = TechnoInsetColorsDataGrid.SelectedRows[0].Cells["InsetColorName"].FormattedValue.ToString();
 
-            if (Patina != "-")
-                FrameColor += "/" + Patina;
-            if (TechnoInsetType != "-")
-                InsetType += "/" + TechnoInsetType;
-            if (TechnoInsetColor != "-")
-                InsetColor += "/" + TechnoInsetColor;
+            if (patina != "-")
+                frameColor += "/" + patina;
+            if (technoInsetType != "-")
+                insetType += "/" + technoInsetType;
+            if (technoInsetColor != "-")
+                insetColor += "/" + technoInsetColor;
 
-            int Height = 0;
-            int Width = 0;
-            int FrontConfigID = 0;
+            int height = 0;
+            int width = 0;
+            int frontConfigId = 0;
 
-            if (FrontsCatalog.HeightBindingSource.Count > 0)
-                Height = Convert.ToInt32(((DataRowView)FrontsCatalog.HeightBindingSource.Current).Row["Height"]);
+            if (_frontsCatalog.HeightBindingSource.Count > 0)
+                height = Convert.ToInt32(((DataRowView)_frontsCatalog.HeightBindingSource.Current).Row["Height"]);
 
-            if (FrontsCatalog.WidthBindingSource.Count > 0)
-                Width = Convert.ToInt32(((DataRowView)FrontsCatalog.WidthBindingSource.Current).Row["Width"]);
+            if (_frontsCatalog.WidthBindingSource.Count > 0)
+                width = Convert.ToInt32(((DataRowView)_frontsCatalog.WidthBindingSource.Current).Row["Width"]);
 
-            if (FrontsCatalog != null)
-                if (FrontsCatalog.WidthBindingSource.Count > 0)
+            if (_frontsCatalog != null)
+                if (_frontsCatalog.WidthBindingSource.Count > 0)
                 {
-                    if (((DataRowView)FrontsCatalog.WidthBindingSource.Current)["Width"] != DBNull.Value)
+                    if (((DataRowView)_frontsCatalog.WidthBindingSource.Current)["Width"] != DBNull.Value)
                     {
-                        FrontConfigID = FrontsCatalog.GetFrontConfigID(((DataRowView)FrontsCatalog.FrontsBindingSource.Current)["FrontName"].ToString(),
-                            Convert.ToInt32(((DataRowView)FrontsCatalog.FrameColorsBindingSource.Current)["ColorID"]),
-                            Convert.ToInt32(((DataRowView)FrontsCatalog.TechnoFrameColorsBindingSource.Current)["ColorID"]),
-                            Convert.ToInt32(((DataRowView)FrontsCatalog.PatinaBindingSource.Current)["PatinaID"]),
-                            Convert.ToInt32(((DataRowView)FrontsCatalog.InsetTypesBindingSource.Current)["InsetTypeID"]),
-                            Convert.ToInt32(((DataRowView)FrontsCatalog.InsetColorsBindingSource.Current)["InsetColorID"]),
-                            Convert.ToInt32(((DataRowView)FrontsCatalog.TechnoInsetTypesBindingSource.Current)["InsetTypeID"]),
-                            Convert.ToInt32(((DataRowView)FrontsCatalog.TechnoInsetColorsBindingSource.Current)["InsetColorID"]),
-                            Height, Width, ref FrontID, ref FactoryID);
+                        frontConfigId = _frontsCatalog.GetFrontConfigID(((DataRowView)_frontsCatalog.FrontsBindingSource.Current)["FrontName"].ToString(),
+                            Convert.ToInt32(((DataRowView)_frontsCatalog.FrameColorsBindingSource.Current)["ColorID"]),
+                            Convert.ToInt32(((DataRowView)_frontsCatalog.TechnoFrameColorsBindingSource.Current)["ColorID"]),
+                            Convert.ToInt32(((DataRowView)_frontsCatalog.PatinaBindingSource.Current)["PatinaID"]),
+                            Convert.ToInt32(((DataRowView)_frontsCatalog.InsetTypesBindingSource.Current)["InsetTypeID"]),
+                            Convert.ToInt32(((DataRowView)_frontsCatalog.InsetColorsBindingSource.Current)["InsetColorID"]),
+                            Convert.ToInt32(((DataRowView)_frontsCatalog.TechnoInsetTypesBindingSource.Current)["InsetTypeID"]),
+                            Convert.ToInt32(((DataRowView)_frontsCatalog.TechnoInsetColorsBindingSource.Current)["InsetColorID"]),
+                            height, width, ref frontId, ref factoryId);
                     }
                 }
 
-            DataRow NewRow = FrontsDT.NewRow();
+            DataRow newRow = _frontsDt.NewRow();
 
-            NewRow["FrameColor"] = FrameColor;
-            NewRow["InsetType"] = InsetType;
-            NewRow["InsetColor"] = InsetColor;
-            NewRow["Front"] = Front;
-            NewRow["LabelsCount"] = LabelsCount;
-            NewRow["PositionsCount"] = PositionsCount;
-            NewRow["FrontConfigID"] = FrontConfigID;
-            NewRow["FrontID"] = FrontID;
-            NewRow["ColorID"] = Convert.ToInt32(((DataRowView)FrontsCatalog.FrameColorsBindingSource.Current)["ColorID"]);
-            NewRow["TechnoColorID"] = Convert.ToInt32(((DataRowView)FrontsCatalog.TechnoFrameColorsBindingSource.Current)["ColorID"]);
+            newRow["FrameColor"] = frameColor;
+            newRow["InsetType"] = insetType;
+            newRow["InsetColor"] = insetColor;
+            newRow["Front"] = front;
+            newRow["LabelsCount"] = labelsCount;
+            newRow["PositionsCount"] = positionsCount;
+            newRow["FrontConfigID"] = frontConfigId;
+            newRow["FrontID"] = frontId;
+            newRow["ColorID"] = Convert.ToInt32(((DataRowView)_frontsCatalog.FrameColorsBindingSource.Current)["ColorID"]);
+            newRow["TechnoColorID"] = Convert.ToInt32(((DataRowView)_frontsCatalog.TechnoFrameColorsBindingSource.Current)["ColorID"]);
 
             if (kryptonCheckSet2.CheckedIndex == 0)
-                NewRow["FactoryType"] = 2;
+                newRow["FactoryType"] = 2;
             if (kryptonCheckSet2.CheckedIndex == 1)
-                NewRow["FactoryType"] = 1;
-            FrontsDT.Rows.Add(NewRow);
+                newRow["FactoryType"] = 1;
+            _frontsDt.Rows.Add(newRow);
         }
 
         private void KryptonContextMenuItem1_Click(object sender, EventArgs e)
         {
-            SampleLabelManager.ClearOrderData();
-            FrontsDT.Clear();
+            _sampleLabelManager.ClearOrderData();
+            _frontsDt.Clear();
         }
 
         private void kryptonContextMenuItem2_Click(object sender, EventArgs e)
         {
-            SampleLabelManager.ClearLabelInfo();
+            _sampleLabelManager.ClearLabelInfo();
 
             //Проверка
-            if (FrontsDT.Rows.Count == 0)
+            if (_frontsDt.Rows.Count == 0)
             {
-                Infinium.LightMessageBox.Show(ref TopForm, false,
+                Infinium.LightMessageBox.Show(ref _topForm, false,
                     "Очередь для печати пуста",
                     "Ошибка печати");
                 return;
             }
 
-            for (int i = 0; i < FrontsDT.Rows.Count; i++)
+            for (int i = 0; i < _frontsDt.Rows.Count; i++)
             {
-                int LabelsCount = Convert.ToInt32(FrontsDT.Rows[i]["LabelsCount"]);
-                int FrontConfigID = Convert.ToInt32(FrontsDT.Rows[i]["FrontConfigID"]);
-                int FrontID = 0;
-                int ColorID = 0;
-                int TechnoColorID = 0;
-                int SampleLabelID = 0;
-                if (FrontsDT.Rows[i]["FrontID"] != DBNull.Value)
-                    FrontID = Convert.ToInt32(FrontsDT.Rows[i]["FrontID"]);
-                if (FrontsDT.Rows[i]["ColorID"] != DBNull.Value)
-                    ColorID = Convert.ToInt32(FrontsDT.Rows[i]["ColorID"]);
-                if (FrontsDT.Rows[i]["TechnoColorID"] != DBNull.Value)
-                    TechnoColorID = Convert.ToInt32(FrontsDT.Rows[i]["TechnoColorID"]);
-                for (int j = 0; j < LabelsCount; j++)
+                int labelsCount = Convert.ToInt32(_frontsDt.Rows[i]["LabelsCount"]);
+                int frontConfigId = Convert.ToInt32(_frontsDt.Rows[i]["FrontConfigID"]);
+                int frontId = 0;
+                int colorId = 0;
+                int technoColorId = 0;
+                int sampleLabelId = 0;
+                if (_frontsDt.Rows[i]["FrontID"] != DBNull.Value)
+                    frontId = Convert.ToInt32(_frontsDt.Rows[i]["FrontID"]);
+                if (_frontsDt.Rows[i]["ColorID"] != DBNull.Value)
+                    colorId = Convert.ToInt32(_frontsDt.Rows[i]["ColorID"]);
+                if (_frontsDt.Rows[i]["TechnoColorID"] != DBNull.Value)
+                    technoColorId = Convert.ToInt32(_frontsDt.Rows[i]["TechnoColorID"]);
+                for (int j = 0; j < labelsCount; j++)
                 {
-                    SampleInfo LabelInfo = new SampleInfo();
+                    SampleInfo labelInfo = new SampleInfo();
 
-                    DataTable DT = FrontsDT.Clone();
+                    DataTable dt = _frontsDt.Clone();
 
-                    DataRow destRow = DT.NewRow();
-                    foreach (DataColumn column in FrontsDT.Columns)
+                    DataRow destRow = dt.NewRow();
+                    foreach (DataColumn column in _frontsDt.Columns)
                     {
                         if (column.ColumnName == "FactoryType")
                             continue;
-                        destRow[column.ColumnName] = FrontsDT.Rows[i][column.ColumnName];
+                        destRow[column.ColumnName] = _frontsDt.Rows[i][column.ColumnName];
                     }
-                    LabelInfo.ProductType = 0;
-                    LabelInfo.Impost = string.Empty;
-                    if ((FrontID == 3630 || FrontID == 15003) && (ColorID == TechnoColorID))
-                        LabelInfo.Impost = " с импостом";
-                    SampleLabelID = SampleLabelManager.SaveSampleLabel(FrontConfigID, DateTime.Now, Security.CurrentUserID, 0);
-                    LabelInfo.BarcodeNumber = SampleLabelManager.GetBarcodeNumber(17, SampleLabelID);
-                    LabelInfo.FactoryType = Convert.ToInt32(FrontsDT.Rows[i]["FactoryType"]);
-                    LabelInfo.DocDateTime = DateTime.Now.ToString("dd.MM.yyyy");
-                    DT.Rows.Add(destRow);
-                    LabelInfo.OrderData = DT;
+                    labelInfo.ProductType = 0;
+                    labelInfo.Impost = string.Empty;
+                    if ((frontId == 3630 || frontId == 15003) && (colorId == technoColorId))
+                        labelInfo.Impost = " с импостом";
+                    sampleLabelId = _sampleLabelManager.SaveSampleLabel(frontConfigId, DateTime.Now, Security.CurrentUserID, 0);
+                    labelInfo.BarcodeNumber = _sampleLabelManager.GetBarcodeNumber(17, sampleLabelId);
+                    labelInfo.FactoryType = Convert.ToInt32(_frontsDt.Rows[i]["FactoryType"]);
+                    labelInfo.DocDateTime = DateTime.Now.ToString("dd.MM.yyyy");
+                    dt.Rows.Add(destRow);
+                    labelInfo.OrderData = dt;
 
-                    SampleLabelManager.AddLabelInfo(ref LabelInfo);
+                    _sampleLabelManager.AddLabelInfo(ref labelInfo);
                 }
             }
-            PrintDialog.Document = SampleLabelManager.PD;
+            PrintDialog.Document = _sampleLabelManager.PD;
 
             if (PrintDialog.ShowDialog() == DialogResult.OK)
             {
-                SampleLabelManager.Print();
+                _sampleLabelManager.Print();
             }
         }
 
         private void FrontsDataGrid_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
         {
-            if (bCanEdit && e.Button == System.Windows.Forms.MouseButtons.Right)
+            if (_bCanEdit && e.Button == System.Windows.Forms.MouseButtons.Right)
             {
                 kryptonContextMenu3.Show(new Point(Cursor.Position.X - 212, Cursor.Position.Y - 10));
             }
@@ -1556,82 +1598,82 @@ namespace Infinium
 
         private void MinimizeButton_Click(object sender, EventArgs e)
         {
-            FormEvent = eHide;
+            _formEvent = EHide;
             AnimateTimer.Enabled = true;
         }
 
         private void kryptonContextMenuItem3_Click(object sender, EventArgs e)
         {
-            string Front = string.Empty;
-            string FrameColor = string.Empty;
-            string Patina = string.Empty;
-            string InsetType = string.Empty;
-            string InsetColor = string.Empty;
-            string TechnoInsetType = string.Empty;
-            string TechnoInsetColor = string.Empty;
+            string front = string.Empty;
+            string frameColor = string.Empty;
+            string patina = string.Empty;
+            string insetType = string.Empty;
+            string insetColor = string.Empty;
+            string technoInsetType = string.Empty;
+            string technoInsetColor = string.Empty;
 
-            string Height = string.Empty;
-            string Width = string.Empty;
+            string height = string.Empty;
+            string width = string.Empty;
 
-            bool PressOK = false;
-            string LabelsCount = string.Empty;
-            string PositionsCount = string.Empty;
-            PhantomForm PhantomForm = new Infinium.PhantomForm();
-            PhantomForm.Show();
-            SampleFrontsManually SampleLabelInfoMenu = new SampleFrontsManually(this);
-            TopForm = SampleLabelInfoMenu;
-            SampleLabelInfoMenu.ShowDialog();
-            Front = SampleLabelInfoMenu.Front;
-            FrameColor = SampleLabelInfoMenu.FrameColor;
-            Patina = SampleLabelInfoMenu.Patina;
-            InsetType = SampleLabelInfoMenu.InsetType;
-            InsetColor = SampleLabelInfoMenu.InsetColor;
-            TechnoInsetType = SampleLabelInfoMenu.TechnoInsetType;
-            TechnoInsetColor = SampleLabelInfoMenu.TechnoInsetColor;
-            Height = SampleLabelInfoMenu.LabelsHeight;
-            Width = SampleLabelInfoMenu.LabelsWidth;
-            LabelsCount = SampleLabelInfoMenu.LabelsCount;
-            PositionsCount = SampleLabelInfoMenu.PositionsCount;
-            PressOK = SampleLabelInfoMenu.PressOK;
+            bool pressOk = false;
+            string labelsCount = string.Empty;
+            string positionsCount = string.Empty;
+            PhantomForm phantomForm = new Infinium.PhantomForm();
+            phantomForm.Show();
+            SampleFrontsManually sampleLabelInfoMenu = new SampleFrontsManually(this);
+            _topForm = sampleLabelInfoMenu;
+            sampleLabelInfoMenu.ShowDialog();
+            front = sampleLabelInfoMenu.Front;
+            frameColor = sampleLabelInfoMenu.FrameColor;
+            patina = sampleLabelInfoMenu.Patina;
+            insetType = sampleLabelInfoMenu.InsetType;
+            insetColor = sampleLabelInfoMenu.InsetColor;
+            technoInsetType = sampleLabelInfoMenu.TechnoInsetType;
+            technoInsetColor = sampleLabelInfoMenu.TechnoInsetColor;
+            height = sampleLabelInfoMenu.LabelsHeight;
+            width = sampleLabelInfoMenu.LabelsWidth;
+            labelsCount = sampleLabelInfoMenu.LabelsCount;
+            positionsCount = sampleLabelInfoMenu.PositionsCount;
+            pressOk = sampleLabelInfoMenu.PressOK;
 
-            PhantomForm.Close();
-            PhantomForm.Dispose();
-            SampleLabelInfoMenu.Dispose();
-            TopForm = null;
+            phantomForm.Close();
+            phantomForm.Dispose();
+            sampleLabelInfoMenu.Dispose();
+            _topForm = null;
 
-            if (!PressOK)
+            if (!pressOk)
                 return;
-            if (LabelsCount.Length == 0)
+            if (labelsCount.Length == 0)
                 return;
-            int FrontConfigID = 0;
-            DataRow NewRow = FrontsDT.NewRow();
+            int frontConfigId = 0;
+            DataRow newRow = _frontsDt.NewRow();
 
-            NewRow["FrameColor"] = FrameColor;
-            NewRow["InsetType"] = InsetType;
-            NewRow["InsetColor"] = InsetColor;
-            NewRow["Front"] = Front;
-            NewRow["LabelsCount"] = LabelsCount;
-            NewRow["PositionsCount"] = PositionsCount;
-            NewRow["FrontConfigID"] = FrontConfigID;
+            newRow["FrameColor"] = frameColor;
+            newRow["InsetType"] = insetType;
+            newRow["InsetColor"] = insetColor;
+            newRow["Front"] = front;
+            newRow["LabelsCount"] = labelsCount;
+            newRow["PositionsCount"] = positionsCount;
+            newRow["FrontConfigID"] = frontConfigId;
             //NewRow["FrontID"] = Convert.ToInt32(((DataRowView)FrontsCatalog.FrontsBindingSource.Current)["FrontID"]);
             //NewRow["ColorID"] = Convert.ToInt32(((DataRowView)FrontsCatalog.FrameColorsBindingSource.Current)["ColorID"]);
             //NewRow["TechnoColorID"] = Convert.ToInt32(((DataRowView)FrontsCatalog.TechnoFrameColorsBindingSource.Current)["ColorID"]);
 
             if (kryptonCheckSet2.CheckedIndex == 0)
-                NewRow["FactoryType"] = 2;
+                newRow["FactoryType"] = 2;
             if (kryptonCheckSet2.CheckedIndex == 1)
-                NewRow["FactoryType"] = 1;
-            FrontsDT.Rows.Add(NewRow);
+                newRow["FactoryType"] = 1;
+            _frontsDt.Rows.Add(newRow);
         }
 
         private void ProductsDataGrid_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
         {
-            if (bCanEdit && e.Button == System.Windows.Forms.MouseButtons.Right)
+            if (_bCanEdit && e.Button == System.Windows.Forms.MouseButtons.Right)
             {
                 kryptonContextMenu2.Show(new Point(Cursor.Position.X - 212, Cursor.Position.Y - 10));
-                int ProductID = -1;
+                int productId = -1;
                 if (ProductsDataGrid.SelectedRows.Count > 0 && ProductsDataGrid.SelectedRows[0].Cells["ProductID"].Value != DBNull.Value)
-                    ProductID = Convert.ToInt32(ProductsDataGrid.SelectedRows[0].Cells["ProductID"].Value);
+                    productId = Convert.ToInt32(ProductsDataGrid.SelectedRows[0].Cells["ProductID"].Value);
                 kryptonContextMenuItem21.Enabled = false;
                 kryptonContextMenuItem22.Enabled = false;
                 kryptonContextMenuItem23.Enabled = false;
@@ -1640,35 +1682,35 @@ namespace Infinium
                 kryptonContextMenuItem26.Enabled = false;
                 kryptonContextMenuItem28.Enabled = false;
                 kryptonContextMenuItem29.Enabled = false;
-                if (ProductID == 46) // патриция 1.x
+                if (productId == 46) // патриция 1.x
                 {
                     kryptonContextMenuItem21.Enabled = true;
                 }
-                if (ProductID == 61) // куб
+                if (productId == 61) // куб
                 {
                     kryptonContextMenuItem22.Enabled = true;
                 }
-                if (ProductID == 63) // норманн
+                if (productId == 63) // норманн
                 {
                     kryptonContextMenuItem23.Enabled = true;
                 }
-                if (ProductID == 73) // патриция 1.0
+                if (productId == 73) // патриция 1.0
                 {
                     kryptonContextMenuItem24.Enabled = true;
                 }
-                if (ProductID == 74) // патриция 2.x
+                if (productId == 74) // патриция 2.x
                 {
                     kryptonContextMenuItem25.Enabled = true;
                 }
-                if (ProductID == 75) // патриция 3.x
+                if (productId == 75) // патриция 3.x
                 {
                     kryptonContextMenuItem26.Enabled = true;
                 }
-                if (ProductID == 80) // ПАТРИЦИЯ-4.0 (С)
+                if (productId == 80) // ПАТРИЦИЯ-4.0 (С)
                 {
                     kryptonContextMenuItem28.Enabled = true;
                 }
-                if (ProductID == 82) // КРИСМАР
+                if (productId == 82) // КРИСМАР
                 {
                     kryptonContextMenuItem29.Enabled = true;
                 }
@@ -1677,74 +1719,74 @@ namespace Infinium
 
         private void kryptonContextMenuItem8_Click(object sender, EventArgs e)
         {
-            int DecorConfigID = 0;
-            bool PressOK = false;
+            int decorConfigId = 0;
+            bool pressOk = false;
 
-            string LabelsCount = string.Empty;
-            string PositionsCount = string.Empty;
-            string LabelsLength = string.Empty;
-            string LabelsHeight = string.Empty;
-            string LabelsWidth = string.Empty;
-            string Product = string.Empty;
-            string Decor = string.Empty;
-            string Color = string.Empty;
-            string Patina = string.Empty;
+            string labelsCount = string.Empty;
+            string positionsCount = string.Empty;
+            string labelsLength = string.Empty;
+            string labelsHeight = string.Empty;
+            string labelsWidth = string.Empty;
+            string product = string.Empty;
+            string decor = string.Empty;
+            string color = string.Empty;
+            string patina = string.Empty;
 
-            PhantomForm PhantomForm = new Infinium.PhantomForm();
-            PhantomForm.Show();
-            SampleDecorManually SampleLabelInfo = new SampleDecorManually(this);
-            TopForm = SampleLabelInfo;
-            SampleLabelInfo.ShowDialog();
-            PressOK = SampleLabelInfo.PressOK;
+            PhantomForm phantomForm = new Infinium.PhantomForm();
+            phantomForm.Show();
+            SampleDecorManually sampleLabelInfo = new SampleDecorManually(this);
+            _topForm = sampleLabelInfo;
+            sampleLabelInfo.ShowDialog();
+            pressOk = sampleLabelInfo.PressOK;
 
-            Product = SampleLabelInfo.Product;
-            Decor = SampleLabelInfo.Decor;
-            Color = SampleLabelInfo.Color;
-            Patina = SampleLabelInfo.Patina;
-            LabelsCount = SampleLabelInfo.LabelsCount;
-            LabelsLength = SampleLabelInfo.LabelsLength;
-            LabelsHeight = SampleLabelInfo.LabelsHeight;
-            LabelsWidth = SampleLabelInfo.LabelsWidth;
-            PositionsCount = SampleLabelInfo.PositionsCount;
+            product = sampleLabelInfo.Product;
+            decor = sampleLabelInfo.Decor;
+            color = sampleLabelInfo.Color;
+            patina = sampleLabelInfo.Patina;
+            labelsCount = sampleLabelInfo.LabelsCount;
+            labelsLength = sampleLabelInfo.LabelsLength;
+            labelsHeight = sampleLabelInfo.LabelsHeight;
+            labelsWidth = sampleLabelInfo.LabelsWidth;
+            positionsCount = sampleLabelInfo.PositionsCount;
 
-            if (Patina.Length > 0 || Patina != "-")
-                Color += " " + Patina;
+            if (patina.Length > 0 || patina != "-")
+                color += " " + patina;
 
-            PhantomForm.Close();
-            PhantomForm.Dispose();
-            SampleLabelInfo.Dispose();
-            TopForm = null;
+            phantomForm.Close();
+            phantomForm.Dispose();
+            sampleLabelInfo.Dispose();
+            _topForm = null;
 
-            if (!PressOK)
+            if (!pressOk)
                 return;
 
-            DataRow NewRow = DecorDT.NewRow();
+            DataRow newRow = _decorDt.NewRow();
 
-            NewRow["Decor"] = Decor;
-            NewRow["Color"] = Color;
-            NewRow["Product"] = Product;
-            NewRow["Length"] = LabelsLength.ToString();
-            NewRow["Height"] = LabelsHeight.ToString();
-            NewRow["Width"] = LabelsWidth.ToString();
-            NewRow["LabelsCount"] = LabelsCount;
-            NewRow["PositionsCount"] = PositionsCount;
-            NewRow["DecorConfigID"] = DecorConfigID;
+            newRow["Decor"] = decor;
+            newRow["Color"] = color;
+            newRow["Product"] = product;
+            newRow["Length"] = labelsLength.ToString();
+            newRow["Height"] = labelsHeight.ToString();
+            newRow["Width"] = labelsWidth.ToString();
+            newRow["LabelsCount"] = labelsCount;
+            newRow["PositionsCount"] = positionsCount;
+            newRow["DecorConfigID"] = decorConfigId;
 
             if (kryptonCheckSet2.CheckedIndex == 0)
-                NewRow["FactoryType"] = 2;
+                newRow["FactoryType"] = 2;
             if (kryptonCheckSet2.CheckedIndex == 1)
-                NewRow["FactoryType"] = 1;
-            DecorDT.Rows.Add(NewRow);
+                newRow["FactoryType"] = 1;
+            _decorDt.Rows.Add(newRow);
         }
 
         private void ColorsDataGrid_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
         {
-            if (bCanEdit && e.Button == System.Windows.Forms.MouseButtons.Right)
+            if (_bCanEdit && e.Button == System.Windows.Forms.MouseButtons.Right)
             {
                 kryptonContextMenu2.Show(new Point(Cursor.Position.X - 212, Cursor.Position.Y - 10));
-                int ProductID = -1;
+                int productId = -1;
                 if (ProductsDataGrid.SelectedRows.Count > 0 && ProductsDataGrid.SelectedRows[0].Cells["ProductID"].Value != DBNull.Value)
-                    ProductID = Convert.ToInt32(ProductsDataGrid.SelectedRows[0].Cells["ProductID"].Value);
+                    productId = Convert.ToInt32(ProductsDataGrid.SelectedRows[0].Cells["ProductID"].Value);
                 kryptonContextMenuItem21.Enabled = false;
                 kryptonContextMenuItem22.Enabled = false;
                 kryptonContextMenuItem23.Enabled = false;
@@ -1753,35 +1795,35 @@ namespace Infinium
                 kryptonContextMenuItem26.Enabled = false;
                 kryptonContextMenuItem28.Enabled = false;
                 kryptonContextMenuItem29.Enabled = false;
-                if (ProductID == 46) // патриция 1.x
+                if (productId == 46) // патриция 1.x
                 {
                     kryptonContextMenuItem21.Enabled = true;
                 }
-                if (ProductID == 61) // куб
+                if (productId == 61) // куб
                 {
                     kryptonContextMenuItem22.Enabled = true;
                 }
-                if (ProductID == 63) // норманн
+                if (productId == 63) // норманн
                 {
                     kryptonContextMenuItem23.Enabled = true;
                 }
-                if (ProductID == 73) // патриция 1.0
+                if (productId == 73) // патриция 1.0
                 {
                     kryptonContextMenuItem24.Enabled = true;
                 }
-                if (ProductID == 74) // патриция 2.x
+                if (productId == 74) // патриция 2.x
                 {
                     kryptonContextMenuItem25.Enabled = true;
                 }
-                if (ProductID == 75) // патриция 3.x
+                if (productId == 75) // патриция 3.x
                 {
                     kryptonContextMenuItem26.Enabled = true;
                 }
-                if (ProductID == 80) // ПАТРИЦИЯ-4.0 (С)
+                if (productId == 80) // ПАТРИЦИЯ-4.0 (С)
                 {
                     kryptonContextMenuItem28.Enabled = true;
                 }
-                if (ProductID == 82) // КРИСМАР
+                if (productId == 82) // КРИСМАР
                 {
                     kryptonContextMenuItem29.Enabled = true;
                 }
@@ -1790,13 +1832,13 @@ namespace Infinium
 
         private void DecorDataGrid_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
         {
-            if (bCanEdit && e.Button == System.Windows.Forms.MouseButtons.Right)
+            if (_bCanEdit && e.Button == System.Windows.Forms.MouseButtons.Right)
             {
                 kryptonContextMenu2.Show(new Point(Cursor.Position.X - 212, Cursor.Position.Y - 10));
 
-                int ProductID = -1;
+                int productId = -1;
                 if (ProductsDataGrid.SelectedRows.Count > 0 && ProductsDataGrid.SelectedRows[0].Cells["ProductID"].Value != DBNull.Value)
-                    ProductID = Convert.ToInt32(ProductsDataGrid.SelectedRows[0].Cells["ProductID"].Value);
+                    productId = Convert.ToInt32(ProductsDataGrid.SelectedRows[0].Cells["ProductID"].Value);
                 kryptonContextMenuItem21.Enabled = false;
                 kryptonContextMenuItem22.Enabled = false;
                 kryptonContextMenuItem23.Enabled = false;
@@ -1805,35 +1847,35 @@ namespace Infinium
                 kryptonContextMenuItem26.Enabled = false;
                 kryptonContextMenuItem28.Enabled = false;
                 kryptonContextMenuItem29.Enabled = false;
-                if (ProductID == 46) // патриция 1.x
+                if (productId == 46) // патриция 1.x
                 {
                     kryptonContextMenuItem21.Enabled = true;
                 }
-                if (ProductID == 61) // куб
+                if (productId == 61) // куб
                 {
                     kryptonContextMenuItem22.Enabled = true;
                 }
-                if (ProductID == 63) // норманн
+                if (productId == 63) // норманн
                 {
                     kryptonContextMenuItem23.Enabled = true;
                 }
-                if (ProductID == 73) // патриция 1.0
+                if (productId == 73) // патриция 1.0
                 {
                     kryptonContextMenuItem24.Enabled = true;
                 }
-                if (ProductID == 74) // патриция 2.x
+                if (productId == 74) // патриция 2.x
                 {
                     kryptonContextMenuItem25.Enabled = true;
                 }
-                if (ProductID == 75) // патриция 3.x
+                if (productId == 75) // патриция 3.x
                 {
                     kryptonContextMenuItem26.Enabled = true;
                 }
-                if (ProductID == 80) // ПАТРИЦИЯ-4.0 (С)
+                if (productId == 80) // ПАТРИЦИЯ-4.0 (С)
                 {
                     kryptonContextMenuItem28.Enabled = true;
                 }
-                if (ProductID == 82) // КРИСМАР
+                if (productId == 82) // КРИСМАР
                 {
                     kryptonContextMenuItem29.Enabled = true;
                 }
@@ -1842,155 +1884,155 @@ namespace Infinium
 
         private void kryptonContextMenuItem4_Click(object sender, EventArgs e)
         {
-            int Length = 0;
-            int Height = 0;
-            int Width = 0;
-            int DecorConfigID = 0;
+            int length = 0;
+            int height = 0;
+            int width = 0;
+            int decorConfigId = 0;
 
-            if (DecorCatalog.LengthBindingSource.Count > 0)
-                Length = Convert.ToInt32(((DataRowView)DecorCatalog.LengthBindingSource.Current).Row["Length"]);
+            if (_decorCatalog.LengthBindingSource.Count > 0)
+                length = Convert.ToInt32(((DataRowView)_decorCatalog.LengthBindingSource.Current).Row["Length"]);
 
-            if (DecorCatalog.HeightBindingSource.Count > 0)
-                Height = Convert.ToInt32(((DataRowView)DecorCatalog.HeightBindingSource.Current).Row["Height"]);
+            if (_decorCatalog.HeightBindingSource.Count > 0)
+                height = Convert.ToInt32(((DataRowView)_decorCatalog.HeightBindingSource.Current).Row["Height"]);
 
-            if (DecorCatalog.WidthBindingSource.Count > 0)
-                Width = Convert.ToInt32(((DataRowView)DecorCatalog.WidthBindingSource.Current).Row["Width"]);
+            if (_decorCatalog.WidthBindingSource.Count > 0)
+                width = Convert.ToInt32(((DataRowView)_decorCatalog.WidthBindingSource.Current).Row["Width"]);
 
             bool bNeedLength = false;
             bool bNeedHeight = false;
             bool bNeedWidth = false;
-            bool PressOK = false;
-            int LabelsCount = 0;
-            int PositionsCount = 0;
-            int LabelsLength = 0;
-            int LabelsHeight = 0;
-            int LabelsWidth = 0;
-            if (Length == 0)
+            bool pressOk = false;
+            int labelsCount = 0;
+            int positionsCount = 0;
+            int labelsLength = 0;
+            int labelsHeight = 0;
+            int labelsWidth = 0;
+            if (length == 0)
                 bNeedLength = true;
-            if (Height == 0)
+            if (height == 0)
                 bNeedHeight = true;
-            if (Width == 0)
+            if (width == 0)
                 bNeedWidth = true;
-            PhantomForm PhantomForm = new Infinium.PhantomForm();
-            PhantomForm.Show();
-            SampleDecorLabelInfoMenu SampleLabelInfoMenu = new SampleDecorLabelInfoMenu(this, bNeedLength, bNeedHeight, bNeedWidth);
-            TopForm = SampleLabelInfoMenu;
-            SampleLabelInfoMenu.ShowDialog();
-            PressOK = SampleLabelInfoMenu.PressOK;
-            LabelsCount = SampleLabelInfoMenu.LabelsCount;
-            LabelsLength = SampleLabelInfoMenu.LabelsLength;
-            LabelsHeight = SampleLabelInfoMenu.LabelsHeight;
-            LabelsWidth = SampleLabelInfoMenu.LabelsWidth;
-            PositionsCount = SampleLabelInfoMenu.PositionsCount;
-            PhantomForm.Close();
-            PhantomForm.Dispose();
-            SampleLabelInfoMenu.Dispose();
-            TopForm = null;
+            PhantomForm phantomForm = new Infinium.PhantomForm();
+            phantomForm.Show();
+            SampleDecorLabelInfoMenu sampleLabelInfoMenu = new SampleDecorLabelInfoMenu(this, bNeedLength, bNeedHeight, bNeedWidth);
+            _topForm = sampleLabelInfoMenu;
+            sampleLabelInfoMenu.ShowDialog();
+            pressOk = sampleLabelInfoMenu.PressOK;
+            labelsCount = sampleLabelInfoMenu.LabelsCount;
+            labelsLength = sampleLabelInfoMenu.LabelsLength;
+            labelsHeight = sampleLabelInfoMenu.LabelsHeight;
+            labelsWidth = sampleLabelInfoMenu.LabelsWidth;
+            positionsCount = sampleLabelInfoMenu.PositionsCount;
+            phantomForm.Close();
+            phantomForm.Dispose();
+            sampleLabelInfoMenu.Dispose();
+            _topForm = null;
 
-            if (!PressOK)
+            if (!pressOk)
                 return;
 
-            if (Length > 0)
-                LabelsLength = Length;
-            if (Height > 0)
-                LabelsHeight = Height;
-            if (Width > 0)
-                LabelsWidth = Width;
-            string Product = ProductsDataGrid.SelectedRows[0].Cells["ProductName"].Value.ToString();
-            string Decor = DecorDataGrid.SelectedRows[0].Cells["Name"].Value.ToString();
-            string Color = ColorsDataGrid.SelectedRows[0].Cells["ColorName"].Value.ToString();
-            string Patina = DecorPatinaDataGrid.SelectedRows[0].Cells["PatinaName"].Value.ToString();
-            if (Patina.Length > 0 && Patina != "-")
-                Color += " " + Patina;
+            if (length > 0)
+                labelsLength = length;
+            if (height > 0)
+                labelsHeight = height;
+            if (width > 0)
+                labelsWidth = width;
+            string product = ProductsDataGrid.SelectedRows[0].Cells["ProductName"].Value.ToString();
+            string decor = DecorDataGrid.SelectedRows[0].Cells["Name"].Value.ToString();
+            string color = ColorsDataGrid.SelectedRows[0].Cells["ColorName"].Value.ToString();
+            string patina = DecorPatinaDataGrid.SelectedRows[0].Cells["PatinaName"].Value.ToString();
+            if (patina.Length > 0 && patina != "-")
+                color += " " + patina;
 
-            if (DecorCatalog != null)
-                if (DecorCatalog.WidthBindingSource.Count > 0)
+            if (_decorCatalog != null)
+                if (_decorCatalog.WidthBindingSource.Count > 0)
                 {
-                    if (((DataRowView)DecorCatalog.WidthBindingSource.Current)["Width"] != DBNull.Value)
+                    if (((DataRowView)_decorCatalog.WidthBindingSource.Current)["Width"] != DBNull.Value)
                     {
-                        DecorConfigID = DecorCatalog.GetDecorConfigID(Convert.ToInt32(((DataRowView)DecorCatalog.DecorProductsBindingSource.Current)["ProductID"]),
-                                                      ((DataRowView)DecorCatalog.DecorItemBindingSource.Current)["Name"].ToString(),
-                                                      Convert.ToInt32(((DataRowView)DecorCatalog.ItemColorsBindingSource.Current)["ColorID"]),
-                                                      Convert.ToInt32(((DataRowView)DecorCatalog.ItemPatinaBindingSource.Current)["PatinaID"]),
-                    Convert.ToInt32(((DataRowView)DecorCatalog.ItemInsetTypesBindingSource.Current)["InsetTypeID"]),
-                    Convert.ToInt32(((DataRowView)DecorCatalog.ItemInsetColorsBindingSource.Current)["InsetColorID"]),
-                                                      Length, Height, Width);
+                        decorConfigId = _decorCatalog.GetDecorConfigID(Convert.ToInt32(((DataRowView)_decorCatalog.DecorProductsBindingSource.Current)["ProductID"]),
+                                                      ((DataRowView)_decorCatalog.DecorItemBindingSource.Current)["Name"].ToString(),
+                                                      Convert.ToInt32(((DataRowView)_decorCatalog.ItemColorsBindingSource.Current)["ColorID"]),
+                                                      Convert.ToInt32(((DataRowView)_decorCatalog.ItemPatinaBindingSource.Current)["PatinaID"]),
+                    Convert.ToInt32(((DataRowView)_decorCatalog.ItemInsetTypesBindingSource.Current)["InsetTypeID"]),
+                    Convert.ToInt32(((DataRowView)_decorCatalog.ItemInsetColorsBindingSource.Current)["InsetColorID"]),
+                                                      length, height, width);
                     }
                 }
 
-            DataRow NewRow = DecorDT.NewRow();
+            DataRow newRow = _decorDt.NewRow();
 
-            NewRow["Decor"] = Decor;
-            NewRow["Color"] = Color;
-            NewRow["Product"] = Product;
-            NewRow["Length"] = LabelsLength.ToString();
-            NewRow["Height"] = LabelsHeight.ToString();
-            NewRow["Width"] = LabelsWidth.ToString();
-            NewRow["LabelsCount"] = LabelsCount;
-            NewRow["PositionsCount"] = PositionsCount;
-            NewRow["DecorConfigID"] = DecorConfigID;
+            newRow["Decor"] = decor;
+            newRow["Color"] = color;
+            newRow["Product"] = product;
+            newRow["Length"] = labelsLength.ToString();
+            newRow["Height"] = labelsHeight.ToString();
+            newRow["Width"] = labelsWidth.ToString();
+            newRow["LabelsCount"] = labelsCount;
+            newRow["PositionsCount"] = positionsCount;
+            newRow["DecorConfigID"] = decorConfigId;
 
             if (kryptonCheckSet2.CheckedIndex == 0)
-                NewRow["FactoryType"] = 2;
+                newRow["FactoryType"] = 2;
             if (kryptonCheckSet2.CheckedIndex == 1)
-                NewRow["FactoryType"] = 1;
-            DecorDT.Rows.Add(NewRow);
+                newRow["FactoryType"] = 1;
+            _decorDt.Rows.Add(newRow);
             //DecorDT = DecorCatalog.GetBagetDT();
         }
 
         private void kryptonContextMenuItem5_Click(object sender, EventArgs e)
         {
-            SampleLabelManager.ClearOrderData();
-            DecorDT.Clear();
+            _sampleLabelManager.ClearOrderData();
+            _decorDt.Clear();
         }
 
         private void kryptonContextMenuItem6_Click(object sender, EventArgs e)
         {
-            SampleLabelManager.ClearLabelInfo();
+            _sampleLabelManager.ClearLabelInfo();
 
             //Проверка
-            if (DecorDT.Rows.Count == 0)
+            if (_decorDt.Rows.Count == 0)
             {
-                Infinium.LightMessageBox.Show(ref TopForm, false,
+                Infinium.LightMessageBox.Show(ref _topForm, false,
                     "Очередь для печати пуста",
                     "Ошибка печати");
                 return;
             }
 
-            for (int i = 0; i < DecorDT.Rows.Count; i++)
+            for (int i = 0; i < _decorDt.Rows.Count; i++)
             {
-                int LabelsCount = Convert.ToInt32(DecorDT.Rows[i]["LabelsCount"]);
-                int DecorConfigID = Convert.ToInt32(DecorDT.Rows[i]["DecorConfigID"]);
-                int SampleLabelID = 0;
-                for (int j = 0; j < LabelsCount; j++)
+                int labelsCount = Convert.ToInt32(_decorDt.Rows[i]["LabelsCount"]);
+                int decorConfigId = Convert.ToInt32(_decorDt.Rows[i]["DecorConfigID"]);
+                int sampleLabelId = 0;
+                for (int j = 0; j < labelsCount; j++)
                 {
-                    SampleInfo LabelInfo = new SampleInfo();
+                    SampleInfo labelInfo = new SampleInfo();
 
-                    DataTable DT = DecorDT.Clone();
+                    DataTable dt = _decorDt.Clone();
 
-                    DataRow destRow = DT.NewRow();
-                    foreach (DataColumn column in DecorDT.Columns)
+                    DataRow destRow = dt.NewRow();
+                    foreach (DataColumn column in _decorDt.Columns)
                     {
                         if (column.ColumnName == "FactoryType")
                             continue;
-                        destRow[column.ColumnName] = DecorDT.Rows[i][column.ColumnName];
+                        destRow[column.ColumnName] = _decorDt.Rows[i][column.ColumnName];
                     }
-                    LabelInfo.ProductType = 1;
-                    SampleLabelID = SampleLabelManager.SaveSampleLabel(DecorConfigID, DateTime.Now, Security.CurrentUserID, 1);
-                    LabelInfo.BarcodeNumber = SampleLabelManager.GetBarcodeNumber(17, SampleLabelID);
-                    LabelInfo.FactoryType = Convert.ToInt32(DecorDT.Rows[i]["FactoryType"]);
-                    LabelInfo.DocDateTime = DateTime.Now.ToString("dd.MM.yyyy");
-                    DT.Rows.Add(destRow);
-                    LabelInfo.OrderData = DT;
+                    labelInfo.ProductType = 1;
+                    sampleLabelId = _sampleLabelManager.SaveSampleLabel(decorConfigId, DateTime.Now, Security.CurrentUserID, 1);
+                    labelInfo.BarcodeNumber = _sampleLabelManager.GetBarcodeNumber(17, sampleLabelId);
+                    labelInfo.FactoryType = Convert.ToInt32(_decorDt.Rows[i]["FactoryType"]);
+                    labelInfo.DocDateTime = DateTime.Now.ToString("dd.MM.yyyy");
+                    dt.Rows.Add(destRow);
+                    labelInfo.OrderData = dt;
 
-                    SampleLabelManager.AddLabelInfo(ref LabelInfo);
+                    _sampleLabelManager.AddLabelInfo(ref labelInfo);
                 }
             }
-            PrintDialog.Document = SampleLabelManager.PD;
+            PrintDialog.Document = _sampleLabelManager.PD;
 
             if (PrintDialog.ShowDialog() == DialogResult.OK)
             {
-                SampleLabelManager.Print();
+                _sampleLabelManager.Print();
             }
         }
 
@@ -2039,49 +2081,49 @@ namespace Infinium
             //    MessageBox.Show("Файл больше 1,5 МБ и не может быть загружен");
             //    return;
             //}
-            AttachmentsDT.Clear();
+            _attachmentsDt.Clear();
 
-            DataRow NewRow = AttachmentsDT.NewRow();
-            NewRow["FileName"] = Path.GetFileNameWithoutExtension(openFileDialog4.FileName);
-            NewRow["Extension"] = fileInfo.Extension;
-            NewRow["Path"] = openFileDialog4.FileName;
-            AttachmentsDT.Rows.Add(NewRow);
+            DataRow newRow = _attachmentsDt.NewRow();
+            newRow["FileName"] = Path.GetFileNameWithoutExtension(openFileDialog4.FileName);
+            newRow["Extension"] = fileInfo.Extension;
+            newRow["Path"] = openFileDialog4.FileName;
+            _attachmentsDt.Rows.Add(newRow);
 
-            string FrontName = "";
-            int ColorID = -1;
-            int TechnoColorID = -1;
-            int PatinaID = -1;
-            int InsetTypeID = -1;
-            int InsetColorID = -1;
-            int TechnoInsetTypeID = -1;
-            int TechnoInsetColorID = -1;
+            string frontName = "";
+            int colorId = -1;
+            int technoColorId = -1;
+            int patinaId = -1;
+            int insetTypeId = -1;
+            int insetColorId = -1;
+            int technoInsetTypeId = -1;
+            int technoInsetColorId = -1;
 
             if (FrontsDataGrid.SelectedRows.Count > 0 && FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value != DBNull.Value)
-                FrontName = FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value.ToString();
+                frontName = FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value.ToString();
             if (FrameColorsDataGrid.SelectedRows.Count > 0 && FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value != DBNull.Value)
-                ColorID = Convert.ToInt32(FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
+                colorId = Convert.ToInt32(FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
             if (TechnoFrameColorsDataGrid.SelectedRows.Count > 0 && TechnoFrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value != DBNull.Value)
-                TechnoColorID = Convert.ToInt32(TechnoFrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
+                technoColorId = Convert.ToInt32(TechnoFrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
             if (PatinaDataGrid.SelectedRows.Count > 0 && PatinaDataGrid.SelectedRows[0].Cells["PatinaID"].Value != DBNull.Value)
-                PatinaID = Convert.ToInt32(PatinaDataGrid.SelectedRows[0].Cells["PatinaID"].Value);
+                patinaId = Convert.ToInt32(PatinaDataGrid.SelectedRows[0].Cells["PatinaID"].Value);
             if (InsetTypesDataGrid.SelectedRows.Count > 0 && InsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value != DBNull.Value)
-                InsetTypeID = Convert.ToInt32(InsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
+                insetTypeId = Convert.ToInt32(InsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
             if (InsetColorsDataGrid.SelectedRows.Count > 0 && InsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value != DBNull.Value)
-                InsetColorID = Convert.ToInt32(InsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
+                insetColorId = Convert.ToInt32(InsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
             if (TechnoInsetTypesDataGrid.SelectedRows.Count > 0 && TechnoInsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value != DBNull.Value)
-                TechnoInsetTypeID = Convert.ToInt32(TechnoInsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
+                technoInsetTypeId = Convert.ToInt32(TechnoInsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
             if (TechnoInsetColorsDataGrid.SelectedRows.Count > 0 && TechnoInsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value != DBNull.Value)
-                TechnoInsetColorID = Convert.ToInt32(TechnoInsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
+                technoInsetColorId = Convert.ToInt32(TechnoInsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
 
-            string Description = FrontsCatalog.GetFrontDescription(FrontName, ColorID, TechnoColorID, InsetTypeID, InsetColorID, TechnoInsetTypeID, TechnoInsetColorID, PatinaID);
+            string description = _frontsCatalog.GetFrontDescription(frontName, colorId, technoColorId, insetTypeId, insetColorId, technoInsetTypeId, technoInsetColorId, patinaId);
             //if (Description.Length == 0)
             //{
             //    MessageBox.Show("Отсутствует Description");
             //    return;
             //}
-            int ConfigID = FrontsCatalog.SaveFrontAttachments(FrontName, ColorID, TechnoColorID, InsetTypeID, InsetColorID, TechnoInsetTypeID, TechnoInsetColorID, PatinaID);
-            if (ConfigID != -1)
-                FrontsCatalog.AttachConfigImage(AttachmentsDT, ConfigID, 0, Description, FrontName,
+            int configId = _frontsCatalog.SaveFrontAttachments(frontName, colorId, technoColorId, insetTypeId, insetColorId, technoInsetTypeId, technoInsetColorId, patinaId);
+            if (configId != -1)
+                _frontsCatalog.AttachConfigImage(_attachmentsDt, configId, 0, description, frontName,
                     FrameColorsDataGrid.SelectedRows[0].Cells["ColorName"].FormattedValue.ToString(),
                     PatinaDataGrid.SelectedRows[0].Cells["PatinaName"].FormattedValue.ToString());
 
@@ -2089,13 +2131,13 @@ namespace Infinium
 
             if (cbFrontImage.Checked)
             {
-                Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Загрузка данных с сервера.\r\nПодождите..."); });
+                Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref _topForm, "Загрузка данных с сервера.\r\nПодождите..."); });
                 T.Start();
 
                 while (!SplashWindow.bSmallCreated) ;
 
-                if (ConfigID != -1)
-                    pcbxFrontImage.Image = FrontsCatalog.GetFrontConfigImage(ConfigID);
+                if (configId != -1)
+                    pcbxFrontImage.Image = _frontsCatalog.GetFrontConfigImage(configId);
 
                 while (SplashWindow.bSmallCreated)
                     SmallWaitForm.CloseS = true;
@@ -2109,47 +2151,47 @@ namespace Infinium
 
         private void cbFrontImage_CheckedChanged(object sender, EventArgs e)
         {
-            if (FrontsCatalog == null)
+            if (_frontsCatalog == null)
                 return;
 
-            string FrontName = "";
-            int ColorID = -1;
-            int TechnoColorID = -1;
-            int PatinaID = -1;
-            int InsetTypeID = -1;
-            int InsetColorID = -1;
-            int TechnoInsetTypeID = -1;
-            int TechnoInsetColorID = -1;
+            string frontName = "";
+            int colorId = -1;
+            int technoColorId = -1;
+            int patinaId = -1;
+            int insetTypeId = -1;
+            int insetColorId = -1;
+            int technoInsetTypeId = -1;
+            int technoInsetColorId = -1;
 
             if (FrontsDataGrid.SelectedRows.Count > 0 && FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value != DBNull.Value)
-                FrontName = FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value.ToString();
+                frontName = FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value.ToString();
             if (FrameColorsDataGrid.SelectedRows.Count > 0 && FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value != DBNull.Value)
-                ColorID = Convert.ToInt32(FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
+                colorId = Convert.ToInt32(FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
             if (TechnoFrameColorsDataGrid.SelectedRows.Count > 0 && TechnoFrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value != DBNull.Value)
-                TechnoColorID = Convert.ToInt32(TechnoFrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
+                technoColorId = Convert.ToInt32(TechnoFrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
             if (PatinaDataGrid.SelectedRows.Count > 0 && PatinaDataGrid.SelectedRows[0].Cells["PatinaID"].Value != DBNull.Value)
-                PatinaID = Convert.ToInt32(PatinaDataGrid.SelectedRows[0].Cells["PatinaID"].Value);
+                patinaId = Convert.ToInt32(PatinaDataGrid.SelectedRows[0].Cells["PatinaID"].Value);
             if (InsetTypesDataGrid.SelectedRows.Count > 0 && InsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value != DBNull.Value)
-                InsetTypeID = Convert.ToInt32(InsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
+                insetTypeId = Convert.ToInt32(InsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
             if (InsetColorsDataGrid.SelectedRows.Count > 0 && InsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value != DBNull.Value)
-                InsetColorID = Convert.ToInt32(InsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
+                insetColorId = Convert.ToInt32(InsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
             if (TechnoInsetTypesDataGrid.SelectedRows.Count > 0 && TechnoInsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value != DBNull.Value)
-                TechnoInsetTypeID = Convert.ToInt32(TechnoInsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
+                technoInsetTypeId = Convert.ToInt32(TechnoInsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
             if (TechnoInsetColorsDataGrid.SelectedRows.Count > 0 && TechnoInsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value != DBNull.Value)
-                TechnoInsetColorID = Convert.ToInt32(TechnoInsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
+                technoInsetColorId = Convert.ToInt32(TechnoInsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
 
             pcbxFrontImage.Image = null;
 
             if (cbFrontImage.Checked)
             {
-                Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Загрузка данных с сервера.\r\nПодождите..."); });
+                Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref _topForm, "Загрузка данных с сервера.\r\nПодождите..."); });
                 T.Start();
 
                 while (!SplashWindow.bSmallCreated) ;
 
-                int ConfigID = FrontsCatalog.GetFrontAttachments(FrontName, ColorID, TechnoColorID, InsetTypeID, InsetColorID, TechnoInsetTypeID, TechnoInsetColorID, PatinaID);
-                if (ConfigID != -1)
-                    pcbxFrontImage.Image = FrontsCatalog.GetFrontConfigImage(ConfigID);
+                int configId = _frontsCatalog.GetFrontAttachments(frontName, colorId, technoColorId, insetTypeId, insetColorId, technoInsetTypeId, technoInsetColorId, patinaId);
+                if (configId != -1)
+                    pcbxFrontImage.Image = _frontsCatalog.GetFrontConfigImage(configId);
 
                 while (SplashWindow.bSmallCreated)
                     SmallWaitForm.CloseS = true;
@@ -2166,21 +2208,21 @@ namespace Infinium
             if (pcbxFrontImage.Image == null)
                 return;
 
-            PhantomForm PhantomForm = new PhantomForm();
-            PhantomForm.Show();
+            PhantomForm phantomForm = new PhantomForm();
+            phantomForm.Show();
 
-            ZoomImageForm ZoomImageForm = new ZoomImageForm(pcbxFrontImage.Image, ref TopForm);
+            ZoomImageForm zoomImageForm = new ZoomImageForm(pcbxFrontImage.Image, ref _topForm);
 
-            TopForm = ZoomImageForm;
+            _topForm = zoomImageForm;
 
-            ZoomImageForm.ShowDialog();
+            zoomImageForm.ShowDialog();
 
-            PhantomForm.Close();
-            PhantomForm.Dispose();
+            phantomForm.Close();
+            phantomForm.Dispose();
 
-            TopForm = null;
+            _topForm = null;
 
-            ZoomImageForm.Dispose();
+            zoomImageForm.Dispose();
         }
 
         private void btnAddFrontImageButton_Click(object sender, EventArgs e)
@@ -2193,49 +2235,49 @@ namespace Infinium
 
         private void btnRemoveFrontImageButton_Click(object sender, EventArgs e)
         {
-            bool OKCancel = Infinium.LightMessageBox.Show(ref TopForm, true,
+            bool okCancel = Infinium.LightMessageBox.Show(ref _topForm, true,
                    "Вы уверены, что хотите удалить?",
                    "Удаление");
 
-            if (!OKCancel)
+            if (!okCancel)
                 return;
 
-            string FrontName = "";
-            int ColorID = -1;
-            int TechnoColorID = -1;
-            int PatinaID = -1;
-            int InsetTypeID = -1;
-            int InsetColorID = -1;
-            int TechnoInsetTypeID = -1;
-            int TechnoInsetColorID = -1;
+            string frontName = "";
+            int colorId = -1;
+            int technoColorId = -1;
+            int patinaId = -1;
+            int insetTypeId = -1;
+            int insetColorId = -1;
+            int technoInsetTypeId = -1;
+            int technoInsetColorId = -1;
 
             if (FrontsDataGrid.SelectedRows.Count > 0 && FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value != DBNull.Value)
-                FrontName = FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value.ToString();
+                frontName = FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value.ToString();
             if (FrameColorsDataGrid.SelectedRows.Count > 0 && FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value != DBNull.Value)
-                ColorID = Convert.ToInt32(FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
+                colorId = Convert.ToInt32(FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
             if (TechnoFrameColorsDataGrid.SelectedRows.Count > 0 && TechnoFrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value != DBNull.Value)
-                TechnoColorID = Convert.ToInt32(TechnoFrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
+                technoColorId = Convert.ToInt32(TechnoFrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
             if (PatinaDataGrid.SelectedRows.Count > 0 && PatinaDataGrid.SelectedRows[0].Cells["PatinaID"].Value != DBNull.Value)
-                PatinaID = Convert.ToInt32(PatinaDataGrid.SelectedRows[0].Cells["PatinaID"].Value);
+                patinaId = Convert.ToInt32(PatinaDataGrid.SelectedRows[0].Cells["PatinaID"].Value);
             if (InsetTypesDataGrid.SelectedRows.Count > 0 && InsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value != DBNull.Value)
-                InsetTypeID = Convert.ToInt32(InsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
+                insetTypeId = Convert.ToInt32(InsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
             if (InsetColorsDataGrid.SelectedRows.Count > 0 && InsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value != DBNull.Value)
-                InsetColorID = Convert.ToInt32(InsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
+                insetColorId = Convert.ToInt32(InsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
             if (TechnoInsetTypesDataGrid.SelectedRows.Count > 0 && TechnoInsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value != DBNull.Value)
-                TechnoInsetTypeID = Convert.ToInt32(TechnoInsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
+                technoInsetTypeId = Convert.ToInt32(TechnoInsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
             if (TechnoInsetColorsDataGrid.SelectedRows.Count > 0 && TechnoInsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value != DBNull.Value)
-                TechnoInsetColorID = Convert.ToInt32(TechnoInsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
+                technoInsetColorId = Convert.ToInt32(TechnoInsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
 
-            int ConfigID = FrontsCatalog.GetFrontAttachments(FrontName, ColorID, TechnoColorID, InsetTypeID, InsetColorID, TechnoInsetTypeID, TechnoInsetColorID, PatinaID);
-            if (ConfigID != -1)
+            int configId = _frontsCatalog.GetFrontAttachments(frontName, colorId, technoColorId, insetTypeId, insetColorId, technoInsetTypeId, technoInsetColorId, patinaId);
+            if (configId != -1)
             {
-                Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Загрузка данных с сервера.\r\nПодождите..."); });
+                Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref _topForm, "Загрузка данных с сервера.\r\nПодождите..."); });
                 T.Start();
 
                 while (!SplashWindow.bSmallCreated) ;
 
-                FrontsCatalog.DetachConfigImage(ConfigID);
-                pcbxFrontImage.Image = FrontsCatalog.GetFrontConfigImage(ConfigID);
+                _frontsCatalog.DetachConfigImage(configId);
+                pcbxFrontImage.Image = _frontsCatalog.GetFrontConfigImage(configId);
 
                 while (SplashWindow.bSmallCreated)
                     SmallWaitForm.CloseS = true;
@@ -2249,47 +2291,47 @@ namespace Infinium
 
         private void cbFrontTechStore_CheckedChanged(object sender, EventArgs e)
         {
-            if (FrontsCatalog == null)
+            if (_frontsCatalog == null)
                 return;
 
-            string FrontName = "";
-            int ColorID = -1;
-            int TechnoColorID = -1;
-            int PatinaID = -1;
-            int InsetTypeID = -1;
-            int InsetColorID = -1;
-            int TechnoInsetTypeID = -1;
-            int TechnoInsetColorID = -1;
+            string frontName = "";
+            int colorId = -1;
+            int technoColorId = -1;
+            int patinaId = -1;
+            int insetTypeId = -1;
+            int insetColorId = -1;
+            int technoInsetTypeId = -1;
+            int technoInsetColorId = -1;
 
             if (FrontsDataGrid.SelectedRows.Count > 0 && FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value != DBNull.Value)
-                FrontName = FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value.ToString();
+                frontName = FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value.ToString();
             if (FrameColorsDataGrid.SelectedRows.Count > 0 && FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value != DBNull.Value)
-                ColorID = Convert.ToInt32(FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
+                colorId = Convert.ToInt32(FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
             if (TechnoFrameColorsDataGrid.SelectedRows.Count > 0 && TechnoFrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value != DBNull.Value)
-                TechnoColorID = Convert.ToInt32(TechnoFrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
+                technoColorId = Convert.ToInt32(TechnoFrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
             if (PatinaDataGrid.SelectedRows.Count > 0 && PatinaDataGrid.SelectedRows[0].Cells["PatinaID"].Value != DBNull.Value)
-                PatinaID = Convert.ToInt32(PatinaDataGrid.SelectedRows[0].Cells["PatinaID"].Value);
+                patinaId = Convert.ToInt32(PatinaDataGrid.SelectedRows[0].Cells["PatinaID"].Value);
             if (InsetTypesDataGrid.SelectedRows.Count > 0 && InsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value != DBNull.Value)
-                InsetTypeID = Convert.ToInt32(InsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
+                insetTypeId = Convert.ToInt32(InsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
             if (InsetColorsDataGrid.SelectedRows.Count > 0 && InsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value != DBNull.Value)
-                InsetColorID = Convert.ToInt32(InsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
+                insetColorId = Convert.ToInt32(InsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
             if (TechnoInsetTypesDataGrid.SelectedRows.Count > 0 && TechnoInsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value != DBNull.Value)
-                TechnoInsetTypeID = Convert.ToInt32(TechnoInsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
+                technoInsetTypeId = Convert.ToInt32(TechnoInsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
             if (TechnoInsetColorsDataGrid.SelectedRows.Count > 0 && TechnoInsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value != DBNull.Value)
-                TechnoInsetColorID = Convert.ToInt32(TechnoInsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
+                technoInsetColorId = Convert.ToInt32(TechnoInsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
 
             pcbxFrontTechStore.Image = null;
 
             if (cbFrontTechStore.Checked)
             {
-                Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Загрузка данных с сервера.\r\nПодождите..."); });
+                Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref _topForm, "Загрузка данных с сервера.\r\nПодождите..."); });
                 T.Start();
 
                 while (!SplashWindow.bSmallCreated) ;
 
-                int FrontID = FrontsCatalog.GetFrontID(FrontName, ColorID, TechnoColorID, InsetTypeID, InsetColorID, TechnoInsetTypeID, TechnoInsetColorID, PatinaID);
-                if (FrontID != -1)
-                    pcbxFrontTechStore.Image = FrontsCatalog.GetTechStoreImage(FrontID);
+                int frontId = _frontsCatalog.GetFrontID(frontName, colorId, technoColorId, insetTypeId, insetColorId, technoInsetTypeId, technoInsetColorId, patinaId);
+                if (frontId != -1)
+                    pcbxFrontTechStore.Image = _frontsCatalog.GetTechStoreImage(frontId);
 
                 while (SplashWindow.bSmallCreated)
                     SmallWaitForm.CloseS = true;
@@ -2306,21 +2348,21 @@ namespace Infinium
             if (pcbxFrontTechStore.Image == null)
                 return;
 
-            PhantomForm PhantomForm = new PhantomForm();
-            PhantomForm.Show();
+            PhantomForm phantomForm = new PhantomForm();
+            phantomForm.Show();
 
-            ZoomImageForm ZoomImageForm = new ZoomImageForm(pcbxFrontTechStore.Image, ref TopForm);
+            ZoomImageForm zoomImageForm = new ZoomImageForm(pcbxFrontTechStore.Image, ref _topForm);
 
-            TopForm = ZoomImageForm;
+            _topForm = zoomImageForm;
 
-            ZoomImageForm.ShowDialog();
+            zoomImageForm.ShowDialog();
 
-            PhantomForm.Close();
-            PhantomForm.Dispose();
+            phantomForm.Close();
+            phantomForm.Dispose();
 
-            TopForm = null;
+            _topForm = null;
 
-            ZoomImageForm.Dispose();
+            zoomImageForm.Dispose();
         }
 
         private void btnAddDecorImageButton_Click(object sender, EventArgs e)
@@ -2333,30 +2375,30 @@ namespace Infinium
 
         private void btnRemoveDecorImageButton_Click(object sender, EventArgs e)
         {
-            bool OKCancel = Infinium.LightMessageBox.Show(ref TopForm, true,
+            bool okCancel = Infinium.LightMessageBox.Show(ref _topForm, true,
                    "Вы уверены, что хотите удалить?",
                    "Удаление");
 
-            if (!OKCancel)
+            if (!okCancel)
                 return;
 
-            int ProductID = Convert.ToInt32(((DataRowView)DecorCatalog.DecorProductsBindingSource.Current)["ProductID"]);
-            string DecorName = ((DataRowView)DecorCatalog.DecorItemBindingSource.Current)["Name"].ToString();
-            int ColorID = Convert.ToInt32(((DataRowView)DecorCatalog.ItemColorsBindingSource.Current)["ColorID"]);
-            int PatinaID = Convert.ToInt32(((DataRowView)DecorCatalog.ItemPatinaBindingSource.Current)["PatinaID"]);
-            int InsetTypeID = Convert.ToInt32(((DataRowView)DecorCatalog.ItemInsetTypesBindingSource.Current)["InsetTypeID"]);
-            int InsetColorID = Convert.ToInt32(((DataRowView)DecorCatalog.ItemInsetColorsBindingSource.Current)["InsetColorID"]);
+            int productId = Convert.ToInt32(((DataRowView)_decorCatalog.DecorProductsBindingSource.Current)["ProductID"]);
+            string decorName = ((DataRowView)_decorCatalog.DecorItemBindingSource.Current)["Name"].ToString();
+            int colorId = Convert.ToInt32(((DataRowView)_decorCatalog.ItemColorsBindingSource.Current)["ColorID"]);
+            int patinaId = Convert.ToInt32(((DataRowView)_decorCatalog.ItemPatinaBindingSource.Current)["PatinaID"]);
+            int insetTypeId = Convert.ToInt32(((DataRowView)_decorCatalog.ItemInsetTypesBindingSource.Current)["InsetTypeID"]);
+            int insetColorId = Convert.ToInt32(((DataRowView)_decorCatalog.ItemInsetColorsBindingSource.Current)["InsetColorID"]);
 
-            int ConfigID = DecorCatalog.GetDecorAttachments(ProductID, DecorName, ColorID, PatinaID, InsetTypeID, InsetColorID);
-            if (ConfigID != -1)
+            int configId = _decorCatalog.GetDecorAttachments(productId, decorName, colorId, patinaId, insetTypeId, insetColorId);
+            if (configId != -1)
             {
-                Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Загрузка данных с сервера.\r\nПодождите..."); });
+                Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref _topForm, "Загрузка данных с сервера.\r\nПодождите..."); });
                 T.Start();
 
                 while (!SplashWindow.bSmallCreated) ;
 
-                DecorCatalog.DetachConfigImage(ConfigID);
-                pcbxDecorImage.Image = DecorCatalog.GetDecorConfigImage(ConfigID, ProductID);
+                _decorCatalog.DetachConfigImage(configId);
+                pcbxDecorImage.Image = _decorCatalog.GetDecorConfigImage(configId, productId);
 
                 while (SplashWindow.bSmallCreated)
                     SmallWaitForm.CloseS = true;
@@ -2373,21 +2415,21 @@ namespace Infinium
             if (pcbxDecorImage.Image == null)
                 return;
 
-            PhantomForm PhantomForm = new PhantomForm();
-            PhantomForm.Show();
+            PhantomForm phantomForm = new PhantomForm();
+            phantomForm.Show();
 
-            ZoomImageForm ZoomImageForm = new ZoomImageForm(pcbxDecorImage.Image, ref TopForm);
+            ZoomImageForm zoomImageForm = new ZoomImageForm(pcbxDecorImage.Image, ref _topForm);
 
-            TopForm = ZoomImageForm;
+            _topForm = zoomImageForm;
 
-            ZoomImageForm.ShowDialog();
+            zoomImageForm.ShowDialog();
 
-            PhantomForm.Close();
-            PhantomForm.Dispose();
+            phantomForm.Close();
+            phantomForm.Dispose();
 
-            TopForm = null;
+            _topForm = null;
 
-            ZoomImageForm.Dispose();
+            zoomImageForm.Dispose();
         }
 
         private void pcbxDecorTechStore_Click(object sender, EventArgs e)
@@ -2395,47 +2437,47 @@ namespace Infinium
             if (pcbxDecorTechStore.Image == null)
                 return;
 
-            PhantomForm PhantomForm = new PhantomForm();
-            PhantomForm.Show();
+            PhantomForm phantomForm = new PhantomForm();
+            phantomForm.Show();
 
-            ZoomImageForm ZoomImageForm = new ZoomImageForm(pcbxDecorTechStore.Image, ref TopForm);
+            ZoomImageForm zoomImageForm = new ZoomImageForm(pcbxDecorTechStore.Image, ref _topForm);
 
-            TopForm = ZoomImageForm;
+            _topForm = zoomImageForm;
 
-            ZoomImageForm.ShowDialog();
+            zoomImageForm.ShowDialog();
 
-            PhantomForm.Close();
-            PhantomForm.Dispose();
+            phantomForm.Close();
+            phantomForm.Dispose();
 
-            TopForm = null;
+            _topForm = null;
 
-            ZoomImageForm.Dispose();
+            zoomImageForm.Dispose();
         }
 
         private void cbDecorImage_CheckedChanged(object sender, EventArgs e)
         {
-            if (DecorCatalog == null)
+            if (_decorCatalog == null)
                 return;
 
-            int ProductID = Convert.ToInt32(((DataRowView)DecorCatalog.DecorProductsBindingSource.Current)["ProductID"]);
-            string DecorName = ((DataRowView)DecorCatalog.DecorItemBindingSource.Current)["Name"].ToString();
-            int ColorID = Convert.ToInt32(((DataRowView)DecorCatalog.ItemColorsBindingSource.Current)["ColorID"]);
-            int PatinaID = Convert.ToInt32(((DataRowView)DecorCatalog.ItemPatinaBindingSource.Current)["PatinaID"]);
-            int InsetTypeID = Convert.ToInt32(((DataRowView)DecorCatalog.ItemInsetTypesBindingSource.Current)["InsetTypeID"]);
-            int InsetColorID = Convert.ToInt32(((DataRowView)DecorCatalog.ItemInsetColorsBindingSource.Current)["InsetColorID"]);
+            int productId = Convert.ToInt32(((DataRowView)_decorCatalog.DecorProductsBindingSource.Current)["ProductID"]);
+            string decorName = ((DataRowView)_decorCatalog.DecorItemBindingSource.Current)["Name"].ToString();
+            int colorId = Convert.ToInt32(((DataRowView)_decorCatalog.ItemColorsBindingSource.Current)["ColorID"]);
+            int patinaId = Convert.ToInt32(((DataRowView)_decorCatalog.ItemPatinaBindingSource.Current)["PatinaID"]);
+            int insetTypeId = Convert.ToInt32(((DataRowView)_decorCatalog.ItemInsetTypesBindingSource.Current)["InsetTypeID"]);
+            int insetColorId = Convert.ToInt32(((DataRowView)_decorCatalog.ItemInsetColorsBindingSource.Current)["InsetColorID"]);
 
             pcbxDecorImage.Image = null;
 
             if (cbDecorImage.Checked)
             {
-                Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Загрузка данных с сервера.\r\nПодождите..."); });
+                Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref _topForm, "Загрузка данных с сервера.\r\nПодождите..."); });
                 T.Start();
 
                 while (!SplashWindow.bSmallCreated) ;
 
-                int ConfigID = DecorCatalog.GetDecorAttachments(ProductID, DecorName, ColorID, PatinaID, InsetTypeID, InsetColorID);
-                if (ConfigID != -1)
-                    pcbxDecorImage.Image = DecorCatalog.GetDecorConfigImage(ConfigID, ProductID);
+                int configId = _decorCatalog.GetDecorAttachments(productId, decorName, colorId, patinaId, insetTypeId, insetColorId);
+                if (configId != -1)
+                    pcbxDecorImage.Image = _decorCatalog.GetDecorConfigImage(configId, productId);
 
                 while (SplashWindow.bSmallCreated)
                     SmallWaitForm.CloseS = true;
@@ -2449,28 +2491,28 @@ namespace Infinium
 
         private void cbDecorTechStore_CheckedChanged(object sender, EventArgs e)
         {
-            if (DecorCatalog == null)
+            if (_decorCatalog == null)
                 return;
 
-            int ProductID = Convert.ToInt32(((DataRowView)DecorCatalog.DecorProductsBindingSource.Current)["ProductID"]);
-            string DecorName = ((DataRowView)DecorCatalog.DecorItemBindingSource.Current)["Name"].ToString();
-            int ColorID = Convert.ToInt32(((DataRowView)DecorCatalog.ItemColorsBindingSource.Current)["ColorID"]);
-            int PatinaID = Convert.ToInt32(((DataRowView)DecorCatalog.ItemPatinaBindingSource.Current)["PatinaID"]);
-            int InsetTypeID = Convert.ToInt32(((DataRowView)DecorCatalog.ItemInsetTypesBindingSource.Current)["InsetTypeID"]);
-            int InsetColorID = Convert.ToInt32(((DataRowView)DecorCatalog.ItemInsetColorsBindingSource.Current)["InsetColorID"]);
+            int productId = Convert.ToInt32(((DataRowView)_decorCatalog.DecorProductsBindingSource.Current)["ProductID"]);
+            string decorName = ((DataRowView)_decorCatalog.DecorItemBindingSource.Current)["Name"].ToString();
+            int colorId = Convert.ToInt32(((DataRowView)_decorCatalog.ItemColorsBindingSource.Current)["ColorID"]);
+            int patinaId = Convert.ToInt32(((DataRowView)_decorCatalog.ItemPatinaBindingSource.Current)["PatinaID"]);
+            int insetTypeId = Convert.ToInt32(((DataRowView)_decorCatalog.ItemInsetTypesBindingSource.Current)["InsetTypeID"]);
+            int insetColorId = Convert.ToInt32(((DataRowView)_decorCatalog.ItemInsetColorsBindingSource.Current)["InsetColorID"]);
 
             pcbxDecorTechStore.Image = null;
 
             if (cbDecorTechStore.Checked)
             {
-                Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Загрузка данных с сервера.\r\nПодождите..."); });
+                Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref _topForm, "Загрузка данных с сервера.\r\nПодождите..."); });
                 T.Start();
 
                 while (!SplashWindow.bSmallCreated) ;
 
-                int DecorID = DecorCatalog.GetDecorID(ProductID, DecorName, ColorID, PatinaID, InsetTypeID, InsetColorID);
-                if (DecorID != -1)
-                    pcbxDecorTechStore.Image = DecorCatalog.GetTechStoreImage(DecorID);
+                int decorId = _decorCatalog.GetDecorID(productId, decorName, colorId, patinaId, insetTypeId, insetColorId);
+                if (decorId != -1)
+                    pcbxDecorTechStore.Image = _decorCatalog.GetTechStoreImage(decorId);
 
                 while (SplashWindow.bSmallCreated)
                     SmallWaitForm.CloseS = true;
@@ -2491,41 +2533,41 @@ namespace Infinium
             //    MessageBox.Show("Файл больше 1,5 МБ и не может быть загружен");
             //    return;
             //}
-            AttachmentsDT.Clear();
+            _attachmentsDt.Clear();
 
-            DataRow NewRow = AttachmentsDT.NewRow();
-            NewRow["FileName"] = Path.GetFileNameWithoutExtension(openFileDialog1.FileName);
-            NewRow["Extension"] = fileInfo.Extension;
-            NewRow["Path"] = openFileDialog1.FileName;
-            AttachmentsDT.Rows.Add(NewRow);
+            DataRow newRow = _attachmentsDt.NewRow();
+            newRow["FileName"] = Path.GetFileNameWithoutExtension(openFileDialog1.FileName);
+            newRow["Extension"] = fileInfo.Extension;
+            newRow["Path"] = openFileDialog1.FileName;
+            _attachmentsDt.Rows.Add(newRow);
 
-            int ProductID = Convert.ToInt32(((DataRowView)DecorCatalog.DecorProductsBindingSource.Current)["ProductID"]);
-            string DecorName = ((DataRowView)DecorCatalog.DecorItemBindingSource.Current)["Name"].ToString();
-            int ColorID = Convert.ToInt32(((DataRowView)DecorCatalog.ItemColorsBindingSource.Current)["ColorID"]);
-            int PatinaID = Convert.ToInt32(((DataRowView)DecorCatalog.ItemPatinaBindingSource.Current)["PatinaID"]);
-            int InsetTypeID = Convert.ToInt32(((DataRowView)DecorCatalog.ItemInsetTypesBindingSource.Current)["InsetTypeID"]);
-            int InsetColorID = Convert.ToInt32(((DataRowView)DecorCatalog.ItemInsetColorsBindingSource.Current)["InsetColorID"]);
-            int ProductType = 1;
+            int productId = Convert.ToInt32(((DataRowView)_decorCatalog.DecorProductsBindingSource.Current)["ProductID"]);
+            string decorName = ((DataRowView)_decorCatalog.DecorItemBindingSource.Current)["Name"].ToString();
+            int colorId = Convert.ToInt32(((DataRowView)_decorCatalog.ItemColorsBindingSource.Current)["ColorID"]);
+            int patinaId = Convert.ToInt32(((DataRowView)_decorCatalog.ItemPatinaBindingSource.Current)["PatinaID"]);
+            int insetTypeId = Convert.ToInt32(((DataRowView)_decorCatalog.ItemInsetTypesBindingSource.Current)["InsetTypeID"]);
+            int insetColorId = Convert.ToInt32(((DataRowView)_decorCatalog.ItemInsetColorsBindingSource.Current)["InsetColorID"]);
+            int productType = 1;
 
             //if (ProductID == 46 || ProductID == 61 || ProductID == 62 || ProductID == 63)
-            if (CheckOrdersStatus.IsCabFurniture(ProductID))
-                ProductType = 2;
-            int ConfigID = DecorCatalog.SaveDecorAttachments(ProductID, DecorName, ColorID, PatinaID, InsetTypeID, InsetColorID);
-            if (ConfigID != -1)
-                DecorCatalog.AttachConfigImage(AttachmentsDT, ConfigID, ProductType, ((DataRowView)DecorCatalog.DecorProductsBindingSource.Current)["ProductName"].ToString(),
-                    DecorName, ((DataRowView)DecorCatalog.ItemColorsBindingSource.Current)["ColorName"].ToString(),
-                    ((DataRowView)DecorCatalog.ItemPatinaBindingSource.Current)["PatinaName"].ToString(),
-                    ((DataRowView)DecorCatalog.ItemInsetColorsBindingSource.Current)["InsetColorName"].ToString());
+            if (CheckOrdersStatus.IsCabFurniture(productId))
+                productType = 2;
+            int configId = _decorCatalog.SaveDecorAttachments(productId, decorName, colorId, patinaId, insetTypeId, insetColorId);
+            if (configId != -1)
+                _decorCatalog.AttachConfigImage(_attachmentsDt, configId, productType, ((DataRowView)_decorCatalog.DecorProductsBindingSource.Current)["ProductName"].ToString(),
+                    decorName, ((DataRowView)_decorCatalog.ItemColorsBindingSource.Current)["ColorName"].ToString(),
+                    ((DataRowView)_decorCatalog.ItemPatinaBindingSource.Current)["PatinaName"].ToString(),
+                    ((DataRowView)_decorCatalog.ItemInsetColorsBindingSource.Current)["InsetColorName"].ToString());
 
             pcbxDecorImage.Image = null;
             if (cbDecorImage.Checked)
             {
-                Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Загрузка данных с сервера.\r\nПодождите..."); });
+                Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref _topForm, "Загрузка данных с сервера.\r\nПодождите..."); });
                 T.Start();
                 while (!SplashWindow.bSmallCreated) ;
 
-                if (ConfigID != -1)
-                    pcbxDecorImage.Image = DecorCatalog.GetDecorConfigImage(ConfigID, ProductID);
+                if (configId != -1)
+                    pcbxDecorImage.Image = _decorCatalog.GetDecorConfigImage(configId, productId);
 
                 while (SplashWindow.bSmallCreated)
                     SmallWaitForm.CloseS = true;
@@ -2846,115 +2888,115 @@ namespace Infinium
 
         private void kryptonContextMenuItem15_Click(object sender, EventArgs e)
         {
-            bool OKCancel = Infinium.LightMessageBox.Show(ref TopForm, true,
+            bool okCancel = Infinium.LightMessageBox.Show(ref _topForm, true,
                       "Вы уверены, что хотите удалить?",
                       "Удаление");
 
-            if (!OKCancel)
+            if (!okCancel)
                 return;
 
-            string FrontName = "";
-            int ColorID = -1;
-            int TechnoColorID = -1;
-            int PatinaID = -1;
-            int InsetTypeID = -1;
-            int InsetColorID = -1;
-            int TechnoInsetTypeID = -1;
-            int TechnoInsetColorID = -1;
+            string frontName = "";
+            int colorId = -1;
+            int technoColorId = -1;
+            int patinaId = -1;
+            int insetTypeId = -1;
+            int insetColorId = -1;
+            int technoInsetTypeId = -1;
+            int technoInsetColorId = -1;
 
             if (FrontsDataGrid.SelectedRows.Count > 0 && FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value != DBNull.Value)
-                FrontName = FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value.ToString();
+                frontName = FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value.ToString();
             if (FrameColorsDataGrid.SelectedRows.Count > 0 && FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value != DBNull.Value)
-                ColorID = Convert.ToInt32(FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
+                colorId = Convert.ToInt32(FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
             if (TechnoFrameColorsDataGrid.SelectedRows.Count > 0 && TechnoFrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value != DBNull.Value)
-                TechnoColorID = Convert.ToInt32(TechnoFrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
+                technoColorId = Convert.ToInt32(TechnoFrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
             if (PatinaDataGrid.SelectedRows.Count > 0 && PatinaDataGrid.SelectedRows[0].Cells["PatinaID"].Value != DBNull.Value)
-                PatinaID = Convert.ToInt32(PatinaDataGrid.SelectedRows[0].Cells["PatinaID"].Value);
+                patinaId = Convert.ToInt32(PatinaDataGrid.SelectedRows[0].Cells["PatinaID"].Value);
             if (InsetTypesDataGrid.SelectedRows.Count > 0 && InsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value != DBNull.Value)
-                InsetTypeID = Convert.ToInt32(InsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
+                insetTypeId = Convert.ToInt32(InsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
             if (InsetColorsDataGrid.SelectedRows.Count > 0 && InsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value != DBNull.Value)
-                InsetColorID = Convert.ToInt32(InsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
+                insetColorId = Convert.ToInt32(InsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
             if (TechnoInsetTypesDataGrid.SelectedRows.Count > 0 && TechnoInsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value != DBNull.Value)
-                TechnoInsetTypeID = Convert.ToInt32(TechnoInsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
+                technoInsetTypeId = Convert.ToInt32(TechnoInsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
             if (TechnoInsetColorsDataGrid.SelectedRows.Count > 0 && TechnoInsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value != DBNull.Value)
-                TechnoInsetColorID = Convert.ToInt32(TechnoInsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
+                technoInsetColorId = Convert.ToInt32(TechnoInsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
 
-            Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Загрузка данных с сервера.\r\nПодождите..."); });
+            Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref _topForm, "Загрузка данных с сервера.\r\nПодождите..."); });
             T.Start();
 
             while (!SplashWindow.bSmallCreated) ;
 
-            int ConfigID = FrontsCatalog.GetInsetColorConfig(FrontName, ColorID, TechnoColorID, InsetTypeID, InsetColorID, TechnoInsetTypeID, TechnoInsetColorID);
-            FrontsCatalog.DetachInsetColorImage(ConfigID);
+            int configId = _frontsCatalog.GetInsetColorConfig(frontName, colorId, technoColorId, insetTypeId, insetColorId, technoInsetTypeId, technoInsetColorId);
+            _frontsCatalog.DetachInsetColorImage(configId);
             pcbxVisualConfig.Image = null;
             if (cbVisualConfig.Checked)
             {
-                layer = null;
-                backgr = null;
-                backgr2 = null;
-                newBitmap = null;
-                newBitmap2 = null;
-                ConfigID = FrontsCatalog.GetInsetTypesConfig(FrontName, ColorID, TechnoColorID);
-                Image img = FrontsCatalog.GetInsetTypeImage(ConfigID);
-                if (ConfigID != -1 && img != null)
-                    layer = new Bitmap(img);
-                ConfigID = FrontsCatalog.GetInsetColorConfig(FrontName, ColorID, TechnoColorID, InsetTypeID, InsetColorID, TechnoInsetTypeID, TechnoInsetColorID);
-                img = FrontsCatalog.GetInsetColorImage(ConfigID);
-                if (ConfigID != -1 && img != null)
-                    backgr = new Bitmap(img);
+                _layer = null;
+                _backgr = null;
+                _backgr2 = null;
+                _newBitmap = null;
+                _newBitmap2 = null;
+                configId = _frontsCatalog.GetInsetTypesConfig(frontName, colorId, technoColorId);
+                Image img = _frontsCatalog.GetInsetTypeImage(configId);
+                if (configId != -1 && img != null)
+                    _layer = new Bitmap(img);
+                configId = _frontsCatalog.GetInsetColorConfig(frontName, colorId, technoColorId, insetTypeId, insetColorId, technoInsetTypeId, technoInsetColorId);
+                img = _frontsCatalog.GetInsetColorImage(configId);
+                if (configId != -1 && img != null)
+                    _backgr = new Bitmap(img);
 
-                ConfigID = FrontsCatalog.GetTechnoInsetColorConfig(FrontName, ColorID, TechnoColorID, InsetTypeID, InsetColorID, TechnoInsetTypeID, TechnoInsetColorID);
-                img = FrontsCatalog.GetTechnoInsetColorImage(ConfigID);
-                if (ConfigID != -1 && img != null)
-                    backgr2 = new Bitmap(img);
+                configId = _frontsCatalog.GetTechnoInsetColorConfig(frontName, colorId, technoColorId, insetTypeId, insetColorId, technoInsetTypeId, technoInsetColorId);
+                img = _frontsCatalog.GetTechnoInsetColorImage(configId);
+                if (configId != -1 && img != null)
+                    _backgr2 = new Bitmap(img);
 
-                if (layer != null)
+                if (_layer != null)
                 {
-                    if (backgr != null)
+                    if (_backgr != null)
                     {
-                        if (backgr2 != null)
+                        if (_backgr2 != null)
                         {
-                            int width = layer.Width;
-                            int height = layer.Height;
-                            int width1 = backgr.Width;
-                            int height1 = backgr.Height;
-                            int width2 = backgr2.Width;
-                            int height2 = backgr2.Height;
-                            newBitmap = new Bitmap(width, height);
-                            newBitmap2 = new Bitmap(width1, height1);
-                            using (var canvas = Graphics.FromImage(newBitmap2))
+                            int width = _layer.Width;
+                            int height = _layer.Height;
+                            int width1 = _backgr.Width;
+                            int height1 = _backgr.Height;
+                            int width2 = _backgr2.Width;
+                            int height2 = _backgr2.Height;
+                            _newBitmap = new Bitmap(width, height);
+                            _newBitmap2 = new Bitmap(width1, height1);
+                            using (var canvas = Graphics.FromImage(_newBitmap2))
                             {
                                 if (height2 >= height1)
                                 {
                                     canvas.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                                    canvas.DrawImage(backgr2, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, backgr.Width, backgr.Height), GraphicsUnit.Pixel);
-                                    canvas.DrawImage(backgr, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, backgr.Width, backgr.Height), GraphicsUnit.Pixel);
+                                    canvas.DrawImage(_backgr2, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, _backgr.Width, _backgr.Height), GraphicsUnit.Pixel);
+                                    canvas.DrawImage(_backgr, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, _backgr.Width, _backgr.Height), GraphicsUnit.Pixel);
                                     canvas.Save();
                                 }
                                 else
                                 {
                                     canvas.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                                    canvas.DrawImage(backgr2, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, backgr2.Width, backgr2.Height), GraphicsUnit.Pixel);
-                                    canvas.DrawImage(backgr, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, backgr.Width, backgr.Height), GraphicsUnit.Pixel);
+                                    canvas.DrawImage(_backgr2, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, _backgr2.Width, _backgr2.Height), GraphicsUnit.Pixel);
+                                    canvas.DrawImage(_backgr, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, _backgr.Width, _backgr.Height), GraphicsUnit.Pixel);
                                     canvas.Save();
                                 }
 
-                                int width3 = newBitmap2.Width;
-                                int height3 = newBitmap2.Height;
-                                using (var canvas1 = Graphics.FromImage(newBitmap))
+                                int width3 = _newBitmap2.Width;
+                                int height3 = _newBitmap2.Height;
+                                using (var canvas1 = Graphics.FromImage(_newBitmap))
                                 {
                                     if (height3 >= height)
                                     {
                                         canvas1.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                                        canvas1.DrawImage(newBitmap2, new Rectangle(0, 0, width, height), new Rectangle(0, 0, layer.Width, layer.Height), GraphicsUnit.Pixel);
-                                        canvas1.DrawImage(layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, layer.Width, layer.Height), GraphicsUnit.Pixel);
+                                        canvas1.DrawImage(_newBitmap2, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _layer.Width, _layer.Height), GraphicsUnit.Pixel);
+                                        canvas1.DrawImage(_layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _layer.Width, _layer.Height), GraphicsUnit.Pixel);
                                         canvas1.Save();
                                     }
                                     else
                                     {
                                         canvas1.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                                        canvas1.DrawImage(newBitmap2, new Rectangle(0, 0, width, height), new Rectangle(0, 0, newBitmap2.Width, newBitmap2.Height), GraphicsUnit.Pixel);
-                                        canvas1.DrawImage(layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, layer.Width, layer.Height), GraphicsUnit.Pixel);
+                                        canvas1.DrawImage(_newBitmap2, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _newBitmap2.Width, _newBitmap2.Height), GraphicsUnit.Pixel);
+                                        canvas1.DrawImage(_layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _layer.Width, _layer.Height), GraphicsUnit.Pixel);
                                         canvas1.Save();
                                     }
                                 }
@@ -2962,49 +3004,49 @@ namespace Infinium
 
                             try
                             {
-                                pcbxVisualConfig.Image = newBitmap;
+                                pcbxVisualConfig.Image = _newBitmap;
                             }
                             catch (Exception ex) { MessageBox.Show(ex.Message); }
                         }
                         else
                         {
-                            int width = layer.Width;
-                            int height = layer.Height;
-                            int width1 = backgr.Width;
-                            int height1 = backgr.Height;
-                            newBitmap = new Bitmap(width, height);
-                            using (var canvas = Graphics.FromImage(newBitmap))
+                            int width = _layer.Width;
+                            int height = _layer.Height;
+                            int width1 = _backgr.Width;
+                            int height1 = _backgr.Height;
+                            _newBitmap = new Bitmap(width, height);
+                            using (var canvas = Graphics.FromImage(_newBitmap))
                             {
                                 if (height1 >= height)
                                 {
                                     canvas.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                                    canvas.DrawImage(backgr, new Rectangle(0, 0, width, height), new Rectangle(0, 0, layer.Width, layer.Height), GraphicsUnit.Pixel);
-                                    canvas.DrawImage(layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, layer.Width, layer.Height), GraphicsUnit.Pixel);
+                                    canvas.DrawImage(_backgr, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _layer.Width, _layer.Height), GraphicsUnit.Pixel);
+                                    canvas.DrawImage(_layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _layer.Width, _layer.Height), GraphicsUnit.Pixel);
                                     canvas.Save();
                                 }
                                 else
                                 {
                                     canvas.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                                    canvas.DrawImage(backgr, new Rectangle(0, 0, width, height), new Rectangle(0, 0, backgr.Width, backgr.Height), GraphicsUnit.Pixel);
-                                    canvas.DrawImage(layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, layer.Width, layer.Height), GraphicsUnit.Pixel);
+                                    canvas.DrawImage(_backgr, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _backgr.Width, _backgr.Height), GraphicsUnit.Pixel);
+                                    canvas.DrawImage(_layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _layer.Width, _layer.Height), GraphicsUnit.Pixel);
                                     canvas.Save();
                                 }
                             }
 
                             try
                             {
-                                pcbxVisualConfig.Image = newBitmap;
+                                pcbxVisualConfig.Image = _newBitmap;
                             }
                             catch (Exception ex) { MessageBox.Show(ex.Message); }
                         }
                     }
                     else
-                        pcbxVisualConfig.Image = layer;
+                        pcbxVisualConfig.Image = _layer;
                 }
                 else
                 {
-                    if (backgr != null)
-                        pcbxVisualConfig.Image = backgr;
+                    if (_backgr != null)
+                        pcbxVisualConfig.Image = _backgr;
                 }
 
                 if (pcbxVisualConfig.Image == null)
@@ -3019,114 +3061,114 @@ namespace Infinium
 
         private void kryptonContextMenuItem14_Click(object sender, EventArgs e)
         {
-            bool OKCancel = Infinium.LightMessageBox.Show(ref TopForm, true,
+            bool okCancel = Infinium.LightMessageBox.Show(ref _topForm, true,
                       "Вы уверены, что хотите удалить?",
                       "Удаление");
 
-            if (!OKCancel)
+            if (!okCancel)
                 return;
 
-            string FrontName = "";
-            int ColorID = -1;
-            int TechnoColorID = -1;
-            int PatinaID = -1;
-            int InsetTypeID = -1;
-            int InsetColorID = -1;
-            int TechnoInsetTypeID = -1;
-            int TechnoInsetColorID = -1;
+            string frontName = "";
+            int colorId = -1;
+            int technoColorId = -1;
+            int patinaId = -1;
+            int insetTypeId = -1;
+            int insetColorId = -1;
+            int technoInsetTypeId = -1;
+            int technoInsetColorId = -1;
 
             if (FrontsDataGrid.SelectedRows.Count > 0 && FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value != DBNull.Value)
-                FrontName = FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value.ToString();
+                frontName = FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value.ToString();
             if (FrameColorsDataGrid.SelectedRows.Count > 0 && FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value != DBNull.Value)
-                ColorID = Convert.ToInt32(FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
+                colorId = Convert.ToInt32(FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
             if (TechnoFrameColorsDataGrid.SelectedRows.Count > 0 && TechnoFrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value != DBNull.Value)
-                TechnoColorID = Convert.ToInt32(TechnoFrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
+                technoColorId = Convert.ToInt32(TechnoFrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
             if (PatinaDataGrid.SelectedRows.Count > 0 && PatinaDataGrid.SelectedRows[0].Cells["PatinaID"].Value != DBNull.Value)
-                PatinaID = Convert.ToInt32(PatinaDataGrid.SelectedRows[0].Cells["PatinaID"].Value);
+                patinaId = Convert.ToInt32(PatinaDataGrid.SelectedRows[0].Cells["PatinaID"].Value);
             if (InsetTypesDataGrid.SelectedRows.Count > 0 && InsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value != DBNull.Value)
-                InsetTypeID = Convert.ToInt32(InsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
+                insetTypeId = Convert.ToInt32(InsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
             if (InsetColorsDataGrid.SelectedRows.Count > 0 && InsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value != DBNull.Value)
-                InsetColorID = Convert.ToInt32(InsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
+                insetColorId = Convert.ToInt32(InsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
             if (TechnoInsetTypesDataGrid.SelectedRows.Count > 0 && TechnoInsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value != DBNull.Value)
-                TechnoInsetTypeID = Convert.ToInt32(TechnoInsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
+                technoInsetTypeId = Convert.ToInt32(TechnoInsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
             if (TechnoInsetColorsDataGrid.SelectedRows.Count > 0 && TechnoInsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value != DBNull.Value)
-                TechnoInsetColorID = Convert.ToInt32(TechnoInsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
+                technoInsetColorId = Convert.ToInt32(TechnoInsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
 
-            Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Загрузка данных с сервера.\r\nПодождите..."); });
+            Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref _topForm, "Загрузка данных с сервера.\r\nПодождите..."); });
             T.Start();
 
             while (!SplashWindow.bSmallCreated) ;
 
-            int ConfigID = FrontsCatalog.GetInsetTypesConfig(FrontName, ColorID, TechnoColorID);
-            FrontsCatalog.DetachInsetTypeImage(ConfigID);
+            int configId = _frontsCatalog.GetInsetTypesConfig(frontName, colorId, technoColorId);
+            _frontsCatalog.DetachInsetTypeImage(configId);
             pcbxVisualConfig.Image = null;
             if (cbVisualConfig.Checked)
             {
-                layer = null;
-                backgr = null;
-                backgr2 = null;
-                newBitmap = null;
-                newBitmap2 = null;
-                Image img = FrontsCatalog.GetInsetTypeImage(ConfigID);
-                if (ConfigID != -1 && img != null)
-                    layer = new Bitmap(img);
-                ConfigID = FrontsCatalog.GetInsetColorConfig(FrontName, ColorID, TechnoColorID, InsetTypeID, InsetColorID, TechnoInsetTypeID, TechnoInsetColorID);
-                img = FrontsCatalog.GetInsetColorImage(ConfigID);
-                if (ConfigID != -1 && img != null)
-                    backgr = new Bitmap(img);
+                _layer = null;
+                _backgr = null;
+                _backgr2 = null;
+                _newBitmap = null;
+                _newBitmap2 = null;
+                Image img = _frontsCatalog.GetInsetTypeImage(configId);
+                if (configId != -1 && img != null)
+                    _layer = new Bitmap(img);
+                configId = _frontsCatalog.GetInsetColorConfig(frontName, colorId, technoColorId, insetTypeId, insetColorId, technoInsetTypeId, technoInsetColorId);
+                img = _frontsCatalog.GetInsetColorImage(configId);
+                if (configId != -1 && img != null)
+                    _backgr = new Bitmap(img);
 
-                ConfigID = FrontsCatalog.GetTechnoInsetColorConfig(FrontName, ColorID, TechnoColorID, InsetTypeID, InsetColorID, TechnoInsetTypeID, TechnoInsetColorID);
-                img = FrontsCatalog.GetTechnoInsetColorImage(ConfigID);
-                if (ConfigID != -1 && img != null)
-                    backgr2 = new Bitmap(img);
+                configId = _frontsCatalog.GetTechnoInsetColorConfig(frontName, colorId, technoColorId, insetTypeId, insetColorId, technoInsetTypeId, technoInsetColorId);
+                img = _frontsCatalog.GetTechnoInsetColorImage(configId);
+                if (configId != -1 && img != null)
+                    _backgr2 = new Bitmap(img);
 
-                if (layer != null)
+                if (_layer != null)
                 {
-                    if (backgr != null)
+                    if (_backgr != null)
                     {
-                        if (backgr2 != null)
+                        if (_backgr2 != null)
                         {
-                            int width = layer.Width;
-                            int height = layer.Height;
-                            int width1 = backgr.Width;
-                            int height1 = backgr.Height;
-                            int width2 = backgr2.Width;
-                            int height2 = backgr2.Height;
-                            newBitmap = new Bitmap(width, height);
-                            newBitmap2 = new Bitmap(width1, height1);
-                            using (var canvas = Graphics.FromImage(newBitmap2))
+                            int width = _layer.Width;
+                            int height = _layer.Height;
+                            int width1 = _backgr.Width;
+                            int height1 = _backgr.Height;
+                            int width2 = _backgr2.Width;
+                            int height2 = _backgr2.Height;
+                            _newBitmap = new Bitmap(width, height);
+                            _newBitmap2 = new Bitmap(width1, height1);
+                            using (var canvas = Graphics.FromImage(_newBitmap2))
                             {
                                 if (height2 >= height1)
                                 {
                                     canvas.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                                    canvas.DrawImage(backgr2, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, backgr.Width, backgr.Height), GraphicsUnit.Pixel);
-                                    canvas.DrawImage(backgr, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, backgr.Width, backgr.Height), GraphicsUnit.Pixel);
+                                    canvas.DrawImage(_backgr2, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, _backgr.Width, _backgr.Height), GraphicsUnit.Pixel);
+                                    canvas.DrawImage(_backgr, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, _backgr.Width, _backgr.Height), GraphicsUnit.Pixel);
                                     canvas.Save();
                                 }
                                 else
                                 {
                                     canvas.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                                    canvas.DrawImage(backgr2, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, backgr2.Width, backgr2.Height), GraphicsUnit.Pixel);
-                                    canvas.DrawImage(backgr, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, backgr.Width, backgr.Height), GraphicsUnit.Pixel);
+                                    canvas.DrawImage(_backgr2, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, _backgr2.Width, _backgr2.Height), GraphicsUnit.Pixel);
+                                    canvas.DrawImage(_backgr, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, _backgr.Width, _backgr.Height), GraphicsUnit.Pixel);
                                     canvas.Save();
                                 }
 
-                                int width3 = newBitmap2.Width;
-                                int height3 = newBitmap2.Height;
-                                using (var canvas1 = Graphics.FromImage(newBitmap))
+                                int width3 = _newBitmap2.Width;
+                                int height3 = _newBitmap2.Height;
+                                using (var canvas1 = Graphics.FromImage(_newBitmap))
                                 {
                                     if (height3 >= height)
                                     {
                                         canvas1.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                                        canvas1.DrawImage(newBitmap2, new Rectangle(0, 0, width, height), new Rectangle(0, 0, layer.Width, layer.Height), GraphicsUnit.Pixel);
-                                        canvas1.DrawImage(layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, layer.Width, layer.Height), GraphicsUnit.Pixel);
+                                        canvas1.DrawImage(_newBitmap2, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _layer.Width, _layer.Height), GraphicsUnit.Pixel);
+                                        canvas1.DrawImage(_layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _layer.Width, _layer.Height), GraphicsUnit.Pixel);
                                         canvas1.Save();
                                     }
                                     else
                                     {
                                         canvas1.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                                        canvas1.DrawImage(newBitmap2, new Rectangle(0, 0, width, height), new Rectangle(0, 0, newBitmap2.Width, newBitmap2.Height), GraphicsUnit.Pixel);
-                                        canvas1.DrawImage(layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, layer.Width, layer.Height), GraphicsUnit.Pixel);
+                                        canvas1.DrawImage(_newBitmap2, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _newBitmap2.Width, _newBitmap2.Height), GraphicsUnit.Pixel);
+                                        canvas1.DrawImage(_layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _layer.Width, _layer.Height), GraphicsUnit.Pixel);
                                         canvas1.Save();
                                     }
                                 }
@@ -3134,49 +3176,49 @@ namespace Infinium
 
                             try
                             {
-                                pcbxVisualConfig.Image = newBitmap;
+                                pcbxVisualConfig.Image = _newBitmap;
                             }
                             catch (Exception ex) { MessageBox.Show(ex.Message); }
                         }
                         else
                         {
-                            int width = layer.Width;
-                            int height = layer.Height;
-                            int width1 = backgr.Width;
-                            int height1 = backgr.Height;
-                            newBitmap = new Bitmap(width, height);
-                            using (var canvas = Graphics.FromImage(newBitmap))
+                            int width = _layer.Width;
+                            int height = _layer.Height;
+                            int width1 = _backgr.Width;
+                            int height1 = _backgr.Height;
+                            _newBitmap = new Bitmap(width, height);
+                            using (var canvas = Graphics.FromImage(_newBitmap))
                             {
                                 if (height1 >= height)
                                 {
                                     canvas.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                                    canvas.DrawImage(backgr, new Rectangle(0, 0, width, height), new Rectangle(0, 0, layer.Width, layer.Height), GraphicsUnit.Pixel);
-                                    canvas.DrawImage(layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, layer.Width, layer.Height), GraphicsUnit.Pixel);
+                                    canvas.DrawImage(_backgr, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _layer.Width, _layer.Height), GraphicsUnit.Pixel);
+                                    canvas.DrawImage(_layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _layer.Width, _layer.Height), GraphicsUnit.Pixel);
                                     canvas.Save();
                                 }
                                 else
                                 {
                                     canvas.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                                    canvas.DrawImage(backgr, new Rectangle(0, 0, width, height), new Rectangle(0, 0, backgr.Width, backgr.Height), GraphicsUnit.Pixel);
-                                    canvas.DrawImage(layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, layer.Width, layer.Height), GraphicsUnit.Pixel);
+                                    canvas.DrawImage(_backgr, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _backgr.Width, _backgr.Height), GraphicsUnit.Pixel);
+                                    canvas.DrawImage(_layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _layer.Width, _layer.Height), GraphicsUnit.Pixel);
                                     canvas.Save();
                                 }
                             }
 
                             try
                             {
-                                pcbxVisualConfig.Image = newBitmap;
+                                pcbxVisualConfig.Image = _newBitmap;
                             }
                             catch (Exception ex) { MessageBox.Show(ex.Message); }
                         }
                     }
                     else
-                        pcbxVisualConfig.Image = layer;
+                        pcbxVisualConfig.Image = _layer;
                 }
                 else
                 {
-                    if (backgr != null)
-                        pcbxVisualConfig.Image = backgr;
+                    if (_backgr != null)
+                        pcbxVisualConfig.Image = _backgr;
                 }
 
                 if (pcbxVisualConfig.Image == null)
@@ -3207,101 +3249,101 @@ namespace Infinium
             //    MessageBox.Show("Файл больше 1,5 МБ и не может быть загружен");
             //    return;
             //}
-            AttachmentsDT.Clear();
+            _attachmentsDt.Clear();
 
-            DataRow NewRow = AttachmentsDT.NewRow();
-            NewRow["FileName"] = Path.GetFileNameWithoutExtension(openFileDialog2.FileName);
-            NewRow["Extension"] = fileInfo.Extension;
-            NewRow["Path"] = openFileDialog2.FileName;
-            AttachmentsDT.Rows.Add(NewRow);
+            DataRow newRow = _attachmentsDt.NewRow();
+            newRow["FileName"] = Path.GetFileNameWithoutExtension(openFileDialog2.FileName);
+            newRow["Extension"] = fileInfo.Extension;
+            newRow["Path"] = openFileDialog2.FileName;
+            _attachmentsDt.Rows.Add(newRow);
 
-            string FrontName = "";
-            int ColorID = -1;
-            int TechnoColorID = -1;
-            int PatinaID = -1;
-            int InsetTypeID = -1;
-            int InsetColorID = -1;
-            int TechnoInsetTypeID = -1;
-            int TechnoInsetColorID = -1;
+            string frontName = "";
+            int colorId = -1;
+            int technoColorId = -1;
+            int patinaId = -1;
+            int insetTypeId = -1;
+            int insetColorId = -1;
+            int technoInsetTypeId = -1;
+            int technoInsetColorId = -1;
 
             if (FrontsDataGrid.SelectedRows.Count > 0 && FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value != DBNull.Value)
-                FrontName = FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value.ToString();
+                frontName = FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value.ToString();
             if (FrameColorsDataGrid.SelectedRows.Count > 0 && FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value != DBNull.Value)
-                ColorID = Convert.ToInt32(FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
+                colorId = Convert.ToInt32(FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
             if (TechnoFrameColorsDataGrid.SelectedRows.Count > 0 && TechnoFrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value != DBNull.Value)
-                TechnoColorID = Convert.ToInt32(TechnoFrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
+                technoColorId = Convert.ToInt32(TechnoFrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
             if (PatinaDataGrid.SelectedRows.Count > 0 && PatinaDataGrid.SelectedRows[0].Cells["PatinaID"].Value != DBNull.Value)
-                PatinaID = Convert.ToInt32(PatinaDataGrid.SelectedRows[0].Cells["PatinaID"].Value);
+                patinaId = Convert.ToInt32(PatinaDataGrid.SelectedRows[0].Cells["PatinaID"].Value);
             if (InsetTypesDataGrid.SelectedRows.Count > 0 && InsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value != DBNull.Value)
-                InsetTypeID = Convert.ToInt32(InsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
+                insetTypeId = Convert.ToInt32(InsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
             if (InsetColorsDataGrid.SelectedRows.Count > 0 && InsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value != DBNull.Value)
-                InsetColorID = Convert.ToInt32(InsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
+                insetColorId = Convert.ToInt32(InsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
             if (TechnoInsetTypesDataGrid.SelectedRows.Count > 0 && TechnoInsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value != DBNull.Value)
-                TechnoInsetTypeID = Convert.ToInt32(TechnoInsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
+                technoInsetTypeId = Convert.ToInt32(TechnoInsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
             if (TechnoInsetColorsDataGrid.SelectedRows.Count > 0 && TechnoInsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value != DBNull.Value)
-                TechnoInsetColorID = Convert.ToInt32(TechnoInsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
+                technoInsetColorId = Convert.ToInt32(TechnoInsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
 
-            int ConfigID = FrontsCatalog.SaveInsetTypesConfig(FrontName, ColorID, TechnoColorID);
-            if (ConfigID != -1)
-                FrontsCatalog.AttachInsetTypeImage(AttachmentsDT, ConfigID);
+            int configId = _frontsCatalog.SaveInsetTypesConfig(frontName, colorId, technoColorId);
+            if (configId != -1)
+                _frontsCatalog.AttachInsetTypeImage(_attachmentsDt, configId);
 
             pcbxVisualConfig.Image = null;
             if (cbVisualConfig.Checked)
             {
-                Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Загрузка данных с сервера.\r\nПодождите..."); });
+                Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref _topForm, "Загрузка данных с сервера.\r\nПодождите..."); });
                 T.Start();
 
                 while (!SplashWindow.bSmallCreated) ;
 
-                layer = null;
-                backgr = null;
-                newBitmap = null;
-                Image img = FrontsCatalog.GetInsetTypeImage(ConfigID);
-                if (ConfigID != -1 && img != null)
-                    layer = new Bitmap(img);
-                ConfigID = FrontsCatalog.GetInsetColorConfig(FrontName, ColorID, TechnoColorID, InsetTypeID, InsetColorID, TechnoInsetTypeID, TechnoInsetColorID);
-                img = FrontsCatalog.GetInsetColorImage(ConfigID);
-                if (ConfigID != -1 && img != null)
-                    backgr = new Bitmap(img);
-                if (layer != null)
+                _layer = null;
+                _backgr = null;
+                _newBitmap = null;
+                Image img = _frontsCatalog.GetInsetTypeImage(configId);
+                if (configId != -1 && img != null)
+                    _layer = new Bitmap(img);
+                configId = _frontsCatalog.GetInsetColorConfig(frontName, colorId, technoColorId, insetTypeId, insetColorId, technoInsetTypeId, technoInsetColorId);
+                img = _frontsCatalog.GetInsetColorImage(configId);
+                if (configId != -1 && img != null)
+                    _backgr = new Bitmap(img);
+                if (_layer != null)
                 {
-                    if (backgr != null)
+                    if (_backgr != null)
                     {
-                        int width = layer.Width;
-                        int height = layer.Height;
-                        int width1 = backgr.Width;
-                        int height1 = backgr.Height;
-                        newBitmap = new Bitmap(width, height);
-                        using (var canvas = Graphics.FromImage(newBitmap))
+                        int width = _layer.Width;
+                        int height = _layer.Height;
+                        int width1 = _backgr.Width;
+                        int height1 = _backgr.Height;
+                        _newBitmap = new Bitmap(width, height);
+                        using (var canvas = Graphics.FromImage(_newBitmap))
                         {
                             if (height1 >= height)
                             {
                                 canvas.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                                canvas.DrawImage(backgr, new Rectangle(0, 0, width, height), new Rectangle(0, 0, layer.Width, layer.Height), GraphicsUnit.Pixel);
-                                canvas.DrawImage(layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, layer.Width, layer.Height), GraphicsUnit.Pixel);
+                                canvas.DrawImage(_backgr, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _layer.Width, _layer.Height), GraphicsUnit.Pixel);
+                                canvas.DrawImage(_layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _layer.Width, _layer.Height), GraphicsUnit.Pixel);
                                 canvas.Save();
                             }
                             else
                             {
                                 canvas.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                                canvas.DrawImage(backgr, new Rectangle(0, 0, width, height), new Rectangle(0, 0, backgr.Width, backgr.Height), GraphicsUnit.Pixel);
-                                canvas.DrawImage(layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, layer.Width, layer.Height), GraphicsUnit.Pixel);
+                                canvas.DrawImage(_backgr, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _backgr.Width, _backgr.Height), GraphicsUnit.Pixel);
+                                canvas.DrawImage(_layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _layer.Width, _layer.Height), GraphicsUnit.Pixel);
                                 canvas.Save();
                             }
                         }
                         try
                         {
-                            pcbxVisualConfig.Image = newBitmap;
+                            pcbxVisualConfig.Image = _newBitmap;
                         }
                         catch (Exception ex) { MessageBox.Show(ex.Message); }
                     }
                     else
-                        pcbxVisualConfig.Image = layer;
+                        pcbxVisualConfig.Image = _layer;
                 }
                 else
                 {
-                    if (backgr != null)
-                        pcbxVisualConfig.Image = backgr;
+                    if (_backgr != null)
+                        pcbxVisualConfig.Image = _backgr;
                 }
 
                 while (SplashWindow.bSmallCreated)
@@ -3318,117 +3360,117 @@ namespace Infinium
         {
             var fileInfo = new System.IO.FileInfo(openFileDialog3.FileName);
 
-            AttachmentsDT.Clear();
+            _attachmentsDt.Clear();
 
-            DataRow NewRow = AttachmentsDT.NewRow();
-            NewRow["FileName"] = Path.GetFileNameWithoutExtension(openFileDialog3.FileName);
-            NewRow["Extension"] = fileInfo.Extension;
-            NewRow["Path"] = openFileDialog3.FileName;
-            AttachmentsDT.Rows.Add(NewRow);
-            string FrontName = "";
-            int ColorID = -1;
-            int TechnoColorID = -1;
-            int PatinaID = -1;
-            int InsetTypeID = -1;
-            int InsetColorID = -1;
-            int TechnoInsetTypeID = -1;
-            int TechnoInsetColorID = -1;
+            DataRow newRow = _attachmentsDt.NewRow();
+            newRow["FileName"] = Path.GetFileNameWithoutExtension(openFileDialog3.FileName);
+            newRow["Extension"] = fileInfo.Extension;
+            newRow["Path"] = openFileDialog3.FileName;
+            _attachmentsDt.Rows.Add(newRow);
+            string frontName = "";
+            int colorId = -1;
+            int technoColorId = -1;
+            int patinaId = -1;
+            int insetTypeId = -1;
+            int insetColorId = -1;
+            int technoInsetTypeId = -1;
+            int technoInsetColorId = -1;
 
             if (FrontsDataGrid.SelectedRows.Count > 0 && FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value != DBNull.Value)
-                FrontName = FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value.ToString();
+                frontName = FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value.ToString();
             if (FrameColorsDataGrid.SelectedRows.Count > 0 && FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value != DBNull.Value)
-                ColorID = Convert.ToInt32(FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
+                colorId = Convert.ToInt32(FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
             if (TechnoFrameColorsDataGrid.SelectedRows.Count > 0 && TechnoFrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value != DBNull.Value)
-                TechnoColorID = Convert.ToInt32(TechnoFrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
+                technoColorId = Convert.ToInt32(TechnoFrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
             if (PatinaDataGrid.SelectedRows.Count > 0 && PatinaDataGrid.SelectedRows[0].Cells["PatinaID"].Value != DBNull.Value)
-                PatinaID = Convert.ToInt32(PatinaDataGrid.SelectedRows[0].Cells["PatinaID"].Value);
+                patinaId = Convert.ToInt32(PatinaDataGrid.SelectedRows[0].Cells["PatinaID"].Value);
             if (InsetTypesDataGrid.SelectedRows.Count > 0 && InsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value != DBNull.Value)
-                InsetTypeID = Convert.ToInt32(InsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
+                insetTypeId = Convert.ToInt32(InsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
             if (InsetColorsDataGrid.SelectedRows.Count > 0 && InsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value != DBNull.Value)
-                InsetColorID = Convert.ToInt32(InsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
+                insetColorId = Convert.ToInt32(InsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
             if (TechnoInsetTypesDataGrid.SelectedRows.Count > 0 && TechnoInsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value != DBNull.Value)
-                TechnoInsetTypeID = Convert.ToInt32(TechnoInsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
+                technoInsetTypeId = Convert.ToInt32(TechnoInsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
             if (TechnoInsetColorsDataGrid.SelectedRows.Count > 0 && TechnoInsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value != DBNull.Value)
-                TechnoInsetColorID = Convert.ToInt32(TechnoInsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
+                technoInsetColorId = Convert.ToInt32(TechnoInsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
 
-            int ConfigID = FrontsCatalog.SaveInsetColorsConfig(FrontName, ColorID, TechnoColorID, InsetTypeID, InsetColorID, TechnoInsetTypeID, TechnoInsetColorID);
-            if (ConfigID != -1)
-                FrontsCatalog.AttachInsetColorImage(AttachmentsDT, ConfigID);
+            int configId = _frontsCatalog.SaveInsetColorsConfig(frontName, colorId, technoColorId, insetTypeId, insetColorId, technoInsetTypeId, technoInsetColorId);
+            if (configId != -1)
+                _frontsCatalog.AttachInsetColorImage(_attachmentsDt, configId);
 
             pcbxVisualConfig.Image = null;
             if (cbVisualConfig.Checked)
             {
-                Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Загрузка данных с сервера.\r\nПодождите..."); });
+                Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref _topForm, "Загрузка данных с сервера.\r\nПодождите..."); });
                 T.Start();
 
                 while (!SplashWindow.bSmallCreated) ;
 
-                layer = null;
-                backgr = null;
-                backgr2 = null;
-                newBitmap = null;
-                newBitmap2 = null;
-                ConfigID = FrontsCatalog.GetInsetTypesConfig(FrontName, ColorID, TechnoColorID);
-                Image img = FrontsCatalog.GetInsetTypeImage(ConfigID);
-                if (ConfigID != -1 && img != null)
-                    layer = new Bitmap(img);
-                ConfigID = FrontsCatalog.GetInsetColorConfig(FrontName, ColorID, TechnoColorID, InsetTypeID, InsetColorID, TechnoInsetTypeID, TechnoInsetColorID);
-                img = FrontsCatalog.GetInsetColorImage(ConfigID);
-                if (ConfigID != -1 && img != null)
-                    backgr = new Bitmap(img);
+                _layer = null;
+                _backgr = null;
+                _backgr2 = null;
+                _newBitmap = null;
+                _newBitmap2 = null;
+                configId = _frontsCatalog.GetInsetTypesConfig(frontName, colorId, technoColorId);
+                Image img = _frontsCatalog.GetInsetTypeImage(configId);
+                if (configId != -1 && img != null)
+                    _layer = new Bitmap(img);
+                configId = _frontsCatalog.GetInsetColorConfig(frontName, colorId, technoColorId, insetTypeId, insetColorId, technoInsetTypeId, technoInsetColorId);
+                img = _frontsCatalog.GetInsetColorImage(configId);
+                if (configId != -1 && img != null)
+                    _backgr = new Bitmap(img);
 
-                ConfigID = FrontsCatalog.GetTechnoInsetColorConfig(FrontName, ColorID, TechnoColorID, InsetTypeID, InsetColorID, TechnoInsetTypeID, TechnoInsetColorID);
-                img = FrontsCatalog.GetTechnoInsetColorImage(ConfigID);
-                if (ConfigID != -1 && img != null)
-                    backgr2 = new Bitmap(img);
+                configId = _frontsCatalog.GetTechnoInsetColorConfig(frontName, colorId, technoColorId, insetTypeId, insetColorId, technoInsetTypeId, technoInsetColorId);
+                img = _frontsCatalog.GetTechnoInsetColorImage(configId);
+                if (configId != -1 && img != null)
+                    _backgr2 = new Bitmap(img);
 
-                if (layer != null)
+                if (_layer != null)
                 {
-                    if (backgr != null)
+                    if (_backgr != null)
                     {
-                        if (backgr2 != null)
+                        if (_backgr2 != null)
                         {
-                            int width = layer.Width;
-                            int height = layer.Height;
-                            int width1 = backgr.Width;
-                            int height1 = backgr.Height;
-                            int width2 = backgr2.Width;
-                            int height2 = backgr2.Height;
-                            newBitmap = new Bitmap(width, height);
-                            newBitmap2 = new Bitmap(width1, height1);
-                            using (var canvas = Graphics.FromImage(newBitmap2))
+                            int width = _layer.Width;
+                            int height = _layer.Height;
+                            int width1 = _backgr.Width;
+                            int height1 = _backgr.Height;
+                            int width2 = _backgr2.Width;
+                            int height2 = _backgr2.Height;
+                            _newBitmap = new Bitmap(width, height);
+                            _newBitmap2 = new Bitmap(width1, height1);
+                            using (var canvas = Graphics.FromImage(_newBitmap2))
                             {
                                 if (height2 >= height1)
                                 {
                                     canvas.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                                    canvas.DrawImage(backgr2, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, backgr.Width, backgr.Height), GraphicsUnit.Pixel);
-                                    canvas.DrawImage(backgr, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, backgr.Width, backgr.Height), GraphicsUnit.Pixel);
+                                    canvas.DrawImage(_backgr2, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, _backgr.Width, _backgr.Height), GraphicsUnit.Pixel);
+                                    canvas.DrawImage(_backgr, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, _backgr.Width, _backgr.Height), GraphicsUnit.Pixel);
                                     canvas.Save();
                                 }
                                 else
                                 {
                                     canvas.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                                    canvas.DrawImage(backgr2, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, backgr2.Width, backgr2.Height), GraphicsUnit.Pixel);
-                                    canvas.DrawImage(backgr, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, backgr.Width, backgr.Height), GraphicsUnit.Pixel);
+                                    canvas.DrawImage(_backgr2, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, _backgr2.Width, _backgr2.Height), GraphicsUnit.Pixel);
+                                    canvas.DrawImage(_backgr, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, _backgr.Width, _backgr.Height), GraphicsUnit.Pixel);
                                     canvas.Save();
                                 }
 
-                                int width3 = newBitmap2.Width;
-                                int height3 = newBitmap2.Height;
-                                using (var canvas1 = Graphics.FromImage(newBitmap))
+                                int width3 = _newBitmap2.Width;
+                                int height3 = _newBitmap2.Height;
+                                using (var canvas1 = Graphics.FromImage(_newBitmap))
                                 {
                                     if (height3 >= height)
                                     {
                                         canvas1.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                                        canvas1.DrawImage(newBitmap2, new Rectangle(0, 0, width, height), new Rectangle(0, 0, layer.Width, layer.Height), GraphicsUnit.Pixel);
-                                        canvas1.DrawImage(layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, layer.Width, layer.Height), GraphicsUnit.Pixel);
+                                        canvas1.DrawImage(_newBitmap2, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _layer.Width, _layer.Height), GraphicsUnit.Pixel);
+                                        canvas1.DrawImage(_layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _layer.Width, _layer.Height), GraphicsUnit.Pixel);
                                         canvas1.Save();
                                     }
                                     else
                                     {
                                         canvas1.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                                        canvas1.DrawImage(newBitmap2, new Rectangle(0, 0, width, height), new Rectangle(0, 0, newBitmap2.Width, newBitmap2.Height), GraphicsUnit.Pixel);
-                                        canvas1.DrawImage(layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, layer.Width, layer.Height), GraphicsUnit.Pixel);
+                                        canvas1.DrawImage(_newBitmap2, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _newBitmap2.Width, _newBitmap2.Height), GraphicsUnit.Pixel);
+                                        canvas1.DrawImage(_layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _layer.Width, _layer.Height), GraphicsUnit.Pixel);
                                         canvas1.Save();
                                     }
                                 }
@@ -3436,49 +3478,49 @@ namespace Infinium
 
                             try
                             {
-                                pcbxVisualConfig.Image = newBitmap;
+                                pcbxVisualConfig.Image = _newBitmap;
                             }
                             catch (Exception ex) { MessageBox.Show(ex.Message); }
                         }
                         else
                         {
-                            int width = layer.Width;
-                            int height = layer.Height;
-                            int width1 = backgr.Width;
-                            int height1 = backgr.Height;
-                            newBitmap = new Bitmap(width, height);
-                            using (var canvas = Graphics.FromImage(newBitmap))
+                            int width = _layer.Width;
+                            int height = _layer.Height;
+                            int width1 = _backgr.Width;
+                            int height1 = _backgr.Height;
+                            _newBitmap = new Bitmap(width, height);
+                            using (var canvas = Graphics.FromImage(_newBitmap))
                             {
                                 if (height1 >= height)
                                 {
                                     canvas.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                                    canvas.DrawImage(backgr, new Rectangle(0, 0, width, height), new Rectangle(0, 0, layer.Width, layer.Height), GraphicsUnit.Pixel);
-                                    canvas.DrawImage(layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, layer.Width, layer.Height), GraphicsUnit.Pixel);
+                                    canvas.DrawImage(_backgr, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _layer.Width, _layer.Height), GraphicsUnit.Pixel);
+                                    canvas.DrawImage(_layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _layer.Width, _layer.Height), GraphicsUnit.Pixel);
                                     canvas.Save();
                                 }
                                 else
                                 {
                                     canvas.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                                    canvas.DrawImage(backgr, new Rectangle(0, 0, width, height), new Rectangle(0, 0, backgr.Width, backgr.Height), GraphicsUnit.Pixel);
-                                    canvas.DrawImage(layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, layer.Width, layer.Height), GraphicsUnit.Pixel);
+                                    canvas.DrawImage(_backgr, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _backgr.Width, _backgr.Height), GraphicsUnit.Pixel);
+                                    canvas.DrawImage(_layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _layer.Width, _layer.Height), GraphicsUnit.Pixel);
                                     canvas.Save();
                                 }
                             }
 
                             try
                             {
-                                pcbxVisualConfig.Image = newBitmap;
+                                pcbxVisualConfig.Image = _newBitmap;
                             }
                             catch (Exception ex) { MessageBox.Show(ex.Message); }
                         }
                     }
                     else
-                        pcbxVisualConfig.Image = layer;
+                        pcbxVisualConfig.Image = _layer;
                 }
                 else
                 {
-                    if (backgr != null)
-                        pcbxVisualConfig.Image = backgr;
+                    if (_backgr != null)
+                        pcbxVisualConfig.Image = _backgr;
                 }
 
                 while (SplashWindow.bSmallCreated)
@@ -3496,128 +3538,128 @@ namespace Infinium
             if (pcbxVisualConfig.Image == null)
                 return;
 
-            PhantomForm PhantomForm = new PhantomForm();
-            PhantomForm.Show();
+            PhantomForm phantomForm = new PhantomForm();
+            phantomForm.Show();
 
-            ZoomImageForm ZoomImageForm = new ZoomImageForm(pcbxVisualConfig.Image, ref TopForm);
+            ZoomImageForm zoomImageForm = new ZoomImageForm(pcbxVisualConfig.Image, ref _topForm);
 
-            TopForm = ZoomImageForm;
+            _topForm = zoomImageForm;
 
-            ZoomImageForm.ShowDialog();
+            zoomImageForm.ShowDialog();
 
-            PhantomForm.Close();
-            PhantomForm.Dispose();
+            phantomForm.Close();
+            phantomForm.Dispose();
 
-            TopForm = null;
+            _topForm = null;
 
-            ZoomImageForm.Dispose();
+            zoomImageForm.Dispose();
         }
 
         private void cbVisualConfig_CheckedChanged(object sender, EventArgs e)
         {
-            if (FrontsCatalog == null)
+            if (_frontsCatalog == null)
                 return;
-            string FrontName = "";
-            int ColorID = -1;
-            int TechnoColorID = -1;
-            int PatinaID = -1;
-            int InsetTypeID = -1;
-            int InsetColorID = -1;
-            int TechnoInsetTypeID = -1;
-            int TechnoInsetColorID = -1;
+            string frontName = "";
+            int colorId = -1;
+            int technoColorId = -1;
+            int patinaId = -1;
+            int insetTypeId = -1;
+            int insetColorId = -1;
+            int technoInsetTypeId = -1;
+            int technoInsetColorId = -1;
 
             if (FrontsDataGrid.SelectedRows.Count > 0 && FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value != DBNull.Value)
-                FrontName = FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value.ToString();
+                frontName = FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value.ToString();
             if (FrameColorsDataGrid.SelectedRows.Count > 0 && FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value != DBNull.Value)
-                ColorID = Convert.ToInt32(FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
+                colorId = Convert.ToInt32(FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
             if (TechnoFrameColorsDataGrid.SelectedRows.Count > 0 && TechnoFrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value != DBNull.Value)
-                TechnoColorID = Convert.ToInt32(TechnoFrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
+                technoColorId = Convert.ToInt32(TechnoFrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
             if (PatinaDataGrid.SelectedRows.Count > 0 && PatinaDataGrid.SelectedRows[0].Cells["PatinaID"].Value != DBNull.Value)
-                PatinaID = Convert.ToInt32(PatinaDataGrid.SelectedRows[0].Cells["PatinaID"].Value);
+                patinaId = Convert.ToInt32(PatinaDataGrid.SelectedRows[0].Cells["PatinaID"].Value);
             if (InsetTypesDataGrid.SelectedRows.Count > 0 && InsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value != DBNull.Value)
-                InsetTypeID = Convert.ToInt32(InsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
+                insetTypeId = Convert.ToInt32(InsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
             if (InsetColorsDataGrid.SelectedRows.Count > 0 && InsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value != DBNull.Value)
-                InsetColorID = Convert.ToInt32(InsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
+                insetColorId = Convert.ToInt32(InsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
             if (TechnoInsetTypesDataGrid.SelectedRows.Count > 0 && TechnoInsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value != DBNull.Value)
-                TechnoInsetTypeID = Convert.ToInt32(TechnoInsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
+                technoInsetTypeId = Convert.ToInt32(TechnoInsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
             if (TechnoInsetColorsDataGrid.SelectedRows.Count > 0 && TechnoInsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value != DBNull.Value)
-                TechnoInsetColorID = Convert.ToInt32(TechnoInsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
+                technoInsetColorId = Convert.ToInt32(TechnoInsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
 
             pcbxVisualConfig.Image = null;
 
             if (cbVisualConfig.Checked)
             {
-                Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Загрузка данных с сервера.\r\nПодождите..."); });
+                Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref _topForm, "Загрузка данных с сервера.\r\nПодождите..."); });
                 T.Start();
 
                 while (!SplashWindow.bSmallCreated) ;
 
-                layer = null;
-                backgr = null;
-                backgr2 = null;
-                newBitmap = null;
-                newBitmap2 = null;
-                int ConfigID = FrontsCatalog.GetInsetTypesConfig(FrontName, ColorID, TechnoColorID);
-                Image img = FrontsCatalog.GetInsetTypeImage(ConfigID);
-                if (ConfigID != -1 && img != null)
-                    layer = new Bitmap(img);
-                ConfigID = FrontsCatalog.GetInsetColorConfig(FrontName, ColorID, TechnoColorID, InsetTypeID, InsetColorID, TechnoInsetTypeID, TechnoInsetColorID);
-                img = FrontsCatalog.GetInsetColorImage(ConfigID);
-                if (ConfigID != -1 && img != null)
-                    backgr = new Bitmap(img);
+                _layer = null;
+                _backgr = null;
+                _backgr2 = null;
+                _newBitmap = null;
+                _newBitmap2 = null;
+                int configId = _frontsCatalog.GetInsetTypesConfig(frontName, colorId, technoColorId);
+                Image img = _frontsCatalog.GetInsetTypeImage(configId);
+                if (configId != -1 && img != null)
+                    _layer = new Bitmap(img);
+                configId = _frontsCatalog.GetInsetColorConfig(frontName, colorId, technoColorId, insetTypeId, insetColorId, technoInsetTypeId, technoInsetColorId);
+                img = _frontsCatalog.GetInsetColorImage(configId);
+                if (configId != -1 && img != null)
+                    _backgr = new Bitmap(img);
 
-                ConfigID = FrontsCatalog.GetTechnoInsetColorConfig(FrontName, ColorID, TechnoColorID, InsetTypeID, InsetColorID, TechnoInsetTypeID, TechnoInsetColorID);
-                img = FrontsCatalog.GetTechnoInsetColorImage(ConfigID);
-                if (ConfigID != -1 && img != null)
-                    backgr2 = new Bitmap(img);
+                configId = _frontsCatalog.GetTechnoInsetColorConfig(frontName, colorId, technoColorId, insetTypeId, insetColorId, technoInsetTypeId, technoInsetColorId);
+                img = _frontsCatalog.GetTechnoInsetColorImage(configId);
+                if (configId != -1 && img != null)
+                    _backgr2 = new Bitmap(img);
 
-                if (layer != null)
+                if (_layer != null)
                 {
-                    if (backgr != null)
+                    if (_backgr != null)
                     {
-                        if (backgr2 != null)
+                        if (_backgr2 != null)
                         {
-                            int width = layer.Width;
-                            int height = layer.Height;
-                            int width1 = backgr.Width;
-                            int height1 = backgr.Height;
-                            int width2 = backgr2.Width;
-                            int height2 = backgr2.Height;
-                            newBitmap = new Bitmap(width, height);
-                            newBitmap2 = new Bitmap(width1, height1);
-                            using (var canvas = Graphics.FromImage(newBitmap2))
+                            int width = _layer.Width;
+                            int height = _layer.Height;
+                            int width1 = _backgr.Width;
+                            int height1 = _backgr.Height;
+                            int width2 = _backgr2.Width;
+                            int height2 = _backgr2.Height;
+                            _newBitmap = new Bitmap(width, height);
+                            _newBitmap2 = new Bitmap(width1, height1);
+                            using (var canvas = Graphics.FromImage(_newBitmap2))
                             {
                                 if (height2 >= height1)
                                 {
                                     canvas.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                                    canvas.DrawImage(backgr2, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, backgr.Width, backgr.Height), GraphicsUnit.Pixel);
-                                    canvas.DrawImage(backgr, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, backgr.Width, backgr.Height), GraphicsUnit.Pixel);
+                                    canvas.DrawImage(_backgr2, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, _backgr.Width, _backgr.Height), GraphicsUnit.Pixel);
+                                    canvas.DrawImage(_backgr, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, _backgr.Width, _backgr.Height), GraphicsUnit.Pixel);
                                     canvas.Save();
                                 }
                                 else
                                 {
                                     canvas.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                                    canvas.DrawImage(backgr2, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, backgr2.Width, backgr2.Height), GraphicsUnit.Pixel);
-                                    canvas.DrawImage(backgr, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, backgr.Width, backgr.Height), GraphicsUnit.Pixel);
+                                    canvas.DrawImage(_backgr2, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, _backgr2.Width, _backgr2.Height), GraphicsUnit.Pixel);
+                                    canvas.DrawImage(_backgr, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, _backgr.Width, _backgr.Height), GraphicsUnit.Pixel);
                                     canvas.Save();
                                 }
 
-                                int width3 = newBitmap2.Width;
-                                int height3 = newBitmap2.Height;
-                                using (var canvas1 = Graphics.FromImage(newBitmap))
+                                int width3 = _newBitmap2.Width;
+                                int height3 = _newBitmap2.Height;
+                                using (var canvas1 = Graphics.FromImage(_newBitmap))
                                 {
                                     if (height3 >= height)
                                     {
                                         canvas1.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                                        canvas1.DrawImage(newBitmap2, new Rectangle(0, 0, width, height), new Rectangle(0, 0, layer.Width, layer.Height), GraphicsUnit.Pixel);
-                                        canvas1.DrawImage(layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, layer.Width, layer.Height), GraphicsUnit.Pixel);
+                                        canvas1.DrawImage(_newBitmap2, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _layer.Width, _layer.Height), GraphicsUnit.Pixel);
+                                        canvas1.DrawImage(_layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _layer.Width, _layer.Height), GraphicsUnit.Pixel);
                                         canvas1.Save();
                                     }
                                     else
                                     {
                                         canvas1.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                                        canvas1.DrawImage(newBitmap2, new Rectangle(0, 0, width, height), new Rectangle(0, 0, newBitmap2.Width, newBitmap2.Height), GraphicsUnit.Pixel);
-                                        canvas1.DrawImage(layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, layer.Width, layer.Height), GraphicsUnit.Pixel);
+                                        canvas1.DrawImage(_newBitmap2, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _newBitmap2.Width, _newBitmap2.Height), GraphicsUnit.Pixel);
+                                        canvas1.DrawImage(_layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _layer.Width, _layer.Height), GraphicsUnit.Pixel);
                                         canvas1.Save();
                                     }
                                 }
@@ -3625,49 +3667,49 @@ namespace Infinium
 
                             try
                             {
-                                pcbxVisualConfig.Image = newBitmap;
+                                pcbxVisualConfig.Image = _newBitmap;
                             }
                             catch (Exception ex) { MessageBox.Show(ex.Message); }
                         }
                         else
                         {
-                            int width = layer.Width;
-                            int height = layer.Height;
-                            int width1 = backgr.Width;
-                            int height1 = backgr.Height;
-                            newBitmap = new Bitmap(width, height);
-                            using (var canvas = Graphics.FromImage(newBitmap))
+                            int width = _layer.Width;
+                            int height = _layer.Height;
+                            int width1 = _backgr.Width;
+                            int height1 = _backgr.Height;
+                            _newBitmap = new Bitmap(width, height);
+                            using (var canvas = Graphics.FromImage(_newBitmap))
                             {
                                 if (height1 >= height)
                                 {
                                     canvas.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                                    canvas.DrawImage(backgr, new Rectangle(0, 0, width, height), new Rectangle(0, 0, layer.Width, layer.Height), GraphicsUnit.Pixel);
-                                    canvas.DrawImage(layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, layer.Width, layer.Height), GraphicsUnit.Pixel);
+                                    canvas.DrawImage(_backgr, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _layer.Width, _layer.Height), GraphicsUnit.Pixel);
+                                    canvas.DrawImage(_layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _layer.Width, _layer.Height), GraphicsUnit.Pixel);
                                     canvas.Save();
                                 }
                                 else
                                 {
                                     canvas.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                                    canvas.DrawImage(backgr, new Rectangle(0, 0, width, height), new Rectangle(0, 0, backgr.Width, backgr.Height), GraphicsUnit.Pixel);
-                                    canvas.DrawImage(layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, layer.Width, layer.Height), GraphicsUnit.Pixel);
+                                    canvas.DrawImage(_backgr, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _backgr.Width, _backgr.Height), GraphicsUnit.Pixel);
+                                    canvas.DrawImage(_layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _layer.Width, _layer.Height), GraphicsUnit.Pixel);
                                     canvas.Save();
                                 }
                             }
 
                             try
                             {
-                                pcbxVisualConfig.Image = newBitmap;
+                                pcbxVisualConfig.Image = _newBitmap;
                             }
                             catch (Exception ex) { MessageBox.Show(ex.Message); }
                         }
                     }
                     else
-                        pcbxVisualConfig.Image = layer;
+                        pcbxVisualConfig.Image = _layer;
                 }
                 else
                 {
-                    if (backgr != null)
-                        pcbxVisualConfig.Image = backgr;
+                    if (_backgr != null)
+                        pcbxVisualConfig.Image = _backgr;
                 }
 
                 while (SplashWindow.bSmallCreated)
@@ -3690,7 +3732,7 @@ namespace Infinium
 
         private void TechnoFrameColorsDataGrid_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
         {
-            if (bCanEdit && e.Button == System.Windows.Forms.MouseButtons.Right)
+            if (_bCanEdit && e.Button == System.Windows.Forms.MouseButtons.Right)
             {
                 kryptonContextMenu3.Show(new Point(Cursor.Position.X - 212, Cursor.Position.Y - 10));
             }
@@ -3705,101 +3747,101 @@ namespace Infinium
             //    MessageBox.Show("Файл больше 1,5 МБ и не может быть загружен");
             //    return;
             //}
-            AttachmentsDT.Clear();
+            _attachmentsDt.Clear();
 
-            DataRow NewRow = AttachmentsDT.NewRow();
-            NewRow["FileName"] = Path.GetFileNameWithoutExtension(openFileDialog5.FileName);
-            NewRow["Extension"] = fileInfo.Extension;
-            NewRow["Path"] = openFileDialog5.FileName;
-            AttachmentsDT.Rows.Add(NewRow);
+            DataRow newRow = _attachmentsDt.NewRow();
+            newRow["FileName"] = Path.GetFileNameWithoutExtension(openFileDialog5.FileName);
+            newRow["Extension"] = fileInfo.Extension;
+            newRow["Path"] = openFileDialog5.FileName;
+            _attachmentsDt.Rows.Add(newRow);
 
-            string FrontName = "";
-            int ColorID = -1;
-            int TechnoColorID = -1;
-            int PatinaID = -1;
-            int InsetTypeID = -1;
-            int InsetColorID = -1;
-            int TechnoInsetTypeID = -1;
-            int TechnoInsetColorID = -1;
+            string frontName = "";
+            int colorId = -1;
+            int technoColorId = -1;
+            int patinaId = -1;
+            int insetTypeId = -1;
+            int insetColorId = -1;
+            int technoInsetTypeId = -1;
+            int technoInsetColorId = -1;
 
             if (FrontsDataGrid.SelectedRows.Count > 0 && FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value != DBNull.Value)
-                FrontName = FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value.ToString();
+                frontName = FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value.ToString();
             if (FrameColorsDataGrid.SelectedRows.Count > 0 && FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value != DBNull.Value)
-                ColorID = Convert.ToInt32(FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
+                colorId = Convert.ToInt32(FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
             if (TechnoFrameColorsDataGrid.SelectedRows.Count > 0 && TechnoFrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value != DBNull.Value)
-                TechnoColorID = Convert.ToInt32(TechnoFrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
+                technoColorId = Convert.ToInt32(TechnoFrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
             if (PatinaDataGrid.SelectedRows.Count > 0 && PatinaDataGrid.SelectedRows[0].Cells["PatinaID"].Value != DBNull.Value)
-                PatinaID = Convert.ToInt32(PatinaDataGrid.SelectedRows[0].Cells["PatinaID"].Value);
+                patinaId = Convert.ToInt32(PatinaDataGrid.SelectedRows[0].Cells["PatinaID"].Value);
             if (InsetTypesDataGrid.SelectedRows.Count > 0 && InsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value != DBNull.Value)
-                InsetTypeID = Convert.ToInt32(InsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
+                insetTypeId = Convert.ToInt32(InsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
             if (InsetColorsDataGrid.SelectedRows.Count > 0 && InsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value != DBNull.Value)
-                InsetColorID = Convert.ToInt32(InsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
+                insetColorId = Convert.ToInt32(InsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
             if (TechnoInsetTypesDataGrid.SelectedRows.Count > 0 && TechnoInsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value != DBNull.Value)
-                TechnoInsetTypeID = Convert.ToInt32(TechnoInsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
+                technoInsetTypeId = Convert.ToInt32(TechnoInsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
             if (TechnoInsetColorsDataGrid.SelectedRows.Count > 0 && TechnoInsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value != DBNull.Value)
-                TechnoInsetColorID = Convert.ToInt32(TechnoInsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
+                technoInsetColorId = Convert.ToInt32(TechnoInsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
 
-            int ConfigID = FrontsCatalog.SaveInsetTypesConfig(FrontName, ColorID, TechnoColorID);
-            if (ConfigID != -1)
-                FrontsCatalog.AttachInsetTypeImage(AttachmentsDT, ConfigID);
+            int configId = _frontsCatalog.SaveInsetTypesConfig(frontName, colorId, technoColorId);
+            if (configId != -1)
+                _frontsCatalog.AttachInsetTypeImage(_attachmentsDt, configId);
 
             pcbxVisualConfig.Image = null;
             if (cbVisualConfig.Checked)
             {
-                Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Загрузка данных с сервера.\r\nПодождите..."); });
+                Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref _topForm, "Загрузка данных с сервера.\r\nПодождите..."); });
                 T.Start();
 
                 while (!SplashWindow.bSmallCreated) ;
 
-                layer = null;
-                backgr = null;
-                newBitmap = null;
-                Image img = FrontsCatalog.GetInsetTypeImage(ConfigID);
-                if (ConfigID != -1 && img != null)
-                    layer = new Bitmap(img);
-                ConfigID = FrontsCatalog.GetInsetColorConfig(FrontName, ColorID, TechnoColorID, InsetTypeID, InsetColorID, TechnoInsetTypeID, TechnoInsetColorID);
-                img = FrontsCatalog.GetInsetColorImage(ConfigID);
-                if (ConfigID != -1 && img != null)
-                    backgr = new Bitmap(img);
-                if (layer != null)
+                _layer = null;
+                _backgr = null;
+                _newBitmap = null;
+                Image img = _frontsCatalog.GetInsetTypeImage(configId);
+                if (configId != -1 && img != null)
+                    _layer = new Bitmap(img);
+                configId = _frontsCatalog.GetInsetColorConfig(frontName, colorId, technoColorId, insetTypeId, insetColorId, technoInsetTypeId, technoInsetColorId);
+                img = _frontsCatalog.GetInsetColorImage(configId);
+                if (configId != -1 && img != null)
+                    _backgr = new Bitmap(img);
+                if (_layer != null)
                 {
-                    if (backgr != null)
+                    if (_backgr != null)
                     {
-                        int width = layer.Width;
-                        int height = layer.Height;
-                        int width1 = backgr.Width;
-                        int height1 = backgr.Height;
-                        newBitmap = new Bitmap(width, height);
-                        using (var canvas = Graphics.FromImage(newBitmap))
+                        int width = _layer.Width;
+                        int height = _layer.Height;
+                        int width1 = _backgr.Width;
+                        int height1 = _backgr.Height;
+                        _newBitmap = new Bitmap(width, height);
+                        using (var canvas = Graphics.FromImage(_newBitmap))
                         {
                             if (height1 >= height)
                             {
                                 canvas.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                                canvas.DrawImage(backgr, new Rectangle(0, 0, width, height), new Rectangle(0, 0, layer.Width, layer.Height), GraphicsUnit.Pixel);
-                                canvas.DrawImage(layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, layer.Width, layer.Height), GraphicsUnit.Pixel);
+                                canvas.DrawImage(_backgr, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _layer.Width, _layer.Height), GraphicsUnit.Pixel);
+                                canvas.DrawImage(_layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _layer.Width, _layer.Height), GraphicsUnit.Pixel);
                                 canvas.Save();
                             }
                             else
                             {
                                 canvas.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                                canvas.DrawImage(backgr, new Rectangle(0, 0, width, height), new Rectangle(0, 0, backgr.Width, backgr.Height), GraphicsUnit.Pixel);
-                                canvas.DrawImage(layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, layer.Width, layer.Height), GraphicsUnit.Pixel);
+                                canvas.DrawImage(_backgr, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _backgr.Width, _backgr.Height), GraphicsUnit.Pixel);
+                                canvas.DrawImage(_layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _layer.Width, _layer.Height), GraphicsUnit.Pixel);
                                 canvas.Save();
                             }
                         }
                         try
                         {
-                            pcbxVisualConfig.Image = newBitmap;
+                            pcbxVisualConfig.Image = _newBitmap;
                         }
                         catch (Exception ex) { MessageBox.Show(ex.Message); }
                     }
                     else
-                        pcbxVisualConfig.Image = layer;
+                        pcbxVisualConfig.Image = _layer;
                 }
                 else
                 {
-                    if (backgr != null)
-                        pcbxVisualConfig.Image = backgr;
+                    if (_backgr != null)
+                        pcbxVisualConfig.Image = _backgr;
                 }
 
                 while (SplashWindow.bSmallCreated)
@@ -3814,114 +3856,114 @@ namespace Infinium
 
         private void kryptonContextMenuItem17_Click(object sender, EventArgs e)
         {
-            bool OKCancel = Infinium.LightMessageBox.Show(ref TopForm, true,
+            bool okCancel = Infinium.LightMessageBox.Show(ref _topForm, true,
                          "Вы уверены, что хотите удалить?",
                          "Удаление");
 
-            if (!OKCancel)
+            if (!okCancel)
                 return;
 
-            string FrontName = "";
-            int ColorID = -1;
-            int TechnoColorID = -1;
-            int PatinaID = -1;
-            int InsetTypeID = -1;
-            int InsetColorID = -1;
-            int TechnoInsetTypeID = -1;
-            int TechnoInsetColorID = -1;
+            string frontName = "";
+            int colorId = -1;
+            int technoColorId = -1;
+            int patinaId = -1;
+            int insetTypeId = -1;
+            int insetColorId = -1;
+            int technoInsetTypeId = -1;
+            int technoInsetColorId = -1;
 
             if (FrontsDataGrid.SelectedRows.Count > 0 && FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value != DBNull.Value)
-                FrontName = FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value.ToString();
+                frontName = FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value.ToString();
             if (FrameColorsDataGrid.SelectedRows.Count > 0 && FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value != DBNull.Value)
-                ColorID = Convert.ToInt32(FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
+                colorId = Convert.ToInt32(FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
             if (TechnoFrameColorsDataGrid.SelectedRows.Count > 0 && TechnoFrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value != DBNull.Value)
-                TechnoColorID = Convert.ToInt32(TechnoFrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
+                technoColorId = Convert.ToInt32(TechnoFrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
             if (PatinaDataGrid.SelectedRows.Count > 0 && PatinaDataGrid.SelectedRows[0].Cells["PatinaID"].Value != DBNull.Value)
-                PatinaID = Convert.ToInt32(PatinaDataGrid.SelectedRows[0].Cells["PatinaID"].Value);
+                patinaId = Convert.ToInt32(PatinaDataGrid.SelectedRows[0].Cells["PatinaID"].Value);
             if (InsetTypesDataGrid.SelectedRows.Count > 0 && InsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value != DBNull.Value)
-                InsetTypeID = Convert.ToInt32(InsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
+                insetTypeId = Convert.ToInt32(InsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
             if (InsetColorsDataGrid.SelectedRows.Count > 0 && InsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value != DBNull.Value)
-                InsetColorID = Convert.ToInt32(InsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
+                insetColorId = Convert.ToInt32(InsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
             if (TechnoInsetTypesDataGrid.SelectedRows.Count > 0 && TechnoInsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value != DBNull.Value)
-                TechnoInsetTypeID = Convert.ToInt32(TechnoInsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
+                technoInsetTypeId = Convert.ToInt32(TechnoInsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
             if (TechnoInsetColorsDataGrid.SelectedRows.Count > 0 && TechnoInsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value != DBNull.Value)
-                TechnoInsetColorID = Convert.ToInt32(TechnoInsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
+                technoInsetColorId = Convert.ToInt32(TechnoInsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
 
-            Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Загрузка данных с сервера.\r\nПодождите..."); });
+            Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref _topForm, "Загрузка данных с сервера.\r\nПодождите..."); });
             T.Start();
 
             while (!SplashWindow.bSmallCreated) ;
 
-            int ConfigID = FrontsCatalog.GetInsetTypesConfig(FrontName, ColorID, TechnoColorID);
-            FrontsCatalog.DetachInsetTypeImage(ConfigID);
+            int configId = _frontsCatalog.GetInsetTypesConfig(frontName, colorId, technoColorId);
+            _frontsCatalog.DetachInsetTypeImage(configId);
             pcbxVisualConfig.Image = null;
             if (cbVisualConfig.Checked)
             {
-                layer = null;
-                backgr = null;
-                backgr2 = null;
-                newBitmap = null;
-                newBitmap2 = null;
-                Image img = FrontsCatalog.GetInsetTypeImage(ConfigID);
-                if (ConfigID != -1 && img != null)
-                    layer = new Bitmap(img);
-                ConfigID = FrontsCatalog.GetInsetColorConfig(FrontName, ColorID, TechnoColorID, InsetTypeID, InsetColorID, TechnoInsetTypeID, TechnoInsetColorID);
-                img = FrontsCatalog.GetInsetColorImage(ConfigID);
-                if (ConfigID != -1 && img != null)
-                    backgr = new Bitmap(img);
+                _layer = null;
+                _backgr = null;
+                _backgr2 = null;
+                _newBitmap = null;
+                _newBitmap2 = null;
+                Image img = _frontsCatalog.GetInsetTypeImage(configId);
+                if (configId != -1 && img != null)
+                    _layer = new Bitmap(img);
+                configId = _frontsCatalog.GetInsetColorConfig(frontName, colorId, technoColorId, insetTypeId, insetColorId, technoInsetTypeId, technoInsetColorId);
+                img = _frontsCatalog.GetInsetColorImage(configId);
+                if (configId != -1 && img != null)
+                    _backgr = new Bitmap(img);
 
-                ConfigID = FrontsCatalog.GetTechnoInsetColorConfig(FrontName, ColorID, TechnoColorID, InsetTypeID, InsetColorID, TechnoInsetTypeID, TechnoInsetColorID);
-                img = FrontsCatalog.GetTechnoInsetColorImage(ConfigID);
-                if (ConfigID != -1 && img != null)
-                    backgr2 = new Bitmap(img);
+                configId = _frontsCatalog.GetTechnoInsetColorConfig(frontName, colorId, technoColorId, insetTypeId, insetColorId, technoInsetTypeId, technoInsetColorId);
+                img = _frontsCatalog.GetTechnoInsetColorImage(configId);
+                if (configId != -1 && img != null)
+                    _backgr2 = new Bitmap(img);
 
-                if (layer != null)
+                if (_layer != null)
                 {
-                    if (backgr != null)
+                    if (_backgr != null)
                     {
-                        if (backgr2 != null)
+                        if (_backgr2 != null)
                         {
-                            int width = layer.Width;
-                            int height = layer.Height;
-                            int width1 = backgr.Width;
-                            int height1 = backgr.Height;
-                            int width2 = backgr2.Width;
-                            int height2 = backgr2.Height;
-                            newBitmap = new Bitmap(width, height);
-                            newBitmap2 = new Bitmap(width1, height1);
-                            using (var canvas = Graphics.FromImage(newBitmap2))
+                            int width = _layer.Width;
+                            int height = _layer.Height;
+                            int width1 = _backgr.Width;
+                            int height1 = _backgr.Height;
+                            int width2 = _backgr2.Width;
+                            int height2 = _backgr2.Height;
+                            _newBitmap = new Bitmap(width, height);
+                            _newBitmap2 = new Bitmap(width1, height1);
+                            using (var canvas = Graphics.FromImage(_newBitmap2))
                             {
                                 if (height2 >= height1)
                                 {
                                     canvas.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                                    canvas.DrawImage(backgr2, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, backgr.Width, backgr.Height), GraphicsUnit.Pixel);
-                                    canvas.DrawImage(backgr, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, backgr.Width, backgr.Height), GraphicsUnit.Pixel);
+                                    canvas.DrawImage(_backgr2, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, _backgr.Width, _backgr.Height), GraphicsUnit.Pixel);
+                                    canvas.DrawImage(_backgr, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, _backgr.Width, _backgr.Height), GraphicsUnit.Pixel);
                                     canvas.Save();
                                 }
                                 else
                                 {
                                     canvas.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                                    canvas.DrawImage(backgr2, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, backgr2.Width, backgr2.Height), GraphicsUnit.Pixel);
-                                    canvas.DrawImage(backgr, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, backgr.Width, backgr.Height), GraphicsUnit.Pixel);
+                                    canvas.DrawImage(_backgr2, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, _backgr2.Width, _backgr2.Height), GraphicsUnit.Pixel);
+                                    canvas.DrawImage(_backgr, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, _backgr.Width, _backgr.Height), GraphicsUnit.Pixel);
                                     canvas.Save();
                                 }
 
-                                int width3 = newBitmap2.Width;
-                                int height3 = newBitmap2.Height;
-                                using (var canvas1 = Graphics.FromImage(newBitmap))
+                                int width3 = _newBitmap2.Width;
+                                int height3 = _newBitmap2.Height;
+                                using (var canvas1 = Graphics.FromImage(_newBitmap))
                                 {
                                     if (height3 >= height)
                                     {
                                         canvas1.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                                        canvas1.DrawImage(newBitmap2, new Rectangle(0, 0, width, height), new Rectangle(0, 0, layer.Width, layer.Height), GraphicsUnit.Pixel);
-                                        canvas1.DrawImage(layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, layer.Width, layer.Height), GraphicsUnit.Pixel);
+                                        canvas1.DrawImage(_newBitmap2, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _layer.Width, _layer.Height), GraphicsUnit.Pixel);
+                                        canvas1.DrawImage(_layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _layer.Width, _layer.Height), GraphicsUnit.Pixel);
                                         canvas1.Save();
                                     }
                                     else
                                     {
                                         canvas1.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                                        canvas1.DrawImage(newBitmap2, new Rectangle(0, 0, width, height), new Rectangle(0, 0, newBitmap2.Width, newBitmap2.Height), GraphicsUnit.Pixel);
-                                        canvas1.DrawImage(layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, layer.Width, layer.Height), GraphicsUnit.Pixel);
+                                        canvas1.DrawImage(_newBitmap2, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _newBitmap2.Width, _newBitmap2.Height), GraphicsUnit.Pixel);
+                                        canvas1.DrawImage(_layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _layer.Width, _layer.Height), GraphicsUnit.Pixel);
                                         canvas1.Save();
                                     }
                                 }
@@ -3929,49 +3971,49 @@ namespace Infinium
 
                             try
                             {
-                                pcbxVisualConfig.Image = newBitmap;
+                                pcbxVisualConfig.Image = _newBitmap;
                             }
                             catch (Exception ex) { MessageBox.Show(ex.Message); }
                         }
                         else
                         {
-                            int width = layer.Width;
-                            int height = layer.Height;
-                            int width1 = backgr.Width;
-                            int height1 = backgr.Height;
-                            newBitmap = new Bitmap(width, height);
-                            using (var canvas = Graphics.FromImage(newBitmap))
+                            int width = _layer.Width;
+                            int height = _layer.Height;
+                            int width1 = _backgr.Width;
+                            int height1 = _backgr.Height;
+                            _newBitmap = new Bitmap(width, height);
+                            using (var canvas = Graphics.FromImage(_newBitmap))
                             {
                                 if (height1 >= height)
                                 {
                                     canvas.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                                    canvas.DrawImage(backgr, new Rectangle(0, 0, width, height), new Rectangle(0, 0, layer.Width, layer.Height), GraphicsUnit.Pixel);
-                                    canvas.DrawImage(layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, layer.Width, layer.Height), GraphicsUnit.Pixel);
+                                    canvas.DrawImage(_backgr, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _layer.Width, _layer.Height), GraphicsUnit.Pixel);
+                                    canvas.DrawImage(_layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _layer.Width, _layer.Height), GraphicsUnit.Pixel);
                                     canvas.Save();
                                 }
                                 else
                                 {
                                     canvas.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                                    canvas.DrawImage(backgr, new Rectangle(0, 0, width, height), new Rectangle(0, 0, backgr.Width, backgr.Height), GraphicsUnit.Pixel);
-                                    canvas.DrawImage(layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, layer.Width, layer.Height), GraphicsUnit.Pixel);
+                                    canvas.DrawImage(_backgr, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _backgr.Width, _backgr.Height), GraphicsUnit.Pixel);
+                                    canvas.DrawImage(_layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _layer.Width, _layer.Height), GraphicsUnit.Pixel);
                                     canvas.Save();
                                 }
                             }
 
                             try
                             {
-                                pcbxVisualConfig.Image = newBitmap;
+                                pcbxVisualConfig.Image = _newBitmap;
                             }
                             catch (Exception ex) { MessageBox.Show(ex.Message); }
                         }
                     }
                     else
-                        pcbxVisualConfig.Image = layer;
+                        pcbxVisualConfig.Image = _layer;
                 }
                 else
                 {
-                    if (backgr != null)
-                        pcbxVisualConfig.Image = backgr;
+                    if (_backgr != null)
+                        pcbxVisualConfig.Image = _backgr;
                 }
 
                 if (pcbxVisualConfig.Image == null)
@@ -3994,115 +4036,115 @@ namespace Infinium
 
         private void kryptonContextMenuItem19_Click(object sender, EventArgs e)
         {
-            bool OKCancel = Infinium.LightMessageBox.Show(ref TopForm, true,
+            bool okCancel = Infinium.LightMessageBox.Show(ref _topForm, true,
                          "Вы уверены, что хотите удалить?",
                          "Удаление");
 
-            if (!OKCancel)
+            if (!okCancel)
                 return;
 
-            string FrontName = "";
-            int ColorID = -1;
-            int TechnoColorID = -1;
-            int PatinaID = -1;
-            int InsetTypeID = -1;
-            int InsetColorID = -1;
-            int TechnoInsetTypeID = -1;
-            int TechnoInsetColorID = -1;
+            string frontName = "";
+            int colorId = -1;
+            int technoColorId = -1;
+            int patinaId = -1;
+            int insetTypeId = -1;
+            int insetColorId = -1;
+            int technoInsetTypeId = -1;
+            int technoInsetColorId = -1;
 
             if (FrontsDataGrid.SelectedRows.Count > 0 && FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value != DBNull.Value)
-                FrontName = FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value.ToString();
+                frontName = FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value.ToString();
             if (FrameColorsDataGrid.SelectedRows.Count > 0 && FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value != DBNull.Value)
-                ColorID = Convert.ToInt32(FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
+                colorId = Convert.ToInt32(FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
             if (TechnoFrameColorsDataGrid.SelectedRows.Count > 0 && TechnoFrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value != DBNull.Value)
-                TechnoColorID = Convert.ToInt32(TechnoFrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
+                technoColorId = Convert.ToInt32(TechnoFrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
             if (PatinaDataGrid.SelectedRows.Count > 0 && PatinaDataGrid.SelectedRows[0].Cells["PatinaID"].Value != DBNull.Value)
-                PatinaID = Convert.ToInt32(PatinaDataGrid.SelectedRows[0].Cells["PatinaID"].Value);
+                patinaId = Convert.ToInt32(PatinaDataGrid.SelectedRows[0].Cells["PatinaID"].Value);
             if (InsetTypesDataGrid.SelectedRows.Count > 0 && InsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value != DBNull.Value)
-                InsetTypeID = Convert.ToInt32(InsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
+                insetTypeId = Convert.ToInt32(InsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
             if (InsetColorsDataGrid.SelectedRows.Count > 0 && InsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value != DBNull.Value)
-                InsetColorID = Convert.ToInt32(InsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
+                insetColorId = Convert.ToInt32(InsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
             if (TechnoInsetTypesDataGrid.SelectedRows.Count > 0 && TechnoInsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value != DBNull.Value)
-                TechnoInsetTypeID = Convert.ToInt32(TechnoInsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
+                technoInsetTypeId = Convert.ToInt32(TechnoInsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
             if (TechnoInsetColorsDataGrid.SelectedRows.Count > 0 && TechnoInsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value != DBNull.Value)
-                TechnoInsetColorID = Convert.ToInt32(TechnoInsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
+                technoInsetColorId = Convert.ToInt32(TechnoInsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
 
-            Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Загрузка данных с сервера.\r\nПодождите..."); });
+            Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref _topForm, "Загрузка данных с сервера.\r\nПодождите..."); });
             T.Start();
 
             while (!SplashWindow.bSmallCreated) ;
 
-            int ConfigID = FrontsCatalog.GetTechnoInsetColorConfig(FrontName, ColorID, TechnoColorID, InsetTypeID, InsetColorID, TechnoInsetTypeID, TechnoInsetColorID);
-            FrontsCatalog.DetachTechnoInsetColorImage(ConfigID);
+            int configId = _frontsCatalog.GetTechnoInsetColorConfig(frontName, colorId, technoColorId, insetTypeId, insetColorId, technoInsetTypeId, technoInsetColorId);
+            _frontsCatalog.DetachTechnoInsetColorImage(configId);
             pcbxVisualConfig.Image = null;
             if (cbVisualConfig.Checked)
             {
-                layer = null;
-                backgr = null;
-                backgr2 = null;
-                newBitmap = null;
-                newBitmap2 = null;
-                ConfigID = FrontsCatalog.GetInsetTypesConfig(FrontName, ColorID, TechnoColorID);
-                Image img = FrontsCatalog.GetInsetTypeImage(ConfigID);
-                if (ConfigID != -1 && img != null)
-                    layer = new Bitmap(img);
-                ConfigID = FrontsCatalog.GetInsetColorConfig(FrontName, ColorID, TechnoColorID, InsetTypeID, InsetColorID, TechnoInsetTypeID, TechnoInsetColorID);
-                img = FrontsCatalog.GetInsetColorImage(ConfigID);
-                if (ConfigID != -1 && img != null)
-                    backgr = new Bitmap(img);
+                _layer = null;
+                _backgr = null;
+                _backgr2 = null;
+                _newBitmap = null;
+                _newBitmap2 = null;
+                configId = _frontsCatalog.GetInsetTypesConfig(frontName, colorId, technoColorId);
+                Image img = _frontsCatalog.GetInsetTypeImage(configId);
+                if (configId != -1 && img != null)
+                    _layer = new Bitmap(img);
+                configId = _frontsCatalog.GetInsetColorConfig(frontName, colorId, technoColorId, insetTypeId, insetColorId, technoInsetTypeId, technoInsetColorId);
+                img = _frontsCatalog.GetInsetColorImage(configId);
+                if (configId != -1 && img != null)
+                    _backgr = new Bitmap(img);
 
-                ConfigID = FrontsCatalog.GetTechnoInsetColorConfig(FrontName, ColorID, TechnoColorID, InsetTypeID, InsetColorID, TechnoInsetTypeID, TechnoInsetColorID);
-                img = FrontsCatalog.GetTechnoInsetColorImage(ConfigID);
-                if (ConfigID != -1 && img != null)
-                    backgr2 = new Bitmap(img);
+                configId = _frontsCatalog.GetTechnoInsetColorConfig(frontName, colorId, technoColorId, insetTypeId, insetColorId, technoInsetTypeId, technoInsetColorId);
+                img = _frontsCatalog.GetTechnoInsetColorImage(configId);
+                if (configId != -1 && img != null)
+                    _backgr2 = new Bitmap(img);
 
-                if (layer != null)
+                if (_layer != null)
                 {
-                    if (backgr != null)
+                    if (_backgr != null)
                     {
-                        if (backgr2 != null)
+                        if (_backgr2 != null)
                         {
-                            int width = layer.Width;
-                            int height = layer.Height;
-                            int width1 = backgr.Width;
-                            int height1 = backgr.Height;
-                            int width2 = backgr2.Width;
-                            int height2 = backgr2.Height;
-                            newBitmap = new Bitmap(width, height);
-                            newBitmap2 = new Bitmap(width1, height1);
-                            using (var canvas = Graphics.FromImage(newBitmap2))
+                            int width = _layer.Width;
+                            int height = _layer.Height;
+                            int width1 = _backgr.Width;
+                            int height1 = _backgr.Height;
+                            int width2 = _backgr2.Width;
+                            int height2 = _backgr2.Height;
+                            _newBitmap = new Bitmap(width, height);
+                            _newBitmap2 = new Bitmap(width1, height1);
+                            using (var canvas = Graphics.FromImage(_newBitmap2))
                             {
                                 if (height2 >= height1)
                                 {
                                     canvas.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                                    canvas.DrawImage(backgr2, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, backgr.Width, backgr.Height), GraphicsUnit.Pixel);
-                                    canvas.DrawImage(backgr, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, backgr.Width, backgr.Height), GraphicsUnit.Pixel);
+                                    canvas.DrawImage(_backgr2, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, _backgr.Width, _backgr.Height), GraphicsUnit.Pixel);
+                                    canvas.DrawImage(_backgr, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, _backgr.Width, _backgr.Height), GraphicsUnit.Pixel);
                                     canvas.Save();
                                 }
                                 else
                                 {
                                     canvas.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                                    canvas.DrawImage(backgr2, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, backgr2.Width, backgr2.Height), GraphicsUnit.Pixel);
-                                    canvas.DrawImage(backgr, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, backgr.Width, backgr.Height), GraphicsUnit.Pixel);
+                                    canvas.DrawImage(_backgr2, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, _backgr2.Width, _backgr2.Height), GraphicsUnit.Pixel);
+                                    canvas.DrawImage(_backgr, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, _backgr.Width, _backgr.Height), GraphicsUnit.Pixel);
                                     canvas.Save();
                                 }
 
-                                int width3 = newBitmap2.Width;
-                                int height3 = newBitmap2.Height;
-                                using (var canvas1 = Graphics.FromImage(newBitmap))
+                                int width3 = _newBitmap2.Width;
+                                int height3 = _newBitmap2.Height;
+                                using (var canvas1 = Graphics.FromImage(_newBitmap))
                                 {
                                     if (height3 >= height)
                                     {
                                         canvas1.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                                        canvas1.DrawImage(newBitmap2, new Rectangle(0, 0, width, height), new Rectangle(0, 0, layer.Width, layer.Height), GraphicsUnit.Pixel);
-                                        canvas1.DrawImage(layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, layer.Width, layer.Height), GraphicsUnit.Pixel);
+                                        canvas1.DrawImage(_newBitmap2, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _layer.Width, _layer.Height), GraphicsUnit.Pixel);
+                                        canvas1.DrawImage(_layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _layer.Width, _layer.Height), GraphicsUnit.Pixel);
                                         canvas1.Save();
                                     }
                                     else
                                     {
                                         canvas1.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                                        canvas1.DrawImage(newBitmap2, new Rectangle(0, 0, width, height), new Rectangle(0, 0, newBitmap2.Width, newBitmap2.Height), GraphicsUnit.Pixel);
-                                        canvas1.DrawImage(layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, layer.Width, layer.Height), GraphicsUnit.Pixel);
+                                        canvas1.DrawImage(_newBitmap2, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _newBitmap2.Width, _newBitmap2.Height), GraphicsUnit.Pixel);
+                                        canvas1.DrawImage(_layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _layer.Width, _layer.Height), GraphicsUnit.Pixel);
                                         canvas1.Save();
                                     }
                                 }
@@ -4110,49 +4152,49 @@ namespace Infinium
 
                             try
                             {
-                                pcbxVisualConfig.Image = newBitmap;
+                                pcbxVisualConfig.Image = _newBitmap;
                             }
                             catch (Exception ex) { MessageBox.Show(ex.Message); }
                         }
                         else
                         {
-                            int width = layer.Width;
-                            int height = layer.Height;
-                            int width1 = backgr.Width;
-                            int height1 = backgr.Height;
-                            newBitmap = new Bitmap(width, height);
-                            using (var canvas = Graphics.FromImage(newBitmap))
+                            int width = _layer.Width;
+                            int height = _layer.Height;
+                            int width1 = _backgr.Width;
+                            int height1 = _backgr.Height;
+                            _newBitmap = new Bitmap(width, height);
+                            using (var canvas = Graphics.FromImage(_newBitmap))
                             {
                                 if (height1 >= height)
                                 {
                                     canvas.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                                    canvas.DrawImage(backgr, new Rectangle(0, 0, width, height), new Rectangle(0, 0, layer.Width, layer.Height), GraphicsUnit.Pixel);
-                                    canvas.DrawImage(layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, layer.Width, layer.Height), GraphicsUnit.Pixel);
+                                    canvas.DrawImage(_backgr, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _layer.Width, _layer.Height), GraphicsUnit.Pixel);
+                                    canvas.DrawImage(_layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _layer.Width, _layer.Height), GraphicsUnit.Pixel);
                                     canvas.Save();
                                 }
                                 else
                                 {
                                     canvas.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                                    canvas.DrawImage(backgr, new Rectangle(0, 0, width, height), new Rectangle(0, 0, backgr.Width, backgr.Height), GraphicsUnit.Pixel);
-                                    canvas.DrawImage(layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, layer.Width, layer.Height), GraphicsUnit.Pixel);
+                                    canvas.DrawImage(_backgr, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _backgr.Width, _backgr.Height), GraphicsUnit.Pixel);
+                                    canvas.DrawImage(_layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _layer.Width, _layer.Height), GraphicsUnit.Pixel);
                                     canvas.Save();
                                 }
                             }
 
                             try
                             {
-                                pcbxVisualConfig.Image = newBitmap;
+                                pcbxVisualConfig.Image = _newBitmap;
                             }
                             catch (Exception ex) { MessageBox.Show(ex.Message); }
                         }
                     }
                     else
-                        pcbxVisualConfig.Image = layer;
+                        pcbxVisualConfig.Image = _layer;
                 }
                 else
                 {
-                    if (backgr != null)
-                        pcbxVisualConfig.Image = backgr;
+                    if (_backgr != null)
+                        pcbxVisualConfig.Image = _backgr;
                 }
 
                 if (pcbxVisualConfig.Image == null)
@@ -4169,117 +4211,117 @@ namespace Infinium
         {
             var fileInfo = new System.IO.FileInfo(openFileDialog6.FileName);
 
-            AttachmentsDT.Clear();
+            _attachmentsDt.Clear();
 
-            DataRow NewRow = AttachmentsDT.NewRow();
-            NewRow["FileName"] = Path.GetFileNameWithoutExtension(openFileDialog6.FileName);
-            NewRow["Extension"] = fileInfo.Extension;
-            NewRow["Path"] = openFileDialog6.FileName;
-            AttachmentsDT.Rows.Add(NewRow);
-            string FrontName = "";
-            int ColorID = -1;
-            int TechnoColorID = -1;
-            int PatinaID = -1;
-            int InsetTypeID = -1;
-            int InsetColorID = -1;
-            int TechnoInsetTypeID = -1;
-            int TechnoInsetColorID = -1;
+            DataRow newRow = _attachmentsDt.NewRow();
+            newRow["FileName"] = Path.GetFileNameWithoutExtension(openFileDialog6.FileName);
+            newRow["Extension"] = fileInfo.Extension;
+            newRow["Path"] = openFileDialog6.FileName;
+            _attachmentsDt.Rows.Add(newRow);
+            string frontName = "";
+            int colorId = -1;
+            int technoColorId = -1;
+            int patinaId = -1;
+            int insetTypeId = -1;
+            int insetColorId = -1;
+            int technoInsetTypeId = -1;
+            int technoInsetColorId = -1;
 
             if (FrontsDataGrid.SelectedRows.Count > 0 && FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value != DBNull.Value)
-                FrontName = FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value.ToString();
+                frontName = FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value.ToString();
             if (FrameColorsDataGrid.SelectedRows.Count > 0 && FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value != DBNull.Value)
-                ColorID = Convert.ToInt32(FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
+                colorId = Convert.ToInt32(FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
             if (TechnoFrameColorsDataGrid.SelectedRows.Count > 0 && TechnoFrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value != DBNull.Value)
-                TechnoColorID = Convert.ToInt32(TechnoFrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
+                technoColorId = Convert.ToInt32(TechnoFrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
             if (PatinaDataGrid.SelectedRows.Count > 0 && PatinaDataGrid.SelectedRows[0].Cells["PatinaID"].Value != DBNull.Value)
-                PatinaID = Convert.ToInt32(PatinaDataGrid.SelectedRows[0].Cells["PatinaID"].Value);
+                patinaId = Convert.ToInt32(PatinaDataGrid.SelectedRows[0].Cells["PatinaID"].Value);
             if (InsetTypesDataGrid.SelectedRows.Count > 0 && InsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value != DBNull.Value)
-                InsetTypeID = Convert.ToInt32(InsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
+                insetTypeId = Convert.ToInt32(InsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
             if (InsetColorsDataGrid.SelectedRows.Count > 0 && InsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value != DBNull.Value)
-                InsetColorID = Convert.ToInt32(InsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
+                insetColorId = Convert.ToInt32(InsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
             if (TechnoInsetTypesDataGrid.SelectedRows.Count > 0 && TechnoInsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value != DBNull.Value)
-                TechnoInsetTypeID = Convert.ToInt32(TechnoInsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
+                technoInsetTypeId = Convert.ToInt32(TechnoInsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
             if (TechnoInsetColorsDataGrid.SelectedRows.Count > 0 && TechnoInsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value != DBNull.Value)
-                TechnoInsetColorID = Convert.ToInt32(TechnoInsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
+                technoInsetColorId = Convert.ToInt32(TechnoInsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
 
-            int ConfigID = FrontsCatalog.SaveTechnoInsetColorsConfig(FrontName, ColorID, TechnoColorID, InsetTypeID, InsetColorID, TechnoInsetTypeID, TechnoInsetColorID);
-            if (ConfigID != -1)
-                FrontsCatalog.AttachTechnoInsetColorImage(AttachmentsDT, ConfigID);
+            int configId = _frontsCatalog.SaveTechnoInsetColorsConfig(frontName, colorId, technoColorId, insetTypeId, insetColorId, technoInsetTypeId, technoInsetColorId);
+            if (configId != -1)
+                _frontsCatalog.AttachTechnoInsetColorImage(_attachmentsDt, configId);
 
             pcbxVisualConfig.Image = null;
             if (cbVisualConfig.Checked)
             {
-                Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Загрузка данных с сервера.\r\nПодождите..."); });
+                Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref _topForm, "Загрузка данных с сервера.\r\nПодождите..."); });
                 T.Start();
 
                 while (!SplashWindow.bSmallCreated) ;
 
-                layer = null;
-                backgr = null;
-                backgr2 = null;
-                newBitmap = null;
-                newBitmap2 = null;
-                ConfigID = FrontsCatalog.GetInsetTypesConfig(FrontName, ColorID, TechnoColorID);
-                Image img = FrontsCatalog.GetInsetTypeImage(ConfigID);
-                if (ConfigID != -1 && img != null)
-                    layer = new Bitmap(img);
-                ConfigID = FrontsCatalog.GetInsetColorConfig(FrontName, ColorID, TechnoColorID, InsetTypeID, InsetColorID, TechnoInsetTypeID, TechnoInsetColorID);
-                img = FrontsCatalog.GetInsetColorImage(ConfigID);
-                if (ConfigID != -1 && img != null)
-                    backgr = new Bitmap(img);
+                _layer = null;
+                _backgr = null;
+                _backgr2 = null;
+                _newBitmap = null;
+                _newBitmap2 = null;
+                configId = _frontsCatalog.GetInsetTypesConfig(frontName, colorId, technoColorId);
+                Image img = _frontsCatalog.GetInsetTypeImage(configId);
+                if (configId != -1 && img != null)
+                    _layer = new Bitmap(img);
+                configId = _frontsCatalog.GetInsetColorConfig(frontName, colorId, technoColorId, insetTypeId, insetColorId, technoInsetTypeId, technoInsetColorId);
+                img = _frontsCatalog.GetInsetColorImage(configId);
+                if (configId != -1 && img != null)
+                    _backgr = new Bitmap(img);
 
-                ConfigID = FrontsCatalog.GetTechnoInsetColorConfig(FrontName, ColorID, TechnoColorID, InsetTypeID, InsetColorID, TechnoInsetTypeID, TechnoInsetColorID);
-                img = FrontsCatalog.GetTechnoInsetColorImage(ConfigID);
-                if (ConfigID != -1 && img != null)
-                    backgr2 = new Bitmap(img);
+                configId = _frontsCatalog.GetTechnoInsetColorConfig(frontName, colorId, technoColorId, insetTypeId, insetColorId, technoInsetTypeId, technoInsetColorId);
+                img = _frontsCatalog.GetTechnoInsetColorImage(configId);
+                if (configId != -1 && img != null)
+                    _backgr2 = new Bitmap(img);
 
-                if (layer != null)
+                if (_layer != null)
                 {
-                    if (backgr != null)
+                    if (_backgr != null)
                     {
-                        if (backgr2 != null)
+                        if (_backgr2 != null)
                         {
-                            int width = layer.Width;
-                            int height = layer.Height;
-                            int width1 = backgr.Width;
-                            int height1 = backgr.Height;
-                            int width2 = backgr2.Width;
-                            int height2 = backgr2.Height;
-                            newBitmap = new Bitmap(width, height);
-                            newBitmap2 = new Bitmap(width1, height1);
-                            using (var canvas = Graphics.FromImage(newBitmap2))
+                            int width = _layer.Width;
+                            int height = _layer.Height;
+                            int width1 = _backgr.Width;
+                            int height1 = _backgr.Height;
+                            int width2 = _backgr2.Width;
+                            int height2 = _backgr2.Height;
+                            _newBitmap = new Bitmap(width, height);
+                            _newBitmap2 = new Bitmap(width1, height1);
+                            using (var canvas = Graphics.FromImage(_newBitmap2))
                             {
                                 if (height2 >= height1)
                                 {
                                     canvas.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                                    canvas.DrawImage(backgr2, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, backgr.Width, backgr.Height), GraphicsUnit.Pixel);
-                                    canvas.DrawImage(backgr, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, backgr.Width, backgr.Height), GraphicsUnit.Pixel);
+                                    canvas.DrawImage(_backgr2, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, _backgr.Width, _backgr.Height), GraphicsUnit.Pixel);
+                                    canvas.DrawImage(_backgr, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, _backgr.Width, _backgr.Height), GraphicsUnit.Pixel);
                                     canvas.Save();
                                 }
                                 else
                                 {
                                     canvas.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                                    canvas.DrawImage(backgr2, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, backgr2.Width, backgr2.Height), GraphicsUnit.Pixel);
-                                    canvas.DrawImage(backgr, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, backgr.Width, backgr.Height), GraphicsUnit.Pixel);
+                                    canvas.DrawImage(_backgr2, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, _backgr2.Width, _backgr2.Height), GraphicsUnit.Pixel);
+                                    canvas.DrawImage(_backgr, new Rectangle(0, 0, width1, height1), new Rectangle(0, 0, _backgr.Width, _backgr.Height), GraphicsUnit.Pixel);
                                     canvas.Save();
                                 }
 
-                                int width3 = newBitmap2.Width;
-                                int height3 = newBitmap2.Height;
-                                using (var canvas1 = Graphics.FromImage(newBitmap))
+                                int width3 = _newBitmap2.Width;
+                                int height3 = _newBitmap2.Height;
+                                using (var canvas1 = Graphics.FromImage(_newBitmap))
                                 {
                                     if (height3 >= height)
                                     {
                                         canvas1.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                                        canvas1.DrawImage(newBitmap2, new Rectangle(0, 0, width, height), new Rectangle(0, 0, layer.Width, layer.Height), GraphicsUnit.Pixel);
-                                        canvas1.DrawImage(layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, layer.Width, layer.Height), GraphicsUnit.Pixel);
+                                        canvas1.DrawImage(_newBitmap2, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _layer.Width, _layer.Height), GraphicsUnit.Pixel);
+                                        canvas1.DrawImage(_layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _layer.Width, _layer.Height), GraphicsUnit.Pixel);
                                         canvas1.Save();
                                     }
                                     else
                                     {
                                         canvas1.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                                        canvas1.DrawImage(newBitmap2, new Rectangle(0, 0, width, height), new Rectangle(0, 0, newBitmap2.Width, newBitmap2.Height), GraphicsUnit.Pixel);
-                                        canvas1.DrawImage(layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, layer.Width, layer.Height), GraphicsUnit.Pixel);
+                                        canvas1.DrawImage(_newBitmap2, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _newBitmap2.Width, _newBitmap2.Height), GraphicsUnit.Pixel);
+                                        canvas1.DrawImage(_layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _layer.Width, _layer.Height), GraphicsUnit.Pixel);
                                         canvas1.Save();
                                     }
                                 }
@@ -4287,49 +4329,49 @@ namespace Infinium
 
                             try
                             {
-                                pcbxVisualConfig.Image = newBitmap;
+                                pcbxVisualConfig.Image = _newBitmap;
                             }
                             catch (Exception ex) { MessageBox.Show(ex.Message); }
                         }
                         else
                         {
-                            int width = layer.Width;
-                            int height = layer.Height;
-                            int width1 = backgr.Width;
-                            int height1 = backgr.Height;
-                            newBitmap = new Bitmap(width, height);
-                            using (var canvas = Graphics.FromImage(newBitmap))
+                            int width = _layer.Width;
+                            int height = _layer.Height;
+                            int width1 = _backgr.Width;
+                            int height1 = _backgr.Height;
+                            _newBitmap = new Bitmap(width, height);
+                            using (var canvas = Graphics.FromImage(_newBitmap))
                             {
                                 if (height1 >= height)
                                 {
                                     canvas.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                                    canvas.DrawImage(backgr, new Rectangle(0, 0, width, height), new Rectangle(0, 0, layer.Width, layer.Height), GraphicsUnit.Pixel);
-                                    canvas.DrawImage(layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, layer.Width, layer.Height), GraphicsUnit.Pixel);
+                                    canvas.DrawImage(_backgr, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _layer.Width, _layer.Height), GraphicsUnit.Pixel);
+                                    canvas.DrawImage(_layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _layer.Width, _layer.Height), GraphicsUnit.Pixel);
                                     canvas.Save();
                                 }
                                 else
                                 {
                                     canvas.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                                    canvas.DrawImage(backgr, new Rectangle(0, 0, width, height), new Rectangle(0, 0, backgr.Width, backgr.Height), GraphicsUnit.Pixel);
-                                    canvas.DrawImage(layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, layer.Width, layer.Height), GraphicsUnit.Pixel);
+                                    canvas.DrawImage(_backgr, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _backgr.Width, _backgr.Height), GraphicsUnit.Pixel);
+                                    canvas.DrawImage(_layer, new Rectangle(0, 0, width, height), new Rectangle(0, 0, _layer.Width, _layer.Height), GraphicsUnit.Pixel);
                                     canvas.Save();
                                 }
                             }
 
                             try
                             {
-                                pcbxVisualConfig.Image = newBitmap;
+                                pcbxVisualConfig.Image = _newBitmap;
                             }
                             catch (Exception ex) { MessageBox.Show(ex.Message); }
                         }
                     }
                     else
-                        pcbxVisualConfig.Image = layer;
+                        pcbxVisualConfig.Image = _layer;
                 }
                 else
                 {
-                    if (backgr != null)
-                        pcbxVisualConfig.Image = backgr;
+                    if (_backgr != null)
+                        pcbxVisualConfig.Image = _backgr;
                 }
 
                 while (SplashWindow.bSmallCreated)
@@ -4344,177 +4386,177 @@ namespace Infinium
 
         private void kryptonContextMenuItem20_Click(object sender, EventArgs e)
         {
-            bool PressOK = false;
+            bool pressOk = false;
 
-            string LabelsCount = string.Empty;
-            string PositionsCount = string.Empty;
-            string LabelsLength = string.Empty;
-            string Serviceman = string.Empty;
-            string Milling = string.Empty;
-            string DocDateTime = string.Empty;
-            string Batch = string.Empty;
-            string Pallet = string.Empty;
-            string Profile = string.Empty;
+            string labelsCount = string.Empty;
+            string positionsCount = string.Empty;
+            string labelsLength = string.Empty;
+            string serviceman = string.Empty;
+            string milling = string.Empty;
+            string docDateTime = string.Empty;
+            string batch = string.Empty;
+            string pallet = string.Empty;
+            string profile = string.Empty;
 
-            string LabelsCount1 = string.Empty;
-            string PositionsCount1 = string.Empty;
-            string LabelsLength1 = string.Empty;
-            string Serviceman1 = string.Empty;
-            string Milling1 = string.Empty;
-            string DocDateTime1 = string.Empty;
-            string Batch1 = string.Empty;
-            string Pallet1 = string.Empty;
-            string Profile1 = string.Empty;
+            string labelsCount1 = string.Empty;
+            string positionsCount1 = string.Empty;
+            string labelsLength1 = string.Empty;
+            string serviceman1 = string.Empty;
+            string milling1 = string.Empty;
+            string docDateTime1 = string.Empty;
+            string batch1 = string.Empty;
+            string pallet1 = string.Empty;
+            string profile1 = string.Empty;
 
-            PhantomForm PhantomForm = new Infinium.PhantomForm();
-            PhantomForm.Show();
-            SamplesLabelsForm SampleLabelInfo = new SamplesLabelsForm(this);
-            TopForm = SampleLabelInfo;
-            SampleLabelInfo.ShowDialog();
-            PressOK = SampleLabelInfo.PressOK;
+            PhantomForm phantomForm = new Infinium.PhantomForm();
+            phantomForm.Show();
+            SamplesLabelsForm sampleLabelInfo = new SamplesLabelsForm(this);
+            _topForm = sampleLabelInfo;
+            sampleLabelInfo.ShowDialog();
+            pressOk = sampleLabelInfo.PressOK;
 
-            DocDateTime = SampleLabelInfo.DocDateTime;
-            Batch = SampleLabelInfo.Batch;
-            Pallet = SampleLabelInfo.Pallet;
-            Profile = SampleLabelInfo.Profile;
-            Serviceman = SampleLabelInfo.Serviceman;
-            Milling = SampleLabelInfo.Milling;
-            LabelsCount = SampleLabelInfo.LabelsCount;
+            docDateTime = sampleLabelInfo.DocDateTime;
+            batch = sampleLabelInfo.Batch;
+            pallet = sampleLabelInfo.Pallet;
+            profile = sampleLabelInfo.Profile;
+            serviceman = sampleLabelInfo.Serviceman;
+            milling = sampleLabelInfo.Milling;
+            labelsCount = sampleLabelInfo.LabelsCount;
 
-            DocDateTime1 = SampleLabelInfo.DocDateTime1;
-            Batch1 = SampleLabelInfo.Batch1;
-            Pallet1 = SampleLabelInfo.Pallet1;
-            Profile1 = SampleLabelInfo.Profile1;
-            Serviceman1 = SampleLabelInfo.Serviceman1;
-            Milling1 = SampleLabelInfo.Milling1;
-            LabelsCount1 = SampleLabelInfo.LabelsCount1;
+            docDateTime1 = sampleLabelInfo.DocDateTime1;
+            batch1 = sampleLabelInfo.Batch1;
+            pallet1 = sampleLabelInfo.Pallet1;
+            profile1 = sampleLabelInfo.Profile1;
+            serviceman1 = sampleLabelInfo.Serviceman1;
+            milling1 = sampleLabelInfo.Milling1;
+            labelsCount1 = sampleLabelInfo.LabelsCount1;
 
-            PhantomForm.Close();
-            PhantomForm.Dispose();
-            SampleLabelInfo.Dispose();
-            TopForm = null;
+            phantomForm.Close();
+            phantomForm.Dispose();
+            sampleLabelInfo.Dispose();
+            _topForm = null;
 
-            if (!PressOK)
+            if (!pressOk)
                 return;
-            SamplesLabels SamplesLabelsManager = new SamplesLabels();
-            SamplesLabelsManager.ClearLabelInfo();
+            SamplesLabels samplesLabelsManager = new SamplesLabels();
+            samplesLabelsManager.ClearLabelInfo();
 
-            LabelContent LabelInfo = new LabelContent()
+            LabelContent labelInfo = new LabelContent()
             {
-                DocDateTime = DocDateTime,
-                Batch = Batch,
-                Pallet = Pallet,
-                Profile = Profile,
-                Serviceman = Serviceman,
-                Milling = Milling,
+                DocDateTime = docDateTime,
+                Batch = batch,
+                Pallet = pallet,
+                Profile = profile,
+                Serviceman = serviceman,
+                Milling = milling,
 
-                DocDateTime1 = DocDateTime1,
-                Batch1 = Batch1,
-                Pallet1 = Pallet1,
-                Profile1 = Profile1,
-                Serviceman1 = Serviceman1,
-                Milling1 = Milling1
+                DocDateTime1 = docDateTime1,
+                Batch1 = batch1,
+                Pallet1 = pallet1,
+                Profile1 = profile1,
+                Serviceman1 = serviceman1,
+                Milling1 = milling1
             };
-            SamplesLabelsManager.AddLabelInfo(ref LabelInfo);
+            samplesLabelsManager.AddLabelInfo(ref labelInfo);
 
-            PrintDialog.Document = SamplesLabelsManager.PD;
+            PrintDialog.Document = samplesLabelsManager.PD;
 
             if (PrintDialog.ShowDialog() == DialogResult.OK)
             {
-                SamplesLabelsManager.Print();
+                samplesLabelsManager.Print();
             }
         }
 
         private void btnSetDescription_Click(object sender, EventArgs e)
         {
-            bool PressOK = false;
+            bool pressOk = false;
 
-            string FrontName = "";
-            int ColorID = -1;
-            int TechnoColorID = -1;
-            int PatinaID = -1;
-            int InsetTypeID = -1;
-            int InsetColorID = -1;
-            int TechnoInsetTypeID = -1;
-            int TechnoInsetColorID = -1;
+            string frontName = "";
+            int colorId = -1;
+            int technoColorId = -1;
+            int patinaId = -1;
+            int insetTypeId = -1;
+            int insetColorId = -1;
+            int technoInsetTypeId = -1;
+            int technoInsetColorId = -1;
 
             if (FrontsDataGrid.SelectedRows.Count > 0 && FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value != DBNull.Value)
-                FrontName = FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value.ToString();
+                frontName = FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value.ToString();
             if (FrameColorsDataGrid.SelectedRows.Count > 0 && FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value != DBNull.Value)
-                ColorID = Convert.ToInt32(FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
+                colorId = Convert.ToInt32(FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
             if (TechnoFrameColorsDataGrid.SelectedRows.Count > 0 && TechnoFrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value != DBNull.Value)
-                TechnoColorID = Convert.ToInt32(TechnoFrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
+                technoColorId = Convert.ToInt32(TechnoFrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
             if (PatinaDataGrid.SelectedRows.Count > 0 && PatinaDataGrid.SelectedRows[0].Cells["PatinaID"].Value != DBNull.Value)
-                PatinaID = Convert.ToInt32(PatinaDataGrid.SelectedRows[0].Cells["PatinaID"].Value);
+                patinaId = Convert.ToInt32(PatinaDataGrid.SelectedRows[0].Cells["PatinaID"].Value);
             if (InsetTypesDataGrid.SelectedRows.Count > 0 && InsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value != DBNull.Value)
-                InsetTypeID = Convert.ToInt32(InsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
+                insetTypeId = Convert.ToInt32(InsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
             if (InsetColorsDataGrid.SelectedRows.Count > 0 && InsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value != DBNull.Value)
-                InsetColorID = Convert.ToInt32(InsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
+                insetColorId = Convert.ToInt32(InsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
             if (TechnoInsetTypesDataGrid.SelectedRows.Count > 0 && TechnoInsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value != DBNull.Value)
-                TechnoInsetTypeID = Convert.ToInt32(TechnoInsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
+                technoInsetTypeId = Convert.ToInt32(TechnoInsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
             if (TechnoInsetColorsDataGrid.SelectedRows.Count > 0 && TechnoInsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value != DBNull.Value)
-                TechnoInsetColorID = Convert.ToInt32(TechnoInsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
+                technoInsetColorId = Convert.ToInt32(TechnoInsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
 
-            bool IsConfigImageToSite = false;
+            bool isConfigImageToSite = false;
             bool bLatest = false;
-            string Category = string.Empty;
-            string NameProd = string.Empty;
-            string Description = string.Empty;
-            string Sizes = string.Empty;
-            string Material = string.Empty;
+            string category = string.Empty;
+            string nameProd = string.Empty;
+            string description = string.Empty;
+            string sizes = string.Empty;
+            string material = string.Empty;
 
-            int ConfigID = FrontsCatalog.GetFrontAttachments(FrontName, ColorID, TechnoColorID, InsetTypeID, InsetColorID, TechnoInsetTypeID, TechnoInsetColorID, PatinaID);
-            if (ConfigID != -1)
-                IsConfigImageToSite = FrontsCatalog.IsConfigImageToSite(ConfigID, ref bLatest, ref Category, ref NameProd, ref Description, ref Sizes, ref Material);
+            int configId = _frontsCatalog.GetFrontAttachments(frontName, colorId, technoColorId, insetTypeId, insetColorId, technoInsetTypeId, technoInsetColorId, patinaId);
+            if (configId != -1)
+                isConfigImageToSite = _frontsCatalog.IsConfigImageToSite(configId, ref bLatest, ref category, ref nameProd, ref description, ref sizes, ref material);
 
-            PhantomForm PhantomForm = new Infinium.PhantomForm();
-            PhantomForm.Show();
-            ProductDescriptionForm ProductDescriptionForm = new ProductDescriptionForm(this, IsConfigImageToSite, bLatest, Category, NameProd, Description, Sizes, Material);
-            TopForm = ProductDescriptionForm;
-            ProductDescriptionForm.ShowDialog();
+            PhantomForm phantomForm = new Infinium.PhantomForm();
+            phantomForm.Show();
+            ProductDescriptionForm productDescriptionForm = new ProductDescriptionForm(this, isConfigImageToSite, bLatest, category, nameProd, description, sizes, material);
+            _topForm = productDescriptionForm;
+            productDescriptionForm.ShowDialog();
 
-            PressOK = ProductDescriptionForm.PressOK;
-            IsConfigImageToSite = ProductDescriptionForm.ToSite;
-            Category = ProductDescriptionForm.Category;
-            NameProd = ProductDescriptionForm.NameProd;
-            Description = ProductDescriptionForm.Description;
-            Sizes = ProductDescriptionForm.Sizes;
-            Material = ProductDescriptionForm.Material;
-            bLatest = ProductDescriptionForm.Latest;
+            pressOk = productDescriptionForm.PressOK;
+            isConfigImageToSite = productDescriptionForm.ToSite;
+            category = productDescriptionForm.Category;
+            nameProd = productDescriptionForm.NameProd;
+            description = productDescriptionForm.Description;
+            sizes = productDescriptionForm.Sizes;
+            material = productDescriptionForm.Material;
+            bLatest = productDescriptionForm.Latest;
 
-            PhantomForm.Close();
-            PhantomForm.Dispose();
-            ProductDescriptionForm.Dispose();
-            TopForm = null;
+            phantomForm.Close();
+            phantomForm.Dispose();
+            productDescriptionForm.Dispose();
+            _topForm = null;
 
-            if (!PressOK)
+            if (!pressOk)
                 return;
 
-            Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Загрузка данных с сервера.\r\nПодождите..."); });
+            Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref _topForm, "Загрузка данных с сервера.\r\nПодождите..."); });
             T.Start();
 
             while (!SplashWindow.bSmallCreated) ;
 
-            if (ConfigID != -1)
+            if (configId != -1)
             {
 
-                FrontsCatalog.ConfigImageToSite(ConfigID, IsConfigImageToSite, bLatest, Category, NameProd, Description, Sizes, Material);
+                _frontsCatalog.ConfigImageToSite(configId, isConfigImageToSite, bLatest, category, nameProd, description, sizes, material);
 
                 while (SplashWindow.bSmallCreated)
                     SmallWaitForm.CloseS = true;
             }
             else
             {
-                int FrontID = FrontsCatalog.GetFrontID(FrontName, ColorID, TechnoColorID, InsetTypeID, InsetColorID, TechnoInsetTypeID, TechnoInsetColorID, PatinaID);
+                int frontId = _frontsCatalog.GetFrontID(frontName, colorId, technoColorId, insetTypeId, insetColorId, technoInsetTypeId, technoInsetColorId, patinaId);
 
-                string Front = FrontsDataGrid.SelectedRows[0].Cells["FrontName"].FormattedValue.ToString();
-                string FrameColor = FrameColorsDataGrid.SelectedRows[0].Cells["ColorName"].FormattedValue.ToString();
-                string Patina = PatinaDataGrid.SelectedRows[0].Cells["PatinaName"].FormattedValue.ToString();
-                string InsetType = InsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeName"].FormattedValue.ToString();
-                string InsetColor = InsetColorsDataGrid.SelectedRows[0].Cells["InsetColorName"].FormattedValue.ToString();
+                string front = FrontsDataGrid.SelectedRows[0].Cells["FrontName"].FormattedValue.ToString();
+                string frameColor = FrameColorsDataGrid.SelectedRows[0].Cells["ColorName"].FormattedValue.ToString();
+                string patina = PatinaDataGrid.SelectedRows[0].Cells["PatinaName"].FormattedValue.ToString();
+                string insetType = InsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeName"].FormattedValue.ToString();
+                string insetColor = InsetColorsDataGrid.SelectedRows[0].Cells["InsetColorName"].FormattedValue.ToString();
 
-                if (IsConfigImageToSite && !FrontsCatalog.CreateFotoFromVisualConfig(FrontID, ColorID, TechnoColorID, PatinaID, InsetTypeID, InsetColorID, TechnoInsetTypeID, TechnoInsetColorID,
-                    Category, Front, FrameColor, Patina, InsetType, InsetColor))
+                if (isConfigImageToSite && !_frontsCatalog.CreateFotoFromVisualConfig(frontId, colorId, technoColorId, patinaId, insetTypeId, insetColorId, technoInsetTypeId, technoInsetColorId,
+                    category, front, frameColor, patina, insetType, insetColor))
                 {
                     while (SplashWindow.bSmallCreated)
                         SmallWaitForm.CloseS = true;
@@ -4523,8 +4565,8 @@ namespace Infinium
                 else
                 {
 
-                    ConfigID = FrontsCatalog.GetFrontAttachments(FrontName, ColorID, TechnoColorID, InsetTypeID, InsetColorID, TechnoInsetTypeID, TechnoInsetColorID, PatinaID);
-                    FrontsCatalog.ConfigImageToSite(ConfigID, IsConfigImageToSite, bLatest, Category, NameProd, Description, Sizes, Material);
+                    configId = _frontsCatalog.GetFrontAttachments(frontName, colorId, technoColorId, insetTypeId, insetColorId, technoInsetTypeId, technoInsetColorId, patinaId);
+                    _frontsCatalog.ConfigImageToSite(configId, isConfigImageToSite, bLatest, category, nameProd, description, sizes, material);
 
                     while (SplashWindow.bSmallCreated)
                         SmallWaitForm.CloseS = true;
@@ -4534,829 +4576,853 @@ namespace Infinium
 
         private void KryptonButton1_Click(object sender, EventArgs e)
         {
-            bool PressOK = false;
+            bool pressOk = false;
 
-            int ProductID = -1;
-            string DecorName = string.Empty;
-            int ColorID = -1;
-            int PatinaID = -1;
-            int InsetTypeID = -1;
-            int InsetColorID = -1;
+            int productId = -1;
+            string decorName = string.Empty;
+            int colorId = -1;
+            int patinaId = -1;
+            int insetTypeId = -1;
+            int insetColorId = -1;
 
-            if ((DataRowView)DecorCatalog.DecorProductsBindingSource.Current != null)
-                ProductID = Convert.ToInt32(((DataRowView)DecorCatalog.DecorProductsBindingSource.Current)["ProductID"]);
-            if ((DataRowView)DecorCatalog.DecorItemBindingSource.Current != null)
-                DecorName = ((DataRowView)DecorCatalog.DecorItemBindingSource.Current)["Name"].ToString();
-            if ((DataRowView)DecorCatalog.ItemColorsBindingSource.Current != null)
-                ColorID = Convert.ToInt32(((DataRowView)DecorCatalog.ItemColorsBindingSource.Current)["ColorID"]);
-            if ((DataRowView)DecorCatalog.ItemPatinaBindingSource.Current != null)
-                PatinaID = Convert.ToInt32(((DataRowView)DecorCatalog.ItemPatinaBindingSource.Current)["PatinaID"]);
-            if ((DataRowView)DecorCatalog.ItemInsetTypesBindingSource.Current != null)
-                InsetTypeID = Convert.ToInt32(((DataRowView)DecorCatalog.ItemInsetTypesBindingSource.Current)["InsetTypeID"]);
-            if ((DataRowView)DecorCatalog.ItemInsetColorsBindingSource.Current != null)
-                InsetColorID = Convert.ToInt32(((DataRowView)DecorCatalog.ItemInsetColorsBindingSource.Current)["InsetColorID"]);
+            if ((DataRowView)_decorCatalog.DecorProductsBindingSource.Current != null)
+                productId = Convert.ToInt32(((DataRowView)_decorCatalog.DecorProductsBindingSource.Current)["ProductID"]);
+            if ((DataRowView)_decorCatalog.DecorItemBindingSource.Current != null)
+                decorName = ((DataRowView)_decorCatalog.DecorItemBindingSource.Current)["Name"].ToString();
+            if ((DataRowView)_decorCatalog.ItemColorsBindingSource.Current != null)
+                colorId = Convert.ToInt32(((DataRowView)_decorCatalog.ItemColorsBindingSource.Current)["ColorID"]);
+            if ((DataRowView)_decorCatalog.ItemPatinaBindingSource.Current != null)
+                patinaId = Convert.ToInt32(((DataRowView)_decorCatalog.ItemPatinaBindingSource.Current)["PatinaID"]);
+            if ((DataRowView)_decorCatalog.ItemInsetTypesBindingSource.Current != null)
+                insetTypeId = Convert.ToInt32(((DataRowView)_decorCatalog.ItemInsetTypesBindingSource.Current)["InsetTypeID"]);
+            if ((DataRowView)_decorCatalog.ItemInsetColorsBindingSource.Current != null)
+                insetColorId = Convert.ToInt32(((DataRowView)_decorCatalog.ItemInsetColorsBindingSource.Current)["InsetColorID"]);
 
-            string Category = string.Empty;
-            string Description = string.Empty;
-            string NameProd = string.Empty;
-            string Sizes = string.Empty;
-            string Material = string.Empty;
-            bool IsConfigImageToSite = false;
+            string category = string.Empty;
+            string description = string.Empty;
+            string nameProd = string.Empty;
+            string sizes = string.Empty;
+            string material = string.Empty;
+            bool isConfigImageToSite = false;
             bool bLatest = false;
 
-            int ConfigID = DecorCatalog.GetDecorAttachments(ProductID, DecorName, ColorID, PatinaID, InsetTypeID, InsetColorID);
-            if (ConfigID != -1)
-                IsConfigImageToSite = DecorCatalog.IsConfigImageToSite(ConfigID, ref bLatest, ref Category, ref NameProd, ref Description, ref Sizes, ref Material);
+            int configId = _decorCatalog.GetDecorAttachments(productId, decorName, colorId, patinaId, insetTypeId, insetColorId);
+            if (configId != -1)
+                isConfigImageToSite = _decorCatalog.IsConfigImageToSite(configId, ref bLatest, ref category, ref nameProd, ref description, ref sizes, ref material);
             else
             {
                 MessageBox.Show("Изображение не найдено!");
                 return;
             }
-            PhantomForm PhantomForm = new Infinium.PhantomForm();
-            PhantomForm.Show();
-            ProductDescriptionForm ProductDescriptionForm = new ProductDescriptionForm(this, IsConfigImageToSite, bLatest, Category, NameProd, Description, Sizes, Material);
-            TopForm = ProductDescriptionForm;
-            ProductDescriptionForm.ShowDialog();
+            PhantomForm phantomForm = new Infinium.PhantomForm();
+            phantomForm.Show();
+            ProductDescriptionForm productDescriptionForm = new ProductDescriptionForm(this, isConfigImageToSite, bLatest, category, nameProd, description, sizes, material);
+            _topForm = productDescriptionForm;
+            productDescriptionForm.ShowDialog();
 
-            PressOK = ProductDescriptionForm.PressOK;
-            IsConfigImageToSite = ProductDescriptionForm.ToSite;
-            Category = ProductDescriptionForm.Category;
-            Description = ProductDescriptionForm.Description;
-            NameProd = ProductDescriptionForm.NameProd;
-            Sizes = ProductDescriptionForm.Sizes;
-            Material = ProductDescriptionForm.Material;
-            bLatest = ProductDescriptionForm.Latest;
+            pressOk = productDescriptionForm.PressOK;
+            isConfigImageToSite = productDescriptionForm.ToSite;
+            category = productDescriptionForm.Category;
+            description = productDescriptionForm.Description;
+            nameProd = productDescriptionForm.NameProd;
+            sizes = productDescriptionForm.Sizes;
+            material = productDescriptionForm.Material;
+            bLatest = productDescriptionForm.Latest;
 
-            PhantomForm.Close();
-            PhantomForm.Dispose();
-            ProductDescriptionForm.Dispose();
-            TopForm = null;
+            phantomForm.Close();
+            phantomForm.Dispose();
+            productDescriptionForm.Dispose();
+            _topForm = null;
 
-            if (!PressOK)
+            if (!pressOk)
                 return;
 
-            if (ConfigID != -1)
+            if (configId != -1)
             {
-                DecorCatalog.ConfigImageToSite(ConfigID, IsConfigImageToSite, bLatest, Category, NameProd, Description, Sizes, Material);
+                _decorCatalog.ConfigImageToSite(configId, isConfigImageToSite, bLatest, category, nameProd, description, sizes, material);
             }
 
         }
 
         private void KryptonContextMenuItem21_Click(object sender, EventArgs e)
         {
-            bool PressOK = false;
-            int LabelsCount = 0;
-            int PositionsCount = 0;
-            string DocDateTime = string.Empty;
+            bool pressOk = false;
+            int labelsCount = 0;
+            int positionsCount = 0;
+            string docDateTime = string.Empty;
 
-            PhantomForm PhantomForm = new Infinium.PhantomForm();
-            PhantomForm.Show();
-            CabFurLabelInfoMenu CabFurLabelInfoMenu = new CabFurLabelInfoMenu(this, false, false, false);
-            TopForm = CabFurLabelInfoMenu;
-            CabFurLabelInfoMenu.ShowDialog();
-            PressOK = CabFurLabelInfoMenu.PressOK;
-            LabelsCount = CabFurLabelInfoMenu.LabelsCount;
-            DocDateTime = CabFurLabelInfoMenu.DocDateTime;
-            PositionsCount = CabFurLabelInfoMenu.PositionsCount;
-            PhantomForm.Close();
-            PhantomForm.Dispose();
-            CabFurLabelInfoMenu.Dispose();
-            TopForm = null;
+            PhantomForm phantomForm = new Infinium.PhantomForm();
+            phantomForm.Show();
+            CabFurLabelInfoMenu cabFurLabelInfoMenu = new CabFurLabelInfoMenu(this, false, false, false);
+            _topForm = cabFurLabelInfoMenu;
+            cabFurLabelInfoMenu.ShowDialog();
+            pressOk = cabFurLabelInfoMenu.PressOK;
+            labelsCount = cabFurLabelInfoMenu.LabelsCount;
+            docDateTime = cabFurLabelInfoMenu.DocDateTime;
+            positionsCount = cabFurLabelInfoMenu.PositionsCount;
+            phantomForm.Close();
+            phantomForm.Dispose();
+            cabFurLabelInfoMenu.Dispose();
+            _topForm = null;
 
-            if (!PressOK)
+            if (!pressOk)
                 return;
 
-            int DecorID = DecorCatalog.GetDecorIdByName(DecorDataGrid.SelectedRows[0].Cells["Name"].Value.ToString());
-            int LabelsLength = Convert.ToInt32(LengthDataGrid.SelectedRows[0].Cells["Length"].Value);
-            int LabelsHeight = Convert.ToInt32(HeightDataGrid.SelectedRows[0].Cells["Height"].Value);
-            int LabelsWidth = Convert.ToInt32(WidthDataGrid.SelectedRows[0].Cells["Width"].Value);
-            string Color = ColorsDataGrid.SelectedRows[0].Cells["ColorName"].Value.ToString();
+            int decorId = _decorCatalog.GetDecorIdByName(DecorDataGrid.SelectedRows[0].Cells["Name"].Value.ToString());
+            int labelsLength = Convert.ToInt32(LengthDataGrid.SelectedRows[0].Cells["Length"].Value);
+            int labelsHeight = Convert.ToInt32(HeightDataGrid.SelectedRows[0].Cells["Height"].Value);
+            int labelsWidth = Convert.ToInt32(WidthDataGrid.SelectedRows[0].Cells["Width"].Value);
+            string color = ColorsDataGrid.SelectedRows[0].Cells["ColorName"].Value.ToString();
 
-            int DecorConfigID = 0;
-            CabFurDT.Clear();
-            DataRow NewRow = CabFurDT.NewRow();
+            int decorConfigId = 0;
+            _cabFurDt.Clear();
+            DataRow newRow = _cabFurDt.NewRow();
 
-            DecorCatalog.TechStoreGroupInfo techStoreGroupInfo = DecorCatalog.GetSubGroupInfo(DecorID);
+            DecorCatalog.TechStoreGroupInfo techStoreGroupInfo = _decorCatalog.GetSubGroupInfo(decorId);
 
-            NewRow["TechStoreName"] = techStoreGroupInfo.TechStoreName;
-            NewRow["TechStoreSubGroupName"] = techStoreGroupInfo.TechStoreSubGroupName;
-            NewRow["SubGroupNotes"] = techStoreGroupInfo.SubGroupNotes;
-            NewRow["SubGroupNotes1"] = techStoreGroupInfo.SubGroupNotes1;
-            NewRow["SubGroupNotes2"] = techStoreGroupInfo.SubGroupNotes2;
-            NewRow["Color"] = Color;
-            NewRow["Length"] = LabelsLength;
-            NewRow["Height"] = LabelsHeight;
-            NewRow["Width"] = LabelsWidth;
-            NewRow["LabelsCount"] = LabelsCount;
-            NewRow["PositionsCount"] = PositionsCount;
-            NewRow["DecorConfigID"] = DecorConfigID;
+            newRow["TechStoreName"] = techStoreGroupInfo.TechStoreName;
+            newRow["TechStoreSubGroupName"] = techStoreGroupInfo.TechStoreSubGroupName;
+            newRow["SubGroupNotes"] = techStoreGroupInfo.SubGroupNotes;
+            newRow["SubGroupNotes1"] = techStoreGroupInfo.SubGroupNotes1;
+            newRow["SubGroupNotes2"] = techStoreGroupInfo.SubGroupNotes2;
+            newRow["Color"] = color;
+            newRow["Length"] = labelsLength;
+            newRow["Height"] = labelsHeight;
+            newRow["Width"] = labelsWidth;
+            newRow["LabelsCount"] = labelsCount;
+            newRow["PositionsCount"] = positionsCount;
+            newRow["DecorConfigID"] = decorConfigId;
 
-            CabFurDT.Rows.Add(NewRow);
+            _cabFurDt.Rows.Add(newRow);
 
-            CabFurLabelManager.ClearLabelInfo();
+            _cabFurLabelManager.ClearLabelInfo();
 
             //Проверка
-            if (CabFurDT.Rows.Count == 0)
+            if (_cabFurDt.Rows.Count == 0)
             {
-                Infinium.LightMessageBox.Show(ref TopForm, false,
+                Infinium.LightMessageBox.Show(ref _topForm, false,
                     "Очередь для печати пуста",
                     "Ошибка печати");
                 return;
             }
 
-            for (int i = 0; i < CabFurDT.Rows.Count; i++)
+            for (int i = 0; i < _cabFurDt.Rows.Count; i++)
             {
-                LabelsCount = Convert.ToInt32(CabFurDT.Rows[i]["LabelsCount"]);
-                DecorConfigID = Convert.ToInt32(CabFurDT.Rows[i]["DecorConfigID"]);
-                int SampleLabelID = 0;
-                for (int j = 0; j < LabelsCount; j++)
+                labelsCount = Convert.ToInt32(_cabFurDt.Rows[i]["LabelsCount"]);
+                decorConfigId = Convert.ToInt32(_cabFurDt.Rows[i]["DecorConfigID"]);
+                int sampleLabelId = 0;
+                for (int j = 0; j < labelsCount; j++)
                 {
-                    CabFurInfo LabelInfo = new CabFurInfo();
+                    CabFurInfo labelInfo = new CabFurInfo();
 
-                    DataTable DT = CabFurDT.Clone();
+                    DataTable dt = _cabFurDt.Clone();
 
-                    DataRow destRow = DT.NewRow();
-                    foreach (DataColumn column in CabFurDT.Columns)
+                    DataRow destRow = dt.NewRow();
+                    foreach (DataColumn column in _cabFurDt.Columns)
                     {
                         if (column.ColumnName == "FactoryType")
                             continue;
-                        destRow[column.ColumnName] = CabFurDT.Rows[i][column.ColumnName];
+                        destRow[column.ColumnName] = _cabFurDt.Rows[i][column.ColumnName];
                     }
-                    LabelInfo.TechStoreName = CabFurDT.Rows[i]["TechStoreName"].ToString();
-                    LabelInfo.TechStoreSubGroupName = CabFurDT.Rows[i]["TechStoreSubGroupName"].ToString();
-                    LabelInfo.SubGroupNotes = CabFurDT.Rows[i]["SubGroupNotes"].ToString();
-                    LabelInfo.SubGroupNotes1 = CabFurDT.Rows[i]["SubGroupNotes1"].ToString();
-                    LabelInfo.SubGroupNotes2 = CabFurDT.Rows[i]["SubGroupNotes2"].ToString();
-                    SampleLabelID = CabFurLabelManager.SaveSampleLabel(DecorConfigID, DateTime.Now, Security.CurrentUserID, 2);
-                    LabelInfo.BarcodeNumber = CabFurLabelManager.GetBarcodeNumber(19, SampleLabelID);
-                    int FactoryId = 1;
+                    labelInfo.TechStoreName = _cabFurDt.Rows[i]["TechStoreName"].ToString();
+                    labelInfo.TechStoreSubGroupName = _cabFurDt.Rows[i]["TechStoreSubGroupName"].ToString();
+                    labelInfo.SubGroupNotes = _cabFurDt.Rows[i]["SubGroupNotes"].ToString();
+                    labelInfo.SubGroupNotes1 = _cabFurDt.Rows[i]["SubGroupNotes1"].ToString();
+                    labelInfo.SubGroupNotes2 = _cabFurDt.Rows[i]["SubGroupNotes2"].ToString();
+                    sampleLabelId = _cabFurLabelManager.SaveSampleLabel(decorConfigId, DateTime.Now, Security.CurrentUserID, 2);
+                    labelInfo.BarcodeNumber = _cabFurLabelManager.GetBarcodeNumber(19, sampleLabelId);
+                    int factoryId = 1;
                     if (kryptonCheckSet2.CheckedButton == TPSCheckButton)
-                        FactoryId = 2;
-                    LabelInfo.FactoryType = FactoryId;
-                    LabelInfo.ProductType = 2;
-                    LabelInfo.DocDateTime = DocDateTime;
-                    DT.Rows.Add(destRow);
-                    LabelInfo.OrderData = DT;
+                        factoryId = 2;
+                    labelInfo.FactoryType = factoryId;
+                    labelInfo.ProductType = 2;
+                    labelInfo.DocDateTime = docDateTime;
+                    dt.Rows.Add(destRow);
+                    labelInfo.OrderData = dt;
 
-                    CabFurLabelManager.AddLabelInfo(ref LabelInfo);
+                    _cabFurLabelManager.AddLabelInfo(ref labelInfo);
                 }
             }
-            PrintDialog.Document = CabFurLabelManager.PD;
+            PrintDialog.Document = _cabFurLabelManager.PD;
 
             if (PrintDialog.ShowDialog() == DialogResult.OK)
             {
-                CabFurLabelManager.Print();
+                _cabFurLabelManager.Print();
             }
         }
 
         private void KryptonContextMenuItem22_Click(object sender, EventArgs e)
         {
-            bool PressOK = false;
-            int LabelsCount = 0;
-            int PositionsCount = 0;
-            string DocDateTime = string.Empty;
+            bool pressOk = false;
+            int labelsCount = 0;
+            int positionsCount = 0;
+            string docDateTime = string.Empty;
 
-            PhantomForm PhantomForm = new Infinium.PhantomForm();
-            PhantomForm.Show();
-            CabFurLabelInfoMenu CabFurLabelInfoMenu = new CabFurLabelInfoMenu(this, false, false, false);
-            TopForm = CabFurLabelInfoMenu;
-            CabFurLabelInfoMenu.ShowDialog();
-            PressOK = CabFurLabelInfoMenu.PressOK;
-            LabelsCount = CabFurLabelInfoMenu.LabelsCount;
-            DocDateTime = CabFurLabelInfoMenu.DocDateTime;
-            PositionsCount = CabFurLabelInfoMenu.PositionsCount;
-            PhantomForm.Close();
-            PhantomForm.Dispose();
-            CabFurLabelInfoMenu.Dispose();
-            TopForm = null;
+            PhantomForm phantomForm = new Infinium.PhantomForm();
+            phantomForm.Show();
+            CabFurLabelInfoMenu cabFurLabelInfoMenu = new CabFurLabelInfoMenu(this, false, false, false);
+            _topForm = cabFurLabelInfoMenu;
+            cabFurLabelInfoMenu.ShowDialog();
+            pressOk = cabFurLabelInfoMenu.PressOK;
+            labelsCount = cabFurLabelInfoMenu.LabelsCount;
+            docDateTime = cabFurLabelInfoMenu.DocDateTime;
+            positionsCount = cabFurLabelInfoMenu.PositionsCount;
+            phantomForm.Close();
+            phantomForm.Dispose();
+            cabFurLabelInfoMenu.Dispose();
+            _topForm = null;
 
-            if (!PressOK)
+            if (!pressOk)
                 return;
 
-            int DecorID = DecorCatalog.GetDecorIdByName(DecorDataGrid.SelectedRows[0].Cells["Name"].Value.ToString());
-            int LabelsLength = Convert.ToInt32(LengthDataGrid.SelectedRows[0].Cells["Length"].Value);
-            int LabelsHeight = Convert.ToInt32(HeightDataGrid.SelectedRows[0].Cells["Height"].Value);
-            int LabelsWidth = Convert.ToInt32(WidthDataGrid.SelectedRows[0].Cells["Width"].Value);
-            string Color = ColorsDataGrid.SelectedRows[0].Cells["ColorName"].Value.ToString();
-            string Color2 = DecorInsetColorsDataGrid.SelectedRows[0].Cells["InsetColorName"].Value.ToString();
+            int decorId = _decorCatalog.GetDecorIdByName(DecorDataGrid.SelectedRows[0].Cells["Name"].Value.ToString());
+            int labelsLength = Convert.ToInt32(LengthDataGrid.SelectedRows[0].Cells["Length"].Value);
+            int labelsHeight = Convert.ToInt32(HeightDataGrid.SelectedRows[0].Cells["Height"].Value);
+            int labelsWidth = Convert.ToInt32(WidthDataGrid.SelectedRows[0].Cells["Width"].Value);
+            string color = ColorsDataGrid.SelectedRows[0].Cells["ColorName"].Value.ToString();
+            string color2 = DecorInsetColorsDataGrid.SelectedRows[0].Cells["InsetColorName"].Value.ToString();
 
-            int DecorConfigID = 0;
-            CabFurDT.Clear();
-            DataRow NewRow = CabFurDT.NewRow();
+            int decorConfigId = 0;
+            _cabFurDt.Clear();
+            DataRow newRow = _cabFurDt.NewRow();
 
-            DecorCatalog.TechStoreGroupInfo techStoreGroupInfo = DecorCatalog.GetSubGroupInfo(DecorID);
+            DecorCatalog.TechStoreGroupInfo techStoreGroupInfo = _decorCatalog.GetSubGroupInfo(decorId);
 
-            NewRow["TechStoreName"] = techStoreGroupInfo.TechStoreName;
-            NewRow["TechStoreSubGroupName"] = techStoreGroupInfo.TechStoreSubGroupName;
-            NewRow["SubGroupNotes"] = techStoreGroupInfo.SubGroupNotes;
-            NewRow["SubGroupNotes1"] = techStoreGroupInfo.SubGroupNotes1;
-            NewRow["SubGroupNotes2"] = techStoreGroupInfo.SubGroupNotes2;
-            NewRow["Color"] = Color;
-            NewRow["Color2"] = Color2;
-            NewRow["Length"] = LabelsLength;
-            NewRow["Height"] = LabelsHeight;
-            NewRow["Width"] = LabelsWidth;
-            NewRow["LabelsCount"] = LabelsCount;
-            NewRow["PositionsCount"] = PositionsCount;
-            NewRow["DecorConfigID"] = DecorConfigID;
+            newRow["TechStoreName"] = techStoreGroupInfo.TechStoreName;
+            newRow["TechStoreSubGroupName"] = techStoreGroupInfo.TechStoreSubGroupName;
+            newRow["SubGroupNotes"] = techStoreGroupInfo.SubGroupNotes;
+            newRow["SubGroupNotes1"] = techStoreGroupInfo.SubGroupNotes1;
+            newRow["SubGroupNotes2"] = techStoreGroupInfo.SubGroupNotes2;
+            newRow["Color"] = color;
+            newRow["Color2"] = color2;
+            newRow["Length"] = labelsLength;
+            newRow["Height"] = labelsHeight;
+            newRow["Width"] = labelsWidth;
+            newRow["LabelsCount"] = labelsCount;
+            newRow["PositionsCount"] = positionsCount;
+            newRow["DecorConfigID"] = decorConfigId;
 
-            CabFurDT.Rows.Add(NewRow);
+            _cabFurDt.Rows.Add(newRow);
 
-            CubeLabelManager.ClearLabelInfo();
+            _cubeLabelManager.ClearLabelInfo();
 
             //Проверка
-            if (CabFurDT.Rows.Count == 0)
+            if (_cabFurDt.Rows.Count == 0)
             {
-                Infinium.LightMessageBox.Show(ref TopForm, false,
+                Infinium.LightMessageBox.Show(ref _topForm, false,
                     "Очередь для печати пуста",
                     "Ошибка печати");
                 return;
             }
 
-            for (int i = 0; i < CabFurDT.Rows.Count; i++)
+            for (int i = 0; i < _cabFurDt.Rows.Count; i++)
             {
-                LabelsCount = Convert.ToInt32(CabFurDT.Rows[i]["LabelsCount"]);
-                DecorConfigID = Convert.ToInt32(CabFurDT.Rows[i]["DecorConfigID"]);
-                int SampleLabelID = 0;
-                for (int j = 0; j < LabelsCount; j++)
+                labelsCount = Convert.ToInt32(_cabFurDt.Rows[i]["LabelsCount"]);
+                decorConfigId = Convert.ToInt32(_cabFurDt.Rows[i]["DecorConfigID"]);
+                int sampleLabelId = 0;
+                for (int j = 0; j < labelsCount; j++)
                 {
-                    CabFurInfo LabelInfo = new CabFurInfo();
+                    CabFurInfo labelInfo = new CabFurInfo();
 
-                    DataTable DT = CabFurDT.Clone();
+                    DataTable dt = _cabFurDt.Clone();
 
-                    DataRow destRow = DT.NewRow();
-                    foreach (DataColumn column in CabFurDT.Columns)
+                    DataRow destRow = dt.NewRow();
+                    foreach (DataColumn column in _cabFurDt.Columns)
                     {
                         if (column.ColumnName == "FactoryType")
                             continue;
-                        destRow[column.ColumnName] = CabFurDT.Rows[i][column.ColumnName];
+                        destRow[column.ColumnName] = _cabFurDt.Rows[i][column.ColumnName];
                     }
-                    LabelInfo.TechStoreName = CabFurDT.Rows[i]["TechStoreName"].ToString();
-                    LabelInfo.TechStoreSubGroupName = CabFurDT.Rows[i]["TechStoreSubGroupName"].ToString();
-                    LabelInfo.SubGroupNotes = CabFurDT.Rows[i]["SubGroupNotes"].ToString();
-                    LabelInfo.SubGroupNotes1 = CabFurDT.Rows[i]["SubGroupNotes1"].ToString();
-                    LabelInfo.SubGroupNotes2 = CabFurDT.Rows[i]["SubGroupNotes2"].ToString();
-                    SampleLabelID = CubeLabelManager.SaveSampleLabel(DecorConfigID, DateTime.Now, Security.CurrentUserID, 2);
-                    LabelInfo.BarcodeNumber = CubeLabelManager.GetBarcodeNumber(19, SampleLabelID);
-                    int FactoryId = 1;
+                    labelInfo.TechStoreName = _cabFurDt.Rows[i]["TechStoreName"].ToString();
+                    labelInfo.TechStoreSubGroupName = _cabFurDt.Rows[i]["TechStoreSubGroupName"].ToString();
+                    labelInfo.SubGroupNotes = _cabFurDt.Rows[i]["SubGroupNotes"].ToString();
+                    labelInfo.SubGroupNotes1 = _cabFurDt.Rows[i]["SubGroupNotes1"].ToString();
+                    labelInfo.SubGroupNotes2 = _cabFurDt.Rows[i]["SubGroupNotes2"].ToString();
+                    sampleLabelId = _cubeLabelManager.SaveSampleLabel(decorConfigId, DateTime.Now, Security.CurrentUserID, 2);
+                    labelInfo.BarcodeNumber = _cubeLabelManager.GetBarcodeNumber(19, sampleLabelId);
+                    int factoryId = 1;
                     if (kryptonCheckSet2.CheckedButton == TPSCheckButton)
-                        FactoryId = 2;
-                    LabelInfo.FactoryType = FactoryId;
-                    LabelInfo.ProductType = 2;
-                    LabelInfo.DocDateTime = DocDateTime;
-                    DT.Rows.Add(destRow);
-                    LabelInfo.OrderData = DT;
+                        factoryId = 2;
+                    labelInfo.FactoryType = factoryId;
+                    labelInfo.ProductType = 2;
+                    labelInfo.DocDateTime = docDateTime;
+                    dt.Rows.Add(destRow);
+                    labelInfo.OrderData = dt;
 
-                    CubeLabelManager.AddLabelInfo(ref LabelInfo);
+                    _cubeLabelManager.AddLabelInfo(ref labelInfo);
                 }
             }
-            PrintDialog.Document = CubeLabelManager.PD;
+            PrintDialog.Document = _cubeLabelManager.PD;
 
             if (PrintDialog.ShowDialog() == DialogResult.OK)
             {
-                CubeLabelManager.Print();
+                _cubeLabelManager.Print();
             }
         }
 
         private void KryptonContextMenuItem23_Click(object sender, EventArgs e)
         {
-            bool PressOK = false;
-            int LabelsCount = 0;
-            int PositionsCount = 0;
-            string DocDateTime = string.Empty;
+            bool pressOk = false;
+            int labelsCount = 0;
+            int positionsCount = 0;
+            string docDateTime = string.Empty;
 
-            PhantomForm PhantomForm = new Infinium.PhantomForm();
-            PhantomForm.Show();
-            CabFurLabelInfoMenu CabFurLabelInfoMenu = new CabFurLabelInfoMenu(this, false, false, false);
-            TopForm = CabFurLabelInfoMenu;
-            CabFurLabelInfoMenu.ShowDialog();
-            PressOK = CabFurLabelInfoMenu.PressOK;
-            LabelsCount = CabFurLabelInfoMenu.LabelsCount;
-            DocDateTime = CabFurLabelInfoMenu.DocDateTime;
-            PositionsCount = CabFurLabelInfoMenu.PositionsCount;
-            PhantomForm.Close();
-            PhantomForm.Dispose();
-            CabFurLabelInfoMenu.Dispose();
-            TopForm = null;
+            PhantomForm phantomForm = new Infinium.PhantomForm();
+            phantomForm.Show();
+            CabFurLabelInfoMenu cabFurLabelInfoMenu = new CabFurLabelInfoMenu(this, false, false, false);
+            _topForm = cabFurLabelInfoMenu;
+            cabFurLabelInfoMenu.ShowDialog();
+            pressOk = cabFurLabelInfoMenu.PressOK;
+            labelsCount = cabFurLabelInfoMenu.LabelsCount;
+            docDateTime = cabFurLabelInfoMenu.DocDateTime;
+            positionsCount = cabFurLabelInfoMenu.PositionsCount;
+            phantomForm.Close();
+            phantomForm.Dispose();
+            cabFurLabelInfoMenu.Dispose();
+            _topForm = null;
 
-            if (!PressOK)
+            if (!pressOk)
                 return;
 
-            int DecorID = DecorCatalog.GetDecorIdByName(DecorDataGrid.SelectedRows[0].Cells["Name"].Value.ToString());
-            int LabelsLength = Convert.ToInt32(LengthDataGrid.SelectedRows[0].Cells["Length"].Value);
-            int LabelsHeight = Convert.ToInt32(HeightDataGrid.SelectedRows[0].Cells["Height"].Value);
-            int LabelsWidth = Convert.ToInt32(WidthDataGrid.SelectedRows[0].Cells["Width"].Value);
-            string Color = ColorsDataGrid.SelectedRows[0].Cells["ColorName"].Value.ToString();
+            int decorId = _decorCatalog.GetDecorIdByName(DecorDataGrid.SelectedRows[0].Cells["Name"].Value.ToString());
+            int labelsLength = Convert.ToInt32(LengthDataGrid.SelectedRows[0].Cells["Length"].Value);
+            int labelsHeight = Convert.ToInt32(HeightDataGrid.SelectedRows[0].Cells["Height"].Value);
+            int labelsWidth = Convert.ToInt32(WidthDataGrid.SelectedRows[0].Cells["Width"].Value);
+            string color = ColorsDataGrid.SelectedRows[0].Cells["ColorName"].Value.ToString();
 
-            int DecorConfigID = 0;
-            CabFurDT.Clear();
-            DataRow NewRow = CabFurDT.NewRow();
+            int decorConfigId = 0;
+            _cabFurDt.Clear();
+            DataRow newRow = _cabFurDt.NewRow();
 
-            DecorCatalog.TechStoreGroupInfo techStoreGroupInfo = DecorCatalog.GetSubGroupInfo(DecorID);
+            DecorCatalog.TechStoreGroupInfo techStoreGroupInfo = _decorCatalog.GetSubGroupInfo(decorId);
 
-            NewRow["TechStoreName"] = techStoreGroupInfo.TechStoreName;
-            NewRow["TechStoreSubGroupName"] = techStoreGroupInfo.TechStoreSubGroupName;
-            NewRow["SubGroupNotes"] = techStoreGroupInfo.SubGroupNotes;
-            NewRow["SubGroupNotes1"] = techStoreGroupInfo.SubGroupNotes1;
-            NewRow["SubGroupNotes2"] = techStoreGroupInfo.SubGroupNotes2;
-            NewRow["Color"] = Color;
-            NewRow["Length"] = LabelsLength;
-            NewRow["Height"] = LabelsHeight;
-            NewRow["Width"] = LabelsWidth;
-            NewRow["LabelsCount"] = LabelsCount;
-            NewRow["PositionsCount"] = PositionsCount;
-            NewRow["DecorConfigID"] = DecorConfigID;
+            newRow["TechStoreName"] = techStoreGroupInfo.TechStoreName;
+            newRow["TechStoreSubGroupName"] = techStoreGroupInfo.TechStoreSubGroupName;
+            newRow["SubGroupNotes"] = techStoreGroupInfo.SubGroupNotes;
+            newRow["SubGroupNotes1"] = techStoreGroupInfo.SubGroupNotes1;
+            newRow["SubGroupNotes2"] = techStoreGroupInfo.SubGroupNotes2;
+            newRow["Color"] = color;
+            newRow["Length"] = labelsLength;
+            newRow["Height"] = labelsHeight;
+            newRow["Width"] = labelsWidth;
+            newRow["LabelsCount"] = labelsCount;
+            newRow["PositionsCount"] = positionsCount;
+            newRow["DecorConfigID"] = decorConfigId;
 
-            CabFurDT.Rows.Add(NewRow);
+            _cabFurDt.Rows.Add(newRow);
 
-            CabFurLabelManager.ClearLabelInfo();
+            _cabFurLabelManager.ClearLabelInfo();
 
             //Проверка
-            if (CabFurDT.Rows.Count == 0)
+            if (_cabFurDt.Rows.Count == 0)
             {
-                Infinium.LightMessageBox.Show(ref TopForm, false,
+                Infinium.LightMessageBox.Show(ref _topForm, false,
                     "Очередь для печати пуста",
                     "Ошибка печати");
                 return;
             }
 
-            for (int i = 0; i < CabFurDT.Rows.Count; i++)
+            for (int i = 0; i < _cabFurDt.Rows.Count; i++)
             {
-                LabelsCount = Convert.ToInt32(CabFurDT.Rows[i]["LabelsCount"]);
-                DecorConfigID = Convert.ToInt32(CabFurDT.Rows[i]["DecorConfigID"]);
-                int SampleLabelID = 0;
-                for (int j = 0; j < LabelsCount; j++)
+                labelsCount = Convert.ToInt32(_cabFurDt.Rows[i]["LabelsCount"]);
+                decorConfigId = Convert.ToInt32(_cabFurDt.Rows[i]["DecorConfigID"]);
+                int sampleLabelId = 0;
+                for (int j = 0; j < labelsCount; j++)
                 {
-                    CabFurInfo LabelInfo = new CabFurInfo();
+                    CabFurInfo labelInfo = new CabFurInfo();
 
-                    DataTable DT = CabFurDT.Clone();
+                    DataTable dt = _cabFurDt.Clone();
 
-                    DataRow destRow = DT.NewRow();
-                    foreach (DataColumn column in CabFurDT.Columns)
+                    DataRow destRow = dt.NewRow();
+                    foreach (DataColumn column in _cabFurDt.Columns)
                     {
                         if (column.ColumnName == "FactoryType")
                             continue;
-                        destRow[column.ColumnName] = CabFurDT.Rows[i][column.ColumnName];
+                        destRow[column.ColumnName] = _cabFurDt.Rows[i][column.ColumnName];
                     }
-                    LabelInfo.TechStoreName = CabFurDT.Rows[i]["TechStoreName"].ToString();
-                    LabelInfo.TechStoreSubGroupName = CabFurDT.Rows[i]["TechStoreSubGroupName"].ToString();
-                    LabelInfo.SubGroupNotes = CabFurDT.Rows[i]["SubGroupNotes"].ToString();
-                    LabelInfo.SubGroupNotes1 = CabFurDT.Rows[i]["SubGroupNotes1"].ToString();
-                    LabelInfo.SubGroupNotes2 = CabFurDT.Rows[i]["SubGroupNotes2"].ToString();
-                    SampleLabelID = CabFurLabelManager.SaveSampleLabel(DecorConfigID, DateTime.Now, Security.CurrentUserID, 2);
-                    LabelInfo.BarcodeNumber = CabFurLabelManager.GetBarcodeNumber(19, SampleLabelID);
-                    int FactoryId = 1;
+                    labelInfo.TechStoreName = _cabFurDt.Rows[i]["TechStoreName"].ToString();
+                    labelInfo.TechStoreSubGroupName = _cabFurDt.Rows[i]["TechStoreSubGroupName"].ToString();
+                    labelInfo.SubGroupNotes = _cabFurDt.Rows[i]["SubGroupNotes"].ToString();
+                    labelInfo.SubGroupNotes1 = _cabFurDt.Rows[i]["SubGroupNotes1"].ToString();
+                    labelInfo.SubGroupNotes2 = _cabFurDt.Rows[i]["SubGroupNotes2"].ToString();
+                    sampleLabelId = _cabFurLabelManager.SaveSampleLabel(decorConfigId, DateTime.Now, Security.CurrentUserID, 2);
+                    labelInfo.BarcodeNumber = _cabFurLabelManager.GetBarcodeNumber(19, sampleLabelId);
+                    int factoryId = 1;
                     if (kryptonCheckSet2.CheckedButton == TPSCheckButton)
-                        FactoryId = 2;
-                    LabelInfo.FactoryType = FactoryId;
-                    LabelInfo.ProductType = 2;
-                    LabelInfo.DocDateTime = DocDateTime;
-                    DT.Rows.Add(destRow);
-                    LabelInfo.OrderData = DT;
+                        factoryId = 2;
+                    labelInfo.FactoryType = factoryId;
+                    labelInfo.ProductType = 2;
+                    labelInfo.DocDateTime = docDateTime;
+                    dt.Rows.Add(destRow);
+                    labelInfo.OrderData = dt;
 
-                    CabFurLabelManager.AddLabelInfo(ref LabelInfo);
+                    _cabFurLabelManager.AddLabelInfo(ref labelInfo);
                 }
             }
-            PrintDialog.Document = CabFurLabelManager.PD;
+            PrintDialog.Document = _cabFurLabelManager.PD;
 
             if (PrintDialog.ShowDialog() == DialogResult.OK)
             {
-                CabFurLabelManager.Print();
+                _cabFurLabelManager.Print();
             }
         }
 
         private void kryptonContextMenuItem24_Click(object sender, EventArgs e)
         {
-            bool PressOK = false;
-            int LabelsCount = 0;
-            int PositionsCount = 0;
-            string DocDateTime = string.Empty;
+            bool pressOk = false;
+            int labelsCount = 0;
+            int positionsCount = 0;
+            string docDateTime = string.Empty;
 
-            PhantomForm PhantomForm = new Infinium.PhantomForm();
-            PhantomForm.Show();
-            CabFurLabelInfoMenu CabFurLabelInfoMenu = new CabFurLabelInfoMenu(this, false, false, false);
-            TopForm = CabFurLabelInfoMenu;
-            CabFurLabelInfoMenu.ShowDialog();
-            PressOK = CabFurLabelInfoMenu.PressOK;
-            LabelsCount = CabFurLabelInfoMenu.LabelsCount;
-            DocDateTime = CabFurLabelInfoMenu.DocDateTime;
-            PositionsCount = CabFurLabelInfoMenu.PositionsCount;
-            PhantomForm.Close();
-            PhantomForm.Dispose();
-            CabFurLabelInfoMenu.Dispose();
-            TopForm = null;
+            PhantomForm phantomForm = new Infinium.PhantomForm();
+            phantomForm.Show();
+            CabFurLabelInfoMenu cabFurLabelInfoMenu = new CabFurLabelInfoMenu(this, false, false, false);
+            _topForm = cabFurLabelInfoMenu;
+            cabFurLabelInfoMenu.ShowDialog();
+            pressOk = cabFurLabelInfoMenu.PressOK;
+            labelsCount = cabFurLabelInfoMenu.LabelsCount;
+            docDateTime = cabFurLabelInfoMenu.DocDateTime;
+            positionsCount = cabFurLabelInfoMenu.PositionsCount;
+            phantomForm.Close();
+            phantomForm.Dispose();
+            cabFurLabelInfoMenu.Dispose();
+            _topForm = null;
 
-            if (!PressOK)
+            if (!pressOk)
                 return;
 
-            int DecorID = DecorCatalog.GetDecorIdByName(DecorDataGrid.SelectedRows[0].Cells["Name"].Value.ToString());
-            int LabelsLength = Convert.ToInt32(LengthDataGrid.SelectedRows[0].Cells["Length"].Value);
-            int LabelsHeight = Convert.ToInt32(HeightDataGrid.SelectedRows[0].Cells["Height"].Value);
-            int LabelsWidth = Convert.ToInt32(WidthDataGrid.SelectedRows[0].Cells["Width"].Value);
-            string Color = ColorsDataGrid.SelectedRows[0].Cells["ColorName"].Value.ToString();
+            int decorId = _decorCatalog.GetDecorIdByName(DecorDataGrid.SelectedRows[0].Cells["Name"].Value.ToString());
+            int labelsLength = Convert.ToInt32(LengthDataGrid.SelectedRows[0].Cells["Length"].Value);
+            int labelsHeight = Convert.ToInt32(HeightDataGrid.SelectedRows[0].Cells["Height"].Value);
+            int labelsWidth = Convert.ToInt32(WidthDataGrid.SelectedRows[0].Cells["Width"].Value);
+            string color = ColorsDataGrid.SelectedRows[0].Cells["ColorName"].Value.ToString();
 
-            int DecorConfigID = 0;
-            CabFurDT.Clear();
-            DataRow NewRow = CabFurDT.NewRow();
+            int decorConfigId = 0;
+            _cabFurDt.Clear();
+            DataRow newRow = _cabFurDt.NewRow();
 
-            DecorCatalog.TechStoreGroupInfo techStoreGroupInfo = DecorCatalog.GetSubGroupInfo(DecorID);
+            DecorCatalog.TechStoreGroupInfo techStoreGroupInfo = _decorCatalog.GetSubGroupInfo(decorId);
 
-            NewRow["TechStoreName"] = techStoreGroupInfo.TechStoreName;
-            NewRow["TechStoreSubGroupName"] = techStoreGroupInfo.TechStoreSubGroupName;
-            NewRow["SubGroupNotes"] = techStoreGroupInfo.SubGroupNotes;
-            NewRow["SubGroupNotes1"] = techStoreGroupInfo.SubGroupNotes1;
-            NewRow["SubGroupNotes2"] = techStoreGroupInfo.SubGroupNotes2;
-            NewRow["Color"] = Color;
-            NewRow["Length"] = LabelsLength;
-            NewRow["Height"] = LabelsHeight;
-            NewRow["Width"] = LabelsWidth;
-            NewRow["LabelsCount"] = LabelsCount;
-            NewRow["PositionsCount"] = PositionsCount;
-            NewRow["DecorConfigID"] = DecorConfigID;
+            newRow["TechStoreName"] = techStoreGroupInfo.TechStoreName;
+            newRow["TechStoreSubGroupName"] = techStoreGroupInfo.TechStoreSubGroupName;
+            newRow["SubGroupNotes"] = techStoreGroupInfo.SubGroupNotes;
+            newRow["SubGroupNotes1"] = techStoreGroupInfo.SubGroupNotes1;
+            newRow["SubGroupNotes2"] = techStoreGroupInfo.SubGroupNotes2;
+            newRow["Color"] = color;
+            newRow["Length"] = labelsLength;
+            newRow["Height"] = labelsHeight;
+            newRow["Width"] = labelsWidth;
+            newRow["LabelsCount"] = labelsCount;
+            newRow["PositionsCount"] = positionsCount;
+            newRow["DecorConfigID"] = decorConfigId;
 
-            CabFurDT.Rows.Add(NewRow);
+            _cabFurDt.Rows.Add(newRow);
 
-            CabFurLabelManager.ClearLabelInfo();
+            _cabFurLabelManager.ClearLabelInfo();
 
             //Проверка
-            if (CabFurDT.Rows.Count == 0)
+            if (_cabFurDt.Rows.Count == 0)
             {
-                Infinium.LightMessageBox.Show(ref TopForm, false,
+                Infinium.LightMessageBox.Show(ref _topForm, false,
                     "Очередь для печати пуста",
                     "Ошибка печати");
                 return;
             }
 
-            for (int i = 0; i < CabFurDT.Rows.Count; i++)
+            for (int i = 0; i < _cabFurDt.Rows.Count; i++)
             {
-                LabelsCount = Convert.ToInt32(CabFurDT.Rows[i]["LabelsCount"]);
-                DecorConfigID = Convert.ToInt32(CabFurDT.Rows[i]["DecorConfigID"]);
-                int SampleLabelID = 0;
-                for (int j = 0; j < LabelsCount; j++)
+                labelsCount = Convert.ToInt32(_cabFurDt.Rows[i]["LabelsCount"]);
+                decorConfigId = Convert.ToInt32(_cabFurDt.Rows[i]["DecorConfigID"]);
+                int sampleLabelId = 0;
+                for (int j = 0; j < labelsCount; j++)
                 {
-                    CabFurInfo LabelInfo = new CabFurInfo();
+                    CabFurInfo labelInfo = new CabFurInfo();
 
-                    DataTable DT = CabFurDT.Clone();
+                    DataTable dt = _cabFurDt.Clone();
 
-                    DataRow destRow = DT.NewRow();
-                    foreach (DataColumn column in CabFurDT.Columns)
+                    DataRow destRow = dt.NewRow();
+                    foreach (DataColumn column in _cabFurDt.Columns)
                     {
                         if (column.ColumnName == "FactoryType")
                             continue;
-                        destRow[column.ColumnName] = CabFurDT.Rows[i][column.ColumnName];
+                        destRow[column.ColumnName] = _cabFurDt.Rows[i][column.ColumnName];
                     }
-                    LabelInfo.TechStoreName = CabFurDT.Rows[i]["TechStoreName"].ToString();
-                    LabelInfo.TechStoreSubGroupName = CabFurDT.Rows[i]["TechStoreSubGroupName"].ToString();
-                    LabelInfo.SubGroupNotes = CabFurDT.Rows[i]["SubGroupNotes"].ToString();
-                    LabelInfo.SubGroupNotes1 = CabFurDT.Rows[i]["SubGroupNotes1"].ToString();
-                    LabelInfo.SubGroupNotes2 = CabFurDT.Rows[i]["SubGroupNotes2"].ToString();
-                    SampleLabelID = CabFurLabelManager.SaveSampleLabel(DecorConfigID, DateTime.Now, Security.CurrentUserID, 2);
-                    LabelInfo.BarcodeNumber = CabFurLabelManager.GetBarcodeNumber(19, SampleLabelID);
-                    int FactoryId = 1;
+                    labelInfo.TechStoreName = _cabFurDt.Rows[i]["TechStoreName"].ToString();
+                    labelInfo.TechStoreSubGroupName = _cabFurDt.Rows[i]["TechStoreSubGroupName"].ToString();
+                    labelInfo.SubGroupNotes = _cabFurDt.Rows[i]["SubGroupNotes"].ToString();
+                    labelInfo.SubGroupNotes1 = _cabFurDt.Rows[i]["SubGroupNotes1"].ToString();
+                    labelInfo.SubGroupNotes2 = _cabFurDt.Rows[i]["SubGroupNotes2"].ToString();
+                    sampleLabelId = _cabFurLabelManager.SaveSampleLabel(decorConfigId, DateTime.Now, Security.CurrentUserID, 2);
+                    labelInfo.BarcodeNumber = _cabFurLabelManager.GetBarcodeNumber(19, sampleLabelId);
+                    int factoryId = 1;
                     if (kryptonCheckSet2.CheckedButton == TPSCheckButton)
-                        FactoryId = 2;
-                    LabelInfo.FactoryType = FactoryId;
-                    LabelInfo.ProductType = 2;
-                    LabelInfo.DocDateTime = DocDateTime;
-                    DT.Rows.Add(destRow);
-                    LabelInfo.OrderData = DT;
+                        factoryId = 2;
+                    labelInfo.FactoryType = factoryId;
+                    labelInfo.ProductType = 2;
+                    labelInfo.DocDateTime = docDateTime;
+                    dt.Rows.Add(destRow);
+                    labelInfo.OrderData = dt;
 
-                    CabFurLabelManager.AddLabelInfo(ref LabelInfo);
+                    _cabFurLabelManager.AddLabelInfo(ref labelInfo);
                 }
             }
-            PrintDialog.Document = CabFurLabelManager.PD;
+            PrintDialog.Document = _cabFurLabelManager.PD;
 
             if (PrintDialog.ShowDialog() == DialogResult.OK)
             {
-                CabFurLabelManager.Print();
+                _cabFurLabelManager.Print();
             }
         }
 
         private void kryptonContextMenuItem25_Click(object sender, EventArgs e)
         {
-            bool PressOK = false;
-            int LabelsCount = 0;
-            int PositionsCount = 0;
-            string DocDateTime = string.Empty;
+            bool pressOk = false;
+            int labelsCount = 0;
+            int positionsCount = 0;
+            string docDateTime = string.Empty;
 
-            PhantomForm PhantomForm = new Infinium.PhantomForm();
-            PhantomForm.Show();
-            CabFurLabelInfoMenu CabFurLabelInfoMenu = new CabFurLabelInfoMenu(this, false, false, false);
-            TopForm = CabFurLabelInfoMenu;
-            CabFurLabelInfoMenu.ShowDialog();
-            PressOK = CabFurLabelInfoMenu.PressOK;
-            LabelsCount = CabFurLabelInfoMenu.LabelsCount;
-            DocDateTime = CabFurLabelInfoMenu.DocDateTime;
-            PositionsCount = CabFurLabelInfoMenu.PositionsCount;
-            PhantomForm.Close();
-            PhantomForm.Dispose();
-            CabFurLabelInfoMenu.Dispose();
-            TopForm = null;
+            PhantomForm phantomForm = new Infinium.PhantomForm();
+            phantomForm.Show();
+            CabFurLabelInfoMenu cabFurLabelInfoMenu = new CabFurLabelInfoMenu(this, false, false, false);
+            _topForm = cabFurLabelInfoMenu;
+            cabFurLabelInfoMenu.ShowDialog();
+            pressOk = cabFurLabelInfoMenu.PressOK;
+            labelsCount = cabFurLabelInfoMenu.LabelsCount;
+            docDateTime = cabFurLabelInfoMenu.DocDateTime;
+            positionsCount = cabFurLabelInfoMenu.PositionsCount;
+            phantomForm.Close();
+            phantomForm.Dispose();
+            cabFurLabelInfoMenu.Dispose();
+            _topForm = null;
 
-            if (!PressOK)
+            if (!pressOk)
                 return;
 
-            int DecorID = DecorCatalog.GetDecorIdByName(DecorDataGrid.SelectedRows[0].Cells["Name"].Value.ToString());
-            int LabelsLength = Convert.ToInt32(LengthDataGrid.SelectedRows[0].Cells["Length"].Value);
-            int LabelsHeight = Convert.ToInt32(HeightDataGrid.SelectedRows[0].Cells["Height"].Value);
-            int LabelsWidth = Convert.ToInt32(WidthDataGrid.SelectedRows[0].Cells["Width"].Value);
-            string Color = ColorsDataGrid.SelectedRows[0].Cells["ColorName"].Value.ToString();
+            int decorId = _decorCatalog.GetDecorIdByName(DecorDataGrid.SelectedRows[0].Cells["Name"].Value.ToString());
+            int labelsLength = Convert.ToInt32(LengthDataGrid.SelectedRows[0].Cells["Length"].Value);
+            int labelsHeight = Convert.ToInt32(HeightDataGrid.SelectedRows[0].Cells["Height"].Value);
+            int labelsWidth = Convert.ToInt32(WidthDataGrid.SelectedRows[0].Cells["Width"].Value);
+            string color = ColorsDataGrid.SelectedRows[0].Cells["ColorName"].Value.ToString();
 
-            int DecorConfigID = 0;
-            CabFurDT.Clear();
-            DataRow NewRow = CabFurDT.NewRow();
+            int decorConfigId = 0;
+            _cabFurDt.Clear();
+            DataRow newRow = _cabFurDt.NewRow();
 
-            DecorCatalog.TechStoreGroupInfo techStoreGroupInfo = DecorCatalog.GetSubGroupInfo(DecorID);
+            DecorCatalog.TechStoreGroupInfo techStoreGroupInfo = _decorCatalog.GetSubGroupInfo(decorId);
 
-            NewRow["TechStoreName"] = techStoreGroupInfo.TechStoreName;
-            NewRow["TechStoreSubGroupName"] = techStoreGroupInfo.TechStoreSubGroupName;
-            NewRow["SubGroupNotes"] = techStoreGroupInfo.SubGroupNotes;
-            NewRow["SubGroupNotes1"] = techStoreGroupInfo.SubGroupNotes1;
-            NewRow["SubGroupNotes2"] = techStoreGroupInfo.SubGroupNotes2;
-            NewRow["Color"] = Color;
-            NewRow["Length"] = LabelsLength;
-            NewRow["Height"] = LabelsHeight;
-            NewRow["Width"] = LabelsWidth;
-            NewRow["LabelsCount"] = LabelsCount;
-            NewRow["PositionsCount"] = PositionsCount;
-            NewRow["DecorConfigID"] = DecorConfigID;
+            newRow["TechStoreName"] = techStoreGroupInfo.TechStoreName;
+            newRow["TechStoreSubGroupName"] = techStoreGroupInfo.TechStoreSubGroupName;
+            newRow["SubGroupNotes"] = techStoreGroupInfo.SubGroupNotes;
+            newRow["SubGroupNotes1"] = techStoreGroupInfo.SubGroupNotes1;
+            newRow["SubGroupNotes2"] = techStoreGroupInfo.SubGroupNotes2;
+            newRow["Color"] = color;
+            newRow["Length"] = labelsLength;
+            newRow["Height"] = labelsHeight;
+            newRow["Width"] = labelsWidth;
+            newRow["LabelsCount"] = labelsCount;
+            newRow["PositionsCount"] = positionsCount;
+            newRow["DecorConfigID"] = decorConfigId;
 
-            CabFurDT.Rows.Add(NewRow);
+            _cabFurDt.Rows.Add(newRow);
 
-            CabFurLabelManager.ClearLabelInfo();
+            _cabFurLabelManager.ClearLabelInfo();
 
             //Проверка
-            if (CabFurDT.Rows.Count == 0)
+            if (_cabFurDt.Rows.Count == 0)
             {
-                Infinium.LightMessageBox.Show(ref TopForm, false,
+                Infinium.LightMessageBox.Show(ref _topForm, false,
                     "Очередь для печати пуста",
                     "Ошибка печати");
                 return;
             }
 
-            for (int i = 0; i < CabFurDT.Rows.Count; i++)
+            for (int i = 0; i < _cabFurDt.Rows.Count; i++)
             {
-                LabelsCount = Convert.ToInt32(CabFurDT.Rows[i]["LabelsCount"]);
-                DecorConfigID = Convert.ToInt32(CabFurDT.Rows[i]["DecorConfigID"]);
-                int SampleLabelID = 0;
-                for (int j = 0; j < LabelsCount; j++)
+                labelsCount = Convert.ToInt32(_cabFurDt.Rows[i]["LabelsCount"]);
+                decorConfigId = Convert.ToInt32(_cabFurDt.Rows[i]["DecorConfigID"]);
+                int sampleLabelId = 0;
+                for (int j = 0; j < labelsCount; j++)
                 {
-                    CabFurInfo LabelInfo = new CabFurInfo();
+                    CabFurInfo labelInfo = new CabFurInfo();
 
-                    DataTable DT = CabFurDT.Clone();
+                    DataTable dt = _cabFurDt.Clone();
 
-                    DataRow destRow = DT.NewRow();
-                    foreach (DataColumn column in CabFurDT.Columns)
+                    DataRow destRow = dt.NewRow();
+                    foreach (DataColumn column in _cabFurDt.Columns)
                     {
                         if (column.ColumnName == "FactoryType")
                             continue;
-                        destRow[column.ColumnName] = CabFurDT.Rows[i][column.ColumnName];
+                        destRow[column.ColumnName] = _cabFurDt.Rows[i][column.ColumnName];
                     }
-                    LabelInfo.TechStoreName = CabFurDT.Rows[i]["TechStoreName"].ToString();
-                    LabelInfo.TechStoreSubGroupName = CabFurDT.Rows[i]["TechStoreSubGroupName"].ToString();
-                    LabelInfo.SubGroupNotes = CabFurDT.Rows[i]["SubGroupNotes"].ToString();
-                    LabelInfo.SubGroupNotes1 = CabFurDT.Rows[i]["SubGroupNotes1"].ToString();
-                    LabelInfo.SubGroupNotes2 = CabFurDT.Rows[i]["SubGroupNotes2"].ToString();
-                    SampleLabelID = CabFurLabelManager.SaveSampleLabel(DecorConfigID, DateTime.Now, Security.CurrentUserID, 2);
-                    LabelInfo.BarcodeNumber = CabFurLabelManager.GetBarcodeNumber(19, SampleLabelID);
-                    int FactoryId = 1;
+                    labelInfo.TechStoreName = _cabFurDt.Rows[i]["TechStoreName"].ToString();
+                    labelInfo.TechStoreSubGroupName = _cabFurDt.Rows[i]["TechStoreSubGroupName"].ToString();
+                    labelInfo.SubGroupNotes = _cabFurDt.Rows[i]["SubGroupNotes"].ToString();
+                    labelInfo.SubGroupNotes1 = _cabFurDt.Rows[i]["SubGroupNotes1"].ToString();
+                    labelInfo.SubGroupNotes2 = _cabFurDt.Rows[i]["SubGroupNotes2"].ToString();
+                    sampleLabelId = _cabFurLabelManager.SaveSampleLabel(decorConfigId, DateTime.Now, Security.CurrentUserID, 2);
+                    labelInfo.BarcodeNumber = _cabFurLabelManager.GetBarcodeNumber(19, sampleLabelId);
+                    int factoryId = 1;
                     if (kryptonCheckSet2.CheckedButton == TPSCheckButton)
-                        FactoryId = 2;
-                    LabelInfo.FactoryType = FactoryId;
-                    LabelInfo.ProductType = 2;
-                    LabelInfo.DocDateTime = DocDateTime;
-                    DT.Rows.Add(destRow);
-                    LabelInfo.OrderData = DT;
+                        factoryId = 2;
+                    labelInfo.FactoryType = factoryId;
+                    labelInfo.ProductType = 2;
+                    labelInfo.DocDateTime = docDateTime;
+                    dt.Rows.Add(destRow);
+                    labelInfo.OrderData = dt;
 
-                    CabFurLabelManager.AddLabelInfo(ref LabelInfo);
+                    _cabFurLabelManager.AddLabelInfo(ref labelInfo);
                 }
             }
-            PrintDialog.Document = CabFurLabelManager.PD;
+            PrintDialog.Document = _cabFurLabelManager.PD;
 
             if (PrintDialog.ShowDialog() == DialogResult.OK)
             {
-                CabFurLabelManager.Print();
+                _cabFurLabelManager.Print();
             }
         }
 
         private void kryptonContextMenuItem26_Click(object sender, EventArgs e)
         {
-            bool PressOK = false;
-            int LabelsCount = 0;
-            int PositionsCount = 0;
-            string DocDateTime = string.Empty;
+            bool pressOk = false;
+            int labelsCount = 0;
+            int positionsCount = 0;
+            string docDateTime = string.Empty;
 
-            PhantomForm PhantomForm = new Infinium.PhantomForm();
-            PhantomForm.Show();
-            CabFurLabelInfoMenu CabFurLabelInfoMenu = new CabFurLabelInfoMenu(this, false, false, false);
-            TopForm = CabFurLabelInfoMenu;
-            CabFurLabelInfoMenu.ShowDialog();
-            PressOK = CabFurLabelInfoMenu.PressOK;
-            LabelsCount = CabFurLabelInfoMenu.LabelsCount;
-            DocDateTime = CabFurLabelInfoMenu.DocDateTime;
-            PositionsCount = CabFurLabelInfoMenu.PositionsCount;
-            PhantomForm.Close();
-            PhantomForm.Dispose();
-            CabFurLabelInfoMenu.Dispose();
-            TopForm = null;
+            PhantomForm phantomForm = new Infinium.PhantomForm();
+            phantomForm.Show();
+            CabFurLabelInfoMenu cabFurLabelInfoMenu = new CabFurLabelInfoMenu(this, false, false, false);
+            _topForm = cabFurLabelInfoMenu;
+            cabFurLabelInfoMenu.ShowDialog();
+            pressOk = cabFurLabelInfoMenu.PressOK;
+            labelsCount = cabFurLabelInfoMenu.LabelsCount;
+            docDateTime = cabFurLabelInfoMenu.DocDateTime;
+            positionsCount = cabFurLabelInfoMenu.PositionsCount;
+            phantomForm.Close();
+            phantomForm.Dispose();
+            cabFurLabelInfoMenu.Dispose();
+            _topForm = null;
 
-            if (!PressOK)
+            if (!pressOk)
                 return;
 
-            int DecorID = DecorCatalog.GetDecorIdByName(DecorDataGrid.SelectedRows[0].Cells["Name"].Value.ToString());
-            int LabelsLength = Convert.ToInt32(LengthDataGrid.SelectedRows[0].Cells["Length"].Value);
-            int LabelsHeight = Convert.ToInt32(HeightDataGrid.SelectedRows[0].Cells["Height"].Value);
-            int LabelsWidth = Convert.ToInt32(WidthDataGrid.SelectedRows[0].Cells["Width"].Value);
-            string Color = ColorsDataGrid.SelectedRows[0].Cells["ColorName"].Value.ToString();
+            int decorId = _decorCatalog.GetDecorIdByName(DecorDataGrid.SelectedRows[0].Cells["Name"].Value.ToString());
+            int labelsLength = Convert.ToInt32(LengthDataGrid.SelectedRows[0].Cells["Length"].Value);
+            int labelsHeight = Convert.ToInt32(HeightDataGrid.SelectedRows[0].Cells["Height"].Value);
+            int labelsWidth = Convert.ToInt32(WidthDataGrid.SelectedRows[0].Cells["Width"].Value);
+            string color = ColorsDataGrid.SelectedRows[0].Cells["ColorName"].Value.ToString();
 
-            int DecorConfigID = 0;
-            CabFurDT.Clear();
-            DataRow NewRow = CabFurDT.NewRow();
+            int decorConfigId = 0;
+            _cabFurDt.Clear();
+            DataRow newRow = _cabFurDt.NewRow();
 
-            DecorCatalog.TechStoreGroupInfo techStoreGroupInfo = DecorCatalog.GetSubGroupInfo(DecorID);
+            DecorCatalog.TechStoreGroupInfo techStoreGroupInfo = _decorCatalog.GetSubGroupInfo(decorId);
 
-            NewRow["TechStoreName"] = techStoreGroupInfo.TechStoreName;
-            NewRow["TechStoreSubGroupName"] = techStoreGroupInfo.TechStoreSubGroupName;
-            NewRow["SubGroupNotes"] = techStoreGroupInfo.SubGroupNotes;
-            NewRow["SubGroupNotes1"] = techStoreGroupInfo.SubGroupNotes1;
-            NewRow["SubGroupNotes2"] = techStoreGroupInfo.SubGroupNotes2;
-            NewRow["Color"] = Color;
-            NewRow["Length"] = LabelsLength;
-            NewRow["Height"] = LabelsHeight;
-            NewRow["Width"] = LabelsWidth;
-            NewRow["LabelsCount"] = LabelsCount;
-            NewRow["PositionsCount"] = PositionsCount;
-            NewRow["DecorConfigID"] = DecorConfigID;
+            newRow["TechStoreName"] = techStoreGroupInfo.TechStoreName;
+            newRow["TechStoreSubGroupName"] = techStoreGroupInfo.TechStoreSubGroupName;
+            newRow["SubGroupNotes"] = techStoreGroupInfo.SubGroupNotes;
+            newRow["SubGroupNotes1"] = techStoreGroupInfo.SubGroupNotes1;
+            newRow["SubGroupNotes2"] = techStoreGroupInfo.SubGroupNotes2;
+            newRow["Color"] = color;
+            newRow["Length"] = labelsLength;
+            newRow["Height"] = labelsHeight;
+            newRow["Width"] = labelsWidth;
+            newRow["LabelsCount"] = labelsCount;
+            newRow["PositionsCount"] = positionsCount;
+            newRow["DecorConfigID"] = decorConfigId;
 
-            CabFurDT.Rows.Add(NewRow);
+            _cabFurDt.Rows.Add(newRow);
 
-            CabFurLabelManager.ClearLabelInfo();
+            _cabFurLabelManager.ClearLabelInfo();
 
             //Проверка
-            if (CabFurDT.Rows.Count == 0)
+            if (_cabFurDt.Rows.Count == 0)
             {
-                Infinium.LightMessageBox.Show(ref TopForm, false,
+                Infinium.LightMessageBox.Show(ref _topForm, false,
                     "Очередь для печати пуста",
                     "Ошибка печати");
                 return;
             }
 
-            for (int i = 0; i < CabFurDT.Rows.Count; i++)
+            for (int i = 0; i < _cabFurDt.Rows.Count; i++)
             {
-                LabelsCount = Convert.ToInt32(CabFurDT.Rows[i]["LabelsCount"]);
-                DecorConfigID = Convert.ToInt32(CabFurDT.Rows[i]["DecorConfigID"]);
-                int SampleLabelID = 0;
-                for (int j = 0; j < LabelsCount; j++)
+                labelsCount = Convert.ToInt32(_cabFurDt.Rows[i]["LabelsCount"]);
+                decorConfigId = Convert.ToInt32(_cabFurDt.Rows[i]["DecorConfigID"]);
+                int sampleLabelId = 0;
+                for (int j = 0; j < labelsCount; j++)
                 {
-                    CabFurInfo LabelInfo = new CabFurInfo();
+                    CabFurInfo labelInfo = new CabFurInfo();
 
-                    DataTable DT = CabFurDT.Clone();
+                    DataTable dt = _cabFurDt.Clone();
 
-                    DataRow destRow = DT.NewRow();
-                    foreach (DataColumn column in CabFurDT.Columns)
+                    DataRow destRow = dt.NewRow();
+                    foreach (DataColumn column in _cabFurDt.Columns)
                     {
                         if (column.ColumnName == "FactoryType")
                             continue;
-                        destRow[column.ColumnName] = CabFurDT.Rows[i][column.ColumnName];
+                        destRow[column.ColumnName] = _cabFurDt.Rows[i][column.ColumnName];
                     }
 
 
-                    LabelInfo.TechStoreName = CabFurDT.Rows[i]["TechStoreName"].ToString();
-                    LabelInfo.TechStoreSubGroupName = CabFurDT.Rows[i]["TechStoreSubGroupName"].ToString();
-                    LabelInfo.SubGroupNotes = CabFurDT.Rows[i]["SubGroupNotes"].ToString();
-                    LabelInfo.SubGroupNotes1 = CabFurDT.Rows[i]["SubGroupNotes1"].ToString();
-                    LabelInfo.SubGroupNotes2 = CabFurDT.Rows[i]["SubGroupNotes2"].ToString();
-                    SampleLabelID = CabFurLabelManager.SaveSampleLabel(DecorConfigID, DateTime.Now, Security.CurrentUserID, 2);
-                    LabelInfo.BarcodeNumber = CabFurLabelManager.GetBarcodeNumber(19, SampleLabelID);
+                    labelInfo.TechStoreName = _cabFurDt.Rows[i]["TechStoreName"].ToString();
+                    labelInfo.TechStoreSubGroupName = _cabFurDt.Rows[i]["TechStoreSubGroupName"].ToString();
+                    labelInfo.SubGroupNotes = _cabFurDt.Rows[i]["SubGroupNotes"].ToString();
+                    labelInfo.SubGroupNotes1 = _cabFurDt.Rows[i]["SubGroupNotes1"].ToString();
+                    labelInfo.SubGroupNotes2 = _cabFurDt.Rows[i]["SubGroupNotes2"].ToString();
+                    sampleLabelId = _cabFurLabelManager.SaveSampleLabel(decorConfigId, DateTime.Now, Security.CurrentUserID, 2);
+                    labelInfo.BarcodeNumber = _cabFurLabelManager.GetBarcodeNumber(19, sampleLabelId);
 
-                    int FactoryId = 1;
+                    int factoryId = 1;
                     if (kryptonCheckSet2.CheckedButton == TPSCheckButton)
-                        FactoryId = 2;
-                    LabelInfo.FactoryType = FactoryId;
-                    LabelInfo.ProductType = 2;
-                    LabelInfo.DocDateTime = DocDateTime;
-                    DT.Rows.Add(destRow);
-                    LabelInfo.OrderData = DT;
+                        factoryId = 2;
+                    labelInfo.FactoryType = factoryId;
+                    labelInfo.ProductType = 2;
+                    labelInfo.DocDateTime = docDateTime;
+                    dt.Rows.Add(destRow);
+                    labelInfo.OrderData = dt;
 
-                    CabFurLabelManager.AddLabelInfo(ref LabelInfo);
+                    _cabFurLabelManager.AddLabelInfo(ref labelInfo);
                 }
             }
-            PrintDialog.Document = CabFurLabelManager.PD;
+            PrintDialog.Document = _cabFurLabelManager.PD;
 
             if (PrintDialog.ShowDialog() == DialogResult.OK)
             {
-                CabFurLabelManager.Print();
+                _cabFurLabelManager.Print();
             }
         }
 
         private void kryptonContextMenuItem27_Click(object sender, EventArgs e)
         {
-            bool PressOK = false;
-            int LabelsCount = 0;
-            int PositionsCount = 0;
-            string DocDateTime = string.Empty;
+            bool pressOk = false;
+            int labelsCount = 0;
+            int positionsCount = 0;
+            string docDateTime = string.Empty;
 
-            PhantomForm PhantomForm = new Infinium.PhantomForm();
-            PhantomForm.Show();
-            CabFurLabelInfoMenu CabFurLabelInfoMenu = new CabFurLabelInfoMenu(this, false, false, false);
-            TopForm = CabFurLabelInfoMenu;
-            CabFurLabelInfoMenu.ShowDialog();
-            PressOK = CabFurLabelInfoMenu.PressOK;
-            LabelsCount = CabFurLabelInfoMenu.LabelsCount;
-            DocDateTime = CabFurLabelInfoMenu.DocDateTime;
-            PositionsCount = CabFurLabelInfoMenu.PositionsCount;
-            PhantomForm.Close();
-            PhantomForm.Dispose();
-            CabFurLabelInfoMenu.Dispose();
-            TopForm = null;
+            PhantomForm phantomForm = new Infinium.PhantomForm();
+            phantomForm.Show();
+            CabFurLabelInfoMenu cabFurLabelInfoMenu = new CabFurLabelInfoMenu(this, false, false, false);
+            _topForm = cabFurLabelInfoMenu;
+            cabFurLabelInfoMenu.ShowDialog();
+            pressOk = cabFurLabelInfoMenu.PressOK;
+            labelsCount = cabFurLabelInfoMenu.LabelsCount;
+            docDateTime = cabFurLabelInfoMenu.DocDateTime;
+            positionsCount = cabFurLabelInfoMenu.PositionsCount;
+            phantomForm.Close();
+            phantomForm.Dispose();
+            cabFurLabelInfoMenu.Dispose();
+            _topForm = null;
 
-            if (!PressOK)
+            if (!pressOk)
                 return;
 
-            int DecorID = DecorCatalog.GetDecorIdByName(DecorDataGrid.SelectedRows[0].Cells["Name"].Value.ToString());
-            int LabelsLength = Convert.ToInt32(LengthDataGrid.SelectedRows[0].Cells["Length"].Value);
-            int LabelsHeight = Convert.ToInt32(HeightDataGrid.SelectedRows[0].Cells["Height"].Value);
-            int LabelsWidth = Convert.ToInt32(WidthDataGrid.SelectedRows[0].Cells["Width"].Value);
-            string Color = ColorsDataGrid.SelectedRows[0].Cells["ColorName"].Value.ToString();
+            int decorId = _decorCatalog.GetDecorIdByName(DecorDataGrid.SelectedRows[0].Cells["Name"].Value.ToString());
+            int labelsLength = Convert.ToInt32(LengthDataGrid.SelectedRows[0].Cells["Length"].Value);
+            int labelsHeight = Convert.ToInt32(HeightDataGrid.SelectedRows[0].Cells["Height"].Value);
+            int labelsWidth = Convert.ToInt32(WidthDataGrid.SelectedRows[0].Cells["Width"].Value);
+            string color = ColorsDataGrid.SelectedRows[0].Cells["ColorName"].Value.ToString();
 
-            int DecorConfigID = 0;
-            CabFurDT.Clear();
-            DataRow NewRow = CabFurDT.NewRow();
+            int decorConfigId = 0;
+            _cabFurDt.Clear();
+            DataRow newRow = _cabFurDt.NewRow();
 
-            DecorCatalog.TechStoreGroupInfo techStoreGroupInfo = DecorCatalog.GetSubGroupInfo(DecorID);
+            DecorCatalog.TechStoreGroupInfo techStoreGroupInfo = _decorCatalog.GetSubGroupInfo(decorId);
 
-            NewRow["TechStoreName"] = techStoreGroupInfo.TechStoreName;
-            NewRow["TechStoreSubGroupName"] = techStoreGroupInfo.TechStoreSubGroupName;
-            NewRow["SubGroupNotes"] = techStoreGroupInfo.SubGroupNotes;
-            NewRow["SubGroupNotes1"] = techStoreGroupInfo.SubGroupNotes1;
-            NewRow["SubGroupNotes2"] = techStoreGroupInfo.SubGroupNotes2;
-            NewRow["Color"] = Color;
-            NewRow["Length"] = LabelsLength;
-            NewRow["Height"] = LabelsHeight;
-            NewRow["Width"] = LabelsWidth;
-            NewRow["LabelsCount"] = LabelsCount;
-            NewRow["PositionsCount"] = PositionsCount;
-            NewRow["DecorConfigID"] = DecorConfigID;
+            newRow["TechStoreName"] = techStoreGroupInfo.TechStoreName;
+            newRow["TechStoreSubGroupName"] = techStoreGroupInfo.TechStoreSubGroupName;
+            newRow["SubGroupNotes"] = techStoreGroupInfo.SubGroupNotes;
+            newRow["SubGroupNotes1"] = techStoreGroupInfo.SubGroupNotes1;
+            newRow["SubGroupNotes2"] = techStoreGroupInfo.SubGroupNotes2;
+            newRow["Color"] = color;
+            newRow["Length"] = labelsLength;
+            newRow["Height"] = labelsHeight;
+            newRow["Width"] = labelsWidth;
+            newRow["LabelsCount"] = labelsCount;
+            newRow["PositionsCount"] = positionsCount;
+            newRow["DecorConfigID"] = decorConfigId;
 
-            CabFurDT.Rows.Add(NewRow);
+            _cabFurDt.Rows.Add(newRow);
 
-            CabFurLabelManager.ClearLabelInfo();
+            _cabFurLabelManager.ClearLabelInfo();
 
             //Проверка
-            if (CabFurDT.Rows.Count == 0)
+            if (_cabFurDt.Rows.Count == 0)
             {
-                Infinium.LightMessageBox.Show(ref TopForm, false,
+                Infinium.LightMessageBox.Show(ref _topForm, false,
                     "Очередь для печати пуста",
                     "Ошибка печати");
                 return;
             }
 
-            for (int i = 0; i < CabFurDT.Rows.Count; i++)
+            for (int i = 0; i < _cabFurDt.Rows.Count; i++)
             {
-                LabelsCount = Convert.ToInt32(CabFurDT.Rows[i]["LabelsCount"]);
-                DecorConfigID = Convert.ToInt32(CabFurDT.Rows[i]["DecorConfigID"]);
-                int SampleLabelID = 0;
-                for (int j = 0; j < LabelsCount; j++)
+                labelsCount = Convert.ToInt32(_cabFurDt.Rows[i]["LabelsCount"]);
+                decorConfigId = Convert.ToInt32(_cabFurDt.Rows[i]["DecorConfigID"]);
+                int sampleLabelId = 0;
+                for (int j = 0; j < labelsCount; j++)
                 {
-                    CabFurInfo LabelInfo = new CabFurInfo();
+                    CabFurInfo labelInfo = new CabFurInfo();
 
-                    DataTable DT = CabFurDT.Clone();
+                    DataTable dt = _cabFurDt.Clone();
 
-                    DataRow destRow = DT.NewRow();
-                    foreach (DataColumn column in CabFurDT.Columns)
+                    DataRow destRow = dt.NewRow();
+                    foreach (DataColumn column in _cabFurDt.Columns)
                     {
                         if (column.ColumnName == "FactoryType")
                             continue;
-                        destRow[column.ColumnName] = CabFurDT.Rows[i][column.ColumnName];
+                        destRow[column.ColumnName] = _cabFurDt.Rows[i][column.ColumnName];
                     }
 
 
-                    LabelInfo.TechStoreName = CabFurDT.Rows[i]["TechStoreName"].ToString();
-                    LabelInfo.TechStoreSubGroupName = CabFurDT.Rows[i]["TechStoreSubGroupName"].ToString();
-                    LabelInfo.SubGroupNotes = CabFurDT.Rows[i]["SubGroupNotes"].ToString();
-                    LabelInfo.SubGroupNotes1 = CabFurDT.Rows[i]["SubGroupNotes1"].ToString();
-                    LabelInfo.SubGroupNotes2 = CabFurDT.Rows[i]["SubGroupNotes2"].ToString();
-                    SampleLabelID = CabFurLabelManager.SaveSampleLabel(DecorConfigID, DateTime.Now, Security.CurrentUserID, 2);
-                    LabelInfo.BarcodeNumber = CabFurLabelManager.GetBarcodeNumber(19, SampleLabelID);
+                    labelInfo.TechStoreName = _cabFurDt.Rows[i]["TechStoreName"].ToString();
+                    labelInfo.TechStoreSubGroupName = _cabFurDt.Rows[i]["TechStoreSubGroupName"].ToString();
+                    labelInfo.SubGroupNotes = _cabFurDt.Rows[i]["SubGroupNotes"].ToString();
+                    labelInfo.SubGroupNotes1 = _cabFurDt.Rows[i]["SubGroupNotes1"].ToString();
+                    labelInfo.SubGroupNotes2 = _cabFurDt.Rows[i]["SubGroupNotes2"].ToString();
+                    sampleLabelId = _cabFurLabelManager.SaveSampleLabel(decorConfigId, DateTime.Now, Security.CurrentUserID, 2);
+                    labelInfo.BarcodeNumber = _cabFurLabelManager.GetBarcodeNumber(19, sampleLabelId);
 
-                    int FactoryId = 1;
+                    int factoryId = 1;
                     if (kryptonCheckSet2.CheckedButton == TPSCheckButton)
-                        FactoryId = 2;
-                    LabelInfo.FactoryType = FactoryId;
-                    LabelInfo.ProductType = 2;
-                    LabelInfo.DocDateTime = DocDateTime;
-                    DT.Rows.Add(destRow);
-                    LabelInfo.OrderData = DT;
+                        factoryId = 2;
+                    labelInfo.FactoryType = factoryId;
+                    labelInfo.ProductType = 2;
+                    labelInfo.DocDateTime = docDateTime;
+                    dt.Rows.Add(destRow);
+                    labelInfo.OrderData = dt;
 
-                    CabFurLabelManager.AddLabelInfo(ref LabelInfo);
+                    _cabFurLabelManager.AddLabelInfo(ref labelInfo);
                 }
             }
-            PrintDialog.Document = CabFurLabelManager.PD;
+            PrintDialog.Document = _cabFurLabelManager.PD;
 
             if (PrintDialog.ShowDialog() == DialogResult.OK)
             {
-                CabFurLabelManager.Print();
+                _cabFurLabelManager.Print();
             }
+        }
+
+        private void MenuButton_Click(object sender, EventArgs e)
+        {
+            MenuPanel.Visible = !MenuPanel.Visible;
+        }
+
+        private void cbClients_CheckedChanged(object sender, EventArgs e)
+        {
+            cbExcluzive.Enabled = !cbExcluzive.Checked;
+            FilterClientsDataGrid.Enabled = !FilterClientsDataGrid.Enabled;
+        }
+
+        private void btnFilterCatalog_Click(object sender, EventArgs e)
+        {
+            int ClientID = -1;
+
+            if (cbClients.Checked && FilterClientsDataGrid.SelectedRows.Count > 0)
+                ClientID = Convert.ToInt32(FilterClientsDataGrid.SelectedRows[0].Cells["ClientID"].Value);
+
+            if (cbClients.Checked)
+                _frontsCatalog.FilterFronts(ClientID);
+            else
+                _frontsCatalog.FilterFronts();
         }
     }
 }

@@ -8,21 +8,21 @@ namespace Infinium
 {
     public partial class HistoryScanPermitsForm : Form
     {
-        const int iAdmin = 89;
+        private const int iAdmin = 89;
 
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
 
-        int _formEvent = 0;
+        private int _formEvent = 0;
 
-        bool NeedSplash = false;
+        private bool NeedSplash = false;
 
-        Form _topForm = null;
-        LightStartForm _lightStartForm;
+        private Form _topForm = null;
+        private readonly LightStartForm _lightStartForm;
 
-        HistoryScanPermits _historyScanPermits;
-        HistoryDispatch historyDispatchManager;
+        private readonly HistoryScanPermits _historyScanPermits;
+        private readonly HistoryDispatch historyDispatchManager;
 
         //RoleTypes _roleType = RoleTypes.Ordinary;
 
@@ -623,7 +623,7 @@ namespace Infinium
             dgvDecorOrders.Columns["Notes"].DisplayIndex = DisplayIndex++;
         }
 
-        void FrontsOrdersDataGrid_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        private void FrontsOrdersDataGrid_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             PercentageDataGrid grid = (PercentageDataGrid)sender;
             if (grid.Columns.Contains("PatinaColumn") && (e.ColumnIndex == grid.Columns["PatinaColumn"].Index)

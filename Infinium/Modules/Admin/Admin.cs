@@ -17,19 +17,19 @@ namespace Infinium
 {
     public class AdminModulesJournalToExcel
     {
-        HSSFWorkbook hssfworkbook;
+        private HSSFWorkbook hssfworkbook;
 
-        HSSFFont HeaderF;
-        HSSFFont SimpleF;
-        HSSFCellStyle MainCS;
-        HSSFCellStyle HeaderCS;
+        private HSSFFont HeaderF;
+        private HSSFFont SimpleF;
+        private HSSFCellStyle MainCS;
+        private HSSFCellStyle HeaderCS;
 
-        HSSFCellStyle SimpleCS;
-        HSSFCellStyle SimpleLCS;
-        HSSFCellStyle SimpleLBCS;
-        HSSFCellStyle SimpleRCS;
-        HSSFCellStyle SimpleRBCS;
-        HSSFCellStyle SimpleBCS;
+        private HSSFCellStyle SimpleCS;
+        private HSSFCellStyle SimpleLCS;
+        private HSSFCellStyle SimpleLBCS;
+        private HSSFCellStyle SimpleRCS;
+        private HSSFCellStyle SimpleRBCS;
+        private HSSFCellStyle SimpleBCS;
 
         public AdminModulesJournalToExcel()
         {
@@ -582,18 +582,18 @@ namespace Infinium
 
     public class AdminModulesJournal
     {
-        DataTable ComputerParamsDataTable;
-        DataTable ResultUsersTimeDataTable;
-        DataTable TotalResultUsersDataTable;
-        DataTable ResultModulesDataTable;
-        DataTable TotalResultModulesDataTable;
-        DataTable ModulesDataTable;
-        DataTable LoginJournalDataTable;
-        DataTable ModulesJournalDataTable;
-        DataTable UsersDataTable;
+        private DataTable ComputerParamsDataTable;
+        private DataTable ResultUsersTimeDataTable;
+        private DataTable TotalResultUsersDataTable;
+        private DataTable ResultModulesDataTable;
+        private DataTable TotalResultModulesDataTable;
+        private DataTable ModulesDataTable;
+        private DataTable LoginJournalDataTable;
+        private DataTable ModulesJournalDataTable;
+        private DataTable UsersDataTable;
         public DataTable ChartDataTable;
 
-        PercentageDataGrid JournalDataGrid;
+        private readonly PercentageDataGrid JournalDataGrid;
 
         public BindingSource ResultUsersTimeBingingSource = null;
         public BindingSource TotalResultUsersBingingSource = null;
@@ -1335,12 +1335,12 @@ namespace Infinium
     public class AdminJournalDetail
     {
         public DataTable UsersDataTable;
-        DataTable LoginJournalDataTable;
-        DataTable ModulesJournalDataTable;
-        DataTable ComputerParamsDataTable;
-        DataTable ComputerParamsStuctDataTable;
-        DataTable ModulesDataTable;
-        DataTable MessagesDataTable;
+        private readonly DataTable LoginJournalDataTable;
+        private readonly DataTable ModulesJournalDataTable;
+        private readonly DataTable ComputerParamsDataTable;
+        private readonly DataTable ComputerParamsStuctDataTable;
+        private readonly DataTable ModulesDataTable;
+        private readonly DataTable MessagesDataTable;
         public DataTable FullUsersDataTable;
         public DataTable OfficesDataTable;
 
@@ -1350,23 +1350,23 @@ namespace Infinium
         public BindingSource ComputerParamsBindingSource;
         public BindingSource MessagesBindingSource;
 
-        DateTime StartModuleDateTime;
+        private DateTime StartModuleDateTime;
 
-        UsersDataGrid UsersGrid;
-        PercentageDataGrid LoginJournalDataGrid;
-        PercentageDataGrid ModulesJournalDataGrid;
-        PercentageDataGrid ComputerParamsDataGrid;
-        PercentageDataGrid MessagesDataGrid;
+        private readonly UsersDataGrid UsersGrid;
+        private readonly PercentageDataGrid LoginJournalDataGrid;
+        private readonly PercentageDataGrid ModulesJournalDataGrid;
+        private readonly PercentageDataGrid ComputerParamsDataGrid;
+        private readonly PercentageDataGrid MessagesDataGrid;
 
-        Font fUserFont = new Font("Segoe UI", 13.0f, FontStyle.Bold);
-        Font fModuleFont = new Font("Segoe UI", 13.0f, FontStyle.Bold);
-        Font fTextFont = new Font("Segoe UI", 11.0f, FontStyle.Regular);
+        private readonly Font fUserFont = new Font("Segoe UI", 13.0f, FontStyle.Bold);
+        private readonly Font fModuleFont = new Font("Segoe UI", 13.0f, FontStyle.Bold);
+        private readonly Font fTextFont = new Font("Segoe UI", 11.0f, FontStyle.Regular);
 
-        Color cUserFontColor = Color.FromArgb(65, 124, 174);
-        Color cModuleColor = Color.FromArgb(255, 15, 60);
-        Color cTextFontColor = Color.Black;
+        private readonly Color cUserFontColor = Color.FromArgb(65, 124, 174);
+        private readonly Color cModuleColor = Color.FromArgb(255, 15, 60);
+        private readonly Color cTextFontColor = Color.Black;
 
-        RichTextBox RichTextBox;
+        private readonly RichTextBox RichTextBox;
 
         public AdminJournalDetail(ref UsersDataGrid tUsersGrid, ref PercentageDataGrid tLoginJournalDataGrid,
                                   ref PercentageDataGrid tComputerParamsDataGrid, ref PercentageDataGrid tModulesJournalDataGrid,
@@ -1829,10 +1829,10 @@ namespace Infinium
         public BindingSource ModulesBindingSource = null;
         public BindingSource MainMenuTabsBingingSource = null;
 
-        SqlDataAdapter ModulesDataAdapter;
-        SqlCommandBuilder ModulesCommandBuilder;
+        private SqlDataAdapter ModulesDataAdapter;
+        private SqlCommandBuilder ModulesCommandBuilder;
 
-        PercentageDataGrid ModulesDataGrid;
+        private readonly PercentageDataGrid ModulesDataGrid;
 
         public AdminModulesManagement(ref PercentageDataGrid tModulesDataGrid)
         {
@@ -1973,12 +1973,12 @@ namespace Infinium
     {
         public DataTable UsersDataTable;
 
-        PercentageDataGrid UsersDataGrid;
+        private readonly PercentageDataGrid UsersDataGrid;
 
         public BindingSource UsersBindingSource;
 
-        SqlDataAdapter UsersDataAdapter;
-        SqlCommandBuilder UsersCommandBuilder;
+        private SqlDataAdapter UsersDataAdapter;
+        private SqlCommandBuilder UsersCommandBuilder;
 
         public AdminUsersManagement(ref PercentageDataGrid tUsersDataGrid)
         {
@@ -2215,14 +2215,14 @@ namespace Infinium
         public DataTable ModulesDataTable;
         public DataTable ModulesAccessDataTable;
 
-        PercentageDataGrid ModulesDataGrid;
-        PercentageDataGrid UsersDataGrid;
+        private readonly PercentageDataGrid ModulesDataGrid;
+        private readonly PercentageDataGrid UsersDataGrid;
 
         public BindingSource ModulesBindingSource;
         public BindingSource UsersBindingSource;
 
-        SqlDataAdapter ModulesAccessDataAdapter;
-        SqlCommandBuilder ModulesAccessCommandBuilder;
+        private SqlDataAdapter ModulesAccessDataAdapter;
+        private SqlCommandBuilder ModulesAccessCommandBuilder;
 
         public AdminModulesAccess(ref PercentageDataGrid tModulesDataGrid, ref PercentageDataGrid tUsersDataGrid)
         {
@@ -2399,10 +2399,10 @@ namespace Infinium
 
     public class AdminLoginJournal
     {
-        DataTable LoginJournalDataTable;
-        DataTable UsersDataTable;
+        private DataTable LoginJournalDataTable;
+        private DataTable UsersDataTable;
 
-        PercentageDataGrid JournalDataGrid;
+        private readonly PercentageDataGrid JournalDataGrid;
 
         public BindingSource UsersBingingSource = null;
         public BindingSource LoginJournalBingingSource = null;
@@ -2537,11 +2537,11 @@ namespace Infinium
     {
         public DataTable UsersDataTable;
         public BindingSource UsersBindingSource;
-        SqlDataAdapter DA;
-        SqlCommandBuilder CB;
+        private readonly SqlDataAdapter DA;
+        private SqlCommandBuilder CB;
 
-        SqlDataAdapter DepartmentsDA;
-        SqlCommandBuilder DepartmentsCB;
+        private readonly SqlDataAdapter DepartmentsDA;
+        private SqlCommandBuilder DepartmentsCB;
         public DataTable DepartmentsDataTable;
         public DataTable PositionsDataTable;
 
@@ -2681,11 +2681,11 @@ namespace Infinium
     {
         public DataTable UsersDataTable;
         public BindingSource UsersBindingSource;
-        SqlDataAdapter DA;
-        SqlCommandBuilder CB;
+        private readonly SqlDataAdapter DA;
+        private SqlCommandBuilder CB;
 
-        SqlDataAdapter PositionsDA;
-        SqlCommandBuilder PositionsCB;
+        private readonly SqlDataAdapter PositionsDA;
+        private SqlCommandBuilder PositionsCB;
         public DataTable PositionsDataTable;
 
         public AdminPositionsEdit()
@@ -2723,6 +2723,17 @@ namespace Infinium
 
             TablesManager.RefreshPositionsDataTable();
         }
+        
+        public void SavePositions()
+        {
+            PositionsDA.Update(PositionsDataTable);
+
+            PositionsDataTable.Clear();
+
+            PositionsDA.Fill(PositionsDataTable);
+
+            TablesManager.RefreshPositionsDataTable();
+        }
 
     }
 
@@ -2736,10 +2747,10 @@ namespace Infinium
         public DataTable FunctionsDataTable;
         public DataTable UsersResponsibilitiesDT;
         public BindingSource FunctionsBindingSource;
-        SqlDataAdapter FunctionsDA;
-        SqlCommandBuilder FunctionsCB;
+        private readonly SqlDataAdapter FunctionsDA;
+        private SqlCommandBuilder FunctionsCB;
 
-        SqlDataAdapter DepartmentsDA;
+        private readonly SqlDataAdapter DepartmentsDA;
         public DataTable DepartmentsDataTable;
 
         public AdminFunctionsEdit()
@@ -2914,8 +2925,8 @@ namespace Infinium
     {
         public DataTable DateRatesDT;
         public BindingSource DateRatesBS;
-        SqlDataAdapter DateRatesDA;
-        SqlCommandBuilder DateRatesCB;
+        private readonly SqlDataAdapter DateRatesDA;
+        private SqlCommandBuilder DateRatesCB;
 
         public DateRatesEdit()
         {
@@ -3194,8 +3205,8 @@ namespace Infinium
         public BindingSource WorkDaysBindingSource;
         public BindingSource UsersBindingSource;
 
-        int CurrentUserID = -1;
-        int CurrentWorkDayID = -1;
+        private int CurrentUserID = -1;
+        private int CurrentWorkDayID = -1;
         public int sDayNotStarted = 0;
         public int sDayStarted = 1;
         public int sBreakStarted = 2;
@@ -3799,7 +3810,7 @@ namespace Infinium
         private DataTable userTable;
         private DataTable dtTimeSheetNew;
         private DataTable _productionShedule;
-        Excel Ex = null;
+        private Excel Ex = null;
 
         public WorkTimeSheet()
         {
@@ -4431,15 +4442,15 @@ namespace Infinium
 
     public class StaffListManager
     {
-        DataTable RanksDT;
-        DataTable TariffCoefsDT;
-        DataTable RatesDT;
-        DataTable DepartmentsDT;
-        DataTable PositionsDT;
-        DataTable StaffListDT;
-        DataTable StaffListGroupByFullNameDT;
-        DataTable FactoryDT;
-        DataTable UsersDT;
+        private DataTable RanksDT;
+        private DataTable TariffCoefsDT;
+        private DataTable RatesDT;
+        private DataTable DepartmentsDT;
+        private DataTable PositionsDT;
+        private DataTable StaffListDT;
+        private DataTable StaffListGroupByFullNameDT;
+        private DataTable FactoryDT;
+        private DataTable UsersDT;
 
         public BindingSource RanksBS;
         public BindingSource TariffCoefsBS;
@@ -4514,6 +4525,7 @@ namespace Infinium
 
             for (int i = 1; i < 21; i++)
                 RankNewRow(i);
+            TariffCoefNewRow(1.00m);
             TariffCoefNewRow(1.16m);
             TariffCoefNewRow(1.35m);
             TariffCoefNewRow(1.57m);
@@ -4889,16 +4901,16 @@ namespace Infinium
 
     public class UsersResponsibilities
     {
-        DataTable DepartmentsDT;
-        DataTable PositionsDT;
-        DataTable StaffListDT;
-        DataTable ProfilPositionsDT;
-        DataTable TPSPositionsDT;
+        private DataTable DepartmentsDT;
+        private DataTable PositionsDT;
+        private DataTable StaffListDT;
+        private DataTable ProfilPositionsDT;
+        private DataTable TPSPositionsDT;
         public DataTable ProfilFunctionsDT;
         public DataTable TPSFunctionsDT;
-        DataTable UsersResponsibilitiesDT;
-        DataTable FactoryDT;
-        DataTable UsersDT;
+        private DataTable UsersResponsibilitiesDT;
+        private DataTable FactoryDT;
+        private DataTable UsersDT;
 
         public BindingSource DepartmentsBS;
         public BindingSource PositionsBS;
@@ -5255,7 +5267,7 @@ namespace Infinium
 
     public class UsersResponsibilitiesReport
     {
-        DataTable FunctionsDT = null;
+        private DataTable FunctionsDT = null;
 
         public UsersResponsibilitiesReport()
         {
@@ -5390,12 +5402,12 @@ namespace Infinium
 
     public class RolesAndPermissionsManager
     {
-        DataTable ModulesDataTable;
-        DataTable RolesDataTable;
-        DataTable PermissionsDataTable;
-        DataTable RolePermissionsDataTable;
-        DataTable UserRolesDataTable;
-        DataTable UsersDataTable;
+        private DataTable ModulesDataTable;
+        private DataTable RolesDataTable;
+        private DataTable PermissionsDataTable;
+        private DataTable RolePermissionsDataTable;
+        private DataTable UserRolesDataTable;
+        private DataTable UsersDataTable;
 
         public BindingSource ModulesBindingSource;
         public BindingSource RolesBindingSource;
@@ -5404,25 +5416,25 @@ namespace Infinium
         public BindingSource UserRolesBindingSource;
         public BindingSource UsersBindingSource;
 
-        PercentageDataGrid ModulesDataGrid;
-        PercentageDataGrid RolesDataGrid;
-        PercentageDataGrid PermissionsDataGrid;
-        PercentageDataGrid RolePermissionsDataGrid;
-        PercentageDataGrid RolesPermissionsRolesDataGrid;
-        PercentageDataGrid RoleUsersDataGrid;
-        PercentageDataGrid UserRolesDataGrid;
+        private readonly PercentageDataGrid ModulesDataGrid;
+        private readonly PercentageDataGrid RolesDataGrid;
+        private readonly PercentageDataGrid PermissionsDataGrid;
+        private readonly PercentageDataGrid RolePermissionsDataGrid;
+        private readonly PercentageDataGrid RolesPermissionsRolesDataGrid;
+        private readonly PercentageDataGrid RoleUsersDataGrid;
+        private readonly PercentageDataGrid UserRolesDataGrid;
 
-        SqlDataAdapter RolesDA;
-        SqlCommandBuilder RolesCB;
+        private SqlDataAdapter RolesDA;
+        private SqlCommandBuilder RolesCB;
 
-        SqlDataAdapter PermissionsDA;
-        SqlCommandBuilder PermissionsCB;
+        private SqlDataAdapter PermissionsDA;
+        private SqlCommandBuilder PermissionsCB;
 
-        SqlDataAdapter RolePermissionsDA;
-        SqlCommandBuilder RolePermissionsCB;
+        private SqlDataAdapter RolePermissionsDA;
+        private SqlCommandBuilder RolePermissionsCB;
 
-        SqlDataAdapter UserRolesDA;
-        SqlCommandBuilder UserRolesCB;
+        private SqlDataAdapter UserRolesDA;
+        private SqlCommandBuilder UserRolesCB;
 
         private DataGridViewComboBoxColumn PermissionColumn = null;
         private DataGridViewComboBoxColumn UsersColumn = null;
@@ -5825,7 +5837,7 @@ namespace Infinium
 
         private SqlCommandBuilder CB;
         private SqlDataAdapter DA;
-        PercentageDataGrid TasksPlanDataGrid;
+        private readonly PercentageDataGrid TasksPlanDataGrid;
 
         public ScanTasks(ref PercentageDataGrid tTasksPlanDataGrid)
         {
@@ -5922,16 +5934,16 @@ namespace Infinium
     public class AdminClientsJournalDetail
     {
         public DataTable ClientsDataTable;
-        DataTable LoginJournalDataTable;
-        DataTable ModulesJournalDataTable;
-        DataTable ComputerParamsDataTable;
-        DataTable ComputerParamsStuctDataTable;
-        DataTable MessagesDataTable;
+        private readonly DataTable LoginJournalDataTable;
+        private readonly DataTable ModulesJournalDataTable;
+        private readonly DataTable ComputerParamsDataTable;
+        private readonly DataTable ComputerParamsStuctDataTable;
+        private readonly DataTable MessagesDataTable;
         public DataTable PaymentsDataTable;
 
-        DataTable ClientEventsJournalDT;
+        private readonly DataTable ClientEventsJournalDT;
 
-        DataTable UsersNameDT;
+        private readonly DataTable UsersNameDT;
         public DataTable ClientsNameDT;
 
         public BindingSource ClientsBindingSource;
@@ -5941,22 +5953,22 @@ namespace Infinium
         public BindingSource MessagesBindingSource;
         public BindingSource ClientEventsJournalBindingSource;
 
-        DateTime StartModuleDateTime;
+        private DateTime StartModuleDateTime;
 
-        UsersDataGrid ClientsGrid;
-        PercentageDataGrid LoginJournalDataGrid;
-        PercentageDataGrid ModulesJournalDataGrid;
-        PercentageDataGrid ComputerParamsDataGrid;
-        PercentageDataGrid MessagesDataGrid;
-        PercentageDataGrid ClientEventsJournalDataGrid;
+        private readonly UsersDataGrid ClientsGrid;
+        private readonly PercentageDataGrid LoginJournalDataGrid;
+        private readonly PercentageDataGrid ModulesJournalDataGrid;
+        private readonly PercentageDataGrid ComputerParamsDataGrid;
+        private readonly PercentageDataGrid MessagesDataGrid;
+        private readonly PercentageDataGrid ClientEventsJournalDataGrid;
 
-        Font fUserFont = new Font("Segoe UI", 13.0f, FontStyle.Bold);
-        Font fModuleFont = new Font("Segoe UI", 13.0f, FontStyle.Bold);
-        Font fTextFont = new Font("Segoe UI", 11.0f, FontStyle.Regular);
+        private Font fUserFont = new Font("Segoe UI", 13.0f, FontStyle.Bold);
+        private Font fModuleFont = new Font("Segoe UI", 13.0f, FontStyle.Bold);
+        private Font fTextFont = new Font("Segoe UI", 11.0f, FontStyle.Regular);
 
-        Color cUserFontColor = Color.FromArgb(65, 124, 174);
-        Color cModuleColor = Color.FromArgb(255, 15, 60);
-        Color cTextFontColor = Color.Black;
+        private Color cUserFontColor = Color.FromArgb(65, 124, 174);
+        private Color cModuleColor = Color.FromArgb(255, 15, 60);
+        private Color cTextFontColor = Color.Black;
 
         public AdminClientsJournalDetail(ref UsersDataGrid tClientsGrid, ref PercentageDataGrid tLoginJournalDataGrid,
             ref PercentageDataGrid tComputerParamsDataGrid, ref PercentageDataGrid tModulesJournalDataGrid,
@@ -6393,16 +6405,16 @@ namespace Infinium
     public class AdminManagersJournalDetail
     {
         public DataTable ManagersDataTable;
-        DataTable LoginJournalDataTable;
-        DataTable ModulesJournalDataTable;
-        DataTable ComputerParamsDataTable;
-        DataTable ComputerParamsStuctDataTable;
-        DataTable MessagesDataTable;
+        private readonly DataTable LoginJournalDataTable;
+        private readonly DataTable ModulesJournalDataTable;
+        private readonly DataTable ComputerParamsDataTable;
+        private readonly DataTable ComputerParamsStuctDataTable;
+        private readonly DataTable MessagesDataTable;
 
-        DataTable ManagerEventsJournalDT;
+        private readonly DataTable ManagerEventsJournalDT;
 
-        DataTable UsersNameDT;
-        DataTable ManagersNameDT;
+        private readonly DataTable UsersNameDT;
+        private readonly DataTable ManagersNameDT;
 
         public BindingSource ManagersBindingSource;
         public BindingSource LoginJournalBindingSource;
@@ -6411,22 +6423,22 @@ namespace Infinium
         public BindingSource MessagesBindingSource;
         public BindingSource ManagerEventsJournalBindingSource;
 
-        DateTime StartModuleDateTime;
+        private DateTime StartModuleDateTime;
 
-        UsersDataGrid ClientsGrid;
-        PercentageDataGrid LoginJournalDataGrid;
-        PercentageDataGrid ModulesJournalDataGrid;
-        PercentageDataGrid ComputerParamsDataGrid;
-        PercentageDataGrid MessagesDataGrid;
-        PercentageDataGrid ClientEventsJournalDataGrid;
+        private readonly UsersDataGrid ClientsGrid;
+        private readonly PercentageDataGrid LoginJournalDataGrid;
+        private readonly PercentageDataGrid ModulesJournalDataGrid;
+        private readonly PercentageDataGrid ComputerParamsDataGrid;
+        private readonly PercentageDataGrid MessagesDataGrid;
+        private readonly PercentageDataGrid ClientEventsJournalDataGrid;
 
-        Font fUserFont = new Font("Segoe UI", 13.0f, FontStyle.Bold);
-        Font fModuleFont = new Font("Segoe UI", 13.0f, FontStyle.Bold);
-        Font fTextFont = new Font("Segoe UI", 11.0f, FontStyle.Regular);
+        private Font fUserFont = new Font("Segoe UI", 13.0f, FontStyle.Bold);
+        private Font fModuleFont = new Font("Segoe UI", 13.0f, FontStyle.Bold);
+        private Font fTextFont = new Font("Segoe UI", 11.0f, FontStyle.Regular);
 
-        Color cUserFontColor = Color.FromArgb(65, 124, 174);
-        Color cModuleColor = Color.FromArgb(255, 15, 60);
-        Color cTextFontColor = Color.Black;
+        private Color cUserFontColor = Color.FromArgb(65, 124, 174);
+        private Color cModuleColor = Color.FromArgb(255, 15, 60);
+        private Color cTextFontColor = Color.Black;
 
         public AdminManagersJournalDetail(ref UsersDataGrid tClientsGrid, ref PercentageDataGrid tLoginJournalDataGrid,
             ref PercentageDataGrid tComputerParamsDataGrid, ref PercentageDataGrid tModulesJournalDataGrid,
@@ -6990,7 +7002,7 @@ namespace Infinium
         public BindingSource UserFunctionsBindingSource;
         public BindingSource CommentsBindingSource;
 
-        PercentageDataGrid UserFunctionsDataGrid;
+        private readonly PercentageDataGrid UserFunctionsDataGrid;
         public string TotalTime = "";
         public string Comments = "";
         public string TotalMin;

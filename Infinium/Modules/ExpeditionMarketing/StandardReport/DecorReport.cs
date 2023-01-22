@@ -9,15 +9,16 @@ namespace Infinium.Modules.ExpeditionMarketing.StandardReport
 {
     public class DecorReport
     {
-        string ProfilCurrencyCode = "0";
-        string TPSCurrencyCode = "0";
-        decimal PaymentRate = 0;
-        string UNN = string.Empty;
+        private string ProfilCurrencyCode = "0";
+        private string TPSCurrencyCode = "0";
+        private decimal PaymentRate = 0;
+
+        private string UNN = string.Empty;
         //int ClientID = 0;
 
         public DataTable CurrencyTypesDT = null;
 
-        DecorCatalogOrder DecorCatalogOrder = null;
+        private DecorCatalogOrder DecorCatalogOrder = null;
 
         public DataTable ProfilReportDataTable = null;
         public DataTable TPSReportDataTable = null;
@@ -1349,17 +1350,17 @@ namespace Infinium.Modules.ExpeditionMarketing.StandardReport
             {
                 if (DecorOrdersDataTable.Rows[i]["FactoryID"].ToString() == "1")//profil
                 {
-                    if (ClientID != 145 && DiscountPaymentConditionID != 6 && !ProfilVerify)
-                    {
-                        DecorOrdersDataTable.Rows[i]["PaymentRate"] = Convert.ToDecimal(DecorOrdersDataTable.Rows[i]["Rate"]) * 1.05m;
-                    }
+                    //if (ClientID != 145 && DiscountPaymentConditionID != 6 && !ProfilVerify)
+                    //{
+                    //    DecorOrdersDataTable.Rows[i]["PaymentRate"] = Convert.ToDecimal(DecorOrdersDataTable.Rows[i]["Rate"]) * 1.05m;
+                    //}
                 }
                 if (DecorOrdersDataTable.Rows[i]["FactoryID"].ToString() == "2")//tps
                 {
-                    if (ClientID != 145 && DiscountPaymentConditionID != 6 && !TPSVerify)
-                    {
-                        DecorOrdersDataTable.Rows[i]["PaymentRate"] = Convert.ToDecimal(DecorOrdersDataTable.Rows[i]["Rate"]) * 1.05m;
-                    }
+                    //if (ClientID != 145 && DiscountPaymentConditionID != 6 && !TPSVerify)
+                    //{
+                    //    DecorOrdersDataTable.Rows[i]["PaymentRate"] = Convert.ToDecimal(DecorOrdersDataTable.Rows[i]["Rate"]) * 1.05m;
+                    //}
                 }
             }
             using (DataView DV = new DataView(DecorOrdersDataTable))

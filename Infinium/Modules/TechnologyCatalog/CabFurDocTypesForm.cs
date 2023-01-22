@@ -7,13 +7,13 @@ namespace Infinium
 {
     public partial class CabFurDocTypesForm : Form
     {
-        int CabFurDocTypeID;
-        int MachinesOperationID;
+        private int CabFurDocTypeID;
+        private int MachinesOperationID;
         public bool Ok = false;
         //bool IsNew;
 
-        Form TopForm = null;
-        TechStoreManager TechStoreManager;
+        private Form TopForm = null;
+        private TechStoreManager TechStoreManager;
 
         public CabFurDocTypesForm(int tCabFurDocTypeID, int tMachinesOperationID, ref TechStoreManager tTechStoreManager)
         {

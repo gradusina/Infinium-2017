@@ -13,33 +13,33 @@ namespace Infinium
 {
     public partial class TechStorageItemsForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
-        int FormEvent = 0;
+        private int FormEvent = 0;
 
-        bool CopyConfigs = false;
-        bool MoveConfigs = false;
-        List<int> TechStoreIDList;
+        private bool CopyConfigs = false;
+        private bool MoveConfigs = false;
+        private List<int> TechStoreIDList;
 
-        int TechCatalogOperationsDetailID = 0;
+        private int TechCatalogOperationsDetailID = 0;
         public int ColorInsetGroupID = 0;
         public int InsetGroupID = 0;
 
-        bool CreateStoreDetail = false;
-        bool bPrintLabels = false;
+        private bool CreateStoreDetail = false;
+        private bool bPrintLabels = false;
         public ArrayList TechStoreIDArray;
         public ArrayList LengthArray;
         public ArrayList IsHalfStuff1Array;
         public ArrayList HeightArray;
         public ArrayList WidthArray;
-        Form TopForm = null;
-        InsetTypesEditForm InsetTypesEditForm;
-        InsetTypesSelectForm InsetTypesSelectForm;
+        private Form TopForm = null;
+        private InsetTypesEditForm InsetTypesEditForm;
+        private InsetTypesSelectForm InsetTypesSelectForm;
 
-        TechStoreManager TechStoreManager;
+        private TechStoreManager TechStoreManager;
         public TechStoreItemsManager StorageItemsManager;
 
         public TechStorageItemsForm(TechStoreManager tTechStoreManager, bool PrintLabels)

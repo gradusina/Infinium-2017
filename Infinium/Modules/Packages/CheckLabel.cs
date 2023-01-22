@@ -17,13 +17,13 @@ namespace Infinium
 {
     public class CheckLabel
     {
-        int iUserID = 0;
+        private int iUserID = 0;
 
-        PercentageDataGrid FrontsPackContentDataGrid = null;
-        PercentageDataGrid DecorPackContentDataGrid = null;
+        private PercentageDataGrid FrontsPackContentDataGrid = null;
+        private PercentageDataGrid DecorPackContentDataGrid = null;
 
-        DataTable FrontsPackContentDataTable = null;
-        DataTable DecorPackContentDataTable = null;
+        private DataTable FrontsPackContentDataTable = null;
+        private DataTable DecorPackContentDataTable = null;
 
         private DataTable FrontsDataTable = null;
         private DataTable FrameColorsDataTable = null;
@@ -34,11 +34,11 @@ namespace Infinium
         private DataTable TechnoInsetTypesDataTable = null;
         private DataTable TechnoInsetColorsDataTable = null;
         private DataTable TechnoProfilesDataTable = null;
-        DataTable ZOVClientsDataTable;
-        DataTable MarktClientsDataTable;
+        private DataTable ZOVClientsDataTable;
+        private DataTable MarktClientsDataTable;
 
-        DataTable DecorDataTable;
-        DataTable DecorProductsDataTable;
+        private DataTable DecorDataTable;
+        private DataTable DecorProductsDataTable;
 
         private DataGridViewComboBoxColumn FrontsColumn = null;
         private DataGridViewComboBoxColumn FrameColorsColumn = null;
@@ -1108,13 +1108,13 @@ namespace Infinium
 
     public class StorageCheckLabel
     {
-        int iUserID = 0;
+        private int iUserID = 0;
 
-        PercentageDataGrid FrontsPackContentDataGrid = null;
-        PercentageDataGrid DecorPackContentDataGrid = null;
+        private PercentageDataGrid FrontsPackContentDataGrid = null;
+        private PercentageDataGrid DecorPackContentDataGrid = null;
 
-        DataTable FrontsPackContentDataTable = null;
-        DataTable DecorPackContentDataTable = null;
+        private DataTable FrontsPackContentDataTable = null;
+        private DataTable DecorPackContentDataTable = null;
 
         private DataTable FrontsDataTable = null;
         private DataTable FrameColorsDataTable = null;
@@ -1125,11 +1125,11 @@ namespace Infinium
         private DataTable TechnoInsetTypesDataTable = null;
         private DataTable TechnoInsetColorsDataTable = null;
         private DataTable TechnoProfilesDataTable = null;
-        DataTable ZOVClientsDataTable;
-        DataTable MarktClientsDataTable;
+        private DataTable ZOVClientsDataTable;
+        private DataTable MarktClientsDataTable;
 
-        DataTable DecorDataTable;
-        DataTable DecorProductsDataTable;
+        private DataTable DecorDataTable;
+        private DataTable DecorProductsDataTable;
 
         private DataGridViewComboBoxColumn FrontsColumn = null;
         private DataGridViewComboBoxColumn FrameColorsColumn = null;
@@ -2235,21 +2235,21 @@ namespace Infinium
 
     public class ExpeditionCheckLabel
     {
-        int iUserID = 0;
-        int CurrentGroup = 0;
+        private int iUserID = 0;
+        private int CurrentGroup = 0;
         public int CurrentProductType = 0;
-        int CurrentClientID = 0;
-        int CurrentFactoryID = 0;
+        private int CurrentClientID = 0;
+        private int CurrentFactoryID = 0;
         public int CurrentMainOrderID = 0;
         public int CurrentMegaOrderID = 0;
 
-        PercentageDataGrid FrontsPackContentDataGrid = null;
-        PercentageDataGrid DecorPackContentDataGrid = null;
-        PercentageDataGrid PackagesDataGrid = null;
+        private PercentageDataGrid FrontsPackContentDataGrid = null;
+        private PercentageDataGrid DecorPackContentDataGrid = null;
+        private PercentageDataGrid PackagesDataGrid = null;
 
-        DataTable FrontsPackContentDataTable = null;
-        DataTable DecorPackContentDataTable = null;
-        DataTable PackagesDataTable = null;
+        private DataTable FrontsPackContentDataTable = null;
+        private DataTable DecorPackContentDataTable = null;
+        private DataTable PackagesDataTable = null;
 
         private DataTable FrontsDataTable = null;
         private DataTable FrameColorsDataTable = null;
@@ -2261,29 +2261,29 @@ namespace Infinium
         private DataTable TechnoInsetColorsDataTable = null;
         private DataTable TechnoProfilesDataTable = null;
 
-        DataTable ZOVClientsDataTable;
-        DataTable MarktClientsDataTable;
-        DataTable PackageStatusesDataTable;
+        private DataTable ZOVClientsDataTable;
+        private DataTable MarktClientsDataTable;
+        private DataTable PackageStatusesDataTable;
 
-        DataTable DecorDataTable;
-        DataTable DecorProductsDataTable;
+        private DataTable DecorDataTable;
+        private DataTable DecorProductsDataTable;
 
-        DataTable PackageDetailsDT;
-        DataTable DecorAssignmentsDT;
-        DataTable StoreDT;
-        DataTable ManufactureStoreDT;
-        DataTable ReadyStoreDT;
-        DataTable MovementInvoicesDT;
-        DataTable MovementInvoiceDetailsDT;
+        private DataTable PackageDetailsDT;
+        private DataTable DecorAssignmentsDT;
+        private DataTable StoreDT;
+        private DataTable ManufactureStoreDT;
+        private DataTable ReadyStoreDT;
+        private DataTable MovementInvoicesDT;
+        private DataTable MovementInvoiceDetailsDT;
 
-        SqlDataAdapter ManufactureStoreDA;
-        SqlCommandBuilder ManufactureStoreCB;
-        SqlDataAdapter ReadyStoreDA;
-        SqlCommandBuilder ReadyStoreCB;
-        SqlDataAdapter MovementInvoicesDA;
-        SqlCommandBuilder MovementInvoicesCB;
-        SqlDataAdapter MovementInvoiceDetailsDA;
-        SqlCommandBuilder MovementInvoiceDetailsCB;
+        private SqlDataAdapter ManufactureStoreDA;
+        private SqlCommandBuilder ManufactureStoreCB;
+        private SqlDataAdapter ReadyStoreDA;
+        private SqlCommandBuilder ReadyStoreCB;
+        private SqlDataAdapter MovementInvoicesDA;
+        private SqlCommandBuilder MovementInvoicesCB;
+        private SqlDataAdapter MovementInvoiceDetailsDA;
+        private SqlCommandBuilder MovementInvoiceDetailsCB;
 
         private DataGridViewComboBoxColumn FrontsColumn = null;
         private DataGridViewComboBoxColumn FrameColorsColumn = null;
@@ -2295,7 +2295,7 @@ namespace Infinium
         private DataGridViewComboBoxColumn TechnoInsetTypesColumn = null;
         private DataGridViewComboBoxColumn TechnoInsetColorsColumn = null;
 
-        DataGridViewComboBoxColumn PackageStatusesColumn = null;
+        private DataGridViewComboBoxColumn PackageStatusesColumn = null;
 
         public BindingSource FrontsPackContentBindingSource = null;
         public BindingSource DecorPackContentBindingSource = null;
@@ -4804,7 +4804,7 @@ namespace Infinium
 
     public class PalleteCheckLabel
     {
-        DataTable DecorPackContentDT = null;
+        private DataTable DecorPackContentDT = null;
 
         public BindingSource DecorPackContentBindingSource = null;
 
@@ -5195,7 +5195,7 @@ namespace Infinium
 
     public class ScanEvents
     {
-        static TimeSpan DeltaTime;
+        private static TimeSpan DeltaTime;
 
         public ScanEvents()
         {

@@ -15,9 +15,9 @@ namespace Infinium.Modules.WorkAssignments
 
     public class TPSAngle45Assignments : IAllFrontParameterName
     {
-        private string _appovingUser = "Егорченко Р.П.";
+        private readonly string _appovingUser = "Егорченко Р.П.";
         private ArrayList FrontsID;
-        private FileManager FM = new FileManager();
+        private readonly FileManager FM = new FileManager();
         private DateTime CurrentDate;
         private int FrontType = 0;
         private DataTable AssemblyDT;
@@ -106,6 +106,11 @@ namespace Infinium.Modules.WorkAssignments
         private DataTable LeonGridsDT;
         private DataTable LeonSimpleDT;
         private DataTable LeonOrdersDT;
+        private DataTable BonaVitrinaDT;
+        private DataTable BonaBoxesDT;
+        private DataTable BonaGridsDT;
+        private DataTable BonaSimpleDT;
+        private DataTable BonaOrdersDT;
         private DataTable Turin1RemovingBoxesDT;
         private DataTable Turin3RemovingBoxesDT;
         private DataTable DakotaAppliqueDT;
@@ -208,6 +213,11 @@ namespace Infinium.Modules.WorkAssignments
             LeonGridsDT = new DataTable();
             LeonSimpleDT = new DataTable();
             LeonOrdersDT = new DataTable();
+            
+            BonaBoxesDT = new DataTable();
+            BonaGridsDT = new DataTable();
+            BonaSimpleDT = new DataTable();
+            BonaOrdersDT = new DataTable();
 
             InfinitiBoxesDT = new DataTable();
             InfinitiGridsDT = new DataTable();
@@ -600,6 +610,12 @@ namespace Infinium.Modules.WorkAssignments
                 LeonBoxesDT = SofiaOrdersDT.Clone();
                 LeonGridsDT = SofiaOrdersDT.Clone();
                 LeonSimpleDT = SofiaOrdersDT.Clone();
+                
+                BonaVitrinaDT = SofiaOrdersDT.Clone();
+                BonaOrdersDT = SofiaOrdersDT.Clone();
+                BonaBoxesDT = SofiaOrdersDT.Clone();
+                BonaGridsDT = SofiaOrdersDT.Clone();
+                BonaSimpleDT = SofiaOrdersDT.Clone();
 
                 InfinitiOrdersDT = SofiaOrdersDT.Clone();
                 InfinitiBoxesDT = SofiaOrdersDT.Clone();
@@ -1226,7 +1242,8 @@ namespace Infinium.Modules.WorkAssignments
         }
 
         private DataTable DistMainOrdersTable(DataTable SourceDT1, DataTable SourceDT2, DataTable SourceDT3, DataTable SourceDT4, DataTable SourceDT5,
-            DataTable SourceDT6, DataTable SourceDT7, DataTable SourceDT8, DataTable SourceDT9, DataTable SourceDT10, DataTable SourceDT11, DataTable SourceDT12, bool OrderASC)
+            DataTable SourceDT6, DataTable SourceDT7, DataTable SourceDT8, DataTable SourceDT9, DataTable SourceDT10, DataTable SourceDT11, 
+            DataTable SourceDT12, DataTable SourceDT13, bool OrderASC)
         {
             int MainOrderID = 0;
             DataTable DT = new DataTable();
@@ -1343,6 +1360,16 @@ namespace Infinium.Modules.WorkAssignments
                 }
             }
             foreach (DataRow Row in SourceDT12.Rows)
+            {
+                if (int.TryParse(Row["MainOrderID"].ToString(), out MainOrderID))
+                {
+                    DataRow NewRow = DT.NewRow();
+                    NewRow["MainOrderID"] = MainOrderID;
+                    NewRow["GroupType"] = Convert.ToInt32(Row["GroupType"]);
+                    DT.Rows.Add(NewRow);
+                }
+            }
+            foreach (DataRow Row in SourceDT13.Rows)
             {
                 if (int.TryParse(Row["MainOrderID"].ToString(), out MainOrderID))
                 {
@@ -1662,7 +1689,7 @@ namespace Infinium.Modules.WorkAssignments
                 DT2 = DV.ToTable(true, new string[] { "ColorID", "PatinaID", "InsetTypeID", "InsetColorID", "Height", "Width", "Notes" });
             }
 
-            //using (DataView DV = new DataView(SourceDT, "InsetTypeID IN (2069,2070,2071,2073,2075,2077,2233,3644,29043,29531,41213) AND ColorID=" + ColorID, "ColorID, InsetColorID, Height, Width", DataViewRowState.CurrentRows))
+            //using (DataView DV = new DataView(SourceDT, "InsetTypeID IN (2069,2070,2071,2073,2075,42066,2077,2233,3644,29043,29531,41213) AND ColorID=" + ColorID, "ColorID, InsetColorID, Height, Width", DataViewRowState.CurrentRows))
             //{
             //    DT2 = DV.ToTable(true, new string[] { "ColorID", "PatinaID", "InsetTypeID", "InsetColorID", "Height", "Width", "Notes" });
             //}
@@ -1810,7 +1837,7 @@ namespace Infinium.Modules.WorkAssignments
                 DT2 = DV.ToTable(true, new string[] { "ColorID", "PatinaID", "InsetTypeID", "InsetColorID", "Height", "Width", "Notes" });
             }
 
-            //using (DataView DV = new DataView(SourceDT, "InsetTypeID IN (2069,2070,2071,2073,2075,2077,2233,3644,29043,29531,41213) AND ColorID=" + ColorID, "ColorID, InsetColorID, Height, Width", DataViewRowState.CurrentRows))
+            //using (DataView DV = new DataView(SourceDT, "InsetTypeID IN (2069,2070,2071,2073,2075,42066,2077,2233,3644,29043,29531,41213) AND ColorID=" + ColorID, "ColorID, InsetColorID, Height, Width", DataViewRowState.CurrentRows))
             //{
             //    DT2 = DV.ToTable(true, new string[] { "ColorID", "PatinaID", "InsetTypeID", "InsetColorID", "Height", "Width", "Notes" });
             //}
@@ -1957,7 +1984,7 @@ namespace Infinium.Modules.WorkAssignments
                 DT2 = DV.ToTable(true, new string[] { "ColorID", "PatinaID", "InsetTypeID", "InsetColorID", "Height", "Width", "Notes" });
             }
 
-            //using (DataView DV = new DataView(SourceDT, "InsetTypeID IN (2069,2070,2071,2073,2075,2077,2233,3644,29043,29531,41213) AND ColorID=" + ColorID, "ColorID, InsetColorID, Height, Width", DataViewRowState.CurrentRows))
+            //using (DataView DV = new DataView(SourceDT, "InsetTypeID IN (2069,2070,2071,2073,2075,42066,2077,2233,3644,29043,29531,41213) AND ColorID=" + ColorID, "ColorID, InsetColorID, Height, Width", DataViewRowState.CurrentRows))
             //{
             //    DT2 = DV.ToTable(true, new string[] { "ColorID", "PatinaID", "InsetTypeID", "InsetColorID", "Height", "Width", "Notes" });
             //}
@@ -2624,6 +2651,8 @@ namespace Infinium.Modules.WorkAssignments
                 TrimmingSyngly(Turin3SimpleDT, ref TempDT, Admission, 1, true, HeightASC, string.Empty);
             if (LeonSimpleDT.Rows.Count > 0)
                 TrimmingSyngly(LeonSimpleDT, ref TempDT, Admission, 1, true, HeightASC, string.Empty);
+            if (BonaSimpleDT.Rows.Count > 0)
+                TrimmingSyngly(BonaSimpleDT, ref TempDT, Admission, 1, true, HeightASC, string.Empty);
             if (InfinitiSimpleDT.Rows.Count > 0)
                 TrimmingSyngly(InfinitiSimpleDT, ref TempDT, Admission, 1, true, HeightASC, string.Empty);
             for (int i = 1; i < TempDT.Rows.Count; i++)
@@ -2685,6 +2714,8 @@ namespace Infinium.Modules.WorkAssignments
                 TrimmingSyngly(Turin3GridsDT, ref TempDT, Admission, 3, true, HeightASC, " РЕШ");
             if (LeonGridsDT.Rows.Count > 0)
                 TrimmingSyngly(LeonGridsDT, ref TempDT, Admission, 3, true, HeightASC, " РЕШ");
+            if (BonaGridsDT.Rows.Count > 0)
+                TrimmingSyngly(BonaGridsDT, ref TempDT, Admission, 3, true, HeightASC, " РЕШ");
             if (InfinitiGridsDT.Rows.Count > 0)
                 TrimmingSyngly(InfinitiGridsDT, ref TempDT, Admission, 3, true, HeightASC, " РЕШ");
             for (int i = 1; i < TempDT.Rows.Count; i++)
@@ -2726,6 +2757,8 @@ namespace Infinium.Modules.WorkAssignments
                 TrimmingSyngly(Turin3BoxesDT, ref TempDT, Admission, 2, true, HeightASC, " ШУФ");
             if (LeonBoxesDT.Rows.Count > 0)
                 TrimmingSyngly(LeonBoxesDT, ref TempDT, Admission, 2, true, HeightASC, " ШУФ");
+            if (BonaBoxesDT.Rows.Count > 0)
+                TrimmingSyngly(BonaBoxesDT, ref TempDT, Admission, 2, true, HeightASC, " ШУФ");
             if (InfinitiBoxesDT.Rows.Count > 0)
                 TrimmingSyngly(InfinitiBoxesDT, ref TempDT, Admission, 2, true, HeightASC, " ШУФ");
             for (int i = 1; i < TempDT.Rows.Count; i++)
@@ -2761,6 +2794,8 @@ namespace Infinium.Modules.WorkAssignments
                 TrimmingSyngly(Turin3SimpleDT, ref TempDT, Admission, 1, false, HeightASC, string.Empty);
             if (LeonSimpleDT.Rows.Count > 0)
                 TrimmingSyngly(LeonSimpleDT, ref TempDT, Admission, 1, false, HeightASC, string.Empty);
+            if (BonaSimpleDT.Rows.Count > 0)
+                TrimmingSyngly(BonaSimpleDT, ref TempDT, Admission, 1, false, HeightASC, string.Empty);
 
             if (DT.Rows.Count > 0)
                 TrimmingSyngly(DT, ref TempDT, Admission, 1, false, HeightASC, string.Empty);
@@ -2830,6 +2865,8 @@ namespace Infinium.Modules.WorkAssignments
                 TrimmingSyngly(Turin3GridsDT, ref TempDT, Admission, 3, false, HeightASC, " РЕШ");
             if (LeonGridsDT.Rows.Count > 0)
                 TrimmingSyngly(LeonGridsDT, ref TempDT, Admission, 3, false, HeightASC, " РЕШ");
+            if (BonaGridsDT.Rows.Count > 0)
+                TrimmingSyngly(BonaGridsDT, ref TempDT, Admission, 3, false, HeightASC, " РЕШ");
             if (SofiaGridsDT.Rows.Count > 0)
                 TrimmingSyngly(SofiaGridsDT, ref TempDT, Admission, 3, false, HeightASC, " РЕШ");
             if (LorenzoGridsDT.Rows.Count > 0)
@@ -2867,6 +2904,8 @@ namespace Infinium.Modules.WorkAssignments
                 TrimmingSyngly(Turin3BoxesDT, ref TempDT, Admission, 2, false, HeightASC, " ШУФ");
             if (LeonBoxesDT.Rows.Count > 0)
                 TrimmingSyngly(LeonBoxesDT, ref TempDT, Admission, 2, false, HeightASC, " ШУФ");
+            if (BonaBoxesDT.Rows.Count > 0)
+                TrimmingSyngly(BonaBoxesDT, ref TempDT, Admission, 2, false, HeightASC, " ШУФ");
             if (Turin1BoxesDT.Rows.Count > 0)
                 TrimmingSyngly(Turin1BoxesDT, ref TempDT, Admission, 2, false, HeightASC, " ШУФ");
             if (Turin1_1BoxesDT.Rows.Count > 0)
@@ -3301,6 +3340,8 @@ namespace Infinium.Modules.WorkAssignments
                 AdditionsSyngly(Turin3VitrinaDT, ref DestinationDT);
             if (LeonVitrinaDT.Rows.Count > 0)
                 AdditionsSyngly(LeonVitrinaDT, ref DestinationDT);
+            if (BonaVitrinaDT.Rows.Count > 0)
+                AdditionsSyngly(BonaVitrinaDT, ref DestinationDT);
             if (InfinitiVitrinaDT.Rows.Count > 0)
                 AdditionsSyngly(InfinitiVitrinaDT, ref DestinationDT);
 
@@ -3397,7 +3438,7 @@ namespace Infinium.Modules.WorkAssignments
             if (filter.Length > 0)
                 filter = "InsetTypeID IN (" + filter.Substring(0, filter.Length - 1) + ")";
             //Нужно добавлять Id Новых филенок
-            using (DataView DV = new DataView(SourceDT, filter + " OR InsetTypeID IN (2069,2070,2071,2073,2075,2077,2233,3644,29043,29531,41213) OR InsetTypeID IN (685,686,687,688,29470,29471) OR InsetTypeID IN (28961,3653,3654,3655)", string.Empty, DataViewRowState.CurrentRows))
+            using (DataView DV = new DataView(SourceDT, filter + " OR InsetTypeID IN (2069,2070,2071,2073,2075,42066,2077,2233,3644,29043,29531,41213) OR InsetTypeID IN (685,686,687,688,29470,29471) OR InsetTypeID IN (28961,3653,3654,3655)", string.Empty, DataViewRowState.CurrentRows))
             {
                 DT1 = DV.ToTable(true, new string[] { "InsetTypeID" });
             }
@@ -3614,7 +3655,7 @@ namespace Infinium.Modules.WorkAssignments
             if (filter.Length > 0)
                 filter = "InsetTypeID IN (" + filter.Substring(0, filter.Length - 1) + ")";
 
-            using (DataView DV = new DataView(SourceDT, filter + " OR InsetTypeID IN (2069,2070,2071,2073,2075,2077,2233,3644,29043,29531,41213) OR InsetTypeID IN (685,686,687,688,29470,29471) OR InsetTypeID IN (28961,3653,3654,3655)", string.Empty, DataViewRowState.CurrentRows))
+            using (DataView DV = new DataView(SourceDT, filter + " OR InsetTypeID IN (2069,2070,2071,2073,2075,42066,2077,2233,3644,29043,29531,41213) OR InsetTypeID IN (685,686,687,688,29470,29471) OR InsetTypeID IN (28961,3653,3654,3655)", string.Empty, DataViewRowState.CurrentRows))
             {
                 DT1 = DV.ToTable(true, new string[] { "InsetTypeID" });
             }
@@ -3683,9 +3724,9 @@ namespace Infinium.Modules.WorkAssignments
                 SizeASC = "Height DESC, Width DESC";
             //InsetTypeID IN (685,686,687,688,29470,29471) РЕШЕТКИ
             //InsetTypeID IN (28961,3653,3654,3655) АПЛИКАЦИИ
-            //InsetTypeID IN (2069,2070,2071,2073,2075,2077,2233,3644,29043,29531,41213) ФИЛЕНКИ
+            //InsetTypeID IN (2069,2070,2071,2073,2075,42066,2077,2233,3644,29043,29531,41213) ФИЛЕНКИ
 
-            using (DataView DV = new DataView(SourceDT, "InsetTypeID IN (2069,2070,2071,2073,2075,2077,2233,3644,29043,29531,41213) OR InsetTypeID IN (685,686,687,688,29470,29471) OR InsetTypeID IN (28961,3653,3654,3655)", string.Empty, DataViewRowState.CurrentRows))
+            using (DataView DV = new DataView(SourceDT, "InsetTypeID IN (2069,2070,2071,2073,2075,42066,2077,2233,3644,29043,29531,41213) OR InsetTypeID IN (685,686,687,688,29470,29471) OR InsetTypeID IN (28961,3653,3654,3655)", string.Empty, DataViewRowState.CurrentRows))
             {
                 DT1 = DV.ToTable(true, new string[] { "InsetTypeID" });
             }
@@ -3799,6 +3840,9 @@ namespace Infinium.Modules.WorkAssignments
             if (LeonSimpleDT.Rows.Count > 0)
                 SimpleInsetsOnly(LeonSimpleDT, ref DestinationDT,
                     Convert.ToInt32(FrontMargins.LeonSimpleInsetHeight), Convert.ToInt32(FrontMargins.LeonSimpleInsetWidth), OrderASC, IsBox);
+            if (BonaSimpleDT.Rows.Count > 0)
+                SimpleInsetsOnly(BonaSimpleDT, ref DestinationDT,
+                    Convert.ToInt32(FrontMargins.BonaSimpleInsetHeight), Convert.ToInt32(FrontMargins.BonaSimpleInsetWidth), OrderASC, IsBox);
             if (InfinitiSimpleDT.Rows.Count > 0)
                 SimpleInsetsOnly(InfinitiSimpleDT, ref DestinationDT,
                     Convert.ToInt32(FrontMargins.InfinitiSimpleInsetHeight), Convert.ToInt32(FrontMargins.InfinitiSimpleInsetWidth), OrderASC, IsBox);
@@ -3849,6 +3893,9 @@ namespace Infinium.Modules.WorkAssignments
             if (LeonGridsDT.Rows.Count > 0)
                 GridInsetsOnly(LeonGridsDT, ref DestinationDT,
                     Convert.ToInt32(FrontMargins.LeonGridInsetHeight), Convert.ToInt32(FrontMargins.LeonGridInsetWidth), OrderASC, IsBox);
+            if (BonaGridsDT.Rows.Count > 0)
+                GridInsetsOnly(BonaGridsDT, ref DestinationDT,
+                    Convert.ToInt32(FrontMargins.BonaGridInsetHeight), Convert.ToInt32(FrontMargins.BonaGridInsetWidth), OrderASC, IsBox);
             if (InfinitiGridsDT.Rows.Count > 0)
                 GridInsetsOnly(InfinitiGridsDT, ref DestinationDT,
                     Convert.ToInt32(FrontMargins.InfinitiGridInsetHeight), Convert.ToInt32(FrontMargins.InfinitiGridInsetWidth), OrderASC, IsBox);
@@ -3886,6 +3933,9 @@ namespace Infinium.Modules.WorkAssignments
             if (LeonBoxesDT.Rows.Count > 0)
                 BoxInsetsOnly(LeonBoxesDT, ref DestinationDT,
                     Convert.ToInt32(FrontMargins.LeonBoxInsetHeight), Convert.ToInt32(FrontMargins.LeonBoxInsetWidth), OrderASC, IsBox);
+            if (BonaBoxesDT.Rows.Count > 0)
+                BoxInsetsOnly(BonaBoxesDT, ref DestinationDT,
+                    Convert.ToInt32(FrontMargins.BonaBoxInsetHeight), Convert.ToInt32(FrontMargins.BonaBoxInsetWidth), OrderASC, IsBox);
             if (InfinitiBoxesDT.Rows.Count > 0)
                 BoxInsetsOnly(InfinitiBoxesDT, ref DestinationDT,
                     Convert.ToInt32(FrontMargins.InfinitiBoxInsetHeight), Convert.ToInt32(FrontMargins.InfinitiBoxInsetWidth), OrderASC, IsBox);
@@ -3912,6 +3962,7 @@ namespace Infinium.Modules.WorkAssignments
             Turin1_1OrdersDT.Clear();
             Turin3OrdersDT.Clear();
             LeonOrdersDT.Clear();
+            BonaOrdersDT.Clear();
             InfinitiOrdersDT.Clear();
 
             LorenzoCurvedOrdersDT.Clear();
@@ -4034,6 +4085,11 @@ namespace Infinium.Modules.WorkAssignments
                     GetFrontsOrders(ref LeonOrdersDT, WorkAssignmentID, FactoryID, Fronts.LeonTPS);
                     GetProfileNames(ref ProfileNamesDT, WorkAssignmentID, FactoryID, Fronts.LeonTPS);
                 }
+                if (Convert.ToInt32(Convert.ToInt32(FrontsID[i])) == Convert.ToInt32(Fronts.Bona))
+                {
+                    GetFrontsOrders(ref BonaOrdersDT, WorkAssignmentID, FactoryID, Fronts.Bona);
+                    GetProfileNames(ref ProfileNamesDT, WorkAssignmentID, FactoryID, Fronts.Bona);
+                }
                 if (Convert.ToInt32(Convert.ToInt32(FrontsID[i])) == Convert.ToInt32(Fronts.Infiniti))
                 {
                     GetFrontsOrders(ref InfinitiOrdersDT, WorkAssignmentID, FactoryID, Fronts.Infiniti);
@@ -4046,9 +4102,15 @@ namespace Infinium.Modules.WorkAssignments
                 }
             }
 
-            if (LorenzoCurvedOrdersDT.Rows.Count == 0 && ElegantCurvedOrdersDT.Rows.Count == 0 && Patricia1CurvedOrdersDT.Rows.Count == 0 && ScandiaCurvedOrdersDT.Rows.Count == 0 && KansasCurvedOrdersDT.Rows.Count == 0 && SofiaCurvedOrdersDT.Rows.Count == 0 && DakotaCurvedOrdersDT.Rows.Count == 0 && Turin1CurvedOrdersDT.Rows.Count == 0 && Turin1_1CurvedOrdersDT.Rows.Count == 0 && Turin3CurvedOrdersDT.Rows.Count == 0 && InfinitiCurvedOrdersDT.Rows.Count == 0 &&
-                LorenzoOrdersDT.Rows.Count == 0 && ElegantOrdersDT.Rows.Count == 0 && Patricia1OrdersDT.Rows.Count == 0 && ScandiaOrdersDT.Rows.Count == 0 && KansasOrdersDT.Rows.Count == 0 && DakotaOrdersDT.Rows.Count == 0 && SofiaOrdersDT.Rows.Count == 0 && Turin1OrdersDT.Rows.Count == 0 && Turin1_1OrdersDT.Rows.Count == 0 && Turin3OrdersDT.Rows.Count == 0 && LeonOrdersDT.Rows.Count == 0 && InfinitiOrdersDT.Rows.Count == 0 &&
-                BagetWithAngelOrdersDT.Rows.Count == 0 && NotArchDecorOrdersDT.Rows.Count == 0 && ArchDecorOrdersDT.Rows.Count == 0 && GridsDecorOrdersDT.Rows.Count == 0)
+            if (LorenzoCurvedOrdersDT.Rows.Count == 0 && ElegantCurvedOrdersDT.Rows.Count == 0 && Patricia1CurvedOrdersDT.Rows.Count == 0 
+                && ScandiaCurvedOrdersDT.Rows.Count == 0 && KansasCurvedOrdersDT.Rows.Count == 0 && SofiaCurvedOrdersDT.Rows.Count == 0 
+                && DakotaCurvedOrdersDT.Rows.Count == 0 && Turin1CurvedOrdersDT.Rows.Count == 0 && Turin1_1CurvedOrdersDT.Rows.Count == 0 
+                && Turin3CurvedOrdersDT.Rows.Count == 0 && InfinitiCurvedOrdersDT.Rows.Count == 0 && LorenzoOrdersDT.Rows.Count == 0 
+                && ElegantOrdersDT.Rows.Count == 0 && Patricia1OrdersDT.Rows.Count == 0 && ScandiaOrdersDT.Rows.Count == 0 
+                && KansasOrdersDT.Rows.Count == 0 && DakotaOrdersDT.Rows.Count == 0 && SofiaOrdersDT.Rows.Count == 0 
+                && Turin1OrdersDT.Rows.Count == 0 && Turin1_1OrdersDT.Rows.Count == 0 && Turin3OrdersDT.Rows.Count == 0 
+                && LeonOrdersDT.Rows.Count == 0 && BonaOrdersDT.Rows.Count == 0 && InfinitiOrdersDT.Rows.Count == 0 && BagetWithAngelOrdersDT.Rows.Count == 0 
+                && NotArchDecorOrdersDT.Rows.Count == 0 && ArchDecorOrdersDT.Rows.Count == 0 && GridsDecorOrdersDT.Rows.Count == 0)
                 return false;
             else
                 return true;
@@ -4216,6 +4278,7 @@ namespace Infinium.Modules.WorkAssignments
             Turin1_1SimpleDT.Clear();
             Turin3SimpleDT.Clear();
             LeonSimpleDT.Clear();
+            BonaSimpleDT.Clear();
             InfinitiSimpleDT.Clear();
 
             LorenzoVitrinaDT.Clear();
@@ -4229,6 +4292,7 @@ namespace Infinium.Modules.WorkAssignments
             Turin1_1VitrinaDT.Clear();
             Turin3VitrinaDT.Clear();
             LeonVitrinaDT.Clear();
+            BonaVitrinaDT.Clear();
             InfinitiVitrinaDT.Clear();
 
             Turin1RemovingBoxesDT.Clear();
@@ -4245,6 +4309,7 @@ namespace Infinium.Modules.WorkAssignments
             GetVitrinaFronts(Turin1_1OrdersDT, ref Turin1_1VitrinaDT);
             GetVitrinaFronts(Turin3OrdersDT, ref Turin3VitrinaDT);
             GetVitrinaFronts(LeonOrdersDT, ref LeonVitrinaDT);
+            GetVitrinaFronts(BonaOrdersDT, ref BonaVitrinaDT);
             GetVitrinaFronts(InfinitiOrdersDT, ref InfinitiVitrinaDT);
 
             GetRemovingBoxesFronts(Turin1OrdersDT, ref Turin1RemovingBoxesDT, 138);
@@ -4262,6 +4327,7 @@ namespace Infinium.Modules.WorkAssignments
             GetSimpleFronts(Turin1_1OrdersDT, ref Turin1_1SimpleDT, 175);
             GetSimpleFronts(Turin3OrdersDT, ref Turin3SimpleDT, 175);
             GetSimpleFronts(LeonOrdersDT, ref LeonSimpleDT, 175);
+            GetSimpleFronts(BonaOrdersDT, ref BonaSimpleDT, 175);
             GetSimpleFronts(InfinitiOrdersDT, ref InfinitiSimpleDT, 222);
 
             LorenzoGridsDT.Clear();
@@ -4275,6 +4341,7 @@ namespace Infinium.Modules.WorkAssignments
             Turin1_1GridsDT.Clear();
             Turin3GridsDT.Clear();
             LeonGridsDT.Clear();
+            BonaGridsDT.Clear();
             InfinitiGridsDT.Clear();
 
             DakotaAppliqueDT.Clear();
@@ -4293,6 +4360,7 @@ namespace Infinium.Modules.WorkAssignments
             GetGridFronts(Turin1_1OrdersDT, ref Turin1_1GridsDT);
             GetGridFronts(Turin3OrdersDT, ref Turin3GridsDT);
             GetGridFronts(LeonOrdersDT, ref LeonGridsDT);
+            GetGridFronts(BonaOrdersDT, ref BonaGridsDT);
             GetGridFronts(InfinitiOrdersDT, ref InfinitiGridsDT);
 
             LorenzoBoxesDT.Clear();
@@ -4306,6 +4374,7 @@ namespace Infinium.Modules.WorkAssignments
             Turin1_1BoxesDT.Clear();
             Turin3BoxesDT.Clear();
             LeonBoxesDT.Clear();
+            BonaBoxesDT.Clear();
             InfinitiBoxesDT.Clear();
 
             GetBoxFronts(LorenzoOrdersDT, ref LorenzoBoxesDT, 222);
@@ -4319,6 +4388,7 @@ namespace Infinium.Modules.WorkAssignments
             GetBoxFronts(Turin1_1OrdersDT, ref Turin1_1BoxesDT, 175);
             GetBoxFronts(Turin3OrdersDT, ref Turin3BoxesDT, 175);
             GetBoxFronts(LeonOrdersDT, ref LeonBoxesDT, 175);
+            GetBoxFronts(BonaOrdersDT, ref BonaBoxesDT, 175);
             GetBoxFronts(InfinitiOrdersDT, ref InfinitiBoxesDT, 222);
 
             BagetWithAngleAssemblyByMainOrderToExcel(ref hssfworkbook, Calibri11CS, CalibriBold11CS, CalibriBold11F, TableHeaderCS, TableHeaderDecCS, WorkAssignmentID, BatchName);
@@ -4454,8 +4524,17 @@ namespace Infinium.Modules.WorkAssignments
                 CollectAssemblyGrids(Convert.ToInt32(DistFrameColorsDT.Rows[i]["ColorID"]), LeonGridsDT, ref AssemblyDT, FrontType);
             }
             DistFrameColorsDT.Clear();
-            DistFrameColorsDT = DistFrameColorsTable(InfinitiOrdersDT, true);
+            DistFrameColorsDT = DistFrameColorsTable(BonaOrdersDT, true);
             FrontType = 5;
+            for (int i = 0; i < DistFrameColorsDT.Rows.Count; i++)
+            {
+                CollectAssemblySimple(Convert.ToInt32(DistFrameColorsDT.Rows[i]["ColorID"]), BonaSimpleDT, ref AssemblyDT, FrontType);
+                CollectAssemblyBoxes(Convert.ToInt32(DistFrameColorsDT.Rows[i]["ColorID"]), BonaBoxesDT, ref AssemblyDT, FrontType);
+                CollectAssemblyGrids(Convert.ToInt32(DistFrameColorsDT.Rows[i]["ColorID"]), BonaGridsDT, ref AssemblyDT, FrontType);
+            }
+            DistFrameColorsDT.Clear();
+            DistFrameColorsDT = DistFrameColorsTable(InfinitiOrdersDT, true);
+            FrontType = 6;
             for (int i = 0; i < DistFrameColorsDT.Rows.Count; i++)
             {
                 CollectAssemblySimple(Convert.ToInt32(DistFrameColorsDT.Rows[i]["ColorID"]), InfinitiSimpleDT, ref AssemblyDT, FrontType);
@@ -4770,6 +4849,14 @@ namespace Infinium.Modules.WorkAssignments
                 RowIndex++;
                 RowIndex++;
             }
+            if (BonaBoxesDT.Rows.Count > 0 || BonaGridsDT.Rows.Count > 0 || BonaSimpleDT.Rows.Count > 0)
+            {
+                SummingOrders(BonaOrdersDT, BonaBoxesDT, BonaGridsDT, BonaSimpleDT, BonaVitrinaDT, "Бона ШУФ", "Бона РЕШ", "Бона");
+                OrdersToExcelSingly(ref hssfworkbook,
+                        Calibri11CS, CalibriBold11CS, CalibriBold11F, TableHeaderCS, TableHeaderDecCS, ref sheet1, WorkAssignmentID, BatchName, ClientName, ref RowIndex);
+                RowIndex++;
+                RowIndex++;
+            }
             if (InfinitiBoxesDT.Rows.Count > 0 || InfinitiGridsDT.Rows.Count > 0 || InfinitiSimpleDT.Rows.Count > 0)
             {
                 SummingOrders(InfinitiOrdersDT, InfinitiBoxesDT, InfinitiGridsDT, InfinitiSimpleDT, InfinitiVitrinaDT, "Инфинити ШУФ", "Инфинити РЕШ", "Инфинити");
@@ -4916,6 +5003,17 @@ namespace Infinium.Modules.WorkAssignments
                 CollectDeying(Convert.ToInt32(DT1.Rows[i]["ColorID"]), LeonBoxesDT, ref DeyingDT, " ШУФ");
                 CollectDeying(Convert.ToInt32(DT1.Rows[i]["ColorID"]), LeonGridsDT, ref DeyingDT, " РЕШ");
             }
+            using (DataView DV = new DataView(BonaOrdersDT, string.Empty, "ColorID", DataViewRowState.CurrentRows))
+            {
+                DT1.Clear();
+                DT1 = DV.ToTable(true, new string[] { "ColorID" });
+            }
+            for (int i = 0; i < DT1.Rows.Count; i++)
+            {
+                CollectDeying(Convert.ToInt32(DT1.Rows[i]["ColorID"]), BonaSimpleDT, ref DeyingDT, string.Empty);
+                CollectDeying(Convert.ToInt32(DT1.Rows[i]["ColorID"]), BonaBoxesDT, ref DeyingDT, " ШУФ");
+                CollectDeying(Convert.ToInt32(DT1.Rows[i]["ColorID"]), BonaGridsDT, ref DeyingDT, " РЕШ");
+            }
             using (DataView DV = new DataView(InfinitiOrdersDT, string.Empty, "ColorID", DataViewRowState.CurrentRows))
             {
                 DT1.Clear();
@@ -4937,7 +5035,8 @@ namespace Infinium.Modules.WorkAssignments
             HSSFCellStyle Calibri11CS, HSSFCellStyle CalibriBold11CS, HSSFFont CalibriBold11F, HSSFCellStyle TableHeaderCS, HSSFCellStyle TableHeaderDecCS,
             int WorkAssignmentID, string BatchName)
         {
-            DataTable DistMainOrdersDT = DistMainOrdersTable(LorenzoOrdersDT, ElegantOrdersDT, Patricia1OrdersDT, ScandiaOrdersDT, KansasOrdersDT, SofiaOrdersDT, Turin1OrdersDT, Turin1_1OrdersDT, Turin3OrdersDT, LeonOrdersDT, InfinitiOrdersDT, DakotaOrdersDT, true);
+            DataTable DistMainOrdersDT = DistMainOrdersTable(LorenzoOrdersDT, ElegantOrdersDT, Patricia1OrdersDT, ScandiaOrdersDT, KansasOrdersDT, 
+                SofiaOrdersDT, Turin1OrdersDT, Turin1_1OrdersDT, Turin3OrdersDT, LeonOrdersDT, BonaOrdersDT, InfinitiOrdersDT, DakotaOrdersDT, true);
             DataTable DT = KansasOrdersDT.Clone();
             DataTable DT1 = new DataTable();
             DataTable ZOVOrdersNames = new DataTable();
@@ -5274,6 +5373,32 @@ namespace Infinium.Modules.WorkAssignments
 
                         DT.Clear();
                         rows = LeonGridsDT.Select("MainOrderID=" + MainOrderID);
+                        foreach (DataRow item in rows)
+                            DT.Rows.Add(item.ItemArray);
+                        CollectDeying(Convert.ToInt32(DT1.Rows[j]["ColorID"]), DT, ref DeyingDT, " РЕШ");
+                    }
+                    
+                    using (DataView DV = new DataView(BonaOrdersDT, "MainOrderID=" + MainOrderID, "ColorID", DataViewRowState.CurrentRows))
+                    {
+                        DT1.Clear();
+                        DT1 = DV.ToTable(true, new string[] { "ColorID" });
+                    }
+                    for (int j = 0; j < DT1.Rows.Count; j++)
+                    {
+                        DT.Clear();
+                        DataRow[] rows = BonaSimpleDT.Select("MainOrderID=" + MainOrderID);
+                        foreach (DataRow item in rows)
+                            DT.Rows.Add(item.ItemArray);
+                        CollectDeying(Convert.ToInt32(DT1.Rows[j]["ColorID"]), DT, ref DeyingDT, string.Empty);
+
+                        DT.Clear();
+                        rows = BonaBoxesDT.Select("MainOrderID=" + MainOrderID);
+                        foreach (DataRow item in rows)
+                            DT.Rows.Add(item.ItemArray);
+                        CollectDeying(Convert.ToInt32(DT1.Rows[j]["ColorID"]), DT, ref DeyingDT, " ШУФ");
+
+                        DT.Clear();
+                        rows = BonaGridsDT.Select("MainOrderID=" + MainOrderID);
                         foreach (DataRow item in rows)
                             DT.Rows.Add(item.ItemArray);
                         CollectDeying(Convert.ToInt32(DT1.Rows[j]["ColorID"]), DT, ref DeyingDT, " РЕШ");
@@ -5616,6 +5741,32 @@ namespace Infinium.Modules.WorkAssignments
 
                         DT.Clear();
                         rows = LeonGridsDT.Select("MainOrderID=" + MainOrderID);
+                        foreach (DataRow item in rows)
+                            DT.Rows.Add(item.ItemArray);
+                        CollectDeying(Convert.ToInt32(DT1.Rows[j]["ColorID"]), DT, ref DeyingDT, " РЕШ");
+                    }
+                    
+                    using (DataView DV = new DataView(BonaOrdersDT, "MainOrderID=" + MainOrderID, "ColorID", DataViewRowState.CurrentRows))
+                    {
+                        DT1.Clear();
+                        DT1 = DV.ToTable(true, new string[] { "ColorID" });
+                    }
+                    for (int j = 0; j < DT1.Rows.Count; j++)
+                    {
+                        DT.Clear();
+                        DataRow[] rows = BonaSimpleDT.Select("MainOrderID=" + MainOrderID);
+                        foreach (DataRow item in rows)
+                            DT.Rows.Add(item.ItemArray);
+                        CollectDeying(Convert.ToInt32(DT1.Rows[j]["ColorID"]), DT, ref DeyingDT, string.Empty);
+
+                        DT.Clear();
+                        rows = BonaBoxesDT.Select("MainOrderID=" + MainOrderID);
+                        foreach (DataRow item in rows)
+                            DT.Rows.Add(item.ItemArray);
+                        CollectDeying(Convert.ToInt32(DT1.Rows[j]["ColorID"]), DT, ref DeyingDT, " ШУФ");
+
+                        DT.Clear();
+                        rows = BonaGridsDT.Select("MainOrderID=" + MainOrderID);
                         foreach (DataRow item in rows)
                             DT.Rows.Add(item.ItemArray);
                         CollectDeying(Convert.ToInt32(DT1.Rows[j]["ColorID"]), DT, ref DeyingDT, " РЕШ");
@@ -5966,6 +6117,32 @@ namespace Infinium.Modules.WorkAssignments
 
                     DT.Clear();
                     rows = LeonGridsDT.Select("MainOrderID=" + MainOrderID);
+                    foreach (DataRow item in rows)
+                        DT.Rows.Add(item.ItemArray);
+                    CollectDeying(Convert.ToInt32(DT1.Rows[j]["ColorID"]), DT, ref DeyingDT, " РЕШ");
+                }
+                
+                using (DataView DV = new DataView(BonaOrdersDT, "MainOrderID=" + MainOrderID, "ColorID", DataViewRowState.CurrentRows))
+                {
+                    DT1.Clear();
+                    DT1 = DV.ToTable(true, new string[] { "ColorID" });
+                }
+                for (int j = 0; j < DT1.Rows.Count; j++)
+                {
+                    DT.Clear();
+                    DataRow[] rows = BonaSimpleDT.Select("MainOrderID=" + MainOrderID);
+                    foreach (DataRow item in rows)
+                        DT.Rows.Add(item.ItemArray);
+                    CollectDeying(Convert.ToInt32(DT1.Rows[j]["ColorID"]), DT, ref DeyingDT, string.Empty);
+
+                    DT.Clear();
+                    rows = BonaBoxesDT.Select("MainOrderID=" + MainOrderID);
+                    foreach (DataRow item in rows)
+                        DT.Rows.Add(item.ItemArray);
+                    CollectDeying(Convert.ToInt32(DT1.Rows[j]["ColorID"]), DT, ref DeyingDT, " ШУФ");
+
+                    DT.Clear();
+                    rows = BonaGridsDT.Select("MainOrderID=" + MainOrderID);
                     foreach (DataRow item in rows)
                         DT.Rows.Add(item.ItemArray);
                     CollectDeying(Convert.ToInt32(DT1.Rows[j]["ColorID"]), DT, ref DeyingDT, " РЕШ");
@@ -11923,11 +12100,15 @@ namespace Infinium.Modules.WorkAssignments
             HSSFCellStyle Calibri11CS, HSSFCellStyle CalibriBold11CS, HSSFFont CalibriBold11F, HSSFCellStyle TableHeaderCS, HSSFCellStyle TableHeaderDecCS,
             int WorkAssignmentID, string BatchName)
         {
-            if (LorenzoCurvedOrdersDT.Rows.Count == 0 && ElegantCurvedOrdersDT.Rows.Count == 0 && Patricia1CurvedOrdersDT.Rows.Count == 0 && ScandiaCurvedOrdersDT.Rows.Count == 0 && KansasCurvedOrdersDT.Rows.Count == 0 && SofiaCurvedOrdersDT.Rows.Count == 0 && DakotaCurvedOrdersDT.Rows.Count == 0 && Turin1CurvedOrdersDT.Rows.Count == 0 && Turin1_1CurvedOrdersDT.Rows.Count == 0
+            if (LorenzoCurvedOrdersDT.Rows.Count == 0 && ElegantCurvedOrdersDT.Rows.Count == 0 && Patricia1CurvedOrdersDT.Rows.Count == 0 
+                && ScandiaCurvedOrdersDT.Rows.Count == 0 && KansasCurvedOrdersDT.Rows.Count == 0 && SofiaCurvedOrdersDT.Rows.Count == 0 
+                && DakotaCurvedOrdersDT.Rows.Count == 0 && Turin1CurvedOrdersDT.Rows.Count == 0 && Turin1_1CurvedOrdersDT.Rows.Count == 0
                 && Turin3CurvedOrdersDT.Rows.Count == 0 && InfinitiCurvedOrdersDT.Rows.Count == 0)
                 return;
 
-            DataTable DistMainOrdersDT = DistMainOrdersTable(LorenzoCurvedOrdersDT, ElegantCurvedOrdersDT, Patricia1CurvedOrdersDT, ScandiaCurvedOrdersDT, KansasCurvedOrdersDT, SofiaCurvedOrdersDT, Turin1CurvedOrdersDT, Turin1_1CurvedOrdersDT, Turin3CurvedOrdersDT, Turin3CurvedOrdersDT.Clone(), InfinitiCurvedOrdersDT, DakotaCurvedOrdersDT, true);
+            DataTable DistMainOrdersDT = DistMainOrdersTable(LorenzoCurvedOrdersDT, ElegantCurvedOrdersDT, Patricia1CurvedOrdersDT, ScandiaCurvedOrdersDT, 
+                KansasCurvedOrdersDT, SofiaCurvedOrdersDT, Turin1CurvedOrdersDT, Turin1_1CurvedOrdersDT, Turin3CurvedOrdersDT, Turin3CurvedOrdersDT.Clone(), 
+                InfinitiCurvedOrdersDT, DakotaCurvedOrdersDT, new DataTable(), true);
             DataTable DT = KansasCurvedOrdersDT.Clone();
             DataTable ZOVOrdersNames = new DataTable();
             DataTable MarketOrdersNames = new DataTable();

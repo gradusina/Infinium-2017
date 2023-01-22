@@ -1,27 +1,28 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Data;
+using System.IO;
 using System.Windows.Forms;
 
 namespace Infinium
 {
     public partial class DocumentsCommentsFilesForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
 
-        int FormEvent = 0;
+        private int FormEvent;
 
-        Form TopForm;
+        private Form TopForm;
 
-        InfiniumDocuments InfiniumDocuments;
+        private InfiniumDocuments InfiniumDocuments;
 
         public bool bStopTransfer = false;
 
         public int InnerDocumentID = -1;
 
-        public DataTable CurrentFilesDataTable = null;
+        public DataTable CurrentFilesDataTable;
 
 
 
@@ -58,7 +59,7 @@ namespace Infinium
         {
             if (!DatabaseConfigsManager.Animation)
             {
-                this.Opacity = 1;
+                Opacity = 1;
 
                 if (FormEvent == eClose || FormEvent == eHide)
                 {
@@ -66,12 +67,12 @@ namespace Infinium
 
                     if (FormEvent == eClose)
                     {
-                        this.Close();
+                        Close();
                     }
 
                     if (FormEvent == eHide)
                     {
-                        this.Hide();
+                        Hide();
                     }
 
                     return;
@@ -88,20 +89,20 @@ namespace Infinium
 
             if (FormEvent == eClose || FormEvent == eHide)
             {
-                if (Convert.ToDecimal(this.Opacity) != Convert.ToDecimal(0.00))
-                    this.Opacity = Convert.ToDouble(Convert.ToDecimal(this.Opacity) - Convert.ToDecimal(0.05));
+                if (Convert.ToDecimal(Opacity) != Convert.ToDecimal(0.00))
+                    Opacity = Convert.ToDouble(Convert.ToDecimal(Opacity) - Convert.ToDecimal(0.05));
                 else
                 {
                     AnimateTimer.Enabled = false;
 
                     if (FormEvent == eClose)
                     {
-                        this.Close();
+                        Close();
                     }
 
                     if (FormEvent == eHide)
                     {
-                        this.Hide();
+                        Hide();
                     }
                 }
 
@@ -111,15 +112,13 @@ namespace Infinium
 
             if (FormEvent == eShow || FormEvent == eShow)
             {
-                if (this.Opacity != 1)
-                    this.Opacity += 0.05;
+                if (Opacity != 1)
+                    Opacity += 0.05;
                 else
                 {
                     AnimateTimer.Enabled = false;
                     SplashForm.CloseS = true;
                 }
-
-                return;
             }
         }
 
@@ -141,16 +140,16 @@ namespace Infinium
 
             foreach (string FileName in openFileDialog1.FileNames)
             {
-                var fileInfo = new System.IO.FileInfo(FileName);
+                var fileInfo = new FileInfo(FileName);
 
                 DataRow NewRow = CurrentFilesDataTable.NewRow();
-                NewRow["FileName"] = System.IO.Path.GetFileName(FileName);
+                NewRow["FileName"] = Path.GetFileName(FileName);
 
                 Size = (int)(fileInfo.Length / 1024);
                 if (Size == 0)
                     Size = 1;
 
-                NewRow["FileSizeText"] = Size.ToString() + " КБ";
+                NewRow["FileSizeText"] = Size + " КБ";
                 NewRow["FileSize"] = fileInfo.Length;
                 NewRow["FilePath"] = FileName;
                 NewRow["IsNew"] = true;
@@ -165,13 +164,13 @@ namespace Infinium
 
         private void DetachButton_Click(object sender, EventArgs e)
         {
-            CurrentFilesDataTable.Select("FileName = '" + FilesDataGrid.SelectedRows[0].Cells["FileName"].FormattedValue.ToString() + "'")[0].Delete();
+            CurrentFilesDataTable.Select("FileName = '" + FilesDataGrid.SelectedRows[0].Cells["FileName"].FormattedValue + "'")[0].Delete();
             CurrentFilesDataTable.AcceptChanges();
         }
 
         private void CreateButton_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
     }

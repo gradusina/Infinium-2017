@@ -1,11 +1,15 @@
-﻿namespace Infinium
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+using ComponentFactory.Krypton.Toolkit;
+
+namespace Infinium
 {
     partial class ContractorsForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -488,38 +492,38 @@
 
         #endregion
 
-        private System.Windows.Forms.Timer AnimateTimer;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton NavigateMenuCloseButton;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Panel NavigatePanel;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge3;
-        private ComponentFactory.Krypton.Toolkit.KryptonPalette ButtonsPalette;
-        private ComponentFactory.Krypton.Toolkit.KryptonPalette NavigateMenuButtonsPalette;
-        private ComponentFactory.Krypton.Toolkit.KryptonCheckButton PasswordButton;
-        private System.Windows.Forms.Panel LeftPanel;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge1;
-        private System.Windows.Forms.Panel UpdatePanel;
-        private System.Windows.Forms.ToolTip toolTip1;
-        private System.Windows.Forms.OpenFileDialog UploadFileDialog;
-        private ComponentFactory.Krypton.Toolkit.KryptonContextMenu FileContextMenu;
-        private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItems kryptonContextMenuItems1;
-        private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem MenuFileOpenFile;
-        private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem MenuFileSaveFile;
-        private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem kryptonContextMenuItem3;
-        private ComponentFactory.Krypton.Toolkit.KryptonPalette ContextMenuPalette;
-        private System.Windows.Forms.SaveFileDialog SaveFileDialog;
-        private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem MenuFileReplaceFile;
-        private System.Windows.Forms.FolderBrowserDialog FolderBrowserDialog;
-        private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem MenuFileDeleteFile;
-        private System.Windows.Forms.Timer timer1;
-        private System.Windows.Forms.Panel TopMenuPanel;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge2;
+        private Timer AnimateTimer;
+        private KryptonButton NavigateMenuCloseButton;
+        private Label label1;
+        private Panel NavigatePanel;
+        private KryptonBorderEdge kryptonBorderEdge3;
+        private KryptonPalette ButtonsPalette;
+        private KryptonPalette NavigateMenuButtonsPalette;
+        private KryptonCheckButton PasswordButton;
+        private Panel LeftPanel;
+        private KryptonBorderEdge kryptonBorderEdge1;
+        private Panel UpdatePanel;
+        private ToolTip toolTip1;
+        private OpenFileDialog UploadFileDialog;
+        private KryptonContextMenu FileContextMenu;
+        private KryptonContextMenuItems kryptonContextMenuItems1;
+        private KryptonContextMenuItem MenuFileOpenFile;
+        private KryptonContextMenuItem MenuFileSaveFile;
+        private KryptonContextMenuItem kryptonContextMenuItem3;
+        private KryptonPalette ContextMenuPalette;
+        private SaveFileDialog SaveFileDialog;
+        private KryptonContextMenuItem MenuFileReplaceFile;
+        private FolderBrowserDialog FolderBrowserDialog;
+        private KryptonContextMenuItem MenuFileDeleteFile;
+        private Timer timer1;
+        private Panel TopMenuPanel;
+        private KryptonBorderEdge kryptonBorderEdge2;
         private InfiniumLightButton CreateButton;
-        private System.Windows.Forms.Panel EditButtonsPanel;
+        private Panel EditButtonsPanel;
         private InfiniumContractorsMenu CategoriesMenu;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge4;
+        private KryptonBorderEdge kryptonBorderEdge4;
         private InfiniumContractorsSubMenu SubCategoriesMenu;
         private InfiniumContractorsList ContractorsList;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton MinimizeButton;
+        private KryptonButton MinimizeButton;
     }
 }

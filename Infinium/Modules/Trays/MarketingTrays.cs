@@ -430,7 +430,7 @@ namespace Infinium.Modules.Packages.Trays
             FrontsOrdersDataGrid.CellFormatting += FrontsOrdersDataGrid_CellFormatting;
         }
 
-        void FrontsOrdersDataGrid_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        private void FrontsOrdersDataGrid_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             PercentageDataGrid grid = (PercentageDataGrid)sender;
             if (grid.Columns.Contains("PatinaColumn") && (e.ColumnIndex == grid.Columns["PatinaColumn"].Index)
@@ -1489,23 +1489,23 @@ namespace Infinium.Modules.Packages.Trays
 
         public bool IsNewTray = true;
 
-        PercentageDataGrid PackagesDataGrid = null;
-        PercentageDataGrid FrontsContentDataGrid = null;
-        PercentageDataGrid DecorContentDataGrid = null;
-        PercentageDataGrid FrontsPackContentDataGrid = null;
-        PercentageDataGrid DecorPackContentDataGrid = null;
+        private PercentageDataGrid PackagesDataGrid = null;
+        private PercentageDataGrid FrontsContentDataGrid = null;
+        private PercentageDataGrid DecorContentDataGrid = null;
+        private PercentageDataGrid FrontsPackContentDataGrid = null;
+        private PercentageDataGrid DecorPackContentDataGrid = null;
 
-        DataTable PackageInfoDT = null;
-        DataTable OrderStatusInfoDT = null;
-        DataTable ClientsDataTable = null;
-        DataTable MarketPackagesDataTable = null;
-        DataTable ZOVPackagesDataTable = null;
-        DataTable PackagesDataTable = null;
+        private DataTable PackageInfoDT = null;
+        private DataTable OrderStatusInfoDT = null;
+        private DataTable ClientsDataTable = null;
+        private DataTable MarketPackagesDataTable = null;
+        private DataTable ZOVPackagesDataTable = null;
+        private DataTable PackagesDataTable = null;
 
-        DataTable FrontsContentDataTable = null;
-        DataTable DecorContentDataTable = null;
-        DataTable FrontsPackContentDataTable = null;
-        DataTable DecorPackContentDataTable = null;
+        private DataTable FrontsContentDataTable = null;
+        private DataTable DecorContentDataTable = null;
+        private DataTable FrontsPackContentDataTable = null;
+        private DataTable DecorPackContentDataTable = null;
 
         private DataTable FrontsDataTable = null;
         private DataTable FrameColorsDataTable = null;
@@ -1516,12 +1516,12 @@ namespace Infinium.Modules.Packages.Trays
         private DataTable TechnoInsetTypesDataTable = null;
         private DataTable TechnoInsetColorsDataTable = null;
         private DataTable TechnoProfilesDataTable = null;
-        DataTable ZOVClientsDataTable;
-        DataTable MarketClientsDataTable;
+        private DataTable ZOVClientsDataTable;
+        private DataTable MarketClientsDataTable;
 
-        DataTable DecorDataTable;
-        DataTable DecorProductsDataTable;
-        DataTable TempDataTable;
+        private DataTable DecorDataTable;
+        private DataTable DecorProductsDataTable;
+        private DataTable TempDataTable;
 
         public BindingSource ClientsBindingSource = null;
         public BindingSource PackagesBindingSource = null;
@@ -1532,7 +1532,7 @@ namespace Infinium.Modules.Packages.Trays
 
         public DataTable EventsDataTable;
 
-        static TimeSpan DeltaTime;
+        private static TimeSpan DeltaTime;
 
         public struct PackLabelInfo
         {
@@ -3505,9 +3505,9 @@ namespace Infinium.Modules.Packages.Trays
 
     public class Barcode
     {
-        BarcodeLib.Barcode Barcod;
+        private BarcodeLib.Barcode Barcod;
 
-        SolidBrush FontBrush;
+        private SolidBrush FontBrush;
 
         public enum BarcodeLength { Short, Medium, Long };
 
@@ -3615,7 +3615,7 @@ namespace Infinium.Modules.Packages.Trays
 
     public class TrayLabel
     {
-        Barcode Barcode;
+        private Barcode Barcode;
         public PrintDocument PD;
 
         public int PaperHeight = 488;
@@ -3627,13 +3627,13 @@ namespace Infinium.Modules.Packages.Trays
 
         public bool Printed = false;
 
-        SolidBrush FontBrush;
+        private SolidBrush FontBrush;
 
-        Font DocFont;
-        Font GroupFont;
-        Font NumFont;
+        private Font DocFont;
+        private Font GroupFont;
+        private Font NumFont;
 
-        Pen Pen;
+        private Pen Pen;
 
         public ArrayList LabelInfo;
 

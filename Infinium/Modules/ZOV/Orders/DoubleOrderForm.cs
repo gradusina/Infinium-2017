@@ -9,24 +9,24 @@ namespace Infinium
 {
     public partial class DoubleOrderForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
-        int FormEvent = 0;
+        private int FormEvent = 0;
 
-        Form TopForm = null;
+        private Form TopForm = null;
 
-        FrontsCatalogOrder FrontsCatalogOrder = null;
-        DecorCatalogOrder DecorCatalogOrder = null;
-        DoubleFrontsOrders DoubleFrontsOrders;
-        DoubleDecorOrders DoubleDecorOrders;
-        OrdersManager OrdersManager;
-        OrdersCalculate OrdersCalculate;
-        FrontsOrders FrontsOrders;
-        DecorOrders DecorOrders;
-        NewOrderInfo NewOrderInfo;
+        private FrontsCatalogOrder FrontsCatalogOrder = null;
+        private DecorCatalogOrder DecorCatalogOrder = null;
+        private DoubleFrontsOrders DoubleFrontsOrders;
+        private DoubleDecorOrders DoubleDecorOrders;
+        private OrdersManager OrdersManager;
+        private OrdersCalculate OrdersCalculate;
+        private FrontsOrders FrontsOrders;
+        private DecorOrders DecorOrders;
+        private NewOrderInfo NewOrderInfo;
 
         public DoubleOrderForm(Form tTopForm, OrdersManager tOrdersManager, OrdersCalculate tOrdersCalculate,
             FrontsOrders tFrontsOrders, DecorOrders tDecorOrders,

@@ -15,31 +15,30 @@ namespace Infinium
 {
     public partial class ZOVOrdersForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
-        bool NeedRefresh = false;
-        bool NeedSplash = false;
-        bool SetFonts = false;
+        private bool NeedRefresh = false;
+        private bool NeedSplash = false;
+        private bool SetFonts = false;
 
-        int FormEvent = 0;
-        int CurrentRowIndex = 0;
+        private int FormEvent = 0;
+        private int CurrentRowIndex = 0;
 
-        LightStartForm LightStartForm;
+        private LightStartForm LightStartForm;
 
-        Form TopForm = null;
+        private Form TopForm = null;
 
-        DataTable RolePermissionsDataTable;
-
-        FrontsCatalogOrder FrontsCatalogOrder = null;
-        DecorCatalogOrder DecorCatalogOrder = null;
-        OrdersManager OrdersManager = null;
-        OrdersCalculate OrdersCalculate = null;
-        DailyReport DailyReport;
-        PaymentWeeks PaymentWeeks = null;
-        NewOrderInfo NewOrderInfo;
+        private DataTable RolePermissionsDataTable;
+        
+        private DecorCatalogOrder DecorCatalogOrder = null;
+        private OrdersManager OrdersManager = null;
+        private OrdersCalculate OrdersCalculate = null;
+        private DailyReport DailyReport;
+        private PaymentWeeks PaymentWeeks = null;
+        private NewOrderInfo NewOrderInfo;
 
         public ZOVOrdersForm(LightStartForm tLightStartForm)
         {

@@ -40,24 +40,24 @@ namespace Infinium.Modules.Dispatch
 
     public class MarketingDispatchList
     {
-        MarketingPackingList PackingList;
+        private MarketingPackingList PackingList;
 
-        PackagesCount PackagesCount;
+        private PackagesCount PackagesCount;
 
         private int CurrentMegaOrderID = 0;
 
-        DataTable ClientsDataTable = null;
-        DataTable ResultDataTable = null;
-        DataTable MegaOrdersDataTable = null;
-        DataTable MainOrdersDataTable = null;
-        DataTable AttachResultDataTable = null;
-        DataTable PackagesDataTable = null;
-        DataTable DispPackagesDataTable = null;
+        private DataTable ClientsDataTable = null;
+        private DataTable ResultDataTable = null;
+        private DataTable MegaOrdersDataTable = null;
+        private DataTable MainOrdersDataTable = null;
+        private DataTable AttachResultDataTable = null;
+        private DataTable PackagesDataTable = null;
+        private DataTable DispPackagesDataTable = null;
 
         public BindingSource MegaOrdersBindingSource = null;
         public BindingSource FilterClientsBindingSource = null;
 
-        SqlDataAdapter MegaOrdersDataAdapter = null;
+        private SqlDataAdapter MegaOrdersDataAdapter = null;
 
         public PercentageDataGrid MegaOrdersDataGrid = null;
 
@@ -1366,7 +1366,7 @@ namespace Infinium.Modules.Dispatch
 
     public class MarketingPackingList : IAllFrontParameterName, IIsMarsel
     {
-        int ClientID = 0;
+        private int ClientID = 0;
         public bool ColorFullName = false;
         private DataTable ClientsDataTable = null;
         private DataTable FrontsResultDataTable = null;
@@ -1378,7 +1378,7 @@ namespace Infinium.Modules.Dispatch
         public DataTable FrontsDataTable = null;
         public DataTable FrameColorsDataTable = null;
         public DataTable PatinaDataTable = null;
-        DataTable PatinaRALDataTable = null;
+        private DataTable PatinaRALDataTable = null;
         public DataTable InsetTypesDataTable = null;
         public DataTable InsetColorsDataTable = null;
         private DataTable ProductsDataTable = null;
@@ -3547,22 +3547,22 @@ namespace Infinium.Modules.Dispatch
 
     public class ZOVDispatchList
     {
-        ZOVPackingList PackingList;
+        private ZOVPackingList PackingList;
 
-        PackagesCount PackagesCount;
+        private PackagesCount PackagesCount;
 
         private int CurrentMegaOrderID = 0;
 
-        DataTable ClientsDataTable = null;
-        DataTable SimpleResultDataTable = null;
-        DataTable MegaOrdersDataTable = null;
-        DataTable MainOrdersDataTable = null;
-        DataTable MainOrdersInfoDT = null;
-        DataTable AllPackagesDT = null;
+        private DataTable ClientsDataTable = null;
+        private DataTable SimpleResultDataTable = null;
+        private DataTable MegaOrdersDataTable = null;
+        private DataTable MainOrdersDataTable = null;
+        private DataTable MainOrdersInfoDT = null;
+        private DataTable AllPackagesDT = null;
 
         public BindingSource MegaOrdersBindingSource = null;
 
-        SqlDataAdapter MegaOrdersDataAdapter = null;
+        private SqlDataAdapter MegaOrdersDataAdapter = null;
 
         public PercentageDataGrid MegaOrdersDataGrid = null;
 
@@ -4792,8 +4792,8 @@ namespace Infinium.Modules.Dispatch
         private DataTable FrontsResultDataTable = null;
         private DataTable DecorResultDataTable = null;
 
-        DataTable OriginalFrontsOrdersDataTable = null;
-        DataTable OriginalDecorOrdersDataTable = null;
+        private DataTable OriginalFrontsOrdersDataTable = null;
+        private DataTable OriginalDecorOrdersDataTable = null;
 
         private DataTable FrontsOrdersDataTable = null;
         private DataTable DecorOrdersDataTable = null;
@@ -4803,7 +4803,7 @@ namespace Infinium.Modules.Dispatch
         public DataTable FrontsDataTable = null;
         public DataTable FrameColorsDataTable = null;
         public DataTable PatinaDataTable = null;
-        DataTable PatinaRALDataTable = null;
+        private DataTable PatinaRALDataTable = null;
         public DataTable InsetTypesDataTable = null;
         public DataTable InsetColorsDataTable = null;
         private DataTable ProductsDataTable = null;
@@ -6663,14 +6663,14 @@ namespace Infinium.Modules.Dispatch
         public DataTable FrontsDataTable = null;
         public DataTable FrameColorsDataTable = null;
         public DataTable PatinaDataTable = null;
-        DataTable PatinaRALDataTable = null;
+        private DataTable PatinaRALDataTable = null;
         public DataTable InsetTypesDataTable = null;
         public DataTable InsetColorsDataTable = null;
         private DataTable ProductsDataTable = null;
         private DataTable DecorDataTable = null;
         private DataTable DecorParametersDataTable = null;
 
-        TrayPackages TrayPackages;
+        private TrayPackages TrayPackages;
 
         public ZOVTrayList()
         {
@@ -8935,14 +8935,14 @@ namespace Infinium.Modules.Dispatch
         private DataTable FrontsDataTable = null;
         private DataTable FrameColorsDataTable = null;
         private DataTable PatinaDataTable = null;
-        DataTable PatinaRALDataTable = null;
+        private DataTable PatinaRALDataTable = null;
         private DataTable InsetTypesDataTable = null;
         private DataTable InsetColorsDataTable = null;
         private DataTable ProductsDataTable = null;
         private DataTable DecorDataTable = null;
         private DataTable DecorParametersDataTable = null;
 
-        TrayPackages TrayPackages;
+        private TrayPackages TrayPackages;
 
         public MarketingTrayList()
         {
@@ -11493,53 +11493,53 @@ namespace Infinium.Modules.Dispatch
 
     public class ZOVDispatchCheckLabel
     {
-        int iUserID = 0;
-        ArrayList DispatchIDs;
-        ArrayList TrayIDs;
+        private int iUserID = 0;
+        private ArrayList DispatchIDs;
+        private ArrayList TrayIDs;
 
-        int CurrentProductType = 0;
+        private int CurrentProductType = 0;
         public int CurrentMainOrderID = 0;
         public int CurrentMegaOrderID = 0;
 
-        PercentageDataGrid FrontsPackContentDataGrid = null;
-        PercentageDataGrid DecorPackContentDataGrid = null;
-        PercentageDataGrid PackagesDataGrid = null;
-        PercentageDataGrid dgvScanPackages = null;
-        PercentageDataGrid dgvNotScanPackages = null;
-        PercentageDataGrid dgvWrongPackages = null;
+        private readonly PercentageDataGrid FrontsPackContentDataGrid = null;
+        private readonly PercentageDataGrid DecorPackContentDataGrid = null;
+        private PercentageDataGrid PackagesDataGrid = null;
+        private PercentageDataGrid dgvScanPackages = null;
+        private PercentageDataGrid dgvNotScanPackages = null;
+        private PercentageDataGrid dgvWrongPackages = null;
 
-        DataTable FrontsPackContentDataTable = null;
-        DataTable DecorPackContentDataTable = null;
-        DataTable PackagesDataTable = null;
-        DataTable ScanedPackagesDT = null;
-        DataTable NotScanedPackagesDT = null;
-        DataTable WrongPackagesDT = null;
+        private DataTable FrontsPackContentDataTable = null;
+        private DataTable DecorPackContentDataTable = null;
+        private DataTable PackagesDataTable = null;
+        private DataTable ScanedPackagesDT = null;
+        private DataTable NotScanedPackagesDT = null;
+        private DataTable WrongPackagesDT = null;
 
-        DataTable FrontsDataTable = null;
-        DataTable PatinaDataTable = null;
-        DataTable InsetTypesDataTable = null;
-        DataTable FrameColorsDataTable = null;
-        DataTable InsetColorsDataTable = null;
-        DataTable TechnoInsetTypesDataTable = null;
-        DataTable TechnoInsetColorsDataTable = null;
+        private DataTable FrontsDataTable = null;
+        private DataTable PatinaDataTable = null;
+        private DataTable InsetTypesDataTable = null;
+        private DataTable FrameColorsDataTable = null;
+        private DataTable InsetColorsDataTable = null;
+        private DataTable TechnoInsetTypesDataTable = null;
+        private DataTable TechnoInsetColorsDataTable = null;
         private DataTable TechnoProfilesDataTable = null;
-        DataTable ZOVClientsDataTable;
-        DataTable PackageStatusesDataTable;
+        private DataTable ZOVClientsDataTable;
+        private DataTable PackageStatusesDataTable;
 
-        DataTable DecorDataTable;
-        DataTable DecorProductsDataTable;
+        private DataTable DecorDataTable;
+        private DataTable DecorProductsDataTable;
 
-        DataTable OrderStatusInfoDT;
+        private DataTable OrderStatusInfoDT;
 
-        DataGridViewComboBoxColumn FrontsColumn;
-        DataGridViewComboBoxColumn PatinaColumn = null;
-        DataGridViewComboBoxColumn InsetTypesColumn;
-        DataGridViewComboBoxColumn FrameColorsColumn;
-        DataGridViewComboBoxColumn InsetColorsColumn;
-        DataGridViewComboBoxColumn TechnoProfilesColumn = null;
-        DataGridViewComboBoxColumn TechnoFrameColorsColumn = null;
-        DataGridViewComboBoxColumn TechnoInsetTypesColumn = null;
-        DataGridViewComboBoxColumn TechnoInsetColorsColumn = null;
+        private DataGridViewComboBoxColumn FrontsColumn;
+        private DataGridViewComboBoxColumn PatinaColumn = null;
+        private DataGridViewComboBoxColumn InsetTypesColumn;
+        private DataGridViewComboBoxColumn FrameColorsColumn;
+        private DataGridViewComboBoxColumn InsetColorsColumn;
+        private DataGridViewComboBoxColumn TechnoProfilesColumn = null;
+        private DataGridViewComboBoxColumn TechnoFrameColorsColumn = null;
+        private DataGridViewComboBoxColumn TechnoInsetTypesColumn = null;
+        private DataGridViewComboBoxColumn TechnoInsetColorsColumn = null;
 
         public BindingSource FrontsPackContentBindingSource = null;
         public BindingSource DecorPackContentBindingSource = null;
@@ -12976,29 +12976,29 @@ namespace Infinium.Modules.Dispatch
 
     public class MarketingDispatchCheckLabel
     {
-        int iUserID = 0;
-        ArrayList DispatchIDs;
-        ArrayList TrayIDs;
+        private int iUserID = 0;
+        private ArrayList DispatchIDs;
+        private ArrayList TrayIDs;
 
-        int CurrentProductType = 0;
-        int CurrentClientID = 0;
-        int CurrentFactoryID = 0;
+        private int CurrentProductType = 0;
+        private int CurrentClientID = 0;
+        private int CurrentFactoryID = 0;
         public int CurrentMainOrderID = 0;
         public int CurrentMegaOrderID = 0;
 
-        PercentageDataGrid FrontsPackContentDataGrid = null;
-        PercentageDataGrid DecorPackContentDataGrid = null;
-        PercentageDataGrid PackagesDataGrid = null;
-        PercentageDataGrid dgvScanPackages = null;
-        PercentageDataGrid dgvNotScanPackages = null;
-        PercentageDataGrid dgvWrongPackages = null;
+        private readonly PercentageDataGrid FrontsPackContentDataGrid = null;
+        private readonly PercentageDataGrid DecorPackContentDataGrid = null;
+        private PercentageDataGrid PackagesDataGrid = null;
+        private PercentageDataGrid dgvScanPackages = null;
+        private PercentageDataGrid dgvNotScanPackages = null;
+        private PercentageDataGrid dgvWrongPackages = null;
 
-        DataTable FrontsPackContentDataTable = null;
-        DataTable DecorPackContentDataTable = null;
-        DataTable PackagesDataTable = null;
-        DataTable ScanedPackagesDT = null;
-        DataTable NotScanedPackagesDT = null;
-        DataTable WrongPackagesDT = null;
+        private DataTable FrontsPackContentDataTable = null;
+        private DataTable DecorPackContentDataTable = null;
+        private DataTable PackagesDataTable = null;
+        private DataTable ScanedPackagesDT = null;
+        private DataTable NotScanedPackagesDT = null;
+        private DataTable WrongPackagesDT = null;
 
         public DataTable FrontsDataTable = null;
         public DataTable PatinaDataTable = null;
@@ -13009,31 +13009,31 @@ namespace Infinium.Modules.Dispatch
         private DataTable TechnoInsetTypesDataTable = null;
         private DataTable TechnoInsetColorsDataTable = null;
         private DataTable TechnoProfilesDataTable = null;
-        DataTable ZOVClientsDataTable;
-        DataTable MarktClientsDataTable;
-        DataTable PackageStatusesDataTable;
+        private DataTable ZOVClientsDataTable;
+        private DataTable MarktClientsDataTable;
+        private DataTable PackageStatusesDataTable;
 
-        DataTable DecorDataTable;
-        DataTable DecorProductsDataTable;
+        private DataTable DecorDataTable;
+        private DataTable DecorProductsDataTable;
 
-        DataTable OrderStatusInfoDT;
+        private DataTable OrderStatusInfoDT;
 
-        DataTable PackageDetailsDT;
-        DataTable DecorAssignmentsDT;
-        DataTable StoreDT;
-        DataTable ReadyStoreDT;
-        DataTable WriteOffStoreDT;
-        DataTable MovementInvoicesDT;
-        DataTable MovementInvoiceDetailsDT;
+        private DataTable PackageDetailsDT;
+        private DataTable DecorAssignmentsDT;
+        private DataTable StoreDT;
+        private DataTable ReadyStoreDT;
+        private DataTable WriteOffStoreDT;
+        private DataTable MovementInvoicesDT;
+        private DataTable MovementInvoiceDetailsDT;
 
-        SqlDataAdapter ReadyStoreDA;
-        SqlCommandBuilder ReadyStoreCB;
-        SqlDataAdapter WriteOffStoreDA;
-        SqlCommandBuilder WriteOffStoreCB;
-        SqlDataAdapter MovementInvoicesDA;
-        SqlCommandBuilder MovementInvoicesCB;
-        SqlDataAdapter MovementInvoiceDetailsDA;
-        SqlCommandBuilder MovementInvoiceDetailsCB;
+        private SqlDataAdapter ReadyStoreDA;
+        private SqlCommandBuilder ReadyStoreCB;
+        private SqlDataAdapter WriteOffStoreDA;
+        private SqlCommandBuilder WriteOffStoreCB;
+        private SqlDataAdapter MovementInvoicesDA;
+        private SqlCommandBuilder MovementInvoicesCB;
+        private SqlDataAdapter MovementInvoiceDetailsDA;
+        private SqlCommandBuilder MovementInvoiceDetailsCB;
 
         private DataGridViewComboBoxColumn FrontsColumn = null;
         private DataGridViewComboBoxColumn PatinaColumn = null;
@@ -13045,9 +13045,9 @@ namespace Infinium.Modules.Dispatch
         private DataGridViewComboBoxColumn TechnoInsetTypesColumn = null;
         private DataGridViewComboBoxColumn TechnoInsetColorsColumn = null;
 
-        DataGridViewComboBoxColumn DecorColumn;
-        DataGridViewComboBoxColumn DecorProductsColumn;
-        DataGridViewComboBoxColumn DecorColorColumn;
+        private DataGridViewComboBoxColumn DecorColumn;
+        private DataGridViewComboBoxColumn DecorProductsColumn;
+        private DataGridViewComboBoxColumn DecorColorColumn;
 
         public BindingSource FrontsPackContentBindingSource = null;
         public BindingSource DecorPackContentBindingSource = null;

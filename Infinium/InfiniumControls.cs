@@ -21,8 +21,8 @@ namespace Infinium
     //news
     public class InfiniumScrollContainer : Control
     {
-        SolidBrush brBackBrush;
-        Color cBackColor = Color.White;
+        private readonly SolidBrush brBackBrush;
+        private Color cBackColor = Color.White;
 
         public InfiniumScrollContainer()
         {
@@ -82,13 +82,13 @@ namespace Infinium
     {
         public int iTotalControlHeight = 0;//height of scrollable container (area)
         public int iScrollWheelOffset = 30;
-        int iOffset = 0;
+        private int iOffset = 0;
 
-        Rectangle rVerticalScrollShaftRect;
+        private Rectangle rVerticalScrollShaftRect;
 
-        bool bThumbTracking = false;
-        bool bThumbClicked = false;
-        int iThumbYClicked = -1;
+        private bool bThumbTracking = false;
+        private bool bThumbClicked = false;
+        private int iThumbYClicked = -1;
 
 
         public int ThumbSize = 0;//height of thumb
@@ -98,15 +98,15 @@ namespace Infinium
         public decimal ThumbStepWidthOnScrollWheel = 0;//thumb offset on scrollshaft (Y) on every scrollwheeloffset
 
 
-        Color cVerticalScrollCommonShaftBackColor = Color.LightBlue;
-        Color cVerticalScrollCommonThumbButtonColor = Color.DarkGray;
-        Color cVerticalScrollTrackingShaftBackColor = Color.Blue;
-        Color cVerticalScrollTrackingThumbButtonColor = Color.Gray;
+        private Color cVerticalScrollCommonShaftBackColor = Color.LightBlue;
+        private Color cVerticalScrollCommonThumbButtonColor = Color.DarkGray;
+        private Color cVerticalScrollTrackingShaftBackColor = Color.Blue;
+        private Color cVerticalScrollTrackingThumbButtonColor = Color.Gray;
 
-        SolidBrush brVerticalScrollCommonShaftBackBrush;
-        SolidBrush brVerticalScrollCommonThumbButtonBrush;
-        SolidBrush brVerticalScrollTrackingShaftBackBrush;
-        SolidBrush brVerticalScrollTrackingThumbButtonBrush;
+        private readonly SolidBrush brVerticalScrollCommonShaftBackBrush;
+        private readonly SolidBrush brVerticalScrollCommonThumbButtonBrush;
+        private readonly SolidBrush brVerticalScrollTrackingShaftBackBrush;
+        private readonly SolidBrush brVerticalScrollTrackingThumbButtonBrush;
 
         public InfiniumVerticalScrollBar()
         {
@@ -414,13 +414,13 @@ namespace Infinium
     {
         public int iTotalControlWidth = 0;//height of scrollable container (area)
         public int iScrollWheelOffset = 30;
-        int iOffset = 0;
+        private int iOffset = 0;
 
-        Rectangle rHorizontalScrollShaftRect;
+        private Rectangle rHorizontalScrollShaftRect;
 
-        bool bThumbTracking = false;
-        bool bThumbClicked = false;
-        int iThumbYClicked = -1;
+        private bool bThumbTracking = false;
+        private bool bThumbClicked = false;
+        private int iThumbYClicked = -1;
 
 
         public int ThumbSize = 0;//height of thumb
@@ -430,15 +430,15 @@ namespace Infinium
         public decimal ThumbStepWidthOnScrollWheel = 0;//thumb offset on scrollshaft (Y) on every scrollwheeloffset
 
 
-        Color cHorizontalScrollCommonShaftBackColor = Color.LightBlue;
-        Color cHorizontalScrollCommonThumbButtonColor = Color.DarkGray;
-        Color cHorizontalScrollTrackingShaftBackColor = Color.Blue;
-        Color cHorizontalScrollTrackingThumbButtonColor = Color.Gray;
+        private Color cHorizontalScrollCommonShaftBackColor = Color.LightBlue;
+        private Color cHorizontalScrollCommonThumbButtonColor = Color.DarkGray;
+        private Color cHorizontalScrollTrackingShaftBackColor = Color.Blue;
+        private Color cHorizontalScrollTrackingThumbButtonColor = Color.Gray;
 
-        SolidBrush brHorizontalScrollCommonShaftBackBrush;
-        SolidBrush brHorizontalScrollCommonThumbButtonBrush;
-        SolidBrush brHorizontalScrollTrackingShaftBackBrush;
-        SolidBrush brHorizontalScrollTrackingThumbButtonBrush;
+        private readonly SolidBrush brHorizontalScrollCommonShaftBackBrush;
+        private readonly SolidBrush brHorizontalScrollCommonThumbButtonBrush;
+        private readonly SolidBrush brHorizontalScrollTrackingShaftBackBrush;
+        private readonly SolidBrush brHorizontalScrollTrackingThumbButtonBrush;
 
         public InfiniumHorizontalScrollBar()
         {
@@ -758,26 +758,26 @@ namespace Infinium
 
     public class InfiniumAttachItem : Control
     {
-        string sExtension = "";
-        int iFileSize = 0;
-        string sKBFileSize = "";
-        string sFileName = "";
-        int iNewsAttachID = -1;
+        private string sExtension = "";
+        private int iFileSize = 0;
+        private string sKBFileSize = "";
+        private string sFileName = "";
+        private int iNewsAttachID = -1;
 
 
-        SolidBrush brFileNameBrush;
-        SolidBrush brFileSizeBrush;
+        private readonly SolidBrush brFileNameBrush;
+        private readonly SolidBrush brFileSizeBrush;
 
-        Font fFileNameFont;
-        Font fFileSizeFont;
+        private Font fFileNameFont;
+        private Font fFileSizeFont;
 
-        Color cFileNameColor;
-        Color cFileSizeColor;
+        private readonly Color cFileNameColor;
+        private readonly Color cFileSizeColor;
 
-        int iFNW = 0;
-        int iFNH = 0;
-        int iFSW = 0;
-        int iFSH = 0;
+        private int iFNW = 0;
+        private int iFNH = 0;
+        private int iFSW = 0;
+        private int iFSH = 0;
 
         public InfiniumAttachItem()
         {
@@ -923,27 +923,27 @@ namespace Infinium
     {
         public InfiniumAttachItem[] FileLabel;
 
-        Label AllFilesLabel;
+        private readonly Label AllFilesLabel;
 
-        int iMarginToNextLabel = 5;
-        int iMarginForCaptionLabel = 25;
+        private readonly int iMarginToNextLabel = 5;
+        private readonly int iMarginForCaptionLabel = 25;
 
-        SolidBrush brFontBrush;
+        private readonly SolidBrush brFontBrush;
 
-        DataRow[] dRows;
+        private readonly DataRow[] dRows;
 
-        int MaxCount = 3;
+        private readonly int MaxCount = 3;
 
-        bool bAllFilesShowed = false;
+        private bool bAllFilesShowed = false;
 
         public int StandardHeight = 0;
 
-        Bitmap ImageFileBMP = Properties.Resources.ImageFile;
-        Bitmap PDFFileBMP = Properties.Resources.PDFFile;
-        Bitmap ExcelFileBMP = Properties.Resources.ExcelFile;
-        Bitmap WordFileBMP = Properties.Resources.WordFile;
-        Bitmap ArchiveFileBMP = Properties.Resources.ArchiveFile;
-        Bitmap OtherFileBMP = Properties.Resources.OtherFile;
+        private readonly Bitmap ImageFileBMP = Properties.Resources.ImageFile;
+        private readonly Bitmap PDFFileBMP = Properties.Resources.PDFFile;
+        private readonly Bitmap ExcelFileBMP = Properties.Resources.ExcelFile;
+        private readonly Bitmap WordFileBMP = Properties.Resources.WordFile;
+        private readonly Bitmap ArchiveFileBMP = Properties.Resources.ArchiveFile;
+        private readonly Bitmap OtherFileBMP = Properties.Resources.OtherFile;
 
 
         public InfiniumNewsAttachmentsList(DataRow[] Rows)
@@ -1214,9 +1214,9 @@ namespace Infinium
     {
         public int Offset = 0;
 
-        int iTempScrollWheelOffset = 0;
+        private int iTempScrollWheelOffset = 0;
 
-        int iMarginToNextItem = 21;
+        private readonly int iMarginToNextItem = 21;
 
         public DataTable ClientsManagersDT;
         public DataTable ManagersDT;
@@ -1241,7 +1241,7 @@ namespace Infinium
 
         private UserImagesStruct[] UserImages;
 
-        int iCurrentUserID;
+        private int iCurrentUserID;
 
         public InfiniumNewsContainer()
         {
@@ -1272,10 +1272,10 @@ namespace Infinium
 
 
         [DllImport("user32.dll", SetLastError = true)]
-        static extern UInt32 GetWindowLong(IntPtr hWnd, int nIndex);
+        private static extern UInt32 GetWindowLong(IntPtr hWnd, int nIndex);
 
         [DllImport("user32.dll")]
-        static extern int SetWindowLong(IntPtr hWnd, int nIndex, UInt32 dwNewLong);
+        private static extern int SetWindowLong(IntPtr hWnd, int nIndex, UInt32 dwNewLong);
 
 
 
@@ -2059,77 +2059,77 @@ namespace Infinium
 
     public class InfiniumNewsItem : Control
     {
-        Bitmap imSenderImage;
+        private Bitmap imSenderImage;
 
         public DataTable ClientsManagersDT;
         public DataTable ManagersDT;
 
-        Color cHeaderFontColor = Color.FromArgb(18, 164, 217);
-        Color cSenderFontColor = Color.Gray;
-        Color cTextFontColor = Color.FromArgb(30, 30, 30);
-        Color cDarkSplitterColor = Color.LightGray;
-        Color cLightSplitterColor = Color.FromArgb(240, 240, 240);
-        Color cNewBackColor = Color.FromArgb(255, 250, 228);
+        private Color cHeaderFontColor = Color.FromArgb(18, 164, 217);
+        private Color cSenderFontColor = Color.Gray;
+        private Color cTextFontColor = Color.FromArgb(30, 30, 30);
+        private Color cDarkSplitterColor = Color.LightGray;
+        private Color cLightSplitterColor = Color.FromArgb(240, 240, 240);
+        private readonly Color cNewBackColor = Color.FromArgb(255, 250, 228);
 
-        Font fHeaderFont;
-        Font fSenderFont;
-        Font fTextFont;
+        private Font fHeaderFont;
+        private Font fSenderFont;
+        private Font fTextFont;
 
-        Pen pImageBorderPen;
-        Pen pDarkSplitterPen;
-        Pen pLightSplitterPen;
+        private readonly Pen pImageBorderPen;
+        private readonly Pen pDarkSplitterPen;
+        private readonly Pen pLightSplitterPen;
 
-        Rectangle ImageRect;
+        private Rectangle ImageRect;
 
-        UserImagesStruct[] UsersImages;
+        private readonly UserImagesStruct[] UsersImages;
 
-        SolidBrush brHeaderFontBrush;
-        SolidBrush brSenderFontBrush;
-        SolidBrush brTextFontBrush;
-        SolidBrush brBackBrush;
+        private readonly SolidBrush brHeaderFontBrush;
+        private readonly SolidBrush brSenderFontBrush;
+        private readonly SolidBrush brTextFontBrush;
+        private readonly SolidBrush brBackBrush;
 
-        int iNewsID = -1;
-        string sSenderName = "";
-        int iSenderID = -1;
-        string sDate = "";
-        string sHeaderText = "";
-        string sNewsText = "";
+        private int iNewsID = -1;
+        private string sSenderName = "";
+        private int iSenderID = -1;
+        private string sDate = "";
+        private string sHeaderText = "";
+        private string sNewsText = "";
 
-        int iLikesCount = 0;
+        private int iLikesCount = 0;
 
-        int iNewCommentsCount = 0;
+        private int iNewCommentsCount = 0;
 
-        bool bNew = false;
+        private bool bNew = false;
 
-        bool bAllCommentsVisible = false;
-        int iCommentsHeight = 0;
-        int iMaxCommentsInNews = 2;
+        private bool bAllCommentsVisible = false;
+        private int iCommentsHeight = 0;
+        private readonly int iMaxCommentsInNews = 2;
 
-        int iPrevCommentsTextBoxHeight = 0;
+        private int iPrevCommentsTextBoxHeight = 0;
 
         public int iMarginForImageWidth = 140;
         public int iMarginForImageHeight = 130;
-        int iMarginForText = 8;
-        int iCurTextPosY = 0;
-        int iMarginToNextComment = 8;
-        int iMarginTextRows = 5;
+        private readonly int iMarginForText = 8;
+        private int iCurTextPosY = 0;
+        private readonly int iMarginToNextComment = 8;
+        private readonly int iMarginTextRows = 5;
 
-        int iFirstWidth = 0;
-        int iFirstHeight = 0;
+        private int iFirstWidth = 0;
+        private int iFirstHeight = 0;
 
-        InfiniumNewsCommentItem[] CommentsItems;
+        private InfiniumNewsCommentItem[] CommentsItems;
 
-        DataTable UsersDT = null;
+        private readonly DataTable UsersDT = null;
         public DataRow[] CommentsRows = null;
         public DataRow[] AttachmentsRows = null;
         public DataRow[] NewsLikesRows = null;
         public DataRow[] CommentsLikesRows = null;
 
-        InfiniumNewsControlButtons ControlButtons;
+        private InfiniumNewsControlButtons ControlButtons;
         public InfiniumNewsCommentsRichTextBox CommentsTextBox;
-        InfiniumNewsAttachmentsList AttachmentsList;
+        private InfiniumNewsAttachmentsList AttachmentsList;
 
-        int CurrentUserID = -1;
+        private readonly int CurrentUserID = -1;
 
         //CONSTRUCTOR
         public InfiniumNewsItem(int iCurrentUserID, ref UserImagesStruct[] tUsersImages, DataTable tUsersDT)
@@ -3257,50 +3257,50 @@ namespace Infinium
 
     public class InfiniumNewsCommentItem : Control
     {
-        Bitmap imSenderImage;
+        private Bitmap imSenderImage;
 
-        Color cSenderFontColor = Color.FromArgb(18, 164, 217);
-        Color cDateFontColor = Color.Gray;
-        Color cTextFontColor = Color.FromArgb(30, 30, 30);
-        Color cSplitterColor = Color.FromArgb(240, 240, 240);
+        private Color cSenderFontColor = Color.FromArgb(18, 164, 217);
+        private Color cDateFontColor = Color.Gray;
+        private Color cTextFontColor = Color.FromArgb(30, 30, 30);
+        private Color cSplitterColor = Color.FromArgb(240, 240, 240);
 
-        Font fSenderFont;
-        Font fDateFont;
-        Font fTextFont;
+        private Font fSenderFont;
+        private Font fDateFont;
+        private Font fTextFont;
 
-        int iNewsID = -1;
-        int iNewsCommentID = -1;
-        int iSenderID = -1;
-        string sSenderName = "";
-        string sDate = "";
-        string sCommentText = "";
+        private int iNewsID = -1;
+        private int iNewsCommentID = -1;
+        private int iSenderID = -1;
+        private string sSenderName = "";
+        private string sDate = "";
+        private string sCommentText = "";
 
         public bool bAllCommentsVisible = false;
         public bool bCommentsVisible = false;
         public int iAllCommentsCount = -1;
 
-        int iLikesCount = 0;
+        private int iLikesCount = 0;
 
-        int iMarginForImageWidth = 90;
-        int iMarginForImageHeight = 84;
-        int iCurTextPosY = 0;
-        int iMarginTextRows = 5;
-        int iMarginText = 5;
+        private readonly int iMarginForImageWidth = 90;
+        private readonly int iMarginForImageHeight = 84;
+        private int iCurTextPosY = 0;
+        private readonly int iMarginTextRows = 5;
+        private readonly int iMarginText = 5;
 
-        Pen pImageBorderPen;
-        Pen pSplitterPen;
+        private readonly Pen pImageBorderPen;
+        private readonly Pen pSplitterPen;
 
-        Rectangle ImageRect;
+        private Rectangle ImageRect;
 
-        SolidBrush brSenderFontBrush;
-        SolidBrush brDateFontBrush;
-        SolidBrush brTextFontBrush;
+        private readonly SolidBrush brSenderFontBrush;
+        private readonly SolidBrush brDateFontBrush;
+        private readonly SolidBrush brTextFontBrush;
 
-        InfiniumNewsControlButtons ControlButtons;
+        private InfiniumNewsControlButtons ControlButtons;
 
         public DataRow[] CommentsLikesRows = null;
 
-        int CurrentUserID = -1;
+        private readonly int CurrentUserID = -1;
 
         public InfiniumNewsCommentItem(int iCurrentUserID)
         {
@@ -3830,55 +3830,56 @@ namespace Infinium
 
     public class InfiniumNewsControlButtons : Control
     {
-        bool bAllCommentsLabelVisible = false;
-        bool bCommentsLabelVisible = false;
-        bool bQuoteLabelVisible = false;
-        bool bEditLabelVisible = false;
-        bool bRemoveLabelVisible = false;
+        private bool bAllCommentsLabelVisible = false;
+        private bool bCommentsLabelVisible = false;
+        private bool bQuoteLabelVisible = false;
+        private bool bEditLabelVisible = false;
+        private bool bRemoveLabelVisible = false;
 
-        bool bAllCommentsLabelTrack;
-        bool bCommentsLabelTrack;
-        bool bQuoteLabelTrack;
-        bool bEditLabelTrack;
-        bool bRemoveLabelTrack;
-        bool bLikeTrack;
+        private bool bAllCommentsLabelTrack;
+        private bool bCommentsLabelTrack;
+        private bool bQuoteLabelTrack;
+        private bool bEditLabelTrack;
+        private bool bRemoveLabelTrack;
+        private bool bLikeTrack;
 
-        int iAllCommentsLabelWidth = 0;
-        int iCommentsLabelWidth = 0;
-        int iQuoteLabelWidth = 0;
-        int iEditLabelWidth = 0;
-        int iRemoveLabelWidth = 0;
+        private int iAllCommentsLabelWidth = 0;
+        private int iCommentsLabelWidth = 0;
+        private int iQuoteLabelWidth = 0;
+        private int iEditLabelWidth = 0;
+        private int iRemoveLabelWidth = 0;
 
-        int iAllCommentsLabelLeft = 0;
-        int iCommentsLabelLeft = 0;
-        int iQuoteLabelLeft = 0;
-        int iEditLabelLeft = 0;
-        int iRemoveLabelLeft = 0;
+        private int iAllCommentsLabelLeft = 0;
+        private int iCommentsLabelLeft = 0;
+        private int iQuoteLabelLeft = 0;
+        private int iEditLabelLeft = 0;
+        private int iRemoveLabelLeft = 0;
 
-        int iMarginToNextLabel = 20;
-        int iNewsID = -1;
-        int iNewsCommentID = -1;
+        private readonly int iMarginToNextLabel = 20;
+        private int iNewsID = -1;
+        private int iNewsCommentID = -1;
 
-        int iLikeWidth = 0;
-        int iLikeLeft = 0;
+        private int iLikeWidth = 0;
+
+        private int iLikeLeft = 0;
         //int iLikeHeight = 15;
-        int iLikeMargin = 3;
-        int iLikesCount = 0;
+        private readonly int iLikeMargin = 3;
+        private int iLikesCount = 0;
 
-        int iCurrentUserID;
+        private int iCurrentUserID;
 
-        int iAllCommentsCount = -1;
+        private int iAllCommentsCount = -1;
 
-        bool bTipUp = false;
+        private bool bTipUp = false;
 
-        bool bILike = false;
+        private bool bILike = false;
 
-        SolidBrush brFontBrush;
+        private readonly SolidBrush brFontBrush;
 
-        Bitmap LikeInactiveBMP = Properties.Resources.LikeInActive;
-        Bitmap LikeLikedBMP = Properties.Resources.LikeLiked;
+        private readonly Bitmap LikeInactiveBMP = Properties.Resources.LikeInActive;
+        private readonly Bitmap LikeLikedBMP = Properties.Resources.LikeLiked;
 
-        Form LikesList;
+        private Form LikesList;
 
         public DataRow[] rLikesRows;
 
@@ -4336,19 +4337,19 @@ namespace Infinium
 
     public class InfiniumNewsCommentsRichTextBox : Control
     {
-        ComponentFactory.Krypton.Toolkit.KryptonRichTextBox RichTextBox;
+        private ComponentFactory.Krypton.Toolkit.KryptonRichTextBox RichTextBox;
 
-        ComponentFactory.Krypton.Toolkit.KryptonButton SendButton;
-        ComponentFactory.Krypton.Toolkit.KryptonButton CancelButton;
+        private ComponentFactory.Krypton.Toolkit.KryptonButton SendButton;
+        private ComponentFactory.Krypton.Toolkit.KryptonButton CancelButton;
 
-        Label InfoLabel;
+        private Label InfoLabel;
 
-        bool bEdit = false;
-        int iStartHeight = 150;
-        int iNewsCommentID = -1;
-        int iLineHeight = -1;
+        private bool bEdit = false;
+        private readonly int iStartHeight = 150;
+        private int iNewsCommentID = -1;
+        private int iLineHeight = -1;
 
-        bool bCtrlEnter = false;
+        private readonly bool bCtrlEnter = false;
 
         public InfiniumNewsCommentsRichTextBox()
         {
@@ -4567,13 +4568,13 @@ namespace Infinium
     {
         public int iTotalControlHeight = 0;//height of scrollable container (area)
         public int iScrollWheelOffset = 30;
-        int iOffset = 0;
+        private int iOffset = 0;
 
-        Rectangle rVerticalScrollShaftRect;
+        private Rectangle rVerticalScrollShaftRect;
 
-        bool bThumbTracking = false;
-        bool bThumbClicked = false;
-        int iThumbYClicked = -1;
+        private bool bThumbTracking = false;
+        private bool bThumbClicked = false;
+        private int iThumbYClicked = -1;
 
         public int ThumbSize = 0;//height of thumb
         public decimal iThumbPosition = 0;//current position of thumb on scrollshaft
@@ -4581,15 +4582,15 @@ namespace Infinium
         public int ThumbStepsCount = 0;//total count of thumb steps (in pixels) on scrollshaft
         public decimal ThumbStepWidthOnScrollWheel = 0;//thumb offset on scrollshaft (Y) on every scrollwheeloffset
 
-        Color cVerticalScrollCommonShaftBackColor = Color.LightBlue;
-        Color cVerticalScrollCommonThumbButtonColor = Color.DarkGray;
-        Color cVerticalScrollTrackingShaftBackColor = Color.Blue;
-        Color cVerticalScrollTrackingThumbButtonColor = Color.Gray;
+        private Color cVerticalScrollCommonShaftBackColor = Color.LightBlue;
+        private Color cVerticalScrollCommonThumbButtonColor = Color.DarkGray;
+        private Color cVerticalScrollTrackingShaftBackColor = Color.Blue;
+        private Color cVerticalScrollTrackingThumbButtonColor = Color.Gray;
 
-        SolidBrush brVerticalScrollCommonShaftBackBrush;
-        SolidBrush brVerticalScrollCommonThumbButtonBrush;
-        SolidBrush brVerticalScrollTrackingShaftBackBrush;
-        SolidBrush brVerticalScrollTrackingThumbButtonBrush;
+        private readonly SolidBrush brVerticalScrollCommonShaftBackBrush;
+        private readonly SolidBrush brVerticalScrollCommonThumbButtonBrush;
+        private readonly SolidBrush brVerticalScrollTrackingShaftBackBrush;
+        private readonly SolidBrush brVerticalScrollTrackingThumbButtonBrush;
 
         public InfiniumProjectsVerticalScrollBar()
         {
@@ -4895,41 +4896,41 @@ namespace Infinium
 
     public class InfiniumProjectsFilterGroupItem : Control
     {
-        string sCaption = "";
-        int iNewCount = 0;
+        private string sCaption = "";
+        private int iNewCount = 0;
 
-        int iMarginToCount = 5;
-        int iMarginCaptionLeft = 28;
-        int iMarginIconLeft = 0;
+        private readonly int iMarginToCount = 5;
+        private readonly int iMarginCaptionLeft = 28;
+        private readonly int iMarginIconLeft = 0;
 
-        int iStatus = -1;
+        private int iStatus = -1;
 
-        Font fCaptionFont;
-        Font fNewCountFont;
+        private Font fCaptionFont;
+        private Font fNewCountFont;
 
-        Color cCaptionColor = Color.FromArgb(60, 60, 60);
-        Color cCaptionTrackingColor = Color.FromArgb(0, 161, 214);
-        Color cCaptionSelectedColor = Color.FromArgb(56, 184, 238);
+        private Color cCaptionColor = Color.FromArgb(60, 60, 60);
+        private Color cCaptionTrackingColor = Color.FromArgb(0, 161, 214);
+        private Color cCaptionSelectedColor = Color.FromArgb(56, 184, 238);
 
-        Color cNewCountColor = Color.FromArgb(60, 60, 60);
-        Color cNewCountTrackingColor = Color.FromArgb(0, 161, 214);
-        Color cNewCountSelectedColor = Color.FromArgb(56, 184, 238);
+        private Color cNewCountColor = Color.FromArgb(60, 60, 60);
+        private Color cNewCountTrackingColor = Color.FromArgb(0, 161, 214);
+        private Color cNewCountSelectedColor = Color.FromArgb(56, 184, 238);
 
-        SolidBrush brCaptionBrush;
-        SolidBrush brNewCountBrush;
+        private readonly SolidBrush brCaptionBrush;
+        private readonly SolidBrush brNewCountBrush;
 
-        bool bTracking = false;
+        private bool bTracking = false;
 
-        bool bSelected = false;
+        private bool bSelected = false;
 
-        Bitmap IconGroupMySelected = Properties.Resources.ProjectGroupMy;
-        Bitmap IconGroupMyGray = Properties.Resources.ProjectGroupMyGray;
-        Bitmap IconGroupAllSelected = Properties.Resources.ProjectGroupAll;
-        Bitmap IconGroupAllGray = Properties.Resources.ProjectGroupAllGray;
-        Bitmap IconGroupUsersSelected = Properties.Resources.ProjectGroupUsers;
-        Bitmap IconGroupUsersGray = Properties.Resources.ProjectGroupUsersGray;
-        Bitmap IconGroupDepsSelected = Properties.Resources.ProjectGroupDeps;
-        Bitmap IconGroupDepsGray = Properties.Resources.ProjectGroupDepsGray;
+        private readonly Bitmap IconGroupMySelected = Properties.Resources.ProjectGroupMy;
+        private readonly Bitmap IconGroupMyGray = Properties.Resources.ProjectGroupMyGray;
+        private readonly Bitmap IconGroupAllSelected = Properties.Resources.ProjectGroupAll;
+        private readonly Bitmap IconGroupAllGray = Properties.Resources.ProjectGroupAllGray;
+        private readonly Bitmap IconGroupUsersSelected = Properties.Resources.ProjectGroupUsers;
+        private readonly Bitmap IconGroupUsersGray = Properties.Resources.ProjectGroupUsersGray;
+        private readonly Bitmap IconGroupDepsSelected = Properties.Resources.ProjectGroupDeps;
+        private readonly Bitmap IconGroupDepsGray = Properties.Resources.ProjectGroupDepsGray;
 
         public InfiniumProjectsFilterGroupItem()
         {
@@ -5196,41 +5197,41 @@ namespace Infinium
 
     public class InfiniumProjectsFilterStateItem : Control
     {
-        string sCaption = "";
-        int iNewCount = 0;
+        private string sCaption = "";
+        private int iNewCount = 0;
 
-        int iMarginToCount = 5;
-        int iMarginCaptionLeft = 28;
-        int iMarginIconLeft = 4;
+        private readonly int iMarginToCount = 5;
+        private readonly int iMarginCaptionLeft = 28;
+        private readonly int iMarginIconLeft = 4;
 
-        Font fCaptionFont;
-        Font fNewCountFont;
+        private Font fCaptionFont;
+        private Font fNewCountFont;
 
-        Color cCaptionColor = Color.FromArgb(60, 60, 60);
-        Color cCaptionTrackingColor = Color.FromArgb(0, 161, 214);
-        Color cCaptionSelectedColor = Color.FromArgb(56, 184, 238);
+        private Color cCaptionColor = Color.FromArgb(60, 60, 60);
+        private Color cCaptionTrackingColor = Color.FromArgb(0, 161, 214);
+        private Color cCaptionSelectedColor = Color.FromArgb(56, 184, 238);
 
-        Color cNewCountColor = Color.FromArgb(60, 60, 60);
-        Color cNewCountTrackingColor = Color.FromArgb(0, 161, 214);
-        Color cNewCountSelectedColor = Color.FromArgb(56, 184, 238);
+        private Color cNewCountColor = Color.FromArgb(60, 60, 60);
+        private Color cNewCountTrackingColor = Color.FromArgb(0, 161, 214);
+        private Color cNewCountSelectedColor = Color.FromArgb(56, 184, 238);
 
-        SolidBrush brCaptionBrush;
-        SolidBrush brNewCountBrush;
+        private readonly SolidBrush brCaptionBrush;
+        private readonly SolidBrush brNewCountBrush;
 
-        bool bTracking = false;
-        int iStatus = -1;
-        bool bSelected = false;
+        private bool bTracking = false;
+        private int iStatus = -1;
+        private bool bSelected = false;
 
-        Bitmap IconStartSelected = Properties.Resources.ProjectStart;
-        Bitmap IconStartGray = Properties.Resources.ProjectStartGray;
-        Bitmap IconStopSelected = Properties.Resources.ProjectStop;
-        Bitmap IconStopGray = Properties.Resources.ProjectStopGray;
-        Bitmap IconPauseSelected = Properties.Resources.ProjectPause;
-        Bitmap IconPauseGray = Properties.Resources.ProjectPauseGray;
-        Bitmap IconCancelSelected = Properties.Resources.ProjectCanceled;
-        Bitmap IconCancelGray = Properties.Resources.ProjectCanceledGray;
-        Bitmap IconAllSelected = Properties.Resources.ProjectsAll;
-        Bitmap IconAllGray = Properties.Resources.ProjectsAllGray;
+        private readonly Bitmap IconStartSelected = Properties.Resources.ProjectStart;
+        private readonly Bitmap IconStartGray = Properties.Resources.ProjectStartGray;
+        private readonly Bitmap IconStopSelected = Properties.Resources.ProjectStop;
+        private readonly Bitmap IconStopGray = Properties.Resources.ProjectStopGray;
+        private readonly Bitmap IconPauseSelected = Properties.Resources.ProjectPause;
+        private readonly Bitmap IconPauseGray = Properties.Resources.ProjectPauseGray;
+        private readonly Bitmap IconCancelSelected = Properties.Resources.ProjectCanceled;
+        private readonly Bitmap IconCancelGray = Properties.Resources.ProjectCanceledGray;
+        private readonly Bitmap IconAllSelected = Properties.Resources.ProjectsAll;
+        private readonly Bitmap IconAllGray = Properties.Resources.ProjectsAllGray;
 
         public InfiniumProjectsFilterStateItem()
         {
@@ -5510,39 +5511,39 @@ namespace Infinium
     {
         public int Offset = 0;
 
-        int iTempScrollWheelOffset = 0;
+        private int iTempScrollWheelOffset = 0;
 
-        int iMarginToNextItem = 7;
+        private readonly int iMarginToNextItem = 7;
 
-        int iSelected = 0;
+        private int iSelected = 0;
 
-        int iUsersHeight = 0;
-        int iDepartmentsHeight = 0;
+        private int iUsersHeight = 0;
+        private int iDepartmentsHeight = 0;
 
-        bool bUsersVisible = false;
-        bool bDepartmentsVisible = false;
+        private bool bUsersVisible = false;
+        private bool bDepartmentsVisible = false;
 
-        Font fCaptionFont;
-        Font fNewCountFont;
+        private Font fCaptionFont;
+        private Font fNewCountFont;
 
-        Font fSubItemsCaptionFont;
-        Font fSubItemsNewCountFont;
+        private Font fSubItemsCaptionFont;
+        private Font fSubItemsNewCountFont;
 
-        Color cCaptionColor = Color.FromArgb(60, 60, 60);
-        Color cCaptionTrackingColor = Color.FromArgb(0, 161, 214);
-        Color cCaptionSelectedColor = Color.FromArgb(56, 184, 238);
+        private Color cCaptionColor = Color.FromArgb(60, 60, 60);
+        private Color cCaptionTrackingColor = Color.FromArgb(0, 161, 214);
+        private Color cCaptionSelectedColor = Color.FromArgb(56, 184, 238);
 
-        Color cNewCountColor = Color.FromArgb(60, 60, 60);
-        Color cNewCountTrackingColor = Color.FromArgb(0, 161, 214);
-        Color cNewCountSelectedColor = Color.FromArgb(56, 184, 238);
+        private Color cNewCountColor = Color.FromArgb(60, 60, 60);
+        private Color cNewCountTrackingColor = Color.FromArgb(0, 161, 214);
+        private Color cNewCountSelectedColor = Color.FromArgb(56, 184, 238);
 
-        Color cSubItemsCaptionColor = Color.FromArgb(60, 60, 60);
-        Color cSubItemsCaptionTrackingColor = Color.FromArgb(0, 161, 214);
-        Color cSubItemsCaptionSelectedColor = Color.FromArgb(56, 184, 238);
+        private Color cSubItemsCaptionColor = Color.FromArgb(60, 60, 60);
+        private Color cSubItemsCaptionTrackingColor = Color.FromArgb(0, 161, 214);
+        private Color cSubItemsCaptionSelectedColor = Color.FromArgb(56, 184, 238);
 
-        Color cSubItemsNewCountColor = Color.FromArgb(60, 60, 60);
-        Color cSubItemsNewCountTrackingColor = Color.FromArgb(0, 161, 214);
-        Color cSubItemsNewCountSelectedColor = Color.FromArgb(56, 184, 238);
+        private Color cSubItemsNewCountColor = Color.FromArgb(60, 60, 60);
+        private Color cSubItemsNewCountTrackingColor = Color.FromArgb(0, 161, 214);
+        private Color cSubItemsNewCountSelectedColor = Color.FromArgb(56, 184, 238);
 
         public InfiniumScrollContainer ScrollContainer;
         public InfiniumProjectsVerticalScrollBar VerticalScroll;
@@ -5551,11 +5552,11 @@ namespace Infinium
         public InfiniumProjectsFilterGroupItem[] UsersItems;
         public InfiniumProjectsFilterGroupItem[] DepartmentsItems;
 
-        DataTable UsersDT;
-        DataTable DepartmentsDT;
+        private DataTable UsersDT;
+        private DataTable DepartmentsDT;
 
-        int iSelectedUser = -1;
-        int iSelectedDepartment = -1;
+        private int iSelectedUser = -1;
+        private int iSelectedDepartment = -1;
 
         public InfiniumProjectsFilterGroups()
         {
@@ -6563,13 +6564,13 @@ namespace Infinium
 
     public class InfiniumProjectsMembersItem : Control
     {
-        string sCaption = "";
+        private string sCaption = "";
 
-        Font fCaptionFont;
+        private Font fCaptionFont;
 
-        Color cCaptionColor = Color.FromArgb(60, 60, 60);
+        private Color cCaptionColor = Color.FromArgb(60, 60, 60);
 
-        SolidBrush brCaptionBrush;
+        private readonly SolidBrush brCaptionBrush;
 
         public InfiniumProjectsMembersItem()
         {
@@ -6653,27 +6654,27 @@ namespace Infinium
     {
         public int Offset = 0;
 
-        int iTempScrollWheelOffset = 0;
+        private int iTempScrollWheelOffset = 0;
 
-        int iMarginToNextItem = 7;
+        private readonly int iMarginToNextItem = 7;
 
-        Font fCaptionFont;
+        private Font fCaptionFont;
 
-        Font fSubItemsCaptionFont;
+        private Font fSubItemsCaptionFont;
 
-        Color cCaptionColor = Color.FromArgb(60, 60, 60);
-        Color cSubItemsCaptionColor = Color.FromArgb(60, 60, 60);
+        private Color cCaptionColor = Color.FromArgb(60, 60, 60);
+        private Color cSubItemsCaptionColor = Color.FromArgb(60, 60, 60);
 
         public InfiniumScrollContainer ScrollContainer;
         public InfiniumProjectsVerticalScrollBar VerticalScroll;
 
-        DataTable UsersDT;
-        DataTable DepartmentsDT;
+        private DataTable UsersDT;
+        private DataTable DepartmentsDT;
 
-        InfiniumProjectsMembersItem UsersCaption;
-        InfiniumProjectsMembersItem DepartmentsCaption;
-        InfiniumProjectsMembersItem[] UsersMembersItem;
-        InfiniumProjectsMembersItem[] DepartmentsMembersItem;
+        private InfiniumProjectsMembersItem UsersCaption;
+        private InfiniumProjectsMembersItem DepartmentsCaption;
+        private InfiniumProjectsMembersItem[] UsersMembersItem;
+        private InfiniumProjectsMembersItem[] DepartmentsMembersItem;
 
 
         public InfiniumProjectsMembersList()
@@ -6963,22 +6964,22 @@ namespace Infinium
     {
         public int Offset = 0;
 
-        int iTempScrollWheelOffset = 0;
+        private int iTempScrollWheelOffset = 0;
 
-        int iMarginToNextItem = 7;
+        private readonly int iMarginToNextItem = 7;
 
-        int iSelected = 0;
+        private int iSelected = 0;
 
-        Font fCaptionFont;
-        Font fNewCountFont;
+        private Font fCaptionFont;
+        private Font fNewCountFont;
 
-        Color cCaptionColor = Color.FromArgb(60, 60, 60);
-        Color cCaptionTrackingColor = Color.FromArgb(0, 161, 214);
-        Color cCaptionSelectedColor = Color.FromArgb(56, 184, 238);
+        private Color cCaptionColor = Color.FromArgb(60, 60, 60);
+        private Color cCaptionTrackingColor = Color.FromArgb(0, 161, 214);
+        private Color cCaptionSelectedColor = Color.FromArgb(56, 184, 238);
 
-        Color cNewCountColor = Color.FromArgb(60, 60, 60);
-        Color cNewCountTrackingColor = Color.FromArgb(0, 161, 214);
-        Color cNewCountSelectedColor = Color.FromArgb(56, 184, 238);
+        private Color cNewCountColor = Color.FromArgb(60, 60, 60);
+        private Color cNewCountTrackingColor = Color.FromArgb(0, 161, 214);
+        private Color cNewCountSelectedColor = Color.FromArgb(56, 184, 238);
 
         public InfiniumScrollContainer ScrollContainer;
         public InfiniumProjectsVerticalScrollBar VerticalScroll;
@@ -7369,35 +7370,35 @@ namespace Infinium
 
     public class InfiniumProjectsListItem : Control
     {
-        Color cCaptionColor = Color.FromArgb(60, 60, 60);
-        Color cStatusColor = Color.FromArgb(150, 150, 150);
+        private Color cCaptionColor = Color.FromArgb(60, 60, 60);
+        private Color cStatusColor = Color.FromArgb(150, 150, 150);
 
-        Color cBackColor = Color.White;
-        Color cBackSelectedColor = Color.FromArgb(245, 252, 255);
+        private readonly Color cBackColor = Color.White;
+        private Color cBackSelectedColor = Color.FromArgb(245, 252, 255);
 
-        Color cBorderColor = Color.FromArgb(240, 240, 240);
+        private Color cBorderColor = Color.FromArgb(240, 240, 240);
 
-        Pen pBorderPen;
+        private readonly Pen pBorderPen;
 
-        Font fCaptionFont = new Font("Segoe UI", 17.0f, FontStyle.Regular, GraphicsUnit.Pixel);
-        Font fStatusFont = new Font("Segoe UI", 14.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private Font fCaptionFont = new Font("Segoe UI", 17.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private Font fStatusFont = new Font("Segoe UI", 14.0f, FontStyle.Regular, GraphicsUnit.Pixel);
 
-        SolidBrush brCaptionBrush;
-        SolidBrush brStatusBrush;
+        private readonly SolidBrush brCaptionBrush;
+        private readonly SolidBrush brStatusBrush;
 
-        bool bSelected = false;
+        private bool bSelected = false;
 
         public string sAuthor = "";
-        string sCaption = "Project Caption";
+        private string sCaption = "Project Caption";
 
         public bool bPropos = false;
 
-        InfiniumProjectStates eStatus;
+        private InfiniumProjectStates eStatus;
 
-        Bitmap IconStart = Properties.Resources.ProjectItemStart;
-        Bitmap IconStop = Properties.Resources.ProjectItemStop;
-        Bitmap IconCancel = Properties.Resources.ProjectItemCanceled;
-        Bitmap IconPause = Properties.Resources.ProjectItemPause;
+        private readonly Bitmap IconStart = Properties.Resources.ProjectItemStart;
+        private readonly Bitmap IconStop = Properties.Resources.ProjectItemStop;
+        private readonly Bitmap IconCancel = Properties.Resources.ProjectItemCanceled;
+        private readonly Bitmap IconPause = Properties.Resources.ProjectItemPause;
 
         public InfiniumProjectsListItem()
         {
@@ -7555,19 +7556,19 @@ namespace Infinium
     {
         public int Offset = 0;
 
-        int iTempScrollWheelOffset = 0;
+        private int iTempScrollWheelOffset = 0;
 
-        InfiniumScrollContainer ScrollContainer;
+        private readonly InfiniumScrollContainer ScrollContainer;
         public InfiniumProjectsVerticalScrollBar VerticalScroll;
 
         public InfiniumProjectsListItem[] ProjectItems;
         public DataTable UsersDataTable;
 
-        DataTable ProjectsDT;
+        private DataTable ProjectsDT;
 
-        int iSelected = -1;
+        private int iSelected = -1;
 
-        int iProjectID = -1;
+        private int iProjectID = -1;
 
         public bool bPropos = false;
 
@@ -7878,15 +7879,15 @@ namespace Infinium
 
     public class InfiniumProjectsDescriptionItem : Control
     {
-        string sDescriptionText = "";
+        private string sDescriptionText = "";
 
-        int iMarginTextRows = 5;
+        private readonly int iMarginTextRows = 5;
 
-        SolidBrush brTextFontBrush;
+        private readonly SolidBrush brTextFontBrush;
 
-        Color cTextFontColor = Color.FromArgb(30, 30, 30);
+        private Color cTextFontColor = Color.FromArgb(30, 30, 30);
 
-        Font fTextFont;
+        private readonly Font fTextFont;
 
         public InfiniumProjectsDescriptionItem()
         {
@@ -8098,12 +8099,12 @@ namespace Infinium
 
     public class InfiniumProjectsDescriptionBox : Control
     {
-        int Offset = 0;
+        private int Offset = 0;
 
-        int iTempScrollWheelOffset = 0;
+        private int iTempScrollWheelOffset = 0;
 
-        InfiniumProjectsVerticalScrollBar VerticalScroll;
-        InfiniumScrollContainer ScrollContainer;
+        private InfiniumProjectsVerticalScrollBar VerticalScroll;
+        private readonly InfiniumScrollContainer ScrollContainer;
 
         public InfiniumProjectsDescriptionItem tDescriptionItem;
 
@@ -8250,9 +8251,9 @@ namespace Infinium
     {
         public int Offset = 0;
 
-        int iTempScrollWheelOffset = 0;
+        private int iTempScrollWheelOffset = 0;
 
-        int iMarginToNextItem = 21;
+        private readonly int iMarginToNextItem = 21;
 
         public int NewsCount = 0;
 
@@ -8274,7 +8275,7 @@ namespace Infinium
 
         private UserImagesStruct[] UserImages;
 
-        int iCurrentUserID;
+        private int iCurrentUserID;
 
         public InfiniumProjectNewsContainer()
         {
@@ -8306,10 +8307,10 @@ namespace Infinium
 
 
         [DllImport("user32.dll", SetLastError = true)]
-        static extern UInt32 GetWindowLong(IntPtr hWnd, int nIndex);
+        private static extern UInt32 GetWindowLong(IntPtr hWnd, int nIndex);
 
         [DllImport("user32.dll")]
-        static extern int SetWindowLong(IntPtr hWnd, int nIndex, UInt32 dwNewLong);
+        private static extern int SetWindowLong(IntPtr hWnd, int nIndex, UInt32 dwNewLong);
 
 
         public void SetNoClip()
@@ -9078,74 +9079,74 @@ namespace Infinium
 
     public class InfiniumProjectNewsItem : Control
     {
-        Bitmap imSenderImage;
+        private Bitmap imSenderImage;
 
-        Color cHeaderFontColor = Color.FromArgb(18, 164, 217);
-        Color cSenderFontColor = Color.FromArgb(18, 164, 217);
-        Color cTextFontColor = Color.FromArgb(30, 30, 30);
-        Color cDarkSplitterColor = Color.FromArgb(236, 236, 236);
-        Color cLightSplitterColor = Color.FromArgb(249, 249, 249);
-        Color cNewBackColor = Color.FromArgb(255, 250, 228);
+        private Color cHeaderFontColor = Color.FromArgb(18, 164, 217);
+        private Color cSenderFontColor = Color.FromArgb(18, 164, 217);
+        private Color cTextFontColor = Color.FromArgb(30, 30, 30);
+        private Color cDarkSplitterColor = Color.FromArgb(236, 236, 236);
+        private Color cLightSplitterColor = Color.FromArgb(249, 249, 249);
+        private readonly Color cNewBackColor = Color.FromArgb(255, 250, 228);
 
-        Font fHeaderFont;
-        Font fSenderFont;
-        Font fTextFont;
+        private Font fHeaderFont;
+        private Font fSenderFont;
+        private Font fTextFont;
 
-        Pen pImageBorderPen;
-        Pen pDarkSplitterPen;
-        Pen pLightSplitterPen;
+        private readonly Pen pImageBorderPen;
+        private readonly Pen pDarkSplitterPen;
+        private readonly Pen pLightSplitterPen;
 
-        Rectangle ImageRect;
+        private Rectangle ImageRect;
 
-        UserImagesStruct[] UsersImages;
+        private readonly UserImagesStruct[] UsersImages;
 
-        SolidBrush brHeaderFontBrush;
-        SolidBrush brSenderFontBrush;
-        SolidBrush brTextFontBrush;
-        SolidBrush brBackBrush;
+        private readonly SolidBrush brHeaderFontBrush;
+        private readonly SolidBrush brSenderFontBrush;
+        private readonly SolidBrush brTextFontBrush;
+        private readonly SolidBrush brBackBrush;
 
-        int iNewsID = -1;
-        string sSenderName = "";
-        int iSenderID = -1;
-        string sDate = "";
-        string sHeaderText = "";
-        string sNewsText = "";
+        private int iNewsID = -1;
+        private string sSenderName = "";
+        private int iSenderID = -1;
+        private string sDate = "";
+        private string sHeaderText = "";
+        private string sNewsText = "";
 
-        int iLikesCount = 0;
+        private int iLikesCount = 0;
 
-        int iNewCommentsCount = 0;
+        private int iNewCommentsCount = 0;
 
-        bool bNew = false;
+        private bool bNew = false;
 
-        bool bAllCommentsVisible = false;
-        int iCommentsHeight = 0;
-        int iMaxCommentsInNews = 2;
+        private bool bAllCommentsVisible = false;
+        private int iCommentsHeight = 0;
+        private readonly int iMaxCommentsInNews = 2;
 
-        int iPrevCommentsTextBoxHeight = 0;
+        private int iPrevCommentsTextBoxHeight = 0;
 
         public int iMarginForImageWidth = 100;
         public int iMarginForImageHeight = 92;
-        int iMarginForText = 8;
-        int iCurTextPosY = 0;
-        int iMarginToNextComment = 8;
-        int iMarginTextRows = 5;
+        private readonly int iMarginForText = 8;
+        private int iCurTextPosY = 0;
+        private readonly int iMarginToNextComment = 8;
+        private readonly int iMarginTextRows = 5;
 
-        int iFirstWidth = 0;
-        int iFirstHeight = 0;
+        private int iFirstWidth = 0;
+        private int iFirstHeight = 0;
 
-        InfiniumNewsCommentItem[] CommentsItems;
+        private InfiniumNewsCommentItem[] CommentsItems;
 
-        DataTable UsersDT = null;
+        private readonly DataTable UsersDT = null;
         public DataRow[] CommentsRows = null;
         public DataRow[] AttachmentsRows = null;
         public DataRow[] NewsLikesRows = null;
         public DataRow[] CommentsLikesRows = null;
 
-        InfiniumNewsControlButtons ControlButtons;
+        private InfiniumNewsControlButtons ControlButtons;
         public InfiniumProjectNewsCommentsRichTextBox CommentsTextBox;
-        InfiniumNewsAttachmentsList AttachmentsList;
+        private InfiniumNewsAttachmentsList AttachmentsList;
 
-        int CurrentUserID = -1;
+        private readonly int CurrentUserID = -1;
 
         //CONSTRUCTOR
         public InfiniumProjectNewsItem(int iCurrentUserID, ref UserImagesStruct[] tUsersImages, DataTable tUsersDT)
@@ -10227,21 +10228,21 @@ namespace Infinium
 
     public class InfiniumProjectNewsCommentsRichTextBox : Control
     {
-        ComponentFactory.Krypton.Toolkit.KryptonRichTextBox RichTextBox;
+        private ComponentFactory.Krypton.Toolkit.KryptonRichTextBox RichTextBox;
 
-        ComponentFactory.Krypton.Toolkit.KryptonButton SendButton;
-        ComponentFactory.Krypton.Toolkit.KryptonButton CancelButton;
+        private ComponentFactory.Krypton.Toolkit.KryptonButton SendButton;
+        private ComponentFactory.Krypton.Toolkit.KryptonButton CancelButton;
 
-        ComponentFactory.Krypton.Toolkit.KryptonCheckBox NoNotifyCheckBox;
+        private ComponentFactory.Krypton.Toolkit.KryptonCheckBox NoNotifyCheckBox;
 
-        Label InfoLabel;
+        private Label InfoLabel;
 
-        bool bEdit = false;
-        int iStartHeight = 150;
-        int iNewsCommentID = -1;
-        int iLineHeight = -1;
+        private bool bEdit = false;
+        private readonly int iStartHeight = 150;
+        private int iNewsCommentID = -1;
+        private int iLineHeight = -1;
 
-        bool bCtrlEnter = false;
+        private readonly bool bCtrlEnter = false;
 
         public InfiniumProjectNewsCommentsRichTextBox()
         {
@@ -10466,64 +10467,64 @@ namespace Infinium
 
     public class InfiniumFileListItem : Control
     {
-        Color cCaptionColor = Color.FromArgb(60, 60, 60);
-        Color cStatusColor = Color.FromArgb(150, 150, 150);
-        Color cSelectedCaptionColor = Color.FromArgb(56, 184, 238);
+        private Color cCaptionColor = Color.FromArgb(60, 60, 60);
+        private Color cStatusColor = Color.FromArgb(150, 150, 150);
+        private Color cSelectedCaptionColor = Color.FromArgb(56, 184, 238);
 
-        Color cBackColor = Color.White;
-        Color cBackSelectedColor = Color.FromArgb(253, 253, 253);
+        private readonly Color cBackColor = Color.White;
+        private Color cBackSelectedColor = Color.FromArgb(253, 253, 253);
 
-        Color cBorderColor = Color.FromArgb(240, 240, 240);
+        private Color cBorderColor = Color.FromArgb(240, 240, 240);
 
-        Color cFileSizeColor = Color.FromArgb(120, 120, 120);
+        private readonly Color cFileSizeColor = Color.FromArgb(120, 120, 120);
 
-        Pen pBorderPen;
+        private readonly Pen pBorderPen;
 
         public int iMarginForFileSizePercents = 43;
         public int iMarginForAuthorPercents = 58;
         public int iMarginForLastModifiedPercents = 85;
 
-        Font fCaptionFont = new Font("Segoe UI", 18.0f, FontStyle.Regular, GraphicsUnit.Pixel);
-        Font fStatusFont = new Font("Segoe UI", 14.0f, FontStyle.Regular, GraphicsUnit.Pixel);
-        Font fFileSizeFont = new Font("Segoe UI", 12.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private Font fCaptionFont = new Font("Segoe UI", 18.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private Font fStatusFont = new Font("Segoe UI", 14.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private readonly Font fFileSizeFont = new Font("Segoe UI", 12.0f, FontStyle.Regular, GraphicsUnit.Pixel);
 
-        SolidBrush brCaptionBrush;
-        SolidBrush brSelectedCaptionBrush;
-        SolidBrush brStatusBrush;
-        SolidBrush brFileSizeBrush;
+        private readonly SolidBrush brCaptionBrush;
+        private readonly SolidBrush brSelectedCaptionBrush;
+        private SolidBrush brStatusBrush;
+        private readonly SolidBrush brFileSizeBrush;
 
-        bool bSelected = false;
-        bool bCheckVisible = false;
-        bool bChecked = false;
+        private bool bSelected = false;
+        private bool bCheckVisible = false;
+        private bool bChecked = false;
 
-        int iFolderID = -1;
-        int iFileID = -1;
-        int iFileSize = 0;
+        private int iFolderID = -1;
+        private int iFileID = -1;
+        private int iFileSize = 0;
 
-        int iCheckHeight = 0;
-        int iCheckWidth = 0;
-        int iCheckWidthWithMargin = 0;
+        private int iCheckHeight = 0;
+        private int iCheckWidth = 0;
+        private int iCheckWidthWithMargin = 0;
 
-        string sCaption = "Folder name";
+        private string sCaption = "Folder name";
 
-        int iItemHeight = 50;
+        private int iItemHeight = 50;
 
-        string sExtension = "";
-        string sAuthor = "";
-        string sLastModified = "";
+        private string sExtension = "";
+        private string sAuthor = "";
+        private string sLastModified = "";
 
-        Bitmap IconFolder = Properties.Resources.Folder;
-        Bitmap ArchiveFileBMP = Properties.Resources.ArchiveFile;
-        Bitmap ExcelFileBMP = Properties.Resources.ExcelFileIcon;
-        Bitmap WordFileBMP = Properties.Resources.WordFileIcon;
-        Bitmap ImageFileBMP = Properties.Resources.ImageFileIcon;
-        Bitmap PDFFileBMP = Properties.Resources.PDFFileIcon;
-        Bitmap OtherFileBMP = Properties.Resources.OtherFile;
+        private readonly Bitmap IconFolder = Properties.Resources.Folder;
+        private readonly Bitmap ArchiveFileBMP = Properties.Resources.ArchiveFile;
+        private readonly Bitmap ExcelFileBMP = Properties.Resources.ExcelFileIcon;
+        private readonly Bitmap WordFileBMP = Properties.Resources.WordFileIcon;
+        private readonly Bitmap ImageFileBMP = Properties.Resources.ImageFileIcon;
+        private readonly Bitmap PDFFileBMP = Properties.Resources.PDFFileIcon;
+        private readonly Bitmap OtherFileBMP = Properties.Resources.OtherFile;
 
-        Bitmap RootUpBMP = Properties.Resources.FolderUp;
+        private readonly Bitmap RootUpBMP = Properties.Resources.FolderUp;
 
-        Bitmap FileCheckedBMP = Properties.Resources.FileChecked;
-        Bitmap FileUncheckedBMP = Properties.Resources.FileUnchecked;
+        private readonly Bitmap FileCheckedBMP = Properties.Resources.FileChecked;
+        private readonly Bitmap FileUncheckedBMP = Properties.Resources.FileUnchecked;
 
 
         public InfiniumFileListItem()
@@ -10890,19 +10891,19 @@ namespace Infinium
     {
         public int Offset = 0;
 
-        int iTempScrollWheelOffset = 0;
+        private int iTempScrollWheelOffset = 0;
 
-        InfiniumScrollContainer ScrollContainer;
+        private readonly InfiniumScrollContainer ScrollContainer;
         public InfiniumProjectsVerticalScrollBar VerticalScroll;
 
         public InfiniumFileListItem[] FileItems;
 
-        DataTable ItemsDT;
+        private DataTable ItemsDT;
 
-        int iSelected = -1;
-        int iEntered = -1;
+        private int iSelected = -1;
+        private int iEntered = -1;
 
-        bool bCheckVisible = false;
+        private bool bCheckVisible = false;
 
         public InfiniumFileList()
         {
@@ -11362,35 +11363,35 @@ namespace Infinium
 
     public class InfiniumFilesAttributeItem : Control
     {
-        Color cCaptionColor = Color.FromArgb(60, 60, 60);
-        Color cSelectedCaptionColor = Color.FromArgb(56, 184, 238);
+        private Color cCaptionColor = Color.FromArgb(60, 60, 60);
+        private Color cSelectedCaptionColor = Color.FromArgb(56, 184, 238);
 
-        Color cBackColor = Color.White;
-        Color cBackSelectedColor = Color.White;
+        private readonly Color cBackColor = Color.White;
+        private Color cBackSelectedColor = Color.White;
 
-        Color cBorderColor = Color.FromArgb(240, 240, 240);
+        private Color cBorderColor = Color.FromArgb(240, 240, 240);
 
-        Pen pBorderPen;
+        private readonly Pen pBorderPen;
 
-        Font fCaptionFont = new Font("Segoe UI", 18.0f, FontStyle.Regular, GraphicsUnit.Pixel);
-        Font fFileSizeFont = new Font("Segoe UI", 14.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private Font fCaptionFont = new Font("Segoe UI", 18.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private Font fFileSizeFont = new Font("Segoe UI", 14.0f, FontStyle.Regular, GraphicsUnit.Pixel);
 
-        SolidBrush brCaptionBrush;
-        SolidBrush brSelectedCaptionBrush;
+        private readonly SolidBrush brCaptionBrush;
+        private readonly SolidBrush brSelectedCaptionBrush;
 
-        bool bSelected = false;
-        bool bChecked = false;
+        private bool bSelected = false;
+        private bool bChecked = false;
 
-        int iCheckHeight = 0;
-        int iCheckWidth = 0;
-        int iCheckWidthWithMargin = 0;
+        private int iCheckHeight = 0;
+        private int iCheckWidth = 0;
+        private int iCheckWidthWithMargin = 0;
 
-        string sCaption = "Item";
+        private string sCaption = "Item";
 
-        int iItemHeight = 50;
+        private int iItemHeight = 50;
 
-        Bitmap FileCheckedBMP = Properties.Resources.FileChecked;
-        Bitmap FileUncheckedBMP = Properties.Resources.FileUnchecked;
+        private readonly Bitmap FileCheckedBMP = Properties.Resources.FileChecked;
+        private readonly Bitmap FileUncheckedBMP = Properties.Resources.FileUnchecked;
 
 
         public InfiniumFilesAttributeItem()
@@ -11566,16 +11567,16 @@ namespace Infinium
     {
         public int Offset = 0;
 
-        int iTempScrollWheelOffset = 0;
+        private int iTempScrollWheelOffset = 0;
 
-        InfiniumScrollContainer ScrollContainer;
+        private readonly InfiniumScrollContainer ScrollContainer;
         public InfiniumProjectsVerticalScrollBar VerticalScroll;
 
         public InfiniumFilesAttributeItem[] Items;
 
-        DataTable ItemsDT;
+        private DataTable ItemsDT;
 
-        int iSelected = -1;
+        private int iSelected = -1;
 
         public InfiniumFilesAttributesList()
         {
@@ -11870,35 +11871,35 @@ namespace Infinium
 
     public class InfiniumFilesUsersItem : Control
     {
-        Color cCaptionColor = Color.FromArgb(60, 60, 60);
-        Color cSelectedCaptionColor = Color.FromArgb(56, 184, 238);
+        private Color cCaptionColor = Color.FromArgb(60, 60, 60);
+        private Color cSelectedCaptionColor = Color.FromArgb(56, 184, 238);
 
-        Color cBackColor = Color.White;
-        Color cBackSelectedColor = Color.White;
+        private readonly Color cBackColor = Color.White;
+        private Color cBackSelectedColor = Color.White;
 
-        Color cBorderColor = Color.FromArgb(240, 240, 240);
+        private Color cBorderColor = Color.FromArgb(240, 240, 240);
 
-        Pen pBorderPen;
+        private readonly Pen pBorderPen;
 
-        Font fCaptionFont = new Font("Segoe UI", 18.0f, FontStyle.Regular, GraphicsUnit.Pixel);
-        Font fFileSizeFont = new Font("Segoe UI", 14.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private Font fCaptionFont = new Font("Segoe UI", 18.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private Font fFileSizeFont = new Font("Segoe UI", 14.0f, FontStyle.Regular, GraphicsUnit.Pixel);
 
-        SolidBrush brCaptionBrush;
-        SolidBrush brSelectedCaptionBrush;
+        private readonly SolidBrush brCaptionBrush;
+        private readonly SolidBrush brSelectedCaptionBrush;
 
-        bool bSelected = false;
+        private bool bSelected = false;
 
-        int iCheckHeight = 0;
-        int iCheckWidth = 0;
-        int iCheckWidthWithMargin = 0;
+        private int iCheckHeight = 0;
+        private int iCheckWidth = 0;
+        private int iCheckWidthWithMargin = 0;
 
-        string sCaption = "Item";
+        private string sCaption = "Item";
 
-        int iItemHeight = 50;
+        private int iItemHeight = 50;
 
-        int iUserID;
+        private int iUserID;
 
-        Bitmap RemoveItemBMP = Properties.Resources.RemoveItem;
+        private readonly Bitmap RemoveItemBMP = Properties.Resources.RemoveItem;
 
 
         public InfiniumFilesUsersItem()
@@ -12071,9 +12072,9 @@ namespace Infinium
     {
         public int Offset = 0;
 
-        int iTempScrollWheelOffset = 0;
+        private int iTempScrollWheelOffset = 0;
 
-        InfiniumScrollContainer ScrollContainer;
+        private readonly InfiniumScrollContainer ScrollContainer;
         public InfiniumProjectsVerticalScrollBar VerticalScroll;
 
         public InfiniumFilesUsersItem[] Items;
@@ -12081,7 +12082,7 @@ namespace Infinium
         public DataTable ItemsDT;
         public DataTable UsersDataTable;
 
-        int iSelected = -1;
+        private int iSelected = -1;
 
         public InfiniumFilesUsersList()
         {
@@ -12381,56 +12382,56 @@ namespace Infinium
     {
         public int Offset = 0;
 
-        int iTempScrollWheelOffset = 0;
+        private int iTempScrollWheelOffset = 0;
 
         public InfiniumScrollContainer ScrollContainer;
         public InfiniumProjectsVerticalScrollBar VerticalScroll;
 
-        DataTable AttributesDT;
+        private DataTable AttributesDT;
         public DataTable SignsDT;
         public DataTable ReadListDT;
         public DataTable UsersDataTable;
 
-        int iMarginToNextAttribute = 22;
-        int iMarginToAttributeData = 2;
-        int iMarginToAttributeName = 7;
-        int iMarginToNextAttributeData = 11;
+        private readonly int iMarginToNextAttribute = 22;
+        private readonly int iMarginToAttributeData = 2;
+        private readonly int iMarginToAttributeName = 7;
+        private readonly int iMarginToNextAttributeData = 11;
 
         public int CurrentUserID = -1;
 
-        int iSignButtonLeft = -1;
-        int iSignButtonTop = -1;
-        int iSignButtonWidth = -1;
-        int iSignButtonHeight = -1;
+        private int iSignButtonLeft = -1;
+        private int iSignButtonTop = -1;
+        private int iSignButtonWidth = -1;
+        private int iSignButtonHeight = -1;
 
-        int iReadButtonLeft = -1;
-        int iReadButtonTop = -1;
-        int iReadButtonWidth = -1;
-        int iReadButtonHeight = -1;
+        private int iReadButtonLeft = -1;
+        private int iReadButtonTop = -1;
+        private int iReadButtonWidth = -1;
+        private int iReadButtonHeight = -1;
 
         public int FileID = -1;
 
-        bool bSignButtonVisible = false;
-        bool bReadButtonVisible = false;
-        bool bSignButtonTrack = false;
-        bool bReadButtonTrack = false;
+        private bool bSignButtonVisible = false;
+        private bool bReadButtonVisible = false;
+        private bool bSignButtonTrack = false;
+        private bool bReadButtonTrack = false;
 
         public bool bFirstSign = false;
 
-        Color cAttributeGroupFontColor = Color.FromArgb(110, 110, 110);
-        Color cAttributeItemFontColor = Color.FromArgb(130, 130, 130);
-        Color cAttributeValueNotSetColor = Color.FromArgb(180, 180, 180);
-        Color cAttributeValueSetColor = Color.FromArgb(120, 120, 120);
-        Color cAttributeButtonColor = Color.FromArgb(56, 184, 238);
+        private readonly Color cAttributeGroupFontColor = Color.FromArgb(110, 110, 110);
+        private readonly Color cAttributeItemFontColor = Color.FromArgb(130, 130, 130);
+        private readonly Color cAttributeValueNotSetColor = Color.FromArgb(180, 180, 180);
+        private readonly Color cAttributeValueSetColor = Color.FromArgb(120, 120, 120);
+        private readonly Color cAttributeButtonColor = Color.FromArgb(56, 184, 238);
 
-        Font fAttributeGroupFont = new Font("Segoe UI Semibold", 16.0f, FontStyle.Regular, GraphicsUnit.Pixel);
-        Font fAttributeItemFont = new Font("Segoe UI", 15.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private readonly Font fAttributeGroupFont = new Font("Segoe UI Semibold", 16.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private readonly Font fAttributeItemFont = new Font("Segoe UI", 15.0f, FontStyle.Regular, GraphicsUnit.Pixel);
 
-        SolidBrush brAttributeGroupFontBrush;
-        SolidBrush brAttributeItemFontBrush;
-        SolidBrush brAttributeValueNotSetBrush;
-        SolidBrush brAttributeValueSetBrush;
-        SolidBrush brAttributeButtonBrush;
+        private readonly SolidBrush brAttributeGroupFontBrush;
+        private readonly SolidBrush brAttributeItemFontBrush;
+        private readonly SolidBrush brAttributeValueNotSetBrush;
+        private readonly SolidBrush brAttributeValueSetBrush;
+        private readonly SolidBrush brAttributeButtonBrush;
 
         public InfiniumFilesAttributesView()
         {
@@ -12919,7 +12920,7 @@ namespace Infinium
     {
         public int Offset = 0;
 
-        int iTempScrollWheelOffset = 0;
+        private int iTempScrollWheelOffset = 0;
 
         public InfiniumScrollContainer ScrollContainer;
         public InfiniumProjectsVerticalScrollBar VerticalScroll;
@@ -12930,26 +12931,26 @@ namespace Infinium
         public DataTable UsersItemsDT;
         public DataTable DepsItemsDT;
 
-        int iMarginToNextUser = 2;
-        int iMarginToUser = 2;
-        int iLeftMargin = 20;
+        private readonly int iMarginToNextUser = 2;
+        private readonly int iMarginToUser = 2;
+        private readonly int iLeftMargin = 20;
 
         public bool bAdminOnly = false;
         public bool bAllUsers = false;
 
         public int CurrentUserID = -1;
 
-        Color cAttributeCaptionFontColor = Color.FromArgb(140, 140, 140);
-        Color cAttributeGroupFontColor = Color.FromArgb(56, 184, 238);
-        Color cAttributeItemFontColor = Color.FromArgb(140, 140, 140);
+        private readonly Color cAttributeCaptionFontColor = Color.FromArgb(140, 140, 140);
+        private readonly Color cAttributeGroupFontColor = Color.FromArgb(56, 184, 238);
+        private readonly Color cAttributeItemFontColor = Color.FromArgb(140, 140, 140);
 
-        Font fAttributeCaptionFont = new Font("Segoe UI Semibold", 16.0f, FontStyle.Regular, GraphicsUnit.Pixel);
-        Font fAttributeGroupFont = new Font("Segoe UI Semibold", 16.0f, FontStyle.Regular, GraphicsUnit.Pixel);
-        Font fAttributeItemFont = new Font("Segoe UI", 14.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private readonly Font fAttributeCaptionFont = new Font("Segoe UI Semibold", 16.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private readonly Font fAttributeGroupFont = new Font("Segoe UI Semibold", 16.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private readonly Font fAttributeItemFont = new Font("Segoe UI", 14.0f, FontStyle.Regular, GraphicsUnit.Pixel);
 
-        SolidBrush brAttributeCaptionFontBrush;
-        SolidBrush brAttributeGroupFontBrush;
-        SolidBrush brAttributeItemFontBrush;
+        private readonly SolidBrush brAttributeCaptionFontBrush;
+        private readonly SolidBrush brAttributeGroupFontBrush;
+        private readonly SolidBrush brAttributeItemFontBrush;
 
         public InfiniumFilesPermissionsUsersList()
         {
@@ -13163,28 +13164,28 @@ namespace Infinium
 
     public class InfiniumLightButton : Control
     {
-        Bitmap bImage;
-        Bitmap bDisImage;
-        string sCaption = "";
+        private Bitmap bImage;
+        private Bitmap bDisImage;
+        private string sCaption = "";
 
-        bool bTracking = false;
-        bool bDisabled = false;
+        private bool bTracking = false;
+        private bool bDisabled = false;
 
-        SolidBrush brFontBrush;
+        private readonly SolidBrush brFontBrush;
 
-        Color cBorderColor = Color.FromArgb(0, 205, 252);
-        Color cBackColor = Color.Transparent;
-        Color cTrackBackColor = Color.White;
+        private Color cBorderColor = Color.FromArgb(0, 205, 252);
+        private readonly Color cBackColor = Color.Transparent;
+        private Color cTrackBackColor = Color.White;
 
-        Pen pBorderPen;
+        private readonly Pen pBorderPen;
 
-        Rectangle rBorderRect;
+        private Rectangle rBorderRect;
 
-        ToolTip ToolTip;
+        private readonly ToolTip ToolTip;
 
-        string sToolTipText = "";
+        private string sToolTipText = "";
 
-        int iTextYMargin = 0;
+        private int iTextYMargin = 0;
 
         public InfiniumLightButton()
         {
@@ -13355,45 +13356,45 @@ namespace Infinium
 
     public class InfiniumPicturesAlbumItem : Control
     {
-        Color cBorderColor = Color.FromArgb(90, 90, 90);
+        private readonly Color cBorderColor = Color.FromArgb(90, 90, 90);
 
-        Color cHeaderFontColor = Color.White;
-        Color cAuthorFontColor = Color.FromArgb(56, 184, 238);
-        Color cDateFontColor = Color.FromArgb(120, 120, 120);
-        Color cLikesAndCommentsFontColor = Color.FromArgb(120, 120, 120);
-        Color cBottomPanelBackColor = Color.FromArgb(225, 225, 225);
-        Color cHeaderBackColor = Color.FromArgb(56, 184, 238);
-        Color cSamplesBack = Color.FromArgb(250, 250, 250);
+        private readonly Color cHeaderFontColor = Color.White;
+        private readonly Color cAuthorFontColor = Color.FromArgb(56, 184, 238);
+        private readonly Color cDateFontColor = Color.FromArgb(120, 120, 120);
+        private readonly Color cLikesAndCommentsFontColor = Color.FromArgb(120, 120, 120);
+        private readonly Color cBottomPanelBackColor = Color.FromArgb(225, 225, 225);
+        private readonly Color cHeaderBackColor = Color.FromArgb(56, 184, 238);
+        private readonly Color cSamplesBack = Color.FromArgb(250, 250, 250);
 
-        Color cShadowColor0 = Color.FromArgb(175, 175, 175);
-        Color cShadowColor1 = Color.FromArgb(185, 185, 185);
-        Color cShadowColor2 = Color.FromArgb(200, 200, 200);
-        Color cShadowColor3 = Color.FromArgb(215, 215, 215);
-        Color cShadowColor4 = Color.FromArgb(230, 230, 230);
-        Color cShadowColor5 = Color.FromArgb(250, 250, 250);
+        private readonly Color cShadowColor0 = Color.FromArgb(175, 175, 175);
+        private readonly Color cShadowColor1 = Color.FromArgb(185, 185, 185);
+        private readonly Color cShadowColor2 = Color.FromArgb(200, 200, 200);
+        private readonly Color cShadowColor3 = Color.FromArgb(215, 215, 215);
+        private readonly Color cShadowColor4 = Color.FromArgb(230, 230, 230);
+        private readonly Color cShadowColor5 = Color.FromArgb(250, 250, 250);
 
-        Font fHeaderFont = new Font("Segoe UI", 16.0f, FontStyle.Regular, GraphicsUnit.Pixel);
-        Font fAuthorFont = new Font("Segoe UI", 13.0f, FontStyle.Regular, GraphicsUnit.Pixel);
-        Font fDateFont = new Font("Segoe UI", 13.0f, FontStyle.Regular, GraphicsUnit.Pixel);
-        Font fLikesAndCommentsFont = new Font("Segoe UI", 15.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private readonly Font fHeaderFont = new Font("Segoe UI", 16.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private readonly Font fAuthorFont = new Font("Segoe UI", 13.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private readonly Font fDateFont = new Font("Segoe UI", 13.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private readonly Font fLikesAndCommentsFont = new Font("Segoe UI", 15.0f, FontStyle.Regular, GraphicsUnit.Pixel);
 
-        SolidBrush brHeaderFontBrush;
-        SolidBrush brAuthorFontBrush;
-        SolidBrush brDateFontBrush;
-        SolidBrush brLikesAndCommentsFontBrush;
-        SolidBrush brBottomPanelBrush;
-        SolidBrush brHeaderBackBrush;
-        SolidBrush brSamplesBack;
+        private readonly SolidBrush brHeaderFontBrush;
+        private readonly SolidBrush brAuthorFontBrush;
+        private readonly SolidBrush brDateFontBrush;
+        private readonly SolidBrush brLikesAndCommentsFontBrush;
+        private readonly SolidBrush brBottomPanelBrush;
+        private readonly SolidBrush brHeaderBackBrush;
+        private readonly SolidBrush brSamplesBack;
 
-        Pen pBorderPen;
-        Pen pShadowPen0;
-        Pen pShadowPen1;
-        Pen pShadowPen2;
-        Pen pShadowPen3;
-        Pen pShadowPen4;
-        Pen pShadowPen5;
+        private readonly Pen pBorderPen;
+        private readonly Pen pShadowPen0;
+        private readonly Pen pShadowPen1;
+        private readonly Pen pShadowPen2;
+        private readonly Pen pShadowPen3;
+        private readonly Pen pShadowPen4;
+        private readonly Pen pShadowPen5;
 
-        Bitmap imAuthorPhoto;
+        private Bitmap imAuthorPhoto;
 
         public Bitmap BigSample;
         public Bitmap SmallSample1;
@@ -13408,39 +13409,39 @@ namespace Infinium
         public Bitmap LikeActiveBMP = Properties.Resources.LikeAlbumActive;
         public Bitmap LikeInactiveBMP = Properties.Resources.LikeAlbumInactive;
 
-        int iAuthorPictureHeight = 48;
-        int iAuthorPictureWidth = 52;
+        private readonly int iAuthorPictureHeight = 48;
+        private readonly int iAuthorPictureWidth = 52;
 
-        int iBigSampleHeight = 204;
-        int iBigSampleWidth = 306;
+        private readonly int iBigSampleHeight = 204;
+        private readonly int iBigSampleWidth = 306;
 
-        int iSmallSampleHeight = 64;
-        int iSmallSampleWidth = 97;
+        private readonly int iSmallSampleHeight = 64;
+        private readonly int iSmallSampleWidth = 97;
 
-        int iUsersHeight = 30;
-        int iUsersWidth = 32;
+        private readonly int iUsersHeight = 30;
+        private readonly int iUsersWidth = 32;
 
-        int iMarginLeft = 22;
+        private readonly int iMarginLeft = 22;
 
-        int iLikesCount = 0;
+        private int iLikesCount = 0;
 
-        int iInitialLeft = 0;
-        int iInitialTop = 0;
+        private int iInitialLeft = 0;
+        private int iInitialTop = 0;
 
-        bool bTrack = false;
+        private bool bTrack = false;
 
-        int iAlbumID = -1;
+        private int iAlbumID = -1;
 
-        Rectangle rBorderRect;
-        Rectangle rBottomPanelRect;
-        Rectangle rHeaderRect;
-        Rectangle rBigSampleRect;
-        Rectangle rSmallSampleRect;
+        private Rectangle rBorderRect;
+        private Rectangle rBottomPanelRect;
+        private Rectangle rHeaderRect;
+        private Rectangle rBigSampleRect;
+        private Rectangle rSmallSampleRect;
 
-        string sHeader = "";
-        int iAuthorID = -1;
-        string sAuthorName = "";
-        string sDateTime = "";
+        private string sHeader = "";
+        private int iAuthorID = -1;
+        private string sAuthorName = "";
+        private string sDateTime = "";
 
         public InfiniumPicturesAlbumItem()
         {
@@ -13792,13 +13793,13 @@ namespace Infinium
     {
         public int Offset = 0;
 
-        int iTempScrollWheelOffset = 0;
+        private int iTempScrollWheelOffset = 0;
 
-        int iMarginToNextItem = 40;
-        int iItemWidth = 453;
-        int iItemHeight = 370;
+        private readonly int iMarginToNextItem = 40;
+        private readonly int iItemWidth = 453;
+        private readonly int iItemHeight = 370;
 
-        int iRowsCount = 0;
+        private int iRowsCount = 0;
 
         public InfiniumScrollContainer ScrollContainer;
         public InfiniumProjectsVerticalScrollBar VerticalScroll;
@@ -14120,32 +14121,32 @@ namespace Infinium
 
     public class InfiniumPictureItem : Control
     {
-        Color cLikesAndCommentsFontColor = Color.FromArgb(120, 120, 120);
+        private readonly Color cLikesAndCommentsFontColor = Color.FromArgb(120, 120, 120);
 
-        Font fLikesAndCommentsFont = new Font("Segoe UI", 15.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private readonly Font fLikesAndCommentsFont = new Font("Segoe UI", 15.0f, FontStyle.Regular, GraphicsUnit.Pixel);
 
-        SolidBrush brLikesAndCommentsFontBrush;
+        private readonly SolidBrush brLikesAndCommentsFontBrush;
 
         public Bitmap Image;
 
         public Bitmap LikeActiveBMP = Properties.Resources.LikePicActive;
         public Bitmap LikeInactiveBMP = Properties.Resources.LikePicIncative;
 
-        int iLikesCount = 0;
-        int iCommentsCount = 0;
+        private int iLikesCount = 0;
+        private int iCommentsCount = 0;
 
-        int iMarginForLikes = 30;
+        private readonly int iMarginForLikes = 30;
 
-        int iPictureID = -1;
-        int iAlbumID = -1;
+        private int iPictureID = -1;
+        private int iAlbumID = -1;
 
-        int iWidth = 364;
-        int iHeight = 242 + 30;//242 + 30 for likes
+        private readonly int iWidth = 364;
+        private readonly int iHeight = 242 + 30;//242 + 30 for likes
 
-        int iLikePicLeft = 0;
-        int iLikePicTop = 0;
-        bool bLikeTrack = false;
-        bool bPicTrack = false;
+        private int iLikePicLeft = 0;
+        private int iLikePicTop = 0;
+        private bool bLikeTrack = false;
+        private bool bPicTrack = false;
 
         public InfiniumPictureItem()
         {
@@ -14336,12 +14337,12 @@ namespace Infinium
     {
         public int Offset = 0;
 
-        int iTempScrollWheelOffset = 0;
+        private int iTempScrollWheelOffset = 0;
 
-        int iMarginToNextItem = 40;
-        int iItemHeight = 272;
+        private readonly int iMarginToNextItem = 40;
+        private readonly int iItemHeight = 272;
 
-        int iRowsCount = 0;
+        private int iRowsCount = 0;
 
         public InfiniumScrollContainer ScrollContainer;
         public InfiniumProjectsVerticalScrollBar VerticalScroll;
@@ -14602,29 +14603,29 @@ namespace Infinium
     [DefaultEvent("Click")]
     public class InfiniumTile : Control
     {
-        bool bTracking = false;
+        private bool bTracking = false;
 
-        Color cCaptionColor = Color.FromArgb(56, 184, 238);
-        Color cDescriptionColor = Color.FromArgb(114, 114, 114);
+        private readonly Color cCaptionColor = Color.FromArgb(56, 184, 238);
+        private readonly Color cDescriptionColor = Color.FromArgb(114, 114, 114);
 
-        Font fCaptionFont;
-        Font fDescriptionFont;
+        private readonly Font fCaptionFont;
+        private readonly Font fDescriptionFont;
 
-        SolidBrush brCaptionFontBrush;
-        SolidBrush brDescriptionFontBrush;
+        private readonly SolidBrush brCaptionFontBrush;
+        private readonly SolidBrush brDescriptionFontBrush;
 
-        Pen pBorderPen;
+        private readonly Pen pBorderPen;
 
-        Rectangle rBorderRect;
+        private Rectangle rBorderRect;
 
-        Bitmap iImage;
+        private Bitmap iImage;
 
-        int iMarginTextLeft = 25;
-        int iImageWidth = 82;
+        private readonly int iMarginTextLeft = 25;
+        private readonly int iImageWidth = 82;
 
-        string sCaption = "";
-        string sDescription = "";
-        string sFormName = "";
+        private string sCaption = "";
+        private string sDescription = "";
+        private string sFormName = "";
 
         public InfiniumTile()
         {
@@ -14722,7 +14723,7 @@ namespace Infinium
                 e.Graphics.DrawRectangle(pBorderPen, rBorderRect);
         }
 
-        GraphicsPath GetRoundPath(RectangleF Rect, int radius)
+        private GraphicsPath GetRoundPath(RectangleF Rect, int radius)
         {
             float r2 = radius / 2f;
             GraphicsPath GraphPath = new GraphicsPath();
@@ -14875,13 +14876,13 @@ namespace Infinium
     {
         public int Offset = 0;
 
-        int iTempScrollWheelOffset = 0;
+        private int iTempScrollWheelOffset = 0;
 
-        int iMarginToNextItem = 40;
-        int iItemWidth = 300;
-        int iItemHeight = 130;
+        private readonly int iMarginToNextItem = 40;
+        private readonly int iItemWidth = 300;
+        private readonly int iItemHeight = 130;
 
-        int iRowsCount = 0;
+        private int iRowsCount = 0;
 
         public int MenuItemID = -1;
 
@@ -15152,26 +15153,26 @@ namespace Infinium
 
     public class InfiniumNotifyItem : Control
     {
-        Color cCaptionColor = Color.FromArgb(56, 184, 238);
-        Color cCountColor = Color.FromArgb(255, 255, 255);
-        Color cTrackColor = Color.FromArgb(245, 245, 245);
-        Color cCountBackColor = Color.FromArgb(89, 197, 243);
+        private readonly Color cCaptionColor = Color.FromArgb(56, 184, 238);
+        private readonly Color cCountColor = Color.FromArgb(255, 255, 255);
+        private readonly Color cTrackColor = Color.FromArgb(245, 245, 245);
+        private readonly Color cCountBackColor = Color.FromArgb(89, 197, 243);
 
-        Font fCaptionFont = new Font("Segoe UI", 17.0f, FontStyle.Regular, GraphicsUnit.Pixel);
-        Font fCountFont = new Font("Segoe UI Semibold", 12.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private readonly Font fCaptionFont = new Font("Segoe UI", 17.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private readonly Font fCountFont = new Font("Segoe UI Semibold", 12.0f, FontStyle.Regular, GraphicsUnit.Pixel);
 
-        SolidBrush brCaptionBrush;
-        SolidBrush brCountFontBrush;
-        SolidBrush brCountBackBrush;
+        private readonly SolidBrush brCaptionBrush;
+        private readonly SolidBrush brCountFontBrush;
+        private readonly SolidBrush brCountBackBrush;
 
-        Pen pBorderPen;
+        private readonly Pen pBorderPen;
 
-        string sCaption = "Item";
+        private string sCaption = "Item";
 
         public string FormName = "";
 
-        int iItemHeight = 50;
-        bool bTrack = false;
+        private int iItemHeight = 50;
+        private bool bTrack = false;
         public Bitmap Image;
 
         public int Count;
@@ -15306,9 +15307,9 @@ namespace Infinium
     {
         public int Offset = 0;
 
-        int iTempScrollWheelOffset = 0;
+        private int iTempScrollWheelOffset = 0;
 
-        InfiniumScrollContainer ScrollContainer;
+        private readonly InfiniumScrollContainer ScrollContainer;
         public InfiniumProjectsVerticalScrollBar VerticalScroll;
 
         public InfiniumNotifyItem[] Items;
@@ -15316,7 +15317,7 @@ namespace Infinium
         public DataTable ItemsDT;
         public DataTable ModulesDataTable;
 
-        int iMarginToNextItem = 10;
+        private readonly int iMarginToNextItem = 10;
 
         public InfiniumNotifyList()
         {
@@ -15573,25 +15574,25 @@ namespace Infinium
 
     public class InfiniumStartMenuItem : Control
     {
-        Color cCaptionColor = Color.DimGray;
-        Color cSelectedFontColor = Color.FromArgb(56, 184, 238);
-        Color cTrackColor = Color.FromArgb(89, 197, 243);
-        Color cTrackBorderColor = Color.FromArgb(240, 240, 240);
+        private readonly Color cCaptionColor = Color.DimGray;
+        private readonly Color cSelectedFontColor = Color.FromArgb(56, 184, 238);
+        private readonly Color cTrackColor = Color.FromArgb(89, 197, 243);
+        private readonly Color cTrackBorderColor = Color.FromArgb(240, 240, 240);
 
-        Font fCaptionFont = new Font("Segoe UI", 18.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private readonly Font fCaptionFont = new Font("Segoe UI", 18.0f, FontStyle.Regular, GraphicsUnit.Pixel);
 
-        SolidBrush brCaptionBrush;
-        SolidBrush brSelectedFontBrush;
-        SolidBrush brTrackFontBrush;
+        private readonly SolidBrush brCaptionBrush;
+        private readonly SolidBrush brSelectedFontBrush;
+        private SolidBrush brTrackFontBrush;
 
-        string sCaption = "Item";
+        private string sCaption = "Item";
 
-        int iItemHeight = 40;
-        bool bTrack = false;
+        private int iItemHeight = 40;
+        private bool bTrack = false;
 
-        Pen pBorderPen;
+        private readonly Pen pBorderPen;
 
-        bool bSelected = false;
+        private bool bSelected = false;
 
         public InfiniumStartMenuItem()
         {
@@ -15712,9 +15713,9 @@ namespace Infinium
     {
         public int Offset = 0;
 
-        int iTempScrollWheelOffset = 0;
+        private int iTempScrollWheelOffset = 0;
 
-        InfiniumScrollContainer ScrollContainer;
+        private readonly InfiniumScrollContainer ScrollContainer;
         public InfiniumProjectsVerticalScrollBar VerticalScroll;
 
         public InfiniumStartMenuItem[] Items;
@@ -15722,9 +15723,9 @@ namespace Infinium
         public DataTable ItemsDT;
         public DataTable ModulesDataTable;
 
-        int iSelected = -1;
+        private int iSelected = -1;
 
-        int iMarginToNextItem = 10;
+        private readonly int iMarginToNextItem = 10;
 
         public InfiniumStartMenu()
         {
@@ -15990,23 +15991,23 @@ namespace Infinium
 
     public class InfiniumMinimizeItem : Control
     {
-        Color cCaptionColor = Color.FromArgb(100, 100, 100);
-        Color cBorderColor = Color.FromArgb(240, 240, 240);
+        private readonly Color cCaptionColor = Color.FromArgb(100, 100, 100);
+        private readonly Color cBorderColor = Color.FromArgb(240, 240, 240);
 
-        Font fCaptionFont = new Font("Segoe UI", 13.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private readonly Font fCaptionFont = new Font("Segoe UI", 13.0f, FontStyle.Regular, GraphicsUnit.Pixel);
 
-        SolidBrush brCaptionBrush;
+        private readonly SolidBrush brCaptionBrush;
 
-        Pen pBorderPen;
+        private readonly Pen pBorderPen;
 
-        string sCaption = "Item";
+        private string sCaption = "Item";
 
         public int iItemHeight = 80;
         public int iItemWidth = 110;
-        bool bTrack = false;
+        private bool bTrack = false;
         public Bitmap Image;
 
-        Bitmap CloseBMP = Properties.Resources.Closerun;
+        private readonly Bitmap CloseBMP = Properties.Resources.Closerun;
 
         public InfiniumMinimizeItem()
         {
@@ -16145,7 +16146,7 @@ namespace Infinium
     {
         public int Offset = 0;
 
-        int iTempScrollWheelOffset = 0;
+        private int iTempScrollWheelOffset = 0;
 
         public InfiniumScrollContainer ScrollContainer;
         public InfiniumHorizontalScrollBar HorizontalScroll;
@@ -16154,9 +16155,9 @@ namespace Infinium
 
         public DataTable ModulesDataTable;
 
-        ArrayList ItemsArray;
+        private readonly ArrayList ItemsArray;
 
-        int iMarginToNextItem = 10;
+        private readonly int iMarginToNextItem = 10;
 
         public InfiniumMinimizeList()
         {
@@ -16429,27 +16430,27 @@ namespace Infinium
 
     public class InfiniumFilesMenuItem : Control
     {
-        Color cCaptionColor = Color.DimGray;
-        Color cSelectedFontColor = Color.FromArgb(56, 184, 238);
-        Color cTrackColor = Color.FromArgb(89, 197, 243);
-        Color cTrackBorderColor = Color.FromArgb(240, 240, 240);
+        private readonly Color cCaptionColor = Color.DimGray;
+        private readonly Color cSelectedFontColor = Color.FromArgb(56, 184, 238);
+        private readonly Color cTrackColor = Color.FromArgb(89, 197, 243);
+        private readonly Color cTrackBorderColor = Color.FromArgb(240, 240, 240);
 
-        Font fCaptionFont = new Font("Segoe UI", 18.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private readonly Font fCaptionFont = new Font("Segoe UI", 18.0f, FontStyle.Regular, GraphicsUnit.Pixel);
 
-        SolidBrush brCaptionBrush;
-        SolidBrush brSelectedFontBrush;
-        SolidBrush brTrackFontBrush;
+        private readonly SolidBrush brCaptionBrush;
+        private readonly SolidBrush brSelectedFontBrush;
+        private SolidBrush brTrackFontBrush;
 
-        string sCaption = "Item";
+        private string sCaption = "Item";
         public int iCount = 0;
         public int FolderID = 0;
 
-        int iItemHeight = 35;
-        bool bTrack = false;
+        private int iItemHeight = 35;
+        private bool bTrack = false;
 
-        Pen pBorderPen;
+        private readonly Pen pBorderPen;
 
-        bool bSelected = false;
+        private bool bSelected = false;
 
         public InfiniumFilesMenuItem()
         {
@@ -16581,18 +16582,18 @@ namespace Infinium
     {
         public int Offset = 0;
 
-        int iTempScrollWheelOffset = 0;
+        private int iTempScrollWheelOffset = 0;
 
-        InfiniumScrollContainer ScrollContainer;
+        private readonly InfiniumScrollContainer ScrollContainer;
         public InfiniumProjectsVerticalScrollBar VerticalScroll;
 
         public InfiniumFilesMenuItem[] Items;
 
         public DataTable ItemsDT;
 
-        int iSelected = -1;
+        private int iSelected = -1;
 
-        int iMarginToNextItem = 10;
+        private readonly int iMarginToNextItem = 10;
 
         public InfiniumFilesMenu()
         {
@@ -16872,27 +16873,27 @@ namespace Infinium
 
     public class InfiniumNewsClientsMenuItem : Control
     {
-        Color cCaptionColor = Color.DimGray;
-        Color cSelectedFontColor = Color.FromArgb(56, 184, 238);
-        Color cTrackColor = Color.FromArgb(89, 197, 243);
-        Color cTrackBorderColor = Color.FromArgb(240, 240, 240);
+        private readonly Color cCaptionColor = Color.DimGray;
+        private readonly Color cSelectedFontColor = Color.FromArgb(56, 184, 238);
+        private readonly Color cTrackColor = Color.FromArgb(89, 197, 243);
+        private readonly Color cTrackBorderColor = Color.FromArgb(240, 240, 240);
 
-        Font fCaptionFont = new Font("Segoe UI", 18.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private readonly Font fCaptionFont = new Font("Segoe UI", 18.0f, FontStyle.Regular, GraphicsUnit.Pixel);
 
-        SolidBrush brCaptionBrush;
-        SolidBrush brSelectedFontBrush;
-        SolidBrush brTrackFontBrush;
+        private readonly SolidBrush brCaptionBrush;
+        private readonly SolidBrush brSelectedFontBrush;
+        private SolidBrush brTrackFontBrush;
 
-        string sCaption = "Item";
+        private string sCaption = "Item";
 
-        int iItemHeight = 35;
-        bool bTrack = false;
+        private int iItemHeight = 35;
+        private bool bTrack = false;
 
         public int ClientID = -1;
 
-        Pen pBorderPen;
+        private readonly Pen pBorderPen;
 
-        bool bSelected = false;
+        private bool bSelected = false;
 
         public InfiniumNewsClientsMenuItem()
         {
@@ -17025,9 +17026,9 @@ namespace Infinium
     {
         public int Offset = 0;
 
-        int iTempScrollWheelOffset = 0;
+        private int iTempScrollWheelOffset = 0;
 
-        InfiniumScrollContainer ScrollContainer;
+        private readonly InfiniumScrollContainer ScrollContainer;
         public InfiniumProjectsVerticalScrollBar VerticalScroll;
 
         public InfiniumNewsClientsMenuItem[] Items;
@@ -17035,9 +17036,9 @@ namespace Infinium
         public DataTable ItemsDT;
         public DataTable ModulesDataTable;
 
-        int iSelected = -1;
+        private int iSelected = -1;
 
-        int iMarginToNextItem = 10;
+        private readonly int iMarginToNextItem = 10;
 
         public InfiniumNewsClientsMenu()
         {
@@ -17301,9 +17302,9 @@ namespace Infinium
     {
         public int Offset = 0;
 
-        int iTempScrollWheelOffset = 0;
+        private int iTempScrollWheelOffset = 0;
 
-        InfiniumScrollContainer ScrollContainer;
+        private readonly InfiniumScrollContainer ScrollContainer;
         public InfiniumProjectsVerticalScrollBar VerticalScroll;
 
         public InfiniumNewsClientsMenuItem[] Items;
@@ -17311,9 +17312,9 @@ namespace Infinium
         public DataTable ItemsDT;
         public DataTable ModulesDataTable;
 
-        int iSelected = -1;
+        private int iSelected = -1;
 
-        int iMarginToNextItem = 10;
+        private readonly int iMarginToNextItem = 10;
 
         public InfiniumNewsClientsManagersMenu()
         {
@@ -17579,27 +17580,27 @@ namespace Infinium
 
     public class InfiniumMessagesSelectedUserItem : Control
     {
-        Color cCaptionColor = Color.FromArgb(70, 70, 70);
-        Color cSelectedFontColor = Color.FromArgb(56, 184, 238);
-        Color cTrackColor = Color.FromArgb(120, 120, 120);
-        Color cOnlineColor = Color.FromArgb(56, 184, 238);
-        Color cCountBackColor = Color.FromArgb(255, 203, 22);
-        Color cCountFontColor = Color.White;
+        private readonly Color cCaptionColor = Color.FromArgb(70, 70, 70);
+        private readonly Color cSelectedFontColor = Color.FromArgb(56, 184, 238);
+        private readonly Color cTrackColor = Color.FromArgb(120, 120, 120);
+        private readonly Color cOnlineColor = Color.FromArgb(56, 184, 238);
+        private readonly Color cCountBackColor = Color.FromArgb(255, 203, 22);
+        private readonly Color cCountFontColor = Color.White;
 
-        Font fCaptionFont = new Font("Segoe UI", 17.0f, FontStyle.Regular, GraphicsUnit.Pixel);
-        Font fOnlineFont = new Font("Segoe UI", 12.0f, FontStyle.Regular, GraphicsUnit.Pixel);
-        Font fCountFont = new Font("Segoe UI", 12.0f, FontStyle.Bold, GraphicsUnit.Pixel);
+        private readonly Font fCaptionFont = new Font("Segoe UI", 17.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private readonly Font fOnlineFont = new Font("Segoe UI", 12.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private readonly Font fCountFont = new Font("Segoe UI", 12.0f, FontStyle.Bold, GraphicsUnit.Pixel);
 
-        SolidBrush brCaptionBrush;
-        SolidBrush brSelectedFontBrush;
-        SolidBrush brTrackFontBrush;
-        SolidBrush brOnlineColorBrush;
-        SolidBrush brCountFontBrush;
+        private readonly SolidBrush brCaptionBrush;
+        private readonly SolidBrush brSelectedFontBrush;
+        private readonly SolidBrush brTrackFontBrush;
+        private readonly SolidBrush brOnlineColorBrush;
+        private readonly SolidBrush brCountFontBrush;
 
         public Bitmap Image = null;
         public Bitmap CloseBMP = Properties.Resources.CloseUser;
 
-        string sCaption = "Item";
+        private string sCaption = "Item";
         public int UserID = -1;
 
 
@@ -17607,18 +17608,18 @@ namespace Infinium
 
         public bool Online = false;
 
-        int iItemHeight = 58;
-        bool bTrack = false;
+        private int iItemHeight = 58;
+        private bool bTrack = false;
 
-        int iImageHeight = 40;
-        int iImageWidth = 43;
+        private readonly int iImageHeight = 40;
+        private readonly int iImageWidth = 43;
 
-        Pen pBorderPen;
-        Pen pCountPen;
+        private Pen pBorderPen;
+        private readonly Pen pCountPen;
 
-        bool bSelected = false;
+        private bool bSelected = false;
 
-        Rectangle rCountRect;
+        private Rectangle rCountRect;
 
         public InfiniumMessagesSelectedUserItem()
         {
@@ -17844,20 +17845,20 @@ namespace Infinium
     {
         public int Offset = 0;
 
-        int iTempScrollWheelOffset = 0;
+        private int iTempScrollWheelOffset = 0;
 
-        InfiniumScrollContainer ScrollContainer;
+        private readonly InfiniumScrollContainer ScrollContainer;
         public InfiniumProjectsVerticalScrollBar VerticalScroll;
 
         public InfiniumMessagesSelectedUserItem[] Items;
 
         public DataTable ItemsDT;
 
-        bool bCloseVisible = false;
+        private bool bCloseVisible = false;
 
         public int iSelected = -1;
 
-        int iMarginToNextItem = 3;
+        private readonly int iMarginToNextItem = 3;
 
         public InfiniumMessagesSelectedUsersList()
         {
@@ -18207,35 +18208,35 @@ namespace Infinium
 
     public class InfiniumMessagesUserItem : Control
     {
-        Color cCaptionColor = Color.FromArgb(70, 70, 70);
-        Color cSelectedFontColor = Color.FromArgb(56, 184, 238);
-        Color cTrackColor = Color.FromArgb(120, 120, 120);
-        Color cOnlineColor = Color.FromArgb(56, 184, 238);
+        private readonly Color cCaptionColor = Color.FromArgb(70, 70, 70);
+        private readonly Color cSelectedFontColor = Color.FromArgb(56, 184, 238);
+        private readonly Color cTrackColor = Color.FromArgb(120, 120, 120);
+        private readonly Color cOnlineColor = Color.FromArgb(56, 184, 238);
 
-        Font fCaptionFont = new Font("Segoe UI", 17.0f, FontStyle.Regular, GraphicsUnit.Pixel);
-        Font fOnlineFont = new Font("Segoe UI", 12.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private readonly Font fCaptionFont = new Font("Segoe UI", 17.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private readonly Font fOnlineFont = new Font("Segoe UI", 12.0f, FontStyle.Regular, GraphicsUnit.Pixel);
 
-        SolidBrush brCaptionBrush;
-        SolidBrush brSelectedFontBrush;
-        SolidBrush brTrackFontBrush;
-        SolidBrush brOnlineColorBrush;
+        private readonly SolidBrush brCaptionBrush;
+        private readonly SolidBrush brSelectedFontBrush;
+        private readonly SolidBrush brTrackFontBrush;
+        private readonly SolidBrush brOnlineColorBrush;
 
         public Bitmap Image = null;
 
-        string sCaption = "Item";
+        private string sCaption = "Item";
         public int UserID = -1;
 
         public bool Online = false;
 
-        int iItemHeight = 58;
-        bool bTrack = false;
+        private int iItemHeight = 58;
+        private bool bTrack = false;
 
-        int iImageHeight = 40;
-        int iImageWidth = 43;
+        private readonly int iImageHeight = 40;
+        private readonly int iImageWidth = 43;
 
-        Pen pBorderPen;
+        private Pen pBorderPen;
 
-        bool bSelected = false;
+        private bool bSelected = false;
 
         public InfiniumMessagesUserItem()
         {
@@ -18384,20 +18385,20 @@ namespace Infinium
     {
         public int Offset = 0;
 
-        int iTempScrollWheelOffset = 0;
+        private int iTempScrollWheelOffset = 0;
 
-        InfiniumScrollContainer ScrollContainer;
+        private readonly InfiniumScrollContainer ScrollContainer;
         public InfiniumProjectsVerticalScrollBar VerticalScroll;
 
         public InfiniumMessagesUserItem[] Items;
 
         public DataTable ItemsDT;
 
-        bool bCloseVisible = false;
+        private bool bCloseVisible = false;
 
         public int iSelected = -1;
 
-        int iMarginToNextItem = 3;
+        private readonly int iMarginToNextItem = 3;
 
         public InfiniumMessagesUsersList()
         {
@@ -18698,32 +18699,32 @@ namespace Infinium
 
     public class InfiniumMessageItem : Control
     {
-        int iCurTextPosY = 0;
-        int iMarginTextRows = 5;
+        private int iCurTextPosY = 0;
+        private readonly int iMarginTextRows = 5;
 
-        Color cMeTextColor = Color.FromArgb(0, 0, 0);
-        Color cMeColor = Color.FromArgb(0, 120, 202);
-        Color cSenderTextColor = Color.FromArgb(80, 80, 80);
-        Color cDateColor = Color.FromArgb(140, 140, 140);
+        private readonly Color cMeTextColor = Color.FromArgb(0, 0, 0);
+        private readonly Color cMeColor = Color.FromArgb(0, 120, 202);
+        private readonly Color cSenderTextColor = Color.FromArgb(80, 80, 80);
+        private readonly Color cDateColor = Color.FromArgb(140, 140, 140);
 
-        Font fTextFont = new Font("Segoe UI", 17.0f, FontStyle.Regular, GraphicsUnit.Pixel);
-        Font fSenderFont = new Font("Segoe UI", 15.0f, FontStyle.Regular, GraphicsUnit.Pixel);
-        Font fDateFont = new Font("Segoe UI", 15.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private readonly Font fTextFont = new Font("Segoe UI", 17.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private readonly Font fSenderFont = new Font("Segoe UI", 15.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private readonly Font fDateFont = new Font("Segoe UI", 15.0f, FontStyle.Regular, GraphicsUnit.Pixel);
 
-        SolidBrush brMeTextBrush;
-        SolidBrush brSenderTextFontBrush;
-        SolidBrush brDateBrush;
-        SolidBrush brMeBrush;
+        private readonly SolidBrush brMeTextBrush;
+        private readonly SolidBrush brSenderTextFontBrush;
+        private SolidBrush brDateBrush;
+        private readonly SolidBrush brMeBrush;
 
         public string DateTime = "";
-        string sMessage = "";
+        private string sMessage = "";
         public string Sender = "";
 
         public bool Me = false;
 
-        int iMarginForDate = 140;
-        int iMarginForSender = 120;
-        int iMarginForMessage = 20;
+        private readonly int iMarginForDate = 140;
+        private readonly int iMarginForSender = 120;
+        private readonly int iMarginForMessage = 20;
 
         public InfiniumMessageItem()
         {
@@ -18940,9 +18941,9 @@ namespace Infinium
     {
         public int Offset = 0;
 
-        int iTempScrollWheelOffset = 0;
+        private int iTempScrollWheelOffset = 0;
 
-        InfiniumScrollContainer ScrollContainer;
+        private readonly InfiniumScrollContainer ScrollContainer;
         public InfiniumProjectsVerticalScrollBar VerticalScroll;
 
         public InfiniumMessageItem[] Items;
@@ -18950,7 +18951,7 @@ namespace Infinium
         public DataTable ItemsDT;
         public DataTable UsersDataTable;
 
-        int iMarginToNextItem = 14;
+        private readonly int iMarginToNextItem = 14;
 
         public int CurrentUserID = -1;
 
@@ -19209,36 +19210,36 @@ namespace Infinium
 
     public class InfiniumDocumentsSelectUserItem : Control
     {
-        Color cCaptionColor = Color.FromArgb(60, 60, 60);
-        Color cSelectedCaptionColor = Color.FromArgb(56, 184, 238);
+        private Color cCaptionColor = Color.FromArgb(60, 60, 60);
+        private Color cSelectedCaptionColor = Color.FromArgb(56, 184, 238);
 
-        Color cBackColor = Color.White;
-        Color cBackSelectedColor = Color.White;
+        private Color cBackColor = Color.White;
+        private Color cBackSelectedColor = Color.White;
 
-        Color cBorderColor = Color.FromArgb(240, 240, 240);
+        private Color cBorderColor = Color.FromArgb(240, 240, 240);
 
-        Pen pBorderPen;
+        private readonly Pen pBorderPen;
 
-        Font fCaptionFont = new Font("Segoe UI", 18.0f, FontStyle.Regular, GraphicsUnit.Pixel);
-        Font fFileSizeFont = new Font("Segoe UI", 14.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private Font fCaptionFont = new Font("Segoe UI", 18.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private Font fFileSizeFont = new Font("Segoe UI", 14.0f, FontStyle.Regular, GraphicsUnit.Pixel);
 
-        SolidBrush brCaptionBrush;
-        SolidBrush brSelectedCaptionBrush;
+        private readonly SolidBrush brCaptionBrush;
+        private readonly SolidBrush brSelectedCaptionBrush;
 
-        bool bChecked = false;
+        private bool bChecked = false;
 
-        int iCheckHeight = 0;
-        int iCheckWidth = 0;
-        int iCheckWidthWithMargin = 0;
+        private int iCheckHeight = 0;
+        private int iCheckWidth = 0;
+        private int iCheckWidthWithMargin = 0;
 
-        string sCaption = "Item";
+        private string sCaption = "Item";
 
         public int UserID = -1;
 
-        int iItemHeight = 50;
+        private int iItemHeight = 50;
 
-        Bitmap FileCheckedBMP = Properties.Resources.FileChecked;
-        Bitmap FileUncheckedBMP = Properties.Resources.FileUnchecked;
+        private readonly Bitmap FileCheckedBMP = Properties.Resources.FileChecked;
+        private readonly Bitmap FileUncheckedBMP = Properties.Resources.FileUnchecked;
 
 
         public InfiniumDocumentsSelectUserItem()
@@ -19392,14 +19393,14 @@ namespace Infinium
     {
         public int Offset = 0;
 
-        int iTempScrollWheelOffset = 0;
+        private int iTempScrollWheelOffset = 0;
 
-        InfiniumScrollContainer ScrollContainer;
+        private readonly InfiniumScrollContainer ScrollContainer;
         public InfiniumProjectsVerticalScrollBar VerticalScroll;
 
         public InfiniumDocumentsSelectUserItem[] Items;
 
-        DataTable ItemsDT;
+        private DataTable ItemsDT;
 
         public InfiniumDocumentsSelectUsersList()
         {
@@ -19642,26 +19643,26 @@ namespace Infinium
 
     public class InfiniumDocumentsMenuItem : Control
     {
-        Font fCaptionFont = new Font("Segoe UI", 17.0f, FontStyle.Regular, GraphicsUnit.Pixel);
-        Font fCountFont = new Font("Segoe UI", 15.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private readonly Font fCaptionFont = new Font("Segoe UI", 17.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private readonly Font fCountFont = new Font("Segoe UI", 15.0f, FontStyle.Regular, GraphicsUnit.Pixel);
 
-        SolidBrush brCaptionBrush = new SolidBrush(Color.FromArgb(60, 60, 60));
-        SolidBrush brSelectedFontBrush = new SolidBrush(Color.FromArgb(60, 60, 60));
-        SolidBrush brTrackFontBrush = new SolidBrush(Color.FromArgb(60, 60, 60));
-        SolidBrush brSelectedBackBrush = new SolidBrush(Color.FromArgb(245, 245, 245));
-        SolidBrush brCountBrush = new SolidBrush(Color.FromArgb(160, 160, 160));
-        SolidBrush brSelectedCountBrush = new SolidBrush(Color.FromArgb(160, 160, 160));
+        private readonly SolidBrush brCaptionBrush = new SolidBrush(Color.FromArgb(60, 60, 60));
+        private readonly SolidBrush brSelectedFontBrush = new SolidBrush(Color.FromArgb(60, 60, 60));
+        private SolidBrush brTrackFontBrush = new SolidBrush(Color.FromArgb(60, 60, 60));
+        private readonly SolidBrush brSelectedBackBrush = new SolidBrush(Color.FromArgb(245, 245, 245));
+        private readonly SolidBrush brCountBrush = new SolidBrush(Color.FromArgb(160, 160, 160));
+        private SolidBrush brSelectedCountBrush = new SolidBrush(Color.FromArgb(160, 160, 160));
 
-        Bitmap iImage;
+        private Bitmap iImage;
 
-        string sCaption = "Item";
+        private string sCaption = "Item";
 
-        int iItemHeight = 65;
-        bool bTrack = false;
+        private int iItemHeight = 65;
+        private bool bTrack = false;
 
-        int iCount = 0;
+        private int iCount = 0;
 
-        bool bSelected = false;
+        private bool bSelected = false;
         public int index = -1;
 
         public InfiniumDocumentsMenuItem()
@@ -19794,9 +19795,9 @@ namespace Infinium
     {
         public int Offset = 0;
 
-        int iTempScrollWheelOffset = 0;
+        private int iTempScrollWheelOffset = 0;
 
-        InfiniumScrollContainer ScrollContainer;
+        private readonly InfiniumScrollContainer ScrollContainer;
         public InfiniumProjectsVerticalScrollBar VerticalScroll;
 
         public InfiniumDocumentsMenuItem[] Items;
@@ -19805,9 +19806,9 @@ namespace Infinium
 
         public string SelectedName = "";
 
-        int iSelected = 0;
+        private int iSelected = 0;
 
-        int iMarginToNextItem = 0;
+        private readonly int iMarginToNextItem = 0;
 
         public InfiniumDocumentsMenu()
         {
@@ -20089,8 +20090,8 @@ namespace Infinium
 
     public class InfiniumDocumentsUpdatesScrollContainer : Control
     {
-        SolidBrush brBackBrush;
-        Color cBackColor = Color.FromArgb(220, 220, 220);
+        private SolidBrush brBackBrush;
+        private readonly Color cBackColor = Color.FromArgb(220, 220, 220);
 
         public InfiniumDocumentsUpdatesScrollContainer()
         {
@@ -20122,28 +20123,28 @@ namespace Infinium
 
     public class InfiniumDocumentItem : Control
     {
-        Font fUserNameFont = new Font("Segoe UI Semibold", 16.0f, FontStyle.Regular, GraphicsUnit.Pixel);
-        Font fDateFont = new Font("Segoe UI", 13.0f, FontStyle.Regular, GraphicsUnit.Pixel);
-        Font fDescriptionFont = new Font("Segoe UI", 14.0f, FontStyle.Regular, GraphicsUnit.Pixel);
-        Font fParametersFont = new Font("Segoe UI", 12.0f, FontStyle.Regular, GraphicsUnit.Pixel);
-        Font fLabelsFont = new Font("Segoe UI Semibold", 13.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private readonly Font fUserNameFont = new Font("Segoe UI Semibold", 16.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private readonly Font fDateFont = new Font("Segoe UI", 13.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private readonly Font fDescriptionFont = new Font("Segoe UI", 14.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private readonly Font fParametersFont = new Font("Segoe UI", 12.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private readonly Font fLabelsFont = new Font("Segoe UI Semibold", 13.0f, FontStyle.Regular, GraphicsUnit.Pixel);
 
-        SolidBrush brUserNameBrush = new SolidBrush(Color.FromArgb(70, 70, 70));
-        SolidBrush brDateBrush = new SolidBrush(Color.FromArgb(163, 163, 163));
-        SolidBrush brDescriptionBrush = new SolidBrush(Color.FromArgb(80, 80, 80));
-        SolidBrush brParametersBrush = new SolidBrush(Color.FromArgb(80, 80, 80));
-        SolidBrush brNoBrush = new SolidBrush(Color.FromArgb(163, 163, 163));
-        SolidBrush brLabelsBrush = new SolidBrush(Color.FromArgb(55, 82, 128));
+        private readonly SolidBrush brUserNameBrush = new SolidBrush(Color.FromArgb(70, 70, 70));
+        private readonly SolidBrush brDateBrush = new SolidBrush(Color.FromArgb(163, 163, 163));
+        private readonly SolidBrush brDescriptionBrush = new SolidBrush(Color.FromArgb(80, 80, 80));
+        private readonly SolidBrush brParametersBrush = new SolidBrush(Color.FromArgb(80, 80, 80));
+        private readonly SolidBrush brNoBrush = new SolidBrush(Color.FromArgb(163, 163, 163));
+        private readonly SolidBrush brLabelsBrush = new SolidBrush(Color.FromArgb(55, 82, 128));
 
-        Pen pBorderPen = new Pen(new SolidBrush(Color.FromArgb(200, 200, 200)));
+        private readonly Pen pBorderPen = new Pen(new SolidBrush(Color.FromArgb(200, 200, 200)));
 
-        Rectangle rBorderRect = new Rectangle(0, 0, 0, 0);
+        private Rectangle rBorderRect = new Rectangle(0, 0, 0, 0);
 
-        int iImageWidth = 73;
-        int iImageHeight = 68;
+        private readonly int iImageWidth = 73;
+        private readonly int iImageHeight = 68;
 
-        int iBorderMargin = 15;
-        int iButtonsMargin = 180;
+        private readonly int iBorderMargin = 15;
+        private readonly int iButtonsMargin = 180;
 
         public static int iInitialHeight = 165;
 
@@ -20151,26 +20152,26 @@ namespace Infinium
 
         public Bitmap Image = null;
 
-        Bitmap CommentsCountBMP = Properties.Resources.DocCommentsCount;
-        Bitmap RecipientsCountBMP = Properties.Resources.DocUserCount;
-        Bitmap FilesCountBMP = Properties.Resources.DocFileCount;
-        Bitmap DeleteBMP = Properties.Resources.DocDelete;
-        Bitmap EditBMP = Properties.Resources.DocEdit;
+        private readonly Bitmap CommentsCountBMP = Properties.Resources.DocCommentsCount;
+        private readonly Bitmap RecipientsCountBMP = Properties.Resources.DocUserCount;
+        private readonly Bitmap FilesCountBMP = Properties.Resources.DocFileCount;
+        private readonly Bitmap DeleteBMP = Properties.Resources.DocDelete;
+        private readonly Bitmap EditBMP = Properties.Resources.DocEdit;
 
-        int iEditLeft = 0;
-        int iDeleteLeft = 0;
-        int iBMPLeft = 0;
-        int iFilesBMPTop = 0;
-        int iRecipientsBMPTop = 0;
-        int iCommentsBMPTop = 0;
+        private int iEditLeft = 0;
+        private int iDeleteLeft = 0;
+        private int iBMPLeft = 0;
+        private int iFilesBMPTop = 0;
+        private int iRecipientsBMPTop = 0;
+        private int iCommentsBMPTop = 0;
 
-        bool bEditTrack = false;
-        bool bDeleteTrack = false;
-        bool bComTrack = false;
-        bool bFileTrack = false;
-        bool bRecipTrack = false;
-        bool bImageTrack = false;
-        bool bUserNameTrack = false;
+        private bool bEditTrack = false;
+        private bool bDeleteTrack = false;
+        private bool bComTrack = false;
+        private bool bFileTrack = false;
+        private bool bRecipTrack = false;
+        private bool bImageTrack = false;
+        private readonly bool bUserNameTrack = false;
 
         public string sUserName = "";
         public string sDate = "";
@@ -20190,11 +20191,11 @@ namespace Infinium
         public int iFilesCount = 0;
         public int iRecipientsCount = 0;
 
-        string sToolTipText = "";
+        private string sToolTipText = "";
 
         public bool bCanEdit = false;
 
-        ToolTip ToolTip;
+        private readonly ToolTip ToolTip;
 
 
 
@@ -20532,18 +20533,18 @@ namespace Infinium
 
     public class InfiniumDocumentsList : Control
     {
-        Font fCaptionFont = new Font("Segoe UI", 22.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private readonly Font fCaptionFont = new Font("Segoe UI", 22.0f, FontStyle.Regular, GraphicsUnit.Pixel);
 
-        SolidBrush brCaptionBrush = new SolidBrush(Color.FromArgb(110, 110, 110));
+        private readonly SolidBrush brCaptionBrush = new SolidBrush(Color.FromArgb(110, 110, 110));
 
         public int Offset = 0;
 
         public int iCurPosY = 0;
 
-        int iTempScrollWheelOffset = 0;
-        int iMarginToNextItem = 20;
+        private int iTempScrollWheelOffset = 0;
+        private readonly int iMarginToNextItem = 20;
 
-        InfiniumDocumentsUpdatesScrollContainer ScrollContainer;
+        private readonly InfiniumDocumentsUpdatesScrollContainer ScrollContainer;
         public InfiniumProjectsVerticalScrollBar VerticalScroll;
 
         public InfiniumDocumentItem[] Items;
@@ -20838,42 +20839,41 @@ namespace Infinium
 
     public class InfiniumDocumentsUpdatesItem : Control
     {
-        Color cBackColor = Color.White;
+        private Color cBackColor = Color.White;
         //Color cBorderColor = Color.FromArgb(192, 192, 192);
 
-        Font fUserNameFont = new Font("Segoe UI Semibold", 17.0f, FontStyle.Regular, GraphicsUnit.Pixel);
-        Font fDateFont = new Font("Segoe UI", 13.0f, FontStyle.Regular, GraphicsUnit.Pixel);
-        Font fTextFont = new Font("Segoe UI", 16.0f, FontStyle.Regular, GraphicsUnit.Pixel);
-        Font fParametersFont = new Font("Segoe UI", 13.0f, FontStyle.Regular, GraphicsUnit.Pixel);
-        Font fCategoryFont = new Font("Segoe UI", 16.0f, FontStyle.Regular, GraphicsUnit.Pixel);
-        Font fCorrespondentFont = new Font("Segoe UI", 16.0f, FontStyle.Regular, GraphicsUnit.Pixel);
-        Font fLabelsFont = new Font("Segoe UI Semibold", 14.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private readonly Font fUserNameFont = new Font("Segoe UI Semibold", 17.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private readonly Font fDateFont = new Font("Segoe UI", 13.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private readonly Font fTextFont = new Font("Segoe UI", 16.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private readonly Font fParametersFont = new Font("Segoe UI", 13.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private readonly Font fCategoryFont = new Font("Segoe UI", 16.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private readonly Font fCorrespondentFont = new Font("Segoe UI", 16.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private readonly Font fLabelsFont = new Font("Segoe UI Semibold", 14.0f, FontStyle.Regular, GraphicsUnit.Pixel);
 
-        SolidBrush brUserNameBrush = new SolidBrush(Color.FromArgb(70, 70, 70));
-        SolidBrush brDateBrush = new SolidBrush(Color.FromArgb(163, 163, 163));
-        SolidBrush brTextBrush = new SolidBrush(Color.FromArgb(80, 80, 80));
-        SolidBrush brParametersBrush = new SolidBrush(Color.FromArgb(80, 80, 80));
-        SolidBrush brCategoryBrush = new SolidBrush(Color.FromArgb(56, 184, 238));
-        SolidBrush brCorrespondentBrush = new SolidBrush(Color.FromArgb(56, 184, 238));
-        SolidBrush brNoBrush = new SolidBrush(Color.FromArgb(163, 163, 163));
-        SolidBrush brLabelsBrush = new SolidBrush(Color.FromArgb(80, 80, 80));
+        private readonly SolidBrush brUserNameBrush = new SolidBrush(Color.FromArgb(70, 70, 70));
+        private readonly SolidBrush brDateBrush = new SolidBrush(Color.FromArgb(163, 163, 163));
+        private readonly SolidBrush brTextBrush = new SolidBrush(Color.FromArgb(80, 80, 80));
+        private readonly SolidBrush brParametersBrush = new SolidBrush(Color.FromArgb(80, 80, 80));
+        private readonly SolidBrush brCategoryBrush = new SolidBrush(Color.FromArgb(56, 184, 238));
+        private readonly SolidBrush brCorrespondentBrush = new SolidBrush(Color.FromArgb(56, 184, 238));
+        private readonly SolidBrush brNoBrush = new SolidBrush(Color.FromArgb(163, 163, 163));
+        private readonly SolidBrush brLabelsBrush = new SolidBrush(Color.FromArgb(80, 80, 80));
 
-        Pen pBorderPen = new Pen(new SolidBrush(Color.FromArgb(200, 200, 200)));
+        private readonly Pen pBorderPen = new Pen(new SolidBrush(Color.FromArgb(200, 200, 200)));
 
-        Rectangle rBorderRect = new Rectangle(0, 0, 0, 0);
+        private Rectangle rBorderRect = new Rectangle(0, 0, 0, 0);
 
-        int iImageWidth = 73;
-        int iImageHeight = 68;
+        private readonly int iImageWidth = 73;
+        private readonly int iImageHeight = 68;
 
-        int iBorderMargin = 15;
+        private readonly int iBorderMargin = 15;
 
         public static int iInitialHeight = 410;
 
 
+        private readonly ToolTip ToolTip;
 
-        ToolTip ToolTip;
-
-        string sToolTipText = "";
+        private string sToolTipText = "";
 
         public DataTable CommentsDataTable;
         public DataTable UsersDataTable;
@@ -21221,14 +21221,14 @@ namespace Infinium
 
     public class InfiniumDocumentsUpdatesList : Control
     {
-        Font fCaptionFont = new Font("Segoe UI", 22.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private readonly Font fCaptionFont = new Font("Segoe UI", 22.0f, FontStyle.Regular, GraphicsUnit.Pixel);
 
-        SolidBrush brCaptionBrush = new SolidBrush(Color.FromArgb(110, 110, 110));
+        private readonly SolidBrush brCaptionBrush = new SolidBrush(Color.FromArgb(110, 110, 110));
 
         public int Offset = 0;
 
-        int iTempScrollWheelOffset = 0;
-        int iMarginToNextItem = 20;
+        private int iTempScrollWheelOffset = 0;
+        private readonly int iMarginToNextItem = 20;
 
         public int iCurrentCommentsEditIndex = -1;
 
@@ -21731,13 +21731,13 @@ namespace Infinium
 
     public class InfiniumDocumentsUpdatesUserItem : Control
     {
-        Font fUserNameFont = new Font("Segoe UI", 11.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private readonly Font fUserNameFont = new Font("Segoe UI", 11.0f, FontStyle.Regular, GraphicsUnit.Pixel);
 
-        SolidBrush brCaptionBrush = new SolidBrush(Color.FromArgb(162, 162, 162));
+        private readonly SolidBrush brCaptionBrush = new SolidBrush(Color.FromArgb(162, 162, 162));
 
-        Pen pBorderPen = new Pen(new SolidBrush(Color.FromArgb(252, 252, 252)));
+        private readonly Pen pBorderPen = new Pen(new SolidBrush(Color.FromArgb(252, 252, 252)));
 
-        Rectangle rImageRect = new Rectangle(0, 0, 0, 0);
+        private Rectangle rImageRect = new Rectangle(0, 0, 0, 0);
 
         public string sUserName = "";
 
@@ -21749,7 +21749,7 @@ namespace Infinium
         public int iImageWidth = 44;
         public int iImageHeight = 41;
 
-        bool bTrack = false;
+        private bool bTrack = false;
         public Bitmap Image;
 
         public InfiniumDocumentsUpdatesUserItem()
@@ -21845,7 +21845,7 @@ namespace Infinium
     {
         public int Offset = 0;
 
-        int iTempScrollWheelOffset = 0;
+        private int iTempScrollWheelOffset = 0;
 
         public InfiniumDocumentsUpdatesScrollContainer ScrollContainer;
         public InfiniumHorizontalScrollBar HorizontalScroll;
@@ -21855,7 +21855,7 @@ namespace Infinium
         public DataTable ItemsDataTable;
         public DataTable UsersDataTable;
 
-        int iMarginToNextItem = 10;
+        private readonly int iMarginToNextItem = 10;
 
         public int DocType = -1;
         public int DocID = -1;
@@ -22114,20 +22114,20 @@ namespace Infinium
 
     public class InfiniumDocumentsUpdatesFileItem : Control
     {
-        Color cCaptionColor = Color.FromArgb(100, 100, 100);
-        Color cBorderColor = Color.FromArgb(240, 240, 240);
+        private readonly Color cCaptionColor = Color.FromArgb(100, 100, 100);
+        private readonly Color cBorderColor = Color.FromArgb(240, 240, 240);
 
-        Font fCaptionFont = new Font("Segoe UI", 12.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private readonly Font fCaptionFont = new Font("Segoe UI", 12.0f, FontStyle.Regular, GraphicsUnit.Pixel);
 
-        SolidBrush brCaptionBrush;
+        private readonly SolidBrush brCaptionBrush;
 
-        Pen pBorderPen;
+        private readonly Pen pBorderPen;
 
-        string sCaption = "Item";
+        private string sCaption = "Item";
 
         public int iItemHeight = 80;
         public int iItemWidth = 90;
-        bool bTrack = false;
+        private bool bTrack = false;
         public Bitmap Image;
 
         public int iDocumentFileID = -1;
@@ -22260,7 +22260,7 @@ namespace Infinium
     {
         public int Offset = 0;
 
-        int iTempScrollWheelOffset = 0;
+        private int iTempScrollWheelOffset = 0;
 
         public InfiniumDocumentsUpdatesScrollContainer ScrollContainer;
         public InfiniumHorizontalScrollBar HorizontalScroll;
@@ -22269,17 +22269,17 @@ namespace Infinium
 
         public DataTable ItemsDataTable;
 
-        int iMarginToNextItem = 5;
+        private readonly int iMarginToNextItem = 5;
 
         public int DocType = -1;
         public int DocID = -1;
 
-        Bitmap ImageFileBMP = Properties.Resources.ImageFile;
-        Bitmap PDFFileBMP = Properties.Resources.PDFFile;
-        Bitmap ExcelFileBMP = Properties.Resources.ExcelFile;
-        Bitmap WordFileBMP = Properties.Resources.WordFile;
-        Bitmap ArchiveFileBMP = Properties.Resources.ArchiveFile;
-        Bitmap OtherFileBMP = Properties.Resources.OtherFile;
+        private readonly Bitmap ImageFileBMP = Properties.Resources.ImageFile;
+        private readonly Bitmap PDFFileBMP = Properties.Resources.PDFFile;
+        private readonly Bitmap ExcelFileBMP = Properties.Resources.ExcelFile;
+        private readonly Bitmap WordFileBMP = Properties.Resources.WordFile;
+        private readonly Bitmap ArchiveFileBMP = Properties.Resources.ArchiveFile;
+        private readonly Bitmap OtherFileBMP = Properties.Resources.OtherFile;
 
         public InfiniumDocumentsUpdatesFilesList()
         {
@@ -22554,23 +22554,21 @@ namespace Infinium
 
     public class InfiniumDocumentsUpdatesControlPanel : Control
     {
-        Color cBackColor = Color.FromArgb(249, 249, 249);
+        private readonly Color cBackColor = Color.FromArgb(249, 249, 249);
 
 
+        private readonly Pen pBorderPen = new Pen(new SolidBrush(Color.FromArgb(210, 210, 210)));
 
-        Pen pBorderPen = new Pen(new SolidBrush(Color.FromArgb(210, 210, 210)));
-
-        Rectangle rBorderRect = new Rectangle(0, 0, 0, 0);
+        private Rectangle rBorderRect = new Rectangle(0, 0, 0, 0);
 
 
 
         public static int iInitialHeight = 1;
 
 
+        private readonly ToolTip ToolTip;
 
-        ToolTip ToolTip;
-
-        string sToolTipText = "";
+        private string sToolTipText = "";
 
         public InfiniumDocumentsUpdatesCommentsTextBox CommentsTextBox;
         public InfiniumDocumentsCommentsList CommentsList;
@@ -22867,37 +22865,36 @@ namespace Infinium
 
     public class InfiniumDocumentsCommentsItem : Control
     {
-        int iMarginTextRows = 5;
+        private readonly int iMarginTextRows = 5;
 
-        Color cBackColor = Color.White;
+        private Color cBackColor = Color.White;
         //Color cBorderColor = Color.FromArgb(192, 192, 192);
 
-        Font fUserNameFont = new Font("Segoe UI Semibold", 16.0f, FontStyle.Regular, GraphicsUnit.Pixel);
-        Font fDateFont = new Font("Segoe UI", 12.0f, FontStyle.Regular, GraphicsUnit.Pixel);
-        Font fTextFont = new Font("Segoe UI", 16.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private readonly Font fUserNameFont = new Font("Segoe UI Semibold", 16.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private readonly Font fDateFont = new Font("Segoe UI", 12.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private readonly Font fTextFont = new Font("Segoe UI", 16.0f, FontStyle.Regular, GraphicsUnit.Pixel);
 
-        SolidBrush brUserNameBrush = new SolidBrush(Color.FromArgb(60, 60, 60));
-        SolidBrush brDateBrush = new SolidBrush(Color.FromArgb(155, 155, 155));
-        SolidBrush brTextBrush = new SolidBrush(Color.FromArgb(60, 60, 60));
+        private readonly SolidBrush brUserNameBrush = new SolidBrush(Color.FromArgb(60, 60, 60));
+        private readonly SolidBrush brDateBrush = new SolidBrush(Color.FromArgb(155, 155, 155));
+        private readonly SolidBrush brTextBrush = new SolidBrush(Color.FromArgb(60, 60, 60));
 
-        Pen pBorderPen = new Pen(new SolidBrush(Color.FromArgb(200, 200, 200)));
+        private Pen pBorderPen = new Pen(new SolidBrush(Color.FromArgb(200, 200, 200)));
 
-        Rectangle rBorderRect = new Rectangle(0, 0, 0, 0);
+        private Rectangle rBorderRect = new Rectangle(0, 0, 0, 0);
 
-        int iImageWidth = 58;
-        int iImageHeight = 54;
+        private readonly int iImageWidth = 58;
+        private readonly int iImageHeight = 54;
 
-        int iEditLeft = 0;
-        int iDeleteLeft = 0;
+        private int iEditLeft = 0;
+        private int iDeleteLeft = 0;
 
-        Bitmap DeleteBMP = Properties.Resources.DocDelete;
-        Bitmap EditBMP = Properties.Resources.DocEdit;
+        private readonly Bitmap DeleteBMP = Properties.Resources.DocDelete;
+        private readonly Bitmap EditBMP = Properties.Resources.DocEdit;
 
 
+        private readonly ToolTip ToolTip;
 
-        ToolTip ToolTip;
-
-        string sToolTipText = "";
+        private string sToolTipText = "";
         public int iDocumentCommentID = -1;
         public Bitmap Image = null;
 
@@ -23253,21 +23250,21 @@ namespace Infinium
     {
         public int Offset = 0;
 
-        int iTempScrollWheelOffset = 0;
-        int iMarginToNextItem = 20;
-        int iMarginForLabel = 55;
-        int iMarginForComments = 20;
+        private int iTempScrollWheelOffset = 0;
+        private readonly int iMarginToNextItem = 20;
+        private readonly int iMarginForLabel = 55;
+        private readonly int iMarginForComments = 20;
 
         //int iMaxHeight = 500;
-        int iMaxCount = 1;
+        private readonly int iMaxCount = 1;
 
-        int iAllCommentsHeight = 0;
+        private int iAllCommentsHeight = 0;
 
         public bool bExpanded = false;
 
         public static int iInitialHeight = 54;
 
-        InfiniumDocumentsUpdatesScrollContainer ScrollContainer;
+        private readonly InfiniumDocumentsUpdatesScrollContainer ScrollContainer;
         public InfiniumProjectsVerticalScrollBar VerticalScroll;
 
         public InfiniumDocumentsCommentsItem[] Items;
@@ -23627,30 +23624,30 @@ namespace Infinium
 
     public class InfiniumDocumentsConfirmItem : Control
     {
-        Color cBackColor = Color.White;
+        private Color cBackColor = Color.White;
 
-        Font fUserNameFont = new Font("Segoe UI", 14.0f, FontStyle.Regular, GraphicsUnit.Pixel);
-        Font fDateFont = new Font("Segoe UI", 11.0f, FontStyle.Regular, GraphicsUnit.Pixel);
-        Font fTextFont = new Font("Segoe UI", 13.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private readonly Font fUserNameFont = new Font("Segoe UI", 14.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private readonly Font fDateFont = new Font("Segoe UI", 11.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private readonly Font fTextFont = new Font("Segoe UI", 13.0f, FontStyle.Regular, GraphicsUnit.Pixel);
 
-        SolidBrush brUserNameBrush = new SolidBrush(Color.FromArgb(60, 60, 60));
-        SolidBrush brDateBrush = new SolidBrush(Color.FromArgb(155, 155, 155));
-        SolidBrush brTextBrush = new SolidBrush(Color.FromArgb(60, 60, 60));
-        SolidBrush brConfirmBrush = new SolidBrush(Color.FromArgb(56, 184, 238));
-        SolidBrush brCancelBrush = new SolidBrush(Color.FromArgb(255, 0, 0));
-        SolidBrush brEditBrush = new SolidBrush(Color.FromArgb(169, 169, 169));
+        private readonly SolidBrush brUserNameBrush = new SolidBrush(Color.FromArgb(60, 60, 60));
+        private readonly SolidBrush brDateBrush = new SolidBrush(Color.FromArgb(155, 155, 155));
+        private SolidBrush brTextBrush = new SolidBrush(Color.FromArgb(60, 60, 60));
+        private readonly SolidBrush brConfirmBrush = new SolidBrush(Color.FromArgb(56, 184, 238));
+        private readonly SolidBrush brCancelBrush = new SolidBrush(Color.FromArgb(255, 0, 0));
+        private SolidBrush brEditBrush = new SolidBrush(Color.FromArgb(169, 169, 169));
 
-        Pen pBorderPen = new Pen(new SolidBrush(Color.FromArgb(200, 200, 200)));
+        private Pen pBorderPen = new Pen(new SolidBrush(Color.FromArgb(200, 200, 200)));
 
-        Rectangle rBorderRect = new Rectangle(0, 0, 0, 0);
+        private Rectangle rBorderRect = new Rectangle(0, 0, 0, 0);
 
-        int iConfirmLeft = 0;
-        int iConfirmWidth = 0;
-        int iCancelLeft = 0;
-        int iCancelWidth = 0;
+        private int iConfirmLeft = 0;
+        private int iConfirmWidth = 0;
+        private int iCancelLeft = 0;
+        private int iCancelWidth = 0;
 
-        Bitmap CheckOKBMP = Properties.Resources.CheckDocOK;
-        Bitmap CanceledBMP = Properties.Resources.CheckCanceled;
+        private readonly Bitmap CheckOKBMP = Properties.Resources.CheckDocOK;
+        private readonly Bitmap CanceledBMP = Properties.Resources.CheckCanceled;
 
         public int iDocumentConfirmationRecipientID = -1;
         public Bitmap Image = null;
@@ -23848,33 +23845,33 @@ namespace Infinium
 
     public class InfiniumDocumentsConfirmList : Control
     {
-        int iMarginToNextItem = 10;
+        private readonly int iMarginToNextItem = 10;
 
-        Font fUserNameFont = new Font("Segoe UI Semibold", 16.0f, FontStyle.Regular, GraphicsUnit.Pixel);
-        Font fDateFont = new Font("Segoe UI", 12.0f, FontStyle.Regular, GraphicsUnit.Pixel);
-        Font fTextFont = new Font("Segoe UI", 16.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private readonly Font fUserNameFont = new Font("Segoe UI Semibold", 16.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private readonly Font fDateFont = new Font("Segoe UI", 12.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private readonly Font fTextFont = new Font("Segoe UI", 16.0f, FontStyle.Regular, GraphicsUnit.Pixel);
 
-        SolidBrush brUserNameBrush = new SolidBrush(Color.FromArgb(60, 60, 60));
-        SolidBrush brDateBrush = new SolidBrush(Color.FromArgb(155, 155, 155));
-        SolidBrush brTextBrush = new SolidBrush(Color.FromArgb(60, 60, 60));
+        private readonly SolidBrush brUserNameBrush = new SolidBrush(Color.FromArgb(60, 60, 60));
+        private readonly SolidBrush brDateBrush = new SolidBrush(Color.FromArgb(155, 155, 155));
+        private readonly SolidBrush brTextBrush = new SolidBrush(Color.FromArgb(60, 60, 60));
 
 
-        Pen pBorderPen = new Pen(new SolidBrush(Color.FromArgb(240, 240, 240)));
+        private readonly Pen pBorderPen = new Pen(new SolidBrush(Color.FromArgb(240, 240, 240)));
 
-        Rectangle rBorderRect = new Rectangle(0, 0, 0, 0);
+        private Rectangle rBorderRect = new Rectangle(0, 0, 0, 0);
 
-        int iImageWidth = 58;
-        int iImageHeight = 54;
+        private readonly int iImageWidth = 58;
+        private readonly int iImageHeight = 54;
 
-        int iEditLeft = 0;
-        int iDeleteLeft = 0;
+        private int iEditLeft = 0;
+        private int iDeleteLeft = 0;
 
-        Bitmap DeleteBMP = Properties.Resources.DocDelete;
-        Bitmap EditBMP = Properties.Resources.DocEdit;
+        private readonly Bitmap DeleteBMP = Properties.Resources.DocDelete;
+        private readonly Bitmap EditBMP = Properties.Resources.DocEdit;
 
-        ToolTip ToolTip;
+        private readonly ToolTip ToolTip;
 
-        string sToolTipText = "";
+        private string sToolTipText = "";
         public Bitmap Image = null;
 
         public bool bIsComments = false;
@@ -23891,7 +23888,7 @@ namespace Infinium
         public DataTable ConfirmsRecipientsDataTable = null;
         public DataTable UsersDataTable = null;
 
-        InfiniumDocumentsConfirmItem[] Items;
+        private InfiniumDocumentsConfirmItem[] Items;
 
         public InfiniumDocumentsConfirmList()
         {
@@ -24127,49 +24124,49 @@ namespace Infinium
     {
         public ComponentFactory.Krypton.Toolkit.KryptonRichTextBox RichTextBox;
 
-        ComponentFactory.Krypton.Toolkit.KryptonButton SendButton;
-        ComponentFactory.Krypton.Toolkit.KryptonButton CancelButton;
+        private ComponentFactory.Krypton.Toolkit.KryptonButton SendButton;
+        private ComponentFactory.Krypton.Toolkit.KryptonButton CancelButton;
 
         public Label FilesLabel;
 
-        int iAddConfirmLeft = 0;
-        int iAddButtonsTop = 0;
+        private int iAddConfirmLeft = 0;
+        private int iAddButtonsTop = 0;
 
-        int iAddUserLeft = 0;
+        private int iAddUserLeft = 0;
 
-        Font fCommentsTextBoxFont = new Font("Segoe UI", 14.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private readonly Font fCommentsTextBoxFont = new Font("Segoe UI", 14.0f, FontStyle.Regular, GraphicsUnit.Pixel);
 
-        Bitmap AddConfirmBMP = Properties.Resources.DocCheckList;
-        Bitmap AddUserBMP = Properties.Resources.DocAddUser;
+        private readonly Bitmap AddConfirmBMP = Properties.Resources.DocCheckList;
+        private readonly Bitmap AddUserBMP = Properties.Resources.DocAddUser;
 
-        Rectangle rTextBoxRect = new Rectangle(0, 0, 350, 30);
+        private Rectangle rTextBoxRect = new Rectangle(0, 0, 350, 30);
 
-        SolidBrush brCommentsTextBoxBackBrush = new SolidBrush(Color.White);
-        SolidBrush brCommentsTextFontBrush = new SolidBrush(Color.FromArgb(178, 178, 178));
+        private readonly SolidBrush brCommentsTextBoxBackBrush = new SolidBrush(Color.White);
+        private readonly SolidBrush brCommentsTextFontBrush = new SolidBrush(Color.FromArgb(178, 178, 178));
 
-        Pen pBorderPen = new Pen(new SolidBrush(Color.FromArgb(210, 210, 210)));
+        private readonly Pen pBorderPen = new Pen(new SolidBrush(Color.FromArgb(210, 210, 210)));
 
         public bool bEdit = false;
         public static int iExpandedTextBoxHeight = 100;
         public static int iExpandedContainerHeight = 175;
         public static int iInitialContainerHeight = 70;
 
-        bool bCtrlEnter = false;
+        private readonly bool bCtrlEnter = false;
 
         public bool bOpened = false;
 
         public ProgressBar ProgressBar;
 
 
-        ToolTip ToolTip;
+        private readonly ToolTip ToolTip;
 
-        string sToolTipText = "";
+        private string sToolTipText = "";
 
         public int iDocumentCommentID = -1;
 
-        bool bTextTrack = false;
-        bool bConfirmTrack = false;
-        bool bUserTrack = false;
+        private bool bTextTrack = false;
+        private bool bConfirmTrack = false;
+        private bool bUserTrack = false;
 
         public bool bShowButtons = false;
 
@@ -24573,21 +24570,21 @@ namespace Infinium
 
     public class InfiniumDocumentsCheckButton : Control
     {
-        Font fCaptionFont = new Font("Segoe UI", 16.0f, FontStyle.Regular, GraphicsUnit.Pixel);
-        Font fCheckedCaptionFont = new Font("Segoe UI Semibold", 16.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private readonly Font fCaptionFont = new Font("Segoe UI", 16.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private readonly Font fCheckedCaptionFont = new Font("Segoe UI Semibold", 16.0f, FontStyle.Regular, GraphicsUnit.Pixel);
 
-        SolidBrush brCaptionBrush = new SolidBrush(Color.FromArgb(70, 70, 70));
-        SolidBrush brCheckedCaptionBrush = new SolidBrush(Color.FromArgb(60, 60, 60));
+        private readonly SolidBrush brCaptionBrush = new SolidBrush(Color.FromArgb(70, 70, 70));
+        private SolidBrush brCheckedCaptionBrush = new SolidBrush(Color.FromArgb(60, 60, 60));
 
-        Pen pBorderPen = new Pen(new SolidBrush(Color.FromArgb(200, 200, 200)));
-        Pen pLinePen = new Pen(new SolidBrush(Color.FromArgb(230, 230, 230)), 2);
-        Pen pCheckedLinePen = new Pen(new SolidBrush(Color.FromArgb(83, 206, 255)), 2);
+        private readonly Pen pBorderPen = new Pen(new SolidBrush(Color.FromArgb(200, 200, 200)));
+        private readonly Pen pLinePen = new Pen(new SolidBrush(Color.FromArgb(230, 230, 230)), 2);
+        private readonly Pen pCheckedLinePen = new Pen(new SolidBrush(Color.FromArgb(83, 206, 255)), 2);
 
-        Rectangle rBorderRect = new Rectangle(0, 0, 0, 0);
+        private Rectangle rBorderRect = new Rectangle(0, 0, 0, 0);
 
-        ToolTip ToolTip;
+        private readonly ToolTip ToolTip;
 
-        string sToolTipText = "";
+        private string sToolTipText = "";
 
         public bool bCheck = false;
 
@@ -24673,28 +24670,28 @@ namespace Infinium
 
     public class InfiniumContractorsMenuItem : Control
     {
-        Font fCaptionFont = new Font("Segoe UI Semibold", 15.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private readonly Font fCaptionFont = new Font("Segoe UI Semibold", 15.0f, FontStyle.Regular, GraphicsUnit.Pixel);
 
-        SolidBrush brCaptionBrush = new SolidBrush(Color.FromArgb(60, 60, 60));
-        SolidBrush brSelectedFontBrush = new SolidBrush(Color.FromArgb(60, 60, 60));
-        SolidBrush brTrackFontBrush = new SolidBrush(Color.FromArgb(60, 60, 60));
-        SolidBrush brSelectedBackBrush = new SolidBrush(Color.FromArgb(245, 245, 245));
+        private readonly SolidBrush brCaptionBrush = new SolidBrush(Color.FromArgb(60, 60, 60));
+        private readonly SolidBrush brSelectedFontBrush = new SolidBrush(Color.FromArgb(60, 60, 60));
+        private SolidBrush brTrackFontBrush = new SolidBrush(Color.FromArgb(60, 60, 60));
+        private readonly SolidBrush brSelectedBackBrush = new SolidBrush(Color.FromArgb(245, 245, 245));
 
-        SolidBrush brItemColorBrush = new SolidBrush(Color.White);
+        private readonly SolidBrush brItemColorBrush = new SolidBrush(Color.White);
 
-        Rectangle rColorRect = new Rectangle(10, 0, 7, 7);
+        private Rectangle rColorRect = new Rectangle(10, 0, 7, 7);
 
-        string sCaption = "Item";
+        private string sCaption = "Item";
 
-        int iItemHeight = 37;
-        bool bTrack = false;
+        private int iItemHeight = 37;
+        private bool bTrack = false;
 
-        bool bSelected = false;
+        private bool bSelected = false;
         public int index = -1;
 
-        ToolTip ToolTip;
+        private readonly ToolTip ToolTip;
 
-        string sToolTipText = "";
+        private string sToolTipText = "";
 
         public InfiniumContractorsMenuItem()
         {
@@ -24860,11 +24857,11 @@ namespace Infinium
     {
         public int Offset = 0;
 
-        int iTempScrollWheelOffset = 0;
+        private int iTempScrollWheelOffset = 0;
 
-        Color[] ItemColors;
+        private readonly Color[] ItemColors;
 
-        InfiniumScrollContainer ScrollContainer;
+        private readonly InfiniumScrollContainer ScrollContainer;
         public InfiniumProjectsVerticalScrollBar VerticalScroll;
 
         public InfiniumContractorsMenuItem[] Items;
@@ -24873,9 +24870,9 @@ namespace Infinium
 
         public string SelectedName = "";
 
-        int iSelected = -1;
+        private int iSelected = -1;
 
-        int iMarginToNextItem = 0;
+        private readonly int iMarginToNextItem = 0;
 
         public InfiniumContractorsMenu()
         {
@@ -25176,28 +25173,28 @@ namespace Infinium
 
     public class InfiniumContractorsSubMenuItem : Control
     {
-        Font fCaptionFont = new Font("Segoe UI Semibold", 15.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private readonly Font fCaptionFont = new Font("Segoe UI Semibold", 15.0f, FontStyle.Regular, GraphicsUnit.Pixel);
 
-        SolidBrush brCaptionBrush = new SolidBrush(Color.FromArgb(60, 60, 60));
-        SolidBrush brSelectedFontBrush = new SolidBrush(Color.FromArgb(60, 60, 60));
-        SolidBrush brTrackFontBrush = new SolidBrush(Color.FromArgb(60, 60, 60));
-        SolidBrush brSelectedBackBrush = new SolidBrush(Color.FromArgb(245, 245, 245));
+        private readonly SolidBrush brCaptionBrush = new SolidBrush(Color.FromArgb(60, 60, 60));
+        private readonly SolidBrush brSelectedFontBrush = new SolidBrush(Color.FromArgb(60, 60, 60));
+        private SolidBrush brTrackFontBrush = new SolidBrush(Color.FromArgb(60, 60, 60));
+        private readonly SolidBrush brSelectedBackBrush = new SolidBrush(Color.FromArgb(245, 245, 245));
 
-        SolidBrush brItemColorBrush = new SolidBrush(Color.White);
+        private readonly SolidBrush brItemColorBrush = new SolidBrush(Color.White);
 
-        Rectangle rColorRect = new Rectangle(10, 0, 7, 7);
+        private Rectangle rColorRect = new Rectangle(10, 0, 7, 7);
 
-        string sCaption = "Item";
+        private string sCaption = "Item";
 
-        int iItemHeight = 37;
-        bool bTrack = false;
+        private int iItemHeight = 37;
+        private bool bTrack = false;
 
-        bool bSelected = false;
+        private bool bSelected = false;
         public int index = -1;
 
-        ToolTip ToolTip;
+        private readonly ToolTip ToolTip;
 
-        string sToolTipText = "";
+        private string sToolTipText = "";
 
         public InfiniumContractorsSubMenuItem()
         {
@@ -25363,11 +25360,11 @@ namespace Infinium
     {
         public int Offset = 0;
 
-        int iTempScrollWheelOffset = 0;
+        private int iTempScrollWheelOffset = 0;
 
         public Color ItemsColor = Color.White;
 
-        InfiniumScrollContainer ScrollContainer;
+        private readonly InfiniumScrollContainer ScrollContainer;
         public InfiniumProjectsVerticalScrollBar VerticalScroll;
 
         public InfiniumContractorsSubMenuItem[] Items;
@@ -25376,9 +25373,9 @@ namespace Infinium
 
         public string SelectedName = "";
 
-        int iSelected = -1;
+        private int iSelected = -1;
 
-        int iMarginToNextItem = 0;
+        private readonly int iMarginToNextItem = 0;
 
         public InfiniumContractorsSubMenu()
         {
@@ -25669,9 +25666,9 @@ namespace Infinium
 
     public class InfiniumContractorsTextBox : TextBox
     {
-        ToolTip ToolTip;
+        private readonly ToolTip ToolTip;
 
-        string sToolTipText = "";
+        private string sToolTipText = "";
 
         public InfiniumContractorsTextBox(Color cBackColor)
         {
@@ -25714,44 +25711,44 @@ namespace Infinium
 
     public class InfiniumContractorItem : Control
     {
-        Color cBackColor = Color.White;
+        private Color cBackColor = Color.White;
 
-        Font fNameFont = new Font("Segoe UI Semibold", 20.0f, FontStyle.Regular, GraphicsUnit.Pixel);
-        Font fTextFont = new Font("Segoe UI", 15.0f, FontStyle.Regular, GraphicsUnit.Pixel);
-        Font fLabelsFont = new Font("Segoe UI Semibold", 15.0f, FontStyle.Regular, GraphicsUnit.Pixel);
-        Font fLinkFont = new Font("Segoe UI", 15.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private readonly Font fNameFont = new Font("Segoe UI Semibold", 20.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private readonly Font fTextFont = new Font("Segoe UI", 15.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private readonly Font fLabelsFont = new Font("Segoe UI Semibold", 15.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private readonly Font fLinkFont = new Font("Segoe UI", 15.0f, FontStyle.Regular, GraphicsUnit.Pixel);
 
-        SolidBrush brNameBrush = new SolidBrush(Color.FromArgb(70, 70, 70));
-        SolidBrush brTextBrush = new SolidBrush(Color.FromArgb(80, 80, 80));
-        SolidBrush brNoBrush = new SolidBrush(Color.FromArgb(163, 163, 163));
-        SolidBrush brLabelsBrush = new SolidBrush(Color.FromArgb(70, 70, 70));
-        SolidBrush brLinkBrush = new SolidBrush(Color.FromArgb(56, 174, 238));
+        private SolidBrush brNameBrush = new SolidBrush(Color.FromArgb(70, 70, 70));
+        private SolidBrush brTextBrush = new SolidBrush(Color.FromArgb(80, 80, 80));
+        private SolidBrush brNoBrush = new SolidBrush(Color.FromArgb(163, 163, 163));
+        private readonly SolidBrush brLabelsBrush = new SolidBrush(Color.FromArgb(70, 70, 70));
+        private readonly SolidBrush brLinkBrush = new SolidBrush(Color.FromArgb(56, 174, 238));
         public SolidBrush brItemColorBrush = new SolidBrush(Color.White);
 
-        Pen pBorderPen = new Pen(new SolidBrush(Color.FromArgb(200, 200, 200)));
+        private readonly Pen pBorderPen = new Pen(new SolidBrush(Color.FromArgb(200, 200, 200)));
 
-        Rectangle rBorderRect = new Rectangle(0, 0, 0, 0);
-        Rectangle rColorRect = new Rectangle(15, 15, 15, 15);
+        private Rectangle rBorderRect = new Rectangle(0, 0, 0, 0);
+        private readonly Rectangle rColorRect = new Rectangle(15, 15, 15, 15);
 
-        int iBorderMargin = 17;
-        int iTextMargin = 23;
+        private readonly int iBorderMargin = 17;
+        private readonly int iTextMargin = 23;
 
-        int iEditLeft = 0;
-        int iDeleteLeft = 0;
-        int iEditTop = 0;
+        private int iEditLeft = 0;
+        private int iDeleteLeft = 0;
+        private int iEditTop = 0;
 
-        Bitmap DeleteBMP = Properties.Resources.DocDelete;
-        Bitmap EditBMP = Properties.Resources.DocEdit;
+        private readonly Bitmap DeleteBMP = Properties.Resources.DocDelete;
+        private readonly Bitmap EditBMP = Properties.Resources.DocEdit;
 
         public int iInitialHeight = 175;
-        int iReadLeft = 0;
-        int iReadWidth = 0;
-        int iReadTop = 0;
-        int iReadHeight = 0;
+        private int iReadLeft = 0;
+        private int iReadWidth = 0;
+        private int iReadTop = 0;
+        private int iReadHeight = 0;
 
-        ToolTip ToolTip;
+        private readonly ToolTip ToolTip;
 
-        string sToolTipText = "";
+        private string sToolTipText = "";
 
         public DataTable ContactsDataTable;
 
@@ -25769,21 +25766,21 @@ namespace Infinium
         public string sUNN;
         public string sDescription;
 
-        InfiniumContractorsTextBox NameTextBox;
-        InfiniumContractorsTextBox EmailTextBox;
-        InfiniumContractorsTextBox WebsiteTextBox;
-        InfiniumContractorsTextBox AddressTextBox;
-        InfiniumContractorsTextBox FacebookTextBox;
-        InfiniumContractorsTextBox SkypeTextBox;
-        InfiniumContractorsTextBox CountryTextBox;
-        InfiniumContractorsTextBox UNNTextBox;
+        private InfiniumContractorsTextBox NameTextBox;
+        private InfiniumContractorsTextBox EmailTextBox;
+        private InfiniumContractorsTextBox WebsiteTextBox;
+        private InfiniumContractorsTextBox AddressTextBox;
+        private InfiniumContractorsTextBox FacebookTextBox;
+        private InfiniumContractorsTextBox SkypeTextBox;
+        private InfiniumContractorsTextBox CountryTextBox;
+        private InfiniumContractorsTextBox UNNTextBox;
 
         public int iContractorID = -1;
         public bool bCanEdit = false;
 
-        bool bEditTrack = false;
-        bool bDeleteTrack = false;
-        bool bReadTrack = false;
+        private bool bEditTrack = false;
+        private bool bDeleteTrack = false;
+        private bool bReadTrack = false;
 
         public InfiniumContractorItem()
         {
@@ -26124,16 +26121,16 @@ namespace Infinium
 
     public class InfiniumContractorsList : Control
     {
-        Font fCaptionFont = new Font("Segoe UI", 22.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private readonly Font fCaptionFont = new Font("Segoe UI", 22.0f, FontStyle.Regular, GraphicsUnit.Pixel);
 
-        SolidBrush brCaptionBrush = new SolidBrush(Color.FromArgb(110, 110, 110));
+        private readonly SolidBrush brCaptionBrush = new SolidBrush(Color.FromArgb(110, 110, 110));
 
         public int Offset = 0;
 
         public Color ItemColor = Color.White;
 
-        int iTempScrollWheelOffset = 0;
-        int iMarginToNextItem = 20;
+        private int iTempScrollWheelOffset = 0;
+        private readonly int iMarginToNextItem = 20;
 
         public int iCurrentCommentsEditIndex = -1;
 
@@ -26435,46 +26432,46 @@ namespace Infinium
 
     public class InfiniumContractsContactsPanel : Control
     {
-        Color cBackColor = Color.FromArgb(249, 249, 249);
+        private readonly Color cBackColor = Color.FromArgb(249, 249, 249);
 
-        Font fLinkFont = new Font("Segoe UI", 14.0f, FontStyle.Regular, GraphicsUnit.Pixel);
-        Font fTextFont = new Font("Segoe UI", 15.0f, FontStyle.Regular, GraphicsUnit.Pixel);
-        Font fLabelsFont = new Font("Segoe UI Semibold", 15.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private readonly Font fLinkFont = new Font("Segoe UI", 14.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private readonly Font fTextFont = new Font("Segoe UI", 15.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+        private readonly Font fLabelsFont = new Font("Segoe UI Semibold", 15.0f, FontStyle.Regular, GraphicsUnit.Pixel);
 
-        SolidBrush brNoLinkBrush = new SolidBrush(Color.FromArgb(200, 200, 200));
-        SolidBrush brLinkBrush = new SolidBrush(Color.FromArgb(56, 184, 238));
-        SolidBrush brColorBrush = new SolidBrush(Color.FromArgb(56, 184, 238));
-        SolidBrush brTextBrush = new SolidBrush(Color.FromArgb(80, 80, 80));
-        SolidBrush brLabelsBrush = new SolidBrush(Color.FromArgb(70, 70, 70));
+        private readonly SolidBrush brNoLinkBrush = new SolidBrush(Color.FromArgb(200, 200, 200));
+        private readonly SolidBrush brLinkBrush = new SolidBrush(Color.FromArgb(56, 184, 238));
+        private readonly SolidBrush brColorBrush = new SolidBrush(Color.FromArgb(56, 184, 238));
+        private SolidBrush brTextBrush = new SolidBrush(Color.FromArgb(80, 80, 80));
+        private readonly SolidBrush brLabelsBrush = new SolidBrush(Color.FromArgb(70, 70, 70));
 
-        Pen pBorderPen = new Pen(new SolidBrush(Color.FromArgb(210, 210, 210)));
+        private readonly Pen pBorderPen = new Pen(new SolidBrush(Color.FromArgb(210, 210, 210)));
 
-        Rectangle rBorderRect = new Rectangle(0, 0, 0, 0);
-        Rectangle rColorRect = new Rectangle(15, 15, 12, 12);
+        private Rectangle rBorderRect = new Rectangle(0, 0, 0, 0);
+        private Rectangle rColorRect = new Rectangle(15, 15, 12, 12);
 
-        Bitmap ContactDnBMP = Properties.Resources.ContractorContactsDown;
-        Bitmap ContactUpBMP = Properties.Resources.ContractorContactsUp;
+        private readonly Bitmap ContactDnBMP = Properties.Resources.ContractorContactsDown;
+        private readonly Bitmap ContactUpBMP = Properties.Resources.ContractorContactsUp;
 
         public int iInitialHeight = 35;
         //public int iExpandedHeight = 35;
 
-        int iBorderMargin = 17;
-        int iTextMargin = 23;
-        int iMarginToNextItem = 15;
-        int iItemHeight = 90;
+        private readonly int iBorderMargin = 17;
+        private readonly int iTextMargin = 23;
+        private readonly int iMarginToNextItem = 15;
+        private readonly int iItemHeight = 90;
 
-        int iLinkLeft = 0;
-        int iLinkWidth = 0;
-        int iLinkTop = 0;
-        int iLinkHeight = 0;
+        private int iLinkLeft = 0;
+        private int iLinkWidth = 0;
+        private int iLinkTop = 0;
+        private int iLinkHeight = 0;
 
         public DataTable ContactsDataTable;
         public bool bExpanded = false;
 
-        ToolTip ToolTip;
+        private readonly ToolTip ToolTip;
 
-        string sToolTipText = "";
-        string sLink = "Показать контакты";
+        private string sToolTipText = "";
+        private string sLink = "Показать контакты";
 
         public InfiniumContractsContactsPanel()
         {

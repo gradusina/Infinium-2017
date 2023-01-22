@@ -7,21 +7,21 @@ namespace Infinium
 {
     public partial class LabelCheckProfilForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
-        int FormEvent = 0;
+        private int FormEvent = 0;
 
-        LightStartForm LightStartForm;
+        private LightStartForm LightStartForm;
 
-        bool CanAction = false;
-        int UserID = 0;
+        private bool CanAction = false;
+        private int UserID = 0;
         public CheckLabel CheckLabel;
-        Form TopForm = null;
+        private Form TopForm = null;
         [DllImport("user32.dll")]
-        static extern IntPtr GetActiveWindow();
+        private static extern IntPtr GetActiveWindow();
 
         public LabelCheckProfilForm(LightStartForm tLightStartForm)
         {

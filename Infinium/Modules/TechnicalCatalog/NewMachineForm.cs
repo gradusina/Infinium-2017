@@ -8,24 +8,24 @@ namespace Infinium
 {
     public partial class NewMachineForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
-        bool EditMachine = false;
+        private bool EditMachine = false;
         public bool PressOK = false;
 
-        int FormEvent = 0;
-        int CurrentFactoryID = -1;
-        int CurrentSectorID = -1;
-        int CurrentSubSectorID = -1;
-        int MachineID = -1;
-        string MachineName = string.Empty;
+        private int FormEvent = 0;
+        private int CurrentFactoryID = -1;
+        private int CurrentSectorID = -1;
+        private int CurrentSubSectorID = -1;
+        private int MachineID = -1;
+        private string MachineName = string.Empty;
 
-        Form MainForm = null;
-        Form TopForm = null;
-        MachinesCatalog MachinesCatalogManager;
+        private Form MainForm = null;
+        private Form TopForm = null;
+        private MachinesCatalog MachinesCatalogManager;
 
         public NewMachineForm(Form tMainForm, ref MachinesCatalog tMachinesCatalogManager)
         {

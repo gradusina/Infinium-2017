@@ -8,21 +8,21 @@ namespace Infinium
 {
     public partial class ClientsMessagesForm : InfiniumForm
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
 
-        int FormEvent = 0;
+        private int FormEvent = 0;
 
-        LightStartForm LightStartForm;
+        private LightStartForm LightStartForm;
 
 
-        Form TopForm = null;
-        MenuClientsMessagesForm MenuClientsMessagesForm;
+        private Form TopForm = null;
+        private MenuClientsMessagesForm MenuClientsMessagesForm;
 
-        ConnectClientMessage ConnectClientMessage;
+        private ConnectClientMessage ConnectClientMessage;
 
-        DataTable RolePermissionsDataTable;
+        private DataTable RolePermissionsDataTable;
 
         public ClientsMessagesForm(LightStartForm tLightStartForm)
         {

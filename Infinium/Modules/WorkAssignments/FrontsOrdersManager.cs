@@ -304,6 +304,7 @@ namespace Infinium.Modules.WorkAssignments
                     " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.Dakota) + " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.DakotaPat) + 
                     " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.Turin3) + " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.Turin3NotColored) + 
                     " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.LeonTPS) +
+                    " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.Bona) +
                     " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.Infiniti) + " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.InfinitiPat) + ")";
             if (FilterType == 3)
                 FilterString = " AND (FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.Tafel3) + " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.Tafel2) + " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.Tafel3Gl) + ")";
@@ -413,6 +414,7 @@ namespace Infinium.Modules.WorkAssignments
                     " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.Dakota) + " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.DakotaPat) + 
                     " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.Turin3) + " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.Turin3NotColored) + 
                     " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.LeonTPS) +
+                    " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.Bona) +
                     " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.Infiniti) + " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.InfinitiPat) + ")";
             if (FilterType == 3)
                 FilterString = " AND (FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.Tafel3) + " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.Tafel2) + " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.Tafel3Gl) + ")";

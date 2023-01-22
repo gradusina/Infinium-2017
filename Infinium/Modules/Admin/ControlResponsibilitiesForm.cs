@@ -6,18 +6,18 @@ namespace Infinium
 {
     public partial class ControlResponsibilitiesForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
 
-        int FormEvent = 0;
+        private int FormEvent = 0;
 
-        LightStartForm LightStartForm;
-        AdminWorkDays AdminWorkDays;
+        private LightStartForm LightStartForm;
+        private AdminWorkDays AdminWorkDays;
 
-        DataTable TableUsers;
+        private DataTable TableUsers;
 
-        Form TopForm = null;
+        private Form TopForm = null;
 
 
         public ControlResponsibilitiesForm(LightStartForm tLightStartForm)

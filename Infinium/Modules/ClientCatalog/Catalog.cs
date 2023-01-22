@@ -1,6 +1,7 @@
 ﻿using Infinium.Modules.Packages.ZOV;
 
 using NPOI.HSSF.Record;
+using NPOI.HSSF.Record.Formula.Functions;
 
 using System;
 using System.Collections;
@@ -19,69 +20,72 @@ namespace Infinium
     public class FrontsCatalog
     {
         public FileManager FM = new FileManager();
-        int FactoryID = 1;
-        DataTable ClientsCatalogFrontsConfigDT = null;
-        DataTable ClientsCatalogDecorConfigDT = null;
-        DataTable ClientsCatalogImagesDT = null;
+        private readonly int FactoryID = 1;
+        private DataTable ClientsCatalogFrontsConfigDT;
+        private DataTable ClientsCatalogDecorConfigDT;
+        private DataTable ClientsCatalogImagesDT;
 
-        private DataTable TempFrontsConfigDataTable = null;
-        private DataTable TempFrontsDataTable = null;
+        private DataTable TempFrontsConfigDataTable;
+        private DataTable TempFrontsDataTable;
 
-        DataTable AttachmentsDT = null;
+        private DataTable AttachmentsDT;
 
-        public DataTable ConstFrontsConfigDataTable = null;
-        public DataTable ConstFrontsDataTable = null;
-        public DataTable ConstColorsDataTable = null;
-        public DataTable ConstPatinaDataTable = null;
-        public DataTable ConstInsetTypesDataTable = null;
-        public DataTable ConstInsetColorsDataTable = null;
+        public DataTable ConstExcluziveDataTable;
+        public DataTable ConstFrontsConfigDataTable;
+        public DataTable ConstFrontsDataTable;
+        public DataTable ConstColorsDataTable;
+        public DataTable ConstPatinaDataTable;
+        public DataTable ConstInsetTypesDataTable;
+        public DataTable ConstInsetColorsDataTable;
 
-        DataTable FrontsDataTable = null;
-        public DataTable FrameColorsDataTable = null;
-        public DataTable PatinaDataTable = null;
-        private DataTable PatinaRALDataTable = null;
-        public DataTable InsetTypesDataTable = null;
-        public DataTable InsetColorsDataTable = null;
-        public DataTable TechnoFrameColorsDataTable = null;
-        public DataTable TechnoInsetTypesDataTable = null;
-        public DataTable TechnoInsetColorsDataTable = null;
+        private DataTable FilterClientsDataTable;
+        private DataTable FrontsDataTable;
+        public DataTable FrameColorsDataTable;
+        public DataTable PatinaDataTable;
+        private DataTable PatinaRALDataTable;
+        public DataTable InsetTypesDataTable;
+        public DataTable InsetColorsDataTable;
+        public DataTable TechnoFrameColorsDataTable;
+        public DataTable TechnoInsetTypesDataTable;
+        public DataTable TechnoInsetColorsDataTable;
 
-        public DataTable HeightDataTable = null;
-        public DataTable WidthDataTable = null;
+        public DataTable HeightDataTable;
+        public DataTable WidthDataTable;
 
-        public DataTable MeasuresDataTable = null;
-        public DataTable MarketingPriceDataTable = null;
+        public DataTable MeasuresDataTable;
+        public DataTable MarketingPriceDataTable;
         //public DataTable MarketingExtraPriceDataTable = null;
-        public DataTable ZOVPriceDataTable = null;
+        public DataTable ZOVPriceDataTable;
 
-        public BindingSource FrontsBindingSource = null;
-        public BindingSource FrameColorsBindingSource = null;
-        public BindingSource PatinaBindingSource = null;
-        public BindingSource InsetTypesBindingSource = null;
-        public BindingSource InsetColorsBindingSource = null;
-        public BindingSource TechnoFrameColorsBindingSource = null;
-        public BindingSource TechnoInsetTypesBindingSource = null;
-        public BindingSource TechnoInsetColorsBindingSource = null;
-        public BindingSource FrontsConfigBindingSource = null;
-        public BindingSource HeightBindingSource = null;
-        public BindingSource WidthBindingSource = null;
-        public BindingSource MarketingPriceBindingSource = null;
+        public BindingSource FilterClientsBindingSource;
+        public BindingSource FrontsBindingSource;
+        public BindingSource FrameColorsBindingSource;
+        public BindingSource PatinaBindingSource;
+        public BindingSource InsetTypesBindingSource;
+        public BindingSource InsetColorsBindingSource;
+        public BindingSource TechnoFrameColorsBindingSource;
+        public BindingSource TechnoInsetTypesBindingSource;
+        public BindingSource TechnoInsetColorsBindingSource;
+        public BindingSource FrontsConfigBindingSource;
+        public BindingSource HeightBindingSource;
+        public BindingSource WidthBindingSource;
+        public BindingSource MarketingPriceBindingSource;
         //public BindingSource MarketingExtraPriceBindingSource = null;
-        public BindingSource ZOVPriceBindingSource = null;
+        public BindingSource ZOVPriceBindingSource;
 
-        public String FrontsBindingSourceDisplayMember = null;
-        public String FrameColorsBindingSourceDisplayMember = null;
-        public String PatinaBindingSourceDisplayMember = null;
-        public String InsetColorsBindingSourceDisplayMember = null;
-        public String InsetTypesBindingSourceDisplayMember = null;
-        public String WidthBindingSourceDisplayMember = null;
-        public String HeightBindingSourceDisplayMember = null;
+        public String FrontsBindingSourceDisplayMember;
+        public String FrameColorsBindingSourceDisplayMember;
+        public String PatinaBindingSourceDisplayMember;
+        public String InsetColorsBindingSourceDisplayMember;
+        public String InsetTypesBindingSourceDisplayMember;
+        public String WidthBindingSourceDisplayMember;
+        public String HeightBindingSourceDisplayMember;
 
-        public String FrontsBindingSourceValueMember = null;
-        public String FrameColorsBindingSourceValueMember = null;
-        public String PatinaBindingSourceValueMember = null;
-        public String InsetColorsBindingSourceValueMember = null;
-        public String InsetTypesBindingSourceValueMember = null;
+        public String FrontsBindingSourceValueMember;
+        public String FrameColorsBindingSourceValueMember;
+        public String PatinaBindingSourceValueMember;
+        public String InsetColorsBindingSourceValueMember;
+        public String InsetTypesBindingSourceValueMember;
 
         public FrontsCatalog(int tFactoryID)
         {
@@ -108,6 +112,7 @@ namespace Infinium
             InsetColorsConfigDT = new DataTable();
             TechnoInsetColorsConfigDT = new DataTable();
 
+            ConstExcluziveDataTable = new DataTable();
             ConstFrontsConfigDataTable = new DataTable();
             ConstFrontsDataTable = new DataTable();
             ConstColorsDataTable = new DataTable();
@@ -115,6 +120,7 @@ namespace Infinium
             ConstInsetTypesDataTable = new DataTable();
             ConstInsetColorsDataTable = new DataTable();
 
+            FilterClientsDataTable = new DataTable();
             FrontsDataTable = new DataTable();
             FrameColorsDataTable = new DataTable();
             TechnoFrameColorsDataTable = new DataTable();
@@ -147,6 +153,7 @@ namespace Infinium
             ZOVPriceDataTable.Columns.Add(new DataColumn(("ZOVNonStandMargin"), System.Type.GetType("System.Decimal")));
             ZOVPriceDataTable.Columns.Add(new DataColumn(("Measure"), System.Type.GetType("System.String")));
 
+            FilterClientsBindingSource = new BindingSource();
             FrontsConfigBindingSource = new BindingSource();
             FrontsBindingSource = new BindingSource();
             FrameColorsBindingSource = new BindingSource();
@@ -234,6 +241,18 @@ namespace Infinium
             {
                 DA.Fill(MeasuresDataTable);
             }
+
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT ClientID, ClientName FROM Clients ORDER BY ClientName", ConnectionStrings.MarketingReferenceConnectionString))
+            {
+                DA.Fill(FilterClientsDataTable);
+            }
+            SelectCommand = @"SELECT ExcluziveCatalog.*, Config.FrontId, Config.ColorID, Config.PatinaID FROM ExcluziveCatalog 
+INNER JOIN infiniu2_catalog.dbo.FrontsConfig as Config ON Config.FrontConfigID=ExcluziveCatalog.ConfigId
+where producttype=0";
+            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingReferenceConnectionString))
+            {
+                DA.Fill(ConstExcluziveDataTable);
+            }
             TempFrontsConfigDataTable = ConstFrontsConfigDataTable.Copy();
             TempFrontsDataTable = ConstFrontsDataTable.Copy();
             FrontsDataTable = ConstFrontsDataTable.Copy();
@@ -280,6 +299,7 @@ namespace Infinium
 
         private void Binding()
         {
+            FilterClientsBindingSource.DataSource = FilterClientsDataTable;
             FrontsConfigBindingSource.DataSource = ConstFrontsConfigDataTable;
             FrontsBindingSource.DataSource = FrontsDataTable;
             FrameColorsBindingSource.DataSource = FrameColorsDataTable;
@@ -1597,16 +1617,16 @@ namespace Infinium
             }
         }
 
-        DataTable InsetTypesConfigDT;
-        DataTable InsetColorsConfigDT;
-        DataTable TechnoInsetColorsConfigDT;
+        private DataTable InsetTypesConfigDT;
+        private DataTable InsetColorsConfigDT;
+        private DataTable TechnoInsetColorsConfigDT;
 
-        Bitmap layer;
-        Bitmap backgr;
-        Bitmap backgr2;
-        Bitmap newBitmap;
-        Bitmap newBitmap2;
-        Bitmap NewImage;
+        private Bitmap layer;
+        private Bitmap backgr;
+        private Bitmap backgr2;
+        private Bitmap newBitmap;
+        private Bitmap newBitmap2;
+        private Bitmap NewImage;
 
         public bool CreateFotoFromVisualConfig(int FrontID, int ColorID, int TechnoColorID, int PatinaID, int InsetTypeID, int InsetColorID, int TechnoInsetTypeID, int TechnoInsetColorID,
             string Category, string Name, string Color, string PatinaName, string InsetType, string InsetColor)
@@ -2745,11 +2765,79 @@ namespace Infinium
             FrontsDataTable.DefaultView.Sort = "FrontName ASC";
             TempItemsDataTable.Dispose();
         }
+        
+        public void FilterFronts(int clientId)
+        {
+            TempFrontsDataTable.Clear();
+
+            for (int i = ConstFrontsDataTable.Rows.Count - 1; i >= 0; i--)
+            {
+                int FrontID = Convert.ToInt32(ConstFrontsDataTable.Rows[i]["FrontID"]);
+                var rows1 = ConstExcluziveDataTable
+                    .AsEnumerable()
+                    .Where(row => row.Field<Int64>("clientId") == clientId &&
+                    row.Field<Int64>("FrontID") == FrontID);
+
+                if (rows1.Any())
+                {
+                    DataRow NewRow = TempFrontsDataTable.NewRow();
+                    NewRow.ItemArray = ConstFrontsDataTable.Rows[i].ItemArray;
+                    TempFrontsDataTable.Rows.Add(NewRow);
+                }
+            }
+
+            DataTable TempItemsDataTable = ConstFrontsDataTable.Copy();
+            using (DataView DV = new DataView(TempItemsDataTable))
+            {
+                TempItemsDataTable = DV.ToTable(true, new string[] { "FrontName" });
+            }
+
+            FrontsDataTable.Clear();
+            for (int d = 0; d < TempItemsDataTable.Rows.Count; d++)
+            {
+                DataRow NewRow = FrontsDataTable.NewRow();
+                NewRow["FrontName"] = TempFrontsDataTable.Rows[d]["FrontName"].ToString();
+                FrontsDataTable.Rows.Add(NewRow);
+            }
+            FrontsDataTable.DefaultView.Sort = "FrontName ASC";
+            TempItemsDataTable.Dispose();
+        }
 
         public void FilterCatalogFrameColors(string FrontName = "")
         {
             TempFrontsDataTable.Clear();
             TempFrontsDataTable = ConstFrontsDataTable;
+            using (DataView DV = new DataView(TempFrontsDataTable))
+            {
+                DV.RowFilter = "FrontName='" + FrontName + "'";
+
+                TempFrontsDataTable = DV.ToTable();
+            }
+            string filter = string.Empty;
+            for (int i = 0; i < TempFrontsDataTable.Rows.Count; i++)
+                filter += Convert.ToInt32(TempFrontsDataTable.Rows[i]["FrontID"]) + ",";
+            if (filter.Length > 0)
+            {
+                filter = filter.Substring(0, filter.Length - 1);
+                filter = "FrontID IN (" + filter + ")";
+            }
+            else
+                filter = "FrontID <> - 1";
+
+            TempFrontsConfigDataTable.Clear();
+            TempFrontsConfigDataTable = ConstFrontsConfigDataTable;
+            using (DataView DV = new DataView(TempFrontsConfigDataTable))
+            {
+                DV.RowFilter = filter;
+
+                TempFrontsConfigDataTable = DV.ToTable();
+
+                GetFrameColors();
+            }
+        }//фильтрует и заполняет цвета профиля по выбранному фасаду
+        
+        public void FilterCatalogFrameColors(int clientId, string FrontName = "")
+        {
             using (DataView DV = new DataView(TempFrontsDataTable))
             {
                 DV.RowFilter = "FrontName='" + FrontName + "'";
@@ -3381,63 +3469,63 @@ namespace Infinium
     public class DecorCatalog
     {
         public FileManager FM = new FileManager();
-        int FactoryID = 1;
-        public int DecorProductsCount = 0;
+        private readonly int FactoryID = 1;
+        public int DecorProductsCount;
 
-        public DataTable ConstProductsDataTable = null;
-        public DataTable ConstDecorDataTable = null;
-        public DataTable ConstColorsDataTable = null;
-        public DataTable ConstPatinaDataTable = null;
-        public DataTable PatinaRALDataTable = null;
-        public DataTable InsetTypesDataTable = null;
-        public DataTable InsetColorsDataTable = null;
+        public DataTable ConstProductsDataTable;
+        public DataTable ConstDecorDataTable;
+        public DataTable ConstColorsDataTable;
+        public DataTable ConstPatinaDataTable;
+        public DataTable PatinaRALDataTable;
+        public DataTable InsetTypesDataTable;
+        public DataTable InsetColorsDataTable;
 
-        public DataTable DecorConfigDataTable = null;
-        public DataTable DecorParametersDataTable = null;
+        public DataTable DecorConfigDataTable;
+        public DataTable DecorParametersDataTable;
 
         public DataTable TempProductsDataTable = null;
-        public DataTable TempItemsDataTable = null;
+        public DataTable TempItemsDataTable;
 
-        public DataTable ProductsDataTable = null;
-        public DataTable ItemsDataTable = null;
-        public DataTable ItemColorsDataTable = null;
-        public DataTable ItemPatinaDataTable = null;
-        public DataTable ItemLengthDataTable = null;
-        public DataTable ItemHeightDataTable = null;
-        public DataTable ItemWidthDataTable = null;
-        public DataTable ItemInsetTypesDataTable = null;
-        public DataTable ItemInsetColorsDataTable = null;
+        public DataTable ProductsDataTable;
+        public DataTable ItemsDataTable;
+        public DataTable ItemColorsDataTable;
+        public DataTable ItemPatinaDataTable;
+        public DataTable ItemLengthDataTable;
+        public DataTable ItemHeightDataTable;
+        public DataTable ItemWidthDataTable;
+        public DataTable ItemInsetTypesDataTable;
+        public DataTable ItemInsetColorsDataTable;
 
-        public DataTable MeasuresDataTable = null;
-        public DataTable MarketingPriceDataTable = null;
-        public DataTable ZOVPriceDataTable = null;
+        public DataTable MeasuresDataTable;
+        public DataTable MarketingPriceDataTable;
+        public DataTable ZOVPriceDataTable;
 
-        public BindingSource DecorProductsBindingSource = null;
-        public BindingSource DecorItemBindingSource = null;
-        public BindingSource ItemColorsBindingSource = null;
-        public BindingSource ItemPatinaBindingSource = null;
-        public BindingSource ColorsBindingSource = null;
-        public BindingSource PatinaBindingSource = null;
-        public BindingSource ItemInsetTypesBindingSource = null;
-        public BindingSource ItemInsetColorsBindingSource = null;
-        public BindingSource LengthBindingSource = null;
-        public BindingSource HeightBindingSource = null;
-        public BindingSource WidthBindingSource = null;
-        public BindingSource MarketingPriceBindingSource = null;
-        public BindingSource ZOVPriceBindingSource = null;
+        public BindingSource DecorProductsBindingSource;
+        public BindingSource DecorItemBindingSource;
+        public BindingSource ItemColorsBindingSource;
+        public BindingSource ItemPatinaBindingSource;
+        public BindingSource ColorsBindingSource;
+        public BindingSource PatinaBindingSource;
+        public BindingSource ItemInsetTypesBindingSource;
+        public BindingSource ItemInsetColorsBindingSource;
+        public BindingSource LengthBindingSource;
+        public BindingSource HeightBindingSource;
+        public BindingSource WidthBindingSource;
+        public BindingSource MarketingPriceBindingSource;
+        public BindingSource ZOVPriceBindingSource;
 
-        public String DecorProductsBindingSourceDisplayMember = null;
-        public String ItemsBindingSourceDisplayMember = null;
-        public String ItemColorsBindingSourceDisplayMember = null;
-        public String ItemPatinaBindingSourceDisplayMember = null;
-        public String ItemLengthBindingSourceDisplayMember = null;
-        public String ItemHeightBindingSourceDisplayMember = null;
-        public String ItemWidthBindingSourceDisplayMember = null;
+        public String DecorProductsBindingSourceDisplayMember;
+        public String ItemsBindingSourceDisplayMember;
+        public String ItemColorsBindingSourceDisplayMember;
+        public String ItemPatinaBindingSourceDisplayMember;
+        public String ItemLengthBindingSourceDisplayMember;
+        public String ItemHeightBindingSourceDisplayMember;
+        public String ItemWidthBindingSourceDisplayMember;
 
-        public String DecorProductsBindingSourceValueMember = null;
-        public String ItemsBindingSourceValueMember = null;
-        public String ItemColorsBindingSourceValueMember = null;
-        public String ItemPatinaBindingSourceValueMember = null;
+        public String DecorProductsBindingSourceValueMember;
+        public String ItemsBindingSourceValueMember;
+        public String ItemColorsBindingSourceValueMember;
+        public String ItemPatinaBindingSourceValueMember;
 
         public DecorCatalog(int tFactoryID)
         {
@@ -5450,8 +5538,8 @@ namespace Infinium
     {
         public FileManager FM = new FileManager();
 
-        DataTable ClientsCatalogImagesDT = null;
-        public BindingSource ClientsCatalogImagesBS = null;
+        private readonly DataTable ClientsCatalogImagesDT;
+        public BindingSource ClientsCatalogImagesBS;
 
         public FinishedImagesCatalog()
         {
@@ -5710,37 +5798,37 @@ namespace Infinium
 
     public class SampleLabel
     {
-        Barcode Barcode;
+        private readonly Barcode Barcode;
         public PrintDocument PD;
 
         public int PaperHeight = 488;
         public int PaperWidth = 394;
         //public int PaperWidth = 794;
 
-        public int CurrentLabelNumber = 0;
+        public int CurrentLabelNumber;
 
-        public int PrintedCount = 0;
+        public int PrintedCount;
 
-        public bool Printed = false;
+        public bool Printed;
 
-        SolidBrush FontBrush;
+        private SolidBrush FontBrush;
 
-        Font ClientFont;
-        Font DocFont;
-        Font InfoFont;
-        Font NotesFont;
-        Font HeaderFont;
-        Font FrontOrderFont;
-        Font DecorOrderFont;
-        Font DispatchFont;
+        private Font ClientFont;
+        private Font DocFont;
+        private Font InfoFont;
+        private Font NotesFont;
+        private Font HeaderFont;
+        private Font FrontOrderFont;
+        private Font DecorOrderFont;
+        private Font DispatchFont;
 
-        Pen Pen;
+        private Pen Pen;
 
 
-        Image ZTTPS;
-        Image ZTProfil;
-        Image STB;
-        Image RST;
+        private readonly Image ZTTPS;
+        private readonly Image ZTProfil;
+        private readonly Image STB;
+        private readonly Image RST;
 
         public ArrayList LabelInfo;
 
@@ -6142,36 +6230,36 @@ namespace Infinium
 
     public class CabFurLabel
     {
-        Barcode Barcode;
+        private Barcode Barcode;
         public PrintDocument PD;
 
         public int PaperHeight = 488;
         public int PaperWidth = 394;
 
-        public int CurrentLabelNumber = 0;
+        public int CurrentLabelNumber;
 
-        public int PrintedCount = 0;
+        public int PrintedCount;
 
-        public bool Printed = false;
+        public bool Printed;
 
-        SolidBrush FontBrush;
+        private SolidBrush FontBrush;
 
-        Font ClientFont;
-        Font DocFont;
-        Font InfoFont;
-        Font NotesFont;
-        Font HeaderFont;
-        Font FrontOrderFont;
-        Font DecorOrderFont;
-        Font DispatchFont;
+        private Font ClientFont;
+        private Font DocFont;
+        private Font InfoFont;
+        private Font NotesFont;
+        private Font HeaderFont;
+        private Font FrontOrderFont;
+        private Font DecorOrderFont;
+        private Font DispatchFont;
 
-        Pen Pen;
+        private Pen Pen;
 
 
-        Image ZTTPS;
-        Image EAC;
-        Image STB;
-        Image RST;
+        private Image ZTTPS;
+        private readonly Image EAC;
+        private Image STB;
+        private Image RST;
 
 
 
@@ -6451,36 +6539,36 @@ namespace Infinium
 
     public class CubeLabel
     {
-        Barcode Barcode;
+        private Barcode Barcode;
         public PrintDocument PD;
 
         public int PaperHeight = 488;
         public int PaperWidth = 394;
 
-        public int CurrentLabelNumber = 0;
+        public int CurrentLabelNumber;
 
-        public int PrintedCount = 0;
+        public int PrintedCount;
 
-        public bool Printed = false;
+        public bool Printed;
 
-        SolidBrush FontBrush;
+        private SolidBrush FontBrush;
 
-        Font ClientFont;
-        Font DocFont;
-        Font InfoFont;
-        Font NotesFont;
-        Font HeaderFont;
-        Font FrontOrderFont;
-        Font DecorOrderFont;
-        Font DispatchFont;
+        private Font ClientFont;
+        private Font DocFont;
+        private Font InfoFont;
+        private Font NotesFont;
+        private Font HeaderFont;
+        private Font FrontOrderFont;
+        private Font DecorOrderFont;
+        private Font DispatchFont;
 
-        Pen Pen;
+        private Pen Pen;
 
 
-        Image ZTTPS;
-        Image EAC;
-        Image STB;
-        Image RST;
+        private Image ZTTPS;
+        private readonly Image EAC;
+        private Image STB;
+        private Image RST;
 
 
 
@@ -6782,31 +6870,31 @@ namespace Infinium
 
     public class SamplesLabels
     {
-        Barcode Barcode;
+        private Barcode Barcode;
         public PrintDocument PD;
 
         public int PaperHeight = 488;
         public int PaperWidth = 394;
         //public int PaperWidth = 794;
 
-        public int CurrentLabelNumber = 0;
+        public int CurrentLabelNumber;
 
-        public int PrintedCount = 0;
+        public int PrintedCount;
 
-        public bool Printed = false;
+        public bool Printed;
 
-        SolidBrush FontBrush;
+        private SolidBrush FontBrush;
 
-        Font ClientFont;
-        Font DocFont;
-        Font InfoFont;
-        Font NotesFont;
-        Font HeaderFont;
-        Font FrontOrderFont;
-        Font DecorOrderFont;
-        Font DispatchFont;
+        private Font ClientFont;
+        private Font DocFont;
+        private Font InfoFont;
+        private Font NotesFont;
+        private Font HeaderFont;
+        private Font FrontOrderFont;
+        private Font DecorOrderFont;
+        private Font DispatchFont;
 
-        Pen Pen;
+        private Pen Pen;
 
         public ArrayList LabelInfo;
 

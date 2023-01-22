@@ -45,19 +45,19 @@ namespace Infinium
         private int iDefectTotalAmount = 0;
         private int iDefectLabelsAmount = 0;
 
-        DataTable DecorAssignmentsDT;
-        DataTable FactLabelsDT;
-        DataTable DisprepancyLabelsDT;
-        DataTable DefectLabelsDT;
-        DataTable ClientsDT;
-        DataTable CoversDT;
-        DataTable ResultDT;
-        DataTable TechStoreDT;
-        DataTable UsersDT;
+        private DataTable DecorAssignmentsDT;
+        private DataTable FactLabelsDT;
+        private DataTable DisprepancyLabelsDT;
+        private DataTable DefectLabelsDT;
+        private DataTable ClientsDT;
+        private DataTable CoversDT;
+        private DataTable ResultDT;
+        private DataTable TechStoreDT;
+        private DataTable UsersDT;
 
-        BindingSource FactLabelsBS;
-        BindingSource DisprepancyLabelsBS;
-        BindingSource DefectLabelsBS;
+        private BindingSource FactLabelsBS;
+        private BindingSource DisprepancyLabelsBS;
+        private BindingSource DefectLabelsBS;
 
         public ProfileAssignmentsLabels()
         {
@@ -722,7 +722,7 @@ WHERE LabelType=2 AND DecorAssignmentsLabels.DecorAssignmentID=" + iDecorAssignm
 
     public class PrintDefectProfileAssignmentsLabels
     {
-        Infinium.Modules.Packages.Marketing.Barcode Barcode;
+        private readonly Infinium.Modules.Packages.Marketing.Barcode Barcode;
         public PrintDocument PD;
 
         public int PaperHeight = 488;
@@ -737,24 +737,24 @@ WHERE LabelType=2 AND DecorAssignmentsLabels.DecorAssignmentID=" + iDecorAssignm
 
         public bool Printed = false;
 
-        SolidBrush FontBrush;
+        private SolidBrush FontBrush;
 
-        Font DefectFont;
-        Font ClientFont;
-        Font DocFont;
-        Font InfoFont;
-        Font NotesFont;
-        Font HeaderFont;
-        Font FrontOrderFont;
-        Font DecorOrderFont;
-        Font DispatchFont;
+        private Font DefectFont;
+        private Font ClientFont;
+        private Font DocFont;
+        private Font InfoFont;
+        private Font NotesFont;
+        private Font HeaderFont;
+        private Font FrontOrderFont;
+        private Font DecorOrderFont;
+        private Font DispatchFont;
 
-        Pen Pen;
+        private Pen Pen;
 
-        Image ZTTPS;
-        Image ZTProfil;
-        Image STB;
-        Image RST;
+        private readonly Image ZTTPS;
+        private readonly Image ZTProfil;
+        private readonly Image STB;
+        private readonly Image RST;
 
         public ArrayList LabelInfo;
 
@@ -1189,7 +1189,7 @@ WHERE LabelType=2 AND DecorAssignmentsLabels.DecorAssignmentID=" + iDecorAssignm
 
     public class PrintProfileAssignmentsLabels
     {
-        Infinium.Modules.Packages.Marketing.Barcode Barcode;
+        private readonly Infinium.Modules.Packages.Marketing.Barcode Barcode;
         public PrintDocument PD;
 
         public int PaperHeight = 488;
@@ -1204,24 +1204,24 @@ WHERE LabelType=2 AND DecorAssignmentsLabels.DecorAssignmentID=" + iDecorAssignm
 
         public bool Printed = false;
 
-        SolidBrush FontBrush;
+        private SolidBrush FontBrush;
 
-        Font DefectFont;
-        Font ClientFont;
-        Font DocFont;
-        Font InfoFont;
-        Font NotesFont;
-        Font HeaderFont;
-        Font FrontOrderFont;
-        Font DecorOrderFont;
-        Font DispatchFont;
+        private Font DefectFont;
+        private Font ClientFont;
+        private Font DocFont;
+        private Font InfoFont;
+        private Font NotesFont;
+        private Font HeaderFont;
+        private Font FrontOrderFont;
+        private Font DecorOrderFont;
+        private Font DispatchFont;
 
-        Pen Pen;
+        private Pen Pen;
 
-        Image ZTTPS;
-        Image ZTProfil;
-        Image STB;
-        Image RST;
+        private readonly Image ZTTPS;
+        private readonly Image ZTProfil;
+        private readonly Image STB;
+        private readonly Image RST;
 
         public ArrayList LabelInfo;
 
@@ -1560,80 +1560,80 @@ WHERE LabelType=2 AND DecorAssignmentsLabels.DecorAssignmentID=" + iDecorAssignm
         public int iBatchAssignmentID;
         public object oBatchDateTime;
 
-        DataTable ComplexSawingDT;
+        private DataTable ComplexSawingDT;
         //DataTable ReturnedRollersDT;
-        DataTable TransferredRollersDT;
+        private DataTable TransferredRollersDT;
 
-        DataTable FacingMaterialOnStorageDT;
-        DataTable FacingRollersOnStorageDT;
-        DataTable RollersInColorOnStorageDT;
-        DataTable KashirOnStorageDT;
-        DataTable MdfPlateOnStorageDT;
-        DataTable MilledProfilesOnStorageDT;
-        DataTable SawnStripsOnStorageDT;
-        DataTable ShroudedProfilesOnStorageDT;
-        DataTable AssembledProfilesOnStorageDT;
+        private DataTable FacingMaterialOnStorageDT;
+        private DataTable FacingRollersOnStorageDT;
+        private DataTable RollersInColorOnStorageDT;
+        private DataTable KashirOnStorageDT;
+        private DataTable MdfPlateOnStorageDT;
+        private DataTable MilledProfilesOnStorageDT;
+        private DataTable SawnStripsOnStorageDT;
+        private DataTable ShroudedProfilesOnStorageDT;
+        private DataTable AssembledProfilesOnStorageDT;
 
-        DataTable FilterFacingMaterialDT;
-        DataTable FilterFacingRollersDT;
-        DataTable FacingMaterialDT;
-        DataTable FacingRollersDT1;
-        DataTable FacingRollersDT2;
+        private DataTable FilterFacingMaterialDT;
+        private DataTable FilterFacingRollersDT;
+        private DataTable FacingMaterialDT;
+        private DataTable FacingRollersDT1;
+        private DataTable FacingRollersDT2;
 
-        DataTable AssignmentsDT;
-        DataTable AssignmentsBeforeUpdateDT;
+        private DataTable AssignmentsDT;
+        private DataTable AssignmentsBeforeUpdateDT;
 
-        DataTable BatchAssignmentsDT;
-        DataTable DecorAssignmentsDT;
-        DataTable CoversDT;
-        DataTable TechStoreGroupsDT;
-        DataTable TechStoreSubGroupsDT;
-        DataTable TechStoreDT;
-        DataTable TechCatalogStoreDetailDT;
-        DataTable TechCatalogOperationsDetailDT;
-        DataTable ClientsDT;
-        DataTable OrderStatusesDT;
-        DataTable UsersDT;
+        private DataTable BatchAssignmentsDT;
+        private DataTable DecorAssignmentsDT;
+        private DataTable CoversDT;
+        private DataTable TechStoreGroupsDT;
+        private DataTable TechStoreSubGroupsDT;
+        private DataTable TechStoreDT;
+        private DataTable TechCatalogStoreDetailDT;
+        private DataTable TechCatalogOperationsDetailDT;
+        private DataTable ClientsDT;
+        private DataTable OrderStatusesDT;
+        private DataTable UsersDT;
 
-        BindingSource FilterFacingMaterialBS;
-        BindingSource FilterFacingRollersBS;
-        BindingSource ComplexSawingBS;
-        BindingSource ReturnedRollersBS;
-        BindingSource TransferredRollersBS;
-        BindingSource BatchAssignmentsBS;
-        BindingSource TechStoreGroupsBS;
-        BindingSource TechStoreSubGroupsBS;
-        BindingSource TechStoreBS;
+        private BindingSource FilterFacingMaterialBS;
+        private BindingSource FilterFacingRollersBS;
+        private BindingSource ComplexSawingBS;
+        private BindingSource ReturnedRollersBS;
+        private BindingSource TransferredRollersBS;
+        private BindingSource BatchAssignmentsBS;
+        private BindingSource TechStoreGroupsBS;
+        private BindingSource TechStoreSubGroupsBS;
+        private BindingSource TechStoreBS;
 
-        BindingSource FacingMaterialRequestsBS;
-        BindingSource FacingRollersRequestsBS;
-        BindingSource KashirRequestsBS;
-        BindingSource SawnStripsRequestsBS;
-        BindingSource MilledProfileRequestsBS;
-        BindingSource ShroudedProfileRequestsBS;
-        BindingSource AssembledProfileRequestsBS;
+        private BindingSource FacingMaterialRequestsBS;
+        private BindingSource FacingRollersRequestsBS;
+        private BindingSource KashirRequestsBS;
+        private BindingSource SawnStripsRequestsBS;
+        private BindingSource MilledProfileRequestsBS;
+        private BindingSource ShroudedProfileRequestsBS;
+        private BindingSource AssembledProfileRequestsBS;
 
-        BindingSource FacingMaterialAssignmentsBS;
-        BindingSource FacingRollersAssignmentsBS;
-        BindingSource KashirAssignmentsBS;
-        BindingSource MilledProfileAssignmentsBS1;
-        BindingSource SawnStripsAssignmentsBS;
-        BindingSource ShroudedProfileAssignmentsBS1;
-        BindingSource AssembledProfileAssignmentsBS;
+        private BindingSource FacingMaterialAssignmentsBS;
+        private BindingSource FacingRollersAssignmentsBS;
+        private BindingSource KashirAssignmentsBS;
+        private BindingSource MilledProfileAssignmentsBS1;
+        private BindingSource SawnStripsAssignmentsBS;
+        private BindingSource ShroudedProfileAssignmentsBS1;
+        private BindingSource AssembledProfileAssignmentsBS;
 
-        BindingSource MilledProfileAssignmentsBS2;
-        BindingSource MilledProfileAssignmentsBS3;
-        BindingSource ShroudedProfileAssignmentsBS2;
+        private BindingSource MilledProfileAssignmentsBS2;
+        private BindingSource MilledProfileAssignmentsBS3;
+        private BindingSource ShroudedProfileAssignmentsBS2;
 
-        BindingSource FacingMaterialOnStorageBS;
-        BindingSource FacingRollersOnStorageBS;
-        BindingSource RollersInColorOnStorageBS;
-        BindingSource KashirOnStorageBS;
-        BindingSource MdfPlateOnStorageBS;
-        BindingSource MilledProfilesOnStorageBS;
-        BindingSource SawnStripsOnStorageBS;
-        BindingSource ShroudedProfilesOnStorageBS;
-        BindingSource AssembledProfilesOnStorageBS;
+        private BindingSource FacingMaterialOnStorageBS;
+        private BindingSource FacingRollersOnStorageBS;
+        private BindingSource RollersInColorOnStorageBS;
+        private BindingSource KashirOnStorageBS;
+        private BindingSource MdfPlateOnStorageBS;
+        private BindingSource MilledProfilesOnStorageBS;
+        private BindingSource SawnStripsOnStorageBS;
+        private BindingSource ShroudedProfilesOnStorageBS;
+        private BindingSource AssembledProfilesOnStorageBS;
 
         public AssignmentsStoreManager AssignmentsStoreManager;
 
@@ -7131,22 +7131,22 @@ WHERE LabelType=2 AND DecorAssignmentsLabels.DecorAssignmentID=" + iDecorAssignm
 
     public class AssignmentsStoreManager
     {
-        DataTable MainStoreDT;
-        DataTable ManufactureStoreDT;
-        DataTable ReadyStoreDT;
-        DataTable MovementInvoicesDT;
-        DataTable MovementInvoiceDetailsDT;
+        private readonly DataTable MainStoreDT;
+        private readonly DataTable ManufactureStoreDT;
+        private readonly DataTable ReadyStoreDT;
+        private readonly DataTable MovementInvoicesDT;
+        private readonly DataTable MovementInvoiceDetailsDT;
 
-        SqlDataAdapter MainStoreDA;
-        SqlCommandBuilder MainStoreCB;
-        SqlDataAdapter ManufactureStoreDA;
-        SqlCommandBuilder ManufactureStoreCB;
-        SqlDataAdapter ReadyStoreDA;
-        SqlCommandBuilder ReadyStoreCB;
-        SqlDataAdapter MovementInvoicesDA;
-        SqlCommandBuilder MovementInvoicesCB;
-        SqlDataAdapter MovementInvoiceDetailsDA;
-        SqlCommandBuilder MovementInvoiceDetailsCB;
+        private SqlDataAdapter MainStoreDA;
+        private SqlCommandBuilder MainStoreCB;
+        private SqlDataAdapter ManufactureStoreDA;
+        private SqlCommandBuilder ManufactureStoreCB;
+        private readonly SqlDataAdapter ReadyStoreDA;
+        private SqlCommandBuilder ReadyStoreCB;
+        private readonly SqlDataAdapter MovementInvoicesDA;
+        private SqlCommandBuilder MovementInvoicesCB;
+        private readonly SqlDataAdapter MovementInvoiceDetailsDA;
+        private SqlCommandBuilder MovementInvoiceDetailsCB;
 
         public AssignmentsStoreManager()
         {
@@ -7884,49 +7884,50 @@ WHERE LabelType=2 AND DecorAssignmentsLabels.DecorAssignmentID=" + iDecorAssignm
 
     public class ProfileAssignmentsToExcel
     {
-        object ToolsConfirmDate = DBNull.Value;
-        object TechnologyConfirmDate = DBNull.Value;
-        object MaterialConfirmDate = DBNull.Value;
-        object TechnicalConfirmDate = DBNull.Value;
-        object PrintDateTime = DBNull.Value;
-        object ToolsConfirmUserID = DBNull.Value;
-        object TechnologyConfirmUserID = DBNull.Value;
-        object MaterialConfirmUserID = DBNull.Value;
-        object TechnicalConfirmUserID = DBNull.Value;
-        object PrintUserID = DBNull.Value;
+        private object ToolsConfirmDate = DBNull.Value;
+        private object TechnologyConfirmDate = DBNull.Value;
+        private object MaterialConfirmDate = DBNull.Value;
+        private object TechnicalConfirmDate = DBNull.Value;
+        private object PrintDateTime = DBNull.Value;
+        private object ToolsConfirmUserID = DBNull.Value;
+        private object TechnologyConfirmUserID = DBNull.Value;
+        private object MaterialConfirmUserID = DBNull.Value;
+        private object TechnicalConfirmUserID = DBNull.Value;
+        private object PrintUserID = DBNull.Value;
 
-        HSSFWorkbook hssfworkbook;
+        private HSSFWorkbook hssfworkbook;
 
-        HSSFFont Calibri10F;
-        HSSFFont CalibriBold10F;
-        HSSFFont Calibri11F;
-        HSSFFont CalibriBold11F;
-        HSSFCellStyle Calibri11CS;
-        HSSFCellStyle CalibriBold11CS;
-        HSSFCellStyle TableNameCS;
-        HSSFCellStyle TableHeaderCS;
-        HSSFCellStyle TableContentCS;
-        HSSFCellStyle TableDecContentCS;
+        private HSSFFont Calibri10F;
+        private HSSFFont CalibriBold10F;
+        private HSSFFont Calibri11F;
+        private HSSFFont CalibriBold11F;
+        private HSSFCellStyle Calibri11CS;
+        private HSSFCellStyle CalibriBold11CS;
+        private HSSFCellStyle TableNameCS;
+        private HSSFCellStyle TableHeaderCS;
+        private HSSFCellStyle TableContentCS;
+        private HSSFCellStyle TableDecContentCS;
 
-        DateTime CurrentDate;
+        private DateTime CurrentDate;
 
-        DataTable CuttingAssignmentsDT;
-        DataTable MillingAssignmentsDT;
-        DataTable EnvelopingAssignmentsDT;
-        DataTable KashirAssignmentsDT;
+        private DataTable CuttingAssignmentsDT;
+        private DataTable MillingAssignmentsDT;
+        private DataTable EnvelopingAssignmentsDT;
+
+        private DataTable KashirAssignmentsDT;
         //DataTable PackingAssignmentsDT;
 
-        DataTable Barberan1DT;
-        DataTable Barberan2DT;
-        DataTable Frezer1DT;
-        DataTable Frezer2DT;
-        DataTable Frezer3DT;
-        DataTable HolzmaDT;
-        DataTable KashirDT;
-        DataTable PackingDT;
+        private DataTable Barberan1DT;
+        private DataTable Barberan2DT;
+        private DataTable Frezer1DT;
+        private DataTable Frezer2DT;
+        private DataTable Frezer3DT;
+        private DataTable HolzmaDT;
+        private DataTable KashirDT;
+        private DataTable PackingDT;
 
-        DataTable CoversDT;
-        DataTable TechStoreDT;
+        private DataTable CoversDT;
+        private DataTable TechStoreDT;
 
         public ProfileAssignmentsToExcel()
         {

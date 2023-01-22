@@ -8,27 +8,27 @@ namespace Infinium
 {
     public partial class AddProjectForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
 
-        int FormEvent = 0;
+        private int FormEvent;
 
-        public bool Canceled = false;
+        public bool Canceled;
 
-        bool bEdit = false;
+        private bool bEdit;
 
-        Form TopForm;
+        private Form TopForm;
 
-        public bool bProposition = false;
+        public bool bProposition;
 
-        TreeView TempMembersList;
+        private TreeView TempMembersList;
 
-        Infinium.InfiniumProjects InfiniumProjects;
+        private InfiniumProjects InfiniumProjects;
 
         public int ProjectID = -1;
 
-        public AddProjectForm(ref Infinium.InfiniumProjects tInfiniumProjects, ref Form tTopForm)
+        public AddProjectForm(ref InfiniumProjects tInfiniumProjects, ref Form tTopForm)
         {
             InitializeComponent();
 
@@ -38,7 +38,7 @@ namespace Infinium
             SetMembersTree();
         }
 
-        public AddProjectForm(ref Infinium.InfiniumProjects tInfiniumProjects, ref Form tTopForm, int ProjectID)//edit
+        public AddProjectForm(ref InfiniumProjects tInfiniumProjects, ref Form tTopForm, int ProjectID)//edit
         {
             InitializeComponent();
 
@@ -167,7 +167,7 @@ namespace Infinium
         {
             if (!DatabaseConfigsManager.Animation)
             {
-                this.Opacity = 1;
+                Opacity = 1;
 
                 if (FormEvent == eClose || FormEvent == eHide)
                 {
@@ -175,12 +175,12 @@ namespace Infinium
 
                     if (FormEvent == eClose)
                     {
-                        this.Close();
+                        Close();
                     }
 
                     if (FormEvent == eHide)
                     {
-                        this.Hide();
+                        Hide();
                     }
 
                     return;
@@ -197,8 +197,8 @@ namespace Infinium
 
             if (FormEvent == eClose || FormEvent == eHide)
             {
-                if (Convert.ToDecimal(this.Opacity) != Convert.ToDecimal(0.00))
-                    this.Opacity = Convert.ToDouble(Convert.ToDecimal(this.Opacity) - Convert.ToDecimal(0.05));
+                if (Convert.ToDecimal(Opacity) != Convert.ToDecimal(0.00))
+                    Opacity = Convert.ToDouble(Convert.ToDecimal(Opacity) - Convert.ToDecimal(0.05));
                 else
                 {
                     AnimateTimer.Enabled = false;
@@ -206,12 +206,12 @@ namespace Infinium
                     if (FormEvent == eClose)
                     {
 
-                        this.Close();
+                        Close();
                     }
 
                     if (FormEvent == eHide)
                     {
-                        this.Hide();
+                        Hide();
                     }
                 }
 
@@ -221,15 +221,13 @@ namespace Infinium
 
             if (FormEvent == eShow || FormEvent == eShow)
             {
-                if (this.Opacity != 1)
-                    this.Opacity += 0.05;
+                if (Opacity != 1)
+                    Opacity += 0.05;
                 else
                 {
                     AnimateTimer.Enabled = false;
                     SplashForm.CloseS = true;
                 }
-
-                return;
             }
         }
 
@@ -320,17 +318,17 @@ namespace Infinium
 
         private void ProjectNameTextEdit_TextChanged(object sender, EventArgs e)
         {
-            SymbolCountText.Text = (ProjectNameTextEdit.MaxLength - ProjectNameTextEdit.Text.Length).ToString() + " символов осталось";
+            SymbolCountText.Text = (ProjectNameTextEdit.MaxLength - ProjectNameTextEdit.Text.Length) + " символов осталось";
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(MembersTree.Nodes[0].Text.ToString());
+            MessageBox.Show(MembersTree.Nodes[0].Text);
         }
 
         private void ProjectDescriptionRichTextBox_TextChanged(object sender, EventArgs e)
         {
-            DescCountLabel.Text = (ProjectDescriptionRichTextBox.MaxLength - ProjectDescriptionRichTextBox.Text.Length).ToString() + " символов осталось";
+            DescCountLabel.Text = (ProjectDescriptionRichTextBox.MaxLength - ProjectDescriptionRichTextBox.Text.Length) + " символов осталось";
         }
     }
 }

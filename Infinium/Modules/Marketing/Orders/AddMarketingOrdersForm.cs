@@ -8,23 +8,23 @@ namespace Infinium
 {
     public partial class AddMarketingOrdersForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
-        int FormEvent = 0;
-        int MainOrderID = -1;
+        private int FormEvent = 0;
+        private int MainOrderID = -1;
 
-        Form TopForm = null;
+        private Form TopForm = null;
 
         public OrdersManager OrdersManager;
 
-        FrontsCatalogOrder FrontsCatalogOrder = null;
-        DecorCatalogOrder DecorCatalogOrder = null;
-        FrontsOrders FrontsOrders;
-        DecorOrders DecorOrders;
-        OrdersCalculate OrdersCalculate;
+        private FrontsCatalogOrder FrontsCatalogOrder = null;
+        private DecorCatalogOrder DecorCatalogOrder = null;
+        private FrontsOrders FrontsOrders;
+        private DecorOrders DecorOrders;
+        private OrdersCalculate OrdersCalculate;
 
         public AddMarketingOrdersForm(ref OrdersManager tOrdersManager, ref Form tTopForm, ref OrdersCalculate tOrdersCalculate, bool bDeleteEnable)
         {

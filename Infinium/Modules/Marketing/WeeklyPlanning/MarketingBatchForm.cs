@@ -14,41 +14,41 @@ namespace Infinium
 {
     public partial class MarketingBatchForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
         //const int iConfirmBatch = 64;
-        const int iCreateBatch = 34;
-        const int iCreateLabel = 40;
-        const int iAddToBatch = 35;
-        const int iInProduction = 22;
-        const int iCloseBatch = 38;
+        private const int iCreateBatch = 34;
+        private const int iCreateLabel = 40;
+        private const int iAddToBatch = 35;
+        private const int iInProduction = 22;
+        private const int iCloseBatch = 38;
 
-        const int iAgreedProfil = 104;
-        const int iAgreedTPS = 106;
+        private const int iAgreedProfil = 104;
+        private const int iAgreedTPS = 106;
 
-        bool NeedRefresh = false;
-        bool NeedSplash = false;
-        bool bFrontType = false;
-        bool bFrameColor = false;
-        bool PickUpFronts = false;
+        private bool NeedRefresh = false;
+        private bool NeedSplash = false;
+        private bool bFrontType = false;
+        private bool bFrameColor = false;
+        private bool PickUpFronts = false;
 
         //bool ConfirmBatch = false;
-        bool CreateBatch = false;
-        bool CreateLabel = false;
-        bool AddToBatch = false;
-        bool InProduction = false;
-        bool CloseBatch = false;
+        private bool CreateBatch = false;
+        private bool CreateLabel = false;
+        private bool AddToBatch = false;
+        private bool InProduction = false;
+        private bool CloseBatch = false;
 
-        bool bMegaBatchClose = false;
+        private bool bMegaBatchClose = false;
 
-        int FactoryID = 1;
-        int FormEvent = 0;
+        private int FactoryID = 1;
+        private int FormEvent = 0;
 
-        ImageList ImageList1;
-        RoleTypes RoleType = RoleTypes.Ordinary;
+        private ImageList ImageList1;
+        private RoleTypes RoleType = RoleTypes.Ordinary;
 
         public enum RoleTypes
         {
@@ -61,18 +61,18 @@ namespace Infinium
             Control = 6
         }
 
-        ArrayList BatchArray = null;
-        ArrayList FrontIDs;
-        ArrayList MainOrdersArray = null;
+        private ArrayList BatchArray = null;
+        private ArrayList FrontIDs;
+        private ArrayList MainOrdersArray = null;
 
-        Bitmap Lock_BW = new Bitmap(Properties.Resources.LockSmallBlack);
-        Bitmap Unlock_BW = new Bitmap(Properties.Resources.UnlockSmallBlack);
+        private Bitmap Lock_BW = new Bitmap(Properties.Resources.LockSmallBlack);
+        private Bitmap Unlock_BW = new Bitmap(Properties.Resources.UnlockSmallBlack);
 
-        LightStartForm LightStartForm;
+        private LightStartForm LightStartForm;
 
-        Form TopForm = null;
-        MarketingPickFrontsSelectForm PickFrontsSelectForm;
-        DataTable RolePermissionsDataTable;
+        private Form TopForm = null;
+        private MarketingPickFrontsSelectForm PickFrontsSelectForm;
+        private DataTable RolePermissionsDataTable;
 
         public BatchManager BatchManager;
         public DecorCatalogOrder DecorCatalogOrder;
@@ -2559,7 +2559,7 @@ namespace Infinium
 
         }
 
-        void btnAgreed1TPS_Click(object sender, EventArgs e)
+        private void btnAgreed1TPS_Click(object sender, EventArgs e)
         {
             int MegaBatchID = 0;
             int TPSAgreedUserID = -1;
@@ -2597,7 +2597,7 @@ namespace Infinium
             NeedSplash = true;
         }
 
-        void btnAgreed1Profil_Click(object sender, EventArgs e)
+        private void btnAgreed1Profil_Click(object sender, EventArgs e)
         {
             int MegaBatchID = 0;
             int ProfilAgreedUserID = -1;

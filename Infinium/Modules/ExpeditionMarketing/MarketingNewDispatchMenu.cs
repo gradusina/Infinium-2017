@@ -6,21 +6,21 @@ namespace Infinium
 {
     public partial class MarketingNewDispatchMenu : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
-        bool ChangeDispatchDate = false;
+        private bool ChangeDispatchDate = false;
         public bool PressOK = false;
         public int ClientID = 0;
         public object DispatchDate = null;
 
-        int FormEvent = 0;
+        private int FormEvent = 0;
 
-        DataTable ClientsDT;
-        Form MainForm = null;
-        Form TopForm = null;
+        private DataTable ClientsDT;
+        private Form MainForm = null;
+        private Form TopForm = null;
 
         public MarketingNewDispatchMenu(Form tMainForm, DataTable tClientsDT, bool bChangeDispatchDate)
         {

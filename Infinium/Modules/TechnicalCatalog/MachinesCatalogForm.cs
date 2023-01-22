@@ -15,41 +15,41 @@ namespace Infinium
 {
     public partial class MachinesCatalogForm : Form
     {
-        const int iEditCatalog = 60;
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int iEditCatalog = 60;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
-        bool CanEditCatalog = false;
-        bool bStopTransfer = false;
-        bool NeedSplash = false;
-        bool NeedAddColumns = true;
+        private bool CanEditCatalog = false;
+        private bool bStopTransfer = false;
+        private bool NeedSplash = false;
+        private bool NeedAddColumns = true;
 
-        int CurrentTechRowIndex = 0;
-        int CurrentMachineDetailID = 0;
-        int CurrentMachineDocumentID = 0;
-        int CurrentMachineSpareID = 0;
-        int FormEvent = 0;
+        private int CurrentTechRowIndex = 0;
+        private int CurrentMachineDetailID = 0;
+        private int CurrentMachineDocumentID = 0;
+        private int CurrentMachineSpareID = 0;
+        private int FormEvent = 0;
 
-        string CurrentPanelName = "pnlMainPage";
-        DataTable PanelsNamesDT;
-        PercentageDataGrid CurrentGrid;
-        MachineFileTypes CurrentType;
+        private string CurrentPanelName = "pnlMainPage";
+        private DataTable PanelsNamesDT;
+        private PercentageDataGrid CurrentGrid;
+        private MachineFileTypes CurrentType;
 
-        string MachineName = string.Empty;
+        private string MachineName = string.Empty;
 
-        System.Threading.Thread T;
+        private System.Threading.Thread T;
 
-        Form TopForm = null;
-        LightStartForm LightStartForm;
+        private Form TopForm = null;
+        private LightStartForm LightStartForm;
 
-        DataTable AttachsDT;
-        DataTable RolePermissionsDataTable;
+        private DataTable AttachsDT;
+        private DataTable RolePermissionsDataTable;
 
-        MachinesCatalog MachinesCatalogManager;
+        private MachinesCatalog MachinesCatalogManager;
 
-        RoleTypes RoleType = RoleTypes.OrdinaryRole;
+        private RoleTypes RoleType = RoleTypes.OrdinaryRole;
 
         public enum RoleTypes
         {
@@ -1817,7 +1817,7 @@ namespace Infinium
             }
         }
 
-        void tb_KeyPress(object sender, KeyPressEventArgs e)
+        private void tb_KeyPress(object sender, KeyPressEventArgs e)
         {
             //if (!((e.KeyChar >= (char)48 && e.KeyChar <= (char)57) || (e.KeyChar == (char)8) || (e.KeyChar == (char)45) || (e.KeyChar == (char)44)))
             //    e.Handled = true;
@@ -4742,7 +4742,7 @@ namespace Infinium
             RemoveDetailFile(dgvEquipmentFiles);
         }
 
-        DataView dv;
+        private DataView dv;
         private void dgvMechanicsDetails_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
         {
             if (e.ColumnIndex == 14)

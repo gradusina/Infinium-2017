@@ -1,11 +1,15 @@
-﻿namespace Infinium
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+using ComponentFactory.Krypton.Toolkit;
+
+namespace Infinium
 {
     partial class DocumentsForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -1085,71 +1089,71 @@
 
         #endregion
 
-        private System.Windows.Forms.Timer AnimateTimer;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton NavigateMenuCloseButton;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Panel NavigatePanel;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge3;
-        private ComponentFactory.Krypton.Toolkit.KryptonPalette ButtonsPalette;
-        private ComponentFactory.Krypton.Toolkit.KryptonPalette NavigateMenuButtonsPalette;
-        private ComponentFactory.Krypton.Toolkit.KryptonCheckButton PasswordButton;
-        private System.Windows.Forms.Panel LeftPanel;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge1;
-        private System.Windows.Forms.Panel UpdatePanel;
-        private System.Windows.Forms.ToolTip toolTip1;
-        private System.Windows.Forms.OpenFileDialog UploadFileDialog;
-        private ComponentFactory.Krypton.Toolkit.KryptonContextMenu FileContextMenu;
-        private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItems kryptonContextMenuItems1;
-        private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem MenuFileOpenFile;
-        private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem MenuFileSaveFile;
-        private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem kryptonContextMenuItem3;
-        private ComponentFactory.Krypton.Toolkit.KryptonPalette ContextMenuPalette;
-        private System.Windows.Forms.SaveFileDialog SaveFileDialog;
-        private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem MenuFileReplaceFile;
-        private System.Windows.Forms.FolderBrowserDialog FolderBrowserDialog;
-        private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem MenuFileDeleteFile;
-        private System.Windows.Forms.Timer timer1;
+        private Timer AnimateTimer;
+        private KryptonButton NavigateMenuCloseButton;
+        private Label label1;
+        private Panel NavigatePanel;
+        private KryptonBorderEdge kryptonBorderEdge3;
+        private KryptonPalette ButtonsPalette;
+        private KryptonPalette NavigateMenuButtonsPalette;
+        private KryptonCheckButton PasswordButton;
+        private Panel LeftPanel;
+        private KryptonBorderEdge kryptonBorderEdge1;
+        private Panel UpdatePanel;
+        private ToolTip toolTip1;
+        private OpenFileDialog UploadFileDialog;
+        private KryptonContextMenu FileContextMenu;
+        private KryptonContextMenuItems kryptonContextMenuItems1;
+        private KryptonContextMenuItem MenuFileOpenFile;
+        private KryptonContextMenuItem MenuFileSaveFile;
+        private KryptonContextMenuItem kryptonContextMenuItem3;
+        private KryptonPalette ContextMenuPalette;
+        private SaveFileDialog SaveFileDialog;
+        private KryptonContextMenuItem MenuFileReplaceFile;
+        private FolderBrowserDialog FolderBrowserDialog;
+        private KryptonContextMenuItem MenuFileDeleteFile;
+        private Timer timer1;
         private InfiniumDocumentsMenu InfiniumDocumentsMenu;
-        private System.Windows.Forms.CheckBox DayCheckBox;
-        private System.Windows.Forms.DateTimePicker DayPicker;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton MenuFilterButton;
-        private System.Windows.Forms.CheckBox FactoryCheckBox;
-        private System.Windows.Forms.ComboBox FactoryComboBox;
-        private System.Windows.Forms.CheckBox CorrespondentCheckBox;
-        private System.Windows.Forms.ComboBox CorrespondentComboBox;
-        private System.Windows.Forms.CheckBox DocTypeCheckBox;
-        private System.Windows.Forms.ComboBox DocTypeComboBox;
+        private CheckBox DayCheckBox;
+        private DateTimePicker DayPicker;
+        private KryptonButton MenuFilterButton;
+        private CheckBox FactoryCheckBox;
+        private ComboBox FactoryComboBox;
+        private CheckBox CorrespondentCheckBox;
+        private ComboBox CorrespondentComboBox;
+        private CheckBox DocTypeCheckBox;
+        private ComboBox DocTypeComboBox;
         private InfiniumDocumentsList InnerDocumentsList;
         private InfiniumDocumentsList IncomeDocumentsList;
         private InfiniumDocumentsList OuterDocumentsList;
         private InfiniumDocumentsUpdatesList DocumentsUpdatesList;
-        private System.Windows.Forms.Panel AllDocumentsPanel;
-        private System.Windows.Forms.Panel FilterPanel;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge12;
-        private System.Windows.Forms.Panel UpdatesPanel;
-        private System.Windows.Forms.Panel TopMenuPanel;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton CategoriesButton;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge2;
+        private Panel AllDocumentsPanel;
+        private Panel FilterPanel;
+        private KryptonBorderEdge kryptonBorderEdge12;
+        private Panel UpdatesPanel;
+        private Panel TopMenuPanel;
+        private KryptonButton CategoriesButton;
+        private KryptonBorderEdge kryptonBorderEdge2;
         private InfiniumLightButton CreateDocumentButton;
-        private System.Windows.Forms.Panel DocumentsListsPanel;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ComboBox CategoriesComboBox;
-        private System.Windows.Forms.Panel EditButtonsPanel;
+        private Panel DocumentsListsPanel;
+        private Label label2;
+        private ComboBox CategoriesComboBox;
+        private Panel EditButtonsPanel;
         private InfiniumDocumentsCheckButton NewUpdatesButton;
         private InfiniumDocumentsCheckButton MonthUpdatesButton;
         private InfiniumDocumentsCheckButton WeekUpdatesButton;
         private InfiniumDocumentsCheckButton TodayUpdatesButton;
-        private System.Windows.Forms.Panel DateTypePanel;
-        private System.Windows.Forms.Panel StatusPanel;
+        private Panel DateTypePanel;
+        private Panel StatusPanel;
         private InfiniumDocumentsCheckButton CanceledButton;
         private InfiniumDocumentsCheckButton ConfirmedButton;
         private InfiniumDocumentsCheckButton NotConfirmedButton;
         private InfiniumDocumentsCheckButton YourSignButton;
-        private System.Windows.Forms.Panel CurrentDocumentPanel;
+        private Panel CurrentDocumentPanel;
         private InfiniumLightButton CurrentDocumentBackButton;
-        private System.Windows.Forms.Panel MyDocumentsPanel;
+        private Panel MyDocumentsPanel;
         private InfiniumDocumentsCheckButton MyDocRecipientButton;
         private InfiniumDocumentsCheckButton MyDocCreatorButton;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton MinimizeButton;
+        private KryptonButton MinimizeButton;
     }
 }

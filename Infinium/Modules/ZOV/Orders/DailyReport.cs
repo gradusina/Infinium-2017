@@ -380,7 +380,7 @@ namespace Infinium.Modules.ZOV.DailyReport
 
     public class DailyReportDecorOrdersReport
     {
-        DecorCatalogOrder DecorCatalogOrder = null;
+        private DecorCatalogOrder DecorCatalogOrder = null;
 
         public DataTable ResultTable = null;
 
@@ -550,23 +550,23 @@ namespace Infinium.Modules.ZOV.DailyReport
 
     public class DailyReport
     {
-        Excel Ex = null;
+        private Excel Ex = null;
 
-        DataTable ClientsDataTable = null;
+        private DataTable ClientsDataTable = null;
 
         public DataTable[] ClientReportTables = null;
 
         public DataTable ReportTable = null;
         private DataTable MainOrdersDataTable = null;
-        DataTable ClientErrorsDT = null;
+        private DataTable ClientErrorsDT = null;
 
-        int[] Clients = null;
+        private int[] Clients = null;
 
-        DailyReportFrontsOrdersReport FrontsReport = null;
-        DailyReportDecorOrdersReport DecorReport = null;
+        private DailyReportFrontsOrdersReport FrontsReport = null;
+        private DailyReportDecorOrdersReport DecorReport = null;
 
-        MainOrdersFrontsOrders MainOrdersFrontsOrders = null;
-        DecorCatalogOrder DecorCatalogOrder = null;
+        private MainOrdersFrontsOrders MainOrdersFrontsOrders = null;
+        private DecorCatalogOrder DecorCatalogOrder = null;
 
 
         public DailyReport(ref MainOrdersFrontsOrders tMainOrdersFrontsOrders,

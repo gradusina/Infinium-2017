@@ -8,19 +8,19 @@ namespace Infinium
 {
     public partial class NewMarketingClientForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
-        int ClientID = 0;
-        int FormEvent = 0;
-        int OldManagerID = -1;
+        private int ClientID = 0;
+        private int FormEvent = 0;
+        private int OldManagerID = -1;
 
-        Form MainForm = null;
-        Form TopForm = null;
+        private Form MainForm = null;
+        private Form TopForm = null;
 
-        Clients Clients = null;
+        private Clients Clients = null;
 
         public NewMarketingClientForm(Form tMainForm, Clients tClients, int iClientID, bool bPriceGroup)
         {

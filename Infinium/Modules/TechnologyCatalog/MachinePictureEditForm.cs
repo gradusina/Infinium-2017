@@ -9,18 +9,18 @@ namespace Infinium
 {
     public partial class MachinePictureEditForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
 
-        int FormEvent = 0;
+        private int FormEvent = 0;
 
-        Form TopForm = null;
-        Form MainForm = null;
+        private Form TopForm = null;
+        private Form MainForm = null;
 
-        TechStoreManager TechStoreManager;
+        private TechStoreManager TechStoreManager;
 
-        int MachineID;
+        private int MachineID;
 
         public MachinePictureEditForm(ref TechStoreManager tTechStoreManager, int tMachineID)
         {

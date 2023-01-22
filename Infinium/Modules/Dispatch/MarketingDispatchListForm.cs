@@ -8,17 +8,17 @@ namespace Infinium
 {
     public partial class MarketingDispatchListForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
-        int FormEvent = 0;
-        int CurrentRowIndex = 0;
-        int CurrentColumnIndex = 0;
+        private int FormEvent = 0;
+        private int CurrentRowIndex = 0;
+        private int CurrentColumnIndex = 0;
 
-        Form TopForm = null;
-        LightStartForm LightStartForm;
+        private Form TopForm = null;
+        private LightStartForm LightStartForm;
 
 
         private Modules.Dispatch.MarketingDispatchList DispatchList;

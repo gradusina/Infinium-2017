@@ -8,21 +8,21 @@ namespace Infinium
 {
     public partial class AddTechStoreTermsForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
-        bool DecimalParameter = true;
-        int FormEvent = 0;
-        int TechCatalogOperationsDetailID = 0;
-        string TechCatalogOperationName = string.Empty;
-        string Term = string.Empty;
+        private bool DecimalParameter = true;
+        private int FormEvent = 0;
+        private int TechCatalogOperationsDetailID = 0;
+        private string TechCatalogOperationName = string.Empty;
+        private string Term = string.Empty;
 
-        Form MainForm = null;
-        Form TopForm = null;
+        private Form MainForm = null;
+        private Form TopForm = null;
 
-        TechCatalogStoreDetailTerms TechCatalogStoreDetailTermsManager;
+        private TechCatalogStoreDetailTerms TechCatalogStoreDetailTermsManager;
 
         public AddTechStoreTermsForm(Form tMainForm, ref TechCatalogStoreDetailTerms tTechCatalogStoreDetailTermsManager, int iTechCatalogOperationsDetailID, string sTechCatalogOperationName)
         {

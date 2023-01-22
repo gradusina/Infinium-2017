@@ -9,20 +9,20 @@ namespace Infinium
 {
     public partial class TechnologyLabelInfoMenu : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
-        bool NeedLength = false;
-        bool NeedHeight = false;
-        bool NeedWidth = false;
+        private bool NeedLength = false;
+        private bool NeedHeight = false;
+        private bool NeedWidth = false;
         public bool PressOK = false;
         public TechLabelInfo tlInfo;
-        int FormEvent = 0;
+        private int FormEvent = 0;
 
-        DataTable ColorsDT;
-        BindingSource ColorsBS;
+        private DataTable ColorsDT;
+        private BindingSource ColorsBS;
 
         private void GetColorsDT()
         {
@@ -88,7 +88,7 @@ namespace Infinium
             ColorsDT = Table.Copy();
         }
 
-        Form MainForm = null;
+        private Form MainForm = null;
 
         public TechnologyLabelInfoMenu(Form tMainForm, bool bNeedLength, bool bNeedHeight, bool bNeedWidth)
         {

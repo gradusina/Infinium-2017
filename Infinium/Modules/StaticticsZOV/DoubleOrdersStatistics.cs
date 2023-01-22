@@ -8,15 +8,15 @@ namespace Infinium.Modules.StatisticsMarketing
 {
     public class DoubleOrdersStatistics
     {
-        DataTable FirstOperatorStatisticsDT;
-        DataTable SecondOperatorStatisticsDT;
-        DataTable FirstOperatorsDT;
-        DataTable SecondOperatorsDT;
+        private DataTable FirstOperatorStatisticsDT;
+        private DataTable SecondOperatorStatisticsDT;
+        private DataTable FirstOperatorsDT;
+        private DataTable SecondOperatorsDT;
 
-        BindingSource FirstOperatorStatisticsBS;
-        BindingSource SecondOperatorStatisticsBS;
-        BindingSource FirstOperatorsBS;
-        BindingSource SecondOperatorsBS;
+        private BindingSource FirstOperatorStatisticsBS;
+        private BindingSource SecondOperatorStatisticsBS;
+        private BindingSource FirstOperatorsBS;
+        private BindingSource SecondOperatorsBS;
 
         public DoubleOrdersStatistics()
         {

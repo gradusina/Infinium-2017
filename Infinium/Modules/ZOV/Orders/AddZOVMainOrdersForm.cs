@@ -10,25 +10,25 @@ namespace Infinium
 {
     public partial class AddZOVMainOrdersForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
-        int FormEvent = 0;
+        private int FormEvent = 0;
 
-        Form TopForm = null;
+        private Form TopForm = null;
 
-        bool EditMainOrder = false;
+        private bool EditMainOrder = false;
 
         public OrdersManager OrdersManager;
 
-        FrontsCatalogOrder FrontsCatalogOrder = null;
-        DecorCatalogOrder DecorCatalogOrder = null;
-        FrontsOrders FrontsOrders;
-        DecorOrders DecorOrders;
-        OrdersCalculate OrdersCalculate;
-        NewOrderInfo NewOrderInfo;
+        private FrontsCatalogOrder FrontsCatalogOrder = null;
+        private DecorCatalogOrder DecorCatalogOrder = null;
+        private FrontsOrders FrontsOrders;
+        private DecorOrders DecorOrders;
+        private OrdersCalculate OrdersCalculate;
+        private NewOrderInfo NewOrderInfo;
 
         public AddZOVMainOrdersForm(ref OrdersManager tOrdersManager, NewOrderInfo tNewOrderInfo,
             bool bEditMainOrder, ref Form tTopForm, ref OrdersCalculate tOrdersCalculate)

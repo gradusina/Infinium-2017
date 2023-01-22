@@ -280,6 +280,7 @@
         Turin3SimpleInsetHeight = 127,
 
         LeonSimpleInsetHeight = 108,
+        BonaSimpleInsetHeight = 98,
 
         InfinitiSimpleInsetHeight = 134,
 
@@ -301,6 +302,7 @@
         Turin3BoxInsetHeight = 127,
 
         LeonBoxInsetHeight = 108,
+        BonaBoxInsetHeight = 98,
 
         InfinitiBoxInsetHeight = 98,
 
@@ -315,6 +317,7 @@
         Turin3VitrinaInsetHeight = 127,
 
         LeonVitrinaInsetHeight = 108,
+        BonaVitrinaInsetHeight = 98,
 
         InfinitiVitrinaInsetHeight = 134,
 
@@ -336,6 +339,7 @@
         Turin3GridInsetHeight = 127,
 
         LeonGridInsetHeight = 108,
+        BonaGridInsetHeight = 98,
 
         InfinitiGridInsetHeight = 134,
 
@@ -357,6 +361,7 @@
         Turin3SimpleInsetWidth = 127,
 
         LeonSimpleInsetWidth = 108,
+        BonaSimpleInsetWidth = 98,
 
         InfinitiSimpleInsetWidth = 134,
 
@@ -378,6 +383,7 @@
         Turin3BoxInsetWidth = 127,
 
         LeonBoxInsetWidth = 108,
+        BonaBoxInsetWidth = 98,
 
         InfinitiBoxInsetWidth = 99,
 
@@ -392,6 +398,7 @@
         Turin3VitrinaInsetWidth = 127,
 
         LeonVitrinaInsetWidth = 108,
+        BonaVitrinaInsetWidth = 98,
 
         InfinitiVitrinaInsetWidth = 134,
 
@@ -413,6 +420,7 @@
         Turin3GridInsetWidth = 127,
 
         LeonGridInsetWidth = 108,
+        BonaGridInsetWidth = 98,
 
         InfinitiGridInsetWidth = 134
     }
@@ -703,6 +711,7 @@
         Turin1_1 = 4388,
 
         LeonTPS = 27920,
+        Bona = 41924,
 
         Turin3 = 3633,
         Turin3NotColored = 3641

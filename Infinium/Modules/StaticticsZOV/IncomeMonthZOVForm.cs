@@ -9,20 +9,20 @@ namespace Infinium
 {
     public partial class IncomeMonthZOVForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
-        int FormEvent = 0;
+        private int FormEvent = 0;
 
 
-        Form TopForm = null;
-        LightStartForm LightStartForm;
+        private Form TopForm = null;
+        private LightStartForm LightStartForm;
 
         public Modules.StaticticsZOV.IncomeMonthZOV IncomeMonth;
 
-        NumberFormatInfo nfi1;
+        private NumberFormatInfo nfi1;
 
         public IncomeMonthZOVForm(LightStartForm tLightStartForm)
         {
@@ -174,7 +174,7 @@ namespace Infinium
             e.LegendFont = new Font("Segoe UI", 18.0f, FontStyle.Bold);
         }
 
-        ListSortDirection SD;
+        private ListSortDirection SD;
 
         private void IncomeDataGrid_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {

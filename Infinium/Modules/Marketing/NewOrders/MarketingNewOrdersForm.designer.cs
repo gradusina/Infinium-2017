@@ -1158,6 +1158,7 @@
             // kryptonCheckBox2
             // 
             this.kryptonCheckBox2.Checked = true;
+            this.kryptonCheckBox2.Visible = false;
             this.kryptonCheckBox2.CheckState = System.Windows.Forms.CheckState.Checked;
             this.kryptonCheckBox2.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalControl;
             this.kryptonCheckBox2.Location = new System.Drawing.Point(3, 169);
@@ -1169,11 +1170,12 @@
             this.kryptonCheckBox2.TabIndex = 396;
             this.kryptonCheckBox2.Text = "Отсрочка (3 дня)";
             this.kryptonCheckBox2.Values.Text = "Отсрочка (3 дня)";
-            this.kryptonCheckBox2.CheckedChanged += new System.EventHandler(this.kryptonCheckBox2_CheckedChanged);
+            //this.kryptonCheckBox2.CheckedChanged += new System.EventHandler(this.kryptonCheckBox2_CheckedChanged);
             // 
             // kryptonCheckBox1
             // 
             this.kryptonCheckBox1.Checked = true;
+            this.kryptonCheckBox1.Visible = false;
             this.kryptonCheckBox1.CheckState = System.Windows.Forms.CheckState.Checked;
             this.kryptonCheckBox1.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalControl;
             this.kryptonCheckBox1.Location = new System.Drawing.Point(3, 137);
@@ -1185,7 +1187,7 @@
             this.kryptonCheckBox1.TabIndex = 395;
             this.kryptonCheckBox1.Text = "75%-25%";
             this.kryptonCheckBox1.Values.Text = "75%-25%";
-            this.kryptonCheckBox1.CheckedChanged += new System.EventHandler(this.kryptonCheckBox1_CheckedChanged);
+            //this.kryptonCheckBox1.CheckedChanged += new System.EventHandler(this.kryptonCheckBox1_CheckedChanged);            //this.kryptonCheckBox1.CheckedChanged += new System.EventHandler(this.kryptonCheckBox1_CheckedChanged);
             // 
             // kryptonBorderEdge10
             // 
@@ -1199,6 +1201,7 @@
             // cbDelayOfPayment
             // 
             this.cbDelayOfPayment.Checked = true;
+            this.cbDelayOfPayment.Visible = false;
             this.cbDelayOfPayment.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbDelayOfPayment.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalControl;
             this.cbDelayOfPayment.Location = new System.Drawing.Point(3, 3);
@@ -1210,11 +1213,12 @@
             this.cbDelayOfPayment.TabIndex = 391;
             this.cbDelayOfPayment.Text = "Отсрочка";
             this.cbDelayOfPayment.Values.Text = "Отсрочка";
-            this.cbDelayOfPayment.CheckedChanged += new System.EventHandler(this.cbDelayOfPayment_CheckedChanged);
+            //this.cbDelayOfPayment.CheckedChanged += new System.EventHandler(this.cbDelayOfPayment_CheckedChanged);
             // 
             // cbFactoring
             // 
             this.cbFactoring.Checked = true;
+            this.cbFactoring.Visible = false;
             this.cbFactoring.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbFactoring.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalControl;
             this.cbFactoring.Location = new System.Drawing.Point(3, 105);
@@ -1226,11 +1230,12 @@
             this.cbFactoring.TabIndex = 394;
             this.cbFactoring.Text = "Факторинг";
             this.cbFactoring.Values.Text = "Факторинг";
-            this.cbFactoring.CheckedChanged += new System.EventHandler(this.cbFactoring_CheckedChanged);
+            //this.cbFactoring.CheckedChanged += new System.EventHandler(this.cbFactoring_CheckedChanged);
             // 
             // cbHalfOfPayment
             // 
             this.cbHalfOfPayment.Checked = true;
+            this.cbHalfOfPayment.Visible = false;
             this.cbHalfOfPayment.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbHalfOfPayment.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalControl;
             this.cbHalfOfPayment.Location = new System.Drawing.Point(3, 37);
@@ -1242,11 +1247,12 @@
             this.cbHalfOfPayment.TabIndex = 392;
             this.cbHalfOfPayment.Text = "50%-50%";
             this.cbHalfOfPayment.Values.Text = "50%-50%";
-            this.cbHalfOfPayment.CheckedChanged += new System.EventHandler(this.cbHalfOfPayment_CheckedChanged);
+            //this.cbHalfOfPayment.CheckedChanged += new System.EventHandler(this.cbHalfOfPayment_CheckedChanged);
             // 
             // cbFullPayment
             // 
             this.cbFullPayment.Checked = true;
+            this.cbFullPayment.Visible = false;
             this.cbFullPayment.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbFullPayment.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalControl;
             this.cbFullPayment.Location = new System.Drawing.Point(3, 71);
@@ -1258,11 +1264,12 @@
             this.cbFullPayment.TabIndex = 393;
             this.cbFullPayment.Text = "Предоплата 100%";
             this.cbFullPayment.Values.Text = "Предоплата 100%";
-            this.cbFullPayment.CheckedChanged += new System.EventHandler(this.cbFullPayment_CheckedChanged);
+            //this.cbFullPayment.CheckedChanged += new System.EventHandler(this.cbFullPayment_CheckedChanged);
             // 
             // label4
             // 
             this.label4.AutoSize = true;
+            this.label4.Visible = false;
             this.label4.Font = new System.Drawing.Font("Segoe UI", 17.81F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.label4.ForeColor = System.Drawing.Color.White;
             this.label4.Location = new System.Drawing.Point(5, 140);
@@ -1637,6 +1644,7 @@
             this.kryptonBorderEdge16.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.kryptonBorderEdge16.AutoSize = false;
+            this.kryptonBorderEdge16.Visible = false;
             this.kryptonBorderEdge16.Location = new System.Drawing.Point(1, 525);
             this.kryptonBorderEdge16.Name = "kryptonBorderEdge16";
             this.kryptonBorderEdge16.Size = new System.Drawing.Size(768, 1);

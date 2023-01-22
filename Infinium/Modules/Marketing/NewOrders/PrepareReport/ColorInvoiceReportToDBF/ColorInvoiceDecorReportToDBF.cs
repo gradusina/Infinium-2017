@@ -8,15 +8,15 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportT
 {
     public class ColorInvoiceDecorReportToDbf
     {
-        decimal TransportCost = 0;
-        decimal AdditionalCost = 0;
-        decimal PaymentRate = 1;
-        int ClientID = 0;
-        string ProfilCurrencyCode = "0";
-        string TPSCurrencyCode = "0";
-        string UNN = string.Empty;
+        private decimal TransportCost = 0;
+        private decimal AdditionalCost = 0;
+        private decimal PaymentRate = 1;
+        private int ClientID = 0;
+        private string ProfilCurrencyCode = "0";
+        private string TPSCurrencyCode = "0";
+        private string UNN = string.Empty;
 
-        DataTable CurrencyTypesDT;
+        private DataTable CurrencyTypesDT;
         private DataTable _profilReportDataTable = null;
         private DataTable _tPSReportDataTable = null;
         private DataTable FrameColorsDataTable = null;

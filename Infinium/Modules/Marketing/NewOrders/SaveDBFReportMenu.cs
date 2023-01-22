@@ -6,19 +6,19 @@ namespace Infinium
 {
     public partial class SaveDBFReportMenu : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
         public int Result = 1;
         public bool InMutualSettlement = false;
         public string Notes = string.Empty;
         public string SaveFilePath = string.Empty;
-        int FormEvent = 0;
-        string ReportName = string.Empty;
+        private int FormEvent = 0;
+        private string ReportName = string.Empty;
 
-        Form MainForm = null;
+        private Form MainForm = null;
 
         public SaveDBFReportMenu(Form tMainForm, string sReportName)
         {

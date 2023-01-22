@@ -7,15 +7,15 @@ namespace Infinium
     {
         public bool OkComplexSawing = true;
 
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
-        int DecorAssignmentID = 0;
-        int FormEvent = 0;
+        private int DecorAssignmentID = 0;
+        private int FormEvent = 0;
 
-        ProfileAssignments ProfileAssignmentsManager;
+        private ProfileAssignments ProfileAssignmentsManager;
 
         public ComplexSawingForm(ProfileAssignments tProfileAssignmentsManager, int iDecorAssignmentID)
         {

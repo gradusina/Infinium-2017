@@ -86,8 +86,8 @@ namespace Infinium.Modules.ProfileAssignments.Planning
         private DataTable _usersDt;
         private DataTable _millingMachinesDt;
         private DataTable _facingMachinesDt;
-        private BindingSource _millingMachinesBs;
-        private BindingSource _facingMachinesBs;
+        private readonly BindingSource _millingMachinesBs;
+        private readonly BindingSource _facingMachinesBs;
 
         public MoldingsSectionPlanning()
         {
@@ -119,6 +119,13 @@ namespace Infinium.Modules.ProfileAssignments.Planning
             {
                 DataSource = _facingMachinesDt
             };
+
+         //   string str = @"
+         //       List<Int64> distCabFurnitureComplementIDs = CabFurOrdersDataTable.AsEnumerable()
+         //.Where(r => r.Field<Int64>("MainOrderID") == MainOrderID) // filter rows by date
+         //       .Select(r => r.Field<Int64>("CabFurnitureComplementID")) // select only wellbore string value
+         //       .Distinct() // take only unique items
+         //       .ToList();";
         }
 
         public int DistinctThicknessTables => OrdersDs.Tables.Count;
@@ -458,7 +465,6 @@ namespace Infinium.Modules.ProfileAssignments.Planning
                 var facingOption = 0;
                 var millingOption = 0;
                 var palletNumber = 0;
-                decimal palletCount;
                 decimal m2;
 
                 if (_dbProdOrdersDt.Rows[i]["Thickness"] != DBNull.Value)
@@ -488,7 +494,7 @@ namespace Infinium.Modules.ProfileAssignments.Planning
                 else
                     m2 = CalculateProfileM2(length, produceCount);
 
-                palletCount = CalculatePalletCount(thickness, width, produceCount);
+                var palletCount = CalculatePalletCount(thickness, width, produceCount);
 
                 var newRow = new ProdOrderRow
                 {

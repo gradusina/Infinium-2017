@@ -14,9 +14,9 @@ namespace Infinium.Modules.Marketing.Clients
 {
     public class Clients
     {
-        PercentageDataGrid ClientsDataGrid = null;
-        PercentageDataGrid ContactsDataGrid = null;
-        PercentageDataGrid ShopAddressesDataGrid = null;
+        private PercentageDataGrid ClientsDataGrid = null;
+        private PercentageDataGrid ContactsDataGrid = null;
+        private PercentageDataGrid ShopAddressesDataGrid = null;
 
         public DataTable ClientRatesDataTable = null;
         public DataTable ClientsDataTable = null;
@@ -637,7 +637,7 @@ namespace Infinium.Modules.Marketing.Clients
             string result = "Уведомление на почту клиента отправлено";
 
             //string AccountPassword = "7026Gradus0462";
-            string AccountPassword = "onluenzbclnedqtt";
+            string AccountPassword = "foqwsulbjiuslnue";
             string SenderEmail = "infiniumdevelopers@gmail.com";
 
 
@@ -777,6 +777,8 @@ namespace Infinium.Modules.Marketing.Clients
         {
             for (int i = 0; i < ClientRatesDataTable.Rows.Count; i++)
             {
+                if (ClientRatesDataTable.Rows[i].RowState == DataRowState.Deleted)
+                    continue;
                 if (ClientRatesDataTable.Rows[i]["Date"] != DBNull.Value)
                 {
                     DateTime dateTime = Convert.ToDateTime(ClientRatesDataTable.Rows[i]["Date"]);
@@ -924,7 +926,7 @@ namespace Infinium.Modules.Marketing.Clients
         public void Send(int ClientID, string ClientEmail, string Login)
         {
             //string AccountPassword = "7026Gradus0462";
-            string AccountPassword = "onluenzbclnedqtt";
+            string AccountPassword = "foqwsulbjiuslnue";
             string SenderEmail = "infiniumdevelopers@gmail.com";
 
 
@@ -1296,7 +1298,7 @@ infiniumdevelopers@gmail.com";
             }
         }
 
-        DataTable dtRolePermissions;
+        private DataTable dtRolePermissions;
 
         public void GetPermissions(int UserID, string FormName)
         {

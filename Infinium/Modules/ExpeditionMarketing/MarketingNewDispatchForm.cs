@@ -9,25 +9,25 @@ namespace Infinium
 {
     public partial class MarketingNewDispatchForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
-        bool NeedSplash = false;
-        bool NewDispatch = false;
-        bool CanEditDispatch = false;
-        bool EditMegaOrder = false;
+        private bool NeedSplash = false;
+        private bool NewDispatch = false;
+        private bool CanEditDispatch = false;
+        private bool EditMegaOrder = false;
 
-        int FormEvent = 0;
-        int ClientID = 0;
-        int DispatchID = 0;
-        int MainOrderID = 0;
-        int MegaOrderID = 0;
-        object DispatchDate = null;
+        private int FormEvent = 0;
+        private int ClientID = 0;
+        private int DispatchID = 0;
+        private int MainOrderID = 0;
+        private int MegaOrderID = 0;
+        private object DispatchDate = null;
 
-        Form TopForm;
-        NewMarketingDispatch NewDispatchManager;
+        private Form TopForm;
+        private NewMarketingDispatch NewDispatchManager;
 
         public MarketingNewDispatchForm(bool bCanEditDispatch, bool bNewDispatch, object oDispatchDate, int iClientID, int iDispatchID)
         {
@@ -695,7 +695,7 @@ namespace Infinium
             dgvDecorOrders.Columns["Notes"].DisplayIndex = DisplayIndex++;
         }
 
-        void FrontsOrdersDataGrid_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        private void FrontsOrdersDataGrid_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             PercentageDataGrid grid = (PercentageDataGrid)sender;
             if (grid.Columns.Contains("PatinaColumn") && (e.ColumnIndex == grid.Columns["PatinaColumn"].Index)

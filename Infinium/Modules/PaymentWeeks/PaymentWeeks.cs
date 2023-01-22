@@ -11,8 +11,8 @@ namespace Infinium.Modules.PaymentWeeks
 
     public class ZOVDebts
     {
-        DataTable DebtsDetailsDT = null;
-        DataTable DoNotDispatchDetailsDT = null;
+        private DataTable DebtsDetailsDT = null;
+        private DataTable DoNotDispatchDetailsDT = null;
 
         public ZOVDebts()
         {
@@ -198,13 +198,13 @@ namespace Infinium.Modules.PaymentWeeks
 
     public class PaymentWeeks
     {
-        DataTable PaymentWeeksDataTable = null;
-        DataTable PaymentDetailDataTable = null;
+        private DataTable PaymentWeeksDataTable = null;
+        private DataTable PaymentDetailDataTable = null;
 
-        DataTable ResultTotalDataTable = null;
-        DataTable WriteOffDataTable = null;
-        DataTable CalcWriteOffDataTable = null;
-        DataTable DebtTypesDataTable = null;
+        private DataTable ResultTotalDataTable = null;
+        private DataTable WriteOffDataTable = null;
+        private DataTable CalcWriteOffDataTable = null;
+        private DataTable DebtTypesDataTable = null;
 
         public BindingSource ResultTotalBindingSource = null;
         public BindingSource WriteOffBindingSource = null;
@@ -212,14 +212,14 @@ namespace Infinium.Modules.PaymentWeeks
         public BindingSource PaymentDetailBindingSource = null;
         public BindingSource DebtTypesBindingSource = null;
 
-        PercentageDataGrid ResultTotalDataGrid = null;
-        PercentageDataGrid WriteOffDataGrid = null;
-        PercentageDataGrid CalcWriteOffDataGrid = null;
-        PercentageDataGrid WriteOffDetailDataGrid = null;
+        private PercentageDataGrid ResultTotalDataGrid = null;
+        private PercentageDataGrid WriteOffDataGrid = null;
+        private PercentageDataGrid CalcWriteOffDataGrid = null;
+        private PercentageDataGrid WriteOffDetailDataGrid = null;
 
-        Label ResultLabel;
-        Label CalcWriteOffResultLabel;
-        Label WriteOffResultLabel;
+        private Label ResultLabel;
+        private Label CalcWriteOffResultLabel;
+        private Label WriteOffResultLabel;
 
         private DataGridViewComboBoxColumn DebtTypeColumn = null;
 
@@ -504,7 +504,7 @@ namespace Infinium.Modules.PaymentWeeks
 
         public BindingSource SelectPaymentWeekBindingSource = null;
 
-        PercentageDataGrid SelectDateDataGrid = null;
+        private PercentageDataGrid SelectDateDataGrid = null;
 
         public SelectPaymentWeek(ref PercentageDataGrid tSelectDateDataGrid)
         {

@@ -1,11 +1,15 @@
-﻿namespace Infinium
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+using ComponentFactory.Krypton.Toolkit;
+
+namespace Infinium
 {
     partial class MarketingNewsForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -759,34 +763,34 @@
 
         #endregion
 
-        private System.Windows.Forms.Timer AnimateTimer;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton NavigateMenuCloseButton;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Panel NavigatePanel;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge3;
-        private ComponentFactory.Krypton.Toolkit.KryptonPalette ButtonsPalette;
-        private ComponentFactory.Krypton.Toolkit.KryptonPalette NavigateMenuButtonsPalette;
-        private ComponentFactory.Krypton.Toolkit.KryptonCheckButton PasswordButton;
-        private System.Windows.Forms.Panel panel2;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton kryptonButton1;
-        private System.Windows.Forms.Timer timer1;
+        private Timer AnimateTimer;
+        private KryptonButton NavigateMenuCloseButton;
+        private Label label1;
+        private Panel NavigatePanel;
+        private KryptonBorderEdge kryptonBorderEdge3;
+        private KryptonPalette ButtonsPalette;
+        private KryptonPalette NavigateMenuButtonsPalette;
+        private KryptonCheckButton PasswordButton;
+        private Panel panel2;
+        private KryptonButton kryptonButton1;
+        private Timer timer1;
         private InfiniumNewsContainer LightNewsContainer;
-        private System.Windows.Forms.Panel panel3;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton MoreNewsButton;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton UpdateNewsButton;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton MinimizeButton;
+        private Panel panel3;
+        private KryptonButton MoreNewsButton;
+        private KryptonButton UpdateNewsButton;
+        private KryptonButton MinimizeButton;
         private InfiniumNewsClientsMenu ClientsMenu;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge1;
+        private KryptonBorderEdge kryptonBorderEdge1;
         private InfiniumNewsClientsMenu NewClientsMenu;
-        private System.Windows.Forms.Panel panel1;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge6;
-        private System.Windows.Forms.Panel panel4;
+        private Panel panel1;
+        private KryptonBorderEdge kryptonBorderEdge6;
+        private Panel panel4;
         private InfiniumNewsClientsManagersMenu ClientsManagersMenu;
         private InfiniumNewsClientsManagersMenu NewClientsManagersMenu;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge2;
-        private ComponentFactory.Krypton.Toolkit.KryptonCheckSet kryptonCheckSet1;
-        private ComponentFactory.Krypton.Toolkit.KryptonCheckButton cbtnManagers;
-        private ComponentFactory.Krypton.Toolkit.KryptonCheckButton cbtnClients;
-        private ComponentFactory.Krypton.Toolkit.KryptonPalette PanelSelectPalette;
+        private KryptonBorderEdge kryptonBorderEdge2;
+        private KryptonCheckSet kryptonCheckSet1;
+        private KryptonCheckButton cbtnManagers;
+        private KryptonCheckButton cbtnClients;
+        private KryptonPalette PanelSelectPalette;
     }
 }

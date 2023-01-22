@@ -14,48 +14,47 @@ namespace Infinium
 {
     public partial class CabFurnitureModuleForm : Form
     {
-        const int iAgreementRole = 98;
-        const int iAdminRole = 100;
-        const int iDispatchRole = 99;
+        private const int iAgreementRole = 98;
+        private const int iAdminRole = 100;
+        private const int iDispatchRole = 99;
 
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
-        bool NeedSplash = false;
+        private bool NeedSplash = false;
 
-        decimal NonAgreementCount = 0;
-        decimal AgreedCount = 0;
-        decimal OnProdCount = 0;
-        decimal InProdCount = 0;
-        decimal OnStoreCount = 0;
-        decimal OnExpCount = 0;
+        private decimal NonAgreementCount = 0;
+        private decimal AgreedCount = 0;
+        private decimal OnProdCount = 0;
+        private decimal InProdCount = 0;
+        private decimal OnStoreCount = 0;
+        private decimal OnExpCount = 0;
 
-        int FormEvent = 0;
+        private int FormEvent = 0;
 
-        bool CanAction = true;
+        private bool CanAction = true;
         [DllImport("user32.dll")]
-        static extern IntPtr GetActiveWindow();
+        private static extern IntPtr GetActiveWindow();
 
-        Form TopForm = null;
-        LightStartForm LightStartForm;
-        CabFurnitureCoversForm CabFurnitureCoversForm;
+        private Form TopForm = null;
+        private LightStartForm LightStartForm;
+        private CabFurnitureCoversForm CabFurnitureCoversForm;
 
-        DetailsReport detailsReport;
-        CalculateMaterial calcManager;
-        ComplementLabel complementLabel;
-        PackageLabel packageLabel;
-        CellLabel cellLabel;
-        AssignmentsManager assignmentsManager;
-        ComplementsManager complementsManager;
-        PackagesManager packagesManager;
-        StorePackagesManager storagePackagesManager;
+        private DetailsReport detailsReport;
+        private CalculateMaterial calcManager;
+        private ComplementLabel complementLabel;
+        private PackageLabel packageLabel;
+        private CellLabel cellLabel;
+        private AssignmentsManager assignmentsManager;
+        private ComplementsManager complementsManager;
+        private PackagesManager packagesManager;
+        private StorePackagesManager storagePackagesManager;
 
-        CabFurStorage cabFurStorage;
-        CabFurStorageToExcel cabFurStorageToExcel;
-        Infinium.Modules.CabFurnitureAssignments.CheckLabel CheckLabel;
-        RoleTypes RoleType = RoleTypes.OrdinaryRole;
+        private CabFurStorage cabFurStorage;
+        private CabFurStorageToExcel cabFurStorageToExcel;
+        private Infinium.Modules.CabFurnitureAssignments.CheckLabel CheckLabel;
 
         public enum RoleTypes
         {
@@ -97,21 +96,18 @@ namespace Infinium
 
             if (assignmentsManager.PermissionGranted(iAgreementRole))
             {
-                RoleType = RoleTypes.AgreementRole;
                 cmiSaveAssignments.Visible = false;
                 agreeAssignmentContextMenuItem.Visible = true;
                 setDispatchDateContextMenuItem.Visible = false;
             }
             if (assignmentsManager.PermissionGranted(iAdminRole))
             {
-                RoleType = RoleTypes.AdminRole;
                 cmiSaveAssignments.Visible = true;
                 agreeAssignmentContextMenuItem.Visible = true;
                 setDispatchDateContextMenuItem.Visible = true;
             }
             if (assignmentsManager.PermissionGranted(iDispatchRole))
             {
-                RoleType = RoleTypes.DispatchRole;
                 cmiSaveAssignments.Visible = true;
                 agreeAssignmentContextMenuItem.Visible = true;
                 setDispatchDateContextMenuItem.Visible = true;
@@ -3706,13 +3702,11 @@ namespace Infinium
 
         private void kryptonContextMenuItem24_Click(object sender, EventArgs e)
         {
-            popupControlContainer1.ShowPopup(barManager1, this.PointToScreen(new System.Drawing.Point(
-                MousePosition.X, MousePosition.Y)));
+
         }
 
         private void ChangeDateButton_Click(object sender, EventArgs e)
         {
-            popupControlContainer1.HidePopup();
                DateTime DispatchDate = kryptonMonthCalendar2.SelectionStart;
             int CabFurAssignmentID = 0;
             if (dgvAllAssignments.SelectedRows.Count != 0 && dgvAllAssignments.SelectedRows[0].Cells["CabFurAssignmentID"].Value != DBNull.Value)
@@ -3864,6 +3858,29 @@ namespace Infinium
             while (SplashWindow.bSmallCreated)
                 SmallWaitForm.CloseS = true;
 
+        }
+
+        private void kryptonContextMenuItem5_Click_1(object sender, EventArgs e)
+        {
+            int[] cabFurniturePackageID = new int[dgvStoragePackagesLabels.SelectedRows.Count];
+            for (int i = 0; i < dgvStoragePackagesLabels.SelectedRows.Count; i++)
+                cabFurniturePackageID[i] = Convert.ToInt32(dgvStoragePackagesLabels.SelectedRows[i].Cells["cabFurniturePackageID"].Value);
+
+            cabFurStorage.UnbindPackages(cabFurniturePackageID);
+            cabFurStorage.UpdateCells();
+        }
+
+        private void dgvCells_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+        {
+
+        }
+
+        private void dgvStoragePackagesLabels_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.Button == System.Windows.Forms.MouseButtons.Right && e.RowIndex != -1)
+            {
+                kryptonContextMenu9.Show(new Point(Cursor.Position.X - 212, Cursor.Position.Y - 10));
+            }
         }
     }
 }

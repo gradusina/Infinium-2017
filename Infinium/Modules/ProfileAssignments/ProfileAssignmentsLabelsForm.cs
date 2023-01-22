@@ -11,22 +11,22 @@ namespace Infinium
 {
     public partial class ProfileAssignmentsLabelsForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
 
-        int BatchAssignmentID = 0;
-        int DecorAssignmentID = 0;
-        object BatchDateTime = DBNull.Value;
+        private int BatchAssignmentID = 0;
+        private int DecorAssignmentID = 0;
+        private object BatchDateTime = DBNull.Value;
 
-        int FormEvent = 0;
+        private int FormEvent = 0;
 
-        Form MainForm = null;
-        Form TopForm = null;
+        private Form MainForm = null;
+        private Form TopForm = null;
 
-        ProfileAssignmentsLabels ProfileAssignmentsLabelsManager;
-        PrintDefectProfileAssignmentsLabels PrintDefectLabelsManager;
-        PrintProfileAssignmentsLabels PrintLabelsManager;
+        private ProfileAssignmentsLabels ProfileAssignmentsLabelsManager;
+        private PrintDefectProfileAssignmentsLabels PrintDefectLabelsManager;
+        private PrintProfileAssignmentsLabels PrintLabelsManager;
 
         public ProfileAssignmentsLabelsForm(Form tMainForm, int iBatchAssignmentID, int iDecorAssignmentID, object oBatchDateTime)
         {

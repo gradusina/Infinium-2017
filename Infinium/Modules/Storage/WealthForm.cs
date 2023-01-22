@@ -10,25 +10,25 @@ namespace Infinium
 {
     public partial class WealthForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
 
-        bool MoveFromPermits = false;
-        int FormEvent = 0;
+        private bool MoveFromPermits = false;
+        private int FormEvent = 0;
 
-        LightStartForm LightStartForm;
+        private LightStartForm LightStartForm;
 
-        Form MainForm;
-        Form TopForm = null;
+        private Form MainForm;
+        private Form TopForm = null;
 
-        DataTable TableMeasures, TableCurrency, TableUsers;
+        private DataTable TableMeasures, TableCurrency, TableUsers;
 
-        AddWealthForm AddWealthForm;
+        private AddWealthForm AddWealthForm;
 
-        ViewConnectUnloads ViewConnectUnloads;
-        ConnectUnloads ConnectUnloads;
-        LightNotes LightNotes;
+        private ViewConnectUnloads ViewConnectUnloads;
+        private ConnectUnloads ConnectUnloads;
+        private LightNotes LightNotes;
 
         public WealthForm(LightStartForm tLightStartForm)
         {

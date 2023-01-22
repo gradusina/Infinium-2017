@@ -14,25 +14,25 @@ namespace Infinium.Modules.StaticticsZOV
 
     public class Payments
     {
-        int CurrentClientGroupID = -1;
+        private int CurrentClientGroupID = -1;
 
-        string sResult = string.Empty;
-        string sCalcWriteOffResult = string.Empty;
-        string sWriteOffResult = string.Empty;
+        private string sResult = string.Empty;
+        private string sCalcWriteOffResult = string.Empty;
+        private string sWriteOffResult = string.Empty;
 
-        DataTable ClientsDT = null;
-        DataTable ClientsGroupsDT = null;
+        private DataTable ClientsDT = null;
+        private DataTable ClientsGroupsDT = null;
 
-        DataTable ClientCalcDebtsDT = null;
-        DataTable ClientsGroupCalcDebtsDT = null;
-        DataTable ClientWriteOffDT = null;
-        DataTable ClientsGroupWriteOffDT = null;
-        DataTable ClientDispatchDT = null;
-        DataTable ClientsGroupDispatchDT = null;
+        private DataTable ClientCalcDebtsDT = null;
+        private DataTable ClientsGroupCalcDebtsDT = null;
+        private DataTable ClientWriteOffDT = null;
+        private DataTable ClientsGroupWriteOffDT = null;
+        private DataTable ClientDispatchDT = null;
+        private DataTable ClientsGroupDispatchDT = null;
 
-        DataTable ResultTotalDataTable = null;
-        DataTable WriteOffDataTable = null;
-        DataTable CalcWriteOffDataTable = null;
+        private DataTable ResultTotalDataTable = null;
+        private DataTable WriteOffDataTable = null;
+        private DataTable CalcWriteOffDataTable = null;
 
         public BindingSource ClientsBS;
         public BindingSource ClientsGroupsBS;
@@ -46,12 +46,12 @@ namespace Infinium.Modules.StaticticsZOV
         public BindingSource WriteOffBindingSource = null;
         public BindingSource CalcWriteOffBindingSource = null;
 
-        PercentageDataGrid ResultTotalDataGrid = null;
-        PercentageDataGrid WriteOffDataGrid = null;
-        PercentageDataGrid CalcWriteOffDataGrid = null;
+        private PercentageDataGrid ResultTotalDataGrid = null;
+        private PercentageDataGrid WriteOffDataGrid = null;
+        private PercentageDataGrid CalcWriteOffDataGrid = null;
 
-        ArrayList Clients;
-        ArrayList ClientsGroups;
+        private ArrayList Clients;
+        private ArrayList ClientsGroups;
 
         public Payments(ref PercentageDataGrid tResultTotalDataGrid, ref PercentageDataGrid tWriteOffDataGrid,
             ref PercentageDataGrid tCalcWriteOffDataGrid)
@@ -1763,39 +1763,39 @@ namespace Infinium.Modules.StaticticsZOV
 
     public class ZOVStorageStatistics
     {
-        DataTable PrepareFSummaryDT = null;
-        DataTable CurvedPrepareFSummaryDT = null;
-        DataTable PrepareDSummaryDT = null;
+        private DataTable PrepareFSummaryDT = null;
+        private DataTable CurvedPrepareFSummaryDT = null;
+        private DataTable PrepareDSummaryDT = null;
 
-        DataTable ZOVPrepareDT = null;
+        private DataTable ZOVPrepareDT = null;
 
-        DataTable PrepareReadyFrontsCostDT = null;
-        DataTable CurvedPrepareReadyFrontsCostDT = null;
-        DataTable PrepareReadyDecorCostDT = null;
-        DataTable PrepareAllFrontsCostDT = null;
-        DataTable CurvedPrepareAllFrontsCostDT = null;
-        DataTable PrepareAllDecorCostDT = null;
+        private DataTable PrepareReadyFrontsCostDT = null;
+        private DataTable CurvedPrepareReadyFrontsCostDT = null;
+        private DataTable PrepareReadyDecorCostDT = null;
+        private DataTable PrepareAllFrontsCostDT = null;
+        private DataTable CurvedPrepareAllFrontsCostDT = null;
+        private DataTable PrepareAllDecorCostDT = null;
 
-        DataTable ZReadyFrontsCostDT = null;
-        DataTable CurvedZReadyFrontsCostDT = null;
-        DataTable ZReadyDecorCostDT = null;
-        DataTable ZAllFrontsCostDT = null;
-        DataTable CurvedZAllFrontsCostDT = null;
-        DataTable ZAllDecorCostDT = null;
+        private DataTable ZReadyFrontsCostDT = null;
+        private DataTable CurvedZReadyFrontsCostDT = null;
+        private DataTable ZReadyDecorCostDT = null;
+        private DataTable ZAllFrontsCostDT = null;
+        private DataTable CurvedZAllFrontsCostDT = null;
+        private DataTable ZAllDecorCostDT = null;
 
-        DataTable FrontsOrdersDT = null;
-        DataTable CurvedFrontsOrdersDT = null;
-        DataTable DecorOrdersDT = null;
+        private DataTable FrontsOrdersDT = null;
+        private DataTable CurvedFrontsOrdersDT = null;
+        private DataTable DecorOrdersDT = null;
 
-        DataTable FrontsSummaryDT = null;
-        DataTable CurvedFrontsSummaryDT = null;
-        DataTable DecorProductsSummaryDT = null;
-        DataTable DecorItemsSummaryDT = null;
-        DataTable DecorConfigDT = null;
+        private DataTable FrontsSummaryDT = null;
+        private DataTable CurvedFrontsSummaryDT = null;
+        private DataTable DecorProductsSummaryDT = null;
+        private DataTable DecorItemsSummaryDT = null;
+        private DataTable DecorConfigDT = null;
 
-        DataTable FrontsDT = null;
-        DataTable DecorProductsDT = null;
-        DataTable DecorItemsDT = null;
+        private DataTable FrontsDT = null;
+        private DataTable DecorProductsDT = null;
+        private DataTable DecorItemsDT = null;
 
         public BindingSource PrepareFSummaryBS = null;
         public BindingSource CurvedPrepareFSummaryBS = null;
@@ -1806,13 +1806,13 @@ namespace Infinium.Modules.StaticticsZOV
         public BindingSource DecorProductsSummaryBS = null;
         public BindingSource DecorItemsSummaryBS = null;
 
-        PercentageDataGrid PrepareFSummaryDG = null;
-        PercentageDataGrid PrepareCurvedFSummaryDG = null;
-        PercentageDataGrid PrepareDSummaryDG = null;
-        PercentageDataGrid FrontsDG = null;
-        PercentageDataGrid CurvedFrontsDG = null;
-        PercentageDataGrid DecorProductsDG = null;
-        PercentageDataGrid DecorItemsDG = null;
+        private PercentageDataGrid PrepareFSummaryDG = null;
+        private PercentageDataGrid PrepareCurvedFSummaryDG = null;
+        private PercentageDataGrid PrepareDSummaryDG = null;
+        private PercentageDataGrid FrontsDG = null;
+        private PercentageDataGrid CurvedFrontsDG = null;
+        private PercentageDataGrid DecorProductsDG = null;
+        private PercentageDataGrid DecorItemsDG = null;
 
         public ZOVStorageStatistics(
             ref PercentageDataGrid tPrepareFSummaryDG,
@@ -3218,21 +3218,21 @@ namespace Infinium.Modules.StaticticsZOV
 
     public class ClientStatisticsZOV
     {
-        DataTable MainOrdersDataTable = null;
-        DataTable FrontsOrdersDataTable = null;
-        DataTable DecorOrdersDataTable = null;
+        private DataTable MainOrdersDataTable = null;
+        private DataTable FrontsOrdersDataTable = null;
+        private DataTable DecorOrdersDataTable = null;
 
-        DataTable FrontsOrdersResultTable = null;
-        DataTable FrontsCountResultTable = null;
-        DataTable DecorCountResultTable = null;
+        private DataTable FrontsOrdersResultTable = null;
+        private DataTable FrontsCountResultTable = null;
+        private DataTable DecorCountResultTable = null;
 
 
-        DataTable ClientsDataTable = null;
-        DataTable FrontsDataTable = null;
-        DataTable FrameColorsDataTable = null;
+        private DataTable ClientsDataTable = null;
+        private DataTable FrontsDataTable = null;
+        private DataTable FrameColorsDataTable = null;
 
-        DataTable DecorProductsDataTable = null;
-        DataTable DecorConfigDataTable = null;
+        private DataTable DecorProductsDataTable = null;
+        private DataTable DecorConfigDataTable = null;
 
         public decimal TotalFrontsSquare = 0;
         public int TotalFrontsCount = 0;
@@ -3254,10 +3254,10 @@ namespace Infinium.Modules.StaticticsZOV
         public BindingSource ClientsBindingSource = null;
 
 
-        PercentageDataGrid ClientsDataGrid = null;
-        PercentageDataGrid FrontsCountDataGrid = null;
-        PercentageDataGrid FrontsColorsDataGrid = null;
-        PercentageDataGrid DecorCountDataGrid = null;
+        private PercentageDataGrid ClientsDataGrid = null;
+        private PercentageDataGrid FrontsCountDataGrid = null;
+        private PercentageDataGrid FrontsColorsDataGrid = null;
+        private PercentageDataGrid DecorCountDataGrid = null;
 
 
         public ClientStatisticsZOV(ref PercentageDataGrid tClientsDataGrid)
@@ -3720,14 +3720,14 @@ namespace Infinium.Modules.StaticticsZOV
 
     public class AllClientsStatistics
     {
-        DataTable ClientsDataTable = null;
-        DataTable MainOrdersDataTable = null;
+        private DataTable ClientsDataTable = null;
+        private DataTable MainOrdersDataTable = null;
 
-        DataTable ResultDataTable = null;
+        private DataTable ResultDataTable = null;
 
-        BindingSource ResultBindingSource;
+        private BindingSource ResultBindingSource;
 
-        PercentageDataGrid ResultDataGrid;
+        private PercentageDataGrid ResultDataGrid;
 
         public AllClientsStatistics(ref PercentageDataGrid tResultDataGrid)
         {
@@ -3887,7 +3887,7 @@ namespace Infinium.Modules.StaticticsZOV
 
         public BindingSource IncomeBindingSource = null;
 
-        PercentageDataGrid IncomeDataGrid;
+        private PercentageDataGrid IncomeDataGrid;
 
         public IncomeMonthZOV(ref PercentageDataGrid tIncomeDataGrid)
         {

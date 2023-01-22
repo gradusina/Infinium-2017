@@ -1,11 +1,16 @@
-﻿namespace Infinium
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+using ComponentFactory.Krypton.Toolkit;
+using DevExpress.XtraEditors;
+
+namespace Infinium
 {
     partial class EditTimeForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -377,23 +382,23 @@
 
         #endregion
 
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge20;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge21;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge22;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge23;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Label label2;
-        private ComponentFactory.Krypton.Toolkit.KryptonPalette StandardButtonsPalette;
-        private System.Windows.Forms.Timer AnimateTimer;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton MenuCloseButton;
-        private ComponentFactory.Krypton.Toolkit.KryptonPalette NavigateMenuButtonsPalette;
-        private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.RichTextBox richTextBox1;
-        private System.Windows.Forms.Label label3;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge1;
-        private DevExpress.XtraEditors.TimeEdit timeEdit1;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton OKButton;
-        private System.Windows.Forms.Label OverduedDateLabel;
-        private System.Windows.Forms.Label FactTimeLabel;
+        private KryptonBorderEdge kryptonBorderEdge20;
+        private KryptonBorderEdge kryptonBorderEdge21;
+        private KryptonBorderEdge kryptonBorderEdge22;
+        private KryptonBorderEdge kryptonBorderEdge23;
+        private Panel panel1;
+        private Label label2;
+        private KryptonPalette StandardButtonsPalette;
+        private Timer AnimateTimer;
+        private KryptonButton MenuCloseButton;
+        private KryptonPalette NavigateMenuButtonsPalette;
+        private Panel panel2;
+        private RichTextBox richTextBox1;
+        private Label label3;
+        private KryptonBorderEdge kryptonBorderEdge1;
+        private TimeEdit timeEdit1;
+        private KryptonButton OKButton;
+        private Label OverduedDateLabel;
+        private Label FactTimeLabel;
     }
 }

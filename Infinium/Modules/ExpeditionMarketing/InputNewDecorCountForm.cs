@@ -5,17 +5,17 @@ namespace Infinium
 {
     public partial class InputNewDecorCountForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
         public int Result = 1;
         public int NewCount = 0;
 
-        int FormEvent = 0;
+        private int FormEvent = 0;
 
-        Form MainForm = null;
+        private Form MainForm = null;
 
         public InputNewDecorCountForm(Form tMainForm, int OldCount)
         {

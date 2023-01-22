@@ -7,23 +7,23 @@ namespace Infinium
 {
     public partial class PicturesForm : InfiniumForm
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
 
-        int FormEvent = 0;
+        private int FormEvent;
 
-        LightStartForm LightStartForm;
+        private LightStartForm LightStartForm;
 
-        Form TopForm = null;
+        private Form TopForm;
 
 
-        InfiniumPictures InfiniumPictures;
+        private InfiniumPictures InfiniumPictures;
 
-        bool bC = false;
+        private bool bC;
 
-        bool bShow = false;
-        int iAlbumID = -1;
+        private bool bShow;
+        private int iAlbumID = -1;
 
         //bool bNeedNewsSplash = false;
 
@@ -36,13 +36,13 @@ namespace Infinium
 
             LightStartForm = tLightStartForm;
 
-            this.MaximumSize = Screen.PrimaryScreen.WorkingArea.Size;
+            MaximumSize = Screen.PrimaryScreen.WorkingArea.Size;
 
             Initialize();
 
 
 
-            ActiveNotifySystem.ClearSubscribesRecords(Security.CurrentUserID, this.Name);
+            ActiveNotifySystem.ClearSubscribesRecords(Security.CurrentUserID, Name);
             //ActiveNotifySystem.ClearModuleUpdates(LightTile.Name);
             //ActiveNotifySystem.ClearCurrentOpenModuleUpdates(this.Name);
 
@@ -62,7 +62,7 @@ namespace Infinium
         {
             if (!DatabaseConfigsManager.Animation)
             {
-                this.Opacity = 1;
+                Opacity = 1;
 
                 if (FormEvent == eClose || FormEvent == eHide)
                 {
@@ -78,7 +78,7 @@ namespace Infinium
                     {
 
                         LightStartForm.Activate();
-                        this.Hide();
+                        Hide();
                     }
 
 
@@ -98,8 +98,8 @@ namespace Infinium
 
             if (FormEvent == eClose || FormEvent == eHide)
             {
-                if (Convert.ToDecimal(this.Opacity) != Convert.ToDecimal(0.00))
-                    this.Opacity = Convert.ToDouble(Convert.ToDecimal(this.Opacity) - Convert.ToDecimal(0.05));
+                if (Convert.ToDecimal(Opacity) != Convert.ToDecimal(0.00))
+                    Opacity = Convert.ToDouble(Convert.ToDecimal(Opacity) - Convert.ToDecimal(0.05));
                 else
                 {
                     AnimateTimer.Enabled = false;
@@ -116,7 +116,7 @@ namespace Infinium
                     {
 
                         LightStartForm.Activate();
-                        this.Hide();
+                        Hide();
                     }
 
                 }
@@ -127,16 +127,14 @@ namespace Infinium
 
             if (FormEvent == eShow)
             {
-                if (this.Opacity != 1)
-                    this.Opacity += 0.05;
+                if (Opacity != 1)
+                    Opacity += 0.05;
                 else
                 {
                     AnimateTimer.Enabled = false;
                     SplashForm.CloseS = true;
                     PicturesAlbums.ItemsDataTable = InfiniumPictures.AlbumsItemsDataTable;
                 }
-
-                return;
             }
         }
 
@@ -252,7 +250,7 @@ namespace Infinium
 
         private void PicturesContainer_ItemClicked(object sender, int AlbumID, int PictureID)
         {
-            PhantomForm PhantomForm = new PhantomForm()
+            PhantomForm PhantomForm = new PhantomForm
             {
                 BackColor = Color.FromArgb(40, 40, 40),
                 Opacity = 0.8f

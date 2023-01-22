@@ -10,24 +10,24 @@ namespace Infinium
     {
         public static bool IsOKPress = true;
 
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
-        int FormEvent = 0;
-        int FactoryID = 1;
+        private int FormEvent = 0;
+        private int FactoryID = 1;
 
-        DataTable Fronts;
-        DataTable DecorProducts;
+        private DataTable Fronts;
+        private DataTable DecorProducts;
 
-        List<int> listBox1_selectionhistory;
-        List<int> listBox2_selectionhistory;
+        private List<int> listBox1_selectionhistory;
+        private List<int> listBox2_selectionhistory;
 
-        ArrayList FrontIDs;
-        ArrayList ProductIDs;
+        private ArrayList FrontIDs;
+        private ArrayList ProductIDs;
 
-        Form MainForm = null;
+        private Form MainForm = null;
 
         public ZOVFilterProductsForm(int iFactoryID, ref ArrayList aFrontIDs, ref ArrayList aProductIDs)
         {

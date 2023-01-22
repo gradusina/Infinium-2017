@@ -12,34 +12,34 @@ namespace Infinium
 {
     public partial class ProfileAssignmentsForm : Form
     {
-        const int iAdmin = 64;
-        const int iToolsConfirm = 65;
-        const int iTechnologyConfirm = 66;
-        const int iMaterialConfirm = 67;
-        const int iTechnicalConfirm = 68;
-        const int iBatchEnable = 69;
+        private const int iAdmin = 64;
+        private const int iToolsConfirm = 65;
+        private const int iTechnologyConfirm = 66;
+        private const int iMaterialConfirm = 67;
+        private const int iTechnicalConfirm = 68;
+        private const int iBatchEnable = 69;
 
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
-        bool NeedSplash = false;
+        private bool NeedSplash = false;
 
-        int FormEvent = 0;
-        int PanelActive = 0;
+        private int FormEvent = 0;
+        private int PanelActive = 0;
 
         //DataTable RolePermissionsDataTable;
-        Bitmap Lock_BW = new Bitmap(Properties.Resources.LockSmallBlack);
-        Bitmap Unlock_BW = new Bitmap(Properties.Resources.UnlockSmallBlack);
-        ImageList ImageList1;
-        LightStartForm LightStartForm;
-        Form TopForm = null;
+        private readonly Bitmap Lock_BW = new Bitmap(Properties.Resources.LockSmallBlack);
+        private readonly Bitmap Unlock_BW = new Bitmap(Properties.Resources.UnlockSmallBlack);
+        private readonly ImageList ImageList1;
+        private readonly LightStartForm LightStartForm;
+        private Form TopForm = null;
 
-        ProfileAssignmentsToExcel DecorlAssignmentsToExcel;
-        ProfileAssignments ProfileAssignmentsManager;
+        private ProfileAssignmentsToExcel DecorlAssignmentsToExcel;
+        private ProfileAssignments ProfileAssignmentsManager;
 
-        RoleTypes RoleType = RoleTypes.Admin;
+        private readonly RoleTypes RoleType = RoleTypes.Admin;
         //Connection Connection;
         //Security Security = null;
 
@@ -7238,7 +7238,7 @@ namespace Infinium
             }
         }
 
-        void tb_KeyPress(object sender, KeyPressEventArgs e)
+        private void tb_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == '.')
             {

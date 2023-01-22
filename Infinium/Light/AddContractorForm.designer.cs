@@ -1,11 +1,15 @@
-﻿namespace Infinium
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+using ComponentFactory.Krypton.Toolkit;
+
+namespace Infinium
 {
     partial class AddContractorForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -712,46 +716,46 @@
 
         #endregion
 
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge20;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge21;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge22;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge23;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Label label2;
-        private ComponentFactory.Krypton.Toolkit.KryptonPalette StandardButtonsPalette;
-        private System.Windows.Forms.Timer AnimateTimer;
-        private ComponentFactory.Krypton.Toolkit.KryptonTextBox kryptonTextBox1;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton CancelsButton;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton CreateButton;
-        private ComponentFactory.Krypton.Toolkit.KryptonTextBox NameTextBox;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label3;
-        private ComponentFactory.Krypton.Toolkit.KryptonTextBox AddressTextBox;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label5;
-        private ComponentFactory.Krypton.Toolkit.KryptonComboBox CountryComboBox;
-        private ComponentFactory.Krypton.Toolkit.KryptonComboBox CityComboBox;
-        private System.Windows.Forms.Label NoCountryLabel;
-        private System.Windows.Forms.Label NoCityLabel;
-        private System.Windows.Forms.Label label8;
-        private ComponentFactory.Krypton.Toolkit.KryptonTextBox EmailTextBox;
-        private System.Windows.Forms.Label label9;
-        private ComponentFactory.Krypton.Toolkit.KryptonTextBox WEBSiteTextBox;
-        private System.Windows.Forms.Label label10;
-        private ComponentFactory.Krypton.Toolkit.KryptonTextBox SkypeTextBox;
-        private System.Windows.Forms.Label label11;
-        private ComponentFactory.Krypton.Toolkit.KryptonTextBox FacebookTextBox;
-        private System.Windows.Forms.Label label12;
-        private ComponentFactory.Krypton.Toolkit.KryptonTextBox UNNTextBox;
-        private System.Windows.Forms.Label label13;
-        private ComponentFactory.Krypton.Toolkit.KryptonRichTextBox DescriptionTextBox;
-        private ComponentFactory.Krypton.Toolkit.KryptonComboBox CategoriesComboBox;
-        private System.Windows.Forms.Label label14;
-        private ComponentFactory.Krypton.Toolkit.KryptonComboBox SubCategoriesComboBox;
-        private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.Label CategoryNoListLabel;
-        private System.Windows.Forms.Label SubCategoryNoListLabel;
-        private System.Windows.Forms.Timer timer1;
-        private System.Windows.Forms.Label ContactsLabel;
+        private KryptonBorderEdge kryptonBorderEdge20;
+        private KryptonBorderEdge kryptonBorderEdge21;
+        private KryptonBorderEdge kryptonBorderEdge22;
+        private KryptonBorderEdge kryptonBorderEdge23;
+        private Panel panel1;
+        private Label label2;
+        private KryptonPalette StandardButtonsPalette;
+        private Timer AnimateTimer;
+        private KryptonTextBox kryptonTextBox1;
+        private KryptonButton CancelsButton;
+        private KryptonButton CreateButton;
+        private KryptonTextBox NameTextBox;
+        private Label label1;
+        private Label label3;
+        private KryptonTextBox AddressTextBox;
+        private Label label4;
+        private Label label5;
+        private KryptonComboBox CountryComboBox;
+        private KryptonComboBox CityComboBox;
+        private Label NoCountryLabel;
+        private Label NoCityLabel;
+        private Label label8;
+        private KryptonTextBox EmailTextBox;
+        private Label label9;
+        private KryptonTextBox WEBSiteTextBox;
+        private Label label10;
+        private KryptonTextBox SkypeTextBox;
+        private Label label11;
+        private KryptonTextBox FacebookTextBox;
+        private Label label12;
+        private KryptonTextBox UNNTextBox;
+        private Label label13;
+        private KryptonRichTextBox DescriptionTextBox;
+        private KryptonComboBox CategoriesComboBox;
+        private Label label14;
+        private KryptonComboBox SubCategoriesComboBox;
+        private Label label15;
+        private Label CategoryNoListLabel;
+        private Label SubCategoryNoListLabel;
+        private Timer timer1;
+        private Label ContactsLabel;
     }
 }

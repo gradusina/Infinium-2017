@@ -9,7 +9,7 @@ namespace Infinium
         public bool bOk = false;
         public string sName = string.Empty;
 
-        Form TopForm = null;
+        private Form TopForm = null;
 
         public NewCabFurCellForm(string oldName)
         {

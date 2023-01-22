@@ -10,14 +10,14 @@ namespace Infinium.Modules.Marketing.Clients
         public BindingSource ManagersBS;
         public BindingSource UsersBS;
 
-        DataTable ManagersDT;
-        DataTable UsersDT;
+        private DataTable ManagersDT;
+        private DataTable UsersDT;
 
-        SqlCommandBuilder ManagersCB;
-        SqlCommandBuilder UsersСB;
+        private SqlCommandBuilder ManagersCB;
+        private SqlCommandBuilder UsersСB;
 
-        SqlDataAdapter ManagersDA;
-        SqlDataAdapter UsersDA;
+        private SqlDataAdapter ManagersDA;
+        private SqlDataAdapter UsersDA;
 
         public ClientsManagers()
         {

@@ -7,12 +7,12 @@ namespace Infinium
 {
     public partial class NewToolsTypeForm : Form
     {
-        int ToolsTypeID;
+        private int ToolsTypeID;
         public bool Ok = false;
-        bool IsNew;
+        private bool IsNew;
 
-        Form TopForm = null;
-        TechStoreManager TechStoreManager;
+        private Form TopForm = null;
+        private TechStoreManager TechStoreManager;
 
         public NewToolsTypeForm(int tToolsTypeID, ref TechStoreManager tTechStoreManager)
         {

@@ -223,7 +223,6 @@ namespace Infinium
             this.kryptonBorderEdge39 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge40 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge41 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.popupControlContainer1 = new DevExpress.XtraBars.PopupControlContainer(this.components);
             this.ChangeDateButton = new ComponentFactory.Krypton.Toolkit.KryptonButton();
             this.kryptonMonthCalendar2 = new ComponentFactory.Krypton.Toolkit.KryptonMonthCalendar();
             this.kryptonContextMenu1 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenu();
@@ -384,11 +383,9 @@ namespace Infinium
             this.kryptonContextMenu8 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenu();
             this.kryptonContextMenuItems15 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItems();
             this.kryptonContextMenuItem23 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
+            this.kryptonContextMenu9 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenu();
+            this.kryptonContextMenuItems16 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItems();
+            this.kryptonContextMenuItem5 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
             this.NavigatePanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cmbxPatina)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cmbxCovers)).BeginInit();
@@ -431,8 +428,6 @@ namespace Infinium
             this.panel32.SuspendLayout();
             this.panel31.SuspendLayout();
             this.panel30.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.popupControlContainer1)).BeginInit();
-            this.popupControlContainer1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.panel29.SuspendLayout();
@@ -504,7 +499,6 @@ namespace Infinium
             this.panel41.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvStoragePackagesDetails)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cmbxRacks)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             this.SuspendLayout();
             // 
             // AnimateTimer
@@ -3349,18 +3343,6 @@ namespace Infinium
             this.kryptonBorderEdge41.StateCommon.Color1 = System.Drawing.Color.White;
             this.kryptonBorderEdge41.Text = "kryptonBorderEdge41";
             // 
-            // popupControlContainer1
-            // 
-            this.popupControlContainer1.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
-            this.popupControlContainer1.Controls.Add(this.ChangeDateButton);
-            this.popupControlContainer1.Controls.Add(this.kryptonMonthCalendar2);
-            this.popupControlContainer1.Location = new System.Drawing.Point(0, 0);
-            this.popupControlContainer1.Margin = new System.Windows.Forms.Padding(4);
-            this.popupControlContainer1.Name = "popupControlContainer1";
-            this.popupControlContainer1.Size = new System.Drawing.Size(232, 235);
-            this.popupControlContainer1.TabIndex = 433;
-            this.popupControlContainer1.Visible = false;
-            // 
             // ChangeDateButton
             // 
             this.ChangeDateButton.Location = new System.Drawing.Point(0, 183);
@@ -5283,6 +5265,7 @@ namespace Infinium
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.dgvCells.TabIndex = 57;
             this.dgvCells.UseCustomBackColor = true;
+            this.dgvCells.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvCells_CellMouseDown);
             this.dgvCells.SelectionChanged += new System.EventHandler(this.dgvCells_SelectionChanged);
             // 
             // kryptonBorderEdge57
@@ -5587,6 +5570,7 @@ namespace Infinium
             this.dgvStoragePackagesLabels.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
             this.dgvStoragePackagesLabels.TabIndex = 74;
             this.dgvStoragePackagesLabels.UseCustomBackColor = true;
+            this.dgvStoragePackagesLabels.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvStoragePackagesLabels_CellMouseDown);
             this.dgvStoragePackagesLabels.SelectionChanged += new System.EventHandler(this.dgvStoragePackagesLabels_SelectionChanged);
             // 
             // panel41
@@ -5926,46 +5910,21 @@ namespace Infinium
             this.kryptonContextMenuItem23.Text = "Сканировать";
             this.kryptonContextMenuItem23.Click += new System.EventHandler(this.kryptonContextMenuItem23_Click);
             // 
-            // barManager1
+            // kryptonContextMenu9
             // 
-            this.barManager1.DockControls.Add(this.barDockControlTop);
-            this.barManager1.DockControls.Add(this.barDockControlBottom);
-            this.barManager1.DockControls.Add(this.barDockControlLeft);
-            this.barManager1.DockControls.Add(this.barDockControlRight);
-            this.barManager1.Form = this;
-            this.barManager1.MaxItemId = 0;
+            this.kryptonContextMenu9.Items.AddRange(new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItemBase[] {
+            this.kryptonContextMenuItems16});
+            this.kryptonContextMenu9.Tag = "18";
             // 
-            // barDockControlTop
+            // kryptonContextMenuItems16
             // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlTop.Margin = new System.Windows.Forms.Padding(4);
-            this.barDockControlTop.Size = new System.Drawing.Size(1270, 0);
+            this.kryptonContextMenuItems16.Items.AddRange(new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItemBase[] {
+            this.kryptonContextMenuItem5});
             // 
-            // barDockControlBottom
+            // kryptonContextMenuItem5
             // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 740);
-            this.barDockControlBottom.Margin = new System.Windows.Forms.Padding(4);
-            this.barDockControlBottom.Size = new System.Drawing.Size(1270, 0);
-            // 
-            // barDockControlLeft
-            // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlLeft.Margin = new System.Windows.Forms.Padding(4);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 740);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1270, 0);
-            this.barDockControlRight.Margin = new System.Windows.Forms.Padding(4);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 740);
+            this.kryptonContextMenuItem5.Text = "Отвязать от ячейки";
+            this.kryptonContextMenuItem5.Click += new System.EventHandler(this.kryptonContextMenuItem5_Click_1);
             // 
             // CabFurnitureModuleForm
             // 
@@ -5976,12 +5935,7 @@ namespace Infinium
             this.Controls.Add(this.flowLayoutPanel3);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.NavigatePanel);
-            this.Controls.Add(this.popupControlContainer1);
             this.Controls.Add(this.MenuPanel);
-            this.Controls.Add(this.barDockControlLeft);
-            this.Controls.Add(this.barDockControlRight);
-            this.Controls.Add(this.barDockControlBottom);
-            this.Controls.Add(this.barDockControlTop);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MaximizeBox = false;
@@ -6054,8 +6008,6 @@ namespace Infinium
             this.panel31.PerformLayout();
             this.panel30.ResumeLayout(false);
             this.panel30.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.popupControlContainer1)).EndInit();
-            this.popupControlContainer1.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
@@ -6135,7 +6087,6 @@ namespace Infinium
             this.panel41.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvStoragePackagesDetails)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cmbxRacks)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -6488,16 +6439,13 @@ namespace Infinium
         private System.Windows.Forms.Label label55;
         private ComponentFactory.Krypton.Toolkit.KryptonDateTimePicker CreateDateTimePicker2;
         private ComponentFactory.Krypton.Toolkit.KryptonDateTimePicker CreateDateTimePicker1;
-        private DevExpress.XtraBars.PopupControlContainer popupControlContainer1;
         private ComponentFactory.Krypton.Toolkit.KryptonButton ChangeDateButton;
         private ComponentFactory.Krypton.Toolkit.KryptonMonthCalendar kryptonMonthCalendar2;
-        private DevExpress.XtraBars.BarManager barManager1;
-        private DevExpress.XtraBars.BarDockControl barDockControlTop;
-        private DevExpress.XtraBars.BarDockControl barDockControlBottom;
-        private DevExpress.XtraBars.BarDockControl barDockControlLeft;
-        private DevExpress.XtraBars.BarDockControl barDockControlRight;
         private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem setDispatchDateContextMenuItem;
         private ComponentFactory.Krypton.Toolkit.KryptonCheckButton MenuButton;
         private ComponentFactory.Krypton.Toolkit.KryptonButton btnShowQualityControl;
+        private ComponentFactory.Krypton.Toolkit.KryptonContextMenu kryptonContextMenu9;
+        private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItems kryptonContextMenuItems16;
+        private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem kryptonContextMenuItem5;
     }
 }

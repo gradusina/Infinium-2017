@@ -7,12 +7,12 @@ namespace Infinium
 {
     public partial class NewSectorForm : Form
     {
-        int SectorID;
+        private int SectorID;
         public bool Ok = false;
-        bool IsNew;
+        private bool IsNew;
 
-        Form TopForm = null;
-        TechStoreManager TechStoreManager;
+        private Form TopForm = null;
+        private TechStoreManager TechStoreManager;
 
         public NewSectorForm(string Factory, int tSectorID, ref TechStoreManager tTechStoreManager)
         {

@@ -12,26 +12,27 @@ namespace Infinium
 {
     public partial class MutualSettlementsForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
-        const int iAdminRole = 94;
-        const int iAccountantRole = 95;
-        const int iMarketerRole = 96;
+        private const int iAdminRole = 94;
+        private const int iAccountantRole = 95;
+        private const int iMarketerRole = 96;
 
-        bool NeedFilterClients = false;
-        int FactoryID = 1;
-        int FormEvent = 0;
+        private bool NeedFilterClients = false;
+        private int FactoryID = 1;
+        private int FormEvent = 0;
 
-        MutualSettlements MutualSettlementsManager;
+        private MutualSettlements MutualSettlementsManager;
 
-        FileManager FM;
-        Form TopForm;
-        LightStartForm LightStartForm;
-        MutualSettlementsFilterMenu MutualSettlementsFilterMenu;
-        System.Globalization.NumberFormatInfo nfi1;
+        private FileManager FM;
+        private Form TopForm;
+        private LightStartForm LightStartForm;
+        private MutualSettlementsFilterMenu MutualSettlementsFilterMenu;
+
+        private System.Globalization.NumberFormatInfo nfi1;
         //DocumentTypes RoleType = DocumentTypes.InvoiceExcel;
 
         public MutualSettlementsForm(LightStartForm tLightStartForm)

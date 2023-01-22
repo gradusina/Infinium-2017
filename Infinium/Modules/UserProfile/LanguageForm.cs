@@ -7,7 +7,7 @@ namespace Infinium
     public partial class LanguageForm : Form
     {
         public static string SelectedDate = "";
-        Form TopForm = null;
+        private Form TopForm = null;
         public static ArrayList ProfLangs;
 
         public LanguageForm()
@@ -92,7 +92,7 @@ namespace Infinium
             }
         }
 
-        string GetLangWithoutLevel(string Lang)
+        private string GetLangWithoutLevel(string Lang)
         {
             return Lang.Substring(0, Lang.IndexOf("(") - 1);
         }

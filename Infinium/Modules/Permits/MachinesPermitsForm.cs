@@ -9,28 +9,28 @@ namespace Infinium
 {
     public partial class MachinesPermitsForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
-        const int iAdminRole = 70;
-        const int iAgreedRole = 71;
-        const int iApprovedRole = 72;
+        private const int iAdminRole = 70;
+        private const int iAgreedRole = 71;
+        private const int iApprovedRole = 72;
 
-        bool NeedFilter = false;
-        bool NeedSplash = false;
+        private bool NeedFilter = false;
+        private bool NeedSplash = false;
 
-        int FormEvent = 0;
+        private int FormEvent = 0;
 
-        Form TopForm = null;
-        LightStartForm LightStartForm;
+        private Form TopForm = null;
+        private LightStartForm LightStartForm;
 
-        NewMachinePermit NewPermit;
-        MachinesPermits PermitsManager;
-        PrintMachinesPermits PrintPermitsManager;
+        private NewMachinePermit NewPermit;
+        private MachinesPermits PermitsManager;
+        private PrintMachinesPermits PrintPermitsManager;
 
-        RoleTypes RoleType = RoleTypes.OrdinaryRole;
+        private RoleTypes RoleType = RoleTypes.OrdinaryRole;
         public enum RoleTypes
         {
             OrdinaryRole = 0,

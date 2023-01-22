@@ -14,45 +14,45 @@ namespace Infinium
 {
     public partial class ZOVExpeditionForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
-        int FormEvent = 0;
-        int CurrentRowIndex = -1;
-        int CurrentMainOrder = 0;
-        int CurrentPackNumber = 0;
-        int ZDispatchID = 0;
+        private int FormEvent = 0;
+        private int CurrentRowIndex = -1;
+        private int CurrentMainOrder = 0;
+        private int CurrentPackNumber = 0;
+        private int ZDispatchID = 0;
 
-        bool bCheckBoxShow = false;
+        private bool bCheckBoxShow = false;
 
-        bool MoveFromPayments = false;
-        bool MoveFromPermits = false;
-        bool NeedRefresh = false;
-        bool NeedSplash = false;
+        private bool MoveFromPayments = false;
+        private bool MoveFromPermits = false;
+        private bool NeedRefresh = false;
+        private bool NeedSplash = false;
 
-        DateTime PrepareDispatchDateTime;
+        private DateTime PrepareDispatchDateTime;
 
-        string PaymentsDocNumber = string.Empty;
+        private string PaymentsDocNumber = string.Empty;
 
-        Form MainForm;
-        Form TopForm;
-        LightStartForm LightStartForm;
+        private Form MainForm;
+        private Form TopForm;
+        private LightStartForm LightStartForm;
 
         private Infinium.Modules.ZOV.Expedition.ZOVExpeditionManager ZOVExpeditionManager;
 
-        const int iSetDispatchDate = 18;
-        const int iCreateDispatch = 61;
-        const int iConfirmDispatch = 62;
-        const int iPrintDispReport = 63;
+        private const int iSetDispatchDate = 18;
+        private const int iCreateDispatch = 61;
+        private const int iConfirmDispatch = 62;
+        private const int iPrintDispReport = 63;
 
-        bool bCreateDispatch = false;
-        bool bSetDispatchDate = false;
-        bool bConfirmDispatch = false;
-        bool bPrintDispReport = false;
+        private bool bCreateDispatch = false;
+        private bool bSetDispatchDate = false;
+        private bool bConfirmDispatch = false;
+        private bool bPrintDispReport = false;
 
-        RoleTypes RoleType = RoleTypes.OrdinaryRole;
+        private RoleTypes RoleType = RoleTypes.OrdinaryRole;
 
         public enum RoleTypes
         {
@@ -63,12 +63,12 @@ namespace Infinium
             DispatchRole = 4
         }
 
-        DataTable MonthsDT;
-        DataTable YearsDT;
-        DataTable RolePermissionsDataTable;
+        private DataTable MonthsDT;
+        private DataTable YearsDT;
+        private DataTable RolePermissionsDataTable;
 
-        DispatchReportZOV DispatchReport;
-        ZOVDispatch ZOVDispatchManager;
+        private DispatchReportZOV DispatchReport;
+        private ZOVDispatch ZOVDispatchManager;
 
         public ZOVExpeditionForm(LightStartForm tLightStartForm)
         {

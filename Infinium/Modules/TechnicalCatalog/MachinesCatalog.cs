@@ -97,132 +97,132 @@ namespace Infinium.Modules.Marketing.Clients
     {
         public FileManager FM = new FileManager();
 
-        DataTable FindMachinesDT = new DataTable();
-        BindingSource FindMachinesBS = new BindingSource();
-        DataTable MachineDocumentsDT;
-        DataTable TempMachineDocumentsDT;
+        private DataTable FindMachinesDT = new DataTable();
+        private BindingSource FindMachinesBS = new BindingSource();
+        private DataTable MachineDocumentsDT;
+        private DataTable TempMachineDocumentsDT;
 
-        DataTable AspirationDT;
-        DataTable MechanicsDT;
-        DataTable ElectricsDT;
-        DataTable HydraulicsDT;
-        DataTable PneumaticsDT;
+        private DataTable AspirationDT;
+        private DataTable MechanicsDT;
+        private DataTable ElectricsDT;
+        private DataTable HydraulicsDT;
+        private DataTable PneumaticsDT;
 
-        DataTable AspirationDetailsDT;
-        DataTable MechanicsDetailsDT;
-        DataTable ElectricsDetailsDT;
-        DataTable HydraulicsDetailsDT;
-        DataTable PneumaticsDetailsDT;
+        private DataTable AspirationDetailsDT;
+        private DataTable MechanicsDetailsDT;
+        private DataTable ElectricsDetailsDT;
+        private DataTable HydraulicsDetailsDT;
+        private DataTable PneumaticsDetailsDT;
 
-        DataTable ExploitationToolsDT;
-        DataTable RepairToolsDT;
-        DataTable ServiceToolsDT;
-        DataTable LubricantDT;
-        DataTable EquipmentToolsDT;
+        private DataTable ExploitationToolsDT;
+        private DataTable RepairToolsDT;
+        private DataTable ServiceToolsDT;
+        private DataTable LubricantDT;
+        private DataTable EquipmentToolsDT;
 
-        DataTable AspirationUnitsDT;
-        DataTable MechanicsUnitsDT;
-        DataTable ElectricsUnitsDT;
-        DataTable HydraulicsUnitsDT;
-        DataTable PneumaticsUnitsDT;
+        private DataTable AspirationUnitsDT;
+        private DataTable MechanicsUnitsDT;
+        private DataTable ElectricsUnitsDT;
+        private DataTable HydraulicsUnitsDT;
+        private DataTable PneumaticsUnitsDT;
 
-        DataTable TechnicalSpecificationDT;
-        DataTable TempTechnicalSpecificationDT;
+        private DataTable TechnicalSpecificationDT;
+        private DataTable TempTechnicalSpecificationDT;
 
-        DataTable SpareGroupsDT;
-        DataTable SparesDT;
-        DataTable SparesOnStockDT;
-        DataTable MachinesDT;
-        DataTable MachinesSummaryDT;
-        DataTable MainParametersDT;
-        DataTable MeasuresDT;
-        DataTable TempMachinesDT;
-        DataTable UnitsDT;
+        private DataTable SpareGroupsDT;
+        private DataTable SparesDT;
+        private DataTable SparesOnStockDT;
+        private DataTable MachinesDT;
+        private DataTable MachinesSummaryDT;
+        private DataTable MainParametersDT;
+        private DataTable MeasuresDT;
+        private DataTable TempMachinesDT;
+        private DataTable UnitsDT;
 
-        DataTable FactoryDT;
-        DataTable SectorsDT;
-        DataTable SubSectorsDT;
+        private DataTable FactoryDT;
+        private DataTable SectorsDT;
+        private DataTable SubSectorsDT;
 
-        BindingSource FactoryBS;
-        BindingSource SectorsBS;
-        BindingSource SubSectorsBS;
+        private BindingSource FactoryBS;
+        private BindingSource SectorsBS;
+        private BindingSource SubSectorsBS;
 
-        BindingSource AspirationBS;
-        BindingSource MechanicsBS;
-        BindingSource ElectricsBS;
-        BindingSource HydraulicsBS;
-        BindingSource PneumaticsBS;
+        private BindingSource AspirationBS;
+        private BindingSource MechanicsBS;
+        private BindingSource ElectricsBS;
+        private BindingSource HydraulicsBS;
+        private BindingSource PneumaticsBS;
 
-        BindingSource AspirationDetailsBS;
-        BindingSource MechanicsDetailsBS;
-        BindingSource ElectricsDetailsBS;
-        BindingSource HydraulicsDetailsBS;
-        BindingSource PneumaticsDetailsBS;
+        private BindingSource AspirationDetailsBS;
+        private BindingSource MechanicsDetailsBS;
+        private BindingSource ElectricsDetailsBS;
+        private BindingSource HydraulicsDetailsBS;
+        private BindingSource PneumaticsDetailsBS;
 
-        BindingSource ExploitationToolsBS;
-        BindingSource RepairToolsBS;
-        BindingSource ServiceToolsBS;
-        BindingSource LubricantBS;
-        BindingSource EquipmentBS;
+        private BindingSource ExploitationToolsBS;
+        private BindingSource RepairToolsBS;
+        private BindingSource ServiceToolsBS;
+        private BindingSource LubricantBS;
+        private BindingSource EquipmentBS;
 
-        BindingSource AspirationUnitsBS;
-        BindingSource MechanicsUnitsBS;
-        BindingSource ElectricsUnitsBS;
-        BindingSource HydraulicsUnitsBS;
-        BindingSource PneumaticsUnitsBS;
+        private BindingSource AspirationUnitsBS;
+        private BindingSource MechanicsUnitsBS;
+        private BindingSource ElectricsUnitsBS;
+        private BindingSource HydraulicsUnitsBS;
+        private BindingSource PneumaticsUnitsBS;
 
-        BindingSource TechnicalSpecificationBS;
-        BindingSource TempTechnicalSpecificationBS;
+        private BindingSource TechnicalSpecificationBS;
+        private BindingSource TempTechnicalSpecificationBS;
 
-        BindingSource AspirationSpareGroupsBS;
-        BindingSource MechanicsSpareGroupsBS;
-        BindingSource ElectricsSpareGroupsBS;
-        BindingSource HydraulicsSpareGroupsBS;
-        BindingSource PneumaticsSpareGroupsBS;
+        private BindingSource AspirationSpareGroupsBS;
+        private BindingSource MechanicsSpareGroupsBS;
+        private BindingSource ElectricsSpareGroupsBS;
+        private BindingSource HydraulicsSpareGroupsBS;
+        private BindingSource PneumaticsSpareGroupsBS;
 
-        BindingSource AspirationSparesBS;
-        BindingSource MechanicsSparesBS;
-        BindingSource ElectricsSparesBS;
-        BindingSource HydraulicsSparesBS;
-        BindingSource PneumaticsSparesBS;
+        private BindingSource AspirationSparesBS;
+        private BindingSource MechanicsSparesBS;
+        private BindingSource ElectricsSparesBS;
+        private BindingSource HydraulicsSparesBS;
+        private BindingSource PneumaticsSparesBS;
 
-        BindingSource AspirationSparesOnStockBS;
-        BindingSource MechanicsSparesOnStockBS;
-        BindingSource ElectricsSparesOnStockBS;
-        BindingSource HydraulicsSparesOnStockBS;
-        BindingSource PneumaticsSparesOnStockBS;
+        private BindingSource AspirationSparesOnStockBS;
+        private BindingSource MechanicsSparesOnStockBS;
+        private BindingSource ElectricsSparesOnStockBS;
+        private BindingSource HydraulicsSparesOnStockBS;
+        private BindingSource PneumaticsSparesOnStockBS;
 
-        BindingSource MachinesBS;
-        BindingSource SparesOnStockBS;
+        private BindingSource MachinesBS;
+        private BindingSource SparesOnStockBS;
 
-        BindingSource AspirationFilesBS;
-        BindingSource MechanicsFilesBS;
-        BindingSource ElectricsFilesBS;
-        BindingSource HydraulicsFilesBS;
-        BindingSource PneumaticsFilesBS;
+        private BindingSource AspirationFilesBS;
+        private BindingSource MechanicsFilesBS;
+        private BindingSource ElectricsFilesBS;
+        private BindingSource HydraulicsFilesBS;
+        private BindingSource PneumaticsFilesBS;
 
-        BindingSource AspirationDetailFilesBS;
-        BindingSource MechanicsDetailFilesBS;
-        BindingSource ElectricsDetailFilesBS;
-        BindingSource HydraulicsDetailFilesBS;
-        BindingSource PneumaticsDetailFilesBS;
+        private BindingSource AspirationDetailFilesBS;
+        private BindingSource MechanicsDetailFilesBS;
+        private BindingSource ElectricsDetailFilesBS;
+        private BindingSource HydraulicsDetailFilesBS;
+        private BindingSource PneumaticsDetailFilesBS;
 
-        BindingSource ExploitationToolsFilesBS;
-        BindingSource RepairToolsFilesBS;
-        BindingSource ServiceToolsFilesBS;
-        BindingSource LubricantFilesBS;
-        BindingSource EquipmentFilesBS;
+        private BindingSource ExploitationToolsFilesBS;
+        private BindingSource RepairToolsFilesBS;
+        private BindingSource ServiceToolsFilesBS;
+        private BindingSource LubricantFilesBS;
+        private BindingSource EquipmentFilesBS;
 
-        BindingSource OperatingInstructionsBS;
-        BindingSource ServiceInstructionsBS;
-        BindingSource LaborProtInstructionsBS;
-        BindingSource JournalBS;
-        BindingSource AdmissionsBS;
-        BindingSource TechnicalFilesBS;
+        private BindingSource OperatingInstructionsBS;
+        private BindingSource ServiceInstructionsBS;
+        private BindingSource LaborProtInstructionsBS;
+        private BindingSource JournalBS;
+        private BindingSource AdmissionsBS;
+        private BindingSource TechnicalFilesBS;
 
-        BindingSource MachinesSummaryBS;
-        BindingSource MainParametersBS;
-        BindingSource TempMachinesBS;
+        private BindingSource MachinesSummaryBS;
+        private BindingSource MainParametersBS;
+        private BindingSource TempMachinesBS;
 
         public MachinesCatalog()
         {

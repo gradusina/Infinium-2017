@@ -1,11 +1,15 @@
-﻿namespace Infinium
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+using ComponentFactory.Krypton.Toolkit;
+
+namespace Infinium
 {
     partial class UsersForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -574,27 +578,27 @@
 
         #endregion
 
-        private System.Windows.Forms.Timer AnimateTimer;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton NavigateMenuCloseButton;
-        private System.Windows.Forms.Panel NavigatePanel;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge3;
-        private ComponentFactory.Krypton.Toolkit.KryptonPalette NavigateMenuButtonsPalette;
-        private System.Windows.Forms.Panel panel1;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge8;
+        private Timer AnimateTimer;
+        private KryptonButton NavigateMenuCloseButton;
+        private Panel NavigatePanel;
+        private KryptonBorderEdge kryptonBorderEdge3;
+        private KryptonPalette NavigateMenuButtonsPalette;
+        private Panel panel1;
+        private KryptonBorderEdge kryptonBorderEdge8;
         private LightUsersList UsersList;
-        private ComponentFactory.Krypton.Toolkit.KryptonCheckSet kryptonCheckSet1;
-        private System.Windows.Forms.Label label1;
-        private ComponentFactory.Krypton.Toolkit.KryptonCheckSet kryptonCheckSet2;
-        private ComponentFactory.Krypton.Toolkit.KryptonCheckButton AlphabeticalButton;
-        private ComponentFactory.Krypton.Toolkit.KryptonCheckButton ShortViewButton;
-        private ComponentFactory.Krypton.Toolkit.KryptonCheckButton OfflineButton;
-        private ComponentFactory.Krypton.Toolkit.KryptonCheckButton OnlineButton;
-        private ComponentFactory.Krypton.Toolkit.KryptonCheckButton DefaultViewButton;
-        private System.Windows.Forms.Panel panel3;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge10;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge11;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge12;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge13;
+        private KryptonCheckSet kryptonCheckSet1;
+        private Label label1;
+        private KryptonCheckSet kryptonCheckSet2;
+        private KryptonCheckButton AlphabeticalButton;
+        private KryptonCheckButton ShortViewButton;
+        private KryptonCheckButton OfflineButton;
+        private KryptonCheckButton OnlineButton;
+        private KryptonCheckButton DefaultViewButton;
+        private Panel panel3;
+        private KryptonBorderEdge kryptonBorderEdge10;
+        private KryptonBorderEdge kryptonBorderEdge11;
+        private KryptonBorderEdge kryptonBorderEdge12;
+        private KryptonBorderEdge kryptonBorderEdge13;
         private PercentageDataGrid DepartmentsDataGrid;
     }
 }

@@ -7,12 +7,12 @@ namespace Infinium
 {
     public partial class WaitForm : Form
     {
-        const int eShow = 1;
-        const int eClose = 3;
+        private const int eShow = 1;
+        private const int eClose = 3;
 
-        int FormEvent = 0;
+        private int FormEvent = 0;
 
-        Thread Thread = null;
+        private Thread Thread = null;
 
 
         public static bool CloseS = false;

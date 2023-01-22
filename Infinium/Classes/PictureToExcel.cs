@@ -10,11 +10,11 @@ using System.Windows.Forms;
 
 namespace Infinium.Classes
 {
-    class PictureToExcel
+    internal class PictureToExcel
     {
         public FileManager FM = new FileManager();
-        static HSSFWorkbook hssfworkbook;
-        DataTable TechStoreDocumentsDT;
+        private static HSSFWorkbook hssfworkbook;
+        private DataTable TechStoreDocumentsDT;
 
         public PictureToExcel()
         {
@@ -115,7 +115,7 @@ namespace Infinium.Classes
 
         }
 
-        static void WriteToFile()
+        private static void WriteToFile()
         {
             //Write the stream data of workbook to the root directory
             FileStream file = new FileStream(@"test.xls", FileMode.Create);
@@ -123,7 +123,7 @@ namespace Infinium.Classes
             file.Close();
         }
 
-        static void InitializeWorkbook()
+        private static void InitializeWorkbook()
         {
             hssfworkbook = new HSSFWorkbook();
 

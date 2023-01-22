@@ -12,7 +12,7 @@ namespace Infinium.Modules.Storage.StoreLabels
 
     public class PrintManagerStoreLabels
     {
-        Barcode Barcode;
+        private Barcode Barcode;
         public PrintDocument PD;
 
         public int PaperHeight = 80;
@@ -141,9 +141,9 @@ namespace Infinium.Modules.Storage.StoreLabels
 
     public class FFFF
     {
-        int imageType = 1;
+        private int imageType = 1;
 
-        Barcode Barcode;
+        private Barcode Barcode;
         public PrintDocument PD;
 
         public int PaperHeight = 488;
@@ -155,18 +155,18 @@ namespace Infinium.Modules.Storage.StoreLabels
 
         public bool Printed = false;
 
-        SolidBrush FontBrush;
+        private SolidBrush FontBrush;
 
-        Font ClientFont;
-        Font DocFont;
-        Font InfoFont;
-        Font NotesFont;
-        Font HeaderFont;
-        Font FrontOrderFont;
-        Font DecorOrderFont;
-        Font DispatchFont;
+        private Font ClientFont;
+        private Font DocFont;
+        private Font InfoFont;
+        private Font NotesFont;
+        private Font HeaderFont;
+        private Font FrontOrderFont;
+        private Font DecorOrderFont;
+        private Font DispatchFont;
 
-        Pen Pen;
+        private Pen Pen;
 
         public FFFF()
         {
@@ -312,9 +312,9 @@ namespace Infinium.Modules.Storage.StoreLabels
 
     public class Barcode
     {
-        BarcodeLib.Barcode Barcod;
+        private BarcodeLib.Barcode Barcod;
 
-        SolidBrush FontBrush;
+        private SolidBrush FontBrush;
 
         public enum BarcodeLength { Short, Medium, Long };
 

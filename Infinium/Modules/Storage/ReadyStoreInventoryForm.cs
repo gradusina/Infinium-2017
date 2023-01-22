@@ -10,23 +10,23 @@ namespace Infinium
 {
     public partial class ReadyStoreInventoryForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
-        bool NeedSplash = false;
-        bool NeedCheckAll = true;
-        int CurrentFactoryID = 0;
-        int CurrentStoreGroupID = 0;
-        int FormEvent = 0;
-        int Month = 0;
-        int Year = 0;
+        private bool NeedSplash = false;
+        private bool NeedCheckAll = true;
+        private int CurrentFactoryID = 0;
+        private int CurrentStoreGroupID = 0;
+        private int FormEvent = 0;
+        private int Month = 0;
+        private int Year = 0;
 
-        Form TopForm = null;
-        AddInventoryRestForm AddInventoryRestForm;
+        private Form TopForm = null;
+        private AddInventoryRestForm AddInventoryRestForm;
 
-        ReadyInventoryManager InventoryManager;
+        private ReadyInventoryManager InventoryManager;
 
         public ReadyStoreInventoryForm(int iCurrentStoreGroupID, int iCurrentFactoryID,
             int iMonth, int iYear)

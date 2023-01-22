@@ -977,9 +977,9 @@ PackageDetails.PackageID, infiniu2_catalog.dbo.DecorConfig.InvNumber, infiniu2_c
                 Cell1.SetCellValue("Стоимость с транс, " + Currency);
                 Cell1.CellStyle = SimpleHeaderCS;
 
-                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
-                Cell1.SetCellValue("Курс, " + Currency);
-                Cell1.CellStyle = SimpleHeaderCS;
+                //Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                //Cell1.SetCellValue("Курс, " + Currency);
+                //Cell1.CellStyle = SimpleHeaderCS;
 
                 Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                 Cell1.SetCellValue("Вес, кг. ");
@@ -1029,9 +1029,9 @@ PackageDetails.PackageID, infiniu2_catalog.dbo.DecorConfig.InvNumber, infiniu2_c
                         Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                         Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["CostWithTransport"]));
                         Cell1.CellStyle = PriceBelCS;
-                        Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
-                        Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["PaymentRate"]));
-                        Cell1.CellStyle = CurrencyCS;
+                        //Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                        //Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["PaymentRate"]));
+                        //Cell1.CellStyle = CurrencyCS;
                     }
                     else
                     {
@@ -1047,9 +1047,9 @@ PackageDetails.PackageID, infiniu2_catalog.dbo.DecorConfig.InvNumber, infiniu2_c
                         Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                         Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["CostWithTransport"]));
                         Cell1.CellStyle = PriceForeignCS;
-                        Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
-                        Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["PaymentRate"]));
-                        Cell1.CellStyle = CurrencyCS;
+                        //Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                        //Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["PaymentRate"]));
+                        //Cell1.CellStyle = CurrencyCS;
                     }
                     Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                     Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["Weight"]));
@@ -1077,7 +1077,7 @@ PackageDetails.PackageID, infiniu2_catalog.dbo.DecorConfig.InvNumber, infiniu2_c
                     Cell1 = sheet1.CreateRow(pos++).CreateCell(8);
                     Cell1.SetCellValue(Convert.ToDouble(TransportAndOtherProfil));
                     Cell1.CellStyle = SummaryWithoutBorderBelCS;
-                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(10);
+                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(9);
                     Cell1.SetCellValue(Convert.ToDouble(WeightProfil));
                     Cell1.CellStyle = SummaryWeightCS;
                 }
@@ -1095,7 +1095,7 @@ PackageDetails.PackageID, infiniu2_catalog.dbo.DecorConfig.InvNumber, infiniu2_c
                     Cell1 = sheet1.CreateRow(pos++).CreateCell(8);
                     Cell1.SetCellValue(Convert.ToDouble(TransportAndOtherProfil));
                     Cell1.CellStyle = SummaryWithoutBorderForeignCS;
-                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(10);
+                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(9);
                     Cell1.SetCellValue(Convert.ToDouble(WeightProfil));
                     Cell1.CellStyle = SummaryWeightCS;
                 }
@@ -1721,9 +1721,9 @@ PackageDetails.PackageID, infiniu2_catalog.dbo.DecorConfig.InvNumber, infiniu2_c
                 Cell1.SetCellValue("Стоимость с транс, " + Currency);
                 Cell1.CellStyle = SimpleHeaderCS;
 
-                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
-                Cell1.SetCellValue("Курс, " + Currency);
-                Cell1.CellStyle = SimpleHeaderCS;
+                //Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                //Cell1.SetCellValue("Курс, " + Currency);
+                //Cell1.CellStyle = SimpleHeaderCS;
 
                 Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                 Cell1.SetCellValue("Вес, кг. ");
@@ -1773,9 +1773,9 @@ PackageDetails.PackageID, infiniu2_catalog.dbo.DecorConfig.InvNumber, infiniu2_c
                         Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                         Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["CostWithTransport"]));
                         Cell1.CellStyle = PriceBelCS;
-                        Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
-                        Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["PaymentRate"]));
-                        Cell1.CellStyle = CurrencyCS;
+                        //Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                        //Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["PaymentRate"]));
+                        //Cell1.CellStyle = CurrencyCS;
                     }
                     else
                     {
@@ -1791,9 +1791,9 @@ PackageDetails.PackageID, infiniu2_catalog.dbo.DecorConfig.InvNumber, infiniu2_c
                         Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                         Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["CostWithTransport"]));
                         Cell1.CellStyle = PriceForeignCS;
-                        Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
-                        Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["PaymentRate"]));
-                        Cell1.CellStyle = CurrencyCS;
+                        //Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                        //Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["PaymentRate"]));
+                        //Cell1.CellStyle = CurrencyCS;
                     }
                     Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                     Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["Weight"]));
@@ -1821,7 +1821,7 @@ PackageDetails.PackageID, infiniu2_catalog.dbo.DecorConfig.InvNumber, infiniu2_c
                     Cell1 = sheet1.CreateRow(pos++).CreateCell(8);
                     Cell1.SetCellValue(Convert.ToDouble(TransportAndOtherProfil));
                     Cell1.CellStyle = SummaryWithoutBorderBelCS;
-                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(10);
+                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(9);
                     Cell1.SetCellValue(Convert.ToDouble(WeightProfil));
                     Cell1.CellStyle = SummaryWeightCS;
                 }
@@ -1839,7 +1839,7 @@ PackageDetails.PackageID, infiniu2_catalog.dbo.DecorConfig.InvNumber, infiniu2_c
                     Cell1 = sheet1.CreateRow(pos++).CreateCell(8);
                     Cell1.SetCellValue(Convert.ToDouble(TransportAndOtherProfil));
                     Cell1.CellStyle = SummaryWithoutBorderForeignCS;
-                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(10);
+                    Cell1 = sheet1.CreateRow(pos - 2).CreateCell(9);
                     Cell1.SetCellValue(Convert.ToDouble(WeightProfil));
                     Cell1.CellStyle = SummaryWeightCS;
                 }

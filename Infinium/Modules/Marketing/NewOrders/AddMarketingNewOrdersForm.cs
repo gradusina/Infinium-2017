@@ -8,26 +8,26 @@ namespace Infinium
 {
     public partial class AddMarketingNewOrdersForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
-        int FormEvent = 0;
-        int MainOrderID = -1;
+        private int FormEvent = 0;
+        private int MainOrderID = -1;
 
-        Form TopForm = null;
+        private Form TopForm = null;
 
-        bool EditAgreedMainOrder = false;
-        bool EditMainOrder = false;
+        private bool EditAgreedMainOrder = false;
+        private bool EditMainOrder = false;
 
-        public OrdersManager OrdersManager;
+        public OrdersManager _ordersManager;
 
-        FrontsCatalogOrder FrontsCatalogOrder = null;
-        DecorCatalogOrder DecorCatalogOrder = null;
-        FrontsOrders FrontsOrders;
-        DecorOrders DecorOrders;
-        OrdersCalculate OrdersCalculate;
+        private FrontsCatalogOrder FrontsCatalogOrder = null;
+        private DecorCatalogOrder DecorCatalogOrder = null;
+        private FrontsOrders FrontsOrders;
+        private DecorOrders DecorOrders;
+        private OrdersCalculate _ordersCalculate;
 
         public AddMarketingNewOrdersForm(ref OrdersManager tOrdersManager, bool bEditMainOrder, bool bEditAgreedMainOrder, ref Form tTopForm, ref OrdersCalculate tOrdersCalculate)
         {
@@ -37,10 +37,10 @@ namespace Infinium
 
             this.MaximumSize = Screen.PrimaryScreen.WorkingArea.Size;
 
-            OrdersManager = tOrdersManager;
+            _ordersManager = tOrdersManager;
             EditMainOrder = bEditMainOrder;
             EditAgreedMainOrder = bEditAgreedMainOrder;
-            OrdersCalculate = tOrdersCalculate;
+            _ordersCalculate = tOrdersCalculate;
 
             Initialize();
 
@@ -163,15 +163,44 @@ namespace Infinium
             //ExportOrdersFromExcel T = new ExportOrdersFromExcel(ref DecorCatalogOrder, ref FrontsCatalogOrder);
             //T.FF();
 
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
+
             FrontsOrders = new FrontsOrders(ref FrontsOrdersDataGrid,
                 ref FrontsCatalogOrder);
-            FrontsOrders.HasClientExcluzive(OrdersManager.CurrentClientID);
+
+            sw.Stop();
+            TimeSpan ts1 = sw.Elapsed;
+            sw.Restart();
+
+            FrontsOrders.HasClientExcluzive(_ordersManager.CurrentClientID);
+
+            sw.Stop();
+            TimeSpan ts2 = sw.Elapsed;
+            sw.Restart();
             FrontsOrders.Initialize();
+
+            sw.Stop();
+            TimeSpan ts3 = sw.Elapsed;
 
             DecorOrders = new DecorOrders(ref MainOrdersDecorTabControl,
                 ref DecorCatalogOrder, ref FrontsOrdersDataGrid);
-            DecorOrders.HasClientExcluzive(OrdersManager.CurrentClientID);
+
+            sw.Stop();
+            TimeSpan ts4 = sw.Elapsed;
+            sw.Restart();
+
+            DecorOrders.HasClientExcluzive(_ordersManager.CurrentClientID);
+
+            sw.Stop();
+            TimeSpan ts5 = sw.Elapsed;
+            sw.Restart();
+
             DecorOrders.Initialize();
+
+            sw.Stop();
+            TimeSpan ts6 = sw.Elapsed;
+
             FrontsCatalogOrderBinding();
 
             DecorCatalogOrderBinding();
@@ -184,14 +213,14 @@ namespace Infinium
                 DateTime DispatchDate = DateTime.Now;
                 bool IsSample = false;
                 string Notes = null;
-                MainOrderID = OrdersManager.CurrentMainOrderID;
+                MainOrderID = _ordersManager.CurrentMainOrderID;
                 //получение значений параметров заказа, если заблокирован - выход
                 //if (!EditAgreedMainOrder)
                 //{
                 //        return;
                 //}
 
-                if (!OrdersManager.EditMainOrder(ref Notes, ref IsSample))
+                if (!_ordersManager.EditMainOrder(ref Notes, ref IsSample))
                     return;
 
                 //редактирование фасадов
@@ -228,7 +257,7 @@ namespace Infinium
 
                 if (result == System.Windows.Forms.DialogResult.Yes)
                 {
-                    OrdersManager.RemoveCurrentMainOrder();
+                    _ordersManager.RemoveCurrentMainOrder();
                 }
 
                 if (result == System.Windows.Forms.DialogResult.No)
@@ -448,41 +477,41 @@ namespace Infinium
 
         public void FrontsCatalogOrderBinding()
         {
-            FrontsComboBox.DataSource = FrontsCatalogOrder.FrontsBindingSource;
             FrontsComboBox.DisplayMember = FrontsCatalogOrder.FrontsBindingSourceDisplayMember;
             FrontsComboBox.ValueMember = FrontsCatalogOrder.FrontsBindingSourceValueMember;
+            FrontsComboBox.DataSource = FrontsCatalogOrder.FrontsBindingSource;
 
-            TechnoProfilesComboBox.DataSource = FrontsCatalogOrder.TechnoProfilesBindingSource;
             TechnoProfilesComboBox.DisplayMember = FrontsCatalogOrder.TechnoProfilesBindingSourceDisplayMember;
             TechnoProfilesComboBox.ValueMember = FrontsCatalogOrder.TechnoProfilesBindingSourceValueMember;
+            TechnoProfilesComboBox.DataSource = FrontsCatalogOrder.TechnoProfilesBindingSource;
 
-            FrameColorComboBox.DataSource = FrontsCatalogOrder.FrameColorsBindingSource;
             FrameColorComboBox.DisplayMember = FrontsCatalogOrder.FrameColorsBindingSourceDisplayMember;
             FrameColorComboBox.ValueMember = FrontsCatalogOrder.FrameColorsBindingSourceValueMember;
+            FrameColorComboBox.DataSource = FrontsCatalogOrder.FrameColorsBindingSource;
 
-            PatinaComboBox.DataSource = FrontsCatalogOrder.PatinaBindingSource;
             PatinaComboBox.DisplayMember = FrontsCatalogOrder.PatinaBindingSourceDisplayMember;
             PatinaComboBox.ValueMember = FrontsCatalogOrder.PatinaBindingSourceValueMember;
+            PatinaComboBox.DataSource = FrontsCatalogOrder.PatinaBindingSource;
 
-            InsetTypesComboBox.DataSource = FrontsCatalogOrder.InsetTypesBindingSource;
             InsetTypesComboBox.DisplayMember = FrontsCatalogOrder.InsetTypesBindingSourceDisplayMember;
             InsetTypesComboBox.ValueMember = FrontsCatalogOrder.InsetTypesBindingSourceValueMember;
+            InsetTypesComboBox.DataSource = FrontsCatalogOrder.InsetTypesBindingSource;
 
-            InsetColorComboBox.DataSource = FrontsCatalogOrder.InsetColorsBindingSource;
             InsetColorComboBox.DisplayMember = FrontsCatalogOrder.InsetColorsBindingSourceDisplayMember;
             InsetColorComboBox.ValueMember = FrontsCatalogOrder.InsetColorsBindingSourceValueMember;
+            InsetColorComboBox.DataSource = FrontsCatalogOrder.InsetColorsBindingSource;
 
-            TechnoFrameColorComboBox.DataSource = FrontsCatalogOrder.TechnoFrameColorsBindingSource;
             TechnoFrameColorComboBox.DisplayMember = FrontsCatalogOrder.FrameColorsBindingSourceDisplayMember;
             TechnoFrameColorComboBox.ValueMember = FrontsCatalogOrder.FrameColorsBindingSourceValueMember;
+            TechnoFrameColorComboBox.DataSource = FrontsCatalogOrder.TechnoFrameColorsBindingSource;
 
-            TechnoInsetTypesComboBox.DataSource = FrontsCatalogOrder.TechnoInsetTypesBindingSource;
             TechnoInsetTypesComboBox.DisplayMember = FrontsCatalogOrder.InsetTypesBindingSourceDisplayMember;
             TechnoInsetTypesComboBox.ValueMember = FrontsCatalogOrder.InsetTypesBindingSourceValueMember;
+            TechnoInsetTypesComboBox.DataSource = FrontsCatalogOrder.TechnoInsetTypesBindingSource;
 
-            TechnoInsetColorsComboBox.DataSource = FrontsCatalogOrder.TechnoInsetColorsBindingSource;
             TechnoInsetColorsComboBox.DisplayMember = FrontsCatalogOrder.InsetColorsBindingSourceDisplayMember;
             TechnoInsetColorsComboBox.ValueMember = FrontsCatalogOrder.InsetColorsBindingSourceValueMember;
+            TechnoInsetColorsComboBox.DataSource = FrontsCatalogOrder.TechnoInsetColorsBindingSource;
 
             bool bExcluzive = cbOnlyExcluzive.Checked;
             if (!FrontsOrders.HasExcluzive)
@@ -1084,12 +1113,12 @@ namespace Infinium
 
             for (int i = 1; i < OrdersSetCount; i++)
             {
-                OrdersManager.CreateNewMainOrder();
-                FrontsOrders.FrontsOrdersSet(MainOrderID, OrdersManager.CurrentMainOrderID);
-                DecorOrders.DecorOrdersSet(MainOrderID, OrdersManager.CurrentMainOrderID);
-                MainOrdersID[i] = OrdersManager.CurrentMainOrderID;
-                FrontsOrders.SaveFrontsOrder(OrdersManager.CurrentMainOrderID);
-                DecorOrders.SaveDecorOrderSet(OrdersManager.CurrentMainOrderID);
+                _ordersManager.CreateNewMainOrder();
+                FrontsOrders.FrontsOrdersSet(MainOrderID, _ordersManager.CurrentMainOrderID);
+                DecorOrders.DecorOrdersSet(MainOrderID, _ordersManager.CurrentMainOrderID);
+                MainOrdersID[i] = _ordersManager.CurrentMainOrderID;
+                FrontsOrders.SaveFrontsOrder(_ordersManager.CurrentMainOrderID);
+                DecorOrders.SaveDecorOrderSet(_ordersManager.CurrentMainOrderID);
             }
 
             bool IsSample = false;
@@ -1120,13 +1149,13 @@ namespace Infinium
             if (FactoryIDF == -1)
                 F = FactoryIDD;
 
-            OrdersManager.SaveOrder(MainOrderID, MainOrderNotes.Text, IsSample, F);
-            decimal DiscountPaymentCondition = OrdersManager.DiscountPaymentCondition(OrdersManager.CurrentDiscountPaymentConditionID);
-            OrdersCalculate.CalculateOrder(MegaOrderID, MainOrderID, OrdersManager.CurrentProfilDiscountDirector, OrdersManager.CurrentTPSDiscountDirector,
-                OrdersManager.CurrentProfilTotalDiscount, OrdersManager.CurrentTPSTotalDiscount, DiscountPaymentCondition,
-                OrdersManager.CurrencyTypeID, OrdersManager.PaymentCurrency, OrdersManager.ConfirmDateTime);
+            _ordersManager.SaveOrder(MainOrderID, MainOrderNotes.Text, IsSample, F);
+            decimal DiscountPaymentCondition = _ordersManager.DiscountPaymentCondition(_ordersManager.CurrentDiscountPaymentConditionID);
+            _ordersCalculate.CalculateOrder(MegaOrderID, MainOrderID, _ordersManager.CurrentProfilDiscountDirector, _ordersManager.CurrentTPSDiscountDirector,
+                _ordersManager.CurrentProfilTotalDiscount, _ordersManager.CurrentTPSTotalDiscount, DiscountPaymentCondition,
+                _ordersManager.CurrencyTypeID, _ordersManager.PaymentCurrency, _ordersManager.ConfirmDateTime);
 
-            OrdersManager.OrdersSet(MainOrdersID);
+            _ordersManager.OrdersSet(MainOrdersID);
         }
 
         private void SaveButton_Click(object sender, EventArgs e)
@@ -1140,11 +1169,11 @@ namespace Infinium
                 return;
             if (!EditMainOrder)
             {
-                OrdersManager.CreateNewMainOrder();
-                MainOrderID = OrdersManager.CurrentMainOrderID;
+                _ordersManager.CreateNewMainOrder();
+                MainOrderID = _ordersManager.CurrentMainOrderID;
             }
 
-            int MegaOrderID = OrdersManager.CurrentMegaOrderID;
+            int MegaOrderID = _ordersManager.CurrentMegaOrderID;
 
             int F = 0;
 
@@ -1205,34 +1234,90 @@ namespace Infinium
             else
             {
                 //if (OrdersManager.NeedSetStatus)
-                OrdersManager.SaveOrder(MainOrderNotes.Text, IsSample, F, OrdersManager.NeedSetStatus);
-                decimal DiscountPaymentCondition = OrdersManager.DiscountPaymentCondition(OrdersManager.CurrentDiscountPaymentConditionID);
-                if (OrdersManager.CurrentDiscountPaymentConditionID == 4)
+                _ordersManager.SaveOrder(MainOrderNotes.Text, IsSample, F, _ordersManager.NeedSetStatus);
+                decimal DiscountPaymentCondition = _ordersManager.DiscountPaymentCondition(_ordersManager.CurrentDiscountPaymentConditionID);
+                if (_ordersManager.CurrentDiscountPaymentConditionID == 4)
                 {
-                    DiscountPaymentCondition = OrdersManager.DiscountFactoring(OrdersManager.CurrentDiscountFactoringID);
+                    DiscountPaymentCondition = _ordersManager.DiscountFactoring(_ordersManager.CurrentDiscountFactoringID);
+                }
+                
+                _ordersCalculate.ConfirmDateTime = _ordersManager.ConfirmDateTime == DBNull.Value ? DateTime.Now : Convert.ToDateTime(_ordersManager.ConfirmDateTime);
+
+
+                Tuple<bool, decimal, decimal, decimal> clientRates = 
+                    _ordersCalculate.GetFixedPaymentRate(_ordersManager.CurrentClientID, _ordersCalculate.ConfirmDateTime);
+
+                Tuple<bool, decimal, decimal, decimal, decimal> dateRates =
+                    _ordersManager.GetDateRates(_ordersCalculate.ConfirmDateTime);
+
+                bool fixedClientRate = clientRates.Item1;
+
+                if (fixedClientRate)
+                {
+                    switch (_ordersManager.CurrencyTypeID)
+                    {
+                        case 1:
+                            if (dateRates.Item1)
+                                _ordersCalculate.Rate = clientRates.Item4 / dateRates.Item4;
+                            break;
+                        case 2:
+                            _ordersCalculate.Rate = clientRates.Item2;
+                            break;
+                        case 3:
+                            _ordersCalculate.Rate = clientRates.Item3;
+                            break;
+                        case 5:
+                            _ordersCalculate.Rate = clientRates.Item4;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                else
+                {
+                    if (dateRates.Item1)
+                    {
+                        switch (_ordersManager.CurrencyTypeID)
+                        {
+                            case 1:
+                                _ordersCalculate.Rate = 1;
+                                break;
+                            case 2:
+                                _ordersCalculate.Rate = dateRates.Item2;
+                                break;
+                            case 3:
+                                _ordersCalculate.Rate = dateRates.Item3;
+                                break;
+                            case 5:
+                                _ordersCalculate.Rate = dateRates.Item4;
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+
                 }
 
-
-                OrdersCalculate.Recalculate(MegaOrderID, OrdersManager.CurrentProfilDiscountDirector, OrdersManager.CurrentTPSDiscountDirector,
-                    OrdersManager.CurrentProfilTotalDiscount, OrdersManager.CurrentTPSTotalDiscount, DiscountPaymentCondition, OrdersManager.CurrencyTypeID,
-                    OrdersManager.PaymentCurrency, OrdersManager.ConfirmDateTime);
+                _ordersCalculate.Recalculate(MegaOrderID, _ordersManager.CurrentProfilDiscountDirector, _ordersManager.CurrentTPSDiscountDirector,
+                    _ordersManager.CurrentProfilTotalDiscount, _ordersManager.CurrentTPSTotalDiscount, DiscountPaymentCondition, _ordersManager.CurrencyTypeID,
+                    _ordersCalculate.Rate, _ordersCalculate.ConfirmDateTime);
                 InvoiceReportToDbf DBFReport = new InvoiceReportToDbf(FrontsCatalogOrder, DecorCatalogOrder);
                 decimal CurrencyTotalCost = DBFReport.CalcCurrencyCost(
-                    Convert.ToInt32(((DataRowView)OrdersManager.MegaOrdersBindingSource.Current).Row["MegaOrderID"]),
-                    Convert.ToInt32(((DataRowView)OrdersManager.MegaOrdersBindingSource.Current).Row["ClientID"]), OrdersManager.PaymentCurrency);
-                OrdersManager.SetCurrencyCost(Convert.ToInt32(((DataRowView)OrdersManager.MegaOrdersBindingSource.Current).Row["MegaOrderID"]), CurrencyTotalCost);
+                    Convert.ToInt32(((DataRowView)_ordersManager.MegaOrdersBindingSource.Current).Row["MegaOrderID"]),
+                    Convert.ToInt32(((DataRowView)_ordersManager.MegaOrdersBindingSource.Current).Row["ClientID"]), _ordersCalculate.Rate);
+                _ordersManager.SetCurrencyCost(Convert.ToInt32(((DataRowView)_ordersManager.MegaOrdersBindingSource.Current).Row["MegaOrderID"]), CurrencyTotalCost);
             }
 
-            if (OrdersManager.NeedSetStatus)
+            if (_ordersManager.NeedSetStatus)
             {
                 //OrdersManager.SetCurrentMegaOrderStatus();
                 CheckOrdersStatus.SetNewMegaOrderStatus(MegaOrderID);
             }
 
             if (!EditMainOrder)
-                OrdersManager.FixOrderEvent(MegaOrderID, "Добавлен позаказ");
+                _ordersManager.FixOrderEvent(MegaOrderID, "Добавлен позаказ");
             else
-                OrdersManager.FixOrderEvent(MegaOrderID, "Отредактирован подзаказ");
+                _ordersManager.FixOrderEvent(MegaOrderID, "Отредактирован подзаказ");
             //OrdersManager.SummaryCost(OrdersManager.CurrentMegaOrderID);
             InfiniumTips.ShowTip(this, 50, 85, "Заказ сохранён", 1700);
             FormEvent = eClose;

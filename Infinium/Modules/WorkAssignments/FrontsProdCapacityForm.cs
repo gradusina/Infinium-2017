@@ -7,17 +7,17 @@ namespace Infinium
 {
     public partial class FrontsProdCapacityForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
 
-        int FormEvent = 0;
-        int TechStoreID, InsetTypeID, PatinaID, TechHeight, TechWidth = 0;
+        private int FormEvent = 0;
+        private int TechStoreID, InsetTypeID, PatinaID, TechHeight, TechWidth = 0;
 
-        Form MainForm = null;
-        Form TopForm = null;
+        private Form MainForm = null;
+        private Form TopForm = null;
 
-        FrontsProdCapacity ClassManager;
+        private FrontsProdCapacity ClassManager;
 
         public FrontsProdCapacityForm(Form tMainForm, int iTechStoreID, int iInsetTypeID, int iPatinaID, int iHeight, int iWidth)
         {

@@ -8,27 +8,27 @@ namespace Infinium
 {
     public partial class UserProfilesForm : Form
     {
-        const int iEditUsers = 84;
-        const int iAdminRole = 85;
+        private const int iEditUsers = 84;
+        private const int iAdminRole = 85;
 
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
 
-        int FormEvent = 0;
+        private int FormEvent = 0;
 
-        LightStartForm LightStartForm;
+        private LightStartForm LightStartForm;
 
 
-        int CurrentUserID;
+        private int CurrentUserID;
 
-        Form TopForm = null;
+        private Form TopForm = null;
 
-        AdminUsersManagement AdminUsersManagement;
-        UserProfile.Contacts Contacts;
-        UserProfile.PersonalInform PersonalInform;
+        private AdminUsersManagement AdminUsersManagement;
+        private UserProfile.Contacts Contacts;
+        private UserProfile.PersonalInform PersonalInform;
 
-        UserProfile UserProfile;
+        private UserProfile UserProfile;
 
         //RoleTypes RoleType = RoleTypes.OrdinaryRole;
         //public enum RoleTypes

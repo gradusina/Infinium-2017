@@ -5,27 +5,27 @@ namespace Infinium
 {
     public partial class NotifyForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
 
-        const int nCloseNotifyOnly = 0;
-        const int nActivateInfinium = 1;
-        const int nActivateModule = 2;
+        private const int nCloseNotifyOnly = 0;
+        private const int nActivateInfinium = 1;
+        private const int nActivateModule = 2;
 
-        int FormEvent = 0;
-        int ClickEvent = -1;
+        private int FormEvent;
+        private int ClickEvent = -1;
 
-        public static bool bShowed = false;
-        public static bool bCloseNotify = false;
+        public static bool bShowed;
+        public static bool bCloseNotify;
 
-        public bool bCloseOnly = false;
+        public bool bCloseOnly;
 
-        LightStartForm LightStartForm;
+        private LightStartForm LightStartForm;
 
-        int ModuleID = -1;
+        private int ModuleID = -1;
 
-        ActiveNotifySystem ActiveNotifySystem;
+        private ActiveNotifySystem ActiveNotifySystem;
 
         public NotifyForm(LightStartForm tLightStartForm, ref ActiveNotifySystem tActiveNotifySystem, int tModuleID, int Count, int MoreCount)
         {
@@ -38,12 +38,12 @@ namespace Infinium
             if (MoreCount > 0)
             {
                 MoreUpdatesLabel.Visible = true;
-                MoreUpdatesLabel.Text = "и еще (" + MoreCount.ToString() + ") обновлений";
+                MoreUpdatesLabel.Text = "и еще (" + MoreCount + ") обновлений";
             }
 
             ModuleID = tModuleID;
 
-            NewUpdatesLabel.Text = "Новых: " + Count.ToString();
+            NewUpdatesLabel.Text = "Новых: " + Count;
             PictureBox.Image = ActiveNotifySystem.GetModuleImage(tModuleID);
             ModuleNameLabel.Text = ActiveNotifySystem.GetModuleName(tModuleID);
         }
@@ -52,8 +52,8 @@ namespace Infinium
         {
             if (FormEvent == eClose || FormEvent == eHide)
             {
-                if (Convert.ToDecimal(this.Opacity) != Convert.ToDecimal(0.00))
-                    this.Opacity = Convert.ToDouble(Convert.ToDecimal(this.Opacity) - Convert.ToDecimal(0.05));
+                if (Convert.ToDecimal(Opacity) != Convert.ToDecimal(0.00))
+                    Opacity = Convert.ToDouble(Convert.ToDecimal(Opacity) - Convert.ToDecimal(0.05));
                 else
                 {
                     AnimateTimer.Enabled = false;
@@ -69,7 +69,7 @@ namespace Infinium
 
                             LightStartForm.StartModuleFromNotify(ModuleID);
 
-                            this.Close();
+                            Close();
                             return;
                         }
 
@@ -84,14 +84,14 @@ namespace Infinium
                         if (ClickEvent == nCloseNotifyOnly)
                         {
 
-                            this.Close();
+                            Close();
                             return;
                         }
                     }
 
                     if (FormEvent == eHide)
                     {
-                        this.Hide();
+                        Hide();
                     }
                 }
 
@@ -101,16 +101,14 @@ namespace Infinium
 
             if (FormEvent == eShow || FormEvent == eShow)
             {
-                if (this.Opacity != 1)
-                    this.Opacity += 0.05;
+                if (Opacity != 1)
+                    Opacity += 0.05;
                 else
                 {
                     AnimateTimer.Enabled = false;
                     SplashForm.CloseS = true;
                     bShowed = true;
                 }
-
-                return;
             }
         }
 
@@ -119,9 +117,9 @@ namespace Infinium
             FormEvent = eShow;
             AnimateTimer.Enabled = true;
 
-            this.StartPosition = FormStartPosition.Manual;
-            this.Left = Screen.PrimaryScreen.WorkingArea.Width - this.Width - 5;
-            this.Top = Screen.PrimaryScreen.WorkingArea.Height - this.Height - 5;
+            StartPosition = FormStartPosition.Manual;
+            Left = Screen.PrimaryScreen.WorkingArea.Width - Width - 5;
+            Top = Screen.PrimaryScreen.WorkingArea.Height - Height - 5;
 
             //Stream str = Properties.Resources._01_01;
 

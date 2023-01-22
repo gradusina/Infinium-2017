@@ -8,15 +8,15 @@ namespace Infinium
 {
     public partial class MenuClientsMessagesForm : InfiniumForm
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
 
-        int FormEvent = 0;
+        private int FormEvent = 0;
 
-        DataTable TableUsers;
-        ConnectClient ConnectClient;
-        Form TopForm = null;
+        private DataTable TableUsers;
+        private ConnectClient ConnectClient;
+        private Form TopForm = null;
 
         public MenuClientsMessagesForm(ref Form tTopForm)
         {

@@ -9,23 +9,23 @@ namespace Infinium
 {
     public partial class ZOVTraysForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
-        int BarcodeType = 5; // ЗОВ
+        private int BarcodeType = 5; // ЗОВ
 
-        int FormEvent = 0;
-        int CurrentRowIndex = 0;
+        private int FormEvent = 0;
+        private int CurrentRowIndex = 0;
 
-        Form TopForm = null;
-        LightStartForm LightStartForm;
+        private Form TopForm = null;
+        private LightStartForm LightStartForm;
 
 
-        Infinium.Modules.Packages.Trays.ZOVTraysManager ZOVTraysManager;
-        Infinium.Modules.Packages.Trays.TrayLabel TrayLabel;
-        Infinium.Modules.Dispatch.ZOVTrayList ZOVTrayList;
+        private Infinium.Modules.Packages.Trays.ZOVTraysManager ZOVTraysManager;
+        private Infinium.Modules.Packages.Trays.TrayLabel TrayLabel;
+        private Infinium.Modules.Dispatch.ZOVTrayList ZOVTrayList;
 
         public ZOVTraysForm(LightStartForm tLightStartForm)
         {

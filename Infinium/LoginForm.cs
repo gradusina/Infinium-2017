@@ -7,10 +7,10 @@ namespace Infinium
 {
     public partial class LoginForm : Form
     {
-        Security Security = null;
-        Form TopForm = null;
-        bool _waitForEnter = false;
-        Connection _connection;
+        private Security Security = null;
+        private readonly Form TopForm = null;
+        private readonly bool _waitForEnter = false;
+        private readonly Connection _connection;
 
         public void CloseJournalRec()
         {

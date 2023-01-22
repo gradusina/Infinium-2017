@@ -11,29 +11,29 @@ namespace Infinium
 {
     public partial class ClientPaymentsForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
-        FileManager FM = null;
+        private FileManager FM = null;
 
-        bool bStopTransfer = false;
+        private bool bStopTransfer = false;
 
         public int AttachsCount = 0;
 
-        int FormEvent = 0;
+        private int FormEvent = 0;
 
-        LightStartForm LightStartForm;
+        private LightStartForm LightStartForm;
 
 
-        Form TopForm = null;
+        private Form TopForm = null;
 
-        ClientPayments ClientPayments;
-        DataTable TableCurrency, TableClients, TableContract, TableFactory;
+        private ClientPayments ClientPayments;
+        private DataTable TableCurrency, TableClients, TableContract, TableFactory;
 
-        System.Globalization.CultureInfo CI = new System.Globalization.CultureInfo("ru-RU");
-        System.Globalization.NumberFormatInfo nfi1;
+        private System.Globalization.CultureInfo CI = new System.Globalization.CultureInfo("ru-RU");
+        private System.Globalization.NumberFormatInfo nfi1;
 
         public DataTable AttachmentDocumentsDataTable;
         public BindingSource AttachmentDocumentsBindingSource;
@@ -1077,7 +1077,7 @@ namespace Infinium
 
         }
 
-        System.Threading.Thread T;
+        private System.Threading.Thread T;
 
         private void AttachmentsDocumentGrid_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
         {

@@ -44,10 +44,10 @@ namespace Infinium.Modules.Packages.Marketing
     #region Упаковка
     public class MarketingPackagesAllocFrontsOrders
     {
-        private PercentageDataGrid FrontsOrdersDataGrid = null;
+        private readonly PercentageDataGrid FrontsOrdersDataGrid = null;
 
-        int CurrentMainOrderID = -1;
-        int FactoryID = 1;
+        private int CurrentMainOrderID = -1;
+        private int FactoryID = 1;
 
         public DataTable FrontsOrdersDataTable = null;
         public DataTable FrontsDataTable = null;
@@ -472,7 +472,7 @@ namespace Infinium.Modules.Packages.Marketing
             FrontsOrdersDataGrid.CellFormatting += FrontsOrdersDataGrid_CellFormatting;
         }
 
-        void FrontsOrdersDataGrid_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        private void FrontsOrdersDataGrid_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             PercentageDataGrid grid = (PercentageDataGrid)sender;
             if (grid.Columns.Contains("PatinaColumn") && (e.ColumnIndex == grid.Columns["PatinaColumn"].Index)
@@ -1275,7 +1275,7 @@ namespace Infinium.Modules.Packages.Marketing
         /// <param name="t1"></param>
         /// <param name="t2"></param>
         /// <returns></returns>
-        bool AreTablesEqual(DataTable t1, DataTable t2)
+        private bool AreTablesEqual(DataTable t1, DataTable t2)
         {
             if (t1.Rows.Count != t2.Rows.Count)
                 return false;
@@ -1329,13 +1329,13 @@ namespace Infinium.Modules.Packages.Marketing
 
     public class MarketingPackagesAllocDecorOrders
     {
-        int CurrentMainOrderID = -1;
-        int FactoryID = 1;
+        private int CurrentMainOrderID = -1;
+        private int FactoryID = 1;
 
         private PercentageDataGrid MainOrdersFrontsOrdersDataGrid = null;
-        private PercentageDataGrid MainOrdersDecorOrdersDataGrid = null;
+        private readonly PercentageDataGrid MainOrdersDecorOrdersDataGrid = null;
 
-        DataTable StoreDetailTermsDT;
+        private DataTable StoreDetailTermsDT;
         private DataTable ColorsDataTable = null;
         public DataTable PatinaDataTable = null;
         public DataTable PatinaRALDataTable = null;
@@ -2679,18 +2679,18 @@ WHERE dbo.TechCatalogOperationsDetail.TechCatalogOperationsGroupID IN
         private int CurrentMainOrderID = -1;
         private int CurrentMegaOrderID = -1;
 
-        private int FactoryID = 1;
-        private string FirmOrderStatus = "ProfilOrderStatusID";
-        private string PackAllocStatusID = "ProfilPackAllocStatusID";
-        private string PackCount = "ProfilPackCount";
-        private string ProductionStatusID = "ProfilProductionStatusID";
+        private readonly int FactoryID = 1;
+        private readonly string FirmOrderStatus = "ProfilOrderStatusID";
+        private readonly string PackAllocStatusID = "ProfilPackAllocStatusID";
+        private readonly string PackCount = "ProfilPackCount";
+        private readonly string ProductionStatusID = "ProfilProductionStatusID";
 
         public MarketingPackagesAllocFrontsOrders PackagesMainOrdersFrontsOrders = null;
         public MarketingPackagesAllocDecorOrders PackagesMainOrdersDecorOrders = null;
 
         public PercentageDataGrid MainOrdersDataGrid = null;
         public PercentageDataGrid MegaOrdersDataGrid = null;
-        private DevExpress.XtraTab.XtraTabControl OrdersTabControl = null;
+        private readonly DevExpress.XtraTab.XtraTabControl OrdersTabControl = null;
 
         public DataTable ClientsDataTable = null;
         public DataTable MainOrdersDataTable = null;
@@ -4093,7 +4093,7 @@ WHERE dbo.TechCatalogOperationsDetail.TechCatalogOperationsGroupID IN
         /// <param name="t1"></param>
         /// <param name="t2"></param>
         /// <returns></returns>
-        bool AreTablesEqual(DataTable t1, DataTable t2)
+        private bool AreTablesEqual(DataTable t1, DataTable t2)
         {
             if (t1.Rows.Count != t2.Rows.Count)
                 return false;
@@ -4597,11 +4597,11 @@ WHERE dbo.TechCatalogOperationsDetail.TechCatalogOperationsGroupID IN
     #region Печать
     public class MarketingPackagesPrintFrontsOrders
     {
-        private PercentageDataGrid FrontsOrdersDataGrid = null;
+        private readonly PercentageDataGrid FrontsOrdersDataGrid = null;
 
-        int CurrentMainOrderID = -1;
-        int FactoryID = 1;
-        int PackNumber = 1;
+        private int CurrentMainOrderID = -1;
+        private int FactoryID = 1;
+        private int PackNumber = 1;
 
         public DataTable FrontsOrdersDataTable = null;
         public DataTable FrontsDataTable = null;
@@ -5048,7 +5048,7 @@ WHERE dbo.TechCatalogOperationsDetail.TechCatalogOperationsGroupID IN
             FrontsOrdersDataGrid.CellFormatting += FrontsOrdersDataGrid_CellFormatting;
         }
 
-        void FrontsOrdersDataGrid_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        private void FrontsOrdersDataGrid_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             PercentageDataGrid grid = (PercentageDataGrid)sender;
             if (grid.Columns.Contains("PatinaColumn") && (e.ColumnIndex == grid.Columns["PatinaColumn"].Index)
@@ -5270,11 +5270,11 @@ WHERE dbo.TechCatalogOperationsDetail.TechCatalogOperationsGroupID IN
 
     public class MarketingPackagesPrintDecorOrders
     {
-        int CurrentMainOrderID = -1;
-        int FactoryID = 1;
-        int PackNumber = 1;
+        private readonly int CurrentMainOrderID = -1;
+        private int FactoryID = 1;
+        private int PackNumber = 1;
 
-        private PercentageDataGrid MainOrdersDecorOrdersDataGrid = null;
+        private readonly PercentageDataGrid MainOrdersDecorOrdersDataGrid = null;
 
         private DataTable ColorsDataTable = null;
         public DataTable PatinaDataTable = null;
@@ -5876,12 +5876,13 @@ WHERE dbo.TechCatalogOperationsDetail.TechCatalogOperationsGroupID IN
 
         private int FactoryID = 1;
 
-        private string PackAllocStatusID = "ProfilPackAllocStatusID";
-        private string PackCount = "ProfilPackCount";
-        string ProductionStatus = "ProfilProductionStatusID";
-        string StorageStatus = "ProfilStorageStatusID";
-        string DispatchStatus = "ProfilDispatchStatusID";
-        string FirmOrderStatus = "ProfilOrderStatusID";
+        private readonly string PackAllocStatusID = "ProfilPackAllocStatusID";
+        private readonly string PackCount = "ProfilPackCount";
+        private readonly string ProductionStatus = "ProfilProductionStatusID";
+        private readonly string StorageStatus = "ProfilStorageStatusID";
+        private readonly string DispatchStatus = "ProfilDispatchStatusID";
+
+        private readonly string FirmOrderStatus = "ProfilOrderStatusID";
         //string DispatchFilter = "(ProfilProductionStatusID = 2 OR ProfilStorageStatusID = 2)";
 
         public MarketingPackagesPrintFrontsOrders PackedMainOrdersFrontsOrders = null;
@@ -5890,7 +5891,7 @@ WHERE dbo.TechCatalogOperationsDetail.TechCatalogOperationsGroupID IN
         public PercentageDataGrid MainOrdersDataGrid = null;
         public PercentageDataGrid MegaOrdersDataGrid = null;
         public PercentageDataGrid PackagesDataGrid = null;
-        private DevExpress.XtraTab.XtraTabControl OrdersTabControl = null;
+        private readonly DevExpress.XtraTab.XtraTabControl OrdersTabControl = null;
 
         public DataTable MainOrdersDataTable = null;
         private DataTable PackAllocStatusesDataTable = null;
@@ -7098,7 +7099,7 @@ WHERE dbo.TechCatalogOperationsDetail.TechCatalogOperationsGroupID IN
 
         public DataTable FrontsDataTable = null;
         public DataTable PatinaDataTable = null;
-        DataTable PatinaRALDataTable = null;
+        private DataTable PatinaRALDataTable = null;
         public DataTable InsetTypesDataTable = null;
         public DataTable FrameColorsDataTable = null;
         public DataTable InsetColorsDataTable = null;
@@ -8952,7 +8953,7 @@ WHERE dbo.TechCatalogOperationsDetail.TechCatalogOperationsGroupID IN
         private DataTable FrontsDataTable = null;
         private DataTable FrameColorsDataTable = null;
         private DataTable PatinaDataTable = null;
-        DataTable PatinaRALDataTable = null;
+        private DataTable PatinaRALDataTable = null;
         private DataTable InsetTypesDataTable = null;
         private DataTable InsetColorsDataTable = null;
         private DataTable ProductsDataTable = null;
@@ -9740,9 +9741,9 @@ WHERE dbo.TechCatalogOperationsDetail.TechCatalogOperationsGroupID IN
 
     public class Barcode
     {
-        BarcodeLib.Barcode Barcod;
+        private readonly BarcodeLib.Barcode Barcod;
 
-        SolidBrush FontBrush;
+        private readonly SolidBrush FontBrush;
 
         public enum BarcodeLength { Short, Medium, Long };
 
@@ -9882,7 +9883,7 @@ WHERE dbo.TechCatalogOperationsDetail.TechCatalogOperationsGroupID IN
 
     public class PackageLabel
     {
-        Barcode Barcode;
+        private readonly Barcode Barcode;
         public PrintDocument PD;
 
         public int PaperHeight = 488;
@@ -9895,26 +9896,26 @@ WHERE dbo.TechCatalogOperationsDetail.TechCatalogOperationsGroupID IN
 
         public bool Printed = false;
 
-        SolidBrush FontBrush;
+        private SolidBrush FontBrush;
 
-        Font ClientFont;
-        Font DocFont;
-        Font InfoFont;
-        Font NotesFont;
-        Font HeaderFont;
-        Font FrontOrderFont;
-        Font DecorOrderFont;
-        Font DispatchFont;
+        private Font ClientFont;
+        private Font DocFont;
+        private Font InfoFont;
+        private Font NotesFont;
+        private Font HeaderFont;
+        private Font FrontOrderFont;
+        private Font DecorOrderFont;
+        private Font DispatchFont;
 
-        Pen Pen;
+        private Pen Pen;
 
 
-        Image ZTTPS;
-        Image ZTProfil;
-        Image STB;
-        Image RST;
+        private readonly Image ZTTPS;
+        private readonly Image ZTProfil;
+        private readonly Image STB;
+        private readonly Image RST;
 
-        LabelParam labelParam;
+        private LabelParam labelParam;
         public ArrayList LabelInfo;
 
         public LabelParam GetLabelParams()
@@ -10473,7 +10474,7 @@ WHERE dbo.TechCatalogOperationsDetail.TechCatalogOperationsGroupID IN
             PD.Print();
         }
 
-        private Dictionary<string, string> transliter = new Dictionary<string, string>();
+        private readonly Dictionary<string, string> transliter = new Dictionary<string, string>();
 
         private void prepareTranslit()
         {

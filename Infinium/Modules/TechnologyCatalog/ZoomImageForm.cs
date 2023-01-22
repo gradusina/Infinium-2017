@@ -7,7 +7,7 @@ namespace Infinium
 {
     public partial class ZoomImageForm : Form
     {
-        Form TopForm = null;
+        private Form TopForm = null;
 
         public ZoomImageForm(Image ZoomImage, ref Form tTopForm)
         {

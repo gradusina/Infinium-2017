@@ -6,17 +6,17 @@ namespace Infinium
 {
     public partial class InfiniumTipForm : Form
     {
-        int iLeft = -1;
-        int iTop = -1;
-        int iTime = -1;
-        int iLeftPercents = -1;
-        int iTopPercents = -1;
-        Form fParentForm;
+        private int iLeft = -1;
+        private int iTop = -1;
+        private int iTime = -1;
+        private int iLeftPercents = -1;
+        private int iTopPercents = -1;
+        private Form fParentForm;
 
-        const int eShow = 1;
-        const int eClose = 3;
+        private const int eShow = 1;
+        private const int eClose = 3;
 
-        int FormEvent = 0;
+        private int FormEvent = 0;
 
         public InfiniumTipForm(int Left, int Top, int Time, string sText)
         {
@@ -45,7 +45,7 @@ namespace Infinium
 
 
         [DllImport("user32.dll")]
-        static extern IntPtr GetActiveWindow();
+        private static extern IntPtr GetActiveWindow();
 
         [System.Runtime.InteropServices.DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
         private static extern System.IntPtr CreateRoundRectRgn

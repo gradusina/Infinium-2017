@@ -9,12 +9,12 @@ namespace Infinium.Modules.ExpeditionMarketing.DispatchReportToDbf
 {
     public class DispatchDecorReportToDbf
     {
-        string ProfilCurrencyCode = "0";
-        string TPSCurrencyCode = "0";
-        decimal PaymentRate = 0;
-        string UNN = string.Empty;
+        private string ProfilCurrencyCode = "0";
+        private string TPSCurrencyCode = "0";
+        private decimal PaymentRate = 0;
+        private string UNN = string.Empty;
 
-        DecorCatalogOrder decorCatalogOrder = null;
+        private DecorCatalogOrder decorCatalogOrder = null;
 
         public DataTable ProfilReportDataTable = null;
         public DataTable TPSReportDataTable = null;
@@ -986,14 +986,14 @@ namespace Infinium.Modules.ExpeditionMarketing.DispatchReportToDbf
                 {
                     if (ClientID != 145 && DiscountPaymentConditionID != 6 && !ProfilVerify)
                     {
-                        DecorOrdersDataTable.Rows[i]["PaymentRate"] = Convert.ToDecimal(DecorOrdersDataTable.Rows[i]["Rate"]) * 1.05m;
+                        //DecorOrdersDataTable.Rows[i]["PaymentRate"] = Convert.ToDecimal(DecorOrdersDataTable.Rows[i]["Rate"]) * 1.05m;
                     }
                 }
                 if (DecorOrdersDataTable.Rows[i]["FactoryID"].ToString() == "2")//tps
                 {
                     if (ClientID != 145 && DiscountPaymentConditionID != 6 && !TPSVerify)
                     {
-                        DecorOrdersDataTable.Rows[i]["PaymentRate"] = Convert.ToDecimal(DecorOrdersDataTable.Rows[i]["Rate"]) * 1.05m;
+                        //DecorOrdersDataTable.Rows[i]["PaymentRate"] = Convert.ToDecimal(DecorOrdersDataTable.Rows[i]["Rate"]) * 1.05m;
                     }
                 }
             }

@@ -12,40 +12,40 @@ namespace Infinium
 {
     public partial class WorkTimeRegisterForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
 
-        int FormEvent = 0;
+        private int FormEvent = 0;
 
-        const int iAdminRole = 97;
-        LightStartForm LightStartForm;
+        private const int iAdminRole = 97;
+        private LightStartForm LightStartForm;
 
-        Form TopForm = null;
+        private Form TopForm = null;
 
-        WorkTimeRegister WorkTimeRegister;
-        WorkTimeRegister.DayStatus DayStatus;
+        private WorkTimeRegister WorkTimeRegister;
+        private WorkTimeRegister.DayStatus DayStatus;
 
-        RoleTypes RoleType = RoleTypes.OrdinaryRole;
+        private RoleTypes RoleType = RoleTypes.OrdinaryRole;
         public enum RoleTypes
         {
             OrdinaryRole = 0,
             AdminRole = 1
         }
 
-        int absenceTypeId = 1;
+        private int absenceTypeId = 1;
 
         //----------------------------------------------
-        DateTime Date;
-        string Year;
+        private DateTime Date;
+        private string Year;
 
-        WorkTimeSheet WorkTimeSheet;
-        DataTable DayStartDate;
+        private WorkTimeSheet WorkTimeSheet;
+        private DataTable DayStartDate;
 
-        ProductionShedule _productionShedule;
-        ResultTimesheet resultTimesheet;
-        AbsenceJournal _absenceJournal;
-        bool NeedRefresh = false;
+        private ProductionShedule _productionShedule;
+        private ResultTimesheet resultTimesheet;
+        private AbsenceJournal _absenceJournal;
+        private bool NeedRefresh = false;
 
         public WorkTimeRegisterForm(LightStartForm tLightStartForm)
         {

@@ -13,47 +13,48 @@ namespace Infinium
 {
     public partial class StorageForm : Form
     {
-        const int iMoveProducts = 51;
-        const int iCreateInvoice = 52;
-        const int iInventory = 53;
-        const int iPrintLabel = 55;
+        private const int iMoveProducts = 51;
+        private const int iCreateInvoice = 52;
+        private const int iInventory = 53;
+        private const int iPrintLabel = 55;
 
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
-        bool bMoveProducts = false;
-        bool bCreateInvoice = false;
-        bool bInventory = false;
-        bool bPrintLabel = false;
+        private bool bMoveProducts = false;
+        private bool bCreateInvoice = false;
+        private bool bInventory = false;
+        private bool bPrintLabel = false;
 
-        bool bNeedUpdate = true;
-        bool NeedSplash = false;
-        bool bC;
+        private bool bNeedUpdate = true;
+        private bool NeedSplash = false;
+        private bool bC;
 
-        RoleTypes RoleType = RoleTypes.OrdinaryRole;
-        int BarcodeType = 13;
-        int FormEvent = 0;
-        int FactoryID = 1;
-        int CurrentRowIndex = -1;
+        private RoleTypes RoleType = RoleTypes.OrdinaryRole;
+        private int BarcodeType = 13;
+        private int FormEvent = 0;
+        private int FactoryID = 1;
+        private int CurrentRowIndex = -1;
 
-        DataTable MonthsDT;
-        DataTable YearsDT;
-        DataTable RolePermissionsDataTable;
-        LightStartForm LightStartForm;
+        private DataTable MonthsDT;
+        private DataTable YearsDT;
+        private DataTable RolePermissionsDataTable;
+
+        private readonly LightStartForm LightStartForm;
         //Connection Connection;
         //Security Security = null;
-        Form TopForm = null;
+        private Form TopForm = null;
 
-        PersonalStorageManager PersonalStorageManager;
-        WriteOffStoreManager WriteOffStoreManager;
-        ManufactureStoreManager ManufactureStoreManager;
-        ReadyStoreManager ReadyStoreManager;
-        MainStoreManager MainStoreManager;
-        ReportParameters ReportParameters;
-        StoreGeneticsLabel StoreGeneticsLabel;
-        GeneticsManager GeneticsManager;
+        private PersonalStorageManager PersonalStorageManager;
+        private WriteOffStoreManager WriteOffStoreManager;
+        private ManufactureStoreManager ManufactureStoreManager;
+        private ReadyStoreManager ReadyStoreManager;
+        private MainStoreManager MainStoreManager;
+        private ReportParameters ReportParameters;
+        private StoreGeneticsLabel StoreGeneticsLabel;
+        private GeneticsManager GeneticsManager;
 
         public enum RoleTypes
         {

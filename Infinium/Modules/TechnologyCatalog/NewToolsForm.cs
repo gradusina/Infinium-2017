@@ -9,14 +9,14 @@ namespace Infinium
 {
     public partial class NewToolsForm : Form
     {
-        int ToolsID, ToolsSubTypeID;
+        private int ToolsID, ToolsSubTypeID;
         public bool Ok = false;
-        bool IsNew;
+        private bool IsNew;
 
-        Form TopForm = null;
-        TechStoreManager TechStoreManager;
+        private Form TopForm = null;
+        private TechStoreManager TechStoreManager;
 
-        DataTable ValueParametrsDT;
+        private DataTable ValueParametrsDT;
 
         public NewToolsForm(int tToolsID, ref TechStoreManager tTechStoreManager)
         {

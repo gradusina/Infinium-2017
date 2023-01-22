@@ -5,12 +5,12 @@ namespace Infinium
 {
     public partial class SampleFrontsManually : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
-        public bool PressOK = false;
+        public bool PressOK;
         public string Front = string.Empty;
         public string FrameColor = string.Empty;
         public string Patina = string.Empty;
@@ -22,9 +22,9 @@ namespace Infinium
         public string LabelsWidth = string.Empty;
         public string LabelsCount = "1";
         public string PositionsCount = "1";
-        int FormEvent = 0;
+        private int FormEvent;
 
-        Form MainForm = null;
+        private Form MainForm;
 
         public SampleFrontsManually(Form tMainForm)
         {

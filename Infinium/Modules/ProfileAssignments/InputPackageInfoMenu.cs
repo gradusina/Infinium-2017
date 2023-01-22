@@ -5,18 +5,18 @@ namespace Infinium
 {
     public partial class InputPackageInfoMenu : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
         public bool PressOK = false;
         public object DocDateTime = DBNull.Value;
         public int NumberOfChange = 1;
         public string UserName = string.Empty;
-        int FormEvent = 0;
+        private int FormEvent = 0;
 
-        Form MainForm = null;
+        private Form MainForm = null;
 
         public InputPackageInfoMenu(Form tMainForm)
         {

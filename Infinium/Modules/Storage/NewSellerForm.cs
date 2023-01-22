@@ -9,16 +9,16 @@ namespace Infinium
 {
     public partial class NewSellerForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
 
-        int FormEvent = 0;
+        private int FormEvent = 0;
 
-        Form TopForm = null;
-        SellersManager SellersManager;
-        DataTable SellerInfoDataTable;
-        int Index;
+        private Form TopForm = null;
+        private SellersManager SellersManager;
+        private DataTable SellerInfoDataTable;
+        private int Index;
 
         public NewSellerForm(ref SellersManager tSellersManager, int tIndex)
         {

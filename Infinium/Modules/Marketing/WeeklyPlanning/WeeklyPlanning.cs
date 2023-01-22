@@ -18,9 +18,9 @@ namespace Infinium.Modules.Marketing.WeeklyPlanning
 
     public class MainOrdersFrontsOrders
     {
-        private PercentageDataGrid FrontsOrdersDataGrid = null;
+        private readonly PercentageDataGrid FrontsOrdersDataGrid = null;
 
-        int CurrentMainOrderID = -1;
+        private int CurrentMainOrderID = -1;
 
         public DataTable FrontsOrdersDataTable = null;
         private DataTable FrontsDataTable = null;
@@ -438,7 +438,7 @@ namespace Infinium.Modules.Marketing.WeeklyPlanning
             FrontsOrdersDataGrid.CellFormatting += FrontsOrdersDataGrid_CellFormatting;
         }
 
-        void FrontsOrdersDataGrid_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        private void FrontsOrdersDataGrid_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             PercentageDataGrid grid = (PercentageDataGrid)sender;
             if (grid.Columns.Contains("PatinaColumn") && (e.ColumnIndex == grid.Columns["PatinaColumn"].Index)
@@ -530,11 +530,11 @@ namespace Infinium.Modules.Marketing.WeeklyPlanning
 
     public class MainOrdersDecorOrders
     {
-        int CurrentClientID = -1;
-        int CurrentMainOrderID = -1;
-        int SelectedGridIndex = -1;
+        private int CurrentClientID = -1;
+        private int CurrentMainOrderID = -1;
+        private int SelectedGridIndex = -1;
 
-        private DevExpress.XtraTab.XtraTabControl DecorTabControl = null;
+        private readonly DevExpress.XtraTab.XtraTabControl DecorTabControl = null;
 
         public Infinium.Modules.Marketing.NewOrders.DecorCatalogOrder DecorCatalogOrder = null;
 
@@ -916,7 +916,7 @@ namespace Infinium.Modules.Marketing.WeeklyPlanning
             }
         }
 
-        void MainOrdersDecorOrders_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+        private void MainOrdersDecorOrders_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
         {
             PercentageDataGrid grid = (PercentageDataGrid)sender;
             SelectedGridIndex = Convert.ToInt32(grid.Tag);
@@ -1321,9 +1321,9 @@ namespace Infinium.Modules.Marketing.WeeklyPlanning
         public int CurrentBatchMegaOrderID = -1;
         public int CurrentBatchID = -1;
         public int CurrentMegaBatchID = -1;
-        int CurrentFrontID = 0;
-        int CurrentFrameColorID = 0;
-        int CurrentPatinaID = 0;
+        private int CurrentFrontID = 0;
+        private int CurrentFrameColorID = 0;
+        private int CurrentPatinaID = 0;
 
         public MainOrdersFrontsOrders MainOrdersFrontsOrders = null;
         public MainOrdersDecorOrders MainOrdersDecorOrders = null;
@@ -1334,28 +1334,28 @@ namespace Infinium.Modules.Marketing.WeeklyPlanning
         public PercentageDataGrid MegaBatchDataGrid = null;
         public PercentageDataGrid MainOrdersDataGrid = null;
         public PercentageDataGrid MegaOrdersDataGrid = null;
-        private DevExpress.XtraTab.XtraTabControl OrdersTabControl;
+        private readonly DevExpress.XtraTab.XtraTabControl OrdersTabControl;
         public PercentageDataGrid BatchMainOrdersDataGrid = null;
         public PercentageDataGrid BatchMegaOrdersDataGrid = null;
-        private DevExpress.XtraTab.XtraTabControl BatchOrdersTabControl;
+        private readonly DevExpress.XtraTab.XtraTabControl BatchOrdersTabControl;
 
-        PercentageDataGrid FrontsDataGrid = null;
-        PercentageDataGrid FrameColorsDataGrid = null;
-        PercentageDataGrid TechnoColorsDataGrid = null;
-        PercentageDataGrid InsetTypesDataGrid = null;
-        PercentageDataGrid InsetColorsDataGrid = null;
-        PercentageDataGrid TechnoInsetTypesDataGrid = null;
-        PercentageDataGrid TechnoInsetColorsDataGrid = null;
-        PercentageDataGrid SizesDataGrid = null;
+        private PercentageDataGrid FrontsDataGrid = null;
+        private PercentageDataGrid FrameColorsDataGrid = null;
+        private PercentageDataGrid TechnoColorsDataGrid = null;
+        private PercentageDataGrid InsetTypesDataGrid = null;
+        private PercentageDataGrid InsetColorsDataGrid = null;
+        private PercentageDataGrid TechnoInsetTypesDataGrid = null;
+        private PercentageDataGrid TechnoInsetColorsDataGrid = null;
+        private PercentageDataGrid SizesDataGrid = null;
 
-        PercentageDataGrid PreFrontsDataGrid = null;
-        PercentageDataGrid PreFrameColorsDataGrid = null;
-        PercentageDataGrid PreTechnoColorsDataGrid = null;
-        PercentageDataGrid PreInsetTypesDataGrid = null;
-        PercentageDataGrid PreInsetColorsDataGrid = null;
-        PercentageDataGrid PreTechnoInsetTypesDataGrid = null;
-        PercentageDataGrid PreTechnoInsetColorsDataGrid = null;
-        PercentageDataGrid PreSizesDataGrid = null;
+        private PercentageDataGrid PreFrontsDataGrid = null;
+        private PercentageDataGrid PreFrameColorsDataGrid = null;
+        private PercentageDataGrid PreTechnoColorsDataGrid = null;
+        private PercentageDataGrid PreInsetTypesDataGrid = null;
+        private PercentageDataGrid PreInsetColorsDataGrid = null;
+        private PercentageDataGrid PreTechnoInsetTypesDataGrid = null;
+        private PercentageDataGrid PreTechnoInsetColorsDataGrid = null;
+        private PercentageDataGrid PreSizesDataGrid = null;
 
         private PercentageDataGrid DecorProductsDataGrid = null;
         private PercentageDataGrid DecorItemsDataGrid = null;
@@ -1387,25 +1387,25 @@ namespace Infinium.Modules.Marketing.WeeklyPlanning
         public DataTable BatchMegaOrdersDataTable = null;
         private DataTable BatchDetailsDataTable = null;
 
-        DataTable UsersDT = null;
+        private DataTable UsersDT = null;
 
-        DataTable FrontsSummaryDataTable = null;
-        DataTable FrameColorsSummaryDataTable = null;
-        DataTable TechnoColorsSummaryDataTable = null;
-        DataTable InsetTypesSummaryDataTable = null;
-        DataTable InsetColorsSummaryDataTable = null;
-        DataTable TechnoInsetTypesSummaryDataTable = null;
-        DataTable TechnoInsetColorsSummaryDataTable = null;
-        DataTable SizesSummaryDataTable = null;
+        private DataTable FrontsSummaryDataTable = null;
+        private DataTable FrameColorsSummaryDataTable = null;
+        private DataTable TechnoColorsSummaryDataTable = null;
+        private DataTable InsetTypesSummaryDataTable = null;
+        private DataTable InsetColorsSummaryDataTable = null;
+        private DataTable TechnoInsetTypesSummaryDataTable = null;
+        private DataTable TechnoInsetColorsSummaryDataTable = null;
+        private DataTable SizesSummaryDataTable = null;
 
-        DataTable PreFrontsSummaryDataTable = null;
-        DataTable PreFrameColorsSummaryDataTable = null;
-        DataTable PreTechnoColorsSummaryDataTable = null;
-        DataTable PreInsetTypesSummaryDataTable = null;
-        DataTable PreInsetColorsSummaryDataTable = null;
-        DataTable PreTechnoInsetTypesSummaryDataTable = null;
-        DataTable PreTechnoInsetColorsSummaryDataTable = null;
-        DataTable PreSizesSummaryDataTable = null;
+        private DataTable PreFrontsSummaryDataTable = null;
+        private DataTable PreFrameColorsSummaryDataTable = null;
+        private DataTable PreTechnoColorsSummaryDataTable = null;
+        private DataTable PreInsetTypesSummaryDataTable = null;
+        private DataTable PreInsetColorsSummaryDataTable = null;
+        private DataTable PreTechnoInsetTypesSummaryDataTable = null;
+        private DataTable PreTechnoInsetColorsSummaryDataTable = null;
+        private DataTable PreSizesSummaryDataTable = null;
 
         private DataTable DecorProductsSummaryDataTable = null;
         private DataTable DecorItemsSummaryDataTable = null;
@@ -1418,7 +1418,7 @@ namespace Infinium.Modules.Marketing.WeeklyPlanning
 
         private DataTable FrontsDataTable = null;
         private DataTable PatinaDataTable = null;
-        DataTable PatinaRALDataTable = null;
+        private DataTable PatinaRALDataTable = null;
         private DataTable InsetTypesDataTable = null;
         private DataTable TechStoreDataTable = null;
         private DataTable ColorsDataTable = null;
@@ -13981,22 +13981,22 @@ namespace Infinium.Modules.Marketing.WeeklyPlanning
 
     public class BatchReport : IAllFrontParameterName, IIsMarsel
     {
-        object ResponsibleDateTime = DBNull.Value;
-        object TechnologyDateTime = DBNull.Value;
-        object ConfirmDateTime = DBNull.Value;
-        object CloseDateTime = DBNull.Value;
-        object PrintDateTime = DBNull.Value;
-        object ResponsibleUserID = DBNull.Value;
-        object TechnologyUserID = DBNull.Value;
-        object ConfirmUserID = DBNull.Value;
-        object CloseUserID = DBNull.Value;
-        object PrintUserID = DBNull.Value;
+        private object ResponsibleDateTime = DBNull.Value;
+        private object TechnologyDateTime = DBNull.Value;
+        private object ConfirmDateTime = DBNull.Value;
+        private object CloseDateTime = DBNull.Value;
+        private object PrintDateTime = DBNull.Value;
+        private object ResponsibleUserID = DBNull.Value;
+        private object TechnologyUserID = DBNull.Value;
+        private object ConfirmUserID = DBNull.Value;
+        private object CloseUserID = DBNull.Value;
+        private object PrintUserID = DBNull.Value;
 
-        FileManager FM = new FileManager();
-        DataTable ClientsDataTable = null;
+        private readonly FileManager FM = new FileManager();
+        private readonly DataTable ClientsDataTable = null;
 
-        DataTable FrontsResultDataTable = null;
-        DataTable[] DecorResultDataTable = null;
+        private DataTable FrontsResultDataTable = null;
+        private DataTable[] DecorResultDataTable = null;
 
         public DataTable[] ClientReportTables = null;
 
@@ -14005,13 +14005,13 @@ namespace Infinium.Modules.Marketing.WeeklyPlanning
         private DataTable FrontsDataTable = null;
         private DataTable FrameColorsDataTable = null;
         private DataTable PatinaDataTable = null;
-        DataTable PatinaRALDataTable = null;
+        private readonly DataTable PatinaRALDataTable = null;
         private DataTable InsetTypesDataTable = null;
         private DataTable InsetColorsDataTable = null;
         private DataTable TechnoInsetTypesDataTable = null;
         private DataTable TechnoInsetColorsDataTable = null;
 
-        Infinium.Modules.Marketing.NewOrders.DecorCatalogOrder DecorCatalog = null;
+        private readonly Infinium.Modules.Marketing.NewOrders.DecorCatalogOrder DecorCatalog = null;
 
         public BatchReport(ref Infinium.Modules.Marketing.NewOrders.DecorCatalogOrder tDecorCatalog)
         {
@@ -16085,8 +16085,7 @@ namespace Infinium.Modules.Marketing.WeeklyPlanning
                 }
                 #endregion
             }
-
-            Int64 iFileSize = 0;
+            
             string sSourceFolder = System.Environment.GetEnvironmentVariable("TEMP");
             string sFolderPath = "Общие файлы/Производство/Недельное планирование (маркетинг)";
             //string sDestFolder = Configs.DocumentsPath + sFolderPath;
@@ -16695,8 +16694,7 @@ namespace Infinium.Modules.Marketing.WeeklyPlanning
                 PackNumberFont, TempStyle, MegaBatchID, BatchID, FactoryID);
 
             string ReportFilePath = string.Empty;
-
-            Int64 iFileSize = 0;
+            
             string sSourceFolder = System.Environment.GetEnvironmentVariable("TEMP");
             string sFolderPath = "Общие файлы/Производство/Недельное планирование (маркетинг)";
             //string sDestFolder = Configs.DocumentsPath + sFolderPath;

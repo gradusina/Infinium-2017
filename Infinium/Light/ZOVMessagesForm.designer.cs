@@ -1,11 +1,15 @@
-﻿namespace Infinium
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+using ComponentFactory.Krypton.Toolkit;
+
+namespace Infinium
 {
     partial class ZOVMessagesForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -745,39 +749,39 @@
 
         #endregion
 
-        private System.Windows.Forms.Timer AnimateTimer;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton NavigateMenuCloseButton;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Panel NavigatePanel;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge3;
-        private ComponentFactory.Krypton.Toolkit.KryptonPalette NavigateMenuButtonsPalette;
-        private ComponentFactory.Krypton.Toolkit.KryptonCheckButton PasswordButton;
-        private System.Windows.Forms.Panel panel1;
+        private Timer AnimateTimer;
+        private KryptonButton NavigateMenuCloseButton;
+        private Label label1;
+        private Panel NavigatePanel;
+        private KryptonBorderEdge kryptonBorderEdge3;
+        private KryptonPalette NavigateMenuButtonsPalette;
+        private KryptonCheckButton PasswordButton;
+        private Panel panel1;
         private ZOVMessagesContainer messagesContainer1;
-        private System.Windows.Forms.Button button1;
+        private Button button1;
         private AnimatePanel animatePanel1;
-        private System.Windows.Forms.RichTextBox richTextBox1;
-        private System.Windows.Forms.Panel panel2;
+        private RichTextBox richTextBox1;
+        private Panel panel2;
         private ClientsMessagesDataGrid SelectedUsersGrid;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.Label NameLabel;
-        private System.Windows.Forms.Panel panel4;
-        private ComponentFactory.Krypton.Toolkit.KryptonSplitContainer kryptonSplitContainer1;
-        private System.Windows.Forms.Timer NewMessageTimer;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton SendButton;
-        private ComponentFactory.Krypton.Toolkit.KryptonPalette StandardButtonsPalette;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label5;
+        private Label label2;
+        private Label label3;
+        private Panel panel3;
+        private Label NameLabel;
+        private Panel panel4;
+        private KryptonSplitContainer kryptonSplitContainer1;
+        private Timer NewMessageTimer;
+        private KryptonButton SendButton;
+        private KryptonPalette StandardButtonsPalette;
+        private Label label4;
+        private Label label5;
         private ClientsDataGrid UsersListDataGrid;
-        private System.Windows.Forms.Timer OnlineTimer;
-        private System.Windows.Forms.Panel panel5;
-        private ComponentFactory.Krypton.Toolkit.KryptonCheckButton UsersFilterOnline;
-        private System.Windows.Forms.ToolTip toolTip1;
-        private ComponentFactory.Krypton.Toolkit.KryptonCheckButton UsersFilterAlpha;
-        private System.Windows.Forms.Panel panel6;
-        private ComponentFactory.Krypton.Toolkit.KryptonCheckSet kryptonCheckSet1;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton MinimizeButton;
+        private Timer OnlineTimer;
+        private Panel panel5;
+        private KryptonCheckButton UsersFilterOnline;
+        private ToolTip toolTip1;
+        private KryptonCheckButton UsersFilterAlpha;
+        private Panel panel6;
+        private KryptonCheckSet kryptonCheckSet1;
+        private KryptonButton MinimizeButton;
     }
 }

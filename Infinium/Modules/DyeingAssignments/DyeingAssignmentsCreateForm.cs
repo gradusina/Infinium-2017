@@ -11,23 +11,23 @@ namespace Infinium
 {
     public partial class DyeingAssignmentsCreateForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
-        bool NeedSplash = false;
+        private bool NeedSplash = false;
 
-        int FormEvent = 0;
+        private int FormEvent = 0;
 
-        Form MainForm;
-        Form TopForm = null;
-        DateTime From = DateTime.Now;
-        DateTime To = DateTime.Now;
+        private Form MainForm;
+        private Form TopForm = null;
+        private DateTime From = DateTime.Now;
+        private DateTime To = DateTime.Now;
 
-        ControlAssignments ControlAssignmentsManager;
-        FrontsOrdersManager FrontsOrdersManager;
-        PrintDyeingAssignments PrintDyeingAssignmentsManager;
+        private ControlAssignments ControlAssignmentsManager;
+        private FrontsOrdersManager FrontsOrdersManager;
+        private PrintDyeingAssignments PrintDyeingAssignmentsManager;
 
         public DyeingAssignmentsCreateForm(Form tMainForm, ref ControlAssignments tControlAssignmentsManager, ref PrintDyeingAssignments tPrintDyeingAssignmentsManager, DateTime dFrom, DateTime dTo)
         {

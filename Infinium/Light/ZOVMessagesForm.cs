@@ -1,22 +1,24 @@
 ﻿using System;
 using System.Data;
+using System.Diagnostics;
 using System.Windows.Forms;
+
 namespace Infinium
 {
     public partial class ZOVMessagesForm : InfiniumForm
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
 
-        int FormEvent = 0;
+        private int FormEvent;
 
-        LightStartForm LightStartForm;
+        private LightStartForm LightStartForm;
 
 
-        Form TopForm = null;
+        private Form TopForm = null;
 
-        ZOVMessages ZOVMessages;
+        private ZOVMessages ZOVMessages;
 
         public ZOVMessagesForm(LightStartForm tLightStartForm)
         {
@@ -24,7 +26,7 @@ namespace Infinium
 
             LightStartForm = tLightStartForm;
 
-            this.MaximumSize = Screen.PrimaryScreen.WorkingArea.Size;
+            MaximumSize = Screen.PrimaryScreen.WorkingArea.Size;
 
 
             Initialize();
@@ -73,7 +75,7 @@ namespace Infinium
         {
             if (!DatabaseConfigsManager.Animation)
             {
-                this.Opacity = 1;
+                Opacity = 1;
 
                 if (FormEvent == eClose || FormEvent == eHide)
                 {
@@ -106,8 +108,8 @@ namespace Infinium
 
             if (FormEvent == eClose || FormEvent == eHide)
             {
-                if (Convert.ToDecimal(this.Opacity) != Convert.ToDecimal(0.00))
-                    this.Opacity = Convert.ToDouble(Convert.ToDecimal(this.Opacity) - Convert.ToDecimal(0.05));
+                if (Convert.ToDecimal(Opacity) != Convert.ToDecimal(0.00))
+                    Opacity = Convert.ToDouble(Convert.ToDecimal(Opacity) - Convert.ToDecimal(0.05));
                 else
                 {
                     AnimateTimer.Enabled = false;
@@ -132,15 +134,13 @@ namespace Infinium
 
             if (FormEvent == eShow || FormEvent == eShow)
             {
-                if (this.Opacity != 1)
-                    this.Opacity += 0.05;
+                if (Opacity != 1)
+                    Opacity += 0.05;
                 else
                 {
                     AnimateTimer.Enabled = false;
                     SplashForm.CloseS = true;
                 }
-
-                return;
             }
         }
 
@@ -196,7 +196,6 @@ namespace Infinium
             {
                 NameLabel.Text = "";
                 messagesContainer1.Clear();
-                return;
             }
         }
 
@@ -272,7 +271,7 @@ namespace Infinium
 
         private void messagesContainer1_LinkClicked(object sender, LinkClickedEventArgs e)
         {
-            System.Diagnostics.Process.Start(e.LinkText);
+            Process.Start(e.LinkText);
         }
 
         private void ClientsMessagesForm_ANSUpdate(object sender)
@@ -288,7 +287,7 @@ namespace Infinium
 
             SelectedUsersGrid.Refresh();
 
-            ActiveNotifySystem.ClearSubscribesRecords(Security.CurrentUserID, this.Name);
+            ActiveNotifySystem.ClearSubscribesRecords(Security.CurrentUserID, Name);
         }
 
         private void kryptonCheckSet1_CheckedButtonChanged(object sender, EventArgs e)

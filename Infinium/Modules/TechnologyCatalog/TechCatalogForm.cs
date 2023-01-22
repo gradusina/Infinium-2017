@@ -13,50 +13,50 @@ namespace Infinium
 {
     public partial class TechCatalogForm : Form
     {
-        const int iStoreEdit = 37;
-        const int iMachinesEdit = 39;
-        const int iOperationsEdit = 40;
-        const int iToolsEdit = 38;
-        const int iAdmin = 36;
+        private const int iStoreEdit = 37;
+        private const int iMachinesEdit = 39;
+        private const int iOperationsEdit = 40;
+        private const int iToolsEdit = 38;
+        private const int iAdmin = 36;
 
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
-        bool bCopyGroupOperationsDetail = false;
-        bool bCopyOperationsDetail = false;
+        private bool bCopyGroupOperationsDetail = false;
+        private bool bCopyOperationsDetail = false;
 
-        bool AddMachinesOperationClick = false;
-        bool AddToolsClick = false;
-        bool NeedSplash = false;
+        private bool AddMachinesOperationClick = false;
+        private bool AddToolsClick = false;
+        private bool NeedSplash = false;
 
-        List<int> TechCatalogGroupOperationsIDs;
-        List<int> TechCatalogOperationsIDs;
-        List<int> TechCatalogStoreDetailIDs;
+        private List<int> TechCatalogGroupOperationsIDs;
+        private List<int> TechCatalogOperationsIDs;
+        private List<int> TechCatalogStoreDetailIDs;
 
-        FileManager FM;
+        private FileManager FM;
 
-        bool bStopTransfer = false;
+        private bool bStopTransfer = false;
 
-        bool bOperationsRole = false;
-        bool bToolsRole = false;
-        bool bPrintLabels = false;
+        private bool bOperationsRole = false;
+        private bool bToolsRole = false;
+        private bool bPrintLabels = false;
 
-        int FormEvent = 0;
+        private int FormEvent = 0;
 
         public int AttachsCount = 0;
 
-        DataTable CabFurDT;
+        private DataTable CabFurDT;
 
-        Form TopForm = null;
-        LightStartForm LightStartForm;
+        private Form TopForm = null;
+        private LightStartForm LightStartForm;
 
-        CabFurLabel CabFurLabelManager = null;
-        TechCatalogOperationsTerms TechCatalogOperationsTermsManager;
-        TechCatalogStoreDetailTerms TechCatalogStoreDetailTermsManager;
-        TechnologyMaps tTechnologyMaps;
-        TechStoreManager TechStoreManager;
+        private CabFurLabel CabFurLabelManager = null;
+        private TechCatalogOperationsTerms TechCatalogOperationsTermsManager;
+        private TechCatalogStoreDetailTerms TechCatalogStoreDetailTermsManager;
+        private TechnologyMaps tTechnologyMaps;
+        private TechStoreManager TechStoreManager;
 
         public DataTable AttachDT;
         public DataTable TechStoreAttachDT;
@@ -1874,7 +1874,7 @@ namespace Infinium
             }
         }
 
-        System.Threading.Thread T;
+        private System.Threading.Thread T;
 
         private void timer1_Tick(object sender, EventArgs e)
         {

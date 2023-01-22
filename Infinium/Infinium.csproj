@@ -8,9 +8,10 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>Infinium</RootNamespace>
     <AssemblyName>Infinium</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -24,6 +25,7 @@
     <LangVersion>7.1</LangVersion>
     <CodeAnalysisRuleSet>Infinium.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>false</RunCodeAnalysis>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -35,6 +37,7 @@
     <WarningLevel>4</WarningLevel>
     <LangVersion>7.1</LangVersion>
     <CodeAnalysisRuleSet>Infinium.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>Infinium.Program</StartupObject>
@@ -101,7 +104,7 @@
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net40\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NLog">
       <HintPath>..\..\gradusina\Infinium\bin\Debug\NLog.dll</HintPath>
@@ -576,6 +579,12 @@
     <Compile Include="Modules\CabFurnitureAssignments\AllQualityControlForm.designer.cs">
       <DependentUpon>AllQualityControlForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Modules\CabFurnitureAssignments\CabFurnitureModuleForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modules\CabFurnitureAssignments\CabFurnitureModuleForm.designer.cs">
+      <DependentUpon>CabFurnitureModuleForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Modules\CabFurnitureAssignments\QualityControlForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -607,11 +616,11 @@
     <Compile Include="Modules\CabFurnitureAssignments\CabFurnitureCoversForm.designer.cs">
       <DependentUpon>CabFurnitureCoversForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Modules\CabFurnitureAssignments\CabFurnitureModuleForm.cs">
+    <Compile Include="Modules\CabFurnitureAssignments\iiCabFurnitureModuleForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Modules\CabFurnitureAssignments\CabFurnitureModuleForm.designer.cs">
-      <DependentUpon>CabFurnitureModuleForm.cs</DependentUpon>
+    <Compile Include="Modules\CabFurnitureAssignments\iiCabFurnitureModuleForm.designer.cs">
+      <DependentUpon>iiCabFurnitureModuleForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Modules\CabFurnitureAssignments\CabFurnitureOperationsForm.cs">
       <SubType>Form</SubType>
@@ -2251,6 +2260,9 @@
     <EmbeddedResource Include="Modules\CabFurnitureAssignments\AllQualityControlForm.resx">
       <DependentUpon>AllQualityControlForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Modules\CabFurnitureAssignments\CabFurnitureModuleForm.resx">
+      <DependentUpon>CabFurnitureModuleForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Modules\CabFurnitureAssignments\QualityControlForm.resx">
       <DependentUpon>QualityControlForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -2266,8 +2278,8 @@
     <EmbeddedResource Include="Modules\CabFurnitureAssignments\CabFurnitureCoversForm.resx">
       <DependentUpon>CabFurnitureCoversForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Modules\CabFurnitureAssignments\CabFurnitureModuleForm.resx">
-      <DependentUpon>CabFurnitureModuleForm.cs</DependentUpon>
+    <EmbeddedResource Include="Modules\CabFurnitureAssignments\iiCabFurnitureModuleForm.resx">
+      <DependentUpon>iiCabFurnitureModuleForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Modules\CabFurnitureAssignments\CabFurnitureOperationsForm.resx">
       <DependentUpon>CabFurnitureOperationsForm.cs</DependentUpon>
@@ -2920,6 +2932,7 @@
     <EmbeddedResource Include="WaitForm.resx">
       <DependentUpon>WaitForm.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="app.config" />
     <None Include="Infinium.ruleset" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

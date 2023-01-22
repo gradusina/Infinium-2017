@@ -1,11 +1,15 @@
-﻿namespace Infinium
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+using ComponentFactory.Krypton.Toolkit;
+
+namespace Infinium
 {
     partial class NewToolsSellerForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -654,42 +658,42 @@
 
         #endregion
 
-        private System.Windows.Forms.Panel panel199;
-        private System.Windows.Forms.Label label2;
-        private ComponentFactory.Krypton.Toolkit.KryptonPalette StandardButtonsPalette;
-        private System.Windows.Forms.Timer AnimateTimer;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton MenuCloseButton;
-        private ComponentFactory.Krypton.Toolkit.KryptonPalette NavigateMenuButtonsPalette;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton SaveButton;
-        private ComponentFactory.Krypton.Toolkit.KryptonTextBox NotesTextBox;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.PictureBox pictureBox4;
-        private System.Windows.Forms.PictureBox pictureBox3;
-        private System.Windows.Forms.PictureBox pictureBox13;
-        private ComponentFactory.Krypton.Toolkit.KryptonTextBox ContractDocNumberTextBox;
-        private ComponentFactory.Krypton.Toolkit.KryptonTextBox CountryTextBox;
-        private ComponentFactory.Krypton.Toolkit.KryptonTextBox NameTextBox;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label35;
-        private System.Windows.Forms.PictureBox pictureBox5;
-        private ComponentFactory.Krypton.Toolkit.KryptonTextBox SiteTextBox;
-        private ComponentFactory.Krypton.Toolkit.KryptonTextBox EmailTextBox;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.Panel panel10;
-        private System.Windows.Forms.Panel panel9;
-        private System.Windows.Forms.Panel panel8;
-        private System.Windows.Forms.Panel panel7;
-        private System.Windows.Forms.Panel panel6;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.PictureBox pictureBox1;
-        private ComponentFactory.Krypton.Toolkit.KryptonTextBox AddressTextBox;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.PictureBox pictureBox2;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Panel panel2;
+        private Panel panel199;
+        private Label label2;
+        private KryptonPalette StandardButtonsPalette;
+        private Timer AnimateTimer;
+        private KryptonButton MenuCloseButton;
+        private KryptonPalette NavigateMenuButtonsPalette;
+        private KryptonButton SaveButton;
+        private KryptonTextBox NotesTextBox;
+        private Label label8;
+        private Label label6;
+        private PictureBox pictureBox4;
+        private PictureBox pictureBox3;
+        private PictureBox pictureBox13;
+        private KryptonTextBox ContractDocNumberTextBox;
+        private KryptonTextBox CountryTextBox;
+        private KryptonTextBox NameTextBox;
+        private Label label1;
+        private Label label4;
+        private Label label35;
+        private PictureBox pictureBox5;
+        private KryptonTextBox SiteTextBox;
+        private KryptonTextBox EmailTextBox;
+        private Label label7;
+        private TableLayoutPanel tableLayoutPanel1;
+        private Panel panel10;
+        private Panel panel9;
+        private Panel panel8;
+        private Panel panel7;
+        private Panel panel6;
+        private Panel panel1;
+        private PictureBox pictureBox1;
+        private KryptonTextBox AddressTextBox;
+        private Label label3;
+        private PictureBox pictureBox2;
+        private Label label5;
+        private Panel panel2;
         private PercentageDataGrid ToolsSellerInfoDataGrid;
     }
 }

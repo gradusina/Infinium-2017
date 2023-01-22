@@ -7,17 +7,17 @@ namespace Infinium
 {
     public partial class CatalogZOVPriceForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
-        int FormEvent = 0;
+        private int FormEvent;
 
-        LightStartForm LightStartForm;
-        Form TopForm = null;
-        Infinium.FrontsCatalog FrontsCatalog = null;
-        Infinium.DecorCatalog DecorCatalog = null;
+        private LightStartForm LightStartForm;
+        private Form TopForm;
+        private Infinium.FrontsCatalog FrontsCatalog;
+        private Infinium.DecorCatalog DecorCatalog;
 
         public CatalogZOVPriceForm(LightStartForm tLightStartForm)
         {

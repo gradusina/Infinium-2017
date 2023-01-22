@@ -1,4 +1,6 @@
-﻿namespace Infinium
+﻿using System.Windows.Forms;
+
+namespace Infinium
 {
     partial class AdminManagersJournalDetailForm
     {
@@ -64,11 +66,11 @@
             this.FullButton = new ComponentFactory.Krypton.Toolkit.KryptonCheckButton();
             this.kryptonCheckSet2 = new ComponentFactory.Krypton.Toolkit.KryptonCheckSet(this.components);
             this.ClientEventsButton = new ComponentFactory.Krypton.Toolkit.KryptonCheckButton();
-            this.MainOrdersTabControl = new DevExpress.XtraTab.XtraTabControl();
-            this.xtraTabPage1 = new DevExpress.XtraTab.XtraTabPage();
+            this.MainOrdersTabControl = new TabControl();
+            this.xtraTabPage1 = new TabPage();
             this.panel8 = new System.Windows.Forms.Panel();
             this.ClientEventsJournalDataGrid = new Infinium.PercentageDataGrid();
-            this.xtraTabPage2 = new DevExpress.XtraTab.XtraTabPage();
+            this.xtraTabPage2 = new TabPage();
             this.panel7 = new System.Windows.Forms.Panel();
             this.MessagesDataGrid = new Infinium.PercentageDataGrid();
             this.label4 = new System.Windows.Forms.Label();
@@ -88,7 +90,6 @@
             this.panel5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ModulesJornalDataGrid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.kryptonCheckSet2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.MainOrdersTabControl)).BeginInit();
             this.MainOrdersTabControl.SuspendLayout();
             this.xtraTabPage1.SuspendLayout();
             this.panel8.SuspendLayout();
@@ -837,27 +838,13 @@
             this.MainOrdersTabControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.MainOrdersTabControl.Appearance.BackColor = System.Drawing.Color.Transparent;
-            this.MainOrdersTabControl.Appearance.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.MainOrdersTabControl.Appearance.Options.UseBackColor = true;
-            this.MainOrdersTabControl.Appearance.Options.UseFont = true;
-            this.MainOrdersTabControl.AppearancePage.Header.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(140)))), ((int)(((byte)(140)))), ((int)(((byte)(140)))));
-            this.MainOrdersTabControl.AppearancePage.Header.BackColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(140)))), ((int)(((byte)(140)))), ((int)(((byte)(140)))));
-            this.MainOrdersTabControl.AppearancePage.Header.BorderColor = System.Drawing.Color.Black;
-            this.MainOrdersTabControl.AppearancePage.Header.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.MainOrdersTabControl.AppearancePage.Header.Options.UseBackColor = true;
-            this.MainOrdersTabControl.AppearancePage.Header.Options.UseBorderColor = true;
-            this.MainOrdersTabControl.AppearancePage.Header.Options.UseFont = true;
+            this.MainOrdersTabControl.TabPages.Add(this.xtraTabPage1);
+            this.MainOrdersTabControl.TabPages.Add(this.xtraTabPage2);
             this.MainOrdersTabControl.Location = new System.Drawing.Point(10, 60);
-            this.MainOrdersTabControl.LookAndFeel.SkinName = "Office 2010 Black";
-            this.MainOrdersTabControl.LookAndFeel.UseDefaultLookAndFeel = false;
             this.MainOrdersTabControl.Name = "MainOrdersTabControl";
-            this.MainOrdersTabControl.SelectedTabPage = this.xtraTabPage1;
+            this.MainOrdersTabControl.SelectedIndex = 0;
             this.MainOrdersTabControl.Size = new System.Drawing.Size(1248, 668);
             this.MainOrdersTabControl.TabIndex = 317;
-            this.MainOrdersTabControl.TabPages.AddRange(new DevExpress.XtraTab.XtraTabPage[] {
-            this.xtraTabPage1,
-            this.xtraTabPage2});
             // 
             // xtraTabPage1
             // 
@@ -877,6 +864,7 @@
             this.xtraTabPage1.Controls.Add(this.OnlineLabel);
             this.xtraTabPage1.Name = "xtraTabPage1";
             this.xtraTabPage1.Size = new System.Drawing.Size(1242, 628);
+            this.xtraTabPage1.TabIndex = 1;
             this.xtraTabPage1.Text = "Общая статистика";
             // 
             // panel8
@@ -951,6 +939,7 @@
             this.xtraTabPage2.Name = "xtraTabPage2";
             this.xtraTabPage2.Size = new System.Drawing.Size(1242, 628);
             this.xtraTabPage2.Text = "Сообщения";
+            this.xtraTabPage1.TabIndex = 0;
             // 
             // panel7
             // 
@@ -1088,14 +1077,11 @@
             this.panel5.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.ModulesJornalDataGrid)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.kryptonCheckSet2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.MainOrdersTabControl)).EndInit();
             this.MainOrdersTabControl.ResumeLayout(false);
             this.xtraTabPage1.ResumeLayout(false);
-            this.xtraTabPage1.PerformLayout();
             this.panel8.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.ClientEventsJournalDataGrid)).EndInit();
             this.xtraTabPage2.ResumeLayout(false);
-            this.xtraTabPage2.PerformLayout();
             this.panel7.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.MessagesDataGrid)).EndInit();
             this.ResumeLayout(false);
@@ -1137,9 +1123,9 @@
         private ComponentFactory.Krypton.Toolkit.KryptonCheckSet kryptonCheckSet2;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label6;
-        private DevExpress.XtraTab.XtraTabControl MainOrdersTabControl;
-        private DevExpress.XtraTab.XtraTabPage xtraTabPage1;
-        private DevExpress.XtraTab.XtraTabPage xtraTabPage2;
+        private System.Windows.Forms.TabControl MainOrdersTabControl;
+        private System.Windows.Forms.TabPage xtraTabPage1;
+        private System.Windows.Forms.TabPage xtraTabPage2;
         private System.Windows.Forms.Panel panel7;
         private System.Windows.Forms.Label label4;
         private ComponentFactory.Krypton.Toolkit.KryptonDateTimePicker MessagesFromDateTimePicker;

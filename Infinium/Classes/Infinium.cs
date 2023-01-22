@@ -325,6 +325,8 @@ namespace Infinium
 
         public static void RefreshPositionsDataTable()
         {
+            if (_positionsDataTable == null)
+                _positionsDataTable = new DataTable();
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Positions ORDER BY Position", ConnectionStrings.LightConnectionString))
             {
                 _positionsDataTable.Clear();
@@ -452,7 +454,7 @@ namespace Infinium
 
     public class Security
     {
-        private string UsersConnectionString = null;
+        private readonly string UsersConnectionString = null;
 
         public DataTable UsersDataTable = null;
         private DataTable AccessDataTable = null;
@@ -483,11 +485,13 @@ namespace Infinium
 
         public static Color GridsBackColor = Color.White;
 
-        ManagementObjectSearcher searcher;
+        private ManagementObjectSearcher searcher;
 
-        ManagementObjectCollection mObject;
+        private ManagementObjectCollection mObject;
 
         public static int[] CabFurIds;
+        public static int[] FrontsSquareCalcIds;
+
         public static int[] insetTypes = {
             30455, 30456, 4008, 4009, 4010, 4011, 4012, 4013, 4014, 4015,
             16617, 16616, 4027, 4028, 4029, 4030, 4031, 4032, 4033, 4034, 40798, 16179
@@ -523,6 +527,11 @@ namespace Infinium
             CompParamsDataTable.Columns.Add(new DataColumn("OSPlatform", Type.GetType("System.String")));
         }
 
+        static public bool IsFrontsSquareCalc(int FrontID)
+        {
+            return FrontsSquareCalcIds.Contains(FrontID);
+        }
+
         private bool Fill()
         {
             string SelectCommand = @"SELECT ProductID FROM DecorProducts WHERE IsCabFur=1";
@@ -536,6 +545,23 @@ namespace Infinium
                         for (int i = 0; i < DT.Rows.Count; i++)
                         {
                             CabFurIds[i] = Convert.ToInt32(DT.Rows[i]["ProductID"]);
+                        }
+                    }
+                }
+            }
+
+
+            SelectCommand = @"SELECT * FROM FrontsSquareCalculate";
+            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
+            {
+                using (DataTable DT = new DataTable())
+                {
+                    if (DA.Fill(DT) > 0)
+                    {
+                        FrontsSquareCalcIds = new int[DT.Rows.Count];
+                        for (int i = 0; i < DT.Rows.Count; i++)
+                        {
+                            FrontsSquareCalcIds[i] = Convert.ToInt32(DT.Rows[i]["frontId"]);
                         }
                     }
                 }
@@ -1384,7 +1410,7 @@ namespace Infinium
     public class OnLineControl
     {
         [DllImport("user32.dll")]
-        static extern bool GetLastInputInfo(ref LASTINPUTINFO plii);
+        private static extern bool GetLastInputInfo(ref LASTINPUTINFO plii);
 
         internal struct LASTINPUTINFO
         {
@@ -1725,8 +1751,8 @@ namespace Infinium
 
     public class UserProfile
     {
-        DataTable dtRolePermissions;
-        DataTable UsersPositionsDT;
+        private readonly DataTable dtRolePermissions;
+        private readonly DataTable UsersPositionsDT;
         public DataTable UsersDataTable;
         public BindingSource UsersBindingSource;
         public DataTable PositionsDataTable;
@@ -2103,9 +2129,7 @@ namespace Infinium
         }
 
 
-
-
-        FileManager FM = new FileManager();
+        private readonly FileManager FM = new FileManager();
         //for usersprofiles only
 
         public Contacts GetContacts(int UserID)
@@ -2585,11 +2609,7 @@ namespace Infinium
     }
 
 
-
-
-
-
-    class LightCrypto
+    internal class LightCrypto
     {
         public static string Encrypt(string ToEncrypt, bool useHasing, string Password)
         {
@@ -2711,7 +2731,7 @@ namespace Infinium
             }
             return false;
         }
-
+        
         static private ArrayList GetMegaOrdersInDispatch(ArrayList DispatchIDs)
         {
             string OrdersConnectionString = ConnectionStrings.MarketingOrdersConnectionString;
@@ -6821,7 +6841,6 @@ AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = { Meg
 
         static public void SetToDispatch(DateTime date, int[] Packages, int MainOrderID)
         {
-            bool HasPackages = false;
             if (Packages.Count() > 0)
             {
                 using (SqlDataAdapter DA = new SqlDataAdapter(
@@ -6835,7 +6854,6 @@ AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = { Meg
                         {
                             if (DA.Fill(DT) > 0)
                             {
-                                HasPackages = true;
                                 for (int i = 0; i < DT.Rows.Count; i++)
                                 {
                                     DT.Rows[i]["PackageStatusID"] = 3;
@@ -7560,20 +7578,20 @@ AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = { Meg
         private Int64 iTransData = 0;
         public bool bStopTransfer = false;
 
-        private string ServerFTPLogin = "infinium";
-        private string ServerFTPPass = "infinium";
-        private string ZOVTPSHostFTPLogin = "infiniu2_infinium";
-        private string ZOVTPSHostFTPPass = "vqju]nkca8ygtfibrQop";
-        private string HostFTPLogin = "infiniu2_infinium";
-        private string HostFTPPass = "vqju]nkca8ygtfibrQop";
-        private string LocalFTPLogin = "infinium";
-        private string LocalFTPPass = "infinium";
-        private string ServerFTP178Login = "infinium";
-        private string ServerFTP178Pass = "infinium";
+        private readonly string ServerFTPLogin = "infinium";
+        private readonly string ServerFTPPass = "infinium";
+        private readonly string ZOVTPSHostFTPLogin = "infiniu2_infinium";
+        private readonly string ZOVTPSHostFTPPass = "vqju]nkca8ygtfibrQop";
+        private readonly string HostFTPLogin = "infiniu2_infinium";
+        private readonly string HostFTPPass = "vqju]nkca8ygtfibrQop";
+        private readonly string LocalFTPLogin = "infinium";
+        private readonly string LocalFTPPass = "infinium";
+        private readonly string ServerFTP178Login = "infinium";
+        private readonly string ServerFTP178Pass = "infinium";
 
         //private int bFTPDest = Configs.FTPType;//0 - server, 1 - host, 2 - local
 
-        System.Timers.Timer Timer;
+        private readonly System.Timers.Timer Timer;
 
         public FileManager()
         {

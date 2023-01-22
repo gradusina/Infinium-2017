@@ -9,9 +9,9 @@ namespace Infinium.Modules.Marketing.NewOrders
 {
     public class DecorCatalogOrder
     {
-        ComponentFactory.Krypton.Toolkit.KryptonComboBox LengthEdit;
-        ComponentFactory.Krypton.Toolkit.KryptonComboBox HeightEdit;
-        ComponentFactory.Krypton.Toolkit.KryptonComboBox WidthEdit;
+        private ComponentFactory.Krypton.Toolkit.KryptonComboBox LengthEdit;
+        private ComponentFactory.Krypton.Toolkit.KryptonComboBox HeightEdit;
+        private ComponentFactory.Krypton.Toolkit.KryptonComboBox WidthEdit;
 
         public int DecorProductsCount = 0;
 

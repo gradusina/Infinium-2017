@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -6,17 +7,17 @@ namespace Infinium
 {
     public partial class ToolsSellerForm : Form
     {
-        const int eHide = 2;
-        const int eShow = 1;
-        const int eClose = 3;
-        const int eMainMenu = 4;
+        private const int eHide = 2;
+        private const int eShow = 1;
+        private const int eClose = 3;
+        private const int eMainMenu = 4;
 
-        int FormEvent = 0;
+        private int FormEvent;
 
 
-        Form TopForm = null;
-        LightStartForm LightStartForm;
-        ToolsSellersManager ToolsSellersManager;
+        private Form TopForm;
+        private LightStartForm LightStartForm;
+        private ToolsSellersManager ToolsSellersManager;
 
         public ToolsSellerForm(LightStartForm tLightStartForm)
         {
@@ -24,7 +25,7 @@ namespace Infinium
             LightStartForm = tLightStartForm;
 
 
-            this.MaximumSize = Screen.PrimaryScreen.WorkingArea.Size;
+            MaximumSize = Screen.PrimaryScreen.WorkingArea.Size;
 
             Initialize();
             while (!SplashForm.bCreated) ;
@@ -41,7 +42,7 @@ namespace Infinium
         {
             if (!DatabaseConfigsManager.Animation)
             {
-                this.Opacity = 1;
+                Opacity = 1;
 
                 if (FormEvent == eClose || FormEvent == eHide)
                 {
@@ -74,8 +75,8 @@ namespace Infinium
 
             if (FormEvent == eClose || FormEvent == eHide)
             {
-                if (Convert.ToDecimal(this.Opacity) != Convert.ToDecimal(0.00))
-                    this.Opacity = Convert.ToDouble(Convert.ToDecimal(this.Opacity) - Convert.ToDecimal(0.05));
+                if (Convert.ToDecimal(Opacity) != Convert.ToDecimal(0.00))
+                    Opacity = Convert.ToDouble(Convert.ToDecimal(Opacity) - Convert.ToDecimal(0.05));
                 else
                 {
                     AnimateTimer.Enabled = false;
@@ -100,15 +101,13 @@ namespace Infinium
 
             if (FormEvent == eShow || FormEvent == eShow)
             {
-                if (this.Opacity != 1)
-                    this.Opacity += 0.05;
+                if (Opacity != 1)
+                    Opacity += 0.05;
                 else
                 {
                     AnimateTimer.Enabled = false;
                     SplashForm.CloseS = true;
                 }
-
-                return;
             }
         }
 
@@ -172,7 +171,7 @@ namespace Infinium
 
             if (ToolsSellersDataGrid.SelectedRows.Count > 0)
             {
-                bool OKCancel = Infinium.LightMessageBox.Show(ref TopForm, true,
+                bool OKCancel = LightMessageBox.Show(ref TopForm, true,
                     "Вы уверены, что хотите удалить поставщика?",
                     "Удаление поставщика");
 
@@ -253,7 +252,7 @@ namespace Infinium
                 url = SiteLabel.Text;
             else
                 url = "www." + SiteLabel.Text;
-            System.Diagnostics.Process.Start(url);
+            Process.Start(url);
         }
 
         private void ToolsSellersGroupsDataGrid_SelectionChanged(object sender, EventArgs e)
@@ -318,7 +317,7 @@ namespace Infinium
         {
             if (ToolsSellersSubGroupsDataGrid.SelectedRows.Count > 0)
             {
-                bool OKCancel = Infinium.LightMessageBox.Show(ref TopForm, true,
+                bool OKCancel = LightMessageBox.Show(ref TopForm, true,
                     "Вы уверены, что хотите удалить подгруппу?",
                     "Удаление подгруппы");
 
@@ -341,7 +340,7 @@ namespace Infinium
         {
             if (ToolsSellersGroupsDataGrid.SelectedRows.Count > 0)
             {
-                bool OKCancel = Infinium.LightMessageBox.Show(ref TopForm, true,
+                bool OKCancel = LightMessageBox.Show(ref TopForm, true,
                     "Вы уверены, что хотите удалить группу?",
                     "Удаление группы");
 
