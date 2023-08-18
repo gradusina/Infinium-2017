@@ -147,6 +147,7 @@
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.StandardButtonsPalette.ButtonStyles.ButtonCommon.StateTracking.Border.Rounding = 0;
+            this.StandardButtonsPalette.CustomisedKryptonPaletteFilePath = null;
             // 
             // panel1
             // 
@@ -419,6 +420,7 @@
             this.cbManager.DropDownWidth = 121;
             this.cbManager.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.cbManager.FormattingEnabled = true;
+            this.cbManager.IntegralHeight = false;
             this.cbManager.Items.AddRange(new object[] {
             "Нет",
             "Да"});
@@ -427,6 +429,7 @@
             this.cbManager.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.cbManager.Size = new System.Drawing.Size(459, 32);
             this.cbManager.StateCommon.ComboBox.Content.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.cbManager.StateCommon.ComboBox.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.cbManager.StateCommon.Item.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.cbManager.TabIndex = 438;
             // 
@@ -437,6 +440,7 @@
             this.cbClientsGroups.DropDownWidth = 121;
             this.cbClientsGroups.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.cbClientsGroups.FormattingEnabled = true;
+            this.cbClientsGroups.IntegralHeight = false;
             this.cbClientsGroups.Items.AddRange(new object[] {
             "Нет",
             "Да"});
@@ -445,6 +449,7 @@
             this.cbClientsGroups.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.cbClientsGroups.Size = new System.Drawing.Size(459, 32);
             this.cbClientsGroups.StateCommon.ComboBox.Content.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.cbClientsGroups.StateCommon.ComboBox.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.cbClientsGroups.StateCommon.Item.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.cbClientsGroups.TabIndex = 452;
             // 
@@ -465,10 +470,9 @@
             this.ShopsAddressesDataGrid.AllowUserToDeleteRows = false;
             this.ShopsAddressesDataGrid.AllowUserToResizeColumns = false;
             this.ShopsAddressesDataGrid.AllowUserToResizeRows = false;
-            this.ShopsAddressesDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.ShopsAddressesDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.ShopsAddressesDataGrid.BackText = "Нет данных";
             this.ShopsAddressesDataGrid.ColumnHeadersHeight = 40;
-            this.ShopsAddressesDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.ShopsAddressesDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ShopsAddressesDataGrid.HideOuterBorders = true;
             this.ShopsAddressesDataGrid.Location = new System.Drawing.Point(1, 1);

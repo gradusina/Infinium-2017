@@ -392,6 +392,11 @@ namespace Infinium.Modules.Marketing.NewOrders
             return false;
         }
 
+        public string GetProductName(int ProductId)
+        {
+            return DecorProductsDataTable.Select("ProductId = " + ProductId)[0]["ProductName"].ToString();
+        }
+
         public string GetItemName(int DecorID)
         {
             return DecorDataTable.Select("DecorID = " + DecorID)[0]["Name"].ToString();

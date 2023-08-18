@@ -69,7 +69,7 @@
 
         ep216Margin = 108,
 
-        ep111Margin = 110,
+        ep111Margin = 140,
 
         BergamoNarrowMargin = 98,
 
@@ -280,7 +280,8 @@
         Turin3SimpleInsetHeight = 127,
 
         LeonSimpleInsetHeight = 108,
-        BonaSimpleInsetHeight = 98,
+
+        BonaSimpleInsetHeight = 148,
 
         InfinitiSimpleInsetHeight = 134,
 
@@ -361,7 +362,7 @@
         Turin3SimpleInsetWidth = 127,
 
         LeonSimpleInsetWidth = 108,
-        BonaSimpleInsetWidth = 98,
+        BonaSimpleInsetWidth = 148,
 
         InfinitiSimpleInsetWidth = 134,
 

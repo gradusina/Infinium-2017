@@ -1,4 +1,6 @@
 ﻿
+using NPOI.HSSF.Record.Formula.Functions;
+
 using System;
 using System.Data;
 using System.Data.SqlClient;
@@ -22,6 +24,7 @@ namespace Infinium.Modules.Marketing.NewOrders.InvoiceReportToDbf
         private DataTable ProfilFrontsOrdersDataTable = null;
         private DataTable TPSFrontsOrdersDataTable = null;
 
+        public DataTable _reportDataTable = null;
         public DataTable ProfilReportDataTable = null;
         public DataTable TPSReportDataTable = null;
 
@@ -44,6 +47,7 @@ namespace Infinium.Modules.Marketing.NewOrders.InvoiceReportToDbf
 
         public void ClearReport()
         {
+            ProfilReportDataTable.Clear();
             ProfilReportDataTable.Clear();
             TPSReportDataTable.Clear();
         }

@@ -432,8 +432,8 @@ namespace Infinium.Modules.Marketing.NewOrders
             return;
         }
 
-        public void CalculateOrder(int MegaOrderID, int MainOrderID, decimal ProfilDiscountDirector, decimal TPSDiscountDirector, 
-            decimal ProfilTotalDiscount, decimal TPSTotalDiscount, decimal DiscountPaymentCondition, 
+        public void CalculateOrder(int MegaOrderID, int MainOrderID, decimal ProfilDiscountDirector, decimal TPSDiscountDirector,
+            decimal ProfilTotalDiscount, decimal TPSTotalDiscount, decimal DiscountPaymentCondition,
             int CurrencyTypeID, decimal Currency, object ConfirmDateTime)
         {
             int ClientID = GetClientID(MainOrderID);
@@ -486,7 +486,7 @@ namespace Infinium.Modules.Marketing.NewOrders
 
                         Currency = Decimal.Round(Currency, 4, MidpointRounding.AwayFromZero);
                         bool TechDrilling = Convert.ToBoolean(DT.Rows[0]["TechDrilling"]);
-                        FrontsCalculate.CalculateFronts(ClientID, MainOrderID, 
+                        FrontsCalculate.CalculateFronts(ClientID, MainOrderID,
                             ProfilDiscountDirector, TPSDiscountDirector, ProfilTotalDiscount, TPSTotalDiscount,
                             CurrencyTypeID, Currency, TechDrilling,
                             ref OriginalProfilFrontsOrderCost, ref OriginalTPSFrontsOrderCost, ref OriginalTotalFrontsOrderCost,
@@ -541,9 +541,9 @@ namespace Infinium.Modules.Marketing.NewOrders
             }
         }
 
-        public void Recalculate(int MegaOrderID, decimal ComplaintProfilCost, decimal ComplaintTPSCost, int 
+        public void Recalculate(int MegaOrderID, decimal ComplaintProfilCost, decimal ComplaintTPSCost, int
                 TransportType, decimal TransportCost, decimal AdditionalCost,
-            decimal ProfilDiscountDirector, decimal TPSDiscountDirector, 
+            decimal ProfilDiscountDirector, decimal TPSDiscountDirector,
             decimal ProfilTotalDiscount, decimal TPSTotalDiscount, decimal DiscountPaymentCondition, int CurrencyTypeID, decimal PaymentRate,
             object ConfirmDateTime)
         {
@@ -850,7 +850,7 @@ namespace Infinium.Modules.Marketing.NewOrders
         public DateTime ConfirmDateTime { get; set; } = DateTime.Now;
 
         public int CurrencyTypeId { get; set; } = 1;
-        
+
         public decimal Rate { get; set; } = 1;
 
         private bool Sale = false;
@@ -1042,7 +1042,7 @@ namespace Infinium.Modules.Marketing.NewOrders
             }
         }
 
-        private void TPSFrontClientPrice(int ClientID, DataRow FrontsOrdersRow, decimal DiscountDirector, decimal TotalDiscount, 
+        private void TPSFrontClientPrice(int ClientID, DataRow FrontsOrdersRow, decimal DiscountDirector, decimal TotalDiscount,
             bool TechDrilling, ref decimal OriginalPrice, ref decimal Price)
         {
             decimal MarketingCost = 0;//себестоимость
@@ -1106,7 +1106,7 @@ namespace Infinium.Modules.Marketing.NewOrders
             return true;
         }
 
-        private void ProfilFrontPrice(int ClientID, DataRow FrontsOrdersRow, decimal DiscountDirector, decimal TotalDiscount, 
+        private void ProfilFrontPrice(int ClientID, DataRow FrontsOrdersRow, decimal DiscountDirector, decimal TotalDiscount,
             bool TechDrilling, ref decimal OriginalPrice, ref decimal Price, decimal Currency)
         {
             bool IsNonStandard = false;
@@ -1155,7 +1155,7 @@ namespace Infinium.Modules.Marketing.NewOrders
             }
         }
 
-        private void TPSFrontPrice(int ClientID, DataRow FrontsOrdersRow, decimal DiscountDirector, decimal TotalDiscount, 
+        private void TPSFrontPrice(int ClientID, DataRow FrontsOrdersRow, decimal DiscountDirector, decimal TotalDiscount,
             bool TechDrilling, ref decimal OriginalPrice, ref decimal Price)
         {
             bool IsNonStandard = false;
@@ -1203,7 +1203,7 @@ namespace Infinium.Modules.Marketing.NewOrders
             }
         }
 
-        private void InsetPrice(int ClientID, DataRow FrontsOrdersRow, decimal DiscountDirector, decimal TotalDiscount, 
+        private void InsetPrice(int ClientID, DataRow FrontsOrdersRow, decimal DiscountDirector, decimal TotalDiscount,
             bool TechDrilling, ref decimal OriginalPrice, ref decimal Price)
         {
             decimal MarketingCost = 0;//себестоимость
@@ -1508,7 +1508,7 @@ namespace Infinium.Modules.Marketing.NewOrders
             return Cost;
         }
 
-        public decimal GetFrontCostAluminium(int ClientID, DataRow FrontsOrdersRow, decimal DiscountDirector, decimal TotalDiscount, 
+        public decimal GetFrontCostAluminium(int ClientID, DataRow FrontsOrdersRow, decimal DiscountDirector, decimal TotalDiscount,
             bool TechDrilling, ref decimal Square)
         {
             decimal Cost = 0;
@@ -1703,7 +1703,7 @@ namespace Infinium.Modules.Marketing.NewOrders
             OriginalFrontCost = Math.Ceiling(OriginalFrontCost / 0.01m) * 0.01m;
             OriginalCost = OriginalFrontCost + InsetCost;
             Cost = FrontCost + InsetCost;
-            
+
             FrontsOrdersRow["Square"] = Square;
             FrontsOrdersRow["OriginalCost"] = OriginalCost;
             FrontsOrdersRow["CurrencyTypeID"] = CurrencyTypeID;
@@ -1830,7 +1830,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                 Cost = FrontCost + InsetCost;
                 CurrencyOrderCost = FrontCost1 + InsetCost1;
             }
-            
+
             FrontsOrdersRow["Square"] = Square;
             FrontsOrdersRow["OriginalCost"] = OriginalCost;
             FrontsOrdersRow["CurrencyTypeID"] = CurrencyTypeID;
@@ -2013,8 +2013,8 @@ namespace Infinium.Modules.Marketing.NewOrders
 
 
         //общий расчет фасадов в заказе
-        public void CalculateFronts(int ClientID, int MainOrderID, decimal ProfilDiscountDirector, decimal TPSDiscountDirector, 
-            decimal ProfilTotalDiscount, decimal TPSTotalDiscount, 
+        public void CalculateFronts(int ClientID, int MainOrderID, decimal ProfilDiscountDirector, decimal TPSDiscountDirector,
+            decimal ProfilTotalDiscount, decimal TPSTotalDiscount,
             int CurrencyTypeID, decimal Currency, bool TechDrilling,
             ref decimal OriginalProfilCost, ref decimal OriginalTPSCost, ref decimal OriginalTotalCost,
             ref decimal ProfilCost, ref decimal TPSCost, ref decimal TotalCost, ref decimal TotalCurrencyCost,
@@ -2281,17 +2281,17 @@ namespace Infinium.Modules.Marketing.NewOrders
         public DateTime ConfirmDateTime { get; set; } = DateTime.Now;
 
         public int CurrencyTypeId { get; set; } = 1;
-        
+
         public decimal Rate { get; set; } = 1;
 
-        private bool Sale = false;
+        private bool _sale = false;
 
-        private DataTable StockDetailsDT = null;
-        private DataTable DecorConfigDataTable = null;
-        private DataTable ClientsDataTable = null;
-        private DataTable DiscountVolumeTable = null;
-        private DataTable DecorOrdersTable = null;
-        private DataTable AllDecorOrdersTable = null;
+        private DataTable _stockDetailsDt = null;
+        private DataTable _decorConfigDataTable = null;
+        private DataTable _clientsDataTable = null;
+        private DataTable _discountVolumeTable = null;
+        private DataTable _decorOrdersTable = null;
+        private DataTable _allDecorOrdersTable = null;
 
         public DecorCalculate()
         {
@@ -2300,8 +2300,8 @@ namespace Infinium.Modules.Marketing.NewOrders
 
         private void Fill()
         {
-            DecorConfigDataTable = new DataTable();
-            DecorConfigDataTable = TablesManager.DecorConfigDataTable;
+            _decorConfigDataTable = new DataTable();
+            _decorConfigDataTable = TablesManager.DecorConfigDataTable;
             //DecorConfigDataTable = new DataTable();
             //using (SqlDataAdapter DA = new SqlDataAdapter(@"SELECT DecorConfig.*, Decor.TechStoreName FROM DecorConfig INNER JOIN
             //    infiniu2_catalog.dbo.TechStore AS Decor ON DecorConfig.DecorID = Decor.TechStoreID",
@@ -2310,25 +2310,25 @@ namespace Infinium.Modules.Marketing.NewOrders
             //    DA.Fill(DecorConfigDataTable);
             //}
 
-            ClientsDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Clients",
+            _clientsDataTable = new DataTable();
+            using (var da = new SqlDataAdapter("SELECT * FROM Clients",
                 ConnectionStrings.MarketingReferenceConnectionString))
             {
-                DA.Fill(ClientsDataTable);
+                da.Fill(_clientsDataTable);
             }
-            DiscountVolumeTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DiscountVolume",
+            _discountVolumeTable = new DataTable();
+            using (var da = new SqlDataAdapter("SELECT * FROM DiscountVolume",
                 ConnectionStrings.MarketingReferenceConnectionString))
             {
-                DA.Fill(DiscountVolumeTable);
+                da.Fill(_discountVolumeTable);
             }
-            DecorOrdersTable = new DataTable();
-            AllDecorOrdersTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM NewDecorOrders",
+            _decorOrdersTable = new DataTable();
+            _allDecorOrdersTable = new DataTable();
+            using (var da = new SqlDataAdapter("SELECT TOP 0 * FROM NewDecorOrders",
                 ConnectionStrings.MarketingOrdersConnectionString))
             {
-                DA.Fill(DecorOrdersTable);
-                DA.Fill(AllDecorOrdersTable);
+                da.Fill(_decorOrdersTable);
+                da.Fill(_allDecorOrdersTable);
             }
         }
 
@@ -2337,65 +2337,66 @@ namespace Infinium.Modules.Marketing.NewOrders
             Fill();
         }
 
-        public decimal GetDiscountVolume(decimal TotalVolume)
+        public decimal GetDiscountVolume(decimal totalVolume)
         {
-            string withDot = TotalVolume.ToString(System.Globalization.CultureInfo.InvariantCulture);
-            decimal Discount = 0;
-            DataRow[] Rows = DiscountVolumeTable.Select("MinVolume < " + withDot + " AND MaxVolume >=" + withDot);
-            if (Rows.Count() > 0)
-                Discount = Convert.ToDecimal(Rows[0]["Discount"]);
-            return Discount;
+            var withDot = totalVolume.ToString(System.Globalization.CultureInfo.InvariantCulture);
+            decimal discount = 0;
+            var rows = _discountVolumeTable.Select("MinVolume < " + withDot + " AND MaxVolume >=" + withDot);
+            if (rows.Any())
+                discount = Convert.ToDecimal(rows[0]["Discount"]);
+            return discount;
         }
-        
-        private void GetPilastrPrice(int ClientID, DataRow DecorOrderRow, decimal Length, decimal DiscountDirector, decimal TotalDiscount, ref decimal OriginalPrice, ref decimal Price, decimal DiscountVolume = 1)
+
+        private void GetPilastrPrice(int clientId, DataRow decorOrderRow, decimal length, decimal discountDirector, decimal totalDiscount, ref decimal originalPrice, ref decimal price, decimal discountVolume = 1)
         {
-            decimal CurrentPrice = 0;
-            decimal MarketingCost = 0;//себестоимость
-            decimal PriceRatio = 0;//ценовой коэффициент
-            int DigitCapacity = 0;//разрядность
-            decimal PriceGroup = 0;//ценовая группа
+            decimal currentPrice = 0;
+            decimal marketingCost = 0;//себестоимость
+            decimal priceRatio = 0;//ценовой коэффициент
+            var digitCapacity = 0;//разрядность
+            decimal priceGroup = 0;//ценовая группа
 
-            DataRow[] FPRow = ClientsDataTable.Select("ClientID = " + ClientID);
-            if (FPRow.Count() > 0)
+            var fpRow = _clientsDataTable.Select("ClientID = " + clientId);
+            if (fpRow.Count() > 0)
             {
-                bool IsSample = Convert.ToBoolean(DecorOrderRow["IsSample"]);//Образец
-                PriceGroup = Convert.ToDecimal(FPRow[0]["PriceGroup"]);//MarketingCost
-                int DecorConfigID = Convert.ToInt32(DecorOrderRow["DecorConfigID"]);
-                DataRow[] PRows = DecorConfigDataTable.Select("DecorConfigID = " + DecorOrderRow["DecorConfigID"].ToString());
-                if (PRows.Count() > 0)
+                var isSample = Convert.ToBoolean(decorOrderRow["IsSample"]);//Образец
+                priceGroup = Convert.ToDecimal(fpRow[0]["PriceGroup"]);//MarketingCost
+                var decorConfigId = Convert.ToInt32(decorOrderRow["DecorConfigID"]);
+                var pRows = _decorConfigDataTable.Select("DecorConfigID = " + decorOrderRow["DecorConfigID"]);
+                if (pRows.Count() > 0)
                 {
-                    MarketingCost = Convert.ToDecimal(PRows[0]["MarketingCost"]);
-                    PriceRatio = Convert.ToDecimal(PRows[0]["PriceRatio"]);
-                    DigitCapacity = Convert.ToInt32(PRows[0]["DigitCapacity"]);
-                    OriginalPrice = MarketingCost * PriceRatio * (1 + PriceGroup);
-                    OriginalPrice = Decimal.Round(OriginalPrice, DigitCapacity, MidpointRounding.AwayFromZero);
-                    CurrentPrice = DiscountVolume * OriginalPrice;
+                    marketingCost = Convert.ToDecimal(pRows[0]["MarketingCost"]);
+                    priceRatio = Convert.ToDecimal(pRows[0]["PriceRatio"]);
+                    digitCapacity = Convert.ToInt32(pRows[0]["DigitCapacity"]);
+                    originalPrice = marketingCost * priceRatio * (1 + priceGroup);
+                    originalPrice = decimal.Round(originalPrice, digitCapacity, MidpointRounding.AwayFromZero);
+                    currentPrice = discountVolume * originalPrice;
 
-                    decimal pPrice = 50 / (Length / 1000);
+                    var pPrice = 50 / (length / 1000);
 
-                    CurrentPrice += pPrice;
+                    currentPrice += pPrice;
 
-                    if (ClientID == 145)
+                    if (clientId == 145)
                     {
-                        OriginalPrice = Convert.ToDecimal(PRows[0]["ZOVPrice"]);
-                        CurrentPrice = DiscountVolume * OriginalPrice;
+                        originalPrice = Convert.ToDecimal(pRows[0]["ZOVPrice"]);
+                        currentPrice = discountVolume * originalPrice;
+                        currentPrice += 60 / (length / 1000);
                     }
-                    Price = CurrentPrice - CurrentPrice / 100 * TotalDiscount;
-                    if (Sale)
+                    price = currentPrice - currentPrice / 100 * totalDiscount;
+                    if (_sale)
                     {
-                        decimal SampleSaleValue = GetSampleDiscount(Convert.ToInt32(DecorOrderRow["DecorConfigID"]));
-                        decimal SaleValue = GetDiscount(Convert.ToInt32(DecorOrderRow["DecorConfigID"]));
-                        if (IsSample)
-                            Price = (CurrentPrice - CurrentPrice / 100 * (50 + SampleSaleValue)) * (1 - DiscountDirector / 100);
+                        var sampleSaleValue = GetSampleDiscount(Convert.ToInt32(decorOrderRow["DecorConfigID"]));
+                        var saleValue = GetDiscount(Convert.ToInt32(decorOrderRow["DecorConfigID"]));
+                        if (isSample)
+                            price = (currentPrice - currentPrice / 100 * (50 + sampleSaleValue)) * (1 - discountDirector / 100);
                         else
-                            Price = (CurrentPrice - CurrentPrice / 100 * (TotalDiscount + SaleValue)) * (1 - DiscountDirector / 100);
+                            price = (currentPrice - currentPrice / 100 * (totalDiscount + saleValue)) * (1 - discountDirector / 100);
                     }
                     else
                     {
-                        if (IsSample)
-                            Price = (CurrentPrice - CurrentPrice / 100 * 50) * (1 - DiscountDirector / 100);
+                        if (isSample)
+                            price = (currentPrice - currentPrice / 100 * 50) * (1 - discountDirector / 100);
                         else
-                            Price = (CurrentPrice - CurrentPrice / 100 * TotalDiscount) * (1 - DiscountDirector / 100);
+                            price = (currentPrice - currentPrice / 100 * totalDiscount) * (1 - discountDirector / 100);
                     }
                     //if (IsSample)
                     //{
@@ -2407,56 +2408,56 @@ namespace Infinium.Modules.Marketing.NewOrders
                     //    Price = (CurrentPrice - CurrentPrice / 100 * TotalDiscount) * (1 - DiscountDirector / 100);
                     //    //Price = CurrentPrice - CurrentPrice / 100 * (TotalDiscount + DiscountDirector);
                     //}
-                    Price = Decimal.Round(Price, 2, MidpointRounding.AwayFromZero);
+                    price = decimal.Round(price, 2, MidpointRounding.AwayFromZero);
                 }
             }
         }
-        
-        private void GetProfilDecorPrice(int ClientID, DataRow DecorOrderRow, decimal DiscountDirector, decimal TotalDiscount, ref decimal OriginalPrice, ref decimal Price, decimal DiscountVolume = 1)
+
+        private void GetProfilDecorPrice(int clientId, DataRow decorOrderRow, decimal discountDirector, decimal totalDiscount, ref decimal originalPrice, ref decimal price, decimal discountVolume = 1)
         {
-            decimal CurrentPrice = 0;
-            decimal MarketingCost = 0;//себестоимость
-            decimal PriceRatio = 0;//ценовой коэффициент
-            int DigitCapacity = 0;//разрядность
-            decimal PriceGroup = 0;//ценовая группа
+            decimal currentPrice = 0;
+            decimal marketingCost = 0;//себестоимость
+            decimal priceRatio = 0;//ценовой коэффициент
+            var digitCapacity = 0;//разрядность
+            decimal priceGroup = 0;//ценовая группа
 
-            DataRow[] FPRow = ClientsDataTable.Select("ClientID = " + ClientID);
-            if (FPRow.Count() > 0)
+            var fpRow = _clientsDataTable.Select("ClientID = " + clientId);
+            if (fpRow.Count() > 0)
             {
-                bool IsSample = Convert.ToBoolean(DecorOrderRow["IsSample"]);//Образец
-                PriceGroup = Convert.ToDecimal(FPRow[0]["PriceGroup"]);//MarketingCost
-                int DecorConfigID = Convert.ToInt32(DecorOrderRow["DecorConfigID"]);
-                DataRow[] PRows = DecorConfigDataTable.Select("DecorConfigID = " + DecorOrderRow["DecorConfigID"].ToString());
-                if (PRows.Count() > 0)
+                var isSample = Convert.ToBoolean(decorOrderRow["IsSample"]);//Образец
+                priceGroup = Convert.ToDecimal(fpRow[0]["PriceGroup"]);//MarketingCost
+                var decorConfigId = Convert.ToInt32(decorOrderRow["DecorConfigID"]);
+                var pRows = _decorConfigDataTable.Select("DecorConfigID = " + decorOrderRow["DecorConfigID"]);
+                if (pRows.Count() > 0)
                 {
-                    MarketingCost = Convert.ToDecimal(PRows[0]["MarketingCost"]);
-                    PriceRatio = Convert.ToDecimal(PRows[0]["PriceRatio"]);
-                    DigitCapacity = Convert.ToInt32(PRows[0]["DigitCapacity"]);
-                    OriginalPrice = MarketingCost * PriceRatio * (1 + PriceGroup);
-                    OriginalPrice = Decimal.Round(OriginalPrice, DigitCapacity, MidpointRounding.AwayFromZero);
-                    CurrentPrice = DiscountVolume * OriginalPrice;
+                    marketingCost = Convert.ToDecimal(pRows[0]["MarketingCost"]);
+                    priceRatio = Convert.ToDecimal(pRows[0]["PriceRatio"]);
+                    digitCapacity = Convert.ToInt32(pRows[0]["DigitCapacity"]);
+                    originalPrice = marketingCost * priceRatio * (1 + priceGroup);
+                    originalPrice = decimal.Round(originalPrice, digitCapacity, MidpointRounding.AwayFromZero);
+                    currentPrice = discountVolume * originalPrice;
 
-                    if (ClientID == 145)
+                    if (clientId == 145)
                     {
-                        OriginalPrice = Convert.ToDecimal(PRows[0]["ZOVPrice"]);
-                        CurrentPrice = DiscountVolume * OriginalPrice;
+                        originalPrice = Convert.ToDecimal(pRows[0]["ZOVPrice"]);
+                        currentPrice = discountVolume * originalPrice;
                     }
-                    Price = CurrentPrice - CurrentPrice / 100 * TotalDiscount;
-                    if (Sale)
+                    price = currentPrice - currentPrice / 100 * totalDiscount;
+                    if (_sale)
                     {
-                        decimal SampleSaleValue = GetSampleDiscount(Convert.ToInt32(DecorOrderRow["DecorConfigID"]));
-                        decimal SaleValue = GetDiscount(Convert.ToInt32(DecorOrderRow["DecorConfigID"]));
-                        if (IsSample)
-                            Price = (CurrentPrice - CurrentPrice / 100 * (50 + SampleSaleValue)) * (1 - DiscountDirector / 100);
+                        var sampleSaleValue = GetSampleDiscount(Convert.ToInt32(decorOrderRow["DecorConfigID"]));
+                        var saleValue = GetDiscount(Convert.ToInt32(decorOrderRow["DecorConfigID"]));
+                        if (isSample)
+                            price = (currentPrice - currentPrice / 100 * (50 + sampleSaleValue)) * (1 - discountDirector / 100);
                         else
-                            Price = (CurrentPrice - CurrentPrice / 100 * (TotalDiscount + SaleValue)) * (1 - DiscountDirector / 100);
+                            price = (currentPrice - currentPrice / 100 * (totalDiscount + saleValue)) * (1 - discountDirector / 100);
                     }
                     else
                     {
-                        if (IsSample)
-                            Price = (CurrentPrice - CurrentPrice / 100 * 50) * (1 - DiscountDirector / 100);
+                        if (isSample)
+                            price = (currentPrice - currentPrice / 100 * 50) * (1 - discountDirector / 100);
                         else
-                            Price = (CurrentPrice - CurrentPrice / 100 * TotalDiscount) * (1 - DiscountDirector / 100);
+                            price = (currentPrice - currentPrice / 100 * totalDiscount) * (1 - discountDirector / 100);
                     }
                     //if (IsSample)
                     //{
@@ -2468,108 +2469,84 @@ namespace Infinium.Modules.Marketing.NewOrders
                     //    Price = (CurrentPrice - CurrentPrice / 100 * TotalDiscount) * (1 - DiscountDirector / 100);
                     //    //Price = CurrentPrice - CurrentPrice / 100 * (TotalDiscount + DiscountDirector);
                     //}
-                    Price = Decimal.Round(Price, 2, MidpointRounding.AwayFromZero);
+                    price = decimal.Round(price, 2, MidpointRounding.AwayFromZero);
                 }
             }
         }
         
-        private void GetPilastrPrice(int ClientID, DataRow DecorOrderRow, decimal Length, decimal DiscountDirector, decimal TotalDiscount, ref decimal Price)
+        private int GetMeasureType(DataRow decorOrderRow)
         {
-            bool IsSample = Convert.ToBoolean(DecorOrderRow["IsSample"]);//Образец
-            decimal OriginalPrice = 50 / (Length / 1000);
-            Price = OriginalPrice - OriginalPrice / 100 * TotalDiscount;
-            if (Sale)
-            {
-                decimal SampleSaleValue = GetSampleDiscount(Convert.ToInt32(DecorOrderRow["DecorConfigID"]));
-                decimal SaleValue = GetDiscount(Convert.ToInt32(DecorOrderRow["DecorConfigID"]));
-                if (IsSample)
-                    Price = (OriginalPrice - OriginalPrice / 100 * (50 + SampleSaleValue)) * (1 - DiscountDirector / 100);
-                else
-                    Price = (OriginalPrice - OriginalPrice / 100 * (TotalDiscount + SaleValue)) * (1 - DiscountDirector / 100);
-            }
-            else
-            {
-                if (IsSample)
-                    Price = (OriginalPrice - OriginalPrice / 100 * 50) * (1 - DiscountDirector / 100);
-                else
-                    Price = (OriginalPrice - OriginalPrice / 100 * TotalDiscount) * (1 - DiscountDirector / 100);
-            }
-            Price = Decimal.Round(Price, 2, MidpointRounding.AwayFromZero);
+            var rows = _decorConfigDataTable.Select("DecorConfigID = " + decorOrderRow["DecorConfigID"]);
+
+            return Convert.ToInt32(rows[0]["MeasureID"]);
         }
 
-        private int GetMeasureType(DataRow DecorOrderRow)
+        private decimal GetTotalVolume(string techStoreName, bool baseProfile)
         {
-            DataRow[] Rows = DecorConfigDataTable.Select("DecorConfigID = " + DecorOrderRow["DecorConfigID"].ToString());
-
-            return Convert.ToInt32(Rows[0]["MeasureID"]);
-        }
-
-        private decimal GetTotalVolume(string TechStoreName, bool BaseProfile)
-        {
-            decimal Height = -1;
-            decimal Length = -1;
-            decimal Count = -1;
-            decimal TotalVolume = 0;
-            string s1 = string.Empty;
-            string s2 = string.Empty;
-            string s3 = string.Empty;
-            string s4 = string.Empty;
-            int index1 = TechStoreName.IndexOf("-");
-            int index2 = TechStoreName.IndexOfAny(new char[] { '-' }, index1 + 1);
-            int index3 = TechStoreName.IndexOfAny(new char[] { ' ' }, index1 + 1);
-            int index4 = TechStoreName.IndexOfAny(new char[] { ' ' }, index3 + 1);
+            decimal height = -1;
+            decimal length = -1;
+            decimal count = -1;
+            decimal totalVolume = 0;
+            var s1 = string.Empty;
+            var s2 = string.Empty;
+            var s3 = string.Empty;
+            var s4 = string.Empty;
+            var index1 = techStoreName.IndexOf("-");
+            var index2 = techStoreName.IndexOfAny(new char[] { '-' }, index1 + 1);
+            var index3 = techStoreName.IndexOfAny(new char[] { ' ' }, index1 + 1);
+            var index4 = techStoreName.IndexOfAny(new char[] { ' ' }, index3 + 1);
             if (index4 == -1)
-                index4 = TechStoreName.Length;
+                index4 = techStoreName.Length;
             if (index1 != -1)
             {
                 if (index2 != -1)
-                    s1 = TechStoreName.Substring(index1 + 1, index2 - index1 - 1);
+                    s1 = techStoreName.Substring(index1 + 1, index2 - index1 - 1);
                 else
                 {
                     if (index3 != -1)
-                        s1 = TechStoreName.Substring(index1 + 1, index3 - index1 - 1);
+                        s1 = techStoreName.Substring(index1 + 1, index3 - index1 - 1);
                 }
                 if (index3 != -1 && index4 != -1)
-                    s2 = TechStoreName.Substring(index3 + 1, index4 - index3 - 1);
+                    s2 = techStoreName.Substring(index3 + 1, index4 - index3 - 1);
             }
 
-            if (BaseProfile)
+            if (baseProfile)
             {
-                for (int i = 0; i < AllDecorOrdersTable.Rows.Count; i++)
+                for (var i = 0; i < _allDecorOrdersTable.Rows.Count; i++)
                 {
-                    Height = Convert.ToDecimal(AllDecorOrdersTable.Rows[i]["Height"]);
-                    Length = Convert.ToDecimal(AllDecorOrdersTable.Rows[i]["Length"]);
-                    Count = Convert.ToInt32(AllDecorOrdersTable.Rows[i]["Count"]);
-                    decimal MinBalanceOnStorage = 0;
-                    string Name = string.Empty;
-                    GetTechStoreName(Convert.ToInt32(AllDecorOrdersTable.Rows[i]["DecorConfigID"]), ref Name, ref MinBalanceOnStorage);
-                    if (Name.Length > 0)
+                    height = Convert.ToDecimal(_allDecorOrdersTable.Rows[i]["Height"]);
+                    length = Convert.ToDecimal(_allDecorOrdersTable.Rows[i]["Length"]);
+                    count = Convert.ToInt32(_allDecorOrdersTable.Rows[i]["Count"]);
+                    decimal minBalanceOnStorage = 0;
+                    var name = string.Empty;
+                    GetTechStoreName(Convert.ToInt32(_allDecorOrdersTable.Rows[i]["DecorConfigID"]), ref name, ref minBalanceOnStorage);
+                    if (name.Length > 0)
                     {
-                        if (MinBalanceOnStorage != 0)
+                        if (minBalanceOnStorage != 0)
                         {
-                            index1 = Name.IndexOf("-");
-                            index2 = Name.IndexOfAny(new char[] { '-' }, index1 + 1);
-                            index3 = Name.IndexOfAny(new char[] { ' ' }, index1 + 1);
-                            index4 = Name.IndexOfAny(new char[] { ' ' }, index3 + 1);
+                            index1 = name.IndexOf("-");
+                            index2 = name.IndexOfAny(new char[] { '-' }, index1 + 1);
+                            index3 = name.IndexOfAny(new char[] { ' ' }, index1 + 1);
+                            index4 = name.IndexOfAny(new char[] { ' ' }, index3 + 1);
                             if (index4 == -1)
-                                index4 = Name.Length;
+                                index4 = name.Length;
                             if (index1 != -1)
                             {
                                 if (index2 != -1)
-                                    s3 = Name.Substring(index1 + 1, index2 - index1 - 1);
+                                    s3 = name.Substring(index1 + 1, index2 - index1 - 1);
                                 else
                                 {
                                     if (index3 != -1)
-                                        s3 = Name.Substring(index1 + 1, index3 - index1 - 1);
+                                        s3 = name.Substring(index1 + 1, index3 - index1 - 1);
                                 }
                                 if (index3 != -1 && index4 != -1)
-                                    s4 = Name.Substring(index3 + 1, index4 - index3 - 1);
+                                    s4 = name.Substring(index3 + 1, index4 - index3 - 1);
                                 if (s1 == s3 && s2 == s4)
                                 {
-                                    if (Height != -1)
-                                        TotalVolume += Height * Count / 1000;
-                                    if (Length != -1)
-                                        TotalVolume += Length * Count / 1000;
+                                    if (height != -1)
+                                        totalVolume += height * count / 1000;
+                                    if (length != -1)
+                                        totalVolume += length * count / 1000;
                                 }
                             }
                         }
@@ -2578,41 +2555,41 @@ namespace Infinium.Modules.Marketing.NewOrders
             }
             else
             {
-                for (int i = 0; i < AllDecorOrdersTable.Rows.Count; i++)
+                for (var i = 0; i < _allDecorOrdersTable.Rows.Count; i++)
                 {
-                    Height = Convert.ToDecimal(AllDecorOrdersTable.Rows[i]["Height"]);
-                    Length = Convert.ToDecimal(AllDecorOrdersTable.Rows[i]["Length"]);
-                    Count = Convert.ToInt32(AllDecorOrdersTable.Rows[i]["Count"]);
-                    decimal MinBalanceOnStorage = 0;
-                    string Name = string.Empty;
-                    GetTechStoreName(Convert.ToInt32(AllDecorOrdersTable.Rows[i]["DecorConfigID"]), ref Name, ref MinBalanceOnStorage);
-                    if (Name.Length > 0)
+                    height = Convert.ToDecimal(_allDecorOrdersTable.Rows[i]["Height"]);
+                    length = Convert.ToDecimal(_allDecorOrdersTable.Rows[i]["Length"]);
+                    count = Convert.ToInt32(_allDecorOrdersTable.Rows[i]["Count"]);
+                    decimal minBalanceOnStorage = 0;
+                    var name = string.Empty;
+                    GetTechStoreName(Convert.ToInt32(_allDecorOrdersTable.Rows[i]["DecorConfigID"]), ref name, ref minBalanceOnStorage);
+                    if (name.Length > 0)
                     {
-                        if (MinBalanceOnStorage == 0)
+                        if (minBalanceOnStorage == 0)
                         {
-                            index1 = Name.IndexOf("-");
-                            index2 = Name.IndexOfAny(new char[] { '-' }, index1 + 1);
-                            index3 = Name.IndexOfAny(new char[] { ' ' }, index1 + 1);
-                            index4 = Name.IndexOfAny(new char[] { ' ' }, index3 + 1);
+                            index1 = name.IndexOf("-");
+                            index2 = name.IndexOfAny(new char[] { '-' }, index1 + 1);
+                            index3 = name.IndexOfAny(new char[] { ' ' }, index1 + 1);
+                            index4 = name.IndexOfAny(new char[] { ' ' }, index3 + 1);
                             if (index4 == -1)
-                                index4 = Name.Length;
+                                index4 = name.Length;
                             if (index1 != -1)
                             {
                                 if (index2 != -1)
-                                    s3 = Name.Substring(index1 + 1, index2 - index1 - 1);
+                                    s3 = name.Substring(index1 + 1, index2 - index1 - 1);
                                 else
                                 {
                                     if (index3 != -1)
-                                        s3 = Name.Substring(index1 + 1, index3 - index1 - 1);
+                                        s3 = name.Substring(index1 + 1, index3 - index1 - 1);
                                 }
                                 if (index3 != -1 && index4 != -1)
-                                    s4 = Name.Substring(index3 + 1, index4 - index3 - 1);
+                                    s4 = name.Substring(index3 + 1, index4 - index3 - 1);
                                 if (s1 == s3 && s2 == s4)
                                 {
-                                    if (Height != -1)
-                                        TotalVolume += Height * Count / 1000;
-                                    if (Length != -1)
-                                        TotalVolume += Length * Count / 1000;
+                                    if (height != -1)
+                                        totalVolume += height * count / 1000;
+                                    if (length != -1)
+                                        totalVolume += length * count / 1000;
                                 }
                             }
                         }
@@ -2620,226 +2597,226 @@ namespace Infinium.Modules.Marketing.NewOrders
                 }
             }
 
-            return TotalVolume;
+            return totalVolume;
         }
 
-        private void GetTechStoreName(int DecorConfigID, ref string TechStoreName, ref decimal MinBalanceOnStorage)
+        private void GetTechStoreName(int decorConfigId, ref string techStoreName, ref decimal minBalanceOnStorage)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter(@"SELECT DecorConfig.MinBalanceOnStorage, Decor.TechStoreName FROM DecorConfig INNER JOIN
-                infiniu2_catalog.dbo.TechStore AS Decor ON DecorConfig.DecorID = Decor.TechStoreID WHERE DecorConfigID=" + DecorConfigID,
+            using (var da = new SqlDataAdapter(@"SELECT DecorConfig.MinBalanceOnStorage, Decor.TechStoreName FROM DecorConfig INNER JOIN
+                infiniu2_catalog.dbo.TechStore AS Decor ON DecorConfig.DecorID = Decor.TechStoreID WHERE DecorConfigID=" + decorConfigId,
                 ConnectionStrings.CatalogConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var dt = new DataTable())
                 {
-                    if (DA.Fill(DT) > 0)
+                    if (da.Fill(dt) > 0)
                     {
-                        TechStoreName = DT.Rows[0]["TechStoreName"].ToString();
-                        MinBalanceOnStorage = Convert.ToInt32(DT.Rows[0]["MinBalanceOnStorage"]);
+                        techStoreName = dt.Rows[0]["TechStoreName"].ToString();
+                        minBalanceOnStorage = Convert.ToInt32(dt.Rows[0]["MinBalanceOnStorage"]);
                     }
                 }
 
             }
         }
 
-        private string GetTechStoreName(int DecorID)
+        private string GetTechStoreName(int decorId)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter(@"SELECT TechStoreName FROM TechStore WHERE TechStoreID=" + DecorID,
+            using (var da = new SqlDataAdapter(@"SELECT TechStoreName FROM TechStore WHERE TechStoreID=" + decorId,
                 ConnectionStrings.CatalogConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var dt = new DataTable())
                 {
-                    if (DA.Fill(DT) > 0)
-                        return DT.Rows[0]["TechStoreName"].ToString();
+                    if (da.Fill(dt) > 0)
+                        return dt.Rows[0]["TechStoreName"].ToString();
                 }
 
             }
             return string.Empty;
         }
 
-        private void ProfilCalculateItem(int ClientID, DataRow DecorOrderRow, decimal DiscountDirector, decimal TotalDiscount,
-            int CurrencyTypeID, decimal Currency,
-            ref decimal OriginalCost, ref decimal Cost, ref decimal CurrencyOrderCost)
+        private void ProfilCalculateItem(int clientId, DataRow decorOrderRow, decimal discountDirector, decimal totalDiscount,
+            int currencyTypeId, decimal currency,
+            ref decimal originalCost, ref decimal cost, ref decimal currencyOrderCost)
         {
-            decimal OriginalDecorPrice = 0;
-            decimal Price = 0;
-            int MeasureType = -1;
+            decimal originalDecorPrice = 0;
+            decimal price = 0;
+            var measureType = -1;
 
-            decimal Height = -1;
-            decimal Width = -1;
-            decimal Length = -1;
-            decimal Count = -1;
+            decimal height = -1;
+            decimal width = -1;
+            decimal length = -1;
+            decimal count = -1;
 
-            bool BaseProfile = false;
-            decimal DiscountVolume = 0;
-            decimal MinBalanceOnStorage = 0;
-            string TechStoreName = string.Empty;
-            int DecorConfigID = Convert.ToInt32(DecorOrderRow["DecorConfigID"]);
-            DataRow[] Rows = DecorConfigDataTable.Select("DecorConfigID = " + DecorOrderRow["DecorConfigID"].ToString());
-            if (Rows.Count() > 0)
+            var baseProfile = false;
+            decimal discountVolume = 0;
+            decimal minBalanceOnStorage = 0;
+            var techStoreName = string.Empty;
+            var decorConfigId = Convert.ToInt32(decorOrderRow["DecorConfigID"]);
+            var rows = _decorConfigDataTable.Select("DecorConfigID = " + decorOrderRow["DecorConfigID"]);
+            if (rows.Count() > 0)
             {
-                MinBalanceOnStorage = Convert.ToDecimal(Rows[0]["MinBalanceOnStorage"]);
-                if (MinBalanceOnStorage != 0)
-                    BaseProfile = true;
-                TechStoreName = GetTechStoreName(Convert.ToInt32(DecorOrderRow["DecorID"]));
+                minBalanceOnStorage = Convert.ToDecimal(rows[0]["MinBalanceOnStorage"]);
+                if (minBalanceOnStorage != 0)
+                    baseProfile = true;
+                techStoreName = GetTechStoreName(Convert.ToInt32(decorOrderRow["DecorID"]));
             }
-            MeasureType = GetMeasureType(DecorOrderRow);
+            measureType = GetMeasureType(decorOrderRow);
 
             try
             {
-                Height = Convert.ToDecimal(DecorOrderRow["Height"]);
+                height = Convert.ToDecimal(decorOrderRow["Height"]);
             }
             catch
             { }
 
             try
             {
-                Length = Convert.ToDecimal(DecorOrderRow["Length"]);
+                length = Convert.ToDecimal(decorOrderRow["Length"]);
             }
             catch { }
 
             try
             {
-                Width = Convert.ToDecimal(DecorOrderRow["Width"]);
+                width = Convert.ToDecimal(decorOrderRow["Width"]);
             }
             catch { }
 
             try
             {
-                Count = Convert.ToDecimal(DecorOrderRow["Count"]);
+                count = Convert.ToDecimal(decorOrderRow["Count"]);
             }
             catch
             {
             }
 
-            if (MeasureType == 1)
+            if (measureType == 1)
             {
-                GetProfilDecorPrice(ClientID, DecorOrderRow, DiscountDirector, TotalDiscount, ref OriginalDecorPrice, ref Price);
-                if (Height != -1)
+                GetProfilDecorPrice(clientId, decorOrderRow, discountDirector, totalDiscount, ref originalDecorPrice, ref price);
+                if (height != -1)
                 {             //м.кв.
-                    if (CurrencyTypeID == 0)
+                    if (currencyTypeId == 0)
                     {
-                        decimal d = Price * Currency;
+                        var d = price * currency;
                         //d = Math.Ceiling(d / 100.0m) * 100.0m;
-                        CurrencyOrderCost = Decimal.Round(Height * Width / 1000000, 3, MidpointRounding.AwayFromZero) * Count * d;
+                        currencyOrderCost = decimal.Round(height * width / 1000000, 3, MidpointRounding.AwayFromZero) * count * d;
                     }
                     else
                     {
-                        decimal d = Price * Currency;
-                        CurrencyOrderCost = Decimal.Round(Height * Width / 1000000, 3, MidpointRounding.AwayFromZero) * Count * d;
+                        var d = price * currency;
+                        currencyOrderCost = decimal.Round(height * width / 1000000, 3, MidpointRounding.AwayFromZero) * count * d;
                     }
-                    OriginalCost = Decimal.Round(Height * Width / 1000000, 3, MidpointRounding.AwayFromZero) * Count * OriginalDecorPrice;
-                    Cost = Decimal.Round(Height * Width / 1000000, 3, MidpointRounding.AwayFromZero) * Count * Price;
+                    originalCost = decimal.Round(height * width / 1000000, 3, MidpointRounding.AwayFromZero) * count * originalDecorPrice;
+                    cost = decimal.Round(height * width / 1000000, 3, MidpointRounding.AwayFromZero) * count * price;
                 }
-                if (Length != -1)
+                if (length != -1)
                 {
-                    if (CurrencyTypeID == 0)
+                    if (currencyTypeId == 0)
                     {
-                        decimal d = Price * Currency;
+                        var d = price * currency;
                         //d = Math.Ceiling(d / 100.0m) * 100.0m;
-                        CurrencyOrderCost = Decimal.Round(Length * Width / 1000000, 3, MidpointRounding.AwayFromZero) * Count * d;
+                        currencyOrderCost = decimal.Round(length * width / 1000000, 3, MidpointRounding.AwayFromZero) * count * d;
                     }
                     else
                     {
-                        decimal d = Price * Currency;
-                        CurrencyOrderCost = Decimal.Round(Length * Width / 1000000, 3, MidpointRounding.AwayFromZero) * Count * d;
+                        var d = price * currency;
+                        currencyOrderCost = decimal.Round(length * width / 1000000, 3, MidpointRounding.AwayFromZero) * count * d;
                     }
-                    OriginalCost = Decimal.Round(Length * Width / 1000000, 3, MidpointRounding.AwayFromZero) * Count * OriginalDecorPrice;
-                    Cost = Decimal.Round(Length * Width / 1000000, 3, MidpointRounding.AwayFromZero) * Count * Price;
+                    originalCost = decimal.Round(length * width / 1000000, 3, MidpointRounding.AwayFromZero) * count * originalDecorPrice;
+                    cost = decimal.Round(length * width / 1000000, 3, MidpointRounding.AwayFromZero) * count * price;
                 }
             }
 
-            if (MeasureType == 2)
+            if (measureType == 2)
             {
-                decimal TotalVolume = 0;
-                if (MinBalanceOnStorage == 0)
+                decimal totalVolume = 0;
+                if (minBalanceOnStorage == 0)
                 {
-                    TotalVolume = GetTotalVolume(TechStoreName, BaseProfile);
-                    DiscountVolume = GetDiscountVolume(TotalVolume);
-                    if (DecorOrderRow["DecorID"].ToString() == "15523")//плк-110
-                        GetPilastrPrice(ClientID, DecorOrderRow, Length, DiscountDirector, TotalDiscount, ref OriginalDecorPrice, ref Price, DiscountVolume);
+                    totalVolume = GetTotalVolume(techStoreName, baseProfile);
+                    discountVolume = GetDiscountVolume(totalVolume);
+                    if (decorOrderRow["DecorID"].ToString() == "15523")//плк-110
+                        GetPilastrPrice(clientId, decorOrderRow, length, discountDirector, totalDiscount, ref originalDecorPrice, ref price, discountVolume);
                     else
-                        GetProfilDecorPrice(ClientID, DecorOrderRow, DiscountDirector, TotalDiscount, ref OriginalDecorPrice, ref Price, DiscountVolume);
-                    DecorOrderRow["DiscountVolume"] = DiscountVolume;
+                        GetProfilDecorPrice(clientId, decorOrderRow, discountDirector, totalDiscount, ref originalDecorPrice, ref price, discountVolume);
+                    decorOrderRow["DiscountVolume"] = discountVolume;
                 }
                 else
                 {
-                    TotalVolume = GetTotalVolume(TechStoreName, BaseProfile);
-                    if (TotalVolume >= 2400)
+                    totalVolume = GetTotalVolume(techStoreName, baseProfile);
+                    if (totalVolume >= 2400)
                     {
-                        DiscountVolume = GetDiscountVolume(TotalVolume);
-                        if (DecorOrderRow["DecorID"].ToString() == "15523")//плк-110
-                            GetPilastrPrice(ClientID, DecorOrderRow, Length, DiscountDirector, TotalDiscount, ref OriginalDecorPrice, ref Price, DiscountVolume);
+                        discountVolume = GetDiscountVolume(totalVolume);
+                        if (decorOrderRow["DecorID"].ToString() == "15523")//плк-110
+                            GetPilastrPrice(clientId, decorOrderRow, length, discountDirector, totalDiscount, ref originalDecorPrice, ref price, discountVolume);
                         else
-                            GetProfilDecorPrice(ClientID, DecorOrderRow, DiscountDirector, TotalDiscount, ref OriginalDecorPrice, ref Price, DiscountVolume);
-                        DecorOrderRow["DiscountVolume"] = DiscountVolume;
+                            GetProfilDecorPrice(clientId, decorOrderRow, discountDirector, totalDiscount, ref originalDecorPrice, ref price, discountVolume);
+                        decorOrderRow["DiscountVolume"] = discountVolume;
                     }
                     else
                     {
-                        DecorOrderRow["DiscountVolume"] = 1;
-                        if (DecorOrderRow["DecorID"].ToString() == "15523")//плк-110
-                            GetPilastrPrice(ClientID, DecorOrderRow, Length, DiscountDirector, TotalDiscount, ref OriginalDecorPrice, ref Price);
+                        decorOrderRow["DiscountVolume"] = 1;
+                        if (decorOrderRow["DecorID"].ToString() == "15523")//плк-110
+                            GetPilastrPrice(clientId, decorOrderRow, length, discountDirector, totalDiscount, ref originalDecorPrice, ref price);
                         else
-                            GetProfilDecorPrice(ClientID, DecorOrderRow, DiscountDirector, TotalDiscount, ref OriginalDecorPrice, ref Price);
+                            GetProfilDecorPrice(clientId, decorOrderRow, discountDirector, totalDiscount, ref originalDecorPrice, ref price);
                     }
                 }
-                if (Height != -1)
+                if (height != -1)
                 {
-                    if (CurrencyTypeID == 0)
+                    if (currencyTypeId == 0)
                     {
-                        decimal d = Price * Currency;
+                        var d = price * currency;
                         //d = Math.Ceiling(d / 100.0m) * 100.0m;
-                        CurrencyOrderCost = Decimal.Round(Height / 1000, 3, MidpointRounding.AwayFromZero) * Count * d;
+                        currencyOrderCost = decimal.Round(height / 1000, 3, MidpointRounding.AwayFromZero) * count * d;
                     }
                     else
                     {
-                        decimal d = Price * Currency;
-                        CurrencyOrderCost = Decimal.Round(Height / 1000, 3, MidpointRounding.AwayFromZero) * Count * d;
+                        var d = price * currency;
+                        currencyOrderCost = decimal.Round(height / 1000, 3, MidpointRounding.AwayFromZero) * count * d;
                     }
-                    OriginalCost = Decimal.Round(Height / 1000, 3, MidpointRounding.AwayFromZero) * Count * OriginalDecorPrice;
-                    Cost = Decimal.Round(Height / 1000, 3, MidpointRounding.AwayFromZero) * Count * Price;
+                    originalCost = decimal.Round(height / 1000, 3, MidpointRounding.AwayFromZero) * count * originalDecorPrice;
+                    cost = decimal.Round(height / 1000, 3, MidpointRounding.AwayFromZero) * count * price;
                 }
-                if (Length != -1)
+                if (length != -1)
                 {
-                    if (CurrencyTypeID == 0)
+                    if (currencyTypeId == 0)
                     {
-                        decimal d = Price * Currency;
+                        var d = price * currency;
                         //d = Math.Ceiling(d / 100.0m) * 100.0m;
-                        CurrencyOrderCost = Decimal.Round(Length / 1000, 3, MidpointRounding.AwayFromZero) * Count * d;
+                        currencyOrderCost = decimal.Round(length / 1000, 3, MidpointRounding.AwayFromZero) * count * d;
                     }
                     else
                     {
-                        decimal d = Price * Currency;
-                        CurrencyOrderCost = Decimal.Round(Length / 1000, 3, MidpointRounding.AwayFromZero) * Count * d;
+                        var d = price * currency;
+                        currencyOrderCost = decimal.Round(length / 1000, 3, MidpointRounding.AwayFromZero) * count * d;
                     }
-                    OriginalCost = Decimal.Round(Length / 1000, 3, MidpointRounding.AwayFromZero) * Count * OriginalDecorPrice;
-                    Cost = Decimal.Round(Length / 1000, 3, MidpointRounding.AwayFromZero) * Count * Price;
+                    originalCost = decimal.Round(length / 1000, 3, MidpointRounding.AwayFromZero) * count * originalDecorPrice;
+                    cost = decimal.Round(length / 1000, 3, MidpointRounding.AwayFromZero) * count * price;
                 }
             }
 
-            if (MeasureType == 3)
+            if (measureType == 3)
             {
-                GetProfilDecorPrice(ClientID, DecorOrderRow, DiscountDirector, TotalDiscount, ref OriginalDecorPrice, ref Price);            //шт.
-                if (CurrencyTypeID == 0)
+                GetProfilDecorPrice(clientId, decorOrderRow, discountDirector, totalDiscount, ref originalDecorPrice, ref price);            //шт.
+                if (currencyTypeId == 0)
                 {
-                    decimal d = Price * Currency;
+                    var d = price * currency;
                     //d = Math.Ceiling(d / 100.0m) * 100.0m;
-                    CurrencyOrderCost = Count * d;
+                    currencyOrderCost = count * d;
                 }
                 else
                 {
-                    decimal d = Price * Currency;
-                    CurrencyOrderCost = Count * d;
+                    var d = price * currency;
+                    currencyOrderCost = count * d;
                 }
-                OriginalCost = Count * OriginalDecorPrice;
-                Cost = Count * Price;
+                originalCost = count * originalDecorPrice;
+                cost = count * price;
             }
 
-            OriginalCost = Math.Ceiling(OriginalCost / 0.01m) * 0.01m;
-            Cost = Math.Ceiling(Cost / 0.01m) * 0.01m;
-            DecorOrderRow["ClientOriginalPrice"] = Math.Ceiling(OriginalDecorPrice * Currency / 0.01m) * 0.01m;
-            DecorOrderRow["OriginalPrice"] = OriginalDecorPrice;
-            DecorOrderRow["Price"] = Price;
-            bool IsSample = Convert.ToBoolean(DecorOrderRow["IsSample"]);
+            originalCost = Math.Ceiling(originalCost / 0.01m) * 0.01m;
+            cost = Math.Ceiling(cost / 0.01m) * 0.01m;
+            decorOrderRow["ClientOriginalPrice"] = Math.Ceiling(originalDecorPrice * currency / 0.01m) * 0.01m;
+            decorOrderRow["OriginalPrice"] = originalDecorPrice;
+            decorOrderRow["Price"] = price;
+            var isSample = Convert.ToBoolean(decorOrderRow["IsSample"]);
             //if (IsSample)
             //{
             //    if (OriginalDecorPrice != 0)
@@ -2848,303 +2825,302 @@ namespace Infinium.Modules.Marketing.NewOrders
             //else
             //    DecorOrderRow["TotalDiscount"] = TotalDiscount + DiscountDirector;
 
-            if (OriginalDecorPrice != 0)
+            if (originalDecorPrice != 0)
             {
-                decimal d = Decimal.Round((1 - Price / OriginalDecorPrice) * 100, 2, MidpointRounding.AwayFromZero);
-                DecorOrderRow["TotalDiscount"] = d;
+                var d = decimal.Round((1 - price / originalDecorPrice) * 100, 2, MidpointRounding.AwayFromZero);
+                decorOrderRow["TotalDiscount"] = d;
             }
-            if (DecorOrderRow["DecorID"].ToString() == "15523")//плк-110
+            if (decorOrderRow["DecorID"].ToString() == "15523")//плк-110
             {
-                decimal PilastrPrice = 1;
-                GetPilastrPrice(ClientID, DecorOrderRow, Length, DiscountDirector, TotalDiscount, ref PilastrPrice);
-                if (ClientID == 145)
+                //GetPilastrPrice(ClientID, DecorOrderRow, Length, DiscountDirector, TotalDiscount, ref PilastrPrice);
+                if (clientId == 145)
                 {
-                    if (IsSample)
+                    if (isSample)
                     {
-                        CurrencyOrderCost =
-                            Decimal.Round(
-                                Convert.ToInt32(DecorOrderRow["Count"]) * (Length / 1000 * Price * Currency * 1.2m / 2), 3,
+                        currencyOrderCost =
+                            decimal.Round(
+                                Convert.ToInt32(decorOrderRow["Count"]) * (length / 1000 * price * currency), 3,
                                 MidpointRounding.AwayFromZero);
-                        OriginalCost =
-                            Decimal.Round(
-                                Convert.ToInt32(DecorOrderRow["Count"]) * (Length / 1000 * Price * 1.2m / 2), 3,
+                        originalCost =
+                            decimal.Round(
+                                Convert.ToInt32(decorOrderRow["Count"]) * (length / 1000 * price), 3,
                                 MidpointRounding.AwayFromZero);
-                        Cost = Decimal.Round(Convert.ToInt32(DecorOrderRow["Count"]) * (Length / 1000 * Price * 1.2m / 2), 3,
+                        cost = decimal.Round(Convert.ToInt32(decorOrderRow["Count"]) * (length / 1000 * price), 3,
                             MidpointRounding.AwayFromZero);
                     }
                     else
                     {
-                        CurrencyOrderCost =
-                            Decimal.Round(
-                                Convert.ToInt32(DecorOrderRow["Count"]) * (Length / 1000 * Price * Currency * 1.2m), 3,
+                        currencyOrderCost =
+                            decimal.Round(
+                                Convert.ToInt32(decorOrderRow["Count"]) * (length / 1000 * price * currency), 3,
                                 MidpointRounding.AwayFromZero);
-                        OriginalCost =
-                            Decimal.Round(
-                                Convert.ToInt32(DecorOrderRow["Count"]) * (Length / 1000 * Price * 1.2m), 3,
+                        originalCost =
+                            decimal.Round(
+                                Convert.ToInt32(decorOrderRow["Count"]) * (length / 1000 * price), 3,
                                 MidpointRounding.AwayFromZero);
-                        Cost = Decimal.Round(Convert.ToInt32(DecorOrderRow["Count"]) * (Length / 1000 * Price * 1.2m), 3,
+                        cost = decimal.Round(Convert.ToInt32(decorOrderRow["Count"]) * (length / 1000 * price), 3,
                             MidpointRounding.AwayFromZero);
                     }
                 }
                 else
                 {
-                    CurrencyOrderCost =
-                        Decimal.Round(Convert.ToInt32(DecorOrderRow["Count"]) * (Length / 1000 * Price * Currency), 3,
+                    currencyOrderCost =
+                        decimal.Round(Convert.ToInt32(decorOrderRow["Count"]) * (length / 1000 * price * currency), 3,
                             MidpointRounding.AwayFromZero);
-                    OriginalCost =
-                        Decimal.Round(Convert.ToInt32(DecorOrderRow["Count"]) * (Length / 1000 * Price), 3,
+                    originalCost =
+                        decimal.Round(Convert.ToInt32(decorOrderRow["Count"]) * (length / 1000 * price), 3,
                             MidpointRounding.AwayFromZero);
-                    Cost = Decimal.Round(Convert.ToInt32(DecorOrderRow["Count"]) * (Length / 1000 * Price), 3,
+                    cost = decimal.Round(Convert.ToInt32(decorOrderRow["Count"]) * (length / 1000 * price), 3,
                         MidpointRounding.AwayFromZero);
                 }
             }
 
-            DecorOrderRow["OriginalCost"] = OriginalCost;
-            DecorOrderRow["Cost"] = Cost;
-            DecorOrderRow["CurrencyTypeID"] = CurrencyTypeID;
-            
-            CurrencyOrderCost = Math.Ceiling(CurrencyOrderCost / 0.01m) * 0.01m;
+            decorOrderRow["OriginalCost"] = originalCost;
+            decorOrderRow["Cost"] = cost;
+            decorOrderRow["CurrencyTypeID"] = currencyTypeId;
+
+            currencyOrderCost = Math.Ceiling(currencyOrderCost / 0.01m) * 0.01m;
             //CurrencyOrderCost = Decimal.Round(CurrencyOrderCost, 2, MidpointRounding.AwayFromZero);
             //if (CurrencyTypeID == 4)
             //{
             //    CurrencyOrderCost = Math.Ceiling(CurrencyOrderCost / 100m) * 100m;
             //}
-            DecorOrderRow["CurrencyCost"] = CurrencyOrderCost;
+            decorOrderRow["CurrencyCost"] = currencyOrderCost;
         }
 
-        public decimal GetDecorWeight(DataRow DecorOrderRow)
+        public decimal GetDecorWeight(DataRow decorOrderRow)
         {
-            if (DecorOrderRow["Weight"] == DBNull.Value)
+            if (decorOrderRow["Weight"] == DBNull.Value)
             {
-                System.Windows.Forms.MessageBox.Show("Ошибка конфигурации: нет веса в DecorConfigID=" + DecorOrderRow["DecorConfigID"].ToString() +
+                System.Windows.Forms.MessageBox.Show("Ошибка конфигурации: нет веса в DecorConfigID=" + decorOrderRow["DecorConfigID"] +
                     ". Вес будет выставлен в 0.");
                 return 0;
             }
-            decimal Weight = 0;
-            int DecorConfigID = Convert.ToInt32(DecorOrderRow["DecorConfigID"]);
-            DataRow[] Row = DecorConfigDataTable.Select("DecorConfigID = " + DecorOrderRow["DecorConfigID"].ToString());
+            decimal weight = 0;
+            var decorConfigId = Convert.ToInt32(decorOrderRow["DecorConfigID"]);
+            var row = _decorConfigDataTable.Select("DecorConfigID = " + decorOrderRow["DecorConfigID"]);
 
-            if (Row[0]["Weight"] == DBNull.Value)
+            if (row[0]["Weight"] == DBNull.Value)
             {
-                System.Windows.Forms.MessageBox.Show("Ошибка конфигурации: нет веса в DecorConfigID=" + DecorOrderRow["DecorConfigID"].ToString() +
+                System.Windows.Forms.MessageBox.Show("Ошибка конфигурации: нет веса в DecorConfigID=" + decorOrderRow["DecorConfigID"] +
                     ". Вес будет выставлен в 0.");
                 return 0;
             }
-            if (Row[0]["Weight"] != DBNull.Value)
+            if (row[0]["Weight"] != DBNull.Value)
             {
-                if (Row[0]["WeightMeasureID"].ToString() == "1")
+                if (row[0]["WeightMeasureID"].ToString() == "1")
                 {
-                    if (Convert.ToInt32(DecorOrderRow["Height"]) != -1)
-                        Weight = Convert.ToDecimal(DecorOrderRow["Height"]) * Convert.ToDecimal(DecorOrderRow["Width"]) / 1000000
-                             * Convert.ToDecimal(Row[0]["Weight"]) * Convert.ToDecimal(DecorOrderRow["Count"]);
-                    if (Convert.ToInt32(DecorOrderRow["Length"]) != -1)
-                        Weight = Convert.ToDecimal(DecorOrderRow["Length"]) * Convert.ToDecimal(DecorOrderRow["Width"]) / 1000000
-                            * Convert.ToDecimal(Row[0]["Weight"]) * Convert.ToDecimal(DecorOrderRow["Count"]);
+                    if (Convert.ToInt32(decorOrderRow["Height"]) != -1)
+                        weight = Convert.ToDecimal(decorOrderRow["Height"]) * Convert.ToDecimal(decorOrderRow["Width"]) / 1000000
+                             * Convert.ToDecimal(row[0]["Weight"]) * Convert.ToDecimal(decorOrderRow["Count"]);
+                    if (Convert.ToInt32(decorOrderRow["Length"]) != -1)
+                        weight = Convert.ToDecimal(decorOrderRow["Length"]) * Convert.ToDecimal(decorOrderRow["Width"]) / 1000000
+                            * Convert.ToDecimal(row[0]["Weight"]) * Convert.ToDecimal(decorOrderRow["Count"]);
                 }
-                if (Row[0]["WeightMeasureID"].ToString() == "2")
+                if (row[0]["WeightMeasureID"].ToString() == "2")
                 {
-                    if (Convert.ToInt32(DecorOrderRow["Height"]) != -1)
-                        Weight = Convert.ToDecimal(DecorOrderRow["Height"]) / 1000 * Convert.ToDecimal(Row[0]["Weight"]) *
-                                 Convert.ToDecimal(DecorOrderRow["Count"]);
-                    if (Convert.ToInt32(DecorOrderRow["Length"]) != -1)
-                        Weight = Convert.ToDecimal(DecorOrderRow["Length"]) / 1000 * Convert.ToDecimal(Row[0]["Weight"]) *
-                             Convert.ToDecimal(DecorOrderRow["Count"]);
+                    if (Convert.ToInt32(decorOrderRow["Height"]) != -1)
+                        weight = Convert.ToDecimal(decorOrderRow["Height"]) / 1000 * Convert.ToDecimal(row[0]["Weight"]) *
+                                 Convert.ToDecimal(decorOrderRow["Count"]);
+                    if (Convert.ToInt32(decorOrderRow["Length"]) != -1)
+                        weight = Convert.ToDecimal(decorOrderRow["Length"]) / 1000 * Convert.ToDecimal(row[0]["Weight"]) *
+                             Convert.ToDecimal(decorOrderRow["Count"]);
                 }
-                if (Row[0]["WeightMeasureID"].ToString() == "3")
-                    Weight = Convert.ToDecimal(Row[0]["Weight"]) * Convert.ToDecimal(DecorOrderRow["Count"]);
+                if (row[0]["WeightMeasureID"].ToString() == "3")
+                    weight = Convert.ToDecimal(row[0]["Weight"]) * Convert.ToDecimal(decorOrderRow["Count"]);
             }
-            Weight = Decimal.Round(Weight, 3, MidpointRounding.AwayFromZero);
-            DecorOrderRow["ItemWeight"] = Weight / Convert.ToDecimal(DecorOrderRow["Count"]);
-            DecorOrderRow["Weight"] = Weight;
+            weight = decimal.Round(weight, 3, MidpointRounding.AwayFromZero);
+            decorOrderRow["ItemWeight"] = weight / Convert.ToDecimal(decorOrderRow["Count"]);
+            decorOrderRow["Weight"] = weight;
 
-            return Weight;
+            return weight;
         }
 
-        public void GetAllDecorOrders(int MegaOrderID)
+        public void GetAllDecorOrders(int megaOrderId)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM NewDecorOrders WHERE NeedCalcPrice=0 AND MainOrderID IN (SELECT MainOrderID FROM NewMainOrders WHERE MegaOrderID = " + MegaOrderID + ")",
+            using (var da = new SqlDataAdapter("SELECT * FROM NewDecorOrders WHERE NeedCalcPrice=0 AND MainOrderID IN (SELECT MainOrderID FROM NewMainOrders WHERE MegaOrderID = " + megaOrderId + ")",
                 ConnectionStrings.MarketingOrdersConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var cb = new SqlCommandBuilder(da))
                 {
-                    AllDecorOrdersTable.Clear();
-                    DA.Fill(AllDecorOrdersTable);
+                    _allDecorOrdersTable.Clear();
+                    da.Fill(_allDecorOrdersTable);
                 }
             }
         }
 
-        public void CalculateDecor(int ClientID, int MainOrderID, decimal ProfilDiscountDirector, decimal TPSDiscountDirector,
-            decimal ProfilTotalDiscount, decimal TPSTotalDiscount, int CurrencyTypeID, decimal Currency,
-            ref decimal OriginalProfilCost, ref decimal OriginalTPSCost, ref decimal OriginalTotalCost,
-            ref decimal ProfilCost, ref decimal TPSCost, ref decimal TotalCost, ref decimal TotalCurrencyCost,
-            ref decimal DecorOrderWeight, object ConfirmDateTime)
+        public void CalculateDecor(int clientId, int mainOrderId, decimal profilDiscountDirector, decimal tpsDiscountDirector,
+            decimal profilTotalDiscount, decimal tpsTotalDiscount, int currencyTypeId, decimal currency,
+            ref decimal originalProfilCost, ref decimal originalTpsCost, ref decimal originalTotalCost,
+            ref decimal profilCost, ref decimal tpsCost, ref decimal totalCost, ref decimal totalCurrencyCost,
+            ref decimal decorOrderWeight, object confirmDateTime)
         {
-            GetStocks(ClientID, ConfirmDateTime);
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM NewDecorOrders WHERE NeedCalcPrice=0 AND MainOrderID = " + MainOrderID,
+            GetStocks(clientId, confirmDateTime);
+            using (var da = new SqlDataAdapter("SELECT * FROM NewDecorOrders WHERE NeedCalcPrice=0 AND MainOrderID = " + mainOrderId,
                 ConnectionStrings.MarketingOrdersConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (new SqlCommandBuilder(da))
                 {
-                    DecorOrdersTable.Clear();
-                    DA.Fill(DecorOrdersTable);
+                    _decorOrdersTable.Clear();
+                    da.Fill(_decorOrdersTable);
                     //DT.TableName = DecorCatalogOrder.DecorProductsDataTable.Rows[i]["OrdersTableName"].ToString();
 
-                    if (DecorOrdersTable.Rows.Count == 0)
+                    if (_decorOrdersTable.Rows.Count == 0)
                         return;
 
-                    foreach (DataRow Row in DecorOrdersTable.Rows)
+                    foreach (DataRow row in _decorOrdersTable.Rows)
                     {
-                        int FactoryID = Convert.ToInt32(Row["FactoryID"]);
-                        decimal OriginalCost = 0;
-                        decimal Cost = 0;
-                        decimal CurrencyCost = 0;
+                        var factoryId = Convert.ToInt32(row["FactoryID"]);
+                        decimal originalCost = 0;
+                        decimal cost = 0;
+                        decimal currencyCost = 0;
 
-                        DecorOrderWeight += GetDecorWeight(Row);
+                        decorOrderWeight += GetDecorWeight(row);
 
-                        if (FactoryID == 1)
+                        if (factoryId == 1)
                         {
-                            ProfilCalculateItem(ClientID, Row, ProfilDiscountDirector, ProfilTotalDiscount, CurrencyTypeID, Currency, ref OriginalCost, ref Cost, ref CurrencyCost);
-                            OriginalProfilCost += OriginalCost;
-                            ProfilCost += Cost;
+                            ProfilCalculateItem(clientId, row, profilDiscountDirector, profilTotalDiscount, currencyTypeId, currency, ref originalCost, ref cost, ref currencyCost);
+                            originalProfilCost += originalCost;
+                            profilCost += cost;
                         }
-                        if (FactoryID == 2)
+                        if (factoryId == 2)
                         {
                             //TPSCalculateItem(ClientID, Row, TPSDiscountDirector, TPSTotalDiscount, CurrencyTypeID, Currency, ref OriginalCost, ref Cost, ref CurrencyCost);
                             //OriginalTPSCost += OriginalCost;
                             //TPSCost += Cost;
                         }
-                        TotalCurrencyCost += CurrencyCost;
+                        totalCurrencyCost += currencyCost;
                     }
-                    OriginalTotalCost = OriginalProfilCost + OriginalTPSCost;
-                    TotalCost = ProfilCost + TPSCost;
-                    DA.Update(DecorOrdersTable);
+                    originalTotalCost = originalProfilCost + originalTpsCost;
+                    totalCost = profilCost + tpsCost;
+                    da.Update(_decorOrdersTable);
                 }
             }
         }
 
-        public void AssignTransportCost(int MegaOrderID, decimal ProfilComplaintCost, decimal TPSComplaintCost, decimal TransportAdditionalCost)
+        public void AssignTransportCost(int megaOrderId, decimal profilComplaintCost, decimal tpsComplaintCost, decimal transportAdditionalCost)
         {
-            decimal ProfilTotalWeight = 0;
-            decimal TPSTotalWeight = 0;
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM NewFrontsOrders WHERE NeedCalcPrice=0 AND FactoryID=1 AND MainOrderID IN (SELECT MainOrderID FROM NewMainOrders WHERE MegaOrderID=" + MegaOrderID + ")",
+            decimal profilTotalWeight = 0;
+            decimal tpsTotalWeight = 0;
+            using (var da = new SqlDataAdapter("SELECT * FROM NewFrontsOrders WHERE NeedCalcPrice=0 AND FactoryID=1 AND MainOrderID IN (SELECT MainOrderID FROM NewMainOrders WHERE MegaOrderID=" + megaOrderId + ")",
                 ConnectionStrings.MarketingOrdersConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var cb = new SqlCommandBuilder(da))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var dt = new DataTable())
                     {
-                        if (DA.Fill(DT) > 0)
+                        if (da.Fill(dt) > 0)
                         {
-                            foreach (DataRow Row in DT.Rows)
+                            foreach (DataRow row in dt.Rows)
                             {
-                                decimal Square = Convert.ToDecimal(Row["Square"]);
-                                decimal Weight = Convert.ToDecimal(Row["Weight"]);
-                                if (Square > 0)
-                                    Weight = Weight + Square * Convert.ToDecimal(0.7);
-                                Weight = Decimal.Round(Weight, 3, MidpointRounding.AwayFromZero);
-                                ProfilTotalWeight += Weight;
+                                var square = Convert.ToDecimal(row["Square"]);
+                                var weight = Convert.ToDecimal(row["Weight"]);
+                                if (square > 0)
+                                    weight += square * Convert.ToDecimal(0.7);
+                                weight = decimal.Round(weight, 3, MidpointRounding.AwayFromZero);
+                                profilTotalWeight += weight;
                             }
                         }
                     }
                 }
             }
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM NewDecorOrders WHERE NeedCalcPrice=0 AND FactoryID=1 AND MainOrderID IN (SELECT MainOrderID FROM NewMainOrders WHERE MegaOrderID=" + MegaOrderID + ")",
+            using (var da = new SqlDataAdapter("SELECT * FROM NewDecorOrders WHERE NeedCalcPrice=0 AND FactoryID=1 AND MainOrderID IN (SELECT MainOrderID FROM NewMainOrders WHERE MegaOrderID=" + megaOrderId + ")",
                 ConnectionStrings.MarketingOrdersConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var cb = new SqlCommandBuilder(da))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var dt = new DataTable())
                     {
-                        if (DA.Fill(DT) > 0)
+                        if (da.Fill(dt) > 0)
                         {
-                            foreach (DataRow Row in DT.Rows)
-                                ProfilTotalWeight += Convert.ToDecimal(Row["Weight"]);
+                            foreach (DataRow row in dt.Rows)
+                                profilTotalWeight += Convert.ToDecimal(row["Weight"]);
                         }
                     }
                 }
             }
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM NewFrontsOrders WHERE NeedCalcPrice=0 AND FactoryID=2 AND MainOrderID IN (SELECT MainOrderID FROM NewMainOrders WHERE MegaOrderID=" + MegaOrderID + ")",
+            using (var da = new SqlDataAdapter("SELECT * FROM NewFrontsOrders WHERE NeedCalcPrice=0 AND FactoryID=2 AND MainOrderID IN (SELECT MainOrderID FROM NewMainOrders WHERE MegaOrderID=" + megaOrderId + ")",
                 ConnectionStrings.MarketingOrdersConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var cb = new SqlCommandBuilder(da))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var dt = new DataTable())
                     {
-                        if (DA.Fill(DT) > 0)
+                        if (da.Fill(dt) > 0)
                         {
-                            foreach (DataRow Row in DT.Rows)
+                            foreach (DataRow row in dt.Rows)
                             {
-                                decimal Square = Convert.ToDecimal(Row["Square"]);
-                                decimal Weight = Convert.ToDecimal(Row["Weight"]);
-                                if (Square > 0)
-                                    Weight = Weight + Square * Convert.ToDecimal(0.7);
-                                Weight = Decimal.Round(Weight, 3, MidpointRounding.AwayFromZero);
-                                TPSTotalWeight += Weight;
+                                var square = Convert.ToDecimal(row["Square"]);
+                                var weight = Convert.ToDecimal(row["Weight"]);
+                                if (square > 0)
+                                    weight = weight + square * Convert.ToDecimal(0.7);
+                                weight = decimal.Round(weight, 3, MidpointRounding.AwayFromZero);
+                                tpsTotalWeight += weight;
                             }
                         }
                     }
                 }
             }
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM NewDecorOrders WHERE NeedCalcPrice=0 AND FactoryID=2 AND MainOrderID IN (SELECT MainOrderID FROM NewMainOrders WHERE MegaOrderID=" + MegaOrderID + ")",
+            using (var da = new SqlDataAdapter("SELECT * FROM NewDecorOrders WHERE NeedCalcPrice=0 AND FactoryID=2 AND MainOrderID IN (SELECT MainOrderID FROM NewMainOrders WHERE MegaOrderID=" + megaOrderId + ")",
                 ConnectionStrings.MarketingOrdersConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var cb = new SqlCommandBuilder(da))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var dt = new DataTable())
                     {
-                        if (DA.Fill(DT) > 0)
+                        if (da.Fill(dt) > 0)
                         {
-                            foreach (DataRow Row in DT.Rows)
-                                TPSTotalWeight += Convert.ToDecimal(Row["Weight"]);
+                            foreach (DataRow row in dt.Rows)
+                                tpsTotalWeight += Convert.ToDecimal(row["Weight"]);
                         }
                     }
                 }
             }
-            decimal ProfilTransportAdditionalCost = 0;
-            decimal TPSTransportAdditionalCost = 0;
-            if (ProfilTotalWeight > 0)
-                ProfilTransportAdditionalCost = ProfilComplaintCost + TransportAdditionalCost * ProfilTotalWeight / (ProfilTotalWeight + TPSTotalWeight);
-            if (TPSTotalWeight > 0)
-                TPSTransportAdditionalCost = TPSComplaintCost + TransportAdditionalCost * TPSTotalWeight / (ProfilTotalWeight + TPSTotalWeight);
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM NewDecorOrders WHERE NeedCalcPrice=0 AND MainOrderID IN (SELECT MainOrderID FROM NewMainOrders WHERE MegaOrderID=" + MegaOrderID + ")",
+            decimal profilTransportAdditionalCost = 0;
+            decimal tpsTransportAdditionalCost = 0;
+            if (profilTotalWeight > 0)
+                profilTransportAdditionalCost = profilComplaintCost + transportAdditionalCost * profilTotalWeight / (profilTotalWeight + tpsTotalWeight);
+            if (tpsTotalWeight > 0)
+                tpsTransportAdditionalCost = tpsComplaintCost + transportAdditionalCost * tpsTotalWeight / (profilTotalWeight + tpsTotalWeight);
+            using (var da = new SqlDataAdapter("SELECT * FROM NewDecorOrders WHERE NeedCalcPrice=0 AND MainOrderID IN (SELECT MainOrderID FROM NewMainOrders WHERE MegaOrderID=" + megaOrderId + ")",
                 ConnectionStrings.MarketingOrdersConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var cb = new SqlCommandBuilder(da))
                 {
-                    using (DataTable DecorOrdersTable = new DataTable())
+                    using (var decorOrdersTable = new DataTable())
                     {
-                        DA.Fill(DecorOrdersTable);
+                        da.Fill(decorOrdersTable);
 
-                        if (DecorOrdersTable.Rows.Count == 0)
+                        if (decorOrdersTable.Rows.Count == 0)
                             return;
 
-                        foreach (DataRow Row in DecorOrdersTable.Rows)
+                        foreach (DataRow Row in decorOrdersTable.Rows)
                         {
-                            decimal PriceWithTransport = 0;
-                            decimal CostWithTransport = 0;
-                            int FactoryID = Convert.ToInt32(Row["FactoryID"]);
-                            decimal Price = Convert.ToDecimal(Row["Price"]);
-                            decimal Cost = Convert.ToDecimal(Row["Cost"]);
-                            decimal Weight = Convert.ToDecimal(Row["Weight"]);
+                            decimal priceWithTransport = 0;
+                            decimal costWithTransport = 0;
+                            var factoryId = Convert.ToInt32(Row["FactoryID"]);
+                            var price = Convert.ToDecimal(Row["Price"]);
+                            var cost = Convert.ToDecimal(Row["Cost"]);
+                            var weight = Convert.ToDecimal(Row["Weight"]);
 
                             decimal d = 0;
                             decimal d1 = 0;
 
-                            if (FactoryID == 1)
+                            if (factoryId == 1)
                             {
-                                if (ProfilTotalWeight == 0)
+                                if (profilTotalWeight == 0)
                                     continue;
-                                d = Weight / (ProfilTotalWeight / 100);
-                                d1 = ProfilTransportAdditionalCost / 100 * d;
+                                d = weight / (profilTotalWeight / 100);
+                                d1 = profilTransportAdditionalCost / 100 * d;
                             }
-                            if (FactoryID == 2)
+                            if (factoryId == 2)
                             {
-                                if (TPSTotalWeight == 0)
+                                if (tpsTotalWeight == 0)
                                     continue;
-                                d = Weight / (TPSTotalWeight / 100);
-                                d1 = TPSTransportAdditionalCost / 100 * d;
+                                d = weight / (tpsTotalWeight / 100);
+                                d1 = tpsTransportAdditionalCost / 100 * d;
                             }
-                            DataRow[] row = DecorConfigDataTable.Select("DecorConfigID = " + Row["DecorConfigID"].ToString());
+                            var row = _decorConfigDataTable.Select("DecorConfigID = " + Row["DecorConfigID"].ToString());
                             if (row[0]["Weight"] != DBNull.Value)
                             {
                                 decimal d2 = 0;
@@ -3178,60 +3154,56 @@ namespace Infinium.Modules.Marketing.NewOrders
                                 }
                                 else
                                 {
-                                    PriceWithTransport = Price + d1 / d2;
+                                    priceWithTransport = price + d1 / d2;
                                 }
                             }
 
-                            PriceWithTransport = Decimal.Round(PriceWithTransport, 2, MidpointRounding.AwayFromZero);
-                            Row["PriceWithTransport"] = PriceWithTransport;
-                            CostWithTransport = Cost + d1;
-                            CostWithTransport = Decimal.Round(CostWithTransport, 2, MidpointRounding.AwayFromZero);
-                            Row["CostWithTransport"] = CostWithTransport;
+                            priceWithTransport = decimal.Round(priceWithTransport, 2, MidpointRounding.AwayFromZero);
+                            Row["PriceWithTransport"] = priceWithTransport;
+                            costWithTransport = cost + d1;
+                            costWithTransport = decimal.Round(costWithTransport, 2, MidpointRounding.AwayFromZero);
+                            Row["CostWithTransport"] = costWithTransport;
                         }
 
-                        DA.Update(DecorOrdersTable);
+                        da.Update(decorOrdersTable);
                     }
                 }
             }
         }
 
 
-        private void GetStocks(int ClientID, object ConfirmDateTime)
+        private void GetStocks(int clientId, object confirmDateTime)
         {
-            Sale = false;
-            DateTime DocDateTime = DateTime.Now;
-            if (ConfirmDateTime != DBNull.Value)
-                DocDateTime = Convert.ToDateTime(ConfirmDateTime);
+            _sale = false;
+            var docDateTime = DateTime.Now;
+            if (confirmDateTime != DBNull.Value)
+                docDateTime = Convert.ToDateTime(confirmDateTime);
 
-            if (StockDetailsDT == null)
-                StockDetailsDT = new DataTable();
+            if (_stockDetailsDt == null)
+                _stockDetailsDt = new DataTable();
             else
-                StockDetailsDT.Clear();
+                _stockDetailsDt.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter(@"SELECT StockDetails.*, Stocks.Discount, Stocks.SampleDiscount FROM StockDetails INNER JOIN Stocks ON StockDetails.StockID=Stocks.StockID AND Stocks.Enable=1 AND 
-                CAST(Stocks.FirstDate AS Date) <= '" + DocDateTime.ToString("yyyy-MM-dd") +
-               "' AND CAST(Stocks.LastDate AS Date) >= '" + DocDateTime.ToString("yyyy-MM-dd") + "' WHERE StockDetails.StockID IN (SELECT StockID FROM StockClients WHERE ClientID=" + ClientID + ") AND StockDetails.ProductType=1",
+            using (var da = new SqlDataAdapter(@"SELECT StockDetails.*, Stocks.Discount, Stocks.SampleDiscount FROM StockDetails INNER JOIN Stocks ON StockDetails.StockID=Stocks.StockID AND Stocks.Enable=1 AND 
+                CAST(Stocks.FirstDate AS Date) <= '" + docDateTime.ToString("yyyy-MM-dd") +
+                                               "' AND CAST(Stocks.LastDate AS Date) >= '" + docDateTime.ToString("yyyy-MM-dd") + "' WHERE StockDetails.StockID IN (SELECT StockID FROM StockClients WHERE ClientID=" + clientId + ") AND StockDetails.ProductType=1",
                 ConnectionStrings.MarketingReferenceConnectionString))
             {
-                if (DA.Fill(StockDetailsDT) > 0)
-                    Sale = true;
+                if (da.Fill(_stockDetailsDt) > 0)
+                    _sale = true;
             }
         }
 
-        private decimal GetDiscount(int ConfigID)
+        private decimal GetDiscount(int configId)
         {
-            DataRow[] rows = StockDetailsDT.Select("ConfigID = " + ConfigID);
-            if (rows.Count() > 0)
-                return Convert.ToDecimal(rows[0]["Discount"]);
-            return 0;
+            var rows = _stockDetailsDt.Select("ConfigID = " + configId);
+            return rows.Any() ? Convert.ToDecimal(rows[0]["Discount"]) : 0;
         }
 
-        private decimal GetSampleDiscount(int ConfigID)
+        private decimal GetSampleDiscount(int configId)
         {
-            DataRow[] rows = StockDetailsDT.Select("ConfigID = " + ConfigID);
-            if (rows.Count() > 0)
-                return Convert.ToDecimal(rows[0]["SampleDiscount"]);
-            return 0;
+            var rows = _stockDetailsDt.Select("ConfigID = " + configId);
+            return rows.Any() ? Convert.ToDecimal(rows[0]["SampleDiscount"]) : 0;
         }
     }
 }

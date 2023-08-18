@@ -92,6 +92,7 @@
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.LoginButtonsPalette.ButtonStyles.ButtonCommon.StateTracking.Border.Rounding = 0;
+            this.LoginButtonsPalette.CustomisedKryptonPaletteFilePath = null;
             // 
             // AnimateTimer
             // 
@@ -125,11 +126,13 @@
             this.LoginComboBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.LoginComboBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.LoginComboBox.DropDownWidth = 241;
+            this.LoginComboBox.IntegralHeight = false;
             this.LoginComboBox.Location = new System.Drawing.Point(46, 46);
             this.LoginComboBox.Name = "LoginComboBox";
             this.LoginComboBox.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2007Black;
             this.LoginComboBox.Size = new System.Drawing.Size(409, 29);
             this.LoginComboBox.StateCommon.ComboBox.Content.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.LoginComboBox.StateCommon.ComboBox.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.LoginComboBox.StateCommon.Item.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.LoginComboBox.StateTracking.Item.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(184)))), ((int)(((byte)(238)))));
             this.LoginComboBox.StateTracking.Item.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;

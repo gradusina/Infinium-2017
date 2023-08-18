@@ -169,6 +169,16 @@ namespace Infinium
 
             Clients.EditClient(ref ClientName, ref CountryID, ref City, ref ClientGroupID, ref Email, ref Site, ref UNN, ref ManagerID, ref PriceGroup, ref DelayOfPayment, ref Enabled);
 
+            Clients.GetСlientsExcluziveCountries(ClientID);
+            dgvClientsExcluziveCountries.DataSource = Clients.excluziveCountriesBs;
+
+            dgvClientsExcluziveCountries.Columns["countryId"].Visible = false;
+            dgvClientsExcluziveCountries.Columns["check"].DisplayIndex = 0;
+            dgvClientsExcluziveCountries.Columns["name"].DisplayIndex = 1;
+            dgvClientsExcluziveCountries.Columns["check"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            dgvClientsExcluziveCountries.Columns["check"].Width = 50;
+            dgvClientsExcluziveCountries.Columns["name"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+
             OldManagerID = ManagerID;
 
             ClientNameTextBox.Text = ClientName;
@@ -230,6 +240,7 @@ namespace Infinium
             int DelayOfPayment = 0;
             bool Enabled = cbClientEnable.Checked;
 
+            Clients.SaveСlientsExcluziveCountries(ClientID);
             if (tbDelayOfPayment.Text.Length > 0)
                 DelayOfPayment = Convert.ToInt32(tbDelayOfPayment.Text);
             if (Clients.NewClient == true)

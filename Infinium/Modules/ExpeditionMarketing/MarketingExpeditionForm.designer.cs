@@ -61,10 +61,12 @@
             this.kryptonContextMenuItem15 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
             this.kryptonBorderEdge1 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.MenuPanel = new System.Windows.Forms.Panel();
+            this.monthCalendar3 = new System.Windows.Forms.MonthCalendar();
+            this.monthCalendar2 = new System.Windows.Forms.MonthCalendar();
+            this.monthCalendar1 = new System.Windows.Forms.MonthCalendar();
+            this.btnFilterByDate = new ComponentFactory.Krypton.Toolkit.KryptonButton();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.kryptonMonthCalendar4 = new ComponentFactory.Krypton.Toolkit.KryptonMonthCalendar();
-            this.kryptonMonthCalendar3 = new ComponentFactory.Krypton.Toolkit.KryptonMonthCalendar();
             this.btnShowAllOrders = new ComponentFactory.Krypton.Toolkit.KryptonButton();
             this.btnShowCabFurAssemble = new ComponentFactory.Krypton.Toolkit.KryptonButton();
             this.kryptonButton7 = new ComponentFactory.Krypton.Toolkit.KryptonButton();
@@ -105,7 +107,6 @@
             this.MegaBatchCheckBox = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
             this.kryptonButton2 = new ComponentFactory.Krypton.Toolkit.KryptonButton();
             this.kryptonButton1 = new ComponentFactory.Krypton.Toolkit.KryptonButton();
-            this.kryptonMonthCalendar1 = new ComponentFactory.Krypton.Toolkit.KryptonMonthCalendar();
             this.ClientCheckBox = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
             this.panel7 = new System.Windows.Forms.Panel();
             this.kryptonBorderEdge30 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
@@ -219,7 +220,6 @@
             this.kryptonContextMenuItem23 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
             this.kryptonContextMenuItem20 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
             this.kryptonContextMenuItem21 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
-            this.btnFilterByDate = new ComponentFactory.Krypton.Toolkit.KryptonButton();
             this.NavigatePanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MainOrdersSplitContainer)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.MainOrdersSplitContainer.Panel1)).BeginInit();
@@ -248,9 +248,7 @@
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MainOrdersTabControl)).BeginInit();
             this.MainOrdersTabControl.SuspendLayout();
-            this.xtraTabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MainOrdersFrontsOrdersDataGrid)).BeginInit();
-            this.xtraTabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MainOrdersDecorOrdersDataGrid)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.MenuPanel.SuspendLayout();
@@ -262,7 +260,6 @@
             this.panel7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.FilterClientsDataGrid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupControlContainer1)).BeginInit();
-            this.popupControlContainer1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pnlDispatchMenu)).BeginInit();
             this.pnlDispatchMenu.SuspendLayout();
@@ -399,6 +396,7 @@
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.NavigateMenuButtonsPalette.ButtonStyles.ButtonCommon.StateTracking.Border.Rounding = 0;
             this.NavigateMenuButtonsPalette.ButtonStyles.ButtonCommon.StateTracking.Border.Width = 1;
+            this.NavigateMenuButtonsPalette.CustomisedKryptonPaletteFilePath = null;
             // 
             // label1
             // 
@@ -836,6 +834,7 @@
             // xtraTabPage1
             // 
             this.xtraTabPage1.Controls.Add(this.MainOrdersFrontsOrdersDataGrid);
+            this.xtraTabPage1.Enabled = true;
             this.xtraTabPage1.Name = "xtraTabPage1";
             this.xtraTabPage1.Size = new System.Drawing.Size(917, 291);
             this.xtraTabPage1.Text = "      Фасады      ";
@@ -846,14 +845,12 @@
             this.MainOrdersFrontsOrdersDataGrid.AllowUserToDeleteRows = false;
             this.MainOrdersFrontsOrdersDataGrid.AllowUserToResizeColumns = false;
             this.MainOrdersFrontsOrdersDataGrid.AllowUserToResizeRows = false;
-            this.MainOrdersFrontsOrdersDataGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.MainOrdersFrontsOrdersDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.MainOrdersFrontsOrdersDataGrid.BackText = "Нет данных";
             this.MainOrdersFrontsOrdersDataGrid.ColumnHeadersHeight = 40;
             this.MainOrdersFrontsOrdersDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.MainOrdersFrontsOrdersDataGrid.Location = new System.Drawing.Point(0, 2);
+            this.MainOrdersFrontsOrdersDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.MainOrdersFrontsOrdersDataGrid.Location = new System.Drawing.Point(0, 0);
             this.MainOrdersFrontsOrdersDataGrid.MultiSelect = false;
             this.MainOrdersFrontsOrdersDataGrid.Name = "MainOrdersFrontsOrdersDataGrid";
             this.MainOrdersFrontsOrdersDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -863,7 +860,7 @@
             this.MainOrdersFrontsOrdersDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.MainOrdersFrontsOrdersDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Green;
             this.MainOrdersFrontsOrdersDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.MainOrdersFrontsOrdersDataGrid.Size = new System.Drawing.Size(917, 285);
+            this.MainOrdersFrontsOrdersDataGrid.Size = new System.Drawing.Size(917, 291);
             this.MainOrdersFrontsOrdersDataGrid.StandardStyle = false;
             this.MainOrdersFrontsOrdersDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
             this.MainOrdersFrontsOrdersDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
@@ -903,6 +900,7 @@
             // xtraTabPage2
             // 
             this.xtraTabPage2.Controls.Add(this.MainOrdersDecorOrdersDataGrid);
+            this.xtraTabPage2.Enabled = true;
             this.xtraTabPage2.Name = "xtraTabPage2";
             this.xtraTabPage2.Size = new System.Drawing.Size(917, 291);
             this.xtraTabPage2.Text = "      Декор      ";
@@ -913,14 +911,12 @@
             this.MainOrdersDecorOrdersDataGrid.AllowUserToDeleteRows = false;
             this.MainOrdersDecorOrdersDataGrid.AllowUserToResizeColumns = false;
             this.MainOrdersDecorOrdersDataGrid.AllowUserToResizeRows = false;
-            this.MainOrdersDecorOrdersDataGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.MainOrdersDecorOrdersDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.MainOrdersDecorOrdersDataGrid.BackText = "Нет данных";
             this.MainOrdersDecorOrdersDataGrid.ColumnHeadersHeight = 40;
             this.MainOrdersDecorOrdersDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.MainOrdersDecorOrdersDataGrid.Location = new System.Drawing.Point(0, 2);
+            this.MainOrdersDecorOrdersDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.MainOrdersDecorOrdersDataGrid.Location = new System.Drawing.Point(0, 0);
             this.MainOrdersDecorOrdersDataGrid.Name = "MainOrdersDecorOrdersDataGrid";
             this.MainOrdersDecorOrdersDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.MainOrdersDecorOrdersDataGrid.PercentLineWidth = 0;
@@ -929,7 +925,7 @@
             this.MainOrdersDecorOrdersDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.MainOrdersDecorOrdersDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Green;
             this.MainOrdersDecorOrdersDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.MainOrdersDecorOrdersDataGrid.Size = new System.Drawing.Size(917, 285);
+            this.MainOrdersDecorOrdersDataGrid.Size = new System.Drawing.Size(917, 291);
             this.MainOrdersDecorOrdersDataGrid.StandardStyle = false;
             this.MainOrdersDecorOrdersDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
             this.MainOrdersDecorOrdersDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
@@ -1024,11 +1020,12 @@
             // 
             this.MenuPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.MenuPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(140)))), ((int)(((byte)(140)))), ((int)(((byte)(140)))));
+            this.MenuPanel.Controls.Add(this.monthCalendar3);
+            this.MenuPanel.Controls.Add(this.monthCalendar2);
+            this.MenuPanel.Controls.Add(this.monthCalendar1);
             this.MenuPanel.Controls.Add(this.btnFilterByDate);
             this.MenuPanel.Controls.Add(this.label3);
             this.MenuPanel.Controls.Add(this.label2);
-            this.MenuPanel.Controls.Add(this.kryptonMonthCalendar4);
-            this.MenuPanel.Controls.Add(this.kryptonMonthCalendar3);
             this.MenuPanel.Controls.Add(this.btnShowAllOrders);
             this.MenuPanel.Controls.Add(this.btnShowCabFurAssemble);
             this.MenuPanel.Controls.Add(this.kryptonButton7);
@@ -1043,7 +1040,6 @@
             this.MenuPanel.Controls.Add(this.MegaBatchCheckBox);
             this.MenuPanel.Controls.Add(this.kryptonButton2);
             this.MenuPanel.Controls.Add(this.kryptonButton1);
-            this.MenuPanel.Controls.Add(this.kryptonMonthCalendar1);
             this.MenuPanel.Controls.Add(this.ClientCheckBox);
             this.MenuPanel.Controls.Add(this.panel7);
             this.MenuPanel.Controls.Add(this.kryptonBorderEdge8);
@@ -1055,6 +1051,41 @@
             this.MenuPanel.Size = new System.Drawing.Size(1080, 717);
             this.MenuPanel.TabIndex = 38;
             this.MenuPanel.Visible = false;
+            // 
+            // monthCalendar3
+            // 
+            this.monthCalendar3.Location = new System.Drawing.Point(592, 511);
+            this.monthCalendar3.MaxSelectionCount = 1;
+            this.monthCalendar3.Name = "monthCalendar3";
+            this.monthCalendar3.ShowWeekNumbers = true;
+            this.monthCalendar3.TabIndex = 527;
+            // 
+            // monthCalendar2
+            // 
+            this.monthCalendar2.Location = new System.Drawing.Point(827, 253);
+            this.monthCalendar2.MaxSelectionCount = 1;
+            this.monthCalendar2.Name = "monthCalendar2";
+            this.monthCalendar2.ShowWeekNumbers = true;
+            this.monthCalendar2.TabIndex = 522;
+            // 
+            // monthCalendar1
+            // 
+            this.monthCalendar1.Location = new System.Drawing.Point(827, 37);
+            this.monthCalendar1.MaxSelectionCount = 1;
+            this.monthCalendar1.Name = "monthCalendar1";
+            this.monthCalendar1.ShowWeekNumbers = true;
+            this.monthCalendar1.TabIndex = 517;
+            // 
+            // btnFilterByDate
+            // 
+            this.btnFilterByDate.Location = new System.Drawing.Point(827, 444);
+            this.btnFilterByDate.Name = "btnFilterByDate";
+            this.btnFilterByDate.Size = new System.Drawing.Size(230, 52);
+            this.btnFilterByDate.TabIndex = 508;
+            this.btnFilterByDate.Tag = "1";
+            this.btnFilterByDate.Values.ExtraText = "Поиск по дате создания заказа";
+            this.btnFilterByDate.Values.Text = "";
+            this.btnFilterByDate.Click += new System.EventHandler(this.btnFilterByDate_Click);
             // 
             // label3
             // 
@@ -1077,28 +1108,6 @@
             this.label2.Size = new System.Drawing.Size(99, 25);
             this.label2.TabIndex = 502;
             this.label2.Text = "Период с:";
-            // 
-            // kryptonMonthCalendar4
-            // 
-            this.kryptonMonthCalendar4.Location = new System.Drawing.Point(827, 255);
-            this.kryptonMonthCalendar4.MaxSelectionCount = 1;
-            this.kryptonMonthCalendar4.Name = "kryptonMonthCalendar4";
-            this.kryptonMonthCalendar4.SelectionEnd = new System.DateTime(2020, 6, 12, 0, 0, 0, 0);
-            this.kryptonMonthCalendar4.SelectionStart = new System.DateTime(2020, 6, 12, 0, 0, 0, 0);
-            this.kryptonMonthCalendar4.Size = new System.Drawing.Size(230, 184);
-            this.kryptonMonthCalendar4.TabIndex = 501;
-            this.kryptonMonthCalendar4.TodayDate = new System.DateTime(2020, 6, 12, 0, 0, 0, 0);
-            // 
-            // kryptonMonthCalendar3
-            // 
-            this.kryptonMonthCalendar3.Location = new System.Drawing.Point(827, 36);
-            this.kryptonMonthCalendar3.MaxSelectionCount = 1;
-            this.kryptonMonthCalendar3.Name = "kryptonMonthCalendar3";
-            this.kryptonMonthCalendar3.SelectionEnd = new System.DateTime(2020, 6, 12, 0, 0, 0, 0);
-            this.kryptonMonthCalendar3.SelectionStart = new System.DateTime(2020, 6, 12, 0, 0, 0, 0);
-            this.kryptonMonthCalendar3.Size = new System.Drawing.Size(230, 184);
-            this.kryptonMonthCalendar3.TabIndex = 500;
-            this.kryptonMonthCalendar3.TodayDate = new System.DateTime(2020, 6, 12, 0, 0, 0, 0);
             // 
             // btnShowAllOrders
             // 
@@ -1223,7 +1232,6 @@
             // 
             // AllPackagesCheckBox
             // 
-            this.AllPackagesCheckBox.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalControl;
             this.AllPackagesCheckBox.Location = new System.Drawing.Point(4, 11);
             this.AllPackagesCheckBox.Name = "AllPackagesCheckBox";
             this.AllPackagesCheckBox.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -1231,7 +1239,6 @@
             this.AllPackagesCheckBox.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
             this.AllPackagesCheckBox.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 17.81F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
             this.AllPackagesCheckBox.TabIndex = 390;
-            this.AllPackagesCheckBox.Text = "Все упаковки";
             this.AllPackagesCheckBox.Values.Text = "Все упаковки";
             this.AllPackagesCheckBox.CheckedChanged += new System.EventHandler(this.AllPackagesCheckBox_CheckedChanged);
             this.AllPackagesCheckBox.Click += new System.EventHandler(this.AllPackagesCheckBox_Click);
@@ -1293,15 +1300,13 @@
             // 
             this.ProfilCheckBox.Checked = true;
             this.ProfilCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ProfilCheckBox.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalControl;
             this.ProfilCheckBox.Location = new System.Drawing.Point(4, 11);
             this.ProfilCheckBox.Name = "ProfilCheckBox";
             this.ProfilCheckBox.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.ProfilCheckBox.Size = new System.Drawing.Size(153, 28);
+            this.ProfilCheckBox.Size = new System.Drawing.Size(173, 28);
             this.ProfilCheckBox.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
             this.ProfilCheckBox.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 17.81F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
             this.ProfilCheckBox.TabIndex = 346;
-            this.ProfilCheckBox.Text = "ОМЦ-ПРОФИЛЬ";
             this.ProfilCheckBox.Values.Text = "ОМЦ-ПРОФИЛЬ";
             this.ProfilCheckBox.CheckedChanged += new System.EventHandler(this.ProfilCheckBox_CheckedChanged);
             this.ProfilCheckBox.Click += new System.EventHandler(this.ProfilCheckBox_Click);
@@ -1310,7 +1315,6 @@
             // 
             this.TPSCheckBox.Checked = true;
             this.TPSCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.TPSCheckBox.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalControl;
             this.TPSCheckBox.Location = new System.Drawing.Point(4, 45);
             this.TPSCheckBox.Name = "TPSCheckBox";
             this.TPSCheckBox.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -1318,7 +1322,6 @@
             this.TPSCheckBox.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
             this.TPSCheckBox.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 17.81F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
             this.TPSCheckBox.TabIndex = 347;
-            this.TPSCheckBox.Text = "ЗОВ-ТПС";
             this.TPSCheckBox.Values.Text = "ЗОВ-ТПС";
             this.TPSCheckBox.CheckedChanged += new System.EventHandler(this.TPSCheckBox_CheckedChanged);
             this.TPSCheckBox.Click += new System.EventHandler(this.TPSCheckBox_Click);
@@ -1346,7 +1349,6 @@
             // 
             this.cbOnExpedition.Checked = true;
             this.cbOnExpedition.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbOnExpedition.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalControl;
             this.cbOnExpedition.Location = new System.Drawing.Point(4, 144);
             this.cbOnExpedition.Name = "cbOnExpedition";
             this.cbOnExpedition.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -1354,7 +1356,6 @@
             this.cbOnExpedition.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
             this.cbOnExpedition.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 17.81F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
             this.cbOnExpedition.TabIndex = 421;
-            this.cbOnExpedition.Text = "На экспедиции";
             this.cbOnExpedition.Values.Text = "На экспедиции";
             this.cbOnExpedition.CheckedChanged += new System.EventHandler(this.cbOnExpedition_CheckedChanged);
             // 
@@ -1370,7 +1371,6 @@
             // 
             // DispatchCheckBox
             // 
-            this.DispatchCheckBox.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalControl;
             this.DispatchCheckBox.Location = new System.Drawing.Point(4, 178);
             this.DispatchCheckBox.Name = "DispatchCheckBox";
             this.DispatchCheckBox.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -1378,7 +1378,6 @@
             this.DispatchCheckBox.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
             this.DispatchCheckBox.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 17.81F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
             this.DispatchCheckBox.TabIndex = 417;
-            this.DispatchCheckBox.Text = "Отгружено";
             this.DispatchCheckBox.Values.Text = "Отгружено";
             this.DispatchCheckBox.CheckedChanged += new System.EventHandler(this.DispatchCheckBox_CheckedChanged);
             // 
@@ -1396,7 +1395,6 @@
             // 
             this.OnStorageCheckBox.Checked = true;
             this.OnStorageCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.OnStorageCheckBox.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalControl;
             this.OnStorageCheckBox.Location = new System.Drawing.Point(4, 110);
             this.OnStorageCheckBox.Name = "OnStorageCheckBox";
             this.OnStorageCheckBox.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -1404,7 +1402,6 @@
             this.OnStorageCheckBox.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
             this.OnStorageCheckBox.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 17.81F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
             this.OnStorageCheckBox.TabIndex = 416;
-            this.OnStorageCheckBox.Text = "На складе";
             this.OnStorageCheckBox.Values.Text = "На складе";
             this.OnStorageCheckBox.CheckedChanged += new System.EventHandler(this.OnStorageCheckBox_CheckedChanged);
             // 
@@ -1419,7 +1416,6 @@
             // 
             // OnProductionCheckBox
             // 
-            this.OnProductionCheckBox.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalControl;
             this.OnProductionCheckBox.Location = new System.Drawing.Point(4, 45);
             this.OnProductionCheckBox.Name = "OnProductionCheckBox";
             this.OnProductionCheckBox.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -1427,7 +1423,6 @@
             this.OnProductionCheckBox.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
             this.OnProductionCheckBox.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 17.81F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
             this.OnProductionCheckBox.TabIndex = 415;
-            this.OnProductionCheckBox.Text = "На производстве";
             this.OnProductionCheckBox.Values.Text = "На производстве";
             this.OnProductionCheckBox.CheckedChanged += new System.EventHandler(this.OnProductionCheckBox_CheckedChanged);
             // 
@@ -1444,7 +1439,6 @@
             // 
             this.InProductionCheckBox.Checked = true;
             this.InProductionCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.InProductionCheckBox.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalControl;
             this.InProductionCheckBox.Location = new System.Drawing.Point(4, 76);
             this.InProductionCheckBox.Name = "InProductionCheckBox";
             this.InProductionCheckBox.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -1452,13 +1446,11 @@
             this.InProductionCheckBox.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
             this.InProductionCheckBox.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 17.81F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
             this.InProductionCheckBox.TabIndex = 414;
-            this.InProductionCheckBox.Text = "В производстве";
             this.InProductionCheckBox.Values.Text = "В производстве";
             this.InProductionCheckBox.CheckedChanged += new System.EventHandler(this.InProductionCheckBox_CheckedChanged);
             // 
             // NotProductionCheckBox
             // 
-            this.NotProductionCheckBox.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalControl;
             this.NotProductionCheckBox.Location = new System.Drawing.Point(4, 11);
             this.NotProductionCheckBox.Name = "NotProductionCheckBox";
             this.NotProductionCheckBox.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -1466,7 +1458,6 @@
             this.NotProductionCheckBox.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
             this.NotProductionCheckBox.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 17.81F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
             this.NotProductionCheckBox.TabIndex = 413;
-            this.NotProductionCheckBox.Text = "Не в производстве";
             this.NotProductionCheckBox.Values.Text = "Не в производстве";
             this.NotProductionCheckBox.CheckedChanged += new System.EventHandler(this.NotProductionCheckBox_CheckedChanged);
             // 
@@ -1580,7 +1571,6 @@
             // 
             // MegaBatchCheckBox
             // 
-            this.MegaBatchCheckBox.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalControl;
             this.MegaBatchCheckBox.Location = new System.Drawing.Point(623, 6);
             this.MegaBatchCheckBox.Name = "MegaBatchCheckBox";
             this.MegaBatchCheckBox.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -1588,7 +1578,6 @@
             this.MegaBatchCheckBox.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
             this.MegaBatchCheckBox.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 17.81F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
             this.MegaBatchCheckBox.TabIndex = 402;
-            this.MegaBatchCheckBox.Text = "По номеру партии";
             this.MegaBatchCheckBox.Values.Text = "По номеру партии";
             this.MegaBatchCheckBox.CheckedChanged += new System.EventHandler(this.MegaBatchCheckBox_CheckedChanged);
             // 
@@ -1610,20 +1599,8 @@
             this.kryptonButton1.Values.Text = "Отгрузить";
             this.kryptonButton1.Click += new System.EventHandler(this.kryptonButton1_Click_1);
             // 
-            // kryptonMonthCalendar1
-            // 
-            this.kryptonMonthCalendar1.Location = new System.Drawing.Point(586, 511);
-            this.kryptonMonthCalendar1.Name = "kryptonMonthCalendar1";
-            this.kryptonMonthCalendar1.SelectionEnd = new System.DateTime(2020, 6, 12, 0, 0, 0, 0);
-            this.kryptonMonthCalendar1.SelectionStart = new System.DateTime(2020, 6, 12, 0, 0, 0, 0);
-            this.kryptonMonthCalendar1.Size = new System.Drawing.Size(230, 184);
-            this.kryptonMonthCalendar1.TabIndex = 395;
-            this.kryptonMonthCalendar1.TodayDate = new System.DateTime(2020, 6, 12, 0, 0, 0, 0);
-            this.kryptonMonthCalendar1.DateChanged += new System.Windows.Forms.DateRangeEventHandler(this.kryptonMonthCalendar1_DateChanged);
-            // 
             // ClientCheckBox
             // 
-            this.ClientCheckBox.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalControl;
             this.ClientCheckBox.Location = new System.Drawing.Point(244, 6);
             this.ClientCheckBox.Name = "ClientCheckBox";
             this.ClientCheckBox.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -1631,7 +1608,6 @@
             this.ClientCheckBox.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
             this.ClientCheckBox.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 17.81F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
             this.ClientCheckBox.TabIndex = 335;
-            this.ClientCheckBox.Text = "Клиент";
             this.ClientCheckBox.Values.Text = "Клиент";
             this.ClientCheckBox.CheckedChanged += new System.EventHandler(this.ClientCheckBox_CheckedChanged);
             this.ClientCheckBox.Click += new System.EventHandler(this.ClientCheckBox_Click);
@@ -1815,6 +1791,7 @@
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.StandardButtonsPalette.ButtonStyles.ButtonCommon.StateTracking.Border.Rounding = 0;
+            this.StandardButtonsPalette.CustomisedKryptonPaletteFilePath = null;
             // 
             // popupControlContainer1
             // 
@@ -1995,6 +1972,7 @@
             this.MainMenuPalette.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Font = new System.Drawing.Font("Segoe UI Symbol", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.MainMenuPalette.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.MultiLineH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
             this.MainMenuPalette.ButtonStyles.ButtonCommon.StateTracking.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(198)))), ((int)(((byte)(0)))));
+            this.MainMenuPalette.CustomisedKryptonPaletteFilePath = null;
             // 
             // btnAddDispatch
             // 
@@ -2306,12 +2284,14 @@
             this.cbxYears.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.cbxYears.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbxYears.DropDownWidth = 102;
+            this.cbxYears.IntegralHeight = false;
             this.cbxYears.Location = new System.Drawing.Point(162, 10);
             this.cbxYears.Name = "cbxYears";
             this.cbxYears.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.cbxYears.Size = new System.Drawing.Size(74, 23);
             this.cbxYears.StateCommon.ComboBox.Content.Color1 = System.Drawing.Color.Black;
             this.cbxYears.StateCommon.ComboBox.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.cbxYears.StateCommon.ComboBox.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.cbxYears.StateCommon.Item.Content.ShortText.Color1 = System.Drawing.Color.Black;
             this.cbxYears.StateCommon.Item.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.cbxYears.TabIndex = 434;
@@ -2322,12 +2302,14 @@
             this.cbxMonths.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.cbxMonths.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbxMonths.DropDownWidth = 102;
+            this.cbxMonths.IntegralHeight = false;
             this.cbxMonths.Location = new System.Drawing.Point(13, 10);
             this.cbxMonths.Name = "cbxMonths";
             this.cbxMonths.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.cbxMonths.Size = new System.Drawing.Size(136, 23);
             this.cbxMonths.StateCommon.ComboBox.Content.Color1 = System.Drawing.Color.Black;
             this.cbxMonths.StateCommon.ComboBox.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.cbxMonths.StateCommon.ComboBox.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.cbxMonths.StateCommon.Item.Content.ShortText.Color1 = System.Drawing.Color.Black;
             this.cbxMonths.StateCommon.Item.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.cbxMonths.TabIndex = 433;
@@ -2934,12 +2916,14 @@
             this.cbxCabFurYears.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.cbxCabFurYears.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbxCabFurYears.DropDownWidth = 102;
+            this.cbxCabFurYears.IntegralHeight = false;
             this.cbxCabFurYears.Location = new System.Drawing.Point(189, 56);
             this.cbxCabFurYears.Name = "cbxCabFurYears";
             this.cbxCabFurYears.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.cbxCabFurYears.Size = new System.Drawing.Size(74, 23);
             this.cbxCabFurYears.StateCommon.ComboBox.Content.Color1 = System.Drawing.Color.Black;
             this.cbxCabFurYears.StateCommon.ComboBox.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.cbxCabFurYears.StateCommon.ComboBox.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.cbxCabFurYears.StateCommon.Item.Content.ShortText.Color1 = System.Drawing.Color.Black;
             this.cbxCabFurYears.StateCommon.Item.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.cbxCabFurYears.TabIndex = 434;
@@ -2950,12 +2934,14 @@
             this.cbxCabFurMonths.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.cbxCabFurMonths.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbxCabFurMonths.DropDownWidth = 102;
+            this.cbxCabFurMonths.IntegralHeight = false;
             this.cbxCabFurMonths.Location = new System.Drawing.Point(40, 56);
             this.cbxCabFurMonths.Name = "cbxCabFurMonths";
             this.cbxCabFurMonths.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.cbxCabFurMonths.Size = new System.Drawing.Size(136, 23);
             this.cbxCabFurMonths.StateCommon.ComboBox.Content.Color1 = System.Drawing.Color.Black;
             this.cbxCabFurMonths.StateCommon.ComboBox.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.cbxCabFurMonths.StateCommon.ComboBox.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.cbxCabFurMonths.StateCommon.Item.Content.ShortText.Color1 = System.Drawing.Color.Black;
             this.cbxCabFurMonths.StateCommon.Item.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.cbxCabFurMonths.TabIndex = 433;
@@ -3183,34 +3169,23 @@
             this.kryptonContextMenuItem21.Text = "Скомплектовать";
             this.kryptonContextMenuItem21.Click += new System.EventHandler(this.kryptonContextMenuItem21_Click);
             // 
-            // btnFilterByDate
-            // 
-            this.btnFilterByDate.Location = new System.Drawing.Point(827, 444);
-            this.btnFilterByDate.Name = "btnFilterByDate";
-            this.btnFilterByDate.Size = new System.Drawing.Size(230, 52);
-            this.btnFilterByDate.TabIndex = 508;
-            this.btnFilterByDate.Tag = "1";
-            this.btnFilterByDate.Values.ExtraText = "Поиск по дате создания заказа";
-            this.btnFilterByDate.Values.Text = "";
-            this.btnFilterByDate.Click += new System.EventHandler(this.btnFilterByDate_Click);
-            // 
             // MarketingExpeditionForm
             // 
             this.AccessibleName = "false";
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1270, 740);
-            this.Controls.Add(this.MenuPanel);
             this.Controls.Add(this.pnlExpedition);
             this.Controls.Add(this.pnlDispatch);
             this.Controls.Add(this.pnlDispatchMenu);
             this.Controls.Add(this.NavigatePanel);
-            this.Controls.Add(this.popupControlContainer1);
             this.Controls.Add(this.pnlCabFur);
             this.Controls.Add(this.barDockControlLeft);
             this.Controls.Add(this.barDockControlRight);
             this.Controls.Add(this.barDockControlBottom);
             this.Controls.Add(this.barDockControlTop);
+            this.Controls.Add(this.popupControlContainer1);
+            this.Controls.Add(this.MenuPanel);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MaximizeBox = false;
@@ -3253,9 +3228,7 @@
             this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.MainOrdersTabControl)).EndInit();
             this.MainOrdersTabControl.ResumeLayout(false);
-            this.xtraTabPage1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.MainOrdersFrontsOrdersDataGrid)).EndInit();
-            this.xtraTabPage2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.MainOrdersDecorOrdersDataGrid)).EndInit();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.MenuPanel.ResumeLayout(false);
@@ -3273,7 +3246,6 @@
             this.panel7.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.FilterClientsDataGrid)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupControlContainer1)).EndInit();
-            this.popupControlContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pnlDispatchMenu)).EndInit();
             this.pnlDispatchMenu.ResumeLayout(false);
@@ -3370,7 +3342,6 @@
         private ComponentFactory.Krypton.Toolkit.KryptonCheckBox TPSCheckBox;
         private ComponentFactory.Krypton.Toolkit.KryptonCheckBox ProfilCheckBox;
         private ComponentFactory.Krypton.Toolkit.KryptonCheckBox AllPackagesCheckBox;
-        private ComponentFactory.Krypton.Toolkit.KryptonMonthCalendar kryptonMonthCalendar1;
         private ComponentFactory.Krypton.Toolkit.KryptonButton kryptonButton2;
         private ComponentFactory.Krypton.Toolkit.KryptonButton kryptonButton1;
         private System.Windows.Forms.Panel panel2;
@@ -3520,8 +3491,9 @@
         private ComponentFactory.Krypton.Toolkit.KryptonButton kryptonButton8;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
-        private ComponentFactory.Krypton.Toolkit.KryptonMonthCalendar kryptonMonthCalendar4;
-        private ComponentFactory.Krypton.Toolkit.KryptonMonthCalendar kryptonMonthCalendar3;
         private ComponentFactory.Krypton.Toolkit.KryptonButton btnFilterByDate;
+        private System.Windows.Forms.MonthCalendar monthCalendar1;
+        private System.Windows.Forms.MonthCalendar monthCalendar2;
+        private System.Windows.Forms.MonthCalendar monthCalendar3;
     }
 }

@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
+using System.Reflection.Emit;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
@@ -55,6 +56,7 @@ namespace Infinium
         private CabFurStorage cabFurStorage;
         private CabFurStorageToExcel cabFurStorageToExcel;
         private Infinium.Modules.CabFurnitureAssignments.CheckLabel CheckLabel;
+        private bool isDateOn = false;
 
         public enum RoleTypes
         {
@@ -67,6 +69,8 @@ namespace Infinium
             WorkerRole = 6,
             DispatchRole = 7
         }
+
+        private RoleTypes userRole;
 
         public CabFurnitureModuleForm(LightStartForm tLightStartForm)
         {
@@ -96,18 +100,21 @@ namespace Infinium
 
             if (assignmentsManager.PermissionGranted(iAgreementRole))
             {
+                userRole = RoleTypes.AgreementRole;
                 cmiSaveAssignments.Visible = false;
                 agreeAssignmentContextMenuItem.Visible = true;
                 setDispatchDateContextMenuItem.Visible = false;
             }
             if (assignmentsManager.PermissionGranted(iAdminRole))
             {
+                userRole = RoleTypes.AdminRole;
                 cmiSaveAssignments.Visible = true;
                 agreeAssignmentContextMenuItem.Visible = true;
                 setDispatchDateContextMenuItem.Visible = true;
             }
             if (assignmentsManager.PermissionGranted(iDispatchRole))
             {
+                userRole = RoleTypes.DispatchRole;
                 cmiSaveAssignments.Visible = true;
                 agreeAssignmentContextMenuItem.Visible = true;
                 setDispatchDateContextMenuItem.Visible = true;
@@ -225,6 +232,8 @@ namespace Infinium
             DateTime FirstDay = DateTime.Now.AddDays(-100);
             DateTime Today = DateTime.Now;
 
+            kryptonDateTimePicker10.Value = Today;
+            kryptonDateTimePicker9.Value = Today;
             DateTimePicker1.Value = FirstDay;
             CreateDateTimePicker1.Value = FirstDay;
 
@@ -295,6 +304,7 @@ namespace Infinium
             dgvNewAssignment.DataSource = assignmentsManager.NewAssignmentDetailsBS;
             percentageDataGrid1.DataSource = assignmentsManager.NewAssignmentDetailsBS;
             dgvAllAssignments.DataSource = assignmentsManager.AllAssignmentsBS;
+            percentageDataGrid2.DataSource = assignmentsManager.StatisticsBS;
 
             assignmentsManager.NonAgreementOrders(true, ref NonAgreementCount);
             assignmentsManager.AgreedOrders(true, ref AgreedCount);
@@ -331,7 +341,8 @@ namespace Infinium
             dgvNewAssignmentSetting(ref dgvNewAssignment);
             dgvNewAssignmentSetting(ref percentageDataGrid1);
             dgvAllAssignmentsSetting(ref dgvAllAssignments);
-            
+            dgvStatisticsSetting(ref percentageDataGrid2);
+
             assignmentsManager.UpdateNewAssignment(0);
             assignmentsManager.UpdateDocuments(FirstDay, DateTime.Now);
             assignmentsManager.UpdateAllAssignments(FirstDay, DateTime.Now);
@@ -363,6 +374,109 @@ namespace Infinium
             dgvCellsSetting(ref dgvCells);
             dgvStoragePackagesLabelsSetting(ref dgvStoragePackagesLabels);
             dgvPackagesDetailsSetting(ref dgvStoragePackagesDetails);
+        }
+
+        private void dgvStatisticsSetting(ref PercentageDataGrid grid)
+        {
+            grid.Columns.Add(assignmentsManager.CTechStoreNameColumn);
+            grid.Columns.Add(assignmentsManager.CoverColumn);
+            grid.Columns.Add(assignmentsManager.PatinaColumn);
+            grid.Columns.Add(assignmentsManager.InsetColorColumn);
+            grid.AutoGenerateColumns = false;
+
+            if (grid.Columns.Contains("TechStoreSubGroupID"))
+                grid.Columns["TechStoreSubGroupID"].Visible = false;
+            if (grid.Columns.Contains("CTechStoreID"))
+                grid.Columns["CTechStoreID"].Visible = false;
+            if (grid.Columns.Contains("CoverID"))
+                grid.Columns["CoverID"].Visible = false;
+            if (grid.Columns.Contains("PatinaID"))
+                grid.Columns["PatinaID"].Visible = false;
+            if (grid.Columns.Contains("TechStoreID"))
+                grid.Columns["TechStoreID"].Visible = false;
+            if (grid.Columns.Contains("InsetColorID"))
+                grid.Columns["InsetColorID"].Visible = false;
+            if (grid.Columns.Contains("CabFurniturePackageDetailID"))
+                grid.Columns["CabFurniturePackageDetailID"].Visible = false;
+            if (grid.Columns.Contains("CabFurniturePackageID"))
+                grid.Columns["CabFurniturePackageID"].Visible = false;
+            if (grid.Columns.Contains("CreateUserID"))
+                grid.Columns["CreateUserID"].Visible = false;
+            if (grid.Columns.Contains("MainOrderID"))
+                grid.Columns["MainOrderID"].Visible = false;
+            if (grid.Columns.Contains("PackNumber"))
+                grid.Columns["PackNumber"].Visible = false;
+            if (grid.Columns.Contains("CNotes"))
+                grid.Columns["CNotes"].Visible = false;
+            if (grid.Columns.Contains("PackagesCount"))
+                grid.Columns["PackagesCount"].Visible = false;
+            if (grid.Columns.Contains("CreateDateTime"))
+                grid.Columns["CreateDateTime"].Visible = false;
+
+            if (grid.Columns.Contains("ACreationDateTime"))
+                grid.Columns["ACreationDateTime"].Visible = false;
+            if (grid.Columns.Contains("AProductionDateTime"))
+                grid.Columns["AProductionDateTime"].Visible = false;
+
+
+
+
+
+
+
+            if (grid.Columns.Contains("CounterCFA"))
+                grid.Columns["CounterCFA"].Visible = false;
+
+            if (grid.Columns.Contains("PrintDateTime"))
+                grid.Columns["PrintDateTime"].Visible = false;
+            //if (grid.Columns.Contains("AddToStorageDateTime"))
+            //    grid.Columns["AddToStorageDateTime"].Visible = false;
+            if (grid.Columns.Contains("RemoveFromStorageDateTime"))
+                grid.Columns["RemoveFromStorageDateTime"].Visible = false;
+            if (grid.Columns.Contains("QualityControlInDateTime"))
+                grid.Columns["QualityControlInDateTime"].Visible = false;
+            if (grid.Columns.Contains("QualityControlOutDateTime"))
+                grid.Columns["QualityControlOutDateTime"].Visible = false;
+            if (grid.Columns.Contains("ValOutProductionDateTime"))
+                grid.Columns["ValOutProductionDateTime"].Visible = false;
+
+
+
+
+
+
+
+
+            grid.Columns["CabFurAssignmentID"].HeaderText = "№ задания";
+            grid.Columns["AccountingName"].HeaderText = "Бухгалтерское наименование детали";
+            grid.Columns["Cost"].HeaderText = "Стоимость";
+            grid.Columns["AddToStorageDateTime"].HeaderText = "Дата принятия на склад";
+            grid.Columns["Notes"].HeaderText = "Примечание";
+            grid.Columns["Count"].HeaderText = "Кол-во";
+            grid.Columns["InvNumber"].HeaderText = "Инвентарный номер";
+
+
+
+            foreach (DataGridViewColumn Column in grid.Columns)
+            {
+                Column.ReadOnly = true;
+                //Column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                Column.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            }
+
+            int DisplayIndex = 0;
+            grid.Columns["CabFurAssignmentID"].DisplayIndex = DisplayIndex++;
+            grid.Columns["CTechStoreNameColumn"].DisplayIndex = DisplayIndex++;
+            grid.Columns["CoverColumn"].DisplayIndex = DisplayIndex++;
+            grid.Columns["PatinaColumn"].DisplayIndex = DisplayIndex++;
+            grid.Columns["InsetColorColumn"].DisplayIndex = DisplayIndex++;
+            grid.Columns["Notes"].DisplayIndex = DisplayIndex++;
+            grid.Columns["InvNumber"].DisplayIndex = DisplayIndex++;
+            grid.Columns["AccountingName"].DisplayIndex = DisplayIndex++;
+            grid.Columns["Count"].DisplayIndex = DisplayIndex++;
+            grid.Columns["Cost"].DisplayIndex = DisplayIndex++;
+            grid.Columns["ValOutProductionDateTime"].DisplayIndex = DisplayIndex++;
+
         }
 
         private void CabStorageSetting()
@@ -1133,6 +1247,23 @@ namespace Infinium
                 //pnlOrdersCondition.BringToFront();
                 tabControl1.SelectedIndex = 6;
             }
+            if (kryptonCheckSet3.CheckedButton == cbtnStatistics)
+            {
+                //pnlOrdersCondition.BringToFront();
+                tabControl1.SelectedIndex = 7;
+
+                FilterStatisticsData();
+            }
+            if (MenuPanel.Visible == true && kryptonCheckSet3.CheckedButton == cbtnStatistics)
+            {
+                MenuPanel.Visible = false;
+                MenuPanel2.Visible = true;
+            }
+            else if (MenuPanel2.Visible == true && kryptonCheckSet3.CheckedButton != cbtnStatistics)
+            {
+                MenuPanel.Visible = true;
+                MenuPanel2.Visible = false;
+            }
             NeedSplash = true;
             while (SplashWindow.bSmallCreated)
                 SmallWaitForm.CloseS = true;
@@ -1164,6 +1295,8 @@ namespace Infinium
 
         private void dgvAllAssignments_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
+            return;
+
             if (assignmentsManager == null)
                 return;
             int CabFurAssignmentID = 0;
@@ -1562,7 +1695,14 @@ namespace Infinium
 
         private void MenuButton_Click(object sender, EventArgs e)
         {
-            MenuPanel.Visible = !MenuPanel.Visible;
+            if (kryptonCheckSet3.CheckedButton == cbtnStatistics)
+            {
+                MenuPanel2.Visible = !MenuPanel2.Visible;
+            }
+            else
+            {
+                MenuPanel.Visible = !MenuPanel.Visible;
+            }
         }
 
         private void dgvDocuments_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
@@ -2007,13 +2147,19 @@ namespace Infinium
 
         private void dgvAllAssignments_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
+            if (userRole != RoleTypes.AdminRole && userRole != RoleTypes.AgreementRole)
+                return;
+
             var senderGrid = (PercentageDataGrid)sender;
 
             if (senderGrid.Columns[e.ColumnIndex] is KryptonDataGridViewButtonColumn && senderGrid.Columns[e.ColumnIndex].Name == "InProdColumn" &&
                 e.RowIndex >= 0)
             {
-                object ProductionDateTime = senderGrid.SelectedRows[0].Cells["ProductionDateTime"].Value;
-                if (ProductionDateTime != DBNull.Value)
+                int CabFurAssignmentID = 0;
+                if (senderGrid.Rows[e.RowIndex].Cells["CabFurAssignmentID"].Value != DBNull.Value)
+                    CabFurAssignmentID = Convert.ToInt32(senderGrid.Rows[e.RowIndex].Cells["CabFurAssignmentID"].Value);
+                
+                if (assignmentsManager.IsAssignmentInProd(CabFurAssignmentID))
                 {
                     Infinium.LightMessageBox.Show(ref TopForm, false,
                     "Задание уже вошло в производство",
@@ -2022,7 +2168,7 @@ namespace Infinium
                 }
 
                 bool OKCancel = Infinium.LightMessageBox.Show(ref TopForm, true,
-                    "Подтведрите, что задание входит в производство",
+                    "Подтвердите, что задание входит в производство",
                     "Запуск в производство", "Подтвердить", "Отмена");
                 if (!OKCancel)
                     return;
@@ -2052,9 +2198,6 @@ namespace Infinium
                 if (bTPS)
                     FactoryID = 2;
 
-                int CabFurAssignmentID = 0;
-                if (senderGrid.Rows[e.RowIndex].Cells["CabFurAssignmentID"].Value != DBNull.Value)
-                    CabFurAssignmentID = Convert.ToInt32(senderGrid.Rows[e.RowIndex].Cells["CabFurAssignmentID"].Value);
 
                 var T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Сохранение данных.\r\nПодождите..."); });
                 T.Start();
@@ -3880,6 +4023,219 @@ namespace Infinium
             if (e.Button == System.Windows.Forms.MouseButtons.Right && e.RowIndex != -1)
             {
                 kryptonContextMenu9.Show(new Point(Cursor.Position.X - 212, Cursor.Position.Y - 10));
+            }
+        }
+
+
+        private void FilterStatisticsData()
+        {
+            Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Загрузка данных.\r\nПодождите..."); });
+            T.Start();
+            while (!SplashWindow.bSmallCreated) ;
+            NeedSplash = false;
+
+
+            isDateOn = true;
+            bool bDateCreative = kryptonRadioButton1.Checked;
+            bool bDateDispatch = kryptonRadioButton2.Checked;
+            bool bDateAgreement = kryptonRadioButton3.Checked;
+            bool bDateProduction = kryptonRadioButton4.Checked;
+            bool bDateOutProduction = kryptonRadioButton5.Checked;
+            bool bDatePrintout = kryptonRadioButton6.Checked;
+            bool bDatePackaging = kryptonRadioButton7.Checked;
+            bool bRemoveFromStorageDateTime = kryptonRadioButton8.Checked;
+            bool bQualityControlInDateTime = kryptonRadioButton9.Checked;
+            bool bQualityControlOutDateTime = kryptonRadioButton10.Checked;
+
+            DateTime DateStart = kryptonDateTimePicker10.Value;
+            DateTime DataEnd = kryptonDateTimePicker9.Value;
+
+
+
+            int typeDate = 0;
+            typeDate = bDateCreative ? 1 : typeDate;
+            typeDate = bDateDispatch ? 2 : typeDate;
+            typeDate = bDateAgreement ? 3 : typeDate;
+            typeDate = bDateProduction ? 4 : typeDate;
+            typeDate = bDateOutProduction ? 5 : typeDate;
+            typeDate = bDatePrintout ? 6 : typeDate;
+            typeDate = bDatePackaging ? 7 : typeDate;
+            typeDate = bRemoveFromStorageDateTime ? 8 : typeDate;
+            typeDate = bQualityControlInDateTime ? 9 : typeDate;
+            typeDate = bQualityControlOutDateTime ? 10 : typeDate;
+
+            assignmentsManager.UpdateDateStatistics(typeDate, DateStart, DataEnd);
+            FilterCheckStatistics(false);
+
+            NeedSplash = true;
+            while (SplashWindow.bSmallCreated)
+                SmallWaitForm.CloseS = true;
+
+        }
+
+        private void FilterCheckStatistics(bool IsShowMessageBox = true)
+        {
+            if (IsShowMessageBox)
+            {
+                Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Загрузка данных.\r\nПодождите..."); });
+                T.Start();
+                while (!SplashWindow.bSmallCreated) ;
+                NeedSplash = false;
+            }
+
+            string filter = "";
+            filter += kryptonCheckBox13t.Checked ? "" : " and PrintDateTime is NULL";
+            filter += kryptonCheckBox12t.Checked ? "" : " and PrintDateTime is not NULL";
+            filter += kryptonCheckBox10t.Checked ? "" : " and AddToStorageDateTime is NULL";
+            filter += kryptonCheckBox9t.Checked ? "" : " and  AddToStorageDateTime is not NULL";
+
+            filter += kryptonCheckBox4t.Checked ? "" : " and ACreationDateTime is NULL ";
+            filter += kryptonCheckBox3t.Checked ? "" : " and AProductionDateTime is NULL ";
+            filter += kryptonCheckBox2t.Checked ? "" : " and ValOutProductionDateTime is NULL";
+
+            filter += kryptonCheckBox16.Checked ? "" : " and ACreationDateTime is not NULL ";
+            filter += kryptonCheckBox17.Checked ? "" : " and AProductionDateTime is not NULL ";
+            filter += kryptonCheckBox18.Checked ? "" : " and ValOutProductionDateTime is not NULL";
+
+            filter += " and CabFurAssignmentID is NOT NULL";
+
+            if (filter.Length != 0)
+            {
+                filter = filter.Substring(4, filter.Length - 4);
+            }
+
+            assignmentsManager.UpdateCheckStatistics(filter);
+
+            (int Counter, float CostSum) = assignmentsManager.GetResultsStatistics();
+
+            label56.Text = "Oбщая стоимость:" + CostSum;
+            label57.Text = "Количество:" + Counter;
+
+            if (IsShowMessageBox)
+            {
+                NeedSplash = true;
+                while (SplashWindow.bSmallCreated)
+                    SmallWaitForm.CloseS = true;
+            }
+
+        }
+
+        private void kryptonButton3_Click(object sender, EventArgs e)
+        {
+            Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Загрузка данных.\r\nПодождите..."); });
+            T.Start();
+            while (!SplashWindow.bSmallCreated) ;
+            NeedSplash = false;
+
+            kryptonDateTimePicker10.Value = DateTime.Today;
+            kryptonDateTimePicker9.Value = DateTime.Today;
+
+            kryptonRadioButton7.Checked = true;
+
+            kryptonCheckBox13t.Checked = true;
+            kryptonCheckBox12t.Checked = true;
+            kryptonCheckBox10t.Checked = true;
+            kryptonCheckBox9t.Checked = true;
+
+
+            kryptonCheckBox4t.Checked = true;
+            kryptonCheckBox3t.Checked = true;
+            kryptonCheckBox2t.Checked = true;
+
+
+            kryptonCheckBox16.Checked = true;
+            kryptonCheckBox17.Checked = true;
+            kryptonCheckBox18.Checked = true;
+
+            assignmentsManager.UpdateDateStatistics();
+
+            NeedSplash = true;
+            while (SplashWindow.bSmallCreated)
+                SmallWaitForm.CloseS = true;
+        }
+
+        private void kryptonButton7_Click(object sender, EventArgs e)
+        {
+            FilterStatisticsData();
+        }
+
+        private void kryptonCheckBox13t_CheckedChanged(object sender, EventArgs e)
+        {
+            FilterCheckStatistics();
+        }
+
+        private void kryptonCheckBox12t_CheckedChanged(object sender, EventArgs e)
+        {
+            FilterCheckStatistics();
+        }
+
+        private void kryptonCheckBox10t_CheckedChanged(object sender, EventArgs e)
+        {
+            FilterCheckStatistics();
+        }
+
+        private void kryptonCheckBox9t_CheckedChanged(object sender, EventArgs e)
+        {
+            FilterCheckStatistics();
+        }
+
+        private void kryptonCheckBox4t_CheckedChanged(object sender, EventArgs e)
+        {
+            FilterCheckStatistics();
+        }
+
+        private void kryptonCheckBox3t_CheckedChanged(object sender, EventArgs e)
+        {
+            FilterCheckStatistics();
+        }
+
+        private void kryptonCheckBox2t_CheckedChanged(object sender, EventArgs e)
+        {
+            FilterCheckStatistics();
+        }
+
+        private void kryptonCheckBox16_CheckedChanged(object sender, EventArgs e)
+        {
+            FilterCheckStatistics();
+        }
+
+        private void kryptonCheckBox17_CheckedChanged(object sender, EventArgs e)
+        {
+            FilterCheckStatistics();
+        }
+
+        private void kryptonCheckBox18_CheckedChanged(object sender, EventArgs e)
+        {
+            FilterCheckStatistics();
+        }
+
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            isDateOn = true;
+            string filter = "";
+            filter += kryptonRadioButton1.Checked ? "дате создания" : "";
+            filter += kryptonRadioButton2.Checked ? "дате отгрузки" : "";
+            filter += kryptonRadioButton3.Checked ? "дате согласования" : "";
+            filter += kryptonRadioButton4.Checked ? "дате запуска" : "";
+            filter += kryptonRadioButton5.Checked ? "дате выхода" : "";
+            filter += kryptonRadioButton6.Checked ? "дате печати" : "";
+            filter += kryptonRadioButton7.Checked ? "дате принятия на склад" : "";
+            filter += kryptonRadioButton8.Checked ? "дате списания со склада" : "";
+            filter += kryptonRadioButton9.Checked ? "по дате отправления на ОТК" : "";
+            filter += kryptonRadioButton10.Checked ? "по дате принятия с ОТК" : "";
+
+            DateTime DateStart = kryptonDateTimePicker10.Value;
+            DateTime DataEnd = kryptonDateTimePicker9.Value;
+            
+            assignmentsManager.CreateReport
+                ("Статистика по " + filter + " c " + DateStart.ToString("yyyy-MM-dd") + " по " + DateStart.ToString("yyyy-MM-dd"));
+        }
+
+        private void percentageDataGrid2_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.Button == System.Windows.Forms.MouseButtons.Right)
+            {
+                contextMenuStrip1.Show(new Point(Cursor.Position.X, Cursor.Position.Y));
             }
         }
     }

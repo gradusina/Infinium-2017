@@ -74,6 +74,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.cbMainSlider = new System.Windows.Forms.CheckBox();
             this.cbCatSlider = new System.Windows.Forms.CheckBox();
+            this.cbMainSliderZOVExcluzive = new System.Windows.Forms.CheckBox();
             this.NavigatePanel.SuspendLayout();
             this.panel17.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvImages)).BeginInit();
@@ -144,6 +145,7 @@
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.NavigateMenuButtonsPalette.ButtonStyles.ButtonCommon.StateTracking.Border.Rounding = 0;
             this.NavigateMenuButtonsPalette.ButtonStyles.ButtonCommon.StateTracking.Border.Width = 1;
+            this.NavigateMenuButtonsPalette.CustomisedKryptonPaletteFilePath = null;
             // 
             // label1
             // 
@@ -247,6 +249,7 @@
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.StandardButtonsPalette.ButtonStyles.ButtonCommon.StateTracking.Border.Rounding = 0;
+            this.StandardButtonsPalette.CustomisedKryptonPaletteFilePath = null;
             // 
             // panel17
             // 
@@ -366,6 +369,7 @@
             this.MainMenuPalette.ButtonStyles.ButtonCommon.StateTracking.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.MainMenuPalette.CustomisedKryptonPaletteFilePath = null;
             // 
             // PanelSelectPalette
             // 
@@ -432,6 +436,7 @@
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.PanelSelectPalette.ButtonStyles.ButtonCommon.StateTracking.Border.Rounding = 0;
+            this.PanelSelectPalette.CustomisedKryptonPaletteFilePath = null;
             // 
             // kryptonContextMenuItem8
             // 
@@ -695,12 +700,24 @@
             this.cbCatSlider.Text = "Для слайдера категории";
             this.cbCatSlider.UseVisualStyleBackColor = true;
             // 
+            // cbMainSliderZOVExcluzive
+            // 
+            this.cbMainSliderZOVExcluzive.AutoSize = true;
+            this.cbMainSliderZOVExcluzive.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.cbMainSliderZOVExcluzive.Location = new System.Drawing.Point(487, 681);
+            this.cbMainSliderZOVExcluzive.Name = "cbMainSliderZOVExcluzive";
+            this.cbMainSliderZOVExcluzive.Size = new System.Drawing.Size(273, 23);
+            this.cbMainSliderZOVExcluzive.TabIndex = 519;
+            this.cbMainSliderZOVExcluzive.Text = "Для главного слайдера ЗОВ эксклюзив";
+            this.cbMainSliderZOVExcluzive.UseVisualStyleBackColor = true;
+            // 
             // CatalogFinishedProductsForm
             // 
             this.AccessibleName = "false";
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1270, 740);
+            this.Controls.Add(this.cbMainSliderZOVExcluzive);
             this.Controls.Add(this.cbMainSlider);
             this.Controls.Add(this.cbCatSlider);
             this.Controls.Add(this.kryptonRichTextBox4);
@@ -791,5 +808,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.CheckBox cbMainSlider;
         private System.Windows.Forms.CheckBox cbCatSlider;
+        private System.Windows.Forms.CheckBox cbMainSliderZOVExcluzive;
     }
 }

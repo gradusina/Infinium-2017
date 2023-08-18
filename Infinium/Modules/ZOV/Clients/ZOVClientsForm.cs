@@ -28,7 +28,7 @@ namespace Infinium
         private LightStartForm LightStartForm;
 
         private Form TopForm = null;
-        private Infinium.Modules.ZOV.Clients.ZOVClientsToExcel _clientsToExcel;
+        private Infinium.Modules.ZOV.Clients.ZovClientsToExcel _clientsToExcel;
         private Infinium.Modules.ZOV.Clients.Clients Clients;
 
         public ZOVClientsForm(LightStartForm tLightStartForm)
@@ -171,7 +171,7 @@ namespace Infinium
 
         private void Initialize()
         {
-            _clientsToExcel = new ZOVClientsToExcel();
+            _clientsToExcel = new ZovClientsToExcel();
             Clients = new Modules.ZOV.Clients.Clients(ref ClientsDataGrid,
                 ref dgvClientsGroupsDataGrid, ref dgvManagers,
                 ref ClientsContactsDataGrid, ref ShopAddressesDataGrid);

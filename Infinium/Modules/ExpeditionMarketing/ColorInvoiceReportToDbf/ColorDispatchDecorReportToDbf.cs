@@ -808,10 +808,16 @@ PackageDetailID, PackageDetails.Count AS Count, (DecorOrders.Cost * PackageDetai
 
             for (int r = 0; r < Rows.Count(); r++)
             {
+                string accountingName = Rows[r]["AccountingName"].ToString();
                 int ColorID = Convert.ToInt32(Rows[r]["ColorID"]);
                 int PatinaID = Convert.ToInt32(Rows[r]["PatinaID"]);
                 int D = Convert.ToInt32(Rows[r]["DecorConfigID"]);
                 string InvNumber = Rows[r]["InvNumber"].ToString();
+                if (accountingName.ToLower().Contains("лдстп"))
+                {
+                    var cvet = GetColorCode(ColorID);
+                    var patina = GetPatinaCode(PatinaID);
+                }
                 //м.п.
                 if (MeasureTypeID == 2)
                 {

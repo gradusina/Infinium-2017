@@ -4316,7 +4316,7 @@ namespace Infinium.Modules.WorkAssignments
             GetRemovingBoxesFronts(Turin1_1OrdersDT, ref Turin1RemovingBoxesDT, 138);
             GetRemovingBoxesFronts(Turin3OrdersDT, ref Turin3RemovingBoxesDT, 138);
 
-            GetSimpleFronts(LorenzoOrdersDT, ref LorenzoSimpleDT, 222);
+            GetSimpleFronts(LorenzoOrdersDT, ref LorenzoSimpleDT, 230);
             GetSimpleFronts(ElegantOrdersDT, ref ElegantSimpleDT, 222);
             GetSimpleFronts(Patricia1OrdersDT, ref Patricia1SimpleDT, 222);
             GetSimpleFronts(ScandiaOrdersDT, ref ScandiaSimpleDT, 222);
@@ -4327,8 +4327,8 @@ namespace Infinium.Modules.WorkAssignments
             GetSimpleFronts(Turin1_1OrdersDT, ref Turin1_1SimpleDT, 175);
             GetSimpleFronts(Turin3OrdersDT, ref Turin3SimpleDT, 175);
             GetSimpleFronts(LeonOrdersDT, ref LeonSimpleDT, 175);
-            GetSimpleFronts(BonaOrdersDT, ref BonaSimpleDT, 175);
-            GetSimpleFronts(InfinitiOrdersDT, ref InfinitiSimpleDT, 222);
+            GetSimpleFronts(BonaOrdersDT, ref BonaSimpleDT, 169);
+            GetSimpleFronts(InfinitiOrdersDT, ref InfinitiSimpleDT, 240);
 
             LorenzoGridsDT.Clear();
             ElegantGridsDT.Clear();
@@ -4377,7 +4377,7 @@ namespace Infinium.Modules.WorkAssignments
             BonaBoxesDT.Clear();
             InfinitiBoxesDT.Clear();
 
-            GetBoxFronts(LorenzoOrdersDT, ref LorenzoBoxesDT, 222);
+            GetBoxFronts(LorenzoOrdersDT, ref LorenzoBoxesDT, 230);
             GetBoxFronts(ElegantOrdersDT, ref ElegantBoxesDT, 222);
             GetBoxFronts(Patricia1OrdersDT, ref Patricia1BoxesDT, 222);
             GetBoxFronts(ScandiaOrdersDT, ref ScandiaBoxesDT, 222);
@@ -4388,8 +4388,8 @@ namespace Infinium.Modules.WorkAssignments
             GetBoxFronts(Turin1_1OrdersDT, ref Turin1_1BoxesDT, 175);
             GetBoxFronts(Turin3OrdersDT, ref Turin3BoxesDT, 175);
             GetBoxFronts(LeonOrdersDT, ref LeonBoxesDT, 175);
-            GetBoxFronts(BonaOrdersDT, ref BonaBoxesDT, 175);
-            GetBoxFronts(InfinitiOrdersDT, ref InfinitiBoxesDT, 222);
+            GetBoxFronts(BonaOrdersDT, ref BonaBoxesDT, 169);
+            GetBoxFronts(InfinitiOrdersDT, ref InfinitiBoxesDT, 240);
 
             BagetWithAngleAssemblyByMainOrderToExcel(ref hssfworkbook, Calibri11CS, CalibriBold11CS, CalibriBold11F, TableHeaderCS, TableHeaderDecCS, WorkAssignmentID, BatchName);
 

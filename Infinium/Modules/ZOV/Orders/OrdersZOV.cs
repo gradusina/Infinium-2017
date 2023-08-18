@@ -8447,38 +8447,42 @@ namespace Infinium.Modules.ZOV
                 {
                     if (Row.RowState != DataRowState.Deleted)
                     {
+
                         if (SetDecorConfigID(Convert.ToInt32(Row["ProductID"]), Convert.ToInt32(Row["DecorID"]),
-                            Convert.ToInt32(Row["ColorID"]), Convert.ToInt32(Row["PatinaID"]),
-                            Convert.ToInt32(Row["InsetTypeID"]), Convert.ToInt32(Row["InsetColorID"]),
-                            Convert.ToInt32(Row["Length"]), Convert.ToInt32(Row["Height"]), Convert.ToInt32(Row["Width"]), Row, ref FactoryID) == false)
+                                Convert.ToInt32(Row["ColorID"]), Convert.ToInt32(Row["PatinaID"]),
+                                Convert.ToInt32(Row["InsetTypeID"]), Convert.ToInt32(Row["InsetColorID"]),
+                                Convert.ToInt32(Row["Length"]), Convert.ToInt32(Row["Height"]),
+                                Convert.ToInt32(Row["Width"]), Row, ref FactoryID) == false)
                             return false;
 
-                    }
+                        if (Convert.ToInt32(Row["ProductID"]) == 42)
+                        {
+                            Row["IsSample"] = true;
+                        }
 
-                    if (Convert.ToInt32(Row["ProductID"]) == 42)
-                    {
-                        Row["IsSample"] = true;
-                    }
-                    if (DecorItemOrdersDataTables[i].Columns.Contains("LeftAngle") &&
+                        if (DecorItemOrdersDataTables[i].Columns.Contains("LeftAngle") &&
                             Row["LeftAngle"] != DBNull.Value)
-                    {
-
-                        if (Convert.ToDecimal(Row["LeftAngle"]) > 180)
                         {
-                            MessageBox.Show("Угол не может быть больше 180ᵒ", "Ошибка сохранения заказа");
-                            return false;
+
+                            if (Convert.ToDecimal(Row["LeftAngle"]) > 180)
+                            {
+                                MessageBox.Show("Угол не может быть больше 180ᵒ", "Ошибка сохранения заказа");
+                                return false;
+                            }
+                        }
+
+                        if (DecorItemOrdersDataTables[i].Columns.Contains("RightAngle") &&
+                            Row["RightAngle"] != DBNull.Value)
+                        {
+
+                            if (Convert.ToDecimal(Row["RightAngle"]) > 180)
+                            {
+                                MessageBox.Show("Угол не может быть больше 180ᵒ", "Ошибка сохранения заказа");
+                                return false;
+                            }
                         }
                     }
-                    if (DecorItemOrdersDataTables[i].Columns.Contains("RightAngle") &&
-                        Row["RightAngle"] != DBNull.Value)
-                    {
 
-                        if (Convert.ToDecimal(Row["RightAngle"]) > 180)
-                        {
-                            MessageBox.Show("Угол не может быть больше 180ᵒ", "Ошибка сохранения заказа");
-                            return false;
-                        }
-                    }
                     DecorOrdersDataTable.ImportRow(Row);
                 }
             }

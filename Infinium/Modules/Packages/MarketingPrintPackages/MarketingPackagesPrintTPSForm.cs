@@ -385,7 +385,7 @@ namespace Infinium
 
             //PackagesOrdersManager.MainOrdersBindingSource.Position = CurrentRowIndex;
 
-            //int MainOrderID = Convert.ToInt32(((DataRowView)PackagesOrdersManager.MainOrdersBindingSource.Current)["MainOrderID"]);
+            int ClientId = Convert.ToInt32(((DataRowView)MarketingPackagesPrintManager.MegaOrdersBindingSource.Current).Row["ClientId"]);
             int PackNumber = 0;
             int PackageID = 0;
             int ProductType = 0;
@@ -439,7 +439,7 @@ namespace Infinium
                     LabelInfo.OrderData = DT;
                     LabelInfo.GroupType = "М";
 
-                    PackageLabel.AddLabelInfo(0, ref LabelInfo);
+                    PackageLabel.AddLabelInfo(0, ClientId, "", ref LabelInfo);
 
                     MarketingPackagesPrintManager.FilterPackages(MainOrders[j], FrontIDs, ProductIDs);
                 }
@@ -479,6 +479,7 @@ namespace Infinium
 
             DataTable DT = new DataTable();
 
+            int ClientId = Convert.ToInt32(((DataRowView)MarketingPackagesPrintManager.MegaOrdersBindingSource.Current).Row["ClientId"]);
             int MainOrderID = Convert.ToInt32(((DataRowView)MarketingPackagesPrintManager.MainOrdersBindingSource.Current)["MainOrderID"]);
             //Проверка
             if (!MarketingPackagesPrintManager.IsMainOrderPacked(MainOrderID))
@@ -528,7 +529,7 @@ namespace Infinium
                 LabelInfo.GroupType = "М";
 
 
-                PackageLabel.AddLabelInfo(0, ref LabelInfo);
+                PackageLabel.AddLabelInfo(0, ClientId, "", ref LabelInfo);
 
             }
 
@@ -574,6 +575,7 @@ namespace Infinium
             MarketingPackagesPrintManager.MegaOrdersBindingSource.Position = CurrentRowIndex;
 
             //Проверка
+            int ClientId = Convert.ToInt32(((DataRowView)MarketingPackagesPrintManager.MegaOrdersBindingSource.Current).Row["ClientId"]);
             int MegaOrderID = Convert.ToInt32(((DataRowView)MarketingPackagesPrintManager.MegaOrdersBindingSource.Current).Row["MegaOrderID"]);
             int MainOrderID = 0;
 
@@ -631,7 +633,7 @@ namespace Infinium
                     LabelInfo.OrderData = DT;
                     LabelInfo.GroupType = "М";
 
-                    PackageLabel.AddLabelInfo(0, ref LabelInfo);
+                    PackageLabel.AddLabelInfo(0, ClientId, "", ref LabelInfo);
 
 
                     MarketingPackagesPrintManager.FilterPackages(MainOrders[j], FrontIDs, ProductIDs);

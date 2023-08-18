@@ -52,16 +52,19 @@
             this.cbLatest = new System.Windows.Forms.CheckBox();
             this.kryptonRichTextBox5 = new ComponentFactory.Krypton.Toolkit.KryptonRichTextBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.cbBasic = new System.Windows.Forms.CheckBox();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // kryptonBorderEdge20
             // 
             this.kryptonBorderEdge20.Dock = System.Windows.Forms.DockStyle.Right;
-            this.kryptonBorderEdge20.Location = new System.Drawing.Point(535, 0);
+            this.kryptonBorderEdge20.Location = new System.Drawing.Point(600, 0);
             this.kryptonBorderEdge20.Name = "kryptonBorderEdge20";
             this.kryptonBorderEdge20.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge20.Size = new System.Drawing.Size(1, 588);
+            this.kryptonBorderEdge20.Size = new System.Drawing.Size(1, 586);
             this.kryptonBorderEdge20.StateCommon.Color1 = System.Drawing.Color.Black;
             this.kryptonBorderEdge20.Text = "kryptonBorderEdge20";
             // 
@@ -71,16 +74,16 @@
             this.kryptonBorderEdge21.Location = new System.Drawing.Point(0, 0);
             this.kryptonBorderEdge21.Name = "kryptonBorderEdge21";
             this.kryptonBorderEdge21.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge21.Size = new System.Drawing.Size(1, 588);
+            this.kryptonBorderEdge21.Size = new System.Drawing.Size(1, 586);
             this.kryptonBorderEdge21.StateCommon.Color1 = System.Drawing.Color.Black;
             this.kryptonBorderEdge21.Text = "kryptonBorderEdge21";
             // 
             // kryptonBorderEdge22
             // 
             this.kryptonBorderEdge22.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.kryptonBorderEdge22.Location = new System.Drawing.Point(1, 587);
+            this.kryptonBorderEdge22.Location = new System.Drawing.Point(1, 585);
             this.kryptonBorderEdge22.Name = "kryptonBorderEdge22";
-            this.kryptonBorderEdge22.Size = new System.Drawing.Size(534, 1);
+            this.kryptonBorderEdge22.Size = new System.Drawing.Size(599, 1);
             this.kryptonBorderEdge22.StateCommon.Color1 = System.Drawing.Color.Black;
             this.kryptonBorderEdge22.Text = "kryptonBorderEdge22";
             // 
@@ -89,14 +92,14 @@
             this.kryptonBorderEdge23.Dock = System.Windows.Forms.DockStyle.Top;
             this.kryptonBorderEdge23.Location = new System.Drawing.Point(1, 0);
             this.kryptonBorderEdge23.Name = "kryptonBorderEdge23";
-            this.kryptonBorderEdge23.Size = new System.Drawing.Size(534, 1);
+            this.kryptonBorderEdge23.Size = new System.Drawing.Size(599, 1);
             this.kryptonBorderEdge23.StateCommon.Color1 = System.Drawing.Color.Black;
             this.kryptonBorderEdge23.Text = "kryptonBorderEdge23";
             // 
             // btnOKInput
             // 
             this.btnOKInput.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.btnOKInput.Location = new System.Drawing.Point(161, 548);
+            this.btnOKInput.Location = new System.Drawing.Point(193, 546);
             this.btnOKInput.Name = "btnOKInput";
             this.btnOKInput.Palette = this.StandardButtonsPalette;
             this.btnOKInput.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Custom;
@@ -154,6 +157,7 @@
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.StandardButtonsPalette.ButtonStyles.ButtonCommon.StateTracking.Border.Rounding = 0;
+            this.StandardButtonsPalette.CustomisedKryptonPaletteFilePath = null;
             // 
             // panel1
             // 
@@ -180,10 +184,10 @@
             this.kryptonBorderEdge2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.kryptonBorderEdge2.AutoSize = false;
-            this.kryptonBorderEdge2.Location = new System.Drawing.Point(-317, 77);
+            this.kryptonBorderEdge2.Location = new System.Drawing.Point(-252, 77);
             this.kryptonBorderEdge2.Name = "kryptonBorderEdge2";
             this.kryptonBorderEdge2.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge2.Size = new System.Drawing.Size(4, 420);
+            this.kryptonBorderEdge2.Size = new System.Drawing.Size(4, 418);
             this.kryptonBorderEdge2.StateCommon.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(150)))), ((int)(((byte)(201)))));
             this.kryptonBorderEdge2.StateCommon.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
             this.kryptonBorderEdge2.Text = "kryptonBorderEdge2";
@@ -191,7 +195,7 @@
             // btnCancelInput
             // 
             this.btnCancelInput.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.btnCancelInput.Location = new System.Drawing.Point(280, 548);
+            this.btnCancelInput.Location = new System.Drawing.Point(312, 546);
             this.btnCancelInput.Name = "btnCancelInput";
             this.btnCancelInput.Palette = this.StandardButtonsPalette;
             this.btnCancelInput.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Custom;
@@ -247,9 +251,10 @@
             // 
             // cbToSite
             // 
+            this.cbToSite.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cbToSite.AutoSize = true;
             this.cbToSite.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.cbToSite.Location = new System.Drawing.Point(441, 480);
+            this.cbToSite.Location = new System.Drawing.Point(506, 479);
             this.cbToSite.Name = "cbToSite";
             this.cbToSite.Size = new System.Drawing.Size(76, 23);
             this.cbToSite.TabIndex = 452;
@@ -263,7 +268,7 @@
             this.kryptonRichTextBox1.Location = new System.Drawing.Point(139, 129);
             this.kryptonRichTextBox1.Name = "kryptonRichTextBox1";
             this.kryptonRichTextBox1.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.kryptonRichTextBox1.Size = new System.Drawing.Size(385, 80);
+            this.kryptonRichTextBox1.Size = new System.Drawing.Size(450, 80);
             this.kryptonRichTextBox1.TabIndex = 453;
             this.kryptonRichTextBox1.Text = "";
             // 
@@ -274,7 +279,7 @@
             this.kryptonRichTextBox2.Location = new System.Drawing.Point(139, 215);
             this.kryptonRichTextBox2.Name = "kryptonRichTextBox2";
             this.kryptonRichTextBox2.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.kryptonRichTextBox2.Size = new System.Drawing.Size(385, 80);
+            this.kryptonRichTextBox2.Size = new System.Drawing.Size(450, 80);
             this.kryptonRichTextBox2.TabIndex = 454;
             this.kryptonRichTextBox2.Text = "";
             // 
@@ -285,7 +290,7 @@
             this.kryptonRichTextBox3.Location = new System.Drawing.Point(139, 301);
             this.kryptonRichTextBox3.Name = "kryptonRichTextBox3";
             this.kryptonRichTextBox3.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.kryptonRichTextBox3.Size = new System.Drawing.Size(385, 80);
+            this.kryptonRichTextBox3.Size = new System.Drawing.Size(450, 80);
             this.kryptonRichTextBox3.TabIndex = 455;
             this.kryptonRichTextBox3.Text = "";
             // 
@@ -296,7 +301,7 @@
             this.kryptonRichTextBox4.Location = new System.Drawing.Point(139, 45);
             this.kryptonRichTextBox4.Name = "kryptonRichTextBox4";
             this.kryptonRichTextBox4.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.kryptonRichTextBox4.Size = new System.Drawing.Size(385, 80);
+            this.kryptonRichTextBox4.Size = new System.Drawing.Size(450, 80);
             this.kryptonRichTextBox4.TabIndex = 462;
             this.kryptonRichTextBox4.Text = "";
             // 
@@ -312,9 +317,10 @@
             // 
             // cbLatest
             // 
+            this.cbLatest.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cbLatest.AutoSize = true;
             this.cbLatest.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.cbLatest.Location = new System.Drawing.Point(441, 509);
+            this.cbLatest.Location = new System.Drawing.Point(506, 508);
             this.cbLatest.Name = "cbLatest";
             this.cbLatest.Size = new System.Drawing.Size(83, 23);
             this.cbLatest.TabIndex = 475;
@@ -328,7 +334,7 @@
             this.kryptonRichTextBox5.Location = new System.Drawing.Point(139, 387);
             this.kryptonRichTextBox5.Name = "kryptonRichTextBox5";
             this.kryptonRichTextBox5.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.kryptonRichTextBox5.Size = new System.Drawing.Size(385, 80);
+            this.kryptonRichTextBox5.Size = new System.Drawing.Size(450, 80);
             this.kryptonRichTextBox5.TabIndex = 482;
             this.kryptonRichTextBox5.Text = "";
             // 
@@ -342,11 +348,44 @@
             this.label3.TabIndex = 481;
             this.label3.Text = "Имя:";
             // 
+            // cbBasic
+            // 
+            this.cbBasic.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbBasic.AutoSize = true;
+            this.cbBasic.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.cbBasic.Location = new System.Drawing.Point(506, 537);
+            this.cbBasic.Name = "cbBasic";
+            this.cbBasic.Size = new System.Drawing.Size(91, 23);
+            this.cbBasic.TabIndex = 488;
+            this.cbBasic.Text = "Основное";
+            this.cbBasic.UseVisualStyleBackColor = true;
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(29, 493);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(163, 21);
+            this.comboBox1.TabIndex = 494;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Segoe UI", 14.81F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.label4.Location = new System.Drawing.Point(25, 470);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(38, 20);
+            this.label4.TabIndex = 495;
+            this.label4.Text = "Тип:";
+            // 
             // ProductDescriptionForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(536, 588);
+            this.ClientSize = new System.Drawing.Size(601, 586);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.cbBasic);
             this.Controls.Add(this.kryptonRichTextBox5);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.cbLatest);
@@ -406,5 +445,8 @@
         private System.Windows.Forms.CheckBox cbLatest;
         private ComponentFactory.Krypton.Toolkit.KryptonRichTextBox kryptonRichTextBox5;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.CheckBox cbBasic;
+        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.Label label4;
     }
 }

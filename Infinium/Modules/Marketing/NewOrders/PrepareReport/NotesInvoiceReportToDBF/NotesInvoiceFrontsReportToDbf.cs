@@ -56,8 +56,15 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.NotesInvoiceReportT
             string ColorName = string.Empty;
             try
             {
-                DataRow[] Rows = FrameColorsDataTable.Select($"Cvet = '{ Cvet } '");
-                ColorName = Rows[0]["ColorName"].ToString();
+                var Rows = FrameColorsDataTable.Select($"Cvet = '{ Cvet } '");
+                if (Rows.Any())
+                    ColorName = Rows[0]["ColorName"].ToString();
+                else
+                {
+                    Rows = InsetColorsDataTable.Select($"Cvet = '{ Cvet } '");
+                    if (Rows.Any())
+                        ColorName = Rows[0]["InsetColorName"].ToString();
+                }
             }
             catch
             {
@@ -1523,7 +1530,11 @@ FrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catal
 
                 if (CountPP > 0)
                 {
-                    DataTable ddt = OrdersDataTable.Select("InsetTypeID IN (685,686,687,688,29470,29471)").CopyToDataTable();
+                    DataTable ddt = OrdersDataTable.Select("ColorID = " + Fronts.Rows[i]["ColorID"].ToString() +
+                                                           " AND PatinaID = " + Fronts.Rows[i]["PatinaID"].ToString() +
+                                                           " AND Notes = '" + Fronts.Rows[i]["Notes"].ToString() +
+                                                           "' AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString()+
+                                                           " and InsetTypeID IN (685,686,687,688,29470,29471)").CopyToDataTable();
                     for (int x = 0; x < ddt.Rows.Count; x++)
                     {
                         decimal d = GetInsetSquare(Convert.ToInt32(ddt.Rows[x]["FrontID"]), Convert.ToInt32(ddt.Rows[x]["Height"]),
@@ -1613,27 +1624,49 @@ FrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catal
         private void GetInsetColorsDT()
         {
             InsetColorsDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT InsetColors.InsetColorID, InsetColors.GroupID, infiniu2_catalog.dbo.TechStore.TechStoreName AS InsetColorName FROM InsetColors" +
-                " INNER JOIN infiniu2_catalog.dbo.TechStore ON InsetColors.InsetColorID = infiniu2_catalog.dbo.TechStore.TechStoreID ORDER BY TechStoreName", ConnectionStrings.CatalogConnectionString))
+            InsetColorsDataTable.Columns.Add(new DataColumn("InsetColorID", Type.GetType("System.Int64")));
+            InsetColorsDataTable.Columns.Add(new DataColumn("GroupID", Type.GetType("System.Int64")));
+            InsetColorsDataTable.Columns.Add(new DataColumn("InsetColorName", Type.GetType("System.String")));
+            InsetColorsDataTable.Columns.Add(new DataColumn("Cvet", Type.GetType("System.String")));
+            using (var DA = new SqlDataAdapter(
+                       @"SELECT InsetColors.InsetColorID, InsetColors.GroupID, TechStore.TechStoreName AS InsetColorName, 
+TechStore.Cvet AS Cvet FROM InsetColors 
+INNER JOIN infiniu2_catalog.dbo.TechStore as TechStore 
+ON InsetColors.InsetColorID = TechStore.TechStoreID ORDER BY TechStoreName",
+                       ConnectionStrings.CatalogConnectionString))
             {
-                DA.Fill(InsetColorsDataTable);
+                using (var DT = new DataTable())
                 {
-                    DataRow NewRow = InsetColorsDataTable.NewRow();
-                    NewRow["InsetColorID"] = -1;
-                    NewRow["GroupID"] = -1;
-                    NewRow["InsetColorName"] = "-";
-                    InsetColorsDataTable.Rows.Add(NewRow);
-                }
-                {
-                    DataRow NewRow = InsetColorsDataTable.NewRow();
-                    NewRow["InsetColorID"] = 0;
-                    NewRow["GroupID"] = -1;
-                    NewRow["InsetColorName"] = "на выбор";
-                    InsetColorsDataTable.Rows.Add(NewRow);
+                    DA.Fill(DT);
+                    {
+                        var NewRow = InsetColorsDataTable.NewRow();
+                        NewRow["InsetColorID"] = -1;
+                        NewRow["GroupID"] = -1;
+                        NewRow["InsetColorName"] = "-";
+                        NewRow["Cvet"] = "000";
+                        InsetColorsDataTable.Rows.Add(NewRow);
+                    }
+                    {
+                        var NewRow = InsetColorsDataTable.NewRow();
+                        NewRow["InsetColorID"] = 0;
+                        NewRow["GroupID"] = -1;
+                        NewRow["InsetColorName"] = "на выбор";
+                        NewRow["Cvet"] = "0000000";
+                        InsetColorsDataTable.Rows.Add(NewRow);
+                    }
+                    for (var i = 0; i < DT.Rows.Count; i++)
+                    {
+                        var NewRow = InsetColorsDataTable.NewRow();
+                        NewRow["InsetColorID"] = Convert.ToInt64(DT.Rows[i]["InsetColorID"]);
+                        NewRow["GroupID"] = Convert.ToInt64(DT.Rows[i]["GroupID"]);
+                        NewRow["InsetColorName"] = DT.Rows[i]["InsetColorName"].ToString();
+                        NewRow["Cvet"] = DT.Rows[i]["Cvet"].ToString();
+                        InsetColorsDataTable.Rows.Add(NewRow);
+                    }
                 }
             }
         }
-
+        
         private void GetInsets(DataTable OrdersDataTable, DataTable ReportDataTable)
         {
             int fID = Convert.ToInt32(OrdersDataTable.Rows[0]["FactoryID"]);

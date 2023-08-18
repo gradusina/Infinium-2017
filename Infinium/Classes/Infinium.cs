@@ -1,5 +1,7 @@
 ﻿using Microsoft.VisualBasic.Devices;
 
+using NPOI.HSSF.Record;
+
 using System;
 using System.Collections;
 using System.Configuration;
@@ -15,6 +17,7 @@ using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
 using System.Windows.Forms;
+using BarcodeLib;
 
 
 namespace Infinium
@@ -166,10 +169,54 @@ namespace Infinium
                     DecorAllConfigDT.Clear();
                     DecorAllConfigDT = TablesManager.GetDataTableByAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString);
                 }
+
+                //ddddd();
                 if (DecorAllConfigDT.Columns.Contains("Excluzive"))
                     DecorAllConfigDT.Columns.Remove("Excluzive");
                 return DecorAllConfigDT;
             }
+        }
+
+        public static void ddddd()
+        {
+            string SelectCommand = $@"SELECT DecorOrderID, DecorID, DecorConfigID, mainOrderId
+FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.dbo.TechStore)";
+            using (var da = new SqlDataAdapter(SelectCommand,
+                       ConnectionStrings.MarketingOrdersConnectionString))
+            {
+                using (new SqlCommandBuilder(da))
+                {
+                    using (var dt = new DataTable())
+                    {
+                        da.Fill(dt);
+                        for (int i = 0; i < dt.Rows.Count; i++)
+                        {
+                            var decorConfigID = Convert.ToInt32(dt.Rows[i]["decorConfigID"]);
+                            var mainOrderId = Convert.ToInt32(dt.Rows[i]["mainOrderId"]);
+
+                            var decorId = GetDecorId(decorConfigID);
+                            if (decorId != -1)
+                            {
+                                dt.Rows[i]["decorId"] = decorId;
+                            }
+                            else
+                            {
+                                
+                            }
+                        }
+                        da.Update(dt);
+                    }
+                }
+            }
+        }
+
+        private static int GetDecorId(int decorConfigID)
+        {
+            DataRow[] rows = DecorAllConfigDT.Select("decorConfigID = " + decorConfigID);
+            if (rows.Length == 0)
+                return -1;
+
+            return Convert.ToInt32(rows[0]["decorId"]);
         }
 
         public static DataTable DecorConfigDataTable
@@ -1424,6 +1471,7 @@ namespace Infinium
 
 
         }
+
         public static void KillProcess()
         {
             string name = "Infinium";
@@ -1454,6 +1502,22 @@ namespace Infinium
                     {
                         if (DA.Fill(DT) > 0)
                         {
+                            string s = "";
+
+                            DT.Rows[0]["Online"] = true;
+                            DT.Rows[0]["OnlineRefreshDateTime"] = DT.Rows[0]["DateTime"];
+                            DT.Rows[0]["TopModule"] = ModuleID;
+                            DT.Rows[0]["IdleTime"] = OnLineControl.GetIdleTime(ref s);
+                            DT.Rows[0]["TopMost"] = TopMost;
+
+                            try
+                            {
+                                DA.Update(DT);
+                            }
+                            catch
+                            {
+
+                            }
                         }
                         else
                         {
@@ -1461,22 +1525,6 @@ namespace Infinium
                             SetOffline();
                         }
 
-                        string s = "";
-
-                        DT.Rows[0]["Online"] = true;
-                        DT.Rows[0]["OnlineRefreshDateTime"] = DT.Rows[0]["DateTime"];
-                        DT.Rows[0]["TopModule"] = ModuleID;
-                        DT.Rows[0]["IdleTime"] = OnLineControl.GetIdleTime(ref s);
-                        DT.Rows[0]["TopMost"] = TopMost;
-
-                        try
-                        {
-                            DA.Update(DT);
-                        }
-                        catch
-                        {
-
-                        }
                     }
                 }
             }
@@ -1556,6 +1604,23 @@ namespace Infinium
                     }
                 }
             }
+        }
+
+        public static bool GetForciblyOffline()
+        {
+            bool ForciblyOffline = false;
+            using (SqlDataAdapter DA = new SqlDataAdapter(
+                       "SELECT UserID, ForciblyOffline FROM Users WHERE UserID = " + Security.CurrentUserID,
+                       ConnectionStrings.UsersConnectionString))
+            {
+                using (DataTable DT = new DataTable())
+                {
+                    if (DA.Fill(DT) >0)
+                        ForciblyOffline = Convert.ToBoolean(DT.Rows[0]["ForciblyOffline"]);
+                }
+            }
+
+            return ForciblyOffline;
         }
 
         public static void SetOfflineClient()

@@ -228,7 +228,7 @@ namespace Infinium
                 ImageID = Convert.ToInt32(dgvImages.SelectedRows[0].Cells["ImageID"].Value);
             if (ImageID != 0)
             {
-                FinishedImagesCatalogManager.EditImageRowBeforeSaving(ImageID, cbToSite.Checked, cbCatSlider.Checked, cbMainSlider.Checked,
+                FinishedImagesCatalogManager.EditImageRowBeforeSaving(ImageID, cbToSite.Checked, cbCatSlider.Checked, cbMainSlider.Checked, cbMainSliderZOVExcluzive.Checked,
                     kryptonRichTextBox6.Text, kryptonRichTextBox5.Text, kryptonRichTextBox4.Text,
                     kryptonRichTextBox1.Text, kryptonRichTextBox2.Text, kryptonRichTextBox3.Text);
             }
@@ -317,6 +317,7 @@ namespace Infinium
                     cbToSite.Checked = Convert.ToBoolean(dgvImages.SelectedRows[0].Cells["ToSite"].Value);
                     cbCatSlider.Checked = Convert.ToBoolean(dgvImages.SelectedRows[0].Cells["CatSlider"].Value);
                     cbMainSlider.Checked = Convert.ToBoolean(dgvImages.SelectedRows[0].Cells["MainSlider"].Value);
+                    cbMainSliderZOVExcluzive.Checked = Convert.ToBoolean(dgvImages.SelectedRows[0].Cells["MainSliderZOVExcluzive"].Value);
                 }
                 while (SplashWindow.bSmallCreated)
                     SmallWaitForm.CloseS = true;
@@ -344,6 +345,7 @@ namespace Infinium
                     cbToSite.Checked = Convert.ToBoolean(dgvImages.SelectedRows[0].Cells["ToSite"].Value);
                     cbCatSlider.Checked = Convert.ToBoolean(dgvImages.SelectedRows[0].Cells["CatSlider"].Value);
                     cbMainSlider.Checked = Convert.ToBoolean(dgvImages.SelectedRows[0].Cells["MainSlider"].Value);
+                    cbMainSliderZOVExcluzive.Checked = Convert.ToBoolean(dgvImages.SelectedRows[0].Cells["MainSliderZOVExcluzive"].Value);
                 }
             }
         }

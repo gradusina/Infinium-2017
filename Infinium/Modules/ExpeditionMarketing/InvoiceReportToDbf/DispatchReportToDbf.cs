@@ -919,12 +919,12 @@ namespace Infinium.Modules.ExpeditionMarketing.DispatchReportToDbf
                         //Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["PaymentRate"]));
                         //Cell1.CellStyle = CurrencyCS;
                     }
-                    Cell1 = sheet1.CreateRow(pos).CreateCell(8);
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(7);
                     Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["Weight"]));
                     Cell1.CellStyle = WeightCS;
                     if (ProfilReportTable.Rows[i]["PackageCount"] != DBNull.Value)
                     {
-                        Cell1 = sheet1.CreateRow(pos).CreateCell(9);
+                        Cell1 = sheet1.CreateRow(pos).CreateCell(8);
                         Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["PackageCount"]));
                         Cell1.CellStyle = SimpleCS;
                     }

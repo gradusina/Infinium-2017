@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Windows.Forms;
 
+using static Infinium.FrontsCatalog;
+
 namespace Infinium
 {
     public partial class ProductDescriptionForm : Form
@@ -12,35 +14,37 @@ namespace Infinium
 
         public bool PressOK;
 
-        public bool ToSite;
-        public bool Latest;
-        public string Category = string.Empty;
-        public string NameProd = string.Empty;
-        public string Description = string.Empty;
-        public string Sizes = string.Empty;
-        public string Material = string.Empty;
+        public ConfigImageInfo ConfigImageInfo;
+
+        //public bool ToSite;
+        //public bool Latest;
+        //public bool Basic;
+        //public string Category = string.Empty;
+        //public string NameProd = string.Empty;
+        //public string Description = string.Empty;
+        //public string Sizes = string.Empty;
+        //public string Material = string.Empty;
+
         private int FormEvent;
 
         private Form MainForm;
 
-        public ProductDescriptionForm(Form tMainForm, bool bToSite, bool bLatest, string sCategory, string sName, string sDescription, string sSizes, string sMaterial)
+        public ProductDescriptionForm(Form tMainForm, ConfigImageInfo configImageInfo)
         {
+            this.ConfigImageInfo = configImageInfo;
+
             MainForm = tMainForm;
-            Category = sCategory;
-            NameProd = sName;
-            Description = sDescription;
-            Sizes = sSizes;
-            Material = sMaterial;
 
             InitializeComponent();
 
-            kryptonRichTextBox4.Text = Category;
-            kryptonRichTextBox5.Text = NameProd;
-            kryptonRichTextBox1.Text = Description;
-            kryptonRichTextBox2.Text = Sizes;
-            kryptonRichTextBox3.Text = Material;
-            cbToSite.Checked = bToSite;
-            cbLatest.Checked = bLatest;
+            kryptonRichTextBox4.Text = configImageInfo.Category;
+            kryptonRichTextBox5.Text = configImageInfo.Name;
+            kryptonRichTextBox1.Text = configImageInfo.Description;
+            kryptonRichTextBox2.Text = configImageInfo.Sizes;
+            kryptonRichTextBox3.Text = configImageInfo.Material;
+            cbToSite.Checked = configImageInfo.ToSite;
+            cbLatest.Checked = configImageInfo.Latest;
+            cbBasic.Checked = configImageInfo.Basic;
         }
 
         private void AnimateTimer_Tick(object sender, EventArgs e)
@@ -117,13 +121,14 @@ namespace Infinium
         private void btnOKInput_Click(object sender, EventArgs e)
         {
             PressOK = true;
-            Category = kryptonRichTextBox4.Text;
-            NameProd = kryptonRichTextBox5.Text;
-            Description = kryptonRichTextBox1.Text;
-            Sizes = kryptonRichTextBox2.Text;
-            Material = kryptonRichTextBox3.Text;
-            ToSite = cbToSite.Checked;
-            Latest = cbLatest.Checked;
+            ConfigImageInfo.Category = kryptonRichTextBox4.Text;
+            ConfigImageInfo.Name = kryptonRichTextBox5.Text;
+            ConfigImageInfo.Description = kryptonRichTextBox1.Text;
+            ConfigImageInfo.Sizes = kryptonRichTextBox2.Text;
+            ConfigImageInfo.Material = kryptonRichTextBox3.Text;
+            ConfigImageInfo.ToSite = cbToSite.Checked;
+            ConfigImageInfo.Latest = cbLatest.Checked;
+            ConfigImageInfo.Basic = cbBasic.Checked;
 
             FormEvent = eClose;
             AnimateTimer.Enabled = true;

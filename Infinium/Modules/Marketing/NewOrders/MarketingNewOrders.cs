@@ -1,10 +1,13 @@
-﻿using NPOI.HPSF;
+﻿using DevExpress.XtraLayout.Utils;
+
+using NPOI.HPSF;
 using NPOI.HSSF.UserModel;
 using NPOI.HSSF.UserModel.Contrib;
 using NPOI.HSSF.Util;
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
@@ -19,6 +22,8 @@ using System.Windows.Forms;
 using System.Xml;
 
 using static Infinium.TablesManager;
+
+using Region = NPOI.HSSF.Util.Region;
 
 namespace Infinium.Modules.Marketing.NewOrders
 {
@@ -78,7 +83,7 @@ namespace Infinium.Modules.Marketing.NewOrders
         private DataGridViewComboBoxColumn CupboardsInsetTypesColumn = null;
 
         public FrontsOrders(ref PercentageDataGrid tFrontsOrdersDataGrid,
-                            ref FrontsCatalogOrder tFrontsCatalogOrder)
+            ref FrontsCatalogOrder tFrontsCatalogOrder)
         {
             FrontsOrdersDataGrid = tFrontsOrdersDataGrid;
             FrontsCatalogOrder = tFrontsCatalogOrder;
@@ -142,8 +147,10 @@ namespace Infinium.Modules.Marketing.NewOrders
         private void GetInsetColorsDT()
         {
             InsetColorsDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT InsetColors.InsetColorID, InsetColors.GroupID, infiniu2_catalog.dbo.TechStore.TechStoreName AS InsetColorName FROM InsetColors" +
-                " INNER JOIN infiniu2_catalog.dbo.TechStore ON InsetColors.InsetColorID = infiniu2_catalog.dbo.TechStore.TechStoreID ORDER BY TechStoreName", ConnectionStrings.CatalogConnectionString))
+            using (SqlDataAdapter DA = new SqlDataAdapter(
+                       "SELECT InsetColors.InsetColorID, InsetColors.GroupID, infiniu2_catalog.dbo.TechStore.TechStoreName AS InsetColorName FROM InsetColors" +
+                       " INNER JOIN infiniu2_catalog.dbo.TechStore ON InsetColors.InsetColorID = infiniu2_catalog.dbo.TechStore.TechStoreID ORDER BY TechStoreName",
+                       ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(InsetColorsDataTable);
                 {
@@ -182,7 +189,9 @@ namespace Infinium.Modules.Marketing.NewOrders
             {
                 DA.Fill(FrontsDataTable);
             }
-            SelectCommand = @"SELECT DISTINCT TechStoreID AS TechnoProfileID, TechStoreName AS TechnoProfileName FROM TechStore 
+
+            SelectCommand =
+                @"SELECT DISTINCT TechStoreID AS TechnoProfileID, TechStoreName AS TechnoProfileName FROM TechStore 
                 WHERE TechStoreID IN (SELECT TechnoProfileID FROM FrontsConfig WHERE Enabled = 1 AND AccountingName IS NOT NULL AND InvNumber IS NOT NULL)
                 ORDER BY TechStoreName";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
@@ -195,44 +204,52 @@ namespace Infinium.Modules.Marketing.NewOrders
                 NewRow["TechnoProfileName"] = "-";
                 TechnoProfilesDataTable.Rows.InsertAt(NewRow, 0);
             }
+
             PatinaDataTable = new DataTable();
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Patina",
-                ConnectionStrings.CatalogConnectionString))
+                       ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(PatinaDataTable);
             }
+
             PatinaRALDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT PatinaRAL.*, Patina.Patina FROM PatinaRAL INNER JOIN Patina ON Patina.PatinaID=PatinaRAL.PatinaID WHERE PatinaRAL.Enabled=1",
-                ConnectionStrings.CatalogConnectionString))
+            using (SqlDataAdapter DA = new SqlDataAdapter(
+                       "SELECT PatinaRAL.*, Patina.Patina FROM PatinaRAL INNER JOIN Patina ON Patina.PatinaID=PatinaRAL.PatinaID WHERE PatinaRAL.Enabled=1",
+                       ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(PatinaRALDataTable);
             }
+
             foreach (DataRow item in PatinaRALDataTable.Rows)
             {
                 DataRow NewRow = PatinaDataTable.NewRow();
                 NewRow["PatinaID"] = item["PatinaRALID"];
-                NewRow["PatinaName"] = item["PatinaRAL"]; NewRow["Patina"] = item["Patina"];
+                NewRow["PatinaName"] = item["PatinaRAL"];
+                NewRow["Patina"] = item["Patina"];
                 NewRow["DisplayName"] = item["DisplayName"];
                 PatinaDataTable.Rows.Add(NewRow);
             }
+
             GetColorsDT();
             GetInsetColorsDT();
             InsetTypesDataTable = new DataTable();
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM InsetTypes",
-                ConnectionStrings.CatalogConnectionString))
+                       ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(InsetTypesDataTable);
             }
+
             TechnoInsetTypesDataTable = InsetTypesDataTable.Copy();
             TechnoInsetColorsDataTable = InsetColorsDataTable.Copy();
 
-            FrontsOrdersDataAdapter = new SqlDataAdapter("SELECT TOP 0 * FROM NewFrontsOrders", ConnectionStrings.MarketingOrdersConnectionString);
+            FrontsOrdersDataAdapter = new SqlDataAdapter("SELECT TOP 0 * FROM NewFrontsOrders",
+                ConnectionStrings.MarketingOrdersConnectionString);
             FrontsOrdersCommandBuider = new SqlCommandBuilder(FrontsOrdersDataAdapter);
             FrontsOrdersDataAdapter.Fill(FrontsOrdersDataTable);
 
             CupboardsDataTable = new DataTable();
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Cupboards",
-                ConnectionStrings.ZOVReferenceConnectionString))
+                       ConnectionStrings.ZOVReferenceConnectionString))
             {
                 DA.Fill(CupboardsDataTable);
             }
@@ -385,6 +402,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                 FrontsOrdersDataGrid.Columns["CreateDateTime"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
                 FrontsOrdersDataGrid.Columns["CreateDateTime"].Width = 100;
             }
+
             if (FrontsOrdersDataGrid.Columns.Contains("CreateUserID"))
                 FrontsOrdersDataGrid.Columns["CreateUserID"].Visible = false;
             if (FrontsOrdersDataGrid.Columns.Contains("CreateUserTypeID"))
@@ -424,6 +442,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                 FrontsOrdersDataGrid.Columns["CurrencyTypeID"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
                 FrontsOrdersDataGrid.Columns["CurrencyTypeID"].Width = 85;
             }
+
             if (FrontsOrdersDataGrid.Columns.Contains("PriceWithTransport"))
                 FrontsOrdersDataGrid.Columns["PriceWithTransport"].Visible = false;
             if (FrontsOrdersDataGrid.Columns.Contains("CostWithTransport"))
@@ -458,9 +477,12 @@ namespace Infinium.Modules.Marketing.NewOrders
             FrontsOrdersDataGrid.Columns["InsetTypesColumn"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             FrontsOrdersDataGrid.Columns["InsetColorsColumn"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             FrontsOrdersDataGrid.Columns["TechnoProfilesColumn"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            FrontsOrdersDataGrid.Columns["TechnoFrameColorsColumn"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            FrontsOrdersDataGrid.Columns["TechnoInsetTypesColumn"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            FrontsOrdersDataGrid.Columns["TechnoInsetColorsColumn"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            FrontsOrdersDataGrid.Columns["TechnoFrameColorsColumn"].AutoSizeMode =
+                DataGridViewAutoSizeColumnMode.AllCells;
+            FrontsOrdersDataGrid.Columns["TechnoInsetTypesColumn"].AutoSizeMode =
+                DataGridViewAutoSizeColumnMode.AllCells;
+            FrontsOrdersDataGrid.Columns["TechnoInsetColorsColumn"].AutoSizeMode =
+                DataGridViewAutoSizeColumnMode.AllCells;
             FrontsOrdersDataGrid.Columns["Height"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
             FrontsOrdersDataGrid.Columns["Height"].Width = 85;
             FrontsOrdersDataGrid.Columns["Width"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
@@ -510,8 +532,8 @@ namespace Infinium.Modules.Marketing.NewOrders
         private void FrontsOrdersDataGrid_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             PercentageDataGrid grid = (PercentageDataGrid)sender;
-            if (grid.Columns.Contains("PatinaColumn") && (e.ColumnIndex == grid.Columns["PatinaColumn"].Index)
-                && e.Value != null)
+            if (grid.Columns.Contains("PatinaColumn") && e.ColumnIndex == grid.Columns["PatinaColumn"].Index
+                                                      && e.Value != null)
             {
                 DataGridViewCell cell =
                     grid.Rows[e.RowIndex].Cells[e.ColumnIndex];
@@ -522,6 +544,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                     PatinaID = Convert.ToInt32(grid.Rows[e.RowIndex].Cells["PatinaID"].Value);
                     DisplayName = PatinaDisplayName(PatinaID);
                 }
+
                 cell.ToolTipText = DisplayName;
             }
         }
@@ -542,19 +565,70 @@ namespace Infinium.Modules.Marketing.NewOrders
             CreateColumns();
         }
 
+        private List<int> GetClientsExcluziveCountriesList(int clientId)
+        {
+            var countryId = 0;
+
+            var clientsList = new List<int>();
+            var countriesList = new List<int>();
+
+            using (var da = new SqlDataAdapter($@"SELECT countryId FROM Clients where ClientID={clientId}",
+                       ConnectionStrings.MarketingReferenceConnectionString))
+            {
+                using (var dt = new DataTable())
+                {
+                    if (da.Fill(dt) > 0)
+                        countryId = Convert.ToInt32(dt.Rows[0]["countryId"]);
+                }
+            }
+
+            using (var da = new SqlDataAdapter($@"SELECT * FROM ClientsExcluziveCountries",
+                       ConnectionStrings.MarketingReferenceConnectionString))
+            {
+                using (var dt = new DataTable())
+                {
+                    da.Fill(dt);
+                    DataTable distClients;
+                    using (var dv = new DataView(dt))
+                    {
+                        distClients = dv.ToTable(true, "clientId");
+                    }
+
+                    for (var i = 0; i < distClients.Rows.Count; i++)
+                    {
+                        var rows = dt.Select($"clientId={Convert.ToInt32(dt.Rows[i]["clientId"])}");
+                        countriesList.AddRange(rows.Select(row => Convert.ToInt32(row["countryId"])));
+                        if (!countriesList.Contains(countryId))
+                            clientsList.Add(Convert.ToInt32(dt.Rows[i]["clientId"]));
+                    }
+                }
+            }
+
+            clientsList.Add(clientId);
+            return clientsList;
+        }
+
         public void HasClientExcluzive(int iClientID)
         {
-
-            string SelectCommand = string.Empty;
             ClientID = iClientID;
             ExcluziveDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter(@"SELECT FrontsConfig.*, infiniu2_marketingreference.dbo.ExcluziveCatalog.ClientID FROM FrontsConfig 
+            using (SqlDataAdapter DA = new SqlDataAdapter(
+                       @"SELECT FrontsConfig.*, infiniu2_marketingreference.dbo.ExcluziveCatalog.ClientID FROM FrontsConfig 
                 INNER JOIN infiniu2_marketingreference.dbo.ExcluziveCatalog ON FrontsConfig.FrontConfigID=infiniu2_marketingreference.dbo.ExcluziveCatalog.ConfigID AND ProductType=0",
-                ConnectionStrings.CatalogConnectionString))
+                       ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(ExcluziveDataTable);
             }
-            DataRow[] rows = ExcluziveDataTable.Select("ClientID=" + ClientID);
+
+            List<int> clientsList = GetClientsExcluziveCountriesList(iClientID);
+            string filter = string.Empty;
+            foreach (int item in clientsList)
+                filter += item.ToString() + ",";
+
+            if (filter.Length > 0)
+                filter = $"ClientID IN ({filter.Substring(0, filter.Length - 1)})";
+
+            DataRow[] rows = ExcluziveDataTable.Select(filter);
             HasExcluzive = rows.Count() > 0;
             for (int i = 0; i < ExcluziveDataTable.Rows.Count; i++)
             {
@@ -562,11 +636,12 @@ namespace Infinium.Modules.Marketing.NewOrders
                 int FrontConfigID = Convert.ToInt32(ExcluziveDataTable.Rows[i]["FrontConfigID"]);
                 int Excluzive1 = 0;
 
-                if (ExcluziveClientID == ClientID)
+                if (ExcluziveClientID == ClientID || clientsList.Contains(ExcluziveClientID))
                 {
                     Excluzive1 = 1;
                 }
-                rows = ExcluziveDataTable.Select("ClientID=" + ClientID + " AND FrontConfigID=" + FrontConfigID);
+
+                rows = ExcluziveDataTable.Select(filter + " AND FrontConfigID=" + FrontConfigID);
                 if (rows.Count() > 1)
                     Excluzive1 = 1;
                 rows = FrontsCatalogOrder.ConstFrontsConfigDataTable.Select("FrontConfigID=" + FrontConfigID);
@@ -581,15 +656,17 @@ namespace Infinium.Modules.Marketing.NewOrders
                     }
                 }
             }
+
             for (int i = 0; i < FrontsCatalogOrder.ConstFrontsDataTable.Rows.Count; i++)
             {
                 int FrontID = Convert.ToInt32(FrontsCatalogOrder.ConstFrontsDataTable.Rows[i]["FrontID"]);
                 rows = ExcluziveDataTable.Select("FrontID=" + FrontID);
                 if (rows.Count() == 0)
                     continue;
-                rows = FrontsCatalogOrder.ConstFrontsConfigDataTable.Select("(Excluzive<>0 OR Excluzive IS NULL) AND FrontID=" + FrontID);
+                rows = FrontsCatalogOrder.ConstFrontsConfigDataTable.Select(
+                    "(Excluzive<>0 OR Excluzive IS NULL) AND FrontID=" + FrontID);
                 int NotExcluziveConfiguration = rows.Count();
-                rows = ExcluziveDataTable.Select("ClientID=" + ClientID + " AND FrontID=" + FrontID);
+                rows = ExcluziveDataTable.Select(filter + " AND FrontID=" + FrontID);
                 int ClientExcluziveConfiguration = rows.Count();
                 if (ClientExcluziveConfiguration > 0)
                     FrontsCatalogOrder.ConstFrontsDataTable.Rows[i]["Excluzive"] = 1;
@@ -632,7 +709,8 @@ namespace Infinium.Modules.Marketing.NewOrders
         }
 
         public void AddFrontsOrder(int MainOrderID, int FrontID, int ColorID, int PatinaID, int InsetTypeID,
-            int InsetColorID, int TechnoProfileID, int TechnoColorID, int TechnoInsetTypeID, int TechnoInsetColorID, int Height, int Width, int Count, string Notes, int ImpostMargin = 0)
+            int InsetColorID, int TechnoProfileID, int TechnoColorID, int TechnoInsetTypeID, int TechnoInsetColorID,
+            int Height, int Width, int Count, string Notes, int ImpostMargin = 0)
         {
             //if (TablesManager.IsInsetTypePressed(InsetTypeID))
             //{
@@ -681,40 +759,52 @@ namespace Infinium.Modules.Marketing.NewOrders
                 MessageBox.Show("Ширина фасада Марсель 3 не может быть больше 1478 мм", "Добавление фасада");
                 return;
             }
-            if (Width != -1 && (Height < 110 || Width < 110) && (FrontID != 3727 && FrontID != 3728 && FrontID != 3729 &&
-                 FrontID != 3730 && FrontID != 3731 && FrontID != 3732 && FrontID != 3733 && FrontID != 3734 &&
-                 FrontID != 3735 && FrontID != 3736 && FrontID != 3737 && FrontID != 27914 && FrontID != 29597 && FrontID != 3739 && FrontID != 3740 &&
-                 FrontID != 3741 && FrontID != 3742 && FrontID != 3743 && FrontID != 3744 && FrontID != 3745 &&
-                 FrontID != 3746 && FrontID != 3747 && FrontID != 3748 && FrontID != 15108 && FrontID != 3662 && FrontID != 3663 && FrontID != 3664 &&
-                 FrontID != 16269 && FrontID != 28945 && FrontID != 41327 && FrontID != 41328 && FrontID != 41331 &&
-                 FrontID != 16579 && FrontID != 16580 && FrontID != 16581 && FrontID != 16582 && FrontID != 16583 && FrontID != 16584 &&
-                 FrontID != 29277 && FrontID != 29278 &&
-                     FrontID != 15107 && FrontID != 15759 && FrontID != 15760 && FrontID != 27437 && FrontID != 27913 && FrontID != 29598))
+
+            if (Width != -1 && (Height < 110 || Width < 110) && FrontID != 3727 && FrontID != 3728 && FrontID != 3729 && FrontID != 3730 && FrontID != 3731 && FrontID != 3732 && FrontID != 3733 && FrontID != 3734 && FrontID != 3735 && FrontID != 3736 && FrontID != 3737 && FrontID != 27914 && FrontID != 29597 && FrontID != 3739 && FrontID != 3740 && FrontID != 3741 && FrontID != 3742 && FrontID != 3743 && FrontID != 3744 && FrontID != 3745 && FrontID != 3746 && FrontID != 3747 && FrontID != 3748 && FrontID != 15108 && FrontID != 3662 && FrontID != 3663 && FrontID != 3664 && FrontID != 16269 && FrontID != 28945 && FrontID != 41327 && FrontID != 41328 && FrontID != 41331 && FrontID != 16579 && FrontID != 16580 && FrontID != 16581 && FrontID != 16582 && FrontID != 16583 && FrontID != 16584 && FrontID != 29277 && FrontID != 29278 && FrontID != 15107 && FrontID != 15759 && FrontID != 15760 && FrontID != 27437 && FrontID != 27913 && FrontID != 29598)
             {
                 MessageBox.Show("Высота и ширина фасада не могут быть меньше 110 мм", "Добавление фасада");
                 return;
             }
+
             if (Width != -1 && (Height < 30 || Width < 30) && (FrontID == 3727 || FrontID == 3728 || FrontID == 3729 ||
-                 FrontID == 3730 || FrontID == 3731 || FrontID == 3732 || FrontID == 3733 || FrontID == 3734 ||
-                 FrontID == 3735 || FrontID == 3736 || FrontID == 3737 || FrontID == 3739 || FrontID == 3740 ||
-                 FrontID == 3741 || FrontID == 3742 || FrontID == 3743 || FrontID == 3744 || FrontID == 3745 ||
-                 FrontID == 3746 || FrontID == 3747 || FrontID == 3748 || FrontID == 15108 ||
-                 FrontID == 30504 || FrontID == 30505 || FrontID == 30506 ||
-                 FrontID == 30364 || FrontID == 30366 || FrontID == 30367 ||
-                 FrontID == 30501 || FrontID == 30502 || FrontID == 30503 ||
-                 FrontID == 16269 || FrontID == 28945 || FrontID == 41327 || FrontID == 41328 || FrontID == 41331 || FrontID == 27914 || FrontID == 29597 ||
-                 FrontID == 16579 || FrontID == 16580 || FrontID == 16581 || FrontID == 16582 || FrontID == 16583 || FrontID == 16584 ||
-                 FrontID == 29277 || FrontID == 29278 ||
-                 FrontID == 15107 || FrontID == 15759 || FrontID == 15760 || FrontID == 27437 || FrontID == 27913 || FrontID == 29598))
+                                                               FrontID == 3730 || FrontID == 3731 || FrontID == 3732 ||
+                                                               FrontID == 3733 || FrontID == 3734 ||
+                                                               FrontID == 3735 || FrontID == 3736 || FrontID == 3737 ||
+                                                               FrontID == 3739 || FrontID == 3740 ||
+                                                               FrontID == 3741 || FrontID == 3742 || FrontID == 3743 ||
+                                                               FrontID == 3744 || FrontID == 3745 ||
+                                                               FrontID == 3746 || FrontID == 3747 || FrontID == 3748 ||
+                                                               FrontID == 15108 ||
+                                                               FrontID == 30504 || FrontID == 30505 ||
+                                                               FrontID == 30506 ||
+                                                               FrontID == 30364 || FrontID == 30366 ||
+                                                               FrontID == 30367 ||
+                                                               FrontID == 30501 || FrontID == 30502 ||
+                                                               FrontID == 30503 ||
+                                                               FrontID == 16269 || FrontID == 28945 ||
+                                                               FrontID == 41327 || FrontID == 41328 ||
+                                                               FrontID == 41331 || FrontID == 27914 ||
+                                                               FrontID == 29597 ||
+                                                               FrontID == 16579 || FrontID == 16580 ||
+                                                               FrontID == 16581 || FrontID == 16582 ||
+                                                               FrontID == 16583 || FrontID == 16584 ||
+                                                               FrontID == 29277 || FrontID == 29278 ||
+                                                               FrontID == 15107 || FrontID == 15759 ||
+                                                               FrontID == 15760 || FrontID == 27437 ||
+                                                               FrontID == 27913 || FrontID == 29598))
             {
                 MessageBox.Show("Высота и ширина фасада не могут быть меньше 30 мм", "Добавление фасада");
                 return;
             }
+
             if ((Height < 570 || Width < 396) && (FrontID == 3731 || FrontID == 3728 || FrontID == 3732))
             {
-                MessageBox.Show("Высота апликации не может быть меньше 570 мм\r\nШирина апликации не может быть меньше 396 мм", "Добавление фасада");
+                MessageBox.Show(
+                    "Высота апликации не может быть меньше 570 мм\r\nШирина апликации не может быть меньше 396 мм",
+                    "Добавление фасада");
                 return;
             }
+
             //if (Width != -1 && (Height < 10 || Width < 10) && (FrontID == 3662 || FrontID == 3663 || FrontID == 3664))
             //{
             //    MessageBox.Show("Высота и ширина фасада Тафель не могут быть меньше 10 мм", "Добавление фасада");
@@ -752,7 +842,8 @@ namespace Infinium.Modules.Marketing.NewOrders
 
         public void AddFrontsOrderCupboards(ref ComponentFactory.Krypton.Toolkit.KryptonListBox CupboardsExportListBox,
             int MainOrderID, int FrontID, int ColorID, int PatinaID, int InsetTypeID,
-            int InsetColorID, int TechnoProfileID, int TechnoColorID, int TechnoInsetTypeID, int TechnoInsetColorID, int Height, int Width, int Count)
+            int InsetColorID, int TechnoProfileID, int TechnoColorID, int TechnoInsetTypeID, int TechnoInsetColorID,
+            int Height, int Width, int Count)
         {
             TechStoreDimensions dimensions = TablesManager.GetTechStoreDimensions(FrontID);
 
@@ -869,13 +960,15 @@ namespace Infinium.Modules.Marketing.NewOrders
                                 row["Height"] = Convert.ToInt32(CupboardsDataTable.Rows[k]["Height"]);
                                 row["Width"] = Convert.ToInt32(CupboardsDataTable.Rows[k]["Width"]);
                                 row["Count"] = Convert.ToInt32(CupboardsDataTable.Rows[k]["Count"]);
-                                row["FrontConfigID"] = FrontsCatalogOrder.GetFrontConfigID(FrontID, ColorID, PatinaID, InsetTypeID,
-                                    InsetColorID, TechnoProfileID, TechnoColorID, TechnoInsetTypeID, TechnoInsetColorID, Height, Width, ref F, ref AreaID);
+                                row["FrontConfigID"] = FrontsCatalogOrder.GetFrontConfigID(FrontID, ColorID, PatinaID,
+                                    InsetTypeID,
+                                    InsetColorID, TechnoProfileID, TechnoColorID, TechnoInsetTypeID, TechnoInsetColorID,
+                                    Height, Width, ref F, ref AreaID);
                                 FrontsOrdersDataTable.Rows.Add(row);
                             }
                             else
                             {
-                                j = CupboardsDataTable.Rows.Count;//выход из цикла поиска шкафов
+                                j = CupboardsDataTable.Rows.Count; //выход из цикла поиска шкафов
                                 break;
                             }
                         }
@@ -904,8 +997,10 @@ namespace Infinium.Modules.Marketing.NewOrders
                         row["Height"] = Height;
                         row["Width"] = Width;
                         row["Count"] = Count;
-                        row["FrontConfigID"] = FrontsCatalogOrder.GetFrontConfigID(FrontID, ColorID, PatinaID, InsetTypeID,
-                            InsetColorID, TechnoProfileID, TechnoColorID, TechnoInsetTypeID, TechnoInsetColorID, Height, Width, ref F, ref AreaID);
+                        row["FrontConfigID"] = FrontsCatalogOrder.GetFrontConfigID(FrontID, ColorID, PatinaID,
+                            InsetTypeID,
+                            InsetColorID, TechnoProfileID, TechnoColorID, TechnoInsetTypeID, TechnoInsetColorID, Height,
+                            Width, ref F, ref AreaID);
                         FrontsOrdersDataTable.Rows.Add(row);
                         break;
                     }
@@ -935,7 +1030,8 @@ namespace Infinium.Modules.Marketing.NewOrders
                 Height = Convert.ToInt32(DataGrid.Rows[i].Cells["HeightColumn"].Value);
                 Width = Convert.ToInt32(DataGrid.Rows[i].Cells["WidthColumn"].Value);
                 FrontsCatalogOrder.GetFrontConfigID(FrontName, ColorID, PatinaID, InsetTypeID,
-                    InsetColorID, TechnoProfileID, TechnoColorID, TechnoInsetTypeID, TechnoInsetColorID, Height, Width, ref FrontID, ref FactoryID, ref AreaID);
+                    InsetColorID, TechnoProfileID, TechnoColorID, TechnoInsetTypeID, TechnoInsetColorID, Height, Width,
+                    ref FrontID, ref FactoryID, ref AreaID);
                 if (FrontID == -1)
                     return;
 
@@ -979,20 +1075,15 @@ namespace Infinium.Modules.Marketing.NewOrders
                     MessageBox.Show("Ширина фасада Марсель 3 не может быть больше 1478 мм", "Добавление фасада");
                     return;
                 }
-                if (Width != -1 && (Height < 110 || Width < 110) && (FrontID != 3727 && FrontID != 3728 && FrontID != 3729 &&
-                     FrontID != 3730 && FrontID != 3731 && FrontID != 3732 && FrontID != 3733 && FrontID != 3734 &&
-                     FrontID != 3735 && FrontID != 3736 && FrontID != 3737 && FrontID != 27914 && FrontID != 29597 && FrontID != 3739 && FrontID != 3740 &&
-                     FrontID != 3741 && FrontID != 3742 && FrontID != 3743 && FrontID != 3744 && FrontID != 3745 &&
-                     FrontID != 3746 && FrontID != 3747 && FrontID != 3748 && FrontID != 15108 && FrontID != 3662 && FrontID != 3663 && FrontID != 3664 &&
-                     FrontID != 16269 && FrontID != 28945 && FrontID != 41327 && FrontID != 41328 && FrontID != 41331 &&
-                     FrontID != 16579 && FrontID != 16580 && FrontID != 16581 && FrontID != 16582 && FrontID != 16583 && FrontID != 16584 &&
-                     FrontID != 29277 && FrontID != 29278 &&
-                     FrontID != 15107 && FrontID != 15759 && FrontID != 15760 && FrontID != 27437 && FrontID != 27913 && FrontID != 29598))
+
+                if (Width != -1 && (Height < 110 || Width < 110) && FrontID != 3727 && FrontID != 3728 && FrontID != 3729 && FrontID != 3730 && FrontID != 3731 && FrontID != 3732 && FrontID != 3733 && FrontID != 3734 && FrontID != 3735 && FrontID != 3736 && FrontID != 3737 && FrontID != 27914 && FrontID != 29597 && FrontID != 3739 && FrontID != 3740 && FrontID != 3741 && FrontID != 3742 && FrontID != 3743 && FrontID != 3744 && FrontID != 3745 && FrontID != 3746 && FrontID != 3747 && FrontID != 3748 && FrontID != 15108 && FrontID != 3662 && FrontID != 3663 && FrontID != 3664 && FrontID != 16269 && FrontID != 28945 && FrontID != 41327 && FrontID != 41328 && FrontID != 41331 && FrontID != 16579 && FrontID != 16580 && FrontID != 16581 && FrontID != 16582 && FrontID != 16583 && FrontID != 16584 && FrontID != 29277 && FrontID != 29278 && FrontID != 15107 && FrontID != 15759 && FrontID != 15760 && FrontID != 27437 && FrontID != 27913 && FrontID != 29598)
                 {
                     MessageBox.Show("Высота и ширина фасада не могут быть меньше 110 мм", "Добавление фасада");
                     return;
                 }
-                if (Width != -1 && (Height < 30 || Width < 30) && (FrontID == 3727 || FrontID == 3728 || FrontID == 3729 ||
+
+                if (Width != -1 && (Height < 30 || Width < 30) &&
+                    (FrontID == 3727 || FrontID == 3728 || FrontID == 3729 ||
                      FrontID == 3730 || FrontID == 3731 || FrontID == 3732 || FrontID == 3733 || FrontID == 3734 ||
                      FrontID == 3735 || FrontID == 3736 || FrontID == 3737 || FrontID == 3739 || FrontID == 3740 ||
                      FrontID == 3741 || FrontID == 3742 || FrontID == 3743 || FrontID == 3744 || FrontID == 3745 ||
@@ -1000,17 +1091,23 @@ namespace Infinium.Modules.Marketing.NewOrders
                      FrontID == 30504 || FrontID == 30505 || FrontID == 30506 ||
                      FrontID == 30364 || FrontID == 30366 || FrontID == 30367 ||
                      FrontID == 30501 || FrontID == 30502 || FrontID == 30503 ||
-                     FrontID == 16269 || FrontID == 28945 || FrontID == 41327 || FrontID == 41328 || FrontID == 41331 || FrontID == 27914 || FrontID == 29597 ||
-                     FrontID == 16579 || FrontID == 16580 || FrontID == 16581 || FrontID == 16582 || FrontID == 16583 || FrontID == 16584 ||
+                     FrontID == 16269 || FrontID == 28945 || FrontID == 41327 || FrontID == 41328 || FrontID == 41331 ||
+                     FrontID == 27914 || FrontID == 29597 ||
+                     FrontID == 16579 || FrontID == 16580 || FrontID == 16581 || FrontID == 16582 || FrontID == 16583 ||
+                     FrontID == 16584 ||
                      FrontID == 29277 || FrontID == 29278 ||
-                     FrontID == 15107 || FrontID == 15759 || FrontID == 15760 || FrontID == 27437 || FrontID == 27913 || FrontID == 29598))
+                     FrontID == 15107 || FrontID == 15759 || FrontID == 15760 || FrontID == 27437 || FrontID == 27913 ||
+                     FrontID == 29598))
                 {
                     MessageBox.Show("Высота и ширина фасада не могут быть меньше 30 мм", "Добавление фасада");
                     return;
                 }
+
                 if ((Height < 570 || Width < 396) && (FrontID == 3731 || FrontID == 3728 || FrontID == 3732))
                 {
-                    MessageBox.Show("Высота апликации не может быть меньше 570 мм\r\nШирина апликации не может быть меньше 396 мм", "Добавление фасада");
+                    MessageBox.Show(
+                        "Высота апликации не может быть меньше 570 мм\r\nШирина апликации не может быть меньше 396 мм",
+                        "Добавление фасада");
                     return;
                 }
                 //if (Width != -1 && (Height < 10 || Width < 10) && (FrontID == 3662 || FrontID == 3663 || FrontID == 3664))
@@ -1056,13 +1153,16 @@ namespace Infinium.Modules.Marketing.NewOrders
             string MainOrderID = ((DataRowView)FrontsOrdersBindingSource.Current).Row["MainOrderID"].ToString();
             int FrontID = Convert.ToInt32(((DataRowView)FrontsOrdersBindingSource.Current).Row["FrontID"]);
             int PatinaID = Convert.ToInt32(((DataRowView)FrontsOrdersBindingSource.Current).Row["PatinaID"]);
-            int TechnoProfileID = Convert.ToInt32(((DataRowView)FrontsOrdersBindingSource.Current).Row["TechnoProfileID"]);
+            int TechnoProfileID =
+                Convert.ToInt32(((DataRowView)FrontsOrdersBindingSource.Current).Row["TechnoProfileID"]);
             int TechnoColorID = Convert.ToInt32(((DataRowView)FrontsOrdersBindingSource.Current).Row["TechnoColorID"]);
             int InsetTypeID = Convert.ToInt32(((DataRowView)FrontsOrdersBindingSource.Current).Row["InsetTypeID"]);
             int ColorID = Convert.ToInt32(((DataRowView)FrontsOrdersBindingSource.Current).Row["ColorID"]);
             int InsetColorID = Convert.ToInt32(((DataRowView)FrontsOrdersBindingSource.Current).Row["InsetColorID"]);
-            int TechnoInsetTypeID = Convert.ToInt32(((DataRowView)FrontsOrdersBindingSource.Current).Row["TechnoInsetTypeID"]);
-            int TechnoInsetColorID = Convert.ToInt32(((DataRowView)FrontsOrdersBindingSource.Current).Row["TechnoInsetColorID"]);
+            int TechnoInsetTypeID =
+                Convert.ToInt32(((DataRowView)FrontsOrdersBindingSource.Current).Row["TechnoInsetTypeID"]);
+            int TechnoInsetColorID =
+                Convert.ToInt32(((DataRowView)FrontsOrdersBindingSource.Current).Row["TechnoInsetColorID"]);
 
             DataTable DT = new DataTable();
             DT = FrontsOrdersDataTable.Clone();
@@ -1120,7 +1220,8 @@ namespace Infinium.Modules.Marketing.NewOrders
             DT.Dispose();
         }
 
-        private void AddCupboardToBase(string CupboardName, int FrontID, int InsetTypeID, int Height, int Width, int Count)
+        private void AddCupboardToBase(string CupboardName, int FrontID, int InsetTypeID, int Height, int Width,
+            int Count)
         {
             if (CupboardName == "-")
                 return;
@@ -1152,8 +1253,10 @@ namespace Infinium.Modules.Marketing.NewOrders
             else
                 Row["CupboardName"] = CupboardName;
             //FrontID IN (3728,3731,3732,3739,3740,3741,3744,3745,3746)
-            if (InsetTypeID == 1 || InsetTypeID == 28961 || InsetTypeID == 3653 || InsetTypeID == 3654 || InsetTypeID == 3655
-                || InsetTypeID == 685 || InsetTypeID == 686 || InsetTypeID == 687 || InsetTypeID == 688 || InsetTypeID == 29470 || InsetTypeID == 29471
+            if (InsetTypeID == 1 || InsetTypeID == 28961 || InsetTypeID == 3653 || InsetTypeID == 3654 ||
+                InsetTypeID == 3655
+                || InsetTypeID == 685 || InsetTypeID == 686 || InsetTypeID == 687 || InsetTypeID == 688 ||
+                InsetTypeID == 29470 || InsetTypeID == 29471
                 || FrontID == 3728 || FrontID == 3731 || FrontID == 3732 || FrontID == 3739
                 || FrontID == 3740 || FrontID == 3741 || FrontID == 3744 || FrontID == 3745 || FrontID == 3746)
                 Row["InsetTypeID"] = InsetTypeID;
@@ -1228,7 +1331,8 @@ namespace Infinium.Modules.Marketing.NewOrders
             int F = -1;
             int AreaID = 0;
             Row["FrontConfigID"] = FrontsCatalogOrder.GetFrontConfigID(FrontID, ColorID, PatinaID, InsetTypeID,
-                InsetColorID, TechnoProfileID, TechnoColorID, TechnoInsetTypeID, TechnoInsetColorID, Height, Width, ref F, ref AreaID);
+                InsetColorID, TechnoProfileID, TechnoColorID, TechnoInsetTypeID, TechnoInsetColorID, Height, Width,
+                ref F, ref AreaID);
             Row["FactoryID"] = F;
             Row["AreaID"] = AreaID;
 
@@ -1296,7 +1400,7 @@ namespace Infinium.Modules.Marketing.NewOrders
         public void SaveCupboards()
         {
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Cupboards",
-                   ConnectionStrings.ZOVReferenceConnectionString))
+                       ConnectionStrings.ZOVReferenceConnectionString))
             {
                 using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
                 {
@@ -1309,7 +1413,8 @@ namespace Infinium.Modules.Marketing.NewOrders
             IsNewCupboardsAdded = false;
         }
 
-        public void ExportCupboardsFromExcelToList(ref ComponentFactory.Krypton.Toolkit.KryptonListBox CupboardsExportListBox)
+        public void ExportCupboardsFromExcelToList(
+            ref ComponentFactory.Krypton.Toolkit.KryptonListBox CupboardsExportListBox)
         {
             CupboardsExportListBox.Items.Clear();
 
@@ -1353,7 +1458,8 @@ namespace Infinium.Modules.Marketing.NewOrders
         public bool HasSample()
         {
             for (int i = 0; i < FrontsOrdersDataTable.Rows.Count; i++)
-                if (FrontsOrdersDataTable.Rows[i].RowState != DataRowState.Deleted && Convert.ToBoolean(FrontsOrdersDataTable.Rows[i]["IsSample"]))
+                if (FrontsOrdersDataTable.Rows[i].RowState != DataRowState.Deleted &&
+                    Convert.ToBoolean(FrontsOrdersDataTable.Rows[i]["IsSample"]))
                     return true;
             return false;
         }
@@ -1371,11 +1477,13 @@ namespace Infinium.Modules.Marketing.NewOrders
                 if (SetConfigID(FrontsOrdersDataTable.Rows[i], ref FactoryID) == false)
                 {
                     MessageBox.Show("Невозможно сохранить заказ, так как одна или несколько позиций фасадов\r\n" +
-                                    "отсутствует в каталоге. Проверьте правильность ввода данных в позиции " + (i + 1).ToString(),
-                                    "Ошибка сохранения заказа");
+                                    "отсутствует в каталоге. Проверьте правильность ввода данных в позиции " +
+                                    (i + 1).ToString(),
+                        "Ошибка сохранения заказа");
                     return false;
                 }
             }
+
             return true;
         }
 
@@ -1512,7 +1620,8 @@ namespace Infinium.Modules.Marketing.NewOrders
             FrontsOrdersDataTable.Rows.Add(row);
             FrontsOrdersDataTable.Rows.Clear();
 
-            FrontsOrdersDataAdapter = new SqlDataAdapter("SELECT * FROM NewFrontsOrders WHERE NeedCalcPrice=0 AND MainOrderID = " + MainOrderID,
+            FrontsOrdersDataAdapter = new SqlDataAdapter(
+                "SELECT * FROM NewFrontsOrders WHERE NeedCalcPrice=0 AND MainOrderID = " + MainOrderID,
                 ConnectionStrings.MarketingOrdersConnectionString);
             FrontsOrdersCommandBuider = new SqlCommandBuilder(FrontsOrdersDataAdapter);
             FrontsOrdersDataAdapter.Fill(FrontsOrdersDataTable);
@@ -1543,6 +1652,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                 if (rows.Count() > 0)
                     rows[0]["Excluzive"] = 1;
             }
+
             if (FrontsOrdersDataTable.Rows.Count > 0)
                 return true;
 
@@ -1627,18 +1737,70 @@ namespace Infinium.Modules.Marketing.NewOrders
             GridSettings();
         }
 
+        private List<int> GetClientsExcluziveCountriesList(int iClientID)
+        {
+            var countryId = 0;
+
+            var clientsList = new List<int>();
+            var countriesList = new List<int>();
+
+            using (var da = new SqlDataAdapter($@"SELECT countryId FROM Clients where ClientID={iClientID}",
+                       ConnectionStrings.MarketingReferenceConnectionString))
+            {
+                using (var dt = new DataTable())
+                {
+                    if (da.Fill(dt) > 0)
+                        countryId = Convert.ToInt32(dt.Rows[0]["countryId"]);
+                }
+            }
+
+            using (var da = new SqlDataAdapter($@"SELECT * FROM ClientsExcluziveCountries",
+                       ConnectionStrings.MarketingReferenceConnectionString))
+            {
+                using (var dt = new DataTable())
+                {
+                    da.Fill(dt);
+                    DataTable distClients;
+                    using (var dv = new DataView(dt))
+                    {
+                        distClients = dv.ToTable(true, "clientId");
+                    }
+
+                    for (var i = 0; i < distClients.Rows.Count; i++)
+                    {
+                        var rows = dt.Select($"clientId={Convert.ToInt32(dt.Rows[i]["clientId"])}");
+                        countriesList.AddRange(rows.Select(row => Convert.ToInt32(row["countryId"])));
+                        if (!countriesList.Contains(countryId))
+                            clientsList.Add(Convert.ToInt32(dt.Rows[i]["clientId"]));
+                    }
+                }
+            }
+
+            clientsList.Add(iClientID);
+            return clientsList;
+        }
+
         public void HasClientExcluzive(int iClientID)
         {
-            string SelectCommand = string.Empty;
             ClientID = iClientID;
             ExcluziveDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter(@"SELECT DecorConfig.*, infiniu2_marketingreference.dbo.ExcluziveCatalog.ClientID FROM DecorConfig 
+            using (SqlDataAdapter DA = new SqlDataAdapter(
+                       @"SELECT DecorConfig.*, infiniu2_marketingreference.dbo.ExcluziveCatalog.ClientID FROM DecorConfig 
                 INNER JOIN infiniu2_marketingreference.dbo.ExcluziveCatalog ON DecorConfig.DecorConfigID=infiniu2_marketingreference.dbo.ExcluziveCatalog.ConfigID AND ProductType=1",
-                ConnectionStrings.CatalogConnectionString))
+                       ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(ExcluziveDataTable);
             }
-            DataRow[] rows = ExcluziveDataTable.Select("ClientID=" + ClientID);
+
+            List<int> clientsList = GetClientsExcluziveCountriesList(iClientID);
+            string filter = string.Empty;
+            foreach (int item in clientsList)
+                filter += item.ToString() + ",";
+
+            if (filter.Length > 0)
+                filter = $"ClientID IN ({filter.Substring(0, filter.Length - 1)})";
+
+            DataRow[] rows = ExcluziveDataTable.Select(filter);
             HasExcluzive = rows.Count() > 0;
             for (int i = 0; i < ExcluziveDataTable.Rows.Count; i++)
             {
@@ -1646,11 +1808,12 @@ namespace Infinium.Modules.Marketing.NewOrders
                 int DecorConfigID = Convert.ToInt32(ExcluziveDataTable.Rows[i]["DecorConfigID"]);
                 int Excluzive1 = 0;
 
-                if (ExcluziveClientID == ClientID)
+                if (ExcluziveClientID == ClientID || clientsList.Contains(ExcluziveClientID))
                 {
                     Excluzive1 = 1;
                 }
-                rows = ExcluziveDataTable.Select("ClientID=" + ClientID + " AND DecorConfigID=" + DecorConfigID);
+
+                rows = ExcluziveDataTable.Select(filter + " AND DecorConfigID=" + DecorConfigID);
                 if (rows.Count() > 1)
                     Excluzive1 = 1;
                 rows = DecorCatalogOrder.DecorConfigDataTable.Select("DecorConfigID=" + DecorConfigID);
@@ -1665,15 +1828,17 @@ namespace Infinium.Modules.Marketing.NewOrders
                     }
                 }
             }
+
             for (int i = 0; i < DecorCatalogOrder.DecorProductsDataTable.Rows.Count; i++)
             {
                 int ProductID = Convert.ToInt32(DecorCatalogOrder.DecorProductsDataTable.Rows[i]["ProductID"]);
                 rows = ExcluziveDataTable.Select("ProductID=" + ProductID);
                 if (rows.Count() == 0)
                     continue;
-                rows = DecorCatalogOrder.DecorConfigDataTable.Select("(Excluzive<>0 OR Excluzive IS NULL) AND ProductID=" + ProductID);
+                rows = DecorCatalogOrder.DecorConfigDataTable.Select(
+                    "(Excluzive<>0 OR Excluzive IS NULL) AND ProductID=" + ProductID);
                 int NotExcluziveConfiguration = rows.Count();
-                rows = ExcluziveDataTable.Select("ClientID=" + ClientID + " AND ProductID=" + ProductID);
+                rows = ExcluziveDataTable.Select(filter + " AND ProductID=" + ProductID);
                 int ClientExcluziveConfiguration = rows.Count();
                 if (ClientExcluziveConfiguration > 0)
                     DecorCatalogOrder.DecorProductsDataTable.Rows[i]["Excluzive"] = 1;
@@ -1683,15 +1848,17 @@ namespace Infinium.Modules.Marketing.NewOrders
                         DecorCatalogOrder.DecorProductsDataTable.Rows[i]["Excluzive"] = 0;
                 }
             }
+
             for (int i = 0; i < DecorCatalogOrder.DecorDataTable.Rows.Count; i++)
             {
                 int DecorID = Convert.ToInt32(DecorCatalogOrder.DecorDataTable.Rows[i]["DecorID"]);
                 rows = ExcluziveDataTable.Select("DecorID=" + DecorID);
                 if (rows.Count() == 0)
                     continue;
-                rows = DecorCatalogOrder.DecorConfigDataTable.Select("(Excluzive<>0 OR Excluzive IS NULL) AND DecorID=" + DecorID);
+                rows = DecorCatalogOrder.DecorConfigDataTable.Select(
+                    "(Excluzive<>0 OR Excluzive IS NULL) AND DecorID=" + DecorID);
                 int NotExcluziveConfiguration = rows.Count();
-                rows = ExcluziveDataTable.Select("ClientID=" + ClientID + " AND DecorID=" + DecorID);
+                rows = ExcluziveDataTable.Select(filter + " AND DecorID=" + DecorID);
                 int ClientExcluziveConfiguration = rows.Count();
                 if (ClientExcluziveConfiguration > 0)
                     DecorCatalogOrder.DecorDataTable.Rows[i]["Excluzive"] = 1;
@@ -1794,11 +1961,14 @@ namespace Infinium.Modules.Marketing.NewOrders
 
         private void GridSettings()
         {
-            DecorTabControl.AppearancePage.Header.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(140)))), ((int)(((byte)(140)))), ((int)(((byte)(140)))));
-            DecorTabControl.AppearancePage.Header.BackColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(140)))), ((int)(((byte)(140)))), ((int)(((byte)(140)))));
+            DecorTabControl.AppearancePage.Header.BackColor = System.Drawing.Color.FromArgb((int)(byte)140,
+                (int)(byte)140, (int)(byte)140);
+            DecorTabControl.AppearancePage.Header.BackColor2 = System.Drawing.Color.FromArgb((int)(byte)140,
+                (int)(byte)140, (int)(byte)140);
             DecorTabControl.AppearancePage.Header.BorderColor = System.Drawing.Color.Black;
-            DecorTabControl.AppearancePage.Header.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point,
-                ((byte)(204)));
+            DecorTabControl.AppearancePage.Header.Font = new System.Drawing.Font("Segoe UI", 12F,
+                System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point,
+                (byte)204);
             DecorTabControl.AppearancePage.Header.Options.UseBackColor = true;
             DecorTabControl.AppearancePage.Header.Options.UseBorderColor = true;
             DecorTabControl.AppearancePage.Header.Options.UseFont = true;
@@ -1807,9 +1977,11 @@ namespace Infinium.Modules.Marketing.NewOrders
 
             for (int i = 0; i < DecorCatalogOrder.DecorProductsCount; i++)
             {
-                DecorTabControl.TabPages.Add(DecorCatalogOrder.DecorProductsDataTable.Rows[i]["ProductName"].ToString());
+                DecorTabControl.TabPages.Add(DecorCatalogOrder.DecorProductsDataTable.Rows[i]["ProductName"]
+                    .ToString());
                 DecorTabControl.TabPages[i].PageVisible = false;
-                DecorTabControl.TabPages[i].Text = DecorCatalogOrder.DecorProductsDataTable.Rows[i]["ProductName"].ToString();
+                DecorTabControl.TabPages[i].Text =
+                    DecorCatalogOrder.DecorProductsDataTable.Rows[i]["ProductName"].ToString();
 
                 DecorItemOrdersDataGrids[i] = new PercentageDataGrid()
                 {
@@ -1824,49 +1996,75 @@ namespace Infinium.Modules.Marketing.NewOrders
                 DecorItemOrdersDataGrids[i].AllowUserToResizeRows = false;
                 DecorItemOrdersDataGrids[i].RowHeadersVisible = false;
                 DecorItemOrdersDataGrids[i].AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-                DecorItemOrdersDataGrids[i].StateCommon.Background.Color1 = MainOrdersFrontsOrdersDataGrid.StateCommon.Background.Color1;
-                DecorItemOrdersDataGrids[i].StateCommon.Background.ColorStyle = MainOrdersFrontsOrdersDataGrid.StateCommon.Background.ColorStyle;
-                DecorItemOrdersDataGrids[i].StateCommon.DataCell.Back.Color1 = MainOrdersFrontsOrdersDataGrid.StateCommon.DataCell.Back.Color1;
-                DecorItemOrdersDataGrids[i].StateCommon.DataCell.Back.ColorStyle = MainOrdersFrontsOrdersDataGrid.StateCommon.DataCell.Back.ColorStyle;
-                DecorItemOrdersDataGrids[i].StateCommon.DataCell.Border.Color1 = MainOrdersFrontsOrdersDataGrid.StateCommon.DataCell.Border.Color1;
-                DecorItemOrdersDataGrids[i].StateCommon.DataCell.Content.Font = MainOrdersFrontsOrdersDataGrid.StateCommon.DataCell.Content.Font;
-                DecorItemOrdersDataGrids[i].StateCommon.DataCell.Content.Color1 = MainOrdersFrontsOrdersDataGrid.StateCommon.DataCell.Content.Color1;
-                DecorItemOrdersDataGrids[i].StateSelected.DataCell.Content.Color1 = MainOrdersFrontsOrdersDataGrid.StateSelected.DataCell.Content.Color1;
-                DecorItemOrdersDataGrids[i].StateSelected.DataCell.Back.Color1 = MainOrdersFrontsOrdersDataGrid.StateSelected.DataCell.Back.Color1;
-                DecorItemOrdersDataGrids[i].StateSelected.DataCell.Back.ColorStyle = MainOrdersFrontsOrdersDataGrid.StateSelected.DataCell.Back.ColorStyle;
-                DecorItemOrdersDataGrids[i].StateSelected.DataCell.Border.Color1 = MainOrdersFrontsOrdersDataGrid.StateSelected.DataCell.Border.Color1;
+                DecorItemOrdersDataGrids[i].StateCommon.Background.Color1 =
+                    MainOrdersFrontsOrdersDataGrid.StateCommon.Background.Color1;
+                DecorItemOrdersDataGrids[i].StateCommon.Background.ColorStyle =
+                    MainOrdersFrontsOrdersDataGrid.StateCommon.Background.ColorStyle;
+                DecorItemOrdersDataGrids[i].StateCommon.DataCell.Back.Color1 =
+                    MainOrdersFrontsOrdersDataGrid.StateCommon.DataCell.Back.Color1;
+                DecorItemOrdersDataGrids[i].StateCommon.DataCell.Back.ColorStyle =
+                    MainOrdersFrontsOrdersDataGrid.StateCommon.DataCell.Back.ColorStyle;
+                DecorItemOrdersDataGrids[i].StateCommon.DataCell.Border.Color1 =
+                    MainOrdersFrontsOrdersDataGrid.StateCommon.DataCell.Border.Color1;
+                DecorItemOrdersDataGrids[i].StateCommon.DataCell.Content.Font =
+                    MainOrdersFrontsOrdersDataGrid.StateCommon.DataCell.Content.Font;
+                DecorItemOrdersDataGrids[i].StateCommon.DataCell.Content.Color1 =
+                    MainOrdersFrontsOrdersDataGrid.StateCommon.DataCell.Content.Color1;
+                DecorItemOrdersDataGrids[i].StateSelected.DataCell.Content.Color1 =
+                    MainOrdersFrontsOrdersDataGrid.StateSelected.DataCell.Content.Color1;
+                DecorItemOrdersDataGrids[i].StateSelected.DataCell.Back.Color1 =
+                    MainOrdersFrontsOrdersDataGrid.StateSelected.DataCell.Back.Color1;
+                DecorItemOrdersDataGrids[i].StateSelected.DataCell.Back.ColorStyle =
+                    MainOrdersFrontsOrdersDataGrid.StateSelected.DataCell.Back.ColorStyle;
+                DecorItemOrdersDataGrids[i].StateSelected.DataCell.Border.Color1 =
+                    MainOrdersFrontsOrdersDataGrid.StateSelected.DataCell.Border.Color1;
                 DecorItemOrdersDataGrids[i].RowTemplate.Height = MainOrdersFrontsOrdersDataGrid.RowTemplate.Height;
                 DecorItemOrdersDataGrids[i].ColumnHeadersHeight = MainOrdersFrontsOrdersDataGrid.ColumnHeadersHeight;
-                DecorItemOrdersDataGrids[i].StateCommon.HeaderColumn.Back.Color1 = MainOrdersFrontsOrdersDataGrid.StateCommon.HeaderColumn.Back.Color1;
-                DecorItemOrdersDataGrids[i].StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-                DecorItemOrdersDataGrids[i].StateCommon.HeaderColumn.Border.Color1 = MainOrdersFrontsOrdersDataGrid.StateCommon.HeaderColumn.Border.Color1;
-                DecorItemOrdersDataGrids[i].StateCommon.HeaderColumn.Content.Font = MainOrdersFrontsOrdersDataGrid.StateCommon.HeaderColumn.Content.Font;
-                DecorItemOrdersDataGrids[i].StateCommon.HeaderColumn.Content.Color1 = MainOrdersFrontsOrdersDataGrid.StateCommon.HeaderColumn.Content.Color1;
-                DecorItemOrdersDataGrids[i].StateCommon.HeaderColumn.Content.MultiLine = MainOrdersFrontsOrdersDataGrid.StateCommon.HeaderColumn.Content.MultiLine;
-                DecorItemOrdersDataGrids[i].StateCommon.HeaderColumn.Content.MultiLineH = MainOrdersFrontsOrdersDataGrid.StateCommon.HeaderColumn.Content.MultiLineH;
-                DecorItemOrdersDataGrids[i].StateCommon.HeaderColumn.Content.TextH = MainOrdersFrontsOrdersDataGrid.StateCommon.HeaderColumn.Content.TextH;
-                DecorItemOrdersDataGrids[i].StateSelected.DataCell.Back.Color1 = MainOrdersFrontsOrdersDataGrid.StateSelected.DataCell.Back.Color1;
+                DecorItemOrdersDataGrids[i].StateCommon.HeaderColumn.Back.Color1 =
+                    MainOrdersFrontsOrdersDataGrid.StateCommon.HeaderColumn.Back.Color1;
+                DecorItemOrdersDataGrids[i].StateCommon.HeaderColumn.Back.ColorStyle =
+                    ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+                DecorItemOrdersDataGrids[i].StateCommon.HeaderColumn.Border.Color1 =
+                    MainOrdersFrontsOrdersDataGrid.StateCommon.HeaderColumn.Border.Color1;
+                DecorItemOrdersDataGrids[i].StateCommon.HeaderColumn.Content.Font =
+                    MainOrdersFrontsOrdersDataGrid.StateCommon.HeaderColumn.Content.Font;
+                DecorItemOrdersDataGrids[i].StateCommon.HeaderColumn.Content.Color1 =
+                    MainOrdersFrontsOrdersDataGrid.StateCommon.HeaderColumn.Content.Color1;
+                DecorItemOrdersDataGrids[i].StateCommon.HeaderColumn.Content.MultiLine =
+                    MainOrdersFrontsOrdersDataGrid.StateCommon.HeaderColumn.Content.MultiLine;
+                DecorItemOrdersDataGrids[i].StateCommon.HeaderColumn.Content.MultiLineH =
+                    MainOrdersFrontsOrdersDataGrid.StateCommon.HeaderColumn.Content.MultiLineH;
+                DecorItemOrdersDataGrids[i].StateCommon.HeaderColumn.Content.TextH =
+                    MainOrdersFrontsOrdersDataGrid.StateCommon.HeaderColumn.Content.TextH;
+                DecorItemOrdersDataGrids[i].StateSelected.DataCell.Back.Color1 =
+                    MainOrdersFrontsOrdersDataGrid.StateSelected.DataCell.Back.Color1;
                 DecorItemOrdersDataGrids[i].SelectionMode = DataGridViewSelectionMode.CellSelect;
                 DecorItemOrdersDataGrids[i].SelectedColorStyle = PercentageDataGrid.ColorStyle.Green;
                 DecorItemOrdersDataGrids[i].ReadOnly = false;
                 DecorItemOrdersDataGrids[i].UseCustomBackColor = true;
 
                 DecorItemOrdersDataGrids[i].Columns.Add(CreateInsetColorsColumn());
-                DecorItemOrdersDataGrids[i].Columns["InsetColorsColumn"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                DecorItemOrdersDataGrids[i].Columns["InsetColorsColumn"].AutoSizeMode =
+                    DataGridViewAutoSizeColumnMode.AllCells;
                 DecorItemOrdersDataGrids[i].Columns["InsetColorsColumn"].MinimumWidth = 120;
                 DecorItemOrdersDataGrids[i].Columns.Add(CreateInsetTypesColumn());
-                DecorItemOrdersDataGrids[i].Columns["InsetTypesColumn"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                DecorItemOrdersDataGrids[i].Columns["InsetTypesColumn"].AutoSizeMode =
+                    DataGridViewAutoSizeColumnMode.AllCells;
                 DecorItemOrdersDataGrids[i].Columns["InsetTypesColumn"].MinimumWidth = 120;
                 DecorItemOrdersDataGrids[i].Columns.Add(CreateColorColumn());
-                DecorItemOrdersDataGrids[i].Columns["ColorsColumn"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                DecorItemOrdersDataGrids[i].Columns["ColorsColumn"].AutoSizeMode =
+                    DataGridViewAutoSizeColumnMode.AllCells;
                 DecorItemOrdersDataGrids[i].Columns["ColorsColumn"].MinimumWidth = 120;
                 DecorItemOrdersDataGrids[i].Columns.Add(CreatePatinaColumn());
-                DecorItemOrdersDataGrids[i].Columns["PatinaColumn"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                DecorItemOrdersDataGrids[i].Columns["PatinaColumn"].AutoSizeMode =
+                    DataGridViewAutoSizeColumnMode.AllCells;
                 DecorItemOrdersDataGrids[i].Columns["PatinaColumn"].MinimumWidth = 120;
                 DecorItemOrdersDataGrids[i].Columns.Add(CreateItemColumn());
-                DecorItemOrdersDataGrids[i].Columns["ItemColumn"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                DecorItemOrdersDataGrids[i].Columns["ItemColumn"].AutoSizeMode =
+                    DataGridViewAutoSizeColumnMode.AllCells;
                 DecorItemOrdersDataGrids[i].Columns["ItemColumn"].MinimumWidth = 120;
-                DecorItemOrdersDataGrids[i].Columns["DiscountVolume"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                DecorItemOrdersDataGrids[i].Columns["DiscountVolume"].AutoSizeMode =
+                    DataGridViewAutoSizeColumnMode.AllCells;
                 DecorItemOrdersDataGrids[i].Columns["DiscountVolume"].MinimumWidth = 60;
                 DecorItemOrdersDataGrids[i].Columns["OnStorage"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                 DecorItemOrdersDataGrids[i].Columns["OnStorage"].MinimumWidth = 60;
@@ -1876,9 +2074,11 @@ namespace Infinium.Modules.Marketing.NewOrders
                 {
                     DecorItemOrdersDataGrids[i].Columns["CreateDateTime"].HeaderText = "Добавлено";
                     DecorItemOrdersDataGrids[i].Columns["CreateDateTime"].DefaultCellStyle.Format = "dd.MM.yyyy HH:mm";
-                    DecorItemOrdersDataGrids[i].Columns["CreateDateTime"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                    DecorItemOrdersDataGrids[i].Columns["CreateDateTime"].AutoSizeMode =
+                        DataGridViewAutoSizeColumnMode.None;
                     DecorItemOrdersDataGrids[i].Columns["CreateDateTime"].Width = 100;
                 }
+
                 if (DecorItemOrdersDataGrids[i].Columns.Contains("CreateUserID"))
                     DecorItemOrdersDataGrids[i].Columns["CreateUserID"].Visible = false;
                 if (DecorItemOrdersDataGrids[i].Columns.Contains("CreateUserTypeID"))
@@ -1912,28 +2112,34 @@ namespace Infinium.Modules.Marketing.NewOrders
                     {
                         DecorItemOrdersDataGrids[i].Columns[j].HeaderText = "Высота";
                     }
+
                     if (DecorItemOrdersDataGrids[i].Columns[j].HeaderText == "Length")
                     {
                         DecorItemOrdersDataGrids[i].Columns[j].HeaderText = "Длина";
                     }
+
                     if (DecorItemOrdersDataGrids[i].Columns[j].HeaderText == "Width")
                     {
                         DecorItemOrdersDataGrids[i].Columns[j].HeaderText = "Ширина";
                     }
+
                     if (DecorItemOrdersDataGrids[i].Columns[j].HeaderText == "Count")
                     {
                         DecorItemOrdersDataGrids[i].Columns[j].HeaderText = "Кол-во";
                     }
+
                     if (DecorItemOrdersDataGrids[i].Columns[j].HeaderText == "Notes")
                     {
                         DecorItemOrdersDataGrids[i].Columns[j].HeaderText = "Примечание";
                     }
+
                     if (DecorItemOrdersDataGrids[i].Columns[j].HeaderText == "LeftAngle")
                     {
                         DecorItemOrdersDataGrids[i].Columns[j].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                         DecorItemOrdersDataGrids[i].Columns[j].MinimumWidth = 100;
                         DecorItemOrdersDataGrids[i].Columns[j].HeaderText = "ᵒ∠ л";
                     }
+
                     if (DecorItemOrdersDataGrids[i].Columns[j].HeaderText == "RightAngle")
                     {
                         DecorItemOrdersDataGrids[i].Columns[j].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
@@ -1967,8 +2173,8 @@ namespace Infinium.Modules.Marketing.NewOrders
         private void DecorOrders_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             PercentageDataGrid grid = (PercentageDataGrid)sender;
-            if (grid.Columns.Contains("PatinaColumn") && (e.ColumnIndex == grid.Columns["PatinaColumn"].Index)
-                && e.Value != null)
+            if (grid.Columns.Contains("PatinaColumn") && e.ColumnIndex == grid.Columns["PatinaColumn"].Index
+                                                      && e.Value != null)
             {
                 DataGridViewCell cell =
                     grid.Rows[e.RowIndex].Cells[e.ColumnIndex];
@@ -1979,6 +2185,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                     PatinaID = Convert.ToInt32(grid.Rows[e.RowIndex].Cells["PatinaID"].Value);
                     DisplayName = DecorCatalogOrder.PatinaDisplayName(PatinaID);
                 }
+
                 cell.ToolTipText = DisplayName;
             }
 
@@ -2019,9 +2226,11 @@ namespace Infinium.Modules.Marketing.NewOrders
             for (int i = 0; i < DecorCatalogOrder.DecorProductsCount; i++)
             {
                 for (int r = 0; r < DecorItemOrdersDataTables[i].Rows.Count; r++)
-                    if (DecorItemOrdersDataTables[i].Rows[r].RowState != DataRowState.Deleted && Convert.ToBoolean(DecorItemOrdersDataTables[i].Rows[r]["IsSample"]))
+                    if (DecorItemOrdersDataTables[i].Rows[r].RowState != DataRowState.Deleted &&
+                        Convert.ToBoolean(DecorItemOrdersDataTables[i].Rows[r]["IsSample"]))
                         return true;
             }
+
             return false;
         }
 
@@ -2052,12 +2261,14 @@ namespace Infinium.Modules.Marketing.NewOrders
             }
         }
 
-        private bool SetDecorConfigID(int ProductID, int DecorID, int ColorID, int PatinaID, int InsetTypeID, int InsetColorID,
+        private bool SetDecorConfigID(int ProductID, int DecorID, int ColorID, int PatinaID, int InsetTypeID,
+            int InsetColorID,
             int Length, int Height, int Width, DataRow Row, ref int FactoryID)
         {
             int F = 0;
             int AreaID = 0;
-            Row["DecorConfigID"] = DecorCatalogOrder.GetDecorConfigID(ProductID, DecorID, ColorID, PatinaID, InsetTypeID, InsetColorID,
+            Row["DecorConfigID"] = DecorCatalogOrder.GetDecorConfigID(ProductID, DecorID, ColorID, PatinaID,
+                InsetTypeID, InsetColorID,
                 Length, Height, Width, ref F, ref AreaID);
             Row["FactoryID"] = F;
             Row["AreaID"] = AreaID;
@@ -2096,7 +2307,8 @@ namespace Infinium.Modules.Marketing.NewOrders
             }
         }
 
-        public void AddDecorOrder(int MainOrderID, int ProductID, int DecorID, int ColorID, int PatinaID, int InsetTypeID, int InsetColorID,
+        public void AddDecorOrder(int MainOrderID, int ProductID, int DecorID, int ColorID, int PatinaID,
+            int InsetTypeID, int InsetColorID,
             int Length, int Height, int Width, int Count, string Notes)
         {
             bool isContained = Security.insetTypes.Contains(DecorID);
@@ -2117,6 +2329,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                     break;
                 }
             }
+
             DateTime CreateDateTime = Security.GetCurrentDate();
             DataRow NewRow = DecorItemOrdersDataTables[index].NewRow();
             NewRow["CreateDateTime"] = CreateDateTime;
@@ -2154,11 +2367,12 @@ namespace Infinium.Modules.Marketing.NewOrders
             for (int i = 0; i < DecorTabControl.TabPages.Count; i++)
                 C += Convert.ToInt32(DecorTabControl.TabPages[i].PageVisible);
 
-            DecorTabControl.Visible = (C > 0);
+            DecorTabControl.Visible = C > 0;
         }
 
         public void AddDecorOrderFromSizeTable(ref PercentageDataGrid DataGrid,
-            int MainOrderID, int ProductID, int DecorID, int ColorID, int PatinaID, int InsetTypeID, int InsetColorID, string Notes)
+            int MainOrderID, int ProductID, int DecorID, int ColorID, int PatinaID, int InsetTypeID, int InsetColorID,
+            string Notes)
         {
             int index = DecorCatalogOrder.DecorProductsBindingSource.Find("ProductID", ProductID);
 
@@ -2170,6 +2384,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                     break;
                 }
             }
+
             int Height = 0;
             int Width = 0;
             int Count = 0;
@@ -2238,7 +2453,7 @@ namespace Infinium.Modules.Marketing.NewOrders
             for (int i = 0; i < DecorTabControl.TabPages.Count; i++)
                 C += Convert.ToInt32(DecorTabControl.TabPages[i].PageVisible);
 
-            DecorTabControl.Visible = (C > 0);
+            DecorTabControl.Visible = C > 0;
         }
 
         public void ImportFromSizeTable(ref PercentageDataGrid DataGrid)
@@ -2324,7 +2539,8 @@ namespace Infinium.Modules.Marketing.NewOrders
             DecorOrdersCommandBuilder.Dispose();
             DecorOrdersDataAdapter.Dispose();
 
-            DecorOrdersDataAdapter = new SqlDataAdapter("SELECT * FROM NewDecorOrders WHERE NeedCalcPrice=0 AND MainOrderID = " + MainOrderID.ToString(),
+            DecorOrdersDataAdapter = new SqlDataAdapter(
+                "SELECT * FROM NewDecorOrders WHERE NeedCalcPrice=0 AND MainOrderID = " + MainOrderID.ToString(),
                 ConnectionStrings.MarketingOrdersConnectionString);
             DecorOrdersDataAdapter.Fill(DecorOrdersDataTable);
             DecorOrdersCommandBuilder = new SqlCommandBuilder(DecorOrdersDataAdapter);
@@ -2351,9 +2567,12 @@ namespace Infinium.Modules.Marketing.NewOrders
                 if (rows.Count() > 0)
                     rows[0]["Excluzive"] = 1;
             }
+
             for (int i = 0; i < DecorCatalogOrder.DecorProductsCount; i++)
             {
-                DataRow[] Rows = DecorOrdersDataTable.Select("ProductID = " + DecorCatalogOrder.DecorProductsDataTable.Rows[i]["ProductID"].ToString());
+                DataRow[] Rows = DecorOrdersDataTable.Select("ProductID = " +
+                                                             DecorCatalogOrder.DecorProductsDataTable.Rows[i][
+                                                                 "ProductID"].ToString());
 
                 if (Rows.Count() == 0)
                     continue;
@@ -2404,7 +2623,8 @@ namespace Infinium.Modules.Marketing.NewOrders
                         if (pos >= DecorItemOrdersBindingSources[TabIndex].Count)
                         {
                             DecorItemOrdersBindingSources[TabIndex].MoveLast();
-                            DecorItemOrdersDataGrids[TabIndex].Rows[DecorItemOrdersDataGrids[TabIndex].Rows.Count - 1].Selected = true;
+                            DecorItemOrdersDataGrids[TabIndex].Rows[DecorItemOrdersDataGrids[TabIndex].Rows.Count - 1]
+                                .Selected = true;
                         }
                         else
                             DecorItemOrdersBindingSources[TabIndex].Position = pos;
@@ -2419,13 +2639,15 @@ namespace Infinium.Modules.Marketing.NewOrders
             for (int i = 0; i < DecorTabControl.TabPages.Count; i++)
                 C += Convert.ToInt32(DecorTabControl.TabPages[i].PageVisible);
 
-            DecorTabControl.Visible = (C > 0);
+            DecorTabControl.Visible = C > 0;
         }
 
         public void DeleteDecorAssignmentByDecorOrders(int MainOrderID)
         {
             using (SqlDataAdapter DA = new SqlDataAdapter(@"DELETE FROM DecorAssignments 
-                WHERE MainOrderID=" + MainOrderID + @" AND DecorOrderID NOT IN (SELECT DecorOrderID FROM infiniu2_marketingorders.dbo.NewDecorOrders WHERE MainOrderID=" + MainOrderID + ")", ConnectionStrings.StorageConnectionString))
+                WHERE MainOrderID=" + MainOrderID +
+                                                          @" AND DecorOrderID NOT IN (SELECT DecorOrderID FROM infiniu2_marketingorders.dbo.NewDecorOrders WHERE MainOrderID=" +
+                                                          MainOrderID + ")", ConnectionStrings.StorageConnectionString))
             {
                 using (DataTable DT = new DataTable())
                 {
@@ -2443,9 +2665,10 @@ namespace Infinium.Modules.Marketing.NewOrders
                     if (Row.RowState != DataRowState.Deleted)
                     {
                         if (SetDecorConfigID(Convert.ToInt32(Row["ProductID"]), Convert.ToInt32(Row["DecorID"]),
-                            Convert.ToInt32(Row["ColorID"]), Convert.ToInt32(Row["PatinaID"]),
-                            Convert.ToInt32(Row["InsetTypeID"]), Convert.ToInt32(Row["InsetColorID"]),
-                            Convert.ToInt32(Row["Length"]), Convert.ToInt32(Row["Height"]), Convert.ToInt32(Row["Width"]), Row, ref FactoryID) == false)
+                                Convert.ToInt32(Row["ColorID"]), Convert.ToInt32(Row["PatinaID"]),
+                                Convert.ToInt32(Row["InsetTypeID"]), Convert.ToInt32(Row["InsetColorID"]),
+                                Convert.ToInt32(Row["Length"]), Convert.ToInt32(Row["Height"]),
+                                Convert.ToInt32(Row["Width"]), Row, ref FactoryID) == false)
                             return false;
                     }
                 }
@@ -2479,6 +2702,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                         {
                             Row["IsSample"] = true;
                         }
+
                         if (DecorItemOrdersDataTables[i].Columns.Contains("LeftAngle") &&
                             Row["LeftAngle"] != DBNull.Value)
                         {
@@ -2489,6 +2713,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                                 return;
                             }
                         }
+
                         if (DecorItemOrdersDataTables[i].Columns.Contains("RightAngle") &&
                             Row["RightAngle"] != DBNull.Value)
                         {
@@ -2518,14 +2743,20 @@ namespace Infinium.Modules.Marketing.NewOrders
                 if (DecorOrdersDataTable.Rows[i].RowState == DataRowState.Deleted)
                     continue;
 
-                if (SetDecorConfigID(Convert.ToInt32(DecorOrdersDataTable.Rows[i]["ProductID"]), Convert.ToInt32(DecorOrdersDataTable.Rows[i]["DecorID"]),
-                    Convert.ToInt32(DecorOrdersDataTable.Rows[i]["ColorID"]), Convert.ToInt32(DecorOrdersDataTable.Rows[i]["PatinaID"]),
-                    Convert.ToInt32(DecorOrdersDataTable.Rows[i]["InsetTypeID"]), Convert.ToInt32(DecorOrdersDataTable.Rows[i]["InsetColorID"]),
-                    Convert.ToInt32(DecorOrdersDataTable.Rows[i]["Length"]), Convert.ToInt32(DecorOrdersDataTable.Rows[i]["Height"]), Convert.ToInt32(DecorOrdersDataTable.Rows[i]["Width"]),
-                    DecorOrdersDataTable.Rows[i], ref FactoryID) == false)
+                if (SetDecorConfigID(Convert.ToInt32(DecorOrdersDataTable.Rows[i]["ProductID"]),
+                        Convert.ToInt32(DecorOrdersDataTable.Rows[i]["DecorID"]),
+                        Convert.ToInt32(DecorOrdersDataTable.Rows[i]["ColorID"]),
+                        Convert.ToInt32(DecorOrdersDataTable.Rows[i]["PatinaID"]),
+                        Convert.ToInt32(DecorOrdersDataTable.Rows[i]["InsetTypeID"]),
+                        Convert.ToInt32(DecorOrdersDataTable.Rows[i]["InsetColorID"]),
+                        Convert.ToInt32(DecorOrdersDataTable.Rows[i]["Length"]),
+                        Convert.ToInt32(DecorOrdersDataTable.Rows[i]["Height"]),
+                        Convert.ToInt32(DecorOrdersDataTable.Rows[i]["Width"]),
+                        DecorOrdersDataTable.Rows[i], ref FactoryID) == false)
                     return false;
 
             }
+
             return true;
         }
 
@@ -2672,8 +2903,10 @@ namespace Infinium.Modules.Marketing.NewOrders
         private void GetInsetColorsDT()
         {
             InsetColorsDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT InsetColors.InsetColorID, InsetColors.GroupID, infiniu2_catalog.dbo.TechStore.TechStoreName AS InsetColorName FROM InsetColors" +
-                " INNER JOIN infiniu2_catalog.dbo.TechStore ON InsetColors.InsetColorID = infiniu2_catalog.dbo.TechStore.TechStoreID ORDER BY TechStoreName", ConnectionStrings.CatalogConnectionString))
+            using (SqlDataAdapter DA = new SqlDataAdapter(
+                       "SELECT InsetColors.InsetColorID, InsetColors.GroupID, infiniu2_catalog.dbo.TechStore.TechStoreName AS InsetColorName FROM InsetColors" +
+                       " INNER JOIN infiniu2_catalog.dbo.TechStore ON InsetColors.InsetColorID = infiniu2_catalog.dbo.TechStore.TechStoreID ORDER BY TechStoreName",
+                       ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(InsetColorsDataTable);
                 {
@@ -2704,7 +2937,9 @@ namespace Infinium.Modules.Marketing.NewOrders
             {
                 DA.Fill(FrontsDataTable);
             }
-            SelectCommand = @"SELECT DISTINCT TechStoreID AS TechnoProfileID, TechStoreName AS TechnoProfileName FROM TechStore 
+
+            SelectCommand =
+                @"SELECT DISTINCT TechStoreID AS TechnoProfileID, TechStoreName AS TechnoProfileName FROM TechStore 
                 WHERE TechStoreID IN (SELECT TechnoProfileID FROM FrontsConfig WHERE AccountingName IS NOT NULL AND InvNumber IS NOT NULL)
                 ORDER BY TechStoreName";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
@@ -2721,33 +2956,40 @@ namespace Infinium.Modules.Marketing.NewOrders
             GetColorsDT();
             GetInsetColorsDT();
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Patina",
-                ConnectionStrings.CatalogConnectionString))
+                       ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(PatinaDataTable);
             }
+
             PatinaRALDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT PatinaRAL.*, Patina.Patina FROM PatinaRAL INNER JOIN Patina ON Patina.PatinaID=PatinaRAL.PatinaID",
-                ConnectionStrings.CatalogConnectionString))
+            using (SqlDataAdapter DA = new SqlDataAdapter(
+                       "SELECT PatinaRAL.*, Patina.Patina FROM PatinaRAL INNER JOIN Patina ON Patina.PatinaID=PatinaRAL.PatinaID",
+                       ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(PatinaRALDataTable);
             }
+
             foreach (DataRow item in PatinaRALDataTable.Rows)
             {
                 DataRow NewRow = PatinaDataTable.NewRow();
                 NewRow["PatinaID"] = item["PatinaRALID"];
-                NewRow["PatinaName"] = item["PatinaRAL"]; NewRow["Patina"] = item["Patina"];
+                NewRow["PatinaName"] = item["PatinaRAL"];
+                NewRow["Patina"] = item["Patina"];
                 NewRow["DisplayName"] = item["DisplayName"];
                 PatinaDataTable.Rows.Add(NewRow);
             }
+
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM InsetTypes",
-                ConnectionStrings.CatalogConnectionString))
+                       ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(InsetTypesDataTable);
             }
+
             TechnoInsetTypesDataTable = InsetTypesDataTable.Copy();
             TechnoInsetColorsDataTable = InsetColorsDataTable.Copy();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM NewFrontsOrders", ConnectionStrings.MarketingOrdersConnectionString))
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM NewFrontsOrders",
+                       ConnectionStrings.MarketingOrdersConnectionString))
             {
                 DA.Fill(FrontsOrdersDataTable);
             }
@@ -2885,6 +3127,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                 FrontsOrdersDataGrid.Columns["CreateDateTime"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
                 FrontsOrdersDataGrid.Columns["CreateDateTime"].Width = 100;
             }
+
             if (FrontsOrdersDataGrid.Columns.Contains("CreateUserID"))
                 FrontsOrdersDataGrid.Columns["CreateUserID"].Visible = false;
             if (FrontsOrdersDataGrid.Columns.Contains("CreateUserTypeID"))
@@ -2913,11 +3156,13 @@ namespace Infinium.Modules.Marketing.NewOrders
                 FrontsOrdersDataGrid.Columns["CurrencyTypeID"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
                 FrontsOrdersDataGrid.Columns["CurrencyTypeID"].Width = 85;
             }
+
             if (FrontsOrdersDataGrid.Columns.Contains("CurrencyCost"))
             {
                 FrontsOrdersDataGrid.Columns["CurrencyCost"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
                 FrontsOrdersDataGrid.Columns["CurrencyCost"].Width = 85;
             }
+
             if (FrontsOrdersDataGrid.Columns.Contains("OriginalInsetPrice"))
                 FrontsOrdersDataGrid.Columns["OriginalInsetPrice"].Visible = false;
             if (FrontsOrdersDataGrid.Columns.Contains("NeedCalcPrice"))
@@ -2936,6 +3181,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                 FrontsOrdersDataGrid.Columns["CostWithTransport"].Visible = false;
                 FrontsOrdersDataGrid.Columns["PriceWithTransport"].Visible = false;
             }
+
             int DisplayIndex = 0;
             FrontsOrdersDataGrid.Columns["FrontsColumn"].DisplayIndex = DisplayIndex++;
             FrontsOrdersDataGrid.Columns["FrameColorsColumn"].DisplayIndex = DisplayIndex++;
@@ -2992,9 +3238,12 @@ namespace Infinium.Modules.Marketing.NewOrders
             FrontsOrdersDataGrid.Columns["InsetTypesColumn"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             FrontsOrdersDataGrid.Columns["InsetColorsColumn"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             FrontsOrdersDataGrid.Columns["TechnoProfilesColumn"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            FrontsOrdersDataGrid.Columns["TechnoFrameColorsColumn"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            FrontsOrdersDataGrid.Columns["TechnoInsetTypesColumn"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            FrontsOrdersDataGrid.Columns["TechnoInsetColorsColumn"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            FrontsOrdersDataGrid.Columns["TechnoFrameColorsColumn"].AutoSizeMode =
+                DataGridViewAutoSizeColumnMode.AllCells;
+            FrontsOrdersDataGrid.Columns["TechnoInsetTypesColumn"].AutoSizeMode =
+                DataGridViewAutoSizeColumnMode.AllCells;
+            FrontsOrdersDataGrid.Columns["TechnoInsetColorsColumn"].AutoSizeMode =
+                DataGridViewAutoSizeColumnMode.AllCells;
             FrontsOrdersDataGrid.Columns["Height"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             FrontsOrdersDataGrid.Columns["Width"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             FrontsOrdersDataGrid.Columns["Count"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
@@ -3022,8 +3271,8 @@ namespace Infinium.Modules.Marketing.NewOrders
         private void FrontsOrdersDataGrid_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             PercentageDataGrid grid = (PercentageDataGrid)sender;
-            if (grid.Columns.Contains("PatinaColumn") && (e.ColumnIndex == grid.Columns["PatinaColumn"].Index)
-                && e.Value != null)
+            if (grid.Columns.Contains("PatinaColumn") && e.ColumnIndex == grid.Columns["PatinaColumn"].Index
+                                                      && e.Value != null)
             {
                 DataGridViewCell cell =
                     grid.Rows[e.RowIndex].Cells[e.ColumnIndex];
@@ -3034,6 +3283,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                     PatinaID = Convert.ToInt32(grid.Rows[e.RowIndex].Cells["PatinaID"].Value);
                     DisplayName = PatinaDisplayName(PatinaID);
                 }
+
                 cell.ToolTipText = DisplayName;
             }
         }
@@ -3082,8 +3332,10 @@ namespace Infinium.Modules.Marketing.NewOrders
 
             FrontsOrdersDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM NewFrontsOrders WHERE NeedCalcPrice=0 AND MainOrderID = " + MainOrderID + FactoryFilter,
-                ConnectionStrings.MarketingOrdersConnectionString))
+            using (SqlDataAdapter DA = new SqlDataAdapter(
+                       "SELECT * FROM NewFrontsOrders WHERE NeedCalcPrice=0 AND MainOrderID = " + MainOrderID +
+                       FactoryFilter,
+                       ConnectionStrings.MarketingOrdersConnectionString))
             {
                 DA.Fill(FrontsOrdersDataTable);
             }
@@ -3099,14 +3351,18 @@ namespace Infinium.Modules.Marketing.NewOrders
 
         public void DeleteOrder(int MainOrderID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM NewFrontsOrders WHERE NeedCalcPrice=0 AND MainOrderID = " + MainOrderID, ConnectionStrings.MarketingOrdersConnectionString))
+            using (SqlDataAdapter DA = new SqlDataAdapter(
+                       "DELETE FROM NewFrontsOrders WHERE NeedCalcPrice=0 AND MainOrderID = " + MainOrderID,
+                       ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (DataTable DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
             }
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM FrontsOrders WHERE MainOrderID = " + MainOrderID, ConnectionStrings.MarketingOrdersConnectionString))
+
+            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM FrontsOrders WHERE MainOrderID = " + MainOrderID,
+                       ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (DataTable DT = new DataTable())
                 {
@@ -3212,7 +3468,8 @@ namespace Infinium.Modules.Marketing.NewOrders
 
         private void Fill()
         {
-            DecorOrdersDataAdapter = new SqlDataAdapter("SELECT TOP 0 * FROM NewDecorOrders", ConnectionStrings.MarketingOrdersConnectionString);
+            DecorOrdersDataAdapter = new SqlDataAdapter("SELECT TOP 0 * FROM NewDecorOrders",
+                ConnectionStrings.MarketingOrdersConnectionString);
             DecorOrdersCommandBuilder = new SqlCommandBuilder(DecorOrdersDataAdapter);
             DecorOrdersDataAdapter.Fill(DecorOrdersDataTable);
         }
@@ -3325,11 +3582,14 @@ namespace Infinium.Modules.Marketing.NewOrders
 
         private void GridSettings(bool ShowPrice)
         {
-            DecorTabControl.AppearancePage.Header.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(140)))), ((int)(((byte)(140)))), ((int)(((byte)(140)))));
-            DecorTabControl.AppearancePage.Header.BackColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(140)))), ((int)(((byte)(140)))), ((int)(((byte)(140)))));
+            DecorTabControl.AppearancePage.Header.BackColor = System.Drawing.Color.FromArgb((int)(byte)140,
+                (int)(byte)140, (int)(byte)140);
+            DecorTabControl.AppearancePage.Header.BackColor2 = System.Drawing.Color.FromArgb((int)(byte)140,
+                (int)(byte)140, (int)(byte)140);
             DecorTabControl.AppearancePage.Header.BorderColor = System.Drawing.Color.Black;
-            DecorTabControl.AppearancePage.Header.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point,
-                ((byte)(204)));
+            DecorTabControl.AppearancePage.Header.Font = new System.Drawing.Font("Segoe UI", 12F,
+                System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point,
+                (byte)204);
             DecorTabControl.AppearancePage.Header.Options.UseBackColor = true;
             DecorTabControl.AppearancePage.Header.Options.UseBorderColor = true;
             DecorTabControl.AppearancePage.Header.Options.UseFont = true;
@@ -3338,9 +3598,11 @@ namespace Infinium.Modules.Marketing.NewOrders
 
             for (int i = 0; i < DecorCatalogOrder.DecorProductsCount; i++)
             {
-                DecorTabControl.TabPages.Add(DecorCatalogOrder.DecorProductsDataTable.Rows[i]["ProductName"].ToString());
+                DecorTabControl.TabPages.Add(DecorCatalogOrder.DecorProductsDataTable.Rows[i]["ProductName"]
+                    .ToString());
                 DecorTabControl.TabPages[i].PageVisible = false;
-                DecorTabControl.TabPages[i].Text = DecorCatalogOrder.DecorProductsDataTable.Rows[i]["ProductName"].ToString();
+                DecorTabControl.TabPages[i].Text =
+                    DecorCatalogOrder.DecorProductsDataTable.Rows[i]["ProductName"].ToString();
 
                 DecorItemOrdersDataGrids[i] = new PercentageDataGrid()
                 {
@@ -3356,28 +3618,48 @@ namespace Infinium.Modules.Marketing.NewOrders
                 DecorItemOrdersDataGrids[i].ColumnHeadersVisible = false;
                 DecorItemOrdersDataGrids[i].RowHeadersVisible = false;
                 DecorItemOrdersDataGrids[i].AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-                DecorItemOrdersDataGrids[i].StateCommon.Background.Color1 = MainOrdersFrontsOrdersDataGrid.StateCommon.Background.Color1;
-                DecorItemOrdersDataGrids[i].StateCommon.Background.ColorStyle = MainOrdersFrontsOrdersDataGrid.StateCommon.Background.ColorStyle;
-                DecorItemOrdersDataGrids[i].StateCommon.DataCell.Back.Color1 = MainOrdersFrontsOrdersDataGrid.StateCommon.DataCell.Back.Color1;
-                DecorItemOrdersDataGrids[i].StateCommon.DataCell.Back.ColorStyle = MainOrdersFrontsOrdersDataGrid.StateCommon.DataCell.Back.ColorStyle;
-                DecorItemOrdersDataGrids[i].StateCommon.DataCell.Border.Color1 = MainOrdersFrontsOrdersDataGrid.StateCommon.DataCell.Border.Color1;
-                DecorItemOrdersDataGrids[i].StateCommon.DataCell.Content.Font = MainOrdersFrontsOrdersDataGrid.StateCommon.DataCell.Content.Font;
-                DecorItemOrdersDataGrids[i].StateCommon.DataCell.Content.Color1 = MainOrdersFrontsOrdersDataGrid.StateCommon.DataCell.Content.Color1;
-                DecorItemOrdersDataGrids[i].StateSelected.DataCell.Content.Color1 = MainOrdersFrontsOrdersDataGrid.StateSelected.DataCell.Content.Color1;
-                DecorItemOrdersDataGrids[i].StateSelected.DataCell.Back.Color1 = MainOrdersFrontsOrdersDataGrid.StateSelected.DataCell.Back.Color1;
-                DecorItemOrdersDataGrids[i].StateSelected.DataCell.Back.ColorStyle = MainOrdersFrontsOrdersDataGrid.StateSelected.DataCell.Back.ColorStyle;
-                DecorItemOrdersDataGrids[i].StateSelected.DataCell.Border.Color1 = MainOrdersFrontsOrdersDataGrid.StateSelected.DataCell.Border.Color1;
+                DecorItemOrdersDataGrids[i].StateCommon.Background.Color1 =
+                    MainOrdersFrontsOrdersDataGrid.StateCommon.Background.Color1;
+                DecorItemOrdersDataGrids[i].StateCommon.Background.ColorStyle =
+                    MainOrdersFrontsOrdersDataGrid.StateCommon.Background.ColorStyle;
+                DecorItemOrdersDataGrids[i].StateCommon.DataCell.Back.Color1 =
+                    MainOrdersFrontsOrdersDataGrid.StateCommon.DataCell.Back.Color1;
+                DecorItemOrdersDataGrids[i].StateCommon.DataCell.Back.ColorStyle =
+                    MainOrdersFrontsOrdersDataGrid.StateCommon.DataCell.Back.ColorStyle;
+                DecorItemOrdersDataGrids[i].StateCommon.DataCell.Border.Color1 =
+                    MainOrdersFrontsOrdersDataGrid.StateCommon.DataCell.Border.Color1;
+                DecorItemOrdersDataGrids[i].StateCommon.DataCell.Content.Font =
+                    MainOrdersFrontsOrdersDataGrid.StateCommon.DataCell.Content.Font;
+                DecorItemOrdersDataGrids[i].StateCommon.DataCell.Content.Color1 =
+                    MainOrdersFrontsOrdersDataGrid.StateCommon.DataCell.Content.Color1;
+                DecorItemOrdersDataGrids[i].StateSelected.DataCell.Content.Color1 =
+                    MainOrdersFrontsOrdersDataGrid.StateSelected.DataCell.Content.Color1;
+                DecorItemOrdersDataGrids[i].StateSelected.DataCell.Back.Color1 =
+                    MainOrdersFrontsOrdersDataGrid.StateSelected.DataCell.Back.Color1;
+                DecorItemOrdersDataGrids[i].StateSelected.DataCell.Back.ColorStyle =
+                    MainOrdersFrontsOrdersDataGrid.StateSelected.DataCell.Back.ColorStyle;
+                DecorItemOrdersDataGrids[i].StateSelected.DataCell.Border.Color1 =
+                    MainOrdersFrontsOrdersDataGrid.StateSelected.DataCell.Border.Color1;
                 DecorItemOrdersDataGrids[i].RowTemplate.Height = MainOrdersFrontsOrdersDataGrid.RowTemplate.Height;
                 DecorItemOrdersDataGrids[i].ColumnHeadersHeight = MainOrdersFrontsOrdersDataGrid.ColumnHeadersHeight;
-                DecorItemOrdersDataGrids[i].StateCommon.HeaderColumn.Back.Color1 = MainOrdersFrontsOrdersDataGrid.StateCommon.HeaderColumn.Back.Color1;
-                DecorItemOrdersDataGrids[i].StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-                DecorItemOrdersDataGrids[i].StateCommon.HeaderColumn.Border.Color1 = MainOrdersFrontsOrdersDataGrid.StateCommon.HeaderColumn.Border.Color1;
-                DecorItemOrdersDataGrids[i].StateCommon.HeaderColumn.Content.Font = MainOrdersFrontsOrdersDataGrid.StateCommon.HeaderColumn.Content.Font;
-                DecorItemOrdersDataGrids[i].StateCommon.HeaderColumn.Content.Color1 = MainOrdersFrontsOrdersDataGrid.StateCommon.HeaderColumn.Content.Color1;
-                DecorItemOrdersDataGrids[i].StateCommon.HeaderColumn.Content.MultiLine = MainOrdersFrontsOrdersDataGrid.StateCommon.HeaderColumn.Content.MultiLine;
-                DecorItemOrdersDataGrids[i].StateCommon.HeaderColumn.Content.MultiLineH = MainOrdersFrontsOrdersDataGrid.StateCommon.HeaderColumn.Content.MultiLineH;
-                DecorItemOrdersDataGrids[i].StateCommon.HeaderColumn.Content.TextH = MainOrdersFrontsOrdersDataGrid.StateCommon.HeaderColumn.Content.TextH;
-                DecorItemOrdersDataGrids[i].StateSelected.DataCell.Back.Color1 = MainOrdersFrontsOrdersDataGrid.StateSelected.DataCell.Back.Color1;
+                DecorItemOrdersDataGrids[i].StateCommon.HeaderColumn.Back.Color1 =
+                    MainOrdersFrontsOrdersDataGrid.StateCommon.HeaderColumn.Back.Color1;
+                DecorItemOrdersDataGrids[i].StateCommon.HeaderColumn.Back.ColorStyle =
+                    ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+                DecorItemOrdersDataGrids[i].StateCommon.HeaderColumn.Border.Color1 =
+                    MainOrdersFrontsOrdersDataGrid.StateCommon.HeaderColumn.Border.Color1;
+                DecorItemOrdersDataGrids[i].StateCommon.HeaderColumn.Content.Font =
+                    MainOrdersFrontsOrdersDataGrid.StateCommon.HeaderColumn.Content.Font;
+                DecorItemOrdersDataGrids[i].StateCommon.HeaderColumn.Content.Color1 =
+                    MainOrdersFrontsOrdersDataGrid.StateCommon.HeaderColumn.Content.Color1;
+                DecorItemOrdersDataGrids[i].StateCommon.HeaderColumn.Content.MultiLine =
+                    MainOrdersFrontsOrdersDataGrid.StateCommon.HeaderColumn.Content.MultiLine;
+                DecorItemOrdersDataGrids[i].StateCommon.HeaderColumn.Content.MultiLineH =
+                    MainOrdersFrontsOrdersDataGrid.StateCommon.HeaderColumn.Content.MultiLineH;
+                DecorItemOrdersDataGrids[i].StateCommon.HeaderColumn.Content.TextH =
+                    MainOrdersFrontsOrdersDataGrid.StateCommon.HeaderColumn.Content.TextH;
+                DecorItemOrdersDataGrids[i].StateSelected.DataCell.Back.Color1 =
+                    MainOrdersFrontsOrdersDataGrid.StateSelected.DataCell.Back.Color1;
                 DecorItemOrdersDataGrids[i].SelectionMode = DataGridViewSelectionMode.FullRowSelect;
                 DecorItemOrdersDataGrids[i].SelectedColorStyle = PercentageDataGrid.ColorStyle.Green;
                 DecorItemOrdersDataGrids[i].ReadOnly = true;
@@ -3385,52 +3667,68 @@ namespace Infinium.Modules.Marketing.NewOrders
                 DecorItemOrdersDataGrids[i].UseCustomBackColor = true;
                 DecorItemOrdersDataGrids[i].StandardStyle = false;
                 DecorItemOrdersDataGrids[i].MultiSelect = true;
-                DecorItemOrdersDataGrids[i].CellMouseDown += new DataGridViewCellMouseEventHandler(MainOrdersDecorOrders_CellMouseDown);
+                DecorItemOrdersDataGrids[i].CellMouseDown +=
+                    new DataGridViewCellMouseEventHandler(MainOrdersDecorOrders_CellMouseDown);
                 DecorItemOrdersDataGrids[i].DataError += MainOrdersDecorOrders_DataError;
 
                 DecorItemOrdersDataGrids[i].Columns.Add(CreateInsetColorsColumn());
-                DecorItemOrdersDataGrids[i].Columns["InsetColorsColumn"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                DecorItemOrdersDataGrids[i].Columns["InsetColorsColumn"].AutoSizeMode =
+                    DataGridViewAutoSizeColumnMode.AllCells;
                 DecorItemOrdersDataGrids[i].Columns["InsetColorsColumn"].MinimumWidth = 120;
                 DecorItemOrdersDataGrids[i].Columns.Add(CreateInsetTypesColumn());
-                DecorItemOrdersDataGrids[i].Columns["InsetTypesColumn"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                DecorItemOrdersDataGrids[i].Columns["InsetTypesColumn"].AutoSizeMode =
+                    DataGridViewAutoSizeColumnMode.AllCells;
                 DecorItemOrdersDataGrids[i].Columns["InsetTypesColumn"].MinimumWidth = 120;
                 DecorItemOrdersDataGrids[i].Columns.Add(CreateColorColumn());
-                DecorItemOrdersDataGrids[i].Columns["ColorsColumn"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                DecorItemOrdersDataGrids[i].Columns["ColorsColumn"].AutoSizeMode =
+                    DataGridViewAutoSizeColumnMode.AllCells;
                 DecorItemOrdersDataGrids[i].Columns["ColorsColumn"].MinimumWidth = 120;
                 DecorItemOrdersDataGrids[i].Columns.Add(CreatePatinaColumn());
-                DecorItemOrdersDataGrids[i].Columns["PatinaColumn"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                DecorItemOrdersDataGrids[i].Columns["PatinaColumn"].AutoSizeMode =
+                    DataGridViewAutoSizeColumnMode.AllCells;
                 DecorItemOrdersDataGrids[i].Columns["PatinaColumn"].MinimumWidth = 120;
                 DecorItemOrdersDataGrids[i].Columns.Add(CreateItemColumn());
-                DecorItemOrdersDataGrids[i].Columns["ItemColumn"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                DecorItemOrdersDataGrids[i].Columns["ItemColumn"].AutoSizeMode =
+                    DataGridViewAutoSizeColumnMode.AllCells;
                 DecorItemOrdersDataGrids[i].Columns["ItemColumn"].MinimumWidth = 120;
-                DecorItemOrdersDataGrids[i].Columns["DiscountVolume"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                DecorItemOrdersDataGrids[i].Columns["DiscountVolume"].AutoSizeMode =
+                    DataGridViewAutoSizeColumnMode.AllCells;
                 DecorItemOrdersDataGrids[i].Columns["DiscountVolume"].MinimumWidth = 60;
 
                 DecorItemOrdersDataGrids[i].Columns["Cost"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                 DecorItemOrdersDataGrids[i].Columns["Price"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                 DecorItemOrdersDataGrids[i].Columns["Notes"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                DecorItemOrdersDataGrids[i].Columns["TotalDiscount"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                DecorItemOrdersDataGrids[i].Columns["TotalDiscount"].AutoSizeMode =
+                    DataGridViewAutoSizeColumnMode.AllCells;
                 DecorItemOrdersDataGrids[i].Columns["IsSample"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                 DecorItemOrdersDataGrids[i].Columns["Count"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                 DecorItemOrdersDataGrids[i].Columns["Width"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                 DecorItemOrdersDataGrids[i].Columns["Length"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                 DecorItemOrdersDataGrids[i].Columns["Height"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                DecorItemOrdersDataGrids[i].Columns["CurrencyCost"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                DecorItemOrdersDataGrids[i].Columns["OriginalPrice"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                DecorItemOrdersDataGrids[i].Columns["OriginalCost"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                DecorItemOrdersDataGrids[i].Columns["CostWithTransport"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                DecorItemOrdersDataGrids[i].Columns["PriceWithTransport"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                DecorItemOrdersDataGrids[i].Columns["CurrencyCost"].AutoSizeMode =
+                    DataGridViewAutoSizeColumnMode.AllCells;
+                DecorItemOrdersDataGrids[i].Columns["OriginalPrice"].AutoSizeMode =
+                    DataGridViewAutoSizeColumnMode.AllCells;
+                DecorItemOrdersDataGrids[i].Columns["OriginalCost"].AutoSizeMode =
+                    DataGridViewAutoSizeColumnMode.AllCells;
+                DecorItemOrdersDataGrids[i].Columns["CostWithTransport"].AutoSizeMode =
+                    DataGridViewAutoSizeColumnMode.AllCells;
+                DecorItemOrdersDataGrids[i].Columns["PriceWithTransport"].AutoSizeMode =
+                    DataGridViewAutoSizeColumnMode.AllCells;
                 DecorItemOrdersDataGrids[i].Columns["OnStorage"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                DecorItemOrdersDataGrids[i].Columns["ClientOriginalPrice"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                DecorItemOrdersDataGrids[i].Columns["ClientOriginalPrice"].AutoSizeMode =
+                    DataGridViewAutoSizeColumnMode.AllCells;
 
                 //убирание лишних столбцов
                 if (DecorItemOrdersDataGrids[i].Columns.Contains("CreateDateTime"))
                 {
                     DecorItemOrdersDataGrids[i].Columns["CreateDateTime"].HeaderText = "Добавлено";
                     DecorItemOrdersDataGrids[i].Columns["CreateDateTime"].DefaultCellStyle.Format = "dd.MM.yyyy HH:mm";
-                    DecorItemOrdersDataGrids[i].Columns["CreateDateTime"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                    DecorItemOrdersDataGrids[i].Columns["CreateDateTime"].AutoSizeMode =
+                        DataGridViewAutoSizeColumnMode.None;
                     DecorItemOrdersDataGrids[i].Columns["CreateDateTime"].Width = 100;
                 }
+
                 if (DecorItemOrdersDataGrids[i].Columns.Contains("CreateUserID"))
                     DecorItemOrdersDataGrids[i].Columns["CreateUserID"].Visible = false;
                 if (DecorItemOrdersDataGrids[i].Columns.Contains("CreateUserTypeID"))
@@ -3488,28 +3786,34 @@ namespace Infinium.Modules.Marketing.NewOrders
                     {
                         DecorItemOrdersDataGrids[i].Columns[j].HeaderText = "Высота";
                     }
+
                     if (DecorItemOrdersDataGrids[i].Columns[j].HeaderText == "Length")
                     {
                         DecorItemOrdersDataGrids[i].Columns[j].HeaderText = "Длина";
                     }
+
                     if (DecorItemOrdersDataGrids[i].Columns[j].HeaderText == "Width")
                     {
                         DecorItemOrdersDataGrids[i].Columns[j].HeaderText = "Ширина";
                     }
+
                     if (DecorItemOrdersDataGrids[i].Columns[j].HeaderText == "Count")
                     {
                         DecorItemOrdersDataGrids[i].Columns[j].HeaderText = "Кол-во";
                     }
+
                     if (DecorItemOrdersDataGrids[i].Columns[j].HeaderText == "Notes")
                     {
                         DecorItemOrdersDataGrids[i].Columns[j].HeaderText = "Примечание";
                     }
+
                     if (DecorItemOrdersDataGrids[i].Columns[j].HeaderText == "LeftAngle")
                     {
                         DecorItemOrdersDataGrids[i].Columns[j].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                         DecorItemOrdersDataGrids[i].Columns[j].MinimumWidth = 100;
                         DecorItemOrdersDataGrids[i].Columns[j].HeaderText = "ᵒ∠ л";
                     }
+
                     if (DecorItemOrdersDataGrids[i].Columns[j].HeaderText == "RightAngle")
                     {
                         DecorItemOrdersDataGrids[i].Columns[j].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
@@ -3522,6 +3826,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                 {
                     Column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 }
+
                 DecorItemOrdersDataGrids[i].AutoGenerateColumns = false;
                 int DisplayIndex = 0;
                 DecorItemOrdersDataGrids[i].Columns["ItemColumn"].DisplayIndex = DisplayIndex++;
@@ -3577,12 +3882,15 @@ namespace Infinium.Modules.Marketing.NewOrders
 
                 CurrentDecorOrderID = Convert.ToInt32(grid.SelectedRows[0].Cells["DecorOrderID"].Value);
 
-                ComponentFactory.Krypton.Toolkit.KryptonContextMenu kryptonContextMenu = new ComponentFactory.Krypton.Toolkit.KryptonContextMenu();
-                ComponentFactory.Krypton.Toolkit.KryptonContextMenuItems kryptonContextMenuItems = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItems();
-                ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem setOnStorage = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem()
-                {
-                    Text = "На склад"
-                };
+                ComponentFactory.Krypton.Toolkit.KryptonContextMenu kryptonContextMenu =
+                    new ComponentFactory.Krypton.Toolkit.KryptonContextMenu();
+                ComponentFactory.Krypton.Toolkit.KryptonContextMenuItems kryptonContextMenuItems =
+                    new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItems();
+                ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem setOnStorage =
+                    new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem()
+                    {
+                        Text = "На склад"
+                    };
                 setOnStorage.Click += (o, args) =>
                 {
                     SetOnStorage(CurrentDecorOrderID);
@@ -3597,20 +3905,23 @@ namespace Infinium.Modules.Marketing.NewOrders
                     TestTechCatalogManager = new Modules.TechnologyCatalog.TestTechCatalog();
                     TestTechCatalogManager.Initialize();
                 }
+
                 DataTable DT = TestTechCatalogManager.GetOperationsGroups(DecorID);
                 if (DT.Rows.Count > 0)
                 {
                     for (int i = 0; i < DT.Rows.Count; i++)
                     {
-                        ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem kryptonContextMenuItem = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem()
-                        {
-                            Text = DT.Rows[i]["GroupName"].ToString(),
-                            Tag = Convert.ToInt32(DT.Rows[i]["TechCatalogOperationsGroupID"])
-                        };
+                        ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem kryptonContextMenuItem =
+                            new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem()
+                            {
+                                Text = DT.Rows[i]["GroupName"].ToString(),
+                                Tag = Convert.ToInt32(DT.Rows[i]["TechCatalogOperationsGroupID"])
+                            };
                         kryptonContextMenuItem.Click += KryptonContextMenuItem_Click;
                         kryptonContextMenuItems.Items.Add(kryptonContextMenuItem);
                     }
                 }
+
                 kryptonContextMenuItems.Items.Add(setOnStorage);
                 kryptonContextMenu.Items.Add(kryptonContextMenuItems);
                 kryptonContextMenu.Show(new Point(Cursor.Position.X - 212, Cursor.Position.Y - 10));
@@ -3646,6 +3957,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                 else
                     DecorTabControl.TabPages[i].PageVisible = false;
             }
+
             DecorTabControl.ResumeLayout();
 
             if (IsOrder > 0)
@@ -3661,6 +3973,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                 for (int r = 0; r < DecorItemOrdersDataTables[i].Rows.Count; r++)
                     DecorItemOrdersDataTables[r].Clear();
             }
+
             CurrentMainOrderID = -1;
         }
 
@@ -3689,7 +4002,8 @@ namespace Infinium.Modules.Marketing.NewOrders
             DecorOrdersCommandBuilder.Dispose();
             DecorOrdersDataAdapter.Dispose();
 
-            DecorOrdersDataAdapter = new SqlDataAdapter("SELECT * FROM NewDecorOrders WHERE NeedCalcPrice=0 AND MainOrderID = " + MainOrderID + FactoryFilter,
+            DecorOrdersDataAdapter = new SqlDataAdapter(
+                "SELECT * FROM NewDecorOrders WHERE NeedCalcPrice=0 AND MainOrderID = " + MainOrderID + FactoryFilter,
                 ConnectionStrings.MarketingOrdersConnectionString);
             DecorOrdersDataAdapter.Fill(DecorOrdersDataTable);
             DecorOrdersCommandBuilder = new SqlCommandBuilder(DecorOrdersDataAdapter);
@@ -3700,7 +4014,9 @@ namespace Infinium.Modules.Marketing.NewOrders
             for (int i = 0; i < DecorCatalogOrder.DecorProductsCount; i++)
             {
                 DecorItemOrdersDataGrids[i].Columns["DecorOrderID"].Visible = false;
-                DataRow[] Rows = DecorOrdersDataTable.Select("ProductID = " + DecorCatalogOrder.DecorProductsDataTable.Rows[i]["ProductID"].ToString());
+                DataRow[] Rows = DecorOrdersDataTable.Select("ProductID = " +
+                                                             DecorCatalogOrder.DecorProductsDataTable.Rows[i][
+                                                                 "ProductID"].ToString());
 
                 if (Rows.Count() == 0)
                     continue;
@@ -3728,6 +4044,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                             ShowWidth = true;
                     DecorItemOrdersDataTables[i].ImportRow(Rows[r]);
                 }
+
                 DecorItemOrdersDataGrids[i].Columns["ColorsColumn"].Visible = false;
                 DecorItemOrdersDataGrids[i].Columns["PatinaColumn"].Visible = false;
                 DecorItemOrdersDataGrids[i].Columns["Length"].Visible = false;
@@ -3752,14 +4069,18 @@ namespace Infinium.Modules.Marketing.NewOrders
 
         public void DeleteOrder(int MainOrderID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM NewDecorOrders WHERE NeedCalcPrice=0 AND MainOrderID = " + MainOrderID, ConnectionStrings.MarketingOrdersConnectionString))
+            using (SqlDataAdapter DA = new SqlDataAdapter(
+                       "DELETE FROM NewDecorOrders WHERE NeedCalcPrice=0 AND MainOrderID = " + MainOrderID,
+                       ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (DataTable DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
             }
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM DecorOrders WHERE MainOrderID = " + MainOrderID, ConnectionStrings.MarketingOrdersConnectionString))
+
+            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM DecorOrders WHERE MainOrderID = " + MainOrderID,
+                       ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (DataTable DT = new DataTable())
                 {
@@ -3778,7 +4099,9 @@ namespace Infinium.Modules.Marketing.NewOrders
 
         public void DeleteDecorAssignmentByMainOrder(int MainOrderID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM DecorAssignments WHERE MainOrderID = " + MainOrderID, ConnectionStrings.StorageConnectionString))
+            using (SqlDataAdapter DA = new SqlDataAdapter(
+                       "DELETE FROM DecorAssignments WHERE MainOrderID = " + MainOrderID,
+                       ConnectionStrings.StorageConnectionString))
             {
                 using (DataTable DT = new DataTable())
                 {
@@ -3796,9 +4119,12 @@ namespace Infinium.Modules.Marketing.NewOrders
             int Height = -1;
             int Length = -1;
             int Width = -1;
-            string SelectCommand = @"SELECT DecorOrders.FactoryID, DecorOrders.MainOrderID, DecorOrders.DecorConfigID, DecorOrders.DecorOrderID, DecorOrders.Height, DecorOrders.Length, DecorOrders.Width, DecorOrders.Count FROM DecorOrders 
-                WHERE DecorOrders.MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID=" + MegaOrderID + ")";
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
+            string SelectCommand =
+                @"SELECT DecorOrders.FactoryID, DecorOrders.MainOrderID, DecorOrders.DecorConfigID, DecorOrders.DecorOrderID, DecorOrders.Height, DecorOrders.Length, DecorOrders.Width, DecorOrders.Count FROM DecorOrders 
+                WHERE DecorOrders.MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID=" +
+                MegaOrderID + ")";
+            using (SqlDataAdapter DA =
+                   new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (DataTable DT = new DataTable())
                 {
@@ -3811,6 +4137,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                                 if (Convert.ToInt32(DT.Rows[i]["FactoryID"]) == 2)
                                     continue;
                             }
+
                             if (DT.Rows[i]["MainOrderID"] != DBNull.Value)
                                 MainOrderID = Convert.ToInt32(DT.Rows[i]["MainOrderID"]);
                             if (DT.Rows[i]["DecorOrderID"] != DBNull.Value)
@@ -3825,14 +4152,16 @@ namespace Infinium.Modules.Marketing.NewOrders
                                 Length = Convert.ToInt32(DT.Rows[i]["Length"]);
                             if (DT.Rows[i]["Width"] != DBNull.Value)
                                 Width = Convert.ToInt32(DT.Rows[i]["Width"]);
-                            AddToRequest(CurrentClientID, MegaOrderID, MainOrderID, DecorOrderID, DecorConfigID, PlanCount, Height, Length, Width);
+                            AddToRequest(CurrentClientID, MegaOrderID, MainOrderID, DecorOrderID, DecorConfigID,
+                                PlanCount, Height, Length, Width);
                         }
                     }
                 }
             }
         }
 
-        private void AddToRequest(int ClientID, int MegaOrderID, int MainOrderID, int DecorOrderID, int DecorConfigID, int PlanCount,
+        private void AddToRequest(int ClientID, int MegaOrderID, int MainOrderID, int DecorOrderID, int DecorConfigID,
+            int PlanCount,
             int Height = -1, int Length = -1, int Width = -1)
         {
             int TechStoreSubGroupID = -1;
@@ -3842,7 +4171,9 @@ namespace Infinium.Modules.Marketing.NewOrders
             decimal BalanceOnMainStorage = 0;
             decimal BalanceOnManufactureStorage = 0;
 
-            string SelectCommand = @"SELECT TechStoreSubGroupID, DecorID, ColorID, MinBalanceOnStorage FROM DecorConfig WHERE DecorConfigID=" + DecorConfigID;
+            string SelectCommand =
+                @"SELECT TechStoreSubGroupID, DecorID, ColorID, MinBalanceOnStorage FROM DecorConfig WHERE DecorConfigID=" +
+                DecorConfigID;
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
                 using (DataTable DT = new DataTable())
@@ -3897,17 +4228,18 @@ namespace Infinium.Modules.Marketing.NewOrders
             int BalanceStatus = 0;
             if (Length > -1)
             {
-                if (BalanceOnMainStorage + BalanceOnManufactureStorage - (Length * PlanCount) < 0)
+                if (BalanceOnMainStorage + BalanceOnManufactureStorage - Length * PlanCount < 0)
                 {
                     BalanceStatus = 0;
                 }
                 else
                 {
-                    if (BalanceOnMainStorage + BalanceOnManufactureStorage - (Length * PlanCount) > MinBalanceOnStorage)
+                    if (BalanceOnMainStorage + BalanceOnManufactureStorage - Length * PlanCount > MinBalanceOnStorage)
                         return;
                     if (BalanceOnMainStorage + BalanceOnManufactureStorage > MinBalanceOnStorage)
                     {
-                        if (BalanceOnMainStorage + BalanceOnManufactureStorage - (Length * PlanCount) < MinBalanceOnStorage)
+                        if (BalanceOnMainStorage + BalanceOnManufactureStorage - Length * PlanCount <
+                            MinBalanceOnStorage)
                             BalanceStatus = 1;
                     }
                 }
@@ -3919,7 +4251,9 @@ namespace Infinium.Modules.Marketing.NewOrders
 
                 }
             }
-            SelectCommand = @"SELECT * FROM DecorAssignments WHERE ClientID=" + ClientID + " AND MainOrderID=" + MainOrderID + " AND DecorOrderID=" + DecorOrderID;
+
+            SelectCommand = @"SELECT * FROM DecorAssignments WHERE ClientID=" + ClientID + " AND MainOrderID=" +
+                            MainOrderID + " AND DecorOrderID=" + DecorOrderID;
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.StorageConnectionString))
             {
                 using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
@@ -3935,18 +4269,22 @@ namespace Infinium.Modules.Marketing.NewOrders
                             {
                                 ProductType = 1;
                             }
+
                             if (TechStoreSubGroupID == 22)
                             {
                                 ProductType = 2;
                             }
+
                             if (TechStoreSubGroupID == 91 || TechStoreSubGroupID == 232)
                             {
                                 ProductType = 3;
                             }
+
                             if (TechStoreSubGroupID == 9)
                             {
                                 ProductType = 5;
                             }
+
                             if (ProductType == 0)
                                 return;
                             DataRow NewRow = DT.NewRow();
@@ -3990,20 +4328,33 @@ namespace Infinium.Modules.Marketing.NewOrders
             int Length = -1;
             int Width = -1;
 
-            if (((DataRowView)(DecorItemOrdersBindingSources[SelectedGridIndex]).Current).Row["MainOrderID"] != DBNull.Value)
-                MainOrderID = Convert.ToInt32(((DataRowView)(DecorItemOrdersBindingSources[SelectedGridIndex]).Current).Row["MainOrderID"]);
-            if (((DataRowView)(DecorItemOrdersBindingSources[SelectedGridIndex]).Current).Row["DecorOrderID"] != DBNull.Value)
-                DecorOrderID = Convert.ToInt32(((DataRowView)(DecorItemOrdersBindingSources[SelectedGridIndex]).Current).Row["DecorOrderID"]);
-            if (((DataRowView)(DecorItemOrdersBindingSources[SelectedGridIndex]).Current).Row["DecorConfigID"] != DBNull.Value)
-                DecorConfigID = Convert.ToInt32(((DataRowView)(DecorItemOrdersBindingSources[SelectedGridIndex]).Current).Row["DecorConfigID"]);
-            if (((DataRowView)(DecorItemOrdersBindingSources[SelectedGridIndex]).Current).Row["Count"] != DBNull.Value)
-                PlanCount = Convert.ToInt32(((DataRowView)(DecorItemOrdersBindingSources[SelectedGridIndex]).Current).Row["Count"]);
-            if (((DataRowView)(DecorItemOrdersBindingSources[SelectedGridIndex]).Current).Row["Height"] != DBNull.Value)
-                Height = Convert.ToInt32(((DataRowView)(DecorItemOrdersBindingSources[SelectedGridIndex]).Current).Row["Height"]);
-            if (((DataRowView)(DecorItemOrdersBindingSources[SelectedGridIndex]).Current).Row["Length"] != DBNull.Value)
-                Length = Convert.ToInt32(((DataRowView)(DecorItemOrdersBindingSources[SelectedGridIndex]).Current).Row["Length"]);
-            if (((DataRowView)(DecorItemOrdersBindingSources[SelectedGridIndex]).Current).Row["Width"] != DBNull.Value)
-                Width = Convert.ToInt32(((DataRowView)(DecorItemOrdersBindingSources[SelectedGridIndex]).Current).Row["Width"]);
+            if (((DataRowView)DecorItemOrdersBindingSources[SelectedGridIndex].Current).Row["MainOrderID"] !=
+                DBNull.Value)
+                MainOrderID =
+                    Convert.ToInt32(
+                        ((DataRowView)DecorItemOrdersBindingSources[SelectedGridIndex].Current).Row["MainOrderID"]);
+            if (((DataRowView)DecorItemOrdersBindingSources[SelectedGridIndex].Current).Row["DecorOrderID"] !=
+                DBNull.Value)
+                DecorOrderID =
+                    Convert.ToInt32(
+                        ((DataRowView)DecorItemOrdersBindingSources[SelectedGridIndex].Current).Row["DecorOrderID"]);
+            if (((DataRowView)DecorItemOrdersBindingSources[SelectedGridIndex].Current).Row["DecorConfigID"] !=
+                DBNull.Value)
+                DecorConfigID =
+                    Convert.ToInt32(
+                        ((DataRowView)DecorItemOrdersBindingSources[SelectedGridIndex].Current).Row["DecorConfigID"]);
+            if (((DataRowView)DecorItemOrdersBindingSources[SelectedGridIndex].Current).Row["Count"] != DBNull.Value)
+                PlanCount = Convert.ToInt32(
+                    ((DataRowView)DecorItemOrdersBindingSources[SelectedGridIndex].Current).Row["Count"]);
+            if (((DataRowView)DecorItemOrdersBindingSources[SelectedGridIndex].Current).Row["Height"] != DBNull.Value)
+                Height = Convert.ToInt32(
+                    ((DataRowView)DecorItemOrdersBindingSources[SelectedGridIndex].Current).Row["Height"]);
+            if (((DataRowView)DecorItemOrdersBindingSources[SelectedGridIndex].Current).Row["Length"] != DBNull.Value)
+                Length = Convert.ToInt32(
+                    ((DataRowView)DecorItemOrdersBindingSources[SelectedGridIndex].Current).Row["Length"]);
+            if (((DataRowView)DecorItemOrdersBindingSources[SelectedGridIndex].Current).Row["Width"] != DBNull.Value)
+                Width = Convert.ToInt32(
+                    ((DataRowView)DecorItemOrdersBindingSources[SelectedGridIndex].Current).Row["Width"]);
             AddToRequest(CurrentClientID, MainOrderID, DecorOrderID, DecorConfigID, PlanCount, Height, Length, Width);
         }
 
@@ -4057,6 +4408,7 @@ namespace Infinium.Modules.Marketing.NewOrders
         private readonly DevExpress.XtraTab.XtraTabControl OrdersTabControl;
 
         public DataTable ClientsDataTable = null;
+        public DataTable ManagersDataTable = null;
         public DataTable MainOrdersDataTable = null;
         private DataTable OrderStatusesDataTable = null;
         private DataTable AgreementStatusesDataTable = null;
@@ -4074,6 +4426,7 @@ namespace Infinium.Modules.Marketing.NewOrders
         private DataTable OrdersInMutualSettlementTable = null;
 
         public BindingSource FilterClientsBindingSource = null;
+        public BindingSource FilterManagersBindingSource = null;
         public BindingSource MainOrdersBindingSource = null;
         public BindingSource OrderStatusesBindingSource = null;
         public BindingSource AgreementStatusesBindingSource = null;
@@ -4115,11 +4468,11 @@ namespace Infinium.Modules.Marketing.NewOrders
 
 
         public OrdersManager(ref PercentageDataGrid tMainOrdersDataGrid,
-                             ref PercentageDataGrid tMainOrdersFrontsOrdersDataGrid,
-                             ref PercentageDataGrid tMegaOrdersDataGrid,
-                             ref DevExpress.XtraTab.XtraTabControl tMainOrdersDecorTabControl,
-                             ref DevExpress.XtraTab.XtraTabControl tOrdersTabControl,
-                             ref DecorCatalogOrder DecorCatalogOrder)
+            ref PercentageDataGrid tMainOrdersFrontsOrdersDataGrid,
+            ref PercentageDataGrid tMegaOrdersDataGrid,
+            ref DevExpress.XtraTab.XtraTabControl tMainOrdersDecorTabControl,
+            ref DevExpress.XtraTab.XtraTabControl tOrdersTabControl,
+            ref DecorCatalogOrder DecorCatalogOrder)
         {
             MainOrdersDataGrid = tMainOrdersDataGrid;
             MegaOrdersDataGrid = tMegaOrdersDataGrid;
@@ -4129,7 +4482,7 @@ namespace Infinium.Modules.Marketing.NewOrders
             MainOrdersFrontsOrders.Initialize(true);
 
             MainOrdersDecorOrders = new MainOrdersDecorOrders(ref tMainOrdersDecorTabControl,
-                                                              ref DecorCatalogOrder, ref tMainOrdersFrontsOrdersDataGrid);
+                ref DecorCatalogOrder, ref tMainOrdersFrontsOrdersDataGrid);
 
             MainOrdersDecorOrders.Initialize(true);
             Initialize();
@@ -4139,6 +4492,7 @@ namespace Infinium.Modules.Marketing.NewOrders
         {
             OrdersInMutualSettlementTable = new DataTable();
             ClientsDataTable = new DataTable();
+            ManagersDataTable = new DataTable();
             MainOrdersDataTable = new DataTable();
             MegaOrdersDataTable = new DataTable();
             OrderStatusesDataTable = new DataTable();
@@ -4155,6 +4509,7 @@ namespace Infinium.Modules.Marketing.NewOrders
             DiscountFactoringTable = new DataTable();
 
             FilterClientsBindingSource = new BindingSource();
+            FilterManagersBindingSource = new BindingSource();
             MainOrdersBindingSource = new BindingSource();
             MegaOrdersBindingSource = new BindingSource();
             OrderStatusesBindingSource = new BindingSource();
@@ -4169,89 +4524,116 @@ namespace Infinium.Modules.Marketing.NewOrders
 
         private void Fill()
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM NewMainOrders", ConnectionStrings.MarketingOrdersConnectionString))
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM NewMainOrders",
+                       ConnectionStrings.MarketingOrdersConnectionString))
             {
                 DA.Fill(MainOrdersDataTable);
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 NewMegaOrders.*, ClientName FROM NewMegaOrders" +
-                " INNER JOIN infiniu2_marketingreference.dbo.Clients" +
-                " ON NewMegaOrders.ClientID = infiniu2_marketingreference.dbo.Clients.ClientID" +
-                " ORDER BY ClientName, OrderNumber", ConnectionStrings.MarketingOrdersConnectionString))
+            using (SqlDataAdapter DA = new SqlDataAdapter(
+                       "SELECT TOP 0 NewMegaOrders.*, ClientName FROM NewMegaOrders" +
+                       " INNER JOIN infiniu2_marketingreference.dbo.Clients" +
+                       " ON NewMegaOrders.ClientID = infiniu2_marketingreference.dbo.Clients.ClientID" +
+                       " ORDER BY ClientName, OrderNumber", ConnectionStrings.MarketingOrdersConnectionString))
             {
                 DA.Fill(MegaOrdersDataTable);
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM OrderStatuses", ConnectionStrings.MarketingReferenceConnectionString))
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM OrderStatuses",
+                       ConnectionStrings.MarketingReferenceConnectionString))
             {
                 DA.Fill(OrderStatusesDataTable);
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DiscountOrderSum", ConnectionStrings.MarketingReferenceConnectionString))
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DiscountOrderSum",
+                       ConnectionStrings.MarketingReferenceConnectionString))
             {
                 DA.Fill(DiscountOrderSumTable);
             }
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM TransportGrid", ConnectionStrings.MarketingReferenceConnectionString))
+
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM TransportGrid",
+                       ConnectionStrings.MarketingReferenceConnectionString))
             {
                 DA.Fill(TransportGridTable);
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DiscountPaymentConditions", ConnectionStrings.MarketingReferenceConnectionString))
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DiscountPaymentConditions",
+                       ConnectionStrings.MarketingReferenceConnectionString))
             {
                 DA.Fill(DiscountPaymentConditionsTable);
             }
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DiscountFactoring", ConnectionStrings.MarketingReferenceConnectionString))
+
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DiscountFactoring",
+                       ConnectionStrings.MarketingReferenceConnectionString))
             {
                 DA.Fill(DiscountFactoringTable);
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM AgreementStatuses", ConnectionStrings.MarketingReferenceConnectionString))
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM AgreementStatuses",
+                       ConnectionStrings.MarketingReferenceConnectionString))
             {
                 DA.Fill(AgreementStatusesDataTable);
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM ProductionStatuses", ConnectionStrings.MarketingReferenceConnectionString))
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM ProductionStatuses",
+                       ConnectionStrings.MarketingReferenceConnectionString))
             {
                 DA.Fill(ProductionStatusesDataTable);
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM StorageStatuses", ConnectionStrings.MarketingReferenceConnectionString))
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM StorageStatuses",
+                       ConnectionStrings.MarketingReferenceConnectionString))
             {
                 DA.Fill(StorageStatusesDataTable);
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM ExpeditionStatuses", ConnectionStrings.MarketingReferenceConnectionString))
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM ExpeditionStatuses",
+                       ConnectionStrings.MarketingReferenceConnectionString))
             {
                 DA.Fill(ExpeditionStatusesDataTable);
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DispatchStatuses", ConnectionStrings.MarketingReferenceConnectionString))
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DispatchStatuses",
+                       ConnectionStrings.MarketingReferenceConnectionString))
             {
                 DA.Fill(DispatchStatusesDataTable);
             }
 
             FactoryTypesDataTable = new DataTable();
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Factory",
-                ConnectionStrings.CatalogConnectionString))
+                       ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(FactoryTypesDataTable);
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM CurrencyTypes", ConnectionStrings.CatalogConnectionString))
+            using (SqlDataAdapter DA =
+                   new SqlDataAdapter("SELECT * FROM CurrencyTypes", ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(CurrencyTypesDataTable);
             }
 
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT ClientID, ClientName FROM Clients" +
-                " ORDER BY ClientName", ConnectionStrings.MarketingReferenceConnectionString))
+                                                          " ORDER BY ClientName",
+                       ConnectionStrings.MarketingReferenceConnectionString))
             {
                 DA.Fill(ClientsDataTable);
+            }
+            using (SqlDataAdapter DA = new SqlDataAdapter(@"SELECT ManagerID, ShortName, UserId FROM ClientsManagers 
+                where managerId in (select managerId from Clients where enabled=1) ORDER BY ShortName",
+                       ConnectionStrings.MarketingReferenceConnectionString))
+            {
+                DA.Fill(ManagersDataTable);
+                DataColumn checkCol = new DataColumn("checkCol", System.Type.GetType("System.Boolean"));
+                checkCol.DefaultValue = false;
+                ManagersDataTable.Columns.Add(checkCol);
+                checkCol.SetOrdinal(0);
             }
         }
 
         private void Binding()
         {
             FilterClientsBindingSource.DataSource = ClientsDataTable;
+            FilterManagersBindingSource.DataSource = ManagersDataTable;
             CurrencyTypesBindingSource.DataSource = CurrencyTypesDataTable;
 
             ClientsBindingSourceDisplayMember = "ClientName";
@@ -4500,7 +4882,8 @@ namespace Infinium.Modules.Marketing.NewOrders
             MainOrdersDataGrid.Columns["DecorCost"].HeaderText = "Стоимость\r\nдекора, евро";
             MainOrdersDataGrid.Columns["OrderCost"].HeaderText = "Стоимость\r\nзаказа, евро";
             MainOrdersDataGrid.Columns["OriginalOrderCost"].HeaderText = "Стоимость заказа,\r\nевро (оригинал)";
-            MainOrdersDataGrid.Columns["OriginalProfilOrderCost"].HeaderText = "Стоимость заказа\r\nПрофиль, евро (оригинал)";
+            MainOrdersDataGrid.Columns["OriginalProfilOrderCost"].HeaderText =
+                "Стоимость заказа\r\nПрофиль, евро (оригинал)";
             MainOrdersDataGrid.Columns["OriginalTPSOrderCost"].HeaderText = "Стоимость заказа\r\nТПС евро, (оригинал)";
             MainOrdersDataGrid.Columns["ProfilOrderCost"].HeaderText = "Стоимость заказа\r\nПрофиль, евро";
             MainOrdersDataGrid.Columns["TPSOrderCost"].HeaderText = "Стоимость заказа\r\nТПС, евро";
@@ -4561,7 +4944,8 @@ namespace Infinium.Modules.Marketing.NewOrders
             MainOrdersDataGrid.Columns["ProfilOrderCost"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             MainOrdersDataGrid.Columns["TPSOrderCost"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             MainOrdersDataGrid.Columns["OriginalOrderCost"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            MainOrdersDataGrid.Columns["OriginalProfilOrderCost"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            MainOrdersDataGrid.Columns["OriginalProfilOrderCost"].AutoSizeMode =
+                DataGridViewAutoSizeColumnMode.AllCells;
             MainOrdersDataGrid.Columns["OriginalTPSOrderCost"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             //MainOrdersDataGrid.Columns["OrderCost"].Width = 130;
             MainOrdersDataGrid.Columns["DocDateTime"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
@@ -4572,19 +4956,26 @@ namespace Infinium.Modules.Marketing.NewOrders
             //MainOrdersDataGrid.Columns["Notes"].MinimumWidth = 60;
             MainOrdersDataGrid.Columns["Weight"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             //MainOrdersDataGrid.Columns["Weight"].Width = 90;
-            MainOrdersDataGrid.Columns["ProfilProductionStatusColumn"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            MainOrdersDataGrid.Columns["ProfilProductionStatusColumn"].AutoSizeMode =
+                DataGridViewAutoSizeColumnMode.AllCells;
             //MainOrdersDataGrid.Columns["ProfilProductionStatusColumn"].Width = 150;
-            MainOrdersDataGrid.Columns["ProfilStorageStatusColumn"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            MainOrdersDataGrid.Columns["ProfilExpeditionStatusColumn"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            MainOrdersDataGrid.Columns["ProfilStorageStatusColumn"].AutoSizeMode =
+                DataGridViewAutoSizeColumnMode.AllCells;
+            MainOrdersDataGrid.Columns["ProfilExpeditionStatusColumn"].AutoSizeMode =
+                DataGridViewAutoSizeColumnMode.AllCells;
             //MainOrdersDataGrid.Columns["ProfilStorageStatusColumn"].Width = 110;
-            MainOrdersDataGrid.Columns["ProfilDispatchStatusColumn"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            MainOrdersDataGrid.Columns["ProfilDispatchStatusColumn"].AutoSizeMode =
+                DataGridViewAutoSizeColumnMode.AllCells;
             //MainOrdersDataGrid.Columns["ProfilDispatchStatusColumn"].Width = 110;
-            MainOrdersDataGrid.Columns["TPSProductionStatusColumn"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            MainOrdersDataGrid.Columns["TPSProductionStatusColumn"].AutoSizeMode =
+                DataGridViewAutoSizeColumnMode.AllCells;
             //MainOrdersDataGrid.Columns["TPSProductionStatusColumn"].Width = 150;
             MainOrdersDataGrid.Columns["TPSStorageStatusColumn"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             //MainOrdersDataGrid.Columns["TPSStorageStatusColumn"].Width = 110;
-            MainOrdersDataGrid.Columns["TPSExpeditionStatusColumn"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            MainOrdersDataGrid.Columns["TPSDispatchStatusColumn"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            MainOrdersDataGrid.Columns["TPSExpeditionStatusColumn"].AutoSizeMode =
+                DataGridViewAutoSizeColumnMode.AllCells;
+            MainOrdersDataGrid.Columns["TPSDispatchStatusColumn"].AutoSizeMode =
+                DataGridViewAutoSizeColumnMode.AllCells;
             //MainOrdersDataGrid.Columns["TPSDispatchStatusColumn"].Width = 110;
             MainOrdersDataGrid.Columns["FactoryTypeColumn"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             //MainOrdersDataGrid.Columns["FactoryTypeColumn"].Width = 140;
@@ -4631,15 +5022,24 @@ namespace Infinium.Modules.Marketing.NewOrders
             //MainOrdersDataGrid.Columns["DocDateTime"].DisplayIndex = 15;
             //MainOrdersDataGrid.Columns["Notes"].DisplayIndex = 16;
 
-            MainOrdersDataGrid.Columns["FrontsSquare"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-            MainOrdersDataGrid.Columns["FrontsCost"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-            MainOrdersDataGrid.Columns["DecorCost"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-            MainOrdersDataGrid.Columns["OrderCost"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-            MainOrdersDataGrid.Columns["ProfilOrderCost"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-            MainOrdersDataGrid.Columns["TPSOrderCost"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-            MainOrdersDataGrid.Columns["OriginalOrderCost"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-            MainOrdersDataGrid.Columns["OriginalProfilOrderCost"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-            MainOrdersDataGrid.Columns["OriginalTPSOrderCost"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            MainOrdersDataGrid.Columns["FrontsSquare"].DefaultCellStyle.Alignment =
+                DataGridViewContentAlignment.MiddleRight;
+            MainOrdersDataGrid.Columns["FrontsCost"].DefaultCellStyle.Alignment =
+                DataGridViewContentAlignment.MiddleRight;
+            MainOrdersDataGrid.Columns["DecorCost"].DefaultCellStyle.Alignment =
+                DataGridViewContentAlignment.MiddleRight;
+            MainOrdersDataGrid.Columns["OrderCost"].DefaultCellStyle.Alignment =
+                DataGridViewContentAlignment.MiddleRight;
+            MainOrdersDataGrid.Columns["ProfilOrderCost"].DefaultCellStyle.Alignment =
+                DataGridViewContentAlignment.MiddleRight;
+            MainOrdersDataGrid.Columns["TPSOrderCost"].DefaultCellStyle.Alignment =
+                DataGridViewContentAlignment.MiddleRight;
+            MainOrdersDataGrid.Columns["OriginalOrderCost"].DefaultCellStyle.Alignment =
+                DataGridViewContentAlignment.MiddleRight;
+            MainOrdersDataGrid.Columns["OriginalProfilOrderCost"].DefaultCellStyle.Alignment =
+                DataGridViewContentAlignment.MiddleRight;
+            MainOrdersDataGrid.Columns["OriginalTPSOrderCost"].DefaultCellStyle.Alignment =
+                DataGridViewContentAlignment.MiddleRight;
             MainOrdersDataGrid.Columns["Weight"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
         }
 
@@ -4914,16 +5314,25 @@ namespace Infinium.Modules.Marketing.NewOrders
             MegaOrdersDataGrid.Columns["OrderNumber"].Frozen = true;
             MegaOrdersDataGrid.RightToLeft = RightToLeft.No;
 
-            MegaOrdersDataGrid.Columns["OrderCost"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-            MegaOrdersDataGrid.Columns["TransportCost"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-            MegaOrdersDataGrid.Columns["AdditionalCost"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-            MegaOrdersDataGrid.Columns["TotalCost"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-            MegaOrdersDataGrid.Columns["CurrencyOrderCost"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-            MegaOrdersDataGrid.Columns["CurrencyTransportCost"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-            MegaOrdersDataGrid.Columns["CurrencyAdditionalCost"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-            MegaOrdersDataGrid.Columns["CurrencyTotalCost"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            MegaOrdersDataGrid.Columns["OrderCost"].DefaultCellStyle.Alignment =
+                DataGridViewContentAlignment.MiddleRight;
+            MegaOrdersDataGrid.Columns["TransportCost"].DefaultCellStyle.Alignment =
+                DataGridViewContentAlignment.MiddleRight;
+            MegaOrdersDataGrid.Columns["AdditionalCost"].DefaultCellStyle.Alignment =
+                DataGridViewContentAlignment.MiddleRight;
+            MegaOrdersDataGrid.Columns["TotalCost"].DefaultCellStyle.Alignment =
+                DataGridViewContentAlignment.MiddleRight;
+            MegaOrdersDataGrid.Columns["CurrencyOrderCost"].DefaultCellStyle.Alignment =
+                DataGridViewContentAlignment.MiddleRight;
+            MegaOrdersDataGrid.Columns["CurrencyTransportCost"].DefaultCellStyle.Alignment =
+                DataGridViewContentAlignment.MiddleRight;
+            MegaOrdersDataGrid.Columns["CurrencyAdditionalCost"].DefaultCellStyle.Alignment =
+                DataGridViewContentAlignment.MiddleRight;
+            MegaOrdersDataGrid.Columns["CurrencyTotalCost"].DefaultCellStyle.Alignment =
+                DataGridViewContentAlignment.MiddleRight;
             MegaOrdersDataGrid.Columns["Rate"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-            MegaOrdersDataGrid.Columns["PaymentRate"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            MegaOrdersDataGrid.Columns["PaymentRate"].DefaultCellStyle.Alignment =
+                DataGridViewContentAlignment.MiddleRight;
             MegaOrdersDataGrid.Columns["Weight"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             MegaOrdersDataGrid.Columns["Square"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
 
@@ -4966,7 +5375,8 @@ namespace Infinium.Modules.Marketing.NewOrders
 
             if (bsNotInProduction)
             {
-                MainProductionStatus = "((ProfilProductionStatusID=1 AND ProfilStorageStatusID=1 AND ProfilExpeditionStatusID=1 AND ProfilDispatchStatusID=1)" +
+                MainProductionStatus =
+                    "((ProfilProductionStatusID=1 AND ProfilStorageStatusID=1 AND ProfilExpeditionStatusID=1 AND ProfilDispatchStatusID=1)" +
                     " OR (TPSProductionStatusID=1 AND TPSStorageStatusID=1 AND TPSExpeditionStatusID=1 AND TPSDispatchStatusID=1))";
             }
 
@@ -5005,6 +5415,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                     MainProductionStatus = "(ProfilStorageStatusID=2 OR TPSStorageStatusID=2)";
                 }
             }
+
             if (bsOnExpedition)
             {
                 if (MainProductionStatus.Length > 0)
@@ -5016,6 +5427,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                     MainProductionStatus = "(ProfilExpeditionStatusID=2 OR TPSExpeditionStatusID=2)";
                 }
             }
+
             if (bsIsDispatched)
             {
                 if (MainProductionStatus.Length > 0)
@@ -5031,11 +5443,13 @@ namespace Infinium.Modules.Marketing.NewOrders
             if (MainProductionStatus.Length > 0)
                 MainProductionStatus = " AND (" + MainProductionStatus + ")";
 
-            if (!bsNotInProduction && !bsInProduction && !bsOnProduction && !bsInStorage && !bsOnExpedition && !bsIsDispatched)
+            if (!bsNotInProduction && !bsInProduction && !bsOnProduction && !bsInStorage && !bsOnExpedition &&
+                !bsIsDispatched)
                 MainProductionStatus = " AND MainOrderID = -1";
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM NewMainOrders WHERE MegaOrderID = " + MegaOrderID + MainProductionStatus,
-                ConnectionStrings.MarketingOrdersConnectionString))
+            using (SqlDataAdapter DA = new SqlDataAdapter(
+                       "SELECT * FROM NewMainOrders WHERE MegaOrderID = " + MegaOrderID + MainProductionStatus,
+                       ConnectionStrings.MarketingOrdersConnectionString))
             {
                 MainOrdersDataTable.Clear();
                 DA.Fill(MainOrdersDataTable);
@@ -5057,12 +5471,15 @@ namespace Infinium.Modules.Marketing.NewOrders
                 if (OrdersTabControl.TabPages[1].PageVisible != DecorVisible)
                     OrdersTabControl.TabPages[1].PageVisible = DecorVisible;
             }
+
             OrdersTabControl.ResumeLayout();
         }
 
         public void FilterMegaOrders(
             bool bsClient,
             int ClientID,
+            bool bManager,
+            List<int> managers,
             bool bsNotAgreed,
             bool bsOnAgreement,
             bool bsNotConfirmed,
@@ -5083,10 +5500,18 @@ namespace Infinium.Modules.Marketing.NewOrders
             string AgreementStatus = string.Empty;
             string DiscountPaymentCondition = string.Empty;
             string ClientFilter = string.Empty;
+            string managersFilter = string.Empty;
             string MainProductionStatus = string.Empty;
 
             if (bsClient)
                 ClientFilter = " AND NewMegaOrders.ClientID = " + ClientID;
+            if (bManager)
+            {
+                foreach (int item in managers)
+                    managersFilter += item.ToString() + ",";
+                if (managersFilter.Length > 0)
+                    managersFilter = " AND Clients.ManagerId IN (" + managersFilter.Substring(0, managersFilter.Length - 1) + ")";
+            }
 
             if (bsNotAgreed)
                 AgreementStatus = "(AgreementStatusID=0 AND CreatedByClient=0)";
@@ -5122,6 +5547,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                 else
                     DiscountPaymentCondition = "DiscountPaymentConditionID=1";
             }
+
             if (bsHalfOfPayment)
             {
                 if (DiscountPaymentCondition.Length > 0)
@@ -5129,6 +5555,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                 else
                     DiscountPaymentCondition = "DiscountPaymentConditionID=2";
             }
+
             if (bsFullPayment)
             {
                 if (DiscountPaymentCondition.Length > 0)
@@ -5136,6 +5563,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                 else
                     DiscountPaymentCondition = "DiscountPaymentConditionID=3";
             }
+
             if (bsFactoring)
             {
                 if (DiscountPaymentCondition.Length > 0)
@@ -5143,6 +5571,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                 else
                     DiscountPaymentCondition = "DiscountPaymentConditionID=4";
             }
+
             if (bsDelayOfPayment2)
             {
                 if (DiscountPaymentCondition.Length > 0)
@@ -5150,6 +5579,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                 else
                     DiscountPaymentCondition = "DiscountPaymentConditionID=6";
             }
+
             if (bsHalfOfPayment2)
             {
                 if (DiscountPaymentCondition.Length > 0)
@@ -5162,12 +5592,14 @@ namespace Infinium.Modules.Marketing.NewOrders
             {
                 if (MainProductionStatus.Length > 0)
                 {
-                    MainProductionStatus += " OR ((ProfilProductionStatusID=1 AND ProfilStorageStatusID=1 AND ProfilExpeditionStatusID=1 AND ProfilDispatchStatusID=1)" +
+                    MainProductionStatus +=
+                        " OR ((ProfilProductionStatusID=1 AND ProfilStorageStatusID=1 AND ProfilExpeditionStatusID=1 AND ProfilDispatchStatusID=1)" +
                         " OR (TPSProductionStatusID=1 AND TPSStorageStatusID=1 AND TPSExpeditionStatusID=1 AND TPSDispatchStatusID=1))";
                 }
                 else
                 {
-                    MainProductionStatus = "((ProfilProductionStatusID=1 AND ProfilStorageStatusID=1 AND ProfilExpeditionStatusID=1 AND ProfilDispatchStatusID=1)" +
+                    MainProductionStatus =
+                        "((ProfilProductionStatusID=1 AND ProfilStorageStatusID=1 AND ProfilExpeditionStatusID=1 AND ProfilDispatchStatusID=1)" +
                         " OR (TPSProductionStatusID=1 AND TPSStorageStatusID=1 AND TPSExpeditionStatusID=1 AND TPSDispatchStatusID=1))";
                 }
             }
@@ -5207,6 +5639,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                     MainProductionStatus = "(ProfilStorageStatusID=2 OR TPSStorageStatusID=2)";
                 }
             }
+
             if (bsOnExpedition)
             {
                 if (MainProductionStatus.Length > 0)
@@ -5218,6 +5651,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                     MainProductionStatus = "(ProfilExpeditionStatusID=2 OR TPSExpeditionStatusID=2)";
                 }
             }
+
             if (bsIsDispatched)
             {
                 if (MainProductionStatus.Length > 0)
@@ -5238,7 +5672,8 @@ namespace Infinium.Modules.Marketing.NewOrders
             if (MainProductionStatus.Length > 0)
                 MainProductionStatus = " WHERE (" + MainProductionStatus + ")";
 
-            if ((!bsNotInProduction && !bsInProduction && !bsOnProduction && !bsInStorage && !bsOnExpedition && !bsIsDispatched) || AgreementStatus.Length == 0 || DiscountPaymentCondition.Length == 0)
+            if ((!bsNotInProduction && !bsInProduction && !bsOnProduction && !bsInStorage && !bsOnExpedition &&
+                 !bsIsDispatched) || AgreementStatus.Length == 0 || DiscountPaymentCondition.Length == 0)
                 MainProductionStatus = " WHERE MainOrderID = -1";
 
             int MegaOrderID = 0;
@@ -5250,11 +5685,13 @@ namespace Infinium.Modules.Marketing.NewOrders
             //MainOrdersBindingSource.SuspendBinding();
             //MainOrdersBindingSource.RaiseListChangedEvents = false;
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT NewMegaOrders.*, ClientName FROM NewMegaOrders" +
-                " INNER JOIN infiniu2_marketingreference.dbo.Clients" +
-                " ON NewMegaOrders.ClientID = infiniu2_marketingreference.dbo.Clients.ClientID" +
-                " WHERE (MegaOrderID NOT IN (SELECT MegaOrderID FROM NewMainOrders) OR MegaOrderID IN (SELECT MegaOrderID FROM NewMainOrders" + MainProductionStatus + ")" + AgreementStatus + DiscountPaymentCondition + ")" + ClientFilter +
-                " ORDER BY ClientName, OrderNumber",
-                ConnectionStrings.MarketingOrdersConnectionString))
+                                                          " INNER JOIN infiniu2_marketingreference.dbo.Clients as Clients" +
+                                                          " ON NewMegaOrders.ClientID = Clients.ClientID" + managersFilter +
+                                                          " WHERE (MegaOrderID NOT IN (SELECT MegaOrderID FROM NewMainOrders) OR MegaOrderID IN (SELECT MegaOrderID FROM NewMainOrders" +
+                                                          MainProductionStatus + ")" + AgreementStatus +
+                                                          DiscountPaymentCondition + ")" + ClientFilter +
+                                                          " ORDER BY ClientName, OrderNumber",
+                       ConnectionStrings.MarketingOrdersConnectionString))
             {
                 MegaOrdersDataTable.Clear();
                 DA.Fill(MegaOrdersDataTable);
@@ -5314,6 +5751,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                 else
                     DiscountPaymentCondition = "DiscountPaymentConditionID=1";
             }
+
             if (bsHalfOfPayment)
             {
                 if (DiscountPaymentCondition.Length > 0)
@@ -5321,6 +5759,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                 else
                     DiscountPaymentCondition = "DiscountPaymentConditionID=2";
             }
+
             if (bsFullPayment)
             {
                 if (DiscountPaymentCondition.Length > 0)
@@ -5328,6 +5767,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                 else
                     DiscountPaymentCondition = "DiscountPaymentConditionID=3";
             }
+
             if (bsFactoring)
             {
                 if (DiscountPaymentCondition.Length > 0)
@@ -5335,6 +5775,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                 else
                     DiscountPaymentCondition = "DiscountPaymentConditionID=4";
             }
+
             if (bsDelayOfPayment2)
             {
                 if (DiscountPaymentCondition.Length > 0)
@@ -5342,6 +5783,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                 else
                     DiscountPaymentCondition = "DiscountPaymentConditionID=6";
             }
+
             if (bsHalfOfPayment2)
             {
                 if (DiscountPaymentCondition.Length > 0)
@@ -5363,7 +5805,8 @@ namespace Infinium.Modules.Marketing.NewOrders
             System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
             sw.Start();
             using (SqlDataAdapter DA = new SqlDataAdapter(@"SELECT * FROM MutualSettlementOrders
-                WHERE ClientID IN (SELECT ClientID FROM NewMegaOrders " + AgreementStatus + ")", ConnectionStrings.MarketingOrdersConnectionString))
+                WHERE ClientID IN (SELECT ClientID FROM NewMegaOrders " + AgreementStatus + ")",
+                       ConnectionStrings.MarketingOrdersConnectionString))
             {
                 OrdersInMutualSettlementTable.Clear();
                 DA.Fill(OrdersInMutualSettlementTable);
@@ -5375,7 +5818,8 @@ namespace Infinium.Modules.Marketing.NewOrders
 
         public bool IsOrderInMuttlement(int ClientID, int OrderNumber)
         {
-            DataRow[] rows = OrdersInMutualSettlementTable.Select("ClientID=" + ClientID + " AND OrderNumber=" + OrderNumber);
+            DataRow[] rows =
+                OrdersInMutualSettlementTable.Select("ClientID=" + ClientID + " AND OrderNumber=" + OrderNumber);
             return rows.Count() > 0;
         }
 
@@ -5401,7 +5845,8 @@ namespace Infinium.Modules.Marketing.NewOrders
 
             if (bsNotInProduction)
             {
-                MainProductionStatus = "((ProfilProductionStatusID=1 AND ProfilStorageStatusID=1 AND ProfilExpeditionStatusID=1 AND ProfilDispatchStatusID=1)" +
+                MainProductionStatus =
+                    "((ProfilProductionStatusID=1 AND ProfilStorageStatusID=1 AND ProfilExpeditionStatusID=1 AND ProfilDispatchStatusID=1)" +
                     " OR (TPSProductionStatusID=1 AND TPSStorageStatusID=1 AND TPSExpeditionStatusID=1 AND TPSDispatchStatusID=1))";
             }
 
@@ -5440,6 +5885,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                     MainProductionStatus = "(ProfilStorageStatusID=2 OR TPSStorageStatusID=2)";
                 }
             }
+
             if (bsOnExpedition)
             {
                 if (MainProductionStatus.Length > 0)
@@ -5451,6 +5897,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                     MainProductionStatus = "(ProfilExpeditionStatusID=2 OR TPSExpeditionStatusID=2)";
                 }
             }
+
             if (bsIsDispatched)
             {
                 if (MainProductionStatus.Length > 0)
@@ -5466,8 +5913,9 @@ namespace Infinium.Modules.Marketing.NewOrders
             if (MainProductionStatus.Length > 0)
                 MainProductionStatus = " AND (" + MainProductionStatus + ")";
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM NewMainOrders WHERE MegaOrderID = " + MegaOrderID + MainProductionStatus,
-                ConnectionStrings.MarketingOrdersConnectionString))
+            using (SqlDataAdapter DA = new SqlDataAdapter(
+                       "SELECT * FROM NewMainOrders WHERE MegaOrderID = " + MegaOrderID + MainProductionStatus,
+                       ConnectionStrings.MarketingOrdersConnectionString))
             {
                 MainOrdersDataTable.Clear();
                 DA.Fill(MainOrdersDataTable);
@@ -5489,7 +5937,8 @@ namespace Infinium.Modules.Marketing.NewOrders
         public decimal DiscountPaymentCondition(int DiscountPaymentConditionID)
         {
             decimal Discount = 0;
-            DataRow[] Rows = DiscountPaymentConditionsTable.Select("DiscountPaymentConditionID = " + DiscountPaymentConditionID);
+            DataRow[] Rows =
+                DiscountPaymentConditionsTable.Select("DiscountPaymentConditionID = " + DiscountPaymentConditionID);
             if (Rows.Count() > 0)
                 Discount = Convert.ToDecimal(Rows[0]["Discount"]);
             return Discount;
@@ -5503,20 +5952,24 @@ namespace Infinium.Modules.Marketing.NewOrders
             {
                 Discount = Convert.ToDecimal(Rows[0]["Discount"]);
             }
-            return (6 - Discount);
+
+            return 6 - Discount;
         }
 
-        public decimal DiscountFactoring(ref int DiscountFactoringID, ref int DaysCount, int CurrencyTypeID, string Name)
+        public decimal DiscountFactoring(ref int DiscountFactoringID, ref int DaysCount, int CurrencyTypeID,
+            string Name)
         {
             decimal Discount = 0;
-            DataRow[] Rows = DiscountFactoringTable.Select("CurrencyTypeID = " + CurrencyTypeID + " AND Name='" + Name + "'");
+            DataRow[] Rows =
+                DiscountFactoringTable.Select("CurrencyTypeID = " + CurrencyTypeID + " AND Name='" + Name + "'");
             if (Rows.Count() > 0)
             {
                 DiscountFactoringID = Convert.ToInt32(Rows[0]["DiscountFactoringID"]);
                 Discount = Convert.ToDecimal(Rows[0]["Discount"]);
                 DaysCount = Convert.ToInt32(Rows[0]["DaysCount"]);
             }
-            return (6 - Discount);
+
+            return 6 - Discount;
         }
 
         public string DiscountFactoringName(int DiscountFactoringID)
@@ -5527,6 +5980,7 @@ namespace Infinium.Modules.Marketing.NewOrders
             {
                 Name = Rows[0]["Name"].ToString();
             }
+
             return Name;
         }
 
@@ -5549,10 +6003,11 @@ namespace Infinium.Modules.Marketing.NewOrders
                 return 0;
 
             foreach (DataRow row in MainOrdersDataTable.Select("MainOrderID IN (" +
-                string.Join(",", NewMainOrders) + ")"))
+                                                               string.Join(",", NewMainOrders) + ")"))
             {
                 Square += Convert.ToDecimal(row["FrontsSquare"]);
             }
+
             Square = decimal.Round(Square, 2, MidpointRounding.AwayFromZero);
 
             return Square;
@@ -5575,7 +6030,8 @@ namespace Infinium.Modules.Marketing.NewOrders
 
             if (bsNotInProduction)
             {
-                MainProductionStatus = "((ProfilProductionStatusID=1 AND ProfilStorageStatusID=1 AND ProfilExpeditionStatusID=1 AND ProfilDispatchStatusID=1)" +
+                MainProductionStatus =
+                    "((ProfilProductionStatusID=1 AND ProfilStorageStatusID=1 AND ProfilExpeditionStatusID=1 AND ProfilDispatchStatusID=1)" +
                     " OR (TPSProductionStatusID=1 AND TPSStorageStatusID=1 AND TPSExpeditionStatusID=1 AND TPSDispatchStatusID=1))";
             }
 
@@ -5614,6 +6070,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                     MainProductionStatus = "(ProfilStorageStatusID=2 OR TPSStorageStatusID=3)";
                 }
             }
+
             if (bsOnExpedition)
             {
                 if (MainProductionStatus.Length > 0)
@@ -5625,6 +6082,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                     MainProductionStatus = "(ProfilExpeditionStatusID=2 OR TPSExpeditionStatusID=2)";
                 }
             }
+
             if (bsIsDispatched)
             {
                 if (MainProductionStatus.Length > 0)
@@ -5640,9 +6098,10 @@ namespace Infinium.Modules.Marketing.NewOrders
             if (MainProductionStatus.Length > 0)
                 MainProductionStatus = " AND (" + MainProductionStatus + ")";
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT SUM(FrontsSquare) AS FrontsSquare FROM NewMainOrders" +
-                " WHERE MegaOrderID IN (" + string.Join(",", NewMegaOrders) + ")" + MainProductionStatus,
-                ConnectionStrings.MarketingOrdersConnectionString))
+            using (SqlDataAdapter DA = new SqlDataAdapter(
+                       "SELECT SUM(FrontsSquare) AS FrontsSquare FROM NewMainOrders" +
+                       " WHERE MegaOrderID IN (" + string.Join(",", NewMegaOrders) + ")" + MainProductionStatus,
+                       ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (DataTable DT = new DataTable())
                 {
@@ -5658,8 +6117,9 @@ namespace Infinium.Modules.Marketing.NewOrders
 
         private int GetNextMegaNumber(int ClientID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT MAX(OrderNumber) AS NEXT FROM NewMegaOrders WHERE ClientID = " + ClientID,
-                ConnectionStrings.MarketingOrdersConnectionString))
+            using (SqlDataAdapter DA = new SqlDataAdapter(
+                       "SELECT MAX(OrderNumber) AS NEXT FROM NewMegaOrders WHERE ClientID = " + ClientID,
+                       ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (DataTable DT = new DataTable())
                 {
@@ -5676,8 +6136,9 @@ namespace Infinium.Modules.Marketing.NewOrders
         public void CreateNewMegaOrder(int ClientID)
         {
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM NewMegaOrders" +
-               " WHERE ClientID = " + ClientID +
-               " ORDER BY OrderNumber", ConnectionStrings.MarketingOrdersConnectionString))
+                                                          " WHERE ClientID = " + ClientID +
+                                                          " ORDER BY OrderNumber",
+                       ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
                 {
@@ -5712,7 +6173,8 @@ namespace Infinium.Modules.Marketing.NewOrders
             MainOrdersDataTable.Rows.Add(Row);
 
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM NewMainOrders" +
-                " WHERE MegaOrderID = " + CurrentMegaOrderID, ConnectionStrings.MarketingOrdersConnectionString))
+                                                          " WHERE MegaOrderID = " + CurrentMegaOrderID,
+                       ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
                 {
@@ -5724,17 +6186,20 @@ namespace Infinium.Modules.Marketing.NewOrders
 
             MainOrdersBindingSource.MoveLast();
 
-            CurrentMainOrderID = Convert.ToInt32(MainOrdersDataTable.Rows[MainOrdersDataTable.Rows.Count - 1]["MainOrderID"]);
+            CurrentMainOrderID =
+                Convert.ToInt32(MainOrdersDataTable.Rows[MainOrdersDataTable.Rows.Count - 1]["MainOrderID"]);
         }
 
         public void SaveOrder(int MainOrderID, string Notes, bool IsSample, int FactoryID)
         {
             for (int i = 0; i < 3; i++)
             {
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT MainOrderID, MegaOrderID, IsSample, Notes, FactoryID," +
-                    " TPSProductionStatusID, TPSStorageStatusID, TPSExpeditionStatusID, TPSDispatchStatusID," +
-                    " ProfilProductionStatusID, ProfilStorageStatusID, ProfilExpeditionStatusID, ProfilDispatchStatusID" +
-                    " FROM NewMainOrders WHERE MainOrderID = " + MainOrderID, ConnectionStrings.MarketingOrdersConnectionString))
+                using (SqlDataAdapter DA = new SqlDataAdapter(
+                           "SELECT MainOrderID, MegaOrderID, IsSample, Notes, FactoryID," +
+                           " TPSProductionStatusID, TPSStorageStatusID, TPSExpeditionStatusID, TPSDispatchStatusID," +
+                           " ProfilProductionStatusID, ProfilStorageStatusID, ProfilExpeditionStatusID, ProfilDispatchStatusID" +
+                           " FROM NewMainOrders WHERE MainOrderID = " + MainOrderID,
+                           ConnectionStrings.MarketingOrdersConnectionString))
                 {
                     using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
                     {
@@ -5795,7 +6260,8 @@ namespace Infinium.Modules.Marketing.NewOrders
                                 break;
                             }
                             catch
-                            { }
+                            {
+                            }
 
                         }
                     }
@@ -5813,10 +6279,12 @@ namespace Infinium.Modules.Marketing.NewOrders
         {
             for (int i = 0; i < 3; i++)
             {
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT MainOrderID, MegaOrderID, IsSample, Notes, FactoryID," +
-                    " TPSProductionStatusID, TPSStorageStatusID, TPSExpeditionStatusID, TPSDispatchStatusID," +
-                    " ProfilProductionStatusID, ProfilStorageStatusID, ProfilExpeditionStatusID, ProfilDispatchStatusID" +
-                    " FROM NewMainOrders WHERE MainOrderID = " + CurrentMainOrderID, ConnectionStrings.MarketingOrdersConnectionString))
+                using (SqlDataAdapter DA = new SqlDataAdapter(
+                           "SELECT MainOrderID, MegaOrderID, IsSample, Notes, FactoryID," +
+                           " TPSProductionStatusID, TPSStorageStatusID, TPSExpeditionStatusID, TPSDispatchStatusID," +
+                           " ProfilProductionStatusID, ProfilStorageStatusID, ProfilExpeditionStatusID, ProfilDispatchStatusID" +
+                           " FROM NewMainOrders WHERE MainOrderID = " + CurrentMainOrderID,
+                           ConnectionStrings.MarketingOrdersConnectionString))
                 {
                     using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
                     {
@@ -5882,6 +6350,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                                     DT.Rows[0]["TPSDispatchStatusID"] = 0;
                                 }
                             }
+
                             //if (FactoryID == 2)
                             //{
                             //    if (Convert.ToInt32(DT.Rows[0]["ProfilProductionStatusID"]) != 0)
@@ -5899,7 +6368,8 @@ namespace Infinium.Modules.Marketing.NewOrders
                                 break;
                             }
                             catch
-                            { }
+                            {
+                            }
 
                         }
                     }
@@ -5909,8 +6379,9 @@ namespace Infinium.Modules.Marketing.NewOrders
 
         public void OrdersSet(int[] MainOrdersID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM NewFrontsOrders WHERE NeedCalcPrice=0 AND MainOrderID IN (" +
-                string.Join(",", MainOrdersID) + ")", ConnectionStrings.MarketingOrdersConnectionString))
+            using (SqlDataAdapter DA = new SqlDataAdapter(
+                       "SELECT * FROM NewFrontsOrders WHERE NeedCalcPrice=0 AND MainOrderID IN (" +
+                       string.Join(",", MainOrdersID) + ")", ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
                 {
@@ -5934,8 +6405,9 @@ namespace Infinium.Modules.Marketing.NewOrders
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM NewDecorOrders WHERE NeedCalcPrice=0 AND MainOrderID IN (" +
-                string.Join(",", MainOrdersID) + ")", ConnectionStrings.MarketingOrdersConnectionString))
+            using (SqlDataAdapter DA = new SqlDataAdapter(
+                       "SELECT * FROM NewDecorOrders WHERE NeedCalcPrice=0 AND MainOrderID IN (" +
+                       string.Join(",", MainOrdersID) + ")", ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
                 {
@@ -5959,8 +6431,9 @@ namespace Infinium.Modules.Marketing.NewOrders
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM NewMainOrders WHERE MainOrderID IN (" + string.Join(",", MainOrdersID) + ")",
-                    ConnectionStrings.MarketingOrdersConnectionString))
+            using (SqlDataAdapter DA = new SqlDataAdapter(
+                       "SELECT * FROM NewMainOrders WHERE MainOrderID IN (" + string.Join(",", MainOrdersID) + ")",
+                       ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
                 {
@@ -5976,6 +6449,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                                 MRow["MainOrderID"] = MainOrdersID[i];
                             }
                         }
+
                         DA.Update(DT);
                     }
                 }
@@ -6004,8 +6478,9 @@ namespace Infinium.Modules.Marketing.NewOrders
             ((DataRowView)MegaOrdersBindingSource.Current).Row["AgreementStatusID"] = 1;
 
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM NewMegaOrders" +
-                " WHERE MegaOrderID = " + MegaOrderID +
-                " ORDER BY OrderNumber", ConnectionStrings.MarketingOrdersConnectionString))
+                                                          " WHERE MegaOrderID = " + MegaOrderID +
+                                                          " ORDER BY OrderNumber",
+                       ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
                 {
@@ -6025,8 +6500,30 @@ namespace Infinium.Modules.Marketing.NewOrders
             ((DataRowView)MegaOrdersBindingSource.Current).Row["AgreementStatusID"] = AgreementStatusID;
 
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM NewMegaOrders" +
-                " WHERE MegaOrderID = " + MegaOrderID +
-                " ORDER BY OrderNumber", ConnectionStrings.MarketingOrdersConnectionString))
+                                                          " WHERE MegaOrderID = " + MegaOrderID +
+                                                          " ORDER BY OrderNumber",
+                       ConnectionStrings.MarketingOrdersConnectionString))
+            {
+                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                {
+                    DA.Update(MegaOrdersDataTable);
+                }
+            }
+        }
+
+        public void SetAgredDate(DateTime AgreedDate)
+        {
+            if (MegaOrdersBindingSource.Count == 0)
+                return;
+
+            int MegaOrderID = Convert.ToInt32(((DataRowView)MegaOrdersBindingSource.Current).Row["MegaOrderID"]);
+
+            ((DataRowView)MegaOrdersBindingSource.Current).Row["ConfirmDateTime"] = AgreedDate;
+
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM NewMegaOrders" +
+                                                          " WHERE MegaOrderID = " + MegaOrderID +
+                                                          " ORDER BY OrderNumber",
+                       ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
                 {
@@ -6040,7 +6537,8 @@ namespace Infinium.Modules.Marketing.NewOrders
             DataTable DT = MegaOrdersDataTable.Copy();
             DT.Columns.Remove("ClientName");
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM NewMegaOrders" +
-                " ORDER BY OrderNumber", ConnectionStrings.MarketingOrdersConnectionString))
+                                                          " ORDER BY OrderNumber",
+                       ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
                 {
@@ -6056,7 +6554,9 @@ namespace Infinium.Modules.Marketing.NewOrders
             int MegaOrderID = Convert.ToInt32(((DataRowView)MegaOrdersBindingSource.Current).Row["MegaOrderID"]);
             try
             {
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM NewMegaOrders WHERE MegaOrderID=" + MegaOrderID, ConnectionStrings.MarketingOrdersConnectionString))
+                using (SqlDataAdapter DA = new SqlDataAdapter(
+                           "SELECT * FROM NewMegaOrders WHERE MegaOrderID=" + MegaOrderID,
+                           ConnectionStrings.MarketingOrdersConnectionString))
                 {
                     using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
                     {
@@ -6067,6 +6567,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                                 DT.Rows[0]["AgreementStatusID"] = 2;
                                 DT.Rows[0]["ConfirmDateTime"] = Security.GetCurrentDate();
                             }
+
                             DA.Update(DT);
                         }
                     }
@@ -6084,10 +6585,7 @@ namespace Infinium.Modules.Marketing.NewOrders
 
         public int MegaOrdersCount
         {
-            get
-            {
-                return MegaOrdersBindingSource.Count;
-            }
+            get { return MegaOrdersBindingSource.Count; }
         }
 
         public static int GetClientCountry(int ClientID)
@@ -6095,8 +6593,9 @@ namespace Infinium.Modules.Marketing.NewOrders
             int ClientCountryID = 0;
             using (DataTable DT = new DataTable())
             {
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT ClientID, CountryID FROM Clients WHERE ClientID=" + ClientID,
-                    ConnectionStrings.MarketingReferenceConnectionString))
+                using (SqlDataAdapter DA = new SqlDataAdapter(
+                           "SELECT ClientID, CountryID FROM Clients WHERE ClientID=" + ClientID,
+                           ConnectionStrings.MarketingReferenceConnectionString))
                 {
                     DA.Fill(DT);
                     if (DT.Rows.Count > 0)
@@ -6114,8 +6613,9 @@ namespace Infinium.Modules.Marketing.NewOrders
             int DelayOfPayment = 0;
             using (DataTable DT = new DataTable())
             {
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT ClientID, DelayOfPayment FROM Clients WHERE ClientID=" + ClientID,
-                    ConnectionStrings.MarketingReferenceConnectionString))
+                using (SqlDataAdapter DA = new SqlDataAdapter(
+                           "SELECT ClientID, DelayOfPayment FROM Clients WHERE ClientID=" + ClientID,
+                           ConnectionStrings.MarketingReferenceConnectionString))
                 {
                     DA.Fill(DT);
                     if (DT.Rows.Count > 0)
@@ -6124,6 +6624,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                     }
                 }
             }
+
             return DelayOfPayment;
         }
 
@@ -6132,8 +6633,9 @@ namespace Infinium.Modules.Marketing.NewOrders
             string Login = "unnamed";
             using (DataTable DT = new DataTable())
             {
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT ClientID, Login FROM Clients WHERE ClientID=" + ClientID,
-                    ConnectionStrings.MarketingReferenceConnectionString))
+                using (SqlDataAdapter DA = new SqlDataAdapter(
+                           "SELECT ClientID, Login FROM Clients WHERE ClientID=" + ClientID,
+                           ConnectionStrings.MarketingReferenceConnectionString))
                 {
                     DA.Fill(DT);
                     if (DT.Rows.Count > 0 && DT.Rows[0]["Login"] != DBNull.Value)
@@ -6149,6 +6651,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                             else if ((c > 'a' && c < 'z') || (c > 'A' && c < 'Z'))
                                 engCount++;
                         }
+
                         if (rusCount > engCount)
                             Login = "unnamed";
                     }
@@ -6161,15 +6664,18 @@ namespace Infinium.Modules.Marketing.NewOrders
         public bool CheckOrderInMuttlement(int ClientID, int OrderNumber)
         {
             bool OrderInMuttlement = false;
-            string SelectComand = @"SELECT * FROM MutualSettlementOrders WHERE ClientID=" + ClientID + " AND OrderNumber=" + OrderNumber;
+            string SelectComand = @"SELECT * FROM MutualSettlementOrders WHERE ClientID=" + ClientID +
+                                  " AND OrderNumber=" + OrderNumber;
             using (DataTable DT = new DataTable())
             {
-                using (SqlDataAdapter DA = new SqlDataAdapter(SelectComand, ConnectionStrings.MarketingOrdersConnectionString))
+                using (SqlDataAdapter DA =
+                       new SqlDataAdapter(SelectComand, ConnectionStrings.MarketingOrdersConnectionString))
                 {
                     if (DA.Fill(DT) > 0)
                         OrderInMuttlement = true;
                 }
             }
+
             return OrderInMuttlement;
         }
 
@@ -6180,6 +6686,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                 CurrentMainOrderID = -1;
                 return;
             }
+
             if (((DataRowView)MainOrdersBindingSource.Current).Row["MainOrderID"] == DBNull.Value)
                 return;
             else
@@ -6190,7 +6697,8 @@ namespace Infinium.Modules.Marketing.NewOrders
         {
             get
             {
-                if (MegaOrdersBindingSource.Count == 0 || ((DataRowView)MegaOrdersBindingSource.Current).Row["CreatedByClient"] == DBNull.Value)
+                if (MegaOrdersBindingSource.Count == 0 ||
+                    ((DataRowView)MegaOrdersBindingSource.Current).Row["CreatedByClient"] == DBNull.Value)
                     return false;
                 else
                     return Convert.ToBoolean(((DataRowView)MegaOrdersBindingSource.Current).Row["CreatedByClient"]);
@@ -6202,7 +6710,8 @@ namespace Infinium.Modules.Marketing.NewOrders
             ArrayList NewMainOrders = new ArrayList();
 
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT MainOrderID FROM NewMainOrders" +
-                " WHERE MegaOrderID IN (" + string.Join(",", NewMegaOrders) + ")", ConnectionStrings.MarketingOrdersConnectionString))
+                                                          " WHERE MegaOrderID IN (" + string.Join(",", NewMegaOrders) +
+                                                          ")", ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (DataTable DT = new DataTable())
                 {
@@ -6278,7 +6787,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                 int Min = rows.Min();
                 int Max = rows.Max();
 
-                return (Min == Max);
+                return Min == Max;
             }
         }
 
@@ -6287,8 +6796,9 @@ namespace Infinium.Modules.Marketing.NewOrders
             int AgreementStatusID = 0;
 
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT AgreementStatusID" +
-                " FROM NewMegaOrders WHERE MegaOrderID IN (" + string.Join(",", MegaOrderIDs) + ")",
-                ConnectionStrings.MarketingOrdersConnectionString))
+                                                          " FROM NewMegaOrders WHERE MegaOrderID IN (" +
+                                                          string.Join(",", MegaOrderIDs) + ")",
+                       ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
                 {
@@ -6356,7 +6866,8 @@ namespace Infinium.Modules.Marketing.NewOrders
             //    return false;
             //}
 
-            int AgreementStatusID = Convert.ToInt32(((DataRowView)MegaOrdersBindingSource.Current).Row["AgreementStatusID"]);
+            int AgreementStatusID =
+                Convert.ToInt32(((DataRowView)MegaOrdersBindingSource.Current).Row["AgreementStatusID"]);
 
             if (AgreementStatusID == 0)
                 return false;
@@ -6367,7 +6878,7 @@ namespace Infinium.Modules.Marketing.NewOrders
         public bool CanRemoveMegaOrder()
         {
             if (((DataRowView)MegaOrdersBindingSource.Current).Row["AgreementStatusID"].ToString() == "2" ||
-                  ((DataRowView)MegaOrdersBindingSource.Current).Row["AgreementStatusID"].ToString() == "1")
+                ((DataRowView)MegaOrdersBindingSource.Current).Row["AgreementStatusID"].ToString() == "1")
                 return true;
 
             return false;
@@ -6472,6 +6983,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                     return false;
                 }
             }
+
             GetCurrentMainOrder();
 
             int ClientID = Convert.ToInt32(((DataRowView)MegaOrdersBindingSource.Current)["ClientID"]);
@@ -6514,16 +7026,19 @@ namespace Infinium.Modules.Marketing.NewOrders
             Row[0].Delete();
 
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM NewMainOrders" +
-                " WHERE MegaOrderID = " + CurrentMegaOrderID, ConnectionStrings.MarketingOrdersConnectionString))
+                                                          " WHERE MegaOrderID = " + CurrentMegaOrderID,
+                       ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
                 {
                     DA.Update(MainOrdersDataTable);
                 }
             }
+
             using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM PackageDetails" +
-                " WHERE PackageID IN (SELECT PackageID FROM Packages WHERE MainOrderID =" + CurrentMainOrderID + ")",
-                ConnectionStrings.MarketingOrdersConnectionString))
+                                                          " WHERE PackageID IN (SELECT PackageID FROM Packages WHERE MainOrderID =" +
+                                                          CurrentMainOrderID + ")",
+                       ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
                 {
@@ -6533,9 +7048,10 @@ namespace Infinium.Modules.Marketing.NewOrders
                     }
                 }
             }
+
             using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM Packages" +
-                " WHERE MainOrderID =" + CurrentMainOrderID,
-                ConnectionStrings.MarketingOrdersConnectionString))
+                                                          " WHERE MainOrderID =" + CurrentMainOrderID,
+                       ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
                 {
@@ -6545,8 +7061,10 @@ namespace Infinium.Modules.Marketing.NewOrders
                     }
                 }
             }
+
             using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM MainOrders" +
-                " WHERE MainOrderID = " + CurrentMainOrderID, ConnectionStrings.MarketingOrdersConnectionString))
+                                                          " WHERE MainOrderID = " + CurrentMainOrderID,
+                       ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
                 {
@@ -6556,8 +7074,10 @@ namespace Infinium.Modules.Marketing.NewOrders
                     }
                 }
             }
+
             using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM BatchDetails" +
-                " WHERE MainOrderID = " + CurrentMainOrderID, ConnectionStrings.MarketingOrdersConnectionString))
+                                                          " WHERE MainOrderID = " + CurrentMainOrderID,
+                       ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
                 {
@@ -6597,16 +7117,19 @@ namespace Infinium.Modules.Marketing.NewOrders
             Row[0].Delete();
 
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM NewMainOrders" +
-                " WHERE MegaOrderID = " + CurrentMegaOrderID, ConnectionStrings.MarketingOrdersConnectionString))
+                                                          " WHERE MegaOrderID = " + CurrentMegaOrderID,
+                       ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
                 {
                     DA.Update(MainOrdersDataTable);
                 }
             }
+
             using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM PackageDetails" +
-                " WHERE PackageID IN (SELECT PackageID FROM Packages WHERE MainOrderID =" + CurrentMainOrderID + ")",
-                ConnectionStrings.MarketingOrdersConnectionString))
+                                                          " WHERE PackageID IN (SELECT PackageID FROM Packages WHERE MainOrderID =" +
+                                                          CurrentMainOrderID + ")",
+                       ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
                 {
@@ -6616,9 +7139,10 @@ namespace Infinium.Modules.Marketing.NewOrders
                     }
                 }
             }
+
             using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM Packages" +
-                " WHERE MainOrderID =" + CurrentMainOrderID,
-                ConnectionStrings.MarketingOrdersConnectionString))
+                                                          " WHERE MainOrderID =" + CurrentMainOrderID,
+                       ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
                 {
@@ -6628,8 +7152,10 @@ namespace Infinium.Modules.Marketing.NewOrders
                     }
                 }
             }
+
             using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM MainOrders" +
-                " WHERE MainOrderID = " + CurrentMainOrderID, ConnectionStrings.MarketingOrdersConnectionString))
+                                                          " WHERE MainOrderID = " + CurrentMainOrderID,
+                       ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
                 {
@@ -6639,8 +7165,10 @@ namespace Infinium.Modules.Marketing.NewOrders
                     }
                 }
             }
+
             using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM BatchDetails" +
-                " WHERE MainOrderID = " + CurrentMainOrderID, ConnectionStrings.MarketingOrdersConnectionString))
+                                                          " WHERE MainOrderID = " + CurrentMainOrderID,
+                       ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
                 {
@@ -6689,16 +7217,19 @@ namespace Infinium.Modules.Marketing.NewOrders
             }
 
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM NewMainOrders" +
-                " WHERE MegaOrderID = " + CurrentMegaOrderID, ConnectionStrings.MarketingOrdersConnectionString))
+                                                          " WHERE MegaOrderID = " + CurrentMegaOrderID,
+                       ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
                 {
                     DA.Update(MainOrdersDataTable);
                 }
             }
+
             using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM PackageDetails" +
-                " WHERE PackageID IN (SELECT PackageID FROM Packages WHERE MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID =" + MegaOrderID + "))",
-                ConnectionStrings.MarketingOrdersConnectionString))
+                                                          " WHERE PackageID IN (SELECT PackageID FROM Packages WHERE MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID =" +
+                                                          MegaOrderID + "))",
+                       ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
                 {
@@ -6708,9 +7239,11 @@ namespace Infinium.Modules.Marketing.NewOrders
                     }
                 }
             }
+
             using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM Packages" +
-                " WHERE MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID =" + MegaOrderID + ")",
-                ConnectionStrings.MarketingOrdersConnectionString))
+                                                          " WHERE MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID =" +
+                                                          MegaOrderID + ")",
+                       ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
                 {
@@ -6720,9 +7253,11 @@ namespace Infinium.Modules.Marketing.NewOrders
                     }
                 }
             }
+
             using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM BatchDetails" +
-                " WHERE MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID =" + MegaOrderID + ")",
-                ConnectionStrings.MarketingOrdersConnectionString))
+                                                          " WHERE MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID =" +
+                                                          MegaOrderID + ")",
+                       ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
                 {
@@ -6732,8 +7267,10 @@ namespace Infinium.Modules.Marketing.NewOrders
                     }
                 }
             }
+
             using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM MainOrders" +
-                " WHERE MegaOrderID = " + MegaOrderID, ConnectionStrings.MarketingOrdersConnectionString))
+                                                          " WHERE MegaOrderID = " + MegaOrderID,
+                       ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
                 {
@@ -6743,19 +7280,23 @@ namespace Infinium.Modules.Marketing.NewOrders
                     }
                 }
             }
+
             MegaOrdersBindingSource.RemoveCurrent();
 
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM NewMegaOrders" +
-                " WHERE MegaOrderID = " + MegaOrderID +
-                " ORDER BY OrderNumber", ConnectionStrings.MarketingOrdersConnectionString))
+                                                          " WHERE MegaOrderID = " + MegaOrderID +
+                                                          " ORDER BY OrderNumber",
+                       ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
                 {
                     DA.Update(MegaOrdersDataTable);
                 }
             }
+
             using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM MegaOrders" +
-                " WHERE MegaOrderID = " + MegaOrderID, ConnectionStrings.MarketingOrdersConnectionString))
+                                                          " WHERE MegaOrderID = " + MegaOrderID,
+                       ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
                 {
@@ -6801,16 +7342,19 @@ namespace Infinium.Modules.Marketing.NewOrders
             }
 
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM NewMainOrders" +
-                " WHERE MegaOrderID = " + CurrentMegaOrderID, ConnectionStrings.MarketingOrdersConnectionString))
+                                                          " WHERE MegaOrderID = " + CurrentMegaOrderID,
+                       ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
                 {
                     DA.Update(MainOrdersDataTable);
                 }
             }
+
             using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM PackageDetails" +
-                " WHERE PackageID IN (SELECT PackageID FROM Packages WHERE MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID =" + MegaOrderID + "))",
-                ConnectionStrings.MarketingOrdersConnectionString))
+                                                          " WHERE PackageID IN (SELECT PackageID FROM Packages WHERE MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID =" +
+                                                          MegaOrderID + "))",
+                       ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
                 {
@@ -6820,9 +7364,11 @@ namespace Infinium.Modules.Marketing.NewOrders
                     }
                 }
             }
+
             using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM Packages" +
-                " WHERE MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID =" + MegaOrderID + ")",
-                ConnectionStrings.MarketingOrdersConnectionString))
+                                                          " WHERE MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID =" +
+                                                          MegaOrderID + ")",
+                       ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
                 {
@@ -6832,9 +7378,11 @@ namespace Infinium.Modules.Marketing.NewOrders
                     }
                 }
             }
+
             using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM BatchDetails" +
-                " WHERE MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID =" + MegaOrderID + ")",
-                ConnectionStrings.MarketingOrdersConnectionString))
+                                                          " WHERE MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID =" +
+                                                          MegaOrderID + ")",
+                       ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
                 {
@@ -6844,8 +7392,10 @@ namespace Infinium.Modules.Marketing.NewOrders
                     }
                 }
             }
+
             using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM MainOrders" +
-                " WHERE MegaOrderID = " + MegaOrderID, ConnectionStrings.MarketingOrdersConnectionString))
+                                                          " WHERE MegaOrderID = " + MegaOrderID,
+                       ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
                 {
@@ -6859,16 +7409,19 @@ namespace Infinium.Modules.Marketing.NewOrders
             MegaOrdersBindingSource.RemoveCurrent();
 
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM NewMegaOrders" +
-                " WHERE MegaOrderID = " + MegaOrderID +
-                " ORDER BY OrderNumber", ConnectionStrings.MarketingOrdersConnectionString))
+                                                          " WHERE MegaOrderID = " + MegaOrderID +
+                                                          " ORDER BY OrderNumber",
+                       ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
                 {
                     DA.Update(MegaOrdersDataTable);
                 }
             }
+
             using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM MegaOrders" +
-                " WHERE MegaOrderID = " + MegaOrderID, ConnectionStrings.MarketingOrdersConnectionString))
+                                                          " WHERE MegaOrderID = " + MegaOrderID,
+                       ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
                 {
@@ -6893,8 +7446,9 @@ namespace Infinium.Modules.Marketing.NewOrders
         public void SetNotAgreed(int MegaOrderID)
         {
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT MegaOrderID, CurrencyOrderCost," +
-                " CurrencyTransportCost, CurrencyAdditionalCost, CurrencyTotalCost, CurrencyTypeID, Rate, ConfirmDateTime, AgreementStatusID, CreatedByClient" +
-                " FROM NewMegaOrders WHERE MegaOrderID = " + MegaOrderID, ConnectionStrings.MarketingOrdersConnectionString))
+                                                          " CurrencyTransportCost, CurrencyAdditionalCost, CurrencyTotalCost, CurrencyTypeID, Rate, ConfirmDateTime, AgreementStatusID, CreatedByClient" +
+                                                          " FROM NewMegaOrders WHERE MegaOrderID = " + MegaOrderID,
+                       ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
                 {
@@ -6926,8 +7480,9 @@ namespace Infinium.Modules.Marketing.NewOrders
 
         public void SummaryCost(int MegaOrderID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM NewMainOrders WHERE MegaOrderID = " + MegaOrderID,
-                ConnectionStrings.MarketingOrdersConnectionString))
+            using (SqlDataAdapter DA = new SqlDataAdapter(
+                       "SELECT * FROM NewMainOrders WHERE MegaOrderID = " + MegaOrderID,
+                       ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (DataTable DT = new DataTable())
                 {
@@ -6973,10 +7528,11 @@ namespace Infinium.Modules.Marketing.NewOrders
                                 Factory = 2;
                     }
 
-                    using (SqlDataAdapter MegaDA = new SqlDataAdapter("SELECT MegaOrderID, OrderCost, CurrencyOrderCost, Weight, Square," +
-                        " FactoryID, TotalCost, ProfilTotalDiscount, TPSTotalDiscount" +
-                        " FROM NewMegaOrders WHERE MegaOrderID = " + MegaOrderID,
-                        ConnectionStrings.MarketingOrdersConnectionString))
+                    using (SqlDataAdapter MegaDA = new SqlDataAdapter(
+                               "SELECT MegaOrderID, OrderCost, CurrencyOrderCost, Weight, Square," +
+                               " FactoryID, TotalCost, ProfilTotalDiscount, TPSTotalDiscount" +
+                               " FROM NewMegaOrders WHERE MegaOrderID = " + MegaOrderID,
+                               ConnectionStrings.MarketingOrdersConnectionString))
                     {
                         using (SqlCommandBuilder CB = new SqlCommandBuilder(MegaDA))
                         {
@@ -7011,7 +7567,8 @@ namespace Infinium.Modules.Marketing.NewOrders
             //MessageBox.Show("Выполняется функция GetMainOrdersCost");
             decimal OrderCost = 0;
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT OrderCost FROM NewMainOrders" +
-                " WHERE MainOrderID IN (" + string.Join(",", NewMainOrders) + ")", ConnectionStrings.MarketingOrdersConnectionString))
+                                                          " WHERE MainOrderID IN (" + string.Join(",", NewMainOrders) +
+                                                          ")", ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (DataTable DT = new DataTable())
                 {
@@ -7034,8 +7591,9 @@ namespace Infinium.Modules.Marketing.NewOrders
 
             using (DataTable DT = new DataTable())
             {
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT ClientName FROM Clients WHERE ClientID = " + ClientID,
-                    ConnectionStrings.MarketingReferenceConnectionString))
+                using (SqlDataAdapter DA = new SqlDataAdapter(
+                           "SELECT ClientName FROM Clients WHERE ClientID = " + ClientID,
+                           ConnectionStrings.MarketingReferenceConnectionString))
                 {
                     DA.Fill(DT);
                     if (DT.Rows.Count > 0)
@@ -7091,6 +7649,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                                                 EuroXML = reader.ReadOuterXml();
                                             }
                                         }
+
                                         if (reader.Name == "Id")
                                         {
                                             if (reader.Value == "19")
@@ -7106,6 +7665,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                             break;
                     }
                 }
+
                 XmlDocument euroXmlDocument = new XmlDocument();
                 euroXmlDocument.LoadXml(EuroXML);
                 XmlNode xmlNode = euroXmlDocument.SelectSingleNode("Currency/Rate");
@@ -7121,6 +7681,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                 MessageBox.Show(ex.Message + " . КУРСЫ МОЖНО БУДЕТ ВВЕСТИ ВРУЧНУЮ");
                 return false;
             }
+
             return true;
         }
 
@@ -7172,6 +7733,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                                                 EuroXML = reader1.ReadOuterXml();
                                             }
                                         }
+
                                         if (reader1.Name == "ID")
                                         {
                                             if (reader1.Value == "R01235")
@@ -7187,6 +7749,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                             break;
                     }
                 }
+
                 XmlDocument euroXmlDocument = new XmlDocument();
                 euroXmlDocument.LoadXml(EuroXML);
                 XmlDocument usdXmlDocument = new XmlDocument();
@@ -7202,6 +7765,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                 MessageBox.Show(ex.Message + " . КУРСЫ МОЖНО БУДЕТ ВВЕСТИ ВРУЧНУЮ");
                 return false;
             }
+
             return true;
         }
 
@@ -7211,8 +7775,9 @@ namespace Infinium.Modules.Marketing.NewOrders
 
             using (DataTable DT = new DataTable())
             {
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT ClientName FROM Clients WHERE ClientID = " + ClientID,
-                    ConnectionStrings.MarketingReferenceConnectionString))
+                using (SqlDataAdapter DA = new SqlDataAdapter(
+                           "SELECT ClientName FROM Clients WHERE ClientID = " + ClientID,
+                           ConnectionStrings.MarketingReferenceConnectionString))
                 {
                     DA.Fill(DT);
                     if (DT.Rows.Count > 0)
@@ -7225,7 +7790,9 @@ namespace Infinium.Modules.Marketing.NewOrders
 
         public void LastCalcDate(int MegaOrderID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT MegaOrderID, LastCalcDate, LastCalcUserID FROM NewMegaOrders WHERE MegaOrderID = " + MegaOrderID, ConnectionStrings.MarketingOrdersConnectionString))
+            using (SqlDataAdapter DA = new SqlDataAdapter(
+                       "SELECT MegaOrderID, LastCalcDate, LastCalcUserID FROM NewMegaOrders WHERE MegaOrderID = " +
+                       MegaOrderID, ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
                 {
@@ -7265,8 +7832,8 @@ namespace Infinium.Modules.Marketing.NewOrders
             int MegaOrderID = Convert.ToInt32(((DataRowView)MegaOrdersBindingSource.Current).Row["MegaOrderID"]);
 
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT MegaOrderID, DesireDate" +
-                            " FROM NewMegaOrders WHERE MegaOrderID = " + MegaOrderID,
-                            ConnectionStrings.MarketingOrdersConnectionString))
+                                                          " FROM NewMegaOrders WHERE MegaOrderID = " + MegaOrderID,
+                       ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
                 {
@@ -7293,8 +7860,9 @@ namespace Infinium.Modules.Marketing.NewOrders
 
         public void SetFixedPaymentRate(int MegaOrderID, bool IsFixedPaymentRate)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter(@"SELECT MegaOrderID, FixedPaymentRate FROM NewMegaOrders WHERE MegaOrderID = " + MegaOrderID,
-                ConnectionStrings.MarketingOrdersConnectionString))
+            using (SqlDataAdapter DA = new SqlDataAdapter(
+                       @"SELECT MegaOrderID, FixedPaymentRate FROM NewMegaOrders WHERE MegaOrderID = " + MegaOrderID,
+                       ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
                 {
@@ -7312,19 +7880,23 @@ namespace Infinium.Modules.Marketing.NewOrders
             }
         }
 
-        public void SetCurrencyCost(decimal ComplaintProfilCost, decimal ComplaintTPSCost, string ComplaintNotes, bool IsComplaint, int DelayOfPayment,
-            decimal TransportCost, decimal AdditionalCost, int CurrencyTypeID, decimal OriginalCurrency, decimal PaymentCurrency,
-            int DiscountPaymentConditionID, int DiscountFactoringID, decimal ProfilDiscountOrderSum, decimal TPSDiscountOrderSum, decimal ProfilDiscountDirector, decimal TPSDiscountDirector,
+        public void SetCurrencyCost(decimal ComplaintProfilCost, decimal ComplaintTPSCost, string ComplaintNotes,
+            bool IsComplaint, int DelayOfPayment,
+            decimal TransportCost, decimal AdditionalCost, int CurrencyTypeID, decimal OriginalCurrency,
+            decimal PaymentCurrency,
+            int DiscountPaymentConditionID, int DiscountFactoringID, decimal ProfilDiscountOrderSum,
+            decimal TPSDiscountOrderSum, decimal ProfilDiscountDirector, decimal TPSDiscountDirector,
             decimal CurrencyTotalCost)
         {
             int MegaOrderID = Convert.ToInt32(((DataRowView)MegaOrdersBindingSource.Current).Row["MegaOrderID"]);
 
-            using (SqlDataAdapter DA = new SqlDataAdapter(@"SELECT MegaOrderID, OrderStatusID, AgreementStatusID, OrderCost,
+            using (SqlDataAdapter DA = new SqlDataAdapter(
+                       @"SELECT MegaOrderID, OrderStatusID, AgreementStatusID, OrderCost,
                 ComplaintProfilCost, ComplaintTPSCost, CurrencyComplaintProfilCost, CurrencyComplaintTPSCost, ComplaintNotes, IsComplaint,DelayOfPayment,
                 TransportCost, AdditionalCost, TotalCost, CurrencyOrderCost," +
-                " CurrencyTransportCost, CurrencyAdditionalCost, CurrencyTotalCost, CurrencyTypeID, Rate, PaymentRate, ConfirmDateTime, AgreementStatusID, DiscountPaymentConditionID, DiscountFactoringID, ProfilDiscountOrderSum, TPSDiscountOrderSum, ProfilDiscountDirector, TPSDiscountDirector" +
-                " FROM NewMegaOrders WHERE MegaOrderID = " + MegaOrderID,
-                ConnectionStrings.MarketingOrdersConnectionString))
+                       " CurrencyTransportCost, CurrencyAdditionalCost, CurrencyTotalCost, CurrencyTypeID, Rate, PaymentRate, ConfirmDateTime, AgreementStatusID, DiscountPaymentConditionID, DiscountFactoringID, ProfilDiscountOrderSum, TPSDiscountOrderSum, ProfilDiscountDirector, TPSDiscountDirector" +
+                       " FROM NewMegaOrders WHERE MegaOrderID = " + MegaOrderID,
+                       ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
                 {
@@ -7337,11 +7909,17 @@ namespace Infinium.Modules.Marketing.NewOrders
                         decimal OrderCost = Convert.ToDecimal(DT.Rows[0]["OrderCost"]);
                         //decimal CurrencyOrderCost = Convert.ToDecimal(DT.Rows[0]["CurrencyOrderCost"]);
                         decimal TotalCost = OrderCost + TransportCost + AdditionalCost;
-                        decimal CurrencyTransportCost = decimal.Round(TransportCost * PaymentCurrency, 2, MidpointRounding.AwayFromZero);
-                        decimal CurrencyAdditionalCost = decimal.Round(AdditionalCost * PaymentCurrency, 2, MidpointRounding.AwayFromZero);
-                        decimal CurrencyComplaintProfilCost = decimal.Round(ComplaintProfilCost * PaymentCurrency, 2, MidpointRounding.AwayFromZero);
-                        decimal CurrencyComplaintTPSCost = decimal.Round(ComplaintTPSCost * PaymentCurrency, 2, MidpointRounding.AwayFromZero);
-                        decimal CurrencyOrderCost = decimal.Round((CurrencyTotalCost - CurrencyTransportCost - CurrencyAdditionalCost), 2, MidpointRounding.AwayFromZero);
+                        decimal CurrencyTransportCost = decimal.Round(TransportCost * PaymentCurrency, 2,
+                            MidpointRounding.AwayFromZero);
+                        decimal CurrencyAdditionalCost = decimal.Round(AdditionalCost * PaymentCurrency, 2,
+                            MidpointRounding.AwayFromZero);
+                        decimal CurrencyComplaintProfilCost = decimal.Round(ComplaintProfilCost * PaymentCurrency, 2,
+                            MidpointRounding.AwayFromZero);
+                        decimal CurrencyComplaintTPSCost = decimal.Round(ComplaintTPSCost * PaymentCurrency, 2,
+                            MidpointRounding.AwayFromZero);
+                        decimal CurrencyOrderCost =
+                            decimal.Round(CurrencyTotalCost - CurrencyTransportCost - CurrencyAdditionalCost, 2,
+                                MidpointRounding.AwayFromZero);
                         OriginalCurrency = decimal.Round(OriginalCurrency, 4, MidpointRounding.AwayFromZero);
                         PaymentCurrency = decimal.Round(PaymentCurrency, 4, MidpointRounding.AwayFromZero);
 
@@ -7383,12 +7961,13 @@ namespace Infinium.Modules.Marketing.NewOrders
         public void SetCurrencyCost(int MegaOrderID,
             decimal CurrencyTotalCost)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter(@"SELECT MegaOrderID, OrderStatusID, AgreementStatusID, OrderCost,
+            using (SqlDataAdapter DA = new SqlDataAdapter(
+                       @"SELECT MegaOrderID, OrderStatusID, AgreementStatusID, OrderCost,
                 ComplaintProfilCost, ComplaintTPSCost, CurrencyComplaintProfilCost, CurrencyComplaintTPSCost, ComplaintNotes, IsComplaint,DelayOfPayment,
                 TransportCost, AdditionalCost, TotalCost, CurrencyOrderCost," +
-                " CurrencyTransportCost, CurrencyAdditionalCost, CurrencyTotalCost, CurrencyTypeID, Rate, PaymentRate, ConfirmDateTime, AgreementStatusID, DiscountPaymentConditionID, DiscountFactoringID, ProfilDiscountOrderSum, TPSDiscountOrderSum, ProfilDiscountDirector, TPSDiscountDirector" +
-                " FROM NewMegaOrders WHERE MegaOrderID = " + MegaOrderID,
-                ConnectionStrings.MarketingOrdersConnectionString))
+                       " CurrencyTransportCost, CurrencyAdditionalCost, CurrencyTotalCost, CurrencyTypeID, Rate, PaymentRate, ConfirmDateTime, AgreementStatusID, DiscountPaymentConditionID, DiscountFactoringID, ProfilDiscountOrderSum, TPSDiscountOrderSum, ProfilDiscountDirector, TPSDiscountDirector" +
+                       " FROM NewMegaOrders WHERE MegaOrderID = " + MegaOrderID,
+                       ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
                 {
@@ -7400,7 +7979,9 @@ namespace Infinium.Modules.Marketing.NewOrders
                         decimal CurrencyAdditionalCost = Convert.ToDecimal(DT.Rows[0]["CurrencyAdditionalCost"]);
                         decimal dPaymentCurrency = Convert.ToDecimal(DT.Rows[0]["PaymentRate"]);
 
-                        decimal CurrencyOrderCost = decimal.Round((CurrencyTotalCost - CurrencyTransportCost - CurrencyAdditionalCost), 2, MidpointRounding.AwayFromZero);
+                        decimal CurrencyOrderCost =
+                            decimal.Round(CurrencyTotalCost - CurrencyTransportCost - CurrencyAdditionalCost, 2,
+                                MidpointRounding.AwayFromZero);
 
                         DT.Rows[0]["CurrencyTotalCost"] = CurrencyTotalCost;
                         DT.Rows[0]["CurrencyOrderCost"] = CurrencyOrderCost;
@@ -7440,6 +8021,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                         RateExist = false;
                 }
             }
+
             Tuple<bool, decimal, decimal, decimal, decimal> tuple =
                 new Tuple<bool, decimal, decimal, decimal, decimal>(RateExist, usd, rub, byn, USDRUB);
             return tuple;
@@ -7461,15 +8043,18 @@ namespace Infinium.Modules.Marketing.NewOrders
                     }
                 }
             }
+
             return BYN;
         }
-        public void GetDateRates(DateTime DateTime, ref bool RateExist, ref decimal USD, ref decimal RUB, ref decimal BYN, ref decimal USDRUB)
+
+        public void GetDateRates(DateTime DateTime, ref bool RateExist, ref decimal USD, ref decimal RUB,
+            ref decimal BYN, ref decimal USDRUB)
         {
             using (DataTable DT = new DataTable())
             {
                 using (SqlDataAdapter DA = new SqlDataAdapter(@"SELECT * FROM DateRates WHERE CAST(Date AS Date) = 
                     '" + DateTime.ToString("yyyy-MM-dd") + "'",
-                    ConnectionStrings.MarketingReferenceConnectionString))
+                           ConnectionStrings.MarketingReferenceConnectionString))
                 {
                     DA.Fill(DT);
                     if (DT.Rows.Count > 0)
@@ -7486,6 +8071,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                         RateExist = false;
                 }
             }
+
             return;
         }
 
@@ -7493,9 +8079,10 @@ namespace Infinium.Modules.Marketing.NewOrders
         {
             using (DataTable DT = new DataTable())
             {
-                using (SqlDataAdapter DA = new SqlDataAdapter(@"SELECT TOP 0 * FROM DateRates WHERE CAST(Date AS Date) = 
+                using (SqlDataAdapter DA = new SqlDataAdapter(
+                           @"SELECT TOP 0 * FROM DateRates WHERE CAST(Date AS Date) = 
                     '" + DateTime.ToString("yyyy-MM-dd") + "' ORDER BY DateRateID DESC",
-                    ConnectionStrings.MarketingReferenceConnectionString))
+                           ConnectionStrings.MarketingReferenceConnectionString))
                 {
                     using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
                     {
@@ -7513,14 +8100,16 @@ namespace Infinium.Modules.Marketing.NewOrders
                     }
                 }
             }
+
             return;
         }
 
         public DataTable GetPermissions(int UserID, string FormName)
         {
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM UserRoles WHERE UserID = " + UserID +
-                " AND RoleID IN (SELECT RoleID FROM Roles WHERE ModuleID IN " +
-                " (SELECT ModuleID FROM Modules WHERE FormName = '" + FormName + "'))", ConnectionStrings.UsersConnectionString))
+                                                          " AND RoleID IN (SELECT RoleID FROM Roles WHERE ModuleID IN " +
+                                                          " (SELECT ModuleID FROM Modules WHERE FormName = '" +
+                                                          FormName + "'))", ConnectionStrings.UsersConnectionString))
             {
                 using (DataTable DT = new DataTable())
                 {
@@ -7535,12 +8124,15 @@ namespace Infinium.Modules.Marketing.NewOrders
         {
             DataTable TempDT = new DataTable();
             string SelectCommand = @"SELECT * FROM NewMegaOrders WHERE MegaOrderID = " + MegaOrderID;
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
+            using (SqlDataAdapter DA =
+                   new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
             {
                 DA.Fill(TempDT);
             }
+
             SelectCommand = @"SELECT TOP 0 * FROM NewMegaOrdersEvents";
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
+            using (SqlDataAdapter DA =
+                   new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
                 {
@@ -7557,6 +8149,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                             DT.Rows.Add(NewRow);
                             DA.Update(DT);
                         }
+
                         if (TempDT.Rows.Count > 0)
                         {
                             DataRow NewRow = DT.NewRow();
@@ -7586,12 +8179,15 @@ namespace Infinium.Modules.Marketing.NewOrders
         {
             DataTable TempDT = new DataTable();
             string SelectCommand = @"SELECT * FROM NewMegaOrders WHERE MegaOrderID = " + MegaOrderID;
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
+            using (SqlDataAdapter DA =
+                   new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
             {
                 DA.Fill(TempDT);
             }
+
             SelectCommand = @"SELECT * FROM MegaOrders WHERE MegaOrderID = " + MegaOrderID;
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
+            using (SqlDataAdapter DA =
+                   new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
                 {
@@ -7614,12 +8210,15 @@ namespace Infinium.Modules.Marketing.NewOrders
             TempDT.Dispose();
             TempDT = new DataTable();
             SelectCommand = @"SELECT * FROM NewMainOrders WHERE MegaOrderID = " + MegaOrderID;
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
+            using (SqlDataAdapter DA =
+                   new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
             {
                 DA.Fill(TempDT);
             }
+
             SelectCommand = @"SELECT * FROM MainOrders WHERE MegaOrderID = " + MegaOrderID;
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
+            using (SqlDataAdapter DA =
+                   new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
                 {
@@ -7636,6 +8235,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                                 NewRow.ItemArray = TempDT.Rows[i].ItemArray;
                                 DT.Rows.Add(NewRow);
                             }
+
                             DA.Update(DT);
                         }
                     }
@@ -7644,13 +8244,20 @@ namespace Infinium.Modules.Marketing.NewOrders
 
             TempDT.Dispose();
             TempDT = new DataTable();
-            SelectCommand = @"SELECT * FROM NewFrontsOrders WHERE NeedCalcPrice=0 AND MainOrderID IN (SELECT MainOrderID FROM NewMainOrders WHERE MegaOrderID = " + MegaOrderID + ")";
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
+            SelectCommand =
+                @"SELECT * FROM NewFrontsOrders WHERE NeedCalcPrice=0 AND MainOrderID IN (SELECT MainOrderID FROM NewMainOrders WHERE MegaOrderID = " +
+                MegaOrderID + ")";
+            using (SqlDataAdapter DA =
+                   new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
             {
                 DA.Fill(TempDT);
             }
-            SelectCommand = @"SELECT * FROM FrontsOrders WHERE MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = " + MegaOrderID + ")";
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
+
+            SelectCommand =
+                @"SELECT * FROM FrontsOrders WHERE MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = " +
+                MegaOrderID + ")";
+            using (SqlDataAdapter DA =
+                   new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
                 {
@@ -7673,7 +8280,8 @@ namespace Infinium.Modules.Marketing.NewOrders
                                         for (int j = 0; j < DT.Columns.Count; j++)
                                         {
                                             string ColumnName = DT.Columns[j].ColumnName;
-                                            if (ColumnName != "Height" && ColumnName != "Width" && ColumnName != "Length" && ColumnName != "Count")
+                                            if (ColumnName != "Height" && ColumnName != "Width" &&
+                                                ColumnName != "Length" && ColumnName != "Count")
                                                 Rows[0][DT.Columns[j].ColumnName] = TempDT.Rows[i][ColumnName];
                                         }
                                     }
@@ -7685,6 +8293,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                                     }
                                 }
                             }
+
                             DA.Update(DT);
                         }
                     }
@@ -7693,13 +8302,20 @@ namespace Infinium.Modules.Marketing.NewOrders
 
             TempDT.Dispose();
             TempDT = new DataTable();
-            SelectCommand = @"SELECT * FROM NewDecorOrders WHERE NeedCalcPrice=0 AND MainOrderID IN (SELECT MainOrderID FROM NewMainOrders WHERE MegaOrderID = " + MegaOrderID + ")";
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
+            SelectCommand =
+                @"SELECT * FROM NewDecorOrders WHERE NeedCalcPrice=0 AND MainOrderID IN (SELECT MainOrderID FROM NewMainOrders WHERE MegaOrderID = " +
+                MegaOrderID + ")";
+            using (SqlDataAdapter DA =
+                   new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
             {
                 DA.Fill(TempDT);
             }
-            SelectCommand = @"SELECT * FROM DecorOrders WHERE MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = " + MegaOrderID + ")";
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
+
+            SelectCommand =
+                @"SELECT * FROM DecorOrders WHERE MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = " +
+                MegaOrderID + ")";
+            using (SqlDataAdapter DA =
+                   new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
                 {
@@ -7723,7 +8339,8 @@ namespace Infinium.Modules.Marketing.NewOrders
                                         for (int j = 0; j < DT.Columns.Count; j++)
                                         {
                                             string ColumnName = DT.Columns[j].ColumnName;
-                                            if (ColumnName != "Height" && ColumnName != "Width" && ColumnName != "Length" && ColumnName != "Count")
+                                            if (ColumnName != "Height" && ColumnName != "Width" &&
+                                                ColumnName != "Length" && ColumnName != "Count")
                                                 Rows[0][DT.Columns[j].ColumnName] = TempDT.Rows[i][ColumnName];
                                         }
                                     }
@@ -7734,12 +8351,14 @@ namespace Infinium.Modules.Marketing.NewOrders
                                         DT.Rows.Add(NewRow);
                                     }
                                 }
+
                                 DA.Update(DT);
                             }
                         }
                     }
                 }
             }
+
             FixOrderEvent(MegaOrderID, "Заказ записан в таблицу MegaOrders");
         }
 
@@ -7747,12 +8366,15 @@ namespace Infinium.Modules.Marketing.NewOrders
         {
             DataTable TempDT = new DataTable();
             string SelectCommand = @"SELECT * FROM NewMegaOrders WHERE MegaOrderID = " + MegaOrderID;
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
+            using (SqlDataAdapter DA =
+                   new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
             {
                 DA.Fill(TempDT);
             }
+
             SelectCommand = @"SELECT * FROM MegaOrders WHERE MegaOrderID = " + MegaOrderID;
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
+            using (SqlDataAdapter DA =
+                   new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
                 {
@@ -7775,12 +8397,15 @@ namespace Infinium.Modules.Marketing.NewOrders
             TempDT.Dispose();
             TempDT = new DataTable();
             SelectCommand = @"SELECT * FROM NewMainOrders WHERE MegaOrderID = " + MegaOrderID;
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
+            using (SqlDataAdapter DA =
+                   new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
             {
                 DA.Fill(TempDT);
             }
+
             SelectCommand = @"SELECT * FROM MainOrders WHERE MegaOrderID = " + MegaOrderID;
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
+            using (SqlDataAdapter DA =
+                   new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
                 {
@@ -7797,6 +8422,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                                 NewRow.ItemArray = TempDT.Rows[i].ItemArray;
                                 DT.Rows.Add(NewRow);
                             }
+
                             DA.Update(DT);
                         }
                     }
@@ -7805,13 +8431,20 @@ namespace Infinium.Modules.Marketing.NewOrders
 
             TempDT.Dispose();
             TempDT = new DataTable();
-            SelectCommand = @"SELECT * FROM NewFrontsOrders WHERE NeedCalcPrice=0 AND MainOrderID IN (SELECT MainOrderID FROM NewMainOrders WHERE MegaOrderID = " + MegaOrderID + ")";
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
+            SelectCommand =
+                @"SELECT * FROM NewFrontsOrders WHERE NeedCalcPrice=0 AND MainOrderID IN (SELECT MainOrderID FROM NewMainOrders WHERE MegaOrderID = " +
+                MegaOrderID + ")";
+            using (SqlDataAdapter DA =
+                   new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
             {
                 DA.Fill(TempDT);
             }
-            SelectCommand = @"SELECT * FROM FrontsOrders WHERE MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = " + MegaOrderID + ")";
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
+
+            SelectCommand =
+                @"SELECT * FROM FrontsOrders WHERE MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = " +
+                MegaOrderID + ")";
+            using (SqlDataAdapter DA =
+                   new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
                 {
@@ -7830,7 +8463,8 @@ namespace Infinium.Modules.Marketing.NewOrders
                                         for (int j = 0; j < DT.Columns.Count; j++)
                                         {
                                             string ColumnName = DT.Columns[j].ColumnName;
-                                            if (ColumnName != "Height" && ColumnName != "Width" && ColumnName != "Length" && ColumnName != "Count")
+                                            if (ColumnName != "Height" && ColumnName != "Width" &&
+                                                ColumnName != "Length" && ColumnName != "Count")
                                                 Rows[0][DT.Columns[j].ColumnName] = TempDT.Rows[i][ColumnName];
                                         }
                                     }
@@ -7842,6 +8476,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                                     }
                                 }
                             }
+
                             DA.Update(DT);
                         }
                     }
@@ -7850,13 +8485,20 @@ namespace Infinium.Modules.Marketing.NewOrders
 
             TempDT.Dispose();
             TempDT = new DataTable();
-            SelectCommand = @"SELECT * FROM NewDecorOrders WHERE NeedCalcPrice=0 AND MainOrderID IN (SELECT MainOrderID FROM NewMainOrders WHERE MegaOrderID = " + MegaOrderID + ")";
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
+            SelectCommand =
+                @"SELECT * FROM NewDecorOrders WHERE NeedCalcPrice=0 AND MainOrderID IN (SELECT MainOrderID FROM NewMainOrders WHERE MegaOrderID = " +
+                MegaOrderID + ")";
+            using (SqlDataAdapter DA =
+                   new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
             {
                 DA.Fill(TempDT);
             }
-            SelectCommand = @"SELECT * FROM DecorOrders WHERE MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = " + MegaOrderID + ")";
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
+
+            SelectCommand =
+                @"SELECT * FROM DecorOrders WHERE MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = " +
+                MegaOrderID + ")";
+            using (SqlDataAdapter DA =
+                   new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
                 {
@@ -7876,7 +8518,8 @@ namespace Infinium.Modules.Marketing.NewOrders
                                         for (int j = 0; j < DT.Columns.Count; j++)
                                         {
                                             string ColumnName = DT.Columns[j].ColumnName;
-                                            if (ColumnName != "Height" && ColumnName != "Width" && ColumnName != "Length" && ColumnName != "Count")
+                                            if (ColumnName != "Height" && ColumnName != "Width" &&
+                                                ColumnName != "Length" && ColumnName != "Count")
                                                 Rows[0][DT.Columns[j].ColumnName] = TempDT.Rows[i][ColumnName];
                                         }
                                     }
@@ -7887,12 +8530,14 @@ namespace Infinium.Modules.Marketing.NewOrders
                                         DT.Rows.Add(NewRow);
                                     }
                                 }
+
                                 DA.Update(DT);
                             }
                         }
                     }
                 }
             }
+
             FixOrderEvent(MegaOrderID, "Заказ записан в таблицу MegaOrders");
         }
 
@@ -7923,19 +8568,23 @@ namespace Infinium.Modules.Marketing.NewOrders
         {
             bool hasFronts = false;
             bool hasDecor = false;
-            string SelectCommand = "SELECT NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, NewMegaOrders.PaymentRate FROM NewFrontsOrders" +
+            string SelectCommand =
+                "SELECT NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, NewMegaOrders.PaymentRate FROM NewFrontsOrders" +
                 " INNER JOIN infiniu2_catalog.dbo.FrontsConfig ON NewFrontsOrders.FrontConfigID = infiniu2_catalog.dbo.FrontsConfig.FrontConfigID" +
                 " INNER JOIN NewMainOrders ON NewFrontsOrders.MainOrderID = NewMainOrders.MainOrderID" +
-                " INNER JOIN NewMegaOrders ON NewMainOrders.MegaOrderID = NewMegaOrders.MegaOrderID AND NewMegaOrders.MegaOrderID = " + MegaOrderID + @"
+                " INNER JOIN NewMegaOrders ON NewMainOrders.MegaOrderID = NewMegaOrders.MegaOrderID AND NewMegaOrders.MegaOrderID = " +
+                MegaOrderID + @"
                 WHERE NeedCalcPrice=0 AND NewFrontsOrders.IsSample=1 AND InvNumber IS NOT NULL ORDER BY InvNumber";
             if (!IsSample)
-                SelectCommand = "SELECT NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, NewMegaOrders.PaymentRate FROM NewFrontsOrders" +
-                " INNER JOIN infiniu2_catalog.dbo.FrontsConfig ON NewFrontsOrders.FrontConfigID = infiniu2_catalog.dbo.FrontsConfig.FrontConfigID" +
-                " INNER JOIN NewMainOrders ON NewFrontsOrders.MainOrderID = NewMainOrders.MainOrderID" +
-                " INNER JOIN NewMegaOrders ON NewMainOrders.MegaOrderID = NewMegaOrders.MegaOrderID AND NewMegaOrders.MegaOrderID = " + MegaOrderID + @"
+                SelectCommand =
+                    "SELECT NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, NewMegaOrders.PaymentRate FROM NewFrontsOrders" +
+                    " INNER JOIN infiniu2_catalog.dbo.FrontsConfig ON NewFrontsOrders.FrontConfigID = infiniu2_catalog.dbo.FrontsConfig.FrontConfigID" +
+                    " INNER JOIN NewMainOrders ON NewFrontsOrders.MainOrderID = NewMainOrders.MainOrderID" +
+                    " INNER JOIN NewMegaOrders ON NewMainOrders.MegaOrderID = NewMegaOrders.MegaOrderID AND NewMegaOrders.MegaOrderID = " +
+                    MegaOrderID + @"
                 WHERE NeedCalcPrice=0 AND NewFrontsOrders.IsSample=0 AND InvNumber IS NOT NULL ORDER BY InvNumber";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand,
-                ConnectionStrings.MarketingOrdersConnectionString))
+                       ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (DataTable DT = new DataTable())
                 {
@@ -7944,25 +8593,30 @@ namespace Infinium.Modules.Marketing.NewOrders
             }
 
 
-            SelectCommand = "SELECT NewDecorOrders.*, infiniu2_catalog.dbo.DecorConfig.AccountingName, infiniu2_catalog.dbo.DecorConfig.InvNumber, NewMegaOrders.PaymentRate FROM NewDecorOrders" +
+            SelectCommand =
+                "SELECT NewDecorOrders.*, infiniu2_catalog.dbo.DecorConfig.AccountingName, infiniu2_catalog.dbo.DecorConfig.InvNumber, NewMegaOrders.PaymentRate FROM NewDecorOrders" +
                 " INNER JOIN NewMainOrders ON NewDecorOrders.MainOrderID = NewMainOrders.MainOrderID" +
-                " INNER JOIN NewMegaOrders ON NewMainOrders.MegaOrderID = NewMegaOrders.MegaOrderID AND NewMegaOrders.MegaOrderID=" + MegaOrderID +
+                " INNER JOIN NewMegaOrders ON NewMainOrders.MegaOrderID = NewMegaOrders.MegaOrderID AND NewMegaOrders.MegaOrderID=" +
+                MegaOrderID +
                 " INNER JOIN infiniu2_catalog.dbo.DecorConfig ON NewDecorOrders.DecorConfigID = infiniu2_catalog.dbo.DecorConfig.DecorConfigID" +
                 " WHERE NeedCalcPrice=0 AND NewDecorOrders.IsSample=1 AND InvNumber IS NOT NULL ORDER BY InvNumber";
             if (!IsSample)
-                SelectCommand = "SELECT NewDecorOrders.*, infiniu2_catalog.dbo.DecorConfig.AccountingName, infiniu2_catalog.dbo.DecorConfig.InvNumber, NewMegaOrders.PaymentRate FROM NewDecorOrders" +
+                SelectCommand =
+                    "SELECT NewDecorOrders.*, infiniu2_catalog.dbo.DecorConfig.AccountingName, infiniu2_catalog.dbo.DecorConfig.InvNumber, NewMegaOrders.PaymentRate FROM NewDecorOrders" +
                     " INNER JOIN NewMainOrders ON NewDecorOrders.MainOrderID = NewMainOrders.MainOrderID" +
-                    " INNER JOIN NewMegaOrders ON NewMainOrders.MegaOrderID = NewMegaOrders.MegaOrderID AND NewMegaOrders.MegaOrderID=" + MegaOrderID +
+                    " INNER JOIN NewMegaOrders ON NewMainOrders.MegaOrderID = NewMegaOrders.MegaOrderID AND NewMegaOrders.MegaOrderID=" +
+                    MegaOrderID +
                     " INNER JOIN infiniu2_catalog.dbo.DecorConfig ON NewDecorOrders.DecorConfigID = infiniu2_catalog.dbo.DecorConfig.DecorConfigID" +
                     " WHERE NeedCalcPrice=0 AND NewDecorOrders.IsSample=0 AND InvNumber IS NOT NULL ORDER BY InvNumber";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand,
-                ConnectionStrings.MarketingOrdersConnectionString))
+                       ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (DataTable DT = new DataTable())
                 {
                     hasDecor = DA.Fill(DT) > 0 ? true : false;
                 }
             }
+
             if (!hasFronts && !hasDecor)
                 return false;
             return true;
@@ -7972,19 +8626,23 @@ namespace Infinium.Modules.Marketing.NewOrders
         {
             bool hasFronts = false;
             bool hasDecor = false;
-            string SelectCommand = "SELECT FrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, MegaOrders.PaymentRate FROM FrontsOrders" +
+            string SelectCommand =
+                "SELECT FrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, MegaOrders.PaymentRate FROM FrontsOrders" +
                 " INNER JOIN infiniu2_catalog.dbo.FrontsConfig ON FrontsOrders.FrontConfigID = infiniu2_catalog.dbo.FrontsConfig.FrontConfigID" +
                 " INNER JOIN MainOrders ON FrontsOrders.MainOrderID = MainOrders.MainOrderID" +
                 " INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID" +
-                " WHERE FrontsOrders.IsSample=1 AND InvNumber IS NOT NULL AND FrontsOrders.MainOrderID IN (" + string.Join(",", MainOrderIDs) + ") ORDER BY InvNumber";
+                " WHERE FrontsOrders.IsSample=1 AND InvNumber IS NOT NULL AND FrontsOrders.MainOrderID IN (" +
+                string.Join(",", MainOrderIDs) + ") ORDER BY InvNumber";
             if (!IsSample)
-                SelectCommand = "SELECT FrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, MegaOrders.PaymentRate FROM FrontsOrders" +
-                " INNER JOIN infiniu2_catalog.dbo.FrontsConfig ON FrontsOrders.FrontConfigID = infiniu2_catalog.dbo.FrontsConfig.FrontConfigID" +
-                " INNER JOIN MainOrders ON FrontsOrders.MainOrderID = MainOrders.MainOrderID" +
-                " INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID" +
-                " WHERE FrontsOrders.IsSample=0 AND InvNumber IS NOT NULL AND FrontsOrders.MainOrderID IN (" + string.Join(",", MainOrderIDs) + ") ORDER BY InvNumber";
+                SelectCommand =
+                    "SELECT FrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, MegaOrders.PaymentRate FROM FrontsOrders" +
+                    " INNER JOIN infiniu2_catalog.dbo.FrontsConfig ON FrontsOrders.FrontConfigID = infiniu2_catalog.dbo.FrontsConfig.FrontConfigID" +
+                    " INNER JOIN MainOrders ON FrontsOrders.MainOrderID = MainOrders.MainOrderID" +
+                    " INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID" +
+                    " WHERE FrontsOrders.IsSample=0 AND InvNumber IS NOT NULL AND FrontsOrders.MainOrderID IN (" +
+                    string.Join(",", MainOrderIDs) + ") ORDER BY InvNumber";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand,
-                ConnectionStrings.MarketingOrdersConnectionString))
+                       ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (DataTable DT = new DataTable())
                 {
@@ -7992,29 +8650,133 @@ namespace Infinium.Modules.Marketing.NewOrders
                 }
             }
 
-            SelectCommand = "SELECT DecorOrders.*, infiniu2_catalog.dbo.DecorConfig.AccountingName, infiniu2_catalog.dbo.DecorConfig.InvNumber, MegaOrders.PaymentRate FROM DecorOrders" +
+            SelectCommand =
+                "SELECT DecorOrders.*, infiniu2_catalog.dbo.DecorConfig.AccountingName, infiniu2_catalog.dbo.DecorConfig.InvNumber, MegaOrders.PaymentRate FROM DecorOrders" +
                 " INNER JOIN MainOrders ON DecorOrders.MainOrderID = MainOrders.MainOrderID" +
                 " INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID" +
                 " INNER JOIN infiniu2_catalog.dbo.DecorConfig ON DecorOrders.DecorConfigID = infiniu2_catalog.dbo.DecorConfig.DecorConfigID" +
-                " WHERE DecorOrders.IsSample=1 AND InvNumber IS NOT NULL AND DecorOrders.MainOrderID IN (" + string.Join(",", MainOrderIDs) + ") ORDER BY InvNumber";
+                " WHERE DecorOrders.IsSample=1 AND InvNumber IS NOT NULL AND DecorOrders.MainOrderID IN (" +
+                string.Join(",", MainOrderIDs) + ") ORDER BY InvNumber";
             if (!IsSample)
-                SelectCommand = "SELECT DecorOrders.*, infiniu2_catalog.dbo.DecorConfig.AccountingName, infiniu2_catalog.dbo.DecorConfig.InvNumber, MegaOrders.PaymentRate FROM DecorOrders" +
+                SelectCommand =
+                    "SELECT DecorOrders.*, infiniu2_catalog.dbo.DecorConfig.AccountingName, infiniu2_catalog.dbo.DecorConfig.InvNumber, MegaOrders.PaymentRate FROM DecorOrders" +
                     " INNER JOIN MainOrders ON DecorOrders.MainOrderID = MainOrders.MainOrderID" +
                     " INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID" +
                     " INNER JOIN infiniu2_catalog.dbo.DecorConfig ON DecorOrders.DecorConfigID = infiniu2_catalog.dbo.DecorConfig.DecorConfigID" +
-                    " WHERE DecorOrders.IsSample=0 AND InvNumber IS NOT NULL AND DecorOrders.MainOrderID IN (" + string.Join(",", MainOrderIDs) + ") ORDER BY InvNumber";
+                    " WHERE DecorOrders.IsSample=0 AND InvNumber IS NOT NULL AND DecorOrders.MainOrderID IN (" +
+                    string.Join(",", MainOrderIDs) + ") ORDER BY InvNumber";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand,
-                ConnectionStrings.MarketingOrdersConnectionString))
+                       ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (DataTable DT = new DataTable())
                 {
                     hasDecor = DA.Fill(DT) > 0 ? true : false;
                 }
             }
+
             if (!hasFronts && !hasDecor)
                 return false;
             return true;
         }
+
+        public int NewAssignment()
+        {
+            int iCabFurAssignmentID = -1;
+            string SelectCommand = @"SELECT TOP 1 * FROM CabFurnitureAssignments ORDER BY CabFurAssignmentID DESC";
+            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.StorageConnectionString))
+            {
+                using (new SqlCommandBuilder(DA))
+                {
+                    using (DataTable DT = new DataTable())
+                    {
+                        DA.Fill(DT);
+                        DataRow NewRow = DT.NewRow();
+                        NewRow["CreationUserID"] = Security.CurrentUserID;
+                        NewRow["CreationDateTime"] = Security.GetCurrentDate();
+                        DT.Rows.Add(NewRow);
+                        DA.Update(DT);
+                        DT.Clear();
+
+                        if (DA.Fill(DT) > 0)
+                            iCabFurAssignmentID = Convert.ToInt32(DT.Rows[0]["CabFurAssignmentID"]);
+                    }
+                }
+            }
+
+            return iCabFurAssignmentID;
+        }
+
+        public void AddAssignmentDetail(DateTime CreationDateTime, int CabFurAssignmentID, int TechStoreID, int CoverID, int PatinaID, int InsetColorID, int Count)
+        {
+            var StoreItemsDT = new DataTable();
+            var NewAssignmentDetailsDT = new DataTable();
+
+            var SelectCommand = @"SELECT * FROM TechStore WHERE TechStoreID=" + TechStoreID;
+            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
+            {
+                DA.Fill(StoreItemsDT);
+            }
+
+            SelectCommand = @"SELECT TOP 0 * FROM CabFurnitureAssignmentDetails";
+            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.StorageConnectionString))
+            {
+                using (new SqlCommandBuilder(DA))
+                {
+                    DA.Fill(NewAssignmentDetailsDT);
+
+                    DataRow NewRow = NewAssignmentDetailsDT.NewRow();
+                    foreach (DataColumn Col in StoreItemsDT.Columns)
+                    {
+                        string str = Col.ColumnName;
+                        if (NewAssignmentDetailsDT.Columns.Contains(str))
+                            NewRow[str] = StoreItemsDT.Rows[0][str];
+                    }
+
+                    NewRow["CreationUserID"] = Security.CurrentUserID;
+                    NewRow["CreationDateTime"] = CreationDateTime;
+                    NewRow["CabFurAssignmentID"] = CabFurAssignmentID;
+                    NewRow["CoverID"] = CoverID;
+                    NewRow["PatinaID"] = PatinaID;
+                    NewRow["InsetColorID"] = InsetColorID;
+                    NewRow["Count"] = Count;
+                    NewAssignmentDetailsDT.Rows.Add(NewRow);
+
+                    DA.Update(NewAssignmentDetailsDT);
+                }
+            }
+        }
+
+        public void CreateCabFurAssignments(int megaOrderId)
+        {
+            var decorOrdersDt = new DataTable();
+
+            DateTime CreationDateTime = Security.GetCurrentDate();
+
+            var SelectCommand = $@"SELECT * FROM NewDecorOrders WHERE mainOrderId in 
+                (select mainOrderId from mainOrders where megaOrderId={megaOrderId})";
+            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
+            {
+                DA.Fill(decorOrdersDt);
+            }
+
+            for (int i = 0; i < decorOrdersDt.Rows.Count; i++)
+            {
+                var ProductId = Convert.ToInt32(decorOrdersDt.Rows[i]["ProductId"]);
+                var DecorID = Convert.ToInt32(decorOrdersDt.Rows[i]["DecorID"]);
+                var CoverID = Convert.ToInt32(decorOrdersDt.Rows[i]["ColorId"]);
+                var PatinaID = Convert.ToInt32(decorOrdersDt.Rows[i]["PatinaID"]);
+                var InsetColorID = Convert.ToInt32(decorOrdersDt.Rows[i]["InsetColorID"]);
+                var Count = Convert.ToInt32(decorOrdersDt.Rows[i]["Count"]);
+
+                if (!CheckOrdersStatus.IsCabFurniture(ProductId))
+                    continue;
+
+                var CabFurAssignmentID = NewAssignment();
+
+                AddAssignmentDetail(CreationDateTime, CabFurAssignmentID, DecorID, CoverID, PatinaID, InsetColorID, Count);
+            }
+        }
+
     }
 
     public class FrontsReport
@@ -8092,8 +8854,10 @@ namespace Infinium.Modules.Marketing.NewOrders
         private void GetInsetColorsDT()
         {
             InsetColorsDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT InsetColors.InsetColorID, InsetColors.GroupID, infiniu2_catalog.dbo.TechStore.TechStoreName AS InsetColorName FROM InsetColors" +
-                " INNER JOIN infiniu2_catalog.dbo.TechStore ON InsetColors.InsetColorID = infiniu2_catalog.dbo.TechStore.TechStoreID ORDER BY TechStoreName", ConnectionStrings.CatalogConnectionString))
+            using (SqlDataAdapter DA = new SqlDataAdapter(
+                       "SELECT InsetColors.InsetColorID, InsetColors.GroupID, infiniu2_catalog.dbo.TechStore.TechStoreName AS InsetColorName FROM InsetColors" +
+                       " INNER JOIN infiniu2_catalog.dbo.TechStore ON InsetColors.InsetColorID = infiniu2_catalog.dbo.TechStore.TechStoreID ORDER BY TechStoreName",
+                       ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(InsetColorsDataTable);
                 {
@@ -8132,40 +8896,43 @@ namespace Infinium.Modules.Marketing.NewOrders
             {
                 DA.Fill(FrontsDataTable);
             }
+
             PatinaDataTable = new DataTable();
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Patina",
-                ConnectionStrings.CatalogConnectionString))
+                       ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(PatinaDataTable);
             }
+
             GetColorsDT();
             GetInsetColorsDT();
             InsetTypesDataTable = new DataTable();
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM InsetTypes",
-                ConnectionStrings.CatalogConnectionString))
+                       ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(InsetTypesDataTable);
             }
+
             TechnoInsetTypesDataTable = InsetTypesDataTable.Copy();
             TechnoInsetColorsDataTable = InsetColorsDataTable.Copy();
 
             MeasuresDataTable = new DataTable();
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Measures",
-                ConnectionStrings.CatalogConnectionString))
+                       ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(MeasuresDataTable);
             }
 
             FactoryDataTable = new DataTable();
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Factory",
-                ConnectionStrings.CatalogConnectionString))
+                       ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(FactoryDataTable);
             }
 
             GridSizesDataTable = new DataTable();
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM GridSizes",
-                ConnectionStrings.CatalogConnectionString))
+                       ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(GridSizesDataTable);
             }
@@ -8230,22 +8997,24 @@ namespace Infinium.Modules.Marketing.NewOrders
         {
             for (int i = 0; i < FrontsOrdersDataTable.Rows.Count; i++)
             {
-                DataRow[] Rows = FrontsConfigDataTable.Select("FrontConfigID = " + FrontsOrdersDataTable.Rows[i]["FrontConfigID"].ToString());
+                DataRow[] Rows = FrontsConfigDataTable.Select("FrontConfigID = " +
+                                                              FrontsOrdersDataTable.Rows[i]["FrontConfigID"]
+                                                                  .ToString());
 
                 if (Convert.ToDateTime(FrontsOrdersDataTable.Rows[i]["CreateDateTime"]) < new DateTime(2019, 10, 01))
                 {
-                    if (Rows[0]["AreaID"].ToString() == "1")//profil
+                    if (Rows[0]["AreaID"].ToString() == "1") //profil
                         ProfilDT.ImportRow(FrontsOrdersDataTable.Rows[i]);
 
-                    if (Rows[0]["AreaID"].ToString() == "2")//tps
+                    if (Rows[0]["AreaID"].ToString() == "2") //tps
                         TPSDT.ImportRow(FrontsOrdersDataTable.Rows[i]);
                 }
                 else
                 {
-                    if (Rows[0]["FactoryID"].ToString() == "1")//profil
+                    if (Rows[0]["FactoryID"].ToString() == "1") //profil
                         ProfilDT.ImportRow(FrontsOrdersDataTable.Rows[i]);
 
-                    if (Rows[0]["FactoryID"].ToString() == "2")//tps
+                    if (Rows[0]["FactoryID"].ToString() == "2") //tps
                         TPSDT.ImportRow(FrontsOrdersDataTable.Rows[i]);
                 }
             }
@@ -8253,7 +9022,8 @@ namespace Infinium.Modules.Marketing.NewOrders
 
         private int GetMeasureType(int FrontConfigID)
         {
-            return Convert.ToInt32(FrontsConfigDataTable.Select("FrontConfigID = " + FrontConfigID.ToString())[0]["MeasureID"]);
+            return Convert.ToInt32(
+                FrontsConfigDataTable.Select("FrontConfigID = " + FrontConfigID.ToString())[0]["MeasureID"]);
         }
 
         private decimal GetInsetSquare(int FrontID, int Height, int Width)
@@ -8269,9 +9039,11 @@ namespace Infinium.Modules.Marketing.NewOrders
                     GridWidth = Width - Convert.ToInt32(Rows[0]["InsetWidthAdmission"]);
                 if (FrontID == 3729)
                 {
-                    return decimal.Round(Convert.ToInt32(Rows[0]["InsetHeightAdmission"]) * GridWidth / 1000000, 3, MidpointRounding.AwayFromZero);
+                    return decimal.Round(Convert.ToInt32(Rows[0]["InsetHeightAdmission"]) * GridWidth / 1000000, 3,
+                        MidpointRounding.AwayFromZero);
                 }
             }
+
             return decimal.Round(GridHeight * GridWidth / 1000000, 3, MidpointRounding.AwayFromZero);
         }
 
@@ -8283,18 +9055,23 @@ namespace Infinium.Modules.Marketing.NewOrders
             if (Rows.Count() > 0)
             {
                 if (Rows[0]["InsetHeightAdmission"] != DBNull.Value)
-                    GridHeight = Convert.ToInt32(FrontsOrdersRow["Height"]) - Convert.ToInt32(Rows[0]["InsetHeightAdmission"]);
+                    GridHeight = Convert.ToInt32(FrontsOrdersRow["Height"]) -
+                                 Convert.ToInt32(Rows[0]["InsetHeightAdmission"]);
                 if (Rows[0]["InsetWidthAdmission"] != DBNull.Value)
-                    GridWidth = Convert.ToInt32(FrontsOrdersRow["Width"]) - Convert.ToInt32(Rows[0]["InsetWidthAdmission"]);
+                    GridWidth = Convert.ToInt32(FrontsOrdersRow["Width"]) -
+                                Convert.ToInt32(Rows[0]["InsetWidthAdmission"]);
                 if (Convert.ToInt32(FrontsOrdersRow["FrontID"]) == 3729)
                 {
-                    return decimal.Round(Convert.ToInt32(Rows[0]["InsetHeightAdmission"]) * GridWidth / 1000000, 3, MidpointRounding.AwayFromZero);
+                    return decimal.Round(Convert.ToInt32(Rows[0]["InsetHeightAdmission"]) * GridWidth / 1000000, 3,
+                        MidpointRounding.AwayFromZero);
                 }
             }
+
             return decimal.Round(GridHeight * GridWidth / 1000000, 3, MidpointRounding.AwayFromZero);
         }
 
-        private void GetGlassMarginAluminium(DataRow FrontsOrdersRow, ref int GlassMarginHeight, ref int GlassMarginWidth)
+        private void GetGlassMarginAluminium(DataRow FrontsOrdersRow, ref int GlassMarginHeight,
+            ref int GlassMarginWidth)
         {
             DataRow[] Rows = TechStoreDataTable.Select("TechStoreID = " + Convert.ToInt32(FrontsOrdersRow["FrontID"]));
             if (Rows.Count() > 0)
@@ -8308,9 +9085,11 @@ namespace Infinium.Modules.Marketing.NewOrders
 
         public void GetMegaOrderInfo(int MainOrderID)
         {
-            string SelectCommand = "SELECT MegaOrderID, TransportCost, AdditionalCost, Rate, ClientID, CurrencyTypeID FROM MegaOrders" +
+            string SelectCommand =
+                "SELECT MegaOrderID, TransportCost, AdditionalCost, Rate, ClientID, CurrencyTypeID FROM MegaOrders" +
                 " WHERE MegaOrderID IN (SELECT MegaOrderID FROM MainOrders WHERE MainOrderID = " + MainOrderID + ")";
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
+            using (SqlDataAdapter DA =
+                   new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (DataTable DT = new DataTable())
                 {
@@ -8331,8 +9110,10 @@ namespace Infinium.Modules.Marketing.NewOrders
                     }
                 }
             }
+
             SelectCommand = "SELECT UNN FROM Clients WHERE ClientID = " + ClientID;
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingReferenceConnectionString))
+            using (SqlDataAdapter DA =
+                   new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingReferenceConnectionString))
             {
                 using (DataTable DT = new DataTable())
                 {
@@ -8412,32 +9193,39 @@ namespace Infinium.Modules.Marketing.NewOrders
                 foreach (DataRow item in rows)
                     filter += item["InsetTypeID"].ToString() + ",";
                 if (filter.Length > 0)
-                    filter = " AND NOT (FrontID IN (3728,3731,3732,3739,3740,3741,3744,3745,3746) OR InsetTypeID IN (28961,3653,3654,3655)) AND (FrontID = 3729 OR InsetTypeID IN (" + filter.Substring(0, filter.Length - 1) + "))";
-                DataRow[] Rows = OrdersDataTable.Select("FrontID = " + Fronts.Rows[i]["FrontID"].ToString() + " AND (Width <> -1)" + filter + IsNonStandardFilter);
+                    filter =
+                        " AND NOT (FrontID IN (3728,3731,3732,3739,3740,3741,3744,3745,3746) OR InsetTypeID IN (28961,3653,3654,3655)) AND (FrontID = 3729 OR InsetTypeID IN (" +
+                        filter.Substring(0, filter.Length - 1) + "))";
+                DataRow[] Rows = OrdersDataTable.Select("FrontID = " + Fronts.Rows[i]["FrontID"].ToString() +
+                                                        " AND (Width <> -1)" + filter + IsNonStandardFilter);
                 for (int r = 0; r < Rows.Count(); r++)
                 {
                     decimal DeductibleCost = 0;
                     decimal DeductibleCount = 0;
                     decimal DeductibleWeight = 0;
-                    if (Convert.ToInt32(Fronts.Rows[i]["FrontID"]) == 3729)//РЕШЕТКА ОВАЛ
+                    if (Convert.ToInt32(Fronts.Rows[i]["FrontID"]) == 3729) //РЕШЕТКА ОВАЛ
                     {
                         DeductibleWeight = GetInsetWeight(Rows[r]);
 
                         int MarginHeight = 0;
                         int MarginWidth = 0;
                         GetGlassMarginAluminium(Rows[r], ref MarginHeight, ref MarginWidth);
-                        decimal InsetSquare = MarginHeight * (Convert.ToDecimal(Rows[r]["Width"]) - MarginWidth) / 1000000;
+                        decimal InsetSquare = MarginHeight * (Convert.ToDecimal(Rows[r]["Width"]) - MarginWidth) /
+                                              1000000;
                         InsetSquare = decimal.Round(InsetSquare, 3, MidpointRounding.AwayFromZero);
                         DeductibleCount = InsetSquare * Convert.ToDecimal(Rows[r]["Count"]);
-                        DeductibleCost = Convert.ToDecimal(Rows[r]["InsetPrice"]) * InsetSquare * Convert.ToDecimal(Rows[r]["Count"]);
-                        DeductibleWeight = decimal.Round(DeductibleCount * DeductibleWeight, 3, MidpointRounding.AwayFromZero);
+                        DeductibleCost = Convert.ToDecimal(Rows[r]["InsetPrice"]) * InsetSquare *
+                                         Convert.ToDecimal(Rows[r]["Count"]);
+                        DeductibleWeight = decimal.Round(DeductibleCount * DeductibleWeight, 3,
+                            MidpointRounding.AwayFromZero);
                     }
 
                     TotalDiscount = Convert.ToDecimal(Rows[r]["TotalDiscount"]);
                     SolidCount += Convert.ToDecimal(Rows[r]["Square"]);
 
                     SolidCost += Convert.ToDecimal(Rows[r]["FrontPrice"]) * Convert.ToDecimal(Rows[r]["Square"]);
-                    OriginalSolidCost += Convert.ToDecimal(Rows[r]["OriginalPrice"]) * Convert.ToDecimal(Rows[r]["Square"]);
+                    OriginalSolidCost += Convert.ToDecimal(Rows[r]["OriginalPrice"]) *
+                                         Convert.ToDecimal(Rows[r]["Square"]);
                     DeductibleCost = Math.Ceiling(DeductibleCost / 0.01m) * 0.01m;
                     WithTransportSolidCost += Convert.ToDecimal(Rows[r]["CostWithTransport"]) - DeductibleCost;
 
@@ -8449,21 +9237,31 @@ namespace Infinium.Modules.Marketing.NewOrders
                     SolidWeight += Convert.ToDecimal(FrontWeight + InsetWeight);
                     NonStandardMargin = GetNonStandardMargin(Convert.ToInt32(Rows[r]["FrontConfigID"]));
                 }
+
                 //АППЛИКАЦИИ
-                filter = " AND (FrontID IN (3728,3731,3732,3739,3740,3741,3744,3745,3746) OR InsetTypeID IN (28961,3653,3654,3655))";
-                Rows = OrdersDataTable.Select("FrontID = " + Fronts.Rows[i]["FrontID"].ToString() + " AND (Width <> -1)" + filter + IsNonStandardFilter);
+                filter =
+                    " AND (FrontID IN (3728,3731,3732,3739,3740,3741,3744,3745,3746) OR InsetTypeID IN (28961,3653,3654,3655))";
+                Rows = OrdersDataTable.Select("FrontID = " + Fronts.Rows[i]["FrontID"].ToString() +
+                                              " AND (Width <> -1)" + filter + IsNonStandardFilter);
                 for (int r = 0; r < Rows.Count(); r++)
                 {
                     TotalDiscount = Convert.ToDecimal(Rows[r]["TotalDiscount"]);
-                    decimal DeductibleCost = Convert.ToDecimal(Rows[r]["InsetPrice"]) * Convert.ToDecimal(Rows[r]["Count"]);
-                    if (Convert.ToInt32(Rows[r]["FrontID"]) == 3728 || Convert.ToInt32(Rows[r]["FrontID"]) == 3731 || Convert.ToInt32(Rows[r]["FrontID"]) == 3732 ||
-                        Convert.ToInt32(Rows[r]["FrontID"]) == 3739 || Convert.ToInt32(Rows[r]["FrontID"]) == 3740 || Convert.ToInt32(Rows[r]["FrontID"]) == 3741 ||
-                        Convert.ToInt32(Rows[r]["FrontID"]) == 3744 || Convert.ToInt32(Rows[r]["FrontID"]) == 3745 || Convert.ToInt32(Rows[r]["FrontID"]) == 3746)
+                    decimal DeductibleCost =
+                        Convert.ToDecimal(Rows[r]["InsetPrice"]) * Convert.ToDecimal(Rows[r]["Count"]);
+                    if (Convert.ToInt32(Rows[r]["FrontID"]) == 3728 || Convert.ToInt32(Rows[r]["FrontID"]) == 3731 ||
+                        Convert.ToInt32(Rows[r]["FrontID"]) == 3732 ||
+                        Convert.ToInt32(Rows[r]["FrontID"]) == 3739 || Convert.ToInt32(Rows[r]["FrontID"]) == 3740 ||
+                        Convert.ToInt32(Rows[r]["FrontID"]) == 3741 ||
+                        Convert.ToInt32(Rows[r]["FrontID"]) == 3744 || Convert.ToInt32(Rows[r]["FrontID"]) == 3745 ||
+                        Convert.ToInt32(Rows[r]["FrontID"]) == 3746)
                     {
                         SolidCount += Convert.ToDecimal(Rows[r]["Square"]);
 
-                        SolidCost += Convert.ToDecimal(Rows[r]["FrontPrice"]) * Convert.ToDecimal(Rows[r]["Square"]) - DeductibleCost;
-                        OriginalSolidCost += Convert.ToDecimal(Rows[r]["OriginalPrice"]) * Convert.ToDecimal(Rows[r]["Square"]) - DeductibleCost;
+                        SolidCost += Convert.ToDecimal(Rows[r]["FrontPrice"]) * Convert.ToDecimal(Rows[r]["Square"]) -
+                                     DeductibleCost;
+                        OriginalSolidCost +=
+                            Convert.ToDecimal(Rows[r]["OriginalPrice"]) * Convert.ToDecimal(Rows[r]["Square"]) -
+                            DeductibleCost;
 
                         WithTransportSolidCost += Convert.ToDecimal(Rows[r]["CostWithTransport"]) - DeductibleCost;
 
@@ -8474,12 +9272,16 @@ namespace Infinium.Modules.Marketing.NewOrders
 
                         SolidWeight += Convert.ToDecimal(FrontWeight + InsetWeight);
                     }
-                    else if (Convert.ToInt32(Rows[r]["FrontID"]) == 3415 || Convert.ToInt32(Rows[r]["FrontID"]) == 28922)
+                    else if (Convert.ToInt32(Rows[r]["FrontID"]) == 3415 ||
+                             Convert.ToInt32(Rows[r]["FrontID"]) == 28922)
                     {
                         FilenkaCount += Convert.ToDecimal(Rows[r]["Square"]);
 
-                        FilenkaCost += Convert.ToDecimal(Rows[r]["FrontPrice"]) * Convert.ToDecimal(Rows[r]["Square"]) - DeductibleCost;
-                        OriginalFilenkaCost += Convert.ToDecimal(Rows[r]["OriginalPrice"]) * Convert.ToDecimal(Rows[r]["Square"]) - DeductibleCost;
+                        FilenkaCost += Convert.ToDecimal(Rows[r]["FrontPrice"]) * Convert.ToDecimal(Rows[r]["Square"]) -
+                                       DeductibleCost;
+                        OriginalFilenkaCost +=
+                            Convert.ToDecimal(Rows[r]["OriginalPrice"]) * Convert.ToDecimal(Rows[r]["Square"]) -
+                            DeductibleCost;
 
                         WithTransportFilenkaCost += Convert.ToDecimal(Rows[r]["CostWithTransport"]) - DeductibleCost;
 
@@ -8490,11 +9292,14 @@ namespace Infinium.Modules.Marketing.NewOrders
 
                         FilenkaWeight += Convert.ToDecimal(FrontWeight + InsetWeight);
                     }
+
                     NonStandardMargin = GetNonStandardMargin(Convert.ToInt32(Rows[r]["FrontConfigID"]));
                 }
+
                 //ФИЛЕНКА
                 filter = " AND InsetTypeID IN (2069,2070,2071,2073,2075,42066,2077,2233,3644,29043,29531,41213)";
-                Rows = OrdersDataTable.Select("FrontID = " + Fronts.Rows[i]["FrontID"].ToString() + " AND (Width <> -1)" + filter + IsNonStandardFilter);
+                Rows = OrdersDataTable.Select("FrontID = " + Fronts.Rows[i]["FrontID"].ToString() +
+                                              " AND (Width <> -1)" + filter + IsNonStandardFilter);
                 for (int r = 0; r < Rows.Count(); r++)
                 {
                     TotalDiscount = Convert.ToDecimal(Rows[r]["TotalDiscount"]);
@@ -8502,7 +9307,8 @@ namespace Infinium.Modules.Marketing.NewOrders
                     FilenkaCount += Convert.ToDecimal(Rows[r]["Square"]);
 
                     FilenkaCost += Convert.ToDecimal(Rows[r]["FrontPrice"]) * Convert.ToDecimal(Rows[r]["Square"]);
-                    OriginalFilenkaCost += Convert.ToDecimal(Rows[r]["OriginalPrice"]) * Convert.ToDecimal(Rows[r]["Square"]);
+                    OriginalFilenkaCost += Convert.ToDecimal(Rows[r]["OriginalPrice"]) *
+                                           Convert.ToDecimal(Rows[r]["Square"]);
 
                     WithTransportFilenkaCost += Convert.ToDecimal(Rows[r]["CostWithTransport"]);
 
@@ -8514,9 +9320,11 @@ namespace Infinium.Modules.Marketing.NewOrders
                     FilenkaWeight += Convert.ToDecimal(FrontWeight + InsetWeight);
                     NonStandardMargin = GetNonStandardMargin(Convert.ToInt32(Rows[r]["FrontConfigID"]));
                 }
+
                 //ВИТРИНЫ, РЕШЕТКИ, СТЕКЛО
                 filter = " AND InsetTypeID IN (1,2,685,686,687,688,29470,29471) AND FrontID <> 3729";
-                Rows = OrdersDataTable.Select("FrontID = " + Fronts.Rows[i]["FrontID"].ToString() + " AND (Width <> -1)" + filter + IsNonStandardFilter);
+                Rows = OrdersDataTable.Select("FrontID = " + Fronts.Rows[i]["FrontID"].ToString() +
+                                              " AND (Width <> -1)" + filter + IsNonStandardFilter);
                 for (int r = 0; r < Rows.Count(); r++)
                 {
                     TotalDiscount = Convert.ToDecimal(Rows[r]["TotalDiscount"]);
@@ -8524,20 +9332,29 @@ namespace Infinium.Modules.Marketing.NewOrders
                     decimal DeductibleCost = 0;
                     decimal DeductibleWeight = 0;
                     //РЕШЕТКА 45,90,ПЛАСТИК
-                    if (Convert.ToInt32(Rows[r]["InsetTypeID"]) == 685 || Convert.ToInt32(Rows[r]["InsetTypeID"]) == 686 ||
-                        Convert.ToInt32(Rows[r]["InsetTypeID"]) == 687 || Convert.ToInt32(Rows[r]["InsetTypeID"]) == 688 ||
-                        Convert.ToInt32(Rows[r]["InsetTypeID"]) == 29470 || Convert.ToInt32(Rows[r]["InsetTypeID"]) == 29471)
+                    if (Convert.ToInt32(Rows[r]["InsetTypeID"]) == 685 ||
+                        Convert.ToInt32(Rows[r]["InsetTypeID"]) == 686 ||
+                        Convert.ToInt32(Rows[r]["InsetTypeID"]) == 687 ||
+                        Convert.ToInt32(Rows[r]["InsetTypeID"]) == 688 ||
+                        Convert.ToInt32(Rows[r]["InsetTypeID"]) == 29470 ||
+                        Convert.ToInt32(Rows[r]["InsetTypeID"]) == 29471)
                     {
-                        decimal InsetSquare = GetInsetSquare(Convert.ToInt32(Rows[r]["FrontID"]), Convert.ToInt32(Rows[r]["Height"]), Convert.ToInt32(Rows[r]["Width"]));
+                        decimal InsetSquare = GetInsetSquare(Convert.ToInt32(Rows[r]["FrontID"]),
+                            Convert.ToInt32(Rows[r]["Height"]), Convert.ToInt32(Rows[r]["Width"]));
                         InsetSquare = decimal.Round(InsetSquare, 3, MidpointRounding.AwayFromZero);
                         DeductibleCount = InsetSquare * Convert.ToDecimal(Rows[r]["Count"]);
-                        DeductibleCost = Convert.ToDecimal(Rows[r]["InsetPrice"]) * InsetSquare * Convert.ToDecimal(Rows[r]["Count"]);
-                        DeductibleWeight = decimal.Round(DeductibleCount * Convert.ToDecimal(3.5), 3, MidpointRounding.AwayFromZero);
+                        DeductibleCost = Convert.ToDecimal(Rows[r]["InsetPrice"]) * InsetSquare *
+                                         Convert.ToDecimal(Rows[r]["Count"]);
+                        DeductibleWeight = decimal.Round(DeductibleCount * Convert.ToDecimal(3.5), 3,
+                            MidpointRounding.AwayFromZero);
                     }
+
                     //СТЕКЛО
                     if (Convert.ToInt32(Rows[r]["InsetTypeID"]) == 2)
                     {
-                        DeductibleCount = Convert.ToDecimal(Rows[r]["Count"]) * GetInsetSquare(Convert.ToInt32(Rows[r]["FrontID"]), Convert.ToInt32(Rows[r]["Height"]), Convert.ToInt32(Rows[r]["Width"]));
+                        DeductibleCount = Convert.ToDecimal(Rows[r]["Count"]) *
+                                          GetInsetSquare(Convert.ToInt32(Rows[r]["FrontID"]),
+                                              Convert.ToInt32(Rows[r]["Height"]), Convert.ToInt32(Rows[r]["Width"]));
                         DeductibleCost = Convert.ToDecimal(Rows[r]["InsetPrice"]) * DeductibleCount;
                         DeductibleWeight = decimal.Round(DeductibleCount * 10, 3, MidpointRounding.AwayFromZero);
                     }
@@ -8558,23 +9375,28 @@ namespace Infinium.Modules.Marketing.NewOrders
                         GetFrontWeight(Rows[r], ref FrontWeight, ref InsetWeight);
                         VitrinaWeight += Convert.ToDecimal(FrontWeight + InsetWeight - DeductibleWeight);
                     }
+
                     VitrinaCost = Math.Ceiling(VitrinaCost / 0.01m) * 0.01m;
-                    OriginalVitrinaCost += Convert.ToDecimal(Rows[r]["OriginalPrice"]) * Convert.ToDecimal(Rows[r]["Square"]);
+                    OriginalVitrinaCost += Convert.ToDecimal(Rows[r]["OriginalPrice"]) *
+                                           Convert.ToDecimal(Rows[r]["Square"]);
 
                     DeductibleCost = Math.Ceiling(DeductibleCost / 0.01m) * 0.01m;
                     WithTransportVitrinaCost += Convert.ToDecimal(Rows[r]["CostWithTransport"]) - DeductibleCost;
 
                     NonStandardMargin = GetNonStandardMargin(Convert.ToInt32(Rows[r]["FrontConfigID"]));
                 }
+
                 //ЛЮКС
                 filter = " AND InsetTypeID IN (860)";
-                Rows = OrdersDataTable.Select("FrontID = " + Fronts.Rows[i]["FrontID"].ToString() + " AND (Width <> -1)" + filter + IsNonStandardFilter);
+                Rows = OrdersDataTable.Select("FrontID = " + Fronts.Rows[i]["FrontID"].ToString() +
+                                              " AND (Width <> -1)" + filter + IsNonStandardFilter);
                 for (int r = 0; r < Rows.Count(); r++)
                 {
                     TotalDiscount = Convert.ToDecimal(Rows[r]["TotalDiscount"]);
                     LuxCount += Convert.ToDecimal(Rows[r]["Square"]);
                     LuxCost += Convert.ToDecimal(Rows[r]["FrontPrice"]) * Convert.ToDecimal(Rows[r]["Square"]);
-                    OriginalLuxCost += Convert.ToDecimal(Rows[r]["OriginalPrice"]) * Convert.ToDecimal(Rows[r]["Square"]);
+                    OriginalLuxCost += Convert.ToDecimal(Rows[r]["OriginalPrice"]) *
+                                       Convert.ToDecimal(Rows[r]["Square"]);
 
                     WithTransportLuxCost += Convert.ToDecimal(Rows[r]["CostWithTransport"]);
 
@@ -8586,9 +9408,11 @@ namespace Infinium.Modules.Marketing.NewOrders
                     LuxWeight += Convert.ToDecimal(FrontWeight + InsetWeight);
                     NonStandardMargin = GetNonStandardMargin(Convert.ToInt32(Rows[r]["FrontConfigID"]));
                 }
+
                 //МЕГА, Планка
                 filter = " AND InsetTypeID IN (862,4310)";
-                Rows = OrdersDataTable.Select("FrontID = " + Fronts.Rows[i]["FrontID"].ToString() + " AND (Width <> -1)" + filter + IsNonStandardFilter);
+                Rows = OrdersDataTable.Select("FrontID = " + Fronts.Rows[i]["FrontID"].ToString() +
+                                              " AND (Width <> -1)" + filter + IsNonStandardFilter);
                 for (int r = 0; r < Rows.Count(); r++)
                 {
                     TotalDiscount = Convert.ToDecimal(Rows[r]["TotalDiscount"]);
@@ -8596,7 +9420,8 @@ namespace Infinium.Modules.Marketing.NewOrders
                     MegaCount += Convert.ToDecimal(Rows[r]["Square"]);
 
                     MegaCost += Convert.ToDecimal(Rows[r]["FrontPrice"]) * Convert.ToDecimal(Rows[r]["Square"]);
-                    OriginalMegaCost += Convert.ToDecimal(Rows[r]["OriginalPrice"]) * Convert.ToDecimal(Rows[r]["Square"]);
+                    OriginalMegaCost += Convert.ToDecimal(Rows[r]["OriginalPrice"]) *
+                                        Convert.ToDecimal(Rows[r]["Square"]);
 
                     WithTransportMegaCost += Convert.ToDecimal(Rows[r]["CostWithTransport"]);
 
@@ -8631,10 +9456,14 @@ namespace Infinium.Modules.Marketing.NewOrders
                     Row["Count"] = decimal.Round(SolidCount, 3, MidpointRounding.AwayFromZero);
                     Row["Measure"] = "м.кв.";
                     Row["Price"] = decimal.Round(SolidCost / SolidCount, 2, MidpointRounding.AwayFromZero);
-                    Row["OriginalPrice"] = decimal.Round(OriginalSolidCost / SolidCount, 2, MidpointRounding.AwayFromZero);
-                    Row["PriceWithTransport"] = decimal.Round(WithTransportSolidCost / SolidCount, 2, MidpointRounding.AwayFromZero);
-                    Row["CostWithTransport"] = decimal.Round(Math.Ceiling(WithTransportSolidCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
-                    Row["Cost"] = decimal.Round(Math.Ceiling(SolidCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                    Row["OriginalPrice"] =
+                        decimal.Round(OriginalSolidCost / SolidCount, 2, MidpointRounding.AwayFromZero);
+                    Row["PriceWithTransport"] = decimal.Round(WithTransportSolidCost / SolidCount, 2,
+                        MidpointRounding.AwayFromZero);
+                    Row["CostWithTransport"] = decimal.Round(Math.Ceiling(WithTransportSolidCost / 0.01m) * 0.01m, 2,
+                        MidpointRounding.AwayFromZero);
+                    Row["Cost"] = decimal.Round(Math.Ceiling(SolidCost / 0.01m) * 0.01m, 2,
+                        MidpointRounding.AwayFromZero);
                     Row["Weight"] = decimal.Round(SolidWeight, 3, MidpointRounding.AwayFromZero);
                     ReportDataTable.Rows.Add(Row);
                 }
@@ -8658,10 +9487,14 @@ namespace Infinium.Modules.Marketing.NewOrders
                     Row["Count"] = decimal.Round(FilenkaCount, 3, MidpointRounding.AwayFromZero);
                     Row["Measure"] = "м.кв.";
                     Row["Price"] = decimal.Round(FilenkaCost / FilenkaCount, 2, MidpointRounding.AwayFromZero);
-                    Row["OriginalPrice"] = decimal.Round(OriginalFilenkaCost / FilenkaCount, 2, MidpointRounding.AwayFromZero);
-                    Row["PriceWithTransport"] = decimal.Round(WithTransportFilenkaCost / FilenkaCount, 2, MidpointRounding.AwayFromZero);
-                    Row["CostWithTransport"] = decimal.Round(Math.Ceiling(WithTransportFilenkaCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
-                    Row["Cost"] = decimal.Round(Math.Ceiling(FilenkaCount / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                    Row["OriginalPrice"] = decimal.Round(OriginalFilenkaCost / FilenkaCount, 2,
+                        MidpointRounding.AwayFromZero);
+                    Row["PriceWithTransport"] = decimal.Round(WithTransportFilenkaCost / FilenkaCount, 2,
+                        MidpointRounding.AwayFromZero);
+                    Row["CostWithTransport"] = decimal.Round(Math.Ceiling(WithTransportFilenkaCost / 0.01m) * 0.01m, 2,
+                        MidpointRounding.AwayFromZero);
+                    Row["Cost"] = decimal.Round(Math.Ceiling(FilenkaCount / 0.01m) * 0.01m, 2,
+                        MidpointRounding.AwayFromZero);
                     Row["Weight"] = decimal.Round(FilenkaWeight, 3, MidpointRounding.AwayFromZero);
                     ReportDataTable.Rows.Add(Row);
                 }
@@ -8687,10 +9520,14 @@ namespace Infinium.Modules.Marketing.NewOrders
                     Row["Count"] = decimal.Round(VitrinaCount, 3, MidpointRounding.AwayFromZero);
                     Row["Measure"] = "м.кв.";
                     Row["Price"] = decimal.Round(VitrinaCost / VitrinaCount, 2, MidpointRounding.AwayFromZero);
-                    Row["OriginalPrice"] = decimal.Round(OriginalVitrinaCost / VitrinaCount, 2, MidpointRounding.AwayFromZero);
-                    Row["PriceWithTransport"] = decimal.Round(WithTransportVitrinaCost / VitrinaCount, 2, MidpointRounding.AwayFromZero);
-                    Row["CostWithTransport"] = decimal.Round(Math.Ceiling(WithTransportVitrinaCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
-                    Row["Cost"] = decimal.Round(Math.Ceiling(VitrinaCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                    Row["OriginalPrice"] = decimal.Round(OriginalVitrinaCost / VitrinaCount, 2,
+                        MidpointRounding.AwayFromZero);
+                    Row["PriceWithTransport"] = decimal.Round(WithTransportVitrinaCost / VitrinaCount, 2,
+                        MidpointRounding.AwayFromZero);
+                    Row["CostWithTransport"] = decimal.Round(Math.Ceiling(WithTransportVitrinaCost / 0.01m) * 0.01m, 2,
+                        MidpointRounding.AwayFromZero);
+                    Row["Cost"] = decimal.Round(Math.Ceiling(VitrinaCost / 0.01m) * 0.01m, 2,
+                        MidpointRounding.AwayFromZero);
                     Row["Weight"] = decimal.Round(VitrinaWeight, 3, MidpointRounding.AwayFromZero);
                     ReportDataTable.Rows.Add(Row);
                 }
@@ -8715,9 +9552,12 @@ namespace Infinium.Modules.Marketing.NewOrders
                     Row["Measure"] = "м.кв.";
                     Row["Price"] = decimal.Round(LuxCost / LuxCount, 2, MidpointRounding.AwayFromZero);
                     Row["OriginalPrice"] = decimal.Round(OriginalLuxCost / LuxCount, 2, MidpointRounding.AwayFromZero);
-                    Row["PriceWithTransport"] = decimal.Round(WithTransportLuxCost / LuxCount, 2, MidpointRounding.AwayFromZero);
-                    Row["CostWithTransport"] = decimal.Round(Math.Ceiling(WithTransportLuxCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
-                    Row["Cost"] = decimal.Round(Math.Ceiling(LuxCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                    Row["PriceWithTransport"] =
+                        decimal.Round(WithTransportLuxCost / LuxCount, 2, MidpointRounding.AwayFromZero);
+                    Row["CostWithTransport"] = decimal.Round(Math.Ceiling(WithTransportLuxCost / 0.01m) * 0.01m, 2,
+                        MidpointRounding.AwayFromZero);
+                    Row["Cost"] = decimal.Round(Math.Ceiling(LuxCost / 0.01m) * 0.01m, 2,
+                        MidpointRounding.AwayFromZero);
                     Row["Weight"] = decimal.Round(LuxWeight, 3, MidpointRounding.AwayFromZero);
                     ReportDataTable.Rows.Add(Row);
                 }
@@ -8741,10 +9581,14 @@ namespace Infinium.Modules.Marketing.NewOrders
                     Row["Count"] = decimal.Round(MegaCount, 3, MidpointRounding.AwayFromZero);
                     Row["Measure"] = "м.кв.";
                     Row["Price"] = decimal.Round(MegaCost / MegaCount, 2, MidpointRounding.AwayFromZero);
-                    Row["OriginalPrice"] = decimal.Round(OriginalMegaCost / MegaCount, 2, MidpointRounding.AwayFromZero);
-                    Row["PriceWithTransport"] = decimal.Round(WithTransportMegaCost / MegaCount, 2, MidpointRounding.AwayFromZero);
-                    Row["CostWithTransport"] = decimal.Round(Math.Ceiling(WithTransportMegaCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
-                    Row["Cost"] = decimal.Round(Math.Ceiling(MegaCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                    Row["OriginalPrice"] =
+                        decimal.Round(OriginalMegaCost / MegaCount, 2, MidpointRounding.AwayFromZero);
+                    Row["PriceWithTransport"] = decimal.Round(WithTransportMegaCost / MegaCount, 2,
+                        MidpointRounding.AwayFromZero);
+                    Row["CostWithTransport"] = decimal.Round(Math.Ceiling(WithTransportMegaCost / 0.01m) * 0.01m, 2,
+                        MidpointRounding.AwayFromZero);
+                    Row["Cost"] = decimal.Round(Math.Ceiling(MegaCost / 0.01m) * 0.01m, 2,
+                        MidpointRounding.AwayFromZero);
                     Row["Weight"] = decimal.Round(MegaWeight, 3, MidpointRounding.AwayFromZero);
                     ReportDataTable.Rows.Add(Row);
                 }
@@ -8768,7 +9612,7 @@ namespace Infinium.Modules.Marketing.NewOrders
             for (int i = 0; i < Fronts.Rows.Count; i++)
             {
                 DataRow[] Rows = OrdersDataTable.Select("FrontID = " + Fronts.Rows[i]["FrontID"].ToString() +
-                                                              " AND Width = -1");
+                                                        " AND Width = -1");
 
                 if (Rows.Count() == 0)
                     continue;
@@ -8836,7 +9680,8 @@ namespace Infinium.Modules.Marketing.NewOrders
                                 Solid713Count += Convert.ToDecimal(Rows[r]["Count"]);
                                 Solid713Price = Convert.ToDecimal(Rows[r]["FrontPrice"]);
                                 Solid713OriginalPrice = Convert.ToDecimal(Rows[r]["OriginalPrice"]);
-                                Solid713WithTransportCost += Convert.ToDecimal(Rows[r]["PriceWithTransport"]) * Convert.ToDecimal(Rows[r]["Count"]);
+                                Solid713WithTransportCost += Convert.ToDecimal(Rows[r]["PriceWithTransport"]) *
+                                                             Convert.ToDecimal(Rows[r]["Count"]);
 
                                 decimal FrontWeight = 0;
                                 decimal InsetWeight = 0;
@@ -8846,7 +9691,9 @@ namespace Infinium.Modules.Marketing.NewOrders
                                 Solid713Weight += Convert.ToDecimal(FrontWeight + InsetWeight);
                             }
                         }
-                        rows = InsetTypesDataTable.Select("InsetTypeID IN (2079,2080,2081,2082,2085,2086,2087,2088,2212,2213,29210,29211,27831,27832,29210,29211)");
+
+                        rows = InsetTypesDataTable.Select(
+                            "InsetTypeID IN (2079,2080,2081,2082,2085,2086,2087,2088,2212,2213,29210,29211,27831,27832,29210,29211)");
                         foreach (DataRow item in rows)
                         {
                             if (Rows[r]["InsetTypeID"].ToString() == item["InsetTypeID"].ToString())
@@ -8854,7 +9701,8 @@ namespace Infinium.Modules.Marketing.NewOrders
                                 Filenka713Count += Convert.ToDecimal(Rows[r]["Count"]);
                                 Filenka713Price = Convert.ToDecimal(Rows[r]["FrontPrice"]);
                                 Filenka713OriginalPrice = Convert.ToDecimal(Rows[r]["OriginalPrice"]);
-                                Filenka713WithTransportCost += Convert.ToDecimal(Rows[r]["PriceWithTransport"]) * Convert.ToDecimal(Rows[r]["Count"]);
+                                Filenka713WithTransportCost += Convert.ToDecimal(Rows[r]["PriceWithTransport"]) *
+                                                               Convert.ToDecimal(Rows[r]["Count"]);
 
                                 decimal FrontWeight = 0;
                                 decimal InsetWeight = 0;
@@ -8864,12 +9712,14 @@ namespace Infinium.Modules.Marketing.NewOrders
                                 Filenka713Weight += Convert.ToDecimal(FrontWeight + InsetWeight);
                             }
                         }
+
                         if (Rows[r]["InsetTypeID"].ToString() == "-1")
                         {
                             NoInset713Count += Convert.ToDecimal(Rows[r]["Count"]);
                             NoInset713Price = Convert.ToDecimal(Rows[r]["FrontPrice"]);
                             NoInset713OriginalPrice = Convert.ToDecimal(Rows[r]["OriginalPrice"]);
-                            NoInset713WithTransportCost += Convert.ToDecimal(Rows[r]["PriceWithTransport"]) * Convert.ToDecimal(Rows[r]["Count"]);
+                            NoInset713WithTransportCost += Convert.ToDecimal(Rows[r]["PriceWithTransport"]) *
+                                                           Convert.ToDecimal(Rows[r]["Count"]);
 
                             decimal FrontWeight = 0;
                             decimal InsetWeight = 0;
@@ -8884,7 +9734,8 @@ namespace Infinium.Modules.Marketing.NewOrders
                             Vitrina713Count += Convert.ToDecimal(Rows[r]["Count"]);
                             Vitrina713Price = Convert.ToDecimal(Rows[r]["FrontPrice"]);
                             Vitrina713OriginalPrice = Convert.ToDecimal(Rows[r]["OriginalPrice"]);
-                            Vitrina713WithTransportCost += Convert.ToDecimal(Rows[r]["PriceWithTransport"]) * Convert.ToDecimal(Rows[r]["Count"]);
+                            Vitrina713WithTransportCost += Convert.ToDecimal(Rows[r]["PriceWithTransport"]) *
+                                                           Convert.ToDecimal(Rows[r]["Count"]);
 
                             decimal FrontWeight = 0;
                             decimal InsetWeight = 0;
@@ -8905,7 +9756,8 @@ namespace Infinium.Modules.Marketing.NewOrders
                                 Solid910Count += Convert.ToDecimal(Rows[r]["Count"]);
                                 Solid910Price = Convert.ToDecimal(Rows[r]["FrontPrice"]);
                                 Solid910OriginalPrice = Convert.ToDecimal(Rows[r]["OriginalPrice"]);
-                                Solid910WithTransportCost += Convert.ToDecimal(Rows[r]["PriceWithTransport"]) * Convert.ToDecimal(Rows[r]["Count"]);
+                                Solid910WithTransportCost += Convert.ToDecimal(Rows[r]["PriceWithTransport"]) *
+                                                             Convert.ToDecimal(Rows[r]["Count"]);
 
                                 decimal FrontWeight = 0;
                                 decimal InsetWeight = 0;
@@ -8915,7 +9767,9 @@ namespace Infinium.Modules.Marketing.NewOrders
                                 Solid910Weight += Convert.ToDecimal(FrontWeight + InsetWeight);
                             }
                         }
-                        rows = InsetTypesDataTable.Select("InsetTypeID IN (2079,2080,2081,2082,2085,2086,2087,2088,2212,2213,29210,29211,27831,27832,29210,29211)");
+
+                        rows = InsetTypesDataTable.Select(
+                            "InsetTypeID IN (2079,2080,2081,2082,2085,2086,2087,2088,2212,2213,29210,29211,27831,27832,29210,29211)");
                         foreach (DataRow item in rows)
                         {
                             if (Rows[r]["InsetTypeID"].ToString() == item["InsetTypeID"].ToString())
@@ -8923,7 +9777,8 @@ namespace Infinium.Modules.Marketing.NewOrders
                                 Filenka910Count += Convert.ToDecimal(Rows[r]["Count"]);
                                 Filenka910Price = Convert.ToDecimal(Rows[r]["FrontPrice"]);
                                 Filenka910OriginalPrice = Convert.ToDecimal(Rows[r]["OriginalPrice"]);
-                                Filenka910WithTransportCost += Convert.ToDecimal(Rows[r]["PriceWithTransport"]) * Convert.ToDecimal(Rows[r]["Count"]);
+                                Filenka910WithTransportCost += Convert.ToDecimal(Rows[r]["PriceWithTransport"]) *
+                                                               Convert.ToDecimal(Rows[r]["Count"]);
 
                                 decimal FrontWeight = 0;
                                 decimal InsetWeight = 0;
@@ -8933,12 +9788,14 @@ namespace Infinium.Modules.Marketing.NewOrders
                                 Filenka910Weight += Convert.ToDecimal(FrontWeight + InsetWeight);
                             }
                         }
+
                         if (Rows[r]["InsetTypeID"].ToString() == "-1")
                         {
                             NoInset910Count += Convert.ToDecimal(Rows[r]["Count"]);
                             NoInset910Price = Convert.ToDecimal(Rows[r]["FrontPrice"]);
                             NoInset910OriginalPrice = Convert.ToDecimal(Rows[r]["OriginalPrice"]);
-                            NoInset910WithTransportCost += Convert.ToDecimal(Rows[r]["PriceWithTransport"]) * Convert.ToDecimal(Rows[r]["Count"]);
+                            NoInset910WithTransportCost += Convert.ToDecimal(Rows[r]["PriceWithTransport"]) *
+                                                           Convert.ToDecimal(Rows[r]["Count"]);
 
                             decimal FrontWeight = 0;
                             decimal InsetWeight = 0;
@@ -8953,7 +9810,8 @@ namespace Infinium.Modules.Marketing.NewOrders
                             Vitrina910Count += Convert.ToDecimal(Rows[r]["Count"]);
                             Vitrina910Price = Convert.ToDecimal(Rows[r]["FrontPrice"]);
                             Vitrina910OriginalPrice = Convert.ToDecimal(Rows[r]["OriginalPrice"]);
-                            Vitrina910WithTransportCost += Convert.ToDecimal(Rows[r]["PriceWithTransport"]) * Convert.ToDecimal(Rows[r]["Count"]);
+                            Vitrina910WithTransportCost += Convert.ToDecimal(Rows[r]["PriceWithTransport"]) *
+                                                           Convert.ToDecimal(Rows[r]["Count"]);
 
                             decimal FrontWeight = 0;
                             decimal InsetWeight = 0;
@@ -8984,9 +9842,12 @@ namespace Infinium.Modules.Marketing.NewOrders
                     Row["Measure"] = "шт.";
                     Row["Price"] = decimal.Round(Solid713Price, 2, MidpointRounding.AwayFromZero);
                     Row["OriginalPrice"] = decimal.Round(Solid713OriginalPrice, 2, MidpointRounding.AwayFromZero);
-                    Row["PriceWithTransport"] = decimal.Round(Solid713WithTransportCost / Solid713Count, 2, MidpointRounding.AwayFromZero);
-                    Row["CostWithTransport"] = decimal.Round(Math.Ceiling(Solid713WithTransportCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
-                    Row["Cost"] = decimal.Round(Math.Ceiling(Solid713Count * Solid713Price / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                    Row["PriceWithTransport"] = decimal.Round(Solid713WithTransportCost / Solid713Count, 2,
+                        MidpointRounding.AwayFromZero);
+                    Row["CostWithTransport"] = decimal.Round(Math.Ceiling(Solid713WithTransportCost / 0.01m) * 0.01m, 2,
+                        MidpointRounding.AwayFromZero);
+                    Row["Cost"] = decimal.Round(Math.Ceiling(Solid713Count * Solid713Price / 0.01m) * 0.01m, 2,
+                        MidpointRounding.AwayFromZero);
                     Row["Weight"] = decimal.Round(Solid713Weight, 3, MidpointRounding.AwayFromZero);
                     ReportDataTable.Rows.Add(Row);
                 }
@@ -9009,9 +9870,12 @@ namespace Infinium.Modules.Marketing.NewOrders
                     Row["Measure"] = "шт.";
                     Row["Price"] = decimal.Round(Filenka713Price, 2, MidpointRounding.AwayFromZero);
                     Row["OriginalPrice"] = decimal.Round(Filenka713OriginalPrice, 2, MidpointRounding.AwayFromZero);
-                    Row["PriceWithTransport"] = decimal.Round(Filenka713WithTransportCost / Filenka713Count, 2, MidpointRounding.AwayFromZero);
-                    Row["CostWithTransport"] = decimal.Round(Math.Ceiling(Filenka713WithTransportCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
-                    Row["Cost"] = decimal.Round(Math.Ceiling(Filenka713Count * Filenka713Price / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                    Row["PriceWithTransport"] = decimal.Round(Filenka713WithTransportCost / Filenka713Count, 2,
+                        MidpointRounding.AwayFromZero);
+                    Row["CostWithTransport"] = decimal.Round(Math.Ceiling(Filenka713WithTransportCost / 0.01m) * 0.01m,
+                        2, MidpointRounding.AwayFromZero);
+                    Row["Cost"] = decimal.Round(Math.Ceiling(Filenka713Count * Filenka713Price / 0.01m) * 0.01m, 2,
+                        MidpointRounding.AwayFromZero);
                     Row["Weight"] = decimal.Round(Filenka713Weight, 3, MidpointRounding.AwayFromZero);
                     ReportDataTable.Rows.Add(Row);
                 }
@@ -9034,9 +9898,12 @@ namespace Infinium.Modules.Marketing.NewOrders
                     Row["Measure"] = "шт.";
                     Row["Price"] = decimal.Round(NoInset713Price, 2, MidpointRounding.AwayFromZero);
                     Row["OriginalPrice"] = decimal.Round(NoInset713OriginalPrice, 2, MidpointRounding.AwayFromZero);
-                    Row["PriceWithTransport"] = decimal.Round(NoInset713WithTransportCost / NoInset713Count, 2, MidpointRounding.AwayFromZero);
-                    Row["CostWithTransport"] = decimal.Round(Math.Ceiling(NoInset713WithTransportCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
-                    Row["Cost"] = decimal.Round(Math.Ceiling(NoInset713Count * NoInset713Price / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                    Row["PriceWithTransport"] = decimal.Round(NoInset713WithTransportCost / NoInset713Count, 2,
+                        MidpointRounding.AwayFromZero);
+                    Row["CostWithTransport"] = decimal.Round(Math.Ceiling(NoInset713WithTransportCost / 0.01m) * 0.01m,
+                        2, MidpointRounding.AwayFromZero);
+                    Row["Cost"] = decimal.Round(Math.Ceiling(NoInset713Count * NoInset713Price / 0.01m) * 0.01m, 2,
+                        MidpointRounding.AwayFromZero);
                     Row["Weight"] = decimal.Round(NoInset713Weight, 3, MidpointRounding.AwayFromZero);
                     ReportDataTable.Rows.Add(Row);
                 }
@@ -9059,9 +9926,12 @@ namespace Infinium.Modules.Marketing.NewOrders
                     Row["Measure"] = "шт.";
                     Row["Price"] = decimal.Round(Vitrina713Price, 2, MidpointRounding.AwayFromZero);
                     Row["OriginalPrice"] = decimal.Round(Vitrina713OriginalPrice, 2, MidpointRounding.AwayFromZero);
-                    Row["PriceWithTransport"] = decimal.Round(Vitrina713WithTransportCost / Vitrina713Count, 2, MidpointRounding.AwayFromZero);
-                    Row["CostWithTransport"] = decimal.Round(Math.Ceiling(Vitrina713WithTransportCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
-                    Row["Cost"] = decimal.Round(Math.Ceiling(Vitrina713Count * Vitrina713Price / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                    Row["PriceWithTransport"] = decimal.Round(Vitrina713WithTransportCost / Vitrina713Count, 2,
+                        MidpointRounding.AwayFromZero);
+                    Row["CostWithTransport"] = decimal.Round(Math.Ceiling(Vitrina713WithTransportCost / 0.01m) * 0.01m,
+                        2, MidpointRounding.AwayFromZero);
+                    Row["Cost"] = decimal.Round(Math.Ceiling(Vitrina713Count * Vitrina713Price / 0.01m) * 0.01m, 2,
+                        MidpointRounding.AwayFromZero);
                     Row["Weight"] = decimal.Round(Vitrina713Weight, 3, MidpointRounding.AwayFromZero);
                     ReportDataTable.Rows.Add(Row);
                 }
@@ -9084,9 +9954,12 @@ namespace Infinium.Modules.Marketing.NewOrders
                     Row["Measure"] = "шт.";
                     Row["Price"] = decimal.Round(Solid910Price, 2, MidpointRounding.AwayFromZero);
                     Row["OriginalPrice"] = decimal.Round(Solid910OriginalPrice, 2, MidpointRounding.AwayFromZero);
-                    Row["PriceWithTransport"] = decimal.Round(Solid910WithTransportCost / Solid910Count, 2, MidpointRounding.AwayFromZero);
-                    Row["CostWithTransport"] = decimal.Round(Math.Ceiling(Solid910WithTransportCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
-                    Row["Cost"] = decimal.Round(Math.Ceiling(Solid910Count * Solid910Price / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                    Row["PriceWithTransport"] = decimal.Round(Solid910WithTransportCost / Solid910Count, 2,
+                        MidpointRounding.AwayFromZero);
+                    Row["CostWithTransport"] = decimal.Round(Math.Ceiling(Solid910WithTransportCost / 0.01m) * 0.01m, 2,
+                        MidpointRounding.AwayFromZero);
+                    Row["Cost"] = decimal.Round(Math.Ceiling(Solid910Count * Solid910Price / 0.01m) * 0.01m, 2,
+                        MidpointRounding.AwayFromZero);
                     Row["Weight"] = decimal.Round(Solid910Weight, 3, MidpointRounding.AwayFromZero);
                     ReportDataTable.Rows.Add(Row);
                 }
@@ -9109,9 +9982,12 @@ namespace Infinium.Modules.Marketing.NewOrders
                     Row["Measure"] = "шт.";
                     Row["Price"] = decimal.Round(Filenka910Price, 2, MidpointRounding.AwayFromZero);
                     Row["OriginalPrice"] = decimal.Round(Filenka910OriginalPrice, 2, MidpointRounding.AwayFromZero);
-                    Row["PriceWithTransport"] = decimal.Round(Filenka910WithTransportCost / Filenka910Count, 2, MidpointRounding.AwayFromZero);
-                    Row["CostWithTransport"] = decimal.Round(Math.Ceiling(Filenka910WithTransportCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
-                    Row["Cost"] = decimal.Round(Math.Ceiling(Filenka910Count * Filenka910Price / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                    Row["PriceWithTransport"] = decimal.Round(Filenka910WithTransportCost / Filenka910Count, 2,
+                        MidpointRounding.AwayFromZero);
+                    Row["CostWithTransport"] = decimal.Round(Math.Ceiling(Filenka910WithTransportCost / 0.01m) * 0.01m,
+                        2, MidpointRounding.AwayFromZero);
+                    Row["Cost"] = decimal.Round(Math.Ceiling(Filenka910Count * Filenka910Price / 0.01m) * 0.01m, 2,
+                        MidpointRounding.AwayFromZero);
                     Row["Weight"] = decimal.Round(Filenka910Weight, 3, MidpointRounding.AwayFromZero);
                     ReportDataTable.Rows.Add(Row);
                 }
@@ -9134,9 +10010,12 @@ namespace Infinium.Modules.Marketing.NewOrders
                     Row["Measure"] = "шт.";
                     Row["Price"] = decimal.Round(NoInset910Price, 3, MidpointRounding.AwayFromZero);
                     Row["OriginalPrice"] = decimal.Round(NoInset910OriginalPrice, 2, MidpointRounding.AwayFromZero);
-                    Row["PriceWithTransport"] = decimal.Round(NoInset910WithTransportCost / NoInset910Count, 2, MidpointRounding.AwayFromZero);
-                    Row["CostWithTransport"] = decimal.Round(Math.Ceiling(NoInset910WithTransportCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
-                    Row["Cost"] = decimal.Round(Math.Ceiling(NoInset910Count * NoInset910Price / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                    Row["PriceWithTransport"] = decimal.Round(NoInset910WithTransportCost / NoInset910Count, 2,
+                        MidpointRounding.AwayFromZero);
+                    Row["CostWithTransport"] = decimal.Round(Math.Ceiling(NoInset910WithTransportCost / 0.01m) * 0.01m,
+                        2, MidpointRounding.AwayFromZero);
+                    Row["Cost"] = decimal.Round(Math.Ceiling(NoInset910Count * NoInset910Price / 0.01m) * 0.01m, 2,
+                        MidpointRounding.AwayFromZero);
                     Row["Weight"] = decimal.Round(NoInset910Weight, 3, MidpointRounding.AwayFromZero);
                     ReportDataTable.Rows.Add(Row);
                 }
@@ -9159,9 +10038,12 @@ namespace Infinium.Modules.Marketing.NewOrders
                     Row["Measure"] = "шт.";
                     Row["Price"] = decimal.Round(Vitrina910Price, 2, MidpointRounding.AwayFromZero);
                     Row["OriginalPrice"] = decimal.Round(Vitrina910OriginalPrice, 2, MidpointRounding.AwayFromZero);
-                    Row["PriceWithTransport"] = decimal.Round(Vitrina910WithTransportCost / Vitrina910Count, 2, MidpointRounding.AwayFromZero);
-                    Row["CostWithTransport"] = decimal.Round(Math.Ceiling(Vitrina910WithTransportCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
-                    Row["Cost"] = decimal.Round(Math.Ceiling(Vitrina910Count * Vitrina910Price / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                    Row["PriceWithTransport"] = decimal.Round(Vitrina910WithTransportCost / Vitrina910Count, 2,
+                        MidpointRounding.AwayFromZero);
+                    Row["CostWithTransport"] = decimal.Round(Math.Ceiling(Vitrina910WithTransportCost / 0.01m) * 0.01m,
+                        2, MidpointRounding.AwayFromZero);
+                    Row["Cost"] = decimal.Round(Math.Ceiling(Vitrina910Count * Vitrina910Price / 0.01m) * 0.01m, 2,
+                        MidpointRounding.AwayFromZero);
                     Row["Weight"] = decimal.Round(Vitrina910Weight, 3, MidpointRounding.AwayFromZero);
                     ReportDataTable.Rows.Add(Row);
                 }
@@ -9188,14 +10070,16 @@ namespace Infinium.Modules.Marketing.NewOrders
                 int FrontID = Convert.ToInt32(Rows[i]["FrontID"]);
                 if (FrontID == 3729)
                     continue;
-                decimal d = GetInsetSquare(Convert.ToInt32(Rows[i]["FrontID"]), Convert.ToInt32(Rows[i]["Height"]), Convert.ToInt32(Rows[i]["Width"])) * Convert.ToDecimal(Rows[i]["Count"]);
+                decimal d = GetInsetSquare(Convert.ToInt32(Rows[i]["FrontID"]), Convert.ToInt32(Rows[i]["Height"]),
+                    Convert.ToInt32(Rows[i]["Width"])) * Convert.ToDecimal(Rows[i]["Count"]);
                 Count += d;
                 Cost += Math.Ceiling(Convert.ToDecimal(Rows[i]["InsetPrice"]) * d / 0.001m) * 0.001m;
                 Cost1 += Math.Ceiling(Convert.ToDecimal(Rows[i]["OriginalInsetPrice"]) * d / 0.001m) * 0.001m;
                 TotalDiscount = Convert.ToDecimal(Rows[i]["TotalDiscount"]);
             }
-            Cost = (Cost / 0.01m) * 0.01m;
-            Cost1 = (Cost1 / 0.01m) * 0.01m;
+
+            Cost = Cost / 0.01m * 0.01m;
+            Cost1 = Cost1 / 0.01m * 0.01m;
             if (Count > 0)
             {
                 Count = decimal.Round(Count, 3, MidpointRounding.AwayFromZero);
@@ -9215,8 +10099,10 @@ namespace Infinium.Modules.Marketing.NewOrders
                 NewRow["Price"] = decimal.Round(Cost1 / Count, 2, MidpointRounding.AwayFromZero);
                 NewRow["Cost"] = decimal.Round(Math.Ceiling(Cost1 / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
                 NewRow["PriceWithTransport"] = decimal.Round(Cost / Count, 2, MidpointRounding.AwayFromZero);
-                NewRow["CostWithTransport"] = decimal.Round(Math.Ceiling(Cost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
-                NewRow["Weight"] = decimal.Round(Convert.ToDecimal(NewRow["Count"]) * Convert.ToDecimal(3.5), 3, MidpointRounding.AwayFromZero);
+                NewRow["CostWithTransport"] =
+                    decimal.Round(Math.Ceiling(Cost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                NewRow["Weight"] = decimal.Round(Convert.ToDecimal(NewRow["Count"]) * Convert.ToDecimal(3.5), 3,
+                    MidpointRounding.AwayFromZero);
                 ReportDataTable.Rows.Add(NewRow);
             }
         }
@@ -9249,6 +10135,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                     break;
                 }
             }
+
             if (!hasGlass)
                 return;
 
@@ -9265,7 +10152,9 @@ namespace Infinium.Modules.Marketing.NewOrders
                         continue;
 
                     TotalDiscount = Convert.ToDecimal(FRows[i]["TotalDiscount"]);
-                    CountFlutes += Convert.ToDecimal(FRows[i]["Count"]) * GetInsetSquare(Convert.ToInt32(FRows[i]["FrontID"]), Convert.ToInt32(FRows[i]["Height"]), Convert.ToInt32(FRows[i]["Width"]));
+                    CountFlutes += Convert.ToDecimal(FRows[i]["Count"]) * GetInsetSquare(
+                        Convert.ToInt32(FRows[i]["FrontID"]), Convert.ToInt32(FRows[i]["Height"]),
+                        Convert.ToInt32(FRows[i]["Width"]));
                 }
 
                 CountFlutes = decimal.Round(CountFlutes, 3, MidpointRounding.AwayFromZero);
@@ -9286,9 +10175,11 @@ namespace Infinium.Modules.Marketing.NewOrders
                     NewRow["Count"] = CountFlutes;
                     NewRow["Measure"] = "м.кв.";
                     NewRow["Price"] = decimal.Round(PriceFlutes, 2, MidpointRounding.AwayFromZero);
-                    NewRow["Cost"] = decimal.Round(Math.Ceiling(CountFlutes * PriceFlutes / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                    NewRow["Cost"] = decimal.Round(Math.Ceiling(CountFlutes * PriceFlutes / 0.01m) * 0.01m, 2,
+                        MidpointRounding.AwayFromZero);
                     NewRow["PriceWithTransport"] = decimal.Round(PriceFlutes, 2, MidpointRounding.AwayFromZero);
-                    NewRow["CostWithTransport"] = decimal.Round(Math.Ceiling(CountFlutes * PriceFlutes / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                    NewRow["CostWithTransport"] = decimal.Round(Math.Ceiling(CountFlutes * PriceFlutes / 0.01m) * 0.01m,
+                        2, MidpointRounding.AwayFromZero);
                     NewRow["Weight"] = decimal.Round(CountFlutes * 10, 3, MidpointRounding.AwayFromZero);
                     ReportDataTable.Rows.Add(NewRow);
                 }
@@ -9308,9 +10199,9 @@ namespace Infinium.Modules.Marketing.NewOrders
 
                     TotalDiscount = Convert.ToDecimal(LRows[i]["TotalDiscount"]);
                     CountLacomat += Convert.ToDecimal(LRows[i]["Count"]) *
-                                GetInsetSquare(Convert.ToInt32(LRows[i]["FrontID"]),
-                                              Convert.ToInt32(LRows[i]["Height"]),
-                                              Convert.ToInt32(LRows[i]["Width"]));
+                                    GetInsetSquare(Convert.ToInt32(LRows[i]["FrontID"]),
+                                        Convert.ToInt32(LRows[i]["Height"]),
+                                        Convert.ToInt32(LRows[i]["Width"]));
 
                 }
 
@@ -9332,9 +10223,12 @@ namespace Infinium.Modules.Marketing.NewOrders
                     NewRow["Count"] = CountLacomat;
                     NewRow["Measure"] = "м.кв.";
                     NewRow["Price"] = decimal.Round(PriceLacomat, 2, MidpointRounding.AwayFromZero);
-                    NewRow["Cost"] = decimal.Round(Math.Ceiling(CountLacomat * PriceLacomat / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                    NewRow["Cost"] = decimal.Round(Math.Ceiling(CountLacomat * PriceLacomat / 0.01m) * 0.01m, 2,
+                        MidpointRounding.AwayFromZero);
                     NewRow["PriceWithTransport"] = decimal.Round(PriceLacomat, 2, MidpointRounding.AwayFromZero);
-                    NewRow["CostWithTransport"] = decimal.Round(Math.Ceiling(CountLacomat * PriceLacomat / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                    NewRow["CostWithTransport"] =
+                        decimal.Round(Math.Ceiling(CountLacomat * PriceLacomat / 0.01m) * 0.01m, 2,
+                            MidpointRounding.AwayFromZero);
                     NewRow["Weight"] = decimal.Round(CountLacomat * 10, 3, MidpointRounding.AwayFromZero);
                     ReportDataTable.Rows.Add(NewRow);
                 }
@@ -9353,9 +10247,9 @@ namespace Infinium.Modules.Marketing.NewOrders
 
                     TotalDiscount = Convert.ToDecimal(KRows[i]["TotalDiscount"]);
                     CountKrizet += Convert.ToDecimal(KRows[i]["Count"]) *
-                                GetInsetSquare(Convert.ToInt32(KRows[i]["FrontID"]),
-                                              Convert.ToInt32(KRows[i]["Height"]),
-                                              Convert.ToInt32(KRows[i]["Width"]));
+                                   GetInsetSquare(Convert.ToInt32(KRows[i]["FrontID"]),
+                                       Convert.ToInt32(KRows[i]["Height"]),
+                                       Convert.ToInt32(KRows[i]["Width"]));
                 }
 
                 CountKrizet = decimal.Round(CountKrizet, 3, MidpointRounding.AwayFromZero);
@@ -9376,13 +10270,16 @@ namespace Infinium.Modules.Marketing.NewOrders
                     NewRow["Count"] = CountKrizet;
                     NewRow["Measure"] = "м.кв.";
                     NewRow["Price"] = decimal.Round(PriceKrizet, 2, MidpointRounding.AwayFromZero);
-                    NewRow["Cost"] = decimal.Round(Math.Ceiling(CountKrizet * PriceKrizet / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                    NewRow["Cost"] = decimal.Round(Math.Ceiling(CountKrizet * PriceKrizet / 0.01m) * 0.01m, 2,
+                        MidpointRounding.AwayFromZero);
                     NewRow["PriceWithTransport"] = decimal.Round(PriceKrizet, 2, MidpointRounding.AwayFromZero);
-                    NewRow["CostWithTransport"] = decimal.Round(Math.Ceiling(CountKrizet * PriceKrizet / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                    NewRow["CostWithTransport"] = decimal.Round(Math.Ceiling(CountKrizet * PriceKrizet / 0.01m) * 0.01m,
+                        2, MidpointRounding.AwayFromZero);
                     NewRow["Weight"] = decimal.Round(CountKrizet * 10, 3, MidpointRounding.AwayFromZero);
                     ReportDataTable.Rows.Add(NewRow);
                 }
             }
+
             DataRow[] ORows = OrdersDataTable.Select("InsetColorID = 18");
 
             if (ORows.Count() > 0)
@@ -9394,9 +10291,9 @@ namespace Infinium.Modules.Marketing.NewOrders
 
                     TotalDiscount = Convert.ToDecimal(ORows[i]["TotalDiscount"]);
                     CountOther += Convert.ToDecimal(ORows[i]["Count"]) *
-                                GetInsetSquare(Convert.ToInt32(ORows[i]["FrontID"]),
-                                              Convert.ToInt32(ORows[i]["Height"]),
-                                              Convert.ToInt32(ORows[i]["Width"]));
+                                  GetInsetSquare(Convert.ToInt32(ORows[i]["FrontID"]),
+                                      Convert.ToInt32(ORows[i]["Height"]),
+                                      Convert.ToInt32(ORows[i]["Width"]));
                 }
 
                 CountOther = decimal.Round(CountOther, 3, MidpointRounding.AwayFromZero);
@@ -9438,7 +10335,7 @@ namespace Infinium.Modules.Marketing.NewOrders
             decimal PriceEllipseGrid = 0;
             decimal TotalDiscount = 0;
 
-            DataRow[] EGRows = OrdersDataTable.Select("FrontID IN (3729)");//ellipse grid
+            DataRow[] EGRows = OrdersDataTable.Select("FrontID IN (3729)"); //ellipse grid
 
             if (EGRows.Count() > 0)
             {
@@ -9451,9 +10348,14 @@ namespace Infinium.Modules.Marketing.NewOrders
                 for (int i = 0; i < EGRows.Count(); i++)
                 {
                     TotalDiscount = Convert.ToDecimal(EGRows[i]["TotalDiscount"]);
-                    decimal dd = decimal.Round(Convert.ToDecimal(EGRows[i]["Count"]) * MarginHeight * (Convert.ToDecimal(EGRows[i]["Width"]) - MarginWidth) / 1000000, 3, MidpointRounding.AwayFromZero);
+                    decimal dd =
+                        decimal.Round(
+                            Convert.ToDecimal(EGRows[i]["Count"]) * MarginHeight *
+                            (Convert.ToDecimal(EGRows[i]["Width"]) - MarginWidth) / 1000000, 3,
+                            MidpointRounding.AwayFromZero);
                     CountEllipseGrid += dd;
                 }
+
                 decimal Weight = GetInsetWeight(EGRows[0]);
                 Weight = decimal.Round(CountEllipseGrid * Weight, 3, MidpointRounding.AwayFromZero);
 
@@ -9472,14 +10374,18 @@ namespace Infinium.Modules.Marketing.NewOrders
                 NewRow["Measure"] = "м.кв.";
                 NewRow["OriginalPrice"] = PriceEllipseGrid;
                 NewRow["Price"] = PriceEllipseGrid;
-                NewRow["Cost"] = decimal.Round(Math.Ceiling(CountEllipseGrid * PriceEllipseGrid / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                NewRow["Cost"] = decimal.Round(Math.Ceiling(CountEllipseGrid * PriceEllipseGrid / 0.01m) * 0.01m, 2,
+                    MidpointRounding.AwayFromZero);
                 NewRow["PriceWithTransport"] = PriceEllipseGrid;
-                NewRow["CostWithTransport"] = decimal.Round(Math.Ceiling(CountEllipseGrid * PriceEllipseGrid / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                NewRow["CostWithTransport"] =
+                    decimal.Round(Math.Ceiling(CountEllipseGrid * PriceEllipseGrid / 0.01m) * 0.01m, 2,
+                        MidpointRounding.AwayFromZero);
                 NewRow["Weight"] = Weight;
                 ReportDataTable.Rows.Add(NewRow);
             }
 
-            DataRow[] A1RRows = OrdersDataTable.Select("InsetTypeID = 3654 OR FrontID IN (3731,3740,3746)");//applic 1 right
+            DataRow[] A1RRows =
+                OrdersDataTable.Select("InsetTypeID = 3654 OR FrontID IN (3731,3740,3746)"); //applic 1 right
 
             if (A1RRows.Count() > 0)
             {
@@ -9506,14 +10412,17 @@ namespace Infinium.Modules.Marketing.NewOrders
                 NewRow["Measure"] = "шт.";
                 NewRow["Price"] = PriceApplic1R;
                 NewRow["OriginalPrice"] = PriceApplic1R;
-                NewRow["Cost"] = decimal.Round(Math.Ceiling(CountApplic1R * PriceApplic1R / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                NewRow["Cost"] = decimal.Round(Math.Ceiling(CountApplic1R * PriceApplic1R / 0.01m) * 0.01m, 2,
+                    MidpointRounding.AwayFromZero);
                 NewRow["PriceWithTransport"] = PriceApplic1R;
-                NewRow["CostWithTransport"] = decimal.Round(Math.Ceiling(CountApplic1R * PriceApplic1R / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                NewRow["CostWithTransport"] = decimal.Round(Math.Ceiling(CountApplic1R * PriceApplic1R / 0.01m) * 0.01m,
+                    2, MidpointRounding.AwayFromZero);
                 NewRow["Weight"] = 0;
                 ReportDataTable.Rows.Add(NewRow);
             }
 
-            DataRow[] A1LRows = OrdersDataTable.Select("InsetTypeID = 3653 OR FrontID IN (3728,3739,3745)");//applic 1 left
+            DataRow[] A1LRows =
+                OrdersDataTable.Select("InsetTypeID = 3653 OR FrontID IN (3728,3739,3745)"); //applic 1 left
 
             if (A1LRows.Count() > 0)
             {
@@ -9540,14 +10449,16 @@ namespace Infinium.Modules.Marketing.NewOrders
                 NewRow["Measure"] = "шт.";
                 NewRow["Price"] = PriceApplic1L;
                 NewRow["OriginalPrice"] = PriceApplic1L;
-                NewRow["Cost"] = decimal.Round(Math.Ceiling(CountApplic1L * PriceApplic1L / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                NewRow["Cost"] = decimal.Round(Math.Ceiling(CountApplic1L * PriceApplic1L / 0.01m) * 0.01m, 2,
+                    MidpointRounding.AwayFromZero);
                 NewRow["PriceWithTransport"] = PriceApplic1L;
-                NewRow["CostWithTransport"] = decimal.Round(Math.Ceiling(CountApplic1L * PriceApplic1L / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                NewRow["CostWithTransport"] = decimal.Round(Math.Ceiling(CountApplic1L * PriceApplic1L / 0.01m) * 0.01m,
+                    2, MidpointRounding.AwayFromZero);
                 NewRow["Weight"] = 0;
                 ReportDataTable.Rows.Add(NewRow);
             }
 
-            DataRow[] A2Rows = OrdersDataTable.Select("InsetTypeID = 3655 OR FrontID IN (3732,3741,3744)");//applic 2 
+            DataRow[] A2Rows = OrdersDataTable.Select("InsetTypeID = 3655 OR FrontID IN (3732,3741,3744)"); //applic 2 
 
             if (A2Rows.Count() > 0)
             {
@@ -9573,14 +10484,16 @@ namespace Infinium.Modules.Marketing.NewOrders
                 NewRow["Measure"] = "шт.";
                 NewRow["Price"] = PriceApplic2;
                 NewRow["OriginalPrice"] = PriceApplic2;
-                NewRow["Cost"] = decimal.Round(Math.Ceiling(CountApplic2 * PriceApplic2 / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                NewRow["Cost"] = decimal.Round(Math.Ceiling(CountApplic2 * PriceApplic2 / 0.01m) * 0.01m, 2,
+                    MidpointRounding.AwayFromZero);
                 NewRow["PriceWithTransport"] = PriceApplic2;
-                NewRow["CostWithTransport"] = decimal.Round(Math.Ceiling(CountApplic2 * PriceApplic2 / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                NewRow["CostWithTransport"] = decimal.Round(Math.Ceiling(CountApplic2 * PriceApplic2 / 0.01m) * 0.01m,
+                    2, MidpointRounding.AwayFromZero);
                 NewRow["Weight"] = 0;
                 ReportDataTable.Rows.Add(NewRow);
             }
 
-            DataRow[] A3Rows = OrdersDataTable.Select("InsetTypeID = 28961");//applic 3 
+            DataRow[] A3Rows = OrdersDataTable.Select("InsetTypeID = 28961"); //applic 3 
 
             if (A3Rows.Count() > 0)
             {
@@ -9606,9 +10519,11 @@ namespace Infinium.Modules.Marketing.NewOrders
                 NewRow["Measure"] = "шт.";
                 NewRow["Price"] = PriceApplic2;
                 NewRow["OriginalPrice"] = PriceApplic2;
-                NewRow["Cost"] = decimal.Round(Math.Ceiling(CountApplic2 * PriceApplic2 / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                NewRow["Cost"] = decimal.Round(Math.Ceiling(CountApplic2 * PriceApplic2 / 0.01m) * 0.01m, 2,
+                    MidpointRounding.AwayFromZero);
                 NewRow["PriceWithTransport"] = PriceApplic2;
-                NewRow["CostWithTransport"] = decimal.Round(Math.Ceiling(CountApplic2 * PriceApplic2 / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                NewRow["CostWithTransport"] = decimal.Round(Math.Ceiling(CountApplic2 * PriceApplic2 / 0.01m) * 0.01m,
+                    2, MidpointRounding.AwayFromZero);
                 NewRow["Weight"] = 0;
                 ReportDataTable.Rows.Add(NewRow);
             }
@@ -9637,7 +10552,8 @@ namespace Infinium.Modules.Marketing.NewOrders
             decimal FrontWidth = Convert.ToDecimal(FrontsOrdersRow["Width"]);
             decimal ProfileWeight = 0;
             decimal ProfileWidth = 0;
-            DataRow[] FrontsConfigRow = FrontsConfigDataTable.Select("FrontConfigID = " + FrontsOrdersRow["FrontConfigID"].ToString());
+            DataRow[] FrontsConfigRow =
+                FrontsConfigDataTable.Select("FrontConfigID = " + FrontsOrdersRow["FrontConfigID"].ToString());
             if (FrontsConfigRow.Count() > 0)
                 ProfileWeight = Convert.ToDecimal(FrontsConfigRow[0]["Weight"]);
 
@@ -9658,7 +10574,8 @@ namespace Infinium.Modules.Marketing.NewOrders
             //    return FrontWidth * FrontHeight / 1000000 * ProfileWeight;
             else
             {
-                DataRow[] DecorConfigRow = TechStoreDataTable.Select("TechStoreID = " + FrontsConfigRow[0]["ProfileID"].ToString());
+                DataRow[] DecorConfigRow =
+                    TechStoreDataTable.Select("TechStoreID = " + FrontsConfigRow[0]["ProfileID"].ToString());
                 if (DecorConfigRow.Count() > 0)
                 {
                     ProfileWidth = Convert.ToDecimal(DecorConfigRow[0]["Width"]);
@@ -9666,13 +10583,15 @@ namespace Infinium.Modules.Marketing.NewOrders
                     return (FrontWidth * 2 + (FrontHeight - ProfileWidth - ProfileWidth) * 2) / 1000 * ProfileWeight;
                 }
             }
+
             return 0;
         }
 
         public void GetFrontWeight(DataRow FrontsOrdersRow, ref decimal outFrontWeight, ref decimal outInsetWeight)
         {
             //decimal FrontsWeight = 0;
-            DataRow[] FrontsConfigRow = FrontsConfigDataTable.Select("FrontConfigID = " + FrontsOrdersRow["FrontConfigID"].ToString());
+            DataRow[] FrontsConfigRow =
+                FrontsConfigDataTable.Select("FrontConfigID = " + FrontsOrdersRow["FrontConfigID"].ToString());
             decimal InsetWeight = Convert.ToDecimal(FrontsConfigRow[0]["InsetWeight"]);
             decimal FrontsOrderSquare = Convert.ToDecimal(FrontsOrdersRow["Square"]);
             decimal PackWeight = 0;
@@ -9682,19 +10601,23 @@ namespace Infinium.Modules.Marketing.NewOrders
             if (FrontsConfigRow[0]["Width"].ToString() == "-1")
             {
                 outFrontWeight = PackWeight +
-                    Convert.ToDecimal(FrontsOrdersRow["Count"]) * Convert.ToDecimal(FrontsConfigRow[0]["Weight"]);
+                                 Convert.ToDecimal(FrontsOrdersRow["Count"]) *
+                                 Convert.ToDecimal(FrontsConfigRow[0]["Weight"]);
                 return;
             }
+
             //если алюминий
             if (FC.IsAluminium(FrontsOrdersRow) > -1)
             {
                 outFrontWeight = PackWeight +
-                    FC.GetAluminiumWeight(FrontsOrdersRow, true);
+                                 FC.GetAluminiumWeight(FrontsOrdersRow, true);
                 return;
             }
+
             decimal ResultProfileWeight = GetProfileWeight(FrontsOrdersRow);
             decimal ResultInsetWeight = 0;
-            DataRow[] rows = InsetTypesDataTable.Select("GroupID = 3 OR GroupID = 4 OR GroupID = 7 OR GroupID = 12 OR GroupID = 13");
+            DataRow[] rows =
+                InsetTypesDataTable.Select("GroupID = 3 OR GroupID = 4 OR GroupID = 7 OR GroupID = 12 OR GroupID = 13");
             foreach (DataRow item in rows)
             {
                 if (FrontsOrdersRow["InsetTypeID"].ToString() == item["InsetTypeID"].ToString())
@@ -9713,21 +10636,25 @@ namespace Infinium.Modules.Marketing.NewOrders
             ProfilFrontsOrdersDataTable.Clear();
             TPSFrontsOrdersDataTable.Clear();
 
-            string SelectCommand = @"SELECT FrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, 
+            string SelectCommand =
+                @"SELECT FrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, 
                 (-MegaOrders.ComplaintProfilCost-MegaOrders.ComplaintTPSCost+MegaOrders.TransportCost+MegaOrders.AdditionalCost) AS TotalAdditionalCost,
                 MegaOrders.ComplaintProfilCost, MegaOrders.ComplaintTPSCost, MegaOrders.TransportCost, MegaOrders.AdditionalCost, MegaOrders.MegaOrderID, MegaOrders.PaymentRate FROM FrontsOrders
                 INNER JOIN MainOrders ON FrontsOrders.MainOrderID = MainOrders.MainOrderID
                 INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID
-                INNER JOIN infiniu2_catalog.dbo.FrontsConfig ON FrontsOrders.FrontConfigID = infiniu2_catalog.dbo.FrontsConfig.FrontConfigID WHERE FrontsOrders.MainOrderID IN (" + string.Join(",", MainOrderIDs) + ") AND FrontsOrders.IsSample = 1 ORDER BY FrontID";
+                INNER JOIN infiniu2_catalog.dbo.FrontsConfig ON FrontsOrders.FrontConfigID = infiniu2_catalog.dbo.FrontsConfig.FrontConfigID WHERE FrontsOrders.MainOrderID IN (" +
+                string.Join(",", MainOrderIDs) + ") AND FrontsOrders.IsSample = 1 ORDER BY FrontID";
             if (!IsSample)
-                SelectCommand = @"SELECT FrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, 
+                SelectCommand =
+                    @"SELECT FrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, 
                 (-MegaOrders.ComplaintProfilCost-MegaOrders.ComplaintTPSCost+MegaOrders.TransportCost+MegaOrders.AdditionalCost) AS TotalAdditionalCost,
                 MegaOrders.ComplaintProfilCost, MegaOrders.ComplaintTPSCost, MegaOrders.TransportCost, MegaOrders.AdditionalCost, MegaOrders.MegaOrderID, MegaOrders.PaymentRate FROM FrontsOrders
                 INNER JOIN MainOrders ON FrontsOrders.MainOrderID = MainOrders.MainOrderID
                 INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID
-                INNER JOIN infiniu2_catalog.dbo.FrontsConfig ON FrontsOrders.FrontConfigID = infiniu2_catalog.dbo.FrontsConfig.FrontConfigID WHERE FrontsOrders.MainOrderID IN (" + string.Join(",", MainOrderIDs) + ") AND FrontsOrders.IsSample = 0 ORDER BY FrontID";
+                INNER JOIN infiniu2_catalog.dbo.FrontsConfig ON FrontsOrders.FrontConfigID = infiniu2_catalog.dbo.FrontsConfig.FrontConfigID WHERE FrontsOrders.MainOrderID IN (" +
+                    string.Join(",", MainOrderIDs) + ") AND FrontsOrders.IsSample = 0 ORDER BY FrontID";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand,
-                ConnectionStrings.MarketingOrdersConnectionString))
+                       ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (DataTable DT = new DataTable())
                 {
@@ -9754,7 +10681,8 @@ namespace Infinium.Modules.Marketing.NewOrders
                         {
                             DT1.Clear();
                             PaymentRate = Convert.ToDecimal(DistRatesDT.Rows[j]["PaymentRate"]);
-                            DataRow[] rows = ProfilFrontsOrdersDataTable.Select("PaymentRate='" + PaymentRate.ToString() + "'");
+                            DataRow[] rows =
+                                ProfilFrontsOrdersDataTable.Select("PaymentRate='" + PaymentRate.ToString() + "'");
                             foreach (DataRow item in rows)
                                 DT1.Rows.Add(item.ItemArray);
                             if (DT1.Rows.Count == 0)
@@ -9780,7 +10708,8 @@ namespace Infinium.Modules.Marketing.NewOrders
                         {
                             DT1.Clear();
                             PaymentRate = Convert.ToDecimal(DistRatesDT.Rows[j]["PaymentRate"]);
-                            DataRow[] rows = TPSFrontsOrdersDataTable.Select("PaymentRate='" + PaymentRate.ToString() + "'");
+                            DataRow[] rows =
+                                TPSFrontsOrdersDataTable.Select("PaymentRate='" + PaymentRate.ToString() + "'");
                             foreach (DataRow item in rows)
                                 DT1.Rows.Add(item.ItemArray);
                             if (DT1.Rows.Count == 0)
@@ -9809,14 +10738,16 @@ namespace Infinium.Modules.Marketing.NewOrders
             ProfilFrontsOrdersDataTable.Clear();
             TPSFrontsOrdersDataTable.Clear();
 
-            string SelectCommand = @"SELECT FrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, 
+            string SelectCommand =
+                @"SELECT FrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, 
                 (-MegaOrders.ComplaintProfilCost-MegaOrders.ComplaintTPSCost+MegaOrders.TransportCost+MegaOrders.AdditionalCost) AS TotalAdditionalCost,
                 MegaOrders.ComplaintProfilCost, MegaOrders.ComplaintTPSCost, MegaOrders.TransportCost, MegaOrders.AdditionalCost, MegaOrders.MegaOrderID, MegaOrders.PaymentRate FROM FrontsOrders
                 INNER JOIN MainOrders ON FrontsOrders.MainOrderID = MainOrders.MainOrderID
                 INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID
-                INNER JOIN infiniu2_catalog.dbo.FrontsConfig ON FrontsOrders.FrontConfigID = infiniu2_catalog.dbo.FrontsConfig.FrontConfigID WHERE FrontsOrders.MainOrderID IN (" + string.Join(",", MainOrderIDs) + ") ORDER BY FrontID";
+                INNER JOIN infiniu2_catalog.dbo.FrontsConfig ON FrontsOrders.FrontConfigID = infiniu2_catalog.dbo.FrontsConfig.FrontConfigID WHERE FrontsOrders.MainOrderID IN (" +
+                string.Join(",", MainOrderIDs) + ") ORDER BY FrontID";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand,
-                ConnectionStrings.MarketingOrdersConnectionString))
+                       ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (DataTable DT = new DataTable())
                 {
@@ -9843,7 +10774,8 @@ namespace Infinium.Modules.Marketing.NewOrders
                         {
                             DT1.Clear();
                             PaymentRate = Convert.ToDecimal(DistRatesDT.Rows[j]["PaymentRate"]);
-                            DataRow[] rows = ProfilFrontsOrdersDataTable.Select("PaymentRate='" + PaymentRate.ToString() + "'");
+                            DataRow[] rows =
+                                ProfilFrontsOrdersDataTable.Select("PaymentRate='" + PaymentRate.ToString() + "'");
                             foreach (DataRow item in rows)
                                 DT1.Rows.Add(item.ItemArray);
                             if (DT1.Rows.Count == 0)
@@ -9869,7 +10801,8 @@ namespace Infinium.Modules.Marketing.NewOrders
                         {
                             DT1.Clear();
                             PaymentRate = Convert.ToDecimal(DistRatesDT.Rows[j]["PaymentRate"]);
-                            DataRow[] rows = TPSFrontsOrdersDataTable.Select("PaymentRate='" + PaymentRate.ToString() + "'");
+                            DataRow[] rows =
+                                TPSFrontsOrdersDataTable.Select("PaymentRate='" + PaymentRate.ToString() + "'");
                             foreach (DataRow item in rows)
                                 DT1.Rows.Add(item.ItemArray);
                             if (DT1.Rows.Count == 0)
@@ -9923,7 +10856,7 @@ namespace Infinium.Modules.Marketing.NewOrders
 
             CurrencyTypesDT = new DataTable();
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM CurrencyTypes",
-                ConnectionStrings.CatalogConnectionString))
+                       ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(CurrencyTypesDT);
             }
@@ -9934,22 +10867,25 @@ namespace Infinium.Modules.Marketing.NewOrders
             DecorOrdersDataTable = new DataTable();
 
             string SelectCommand = @"SELECT ProductID, ProductName, MeasureID, ReportParam FROM DecorProducts" +
-                " WHERE (ProductID IN (SELECT ProductID FROM DecorConfig)) ORDER BY ProductName ASC";
+                                   " WHERE (ProductID IN (SELECT ProductID FROM DecorConfig)) ORDER BY ProductName ASC";
             DecorProductsDataTable = new DataTable();
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(DecorProductsDataTable);
             }
+
             DecorDataTable = new DataTable();
-            SelectCommand = @"SELECT DISTINCT TechStore.TechStoreID AS DecorID, TechStore.TechStoreName AS Name, DecorConfig.ProductID FROM TechStore 
+            SelectCommand =
+                @"SELECT DISTINCT TechStore.TechStoreID AS DecorID, TechStore.TechStoreName AS Name, DecorConfig.ProductID FROM TechStore 
                 INNER JOIN DecorConfig ON TechStore.TechStoreID = DecorConfig.DecorID ORDER BY TechStoreName";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(DecorDataTable);
             }
+
             MeasuresDataTable = new DataTable();
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Measures",
-                ConnectionStrings.CatalogConnectionString))
+                       ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(MeasuresDataTable);
             }
@@ -9964,7 +10900,7 @@ namespace Infinium.Modules.Marketing.NewOrders
 
             CoverTypesDataTable = new DataTable();
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM CoverTypes",
-                ConnectionStrings.CatalogConnectionString))
+                       ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(CoverTypesDataTable);
             }
@@ -10016,9 +10952,11 @@ namespace Infinium.Modules.Marketing.NewOrders
 
         public void GetMegaOrderInfo(int MainOrderID)
         {
-            string SelectCommand = "SELECT MegaOrderID, TransportCost, AdditionalCost, Rate, ClientID, CurrencyTypeID FROM MegaOrders" +
+            string SelectCommand =
+                "SELECT MegaOrderID, TransportCost, AdditionalCost, Rate, ClientID, CurrencyTypeID FROM MegaOrders" +
                 " WHERE MegaOrderID IN (SELECT MegaOrderID FROM MainOrders WHERE MainOrderID = " + MainOrderID + ")";
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
+            using (SqlDataAdapter DA =
+                   new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (DataTable DT = new DataTable())
                 {
@@ -10040,8 +10978,10 @@ namespace Infinium.Modules.Marketing.NewOrders
                     }
                 }
             }
+
             SelectCommand = "SELECT UNN FROM Clients WHERE ClientID = " + ClientID;
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingReferenceConnectionString))
+            using (SqlDataAdapter DA =
+                   new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingReferenceConnectionString))
             {
                 using (DataTable DT = new DataTable())
                 {
@@ -10058,14 +10998,14 @@ namespace Infinium.Modules.Marketing.NewOrders
         {
             DataRow[] Row = DecorConfigDataTable.Select("DecorConfigID = " + DecorConfigID);
 
-            return Convert.ToInt32(Row[0]["ReportMeasureID"]);//1 м.кв.  2 м.п. 3 шт.
+            return Convert.ToInt32(Row[0]["ReportMeasureID"]); //1 м.кв.  2 м.п. 3 шт.
         }
 
         private int GetMeasureTypeID(int DecorConfigID)
         {
             DataRow[] Row = DecorConfigDataTable.Select("DecorConfigID = " + DecorConfigID);
 
-            return Convert.ToInt32(Row[0]["MeasureID"]);//1 м.кв.  2 м.п. 3 шт.
+            return Convert.ToInt32(Row[0]["MeasureID"]); //1 м.кв.  2 м.п. 3 шт.
         }
 
         private string GetItemName(int DecorID)
@@ -10086,29 +11026,36 @@ namespace Infinium.Modules.Marketing.NewOrders
         {
             if (DecorOrderRow["Weight"] == DBNull.Value)
             {
-                System.Windows.Forms.MessageBox.Show("Ошибка конфигурации: нет веса в DecorConfigID=" + DecorOrderRow["DecorConfigID"].ToString() +
-                    ". Вес будет выставлен в 0.");
+                System.Windows.Forms.MessageBox.Show("Ошибка конфигурации: нет веса в DecorConfigID=" +
+                                                     DecorOrderRow["DecorConfigID"].ToString() +
+                                                     ". Вес будет выставлен в 0.");
                 return 0;
             }
+
             decimal Weight = 0;
 
             DataRow[] Row = DecorConfigDataTable.Select("DecorConfigID = " + DecorOrderRow["DecorConfigID"].ToString());
 
             if (Row[0]["Weight"] == DBNull.Value)
             {
-                System.Windows.Forms.MessageBox.Show("Ошибка конфигурации: нет веса в DecorConfigID=" + DecorOrderRow["DecorConfigID"].ToString() +
-                    ". Вес будет выставлен в 0.");
+                System.Windows.Forms.MessageBox.Show("Ошибка конфигурации: нет веса в DecorConfigID=" +
+                                                     DecorOrderRow["DecorConfigID"].ToString() +
+                                                     ". Вес будет выставлен в 0.");
                 return 0;
             }
+
             if (Row[0]["WeightMeasureID"].ToString() == "1")
             {
                 if (Convert.ToDecimal(DecorOrderRow["Height"]) != -1)
-                    Weight = Convert.ToDecimal(DecorOrderRow["Height"]) * Convert.ToDecimal(DecorOrderRow["Width"]) / 1000000
-                         * Convert.ToDecimal(Row[0]["Weight"]) * Convert.ToDecimal(DecorOrderRow["Count"]);
+                    Weight = Convert.ToDecimal(DecorOrderRow["Height"]) * Convert.ToDecimal(DecorOrderRow["Width"]) /
+                             1000000
+                             * Convert.ToDecimal(Row[0]["Weight"]) * Convert.ToDecimal(DecorOrderRow["Count"]);
                 if (Convert.ToDecimal(DecorOrderRow["Length"]) != -1)
-                    Weight = Convert.ToDecimal(DecorOrderRow["Length"]) * Convert.ToDecimal(DecorOrderRow["Width"]) / 1000000
-                         * Convert.ToDecimal(Row[0]["Weight"]) * Convert.ToDecimal(DecorOrderRow["Count"]);
+                    Weight = Convert.ToDecimal(DecorOrderRow["Length"]) * Convert.ToDecimal(DecorOrderRow["Width"]) /
+                             1000000
+                             * Convert.ToDecimal(Row[0]["Weight"]) * Convert.ToDecimal(DecorOrderRow["Count"]);
             }
+
             decimal L = 0;
 
             if (Row[0]["WeightMeasureID"].ToString() == "2")
@@ -10125,6 +11072,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                          Convert.ToDecimal(DecorOrderRow["Count"]);
 
             }
+
             if (Row[0]["WeightMeasureID"].ToString() == "3")
                 Weight = Convert.ToDecimal(Row[0]["Weight"]) * Convert.ToDecimal(DecorOrderRow["Count"]);
 
@@ -10194,7 +11142,7 @@ namespace Infinium.Modules.Marketing.NewOrders
 
             for (int r = 0; r < Rows.Count(); r++)
             {
-                string InvNumber = Rows[r]["InvNumber"].ToString();
+                string AccountingName = Rows[r]["AccountingName"].ToString();
                 //м.п.
                 if (MeasureTypeID == 2)
                 {
@@ -10230,18 +11178,26 @@ namespace Infinium.Modules.Marketing.NewOrders
                         }
                         else
                         {
-                            PDT.Rows[0]["OriginalPrice"] = (Convert.ToDecimal(PDT.Rows[0]["OriginalPrice"]) * Convert.ToDecimal(PDT.Rows[0]["TotalCount"]) + Convert.ToDecimal(Rows[r]["Count"]) * Convert.ToDecimal(Rows[r]["OriginalPrice"])) /
+                            PDT.Rows[0]["OriginalPrice"] =
+                                (Convert.ToDecimal(PDT.Rows[0]["OriginalPrice"]) *
+                                    Convert.ToDecimal(PDT.Rows[0]["TotalCount"]) + Convert.ToDecimal(Rows[r]["Count"]) *
+                                    Convert.ToDecimal(Rows[r]["OriginalPrice"])) /
                                 (Convert.ToDecimal(PDT.Rows[0]["TotalCount"]) + Convert.ToDecimal(Rows[r]["Count"]));
-                            PDT.Rows[0]["Price"] = (Convert.ToDecimal(PDT.Rows[0]["Price"]) * Convert.ToDecimal(PDT.Rows[0]["TotalCount"]) + Convert.ToDecimal(Rows[r]["Count"]) * Convert.ToDecimal(Rows[r]["Price"])) /
+                            PDT.Rows[0]["Price"] =
+                                (Convert.ToDecimal(PDT.Rows[0]["Price"]) *
+                                    Convert.ToDecimal(PDT.Rows[0]["TotalCount"]) + Convert.ToDecimal(Rows[r]["Count"]) *
+                                    Convert.ToDecimal(Rows[r]["Price"])) /
                                 (Convert.ToDecimal(PDT.Rows[0]["TotalCount"]) + Convert.ToDecimal(Rows[r]["Count"]));
                             PDT.Rows[0]["TotalCount"] = Convert.ToDecimal(PDT.Rows[0]["TotalCount"]) +
-                                Convert.ToDecimal(Rows[r]["Count"]);
+                                                        Convert.ToDecimal(Rows[r]["Count"]);
                             PDT.Rows[0]["Count"] = Convert.ToDecimal(PDT.Rows[0]["Count"]) +
-                                Convert.ToDecimal(Rows[r]["Count"]) * L;
-                            PDT.Rows[0]["Cost"] = Convert.ToDecimal(PDT.Rows[0]["Cost"]) + Convert.ToDecimal(Rows[r]["Cost"]);
-                            PDT.Rows[0]["CostWithTransport"] = Convert.ToDecimal(PDT.Rows[0]["CostWithTransport"]) + Convert.ToDecimal(Rows[r]["CostWithTransport"]);
+                                                   Convert.ToDecimal(Rows[r]["Count"]) * L;
+                            PDT.Rows[0]["Cost"] = Convert.ToDecimal(PDT.Rows[0]["Cost"]) +
+                                                  Convert.ToDecimal(Rows[r]["Cost"]);
+                            PDT.Rows[0]["CostWithTransport"] = Convert.ToDecimal(PDT.Rows[0]["CostWithTransport"]) +
+                                                               Convert.ToDecimal(Rows[r]["CostWithTransport"]);
                             PDT.Rows[0]["Weight"] = Convert.ToDecimal(PDT.Rows[0]["Weight"]) +
-                                                         GetDecorWeight(Rows[r]);
+                                                    GetDecorWeight(Rows[r]);
 
                             continue;
                         }
@@ -10275,18 +11231,26 @@ namespace Infinium.Modules.Marketing.NewOrders
                         }
                         else
                         {
-                            TDT.Rows[0]["OriginalPrice"] = (Convert.ToDecimal(TDT.Rows[0]["OriginalPrice"]) * Convert.ToDecimal(TDT.Rows[0]["TotalCount"]) + Convert.ToDecimal(Rows[r]["Count"]) * Convert.ToDecimal(Rows[r]["OriginalPrice"])) /
+                            TDT.Rows[0]["OriginalPrice"] =
+                                (Convert.ToDecimal(TDT.Rows[0]["OriginalPrice"]) *
+                                    Convert.ToDecimal(TDT.Rows[0]["TotalCount"]) + Convert.ToDecimal(Rows[r]["Count"]) *
+                                    Convert.ToDecimal(Rows[r]["OriginalPrice"])) /
                                 (Convert.ToDecimal(TDT.Rows[0]["TotalCount"]) + Convert.ToDecimal(Rows[r]["Count"]));
-                            TDT.Rows[0]["Price"] = (Convert.ToDecimal(TDT.Rows[0]["Price"]) * Convert.ToDecimal(TDT.Rows[0]["TotalCount"]) + Convert.ToDecimal(Rows[r]["Count"]) * Convert.ToDecimal(Rows[r]["Price"])) /
+                            TDT.Rows[0]["Price"] =
+                                (Convert.ToDecimal(TDT.Rows[0]["Price"]) *
+                                    Convert.ToDecimal(TDT.Rows[0]["TotalCount"]) + Convert.ToDecimal(Rows[r]["Count"]) *
+                                    Convert.ToDecimal(Rows[r]["Price"])) /
                                 (Convert.ToDecimal(TDT.Rows[0]["TotalCount"]) + Convert.ToDecimal(Rows[r]["Count"]));
                             TDT.Rows[0]["TotalCount"] = Convert.ToDecimal(TDT.Rows[0]["TotalCount"]) +
-                                Convert.ToDecimal(Rows[r]["Count"]);
+                                                        Convert.ToDecimal(Rows[r]["Count"]);
                             TDT.Rows[0]["Count"] = Convert.ToDecimal(TDT.Rows[0]["Count"]) +
-                                Convert.ToDecimal(Rows[r]["Count"]) * L;
-                            TDT.Rows[0]["Cost"] = Convert.ToDecimal(TDT.Rows[0]["Cost"]) + Convert.ToDecimal(Rows[r]["Cost"]);
-                            TDT.Rows[0]["CostWithTransport"] = Convert.ToDecimal(TDT.Rows[0]["CostWithTransport"]) + Convert.ToDecimal(Rows[r]["CostWithTransport"]);
+                                                   Convert.ToDecimal(Rows[r]["Count"]) * L;
+                            TDT.Rows[0]["Cost"] = Convert.ToDecimal(TDT.Rows[0]["Cost"]) +
+                                                  Convert.ToDecimal(Rows[r]["Cost"]);
+                            TDT.Rows[0]["CostWithTransport"] = Convert.ToDecimal(TDT.Rows[0]["CostWithTransport"]) +
+                                                               Convert.ToDecimal(Rows[r]["CostWithTransport"]);
                             TDT.Rows[0]["Weight"] = Convert.ToDecimal(TDT.Rows[0]["Weight"]) +
-                                                         GetDecorWeight(Rows[r]);
+                                                    GetDecorWeight(Rows[r]);
 
                             continue;
                         }
@@ -10316,14 +11280,17 @@ namespace Infinium.Modules.Marketing.NewOrders
                             {
                                 if (Convert.ToDecimal(Rows[r]["Height"]) != -1)
                                 {
-                                    decimal d = Convert.ToDecimal(Rows[r]["Height"]) * Convert.ToDecimal(Rows[r]["Width"]) / 1000000;
+                                    decimal d = Convert.ToDecimal(Rows[r]["Height"]) *
+                                        Convert.ToDecimal(Rows[r]["Width"]) / 1000000;
                                     d = decimal.Round(d, 3, MidpointRounding.AwayFromZero);
                                     decimal Square = d * Convert.ToDecimal(Rows[r]["Count"]);
                                     NewRow["Count"] = Square;
                                 }
+
                                 if (Convert.ToDecimal(Rows[r]["Length"]) != -1)
                                 {
-                                    decimal d = Convert.ToDecimal(Rows[r]["Length"]) * Convert.ToDecimal(Rows[r]["Width"]) / 1000000;
+                                    decimal d = Convert.ToDecimal(Rows[r]["Length"]) *
+                                        Convert.ToDecimal(Rows[r]["Width"]) / 1000000;
                                     d = decimal.Round(d, 3, MidpointRounding.AwayFromZero);
                                     decimal Square = d * Convert.ToDecimal(Rows[r]["Count"]);
                                     NewRow["Count"] = Square;
@@ -10375,20 +11342,23 @@ namespace Infinium.Modules.Marketing.NewOrders
                             PDT.Rows.Add(NewRow);
                             continue;
                         }
-                        else     //if no color parameter (hands e.g.)
+                        else //if no color parameter (hands e.g.)
                         {
                             if (GetMeasureTypeID(Convert.ToInt32(Rows[0]["DecorConfigID"])) == 1)
                             {
                                 if (Convert.ToDecimal(Rows[r]["Height"]) != -1)
                                 {
-                                    decimal d = Convert.ToDecimal(Rows[r]["Height"]) * Convert.ToDecimal(Rows[r]["Width"]) / 1000000;
+                                    decimal d = Convert.ToDecimal(Rows[r]["Height"]) *
+                                        Convert.ToDecimal(Rows[r]["Width"]) / 1000000;
                                     d = decimal.Round(d, 3, MidpointRounding.AwayFromZero);
                                     decimal Square = d * Convert.ToDecimal(Rows[r]["Count"]);
                                     PDT.Rows[0]["Count"] = Convert.ToDecimal(PDT.Rows[0]["Count"]) + Square;
                                 }
+
                                 if (Convert.ToDecimal(Rows[r]["Length"]) != -1)
                                 {
-                                    decimal d = Convert.ToDecimal(Rows[r]["Length"]) * Convert.ToDecimal(Rows[r]["Width"]) / 1000000;
+                                    decimal d = Convert.ToDecimal(Rows[r]["Length"]) *
+                                        Convert.ToDecimal(Rows[r]["Width"]) / 1000000;
                                     d = decimal.Round(d, 3, MidpointRounding.AwayFromZero);
                                     decimal Square = d * Convert.ToDecimal(Rows[r]["Count"]);
                                     PDT.Rows[0]["Count"] = Convert.ToDecimal(PDT.Rows[0]["Count"]) + Square;
@@ -10426,17 +11396,25 @@ namespace Infinium.Modules.Marketing.NewOrders
                                 PDT.Rows[0]["Count"] = Convert.ToDecimal(PDT.Rows[0]["Count"]) + Square;
                             }
 
-                            PDT.Rows[0]["OriginalPrice"] = (Convert.ToDecimal(PDT.Rows[0]["OriginalPrice"]) * Convert.ToDecimal(PDT.Rows[0]["TotalCount"]) + Convert.ToDecimal(Rows[r]["Count"]) * Convert.ToDecimal(Rows[r]["OriginalPrice"])) /
+                            PDT.Rows[0]["OriginalPrice"] =
+                                (Convert.ToDecimal(PDT.Rows[0]["OriginalPrice"]) *
+                                    Convert.ToDecimal(PDT.Rows[0]["TotalCount"]) + Convert.ToDecimal(Rows[r]["Count"]) *
+                                    Convert.ToDecimal(Rows[r]["OriginalPrice"])) /
                                 (Convert.ToDecimal(PDT.Rows[0]["TotalCount"]) + Convert.ToDecimal(Rows[r]["Count"]));
-                            PDT.Rows[0]["Price"] = (Convert.ToDecimal(PDT.Rows[0]["Price"]) * Convert.ToDecimal(PDT.Rows[0]["TotalCount"]) + Convert.ToDecimal(Rows[r]["Count"]) * Convert.ToDecimal(Rows[r]["Price"])) /
+                            PDT.Rows[0]["Price"] =
+                                (Convert.ToDecimal(PDT.Rows[0]["Price"]) *
+                                    Convert.ToDecimal(PDT.Rows[0]["TotalCount"]) + Convert.ToDecimal(Rows[r]["Count"]) *
+                                    Convert.ToDecimal(Rows[r]["Price"])) /
                                 (Convert.ToDecimal(PDT.Rows[0]["TotalCount"]) + Convert.ToDecimal(Rows[r]["Count"]));
                             PDT.Rows[0]["TotalCount"] = Convert.ToDecimal(PDT.Rows[0]["TotalCount"]) +
-                                Convert.ToDecimal(Rows[r]["Count"]);
+                                                        Convert.ToDecimal(Rows[r]["Count"]);
 
-                            PDT.Rows[0]["Cost"] = Convert.ToDecimal(PDT.Rows[0]["Cost"]) + Convert.ToDecimal(Rows[r]["Cost"]);
-                            PDT.Rows[0]["CostWithTransport"] = Convert.ToDecimal(PDT.Rows[0]["CostWithTransport"]) + Convert.ToDecimal(Rows[r]["CostWithTransport"]);
+                            PDT.Rows[0]["Cost"] = Convert.ToDecimal(PDT.Rows[0]["Cost"]) +
+                                                  Convert.ToDecimal(Rows[r]["Cost"]);
+                            PDT.Rows[0]["CostWithTransport"] = Convert.ToDecimal(PDT.Rows[0]["CostWithTransport"]) +
+                                                               Convert.ToDecimal(Rows[r]["CostWithTransport"]);
                             PDT.Rows[0]["Weight"] = Convert.ToDecimal(PDT.Rows[0]["Weight"]) +
-                                                         GetDecorWeight(Rows[r]);
+                                                    GetDecorWeight(Rows[r]);
 
                             continue;
                         }
@@ -10456,14 +11434,17 @@ namespace Infinium.Modules.Marketing.NewOrders
                             {
                                 if (Convert.ToDecimal(Rows[r]["Height"]) != -1)
                                 {
-                                    decimal d = Convert.ToDecimal(Rows[r]["Height"]) * Convert.ToDecimal(Rows[r]["Width"]) / 1000000;
+                                    decimal d = Convert.ToDecimal(Rows[r]["Height"]) *
+                                        Convert.ToDecimal(Rows[r]["Width"]) / 1000000;
                                     d = decimal.Round(d, 3, MidpointRounding.AwayFromZero);
                                     decimal Square = d * Convert.ToDecimal(Rows[r]["Count"]);
                                     NewRow["Count"] = Square;
                                 }
+
                                 if (Convert.ToDecimal(Rows[r]["Length"]) != -1)
                                 {
-                                    decimal d = Convert.ToDecimal(Rows[r]["Length"]) * Convert.ToDecimal(Rows[r]["Width"]) / 1000000;
+                                    decimal d = Convert.ToDecimal(Rows[r]["Length"]) *
+                                        Convert.ToDecimal(Rows[r]["Width"]) / 1000000;
                                     d = decimal.Round(d, 3, MidpointRounding.AwayFromZero);
                                     decimal Square = d * Convert.ToDecimal(Rows[r]["Count"]);
                                     NewRow["Count"] = Square;
@@ -10521,14 +11502,17 @@ namespace Infinium.Modules.Marketing.NewOrders
                             {
                                 if (Convert.ToDecimal(Rows[r]["Height"]) != -1)
                                 {
-                                    decimal d = Convert.ToDecimal(Rows[r]["Height"]) * Convert.ToDecimal(Rows[r]["Width"]) / 1000000;
+                                    decimal d = Convert.ToDecimal(Rows[r]["Height"]) *
+                                        Convert.ToDecimal(Rows[r]["Width"]) / 1000000;
                                     d = decimal.Round(d, 3, MidpointRounding.AwayFromZero);
                                     decimal Square = d * Convert.ToDecimal(Rows[r]["Count"]);
                                     TDT.Rows[0]["Count"] = Convert.ToDecimal(TDT.Rows[0]["Count"]) + Square;
                                 }
+
                                 if (Convert.ToDecimal(Rows[r]["Length"]) != -1)
                                 {
-                                    decimal d = Convert.ToDecimal(Rows[r]["Length"]) * Convert.ToDecimal(Rows[r]["Width"]) / 1000000;
+                                    decimal d = Convert.ToDecimal(Rows[r]["Length"]) *
+                                        Convert.ToDecimal(Rows[r]["Width"]) / 1000000;
                                     d = decimal.Round(d, 3, MidpointRounding.AwayFromZero);
                                     decimal Square = d * Convert.ToDecimal(Rows[r]["Count"]);
                                     TDT.Rows[0]["Count"] = Convert.ToDecimal(TDT.Rows[0]["Count"]) + Square;
@@ -10566,17 +11550,25 @@ namespace Infinium.Modules.Marketing.NewOrders
                                 TDT.Rows[0]["Count"] = Convert.ToDecimal(TDT.Rows[0]["Count"]) + Square;
                             }
 
-                            TDT.Rows[0]["OriginalPrice"] = (Convert.ToDecimal(TDT.Rows[0]["OriginalPrice"]) * Convert.ToDecimal(TDT.Rows[0]["TotalCount"]) + Convert.ToDecimal(Rows[r]["Count"]) * Convert.ToDecimal(Rows[r]["OriginalPrice"])) /
+                            TDT.Rows[0]["OriginalPrice"] =
+                                (Convert.ToDecimal(TDT.Rows[0]["OriginalPrice"]) *
+                                    Convert.ToDecimal(TDT.Rows[0]["TotalCount"]) + Convert.ToDecimal(Rows[r]["Count"]) *
+                                    Convert.ToDecimal(Rows[r]["OriginalPrice"])) /
                                 (Convert.ToDecimal(TDT.Rows[0]["TotalCount"]) + Convert.ToDecimal(Rows[r]["Count"]));
-                            TDT.Rows[0]["Price"] = (Convert.ToDecimal(TDT.Rows[0]["Price"]) * Convert.ToDecimal(TDT.Rows[0]["TotalCount"]) + Convert.ToDecimal(Rows[r]["Count"]) * Convert.ToDecimal(Rows[r]["Price"])) /
+                            TDT.Rows[0]["Price"] =
+                                (Convert.ToDecimal(TDT.Rows[0]["Price"]) *
+                                    Convert.ToDecimal(TDT.Rows[0]["TotalCount"]) + Convert.ToDecimal(Rows[r]["Count"]) *
+                                    Convert.ToDecimal(Rows[r]["Price"])) /
                                 (Convert.ToDecimal(TDT.Rows[0]["TotalCount"]) + Convert.ToDecimal(Rows[r]["Count"]));
                             TDT.Rows[0]["TotalCount"] = Convert.ToDecimal(TDT.Rows[0]["TotalCount"]) +
-                                Convert.ToDecimal(Rows[r]["Count"]);
+                                                        Convert.ToDecimal(Rows[r]["Count"]);
 
-                            TDT.Rows[0]["Cost"] = Convert.ToDecimal(TDT.Rows[0]["Cost"]) + Convert.ToDecimal(Rows[r]["Cost"]);
-                            TDT.Rows[0]["CostWithTransport"] = Convert.ToDecimal(TDT.Rows[0]["CostWithTransport"]) + Convert.ToDecimal(Rows[r]["CostWithTransport"]);
+                            TDT.Rows[0]["Cost"] = Convert.ToDecimal(TDT.Rows[0]["Cost"]) +
+                                                  Convert.ToDecimal(Rows[r]["Cost"]);
+                            TDT.Rows[0]["CostWithTransport"] = Convert.ToDecimal(TDT.Rows[0]["CostWithTransport"]) +
+                                                               Convert.ToDecimal(Rows[r]["CostWithTransport"]);
                             TDT.Rows[0]["Weight"] = Convert.ToDecimal(TDT.Rows[0]["Weight"]) +
-                                                         GetDecorWeight(Rows[r]);
+                                                    GetDecorWeight(Rows[r]);
 
                             continue;
                         }
@@ -10603,18 +11595,28 @@ namespace Infinium.Modules.Marketing.NewOrders
                         NewRow["InvNumber"] = PDT.Rows[i]["InvNumber"].ToString();
                         NewRow["CurrencyCode"] = ProfilCurrencyCode;
                         NewRow["Name"] = GetProductName(Convert.ToInt32(PDT.Rows[i]["ProductID"])) + " " +
-                            GetItemName(DecorID);
+                                         GetItemName(DecorID);
 
-                        NewRow["Count"] = decimal.Round(Convert.ToDecimal(PDT.Rows[i]["Count"]) / 1000, 3, MidpointRounding.AwayFromZero);
+                        NewRow["Count"] = decimal.Round(Convert.ToDecimal(PDT.Rows[i]["Count"]) / 1000, 3,
+                            MidpointRounding.AwayFromZero);
                         NewRow["Measure"] = "м.п.";
                         NewRow["OriginalPrice"] = Convert.ToDecimal(PDT.Rows[i]["OriginalPrice"]);
                         NewRow["DiscountVolume"] = Convert.ToDecimal(PDT.Rows[i]["DiscountVolume"]);
                         NewRow["TotalDiscount"] = Convert.ToDecimal(PDT.Rows[i]["TotalDiscount"]);
-                        NewRow["Price"] = decimal.Round(Convert.ToDecimal(PDT.Rows[i]["Cost"]) / (Convert.ToDecimal(PDT.Rows[i]["Count"]) / 1000), 2, MidpointRounding.AwayFromZero);
-                        NewRow["Cost"] = decimal.Round(Convert.ToDecimal(PDT.Rows[i]["Cost"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["PriceWithTransport"] = decimal.Round(Convert.ToDecimal(PDT.Rows[i]["CostWithTransport"]) / (Convert.ToDecimal(PDT.Rows[i]["Count"]) / 1000), 2, MidpointRounding.AwayFromZero);
-                        NewRow["CostWithTransport"] = decimal.Round(Convert.ToDecimal(PDT.Rows[i]["CostWithTransport"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["Weight"] = decimal.Round(Convert.ToDecimal(PDT.Rows[i]["Weight"]), 3, MidpointRounding.AwayFromZero);
+                        NewRow["Price"] =
+                            decimal.Round(
+                                Convert.ToDecimal(PDT.Rows[i]["Cost"]) /
+                                (Convert.ToDecimal(PDT.Rows[i]["Count"]) / 1000), 2, MidpointRounding.AwayFromZero);
+                        NewRow["Cost"] = decimal.Round(Convert.ToDecimal(PDT.Rows[i]["Cost"]), 2,
+                            MidpointRounding.AwayFromZero);
+                        NewRow["PriceWithTransport"] =
+                            decimal.Round(
+                                Convert.ToDecimal(PDT.Rows[i]["CostWithTransport"]) /
+                                (Convert.ToDecimal(PDT.Rows[i]["Count"]) / 1000), 2, MidpointRounding.AwayFromZero);
+                        NewRow["CostWithTransport"] = decimal.Round(Convert.ToDecimal(PDT.Rows[i]["CostWithTransport"]),
+                            2, MidpointRounding.AwayFromZero);
+                        NewRow["Weight"] = decimal.Round(Convert.ToDecimal(PDT.Rows[i]["Weight"]), 3,
+                            MidpointRounding.AwayFromZero);
 
                         ProfilReportDataTable.Rows.Add(NewRow);
                     }
@@ -10632,18 +11634,28 @@ namespace Infinium.Modules.Marketing.NewOrders
                         NewRow["CurrencyCode"] = ProfilCurrencyCode;
                         NewRow["TPSCurCode"] = TPSCurrencyCode;
                         NewRow["Name"] = GetProductName(Convert.ToInt32(TDT.Rows[i]["ProductID"])) + " " +
-                            GetItemName(DecorID);
+                                         GetItemName(DecorID);
 
-                        NewRow["Count"] = decimal.Round(Convert.ToDecimal(TDT.Rows[i]["Count"]) / 1000, 3, MidpointRounding.AwayFromZero);
+                        NewRow["Count"] = decimal.Round(Convert.ToDecimal(TDT.Rows[i]["Count"]) / 1000, 3,
+                            MidpointRounding.AwayFromZero);
                         NewRow["Measure"] = "м.п.";
                         NewRow["OriginalPrice"] = Convert.ToDecimal(TDT.Rows[i]["OriginalPrice"]);
-                        NewRow["PriceWithTransport"] = decimal.Round(Convert.ToDecimal(TDT.Rows[i]["CostWithTransport"]) / (Convert.ToDecimal(TDT.Rows[i]["Count"]) / 1000), 2, MidpointRounding.AwayFromZero);
-                        NewRow["CostWithTransport"] = decimal.Round(Convert.ToDecimal(TDT.Rows[i]["CostWithTransport"]), 2, MidpointRounding.AwayFromZero);
+                        NewRow["PriceWithTransport"] =
+                            decimal.Round(
+                                Convert.ToDecimal(TDT.Rows[i]["CostWithTransport"]) /
+                                (Convert.ToDecimal(TDT.Rows[i]["Count"]) / 1000), 2, MidpointRounding.AwayFromZero);
+                        NewRow["CostWithTransport"] = decimal.Round(Convert.ToDecimal(TDT.Rows[i]["CostWithTransport"]),
+                            2, MidpointRounding.AwayFromZero);
                         NewRow["DiscountVolume"] = Convert.ToDecimal(TDT.Rows[i]["DiscountVolume"]);
                         NewRow["TotalDiscount"] = Convert.ToDecimal(TDT.Rows[i]["TotalDiscount"]);
-                        NewRow["Price"] = decimal.Round(Convert.ToDecimal(TDT.Rows[i]["Cost"]) / (Convert.ToDecimal(TDT.Rows[i]["Count"]) / 1000), 2, MidpointRounding.AwayFromZero);
-                        NewRow["Cost"] = decimal.Round(Convert.ToDecimal(TDT.Rows[i]["Cost"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["Weight"] = decimal.Round(Convert.ToDecimal(TDT.Rows[i]["Weight"]), 3, MidpointRounding.AwayFromZero);
+                        NewRow["Price"] =
+                            decimal.Round(
+                                Convert.ToDecimal(TDT.Rows[i]["Cost"]) /
+                                (Convert.ToDecimal(TDT.Rows[i]["Count"]) / 1000), 2, MidpointRounding.AwayFromZero);
+                        NewRow["Cost"] = decimal.Round(Convert.ToDecimal(TDT.Rows[i]["Cost"]), 2,
+                            MidpointRounding.AwayFromZero);
+                        NewRow["Weight"] = decimal.Round(Convert.ToDecimal(TDT.Rows[i]["Weight"]), 3,
+                            MidpointRounding.AwayFromZero);
 
                         TPSReportDataTable.Rows.Add(NewRow);
                     }
@@ -10670,23 +11682,34 @@ namespace Infinium.Modules.Marketing.NewOrders
                         NewRow["AccountingName"] = PDT.Rows[i]["AccountingName"].ToString();
                         NewRow["InvNumber"] = PDT.Rows[i]["InvNumber"].ToString();
                         NewRow["CurrencyCode"] = ProfilCurrencyCode;
-                        if (PDT.Rows[i]["ProductID"].ToString() == "10" || PDT.Rows[i]["ProductID"].ToString() == "11" ||
+                        if (PDT.Rows[i]["ProductID"].ToString() == "10" ||
+                            PDT.Rows[i]["ProductID"].ToString() == "11" ||
                             PDT.Rows[i]["ProductID"].ToString() == "12")
                             NewRow["Name"] = GetProductName(Convert.ToInt32(PDT.Rows[i]["ProductID"]));
                         else
                             NewRow["Name"] = GetProductName(Convert.ToInt32(PDT.Rows[i]["ProductID"])) + " " +
                                              GetItemName(DecorID);
 
-                        NewRow["Count"] = decimal.Round(Convert.ToDecimal(PDT.Rows[i]["Count"]), 3, MidpointRounding.AwayFromZero);
+                        NewRow["Count"] = decimal.Round(Convert.ToDecimal(PDT.Rows[i]["Count"]), 3,
+                            MidpointRounding.AwayFromZero);
                         NewRow["Measure"] = "м.кв.";
                         NewRow["OriginalPrice"] = Convert.ToDecimal(PDT.Rows[i]["OriginalPrice"]);
-                        NewRow["PriceWithTransport"] = decimal.Round(Convert.ToDecimal(PDT.Rows[i]["CostWithTransport"]) / Convert.ToDecimal(PDT.Rows[i]["Count"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["CostWithTransport"] = decimal.Round(Convert.ToDecimal(PDT.Rows[i]["CostWithTransport"]), 2, MidpointRounding.AwayFromZero);
+                        NewRow["PriceWithTransport"] =
+                            decimal.Round(
+                                Convert.ToDecimal(PDT.Rows[i]["CostWithTransport"]) /
+                                Convert.ToDecimal(PDT.Rows[i]["Count"]), 2, MidpointRounding.AwayFromZero);
+                        NewRow["CostWithTransport"] = decimal.Round(Convert.ToDecimal(PDT.Rows[i]["CostWithTransport"]),
+                            2, MidpointRounding.AwayFromZero);
                         NewRow["DiscountVolume"] = Convert.ToDecimal(PDT.Rows[i]["DiscountVolume"]);
                         NewRow["TotalDiscount"] = Convert.ToDecimal(PDT.Rows[i]["TotalDiscount"]);
-                        NewRow["Price"] = decimal.Round(Convert.ToDecimal(PDT.Rows[i]["Cost"]) / Convert.ToDecimal(PDT.Rows[i]["Count"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["Cost"] = decimal.Round(Convert.ToDecimal(PDT.Rows[i]["Cost"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["Weight"] = decimal.Round(Convert.ToDecimal(PDT.Rows[i]["Weight"]), 3, MidpointRounding.AwayFromZero);
+                        NewRow["Price"] =
+                            decimal.Round(
+                                Convert.ToDecimal(PDT.Rows[i]["Cost"]) / Convert.ToDecimal(PDT.Rows[i]["Count"]), 2,
+                                MidpointRounding.AwayFromZero);
+                        NewRow["Cost"] = decimal.Round(Convert.ToDecimal(PDT.Rows[i]["Cost"]), 2,
+                            MidpointRounding.AwayFromZero);
+                        NewRow["Weight"] = decimal.Round(Convert.ToDecimal(PDT.Rows[i]["Weight"]), 3,
+                            MidpointRounding.AwayFromZero);
 
                         ProfilReportDataTable.Rows.Add(NewRow);
                     }
@@ -10704,23 +11727,34 @@ namespace Infinium.Modules.Marketing.NewOrders
                         NewRow["InvNumber"] = TDT.Rows[i]["InvNumber"].ToString();
                         NewRow["CurrencyCode"] = ProfilCurrencyCode;
                         NewRow["TPSCurCode"] = TPSCurrencyCode;
-                        if (TDT.Rows[i]["ProductID"].ToString() == "10" || TDT.Rows[i]["ProductID"].ToString() == "11" ||
+                        if (TDT.Rows[i]["ProductID"].ToString() == "10" ||
+                            TDT.Rows[i]["ProductID"].ToString() == "11" ||
                             TDT.Rows[i]["ProductID"].ToString() == "12")
                             NewRow["Name"] = GetProductName(Convert.ToInt32(TDT.Rows[i]["ProductID"]));
                         else
                             NewRow["Name"] = GetProductName(Convert.ToInt32(TDT.Rows[i]["ProductID"])) + " " +
                                              GetItemName(DecorID);
 
-                        NewRow["Count"] = decimal.Round(Convert.ToDecimal(TDT.Rows[i]["Count"]), 3, MidpointRounding.AwayFromZero);
+                        NewRow["Count"] = decimal.Round(Convert.ToDecimal(TDT.Rows[i]["Count"]), 3,
+                            MidpointRounding.AwayFromZero);
                         NewRow["Measure"] = "м.кв.";
                         NewRow["OriginalPrice"] = Convert.ToDecimal(TDT.Rows[i]["OriginalPrice"]);
-                        NewRow["PriceWithTransport"] = decimal.Round(Convert.ToDecimal(TDT.Rows[i]["CostWithTransport"]) / Convert.ToDecimal(TDT.Rows[i]["Count"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["CostWithTransport"] = decimal.Round(Convert.ToDecimal(TDT.Rows[i]["CostWithTransport"]), 2, MidpointRounding.AwayFromZero);
+                        NewRow["PriceWithTransport"] =
+                            decimal.Round(
+                                Convert.ToDecimal(TDT.Rows[i]["CostWithTransport"]) /
+                                Convert.ToDecimal(TDT.Rows[i]["Count"]), 2, MidpointRounding.AwayFromZero);
+                        NewRow["CostWithTransport"] = decimal.Round(Convert.ToDecimal(TDT.Rows[i]["CostWithTransport"]),
+                            2, MidpointRounding.AwayFromZero);
                         NewRow["DiscountVolume"] = Convert.ToDecimal(TDT.Rows[i]["DiscountVolume"]);
                         NewRow["TotalDiscount"] = Convert.ToDecimal(TDT.Rows[i]["TotalDiscount"]);
-                        NewRow["Price"] = decimal.Round(Convert.ToDecimal(TDT.Rows[i]["Cost"]) / Convert.ToDecimal(TDT.Rows[i]["Count"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["Cost"] = decimal.Round(Convert.ToDecimal(TDT.Rows[i]["Cost"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["Weight"] = decimal.Round(Convert.ToDecimal(TDT.Rows[i]["Weight"]), 3, MidpointRounding.AwayFromZero);
+                        NewRow["Price"] =
+                            decimal.Round(
+                                Convert.ToDecimal(TDT.Rows[i]["Cost"]) / Convert.ToDecimal(TDT.Rows[i]["Count"]), 2,
+                                MidpointRounding.AwayFromZero);
+                        NewRow["Cost"] = decimal.Round(Convert.ToDecimal(TDT.Rows[i]["Cost"]), 2,
+                            MidpointRounding.AwayFromZero);
+                        NewRow["Weight"] = decimal.Round(Convert.ToDecimal(TDT.Rows[i]["Weight"]), 3,
+                            MidpointRounding.AwayFromZero);
 
                         TPSReportDataTable.Rows.Add(NewRow);
                     }
@@ -10786,19 +11820,26 @@ namespace Infinium.Modules.Marketing.NewOrders
                         }
                         else
                         {
-                            PDT.Rows[0]["OriginalPrice"] = (Convert.ToDecimal(PDT.Rows[0]["OriginalPrice"]) * Convert.ToDecimal(PDT.Rows[0]["TotalCount"]) + Convert.ToDecimal(Rows[r]["Count"]) * Convert.ToDecimal(Rows[r]["OriginalPrice"])) /
+                            PDT.Rows[0]["OriginalPrice"] =
+                                (Convert.ToDecimal(PDT.Rows[0]["OriginalPrice"]) *
+                                    Convert.ToDecimal(PDT.Rows[0]["TotalCount"]) + Convert.ToDecimal(Rows[r]["Count"]) *
+                                    Convert.ToDecimal(Rows[r]["OriginalPrice"])) /
                                 (Convert.ToDecimal(PDT.Rows[0]["TotalCount"]) + Convert.ToDecimal(Rows[r]["Count"]));
-                            PDT.Rows[0]["Price"] = (Convert.ToDecimal(PDT.Rows[0]["Price"]) * Convert.ToDecimal(PDT.Rows[0]["TotalCount"]) + Convert.ToDecimal(Rows[r]["Count"]) * Convert.ToDecimal(Rows[r]["Price"])) /
+                            PDT.Rows[0]["Price"] =
+                                (Convert.ToDecimal(PDT.Rows[0]["Price"]) *
+                                    Convert.ToDecimal(PDT.Rows[0]["TotalCount"]) + Convert.ToDecimal(Rows[r]["Count"]) *
+                                    Convert.ToDecimal(Rows[r]["Price"])) /
                                 (Convert.ToDecimal(PDT.Rows[0]["TotalCount"]) + Convert.ToDecimal(Rows[r]["Count"]));
                             PDT.Rows[0]["TotalCount"] = Convert.ToDecimal(PDT.Rows[0]["TotalCount"]) +
-                                Convert.ToDecimal(Rows[r]["Count"]);
+                                                        Convert.ToDecimal(Rows[r]["Count"]);
                             PDT.Rows[0]["Count"] = Convert.ToDecimal(PDT.Rows[0]["Count"]) +
-                                                            Convert.ToDecimal(Rows[r]["Count"]);
+                                                   Convert.ToDecimal(Rows[r]["Count"]);
                             PDT.Rows[0]["Cost"] = Convert.ToDecimal(PDT.Rows[0]["Cost"]) +
-                                                            Convert.ToDecimal(Rows[r]["Cost"]);
-                            PDT.Rows[0]["CostWithTransport"] = Convert.ToDecimal(PDT.Rows[0]["CostWithTransport"]) + Convert.ToDecimal(Rows[r]["CostWithTransport"]);
+                                                  Convert.ToDecimal(Rows[r]["Cost"]);
+                            PDT.Rows[0]["CostWithTransport"] = Convert.ToDecimal(PDT.Rows[0]["CostWithTransport"]) +
+                                                               Convert.ToDecimal(Rows[r]["CostWithTransport"]);
                             PDT.Rows[0]["Weight"] = Convert.ToDecimal(PDT.Rows[0]["Weight"]) +
-                                                            GetDecorWeight(Rows[r]);
+                                                    GetDecorWeight(Rows[r]);
                             continue;
                         }
                     }
@@ -10831,19 +11872,26 @@ namespace Infinium.Modules.Marketing.NewOrders
                         }
                         else
                         {
-                            TDT.Rows[0]["OriginalPrice"] = (Convert.ToDecimal(TDT.Rows[0]["OriginalPrice"]) * Convert.ToDecimal(TDT.Rows[0]["TotalCount"]) + Convert.ToDecimal(Rows[r]["Count"]) * Convert.ToDecimal(Rows[r]["OriginalPrice"])) /
+                            TDT.Rows[0]["OriginalPrice"] =
+                                (Convert.ToDecimal(TDT.Rows[0]["OriginalPrice"]) *
+                                    Convert.ToDecimal(TDT.Rows[0]["TotalCount"]) + Convert.ToDecimal(Rows[r]["Count"]) *
+                                    Convert.ToDecimal(Rows[r]["OriginalPrice"])) /
                                 (Convert.ToDecimal(TDT.Rows[0]["TotalCount"]) + Convert.ToDecimal(Rows[r]["Count"]));
-                            TDT.Rows[0]["Price"] = (Convert.ToDecimal(TDT.Rows[0]["Price"]) * Convert.ToDecimal(TDT.Rows[0]["TotalCount"]) + Convert.ToDecimal(Rows[r]["Count"]) * Convert.ToDecimal(Rows[r]["Price"])) /
+                            TDT.Rows[0]["Price"] =
+                                (Convert.ToDecimal(TDT.Rows[0]["Price"]) *
+                                    Convert.ToDecimal(TDT.Rows[0]["TotalCount"]) + Convert.ToDecimal(Rows[r]["Count"]) *
+                                    Convert.ToDecimal(Rows[r]["Price"])) /
                                 (Convert.ToDecimal(TDT.Rows[0]["TotalCount"]) + Convert.ToDecimal(Rows[r]["Count"]));
                             TDT.Rows[0]["TotalCount"] = Convert.ToDecimal(TDT.Rows[0]["TotalCount"]) +
-                                Convert.ToDecimal(Rows[r]["Count"]);
+                                                        Convert.ToDecimal(Rows[r]["Count"]);
                             TDT.Rows[0]["Count"] = Convert.ToDecimal(TDT.Rows[0]["Count"]) +
-                                                            Convert.ToDecimal(Rows[r]["Count"]);
+                                                   Convert.ToDecimal(Rows[r]["Count"]);
                             TDT.Rows[0]["Cost"] = Convert.ToDecimal(TDT.Rows[0]["Cost"]) +
-                                                            Convert.ToDecimal(Rows[r]["Cost"]);
-                            TDT.Rows[0]["CostWithTransport"] = Convert.ToDecimal(TDT.Rows[0]["CostWithTransport"]) + Convert.ToDecimal(Rows[r]["CostWithTransport"]);
+                                                  Convert.ToDecimal(Rows[r]["Cost"]);
+                            TDT.Rows[0]["CostWithTransport"] = Convert.ToDecimal(TDT.Rows[0]["CostWithTransport"]) +
+                                                               Convert.ToDecimal(Rows[r]["CostWithTransport"]);
                             TDT.Rows[0]["Weight"] = Convert.ToDecimal(TDT.Rows[0]["Weight"]) +
-                                                            GetDecorWeight(Rows[r]);
+                                                    GetDecorWeight(Rows[r]);
                             continue;
                         }
                     }
@@ -10888,21 +11936,31 @@ namespace Infinium.Modules.Marketing.NewOrders
                         else
                         {
                             if (Convert.ToInt32(PDT.Rows[0][p1]) == Convert.ToInt32(Rows[r][p1]) &&
-                                        Convert.ToInt32(PDT.Rows[0][p2]) == Convert.ToInt32(Rows[r][p2]))
+                                Convert.ToInt32(PDT.Rows[0][p2]) == Convert.ToInt32(Rows[r][p2]))
                             {
-                                PDT.Rows[0]["OriginalPrice"] = (Convert.ToDecimal(PDT.Rows[0]["OriginalPrice"]) * Convert.ToDecimal(PDT.Rows[0]["TotalCount"]) + Convert.ToDecimal(Rows[r]["Count"]) * Convert.ToDecimal(Rows[r]["OriginalPrice"])) /
-                                    (Convert.ToDecimal(PDT.Rows[0]["TotalCount"]) + Convert.ToDecimal(Rows[r]["Count"]));
-                                PDT.Rows[0]["Price"] = (Convert.ToDecimal(PDT.Rows[0]["Price"]) * Convert.ToDecimal(PDT.Rows[0]["TotalCount"]) + Convert.ToDecimal(Rows[r]["Count"]) * Convert.ToDecimal(Rows[r]["Price"])) /
-                                    (Convert.ToDecimal(PDT.Rows[0]["TotalCount"]) + Convert.ToDecimal(Rows[r]["Count"]));
+                                PDT.Rows[0]["OriginalPrice"] =
+                                    (Convert.ToDecimal(PDT.Rows[0]["OriginalPrice"]) *
+                                     Convert.ToDecimal(PDT.Rows[0]["TotalCount"]) +
+                                     Convert.ToDecimal(Rows[r]["Count"]) *
+                                     Convert.ToDecimal(Rows[r]["OriginalPrice"])) /
+                                    (Convert.ToDecimal(PDT.Rows[0]["TotalCount"]) +
+                                     Convert.ToDecimal(Rows[r]["Count"]));
+                                PDT.Rows[0]["Price"] =
+                                    (Convert.ToDecimal(PDT.Rows[0]["Price"]) *
+                                     Convert.ToDecimal(PDT.Rows[0]["TotalCount"]) +
+                                     Convert.ToDecimal(Rows[r]["Count"]) * Convert.ToDecimal(Rows[r]["Price"])) /
+                                    (Convert.ToDecimal(PDT.Rows[0]["TotalCount"]) +
+                                     Convert.ToDecimal(Rows[r]["Count"]));
                                 PDT.Rows[0]["TotalCount"] = Convert.ToDecimal(PDT.Rows[0]["TotalCount"]) +
-                                    Convert.ToDecimal(Rows[r]["Count"]);
+                                                            Convert.ToDecimal(Rows[r]["Count"]);
                                 PDT.Rows[0]["Count"] = Convert.ToDecimal(PDT.Rows[0]["Count"]) +
-                                                                Convert.ToDecimal(Rows[r]["Count"]);
+                                                       Convert.ToDecimal(Rows[r]["Count"]);
                                 PDT.Rows[0]["Cost"] = Convert.ToDecimal(PDT.Rows[0]["Cost"]) +
-                                                             Convert.ToDecimal(Rows[r]["Cost"]);
-                                PDT.Rows[0]["CostWithTransport"] = Convert.ToDecimal(PDT.Rows[0]["CostWithTransport"]) + Convert.ToDecimal(Rows[r]["CostWithTransport"]);
+                                                      Convert.ToDecimal(Rows[r]["Cost"]);
+                                PDT.Rows[0]["CostWithTransport"] = Convert.ToDecimal(PDT.Rows[0]["CostWithTransport"]) +
+                                                                   Convert.ToDecimal(Rows[r]["CostWithTransport"]);
                                 PDT.Rows[0]["Weight"] = Convert.ToDecimal(PDT.Rows[0]["Weight"]) +
-                                                             GetDecorWeight(Rows[r]);
+                                                        GetDecorWeight(Rows[r]);
                                 continue;
                             }
                         }
@@ -10938,21 +11996,31 @@ namespace Infinium.Modules.Marketing.NewOrders
                         else
                         {
                             if (Convert.ToInt32(TDT.Rows[0][p1]) == Convert.ToInt32(Rows[r][p1]) &&
-                                        Convert.ToInt32(TDT.Rows[0][p2]) == Convert.ToInt32(Rows[r][p2]))
+                                Convert.ToInt32(TDT.Rows[0][p2]) == Convert.ToInt32(Rows[r][p2]))
                             {
-                                TDT.Rows[0]["OriginalPrice"] = (Convert.ToDecimal(TDT.Rows[0]["OriginalPrice"]) * Convert.ToDecimal(TDT.Rows[0]["TotalCount"]) + Convert.ToDecimal(Rows[r]["Count"]) * Convert.ToDecimal(Rows[r]["OriginalPrice"])) /
-                                    (Convert.ToDecimal(TDT.Rows[0]["TotalCount"]) + Convert.ToDecimal(Rows[r]["Count"]));
-                                TDT.Rows[0]["Price"] = (Convert.ToDecimal(TDT.Rows[0]["Price"]) * Convert.ToDecimal(TDT.Rows[0]["TotalCount"]) + Convert.ToDecimal(Rows[r]["Count"]) * Convert.ToDecimal(Rows[r]["Price"])) /
-                                    (Convert.ToDecimal(TDT.Rows[0]["TotalCount"]) + Convert.ToDecimal(Rows[r]["Count"]));
+                                TDT.Rows[0]["OriginalPrice"] =
+                                    (Convert.ToDecimal(TDT.Rows[0]["OriginalPrice"]) *
+                                     Convert.ToDecimal(TDT.Rows[0]["TotalCount"]) +
+                                     Convert.ToDecimal(Rows[r]["Count"]) *
+                                     Convert.ToDecimal(Rows[r]["OriginalPrice"])) /
+                                    (Convert.ToDecimal(TDT.Rows[0]["TotalCount"]) +
+                                     Convert.ToDecimal(Rows[r]["Count"]));
+                                TDT.Rows[0]["Price"] =
+                                    (Convert.ToDecimal(TDT.Rows[0]["Price"]) *
+                                     Convert.ToDecimal(TDT.Rows[0]["TotalCount"]) +
+                                     Convert.ToDecimal(Rows[r]["Count"]) * Convert.ToDecimal(Rows[r]["Price"])) /
+                                    (Convert.ToDecimal(TDT.Rows[0]["TotalCount"]) +
+                                     Convert.ToDecimal(Rows[r]["Count"]));
                                 TDT.Rows[0]["TotalCount"] = Convert.ToDecimal(TDT.Rows[0]["TotalCount"]) +
-                                    Convert.ToDecimal(Rows[r]["Count"]);
+                                                            Convert.ToDecimal(Rows[r]["Count"]);
                                 TDT.Rows[0]["Count"] = Convert.ToDecimal(TDT.Rows[0]["Count"]) +
-                                                                Convert.ToDecimal(Rows[r]["Count"]);
+                                                       Convert.ToDecimal(Rows[r]["Count"]);
                                 TDT.Rows[0]["Cost"] = Convert.ToDecimal(TDT.Rows[0]["Cost"]) +
-                                                             Convert.ToDecimal(Rows[r]["Cost"]);
-                                TDT.Rows[0]["CostWithTransport"] = Convert.ToDecimal(TDT.Rows[0]["CostWithTransport"]) + Convert.ToDecimal(Rows[r]["CostWithTransport"]);
+                                                      Convert.ToDecimal(Rows[r]["Cost"]);
+                                TDT.Rows[0]["CostWithTransport"] = Convert.ToDecimal(TDT.Rows[0]["CostWithTransport"]) +
+                                                                   Convert.ToDecimal(Rows[r]["CostWithTransport"]);
                                 TDT.Rows[0]["Weight"] = Convert.ToDecimal(TDT.Rows[0]["Weight"]) +
-                                                             GetDecorWeight(Rows[r]);
+                                                        GetDecorWeight(Rows[r]);
                                 continue;
                             }
                         }
@@ -10994,19 +12062,29 @@ namespace Infinium.Modules.Marketing.NewOrders
                         {
                             if (Convert.ToInt32(PDT.Rows[0][p3]) == Convert.ToInt32(Rows[r][p3]))
                             {
-                                PDT.Rows[0]["OriginalPrice"] = (Convert.ToDecimal(PDT.Rows[0]["OriginalPrice"]) * Convert.ToDecimal(PDT.Rows[0]["TotalCount"]) + Convert.ToDecimal(Rows[r]["Count"]) * Convert.ToDecimal(Rows[r]["OriginalPrice"])) /
-                                    (Convert.ToDecimal(PDT.Rows[0]["TotalCount"]) + Convert.ToDecimal(Rows[r]["Count"]));
-                                PDT.Rows[0]["Price"] = (Convert.ToDecimal(PDT.Rows[0]["Price"]) * Convert.ToDecimal(PDT.Rows[0]["TotalCount"]) + Convert.ToDecimal(Rows[r]["Count"]) * Convert.ToDecimal(Rows[r]["Price"])) /
-                                    (Convert.ToDecimal(PDT.Rows[0]["TotalCount"]) + Convert.ToDecimal(Rows[r]["Count"]));
+                                PDT.Rows[0]["OriginalPrice"] =
+                                    (Convert.ToDecimal(PDT.Rows[0]["OriginalPrice"]) *
+                                     Convert.ToDecimal(PDT.Rows[0]["TotalCount"]) +
+                                     Convert.ToDecimal(Rows[r]["Count"]) *
+                                     Convert.ToDecimal(Rows[r]["OriginalPrice"])) /
+                                    (Convert.ToDecimal(PDT.Rows[0]["TotalCount"]) +
+                                     Convert.ToDecimal(Rows[r]["Count"]));
+                                PDT.Rows[0]["Price"] =
+                                    (Convert.ToDecimal(PDT.Rows[0]["Price"]) *
+                                     Convert.ToDecimal(PDT.Rows[0]["TotalCount"]) +
+                                     Convert.ToDecimal(Rows[r]["Count"]) * Convert.ToDecimal(Rows[r]["Price"])) /
+                                    (Convert.ToDecimal(PDT.Rows[0]["TotalCount"]) +
+                                     Convert.ToDecimal(Rows[r]["Count"]));
                                 PDT.Rows[0]["TotalCount"] = Convert.ToDecimal(PDT.Rows[0]["TotalCount"]) +
-                                    Convert.ToDecimal(Rows[r]["Count"]);
+                                                            Convert.ToDecimal(Rows[r]["Count"]);
                                 PDT.Rows[0]["Count"] = Convert.ToDecimal(PDT.Rows[0]["Count"]) +
-                                                                Convert.ToDecimal(Rows[r]["Count"]);
+                                                       Convert.ToDecimal(Rows[r]["Count"]);
                                 PDT.Rows[0]["Cost"] = Convert.ToDecimal(PDT.Rows[0]["Cost"]) +
-                                                             Convert.ToDecimal(Rows[r]["Cost"]);
-                                PDT.Rows[0]["CostWithTransport"] = Convert.ToDecimal(PDT.Rows[0]["CostWithTransport"]) + Convert.ToDecimal(Rows[r]["CostWithTransport"]);
+                                                      Convert.ToDecimal(Rows[r]["Cost"]);
+                                PDT.Rows[0]["CostWithTransport"] = Convert.ToDecimal(PDT.Rows[0]["CostWithTransport"]) +
+                                                                   Convert.ToDecimal(Rows[r]["CostWithTransport"]);
                                 PDT.Rows[0]["Weight"] = Convert.ToDecimal(PDT.Rows[0]["Weight"]) +
-                                                             GetDecorWeight(Rows[r]);
+                                                        GetDecorWeight(Rows[r]);
                                 continue;
                             }
                         }
@@ -11042,19 +12120,29 @@ namespace Infinium.Modules.Marketing.NewOrders
                         {
                             if (Convert.ToInt32(TDT.Rows[0][p3]) == Convert.ToInt32(Rows[r][p3]))
                             {
-                                TDT.Rows[0]["OriginalPrice"] = (Convert.ToDecimal(TDT.Rows[0]["OriginalPrice"]) * Convert.ToDecimal(TDT.Rows[0]["TotalCount"]) + Convert.ToDecimal(Rows[r]["Count"]) * Convert.ToDecimal(Rows[r]["OriginalPrice"])) /
-                                    (Convert.ToDecimal(TDT.Rows[0]["TotalCount"]) + Convert.ToDecimal(Rows[r]["Count"]));
-                                TDT.Rows[0]["Price"] = (Convert.ToDecimal(TDT.Rows[0]["Price"]) * Convert.ToDecimal(TDT.Rows[0]["TotalCount"]) + Convert.ToDecimal(Rows[r]["Count"]) * Convert.ToDecimal(Rows[r]["Price"])) /
-                                    (Convert.ToDecimal(TDT.Rows[0]["TotalCount"]) + Convert.ToDecimal(Rows[r]["Count"]));
+                                TDT.Rows[0]["OriginalPrice"] =
+                                    (Convert.ToDecimal(TDT.Rows[0]["OriginalPrice"]) *
+                                     Convert.ToDecimal(TDT.Rows[0]["TotalCount"]) +
+                                     Convert.ToDecimal(Rows[r]["Count"]) *
+                                     Convert.ToDecimal(Rows[r]["OriginalPrice"])) /
+                                    (Convert.ToDecimal(TDT.Rows[0]["TotalCount"]) +
+                                     Convert.ToDecimal(Rows[r]["Count"]));
+                                TDT.Rows[0]["Price"] =
+                                    (Convert.ToDecimal(TDT.Rows[0]["Price"]) *
+                                     Convert.ToDecimal(TDT.Rows[0]["TotalCount"]) +
+                                     Convert.ToDecimal(Rows[r]["Count"]) * Convert.ToDecimal(Rows[r]["Price"])) /
+                                    (Convert.ToDecimal(TDT.Rows[0]["TotalCount"]) +
+                                     Convert.ToDecimal(Rows[r]["Count"]));
                                 TDT.Rows[0]["TotalCount"] = Convert.ToDecimal(TDT.Rows[0]["TotalCount"]) +
-                                    Convert.ToDecimal(Rows[r]["Count"]);
+                                                            Convert.ToDecimal(Rows[r]["Count"]);
                                 TDT.Rows[0]["Count"] = Convert.ToDecimal(TDT.Rows[0]["Count"]) +
-                                                                Convert.ToDecimal(Rows[r]["Count"]);
+                                                       Convert.ToDecimal(Rows[r]["Count"]);
                                 TDT.Rows[0]["Cost"] = Convert.ToDecimal(TDT.Rows[0]["Cost"]) +
-                                                             Convert.ToDecimal(Rows[r]["Cost"]);
-                                TDT.Rows[0]["CostWithTransport"] = Convert.ToDecimal(TDT.Rows[0]["CostWithTransport"]) + Convert.ToDecimal(Rows[r]["CostWithTransport"]);
+                                                      Convert.ToDecimal(Rows[r]["Cost"]);
+                                TDT.Rows[0]["CostWithTransport"] = Convert.ToDecimal(TDT.Rows[0]["CostWithTransport"]) +
+                                                                   Convert.ToDecimal(Rows[r]["CostWithTransport"]);
                                 TDT.Rows[0]["Weight"] = Convert.ToDecimal(TDT.Rows[0]["Weight"]) +
-                                                             GetDecorWeight(Rows[r]);
+                                                        GetDecorWeight(Rows[r]);
                                 continue;
                             }
                         }
@@ -11084,18 +12172,26 @@ namespace Infinium.Modules.Marketing.NewOrders
                             NewRow["Name"] = GetProductName(Convert.ToInt32(PDT.Rows[g]["ProductID"]));
                         else
                             NewRow["Name"] = GetProductName(Convert.ToInt32(PDT.Rows[g]["ProductID"])) + " " +
-                                         GetItemName(Convert.ToInt32(DecorID)) + " " + PDT.Rows[g][p1] + "x" + PDT.Rows[g][p2];
+                                             GetItemName(Convert.ToInt32(DecorID)) + " " + PDT.Rows[g][p1] + "x" +
+                                             PDT.Rows[g][p2];
 
                         NewRow["OriginalPrice"] = Convert.ToDecimal(PDT.Rows[g]["OriginalPrice"]);
                         NewRow["DiscountVolume"] = Convert.ToDecimal(PDT.Rows[g]["DiscountVolume"]);
                         NewRow["TotalDiscount"] = Convert.ToDecimal(PDT.Rows[g]["TotalDiscount"]);
                         NewRow["Count"] = PDT.Rows[g]["Count"];
                         NewRow["Measure"] = "шт.";
-                        NewRow["Price"] = decimal.Round(Convert.ToDecimal(PDT.Rows[g]["Price"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["Cost"] = decimal.Round(Convert.ToDecimal(PDT.Rows[g]["Cost"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["PriceWithTransport"] = decimal.Round(Convert.ToDecimal(PDT.Rows[g]["CostWithTransport"]) / Convert.ToDecimal(PDT.Rows[g]["Count"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["CostWithTransport"] = decimal.Round(Convert.ToDecimal(PDT.Rows[g]["CostWithTransport"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["Weight"] = decimal.Round(Convert.ToDecimal(PDT.Rows[g]["Weight"]), 3, MidpointRounding.AwayFromZero);
+                        NewRow["Price"] = decimal.Round(Convert.ToDecimal(PDT.Rows[g]["Price"]), 2,
+                            MidpointRounding.AwayFromZero);
+                        NewRow["Cost"] = decimal.Round(Convert.ToDecimal(PDT.Rows[g]["Cost"]), 2,
+                            MidpointRounding.AwayFromZero);
+                        NewRow["PriceWithTransport"] =
+                            decimal.Round(
+                                Convert.ToDecimal(PDT.Rows[g]["CostWithTransport"]) /
+                                Convert.ToDecimal(PDT.Rows[g]["Count"]), 2, MidpointRounding.AwayFromZero);
+                        NewRow["CostWithTransport"] = decimal.Round(Convert.ToDecimal(PDT.Rows[g]["CostWithTransport"]),
+                            2, MidpointRounding.AwayFromZero);
+                        NewRow["Weight"] = decimal.Round(Convert.ToDecimal(PDT.Rows[g]["Weight"]), 3,
+                            MidpointRounding.AwayFromZero);
 
                         ProfilReportDataTable.Rows.Add(NewRow);
                     }
@@ -11115,18 +12211,25 @@ namespace Infinium.Modules.Marketing.NewOrders
                             NewRow["Name"] = GetProductName(Convert.ToInt32(PDT.Rows[g]["ProductID"]));
                         else
                             NewRow["Name"] = GetProductName(Convert.ToInt32(PDT.Rows[g]["ProductID"])) + " " +
-                                         GetItemName(Convert.ToInt32(DecorID)) + " " + PDT.Rows[g][p3];
+                                             GetItemName(Convert.ToInt32(DecorID)) + " " + PDT.Rows[g][p3];
 
                         NewRow["OriginalPrice"] = Convert.ToDecimal(PDT.Rows[g]["OriginalPrice"]);
                         NewRow["DiscountVolume"] = Convert.ToDecimal(PDT.Rows[g]["DiscountVolume"]);
                         NewRow["TotalDiscount"] = Convert.ToDecimal(PDT.Rows[g]["TotalDiscount"]);
                         NewRow["Count"] = PDT.Rows[g]["Count"];
                         NewRow["Measure"] = "шт.";
-                        NewRow["Price"] = decimal.Round(Convert.ToDecimal(PDT.Rows[g]["Price"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["Cost"] = decimal.Round(Convert.ToDecimal(PDT.Rows[g]["Cost"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["PriceWithTransport"] = decimal.Round(Convert.ToDecimal(PDT.Rows[g]["CostWithTransport"]) / Convert.ToDecimal(PDT.Rows[g]["Count"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["CostWithTransport"] = decimal.Round(Convert.ToDecimal(PDT.Rows[g]["CostWithTransport"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["Weight"] = decimal.Round(Convert.ToDecimal(PDT.Rows[g]["Weight"]), 3, MidpointRounding.AwayFromZero);
+                        NewRow["Price"] = decimal.Round(Convert.ToDecimal(PDT.Rows[g]["Price"]), 2,
+                            MidpointRounding.AwayFromZero);
+                        NewRow["Cost"] = decimal.Round(Convert.ToDecimal(PDT.Rows[g]["Cost"]), 2,
+                            MidpointRounding.AwayFromZero);
+                        NewRow["PriceWithTransport"] =
+                            decimal.Round(
+                                Convert.ToDecimal(PDT.Rows[g]["CostWithTransport"]) /
+                                Convert.ToDecimal(PDT.Rows[g]["Count"]), 2, MidpointRounding.AwayFromZero);
+                        NewRow["CostWithTransport"] = decimal.Round(Convert.ToDecimal(PDT.Rows[g]["CostWithTransport"]),
+                            2, MidpointRounding.AwayFromZero);
+                        NewRow["Weight"] = decimal.Round(Convert.ToDecimal(PDT.Rows[g]["Weight"]), 3,
+                            MidpointRounding.AwayFromZero);
 
                         ProfilReportDataTable.Rows.Add(NewRow);
                     }
@@ -11144,18 +12247,25 @@ namespace Infinium.Modules.Marketing.NewOrders
                             NewRow["Name"] = GetProductName(Convert.ToInt32(PDT.Rows[g]["ProductID"]));
                         else
                             NewRow["Name"] = GetProductName(Convert.ToInt32(PDT.Rows[g]["ProductID"])) + " " +
-                                         GetItemName(Convert.ToInt32(DecorID));
+                                             GetItemName(Convert.ToInt32(DecorID));
 
                         NewRow["OriginalPrice"] = Convert.ToDecimal(PDT.Rows[g]["OriginalPrice"]);
                         NewRow["DiscountVolume"] = Convert.ToDecimal(PDT.Rows[g]["DiscountVolume"]);
                         NewRow["TotalDiscount"] = Convert.ToDecimal(PDT.Rows[g]["TotalDiscount"]);
                         NewRow["Count"] = PDT.Rows[g]["Count"];
                         NewRow["Measure"] = "шт.";
-                        NewRow["Price"] = decimal.Round(Convert.ToDecimal(PDT.Rows[g]["Price"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["Cost"] = decimal.Round(Convert.ToDecimal(PDT.Rows[g]["Cost"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["PriceWithTransport"] = decimal.Round(Convert.ToDecimal(PDT.Rows[g]["CostWithTransport"]) / Convert.ToDecimal(PDT.Rows[g]["Count"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["CostWithTransport"] = decimal.Round(Convert.ToDecimal(PDT.Rows[g]["CostWithTransport"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["Weight"] = decimal.Round(Convert.ToDecimal(PDT.Rows[g]["Weight"]), 3, MidpointRounding.AwayFromZero);
+                        NewRow["Price"] = decimal.Round(Convert.ToDecimal(PDT.Rows[g]["Price"]), 2,
+                            MidpointRounding.AwayFromZero);
+                        NewRow["Cost"] = decimal.Round(Convert.ToDecimal(PDT.Rows[g]["Cost"]), 2,
+                            MidpointRounding.AwayFromZero);
+                        NewRow["PriceWithTransport"] =
+                            decimal.Round(
+                                Convert.ToDecimal(PDT.Rows[g]["CostWithTransport"]) /
+                                Convert.ToDecimal(PDT.Rows[g]["Count"]), 2, MidpointRounding.AwayFromZero);
+                        NewRow["CostWithTransport"] = decimal.Round(Convert.ToDecimal(PDT.Rows[g]["CostWithTransport"]),
+                            2, MidpointRounding.AwayFromZero);
+                        NewRow["Weight"] = decimal.Round(Convert.ToDecimal(PDT.Rows[g]["Weight"]), 3,
+                            MidpointRounding.AwayFromZero);
 
                         ProfilReportDataTable.Rows.Add(NewRow);
                     }
@@ -11180,18 +12290,26 @@ namespace Infinium.Modules.Marketing.NewOrders
                             NewRow["Name"] = GetProductName(Convert.ToInt32(TDT.Rows[g]["ProductID"]));
                         else
                             NewRow["Name"] = GetProductName(Convert.ToInt32(TDT.Rows[g]["ProductID"])) + " " +
-                                         GetItemName(Convert.ToInt32(DecorID)) + " " + TDT.Rows[g][p1] + "x" + TDT.Rows[g][p2];
+                                             GetItemName(Convert.ToInt32(DecorID)) + " " + TDT.Rows[g][p1] + "x" +
+                                             TDT.Rows[g][p2];
 
                         NewRow["OriginalPrice"] = Convert.ToDecimal(TDT.Rows[g]["OriginalPrice"]);
                         NewRow["DiscountVolume"] = Convert.ToDecimal(TDT.Rows[g]["DiscountVolume"]);
                         NewRow["TotalDiscount"] = Convert.ToDecimal(TDT.Rows[g]["TotalDiscount"]);
                         NewRow["Count"] = TDT.Rows[g]["Count"];
                         NewRow["Measure"] = "шт.";
-                        NewRow["Price"] = decimal.Round(Convert.ToDecimal(TDT.Rows[g]["Price"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["Cost"] = decimal.Round(Convert.ToDecimal(TDT.Rows[g]["Cost"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["PriceWithTransport"] = decimal.Round(Convert.ToDecimal(TDT.Rows[g]["CostWithTransport"]) / Convert.ToDecimal(TDT.Rows[g]["Count"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["CostWithTransport"] = decimal.Round(Convert.ToDecimal(TDT.Rows[g]["CostWithTransport"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["Weight"] = decimal.Round(Convert.ToDecimal(TDT.Rows[g]["Weight"]), 3, MidpointRounding.AwayFromZero);
+                        NewRow["Price"] = decimal.Round(Convert.ToDecimal(TDT.Rows[g]["Price"]), 2,
+                            MidpointRounding.AwayFromZero);
+                        NewRow["Cost"] = decimal.Round(Convert.ToDecimal(TDT.Rows[g]["Cost"]), 2,
+                            MidpointRounding.AwayFromZero);
+                        NewRow["PriceWithTransport"] =
+                            decimal.Round(
+                                Convert.ToDecimal(TDT.Rows[g]["CostWithTransport"]) /
+                                Convert.ToDecimal(TDT.Rows[g]["Count"]), 2, MidpointRounding.AwayFromZero);
+                        NewRow["CostWithTransport"] = decimal.Round(Convert.ToDecimal(TDT.Rows[g]["CostWithTransport"]),
+                            2, MidpointRounding.AwayFromZero);
+                        NewRow["Weight"] = decimal.Round(Convert.ToDecimal(TDT.Rows[g]["Weight"]), 3,
+                            MidpointRounding.AwayFromZero);
 
                         TPSReportDataTable.Rows.Add(NewRow);
                     }
@@ -11210,18 +12328,25 @@ namespace Infinium.Modules.Marketing.NewOrders
                             NewRow["Name"] = GetProductName(Convert.ToInt32(TDT.Rows[g]["ProductID"]));
                         else
                             NewRow["Name"] = GetProductName(Convert.ToInt32(TDT.Rows[g]["ProductID"])) + " " +
-                                         GetItemName(Convert.ToInt32(DecorID)) + " " + TDT.Rows[g][p3];
+                                             GetItemName(Convert.ToInt32(DecorID)) + " " + TDT.Rows[g][p3];
 
                         NewRow["OriginalPrice"] = Convert.ToDecimal(TDT.Rows[g]["OriginalPrice"]);
                         NewRow["DiscountVolume"] = Convert.ToDecimal(TDT.Rows[g]["DiscountVolume"]);
                         NewRow["TotalDiscount"] = Convert.ToDecimal(TDT.Rows[g]["TotalDiscount"]);
                         NewRow["Count"] = TDT.Rows[g]["Count"];
                         NewRow["Measure"] = "шт.";
-                        NewRow["Price"] = decimal.Round(Convert.ToDecimal(TDT.Rows[g]["Price"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["Cost"] = decimal.Round(Convert.ToDecimal(TDT.Rows[g]["Cost"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["PriceWithTransport"] = decimal.Round(Convert.ToDecimal(TDT.Rows[g]["CostWithTransport"]) / Convert.ToDecimal(TDT.Rows[g]["Count"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["CostWithTransport"] = decimal.Round(Convert.ToDecimal(TDT.Rows[g]["CostWithTransport"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["Weight"] = decimal.Round(Convert.ToDecimal(TDT.Rows[g]["Weight"]), 3, MidpointRounding.AwayFromZero);
+                        NewRow["Price"] = decimal.Round(Convert.ToDecimal(TDT.Rows[g]["Price"]), 2,
+                            MidpointRounding.AwayFromZero);
+                        NewRow["Cost"] = decimal.Round(Convert.ToDecimal(TDT.Rows[g]["Cost"]), 2,
+                            MidpointRounding.AwayFromZero);
+                        NewRow["PriceWithTransport"] =
+                            decimal.Round(
+                                Convert.ToDecimal(TDT.Rows[g]["CostWithTransport"]) /
+                                Convert.ToDecimal(TDT.Rows[g]["Count"]), 2, MidpointRounding.AwayFromZero);
+                        NewRow["CostWithTransport"] = decimal.Round(Convert.ToDecimal(TDT.Rows[g]["CostWithTransport"]),
+                            2, MidpointRounding.AwayFromZero);
+                        NewRow["Weight"] = decimal.Round(Convert.ToDecimal(TDT.Rows[g]["Weight"]), 3,
+                            MidpointRounding.AwayFromZero);
 
                         TPSReportDataTable.Rows.Add(NewRow);
                     }
@@ -11240,18 +12365,25 @@ namespace Infinium.Modules.Marketing.NewOrders
                             NewRow["Name"] = GetProductName(Convert.ToInt32(TDT.Rows[g]["ProductID"]));
                         else
                             NewRow["Name"] = GetProductName(Convert.ToInt32(TDT.Rows[g]["ProductID"])) + " " +
-                                         GetItemName(Convert.ToInt32(DecorID));
+                                             GetItemName(Convert.ToInt32(DecorID));
 
                         NewRow["OriginalPrice"] = Convert.ToDecimal(TDT.Rows[g]["OriginalPrice"]);
                         NewRow["DiscountVolume"] = Convert.ToDecimal(TDT.Rows[g]["DiscountVolume"]);
                         NewRow["TotalDiscount"] = Convert.ToDecimal(TDT.Rows[g]["TotalDiscount"]);
                         NewRow["Count"] = TDT.Rows[g]["Count"];
                         NewRow["Measure"] = "шт.";
-                        NewRow["Price"] = decimal.Round(Convert.ToDecimal(TDT.Rows[g]["Price"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["Cost"] = decimal.Round(Convert.ToDecimal(TDT.Rows[g]["Cost"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["PriceWithTransport"] = decimal.Round(Convert.ToDecimal(TDT.Rows[g]["CostWithTransport"]) / Convert.ToDecimal(TDT.Rows[g]["Count"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["CostWithTransport"] = decimal.Round(Convert.ToDecimal(TDT.Rows[g]["CostWithTransport"]), 2, MidpointRounding.AwayFromZero);
-                        NewRow["Weight"] = decimal.Round(Convert.ToDecimal(TDT.Rows[g]["Weight"]), 3, MidpointRounding.AwayFromZero);
+                        NewRow["Price"] = decimal.Round(Convert.ToDecimal(TDT.Rows[g]["Price"]), 2,
+                            MidpointRounding.AwayFromZero);
+                        NewRow["Cost"] = decimal.Round(Convert.ToDecimal(TDT.Rows[g]["Cost"]), 2,
+                            MidpointRounding.AwayFromZero);
+                        NewRow["PriceWithTransport"] =
+                            decimal.Round(
+                                Convert.ToDecimal(TDT.Rows[g]["CostWithTransport"]) /
+                                Convert.ToDecimal(TDT.Rows[g]["Count"]), 2, MidpointRounding.AwayFromZero);
+                        NewRow["CostWithTransport"] = decimal.Round(Convert.ToDecimal(TDT.Rows[g]["CostWithTransport"]),
+                            2, MidpointRounding.AwayFromZero);
+                        NewRow["Weight"] = decimal.Round(Convert.ToDecimal(TDT.Rows[g]["Weight"]), 3,
+                            MidpointRounding.AwayFromZero);
 
                         TPSReportDataTable.Rows.Add(NewRow);
                     }
@@ -11284,8 +12416,10 @@ namespace Infinium.Modules.Marketing.NewOrders
                 for (int j = 0; j < DistRatesDT.Rows.Count; j++)
                 {
                     PaymentRate = Convert.ToDecimal(DistRatesDT.Rows[j]["PaymentRate"]);
-                    DataRow[] ItemsRows = DecorOrdersDataTable.Select("PaymentRate='" + PaymentRate.ToString() + "' AND DecorID = " + Items.Rows[i]["DecorID"].ToString(),
-                                                                          "Price ASC");
+                    DataRow[] ItemsRows = DecorOrdersDataTable.Select(
+                        "PaymentRate='" + PaymentRate.ToString() + "' AND DecorID = " +
+                        Items.Rows[i]["DecorID"].ToString(),
+                        "Price ASC");
                     if (ItemsRows.Count() == 0)
                         continue;
                     int DecorConfigID = Convert.ToInt32(ItemsRows[0]["DecorConfigID"]);
@@ -11303,12 +12437,13 @@ namespace Infinium.Modules.Marketing.NewOrders
                         DataTable ParamTableTPS = new DataTable();
 
                         DataRow[] DCs = DecorConfigDataTable.Select("DecorConfigID = " +
-                                                                                        ItemsRows[0]["DecorConfigID"].ToString());
+                                                                    ItemsRows[0]["DecorConfigID"].ToString());
 
                         CreateParamsTable(DCs[0]["ReportParam"].ToString(), ParamTableProfil);
                         CreateParamsTable(DCs[0]["ReportParam"].ToString(), ParamTableTPS);
 
-                        GetParametrizedData(ItemsRows, ParamTableProfil, ParamTableTPS, Convert.ToInt32(Items.Rows[i]["DecorID"]));
+                        GetParametrizedData(ItemsRows, ParamTableProfil, ParamTableTPS,
+                            Convert.ToInt32(Items.Rows[i]["DecorID"]));
 
                         ParamTableProfil.Dispose();
                         ParamTableTPS.Dispose();
@@ -11333,19 +12468,23 @@ namespace Infinium.Modules.Marketing.NewOrders
             ProfilReportDataTable.Clear();
             TPSReportDataTable.Clear();
             DecorOrdersDataTable.Clear();
-            string SelectCommand = @"SELECT DecorOrders.*, infiniu2_catalog.dbo.DecorConfig.AccountingName, infiniu2_catalog.dbo.DecorConfig.InvNumber, MegaOrders.PaymentRate FROM DecorOrders
+            string SelectCommand =
+                @"SELECT DecorOrders.*, infiniu2_catalog.dbo.DecorConfig.AccountingName, infiniu2_catalog.dbo.DecorConfig.InvNumber, MegaOrders.PaymentRate FROM DecorOrders
                 INNER JOIN MainOrders ON DecorOrders.MainOrderID = MainOrders.MainOrderID
                 INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID
                 INNER JOIN infiniu2_catalog.dbo.DecorConfig ON DecorOrders.DecorConfigID = infiniu2_catalog.dbo.DecorConfig.DecorConfigID
-                WHERE DecorOrders.MainOrderID IN (" + string.Join(",", MainOrderIDs) + ") AND DecorOrders.IsSample=1 ORDER BY DecorID";
+                WHERE DecorOrders.MainOrderID IN (" + string.Join(",", MainOrderIDs) +
+                ") AND DecorOrders.IsSample=1 ORDER BY DecorID";
             if (!IsSample)
-                SelectCommand = @"SELECT DecorOrders.*, infiniu2_catalog.dbo.DecorConfig.AccountingName, infiniu2_catalog.dbo.DecorConfig.InvNumber, MegaOrders.PaymentRate FROM DecorOrders
+                SelectCommand =
+                    @"SELECT DecorOrders.*, infiniu2_catalog.dbo.DecorConfig.AccountingName, infiniu2_catalog.dbo.DecorConfig.InvNumber, MegaOrders.PaymentRate FROM DecorOrders
                 INNER JOIN MainOrders ON DecorOrders.MainOrderID = MainOrders.MainOrderID
                 INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID
                 INNER JOIN infiniu2_catalog.dbo.DecorConfig ON DecorOrders.DecorConfigID = infiniu2_catalog.dbo.DecorConfig.DecorConfigID
-                WHERE DecorOrders.MainOrderID IN (" + string.Join(",", MainOrderIDs) + ") AND DecorOrders.IsSample=0 ORDER BY DecorID";
+                WHERE DecorOrders.MainOrderID IN (" + string.Join(",", MainOrderIDs) +
+                    ") AND DecorOrders.IsSample=0 ORDER BY DecorID";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand,
-                ConnectionStrings.MarketingOrdersConnectionString))
+                       ConnectionStrings.MarketingOrdersConnectionString))
             {
                 DA.Fill(DecorOrdersDataTable);
             }
@@ -11361,13 +12500,14 @@ namespace Infinium.Modules.Marketing.NewOrders
             ProfilReportDataTable.Clear();
             TPSReportDataTable.Clear();
             DecorOrdersDataTable.Clear();
-            string SelectCommand = @"SELECT DecorOrders.*, infiniu2_catalog.dbo.DecorConfig.AccountingName, infiniu2_catalog.dbo.DecorConfig.InvNumber, MegaOrders.PaymentRate FROM DecorOrders
+            string SelectCommand =
+                @"SELECT DecorOrders.*, infiniu2_catalog.dbo.DecorConfig.AccountingName, infiniu2_catalog.dbo.DecorConfig.InvNumber, MegaOrders.PaymentRate FROM DecorOrders
                 INNER JOIN MainOrders ON DecorOrders.MainOrderID = MainOrders.MainOrderID
                 INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID
                 INNER JOIN infiniu2_catalog.dbo.DecorConfig ON DecorOrders.DecorConfigID = infiniu2_catalog.dbo.DecorConfig.DecorConfigID
                 WHERE DecorOrders.MainOrderID IN (" + string.Join(",", MainOrderIDs) + ") ORDER BY DecorID";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand,
-                ConnectionStrings.MarketingOrdersConnectionString))
+                       ConnectionStrings.MarketingOrdersConnectionString))
             {
                 DA.Fill(DecorOrdersDataTable);
             }
@@ -11399,7 +12539,7 @@ namespace Infinium.Modules.Marketing.NewOrders
 
             CurrencyTypesDataTable = new DataTable();
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM CurrencyTypes",
-                ConnectionStrings.CatalogConnectionString))
+                       ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(CurrencyTypesDataTable);
             }
@@ -11459,24 +12599,30 @@ namespace Infinium.Modules.Marketing.NewOrders
                 if (IsNonStandard)
                 {
                     if (ProfilReportTable.Rows[i]["IsNonStandard"] == DBNull.Value ||
-                        (ProfilReportTable.Rows[i]["IsNonStandard"] != DBNull.Value && !Convert.ToBoolean(ProfilReportTable.Rows[i]["IsNonStandard"])))
-                        continue;
-                }
-                if (!IsNonStandard)
-                {
-                    if (ProfilReportTable.Rows[i]["IsNonStandard"] != DBNull.Value && Convert.ToBoolean(ProfilReportTable.Rows[i]["IsNonStandard"]))
+                        (ProfilReportTable.Rows[i]["IsNonStandard"] != DBNull.Value &&
+                         !Convert.ToBoolean(ProfilReportTable.Rows[i]["IsNonStandard"])))
                         continue;
                 }
 
+                if (!IsNonStandard)
+                {
+                    if (ProfilReportTable.Rows[i]["IsNonStandard"] != DBNull.Value &&
+                        Convert.ToBoolean(ProfilReportTable.Rows[i]["IsNonStandard"]))
+                        continue;
+                }
+
+                var name = ProfilReportTable.Rows[i]["name"].ToString();
                 PaymentRate = Convert.ToDecimal(ProfilReportTable.Rows[i]["PaymentRate"]);
                 Count = Convert.ToDecimal(ProfilReportTable.Rows[i]["Count"]);
                 Cost = Convert.ToDecimal(ProfilReportTable.Rows[i]["Cost"]) * PaymentRate / VAT;
                 if (ProfilReportTable.Rows[i]["OriginalPrice"] != DBNull.Value)
                     OriginalPrice = Convert.ToDecimal(ProfilReportTable.Rows[i]["OriginalPrice"]) * PaymentRate / VAT;
                 if (ProfilReportTable.Rows[i]["PriceWithTransport"] != DBNull.Value)
-                    PriceWithTransport = Convert.ToDecimal(ProfilReportTable.Rows[i]["PriceWithTransport"]) * PaymentRate / VAT;
+                    PriceWithTransport = Convert.ToDecimal(ProfilReportTable.Rows[i]["PriceWithTransport"]) *
+                        PaymentRate / VAT;
                 if (ProfilReportTable.Rows[i]["CostWithTransport"] != DBNull.Value)
-                    CostWithTransport = Convert.ToDecimal(ProfilReportTable.Rows[i]["CostWithTransport"]) * PaymentRate / VAT;
+                    CostWithTransport = Convert.ToDecimal(ProfilReportTable.Rows[i]["CostWithTransport"]) *
+                        PaymentRate / VAT;
                 Cost = Math.Ceiling(Cost / 0.01m) * 0.01m;
                 CostWithTransport = Math.Ceiling(CostWithTransport / 0.01m) * 0.01m;
                 Price = Cost / Count;
@@ -11498,11 +12644,16 @@ namespace Infinium.Modules.Marketing.NewOrders
                     decimal ExtraPrice = Convert.ToDecimal(ProfilReportTable.Rows[i]["NonStandardMargin"]);
                     Price = Price / (ExtraPrice / 100 + 1);
                     PriceWithTransport = PriceWithTransport / (ExtraPrice / 100 + 1);
-                    ProfilReportTable.Rows[i]["NonStandardMargin"] = Convert.ToDecimal(ProfilReportTable.Rows[i]["NonStandardMargin"]);
+                    ProfilReportTable.Rows[i]["NonStandardMargin"] =
+                        Convert.ToDecimal(ProfilReportTable.Rows[i]["NonStandardMargin"]);
                 }
-                ProfilReportTable.Rows[i]["OriginalPrice"] = decimal.Round(OriginalPrice, DecCount, MidpointRounding.AwayFromZero);
-                ProfilReportTable.Rows[i]["PriceWithTransport"] = decimal.Round(PriceWithTransport, DecCount, MidpointRounding.AwayFromZero);
-                ProfilReportTable.Rows[i]["CostWithTransport"] = decimal.Round(CostWithTransport, DecCount, MidpointRounding.AwayFromZero);
+
+                ProfilReportTable.Rows[i]["OriginalPrice"] =
+                    decimal.Round(OriginalPrice, DecCount, MidpointRounding.AwayFromZero);
+                ProfilReportTable.Rows[i]["PriceWithTransport"] =
+                    decimal.Round(PriceWithTransport, DecCount, MidpointRounding.AwayFromZero);
+                ProfilReportTable.Rows[i]["CostWithTransport"] =
+                    decimal.Round(CostWithTransport, DecCount, MidpointRounding.AwayFromZero);
                 ProfilReportTable.Rows[i]["Price"] = decimal.Round(Price, DecCount, MidpointRounding.AwayFromZero);
                 ProfilReportTable.Rows[i]["Cost"] = decimal.Round(Cost, DecCount, MidpointRounding.AwayFromZero);
             }
@@ -11512,12 +12663,15 @@ namespace Infinium.Modules.Marketing.NewOrders
                 if (IsNonStandard)
                 {
                     if (TPSReportTable.Rows[i]["IsNonStandard"] == DBNull.Value ||
-                        (TPSReportTable.Rows[i]["IsNonStandard"] != DBNull.Value && !Convert.ToBoolean(TPSReportTable.Rows[i]["IsNonStandard"])))
+                        (TPSReportTable.Rows[i]["IsNonStandard"] != DBNull.Value &&
+                         !Convert.ToBoolean(TPSReportTable.Rows[i]["IsNonStandard"])))
                         continue;
                 }
+
                 if (!IsNonStandard)
                 {
-                    if (TPSReportTable.Rows[i]["IsNonStandard"] != DBNull.Value && Convert.ToBoolean(TPSReportTable.Rows[i]["IsNonStandard"]))
+                    if (TPSReportTable.Rows[i]["IsNonStandard"] != DBNull.Value &&
+                        Convert.ToBoolean(TPSReportTable.Rows[i]["IsNonStandard"]))
                         continue;
                 }
 
@@ -11527,9 +12681,11 @@ namespace Infinium.Modules.Marketing.NewOrders
                 if (TPSReportTable.Rows[i]["OriginalPrice"] != DBNull.Value)
                     OriginalPrice = Convert.ToDecimal(TPSReportTable.Rows[i]["OriginalPrice"]) * PaymentRate / VAT;
                 if (TPSReportTable.Rows[i]["PriceWithTransport"] != DBNull.Value)
-                    PriceWithTransport = Convert.ToDecimal(TPSReportTable.Rows[i]["PriceWithTransport"]) * PaymentRate / VAT;
+                    PriceWithTransport = Convert.ToDecimal(TPSReportTable.Rows[i]["PriceWithTransport"]) * PaymentRate /
+                                         VAT;
                 if (TPSReportTable.Rows[i]["CostWithTransport"] != DBNull.Value)
-                    CostWithTransport = Convert.ToDecimal(TPSReportTable.Rows[i]["CostWithTransport"]) * PaymentRate / VAT;
+                    CostWithTransport = Convert.ToDecimal(TPSReportTable.Rows[i]["CostWithTransport"]) * PaymentRate /
+                                        VAT;
                 Cost = Math.Ceiling(Cost / 0.01m) * 0.01m;
                 CostWithTransport = Math.Ceiling(CostWithTransport / 0.01m) * 0.01m;
                 Price = Cost / Count;
@@ -11551,11 +12707,16 @@ namespace Infinium.Modules.Marketing.NewOrders
                     decimal ExtraPrice = Convert.ToDecimal(TPSReportTable.Rows[i]["NonStandardMargin"]);
                     Price = Price / (ExtraPrice / 100 + 1);
                     PriceWithTransport = PriceWithTransport / (ExtraPrice / 100 + 1);
-                    TPSReportTable.Rows[i]["NonStandardMargin"] = ExtraPrice = Convert.ToDecimal(TPSReportTable.Rows[i]["NonStandardMargin"]);
+                    TPSReportTable.Rows[i]["NonStandardMargin"] =
+                        ExtraPrice = Convert.ToDecimal(TPSReportTable.Rows[i]["NonStandardMargin"]);
                 }
-                TPSReportTable.Rows[i]["OriginalPrice"] = decimal.Round(OriginalPrice, DecCount, MidpointRounding.AwayFromZero);
-                TPSReportTable.Rows[i]["PriceWithTransport"] = decimal.Round(PriceWithTransport, DecCount, MidpointRounding.AwayFromZero);
-                TPSReportTable.Rows[i]["CostWithTransport"] = decimal.Round(CostWithTransport, DecCount, MidpointRounding.AwayFromZero);
+
+                TPSReportTable.Rows[i]["OriginalPrice"] =
+                    decimal.Round(OriginalPrice, DecCount, MidpointRounding.AwayFromZero);
+                TPSReportTable.Rows[i]["PriceWithTransport"] =
+                    decimal.Round(PriceWithTransport, DecCount, MidpointRounding.AwayFromZero);
+                TPSReportTable.Rows[i]["CostWithTransport"] =
+                    decimal.Round(CostWithTransport, DecCount, MidpointRounding.AwayFromZero);
                 TPSReportTable.Rows[i]["Price"] = decimal.Round(Price, DecCount, MidpointRounding.AwayFromZero);
                 TPSReportTable.Rows[i]["Cost"] = decimal.Round(Cost, DecCount, MidpointRounding.AwayFromZero);
             }
@@ -11638,8 +12799,11 @@ namespace Infinium.Modules.Marketing.NewOrders
                         GridSquare += Convert.ToDecimal(ProfilReportTable.Rows[i]["Count"]);
                         GridWeight += Convert.ToDecimal(ProfilReportTable.Rows[i]["Weight"]);
 
-                        GridCost += Math.Ceiling(Convert.ToDecimal(ProfilReportTable.Rows[i]["OriginalPrice"]) * Convert.ToDecimal(ProfilReportTable.Rows[i]["Count"]) / 0.001m) * 0.001m;
-                        GridCostWithTransport += Math.Ceiling(Convert.ToDecimal(ProfilReportTable.Rows[i]["PriceWithTransport"]) * Convert.ToDecimal(ProfilReportTable.Rows[i]["Count"]) / 0.001m) * 0.001m;
+                        GridCost += Math.Ceiling(Convert.ToDecimal(ProfilReportTable.Rows[i]["OriginalPrice"]) *
+                            Convert.ToDecimal(ProfilReportTable.Rows[i]["Count"]) / 0.001m) * 0.001m;
+                        GridCostWithTransport +=
+                            Math.Ceiling(Convert.ToDecimal(ProfilReportTable.Rows[i]["PriceWithTransport"]) *
+                                Convert.ToDecimal(ProfilReportTable.Rows[i]["Count"]) / 0.001m) * 0.001m;
 
                         b = true;
                     }
@@ -11705,6 +12869,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                         ProfilCurrencyCode = ProfilReportTable.Rows[0]["CurrencyCode"].ToString();
                         TPSCurrencyCode = ProfilReportTable.Rows[0]["TPSCurCode"].ToString();
                     }
+
                     if (GridSquare > 0)
                     {
                         DataRow NewRow = dt.NewRow();
@@ -11719,8 +12884,10 @@ namespace Infinium.Modules.Marketing.NewOrders
                         NewRow["Count"] = GridSquare;
                         NewRow["Measure"] = "м.кв.";
                         NewRow["Price"] = decimal.Round(GridCost / GridSquare, 2, MidpointRounding.AwayFromZero);
-                        NewRow["OriginalPrice"] = decimal.Round(GridCost / GridSquare, 2, MidpointRounding.AwayFromZero);
-                        NewRow["PriceWithTransport"] = decimal.Round(GridCostWithTransport / GridSquare, 2, MidpointRounding.AwayFromZero);
+                        NewRow["OriginalPrice"] =
+                            decimal.Round(GridCost / GridSquare, 2, MidpointRounding.AwayFromZero);
+                        NewRow["PriceWithTransport"] = decimal.Round(GridCostWithTransport / GridSquare, 2,
+                            MidpointRounding.AwayFromZero);
                         NewRow["Cost"] = GridCost;
                         NewRow["CostWithTransport"] = GridCostWithTransport;
                         NewRow["Weight"] = decimal.Round(GridWeight, 3, MidpointRounding.AwayFromZero);
@@ -11820,6 +12987,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                     FlutesPriceWithTransport = 0;
                 }
             }
+
             for (int i = 0; i < dt.Rows.Count; i++)
             {
                 DataRow NewRow = ProfilReportTable.NewRow();
@@ -11894,8 +13062,11 @@ namespace Infinium.Modules.Marketing.NewOrders
                         GridWeight += Convert.ToDecimal(TPSReportTable.Rows[i]["Weight"]);
                         //GridCost = 0;
                         //GridCostWithTransport = 0;
-                        GridCost += Math.Ceiling(Convert.ToDecimal(TPSReportTable.Rows[i]["OriginalPrice"]) * Convert.ToDecimal(TPSReportTable.Rows[i]["Count"]) / 0.001m) * 0.001m;
-                        GridCostWithTransport += Math.Ceiling(Convert.ToDecimal(TPSReportTable.Rows[i]["PriceWithTransport"]) * Convert.ToDecimal(TPSReportTable.Rows[i]["Count"]) / 0.001m) * 0.001m;
+                        GridCost += Math.Ceiling(Convert.ToDecimal(TPSReportTable.Rows[i]["OriginalPrice"]) *
+                            Convert.ToDecimal(TPSReportTable.Rows[i]["Count"]) / 0.001m) * 0.001m;
+                        GridCostWithTransport +=
+                            Math.Ceiling(Convert.ToDecimal(TPSReportTable.Rows[i]["PriceWithTransport"]) *
+                                Convert.ToDecimal(TPSReportTable.Rows[i]["Count"]) / 0.001m) * 0.001m;
 
                         b = true;
                     }
@@ -11976,9 +13147,11 @@ namespace Infinium.Modules.Marketing.NewOrders
                         NewRow["Name"] = "Решетка";
                         NewRow["Count"] = GridSquare;
                         NewRow["Measure"] = "м.кв.";
-                        NewRow["OriginalPrice"] = decimal.Round(GridCost / GridSquare, 2, MidpointRounding.AwayFromZero);
+                        NewRow["OriginalPrice"] =
+                            decimal.Round(GridCost / GridSquare, 2, MidpointRounding.AwayFromZero);
                         NewRow["Price"] = decimal.Round(GridCost / GridSquare, 2, MidpointRounding.AwayFromZero);
-                        NewRow["PriceWithTransport"] = decimal.Round(GridCostWithTransport / GridSquare, 2, MidpointRounding.AwayFromZero);
+                        NewRow["PriceWithTransport"] = decimal.Round(GridCostWithTransport / GridSquare, 2,
+                            MidpointRounding.AwayFromZero);
                         NewRow["Cost"] = GridCost;
                         NewRow["CostWithTransport"] = GridCostWithTransport;
                         NewRow["Weight"] = decimal.Round(GridWeight, 3, MidpointRounding.AwayFromZero);
@@ -12052,6 +13225,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                     }
                 }
             }
+
             for (int i = 0; i < dt.Rows.Count; i++)
             {
                 DataRow NewRow = TPSReportTable.NewRow();
@@ -12075,9 +13249,10 @@ namespace Infinium.Modules.Marketing.NewOrders
             }
         }
 
-        public void AssignCost(decimal ComplaintProfilCost, decimal ComplaintTPSCost, decimal TransportCost, decimal AdditionalCost, decimal WeightProfil, decimal WeightTPS, decimal TotalWeight,
-                               decimal TotalProfil, decimal TotalTPS, ref decimal TransportAndOtherProfil,
-                               ref decimal TransportAndOtherTPS)
+        public void AssignCost(decimal ComplaintProfilCost, decimal ComplaintTPSCost, decimal TransportCost,
+            decimal AdditionalCost, decimal WeightProfil, decimal WeightTPS, decimal TotalWeight,
+            decimal TotalProfil, decimal TotalTPS, ref decimal TransportAndOtherProfil,
+            ref decimal TransportAndOtherTPS)
         {
             decimal Total = TransportCost + AdditionalCost;
 
@@ -12107,13 +13282,15 @@ namespace Infinium.Modules.Marketing.NewOrders
             using (DataTable DT = new DataTable())
             {
                 using (SqlDataAdapter DA = new SqlDataAdapter("SELECT MegaOrderID FROM MainOrders" +
-                    " WHERE MainOrderID=" + MainOrderID, ConnectionStrings.MarketingOrdersConnectionString))
+                                                              " WHERE MainOrderID=" + MainOrderID,
+                           ConnectionStrings.MarketingOrdersConnectionString))
                 {
                     DA.Fill(DT);
                     if (DT.Rows.Count > 0)
                         MegaOrderID = Convert.ToInt32(DT.Rows[0]["MegaOrderID"]);
                 }
             }
+
             return MegaOrderID;
         }
 
@@ -12122,8 +13299,8 @@ namespace Infinium.Modules.Marketing.NewOrders
             bool IsComplaint = false;
 
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT IsComplaint" +
-                            " FROM NewMegaOrders WHERE MegaOrderID = " + MegaOrderID,
-                            ConnectionStrings.MarketingOrdersConnectionString))
+                                                          " FROM NewMegaOrders WHERE MegaOrderID = " + MegaOrderID,
+                       ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
                 {
@@ -12165,7 +13342,8 @@ namespace Infinium.Modules.Marketing.NewOrders
                 FROM MainOrders
                 INNER JOIN MegaOrders ON MainOrders.MegaOrderID=MegaOrders.MegaOrderID
                 AND MegaOrders.MegaOrderID IN (" + string.Join(",", MegaOrders) + ")";
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
+            using (SqlDataAdapter DA =
+                   new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
             {
                 DA.Fill(ReturnDT);
                 ReturnDT.Columns.Add(new DataColumn("ProfilFrontsWeight", Type.GetType("System.Decimal")));
@@ -12179,8 +13357,10 @@ namespace Infinium.Modules.Marketing.NewOrders
                     decimal ProfilDecorWeight = 0;
                     decimal TPSDecorWeight = 0;
                     int MainOrderID = Convert.ToInt32(ReturnDT.Rows[i]["MainOrderID"]);
-                    SelectCommand = @"SELECT Square,Weight,FactoryID FROM FrontsOrders WHERE MainOrderID=" + MainOrderID;
-                    using (SqlDataAdapter DA1 = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
+                    SelectCommand = @"SELECT Square,Weight,FactoryID FROM FrontsOrders WHERE MainOrderID=" +
+                                    MainOrderID;
+                    using (SqlDataAdapter DA1 = new SqlDataAdapter(SelectCommand,
+                               ConnectionStrings.MarketingOrdersConnectionString))
                     {
                         using (DataTable DT = new DataTable())
                         {
@@ -12188,14 +13368,20 @@ namespace Infinium.Modules.Marketing.NewOrders
                             for (int j = 0; j < DT.Rows.Count; j++)
                             {
                                 if (Convert.ToInt32(DT.Rows[j]["FactoryID"]) == 1)
-                                    ProfilFrontsWeight += Convert.ToDecimal(DT.Rows[j]["Square"]) * Convert.ToDecimal(0.7) + Convert.ToDecimal(DT.Rows[j]["Weight"]);
+                                    ProfilFrontsWeight +=
+                                        Convert.ToDecimal(DT.Rows[j]["Square"]) * Convert.ToDecimal(0.7) +
+                                        Convert.ToDecimal(DT.Rows[j]["Weight"]);
                                 if (Convert.ToInt32(DT.Rows[j]["FactoryID"]) == 2)
-                                    TPSFrontsWeight += Convert.ToDecimal(DT.Rows[j]["Square"]) * Convert.ToDecimal(0.7) + Convert.ToDecimal(DT.Rows[j]["Weight"]);
+                                    TPSFrontsWeight +=
+                                        Convert.ToDecimal(DT.Rows[j]["Square"]) * Convert.ToDecimal(0.7) +
+                                        Convert.ToDecimal(DT.Rows[j]["Weight"]);
                             }
                         }
                     }
+
                     SelectCommand = @"SELECT Weight,FactoryID FROM DecorOrders WHERE MainOrderID=" + MainOrderID;
-                    using (SqlDataAdapter DA1 = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
+                    using (SqlDataAdapter DA1 = new SqlDataAdapter(SelectCommand,
+                               ConnectionStrings.MarketingOrdersConnectionString))
                     {
                         using (DataTable DT = new DataTable())
                         {
@@ -12209,18 +13395,21 @@ namespace Infinium.Modules.Marketing.NewOrders
                             }
                         }
                     }
+
                     ReturnDT.Rows[i]["ProfilFrontsWeight"] = ProfilFrontsWeight;
                     ReturnDT.Rows[i]["TPSFrontsWeight"] = TPSFrontsWeight;
                     ReturnDT.Rows[i]["ProfilDecorWeight"] = ProfilDecorWeight;
                     ReturnDT.Rows[i]["TPSDecorWeight"] = TPSDecorWeight;
                 }
             }
+
             return ReturnDT;
         }
 
         public void CreateReport(
             ref HSSFWorkbook hssfworkbook,
-            ref HSSFSheet sheet1, int[] MegaOrders, int[] OrderNumbers, int[] MainOrdersIDs, int ClientID, string ClientName,
+            ref HSSFSheet sheet1, int[] MegaOrders, int[] OrderNumbers, int[] MainOrdersIDs, int ClientID,
+            string ClientName,
             decimal ComplaintProfilCost, decimal ComplaintTPSCost, decimal TransportCost, decimal AdditionalCost,
             decimal TotalCost, int CurrencyTypeID, decimal TotalWeight, int pos, bool IsSample)
         {
@@ -12242,6 +13431,7 @@ namespace Infinium.Modules.Marketing.NewOrders
             {
                 VAT = 1.0m;
             }
+
             DataTable InfoDT = GetMegaOrdersTable(MegaOrders);
             TransportCost = TransportCost / VAT;
             AdditionalCost = AdditionalCost / VAT;
@@ -12282,6 +13472,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                     TPSReportTable.ImportRow(DecorReport.TPSReportDataTable.Rows[i]);
                 }
             }
+
             //F(@"D:\temp", "temp", TPSReportTable);
             CollectGridsAndGlass();
             ConvertToCurrency(CurrencyTypeID, false);
@@ -12308,11 +13499,12 @@ namespace Infinium.Modules.Marketing.NewOrders
                 WeightTPS += Convert.ToDecimal(TPSReportTable.Rows[i]["Weight"]);
             }
 
-            TotalCost = (TotalProfil + TotalTPS);
+            TotalCost = TotalProfil + TotalTPS;
 
             //Assign COST
-            AssignCost(ComplaintProfilCost, ComplaintTPSCost, TransportCost, AdditionalCost, WeightProfil, WeightTPS, TotalWeight, TotalProfil, TotalTPS, ref TransportAndOtherProfil,
-                       ref TransportAndOtherTPS);
+            AssignCost(ComplaintProfilCost, ComplaintTPSCost, TransportCost, AdditionalCost, WeightProfil, WeightTPS,
+                TotalWeight, TotalProfil, TotalTPS, ref TransportAndOtherProfil,
+                ref TransportAndOtherTPS);
 
             decimal dd = 0;
             if (TotalWeight != 0)
@@ -12620,6 +13812,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                         //Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["PaymentRate"]));
                         //Cell1.CellStyle = CurrencyCS;
                     }
+
                     Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
                     Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["Weight"]));
                     Cell1.CellStyle = WeightCS;
@@ -12797,6 +13990,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                         //Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["PaymentRate"]));
                         //Cell1.CellStyle = CurrencyCS;
                     }
+
                     Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
                     Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["Weight"]));
                     Cell1.CellStyle = WeightCS;
@@ -12840,6 +14034,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                     Cell1.CellStyle = SummaryWeightCS;
                 }
             }
+
             pos++;
 
             //if (Rate != 1)
@@ -12898,7 +14093,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                 Cell1.SetCellValue("Итого, " + Currency + ":");
                 Cell1.CellStyle = SummaryWithBorderBelCS;
                 Cell1 = sheet1.CreateRow(pos++).CreateCell(1);
-                Cell1.SetCellValue(Convert.ToDouble((TotalCost)));
+                Cell1.SetCellValue(Convert.ToDouble(TotalCost));
                 Cell1.CellStyle = SummaryWithBorderBelCS;
             }
             else
@@ -12907,7 +14102,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                 Cell1.SetCellValue("Итого, " + Currency + ":");
                 Cell1.CellStyle = SummaryWithBorderForeignCS;
                 Cell1 = sheet1.CreateRow(pos++).CreateCell(1);
-                Cell1.SetCellValue(Convert.ToDouble((TotalCost)));
+                Cell1.SetCellValue(Convert.ToDouble(TotalCost));
                 Cell1.CellStyle = SummaryWithBorderForeignCS;
             }
 
@@ -12916,7 +14111,8 @@ namespace Infinium.Modules.Marketing.NewOrders
 
         public void CreateReport(
             ref HSSFWorkbook hssfworkbook,
-            ref HSSFSheet sheet1, int[] MegaOrders, int[] OrderNumbers, int[] MainOrdersIDs, int ClientID, string ClientName,
+            ref HSSFSheet sheet1, int[] MegaOrders, int[] OrderNumbers, int[] MainOrdersIDs, int ClientID,
+            string ClientName,
             decimal ComplaintProfilCost, decimal ComplaintTPSCost, decimal TransportCost, decimal AdditionalCost,
             decimal TotalCost, int CurrencyTypeID, decimal TotalWeight, int pos)
         {
@@ -12938,6 +14134,7 @@ namespace Infinium.Modules.Marketing.NewOrders
             {
                 VAT = 1.0m;
             }
+
             DataTable InfoDT = GetMegaOrdersTable(MegaOrders);
             TransportCost = TransportCost / VAT;
             AdditionalCost = AdditionalCost / VAT;
@@ -12978,6 +14175,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                     TPSReportTable.ImportRow(DecorReport.TPSReportDataTable.Rows[i]);
                 }
             }
+
             //F(@"D:\temp", "temp", TPSReportTable);
             CollectGridsAndGlass();
             ConvertToCurrency(CurrencyTypeID, false);
@@ -13004,11 +14202,12 @@ namespace Infinium.Modules.Marketing.NewOrders
                 WeightTPS += Convert.ToDecimal(TPSReportTable.Rows[i]["Weight"]);
             }
 
-            TotalCost = (TotalProfil + TotalTPS);
+            TotalCost = TotalProfil + TotalTPS;
 
             //Assign COST
-            AssignCost(ComplaintProfilCost, ComplaintTPSCost, TransportCost, AdditionalCost, WeightProfil, WeightTPS, TotalWeight, TotalProfil, TotalTPS, ref TransportAndOtherProfil,
-                       ref TransportAndOtherTPS);
+            AssignCost(ComplaintProfilCost, ComplaintTPSCost, TransportCost, AdditionalCost, WeightProfil, WeightTPS,
+                TotalWeight, TotalProfil, TotalTPS, ref TransportAndOtherProfil,
+                ref TransportAndOtherTPS);
 
             decimal dd = 0;
             if (TotalWeight != 0)
@@ -13316,6 +14515,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                         //Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["PaymentRate"]));
                         //Cell1.CellStyle = CurrencyCS;
                     }
+
                     Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
                     Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["Weight"]));
                     Cell1.CellStyle = WeightCS;
@@ -13493,6 +14693,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                         //Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["PaymentRate"]));
                         //Cell1.CellStyle = CurrencyCS;
                     }
+
                     Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
                     Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["Weight"]));
                     Cell1.CellStyle = WeightCS;
@@ -13536,6 +14737,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                     Cell1.CellStyle = SummaryWeightCS;
                 }
             }
+
             pos++;
 
             //if (Rate != 1)
@@ -13594,7 +14796,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                 Cell1.SetCellValue("Итого, " + Currency + ":");
                 Cell1.CellStyle = SummaryWithBorderBelCS;
                 Cell1 = sheet1.CreateRow(pos++).CreateCell(1);
-                Cell1.SetCellValue(Convert.ToDouble((TotalCost)));
+                Cell1.SetCellValue(Convert.ToDouble(TotalCost));
                 Cell1.CellStyle = SummaryWithBorderBelCS;
             }
             else
@@ -13603,7 +14805,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                 Cell1.SetCellValue("Итого, " + Currency + ":");
                 Cell1.CellStyle = SummaryWithBorderForeignCS;
                 Cell1 = sheet1.CreateRow(pos++).CreateCell(1);
-                Cell1.SetCellValue(Convert.ToDouble((TotalCost)));
+                Cell1.SetCellValue(Convert.ToDouble(TotalCost));
                 Cell1.CellStyle = SummaryWithBorderForeignCS;
             }
 
@@ -13640,6 +14842,8 @@ namespace Infinium.Modules.Marketing.NewOrders
 
         private readonly DataTable ClientsDataTable = null;
 
+        private DataTable moduleOnlineNamesConverterDt = null;
+        private DataTable _reportDataTable = null;
         private DataTable FrontsResultDataTable = null;
         private DataTable[] DecorResultDataTable = null;
 
@@ -13678,6 +14882,7 @@ namespace Infinium.Modules.Marketing.NewOrders
             {
                 DA.Fill(FrontsDataTable);
             }
+
             GetColorsDT();
             GetInsetColorsDT();
             SelectCommand = @"SELECT * FROM Patina";
@@ -13685,25 +14890,31 @@ namespace Infinium.Modules.Marketing.NewOrders
             {
                 DA.Fill(PatinaDataTable);
             }
+
             PatinaRALDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT PatinaRAL.*, Patina.Patina FROM PatinaRAL INNER JOIN Patina ON Patina.PatinaID=PatinaRAL.PatinaID WHERE PatinaRAL.Enabled=1",
-                ConnectionStrings.CatalogConnectionString))
+            using (SqlDataAdapter DA = new SqlDataAdapter(
+                       "SELECT PatinaRAL.*, Patina.Patina FROM PatinaRAL INNER JOIN Patina ON Patina.PatinaID=PatinaRAL.PatinaID WHERE PatinaRAL.Enabled=1",
+                       ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(PatinaRALDataTable);
             }
+
             foreach (DataRow item in PatinaRALDataTable.Rows)
             {
                 DataRow NewRow = PatinaDataTable.NewRow();
                 NewRow["PatinaID"] = item["PatinaRALID"];
-                NewRow["PatinaName"] = item["PatinaRAL"]; NewRow["Patina"] = item["Patina"];
+                NewRow["PatinaName"] = item["PatinaRAL"];
+                NewRow["Patina"] = item["Patina"];
                 NewRow["DisplayName"] = item["DisplayName"];
                 PatinaDataTable.Rows.Add(NewRow);
             }
+
             SelectCommand = @"SELECT * FROM InsetTypes";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(InsetTypesDataTable);
             }
+
             //SelectCommand = @"SELECT * FROM InsetColors";
             //using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             //{
@@ -13714,13 +14925,21 @@ namespace Infinium.Modules.Marketing.NewOrders
 
             ClientsDataTable = new DataTable();
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Clients",
-                ConnectionStrings.MarketingReferenceConnectionString))
+                       ConnectionStrings.MarketingReferenceConnectionString))
             {
                 DA.Fill(ClientsDataTable);
             }
+
             CreateFrontsDataTable();
             CreateDecorDataTable();
 
+            moduleOnlineNamesConverterDt = new DataTable();
+            var selectCommand = "SELECT * from moduleOnlineNamesConverter";
+            using (var da = new SqlDataAdapter(selectCommand,
+                       ConnectionStrings.CatalogConnectionString))
+            {
+                da.Fill(moduleOnlineNamesConverterDt);
+            }
             //ReadReportFilePath("MarketingClientReportPath.config");
 
             //if (!(Directory.Exists(ReportFilePath)))
@@ -13756,6 +14975,20 @@ namespace Infinium.Modules.Marketing.NewOrders
 
         private void Create()
         {
+            _reportDataTable = new DataTable();
+            _reportDataTable.Columns.Add("number", typeof(int));
+            _reportDataTable.Columns.Add("name", typeof(string));
+            _reportDataTable.Columns.Add("measure", typeof(string));
+            _reportDataTable.Columns.Add("count", typeof(int));
+            _reportDataTable.Columns.Add("price", typeof(decimal));
+            _reportDataTable.Columns.Add("cost", typeof(decimal));
+            _reportDataTable.Columns.Add("vat", typeof(decimal));
+            _reportDataTable.Columns.Add("costVat", typeof(decimal));
+            _reportDataTable.Columns.Add("costWithVat", typeof(decimal));
+            _reportDataTable.Columns.Add("packCount", typeof(int));
+            _reportDataTable.Columns.Add("weight", typeof(decimal));
+            _reportDataTable.Columns.Add("accountingName", typeof(string));
+
             FrontsOrdersDataTable = new DataTable();
 
             FrontsDataTable = new DataTable();
@@ -13810,8 +15043,10 @@ namespace Infinium.Modules.Marketing.NewOrders
         private void GetInsetColorsDT()
         {
             InsetColorsDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT InsetColors.InsetColorID, InsetColors.GroupID, infiniu2_catalog.dbo.TechStore.TechStoreName AS InsetColorName FROM InsetColors" +
-                " INNER JOIN infiniu2_catalog.dbo.TechStore ON InsetColors.InsetColorID = infiniu2_catalog.dbo.TechStore.TechStoreID ORDER BY TechStoreName", ConnectionStrings.CatalogConnectionString))
+            using (SqlDataAdapter DA = new SqlDataAdapter(
+                       "SELECT InsetColors.InsetColorID, InsetColors.GroupID, infiniu2_catalog.dbo.TechStore.TechStoreName AS InsetColorName FROM InsetColors" +
+                       " INNER JOIN infiniu2_catalog.dbo.TechStore ON InsetColors.InsetColorID = infiniu2_catalog.dbo.TechStore.TechStoreID ORDER BY TechStoreName",
+                       ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(InsetColorsDataTable);
                 {
@@ -13837,22 +15072,22 @@ namespace Infinium.Modules.Marketing.NewOrders
         {
             FrontsResultDataTable = new DataTable();
 
-            FrontsResultDataTable.Columns.Add(new DataColumn(("FrontName"), System.Type.GetType("System.String")));
-            FrontsResultDataTable.Columns.Add(new DataColumn(("FrameColor1"), System.Type.GetType("System.String")));
-            FrontsResultDataTable.Columns.Add(new DataColumn(("FrameColor2"), System.Type.GetType("System.String")));
-            FrontsResultDataTable.Columns.Add(new DataColumn(("InsetType1"), System.Type.GetType("System.String")));
-            FrontsResultDataTable.Columns.Add(new DataColumn(("InsetColor1"), System.Type.GetType("System.String")));
-            FrontsResultDataTable.Columns.Add(new DataColumn(("InsetType2"), System.Type.GetType("System.String")));
-            FrontsResultDataTable.Columns.Add(new DataColumn(("InsetColor2"), System.Type.GetType("System.String")));
-            FrontsResultDataTable.Columns.Add(new DataColumn(("Patina"), System.Type.GetType("System.String")));
-            FrontsResultDataTable.Columns.Add(new DataColumn(("Height"), System.Type.GetType("System.Int32")));
-            FrontsResultDataTable.Columns.Add(new DataColumn(("Width"), System.Type.GetType("System.Int32")));
-            FrontsResultDataTable.Columns.Add(new DataColumn(("Count"), System.Type.GetType("System.Int32")));
-            FrontsResultDataTable.Columns.Add(new DataColumn(("Weight"), System.Type.GetType("System.Decimal")));
-            FrontsResultDataTable.Columns.Add(new DataColumn(("FrontPrice"), System.Type.GetType("System.Decimal")));
-            FrontsResultDataTable.Columns.Add(new DataColumn(("InsetPrice"), System.Type.GetType("System.Decimal")));
-            FrontsResultDataTable.Columns.Add(new DataColumn(("Cost"), System.Type.GetType("System.Decimal")));
-            FrontsResultDataTable.Columns.Add(new DataColumn(("Rate"), System.Type.GetType("System.Decimal")));
+            FrontsResultDataTable.Columns.Add(new DataColumn("FrontName", System.Type.GetType("System.String")));
+            FrontsResultDataTable.Columns.Add(new DataColumn("FrameColor1", System.Type.GetType("System.String")));
+            FrontsResultDataTable.Columns.Add(new DataColumn("FrameColor2", System.Type.GetType("System.String")));
+            FrontsResultDataTable.Columns.Add(new DataColumn("InsetType1", System.Type.GetType("System.String")));
+            FrontsResultDataTable.Columns.Add(new DataColumn("InsetColor1", System.Type.GetType("System.String")));
+            FrontsResultDataTable.Columns.Add(new DataColumn("InsetType2", System.Type.GetType("System.String")));
+            FrontsResultDataTable.Columns.Add(new DataColumn("InsetColor2", System.Type.GetType("System.String")));
+            FrontsResultDataTable.Columns.Add(new DataColumn("Patina", System.Type.GetType("System.String")));
+            FrontsResultDataTable.Columns.Add(new DataColumn("Height", System.Type.GetType("System.Int32")));
+            FrontsResultDataTable.Columns.Add(new DataColumn("Width", System.Type.GetType("System.Int32")));
+            FrontsResultDataTable.Columns.Add(new DataColumn("Count", System.Type.GetType("System.Int32")));
+            FrontsResultDataTable.Columns.Add(new DataColumn("Weight", System.Type.GetType("System.Decimal")));
+            FrontsResultDataTable.Columns.Add(new DataColumn("FrontPrice", System.Type.GetType("System.Decimal")));
+            FrontsResultDataTable.Columns.Add(new DataColumn("InsetPrice", System.Type.GetType("System.Decimal")));
+            FrontsResultDataTable.Columns.Add(new DataColumn("Cost", System.Type.GetType("System.Decimal")));
+            FrontsResultDataTable.Columns.Add(new DataColumn("Rate", System.Type.GetType("System.Decimal")));
             FrontsResultDataTable.Columns.Add(new DataColumn("Notes", Type.GetType("System.String")));
         }
 
@@ -13862,19 +15097,21 @@ namespace Infinium.Modules.Marketing.NewOrders
             {
                 DecorResultDataTable[i] = new DataTable();
 
-                DecorResultDataTable[i].Columns.Add(new DataColumn(("Name"), Type.GetType("System.String")));
-                DecorResultDataTable[i].Columns.Add(new DataColumn(("Height"), Type.GetType("System.Int32")));
-                DecorResultDataTable[i].Columns.Add(new DataColumn(("Length"), Type.GetType("System.Int32")));
-                DecorResultDataTable[i].Columns.Add(new DataColumn(("Width"), Type.GetType("System.Int32")));
-                DecorResultDataTable[i].Columns.Add(new DataColumn(("Color"), Type.GetType("System.String")));
-                DecorResultDataTable[i].Columns.Add(new DataColumn(("Patina"), Type.GetType("System.String")));
+                DecorResultDataTable[i].Columns.Add(new DataColumn("Name", Type.GetType("System.String")));
+                DecorResultDataTable[i].Columns.Add(new DataColumn("Height", Type.GetType("System.Int32")));
+                DecorResultDataTable[i].Columns.Add(new DataColumn("Length", Type.GetType("System.Int32")));
+                DecorResultDataTable[i].Columns.Add(new DataColumn("Width", Type.GetType("System.Int32")));
+                DecorResultDataTable[i].Columns.Add(new DataColumn("Color", Type.GetType("System.String")));
+                DecorResultDataTable[i].Columns.Add(new DataColumn("Patina", Type.GetType("System.String")));
+                DecorResultDataTable[i].Columns.Add(new DataColumn("InsetType", Type.GetType("System.String")));
+                DecorResultDataTable[i].Columns.Add(new DataColumn("InsetColor", Type.GetType("System.String")));
 
-                DecorResultDataTable[i].Columns.Add(new DataColumn(("Count"), System.Type.GetType("System.Int32")));
-                DecorResultDataTable[i].Columns.Add(new DataColumn(("Weight"), System.Type.GetType("System.Decimal")));
-                DecorResultDataTable[i].Columns.Add(new DataColumn(("Price"), System.Type.GetType("System.Decimal")));
-                DecorResultDataTable[i].Columns.Add(new DataColumn(("Cost"), System.Type.GetType("System.Decimal")));
-                DecorResultDataTable[i].Columns.Add(new DataColumn(("Rate"), System.Type.GetType("System.Decimal")));
-                DecorResultDataTable[i].Columns.Add(new DataColumn(("Notes"), Type.GetType("System.String")));
+                DecorResultDataTable[i].Columns.Add(new DataColumn("Count", System.Type.GetType("System.Int32")));
+                DecorResultDataTable[i].Columns.Add(new DataColumn("Weight", System.Type.GetType("System.Decimal")));
+                DecorResultDataTable[i].Columns.Add(new DataColumn("Price", System.Type.GetType("System.Decimal")));
+                DecorResultDataTable[i].Columns.Add(new DataColumn("Cost", System.Type.GetType("System.Decimal")));
+                DecorResultDataTable[i].Columns.Add(new DataColumn("Rate", System.Type.GetType("System.Decimal")));
+                DecorResultDataTable[i].Columns.Add(new DataColumn("Notes", Type.GetType("System.String")));
             }
         }
 
@@ -13884,13 +15121,15 @@ namespace Infinium.Modules.Marketing.NewOrders
             using (DataTable DT = new DataTable())
             {
                 using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM MainOrders WHERE MainOrderID=" +
-                    MainOrderID, ConnectionStrings.MarketingOrdersConnectionString))
+                                                              MainOrderID,
+                           ConnectionStrings.MarketingOrdersConnectionString))
                 {
                     DA.Fill(DT);
                     if (DT.Rows.Count > 0)
                         Notes = DT.Rows[0]["Notes"].ToString();
                 }
             }
+
             return Notes;
         }
 
@@ -13900,13 +15139,16 @@ namespace Infinium.Modules.Marketing.NewOrders
             using (DataTable DT = new DataTable())
             {
                 using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM MegaOrders WHERE MegaOrderID=" +
-                    "(SELECT MegaOrderID FROM MainOrders WHERE MainOrderID=" + MainOrderID + ")", ConnectionStrings.MarketingOrdersConnectionString))
+                                                              "(SELECT MegaOrderID FROM MainOrders WHERE MainOrderID=" +
+                                                              MainOrderID + ")",
+                           ConnectionStrings.MarketingOrdersConnectionString))
                 {
                     DA.Fill(DT);
                     if (DT.Rows.Count > 0)
                         OrderNumber = Convert.ToInt32(DT.Rows[0]["OrderNumber"]);
                 }
             }
+
             return OrderNumber;
         }
 
@@ -13916,7 +15158,9 @@ namespace Infinium.Modules.Marketing.NewOrders
             using (DataTable DT = new DataTable())
             {
                 using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM NewMegaOrders WHERE MegaOrderID=" +
-                    "(SELECT MegaOrderID FROM NewMainOrders WHERE MainOrderID=" + MainOrderID + ")", ConnectionStrings.MarketingOrdersConnectionString))
+                                                              "(SELECT MegaOrderID FROM NewMainOrders WHERE MainOrderID=" +
+                                                              MainOrderID + ")",
+                           ConnectionStrings.MarketingOrdersConnectionString))
                 {
                     DA.Fill(DT);
 
@@ -13931,6 +15175,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                     }
                 }
             }
+
             return ClientID;
         }
 
@@ -13960,10 +15205,63 @@ namespace Infinium.Modules.Marketing.NewOrders
         {
             return FrontID == 15003;
         }
+
         public bool IsImpost(int TechnoProfileID)
         {
             return TechnoProfileID == -1;
         }
+
+        public Tuple<string, bool, bool, bool, bool> GetConvertName(int itemId)
+        {
+            string itemName = string.Empty;
+            bool name = false;
+            bool proportions = false;
+            bool dimenstionsMM = false;
+            bool color = false;
+
+            DataRow[] Rows = moduleOnlineNamesConverterDt.Select("itemId = " + itemId);
+            if (Rows.Any())
+            {
+                itemName = Rows[0]["itemName"].ToString();
+                name = Convert.ToBoolean(Rows[0]["name"]);
+                proportions = Convert.ToBoolean(Rows[0]["proportions"]);
+                color = Convert.ToBoolean(Rows[0]["color"]);
+                dimenstionsMM = Convert.ToBoolean(Rows[0]["dimenstionsMM"]);
+            }
+
+            return new Tuple<string, bool, bool, bool, bool>(itemName, name, dimenstionsMM, proportions, color);
+        }
+
+        public string GetShortFrontName(int FrontID)
+        {
+            var FrontName = "";
+            var shortName = "";
+            DataRow[] Rows = FrontsDataTable.Select("FrontID = " + FrontID);
+            if (Rows.Any())
+            {
+                FrontName = Rows[0]["FrontName"].ToString();
+
+                string first2Symbols = FrontName.Substring(0, 2);
+                string first3Symbols = FrontName.Substring(0, 3);
+                string first4Symbols = FrontName.Substring(0, 4);
+
+                if (first2Symbols == "П-" || first3Symbols == "ЭП-" || first4Symbols == "ЭПШ-")
+                {
+                    var index = FrontName.LastIndexOf(" ");
+                    if (index != -1)
+                        shortName = FrontName.Substring(index + 1, FrontName.Length - index - 1);
+                }
+                else
+                {
+                    var index = FrontName.IndexOf(" ");
+                    if (index != -1)
+                        shortName = FrontName.Substring(0, index);
+                }
+            }
+
+            return shortName;
+        }
+
         public string GetFrontName(int FrontID)
         {
             string FrontName = "";
@@ -13976,6 +15274,7 @@ namespace Infinium.Modules.Marketing.NewOrders
             {
                 return "";
             }
+
             return FrontName;
         }
 
@@ -13991,8 +15290,41 @@ namespace Infinium.Modules.Marketing.NewOrders
             {
                 return "";
             }
+
             return FrontName;
         }
+
+        public string GetShortColorName(int ColorID)
+        {
+            var name = "";
+            var shortName = "";
+            DataRow[] Rows = FrameColorsDataTable.Select("ColorID = " + ColorID);
+            if (Rows.Any())
+            {
+                name = Rows[0]["ColorName"].ToString();
+
+                string first2Symbols = name.Substring(0, 2);
+                string first3Symbols = name.Substring(0, 3);
+
+                if (first2Symbols == "ПП" || first3Symbols == "ПВХ")
+                {
+                    var index = name.LastIndexOf(" ");
+                    if (index != -1)
+                        shortName = name.Substring(index + 1, name.Length - index - 1);
+                }
+                else
+                {
+                    var index = name.IndexOf(" ");
+                    if (index != -1)
+                        shortName = name.Substring(0, index);
+                    else
+                        shortName = name;
+                }
+            }
+
+            return shortName;
+        }
+
         public string GetColorName(int ColorID)
         {
             string ColorName = string.Empty;
@@ -14005,6 +15337,7 @@ namespace Infinium.Modules.Marketing.NewOrders
             {
                 return string.Empty;
             }
+
             return ColorName;
         }
 
@@ -14020,6 +15353,7 @@ namespace Infinium.Modules.Marketing.NewOrders
             {
                 return string.Empty;
             }
+
             return PatinaName;
         }
 
@@ -14035,6 +15369,7 @@ namespace Infinium.Modules.Marketing.NewOrders
             {
                 return string.Empty;
             }
+
             return InsetType;
         }
 
@@ -14050,6 +15385,7 @@ namespace Infinium.Modules.Marketing.NewOrders
             {
                 return string.Empty;
             }
+
             return ColorName;
         }
 
@@ -14076,6 +15412,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                             InsetType = InsetType + "/" + Front2;
                     }
                 }
+
                 string InsetType2 = string.Empty;
                 string InsetColor1 = GetInsetColorName(Convert.ToInt32(Row["InsetColorID"]));
                 string InsetColor2 = string.Empty;
@@ -14100,8 +15437,10 @@ namespace Infinium.Modules.Marketing.NewOrders
                 NewRow["Height"] = Row["Height"];
                 NewRow["Width"] = Row["Width"];
                 NewRow["Count"] = Convert.ToInt32(Row["Count"]);
-                NewRow["FrontPrice"] = decimal.Round(Convert.ToDecimal(Row["FrontPrice"]), 2, MidpointRounding.AwayFromZero);
-                NewRow["InsetPrice"] = decimal.Round(Convert.ToDecimal(Row["InsetPrice"]), 2, MidpointRounding.AwayFromZero);
+                NewRow["FrontPrice"] =
+                    decimal.Round(Convert.ToDecimal(Row["FrontPrice"]), 2, MidpointRounding.AwayFromZero);
+                NewRow["InsetPrice"] =
+                    decimal.Round(Convert.ToDecimal(Row["InsetPrice"]), 2, MidpointRounding.AwayFromZero);
                 NewRow["Cost"] = decimal.Round(Convert.ToDecimal(Row["Cost"]), 2, MidpointRounding.AwayFromZero);
                 NewRow["Rate"] = Row["PaymentRate"];
                 NewRow["Notes"] = Row["Notes"];
@@ -14116,7 +15455,9 @@ namespace Infinium.Modules.Marketing.NewOrders
                 DecorResultDataTable[i].Clear();
                 DecorResultDataTable[i].AcceptChanges();
 
-                DataRow[] Rows = DecorOrdersDataTable.Select("ProductID = " + DecorCatalogOrder.DecorProductsDataTable.Rows[i]["ProductID"]);
+                DataRow[] Rows =
+                    DecorOrdersDataTable.Select("ProductID = " +
+                                                DecorCatalogOrder.DecorProductsDataTable.Rows[i]["ProductID"]);
 
                 if (Rows.Count() == 0)
                     continue;
@@ -14126,7 +15467,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                     DataRow NewRow2 = DecorResultDataTable[i].NewRow();
 
                     NewRow2["Name"] = DecorCatalogOrder.DecorProductsDataTable.Rows[i]["ProductName"].ToString() + " " +
-                                            DecorCatalogOrder.GetItemName(Convert.ToInt32(Row["DecorID"]));
+                                      DecorCatalogOrder.GetItemName(Convert.ToInt32(Row["DecorID"]));
 
                     //if (DecorCatalogOrder.HasParameter(Convert.ToInt32(DecorCatalogOrder.DecorProductsDataTable.Rows[i]["ProductID"]), "Height"))
                     //    NewRow2["Height"] = Convert.ToInt32(Row["Height"]);
@@ -14152,7 +15493,16 @@ namespace Infinium.Modules.Marketing.NewOrders
                     //if (DecorCatalogOrder.HasParameter(Convert.ToInt32(DecorCatalogOrder.DecorProductsDataTable.Rows[i]["ProductID"]), "Width") && Convert.ToInt32(Row["Width"]) != -1)
                     //    NewRow2["Width"] = Convert.ToInt32(Row["Width"]);
 
-                    if (DecorCatalogOrder.HasParameter(Convert.ToInt32(DecorCatalogOrder.DecorProductsDataTable.Rows[i]["ProductID"]), "ColorID"))
+                    var InsetType = string.Empty;
+                    var InsetColor = string.Empty;
+
+                    if (Convert.ToInt32(Row["InsetTypeID"]) != -1)
+                        InsetType = GetInsetTypeName(Convert.ToInt32(Row["InsetTypeID"]));
+                    if (Convert.ToInt32(Row["InsetColorID"]) != -1)
+                        InsetColor = GetInsetColorName(Convert.ToInt32(Row["InsetColorID"]));
+
+                    if (DecorCatalogOrder.HasParameter(
+                            Convert.ToInt32(DecorCatalogOrder.DecorProductsDataTable.Rows[i]["ProductID"]), "ColorID"))
                         NewRow2["Color"] = GetColorName(Convert.ToInt32(Row["ColorID"]));
 
                     NewRow2["Patina"] = GetPatinaName(Convert.ToInt32(Row["PatinaID"]));
@@ -14160,6 +15510,8 @@ namespace Infinium.Modules.Marketing.NewOrders
                     NewRow2["Count"] = Convert.ToInt32(Row["Count"]);
                     NewRow2["Price"] = decimal.Round(Convert.ToDecimal(Row["Price"]), 2, MidpointRounding.AwayFromZero);
                     NewRow2["Cost"] = decimal.Round(Convert.ToDecimal(Row["Cost"]), 2, MidpointRounding.AwayFromZero);
+                    NewRow2["InsetType"] = InsetType;
+                    NewRow2["InsetColor"] = InsetColor;
                     NewRow2["Rate"] = Row["PaymentRate"];
                     NewRow2["Notes"] = Row["Notes"];
                     NewRow2["Weight"] = Row["Weight"];
@@ -14174,13 +15526,17 @@ namespace Infinium.Modules.Marketing.NewOrders
 
             FrontsOrdersDataTable.Clear();
             FrontsOrdersDataTable.AcceptChanges();
-            string SelectCommand = "SELECT FrontsOrders.*, MegaOrders.PaymentRate FROM FrontsOrders INNER JOIN MainOrders ON FrontsOrders.MainOrderID = MainOrders.MainOrderID AND FrontsOrders.MainOrderID=" + MainOrderID +
+            string SelectCommand =
+                "SELECT FrontsOrders.*, MegaOrders.PaymentRate FROM FrontsOrders INNER JOIN MainOrders ON FrontsOrders.MainOrderID = MainOrders.MainOrderID AND FrontsOrders.MainOrderID=" +
+                MainOrderID +
                 " INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID WHERE FrontsOrders.IsSample=1 ";
             if (!IsSample)
-                SelectCommand = "SELECT FrontsOrders.*, MegaOrders.PaymentRate FROM FrontsOrders INNER JOIN MainOrders ON FrontsOrders.MainOrderID = MainOrders.MainOrderID AND FrontsOrders.MainOrderID=" + MainOrderID +
-                " INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID WHERE FrontsOrders.IsSample=0 ";
+                SelectCommand =
+                    "SELECT FrontsOrders.*, MegaOrders.PaymentRate FROM FrontsOrders INNER JOIN MainOrders ON FrontsOrders.MainOrderID = MainOrders.MainOrderID AND FrontsOrders.MainOrderID=" +
+                    MainOrderID +
+                    " INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID WHERE FrontsOrders.IsSample=0 ";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand,
-                ConnectionStrings.MarketingOrdersConnectionString))
+                       ConnectionStrings.MarketingOrdersConnectionString))
             {
                 if (DA.Fill(FrontsOrdersDataTable) > 0)
                     IsNotEmpty = true;
@@ -14188,13 +15544,17 @@ namespace Infinium.Modules.Marketing.NewOrders
 
             DecorOrdersDataTable.Clear();
             DecorOrdersDataTable.AcceptChanges();
-            SelectCommand = "SELECT DecorOrders.*, MegaOrders.PaymentRate FROM DecorOrders INNER JOIN MainOrders ON DecorOrders.MainOrderID = MainOrders.MainOrderID AND DecorOrders.MainOrderID=" + MainOrderID +
+            SelectCommand =
+                "SELECT DecorOrders.*, MegaOrders.PaymentRate FROM DecorOrders INNER JOIN MainOrders ON DecorOrders.MainOrderID = MainOrders.MainOrderID AND DecorOrders.MainOrderID=" +
+                MainOrderID +
                 " INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID WHERE DecorOrders.IsSample=1 ";
             if (!IsSample)
-                SelectCommand = "SELECT DecorOrders.*, MegaOrders.PaymentRate FROM DecorOrders INNER JOIN MainOrders ON DecorOrders.MainOrderID = MainOrders.MainOrderID AND DecorOrders.MainOrderID=" + MainOrderID +
-                " INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID WHERE DecorOrders.IsSample=0 ";
+                SelectCommand =
+                    "SELECT DecorOrders.*, MegaOrders.PaymentRate FROM DecorOrders INNER JOIN MainOrders ON DecorOrders.MainOrderID = MainOrders.MainOrderID AND DecorOrders.MainOrderID=" +
+                    MainOrderID +
+                    " INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID WHERE DecorOrders.IsSample=0 ";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand,
-                ConnectionStrings.MarketingOrdersConnectionString))
+                       ConnectionStrings.MarketingOrdersConnectionString))
             {
                 if (DA.Fill(DecorOrdersDataTable) > 0)
                     IsNotEmpty = true;
@@ -14209,10 +15569,12 @@ namespace Infinium.Modules.Marketing.NewOrders
 
             FrontsOrdersDataTable.Clear();
             FrontsOrdersDataTable.AcceptChanges();
-            string SelectCommand = "SELECT FrontsOrders.*, MegaOrders.PaymentRate FROM FrontsOrders INNER JOIN MainOrders ON FrontsOrders.MainOrderID = MainOrders.MainOrderID AND FrontsOrders.MainOrderID=" + MainOrderID +
+            string SelectCommand =
+                "SELECT FrontsOrders.*, MegaOrders.PaymentRate FROM FrontsOrders INNER JOIN MainOrders ON FrontsOrders.MainOrderID = MainOrders.MainOrderID AND FrontsOrders.MainOrderID=" +
+                MainOrderID +
                 " INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand,
-                ConnectionStrings.MarketingOrdersConnectionString))
+                       ConnectionStrings.MarketingOrdersConnectionString))
             {
                 if (DA.Fill(FrontsOrdersDataTable) > 0)
                     IsNotEmpty = true;
@@ -14220,10 +15582,12 @@ namespace Infinium.Modules.Marketing.NewOrders
 
             DecorOrdersDataTable.Clear();
             DecorOrdersDataTable.AcceptChanges();
-            SelectCommand = "SELECT DecorOrders.*, MegaOrders.PaymentRate FROM DecorOrders INNER JOIN MainOrders ON DecorOrders.MainOrderID = MainOrders.MainOrderID AND DecorOrders.MainOrderID=" + MainOrderID +
+            SelectCommand =
+                "SELECT DecorOrders.*, MegaOrders.PaymentRate FROM DecorOrders INNER JOIN MainOrders ON DecorOrders.MainOrderID = MainOrders.MainOrderID AND DecorOrders.MainOrderID=" +
+                MainOrderID +
                 " INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand,
-                ConnectionStrings.MarketingOrdersConnectionString))
+                       ConnectionStrings.MarketingOrdersConnectionString))
             {
                 if (DA.Fill(DecorOrdersDataTable) > 0)
                     IsNotEmpty = true;
@@ -14254,13 +15618,15 @@ namespace Infinium.Modules.Marketing.NewOrders
             using (DataTable DT = new DataTable())
             {
                 using (SqlDataAdapter DA = new SqlDataAdapter("SELECT MegaOrderID FROM NewMainOrders" +
-                    " WHERE MainOrderID=" + MainOrderID, ConnectionStrings.MarketingOrdersConnectionString))
+                                                              " WHERE MainOrderID=" + MainOrderID,
+                           ConnectionStrings.MarketingOrdersConnectionString))
                 {
                     DA.Fill(DT);
                     if (DT.Rows.Count > 0)
                         MegaOrderID = Convert.ToInt32(DT.Rows[0]["MegaOrderID"]);
                 }
             }
+
             return MegaOrderID;
         }
 
@@ -14269,7 +15635,8 @@ namespace Infinium.Modules.Marketing.NewOrders
             bool IsComplaint = false;
 
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT IsComplaint" +
-                " FROM NewMegaOrders WHERE MegaOrderID = " + MegaOrderID, ConnectionStrings.MarketingOrdersConnectionString))
+                                                          " FROM NewMegaOrders WHERE MegaOrderID = " + MegaOrderID,
+                       ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
                 {
@@ -14286,6 +15653,263 @@ namespace Infinium.Modules.Marketing.NewOrders
             }
 
             return IsComplaint;
+        }
+
+        public void ModuleOnline(int[] mainOrderIDs)
+        {
+            _reportDataTable.Clear();
+            DataTable tempDt = _reportDataTable.Clone();
+
+            int number = 1;
+
+            var selectCommand =
+                "SELECT FrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, MegaOrders.PaymentRate FROM FrontsOrders" +
+                " INNER JOIN infiniu2_catalog.dbo.FrontsConfig ON FrontsOrders.FrontConfigID = infiniu2_catalog.dbo.FrontsConfig.FrontConfigID" +
+                " INNER JOIN MainOrders ON FrontsOrders.MainOrderID = MainOrders.MainOrderID" +
+                " INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID" +
+                " WHERE  InvNumber IS NOT NULL AND FrontsOrders.MainOrderID IN (" + string.Join(",", mainOrderIDs) +
+                ") ORDER BY frontId, ColorId, height, width";
+            using (var da = new SqlDataAdapter(selectCommand,
+                       ConnectionStrings.MarketingOrdersConnectionString))
+            {
+                using (var dt = new DataTable())
+                {
+                    if (da.Fill(dt) > 0)
+                    {
+                        for (var i = 0; i < dt.Rows.Count; i++)
+                        {
+                            var accountingName = string.Empty;
+                            var notes = string.Empty;
+                            const string measure = "шт";
+                            var count = 1;
+                            decimal price = 1;
+                            decimal cost = 1;
+                            decimal weight = 1;
+                            const decimal vat = 0.2m;
+                            decimal costVat = 1;
+                            decimal costWithVat = 1;
+
+                            if (dt.Rows[i]["accountingName"] != DBNull.Value)
+                                accountingName = dt.Rows[i]["accountingName"].ToString();
+                            if (dt.Rows[i]["notes"] != DBNull.Value)
+                                notes = dt.Rows[i]["notes"].ToString();
+                            if (dt.Rows[i]["count"] != DBNull.Value)
+                                count = Convert.ToInt32(dt.Rows[i]["count"]);
+                            if (dt.Rows[i]["CurrencyCost"] != DBNull.Value)
+                                cost = Convert.ToDecimal(dt.Rows[i]["CurrencyCost"]);
+                            if (dt.Rows[i]["weight"] != DBNull.Value)
+                                weight = Convert.ToDecimal(dt.Rows[i]["weight"]);
+                            if (count != 0)
+                                price = cost / count;
+                            costVat = cost * vat;
+                            costWithVat = cost + costVat;
+
+                            price = decimal.Round(price, 2, MidpointRounding.AwayFromZero);
+                            cost = decimal.Round(cost, 2, MidpointRounding.AwayFromZero);
+                            costVat = decimal.Round(costVat, 2, MidpointRounding.AwayFromZero);
+                            costWithVat = decimal.Round(costWithVat, 2, MidpointRounding.AwayFromZero);
+
+                            string name =
+                                $"Панель фасадная {Convert.ToInt32(dt.Rows[i]["height"])}x{Convert.ToInt32(dt.Rows[i]["width"])}";
+
+                            StringBuilder sb = new StringBuilder(name);
+
+                            if (Convert.ToInt32(dt.Rows[i]["insetTypeId"]) == 1 ||
+                                Convert.ToInt32(dt.Rows[i]["insetTypeId"]) == 2)
+                                sb.Append(" ВТ");
+                            sb.Append(
+                                $@", {GetShortFrontName(Convert.ToInt32(dt.Rows[i]["frontId"])).ToUpper()} {GetShortColorName(Convert.ToInt32(dt.Rows[i]["colorId"])).ToUpper()}");
+                            if (notes.Contains("б/р"))
+                                sb.Append(" БР");
+
+                            name = sb.ToString();
+
+                            var newRow = tempDt.NewRow();
+                            newRow["name"] = name;
+                            newRow["measure"] = measure;
+                            newRow["count"] = count;
+                            newRow["price"] = price;
+                            newRow["cost"] = cost;
+                            newRow["vat"] = vat;
+                            newRow["costVat"] = costVat;
+                            newRow["costWithVat"] = costWithVat;
+                            newRow["packCount"] = count;
+                            newRow["weight"] = weight;
+                            newRow["accountingName"] = accountingName;
+                            tempDt.Rows.Add(newRow);
+                        }
+                        using (var dv = new DataView(tempDt))
+                        {
+                            dv.Sort = "name";
+                            var dt1 = dv.ToTable(true, "name");
+
+                            foreach (DataRow row in dt1.Rows)
+                            {
+                                var name = row["name"].ToString();
+
+                                var dataRows1 = tempDt.Select($"name='{name}'");
+
+                                foreach (var r in dataRows1)
+                                {
+                                    var dataRows2 = _reportDataTable.Select($"name='{name}'");
+
+                                    if (!dataRows2.Any())
+                                    {
+                                        var newRow = _reportDataTable.NewRow();
+                                        newRow.ItemArray = r.ItemArray;
+                                        newRow["number"] = number++;
+                                        _reportDataTable.Rows.Add(newRow);
+                                    }
+                                    else
+                                    {
+                                        dataRows2[0]["count"] = Convert.ToInt32(dataRows2[0]["count"]) + Convert.ToInt32(r["count"]);
+                                        dataRows2[0]["cost"] = Convert.ToDecimal(dataRows2[0]["cost"]) + Convert.ToDecimal(r["cost"]);
+                                        dataRows2[0]["costVat"] = Convert.ToDecimal(dataRows2[0]["costVat"]) + Convert.ToDecimal(r["costVat"]);
+                                        dataRows2[0]["costWithVat"] = Convert.ToDecimal(dataRows2[0]["costWithVat"]) + Convert.ToDecimal(r["costWithVat"]);
+                                        dataRows2[0]["packCount"] = Convert.ToInt32(dataRows2[0]["packCount"]) + Convert.ToInt32(r["packCount"]);
+                                        dataRows2[0]["weight"] = Convert.ToDecimal(dataRows2[0]["weight"]) + Convert.ToDecimal(r["weight"]);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+
+            tempDt.Clear();
+
+            selectCommand = "SELECT DecorOrders.*, infiniu2_catalog.dbo.DecorConfig.AccountingName, infiniu2_catalog.dbo.DecorConfig.InvNumber, MegaOrders.PaymentRate FROM DecorOrders" +
+                            " INNER JOIN MainOrders ON DecorOrders.MainOrderID = MainOrders.MainOrderID" +
+                            " INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID" +
+                            " INNER JOIN infiniu2_catalog.dbo.DecorConfig ON DecorOrders.DecorConfigID = infiniu2_catalog.dbo.DecorConfig.DecorConfigID" +
+                            " WHERE InvNumber IS NOT NULL AND DecorOrders.MainOrderID IN (" + string.Join(",", mainOrderIDs) + ") ORDER BY MainOrderId";
+            using (var da = new SqlDataAdapter(selectCommand,
+                       ConnectionStrings.MarketingOrdersConnectionString))
+            {
+                using (var dt = new DataTable())
+                {
+                    if (da.Fill(dt) > 0)
+                    {
+                        for (var i = 0; i < dt.Rows.Count; i++)
+                        {
+                            var accountingName = string.Empty;
+                            const string measure = "шт";
+                            var height = -1;
+                            var length = -1;
+                            var width = -1;
+                            var count = 1;
+                            decimal price = 1;
+                            decimal cost = 1;
+                            decimal weight = 1;
+                            const decimal vat = 0.2m;
+                            decimal costVat = 1;
+                            decimal costWithVat = 1;
+
+                            var decorId = Convert.ToInt32(dt.Rows[i]["decorId"]);
+
+                            if (dt.Rows[i]["height"] != DBNull.Value)
+                                height = Convert.ToInt32(dt.Rows[i]["height"]);
+                            if (dt.Rows[i]["length"] != DBNull.Value)
+                                length = Convert.ToInt32(dt.Rows[i]["length"]);
+                            if (dt.Rows[i]["width"] != DBNull.Value)
+                                width = Convert.ToInt32(dt.Rows[i]["width"]);
+
+                            if (dt.Rows[i]["accountingName"] != DBNull.Value)
+                                accountingName = dt.Rows[i]["accountingName"].ToString();
+                            if (dt.Rows[i]["count"] != DBNull.Value)
+                                count = Convert.ToInt32(dt.Rows[i]["count"]);
+                            if (dt.Rows[i]["CurrencyCost"] != DBNull.Value)
+                                cost = Convert.ToDecimal(dt.Rows[i]["CurrencyCost"]);
+                            if (dt.Rows[i]["weight"] != DBNull.Value)
+                                weight = Convert.ToDecimal(dt.Rows[i]["weight"]);
+                            if (count != 0)
+                                price = cost / count;
+                            costVat = cost * vat;
+                            costWithVat = cost + costVat;
+
+                            price = decimal.Round(price, 2, MidpointRounding.AwayFromZero);
+                            cost = decimal.Round(cost, 2, MidpointRounding.AwayFromZero);
+                            costVat = decimal.Round(costVat, 2, MidpointRounding.AwayFromZero);
+                            costWithVat = decimal.Round(costWithVat, 2, MidpointRounding.AwayFromZero);
+
+                            var tuple = GetConvertName(decorId);
+
+                            var sb = new StringBuilder(tuple.Item1);
+
+                            if (tuple.Item2)
+                                sb.Append($" {GetFrontName(Convert.ToInt32(dt.Rows[i]["decorId"]))}");
+                            if (tuple.Item3)
+                            {
+                                sb.Append($" {length} мм");
+                            }
+
+                            if (tuple.Item4)
+                            {
+                                if (height != -1 && width != -1)
+                                    sb.Append($" {height}x{width}");
+                                if (length != -1 && width != -1)
+                                    sb.Append($" {length}x{width}");
+                                if (height != -1 && length != -1)
+                                    sb.Append($" {height}x{length}");
+                            }
+
+                            if (tuple.Item5)
+                                sb.Append($", {GetShortColorName(Convert.ToInt32(dt.Rows[i]["colorId"])).ToUpper()}");
+
+                            var name = sb.ToString();
+
+                            var newRow = tempDt.NewRow();
+                            newRow["name"] = name;
+                            newRow["measure"] = measure;
+                            newRow["count"] = count;
+                            newRow["price"] = price;
+                            newRow["cost"] = cost;
+                            newRow["vat"] = vat;
+                            newRow["costVat"] = costVat;
+                            newRow["costWithVat"] = costWithVat;
+                            newRow["packCount"] = count;
+                            newRow["weight"] = weight;
+                            newRow["accountingName"] = accountingName;
+                            tempDt.Rows.Add(newRow);
+                        }
+                        using (var dv = new DataView(tempDt))
+                        {
+                            dv.Sort = "name";
+                            var dt1 = dv.ToTable(true, "name");
+
+                            foreach (DataRow row in dt1.Rows)
+                            {
+                                var name = row["name"].ToString();
+
+                                var dataRows1 = tempDt.Select($"name='{name}'");
+
+                                foreach (var r in dataRows1)
+                                {
+                                    var dataRows2 = _reportDataTable.Select($"name='{name}'");
+
+                                    if (!dataRows2.Any())
+                                    {
+                                        var newRow = _reportDataTable.NewRow();
+                                        newRow.ItemArray = r.ItemArray;
+                                        newRow["number"] = number++;
+                                        _reportDataTable.Rows.Add(newRow);
+                                    }
+                                    else
+                                    {
+                                        dataRows2[0]["count"] = Convert.ToInt32(dataRows2[0]["count"]) + Convert.ToInt32(r["count"]);
+                                        dataRows2[0]["cost"] = Convert.ToDecimal(dataRows2[0]["cost"]) + Convert.ToDecimal(r["cost"]);
+                                        dataRows2[0]["costVat"] = Convert.ToDecimal(dataRows2[0]["costVat"]) + Convert.ToDecimal(r["costVat"]);
+                                        dataRows2[0]["costWithVat"] = Convert.ToDecimal(dataRows2[0]["costWithVat"]) + Convert.ToDecimal(r["costWithVat"]);
+                                        dataRows2[0]["packCount"] = Convert.ToInt32(dataRows2[0]["packCount"]) + Convert.ToInt32(r["packCount"]);
+                                        dataRows2[0]["weight"] = Convert.ToDecimal(dataRows2[0]["weight"]) + Convert.ToDecimal(r["weight"]);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         public string Report(int[] MegaOrders, int[] OrderNumbers, int[] MainOrdersIDs, int ClientID, string ClientName,
@@ -14422,7 +16046,7 @@ namespace Infinium.Modules.Marketing.NewOrders
 
             CurrencyTypesDataTable = new DataTable();
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM CurrencyTypes",
-                ConnectionStrings.CatalogConnectionString))
+                       ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(CurrencyTypesDataTable);
             }
@@ -14611,25 +16235,25 @@ namespace Infinium.Modules.Marketing.NewOrders
                         Cell1.SetCellValue("Цвет");
                         Cell1.CellStyle = SimpleHeaderCS;
                         Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
-                        Cell1.SetCellValue(string.Empty);
-                        Cell1.CellStyle = SimpleHeaderCS;
-                        Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
-                        Cell1.SetCellValue(string.Empty);
-                        Cell1.CellStyle = SimpleHeaderCS;
-                        Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
-                        Cell1.SetCellValue(string.Empty);
-                        Cell1.CellStyle = SimpleHeaderCS;
-                        Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
-                        Cell1.SetCellValue(string.Empty);
-                        Cell1.CellStyle = SimpleHeaderCS;
-                        Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
-                        Cell1.SetCellValue(string.Empty);
-                        Cell1.CellStyle = SimpleHeaderCS;
-
-
-                        Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
                         Cell1.SetCellValue("Патина");
                         Cell1.CellStyle = SimpleHeaderCS;
+                        Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
+                        Cell1.SetCellValue("Тип наполн.");
+                        Cell1.CellStyle = SimpleHeaderCS;
+                        Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
+                        Cell1.SetCellValue("Цвет наполн.");
+                        Cell1.CellStyle = SimpleHeaderCS;
+                        Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
+                        Cell1.SetCellValue(string.Empty);
+                        Cell1.CellStyle = SimpleHeaderCS;
+                        Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
+                        Cell1.SetCellValue(string.Empty);
+                        Cell1.CellStyle = SimpleHeaderCS;
+                        Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
+                        Cell1.SetCellValue(string.Empty);
+                        Cell1.CellStyle = SimpleHeaderCS;
+
+
 
                         Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
                         Cell1.SetCellValue("Высота");
@@ -14687,22 +16311,22 @@ namespace Infinium.Modules.Marketing.NewOrders
                                 Cell1.SetCellValue(DecorResultDataTable[c].Rows[x]["Color"].ToString());
                             Cell1.CellStyle = SimpleCS;
                             Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
-                            Cell1.SetCellValue(string.Empty);
-                            Cell1.CellStyle = SimpleCS;
-                            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
-                            Cell1.SetCellValue(string.Empty);
-                            Cell1.CellStyle = SimpleCS;
-                            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
-                            Cell1.SetCellValue(string.Empty);
-                            Cell1.CellStyle = SimpleCS;
-                            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
-                            Cell1.SetCellValue(string.Empty);
-                            Cell1.CellStyle = SimpleCS;
-                            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
-                            Cell1.SetCellValue(string.Empty);
-                            Cell1.CellStyle = SimpleCS;
-                            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
                             Cell1.SetCellValue(DecorResultDataTable[c].Rows[x]["Patina"].ToString());
+                            Cell1.CellStyle = SimpleCS;
+                            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                            Cell1.SetCellValue(DecorResultDataTable[c].Rows[x]["InsetType"].ToString());
+                            Cell1.CellStyle = SimpleCS;
+                            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                            Cell1.SetCellValue(DecorResultDataTable[c].Rows[x]["InsetColor"].ToString());
+                            Cell1.CellStyle = SimpleCS;
+                            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                            Cell1.SetCellValue(string.Empty);
+                            Cell1.CellStyle = SimpleCS;
+                            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                            Cell1.SetCellValue(string.Empty);
+                            Cell1.CellStyle = SimpleCS;
+                            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                            Cell1.SetCellValue(string.Empty);
                             Cell1.CellStyle = SimpleCS;
                             Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
                             if (DecorResultDataTable[c].Rows[x]["Height"] != DBNull.Value)
@@ -14742,8 +16366,10 @@ namespace Infinium.Modules.Marketing.NewOrders
                         }
                         //RowIndex++;
                     }
+
                     Cell1 = sheet1.CreateRow(RowIndex).CreateCell(0);
-                    Cell1.SetCellValue($"Итого, {Currency}: " +  decimal.Round(OrderCost, 2, MidpointRounding.AwayFromZero));
+                    Cell1.SetCellValue($"Итого, {Currency}: " +
+                                       decimal.Round(OrderCost, 2, MidpointRounding.AwayFromZero));
                     Cell1.CellStyle = HeaderWithoutBorderCS;
                 }
 
@@ -14752,6 +16378,7 @@ namespace Infinium.Modules.Marketing.NewOrders
 
 
             }
+
             RowIndex++;
             RowIndex++;
 
@@ -14761,10 +16388,10 @@ namespace Infinium.Modules.Marketing.NewOrders
                 TransportCost, AdditionalCost, TotalCost, CurrencyTypeID, TotalWeight, RowIndex, IsSample);
 
             string FileName = ClientsDataTable.Select("ClientName = '" + ClientName + "'")[0]["Login"].ToString() +
-                    " - №" + string.Join(",", OrderNumbers);
+                              " - №" + string.Join(",", OrderNumbers);
             if (IsSample)
                 FileName = ClientsDataTable.Select("ClientName = '" + ClientName + "'")[0]["Login"].ToString() +
-                        " - №" + string.Join(",", OrderNumbers) + " (обр)";
+                           " - №" + string.Join(",", OrderNumbers) + " (обр)";
             string tempFolder = System.Environment.GetEnvironmentVariable("TEMP");
             FileInfo file = new FileInfo(tempFolder + @"\" + FileName + ".xls");
             int j = 1;
@@ -14915,7 +16542,7 @@ namespace Infinium.Modules.Marketing.NewOrders
 
             CurrencyTypesDataTable = new DataTable();
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM CurrencyTypes",
-                ConnectionStrings.CatalogConnectionString))
+                       ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(CurrencyTypesDataTable);
             }
@@ -15104,24 +16731,25 @@ namespace Infinium.Modules.Marketing.NewOrders
                         Cell1.SetCellValue("Цвет");
                         Cell1.CellStyle = SimpleHeaderCS;
                         Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
-                        Cell1.SetCellValue(string.Empty);
-                        Cell1.CellStyle = SimpleHeaderCS;
-                        Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
-                        Cell1.SetCellValue(string.Empty);
-                        Cell1.CellStyle = SimpleHeaderCS;
-                        Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
-                        Cell1.SetCellValue(string.Empty);
-                        Cell1.CellStyle = SimpleHeaderCS;
-                        Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
-                        Cell1.SetCellValue(string.Empty);
-                        Cell1.CellStyle = SimpleHeaderCS;
-                        Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
-                        Cell1.SetCellValue(string.Empty);
-                        Cell1.CellStyle = SimpleHeaderCS;
-                        
-                        Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
                         Cell1.SetCellValue("Патина");
                         Cell1.CellStyle = SimpleHeaderCS;
+
+                        Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
+                        Cell1.SetCellValue("Тип наполн.");
+                        Cell1.CellStyle = SimpleHeaderCS;
+                        Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
+                        Cell1.SetCellValue("Цвет наполн.");
+                        Cell1.CellStyle = SimpleHeaderCS;
+                        Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
+                        Cell1.SetCellValue(string.Empty);
+                        Cell1.CellStyle = SimpleHeaderCS;
+                        Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
+                        Cell1.SetCellValue(string.Empty);
+                        Cell1.CellStyle = SimpleHeaderCS;
+                        Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
+                        Cell1.SetCellValue(string.Empty);
+                        Cell1.CellStyle = SimpleHeaderCS;
+
 
                         Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
                         Cell1.SetCellValue("Высота");
@@ -15179,22 +16807,24 @@ namespace Infinium.Modules.Marketing.NewOrders
                                 Cell1.SetCellValue(DecorResultDataTable[c].Rows[x]["Color"].ToString());
                             Cell1.CellStyle = SimpleCS;
                             Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
-                            Cell1.SetCellValue(string.Empty);
-                            Cell1.CellStyle = SimpleCS;
-                            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
-                            Cell1.SetCellValue(string.Empty);
-                            Cell1.CellStyle = SimpleCS;
-                            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
-                            Cell1.SetCellValue(string.Empty);
-                            Cell1.CellStyle = SimpleCS;
-                            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
-                            Cell1.SetCellValue(string.Empty);
-                            Cell1.CellStyle = SimpleCS;
-                            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
-                            Cell1.SetCellValue(string.Empty);
-                            Cell1.CellStyle = SimpleCS;
-                            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
                             Cell1.SetCellValue(DecorResultDataTable[c].Rows[x]["Patina"].ToString());
+                            Cell1.CellStyle = SimpleCS;
+
+                            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                            Cell1.SetCellValue(DecorResultDataTable[c].Rows[x]["InsetType"].ToString());
+                            Cell1.CellStyle = SimpleCS;
+                            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                            Cell1.SetCellValue(DecorResultDataTable[c].Rows[x]["InsetColor"].ToString());
+                            Cell1.CellStyle = SimpleCS;
+                            
+                            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                            Cell1.SetCellValue(string.Empty);
+                            Cell1.CellStyle = SimpleCS;
+                            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                            Cell1.SetCellValue(string.Empty);
+                            Cell1.CellStyle = SimpleCS;
+                            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                            Cell1.SetCellValue(string.Empty);
                             Cell1.CellStyle = SimpleCS;
                             Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
                             if (DecorResultDataTable[c].Rows[x]["Height"] != DBNull.Value)
@@ -15234,8 +16864,10 @@ namespace Infinium.Modules.Marketing.NewOrders
                         }
                         //RowIndex++;
                     }
+
                     Cell1 = sheet1.CreateRow(RowIndex).CreateCell(0);
-                    Cell1.SetCellValue($"Итого, {Currency}: " + decimal.Round(OrderCost, 2, MidpointRounding.AwayFromZero));
+                    Cell1.SetCellValue($"Итого, {Currency}: " +
+                                       decimal.Round(OrderCost, 2, MidpointRounding.AwayFromZero));
                     Cell1.CellStyle = HeaderWithoutBorderCS;
                 }
 
@@ -15244,6 +16876,7 @@ namespace Infinium.Modules.Marketing.NewOrders
 
 
             }
+
             RowIndex++;
             RowIndex++;
 
@@ -15253,7 +16886,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                 TransportCost, AdditionalCost, TotalCost, CurrencyTypeID, TotalWeight, RowIndex);
 
             string FileName = ClientsDataTable.Select("ClientName = '" + ClientName + "'")[0]["Login"].ToString() +
-                    " - №" + string.Join(",", OrderNumbers);
+                              " - №" + string.Join(",", OrderNumbers);
             string tempFolder = System.Environment.GetEnvironmentVariable("TEMP");
             FileInfo file = new FileInfo(tempFolder + @"\" + FileName + ".xls");
             int j = 1;
@@ -15270,7 +16903,8 @@ namespace Infinium.Modules.Marketing.NewOrders
             return file.FullName;
         }
 
-        public void Report(ref HSSFWorkbook hssfworkbook, int[] MegaOrders, int[] OrderNumbers, int[] MainOrdersIDs, int ClientID, string ClientName,
+        public void Report(ref HSSFWorkbook hssfworkbook, int[] MegaOrders, int[] OrderNumbers, int[] MainOrdersIDs,
+            int ClientID, string ClientName,
             decimal ComplaintProfilCost, decimal ComplaintTPSCost,
             decimal TransportCost, decimal AdditionalCost,
             decimal TotalCost, int CurrencyTypeID, decimal TotalWeight, bool IsSample)
@@ -15392,7 +17026,7 @@ namespace Infinium.Modules.Marketing.NewOrders
 
             CurrencyTypesDataTable = new DataTable();
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM CurrencyTypes",
-                ConnectionStrings.CatalogConnectionString))
+                       ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(CurrencyTypesDataTable);
             }
@@ -15593,25 +17227,24 @@ namespace Infinium.Modules.Marketing.NewOrders
                         Cell1.SetCellValue("Цвет");
                         Cell1.CellStyle = SimpleHeaderCS;
                         Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
-                        Cell1.SetCellValue(string.Empty);
-                        Cell1.CellStyle = SimpleHeaderCS;
-                        Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
-                        Cell1.SetCellValue(string.Empty);
-                        Cell1.CellStyle = SimpleHeaderCS;
-                        Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
-                        Cell1.SetCellValue(string.Empty);
-                        Cell1.CellStyle = SimpleHeaderCS;
-                        Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
-                        Cell1.SetCellValue(string.Empty);
-                        Cell1.CellStyle = SimpleHeaderCS;
-                        Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
-                        Cell1.SetCellValue(string.Empty);
-                        Cell1.CellStyle = SimpleHeaderCS;
-
-
-                        Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
                         Cell1.SetCellValue("Патина");
                         Cell1.CellStyle = SimpleHeaderCS;
+
+                        Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
+                        Cell1.SetCellValue("Тип наполн.");
+                        Cell1.CellStyle = SimpleHeaderCS;
+                        Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
+                        Cell1.SetCellValue("Цвет наполн.");
+                        Cell1.CellStyle = SimpleHeaderCS;
+
+                        Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
+                        Cell1.SetCellValue(string.Empty);
+                        Cell1.CellStyle = SimpleHeaderCS;
+                        Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
+                        Cell1.SetCellValue(string.Empty);
+                        Cell1.CellStyle = SimpleHeaderCS;
+
+
 
                         Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
                         Cell1.SetCellValue("Высота");
@@ -15669,22 +17302,22 @@ namespace Infinium.Modules.Marketing.NewOrders
                                 Cell1.SetCellValue(DecorResultDataTable[c].Rows[x]["Color"].ToString());
                             Cell1.CellStyle = SimpleCS;
                             Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
-                            Cell1.SetCellValue(string.Empty);
-                            Cell1.CellStyle = SimpleCS;
-                            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
-                            Cell1.SetCellValue(string.Empty);
-                            Cell1.CellStyle = SimpleCS;
-                            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
-                            Cell1.SetCellValue(string.Empty);
-                            Cell1.CellStyle = SimpleCS;
-                            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
-                            Cell1.SetCellValue(string.Empty);
-                            Cell1.CellStyle = SimpleCS;
-                            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
-                            Cell1.SetCellValue(string.Empty);
-                            Cell1.CellStyle = SimpleCS;
-                            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
                             Cell1.SetCellValue(DecorResultDataTable[c].Rows[x]["Patina"].ToString());
+                            Cell1.CellStyle = SimpleCS;
+                            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                            Cell1.SetCellValue(DecorResultDataTable[c].Rows[x]["InsetType"].ToString());
+                            Cell1.CellStyle = SimpleCS;
+                            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                            Cell1.SetCellValue(DecorResultDataTable[c].Rows[x]["InsetColor"].ToString());
+                            Cell1.CellStyle = SimpleCS;
+                            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                            Cell1.SetCellValue(string.Empty);
+                            Cell1.CellStyle = SimpleCS;
+                            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                            Cell1.SetCellValue(string.Empty);
+                            Cell1.CellStyle = SimpleCS;
+                            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                            Cell1.SetCellValue(string.Empty);
                             Cell1.CellStyle = SimpleCS;
                             Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
                             if (DecorResultDataTable[c].Rows[x]["Height"] != DBNull.Value)
@@ -15702,7 +17335,8 @@ namespace Infinium.Modules.Marketing.NewOrders
                             Cell1.SetCellValue(Convert.ToInt32(DecorResultDataTable[c].Rows[x]["Count"]));
                             Cell1.CellStyle = SimpleCS;
                             Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
-                            decimal Weight = decimal.Round(Convert.ToDecimal(DecorResultDataTable[c].Rows[x]["Weight"]), 3, MidpointRounding.AwayFromZero);
+                            decimal Weight = decimal.Round(Convert.ToDecimal(DecorResultDataTable[c].Rows[x]["Weight"]),
+                                3, MidpointRounding.AwayFromZero);
                             Cell1.SetCellValue(Convert.ToDouble(Weight));
                             Cell1.CellStyle = SimpleCS;
                             Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
@@ -15724,8 +17358,10 @@ namespace Infinium.Modules.Marketing.NewOrders
                         }
                         //RowIndex++;
                     }
+
                     Cell1 = sheet1.CreateRow(RowIndex).CreateCell(0);
-                    Cell1.SetCellValue($"Итого, {Currency}: " + decimal.Round(OrderCost, 2, MidpointRounding.AwayFromZero));
+                    Cell1.SetCellValue($"Итого, {Currency}: " +
+                                       decimal.Round(OrderCost, 2, MidpointRounding.AwayFromZero));
                     Cell1.CellStyle = HeaderWithoutBorderCS;
                 }
 
@@ -15734,6 +17370,7 @@ namespace Infinium.Modules.Marketing.NewOrders
 
 
             }
+
             RowIndex++;
             RowIndex++;
 
@@ -15744,7 +17381,8 @@ namespace Infinium.Modules.Marketing.NewOrders
 
         }
 
-        public void Report(ref HSSFWorkbook hssfworkbook, int[] MegaOrders, int[] OrderNumbers, int[] MainOrdersIDs, int ClientID, string ClientName,
+        public void Report(ref HSSFWorkbook hssfworkbook, int[] MegaOrders, int[] OrderNumbers, int[] MainOrdersIDs,
+            int ClientID, string ClientName,
             decimal ComplaintProfilCost, decimal ComplaintTPSCost,
             decimal TransportCost, decimal AdditionalCost,
             decimal TotalCost, int CurrencyTypeID, decimal TotalWeight)
@@ -15866,7 +17504,7 @@ namespace Infinium.Modules.Marketing.NewOrders
 
             CurrencyTypesDataTable = new DataTable();
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM CurrencyTypes",
-                ConnectionStrings.CatalogConnectionString))
+                       ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(CurrencyTypesDataTable);
             }
@@ -16067,25 +17705,27 @@ namespace Infinium.Modules.Marketing.NewOrders
                         Cell1.SetCellValue("Цвет");
                         Cell1.CellStyle = SimpleHeaderCS;
                         Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
-                        Cell1.SetCellValue(string.Empty);
-                        Cell1.CellStyle = SimpleHeaderCS;
-                        Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
-                        Cell1.SetCellValue(string.Empty);
-                        Cell1.CellStyle = SimpleHeaderCS;
-                        Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
-                        Cell1.SetCellValue(string.Empty);
-                        Cell1.CellStyle = SimpleHeaderCS;
-                        Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
-                        Cell1.SetCellValue(string.Empty);
-                        Cell1.CellStyle = SimpleHeaderCS;
-                        Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
-                        Cell1.SetCellValue(string.Empty);
-                        Cell1.CellStyle = SimpleHeaderCS;
-
-
-                        Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
                         Cell1.SetCellValue("Патина");
                         Cell1.CellStyle = SimpleHeaderCS;
+
+                        Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
+                        Cell1.SetCellValue("Тип наполн.");
+                        Cell1.CellStyle = SimpleHeaderCS;
+                        Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
+                        Cell1.SetCellValue("Цвет наполн.");
+                        Cell1.CellStyle = SimpleHeaderCS;
+
+                        Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
+                        Cell1.SetCellValue(string.Empty);
+                        Cell1.CellStyle = SimpleHeaderCS;
+                        Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
+                        Cell1.SetCellValue(string.Empty);
+                        Cell1.CellStyle = SimpleHeaderCS;
+                        Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
+                        Cell1.SetCellValue(string.Empty);
+                        Cell1.CellStyle = SimpleHeaderCS;
+
+
 
                         Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
                         Cell1.SetCellValue("Высота");
@@ -16143,22 +17783,22 @@ namespace Infinium.Modules.Marketing.NewOrders
                                 Cell1.SetCellValue(DecorResultDataTable[c].Rows[x]["Color"].ToString());
                             Cell1.CellStyle = SimpleCS;
                             Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
-                            Cell1.SetCellValue(string.Empty);
-                            Cell1.CellStyle = SimpleCS;
-                            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
-                            Cell1.SetCellValue(string.Empty);
-                            Cell1.CellStyle = SimpleCS;
-                            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
-                            Cell1.SetCellValue(string.Empty);
-                            Cell1.CellStyle = SimpleCS;
-                            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
-                            Cell1.SetCellValue(string.Empty);
-                            Cell1.CellStyle = SimpleCS;
-                            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
-                            Cell1.SetCellValue(string.Empty);
-                            Cell1.CellStyle = SimpleCS;
-                            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
                             Cell1.SetCellValue(DecorResultDataTable[c].Rows[x]["Patina"].ToString());
+                            Cell1.CellStyle = SimpleCS;
+                            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                            Cell1.SetCellValue(DecorResultDataTable[c].Rows[x]["InsetType"].ToString());
+                            Cell1.CellStyle = SimpleCS;
+                            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                            Cell1.SetCellValue(DecorResultDataTable[c].Rows[x]["InsetColor"].ToString());
+                            Cell1.CellStyle = SimpleCS;
+                            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                            Cell1.SetCellValue(string.Empty);
+                            Cell1.CellStyle = SimpleCS;
+                            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                            Cell1.SetCellValue(string.Empty);
+                            Cell1.CellStyle = SimpleCS;
+                            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                            Cell1.SetCellValue(string.Empty);
                             Cell1.CellStyle = SimpleCS;
                             Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
                             if (DecorResultDataTable[c].Rows[x]["Height"] != DBNull.Value)
@@ -16176,7 +17816,8 @@ namespace Infinium.Modules.Marketing.NewOrders
                             Cell1.SetCellValue(Convert.ToInt32(DecorResultDataTable[c].Rows[x]["Count"]));
                             Cell1.CellStyle = SimpleCS;
                             Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
-                            decimal Weight = decimal.Round(Convert.ToDecimal(DecorResultDataTable[c].Rows[x]["Weight"]), 3, MidpointRounding.AwayFromZero);
+                            decimal Weight = decimal.Round(Convert.ToDecimal(DecorResultDataTable[c].Rows[x]["Weight"]),
+                                3, MidpointRounding.AwayFromZero);
                             Cell1.SetCellValue(Convert.ToDouble(Weight));
                             Cell1.CellStyle = SimpleCS;
                             Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
@@ -16196,8 +17837,10 @@ namespace Infinium.Modules.Marketing.NewOrders
                         }
                         //RowIndex++;
                     }
+
                     Cell1 = sheet1.CreateRow(RowIndex).CreateCell(0);
-                    Cell1.SetCellValue($"Итого, {Currency}: " + decimal.Round(OrderCost, 2, MidpointRounding.AwayFromZero));
+                    Cell1.SetCellValue($"Итого, {Currency}: " +
+                                       decimal.Round(OrderCost, 2, MidpointRounding.AwayFromZero));
                     Cell1.CellStyle = HeaderWithoutBorderCS;
                 }
 
@@ -16206,6 +17849,7 @@ namespace Infinium.Modules.Marketing.NewOrders
 
 
             }
+
             RowIndex++;
             RowIndex++;
 
@@ -16213,6 +17857,326 @@ namespace Infinium.Modules.Marketing.NewOrders
                 ref hssfworkbook, ref sheet1,
                 MegaOrders, OrderNumbers, MainOrdersIDs, ClientID, ClientName, ComplaintProfilCost, ComplaintTPSCost,
                 TransportCost, AdditionalCost, TotalCost, CurrencyTypeID, TotalWeight, RowIndex);
+
+        }
+
+        public void ReportModuleOnline(ref HSSFWorkbook hssfworkbook, int[] mainOrderIDs)
+        {
+            ClearReport();
+            ModuleOnline(mainOrderIDs);
+
+            #region Create fonts and styles
+
+            HSSFFont HeaderF1 = hssfworkbook.CreateFont();
+            HeaderF1.FontHeightInPoints = 13;
+            HeaderF1.Boldweight = 13 * 256;
+            HeaderF1.FontName = "Calibri";
+
+            HSSFFont HeaderF2 = hssfworkbook.CreateFont();
+            HeaderF2.FontHeightInPoints = 12;
+            HeaderF2.Boldweight = 12 * 256;
+            HeaderF2.FontName = "Calibri";
+
+            HSSFFont HeaderF3 = hssfworkbook.CreateFont();
+            HeaderF3.FontHeightInPoints = 9;
+            HeaderF3.FontName = "Calibri";
+
+            HSSFFont SimpleF = hssfworkbook.CreateFont();
+            SimpleF.FontHeightInPoints = 9;
+            SimpleF.FontName = "Calibri";
+
+            HSSFCellStyle SimpleCS = hssfworkbook.CreateCellStyle();
+            SimpleCS.VerticalAlignment = HSSFCellStyle.VERTICAL_CENTER;
+            SimpleCS.Alignment = HSSFCellStyle.ALIGN_CENTER;
+            SimpleCS.BorderBottom = HSSFCellStyle.BORDER_THIN;
+            SimpleCS.VerticalAlignment = HSSFCellStyle.VERTICAL_CENTER;
+            SimpleCS.BorderBottom = HSSFCellStyle.BORDER_THIN;
+            SimpleCS.BottomBorderColor = HSSFColor.BLACK.index;
+            SimpleCS.BorderLeft = HSSFCellStyle.BORDER_THIN;
+            SimpleCS.LeftBorderColor = HSSFColor.BLACK.index;
+            SimpleCS.BorderRight = HSSFCellStyle.BORDER_THIN;
+            SimpleCS.RightBorderColor = HSSFColor.BLACK.index;
+            SimpleCS.BorderTop = HSSFCellStyle.BORDER_THIN;
+            SimpleCS.TopBorderColor = HSSFColor.BLACK.index;
+            SimpleCS.SetFont(SimpleF);
+
+            HSSFCellStyle SimpleLeftCS = hssfworkbook.CreateCellStyle();
+            SimpleLeftCS.BorderBottom = HSSFCellStyle.BORDER_THIN;
+            SimpleLeftCS.VerticalAlignment = HSSFCellStyle.VERTICAL_CENTER;
+            SimpleLeftCS.BorderBottom = HSSFCellStyle.BORDER_THIN;
+            SimpleLeftCS.BottomBorderColor = HSSFColor.BLACK.index;
+            SimpleLeftCS.BorderLeft = HSSFCellStyle.BORDER_THIN;
+            SimpleLeftCS.LeftBorderColor = HSSFColor.BLACK.index;
+            SimpleLeftCS.BorderRight = HSSFCellStyle.BORDER_THIN;
+            SimpleLeftCS.RightBorderColor = HSSFColor.BLACK.index;
+            SimpleLeftCS.BorderTop = HSSFCellStyle.BORDER_THIN;
+            SimpleLeftCS.TopBorderColor = HSSFColor.BLACK.index;
+            SimpleLeftCS.SetFont(SimpleF);
+
+            HSSFCellStyle SimpleDecCS = hssfworkbook.CreateCellStyle();
+            SimpleDecCS.VerticalAlignment = HSSFCellStyle.VERTICAL_CENTER;
+            SimpleDecCS.Alignment = HSSFCellStyle.ALIGN_CENTER;
+            SimpleDecCS.DataFormat = HSSFDataFormat.GetBuiltinFormat("0.00");
+            SimpleDecCS.BorderBottom = HSSFCellStyle.BORDER_THIN;
+            SimpleDecCS.BottomBorderColor = HSSFColor.BLACK.index;
+            SimpleDecCS.BorderLeft = HSSFCellStyle.BORDER_THIN;
+            SimpleDecCS.LeftBorderColor = HSSFColor.BLACK.index;
+            SimpleDecCS.BorderRight = HSSFCellStyle.BORDER_THIN;
+            SimpleDecCS.RightBorderColor = HSSFColor.BLACK.index;
+            SimpleDecCS.BorderTop = HSSFCellStyle.BORDER_THIN;
+            SimpleDecCS.TopBorderColor = HSSFColor.BLACK.index;
+            SimpleDecCS.SetFont(SimpleF);
+
+            HSSFCellStyle SimpleDec3CS = hssfworkbook.CreateCellStyle();
+            SimpleDec3CS.VerticalAlignment = HSSFCellStyle.VERTICAL_CENTER;
+            SimpleDec3CS.Alignment = HSSFCellStyle.ALIGN_CENTER;
+            SimpleDecCS.DataFormat = HSSFDataFormat.GetBuiltinFormat("0.000");
+            SimpleDecCS.BorderBottom = HSSFCellStyle.BORDER_THIN;
+            SimpleDecCS.BottomBorderColor = HSSFColor.BLACK.index;
+            SimpleDecCS.BorderLeft = HSSFCellStyle.BORDER_THIN;
+            SimpleDecCS.LeftBorderColor = HSSFColor.BLACK.index;
+            SimpleDecCS.BorderRight = HSSFCellStyle.BORDER_THIN;
+            SimpleDecCS.RightBorderColor = HSSFColor.BLACK.index;
+            SimpleDecCS.BorderTop = HSSFCellStyle.BORDER_THIN;
+            SimpleDecCS.TopBorderColor = HSSFColor.BLACK.index;
+            SimpleDecCS.SetFont(SimpleF);
+
+            HSSFCellStyle SimpleHeaderCS = hssfworkbook.CreateCellStyle();
+            SimpleHeaderCS.VerticalAlignment = HSSFCellStyle.VERTICAL_CENTER;
+            SimpleHeaderCS.Alignment = HSSFCellStyle.ALIGN_CENTER;
+            SimpleHeaderCS.BorderBottom = HSSFCellStyle.BORDER_MEDIUM;
+            SimpleHeaderCS.BottomBorderColor = HSSFColor.BLACK.index;
+            SimpleHeaderCS.BorderLeft = HSSFCellStyle.BORDER_MEDIUM;
+            SimpleHeaderCS.LeftBorderColor = HSSFColor.BLACK.index;
+            SimpleHeaderCS.BorderRight = HSSFCellStyle.BORDER_MEDIUM;
+            SimpleHeaderCS.RightBorderColor = HSSFColor.BLACK.index;
+            SimpleHeaderCS.BorderTop = HSSFCellStyle.BORDER_MEDIUM;
+            SimpleHeaderCS.TopBorderColor = HSSFColor.BLACK.index;
+            SimpleHeaderCS.WrapText = true;
+            SimpleHeaderCS.SetFont(HeaderF3);
+
+            HSSFCellStyle SimpleHeader1CS = hssfworkbook.CreateCellStyle();
+            SimpleHeader1CS.VerticalAlignment = HSSFCellStyle.VERTICAL_CENTER;
+            SimpleHeader1CS.Alignment = HSSFCellStyle.ALIGN_CENTER;
+            SimpleHeader1CS.SetFont(HeaderF2);
+
+            #endregion
+
+            HSSFSheet sheet1 = hssfworkbook.CreateSheet("Приложение");
+            sheet1.PrintSetup.PaperSize = (short)PaperSizeType.A4;
+
+            sheet1.SetMargin(HSSFSheet.LeftMargin, (double).12);
+            sheet1.SetMargin(HSSFSheet.RightMargin, (double).07);
+            sheet1.SetMargin(HSSFSheet.TopMargin, (double).20);
+            sheet1.SetMargin(HSSFSheet.BottomMargin, (double).20);
+
+            int DisplayIndex = 0;
+
+            sheet1.SetColumnWidth(DisplayIndex++, 8 * 256);
+            sheet1.SetColumnWidth(DisplayIndex++, 40 * 256);
+            sheet1.SetColumnWidth(DisplayIndex++, 8 * 256);
+            sheet1.SetColumnWidth(DisplayIndex++, 8 * 256);
+            sheet1.SetColumnWidth(DisplayIndex++, 8 * 256);
+            sheet1.SetColumnWidth(DisplayIndex++, 10 * 256);
+            sheet1.SetColumnWidth(DisplayIndex++, 10 * 256);
+            sheet1.SetColumnWidth(DisplayIndex++, 10 * 256);
+            sheet1.SetColumnWidth(DisplayIndex++, 10 * 256);
+            sheet1.SetColumnWidth(DisplayIndex++, 10 * 256);
+            sheet1.SetColumnWidth(DisplayIndex++, 8 * 256);
+            sheet1.SetColumnWidth(DisplayIndex++, 30 * 256);
+
+            int RowIndex = 0;
+
+            HSSFCell Cell1;
+
+            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(0);
+            Cell1.SetCellValue(
+                $@"Приложение №1 к ТОВАРНО-ТРАНСПОРТНОЙ НАКЛАДНОЙ серии от {DateTime.Now.ToShortDateString()} г");
+            Cell1.CellStyle = SimpleHeader1CS;
+            sheet1.AddMergedRegion(new Region(RowIndex, 0, RowIndex, _reportDataTable.Columns.Count - 1));
+
+            DisplayIndex = 0;
+            RowIndex++;
+
+            if (_reportDataTable.Rows.Count != 0)
+            {
+                Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                Cell1.SetCellValue("№ п/п");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                Cell1.SetCellValue("Наименование товара");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                Cell1.SetCellValue("Единица измерения");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                Cell1.SetCellValue("Кол-во");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                Cell1.SetCellValue("Цена, руб. коп.");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                Cell1.SetCellValue("Стоимость, руб. коп.");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                Cell1.SetCellValue("Ставка НДС, % ");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                Cell1.SetCellValue("Сумма НДС, руб. коп.");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                Cell1.SetCellValue("Стоимость с НДС, руб. коп.");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                Cell1.SetCellValue("Количество грузовых мест");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                Cell1.SetCellValue("Масса груза, кг");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                Cell1.SetCellValue("Примечание наименование в ТТН");
+                Cell1.CellStyle = SimpleHeaderCS;
+            }
+
+            DisplayIndex = 0;
+            RowIndex++;
+
+            for (int i = 0; i < _reportDataTable.Columns.Count; i++)
+            {
+                Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                Cell1.SetCellValue(i);
+                Cell1.CellStyle = SimpleHeaderCS;
+            }
+
+            RowIndex++;
+
+            int count = 0;
+            int packCount = 0;
+            double cost = 0;
+            double costVat = 0;
+            double costWithVat = 0;
+            double weight = 0;
+
+            for (int i = 0; i < _reportDataTable.Rows.Count; i++)
+            {
+                DisplayIndex = 0;
+
+                Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                Cell1.SetCellValue(Convert.ToInt32(_reportDataTable.Rows[i]["number"]));
+                Cell1.CellStyle = SimpleCS;
+
+                Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                Cell1.SetCellValue(_reportDataTable.Rows[i]["name"].ToString());
+                Cell1.CellStyle = SimpleLeftCS;
+
+                Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                Cell1.SetCellValue(_reportDataTable.Rows[i]["measure"].ToString());
+                Cell1.CellStyle = SimpleCS;
+
+                Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                Cell1.SetCellValue(Convert.ToInt32(_reportDataTable.Rows[i]["count"]));
+                Cell1.CellStyle = SimpleCS;
+                count += Convert.ToInt32(_reportDataTable.Rows[i]["count"]);
+
+                Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                Cell1.SetCellValue(Convert.ToDouble(_reportDataTable.Rows[i]["price"]));
+                Cell1.CellStyle = SimpleDecCS;
+
+                Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                Cell1.SetCellValue(Convert.ToDouble(_reportDataTable.Rows[i]["cost"]));
+                Cell1.CellStyle = SimpleDecCS;
+                cost += Convert.ToDouble(_reportDataTable.Rows[i]["cost"]);
+
+                Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                Cell1.SetCellValue(Convert.ToDouble(_reportDataTable.Rows[i]["vat"]));
+                Cell1.CellStyle = SimpleDecCS;
+
+                Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                Cell1.SetCellValue(Convert.ToDouble(_reportDataTable.Rows[i]["costVat"]));
+                Cell1.CellStyle = SimpleDecCS;
+                costVat += Convert.ToDouble(_reportDataTable.Rows[i]["costVat"]);
+
+                Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                Cell1.SetCellValue(Convert.ToDouble(_reportDataTable.Rows[i]["costWithVat"]));
+                Cell1.CellStyle = SimpleDecCS;
+                costWithVat += Convert.ToDouble(_reportDataTable.Rows[i]["costWithVat"]);
+
+                Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                Cell1.SetCellValue(Convert.ToInt32(_reportDataTable.Rows[i]["packCount"]));
+                Cell1.CellStyle = SimpleCS;
+                packCount += Convert.ToInt32(_reportDataTable.Rows[i]["packCount"]);
+
+                Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                Cell1.SetCellValue(Convert.ToDouble(_reportDataTable.Rows[i]["weight"]));
+                Cell1.CellStyle = SimpleDecCS;
+                weight += Convert.ToDouble(_reportDataTable.Rows[i]["weight"]);
+
+                Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                Cell1.SetCellValue(_reportDataTable.Rows[i]["accountingName"].ToString());
+                Cell1.CellStyle = SimpleCS;
+
+                RowIndex++;
+            }
+
+            DisplayIndex = 0;
+            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+            Cell1.SetCellValue("ИТОГО");
+            Cell1.CellStyle = SimpleCS;
+
+            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+            Cell1.SetCellValue("");
+            Cell1.CellStyle = SimpleCS;
+
+            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+            Cell1.SetCellValue("шт");
+            Cell1.CellStyle = SimpleCS;
+
+            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+            Cell1.SetCellValue(count);
+            Cell1.CellStyle = SimpleCS;
+
+            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+            Cell1.SetCellValue("X");
+            Cell1.CellStyle = SimpleCS;
+
+            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+            Cell1.SetCellValue(cost);
+            Cell1.CellStyle = SimpleDecCS;
+
+            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+            Cell1.SetCellValue("X");
+            Cell1.CellStyle = SimpleCS;
+
+            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+            Cell1.SetCellValue(costVat);
+            Cell1.CellStyle = SimpleDecCS;
+
+            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+            Cell1.SetCellValue(costWithVat);
+            Cell1.CellStyle = SimpleDecCS;
+
+            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+            Cell1.SetCellValue(packCount);
+            Cell1.CellStyle = SimpleCS;
+
+            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+            Cell1.SetCellValue(weight);
+            Cell1.CellStyle = SimpleDecCS;
+
+            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+            Cell1.SetCellValue("X");
+            Cell1.CellStyle = SimpleCS;
 
         }
 
@@ -16504,14 +18468,14 @@ namespace Infinium.Modules.Marketing.NewOrders
         {
             FrontsResultDataTable = new DataTable();
 
-            FrontsResultDataTable.Columns.Add(new DataColumn(("Front"), System.Type.GetType("System.String")));
+            FrontsResultDataTable.Columns.Add(new DataColumn("Front", System.Type.GetType("System.String")));
             //FrontsResultDataTable.Columns.Add(new DataColumn(("FrameColor"), System.Type.GetType("System.String")));
             //FrontsResultDataTable.Columns.Add(new DataColumn(("Patina"), System.Type.GetType("System.String")));
-            FrontsResultDataTable.Columns.Add(new DataColumn(("Height"), System.Type.GetType("System.Int32")));
-            FrontsResultDataTable.Columns.Add(new DataColumn(("Width"), System.Type.GetType("System.Int32")));
-            FrontsResultDataTable.Columns.Add(new DataColumn(("Square"), System.Type.GetType("System.Decimal")));
-            FrontsResultDataTable.Columns.Add(new DataColumn(("Count"), System.Type.GetType("System.Int32")));
-            FrontsResultDataTable.Columns.Add(new DataColumn(("Cost"), System.Type.GetType("System.Decimal")));
+            FrontsResultDataTable.Columns.Add(new DataColumn("Height", System.Type.GetType("System.Int32")));
+            FrontsResultDataTable.Columns.Add(new DataColumn("Width", System.Type.GetType("System.Int32")));
+            FrontsResultDataTable.Columns.Add(new DataColumn("Square", System.Type.GetType("System.Decimal")));
+            FrontsResultDataTable.Columns.Add(new DataColumn("Count", System.Type.GetType("System.Int32")));
+            FrontsResultDataTable.Columns.Add(new DataColumn("Cost", System.Type.GetType("System.Decimal")));
         }
 
         private void FillFronts(DataTable FrontsOrdersDataTable)
@@ -17662,29 +19626,29 @@ namespace Infinium.Modules.Marketing.NewOrders
         public CreateOrdersFromExcel()
         {
             DecorFromExcelDT = new DataTable();
-            DecorFromExcelDT.Columns.Add(new DataColumn(("Type"), System.Type.GetType("System.Int32")));
-            DecorFromExcelDT.Columns.Add(new DataColumn(("MegaOrderID"), System.Type.GetType("System.Int32")));
-            DecorFromExcelDT.Columns.Add(new DataColumn(("MainOrderID"), System.Type.GetType("System.Int32")));
-            DecorFromExcelDT.Columns.Add(new DataColumn(("Info"), System.Type.GetType("System.String")));
-            DecorFromExcelDT.Columns.Add(new DataColumn(("ConfigID"), System.Type.GetType("System.Int32")));
-            DecorFromExcelDT.Columns.Add(new DataColumn(("Length"), System.Type.GetType("System.Int32")));
-            DecorFromExcelDT.Columns.Add(new DataColumn(("Height"), System.Type.GetType("System.Int32")));
-            DecorFromExcelDT.Columns.Add(new DataColumn(("Width"), System.Type.GetType("System.Int32")));
-            DecorFromExcelDT.Columns.Add(new DataColumn(("Count"), System.Type.GetType("System.Int32")));
-            DecorFromExcelDT.Columns.Add(new DataColumn(("Notes"), System.Type.GetType("System.String")));
+            DecorFromExcelDT.Columns.Add(new DataColumn("Type", System.Type.GetType("System.Int32")));
+            DecorFromExcelDT.Columns.Add(new DataColumn("MegaOrderID", System.Type.GetType("System.Int32")));
+            DecorFromExcelDT.Columns.Add(new DataColumn("MainOrderID", System.Type.GetType("System.Int32")));
+            DecorFromExcelDT.Columns.Add(new DataColumn("Info", System.Type.GetType("System.String")));
+            DecorFromExcelDT.Columns.Add(new DataColumn("ConfigID", System.Type.GetType("System.Int32")));
+            DecorFromExcelDT.Columns.Add(new DataColumn("Length", System.Type.GetType("System.Int32")));
+            DecorFromExcelDT.Columns.Add(new DataColumn("Height", System.Type.GetType("System.Int32")));
+            DecorFromExcelDT.Columns.Add(new DataColumn("Width", System.Type.GetType("System.Int32")));
+            DecorFromExcelDT.Columns.Add(new DataColumn("Count", System.Type.GetType("System.Int32")));
+            DecorFromExcelDT.Columns.Add(new DataColumn("Notes", System.Type.GetType("System.String")));
             DecorFromExcelDT.TableName = "ImportedTable";
 
             FrontsFromExcelDT = new DataTable();
-            FrontsFromExcelDT.Columns.Add(new DataColumn(("Type"), System.Type.GetType("System.Int32")));
-            FrontsFromExcelDT.Columns.Add(new DataColumn(("MegaOrderID"), System.Type.GetType("System.Int32")));
-            FrontsFromExcelDT.Columns.Add(new DataColumn(("MainOrderID"), System.Type.GetType("System.Int32")));
-            FrontsFromExcelDT.Columns.Add(new DataColumn(("Info"), System.Type.GetType("System.String")));
-            FrontsFromExcelDT.Columns.Add(new DataColumn(("ConfigID"), System.Type.GetType("System.Int32")));
-            FrontsFromExcelDT.Columns.Add(new DataColumn(("Length"), System.Type.GetType("System.Int32")));
-            FrontsFromExcelDT.Columns.Add(new DataColumn(("Height"), System.Type.GetType("System.Int32")));
-            FrontsFromExcelDT.Columns.Add(new DataColumn(("Width"), System.Type.GetType("System.Int32")));
-            FrontsFromExcelDT.Columns.Add(new DataColumn(("Count"), System.Type.GetType("System.Int32")));
-            FrontsFromExcelDT.Columns.Add(new DataColumn(("Notes"), System.Type.GetType("System.String")));
+            FrontsFromExcelDT.Columns.Add(new DataColumn("Type", System.Type.GetType("System.Int32")));
+            FrontsFromExcelDT.Columns.Add(new DataColumn("MegaOrderID", System.Type.GetType("System.Int32")));
+            FrontsFromExcelDT.Columns.Add(new DataColumn("MainOrderID", System.Type.GetType("System.Int32")));
+            FrontsFromExcelDT.Columns.Add(new DataColumn("Info", System.Type.GetType("System.String")));
+            FrontsFromExcelDT.Columns.Add(new DataColumn("ConfigID", System.Type.GetType("System.Int32")));
+            FrontsFromExcelDT.Columns.Add(new DataColumn("Length", System.Type.GetType("System.Int32")));
+            FrontsFromExcelDT.Columns.Add(new DataColumn("Height", System.Type.GetType("System.Int32")));
+            FrontsFromExcelDT.Columns.Add(new DataColumn("Width", System.Type.GetType("System.Int32")));
+            FrontsFromExcelDT.Columns.Add(new DataColumn("Count", System.Type.GetType("System.Int32")));
+            FrontsFromExcelDT.Columns.Add(new DataColumn("Notes", System.Type.GetType("System.String")));
             FrontsFromExcelDT.TableName = "ImportedTable";
 
             toDecorOrdersDT = new DataTable();

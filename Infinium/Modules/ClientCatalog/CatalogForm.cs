@@ -8,6 +8,9 @@ using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 
+using static Infinium.Excel;
+using static Infinium.FrontsCatalog;
+
 namespace Infinium
 {
     public partial class CatalogForm : Form
@@ -26,6 +29,7 @@ namespace Infinium
         private LightStartForm _lightStartForm;
 
         private Form _topForm;
+        private FileManager FM;
         private Infinium.FrontsCatalog _frontsCatalog;
         private Infinium.DecorCatalog _decorCatalog;
         private CabFurLabel _cabFurLabelManager;
@@ -228,9 +232,10 @@ namespace Infinium
                 _decorDt.Columns.Add(new DataColumn("DecorConfigID", Type.GetType("System.Int32")));
             }
             _sampleLabelManager = new SampleLabel();
+            FM = new FileManager();
 
             _frontsCatalog = new FrontsCatalog(1);
-            _decorCatalog = new DecorCatalog(1);
+            _decorCatalog = new DecorCatalog(1, FM);
 
             FilterClientsDataGrid.DataSource = _frontsCatalog.FilterClientsBindingSource;
             FilterClientsDataGrid.Columns["ClientID"].Visible = false;
@@ -321,14 +326,10 @@ namespace Infinium
             if (FrontsDataGrid.SelectedRows.Count > 0 && FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value != DBNull.Value)
                 frontName = FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value.ToString();
 
-            int ClientID = -1;
-            if (cbClients.Checked && FilterClientsDataGrid.SelectedRows.Count > 0)
-                ClientID = Convert.ToInt32(FilterClientsDataGrid.SelectedRows[0].Cells["ClientID"].Value);
+            bool clients = cbClients.Checked;
+            bool excluzive = cbExcluzive.Checked;
 
-            if (cbClients.Checked)
-                _frontsCatalog.FilterCatalogFrameColors(ClientID, frontName);
-            else
-                _frontsCatalog.FilterCatalogFrameColors(frontName);
+            _frontsCatalog.FilterCatalogFrameColors(excluzive, clients, frontName);
         }
 
         public void GetTechnoFrameColors()
@@ -343,7 +344,10 @@ namespace Infinium
             if (FrameColorsDataGrid.SelectedRows.Count > 0 && FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value != DBNull.Value)
                 colorId = Convert.ToInt32(FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value);
 
-            _frontsCatalog.FilterCatalogTechnoFrameColors(frontName, colorId);
+            bool clients = cbClients.Checked;
+            bool excluzive = cbExcluzive.Checked;
+
+            _frontsCatalog.FilterCatalogTechnoFrameColors(excluzive, clients, frontName, colorId);
         }
 
         public void GetPatina()
@@ -358,6 +362,9 @@ namespace Infinium
             int insetColorId = -1;
             int technoInsetTypeId = -1;
             int technoInsetColorId = -1;
+
+            bool clients = cbClients.Checked;
+            bool excluzive = cbExcluzive.Checked;
 
             if (FrontsDataGrid.SelectedRows.Count > 0 && FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value != DBNull.Value)
                 frontName = FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value.ToString();
@@ -376,7 +383,7 @@ namespace Infinium
             if (TechnoInsetColorsDataGrid.SelectedRows.Count > 0 && TechnoInsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value != DBNull.Value)
                 technoInsetColorId = Convert.ToInt32(TechnoInsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
 
-            _frontsCatalog.FilterCatalogPatina(frontName, colorId, technoColorId, insetTypeId, insetColorId, technoInsetTypeId, technoInsetColorId);
+            _frontsCatalog.FilterCatalogPatina(excluzive, clients, frontName, colorId, technoColorId, insetTypeId, insetColorId, technoInsetTypeId, technoInsetColorId);
         }
 
         public void GetInsetTypes()
@@ -388,6 +395,9 @@ namespace Infinium
             int technoColorId = -1;
             int patinaId = -1;
 
+            bool clients = cbClients.Checked;
+            bool excluzive = cbExcluzive.Checked;
+
             if (FrontsDataGrid.SelectedRows.Count > 0 && FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value != DBNull.Value)
                 frontName = FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value.ToString();
             if (FrameColorsDataGrid.SelectedRows.Count > 0 && FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value != DBNull.Value)
@@ -397,7 +407,7 @@ namespace Infinium
             if (PatinaDataGrid.SelectedRows.Count > 0 && PatinaDataGrid.SelectedRows[0].Cells["PatinaID"].Value != DBNull.Value)
                 patinaId = Convert.ToInt32(PatinaDataGrid.SelectedRows[0].Cells["PatinaID"].Value);
 
-            _frontsCatalog.FilterCatalogInsetTypes(frontName, colorId, technoColorId);
+            _frontsCatalog.FilterCatalogInsetTypes(excluzive, clients, frontName, colorId, technoColorId);
         }
 
         public void GetInsetColors()
@@ -410,6 +420,9 @@ namespace Infinium
             int patinaId = -1;
             int insetTypeId = -1;
 
+            bool clients = cbClients.Checked;
+            bool excluzive = cbExcluzive.Checked;
+
             if (FrontsDataGrid.SelectedRows.Count > 0 && FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value != DBNull.Value)
                 frontName = FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value.ToString();
             if (FrameColorsDataGrid.SelectedRows.Count > 0 && FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value != DBNull.Value)
@@ -421,7 +434,7 @@ namespace Infinium
             if (InsetTypesDataGrid.SelectedRows.Count > 0 && InsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value != DBNull.Value)
                 insetTypeId = Convert.ToInt32(InsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
 
-            _frontsCatalog.FilterCatalogInsetColors(frontName, colorId, technoColorId, insetTypeId);
+            _frontsCatalog.FilterCatalogInsetColors(excluzive, clients, frontName, colorId, technoColorId, insetTypeId);
         }
 
         public void GetTechnoInsetTypes()
@@ -434,6 +447,9 @@ namespace Infinium
             int patinaId = -1;
             int insetTypeId = -1;
             int insetColorId = -1;
+
+            bool clients = cbClients.Checked;
+            bool excluzive = cbExcluzive.Checked;
 
             if (FrontsDataGrid.SelectedRows.Count > 0 && FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value != DBNull.Value)
                 frontName = FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value.ToString();
@@ -448,7 +464,7 @@ namespace Infinium
             if (InsetColorsDataGrid.SelectedRows.Count > 0 && InsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value != DBNull.Value)
                 insetColorId = Convert.ToInt32(InsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
 
-            _frontsCatalog.FilterCatalogTechnoInsetTypes(frontName, colorId, technoColorId, insetTypeId, insetColorId);
+            _frontsCatalog.FilterCatalogTechnoInsetTypes(excluzive, clients, frontName, colorId, technoColorId, insetTypeId, insetColorId);
 
         }
 
@@ -463,6 +479,9 @@ namespace Infinium
             int insetTypeId = -1;
             int insetColorId = -1;
             int technoInsetTypeId = -1;
+
+            bool clients = cbClients.Checked;
+            bool excluzive = cbExcluzive.Checked;
 
             if (FrontsDataGrid.SelectedRows.Count > 0 && FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value != DBNull.Value)
                 frontName = FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value.ToString();
@@ -479,7 +498,7 @@ namespace Infinium
             if (TechnoInsetTypesDataGrid.SelectedRows.Count > 0 && TechnoInsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value != DBNull.Value)
                 technoInsetTypeId = Convert.ToInt32(TechnoInsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeID"].Value);
 
-            _frontsCatalog.FilterCatalogTechnoInsetColors(frontName, colorId, technoColorId, insetTypeId, insetColorId, technoInsetTypeId);
+            _frontsCatalog.FilterCatalogTechnoInsetColors(excluzive, clients, frontName, colorId, technoColorId, insetTypeId, insetColorId, technoInsetTypeId);
 
         }
 
@@ -502,6 +521,9 @@ namespace Infinium
             int technoInsetTypeId = -1;
             int technoInsetColorId = -1;
 
+            bool clients = cbClients.Checked;
+            bool excluzive = cbExcluzive.Checked;
+
             if (FrontsDataGrid.SelectedRows.Count > 0 && FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value != DBNull.Value)
                 frontName = FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value.ToString();
             if (FrameColorsDataGrid.SelectedRows.Count > 0 && FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value != DBNull.Value)
@@ -519,7 +541,7 @@ namespace Infinium
             if (TechnoInsetColorsDataGrid.SelectedRows.Count > 0 && TechnoInsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value != DBNull.Value)
                 technoInsetColorId = Convert.ToInt32(TechnoInsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
 
-            _frontsCatalog.FilterCatalogHeight(frontName, colorId, technoColorId, insetTypeId, insetColorId, technoInsetTypeId, technoInsetColorId, patinaId);
+            _frontsCatalog.FilterCatalogHeight(excluzive, clients, frontName, colorId, technoColorId, insetTypeId, insetColorId, technoInsetTypeId, technoInsetColorId, patinaId);
 
             pcbxFrontImage.Image = null;
             if (_needSplash)
@@ -866,6 +888,10 @@ namespace Infinium
             int technoInsetTypeId = -1;
             int technoInsetColorId = -1;
             int height = 0;
+
+            bool clients = cbClients.Checked;
+            bool excluzive = cbExcluzive.Checked;
+
             if (FrontsDataGrid.SelectedRows.Count > 0 && FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value != DBNull.Value)
                 frontName = FrontsDataGrid.SelectedRows[0].Cells["FrontName"].Value.ToString();
             if (FrameColorsDataGrid.SelectedRows.Count > 0 && FrameColorsDataGrid.SelectedRows[0].Cells["ColorID"].Value != DBNull.Value)
@@ -885,7 +911,7 @@ namespace Infinium
             if (FrontsHeightDataGrid.SelectedRows.Count > 0 && FrontsHeightDataGrid.SelectedRows[0].Cells["Height"].Value != DBNull.Value)
                 height = Convert.ToInt32(FrontsHeightDataGrid.SelectedRows[0].Cells["Height"].Value);
 
-            _frontsCatalog.FilterCatalogWidth(frontName, colorId, technoColorId, insetTypeId, insetColorId, technoInsetTypeId, technoInsetColorId, patinaId, height);
+            _frontsCatalog.FilterCatalogWidth(excluzive, clients, frontName, colorId, technoColorId, insetTypeId, insetColorId, technoInsetTypeId, technoInsetColorId, patinaId, height);
         }
 
         #endregion
@@ -960,81 +986,166 @@ namespace Infinium
 
         public void GetDecorItems()
         {
-            if (_decorCatalog != null)
-                if (_decorCatalog.DecorProductsBindingSource.Count > 0)
-                {
-                    if (((DataRowView)_decorCatalog.DecorProductsBindingSource.Current)["ProductID"] != DBNull.Value)
-                    {
-                        _decorCatalog.FilterItems(Convert.ToInt32(((DataRowView)_decorCatalog.DecorProductsBindingSource.Current)["ProductID"]));
-                        _decorCatalog.DecorItemBindingSource.MoveFirst();
-                    }
-                }
+            if (_decorCatalog == null)
+                return;
+
+            int ProductID = -1;
+            if (_decorCatalog.DecorProductsBindingSource.Count > 0 && ((DataRowView)_decorCatalog.DecorProductsBindingSource.Current)["ProductID"] != DBNull.Value)
+            {
+                ProductID = Convert.ToInt32(((DataRowView)_decorCatalog.DecorProductsBindingSource.Current)["ProductID"]);
+            }
+
+            _decorCatalog.FilterItems(ProductID);
+            _decorCatalog.DecorItemBindingSource.MoveFirst();
         }
 
         public void GetDecorColors()
         {
-            if (_decorCatalog.DecorItemBindingSource.Current == null)
+            if (_decorCatalog == null)
                 return;
-            if (_decorCatalog.DecorItemBindingSource.Count > 0)
-            {
-                _decorCatalog.FilterColors(((DataRowView)_decorCatalog.DecorItemBindingSource.Current)["Name"].ToString());
-            }
+
+            string decorName = "";
+
+            if (_decorCatalog.DecorItemBindingSource.Current != null)
+                decorName = ((DataRowView)_decorCatalog.DecorItemBindingSource.Current)["Name"].ToString();
+
+            _decorCatalog.FilterColors(decorName);
+
+            //if (_decorCatalog.DecorItemBindingSource.Current == null)
+            //    return;
+            //if (_decorCatalog.DecorItemBindingSource.Count > 0)
+            //{
+            //    _decorCatalog.FilterColors(((DataRowView)_decorCatalog.DecorItemBindingSource.Current)["Name"].ToString());
+            //}
         }
 
         public void GetDecorPatina()
         {
-            if (_decorCatalog.DecorItemBindingSource.Current == null)
+            if (_decorCatalog == null)
                 return;
-            if (_decorCatalog.ItemColorsBindingSource.Count > 0)
-            {
-                _decorCatalog.FilterPatina(((DataRowView)_decorCatalog.DecorItemBindingSource.Current)["Name"].ToString(),
-                    Convert.ToInt32(((DataRowView)_decorCatalog.ItemColorsBindingSource.Current)["ColorID"]));
-            }
+
+            string decorName = "";
+            int ColorID = -1;
+
+            if (_decorCatalog.DecorItemBindingSource.Current != null)
+                decorName = ((DataRowView)_decorCatalog.DecorItemBindingSource.Current)["Name"].ToString();
+            if (_decorCatalog.ItemColorsBindingSource.Current != null)
+                ColorID = Convert.ToInt32(((DataRowView)_decorCatalog.ItemColorsBindingSource.Current)["ColorID"]);
+
+            _decorCatalog.FilterPatina(decorName, ColorID);
+
+            //if (_decorCatalog.DecorItemBindingSource.Current == null)
+            //    return;
+            //if (_decorCatalog.ItemColorsBindingSource.Count > 0)
+            //{
+            //    _decorCatalog.FilterPatina(((DataRowView)_decorCatalog.DecorItemBindingSource.Current)["Name"].ToString(),
+            //        Convert.ToInt32(((DataRowView)_decorCatalog.ItemColorsBindingSource.Current)["ColorID"]));
+            //}
         }
 
         public void GetDecorInsetTypes()
         {
-            if (_decorCatalog.DecorItemBindingSource.Current == null)
+            if (_decorCatalog == null)
                 return;
-            if (_decorCatalog.ItemPatinaBindingSource.Count > 0)
-            {
-                _decorCatalog.FilterInsetType(((DataRowView)_decorCatalog.DecorItemBindingSource.Current)["Name"].ToString(),
-                    Convert.ToInt32(((DataRowView)_decorCatalog.ItemColorsBindingSource.Current)["ColorID"]),
-                    Convert.ToInt32(((DataRowView)_decorCatalog.ItemPatinaBindingSource.Current)["PatinaID"]));
-            }
+
+            string decorName = "";
+            int ColorID = -1;
+            int PatinaID = -1;
+
+            if (_decorCatalog.DecorItemBindingSource.Current != null)
+                decorName = ((DataRowView)_decorCatalog.DecorItemBindingSource.Current)["Name"].ToString();
+            if (_decorCatalog.ItemColorsBindingSource.Current != null)
+                ColorID = Convert.ToInt32(((DataRowView)_decorCatalog.ItemColorsBindingSource.Current)["ColorID"]);
+            if (_decorCatalog.ItemPatinaBindingSource.Current != null)
+                PatinaID = Convert.ToInt32(((DataRowView)_decorCatalog.ItemPatinaBindingSource.Current)["PatinaID"]);
+
+            _decorCatalog.FilterInsetType(decorName, ColorID, PatinaID);
+
+            //if (_decorCatalog.DecorItemBindingSource.Current == null || _decorCatalog.ItemColorsBindingSource.Current == null)
+            //    return;
+            //if (_decorCatalog.ItemPatinaBindingSource.Count > 0)
+            //{
+            //    _decorCatalog.FilterInsetType(((DataRowView)_decorCatalog.DecorItemBindingSource.Current)["Name"].ToString(),
+            //        Convert.ToInt32(((DataRowView)_decorCatalog.ItemColorsBindingSource.Current)["ColorID"]),
+            //        Convert.ToInt32(((DataRowView)_decorCatalog.ItemPatinaBindingSource.Current)["PatinaID"]));
+            //}
         }
 
         public void GetDecorInsetColors()
         {
-            if (_decorCatalog.DecorItemBindingSource.Current == null)
+            if (_decorCatalog == null)
                 return;
-            if (_decorCatalog.ItemInsetTypesBindingSource.Count > 0)
-            {
-                _decorCatalog.FilterInsetColor(((DataRowView)_decorCatalog.DecorItemBindingSource.Current)["Name"].ToString(),
-                    Convert.ToInt32(((DataRowView)_decorCatalog.ItemColorsBindingSource.Current)["ColorID"]),
-                    Convert.ToInt32(((DataRowView)_decorCatalog.ItemPatinaBindingSource.Current)["PatinaID"]),
-                    Convert.ToInt32(((DataRowView)_decorCatalog.ItemInsetTypesBindingSource.Current)["InsetTypeID"]));
-            }
+
+            string decorName = "";
+            int ColorID = -1;
+            int PatinaID = -1;
+            int InsetTypeID = -1;
+
+            if (_decorCatalog.DecorItemBindingSource.Current != null)
+                decorName = ((DataRowView)_decorCatalog.DecorItemBindingSource.Current)["Name"].ToString();
+            if (_decorCatalog.ItemColorsBindingSource.Current != null)
+                ColorID = Convert.ToInt32(((DataRowView)_decorCatalog.ItemColorsBindingSource.Current)["ColorID"]);
+            if (_decorCatalog.ItemPatinaBindingSource.Current != null)
+                PatinaID = Convert.ToInt32(((DataRowView)_decorCatalog.ItemPatinaBindingSource.Current)["PatinaID"]);
+            if (_decorCatalog.ItemInsetTypesBindingSource.Current != null)
+                InsetTypeID = Convert.ToInt32(((DataRowView)_decorCatalog.ItemInsetTypesBindingSource.Current)["InsetTypeID"]);
+
+            _decorCatalog.FilterInsetColor(decorName, ColorID, PatinaID, InsetTypeID);
+
+            //if (_decorCatalog.DecorItemBindingSource.Current == null || _decorCatalog.ItemColorsBindingSource.Current == null)
+            //    return;
+            //if (_decorCatalog.ItemInsetTypesBindingSource.Count > 0)
+            //{
+            //    _decorCatalog.FilterInsetColor(((DataRowView)_decorCatalog.DecorItemBindingSource.Current)["Name"].ToString(),
+            //        Convert.ToInt32(((DataRowView)_decorCatalog.ItemColorsBindingSource.Current)["ColorID"]),
+            //        Convert.ToInt32(((DataRowView)_decorCatalog.ItemPatinaBindingSource.Current)["PatinaID"]),
+            //        Convert.ToInt32(((DataRowView)_decorCatalog.ItemInsetTypesBindingSource.Current)["InsetTypeID"]));
+            //}
         }
 
         public void GetDecorLength()
         {
-            if (_decorCatalog.DecorItemBindingSource.Current == null)
+            if (_decorCatalog == null)
                 return;
-            if (_decorCatalog.ItemInsetColorsBindingSource.Count > 0)
-            {
 
-                _decorCatalog.FilterLength(((DataRowView)_decorCatalog.DecorItemBindingSource.Current)["Name"].ToString(),
-                    Convert.ToInt32(((DataRowView)_decorCatalog.ItemColorsBindingSource.Current)["ColorID"]),
-                    Convert.ToInt32(((DataRowView)_decorCatalog.ItemPatinaBindingSource.Current)["PatinaID"]),
-                    Convert.ToInt32(((DataRowView)_decorCatalog.ItemInsetTypesBindingSource.Current)["InsetTypeID"]),
-                    Convert.ToInt32(((DataRowView)_decorCatalog.ItemInsetColorsBindingSource.Current)["InsetColorID"]));
-            }
+            string decorName = "";
+            int ColorID = -1;
+            int PatinaID = -1;
+            int InsetTypeID = -1;
+            int InsetColorID = -1;
+
+            if (_decorCatalog.DecorItemBindingSource.Current != null)
+                decorName = ((DataRowView)_decorCatalog.DecorItemBindingSource.Current)["Name"].ToString();
+            if (_decorCatalog.ItemColorsBindingSource.Current != null)
+                ColorID = Convert.ToInt32(((DataRowView)_decorCatalog.ItemColorsBindingSource.Current)["ColorID"]);
+            if (_decorCatalog.ItemPatinaBindingSource.Current != null)
+                PatinaID = Convert.ToInt32(((DataRowView)_decorCatalog.ItemPatinaBindingSource.Current)["PatinaID"]);
+            if (_decorCatalog.ItemInsetTypesBindingSource.Current != null)
+                InsetTypeID = Convert.ToInt32(((DataRowView)_decorCatalog.ItemInsetTypesBindingSource.Current)["InsetTypeID"]);
+            if (_decorCatalog.ItemInsetColorsBindingSource.Current != null)
+                InsetColorID = Convert.ToInt32(((DataRowView)_decorCatalog.ItemInsetColorsBindingSource.Current)["InsetColorID"]);
+
+            _decorCatalog.FilterLength(decorName, ColorID, PatinaID, InsetTypeID, InsetColorID);
+
+            //if (_decorCatalog.DecorItemBindingSource.Current == null || _decorCatalog.ItemColorsBindingSource.Current == null)
+            //    return;
+            //if (_decorCatalog.ItemInsetColorsBindingSource.Count > 0)
+            //{
+
+            //    _decorCatalog.FilterLength(((DataRowView)_decorCatalog.DecorItemBindingSource.Current)["Name"].ToString(),
+            //        Convert.ToInt32(((DataRowView)_decorCatalog.ItemColorsBindingSource.Current)["ColorID"]),
+            //        Convert.ToInt32(((DataRowView)_decorCatalog.ItemPatinaBindingSource.Current)["PatinaID"]),
+            //        Convert.ToInt32(((DataRowView)_decorCatalog.ItemInsetTypesBindingSource.Current)["InsetTypeID"]),
+            //        Convert.ToInt32(((DataRowView)_decorCatalog.ItemInsetColorsBindingSource.Current)["InsetColorID"]));
+            //}
         }
 
         public void GetDecorHeight()
         {
-            if (_decorCatalog.DecorProductsBindingSource.Current == null || _decorCatalog.DecorItemBindingSource.Current == null)
+            if (_decorCatalog == null)
+                return;
+
+            if (_decorCatalog.DecorProductsBindingSource.Current == null || _decorCatalog.DecorItemBindingSource.Current == null || _decorCatalog.ItemColorsBindingSource.Current == null)
                 return;
             if (_decorCatalog.LengthBindingSource.Count > 0)
             {
@@ -1117,20 +1228,36 @@ namespace Infinium
 
         public void GetDecorWidth()
         {
-            if (_decorCatalog.DecorItemBindingSource.Current == null)
+            if (_decorCatalog == null)
                 return;
-            if (_decorCatalog.HeightBindingSource.Count > 0)
-            {
-                int length = Convert.ToInt32(((DataRowView)_decorCatalog.LengthBindingSource.Current)["Length"]);
-                int height = Convert.ToInt32(((DataRowView)_decorCatalog.HeightBindingSource.Current)["Height"]);
 
-                _decorCatalog.FilterWidth(((DataRowView)_decorCatalog.DecorItemBindingSource.Current)["Name"].ToString(),
-                    Convert.ToInt32(((DataRowView)_decorCatalog.ItemColorsBindingSource.Current)["ColorID"]),
-                    Convert.ToInt32(((DataRowView)_decorCatalog.ItemPatinaBindingSource.Current)["PatinaID"]),
-                    Convert.ToInt32(((DataRowView)_decorCatalog.ItemInsetTypesBindingSource.Current)["InsetTypeID"]),
-                    Convert.ToInt32(((DataRowView)_decorCatalog.ItemInsetColorsBindingSource.Current)["InsetColorID"]), length, height);
-            }
+            //if (_decorCatalog.DecorItemBindingSource.Current == null || _decorCatalog.ItemColorsBindingSource.Current == null)
+            //    return;
 
+            string decorName = "";
+            int ColorID = -1;
+            int PatinaID = -1;
+            int InsetTypeID = -1;
+            int InsetColorID = -1;
+            int length = -1;
+            int height = -1;
+
+            if (_decorCatalog.DecorItemBindingSource.Current != null)
+                decorName = ((DataRowView)_decorCatalog.DecorItemBindingSource.Current)["Name"].ToString();
+            if (_decorCatalog.ItemColorsBindingSource.Current != null)
+                ColorID = Convert.ToInt32(((DataRowView)_decorCatalog.ItemColorsBindingSource.Current)["ColorID"]);
+            if (_decorCatalog.ItemPatinaBindingSource.Current != null)
+                PatinaID = Convert.ToInt32(((DataRowView)_decorCatalog.ItemPatinaBindingSource.Current)["PatinaID"]);
+            if (_decorCatalog.ItemInsetTypesBindingSource.Current != null)
+                InsetTypeID = Convert.ToInt32(((DataRowView)_decorCatalog.ItemInsetTypesBindingSource.Current)["InsetTypeID"]);
+            if (_decorCatalog.ItemInsetColorsBindingSource.Current != null)
+                InsetColorID = Convert.ToInt32(((DataRowView)_decorCatalog.ItemInsetColorsBindingSource.Current)["InsetColorID"]);
+            if (_decorCatalog.LengthBindingSource.Current != null)
+                length = Convert.ToInt32(((DataRowView)_decorCatalog.LengthBindingSource.Current)["Length"]);
+            if (_decorCatalog.HeightBindingSource.Current != null)
+                height = Convert.ToInt32(((DataRowView)_decorCatalog.HeightBindingSource.Current)["height"]);
+
+            _decorCatalog.FilterWidth(decorName, ColorID, PatinaID, InsetTypeID, InsetColorID, length, height);
         }
 
         #endregion
@@ -1210,16 +1337,8 @@ namespace Infinium
                 TechnoInsetColorsDataGrid.SelectionChanged -= TechnoInsetColorsDataGrid_SelectionChanged;
                 PatinaDataGrid.SelectionChanged -= PatinaDataGrid_SelectionChanged;
                 FrontsHeightDataGrid.SelectionChanged -= FrontsHeightDataGrid_SelectionChanged;
-
-                int ClientID = -1;
-
-                if (cbClients.Checked && FilterClientsDataGrid.SelectedRows.Count > 0)
-                    ClientID = Convert.ToInt32(FilterClientsDataGrid.SelectedRows[0].Cells["ClientID"].Value);
-
-                if (cbClients.Checked)
-                    _frontsCatalog.FilterFronts(ClientID);
-                else
-                    _frontsCatalog.FilterFronts();
+                
+                _frontsCatalog.FilterFronts();
                 GetFrameColors();
                 GetTechnoFrameColors();
                 GetInsetTypes();
@@ -1248,7 +1367,15 @@ namespace Infinium
             if (_frontsCatalog == null || _decorCatalog == null)
                 return;
 
-            int ClientID = -1;
+            bool clients = cbClients.Checked;
+            bool excluzive = cbExcluzive.Checked;
+            int clientId = -1;
+            int factoryId = 2;
+
+            if (cbClients.Checked && FilterClientsDataGrid.SelectedRows.Count > 0)
+                clientId = Convert.ToInt32(FilterClientsDataGrid.SelectedRows[0].Cells["ClientID"].Value);
+            if (kryptonCheckSet2.CheckedButton.Name == "ProfilCheckButton")
+                factoryId = 1;
 
             if (kryptonCheckSet2.CheckedButton.Name == "ProfilCheckButton")
             {
@@ -1257,8 +1384,8 @@ namespace Infinium
 
                 while (!SplashWindow.bSmallCreated) ;
 
-                _frontsCatalog.FilterCatalog(1);
-                _decorCatalog.FilterCatalog(1);
+                _frontsCatalog.FilterCatalog(excluzive, clients, clientId, factoryId);
+                _decorCatalog.FilterCatalog(excluzive, clients, clientId, factoryId);
 
                 FrontsDataGrid.SelectionChanged -= FrontsDataGrid_SelectionChanged;
                 FrameColorsDataGrid.SelectionChanged -= FrameColorsDataGrid_SelectionChanged;
@@ -1269,14 +1396,8 @@ namespace Infinium
                 TechnoInsetColorsDataGrid.SelectionChanged -= TechnoInsetColorsDataGrid_SelectionChanged;
                 PatinaDataGrid.SelectionChanged -= PatinaDataGrid_SelectionChanged;
                 FrontsHeightDataGrid.SelectionChanged -= FrontsHeightDataGrid_SelectionChanged;
-
-                if (cbClients.Checked && FilterClientsDataGrid.SelectedRows.Count > 0)
-                    ClientID = Convert.ToInt32(FilterClientsDataGrid.SelectedRows[0].Cells["ClientID"].Value);
-
-                if (cbClients.Checked)
-                    _frontsCatalog.FilterFronts(ClientID);
-                else
-                    _frontsCatalog.FilterFronts();
+                
+                _frontsCatalog.FilterFronts();
 
                 GetFrameColors();
                 GetTechnoFrameColors();
@@ -1335,8 +1456,8 @@ namespace Infinium
 
                 while (!SplashWindow.bSmallCreated) ;
 
-                _frontsCatalog.FilterCatalog(2);
-                _decorCatalog.FilterCatalog(2);
+                _frontsCatalog.FilterCatalog(excluzive, clients, clientId, factoryId);
+                _decorCatalog.FilterCatalog(excluzive, clients, clientId, factoryId);
 
                 FrontsDataGrid.SelectionChanged -= FrontsDataGrid_SelectionChanged;
                 FrameColorsDataGrid.SelectionChanged -= FrameColorsDataGrid_SelectionChanged;
@@ -1347,14 +1468,8 @@ namespace Infinium
                 TechnoInsetColorsDataGrid.SelectionChanged -= TechnoInsetColorsDataGrid_SelectionChanged;
                 PatinaDataGrid.SelectionChanged -= PatinaDataGrid_SelectionChanged;
                 FrontsHeightDataGrid.SelectionChanged -= FrontsHeightDataGrid_SelectionChanged;
-
-                if (cbClients.Checked && FilterClientsDataGrid.SelectedRows.Count > 0)
-                    ClientID = Convert.ToInt32(FilterClientsDataGrid.SelectedRows[0].Cells["ClientID"].Value);
-
-                if (cbClients.Checked)
-                    _frontsCatalog.FilterFronts(ClientID);
-                else
-                    _frontsCatalog.FilterFronts();
+                
+                _frontsCatalog.FilterFronts();
 
                 GetFrameColors();
                 GetTechnoFrameColors();
@@ -2121,11 +2236,21 @@ namespace Infinium
             //    MessageBox.Show("Отсутствует Description");
             //    return;
             //}
-            int configId = _frontsCatalog.SaveFrontAttachments(frontName, colorId, technoColorId, insetTypeId, insetColorId, technoInsetTypeId, technoInsetColorId, patinaId);
+            int configId = -1;
+
+            configId = _frontsCatalog.GetFrontAttachments(frontName, colorId, technoColorId, insetTypeId, insetColorId, technoInsetTypeId, technoInsetColorId, patinaId);
             if (configId != -1)
-                _frontsCatalog.AttachConfigImage(_attachmentsDt, configId, 0, description, frontName,
-                    FrameColorsDataGrid.SelectedRows[0].Cells["ColorName"].FormattedValue.ToString(),
-                    PatinaDataGrid.SelectedRows[0].Cells["PatinaName"].FormattedValue.ToString());
+            {
+                _frontsCatalog.EditConfigImage(_attachmentsDt, configId);
+            }
+            else
+            {
+                configId = _frontsCatalog.SaveFrontAttachments(frontName, colorId, technoColorId, insetTypeId, insetColorId, technoInsetTypeId, technoInsetColorId, patinaId);
+                if (configId != -1)
+                    _frontsCatalog.AttachConfigImage(_attachmentsDt, configId, 0, description, frontName,
+                        FrameColorsDataGrid.SelectedRows[0].Cells["ColorName"].FormattedValue.ToString(),
+                        PatinaDataGrid.SelectedRows[0].Cells["PatinaName"].FormattedValue.ToString());
+            }
 
             pcbxFrontImage.Image = null;
 
@@ -2552,12 +2677,22 @@ namespace Infinium
             //if (ProductID == 46 || ProductID == 61 || ProductID == 62 || ProductID == 63)
             if (CheckOrdersStatus.IsCabFurniture(productId))
                 productType = 2;
-            int configId = _decorCatalog.SaveDecorAttachments(productId, decorName, colorId, patinaId, insetTypeId, insetColorId);
+            int configId = -1;
+
+            configId = _decorCatalog.GetDecorAttachments(productId, decorName, colorId, patinaId, insetTypeId, insetColorId);
             if (configId != -1)
-                _decorCatalog.AttachConfigImage(_attachmentsDt, configId, productType, ((DataRowView)_decorCatalog.DecorProductsBindingSource.Current)["ProductName"].ToString(),
-                    decorName, ((DataRowView)_decorCatalog.ItemColorsBindingSource.Current)["ColorName"].ToString(),
-                    ((DataRowView)_decorCatalog.ItemPatinaBindingSource.Current)["PatinaName"].ToString(),
-                    ((DataRowView)_decorCatalog.ItemInsetColorsBindingSource.Current)["InsetColorName"].ToString());
+                _decorCatalog.EditConfigImage(_attachmentsDt, configId, productType);
+            else
+            {
+                configId = _decorCatalog.SaveDecorAttachments(productId, decorName, colorId, patinaId, insetTypeId,
+                    insetColorId);
+                if (configId != -1)
+                    _decorCatalog.AttachConfigImage(_attachmentsDt, configId, productType,
+                        ((DataRowView)_decorCatalog.DecorProductsBindingSource.Current)["ProductName"].ToString(),
+                        decorName, ((DataRowView)_decorCatalog.ItemColorsBindingSource.Current)["ColorName"].ToString(),
+                        ((DataRowView)_decorCatalog.ItemPatinaBindingSource.Current)["PatinaName"].ToString(),
+                        ((DataRowView)_decorCatalog.ItemInsetColorsBindingSource.Current)["InsetColorName"].ToString());
+            }
 
             pcbxDecorImage.Image = null;
             if (cbDecorImage.Checked)
@@ -4497,32 +4632,36 @@ namespace Infinium
             if (TechnoInsetColorsDataGrid.SelectedRows.Count > 0 && TechnoInsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value != DBNull.Value)
                 technoInsetColorId = Convert.ToInt32(TechnoInsetColorsDataGrid.SelectedRows[0].Cells["InsetColorID"].Value);
 
-            bool isConfigImageToSite = false;
-            bool bLatest = false;
-            string category = string.Empty;
-            string nameProd = string.Empty;
-            string description = string.Empty;
-            string sizes = string.Empty;
-            string material = string.Empty;
+            //bool isConfigImageToSite = false;
+            //bool bLatest = false;
+            //bool bBasic = false;
+            //string category = string.Empty;
+            //string nameProd = string.Empty;
+            //string description = string.Empty;
+            //string sizes = string.Empty;
+            //string material = string.Empty;
 
+            ConfigImageInfo configImageInfo = new ConfigImageInfo();
             int configId = _frontsCatalog.GetFrontAttachments(frontName, colorId, technoColorId, insetTypeId, insetColorId, technoInsetTypeId, technoInsetColorId, patinaId);
             if (configId != -1)
-                isConfigImageToSite = _frontsCatalog.IsConfigImageToSite(configId, ref bLatest, ref category, ref nameProd, ref description, ref sizes, ref material);
+                configImageInfo = _frontsCatalog.IsConfigImageToSite(configId);
 
             PhantomForm phantomForm = new Infinium.PhantomForm();
             phantomForm.Show();
-            ProductDescriptionForm productDescriptionForm = new ProductDescriptionForm(this, isConfigImageToSite, bLatest, category, nameProd, description, sizes, material);
+            ProductDescriptionForm productDescriptionForm = new ProductDescriptionForm(this, configImageInfo);
             _topForm = productDescriptionForm;
             productDescriptionForm.ShowDialog();
 
             pressOk = productDescriptionForm.PressOK;
-            isConfigImageToSite = productDescriptionForm.ToSite;
-            category = productDescriptionForm.Category;
-            nameProd = productDescriptionForm.NameProd;
-            description = productDescriptionForm.Description;
-            sizes = productDescriptionForm.Sizes;
-            material = productDescriptionForm.Material;
-            bLatest = productDescriptionForm.Latest;
+            configImageInfo = productDescriptionForm.ConfigImageInfo;
+            //isConfigImageToSite = productDescriptionForm.ToSite;
+            //category = productDescriptionForm.Category;
+            //nameProd = productDescriptionForm.NameProd;
+            //description = productDescriptionForm.Description;
+            //sizes = productDescriptionForm.Sizes;
+            //material = productDescriptionForm.Material;
+            //bLatest = productDescriptionForm.Latest;
+            //bBasic = productDescriptionForm.Basic;
 
             phantomForm.Close();
             phantomForm.Dispose();
@@ -4540,7 +4679,7 @@ namespace Infinium
             if (configId != -1)
             {
 
-                _frontsCatalog.ConfigImageToSite(configId, isConfigImageToSite, bLatest, category, nameProd, description, sizes, material);
+                _frontsCatalog.ConfigImageToSite(configId, configImageInfo);
 
                 while (SplashWindow.bSmallCreated)
                     SmallWaitForm.CloseS = true;
@@ -4555,8 +4694,8 @@ namespace Infinium
                 string insetType = InsetTypesDataGrid.SelectedRows[0].Cells["InsetTypeName"].FormattedValue.ToString();
                 string insetColor = InsetColorsDataGrid.SelectedRows[0].Cells["InsetColorName"].FormattedValue.ToString();
 
-                if (isConfigImageToSite && !_frontsCatalog.CreateFotoFromVisualConfig(frontId, colorId, technoColorId, patinaId, insetTypeId, insetColorId, technoInsetTypeId, technoInsetColorId,
-                    category, front, frameColor, patina, insetType, insetColor))
+                if (configImageInfo.ToSite && !_frontsCatalog.CreateFotoFromVisualConfig(frontId, colorId, technoColorId, patinaId, insetTypeId, insetColorId, technoInsetTypeId, technoInsetColorId,
+                        configImageInfo.Category, front, frameColor, patina, insetType, insetColor))
                 {
                     while (SplashWindow.bSmallCreated)
                         SmallWaitForm.CloseS = true;
@@ -4566,7 +4705,7 @@ namespace Infinium
                 {
 
                     configId = _frontsCatalog.GetFrontAttachments(frontName, colorId, technoColorId, insetTypeId, insetColorId, technoInsetTypeId, technoInsetColorId, patinaId);
-                    _frontsCatalog.ConfigImageToSite(configId, isConfigImageToSite, bLatest, category, nameProd, description, sizes, material);
+                    _frontsCatalog.ConfigImageToSite(configId, configImageInfo);
 
                     while (SplashWindow.bSmallCreated)
                         SmallWaitForm.CloseS = true;
@@ -4598,17 +4737,20 @@ namespace Infinium
             if ((DataRowView)_decorCatalog.ItemInsetColorsBindingSource.Current != null)
                 insetColorId = Convert.ToInt32(((DataRowView)_decorCatalog.ItemInsetColorsBindingSource.Current)["InsetColorID"]);
 
-            string category = string.Empty;
-            string description = string.Empty;
-            string nameProd = string.Empty;
-            string sizes = string.Empty;
-            string material = string.Empty;
-            bool isConfigImageToSite = false;
-            bool bLatest = false;
+            //string category = string.Empty;
+            //string description = string.Empty;
+            //string nameProd = string.Empty;
+            //string sizes = string.Empty;
+            //string material = string.Empty;
+            //bool isConfigImageToSite = false;
+            //bool bLatest = false;
+            //bool bBasic = false;
+
+            ConfigImageInfo configImageInfo = new ConfigImageInfo();
 
             int configId = _decorCatalog.GetDecorAttachments(productId, decorName, colorId, patinaId, insetTypeId, insetColorId);
             if (configId != -1)
-                isConfigImageToSite = _decorCatalog.IsConfigImageToSite(configId, ref bLatest, ref category, ref nameProd, ref description, ref sizes, ref material);
+                configImageInfo = _decorCatalog.IsConfigImageToSite(configId);
             else
             {
                 MessageBox.Show("Изображение не найдено!");
@@ -4616,18 +4758,20 @@ namespace Infinium
             }
             PhantomForm phantomForm = new Infinium.PhantomForm();
             phantomForm.Show();
-            ProductDescriptionForm productDescriptionForm = new ProductDescriptionForm(this, isConfigImageToSite, bLatest, category, nameProd, description, sizes, material);
+            ProductDescriptionForm productDescriptionForm = new ProductDescriptionForm(this, configImageInfo);
             _topForm = productDescriptionForm;
             productDescriptionForm.ShowDialog();
 
             pressOk = productDescriptionForm.PressOK;
-            isConfigImageToSite = productDescriptionForm.ToSite;
-            category = productDescriptionForm.Category;
-            description = productDescriptionForm.Description;
-            nameProd = productDescriptionForm.NameProd;
-            sizes = productDescriptionForm.Sizes;
-            material = productDescriptionForm.Material;
-            bLatest = productDescriptionForm.Latest;
+            configImageInfo = productDescriptionForm.ConfigImageInfo;
+            //isConfigImageToSite = productDescriptionForm.ToSite;
+            //category = productDescriptionForm.Category;
+            //description = productDescriptionForm.Description;
+            //nameProd = productDescriptionForm.NameProd;
+            //sizes = productDescriptionForm.Sizes;
+            //material = productDescriptionForm.Material;
+            //bLatest = productDescriptionForm.Latest;
+            //bBasic = productDescriptionForm.Basic;
 
             phantomForm.Close();
             phantomForm.Dispose();
@@ -4639,7 +4783,7 @@ namespace Infinium
 
             if (configId != -1)
             {
-                _decorCatalog.ConfigImageToSite(configId, isConfigImageToSite, bLatest, category, nameProd, description, sizes, material);
+                _decorCatalog.ConfigImageToSite(configId, configImageInfo);
             }
 
         }
@@ -5414,15 +5558,107 @@ namespace Infinium
 
         private void btnFilterCatalog_Click(object sender, EventArgs e)
         {
-            int ClientID = -1;
+            bool clients = cbClients.Checked;
+            bool excluzive = cbExcluzive.Checked;
+            int clientId = -1;
+            int factoryId = 2;
 
             if (cbClients.Checked && FilterClientsDataGrid.SelectedRows.Count > 0)
-                ClientID = Convert.ToInt32(FilterClientsDataGrid.SelectedRows[0].Cells["ClientID"].Value);
+                clientId = Convert.ToInt32(FilterClientsDataGrid.SelectedRows[0].Cells["ClientID"].Value);
+            if (kryptonCheckSet2.CheckedButton.Name == "ProfilCheckButton")
+                factoryId = 1;
 
-            if (cbClients.Checked)
-                _frontsCatalog.FilterFronts(ClientID);
-            else
-                _frontsCatalog.FilterFronts();
+            Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref _topForm, "Загрузка данных с сервера.\r\nПодождите..."); });
+            T.Start();
+
+            while (!SplashWindow.bSmallCreated) ;
+
+            _frontsCatalog.FilterCatalog(excluzive, clients, clientId, factoryId);
+            _frontsCatalog.FilterFronts();
+
+            _decorCatalog.FilterCatalog(excluzive, clients, clientId, factoryId);
+            _decorCatalog.FilterProducts();
+
+            while (SplashWindow.bSmallCreated)
+                SmallWaitForm.CloseS = true;
+            //GetDecorItems();
+            //GetDecorColors();
+            //GetDecorPatina();
+            //GetDecorInsetTypes();
+            //GetDecorInsetColors();
+            //GetDecorLength();
+            //GetDecorHeight();
+            //GetDecorWidth();
+        }
+
+        private void pcbxDecorTechStore_MouseDown(object sender, MouseEventArgs e)
+        {
+        }
+
+        private void btnSaveDecorTechStore_Click(object sender, EventArgs e)
+        {
+            int productId = Convert.ToInt32(((DataRowView)_decorCatalog.DecorProductsBindingSource.Current)["ProductID"]);
+            string decorName = ((DataRowView)_decorCatalog.DecorItemBindingSource.Current)["Name"].ToString();
+            int colorId = Convert.ToInt32(((DataRowView)_decorCatalog.ItemColorsBindingSource.Current)["ColorID"]);
+            int patinaId = Convert.ToInt32(((DataRowView)_decorCatalog.ItemPatinaBindingSource.Current)["PatinaID"]);
+            int insetTypeId = Convert.ToInt32(((DataRowView)_decorCatalog.ItemInsetTypesBindingSource.Current)["InsetTypeID"]);
+            int insetColorId = Convert.ToInt32(((DataRowView)_decorCatalog.ItemInsetColorsBindingSource.Current)["InsetColorID"]);
+
+            var decorId = _decorCatalog.GetDecorID(productId, decorName, colorId, patinaId, insetTypeId, insetColorId);
+            var fileName = _decorCatalog.GetDecorTechStoreFileName(decorId);
+
+            if (decorId != -1 && fileName != "")
+            {
+                saveFileDialog1.Filter = "(*" + Path.GetExtension(fileName) + ")|*" + Path.GetExtension(fileName);
+                saveFileDialog1.FileName = fileName;
+
+                DialogResult dialogResult = saveFileDialog1.ShowDialog();
+
+                if (dialogResult == DialogResult.OK)
+                {
+                    var T = new Thread(delegate () { _decorCatalog.SaveDecorTechStoreFile(decorId, saveFileDialog1.FileName); });
+                    T.Start();
+
+                    while (T.IsAlive)
+                    {
+                        T.Join(50);
+                        Application.DoEvents();
+                    }
+                }
+            }
+        }
+
+        private void btnSaveDecorImage_Click(object sender, EventArgs e)
+        {
+            int productId = Convert.ToInt32(((DataRowView)_decorCatalog.DecorProductsBindingSource.Current)["ProductID"]);
+            string decorName = ((DataRowView)_decorCatalog.DecorItemBindingSource.Current)["Name"].ToString();
+            int colorId = Convert.ToInt32(((DataRowView)_decorCatalog.ItemColorsBindingSource.Current)["ColorID"]);
+            int patinaId = Convert.ToInt32(((DataRowView)_decorCatalog.ItemPatinaBindingSource.Current)["PatinaID"]);
+            int insetTypeId = Convert.ToInt32(((DataRowView)_decorCatalog.ItemInsetTypesBindingSource.Current)["InsetTypeID"]);
+            int insetColorId = Convert.ToInt32(((DataRowView)_decorCatalog.ItemInsetColorsBindingSource.Current)["InsetColorID"]);
+
+            var configId = _decorCatalog.GetDecorAttachments(productId, decorName, colorId, patinaId, insetTypeId, insetColorId);
+            var fileName = _decorCatalog.GetDecorImageFileName(configId, productId);
+
+            if (configId != -1 && fileName != "")
+            {
+                saveFileDialog1.Filter = "(*" + Path.GetExtension(fileName) + ")|*" + Path.GetExtension(fileName);
+                saveFileDialog1.FileName = fileName;
+
+                DialogResult dialogResult = saveFileDialog1.ShowDialog();
+
+                if (dialogResult == DialogResult.OK)
+                {
+                    var T = new Thread(delegate () { _decorCatalog.SaveDecorConfigImage(configId, productId, saveFileDialog1.FileName) ; });
+                    T.Start();
+
+                    while (T.IsAlive)
+                    {
+                        T.Join(50);
+                        Application.DoEvents();
+                    }
+                }
+            }
         }
     }
 }

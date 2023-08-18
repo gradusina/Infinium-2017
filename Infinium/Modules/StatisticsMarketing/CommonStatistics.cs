@@ -2006,8 +2006,8 @@ namespace Infinium.Modules.StatisticsMarketing
 
         private void GetDecorProducts()
         {
-            decimal DecorProductCost = 0;
-            decimal DecorProductCount = 0;
+            decimal DecorCost = 0;
+            decimal DecorCount = 0;
             int decimals = 2;
             string Measure = string.Empty;
             DecorProductsSummaryDataTable.Clear();
@@ -2030,26 +2030,37 @@ namespace Infinium.Modules.StatisticsMarketing
                 {
                     if (Convert.ToInt32(row["ProductID"]) == 2)
                     {
-                        DecorProductCost += Convert.ToDecimal(row["Cost"]);
-                        if (row["Height"].ToString() == "-1")
-                            DecorProductCount += Convert.ToDecimal(row["Length"]) * Convert.ToDecimal(row["Count"]) / 1000;
-                        else
-                            DecorProductCount += Convert.ToDecimal(row["Height"]) * Convert.ToDecimal(row["Count"]) / 1000;
-                        Measure = "м.п.";
+                        if (Convert.ToInt32(row["MeasureID"]) == 2)
+                        {
+                            DecorCost += Convert.ToDecimal(row["Cost"]);
+                            if (row["Height"].ToString() == "-1")
+                                DecorCount += Convert.ToDecimal(row["Length"]) *
+                                    Convert.ToDecimal(row["Count"]) / 1000;
+                            else
+                                DecorCount += Convert.ToDecimal(row["Height"]) *
+                                    Convert.ToDecimal(row["Count"]) / 1000;
+                            Measure = "м.п.";
+                        }
+                        if (Convert.ToInt32(row["MeasureID"]) == 3)
+                        {
+                            DecorCost += Convert.ToDecimal(row["Cost"]);
+                            DecorCount += Convert.ToInt32(row["Count"]);
+                            Measure = "шт.";
+                        }
                         continue;
                     }
 
                     if (Convert.ToInt32(row["MeasureID"]) == 1)
                     {
-                        DecorProductCost += Convert.ToDecimal(row["Cost"]);
-                        DecorProductCount += Convert.ToInt32(row["Count"]);
+                        DecorCost += Convert.ToDecimal(row["Cost"]);
+                        DecorCount += Convert.ToInt32(row["Count"]);
                         Measure = "шт.";
                     }
 
                     if (Convert.ToInt32(row["MeasureID"]) == 3)
                     {
-                        DecorProductCost += Convert.ToDecimal(row["Cost"]);
-                        DecorProductCount += Convert.ToInt32(row["Count"]);
+                        DecorCost += Convert.ToDecimal(row["Cost"]);
+                        DecorCount += Convert.ToInt32(row["Count"]);
                         Measure = "шт.";
                     }
 
@@ -2058,14 +2069,14 @@ namespace Infinium.Modules.StatisticsMarketing
                         //нет параметра "высота"
                         if (row["Height"].ToString() == "-1")
                         {
-                            DecorProductCount += Convert.ToDecimal(row["Length"]) * Convert.ToDecimal(row["Count"]) / 1000;
+                            DecorCount += Convert.ToDecimal(row["Length"]) * Convert.ToDecimal(row["Count"]) / 1000;
                         }
                         else
                         {
-                            DecorProductCount += Convert.ToDecimal(row["Height"]) * Convert.ToDecimal(row["Count"]) / 1000;
+                            DecorCount += Convert.ToDecimal(row["Height"]) * Convert.ToDecimal(row["Count"]) / 1000;
                         }
 
-                        DecorProductCost += Convert.ToDecimal(row["Cost"]);
+                        DecorCost += Convert.ToDecimal(row["Cost"]);
                         Measure = "м.п.";
                     }
                 }
@@ -2074,16 +2085,16 @@ namespace Infinium.Modules.StatisticsMarketing
                 NewRow["ProductID"] = Convert.ToInt32(Table.Rows[i]["ProductID"]);
                 NewRow["MeasureID"] = Convert.ToInt32(Table.Rows[i]["MeasureID"]);
                 NewRow["DecorProduct"] = GetProductName(Convert.ToInt32(Table.Rows[i]["ProductID"]));
-                if (DecorProductCount < 3)
+                if (DecorCount < 3)
                     decimals = 1;
-                NewRow["Cost"] = Decimal.Round(DecorProductCost, decimals, MidpointRounding.AwayFromZero);
-                NewRow["Count"] = Decimal.Round(DecorProductCount, decimals, MidpointRounding.AwayFromZero);
+                NewRow["Cost"] = Decimal.Round(DecorCost, decimals, MidpointRounding.AwayFromZero);
+                NewRow["Count"] = Decimal.Round(DecorCount, decimals, MidpointRounding.AwayFromZero);
                 NewRow["Measure"] = Measure;
                 DecorProductsSummaryDataTable.Rows.Add(NewRow);
 
                 Measure = string.Empty;
-                DecorProductCost = 0;
-                DecorProductCount = 0;
+                DecorCost = 0;
+                DecorCount = 0;
             }
             DecorProductsSummaryDataTable.DefaultView.Sort = "DecorProduct, Measure ASC, Count DESC";
             DecorProductsSummaryBindingSource.MoveFirst();
@@ -2091,8 +2102,8 @@ namespace Infinium.Modules.StatisticsMarketing
 
         private void GetDecorItems()
         {
-            decimal DecorItemCost = 0;
-            decimal DecorItemCount = 0;
+            decimal DecorCost = 0;
+            decimal DecorCount = 0;
             int decimals = 2;
             string Measure = string.Empty;
             DecorItemsSummaryDataTable.Clear();
@@ -2115,26 +2126,37 @@ namespace Infinium.Modules.StatisticsMarketing
                 {
                     if (Convert.ToInt32(row["ProductID"]) == 2)
                     {
-                        DecorItemCost += Convert.ToDecimal(row["Cost"]);
-                        if (row["Height"].ToString() == "-1")
-                            DecorItemCount += Convert.ToDecimal(row["Length"]) * Convert.ToDecimal(row["Count"]) / 1000;
-                        else
-                            DecorItemCount += Convert.ToDecimal(row["Height"]) * Convert.ToDecimal(row["Count"]) / 1000;
-                        Measure = "м.п.";
+                        if (Convert.ToInt32(row["MeasureID"]) == 2)
+                        {
+                            DecorCost += Convert.ToDecimal(row["Cost"]);
+                            if (row["Height"].ToString() == "-1")
+                                DecorCount += Convert.ToDecimal(row["Length"]) *
+                                    Convert.ToDecimal(row["Count"]) / 1000;
+                            else
+                                DecorCount += Convert.ToDecimal(row["Height"]) *
+                                    Convert.ToDecimal(row["Count"]) / 1000;
+                            Measure = "м.п.";
+                        }
+                        if (Convert.ToInt32(row["MeasureID"]) == 3)
+                        {
+                            DecorCost += Convert.ToDecimal(row["Cost"]);
+                            DecorCount += Convert.ToInt32(row["Count"]);
+                            Measure = "шт.";
+                        }
                         continue;
                     }
 
                     if (Convert.ToInt32(row["MeasureID"]) == 1)
                     {
-                        DecorItemCost += Convert.ToDecimal(row["Cost"]);
-                        DecorItemCount += Convert.ToInt32(row["Count"]);
+                        DecorCost += Convert.ToDecimal(row["Cost"]);
+                        DecorCount += Convert.ToInt32(row["Count"]);
                         Measure = "шт.";
                     }
 
                     if (Convert.ToInt32(row["MeasureID"]) == 3)
                     {
-                        DecorItemCost += Convert.ToDecimal(row["Cost"]);
-                        DecorItemCount += Convert.ToInt32(row["Count"]);
+                        DecorCost += Convert.ToDecimal(row["Cost"]);
+                        DecorCount += Convert.ToInt32(row["Count"]);
                         Measure = "шт.";
                     }
 
@@ -2142,11 +2164,11 @@ namespace Infinium.Modules.StatisticsMarketing
                     {
                         //нет параметра "высота"
                         if (row["Height"].ToString() == "-1")
-                            DecorItemCount += Convert.ToDecimal(row["Length"]) * Convert.ToDecimal(row["Count"]) / 1000;
+                            DecorCount += Convert.ToDecimal(row["Length"]) * Convert.ToDecimal(row["Count"]) / 1000;
                         else
-                            DecorItemCount += Convert.ToDecimal(row["Height"]) * Convert.ToDecimal(row["Count"]) / 1000;
+                            DecorCount += Convert.ToDecimal(row["Height"]) * Convert.ToDecimal(row["Count"]) / 1000;
 
-                        DecorItemCost += Convert.ToDecimal(row["Cost"]);
+                        DecorCost += Convert.ToDecimal(row["Cost"]);
                         Measure = "м.п.";
                     }
                 }
@@ -2156,16 +2178,16 @@ namespace Infinium.Modules.StatisticsMarketing
                 NewRow["DecorID"] = Convert.ToInt32(Table.Rows[i]["DecorID"]);
                 NewRow["MeasureID"] = Convert.ToInt32(Table.Rows[i]["MeasureID"]);
                 NewRow["DecorItem"] = GetDecorName(Convert.ToInt32(Table.Rows[i]["DecorID"]));
-                if (DecorItemCount < 3)
+                if (DecorCount < 3)
                     decimals = 1;
-                NewRow["Cost"] = Decimal.Round(DecorItemCost, decimals, MidpointRounding.AwayFromZero);
-                NewRow["Count"] = Decimal.Round(DecorItemCount, decimals, MidpointRounding.AwayFromZero);
+                NewRow["Cost"] = Decimal.Round(DecorCost, decimals, MidpointRounding.AwayFromZero);
+                NewRow["Count"] = Decimal.Round(DecorCount, decimals, MidpointRounding.AwayFromZero);
                 NewRow["Measure"] = Measure;
                 DecorItemsSummaryDataTable.Rows.Add(NewRow);
 
                 Measure = string.Empty;
-                DecorItemCost = 0;
-                DecorItemCount = 0;
+                DecorCost = 0;
+                DecorCount = 0;
             }
             Table.Dispose();
             DecorItemsSummaryDataTable.DefaultView.Sort = "DecorItem, Count DESC";
@@ -2174,8 +2196,8 @@ namespace Infinium.Modules.StatisticsMarketing
 
         private void GetDecorColors()
         {
-            decimal DecorColorCost = 0;
-            decimal DecorColorCount = 0;
+            decimal DecorCost = 0;
+            decimal DecorCount = 0;
             int decimals = 2;
             string Measure = string.Empty;
             DecorColorsSummaryDataTable.Clear();
@@ -2199,26 +2221,37 @@ namespace Infinium.Modules.StatisticsMarketing
                 {
                     if (Convert.ToInt32(row["ProductID"]) == 2)
                     {
-                        DecorColorCost += Convert.ToDecimal(row["Cost"]);
-                        if (row["Height"].ToString() == "-1")
-                            DecorColorCount += Convert.ToDecimal(row["Length"]) * Convert.ToDecimal(row["Count"]) / 1000;
-                        else
-                            DecorColorCount += Convert.ToDecimal(row["Height"]) * Convert.ToDecimal(row["Count"]) / 1000;
-                        Measure = "м.п.";
+                        if (Convert.ToInt32(row["MeasureID"]) == 2)
+                        {
+                            DecorCost += Convert.ToDecimal(row["Cost"]);
+                            if (row["Height"].ToString() == "-1")
+                                DecorCount += Convert.ToDecimal(row["Length"]) *
+                                    Convert.ToDecimal(row["Count"]) / 1000;
+                            else
+                                DecorCount += Convert.ToDecimal(row["Height"]) *
+                                    Convert.ToDecimal(row["Count"]) / 1000;
+                            Measure = "м.п.";
+                        }
+                        if (Convert.ToInt32(row["MeasureID"]) == 3)
+                        {
+                            DecorCost += Convert.ToDecimal(row["Cost"]);
+                            DecorCount += Convert.ToInt32(row["Count"]);
+                            Measure = "шт.";
+                        }
                         continue;
                     }
 
                     if (Convert.ToInt32(row["MeasureID"]) == 1)
                     {
-                        DecorColorCost += Convert.ToDecimal(row["Cost"]);
-                        DecorColorCount += Convert.ToInt32(row["Count"]);
+                        DecorCost += Convert.ToDecimal(row["Cost"]);
+                        DecorCount += Convert.ToInt32(row["Count"]);
                         Measure = "шт.";
                     }
 
                     if (Convert.ToInt32(row["MeasureID"]) == 3)
                     {
-                        DecorColorCost += Convert.ToDecimal(row["Cost"]);
-                        DecorColorCount += Convert.ToInt32(row["Count"]);
+                        DecorCost += Convert.ToDecimal(row["Cost"]);
+                        DecorCount += Convert.ToInt32(row["Count"]);
                         Measure = "шт.";
                     }
 
@@ -2226,11 +2259,11 @@ namespace Infinium.Modules.StatisticsMarketing
                     {
                         //нет параметра "высота"
                         if (row["Height"].ToString() == "-1")
-                            DecorColorCount += Convert.ToDecimal(row["Length"]) * Convert.ToDecimal(row["Count"]) / 1000;
+                            DecorCount += Convert.ToDecimal(row["Length"]) * Convert.ToDecimal(row["Count"]) / 1000;
                         else
-                            DecorColorCount += Convert.ToDecimal(row["Height"]) * Convert.ToDecimal(row["Count"]) / 1000;
+                            DecorCount += Convert.ToDecimal(row["Height"]) * Convert.ToDecimal(row["Count"]) / 1000;
 
-                        DecorColorCost += Convert.ToDecimal(row["Cost"]);
+                        DecorCost += Convert.ToDecimal(row["Cost"]);
                         Measure = "м.п.";
                     }
                 }
@@ -2241,16 +2274,16 @@ namespace Infinium.Modules.StatisticsMarketing
                 NewRow["ColorID"] = Convert.ToInt32(Table.Rows[i]["ColorID"]);
                 NewRow["MeasureID"] = Convert.ToInt32(Table.Rows[i]["MeasureID"]);
                 NewRow["Color"] = GetColorName(Convert.ToInt32(Table.Rows[i]["ColorID"]));
-                if (DecorColorCount < 3)
+                if (DecorCount < 3)
                     decimals = 1;
-                NewRow["Cost"] = Decimal.Round(DecorColorCost, decimals, MidpointRounding.AwayFromZero);
-                NewRow["Count"] = Decimal.Round(DecorColorCount, decimals, MidpointRounding.AwayFromZero);
+                NewRow["Cost"] = Decimal.Round(DecorCost, decimals, MidpointRounding.AwayFromZero);
+                NewRow["Count"] = Decimal.Round(DecorCount, decimals, MidpointRounding.AwayFromZero);
                 NewRow["Measure"] = Measure;
                 DecorColorsSummaryDataTable.Rows.Add(NewRow);
 
                 Measure = string.Empty;
-                DecorColorCost = 0;
-                DecorColorCount = 0;
+                DecorCost = 0;
+                DecorCount = 0;
             }
             Table.Dispose();
             DecorColorsSummaryDataTable.DefaultView.Sort = "Color, Count DESC";
@@ -2259,8 +2292,8 @@ namespace Infinium.Modules.StatisticsMarketing
 
         private void GetDecorSizes()
         {
-            decimal DecorSizeCost = 0;
-            decimal DecorSizeCount = 0;
+            decimal DecorCost = 0;
+            decimal DecorCount = 0;
             int decimals = 2;
             int Height = 0;
             int Length = 0;
@@ -2292,26 +2325,37 @@ namespace Infinium.Modules.StatisticsMarketing
                 {
                     if (Convert.ToInt32(row["ProductID"]) == 2)
                     {
-                        DecorSizeCost += Convert.ToDecimal(row["Cost"]);
-                        if (row["Height"].ToString() == "-1")
-                            DecorSizeCount += Convert.ToDecimal(row["Length"]) * Convert.ToDecimal(row["Count"]) / 1000;
-                        else
-                            DecorSizeCount += Convert.ToDecimal(row["Height"]) * Convert.ToDecimal(row["Count"]) / 1000;
-                        Measure = "м.п.";
+                        if (Convert.ToInt32(row["MeasureID"]) == 2)
+                        {
+                            DecorCost += Convert.ToDecimal(row["Cost"]);
+                            if (row["Height"].ToString() == "-1")
+                                DecorCount += Convert.ToDecimal(row["Length"]) *
+                                    Convert.ToDecimal(row["Count"]) / 1000;
+                            else
+                                DecorCount += Convert.ToDecimal(row["Height"]) *
+                                    Convert.ToDecimal(row["Count"]) / 1000;
+                            Measure = "м.п.";
+                        }
+                        if (Convert.ToInt32(row["MeasureID"]) == 3)
+                        {
+                            DecorCost += Convert.ToDecimal(row["Cost"]);
+                            DecorCount += Convert.ToInt32(row["Count"]);
+                            Measure = "шт.";
+                        }
                         continue;
                     }
 
                     if (Convert.ToInt32(row["MeasureID"]) == 1)
                     {
-                        DecorSizeCost += Convert.ToDecimal(row["Cost"]);
-                        DecorSizeCount += Convert.ToInt32(row["Count"]);
+                        DecorCost += Convert.ToDecimal(row["Cost"]);
+                        DecorCount += Convert.ToInt32(row["Count"]);
                         Measure = "шт.";
                     }
 
                     if (Convert.ToInt32(row["MeasureID"]) == 3)
                     {
-                        DecorSizeCost += Convert.ToDecimal(row["Cost"]);
-                        DecorSizeCount += Convert.ToInt32(row["Count"]);
+                        DecorCost += Convert.ToDecimal(row["Cost"]);
+                        DecorCount += Convert.ToInt32(row["Count"]);
                         Measure = "шт.";
                     }
 
@@ -2319,11 +2363,11 @@ namespace Infinium.Modules.StatisticsMarketing
                     {
                         //нет параметра "высота"
                         if (row["Height"].ToString() == "-1")
-                            DecorSizeCount += Convert.ToDecimal(row["Length"]) * Convert.ToDecimal(row["Count"]) / 1000;
+                            DecorCount += Convert.ToDecimal(row["Length"]) * Convert.ToDecimal(row["Count"]) / 1000;
                         else
-                            DecorSizeCount += Convert.ToDecimal(row["Height"]) * Convert.ToDecimal(row["Count"]) / 1000;
+                            DecorCount += Convert.ToDecimal(row["Height"]) * Convert.ToDecimal(row["Count"]) / 1000;
 
-                        DecorSizeCost += Convert.ToDecimal(row["Cost"]);
+                        DecorCost += Convert.ToDecimal(row["Cost"]);
                         Measure = "м.п.";
                     }
                 }
@@ -2333,10 +2377,10 @@ namespace Infinium.Modules.StatisticsMarketing
                 NewRow["DecorID"] = Convert.ToInt32(Table.Rows[i]["DecorID"]);
                 NewRow["ColorID"] = Convert.ToInt32(Table.Rows[i]["ColorID"]);
                 NewRow["MeasureID"] = Convert.ToInt32(Table.Rows[i]["MeasureID"]);
-                if (DecorSizeCount < 3)
+                if (DecorCount < 3)
                     decimals = 1;
-                NewRow["Cost"] = Decimal.Round(DecorSizeCost, decimals, MidpointRounding.AwayFromZero);
-                NewRow["Count"] = Decimal.Round(DecorSizeCount, decimals, MidpointRounding.AwayFromZero);
+                NewRow["Cost"] = Decimal.Round(DecorCost, decimals, MidpointRounding.AwayFromZero);
+                NewRow["Count"] = Decimal.Round(DecorCount, decimals, MidpointRounding.AwayFromZero);
                 NewRow["Measure"] = Measure;
 
                 Height = Convert.ToInt32(Table.Rows[i]["Height"]);
@@ -2370,8 +2414,8 @@ namespace Infinium.Modules.StatisticsMarketing
                 NewRow["Size"] = Sizes;
                 Sizes = string.Empty;
                 Measure = string.Empty;
-                DecorSizeCost = 0;
-                DecorSizeCount = 0;
+                DecorCost = 0;
+                DecorCount = 0;
             }
             Table.Dispose();
             DecorSizesSummaryDataTable.DefaultView.Sort = "Count DESC";

@@ -922,9 +922,13 @@ WHERE CellID IN (" + filter.Substring(0, filter.Length - 1) + ")";
             return BindPackageLabelsDT.Rows.Count > 0;
         }
 
-        public bool GetQualityControl(int CabFurniturePackageID)
+        public void ClearQualityControl()
         {
             QualityControlDT.Clear();
+        }
+
+        public bool GetQualityControl(int CabFurniturePackageID)
+        {
 
             string SelectCommand = $@"SELECT CabFurniturePackageID, PackNumber, AddToStorageDateTime, RemoveFromStorageDateTime, QualityControlInDateTime, QualityControlOutDateTime, QualityControl, CabFurniturePackages.CellID, Cells.Name FROM CabFurniturePackages 
                 LEFT JOIN Cells ON CabFurniturePackages.CellID=Cells.CellID WHERE CabFurniturePackageID={CabFurniturePackageID}";
@@ -2140,10 +2144,7 @@ TechCatalogOperationsDetailID, PackNumber, ClientName, TechStoreSubGroupID, Tech
             }
         }
 
-        public BindingSource MegaOrdersList
-        {
-            get { return MegaOrdersBS; }
-        }
+        public BindingSource MegaOrdersList => MegaOrdersBS;
 
         public BindingSource AssembleDatesList
         {
@@ -2407,6 +2408,34 @@ TechCatalogOperationsDetailID, PackNumber, ClientName, TechStoreSubGroupID, Tech
             }
         }
 
+        private void ChangeAssembleDate(Tuple<int, int>[] tuple, DateTime prepareDateTime)
+        {
+            const string selectCommand = @"SELECT TOP 0 CabFurDispatchID, MegaOrderID, ClientID, CreationDateTime, PrepareDateTime, DateName FROM CabFurDispatch";
+            using (var da = new SqlDataAdapter(selectCommand, ConnectionStrings.MarketingOrdersConnectionString))
+            {
+                using (new SqlCommandBuilder(da))
+                {
+                    using (var dt = new DataTable())
+                    {
+                        da.Fill(dt);
+                        var creationDateTime = Security.GetCurrentDate();
+                        foreach (var t in tuple)
+                        {
+                            if (t == null)
+                                continue;
+                            var newRow = dt.NewRow();
+                            newRow["PrepareDateTime"] = prepareDateTime;
+                            newRow["CreationDateTime"] = creationDateTime;
+                            newRow["MegaOrderID"] = t.Item1;
+                            newRow["ClientID"] = t.Item2;
+                            dt.Rows.Add(newRow);
+                        }
+                        da.Update(dt);
+                    }
+                }
+            }
+        }
+
         public void UpdateAllCabFurniturePackages()
         {
             string SelectCommand = "SELECT CabFurniturePackages.*, Cells.Name FROM CabFurniturePackages" +
@@ -2486,9 +2515,21 @@ TechCatalogOperationsDetailID, PackNumber, ClientName, TechStoreSubGroupID, Tech
                 if (DA.Fill(dt) > 0)
                 {
                     int[] MegaOrders = new int[dt.Rows.Count];
+                    //int[] clients = new int[dt.Rows.Count];
+                    //Tuple<int, int>[] tuple = new Tuple<int, int>[dt.Rows.Count];
 
                     for (int i = 0; i < dt.Rows.Count; i++)
-                        MegaOrders[i] = Convert.ToInt32(Convert.ToInt32(dt.Rows[i]["MegaOrderID"]));
+                    {
+                        //DateTime OrderDate = Convert.ToDateTime(dt.Rows[i]["OrderDate"]);
+                        //if (OrderDate > new DateTime(2023, 01, 01))
+                        //    continue;
+                        MegaOrders[i] = Convert.ToInt32(dt.Rows[i]["MegaOrderID"]);
+                        //clients[i] = Convert.ToInt32(dt.Rows[i]["ClientId"]);
+                        //tuple[i] = new Tuple<int, int>(MegaOrders[i], clients[i]);
+                    }
+
+                    //ChangeAssembleDate(tuple, new DateTime(2022, 12, 30));
+
                     FilterCabFurOrders(MegaOrders);
 
                     for (int i = 0; i < dt.Rows.Count; i++)

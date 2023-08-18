@@ -382,11 +382,29 @@ namespace Infinium
             if (MarketingPackagesPrintManager.MainOrdersBindingSource.Count < 1)
                 return;
 
+            string firm = "";
+
+            var phantomForm = new Infinium.PhantomForm();
+            phantomForm.Show();
+
+            var clientForm = new MarketingPackagesClientForm(PrintBarCode);
+
+            TopForm = clientForm;
+            clientForm.ShowDialog();
+            TopForm = null;
+
+            phantomForm.Close();
+            phantomForm.Dispose();
+            firm = clientForm.firm;
+
+            clientForm.Dispose();
+            clientForm = null;
+
             int[] MainOrders = MarketingPackagesPrintManager.GetSelectedMainOrders();
 
             //PackagesOrdersManager.MainOrdersBindingSource.Position = CurrentRowIndex;
 
-            //int MainOrderID = Convert.ToInt32(((DataRowView)PackagesOrdersManager.MainOrdersBindingSource.Current)["MainOrderID"]);
+            int ClientId = Convert.ToInt32(((DataRowView)MarketingPackagesPrintManager.MegaOrdersBindingSource.Current).Row["ClientId"]);
             int PackNumber = 0;
             int PackageID = 0;
             int ProductType = 0;
@@ -441,7 +459,7 @@ namespace Infinium
                     LabelInfo.OrderData = DT;
                     LabelInfo.GroupType = "М";
 
-                    PackageLabel.AddLabelInfo(LanguageParam, ref LabelInfo);
+                    PackageLabel.AddLabelInfo(LanguageParam, ClientId, firm, ref LabelInfo);
 
                     MarketingPackagesPrintManager.FilterPackages(MainOrders[j], FrontIDs, ProductIDs);
                 }
@@ -481,6 +499,7 @@ namespace Infinium
 
             DataTable DT = new DataTable();
 
+            int ClientId = Convert.ToInt32(((DataRowView)MarketingPackagesPrintManager.MegaOrdersBindingSource.Current).Row["ClientId"]);
             int MainOrderID = Convert.ToInt32(((DataRowView)MarketingPackagesPrintManager.MainOrdersBindingSource.Current)["MainOrderID"]);
             //Проверка
             if (!MarketingPackagesPrintManager.IsMainOrderPacked(MainOrderID))
@@ -490,6 +509,24 @@ namespace Infinium
                         "Ошибка печати");
                 return;
             }
+
+            string firm = "";
+
+            var phantomForm = new Infinium.PhantomForm();
+            phantomForm.Show();
+
+            var clientForm = new MarketingPackagesClientForm(PrintBarCode);
+
+            TopForm = clientForm;
+            clientForm.ShowDialog();
+            TopForm = null;
+
+            phantomForm.Close();
+            phantomForm.Dispose();
+            firm = clientForm.firm;
+
+            clientForm.Dispose();
+            clientForm = null;
 
             int PackNumber = 0;
             int ProductType = 0;
@@ -530,7 +567,7 @@ namespace Infinium
                 LabelInfo.GroupType = "М";
 
 
-                PackageLabel.AddLabelInfo(LanguageParam, ref LabelInfo);
+                PackageLabel.AddLabelInfo(LanguageParam, ClientId, firm, ref LabelInfo);
 
             }
 
@@ -571,6 +608,7 @@ namespace Infinium
             MarketingPackagesPrintManager.MegaOrdersBindingSource.Position = CurrentRowIndex;
 
             //Проверка
+            int ClientId = Convert.ToInt32(((DataRowView)MarketingPackagesPrintManager.MegaOrdersBindingSource.Current).Row["ClientId"]);
             int MegaOrderID = Convert.ToInt32(((DataRowView)MarketingPackagesPrintManager.MegaOrdersBindingSource.Current).Row["MegaOrderID"]);
             int MainOrderID = 0;
 
@@ -581,6 +619,25 @@ namespace Infinium
                         "Ошибка печати");
                 return;
             }
+
+            string firm = "";
+
+            var phantomForm = new Infinium.PhantomForm();
+            phantomForm.Show();
+
+            var clientForm = new MarketingPackagesClientForm(PrintBarCode);
+
+            TopForm = clientForm;
+            clientForm.ShowDialog();
+            TopForm = null;
+
+            phantomForm.Close();
+            phantomForm.Dispose();
+            firm = clientForm.firm;
+
+            clientForm.Dispose();
+            clientForm = null;
+
             Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Создание этикеток.\r\nПодождите..."); });
             T.Start();
 
@@ -632,7 +689,7 @@ namespace Infinium
                     LabelInfo.OrderData = DT;
                     LabelInfo.GroupType = "М";
 
-                    PackageLabel.AddLabelInfo(LanguageParam, ref LabelInfo);
+                    PackageLabel.AddLabelInfo(LanguageParam, ClientId, firm, ref LabelInfo);
 
 
                     MarketingPackagesPrintManager.FilterPackages(MainOrders[j], FrontIDs, ProductIDs);

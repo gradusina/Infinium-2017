@@ -1,4 +1,7 @@
-﻿using Infinium.Modules.Packages.ZOV;
+﻿using DevExpress.Utils.About;
+
+using Infinium.Modules.Marketing.NewOrders;
+using Infinium.Modules.Packages.ZOV;
 
 using NPOI.HSSF.Record;
 using NPOI.HSSF.Record.Formula.Functions;
@@ -14,6 +17,9 @@ using System.Drawing.Printing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using System.Xml.Linq;
+
+using static Infinium.FrontsCatalog;
 
 namespace Infinium
 {
@@ -32,6 +38,8 @@ namespace Infinium
 
         public DataTable ConstExcluziveDataTable;
         public DataTable ConstFrontsConfigDataTable;
+        public DataTable CommonFrontsConfigDataTable;
+        public DataTable ExcluziveFrontsConfigDataTable;
         public DataTable ConstFrontsDataTable;
         public DataTable ConstColorsDataTable;
         public DataTable ConstPatinaDataTable;
@@ -114,6 +122,8 @@ namespace Infinium
 
             ConstExcluziveDataTable = new DataTable();
             ConstFrontsConfigDataTable = new DataTable();
+            CommonFrontsConfigDataTable = new DataTable();
+            ExcluziveFrontsConfigDataTable = new DataTable();
             ConstFrontsDataTable = new DataTable();
             ConstColorsDataTable = new DataTable();
             ConstPatinaDataTable = new DataTable();
@@ -213,6 +223,16 @@ namespace Infinium
             {
                 DA.Fill(ConstFrontsConfigDataTable);
             }
+            SelectCommand = @"SELECT * FROM FrontsConfig WHERE Enabled = 1 AND FactoryID=" + FactoryID;
+            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
+            {
+                DA.Fill(CommonFrontsConfigDataTable);
+            }
+            SelectCommand = @"SELECT * FROM FrontsConfig WHERE Enabled = 1 AND FactoryID=" + FactoryID;
+            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
+            {
+                DA.Fill(ExcluziveFrontsConfigDataTable);
+            }
             SelectCommand = @"SELECT TechStoreID AS FrontID, TechStoreName AS FrontName FROM TechStore 
                 WHERE TechStoreID IN (SELECT FrontID FROM FrontsConfig WHERE Enabled = 1 AND FactoryID=" + FactoryID + @")
                 ORDER BY TechStoreName";
@@ -279,7 +299,7 @@ where producttype=0";
             TechnoInsetColorsDataTable = ConstInsetColorsDataTable.Copy();
         }
 
-        public void FilterCatalog(int FactoryID)
+        public void FilterCatalog(bool excluzive, bool clients, int clientId, int FactoryID)
         {
             string SelectCommand = @"SELECT * FROM FrontsConfig WHERE Enabled = 1 AND FactoryID=" + FactoryID;
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
@@ -287,9 +307,47 @@ where producttype=0";
                 ConstFrontsConfigDataTable.Clear();
                 DA.Fill(ConstFrontsConfigDataTable);
             }
+
+            SelectCommand = $@"SELECT * FROM FrontsConfig WHERE Enabled = 1 
+and (frontConfigId in (select configId from infiniu2_marketingreference.dbo.ExcluziveCatalog where productType=0 and clientId={clientId})
+or frontConfigId not in (select configId from infiniu2_marketingreference.dbo.ExcluziveCatalog where productType=0))
+AND FactoryID={FactoryID}";
+            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
+            {
+                CommonFrontsConfigDataTable.Clear();
+                DA.Fill(CommonFrontsConfigDataTable);
+            }
+
+            SelectCommand = $@"SELECT * FROM FrontsConfig WHERE Enabled = 1 
+and frontConfigId in (select configId from infiniu2_marketingreference.dbo.ExcluziveCatalog where productType=0 and clientId={clientId})
+AND FactoryID={FactoryID}";
+            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
+            {
+                ExcluziveFrontsConfigDataTable.Clear();
+                DA.Fill(ExcluziveFrontsConfigDataTable);
+            }
+
             SelectCommand = @"SELECT TechStoreID AS FrontID, TechStoreName AS FrontName FROM TechStore 
-                WHERE TechStoreID IN (SELECT FrontID FROM FrontsConfig WHERE Enabled = 1 AND FactoryID=" + FactoryID + @")
+                WHERE TechStoreID IN (SELECT FrontID FROM FrontsConfig WHERE Enabled = 1 AND FactoryID=" + FactoryID +
+                            @")
                 ORDER BY TechStoreName";
+            if (clients)
+            {
+                SelectCommand = $@"SELECT TechStoreID AS FrontID, TechStoreName AS FrontName FROM TechStore 
+WHERE TechStoreID IN (SELECT FrontID FROM FrontsConfig WHERE Enabled = 1 
+and (frontConfigId in (select configId from infiniu2_marketingreference.dbo.ExcluziveCatalog where productType=0 and clientId={clientId})
+or frontConfigId not in (select configId from infiniu2_marketingreference.dbo.ExcluziveCatalog where productType=0))
+AND FactoryID={FactoryID}) ORDER BY TechStoreName";
+
+                if (excluzive)
+                {
+                    SelectCommand = $@"SELECT TechStoreID AS FrontID, TechStoreName AS FrontName FROM TechStore 
+WHERE TechStoreID IN (SELECT FrontID FROM FrontsConfig WHERE Enabled = 1 
+and frontConfigId in (select configId from infiniu2_marketingreference.dbo.ExcluziveCatalog where productType=0 and clientId={clientId})
+AND FactoryID={FactoryID}) ORDER BY TechStoreName";
+                }
+            }
+
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
                 ConstFrontsDataTable.Clear();
@@ -1445,7 +1503,7 @@ where producttype=0";
                     }
                     else
                     {
-                        DeleteClientsCatalogImage(ConfigID);
+                        //DeleteClientsCatalogImage(ConfigID);
                         return null;
                     }
 
@@ -1851,10 +1909,20 @@ where producttype=0";
                 NewRow["Extension"] = fileInfo.Extension;
                 NewRow["Path"] = tempFolder + @"\" + sFileName;
                 AttachmentsDT.Rows.Add(NewRow);
+                
 
-                int ConfigID = SaveFrontAttachments(Name, ColorID, TechnoColorID, InsetTypeID, InsetColorID, TechnoInsetTypeID, TechnoInsetColorID, PatinaID);
-                if (ConfigID != -1)
-                    AttachConfigImage(AttachmentsDT, ConfigID, 0, Category, Name, Color, PatinaName);
+                int configId = GetFrontAttachments(Name, ColorID, TechnoColorID, InsetTypeID, InsetColorID, TechnoInsetTypeID, TechnoInsetColorID, PatinaID);
+                if (configId != -1)
+                {
+                    EditConfigImage(AttachmentsDT, configId);
+                }
+                else
+                {
+
+                }
+                configId = SaveFrontAttachments(Name, ColorID, TechnoColorID, InsetTypeID, InsetColorID, TechnoInsetTypeID, TechnoInsetColorID, PatinaID);
+                if (configId != -1)
+                    AttachConfigImage(AttachmentsDT, configId, 0, Category, Name, Color, PatinaName);
             }
             else
                 return false;
@@ -2158,6 +2226,95 @@ where producttype=0";
                         }
 
                         DA.Update(DT);
+                    }
+                }
+            }
+
+            return Ok;
+        }
+
+        public bool EditConfigImage(DataTable AttachmentsDataTable, int ConfigID)
+        {
+            if (AttachmentsDataTable.Rows.Count == 0)
+                return true;
+
+            bool Ok = true;
+
+            //write to ftp
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM ClientsCatalogImages WHERE ProductType=0 AND ConfigID = " + ConfigID, ConnectionStrings.CatalogConnectionString))
+            {
+                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                {
+                    using (DataTable DT = new DataTable())
+                    {
+                        if (DA.Fill(DT) > 0)
+                        {
+                            bool bOk = false;
+                            foreach (DataRow Row in DT.Rows)
+                            {
+                                bOk = FM.DeleteFile(
+                                    Configs.DocumentsZOVTPSPath + FileManager.GetPath("ClientsCatalogImages") + "/" +
+                                    Row["FileName"].ToString(), Configs.FTPType);
+                                bOk = FM.DeleteFile(
+                                    Configs.DocumentsZOVTPSPath + FileManager.GetPath("ClientsCatalogImages") +
+                                    "/Thumbs/" +
+                                    Row["FileName"].ToString(), Configs.FTPType);
+                            }
+
+                            foreach (DataRow Row in AttachmentsDataTable.Rows)
+                            {
+                                FileInfo fi;
+
+                                try
+                                {
+                                    fi = new FileInfo(Row["Path"].ToString());
+
+                                }
+                                catch
+                                {
+                                    Ok = false;
+                                    continue;
+                                }
+
+                                DT.Rows[0]["FileName"] = Row["FileName"].ToString() + Row["Extension"].ToString();
+                                DT.Rows[0]["FileSize"] = fi.Length;
+
+                                try
+                                {
+                                    string sDestFolder = Configs.DocumentsZOVTPSPath +
+                                                         FileManager.GetPath("ClientsCatalogImages");
+                                    string sExtension = Row["Extension"].ToString();
+                                    string sFileName = Row["FileName"].ToString();
+
+                                    int j = 1;
+                                    while (FM.FileExist(sDestFolder + "/" + sFileName + sExtension, Configs.FTPType))
+                                    {
+                                        sFileName = Row["FileName"].ToString() + "(" + j++ + ")";
+                                    }
+
+                                    Row["FileName"] = sFileName + sExtension;
+                                    if (FM.UploadFile(Row["Path"].ToString(),
+                                            sDestFolder + "/" + sFileName + sExtension,
+                                            Configs.FTPType) == false)
+                                        break;
+                                    string tempFolder = System.Environment.GetEnvironmentVariable("TEMP");
+                                    if (CreateThumb(Row["Path"].ToString(), sFileName + sExtension))
+                                    {
+                                        if (FM.UploadFile(tempFolder + @"\" + sFileName + sExtension,
+                                                sDestFolder + "/Thumbs/" + sFileName + sExtension, Configs.FTPType) ==
+                                            false)
+                                            break;
+                                    }
+                                }
+                                catch
+                                {
+                                    Ok = false;
+                                    break;
+                                }
+                            }
+
+                            DA.Update(DT);
+                        }
                     }
                 }
             }
@@ -2628,30 +2785,35 @@ where producttype=0";
             }
         }
 
-        public bool IsConfigImageToSite(int ConfigID, ref bool bLatest, ref string Category, ref string Name, ref string Description, ref string Sizes, ref string Material)
+        public ConfigImageInfo IsConfigImageToSite(int ConfigId)
         {
-            bool b = false;
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM ClientsCatalogImages WHERE ProductType=0 AND ConfigID = " + ConfigID,
-                ConnectionStrings.CatalogConnectionString))
+            ConfigImageInfo info = new ConfigImageInfo();
+
+            using (SqlDataAdapter DA = new SqlDataAdapter(
+                       "SELECT * FROM ClientsCatalogImages WHERE ProductType=0 AND ConfigID = " + ConfigId,
+                       ConnectionStrings.CatalogConnectionString))
             {
                 using (DataTable DT = new DataTable())
                 {
                     if (DA.Fill(DT) > 0)
                     {
-                        b = Convert.ToBoolean(DT.Rows[0]["ToSite"]);
-                        bLatest = Convert.ToBoolean(DT.Rows[0]["Latest"]);
-                        Category = DT.Rows[0]["Category"].ToString();
-                        Name = DT.Rows[0]["Name"].ToString();
-                        Description = DT.Rows[0]["Description"].ToString();
-                        Sizes = DT.Rows[0]["Sizes"].ToString();
-                        Material = DT.Rows[0]["Material"].ToString();
+                        info.ConfigId = ConfigId;
+                        info.ToSite = Convert.ToBoolean(DT.Rows[0]["ToSite"]);
+                        info.Latest = Convert.ToBoolean(DT.Rows[0]["Latest"]);
+                        info.Basic = Convert.ToBoolean(DT.Rows[0]["Basic"]);
+                        info.Category = DT.Rows[0]["Category"].ToString();
+                        info.Name = DT.Rows[0]["Name"].ToString();
+                        info.Description = DT.Rows[0]["Description"].ToString();
+                        info.Sizes = DT.Rows[0]["Sizes"].ToString();
+                        info.Material = DT.Rows[0]["Material"].ToString();
                     }
                 }
             }
-            return b;
+
+            return info;
         }
 
-        public void ConfigImageToSite(int ConfigID, bool bToSite, bool bLatest, string Category, string Name, string Description, string Sizes, string Material)
+        public void ConfigImageToSite(int ConfigID, ConfigImageInfo configImageInfo)
         {
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM ClientsCatalogImages WHERE ProductType=0 AND ConfigID = " + ConfigID,
                 ConnectionStrings.CatalogConnectionString))
@@ -2662,28 +2824,29 @@ where producttype=0";
                     {
                         if (DA.Fill(DT) > 0)
                         {
-                            DT.Rows[0]["ToSite"] = bToSite;
-                            DT.Rows[0]["Latest"] = bLatest;
-                            if (Category.Length == 0)
+                            DT.Rows[0]["ToSite"] = configImageInfo.ToSite;
+                            DT.Rows[0]["Latest"] = configImageInfo.Latest;
+                            DT.Rows[0]["Basic"] = configImageInfo.Basic;
+                            if (configImageInfo.Category.Length == 0)
                                 DT.Rows[0]["Category"] = DBNull.Value;
                             else
-                                DT.Rows[0]["Category"] = Category;
-                            if (Name.Length == 0)
+                                DT.Rows[0]["Category"] = configImageInfo.Category;
+                            if (configImageInfo.Name.Length == 0)
                                 DT.Rows[0]["Name"] = DBNull.Value;
                             else
-                                DT.Rows[0]["Name"] = Name;
-                            if (Description.Length == 0)
+                                DT.Rows[0]["Name"] = configImageInfo.Name;
+                            if (configImageInfo.Description.Length == 0)
                                 DT.Rows[0]["Description"] = DBNull.Value;
                             else
-                                DT.Rows[0]["Description"] = Description;
-                            if (Sizes.Length == 0)
+                                DT.Rows[0]["Description"] = configImageInfo.Description;
+                            if (configImageInfo.Sizes.Length == 0)
                                 DT.Rows[0]["Sizes"] = DBNull.Value;
                             else
-                                DT.Rows[0]["Sizes"] = Sizes;
-                            if (Material.Length == 0)
+                                DT.Rows[0]["Sizes"] = configImageInfo.Sizes;
+                            if (configImageInfo.Material.Length == 0)
                                 DT.Rows[0]["Material"] = DBNull.Value;
                             else
-                                DT.Rows[0]["Material"] = Material;
+                                DT.Rows[0]["Material"] = configImageInfo.Material;
                             DA.Update(DT);
                         }
                     }
@@ -2766,43 +2929,6 @@ where producttype=0";
             TempItemsDataTable.Dispose();
         }
         
-        public void FilterFronts(int clientId)
-        {
-            TempFrontsDataTable.Clear();
-
-            for (int i = ConstFrontsDataTable.Rows.Count - 1; i >= 0; i--)
-            {
-                int FrontID = Convert.ToInt32(ConstFrontsDataTable.Rows[i]["FrontID"]);
-                var rows1 = ConstExcluziveDataTable
-                    .AsEnumerable()
-                    .Where(row => row.Field<Int64>("clientId") == clientId &&
-                    row.Field<Int64>("FrontID") == FrontID);
-
-                if (rows1.Any())
-                {
-                    DataRow NewRow = TempFrontsDataTable.NewRow();
-                    NewRow.ItemArray = ConstFrontsDataTable.Rows[i].ItemArray;
-                    TempFrontsDataTable.Rows.Add(NewRow);
-                }
-            }
-
-            DataTable TempItemsDataTable = ConstFrontsDataTable.Copy();
-            using (DataView DV = new DataView(TempItemsDataTable))
-            {
-                TempItemsDataTable = DV.ToTable(true, new string[] { "FrontName" });
-            }
-
-            FrontsDataTable.Clear();
-            for (int d = 0; d < TempItemsDataTable.Rows.Count; d++)
-            {
-                DataRow NewRow = FrontsDataTable.NewRow();
-                NewRow["FrontName"] = TempFrontsDataTable.Rows[d]["FrontName"].ToString();
-                FrontsDataTable.Rows.Add(NewRow);
-            }
-            FrontsDataTable.DefaultView.Sort = "FrontName ASC";
-            TempItemsDataTable.Dispose();
-        }
-
         public void FilterCatalogFrameColors(string FrontName = "")
         {
             TempFrontsDataTable.Clear();
@@ -2836,37 +2962,6 @@ where producttype=0";
             }
         }//фильтрует и заполняет цвета профиля по выбранному фасаду
         
-        public void FilterCatalogFrameColors(int clientId, string FrontName = "")
-        {
-            using (DataView DV = new DataView(TempFrontsDataTable))
-            {
-                DV.RowFilter = "FrontName='" + FrontName + "'";
-
-                TempFrontsDataTable = DV.ToTable();
-            }
-            string filter = string.Empty;
-            for (int i = 0; i < TempFrontsDataTable.Rows.Count; i++)
-                filter += Convert.ToInt32(TempFrontsDataTable.Rows[i]["FrontID"]) + ",";
-            if (filter.Length > 0)
-            {
-                filter = filter.Substring(0, filter.Length - 1);
-                filter = "FrontID IN (" + filter + ")";
-            }
-            else
-                filter = "FrontID <> - 1";
-
-            TempFrontsConfigDataTable.Clear();
-            TempFrontsConfigDataTable = ConstFrontsConfigDataTable;
-            using (DataView DV = new DataView(TempFrontsConfigDataTable))
-            {
-                DV.RowFilter = filter;
-
-                TempFrontsConfigDataTable = DV.ToTable();
-
-                GetFrameColors();
-            }
-        }//фильтрует и заполняет цвета профиля по выбранному фасаду
-
         public void FilterCatalogTechnoFrameColors(string FrontName = "", int ColorID = -1) //фильтрует и заполняет типы наполнителя по выбранному типу фасада
         {
             TempFrontsDataTable.Clear();
@@ -3195,6 +3290,440 @@ where producttype=0";
 
             WidthBindingSource.DataSource = WidthDataTable;
         }
+        
+        public void FilterCatalogFrameColors(bool excluzive, bool clients, string FrontName = "")
+        {
+            TempFrontsDataTable.Clear();
+            TempFrontsDataTable = ConstFrontsDataTable;
+            using (DataView DV = new DataView(TempFrontsDataTable))
+            {
+                DV.RowFilter = "FrontName='" + FrontName + "'";
+
+                TempFrontsDataTable = DV.ToTable();
+            }
+            string filter = string.Empty;
+            for (int i = 0; i < TempFrontsDataTable.Rows.Count; i++)
+                filter += Convert.ToInt32(TempFrontsDataTable.Rows[i]["FrontID"]) + ",";
+            if (filter.Length > 0)
+            {
+                filter = filter.Substring(0, filter.Length - 1);
+                filter = "FrontID IN (" + filter + ")";
+            }
+            else
+                filter = "FrontID <> - 1";
+
+            TempFrontsConfigDataTable.Clear();
+            if (!clients)
+                TempFrontsConfigDataTable = ConstFrontsConfigDataTable;
+            else
+            {
+                if (excluzive)
+                    TempFrontsConfigDataTable = ExcluziveFrontsConfigDataTable;
+                else
+                    TempFrontsConfigDataTable = CommonFrontsConfigDataTable;
+            }
+            using (DataView DV = new DataView(TempFrontsConfigDataTable))
+            {
+                DV.RowFilter = filter;
+
+                TempFrontsConfigDataTable = DV.ToTable();
+
+                GetFrameColors();
+            }
+        }//фильтрует и заполняет цвета профиля по выбранному фасаду
+        
+        public void FilterCatalogTechnoFrameColors(bool excluzive, bool clients, string FrontName = "", int ColorID = -1) //фильтрует и заполняет типы наполнителя по выбранному типу фасада
+        {
+            TempFrontsDataTable.Clear();
+            TempFrontsDataTable = ConstFrontsDataTable;
+            using (DataView DV = new DataView(TempFrontsDataTable))
+            {
+                DV.RowFilter = "FrontName='" + FrontName + "'";
+
+                TempFrontsDataTable = DV.ToTable();
+            }
+            string filter = string.Empty;
+            for (int i = 0; i < TempFrontsDataTable.Rows.Count; i++)
+                filter += Convert.ToInt32(TempFrontsDataTable.Rows[i]["FrontID"]) + ",";
+            if (filter.Length > 0)
+            {
+                filter = filter.Substring(0, filter.Length - 1);
+                filter = "FrontID IN (" + filter + ")";
+            }
+            else
+                filter = "FrontID <> - 1";
+
+            TempFrontsConfigDataTable.Clear();
+            if (!clients)
+                TempFrontsConfigDataTable = ConstFrontsConfigDataTable;
+            else
+            {
+                if (excluzive)
+                    TempFrontsConfigDataTable = ExcluziveFrontsConfigDataTable;
+                else
+                    TempFrontsConfigDataTable = CommonFrontsConfigDataTable;
+            }
+
+            using (DataView DV = new DataView(TempFrontsConfigDataTable))
+            {
+                DV.RowFilter = filter;
+                DV.RowFilter += " AND ColorID=" + ColorID;
+
+                TempFrontsConfigDataTable = DV.ToTable();
+
+                GetTechnoFrameColors();
+            }
+        }
+
+        public void FilterCatalogPatina(bool excluzive, bool clients, string FrontName = "", int ColorID = -1, int TechnoColorID = -1,
+            int InsetTypeID = -1, int InsetColorID = -1, int TechnoInsetTypeID = -1, int TechnoInsetColorID = -1) //фильтрует и заполняет типы наполнителя по выбранному типу фасада
+        {
+            TempFrontsDataTable.Clear();
+            TempFrontsDataTable = ConstFrontsDataTable;
+            using (DataView DV = new DataView(TempFrontsDataTable))
+            {
+                DV.RowFilter = "FrontName='" + FrontName + "'";
+
+                TempFrontsDataTable = DV.ToTable();
+            }
+            string filter = string.Empty;
+            for (int i = 0; i < TempFrontsDataTable.Rows.Count; i++)
+                filter += Convert.ToInt32(TempFrontsDataTable.Rows[i]["FrontID"]) + ",";
+            if (filter.Length > 0)
+            {
+                filter = filter.Substring(0, filter.Length - 1);
+                filter = "FrontID IN (" + filter + ")";
+            }
+            else
+                filter = "FrontID <> - 1";
+
+            TempFrontsConfigDataTable.Clear();
+            if (!clients)
+                TempFrontsConfigDataTable = ConstFrontsConfigDataTable;
+            else
+            {
+                if (excluzive)
+                    TempFrontsConfigDataTable = ExcluziveFrontsConfigDataTable;
+                else
+                    TempFrontsConfigDataTable = CommonFrontsConfigDataTable;
+            }
+
+            using (DataView DV = new DataView(TempFrontsConfigDataTable))
+            {
+                DV.RowFilter = filter;
+                DV.RowFilter += " AND InsetTypeID=" + InsetTypeID;
+                DV.RowFilter += " AND ColorID=" + ColorID;
+                DV.RowFilter += " AND InsetColorID=" + InsetColorID;
+                DV.RowFilter += " AND TechnoColorID=" + TechnoColorID;
+                DV.RowFilter += " AND TechnoInsetTypeID=" + TechnoInsetTypeID;
+                DV.RowFilter += " AND TechnoInsetColorID=" + TechnoInsetColorID;
+
+                TempFrontsConfigDataTable = DV.ToTable();
+
+                GetPatina();
+            }
+        }
+
+        public void FilterCatalogInsetTypes(bool excluzive, bool clients, string FrontName = "",
+            int ColorID = -1, int TechnoColorID = -1) //фильтрует и заполняет типы наполнителя по выбранному типу фасада
+        {
+            TempFrontsDataTable.Clear();
+            TempFrontsDataTable = ConstFrontsDataTable;
+            using (DataView DV = new DataView(TempFrontsDataTable))
+            {
+                DV.RowFilter = "FrontName='" + FrontName + "'";
+
+                TempFrontsDataTable = DV.ToTable();
+            }
+            string filter = string.Empty;
+            for (int i = 0; i < TempFrontsDataTable.Rows.Count; i++)
+                filter += Convert.ToInt32(TempFrontsDataTable.Rows[i]["FrontID"]) + ",";
+            if (filter.Length > 0)
+            {
+                filter = filter.Substring(0, filter.Length - 1);
+                filter = "FrontID IN (" + filter + ")";
+            }
+            else
+                filter = "FrontID <> - 1";
+
+            TempFrontsConfigDataTable.Clear();
+            if (!clients)
+                TempFrontsConfigDataTable = ConstFrontsConfigDataTable;
+            else
+            {
+                if (excluzive)
+                    TempFrontsConfigDataTable = ExcluziveFrontsConfigDataTable;
+                else
+                    TempFrontsConfigDataTable = CommonFrontsConfigDataTable;
+            }
+
+            using (DataView DV = new DataView(TempFrontsConfigDataTable))
+            {
+                DV.RowFilter = filter;
+                DV.RowFilter += " AND ColorID=" + ColorID;
+                DV.RowFilter += " AND TechnoColorID=" + TechnoColorID;
+
+                TempFrontsConfigDataTable = DV.ToTable();
+
+                GetInsetTypes();
+            }
+        }
+
+        public void FilterCatalogInsetColors(bool excluzive, bool clients, string FrontName = "", int ColorID = -1,
+            int TechnoColorID = -1, int InsetTypeID = -1) //фильтрует и заполняет цвета наполнителя по выбранному типу наполнителя
+        {
+            TempFrontsDataTable.Clear();
+            TempFrontsDataTable = ConstFrontsDataTable;
+            using (DataView DV = new DataView(TempFrontsDataTable))
+            {
+                DV.RowFilter = "FrontName='" + FrontName + "'";
+
+                TempFrontsDataTable = DV.ToTable();
+            }
+            string filter = string.Empty;
+            for (int i = 0; i < TempFrontsDataTable.Rows.Count; i++)
+                filter += Convert.ToInt32(TempFrontsDataTable.Rows[i]["FrontID"]) + ",";
+            if (filter.Length > 0)
+            {
+                filter = filter.Substring(0, filter.Length - 1);
+                filter = "FrontID IN (" + filter + ")";
+            }
+            else
+                filter = "FrontID <> - 1";
+
+            TempFrontsConfigDataTable.Clear();
+            if (!clients)
+                TempFrontsConfigDataTable = ConstFrontsConfigDataTable;
+            else
+            {
+                if (excluzive)
+                    TempFrontsConfigDataTable = ExcluziveFrontsConfigDataTable;
+                else
+                    TempFrontsConfigDataTable = CommonFrontsConfigDataTable;
+            }
+
+            using (DataView DV = new DataView(TempFrontsConfigDataTable))
+            {
+                DV.RowFilter = filter;
+                DV.RowFilter += " AND ColorID=" + ColorID;
+                DV.RowFilter += " AND TechnoColorID=" + TechnoColorID;
+                DV.RowFilter += " AND InsetTypeID=" + InsetTypeID;
+
+                TempFrontsConfigDataTable = DV.ToTable();
+
+                GetInsetColors();
+            }
+        }
+
+        public void FilterCatalogTechnoInsetTypes(bool excluzive, bool clients, string FrontName = "", int ColorID = -1,
+            int TechnoColorID = -1, int InsetTypeID = -1, int InsetColorID = -1) //фильтрует и заполняет типы наполнителя по выбранному типу фасада
+        {
+            TempFrontsDataTable.Clear();
+            TempFrontsDataTable = ConstFrontsDataTable;
+            using (DataView DV = new DataView(TempFrontsDataTable))
+            {
+                DV.RowFilter = "FrontName='" + FrontName + "'";
+
+                TempFrontsDataTable = DV.ToTable();
+            }
+            string filter = string.Empty;
+            for (int i = 0; i < TempFrontsDataTable.Rows.Count; i++)
+                filter += Convert.ToInt32(TempFrontsDataTable.Rows[i]["FrontID"]) + ",";
+            if (filter.Length > 0)
+            {
+                filter = filter.Substring(0, filter.Length - 1);
+                filter = "FrontID IN (" + filter + ")";
+            }
+            else
+                filter = "FrontID <> - 1";
+
+            TempFrontsConfigDataTable.Clear();
+            if (!clients)
+                TempFrontsConfigDataTable = ConstFrontsConfigDataTable;
+            else
+            {
+                if (excluzive)
+                    TempFrontsConfigDataTable = ExcluziveFrontsConfigDataTable;
+                else
+                    TempFrontsConfigDataTable = CommonFrontsConfigDataTable;
+            }
+
+            using (DataView DV = new DataView(TempFrontsConfigDataTable))
+            {
+                DV.RowFilter = filter;
+                DV.RowFilter += " AND ColorID=" + ColorID;
+                DV.RowFilter += " AND TechnoColorID=" + TechnoColorID;
+                DV.RowFilter += " AND InsetTypeID=" + InsetTypeID;
+                DV.RowFilter += " AND InsetColorID=" + InsetColorID;
+
+                TempFrontsConfigDataTable = DV.ToTable();
+
+                GetTechnoInsetTypes();
+            }
+        }
+
+        public void FilterCatalogTechnoInsetColors(bool excluzive, bool clients, string FrontName = "", int ColorID = -1, int TechnoColorID = -1,
+            int InsetTypeID = -1, int InsetColorID = -1, int TechnoInsetTypeID = -1) //фильтрует и заполняет цвета наполнителя по выбранному типу наполнителя
+        {
+            TempFrontsDataTable.Clear();
+            TempFrontsDataTable = ConstFrontsDataTable;
+            using (DataView DV = new DataView(TempFrontsDataTable))
+            {
+                DV.RowFilter = "FrontName='" + FrontName + "'";
+
+                TempFrontsDataTable = DV.ToTable();
+            }
+            string filter = string.Empty;
+            for (int i = 0; i < TempFrontsDataTable.Rows.Count; i++)
+                filter += Convert.ToInt32(TempFrontsDataTable.Rows[i]["FrontID"]) + ",";
+            if (filter.Length > 0)
+            {
+                filter = filter.Substring(0, filter.Length - 1);
+                filter = "FrontID IN (" + filter + ")";
+            }
+            else
+                filter = "FrontID <> - 1";
+
+            TempFrontsConfigDataTable.Clear();
+            if (!clients)
+                TempFrontsConfigDataTable = ConstFrontsConfigDataTable;
+            else
+            {
+                if (excluzive)
+                    TempFrontsConfigDataTable = ExcluziveFrontsConfigDataTable;
+                else
+                    TempFrontsConfigDataTable = CommonFrontsConfigDataTable;
+            }
+
+            using (DataView DV = new DataView(TempFrontsConfigDataTable))
+            {
+                DV.RowFilter = filter;
+                DV.RowFilter += " AND ColorID=" + ColorID;
+                DV.RowFilter += " AND InsetTypeID=" + InsetTypeID;
+                DV.RowFilter += " AND InsetColorID=" + InsetColorID;
+                DV.RowFilter += " AND TechnoColorID=" + TechnoColorID;
+                DV.RowFilter += " AND TechnoInsetTypeID=" + TechnoInsetTypeID;
+                TempFrontsConfigDataTable = DV.ToTable();
+
+                GetTechnoInsetColors();
+            }
+        }
+
+        public void FilterCatalogHeight(bool excluzive, bool clients, string FrontName = "", int ColorID = -1, int TechnoColorID = -1,
+            int InsetTypeID = -1, int InsetColorID = -1, int TechnoInsetTypeID = -1, int TechnoInsetColorID = -1, int PatinaID = -1)
+        {
+            TempFrontsDataTable.Clear();
+            TempFrontsDataTable = ConstFrontsDataTable;
+            using (DataView DV = new DataView(TempFrontsDataTable))
+            {
+                DV.RowFilter = "FrontName='" + FrontName + "'";
+
+                TempFrontsDataTable = DV.ToTable();
+            }
+            string filter = string.Empty;
+            for (int i = 0; i < TempFrontsDataTable.Rows.Count; i++)
+                filter += Convert.ToInt32(TempFrontsDataTable.Rows[i]["FrontID"]) + ",";
+            if (filter.Length > 0)
+            {
+                filter = filter.Substring(0, filter.Length - 1);
+                filter = "FrontID IN (" + filter + ")";
+            }
+            else
+                filter = "FrontID <> - 1";
+
+            TempFrontsConfigDataTable.Clear();
+            if (!clients)
+                TempFrontsConfigDataTable = ConstFrontsConfigDataTable;
+            else
+            {
+                if (excluzive)
+                    TempFrontsConfigDataTable = ExcluziveFrontsConfigDataTable;
+                else
+                    TempFrontsConfigDataTable = CommonFrontsConfigDataTable;
+            }
+
+            if (PatinaID > 1000)
+            {
+                DataRow[] fRows = PatinaRALDataTable.Select("PatinaRALID=" + PatinaID);
+                if (fRows.Count() > 0)
+                    PatinaID = Convert.ToInt32(fRows[0]["PatinaID"]);
+            }
+            using (DataView DV = new DataView(TempFrontsConfigDataTable))
+            {
+                DV.RowFilter = filter;
+                DV.RowFilter += " AND InsetTypeID=" + InsetTypeID;
+                DV.RowFilter += " AND ColorID=" + ColorID;
+                DV.RowFilter += " AND PatinaID=" + PatinaID;
+                DV.RowFilter += " AND InsetColorID=" + InsetColorID;
+                DV.RowFilter += " AND TechnoColorID=" + TechnoColorID;
+                DV.RowFilter += " AND TechnoInsetTypeID=" + TechnoInsetTypeID;
+                DV.RowFilter += " AND TechnoInsetColorID=" + TechnoInsetColorID;
+
+                TempFrontsConfigDataTable = DV.ToTable();
+            }
+
+            GetHeight();
+            HeightBindingSource.DataSource = HeightDataTable;
+        }
+
+        public void FilterCatalogWidth(bool excluzive, bool clients, string FrontName = "", int ColorID = -1, int TechnoColorID = -1,
+            int InsetTypeID = -1, int InsetColorID = -1, int TechnoInsetTypeID = -1, int TechnoInsetColorID = -1, int PatinaID = -1, int Height = -1)
+        {
+            TempFrontsDataTable.Clear();
+            TempFrontsDataTable = ConstFrontsDataTable;
+            using (DataView DV = new DataView(TempFrontsDataTable))
+            {
+                DV.RowFilter = "FrontName='" + FrontName + "'";
+
+                TempFrontsDataTable = DV.ToTable();
+            }
+            string filter = string.Empty;
+            for (int i = 0; i < TempFrontsDataTable.Rows.Count; i++)
+                filter += Convert.ToInt32(TempFrontsDataTable.Rows[i]["FrontID"]) + ",";
+            if (filter.Length > 0)
+            {
+                filter = filter.Substring(0, filter.Length - 1);
+                filter = "FrontID IN (" + filter + ")";
+            }
+            else
+                filter = "FrontID <> - 1";
+
+            TempFrontsConfigDataTable.Clear();
+            if (!clients)
+                TempFrontsConfigDataTable = ConstFrontsConfigDataTable;
+            else
+            {
+                if (excluzive)
+                    TempFrontsConfigDataTable = ExcluziveFrontsConfigDataTable;
+                else
+                    TempFrontsConfigDataTable = CommonFrontsConfigDataTable;
+            }
+
+            if (PatinaID > 1000)
+            {
+                DataRow[] fRows = PatinaRALDataTable.Select("PatinaRALID=" + PatinaID);
+                if (fRows.Count() > 0)
+                    PatinaID = Convert.ToInt32(fRows[0]["PatinaID"]);
+            }
+            using (DataView DV = new DataView(TempFrontsConfigDataTable))
+            {
+                DV.RowFilter = filter;
+                DV.RowFilter += " AND InsetTypeID=" + InsetTypeID;
+                DV.RowFilter += " AND ColorID=" + ColorID;
+                DV.RowFilter += " AND PatinaID=" + PatinaID;
+                DV.RowFilter += " AND InsetColorID=" + InsetColorID;
+                DV.RowFilter += " AND TechnoColorID=" + TechnoColorID;
+                DV.RowFilter += " AND TechnoInsetTypeID=" + TechnoInsetTypeID;
+                DV.RowFilter += " AND TechnoInsetColorID=" + TechnoInsetColorID;
+                DV.RowFilter += " AND Height=" + Height;
+
+                TempFrontsConfigDataTable = DV.ToTable();
+            }
+
+            GetWidth();
+
+            WidthBindingSource.DataSource = WidthDataTable;
+        }
 
         public void FilterCatalogMarketingPrice(string FrontName = "", int ColorID = -1, int TechnoColorID = -1, int PatinaID = -1,
             int InsetTypeID = -1, int InsetColorID = -1, int TechnoInsetTypeID = -1, int TechnoInsetColorID = -1, int Height = -1, int Width = -1)
@@ -3464,11 +3993,23 @@ where producttype=0";
 
     }
 
-
+    public struct ConfigImageInfo
+    {
+        public int ConfigId;
+        public bool ToSite;
+        public bool Latest;
+        public bool Basic;
+        public string Category;
+        public string Name;
+        public string Description;
+        public string Sizes;
+        public string Material;
+        public int ProductType;
+    }
 
     public class DecorCatalog
     {
-        public FileManager FM = new FileManager();
+        public FileManager FM;
         private readonly int FactoryID = 1;
         public int DecorProductsCount;
 
@@ -3481,6 +4022,8 @@ where producttype=0";
         public DataTable InsetColorsDataTable;
 
         public DataTable DecorConfigDataTable;
+        public DataTable CommonDecorConfigDataTable;
+        public DataTable ExcluziveDecorConfigDataTable;
         public DataTable DecorParametersDataTable;
 
         public DataTable TempProductsDataTable = null;
@@ -3527,8 +4070,9 @@ where producttype=0";
         public String ItemColorsBindingSourceValueMember;
         public String ItemPatinaBindingSourceValueMember;
 
-        public DecorCatalog(int tFactoryID)
+        public DecorCatalog(int tFactoryID, FileManager FM)
         {
+            this.FM = FM;
             FactoryID = tFactoryID;
             Initialize();
         }
@@ -3538,6 +4082,8 @@ where producttype=0";
             ConstProductsDataTable = new DataTable();
             ConstDecorDataTable = new DataTable();
             DecorParametersDataTable = new DataTable();
+            DecorConfigDataTable = new DataTable();
+            CommonDecorConfigDataTable = new DataTable();
             DecorConfigDataTable = new DataTable();
 
             MeasuresDataTable = new DataTable();
@@ -3757,21 +4303,105 @@ where producttype=0";
             //}
         }
 
-        public void FilterCatalog(int FactoryID)
+        public void FilterCatalog(bool excluzive, bool clients, int clientId, int FactoryID)
         {
-            string SelectCommand = @"SELECT ProductID, ProductName, MeasureID, ReportParam FROM DecorProducts" +
-                " WHERE (ProductID IN (SELECT ProductID FROM DecorConfig WHERE (Enabled = 1 AND AccountingName IS NOT NULL AND InvNumber IS NOT NULL AND FactoryID=" + FactoryID + "))) ORDER BY ProductName ASC";
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
+            string SelectCommand = "";
+
+            ConstProductsDataTable.Clear();
+            ConstDecorDataTable.Clear();
+            DecorConfigDataTable.Clear();
+
+            if (clients)
             {
-                ConstProductsDataTable.Clear();
-                DA.Fill(ConstProductsDataTable);
+                if (excluzive)
+                {
+                    SelectCommand =
+                        $@"SELECT DISTINCT TechStore.TechStoreID AS DecorID, TechStore.TechStoreName AS Name, DecorConfig.ProductID FROM TechStore 
+INNER JOIN DecorConfig ON TechStore.TechStoreID = DecorConfig.DecorID AND Enabled = 1  
+and decorConfigId in (select configId from infiniu2_marketingreference.dbo.ExcluziveCatalog where productType=1 and clientId={clientId})
+AND AccountingName IS NOT NULL AND InvNumber IS NOT NULL AND FactoryID={FactoryID} ORDER BY TechStoreName";
+                    using (SqlDataAdapter DA =
+                           new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
+                    {
+                        DA.Fill(ConstDecorDataTable);
+                    }
+
+                    SelectCommand = $@"SELECT * FROM DecorConfig WHERE Enabled = 1 
+and decorConfigId in (select configId from infiniu2_marketingreference.dbo.ExcluziveCatalog where productType=1 and clientId={clientId})
+AND FactoryID={FactoryID}";
+                    using (SqlDataAdapter DA =
+                           new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
+                    {
+                        DA.Fill(DecorConfigDataTable);
+                    }
+
+                    SelectCommand = $@"SELECT ProductID, ProductName, MeasureID, ReportParam FROM DecorProducts 
+WHERE (ProductID IN (SELECT ProductID FROM DecorConfig WHERE (Enabled = 1 AND AccountingName IS NOT NULL AND InvNumber IS NOT NULL 
+and decorConfigId in (select configId from infiniu2_marketingreference.dbo.ExcluziveCatalog where productType=1 and clientId={clientId})
+AND FactoryID={FactoryID}))) ORDER BY ProductName ASC";
+                    using (SqlDataAdapter DA =
+                           new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
+                    {
+                        DA.Fill(ConstProductsDataTable);
+                    }
+                }
+                else
+                {
+                    SelectCommand =
+                        $@"SELECT DISTINCT TechStore.TechStoreID AS DecorID, TechStore.TechStoreName AS Name, DecorConfig.ProductID FROM TechStore 
+INNER JOIN DecorConfig ON TechStore.TechStoreID = DecorConfig.DecorID AND Enabled = 1  
+and (decorConfigId in (select configId from infiniu2_marketingreference.dbo.ExcluziveCatalog where productType=1 and clientId={clientId})
+or decorConfigId not in (select configId from infiniu2_marketingreference.dbo.ExcluziveCatalog where productType=1))
+AND AccountingName IS NOT NULL AND InvNumber IS NOT NULL AND FactoryID={FactoryID} ORDER BY TechStoreName";
+                    using (SqlDataAdapter DA =
+                           new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
+                    {
+                        DA.Fill(ConstDecorDataTable);
+                    }
+
+                    SelectCommand = $@"SELECT * FROM DecorConfig WHERE Enabled = 1 
+and (decorConfigId in (select configId from infiniu2_marketingreference.dbo.ExcluziveCatalog where productType=1 and clientId={clientId})
+or decorConfigId not in (select configId from infiniu2_marketingreference.dbo.ExcluziveCatalog where productType=1))
+AND FactoryID={FactoryID}";
+                    using (SqlDataAdapter DA =
+                           new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
+                    {
+                        DA.Fill(DecorConfigDataTable);
+                    }
+
+                    SelectCommand = $@"SELECT ProductID, ProductName, MeasureID, ReportParam FROM DecorProducts 
+WHERE (ProductID IN (SELECT ProductID FROM DecorConfig WHERE (Enabled = 1 AND AccountingName IS NOT NULL AND InvNumber IS NOT NULL 
+and (decorConfigId in (select configId from infiniu2_marketingreference.dbo.ExcluziveCatalog where productType=1 and clientId={clientId})
+or decorConfigId not in (select configId from infiniu2_marketingreference.dbo.ExcluziveCatalog where productType=1))
+AND FactoryID={FactoryID}))) ORDER BY ProductName ASC";
+                    using (SqlDataAdapter DA =
+                           new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
+                    {
+                        DA.Fill(ConstProductsDataTable);
+                    }
+                }
             }
-            SelectCommand = @"SELECT DISTINCT TechStore.TechStoreID AS DecorID, TechStore.TechStoreName AS Name, DecorConfig.ProductID FROM TechStore 
-                INNER JOIN DecorConfig ON TechStore.TechStoreID = DecorConfig.DecorID AND Enabled = 1  AND AccountingName IS NOT NULL AND InvNumber IS NOT NULL AND FactoryID=" + FactoryID + " ORDER BY TechStoreName";
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
+            else
             {
-                ConstDecorDataTable.Clear();
-                DA.Fill(ConstDecorDataTable);
+                SelectCommand =
+                    $@"SELECT DISTINCT TechStore.TechStoreID AS DecorID, TechStore.TechStoreName AS Name, DecorConfig.ProductID FROM TechStore 
+INNER JOIN DecorConfig ON TechStore.TechStoreID = DecorConfig.DecorID AND Enabled = 1 
+AND AccountingName IS NOT NULL AND InvNumber IS NOT NULL AND FactoryID={FactoryID} ORDER BY TechStoreName";
+                using (SqlDataAdapter DA =
+                       new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
+                {
+                    DA.Fill(ConstDecorDataTable);
+                }
+
+                DecorConfigDataTable = TablesManager.DecorConfigDataTable;
+
+                SelectCommand = @"SELECT ProductID, ProductName, MeasureID, ReportParam FROM DecorProducts" +
+                                " WHERE (ProductID IN (SELECT ProductID FROM DecorConfig WHERE (Enabled = 1 AND AccountingName IS NOT NULL AND InvNumber IS NOT NULL AND FactoryID=" +
+                                FactoryID + "))) ORDER BY ProductName ASC";
+                using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
+                {
+                    DA.Fill(ConstProductsDataTable);
+                }
             }
         }
 
@@ -5039,6 +5669,7 @@ where producttype=0";
             }
 
             int ConfigID = -1;
+
             int DecorID = Convert.ToInt32(Rows[0]["DecorID"]);
 
             using (SqlDataAdapter DA = new SqlDataAdapter(@"SELECT * FROM ClientsCatalogDecorConfig
@@ -5377,30 +6008,124 @@ where producttype=0";
             return Ok;
         }
 
-        public bool IsConfigImageToSite(int ConfigID, ref bool bLatest, ref string Category, ref string Name, ref string Description, ref string Sizes, ref string Material)
+        public bool EditConfigImage(DataTable AttachmentsDataTable, int ConfigID, int ProductType)
         {
-            bool b = false;
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM ClientsCatalogImages WHERE ProductType<>0 AND ConfigID = " + ConfigID,
-                ConnectionStrings.CatalogConnectionString))
+            if (AttachmentsDataTable.Rows.Count == 0)
+                return true;
+
+            bool Ok = true;
+
+            //write to ftp
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM ClientsCatalogImages WHERE ProductType=" + ProductType + " AND ConfigID = " + ConfigID, ConnectionStrings.CatalogConnectionString))
+            {
+                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                {
+                    using (DataTable DT = new DataTable())
+                    {
+                        if (DA.Fill(DT) > 0)
+                        {
+                            bool bOk = false;
+                            foreach (DataRow Row in DT.Rows)
+                            {
+                                bOk = FM.DeleteFile(
+                                    Configs.DocumentsZOVTPSPath + FileManager.GetPath("ClientsCatalogImages") + "/" +
+                                    Row["FileName"].ToString(), Configs.FTPType);
+                                bOk = FM.DeleteFile(
+                                    Configs.DocumentsZOVTPSPath + FileManager.GetPath("ClientsCatalogImages") +
+                                    "/Thumbs/" +
+                                    Row["FileName"].ToString(), Configs.FTPType);
+                            }
+
+                            foreach (DataRow Row in AttachmentsDataTable.Rows)
+                            {
+                                FileInfo fi;
+
+                                try
+                                {
+                                    fi = new FileInfo(Row["Path"].ToString());
+
+                                }
+                                catch
+                                {
+                                    Ok = false;
+                                    continue;
+                                }
+
+                                DT.Rows[0]["FileName"] = Row["FileName"].ToString() + Row["Extension"].ToString();
+                                DT.Rows[0]["FileSize"] = fi.Length;
+
+                                try
+                                {
+                                    string sDestFolder = Configs.DocumentsZOVTPSPath +
+                                                         FileManager.GetPath("ClientsCatalogImages");
+                                    string sExtension = Row["Extension"].ToString();
+                                    string sFileName = Row["FileName"].ToString();
+
+                                    int j = 1;
+                                    while (FM.FileExist(sDestFolder + "/" + sFileName + sExtension, Configs.FTPType))
+                                    {
+                                        sFileName = Row["FileName"].ToString() + "(" + j++ + ")";
+                                    }
+
+                                    Row["FileName"] = sFileName + sExtension;
+                                    if (FM.UploadFile(Row["Path"].ToString(),
+                                            sDestFolder + "/" + sFileName + sExtension,
+                                            Configs.FTPType) == false)
+                                        break;
+                                    string tempFolder = System.Environment.GetEnvironmentVariable("TEMP");
+                                    if (CreateThumb(Row["Path"].ToString(), sFileName + sExtension))
+                                    {
+                                        if (FM.UploadFile(tempFolder + @"\" + sFileName + sExtension,
+                                                sDestFolder + "/Thumbs/" + sFileName + sExtension, Configs.FTPType) ==
+                                            false)
+                                            break;
+                                    }
+                                }
+                                catch
+                                {
+                                    Ok = false;
+                                    break;
+                                }
+                            }
+
+                            DA.Update(DT);
+                        }
+                    }
+                }
+            }
+
+            return Ok;
+        }
+
+        public ConfigImageInfo IsConfigImageToSite(int ConfigId)
+        {
+            ConfigImageInfo info = new ConfigImageInfo();
+
+            using (SqlDataAdapter DA = new SqlDataAdapter(
+                       "SELECT * FROM ClientsCatalogImages WHERE ProductType<>0 AND ConfigID = " + ConfigId,
+                       ConnectionStrings.CatalogConnectionString))
             {
                 using (DataTable DT = new DataTable())
                 {
                     if (DA.Fill(DT) > 0)
                     {
-                        b = Convert.ToBoolean(DT.Rows[0]["ToSite"]);
-                        bLatest = Convert.ToBoolean(DT.Rows[0]["Latest"]);
-                        Category = DT.Rows[0]["Category"].ToString();
-                        Description = DT.Rows[0]["Description"].ToString();
-                        Name = DT.Rows[0]["Name"].ToString();
-                        Sizes = DT.Rows[0]["Sizes"].ToString();
-                        Material = DT.Rows[0]["Material"].ToString();
+                        info.ConfigId = ConfigId;
+                        info.ToSite = Convert.ToBoolean(DT.Rows[0]["ToSite"]);
+                        info.Latest = Convert.ToBoolean(DT.Rows[0]["Latest"]);
+                        info.Basic = Convert.ToBoolean(DT.Rows[0]["Basic"]);
+                        info.Category = DT.Rows[0]["Category"].ToString();
+                        info.Name = DT.Rows[0]["Name"].ToString();
+                        info.Description = DT.Rows[0]["Description"].ToString();
+                        info.Sizes = DT.Rows[0]["Sizes"].ToString();
+                        info.Material = DT.Rows[0]["Material"].ToString();
                     }
                 }
             }
-            return b;
+
+            return info;
         }
 
-        public void ConfigImageToSite(int ConfigID, bool bToSite, bool bLatest, string Category, string Name, string Description, string Sizes, string Material)
+        public void ConfigImageToSite(int ConfigID, ConfigImageInfo configImageInfo)
         {
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM ClientsCatalogImages WHERE ProductType<>0 AND ConfigID = " + ConfigID,
                 ConnectionStrings.CatalogConnectionString))
@@ -5411,35 +6136,35 @@ where producttype=0";
                     {
                         if (DA.Fill(DT) > 0)
                         {
-                            DT.Rows[0]["ToSite"] = bToSite;
-                            DT.Rows[0]["Latest"] = bLatest;
-                            if (Category.Length == 0)
+                            DT.Rows[0]["ToSite"] = configImageInfo.ToSite;
+                            DT.Rows[0]["Latest"] = configImageInfo.Latest;
+                            DT.Rows[0]["Basic"] = configImageInfo.Basic;
+                            if (configImageInfo.Category.Length == 0)
                                 DT.Rows[0]["Category"] = DBNull.Value;
                             else
-                                DT.Rows[0]["Category"] = Category;
-                            if (Description.Length == 0)
-                                DT.Rows[0]["Description"] = DBNull.Value;
-                            else
-                                DT.Rows[0]["Description"] = Description;
-                            if (Name.Length == 0)
+                                DT.Rows[0]["Category"] = configImageInfo.Category;
+                            if (configImageInfo.Name.Length == 0)
                                 DT.Rows[0]["Name"] = DBNull.Value;
                             else
-                                DT.Rows[0]["Name"] = Name;
-                            if (Sizes.Length == 0)
+                                DT.Rows[0]["Name"] = configImageInfo.Name;
+                            if (configImageInfo.Description.Length == 0)
+                                DT.Rows[0]["Description"] = DBNull.Value;
+                            else
+                                DT.Rows[0]["Description"] = configImageInfo.Description;
+                            if (configImageInfo.Sizes.Length == 0)
                                 DT.Rows[0]["Sizes"] = DBNull.Value;
                             else
-                                DT.Rows[0]["Sizes"] = Sizes;
-                            if (Material.Length == 0)
+                                DT.Rows[0]["Sizes"] = configImageInfo.Sizes;
+                            if (configImageInfo.Material.Length == 0)
                                 DT.Rows[0]["Material"] = DBNull.Value;
                             else
-                                DT.Rows[0]["Material"] = Material;
+                                DT.Rows[0]["Material"] = configImageInfo.Material;
                             DA.Update(DT);
                         }
                     }
                 }
             }
         }
-
         public void DetachConfigImage(int ConfigID)
         {
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM ClientsCatalogImages WHERE ProductType<>0 AND ConfigID = " + ConfigID,
@@ -5473,6 +6198,120 @@ where producttype=0";
                     using (DataTable DT = new DataTable())
                     {
                         DA.Fill(DT);
+                    }
+                }
+            }
+        }
+
+        public string GetDecorImageFileName(int ConfigID, int ProductID)
+        {
+            var FileName = string.Empty;
+            string SelectCommand = "SELECT * FROM ClientsCatalogImages" +
+                                   " WHERE ProductType=1 AND ConfigID = " + ConfigID;
+            if (CheckOrdersStatus.IsCabFurniture(ProductID))
+                SelectCommand = "SELECT * FROM ClientsCatalogImages" +
+                                " WHERE ProductType=2 AND ConfigID = " + ConfigID;
+
+            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
+            {
+                using (DataTable DT = new DataTable())
+                {
+                    if (DA.Fill(DT) > 0 && DT.Rows[0]["FileName"] != DBNull.Value)
+                        FileName = DT.Rows[0]["FileName"].ToString();
+                }
+            }
+            return FileName;
+        }
+
+        public string GetDecorTechStoreFileName(int TechStoreID)
+        {
+            var FileName = string.Empty;
+
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM TechStoreDocuments" +
+                                                          " WHERE DocType = 0 AND TechID = " + TechStoreID, ConnectionStrings.CatalogConnectionString))
+            {
+                using (DataTable DT = new DataTable())
+                {
+                    if (DA.Fill(DT) > 0 && DT.Rows[0]["FileName"] != DBNull.Value)
+                        FileName = DT.Rows[0]["FileName"].ToString();
+                }
+            }
+            return FileName;
+        }
+
+        public void SaveDecorConfigImage(int ConfigID, int ProductID, string sDestFileName)
+        {
+            string SelectCommand = "SELECT * FROM ClientsCatalogImages" +
+                                   " WHERE ProductType=1 AND ConfigID = " + ConfigID;
+            if (CheckOrdersStatus.IsCabFurniture(ProductID))
+                SelectCommand = "SELECT * FROM ClientsCatalogImages" +
+                                " WHERE ProductType=2 AND ConfigID = " + ConfigID;
+            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
+            {
+                using (DataTable DT = new DataTable())
+                {
+                    if (DA.Fill(DT) == 0)
+                        return;
+
+                    if (DT.Rows[0]["FileName"] == DBNull.Value)
+                        return;
+
+                    string FileName = DT.Rows[0]["FileName"].ToString();
+
+                    if (FM.FileExist(Configs.DocumentsZOVTPSPath + FileManager.GetPath("ClientsCatalogImages") + "/" + FileName, Configs.FTPType))
+                    {
+                        try
+                        {
+                            FM.DownloadFile(
+                                Configs.DocumentsZOVTPSPath + FileManager.GetPath("ClientsCatalogImages") + "/" +
+                                FileName,
+                                sDestFileName,
+                                Convert.ToInt64(DT.Rows[0]["FileSize"]), Configs.FTPType);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message);
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+            }
+        }
+
+        public void SaveDecorTechStoreFile(int TechStoreID, string sDestFileName)//temp folder
+        {
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM TechStoreDocuments" +
+                                                          " WHERE DocType = 0 AND TechID = " + TechStoreID, ConnectionStrings.CatalogConnectionString))
+            {
+                using (DataTable DT = new DataTable())
+                {
+                    if (DA.Fill(DT) == 0)
+                        return;
+
+                    if (DT.Rows[0]["FileName"] == DBNull.Value)
+                        return;
+
+                    string FileName = DT.Rows[0]["FileName"].ToString();
+
+                    if (FM.FileExist(Configs.DocumentsPath + FileManager.GetPath("TechStoreDocuments") + "/" + FileName, Configs.FTPType))
+                    {
+                        try
+                        {
+                            FM.DownloadFile(
+                                Configs.DocumentsPath + FileManager.GetPath("TechStoreDocuments") + "/" + FileName,
+                                sDestFileName,
+                                Convert.ToInt64(DT.Rows[0]["FileSize"]), 
+                                Configs.FTPType);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message);
+                            return;
+                        }
                     }
                 }
             }
@@ -5565,7 +6404,7 @@ where producttype=0";
             ClientsCatalogImagesDT.Rows.Add(NewRow);
         }
 
-        public void EditImageRowBeforeSaving(int ImageID, bool ToSite, bool CatSlider, bool MainSlider, string Category, string Name, string Color, string Description, string Sizes, string Material)
+        public void EditImageRowBeforeSaving(int ImageID, bool ToSite, bool CatSlider, bool MainSlider, bool MainSliderZOVExcluzive, string Category, string Name, string Color, string Description, string Sizes, string Material)
         {
             DataRow[] rows = ClientsCatalogImagesDT.Select("ImageID = " + ImageID);
             if (rows.Count() > 0)
@@ -5579,6 +6418,7 @@ where producttype=0";
                 rows[0]["ToSite"] = ToSite;
                 rows[0]["CatSlider"] = CatSlider;
                 rows[0]["MainSlider"] = MainSlider;
+                rows[0]["MainSliderZOVExcluzive"] = MainSliderZOVExcluzive;
             }
         }
 

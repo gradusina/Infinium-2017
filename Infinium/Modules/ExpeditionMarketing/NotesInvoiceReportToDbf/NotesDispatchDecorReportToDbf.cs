@@ -382,11 +382,16 @@ PackageDetailID, PackageDetails.Count AS Count, (DecorOrders.Cost * PackageDetai
             {
                 for (int r = 0; r < Rows.Count(); r++)
                 {
+                    string accountingName = Rows[r]["AccountingName"].ToString();
                     string Cvet = GetColorCode(Convert.ToInt32(Rows[r]["ColorID"]));
                     string Patina = GetPatinaCode(Convert.ToInt32(Rows[r]["PatinaID"]));
 
                     string AccountingName = Rows[r]["AccountingName"].ToString();
                     if (AccountingName.ToLower().Contains("стекло"))
+                    {
+
+                    }
+                    if (AccountingName.ToLower().Contains("лдстп"))
                     {
 
                     }
@@ -468,6 +473,10 @@ PackageDetailID, PackageDetails.Count AS Count, (DecorOrders.Cost * PackageDetai
                     string Patina = GetPatinaCode(Convert.ToInt32(Rows[r]["PatinaID"]));
                     string AccountingName = Rows[r]["AccountingName"].ToString();
                     if (AccountingName.ToLower().Contains("стекло"))
+                    {
+
+                    }
+                    if (AccountingName.ToLower().Contains("лдстп"))
                     {
 
                     }
@@ -556,6 +565,10 @@ PackageDetailID, PackageDetails.Count AS Count, (DecorOrders.Cost * PackageDetai
                     string Patina = GetPatinaCode(Convert.ToInt32(Rows[r]["PatinaID"]));
                     string AccountingName = Rows[r]["AccountingName"].ToString();
                     if (AccountingName.ToLower().Contains("стекло"))
+                    {
+
+                    }
+                    if (AccountingName.ToLower().Contains("лдстп"))
                     {
 
                     }
@@ -848,6 +861,11 @@ PackageDetailID, PackageDetails.Count AS Count, (DecorOrders.Cost * PackageDetai
                 if (AccountingName.ToLower().Contains("стекло"))
                 {
 
+                }
+                if (AccountingName.ToLower().Contains("лдстп"))
+                {
+                    var cvet = GetColorCode(ColorID);
+                    var patina = GetPatinaCode(PatinaID);
                 }
                 //м.п.
                 if (MeasureTypeID == 2)

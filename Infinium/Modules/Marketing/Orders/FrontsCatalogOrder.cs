@@ -156,27 +156,47 @@ namespace Infinium.Modules.Marketing.Orders
         private void GetInsetColorsDT()
         {
             ConstInsetColorsDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT InsetColors.InsetColorID, InsetColors.GroupID, infiniu2_catalog.dbo.TechStore.TechStoreName AS InsetColorName FROM InsetColors" +
-                " INNER JOIN infiniu2_catalog.dbo.TechStore ON InsetColors.InsetColorID = infiniu2_catalog.dbo.TechStore.TechStoreID ORDER BY TechStoreName", ConnectionStrings.CatalogConnectionString))
+            ConstInsetColorsDataTable.Columns.Add(new DataColumn("InsetColorID", Type.GetType("System.Int64")));
+            ConstInsetColorsDataTable.Columns.Add(new DataColumn("GroupID", Type.GetType("System.Int64")));
+            ConstInsetColorsDataTable.Columns.Add(new DataColumn("InsetColorName", Type.GetType("System.String")));
+            ConstInsetColorsDataTable.Columns.Add(new DataColumn("Cvet", Type.GetType("System.String")));
+            using (SqlDataAdapter DA = new SqlDataAdapter(
+                       @"SELECT InsetColors.InsetColorID, InsetColors.GroupID, TechStore.TechStoreName AS InsetColorName, 
+TechStore.Cvet AS Cvet FROM InsetColors 
+INNER JOIN infiniu2_catalog.dbo.TechStore as TechStore 
+ON InsetColors.InsetColorID = TechStore.TechStoreID ORDER BY TechStoreName",
+                       ConnectionStrings.CatalogConnectionString))
             {
-                DA.Fill(ConstInsetColorsDataTable);
+                using (DataTable DT = new DataTable())
                 {
-                    DataRow NewRow = ConstInsetColorsDataTable.NewRow();
-                    NewRow["InsetColorID"] = -1;
-                    NewRow["GroupID"] = -1;
-                    NewRow["InsetColorName"] = "-";
-                    ConstInsetColorsDataTable.Rows.Add(NewRow);
+                    DA.Fill(DT);
+                    {
+                        DataRow NewRow = ConstInsetColorsDataTable.NewRow();
+                        NewRow["InsetColorID"] = -1;
+                        NewRow["GroupID"] = -1;
+                        NewRow["InsetColorName"] = "-";
+                        NewRow["Cvet"] = "000";
+                        ConstInsetColorsDataTable.Rows.Add(NewRow);
+                    }
+                    {
+                        DataRow NewRow = ConstInsetColorsDataTable.NewRow();
+                        NewRow["InsetColorID"] = 0;
+                        NewRow["GroupID"] = -1;
+                        NewRow["InsetColorName"] = "на выбор";
+                        NewRow["Cvet"] = "0000000";
+                        ConstInsetColorsDataTable.Rows.Add(NewRow);
+                    }
+                    for (int i = 0; i < DT.Rows.Count; i++)
+                    {
+                        DataRow NewRow = ConstInsetColorsDataTable.NewRow();
+                        NewRow["InsetColorID"] = Convert.ToInt64(DT.Rows[i]["InsetColorID"]);
+                        NewRow["GroupID"] = Convert.ToInt64(DT.Rows[i]["GroupID"]);
+                        NewRow["InsetColorName"] = DT.Rows[i]["InsetColorName"].ToString();
+                        NewRow["Cvet"] = DT.Rows[i]["Cvet"].ToString();
+                        ConstInsetColorsDataTable.Rows.Add(NewRow);
+                    }
                 }
-                {
-                    DataRow NewRow = ConstInsetColorsDataTable.NewRow();
-                    NewRow["InsetColorID"] = 0;
-                    NewRow["GroupID"] = -1;
-                    NewRow["InsetColorName"] = "на выбор";
-                    ConstInsetColorsDataTable.Rows.Add(NewRow);
-                }
-
             }
-
         }
 
         private void Fill()

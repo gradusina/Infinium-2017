@@ -935,8 +935,10 @@ namespace Infinium
 
         private void Initialize()
         {
-            kryptonMonthCalendar3.SelectionStart = DateTime.Today - TimeSpan.FromDays(90);
-            kryptonMonthCalendar4.SelectionStart = DateTime.Today;
+            monthCalendar1.SelectionStart = DateTime.Today - TimeSpan.FromDays(90);
+            monthCalendar2.SelectionStart = DateTime.Today;
+            monthCalendar1.TodayDate= DateTime.Today;
+            monthCalendar2.TodayDate= DateTime.Today;
 
             MegaOrdersDataGrid.SelectionChanged -= MegaOrdersDataGrid_SelectionChanged;
             MarketingExpeditionManager = new MarketingExpeditionManager(
@@ -1012,7 +1014,7 @@ namespace Infinium
             cbxCabFurMonths.SelectedValue = DateTime.Now.Month;
             cbxCabFurYears.SelectedValue = DateTime.Now.Year;
 
-            kryptonMonthCalendar1.SelectionStart = DateTime.Now;
+            monthCalendar3.SelectionStart = DateTime.Now;
 
             _dispatchReportToDbf = new DispatchReportToDbf(FrontsCatalogOrder, DecorCatalogOrder);
             _colorInvoiceReportToDbf = new ColorInvoiceReportToDbf(FrontsCatalogOrder, DecorCatalogOrder);
@@ -1343,8 +1345,8 @@ namespace Infinium
 
         private void FilterOrders()
         {
-            DateTime firstDate = kryptonMonthCalendar3.SelectionStart;
-            DateTime secondDate = kryptonMonthCalendar4.SelectionStart;
+            DateTime firstDate = monthCalendar1.SelectionStart;
+            DateTime secondDate = monthCalendar2.SelectionStart;
 
             bool bClient = ClientCheckBox.Checked;
             bool bMegaBatch = MegaBatchCheckBox.Checked;
@@ -1497,7 +1499,7 @@ namespace Infinium
         {
             if (MainOrdersDataGrid.SelectedRows.Count == 0)
                 return;
-            CheckOrdersStatus.SetToDispatch(kryptonMonthCalendar1.SelectionStart, GetSelectedPackages(),
+            CheckOrdersStatus.SetToDispatch(monthCalendar3.SelectionStart, GetSelectedPackages(),
                 Convert.ToInt32(MainOrdersDataGrid.SelectedRows[0].Cells["MainOrderID"].Value));
         }
 
@@ -3673,6 +3675,10 @@ namespace Infinium
                             _dispatchReportToDbf.SaveDBF(FilePath, ReportName, true, ref ProfilDBFName, ref TPSDBFName);
                             DetailsReport.CreateReport(ref hssfworkbook, new int[1] { Dispatches[j] }, OrderNumbers.OfType<Int32>().ToArray(), MainOrders, ClientID, ClientName, ProfilVerify, TPSVerify, iDiscountPaymentConditionID, true);
 
+                            if (ClientID == 609)
+                            {
+                                DetailsReport.ReportModuleOnline(ref hssfworkbook, Dispatches);
+                            }
                             FileInfo file = new FileInfo(FilePath + @"\" + ReportName + ".xls");
                             int x = 1;
                             while (file.Exists == true)
@@ -3837,6 +3843,10 @@ namespace Infinium
                             _dispatchReportToDbf.SaveDBF(FilePath, ReportName, false, ref ProfilDBFName, ref TPSDBFName);
                             DetailsReport.CreateReport(ref hssfworkbook, new int[1] { Dispatches[j] }, OrderNumbers.OfType<Int32>().ToArray(), MainOrders, ClientID, ClientName, ProfilVerify, TPSVerify, iDiscountPaymentConditionID, false);
 
+                            if (ClientID == 609)
+                            {
+                                DetailsReport.ReportModuleOnline(ref hssfworkbook, Dispatches);
+                            }
                             FileInfo file = new FileInfo(FilePath + @"\" + ReportName + ".xls");
                             int x = 1;
                             while (file.Exists == true)
@@ -4009,6 +4019,10 @@ namespace Infinium
 
                         DetailsReport.CreateReport(ref hssfworkbook, new int[1] { Dispatches[j] }, OrderNumbers.OfType<Int32>().ToArray(), MainOrders, ClientID, ClientName, ProfilVerify, TPSVerify, iDiscountPaymentConditionID);
 
+                        if (ClientID == 609)
+                        {
+                            DetailsReport.ReportModuleOnline(ref hssfworkbook, Dispatches);
+                        }
                         FileInfo file = new FileInfo(FilePath + @"\" + ReportName + ".xls");
                         int x = 1;
                         while (file.Exists == true)
@@ -4096,6 +4110,10 @@ namespace Infinium
             _colorInvoiceReportToDbf.CreateReport(ref hssfworkbook, Dispatches, MainOrders, ClientID, ClientName, ref TotalProfil, ref TotalTPS, ProfilVerify, TPSVerify, iDiscountPaymentConditionID);
             DetailsReport.CreateReport(ref hssfworkbook, Dispatches, OrderNumbers.OfType<Int32>().ToArray(), MainOrders, ClientID, ClientName, ProfilVerify, TPSVerify, iDiscountPaymentConditionID);
 
+            if (ClientID == 609)
+            {
+                DetailsReport.ReportModuleOnline(ref hssfworkbook, Dispatches);
+            }
             object CreationDateTime = dgvDispatch.SelectedRows[0].Cells["CreationDateTime"].Value;
             object ConfirmExpDateTime = dgvDispatch.SelectedRows[0].Cells["ConfirmExpDateTime"].Value;
             object ConfirmDispDateTime = dgvDispatch.SelectedRows[0].Cells["ConfirmDispDateTime"].Value;
@@ -4158,6 +4176,10 @@ namespace Infinium
             _notesInvoiceReportToDbf.CreateReport(ref hssfworkbook, Dispatches, MainOrders, ClientID, ClientName, ref TotalProfil, ref TotalTPS, ProfilVerify, TPSVerify, iDiscountPaymentConditionID);
             DetailsReport.CreateReport(ref hssfworkbook, Dispatches, OrderNumbers.OfType<Int32>().ToArray(), MainOrders, ClientID, ClientName, ProfilVerify, TPSVerify, iDiscountPaymentConditionID);
 
+            if (ClientID == 609)
+            {
+                DetailsReport.ReportModuleOnline(ref hssfworkbook, Dispatches);
+            }
             object CreationDateTime = dgvDispatch.SelectedRows[0].Cells["CreationDateTime"].Value;
             object ConfirmExpDateTime = dgvDispatch.SelectedRows[0].Cells["ConfirmExpDateTime"].Value;
             object ConfirmDispDateTime = dgvDispatch.SelectedRows[0].Cells["ConfirmDispDateTime"].Value;
@@ -4220,6 +4242,10 @@ namespace Infinium
             _dispatchReportToDbf.CreateReport(ref hssfworkbook, Dispatches, MainOrders, ClientID, ClientName, ref TotalProfil, ref TotalTPS, ProfilVerify, TPSVerify, iDiscountPaymentConditionID);
             DetailsReport.CreateReport(ref hssfworkbook, Dispatches, OrderNumbers.OfType<Int32>().ToArray(), MainOrders, ClientID, ClientName, ProfilVerify, TPSVerify, iDiscountPaymentConditionID);
 
+            if (ClientID == 609)
+            {
+                DetailsReport.ReportModuleOnline(ref hssfworkbook, Dispatches);
+            }
             object CreationDateTime = dgvDispatch.SelectedRows[0].Cells["CreationDateTime"].Value;
             object ConfirmExpDateTime = dgvDispatch.SelectedRows[0].Cells["ConfirmExpDateTime"].Value;
             object ConfirmDispDateTime = dgvDispatch.SelectedRows[0].Cells["ConfirmDispDateTime"].Value;
@@ -4814,6 +4840,10 @@ namespace Infinium
             DetailsReport.CreateReport(ref hssfworkbook, Dispatches, OrderNumbers.OfType<Int32>().ToArray(), MainOrders, NewClientID, ClientName,
                 bProfilVerify, bTPSVerify, DiscountPaymentConditionID, false);
 
+            if (ClientID == 609)
+            {
+                DetailsReport.ReportModuleOnline(ref hssfworkbook, Dispatches);
+            }
             FileInfo file = new FileInfo(FilePath + @"\" + ReportName + ".xls");
             int j = 1;
             while (file.Exists == true)
@@ -5169,7 +5199,7 @@ namespace Infinium
 
         private void kryptonButton4_Click(object sender, EventArgs e)
         {
-            CheckOrdersStatus.SetToStorage(kryptonMonthCalendar1.SelectionStart, GetSelectedPackages());
+            CheckOrdersStatus.SetToStorage(monthCalendar3.SelectionStart, GetSelectedPackages());
         }
 
         private void PackagesDataGrid_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
@@ -5413,12 +5443,12 @@ namespace Infinium
 
         private void kryptonButton3_Click_1(object sender, EventArgs e)
         {
-            CheckOrdersStatus.SetToExpedition(kryptonMonthCalendar1.SelectionStart, GetSelectedPackages());
+            CheckOrdersStatus.SetToExpedition(monthCalendar3.SelectionStart, GetSelectedPackages());
         }
 
         private void kryptonButton6_Click(object sender, EventArgs e)
         {
-            CheckOrdersStatus.SetToPack(kryptonMonthCalendar1.SelectionStart, GetSelectedPackages());
+            CheckOrdersStatus.SetToPack(monthCalendar3.SelectionStart, GetSelectedPackages());
         }
 
         private void kryptonButton7_Click(object sender, EventArgs e)
@@ -5731,6 +5761,10 @@ namespace Infinium
                             _colorInvoiceReportToDbf.SaveDBF(FilePath, ReportName, true, ref ProfilDBFName, ref TPSDBFName);
                             DetailsReport.CreateReport(ref hssfworkbook, new int[1] { Dispatches[j] }, OrderNumbers.OfType<Int32>().ToArray(), MainOrders, ClientID, ClientName, ProfilVerify, TPSVerify, iDiscountPaymentConditionID, true);
 
+                            if (ClientID == 609)
+                            {
+                                DetailsReport.ReportModuleOnline(ref hssfworkbook, Dispatches);
+                            }
                             FileInfo file = new FileInfo(FilePath + @"\" + ReportName + ".xls");
                             int x = 1;
                             while (file.Exists == true)
@@ -5895,6 +5929,10 @@ namespace Infinium
                             _colorInvoiceReportToDbf.SaveDBF(FilePath, ReportName, false, ref ProfilDBFName, ref TPSDBFName);
                             DetailsReport.CreateReport(ref hssfworkbook, new int[1] { Dispatches[j] }, OrderNumbers.OfType<Int32>().ToArray(), MainOrders, ClientID, ClientName, ProfilVerify, TPSVerify, iDiscountPaymentConditionID, false);
 
+                            if (ClientID == 609)
+                            {
+                                DetailsReport.ReportModuleOnline(ref hssfworkbook, Dispatches);
+                            }
                             FileInfo file = new FileInfo(FilePath + @"\" + ReportName + ".xls");
                             int x = 1;
                             while (file.Exists == true)
@@ -6067,6 +6105,10 @@ namespace Infinium
 
                         DetailsReport.CreateReport(ref hssfworkbook, new int[1] { Dispatches[j] }, OrderNumbers.OfType<Int32>().ToArray(), MainOrders, ClientID, ClientName, ProfilVerify, TPSVerify, iDiscountPaymentConditionID);
 
+                        if (ClientID == 609)
+                        {
+                            DetailsReport.ReportModuleOnline(ref hssfworkbook, Dispatches);
+                        }
                         FileInfo file = new FileInfo(FilePath + @"\" + ReportName + ".xls");
                         int x = 1;
                         while (file.Exists == true)
@@ -6270,6 +6312,10 @@ namespace Infinium
                             _notesInvoiceReportToDbf.SaveDBF(FilePath, ReportName, true, ref ProfilDBFName, ref TPSDBFName);
                             DetailsReport.CreateReport(ref hssfworkbook, new int[1] { Dispatches[j] }, OrderNumbers.OfType<Int32>().ToArray(), MainOrders, ClientID, ClientName, ProfilVerify, TPSVerify, iDiscountPaymentConditionID, true);
 
+                            if (ClientID == 609)
+                            {
+                                DetailsReport.ReportModuleOnline(ref hssfworkbook, Dispatches);
+                            }
                             FileInfo file = new FileInfo(FilePath + @"\" + ReportName + ".xls");
                             int x = 1;
                             while (file.Exists == true)
@@ -6434,6 +6480,10 @@ namespace Infinium
                             _notesInvoiceReportToDbf.SaveDBF(FilePath, ReportName, false, ref ProfilDBFName, ref TPSDBFName);
                             DetailsReport.CreateReport(ref hssfworkbook, new int[1] { Dispatches[j] }, OrderNumbers.OfType<Int32>().ToArray(), MainOrders, ClientID, ClientName, ProfilVerify, TPSVerify, iDiscountPaymentConditionID, false);
 
+                            if (ClientID == 609)
+                            {
+                                DetailsReport.ReportModuleOnline(ref hssfworkbook, Dispatches);
+                            }
                             FileInfo file = new FileInfo(FilePath + @"\" + ReportName + ".xls");
                             int x = 1;
                             while (file.Exists == true)
@@ -6606,6 +6656,10 @@ namespace Infinium
 
                         DetailsReport.CreateReport(ref hssfworkbook, new int[1] { Dispatches[j] }, OrderNumbers.OfType<Int32>().ToArray(), MainOrders, ClientID, ClientName, ProfilVerify, TPSVerify, iDiscountPaymentConditionID);
 
+                        if (ClientID == 609)
+                        {
+                            DetailsReport.ReportModuleOnline(ref hssfworkbook, Dispatches);
+                        }
                         FileInfo file = new FileInfo(FilePath + @"\" + ReportName + ".xls");
                         int x = 1;
                         while (file.Exists == true)

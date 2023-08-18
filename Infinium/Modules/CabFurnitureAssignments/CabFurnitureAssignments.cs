@@ -1,4 +1,7 @@
-﻿using NPOI.HSSF.UserModel;
+﻿using Newtonsoft.Json;
+
+using NPOI.HSSF.UserModel;
+using NPOI.HSSF.UserModel.Contrib;
 using NPOI.HSSF.Util;
 
 using System;
@@ -8,10 +11,14 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
 using System.Drawing.Printing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
+using System.Threading;
 using System.Windows.Forms;
+using Infinium.Modules.Marketing.NewOrders;
 
 namespace Infinium.Modules.CabFurnitureAssignments
 {
@@ -371,7 +378,7 @@ namespace Infinium.Modules.CabFurnitureAssignments
         private DataTable DocumentsDT = null;
         private DataTable AllAssignmentsDT = null;
         private DataTable NewAssignmentDetailsDT = null;
-
+DataTable StatisticsDT = null;
         private DataTable NonAgreementDetailDT;
         private DataTable AgreedDetailDT;
         private DataTable OnProductionDetailDT;
@@ -406,16 +413,20 @@ namespace Infinium.Modules.CabFurnitureAssignments
         public BindingSource AllAssignmentsBS = null;
         public BindingSource DocumentsBS = null;
         public BindingSource NewAssignmentDetailsBS = null;
-
+ public BindingSource StatisticsBS = null;
         private SqlCommandBuilder NewAssignmentCB;
         private SqlCommandBuilder AllAssignmentsCB;
-
+       SqlCommandBuilder StatisticsCB;
         private SqlDataAdapter NewAssignmentDA;
         private SqlDataAdapter AllAssignmentsDA;
-
+   SqlDataAdapter StatisticsDA;
         private DataTable ComplementLabelDataDT = null;
         private DataTable PackageLabelDataDT = null;
         private DataTable RolesDataTable = null;
+        DataTable ConstStatisticsDT = null;
+
+        decimal ExchangeRateEuro = 0;
+
 
         public bool NewAssignment
         {
@@ -740,6 +751,7 @@ WHERE        CAST(CreateDateTime AS date) >= '2019-12-26 00:00' AND CAST(CreateD
             DocumentsDT = new DataTable();
             AllAssignmentsDT = new DataTable();
             NewAssignmentDetailsDT = new DataTable();
+            StatisticsDT = new DataTable();
 
             NonAgreementDetailBS = new BindingSource();
             AgreedDetailBS = new BindingSource();
@@ -751,6 +763,7 @@ WHERE        CAST(CreateDateTime AS date) >= '2019-12-26 00:00' AND CAST(CreateD
             AllAssignmentsBS = new BindingSource();
             DocumentsBS = new BindingSource();
             NewAssignmentDetailsBS = new BindingSource();
+            StatisticsBS = new BindingSource();
         }
 
         private void Fill()
@@ -848,7 +861,779 @@ WHERE        CAST(CreateDateTime AS date) >= '2019-12-26 00:00' AND CAST(CreateD
             NewAssignmentDA = new SqlDataAdapter(SelectCommand, ConnectionStrings.StorageConnectionString);
             NewAssignmentCB = new SqlCommandBuilder(NewAssignmentDA);
             NewAssignmentDA.Fill(NewAssignmentDetailsDT);
+
+            SelectCommand = @"SELECT TOP 0
+                                    MAX(P.CabFurAssignmentID) as CabFurAssignmentID,
+                                    MAX(PD.Notes) AS Notes,
+                                    MAX(PD.Count) as Count,
+                                    MAX(PD.CreateDateTime) AS CreateDateTime,
+                                    
+                                    
+                                    
+                                    MAX(P.TechStoreSubGroupID) AS TechStoreSubGroupID,
+                                    MAX(P.TechStoreID) AS CTechStoreID,
+                                    MAX(P.CoverID) As CoverID,
+                                    MAX(P.PatinaID) AS PatinaID,
+                                    MAX(P.InsetColorID) AS InsetColorID,
+                                    
+                                    MAX(Decor.AccountingName) As AccountingName,
+                                    MAX(Decor.MarketingCost) As Cost,
+                                    MAX(PD.TechStoreID) As TechStoreID,
+                                    
+                                    
+                                    MAX(A.CreationDateTime) As ACreationDateTime,
+									MAX(A.ProductionDateTime) As AProductionDateTime,
+                                    MAX(A.OutProductionDateTime) As ValOutProductionDateTime,
+                                    
+                                    Count(P.CabFurAssignmentID) as CounterCFA,
+                                    
+                                    MAX(P.PrintDateTime) As PrintDateTime,
+                                    MAX(P.AddToStorageDateTime) As AddToStorageDateTime,
+                                    MAX(Decor.InvNumber) As InvNumber
+                                    
+                                    
+                                    FROM CabFurnitureAssignments A
+                                    LEFT JOIN CabFurniturePackages P ON P.CabFurAssignmentID = A.CabFurAssignmentID
+                                    LEFT JOIN CabFurnitureAssignmentDetails AD ON AD.CabFurAssignmentID = A.CabFurAssignmentID
+                                    LEFT JOIN CabFurniturePackageDetails AS PD ON PD.CabFurniturePackageID = P.CabFurniturePackageID
+                                    LEFT JOIN infiniu2_catalog.dbo.DecorConfig Decor ON Decor.DecorID = PD.TechStoreID 
+                                    
+                                    
+                                    group by PD.CabFurniturePackageDetailID";
+            StatisticsDA = new SqlDataAdapter(SelectCommand, ConnectionStrings.StorageConnectionString);
+            StatisticsCB = new SqlCommandBuilder(StatisticsDA);
+            StatisticsDA.Fill(StatisticsDT);
+
+            
+            ExchangeRateEuro = GetExchangeRate();
+
         }
+        
+
+        public void UpdateDateStatistics(int typeDate = 0, DateTime DateStart = new DateTime(), DateTime DateEnd = new DateTime() )
+        {
+            string filter = "";
+            switch (typeDate) {
+                case 0:
+                    DateStart = DateTime.Today;
+                    DateEnd = DateTime.Today;
+                    filter = " CAST(P.AddToStorageDateTime AS date) >= '" + DateStart.ToString("yyyy-MM-dd") +
+                        " 00:00' AND CAST(P.AddToStorageDateTime AS date) <= '" + DateEnd.ToString("yyyy-MM-dd") + " 23:59'"
+                        + "and P.AddToStorageDateTime is not null";
+                    break;
+                case 1: filter = "  CAST(A.CreationDateTime AS date) >= '" + DateStart.ToString("yyyy-MM-dd") +
+                " 00:00' AND CAST(A.CreationDateTime AS date) <= '" + DateEnd.ToString("yyyy-MM-dd") + " 23:59'"
+                + "and A.CreationDateTime is not null";
+                break;
+
+                case 2:
+                    filter = "  CAST(A.PlanDispatchDateTime AS date) >= '" + DateStart.ToString("yyyy-MM-dd") +
+               " 00:00' AND CAST(A.PlanDispatchDateTime AS date) <= '" + DateEnd.ToString("yyyy-MM-dd") + " 23:59' " +
+               "and A.PlanDispatchDateTime is not null";
+                    break;
+
+                case 3:
+                    filter = "  CAST(A.AgreementDateTime AS date) >= '" + DateStart.ToString("yyyy-MM-dd") +
+               " 00:00' AND CAST(A.AgreementDateTime AS date) <= '" + DateEnd.ToString("yyyy-MM-dd") + " 23:59'"
+               + "and A.AgreementDateTime is not null";
+                    break;
+
+                case 4:
+                    filter = "  CAST(A.ProductionDateTime AS date) >= '" + DateStart.ToString("yyyy-MM-dd") +
+               " 00:00' AND CAST(A.ProductionDateTime AS date) <= '" + DateEnd.ToString("yyyy-MM-dd") + " 23:59'"
+                + "and A.ProductionDateTime is not null";
+                    break;
+
+                case 5:
+                    filter = " CAST(A.OutProductionDateTime AS date) >= '" + DateStart.ToString("yyyy-MM-dd") +
+               " 00:00' AND CAST(A.OutProductionDateTime AS date) <= '" + DateEnd.ToString("yyyy-MM-dd") + " 23:59'"
+               + "and A.OutProductionDateTime is not null";
+                    break;
+
+                case 6:
+                    filter = "  CAST(P.PrintDateTime AS date) >= '" + DateStart.ToString("yyyy-MM-dd") +
+              " 00:00' AND CAST(P.PrintDateTime AS date) <= '" + DateEnd.ToString("yyyy-MM-dd") + " 23:59'"
+              + "and P.PrintDateTime is not null";
+                    break;
+
+                case 7:
+                    filter = "  CAST(P.AddToStorageDateTime AS date) >= '" + DateStart.ToString("yyyy-MM-dd") +
+              " 00:00' AND CAST(P.AddToStorageDateTime AS date) <= '" + DateEnd.ToString("yyyy-MM-dd") + " 23:59'"
+              + "and P.AddToStorageDateTime is not null";
+                    break;
+
+                case 8:
+                    filter = "  CAST(P.RemoveFromStorageDateTime AS date) >= '" + DateStart.ToString("yyyy-MM-dd") +
+              " 00:00' AND CAST(P.RemoveFromStorageDateTime AS date) <= '" + DateEnd.ToString("yyyy-MM-dd") + " 23:59'"
+              + "and P.RemoveFromStorageDateTime is not null";
+                    break;
+
+                case 9:
+                    filter = "  CAST(P.QualityControlInDateTime AS date) >= '" + DateStart.ToString("yyyy-MM-dd") +
+              " 00:00' AND CAST(P.QualityControlInDateTime AS date) <= '" + DateEnd.ToString("yyyy-MM-dd") + " 23:59'"
+              + "and P.QualityControlInDateTime is not null";
+                    break;
+
+                case 10:
+                    filter = " CAST(P.QualityControlOutDateTime AS date) >= '" + DateStart.ToString("yyyy-MM-dd") +
+              " 00:00' AND CAST(P.QualityControlOutDateTime AS date) <= '" + DateEnd.ToString("yyyy-MM-dd") + " 23:59'"
+              + "and P.QualityControlOutDateTime is not null";
+                    break;
+                case 11:
+                    filter = "";
+                    break;
+
+            }
+
+            string SelectCommand = @"SELECT
+                                    MAX(P.CabFurAssignmentID) as CabFurAssignmentID,
+                                    MAX(PD.Notes) AS Notes,
+                                    MAX(PD.Count) as Count,
+                                    MAX(PD.CreateDateTime) AS CreateDateTime,
+                                    
+                                    
+                                    
+                                    MAX(P.TechStoreSubGroupID) AS TechStoreSubGroupID,
+                                    MAX(P.TechStoreID) AS CTechStoreID,
+                                    MAX(P.CoverID) As CoverID,
+                                    MAX(P.PatinaID) AS PatinaID,
+                                    MAX(P.InsetColorID) AS InsetColorID,
+                                    
+                                    MAX(Decor.AccountingName) As AccountingName,
+                                    MAX(Decor.MarketingCost) As Cost,
+                                    MAX(PD.TechStoreID) As TechStoreID,
+                                    
+                                    MAX(A.CreationDateTime) As ACreationDateTime,
+									MAX(A.ProductionDateTime) As AProductionDateTime,
+                                    MAX(A.OutProductionDateTime) As ValOutProductionDateTime,
+                                    
+                                    Count(P.CabFurAssignmentID) as CounterCFA,
+                                    
+                                    MAX(P.PrintDateTime) As PrintDateTime,
+                                    MAX(P.AddToStorageDateTime) As AddToStorageDateTime,
+                                    MAX(Decor.InvNumber) As InvNumber
+                                    
+                                    
+                                    FROM CabFurnitureAssignments A
+                                    LEFT JOIN CabFurniturePackages P ON P.CabFurAssignmentID = A.CabFurAssignmentID
+                                    LEFT JOIN CabFurnitureAssignmentDetails AD ON AD.CabFurAssignmentID = A.CabFurAssignmentID
+                                    LEFT JOIN CabFurniturePackageDetails AS PD ON PD.CabFurniturePackageID = P.CabFurniturePackageID
+                                    LEFT JOIN infiniu2_catalog.dbo.DecorConfig Decor ON Decor.DecorID = PD.TechStoreID 
+                                    LEFT JOIN Cells C ON P.CellID=C.CellID
+
+									WHERE C.Name is NULL AND 
+
+                                    " + filter + @"
+                                    
+                                    group by PD.CabFurniturePackageDetailID";
+            StatisticsDA = new SqlDataAdapter(SelectCommand, ConnectionStrings.StorageConnectionString);
+            StatisticsCB = new SqlCommandBuilder(StatisticsDA);
+            StatisticsDT.Clear();
+            StatisticsDA.Fill(StatisticsDT);
+            StatisticsDT.DefaultView.Sort = "AddToStorageDateTime, CreateDateTime";
+
+            foreach (DataRow row in StatisticsDT.Rows)
+            {
+                if (row["Cost"] != DBNull.Value)
+                {
+                    row["Cost"] = Convert.ToDecimal(row["Cost"]) * ExchangeRateEuro;
+                }
+            }
+
+            
+
+            //SellectNullAccountingName();
+
+
+            ConstStatisticsDT = StatisticsDT.Copy();
+
+        }
+
+
+        public decimal GetExchangeRate()
+        {
+            string Date = DateTime.Today.Year.ToString() + "-" + DateTime.Today.Month.ToString() + "-1";
+            //string url = $"https://www.nbrb.by/api/exrates/rates?periodicity=0&ondate={date:yyyy-MM-dd}";
+            string url = $"https://api.nbrb.by/exrates/rates?periodicity=0&ondate={Date:yyyy-MM-dd}";
+
+            HttpWebResponse myHttpWebResponse = null;
+
+            decimal eur = 0;
+            decimal usd = 0;
+            decimal rub = 0;
+
+            try
+            {
+                ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;
+                var myHttpWebRequest = (HttpWebRequest)WebRequest.Create(url);
+                myHttpWebRequest.UseDefaultCredentials = true;
+                myHttpWebRequest.KeepAlive = false;
+                myHttpWebRequest.AllowAutoRedirect = true;
+                CookieContainer cookieContainer = new CookieContainer();
+                myHttpWebRequest.CookieContainer = cookieContainer;
+                myHttpWebResponse = (HttpWebResponse)myHttpWebRequest.GetResponse();
+            }
+            catch (NotSupportedException)
+            {
+
+            }
+            catch (ProtocolViolationException)
+            {
+
+            }
+            catch (WebException e)
+            {
+                if (e.Status == WebExceptionStatus.ProtocolError)
+                {
+
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+            finally
+            {
+            }
+
+            List<CurrencyConverter.Currency> list = new List<CurrencyConverter.Currency>();
+            if (myHttpWebResponse != null)
+            {
+                using (var reader = new StreamReader(myHttpWebResponse.GetResponseStream()))
+                {
+                    string objText = reader.ReadToEnd();
+                    //list = new JavaScriptSerializer().Deserialize<List<Currency>>(objText);
+                    list = JsonConvert.DeserializeObject<List<CurrencyConverter.Currency>>(objText);
+                }
+            }
+
+            if (list.Count > 0)
+            {
+                eur = (decimal)list.SingleOrDefault(p => p.Cur_Abbreviation == "EUR").Cur_OfficialRate;
+                usd = (decimal)list.SingleOrDefault(p => p.Cur_Abbreviation == "USD").Cur_OfficialRate;
+                rub = (decimal)list.SingleOrDefault(p => p.Cur_Abbreviation == "RUB").Cur_OfficialRate;
+            }
+
+            return eur;
+        }
+
+        private double GetExchangeRate1()
+        {
+
+            string Date = DateTime.Today.Year.ToString() +"-"+ DateTime.Today.Month.ToString()+"-1";
+            //string url = "https://www.nbrb.by/api/exrates/rates/451?ondate="+Date;
+            string url = "https://api.nbrb.by/exrates/rates/451?ondate=" + Date;
+            string html = string.Empty;
+
+            HttpWebRequest myHttpWebRequest = (HttpWebRequest)HttpWebRequest.Create(url);
+            HttpWebResponse myHttpWebResponse = (HttpWebResponse)myHttpWebRequest.GetResponse();
+            StreamReader myStreamReader = new StreamReader(myHttpWebResponse.GetResponseStream());
+            html = myStreamReader.ReadToEnd();
+
+            int counter = 0;
+
+            for (int i = html.Length - 2; i > 0; i--)
+            {
+                
+                if (!((html[i] >= '0' && html[i] <= '9') || html[i] == '.'))
+                {
+                    counter = i + 1;
+                    break;
+                }
+                
+            }
+
+            CultureInfo temp_culture = Thread.CurrentThread.CurrentCulture;
+            Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture("en-US");
+            double d = double.Parse(html.Substring(counter, html.Length - counter - 1));
+            Thread.CurrentThread.CurrentCulture = temp_culture;
+
+            return d;
+        }
+
+
+
+
+        private void SellectNullAccountingName()
+        {
+           
+            foreach (DataRow Row in StatisticsDT.Rows)
+            {
+                if (Row["AccountingName"].GetType().Name == "DBNull" && Row["TechStoreID"].GetType().Name != "DBNull")
+                {
+                    Row["AccountingName"] = TechStoreDT.Select("TechStoreID = " + Row["TechStoreID"])[0]["TechStoreName"];
+                }
+            }
+        }
+
+        public void UpdateCheckStatistics(string filter)
+        {
+            
+            DataRow[] StatisticsDR = (DataRow[])ConstStatisticsDT.Select(filter);
+            if (StatisticsDR.Length > 0)
+            {
+                StatisticsDT.Clear();
+                StatisticsDT = StatisticsDR.CopyToDataTable();
+                StatisticsBS.DataSource = StatisticsDT;
+            }
+            else 
+            {
+                StatisticsDT.Clear();
+            }
+        }
+
+
+        private void BondColumn(ref DataTable ID, string NameColumnId, DataTable Name,string BondColumn,
+            string NameColumnName,string NameNewColumn)
+        {
+            ID.Columns.Add(NameNewColumn, typeof(string));
+            foreach (DataRow row in ID.Rows)
+            {
+                row[NameNewColumn] = Name.Select
+                    ("" + BondColumn + " = " + row[NameColumnId].ToString())[0][NameColumnName];
+
+            }
+        }
+
+
+        private void dtStatisticsSetting(ref DataTable StatisticsDT)
+        {
+            
+            BondColumn(ref StatisticsDT, "CTechStoreID", TechStoreDT, "TechStoreID", "TechStoreName", "Наименование объекта корпусной мебели");
+            BondColumn(ref StatisticsDT, "CoverID", CoversDT, "CoverID", "CoverName", "Облицовка");
+            BondColumn(ref StatisticsDT, "PatinaID", PatinaDT, "PatinaID", "PatinaName", "Платина");
+            BondColumn(ref StatisticsDT, "InsetColorID", InsetColorsDT, "InsetColorID", "InsetColorName", "Цвет наполнителя");
+
+
+            StatisticsDT.Columns["CabFurAssignmentID"].ColumnName = "№ задания";
+            StatisticsDT.Columns["AccountingName"].ColumnName = "Бухгалтерское наименование детали";
+            StatisticsDT.Columns["Cost"].ColumnName = "Стоимость";
+            StatisticsDT.Columns["AddToStorageDateTime"].ColumnName = "Дата принятия на склад";
+            StatisticsDT.Columns["Notes"].ColumnName = "Примечание";
+            StatisticsDT.Columns["Count"].ColumnName = "Кол-во";
+            StatisticsDT.Columns["InvNumber"].ColumnName = "Инвертарный номер";
+
+            StatisticsDT.DefaultView.Sort = "Дата принятия на склад, CreateDateTime";
+;
+
+        }
+
+        public void CreateReport(string FileName)
+        {
+            DataTable StatisticsGridViewDT = StatisticsDT.Copy();
+            if (StatisticsGridViewDT.Rows.Count < 1)
+                return;
+            HSSFWorkbook hssfworkbook = new HSSFWorkbook();
+            
+
+            #region Create fonts and styles
+
+            HSSFFont ClientNameFont = hssfworkbook.CreateFont();
+            ClientNameFont.FontHeightInPoints = 14;
+            ClientNameFont.Boldweight = HSSFFont.BOLDWEIGHT_BOLD;
+            ClientNameFont.FontName = "Calibri";
+
+            HSSFFont MainFont = hssfworkbook.CreateFont();
+            MainFont.FontHeightInPoints = 13;
+            MainFont.Boldweight = HSSFFont.BOLDWEIGHT_BOLD;
+            MainFont.FontName = "Calibri";
+
+            HSSFCellStyle ClientNameStyle = hssfworkbook.CreateCellStyle();
+            ClientNameStyle.SetFont(ClientNameFont);
+
+            HSSFCellStyle MainStyle = hssfworkbook.CreateCellStyle();
+            MainStyle.SetFont(MainFont);
+
+            HSSFFont HeaderFont = hssfworkbook.CreateFont();
+            HeaderFont.FontHeightInPoints = 13;
+            HeaderFont.Boldweight = HSSFFont.BOLDWEIGHT_BOLD;
+            HeaderFont.FontName = "Calibri";
+
+            HSSFCellStyle HeaderStyle = hssfworkbook.CreateCellStyle();
+            HeaderStyle.BorderBottom = HSSFCellStyle.BORDER_THIN;
+            HeaderStyle.BottomBorderColor = HSSFColor.BLACK.index;
+            HeaderStyle.BorderLeft = HSSFCellStyle.BORDER_THIN;
+            HeaderStyle.LeftBorderColor = HSSFColor.BLACK.index;
+            HeaderStyle.BorderRight = HSSFCellStyle.BORDER_THIN;
+            HeaderStyle.RightBorderColor = HSSFColor.BLACK.index;
+            HeaderStyle.BorderTop = HSSFCellStyle.BORDER_THIN;
+            HeaderStyle.TopBorderColor = HSSFColor.BLACK.index;
+            HeaderStyle.SetFont(HeaderFont);
+
+            HSSFFont PackNumberFont = hssfworkbook.CreateFont();
+            PackNumberFont.Boldweight = 12 * 256;
+            PackNumberFont.FontName = "Calibri";
+
+            HSSFCellStyle PackNumberStyle = hssfworkbook.CreateCellStyle();
+            PackNumberStyle.BorderBottom = HSSFCellStyle.BORDER_THIN;
+            PackNumberStyle.BottomBorderColor = HSSFColor.BLACK.index;
+            PackNumberStyle.BorderLeft = HSSFCellStyle.BORDER_THIN;
+            PackNumberStyle.LeftBorderColor = HSSFColor.BLACK.index;
+            PackNumberStyle.BorderRight = HSSFCellStyle.BORDER_THIN;
+            PackNumberStyle.RightBorderColor = HSSFColor.BLACK.index;
+            PackNumberStyle.BorderTop = HSSFCellStyle.BORDER_THIN;
+            PackNumberStyle.TopBorderColor = HSSFColor.BLACK.index;
+            PackNumberStyle.Alignment = HSSFCellStyle.ALIGN_CENTER;
+            PackNumberStyle.VerticalAlignment = HSSFCellStyle.VERTICAL_CENTER;
+            PackNumberStyle.SetFont(PackNumberFont);
+
+            HSSFFont SimpleFont = hssfworkbook.CreateFont();
+            SimpleFont.FontHeightInPoints = 12;
+            SimpleFont.FontName = "Calibri";
+
+            HSSFCellStyle SimpleCellStyle = hssfworkbook.CreateCellStyle();
+            SimpleCellStyle.BorderBottom = HSSFCellStyle.BORDER_THIN;
+            SimpleCellStyle.BottomBorderColor = HSSFColor.BLACK.index;
+            SimpleCellStyle.BorderLeft = HSSFCellStyle.BORDER_THIN;
+            SimpleCellStyle.LeftBorderColor = HSSFColor.BLACK.index;
+            SimpleCellStyle.BorderRight = HSSFCellStyle.BORDER_THIN;
+            SimpleCellStyle.RightBorderColor = HSSFColor.BLACK.index;
+            SimpleCellStyle.BorderTop = HSSFCellStyle.BORDER_THIN;
+            SimpleCellStyle.TopBorderColor = HSSFColor.BLACK.index;
+            SimpleCellStyle.SetFont(SimpleFont);
+
+            HSSFCellStyle cellStyle = hssfworkbook.CreateCellStyle();
+            cellStyle.DataFormat = HSSFDataFormat.GetBuiltinFormat("0.000");
+            cellStyle.BorderBottom = HSSFCellStyle.BORDER_THIN;
+            cellStyle.BottomBorderColor = HSSFColor.BLACK.index;
+            cellStyle.BorderLeft = HSSFCellStyle.BORDER_THIN;
+            cellStyle.LeftBorderColor = HSSFColor.BLACK.index;
+            cellStyle.BorderRight = HSSFCellStyle.BORDER_THIN;
+            cellStyle.RightBorderColor = HSSFColor.BLACK.index;
+            cellStyle.BorderTop = HSSFCellStyle.BORDER_THIN;
+            cellStyle.TopBorderColor = HSSFColor.BLACK.index;
+            cellStyle.SetFont(SimpleFont);
+
+            HSSFCellStyle GreyCellStyle = hssfworkbook.CreateCellStyle();
+            GreyCellStyle.BorderBottom = HSSFCellStyle.BORDER_THIN;
+            GreyCellStyle.BottomBorderColor = HSSFColor.BLACK.index;
+            GreyCellStyle.BorderLeft = HSSFCellStyle.BORDER_THIN;
+            GreyCellStyle.LeftBorderColor = HSSFColor.BLACK.index;
+            GreyCellStyle.BorderRight = HSSFCellStyle.BORDER_THIN;
+            GreyCellStyle.RightBorderColor = HSSFColor.BLACK.index;
+            GreyCellStyle.BorderTop = HSSFCellStyle.BORDER_THIN;
+            GreyCellStyle.TopBorderColor = HSSFColor.BLACK.index;
+            GreyCellStyle.FillForegroundColor = NPOI.HSSF.Util.HSSFColor.GREY_25_PERCENT.index;
+            GreyCellStyle.FillPattern = HSSFCellStyle.SOLID_FOREGROUND;
+            GreyCellStyle.FillBackgroundColor = NPOI.HSSF.Util.HSSFColor.YELLOW.index;
+            GreyCellStyle.SetFont(SimpleFont);
+
+            HSSFFont TotalFont = hssfworkbook.CreateFont();
+            TotalFont.FontHeightInPoints = 12;
+            TotalFont.FontName = "Calibri";
+
+            HSSFCellStyle TotalStyle = hssfworkbook.CreateCellStyle();
+            TotalStyle.BorderTop = HSSFCellStyle.BORDER_MEDIUM;
+            TotalStyle.TopBorderColor = HSSFColor.BLACK.index;
+            TotalStyle.SetFont(TotalFont);
+
+            HSSFCellStyle TempStyle = hssfworkbook.CreateCellStyle();
+            TempStyle.SetFont(TotalFont);
+
+            #endregion
+
+            #region границы между упаковками
+
+            HSSFCellStyle BottomMediumBorderCellStyle = hssfworkbook.CreateCellStyle();
+            BottomMediumBorderCellStyle.BorderBottom = HSSFCellStyle.BORDER_MEDIUM;
+            BottomMediumBorderCellStyle.BottomBorderColor = HSSFColor.BLACK.index;
+            BottomMediumBorderCellStyle.BorderLeft = HSSFCellStyle.BORDER_THIN;
+            BottomMediumBorderCellStyle.LeftBorderColor = HSSFColor.BLACK.index;
+            BottomMediumBorderCellStyle.BorderRight = HSSFCellStyle.BORDER_THIN;
+            BottomMediumBorderCellStyle.RightBorderColor = HSSFColor.BLACK.index;
+            BottomMediumBorderCellStyle.BorderTop = HSSFCellStyle.BORDER_THIN;
+            BottomMediumBorderCellStyle.TopBorderColor = HSSFColor.BLACK.index;
+            BottomMediumBorderCellStyle.SetFont(SimpleFont);
+
+            HSSFCellStyle BottomMediumLeftBorderCellStyle = hssfworkbook.CreateCellStyle();
+            BottomMediumLeftBorderCellStyle.BorderBottom = HSSFCellStyle.BORDER_MEDIUM;
+            BottomMediumLeftBorderCellStyle.BottomBorderColor = HSSFColor.BLACK.index;
+            BottomMediumLeftBorderCellStyle.BorderLeft = HSSFCellStyle.BORDER_MEDIUM;
+            BottomMediumLeftBorderCellStyle.LeftBorderColor = HSSFColor.BLACK.index;
+            BottomMediumLeftBorderCellStyle.BorderRight = HSSFCellStyle.BORDER_THIN;
+            BottomMediumLeftBorderCellStyle.RightBorderColor = HSSFColor.BLACK.index;
+            BottomMediumLeftBorderCellStyle.BorderTop = HSSFCellStyle.BORDER_THIN;
+            BottomMediumLeftBorderCellStyle.TopBorderColor = HSSFColor.BLACK.index;
+            BottomMediumLeftBorderCellStyle.Alignment = HSSFCellStyle.ALIGN_CENTER;
+            BottomMediumLeftBorderCellStyle.VerticalAlignment = HSSFCellStyle.VERTICAL_CENTER;
+            BottomMediumLeftBorderCellStyle.SetFont(PackNumberFont);
+
+            HSSFCellStyle BottomMediumRightBorderCellStyle = hssfworkbook.CreateCellStyle();
+            BottomMediumRightBorderCellStyle.BorderBottom = HSSFCellStyle.BORDER_MEDIUM;
+            BottomMediumRightBorderCellStyle.BottomBorderColor = HSSFColor.BLACK.index;
+            BottomMediumRightBorderCellStyle.BorderLeft = HSSFCellStyle.BORDER_THIN;
+            BottomMediumRightBorderCellStyle.LeftBorderColor = HSSFColor.BLACK.index;
+            BottomMediumRightBorderCellStyle.BorderRight = HSSFCellStyle.BORDER_MEDIUM;
+            BottomMediumRightBorderCellStyle.RightBorderColor = HSSFColor.BLACK.index;
+            BottomMediumRightBorderCellStyle.BorderTop = HSSFCellStyle.BORDER_THIN;
+            BottomMediumRightBorderCellStyle.TopBorderColor = HSSFColor.BLACK.index;
+            BottomMediumRightBorderCellStyle.SetFont(SimpleFont);
+
+            HSSFCellStyle LeftMediumBorderCellStyle = hssfworkbook.CreateCellStyle();
+            LeftMediumBorderCellStyle.BorderBottom = HSSFCellStyle.BORDER_MEDIUM;
+            LeftMediumBorderCellStyle.BottomBorderColor = HSSFColor.BLACK.index;
+            LeftMediumBorderCellStyle.BorderLeft = HSSFCellStyle.BORDER_MEDIUM;
+            LeftMediumBorderCellStyle.LeftBorderColor = HSSFColor.BLACK.index;
+            LeftMediumBorderCellStyle.BorderRight = HSSFCellStyle.BORDER_THIN;
+            LeftMediumBorderCellStyle.RightBorderColor = HSSFColor.BLACK.index;
+            LeftMediumBorderCellStyle.BorderTop = HSSFCellStyle.BORDER_THIN;
+            LeftMediumBorderCellStyle.TopBorderColor = HSSFColor.BLACK.index;
+            LeftMediumBorderCellStyle.Alignment = HSSFCellStyle.ALIGN_CENTER;
+            LeftMediumBorderCellStyle.VerticalAlignment = HSSFCellStyle.VERTICAL_CENTER;
+            LeftMediumBorderCellStyle.SetFont(PackNumberFont);
+
+            HSSFCellStyle RightMediumBorderCellStyle = hssfworkbook.CreateCellStyle();
+            RightMediumBorderCellStyle.BorderBottom = HSSFCellStyle.BORDER_THIN;
+            RightMediumBorderCellStyle.BottomBorderColor = HSSFColor.BLACK.index;
+            RightMediumBorderCellStyle.BorderLeft = HSSFCellStyle.BORDER_THIN;
+            RightMediumBorderCellStyle.LeftBorderColor = HSSFColor.BLACK.index;
+            RightMediumBorderCellStyle.BorderRight = HSSFCellStyle.BORDER_MEDIUM;
+            RightMediumBorderCellStyle.RightBorderColor = HSSFColor.BLACK.index;
+            RightMediumBorderCellStyle.BorderTop = HSSFCellStyle.BORDER_THIN;
+            RightMediumBorderCellStyle.TopBorderColor = HSSFColor.BLACK.index;
+            RightMediumBorderCellStyle.SetFont(SimpleFont);
+
+
+            HSSFCellStyle GreyBottomMediumBorderCellStyle = hssfworkbook.CreateCellStyle();
+            GreyBottomMediumBorderCellStyle.BorderBottom = HSSFCellStyle.BORDER_MEDIUM;
+            GreyBottomMediumBorderCellStyle.BottomBorderColor = HSSFColor.BLACK.index;
+            GreyBottomMediumBorderCellStyle.BorderLeft = HSSFCellStyle.BORDER_THIN;
+            GreyBottomMediumBorderCellStyle.LeftBorderColor = HSSFColor.BLACK.index;
+            GreyBottomMediumBorderCellStyle.BorderRight = HSSFCellStyle.BORDER_THIN;
+            GreyBottomMediumBorderCellStyle.RightBorderColor = HSSFColor.BLACK.index;
+            GreyBottomMediumBorderCellStyle.BorderTop = HSSFCellStyle.BORDER_THIN;
+            GreyBottomMediumBorderCellStyle.TopBorderColor = HSSFColor.BLACK.index;
+            GreyBottomMediumBorderCellStyle.FillForegroundColor = NPOI.HSSF.Util.HSSFColor.GREY_25_PERCENT.index;
+            GreyBottomMediumBorderCellStyle.FillPattern = HSSFCellStyle.SOLID_FOREGROUND;
+            GreyBottomMediumBorderCellStyle.FillBackgroundColor = NPOI.HSSF.Util.HSSFColor.YELLOW.index;
+            GreyBottomMediumBorderCellStyle.SetFont(SimpleFont);
+
+            HSSFCellStyle GreyBottomMediumLeftBorderCellStyle = hssfworkbook.CreateCellStyle();
+            GreyBottomMediumLeftBorderCellStyle.BorderBottom = HSSFCellStyle.BORDER_MEDIUM;
+            GreyBottomMediumLeftBorderCellStyle.BottomBorderColor = HSSFColor.BLACK.index;
+            GreyBottomMediumLeftBorderCellStyle.BorderLeft = HSSFCellStyle.BORDER_MEDIUM;
+            GreyBottomMediumLeftBorderCellStyle.LeftBorderColor = HSSFColor.BLACK.index;
+            GreyBottomMediumLeftBorderCellStyle.BorderRight = HSSFCellStyle.BORDER_THIN;
+            GreyBottomMediumLeftBorderCellStyle.RightBorderColor = HSSFColor.BLACK.index;
+            GreyBottomMediumLeftBorderCellStyle.BorderTop = HSSFCellStyle.BORDER_THIN;
+            GreyBottomMediumLeftBorderCellStyle.TopBorderColor = HSSFColor.BLACK.index;
+            GreyBottomMediumLeftBorderCellStyle.Alignment = HSSFCellStyle.ALIGN_CENTER;
+            GreyBottomMediumLeftBorderCellStyle.VerticalAlignment = HSSFCellStyle.VERTICAL_CENTER;
+            GreyBottomMediumLeftBorderCellStyle.SetFont(PackNumberFont);
+
+            HSSFCellStyle GreyBottomMediumRightBorderCellStyle = hssfworkbook.CreateCellStyle();
+            GreyBottomMediumRightBorderCellStyle.BorderBottom = HSSFCellStyle.BORDER_MEDIUM;
+            GreyBottomMediumRightBorderCellStyle.BottomBorderColor = HSSFColor.BLACK.index;
+            GreyBottomMediumRightBorderCellStyle.BorderLeft = HSSFCellStyle.BORDER_THIN;
+            GreyBottomMediumRightBorderCellStyle.LeftBorderColor = HSSFColor.BLACK.index;
+            GreyBottomMediumRightBorderCellStyle.BorderRight = HSSFCellStyle.BORDER_MEDIUM;
+            GreyBottomMediumRightBorderCellStyle.RightBorderColor = HSSFColor.BLACK.index;
+            GreyBottomMediumRightBorderCellStyle.BorderTop = HSSFCellStyle.BORDER_THIN;
+            GreyBottomMediumRightBorderCellStyle.TopBorderColor = HSSFColor.BLACK.index;
+            GreyBottomMediumRightBorderCellStyle.FillForegroundColor = NPOI.HSSF.Util.HSSFColor.GREY_25_PERCENT.index;
+            GreyBottomMediumRightBorderCellStyle.FillPattern = HSSFCellStyle.SOLID_FOREGROUND;
+            GreyBottomMediumRightBorderCellStyle.FillBackgroundColor = NPOI.HSSF.Util.HSSFColor.YELLOW.index;
+            GreyBottomMediumRightBorderCellStyle.SetFont(SimpleFont);
+
+            HSSFCellStyle GreyLeftMediumBorderCellStyle = hssfworkbook.CreateCellStyle();
+            GreyLeftMediumBorderCellStyle.BorderBottom = HSSFCellStyle.BORDER_MEDIUM;
+            GreyLeftMediumBorderCellStyle.BottomBorderColor = HSSFColor.BLACK.index;
+            GreyLeftMediumBorderCellStyle.BorderLeft = HSSFCellStyle.BORDER_MEDIUM;
+            GreyLeftMediumBorderCellStyle.LeftBorderColor = HSSFColor.BLACK.index;
+            GreyLeftMediumBorderCellStyle.BorderRight = HSSFCellStyle.BORDER_THIN;
+            GreyLeftMediumBorderCellStyle.RightBorderColor = HSSFColor.BLACK.index;
+            GreyLeftMediumBorderCellStyle.BorderTop = HSSFCellStyle.BORDER_THIN;
+            GreyLeftMediumBorderCellStyle.TopBorderColor = HSSFColor.BLACK.index;
+            GreyLeftMediumBorderCellStyle.Alignment = HSSFCellStyle.ALIGN_CENTER;
+            GreyLeftMediumBorderCellStyle.VerticalAlignment = HSSFCellStyle.VERTICAL_CENTER;
+            GreyLeftMediumBorderCellStyle.SetFont(PackNumberFont);
+
+            HSSFCellStyle GreyRightMediumBorderCellStyle = hssfworkbook.CreateCellStyle();
+            GreyRightMediumBorderCellStyle.BorderBottom = HSSFCellStyle.BORDER_THIN;
+            GreyRightMediumBorderCellStyle.BottomBorderColor = HSSFColor.BLACK.index;
+            GreyRightMediumBorderCellStyle.BorderLeft = HSSFCellStyle.BORDER_THIN;
+            GreyRightMediumBorderCellStyle.LeftBorderColor = HSSFColor.BLACK.index;
+            GreyRightMediumBorderCellStyle.BorderRight = HSSFCellStyle.BORDER_MEDIUM;
+            GreyRightMediumBorderCellStyle.RightBorderColor = HSSFColor.BLACK.index;
+            GreyRightMediumBorderCellStyle.BorderTop = HSSFCellStyle.BORDER_THIN;
+            GreyRightMediumBorderCellStyle.TopBorderColor = HSSFColor.BLACK.index;
+            GreyRightMediumBorderCellStyle.FillForegroundColor = NPOI.HSSF.Util.HSSFColor.GREY_25_PERCENT.index;
+            GreyRightMediumBorderCellStyle.FillPattern = HSSFCellStyle.SOLID_FOREGROUND;
+            GreyRightMediumBorderCellStyle.FillBackgroundColor = NPOI.HSSF.Util.HSSFColor.YELLOW.index;
+            GreyRightMediumBorderCellStyle.SetFont(SimpleFont);
+            #endregion
+
+            if (StatisticsDT.Rows.Count > 0)
+                StatisticsReport(hssfworkbook, HeaderStyle, PackNumberFont, SimpleFont, SimpleCellStyle, cellStyle, StatisticsGridViewDT);
+
+            
+
+            string ReportFilePath = string.Empty;
+
+          
+            string tempFolder = System.Environment.GetEnvironmentVariable("TEMP");
+            FileInfo file = new FileInfo(tempFolder + @"\" + FileName + ".xls");
+            int j = 1;
+            while (file.Exists == true)
+            {
+                file = new FileInfo(tempFolder + @"\" + FileName + "(" + j++ + ").xls");
+            }
+
+            FileStream NewFile = new FileStream(file.FullName, FileMode.Create);
+            hssfworkbook.Write(NewFile);
+            NewFile.Close();
+
+            System.Diagnostics.Process.Start(file.FullName);
+        }
+
+
+        private int StatisticsReport(HSSFWorkbook hssfworkbook, HSSFCellStyle HeaderStyle, HSSFFont PackNumberFont, HSSFFont SimpleFont,
+            HSSFCellStyle SimpleCellStyle, HSSFCellStyle cellStyle,
+            DataTable DT)
+        {
+            dtStatisticsSetting(ref DT);
+            int RowIndex = 0;
+
+
+            (int Counter, float CostSum) =GetResultsStatistics();
+
+          
+
+            HSSFSheet sheet1 = hssfworkbook.CreateSheet("Статистика");
+            sheet1.PrintSetup.PaperSize = (short)PaperSizeType.A4;
+
+            sheet1.SetMargin(HSSFSheet.LeftMargin, (double).12);
+            sheet1.SetMargin(HSSFSheet.RightMargin, (double).07);
+            sheet1.SetMargin(HSSFSheet.TopMargin, (double).20);
+            sheet1.SetMargin(HSSFSheet.BottomMargin, (double).20);
+
+            sheet1.SetColumnWidth(0, 13 * 256);
+            sheet1.SetColumnWidth(1, 50 * 256);
+            sheet1.SetColumnWidth(2, 15 * 256);
+            sheet1.SetColumnWidth(3, 10 * 256);
+            sheet1.SetColumnWidth(4, 25 * 256);
+            sheet1.SetColumnWidth(5, 30 * 256);
+            sheet1.SetColumnWidth(6, 22 * 256);
+            sheet1.SetColumnWidth(7, 40 * 256);
+            sheet1.SetColumnWidth(8, 10 * 256);
+            sheet1.SetColumnWidth(9, 13 * 256);
+            sheet1.SetColumnWidth(10, 30 * 256);
+
+
+
+            string[] Columns = {
+            "№ задания",
+            "Наименование объекта корпусной мебели",
+            "Облицовка",
+            "Платина",
+            "Цвет наполнителя",
+            "Примечание",
+            "Инвертарный номер",
+            "Бухгалтерское наименование детали",
+            "Кол-во",
+            "Стоимость",
+            "Дата принятия на склад",
+            };
+
+            HSSFCell cell4;
+            int i = 0;
+            foreach (string Column in Columns)
+            {
+                cell4 = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), i, Column);
+                cell4.CellStyle = HeaderStyle;
+                i++;
+            }
+            
+            RowIndex++;
+
+
+
+
+
+
+
+
+            for (int x = 0; x < DT.Rows.Count; x++)
+            {
+                for (int y = 0; y < Columns.Length; y++)
+                {
+                    Type t = DT.Rows[x][Columns[y]].GetType();
+
+                    if (t.Name == "Decimal")
+                    {
+                        HSSFCell cell = sheet1.CreateRow(RowIndex).CreateCell(y);
+                        cell.SetCellValue(Convert.ToDouble(DT.Rows[x][Columns[y]]));
+
+                        cell.CellStyle = cellStyle;
+                        continue;
+                    }
+                    if (t.Name == "Int32")
+                    {
+                        HSSFCell cell = sheet1.CreateRow(RowIndex).CreateCell(y);
+                        cell.SetCellValue(Convert.ToInt32(DT.Rows[x][Columns[y]]));
+                        cell.CellStyle = SimpleCellStyle;
+                        continue;
+                    }
+
+                    if (t.Name == "Int64")
+                    {
+                        HSSFCell cell = sheet1.CreateRow(RowIndex).CreateCell(y);
+                        cell.SetCellValue(Convert.ToInt64(DT.Rows[x][Columns[y]]));
+                        cell.CellStyle = SimpleCellStyle;
+                        continue;
+                    }
+
+                    if (t.Name == "String" || t.Name == "DBNull")
+                    {
+                        HSSFCell cell = sheet1.CreateRow(RowIndex).CreateCell(y);
+                        cell.SetCellValue(DT.Rows[x][Columns[y]].ToString());
+                        cell.CellStyle = SimpleCellStyle;
+                        continue;
+                    }
+                    if (t.Name == "DateTime")
+                    {
+                        HSSFCell cell = sheet1.CreateRow(RowIndex).CreateCell(y);
+                        cell.SetCellValue(DT.Rows[x][Columns[y]].ToString());
+                        cell.CellStyle = SimpleCellStyle;
+                        continue;
+                    }
+
+                }
+                RowIndex++;
+            }
+            RowIndex++;
+
+            HSSFCellStyle cellStyle1 = hssfworkbook.CreateCellStyle();
+            cellStyle1.DataFormat = HSSFDataFormat.GetBuiltinFormat("0.000");
+            cellStyle1.SetFont(SimpleFont);
+          
+            if (CostSum > 0)
+            {
+                HSSFCell cell20 = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, "Общая стоимость: ");
+                cell20.CellStyle = cellStyle1;
+                HSSFCell cell = sheet1.CreateRow(RowIndex).CreateCell(2);
+                cell.SetCellValue(Convert.ToDouble(CostSum));
+                cell.CellStyle = cellStyle1;
+                cell20 = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 3, " руб");
+                cell20.CellStyle = cellStyle1;
+            }
+            if ( Counter > 0)
+            {
+                HSSFCell cell20 = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex), 1, "Количество: ");
+                cell20.CellStyle = cellStyle1;
+                HSSFCell cell = sheet1.CreateRow(RowIndex).CreateCell(2);
+                cell.SetCellValue(Convert.ToDouble(Counter));
+                cell.CellStyle = cellStyle1;
+                cell20 = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 3, " шт.");
+                cell20.CellStyle = cellStyle1;
+            }
+            
+
+            RowIndex++;
+
+            return RowIndex;
+        }
+
 
         private void GetInsetColorsDT()
         {
@@ -1089,6 +1874,7 @@ WHERE        CAST(CreateDateTime AS date) >= '2019-12-26 00:00' AND CAST(CreateD
             AllAssignmentsBS.DataSource = AllAssignmentsDT;
             DocumentsBS.DataSource = DocumentsDT;
             NewAssignmentDetailsBS.DataSource = NewAssignmentDetailsDT;
+            StatisticsBS.DataSource = StatisticsDT;
         }
 
         public DataGridViewComboBoxColumn ClientColumn
@@ -1255,6 +2041,25 @@ WHERE        CAST(CreateDateTime AS date) >= '2019-12-26 00:00' AND CAST(CreateD
                 return Column;
             }
         }
+
+
+
+        public DataColumn CTechStoreNameColumnDT
+        {
+            get
+            {
+                DataColumn Column = new DataColumn()
+                {
+                    ColumnName = "CTechStoreNameColumn",
+                    
+                };
+
+                //DataSet.Relations.Add("PhonesCompanies", companiesTable.Columns["Id"], phonesTable.Columns["CompanyId"]);
+                return Column;
+            }
+        }
+
+
 
         public DataGridViewComboBoxColumn TechStoreNameColumn
         {
@@ -2694,6 +3499,25 @@ WHERE dbo.TechCatalogOperationsDetail.TechCatalogOperationsGroupID IN
             return dt;
         }
 
+        public bool IsAssignmentInProd(int CabFurAssignmentID)
+        {
+            bool InProd = false;
+            string SelectCommand = @"SELECT ProductionDateTime FROM CabFurnitureAssignments where CabFurAssignmentID = " + CabFurAssignmentID;
+            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.StorageConnectionString))
+            {
+                using (DataTable DT = new DataTable())
+                {
+                    if (DA.Fill(DT) > 0)
+                    {
+                        object ProductionDateTime = DT.Rows[0]["ProductionDateTime"];
+                        if (ProductionDateTime != DBNull.Value)
+                            InProd = true;
+                    }
+                }
+            }
+            return InProd;
+        }
+
         private bool CheckStoreDetailConditions(int TechCatalogStoreDetailID, int CoverID, int PatinaID, int InsetColorID)
         {
             DataRow[] rows = StoreDetailTermsDT.Select("TechCatalogStoreDetailID=" + TechCatalogStoreDetailID);
@@ -3187,6 +4011,19 @@ WHERE dbo.CabFurniturePackages.CabFurAssignmentDetailID = " + CabFurAssignmentDe
             return Labels;
         }
 
+        public (int Counter, float CostSum) GetResultsStatistics()
+        {
+            int Counter = 0;
+            float  CostSum = 0.0f;
+            foreach (DataRow Row in StatisticsDT.Rows)
+            {
+                if(!(Row["Count"] is DBNull))
+                    Counter += (int)(decimal)Row["Count"];
+                if (!(Row["Cost"] is DBNull))
+                    CostSum += (float)(decimal)Row["Cost"];
+            }
+            return (Counter, CostSum);
+        }
     }
 
     public class ComplementsManager

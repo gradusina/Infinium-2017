@@ -35,10 +35,7 @@
             this.NavigateMenuButtonsPalette = new ComponentFactory.Krypton.Toolkit.KryptonPalette(this.components);
             this.label1 = new System.Windows.Forms.Label();
             this.NavigatePanel = new System.Windows.Forms.Panel();
-            this.DecorCheckButton = new Infinium.MenuLabel();
-            this.FrontsCheckButton = new Infinium.MenuLabel();
             this.kryptonBorderEdge3 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.FrontsOrdersDataGrid = new Infinium.PercentageDataGrid();
             this.MainOrdersDecorTabControl = new DevExpress.XtraTab.XtraTabControl();
             this.FrontsComboBox = new ComponentFactory.Krypton.Toolkit.KryptonComboBox();
             this.FrameColorComboBox = new ComponentFactory.Krypton.Toolkit.KryptonComboBox();
@@ -153,7 +150,6 @@
             this.panel3 = new System.Windows.Forms.Panel();
             this.label7 = new System.Windows.Forms.Label();
             this.DecorCountNumUpDown = new ComponentFactory.Krypton.Toolkit.KryptonComboBox();
-            this.kryptonCheckSet1 = new ComponentFactory.Krypton.Toolkit.KryptonCheckSet(this.components);
             this.PanelSelectPalette = new ComponentFactory.Krypton.Toolkit.KryptonPalette(this.components);
             this.panel9 = new System.Windows.Forms.Panel();
             this.MainOrdersTabControl = new DevExpress.XtraTab.XtraTabControl();
@@ -167,8 +163,11 @@
             this.CupboardsRadioButton = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuRadioButton();
             this.SizesRadioButton = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuRadioButton();
             this.CupboardsFormShowButton = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuLinkLabel();
+            this.DecorCheckButton = new Infinium.MenuLabel();
+            this.FrontsCheckButton = new Infinium.MenuLabel();
+            this.FrontsOrdersDataGrid = new Infinium.PercentageDataGrid();
+            this.kryptonCheckSet1 = new ComponentFactory.Krypton.Toolkit.KryptonCheckSet(this.components);
             this.NavigatePanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.FrontsOrdersDataGrid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.MainOrdersDecorTabControl)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.FrontsComboBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.FrameColorComboBox)).BeginInit();
@@ -224,14 +223,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.DecorWidthComboBox)).BeginInit();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DecorCountNumUpDown)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.kryptonCheckSet1)).BeginInit();
             this.panel9.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MainOrdersTabControl)).BeginInit();
             this.MainOrdersTabControl.SuspendLayout();
-            this.xtraTabPage1.SuspendLayout();
             this.panel19.SuspendLayout();
-            this.xtraTabPage2.SuspendLayout();
             this.panel20.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.FrontsOrdersDataGrid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.kryptonCheckSet1)).BeginInit();
             this.SuspendLayout();
             // 
             // AnimateTimer
@@ -315,6 +313,7 @@
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.NavigateMenuButtonsPalette.ButtonStyles.ButtonCommon.StateTracking.Border.Rounding = 0;
             this.NavigateMenuButtonsPalette.ButtonStyles.ButtonCommon.StateTracking.Border.Width = 1;
+            this.NavigateMenuButtonsPalette.CustomisedKryptonPaletteFilePath = null;
             // 
             // label1
             // 
@@ -341,95 +340,6 @@
             this.NavigatePanel.Size = new System.Drawing.Size(1270, 54);
             this.NavigatePanel.TabIndex = 34;
             // 
-            // DecorCheckButton
-            // 
-            this.DecorCheckButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.DecorCheckButton.CommonLineColor = System.Drawing.Color.White;
-            this.DecorCheckButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.DecorCheckButton.LineWidth = 4;
-            this.DecorCheckButton.Location = new System.Drawing.Point(984, 6);
-            this.DecorCheckButton.Margin = new System.Windows.Forms.Padding(0);
-            this.DecorCheckButton.Name = "DecorCheckButton";
-            this.DecorCheckButton.OverrideDefault.Back.Color1 = System.Drawing.Color.Transparent;
-            this.DecorCheckButton.OverrideDefault.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.DecorCheckButton.OverrideDefault.Border.Color1 = System.Drawing.Color.White;
-            this.DecorCheckButton.OverrideDefault.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.DecorCheckButton.Size = new System.Drawing.Size(181, 42);
-            this.DecorCheckButton.StateCheckedNormal.Back.Color1 = System.Drawing.Color.Transparent;
-            this.DecorCheckButton.StateCheckedNormal.Border.Color1 = System.Drawing.Color.White;
-            this.DecorCheckButton.StateCheckedNormal.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.DecorCheckButton.StateCheckedNormal.Content.ShortText.Color1 = System.Drawing.Color.White;
-            this.DecorCheckButton.StateCheckedNormal.Content.ShortText.Font = new System.Drawing.Font("Segoe UI Light", 19.69F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.DecorCheckButton.StateCheckedPressed.Border.Color1 = System.Drawing.Color.White;
-            this.DecorCheckButton.StateCheckedPressed.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.DecorCheckButton.StateCheckedTracking.Back.Color1 = System.Drawing.Color.Transparent;
-            this.DecorCheckButton.StateCheckedTracking.Border.Color1 = System.Drawing.Color.White;
-            this.DecorCheckButton.StateCheckedTracking.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.DecorCheckButton.StateCommon.Back.Color1 = System.Drawing.Color.Transparent;
-            this.DecorCheckButton.StateCommon.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.DecorCheckButton.StateCommon.Border.Color1 = System.Drawing.Color.White;
-            this.DecorCheckButton.StateCommon.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.DecorCheckButton.StateCommon.Border.Draw = ComponentFactory.Krypton.Toolkit.InheritBool.True;
-            this.DecorCheckButton.StateCommon.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.DecorCheckButton.StateCommon.Content.ShortText.Color1 = System.Drawing.Color.White;
-            this.DecorCheckButton.StateCommon.Content.ShortText.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.DecorCheckButton.StateCommon.Content.ShortText.Font = new System.Drawing.Font("Segoe UI Light", 19.69F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.DecorCheckButton.StateCommon.Content.ShortText.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
-            this.DecorCheckButton.StateCommon.Content.ShortText.TextV = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
-            this.DecorCheckButton.StateTracking.Back.Color1 = System.Drawing.Color.Transparent;
-            this.DecorCheckButton.StateTracking.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.DecorCheckButton.StateTracking.Border.Color1 = System.Drawing.Color.White;
-            this.DecorCheckButton.StateTracking.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.DecorCheckButton.TabIndex = 198;
-            this.DecorCheckButton.ToWidth = true;
-            this.DecorCheckButton.TrackingLineColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.DecorCheckButton.Values.Text = "Декор";
-            // 
-            // FrontsCheckButton
-            // 
-            this.FrontsCheckButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.FrontsCheckButton.Checked = true;
-            this.FrontsCheckButton.CommonLineColor = System.Drawing.Color.White;
-            this.FrontsCheckButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.FrontsCheckButton.LineWidth = 4;
-            this.FrontsCheckButton.Location = new System.Drawing.Point(804, 6);
-            this.FrontsCheckButton.Margin = new System.Windows.Forms.Padding(0);
-            this.FrontsCheckButton.Name = "FrontsCheckButton";
-            this.FrontsCheckButton.OverrideDefault.Back.Color1 = System.Drawing.Color.Transparent;
-            this.FrontsCheckButton.OverrideDefault.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.FrontsCheckButton.OverrideDefault.Border.Color1 = System.Drawing.Color.White;
-            this.FrontsCheckButton.OverrideDefault.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.FrontsCheckButton.Size = new System.Drawing.Size(181, 42);
-            this.FrontsCheckButton.StateCheckedNormal.Back.Color1 = System.Drawing.Color.Transparent;
-            this.FrontsCheckButton.StateCheckedNormal.Border.Color1 = System.Drawing.Color.White;
-            this.FrontsCheckButton.StateCheckedNormal.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.FrontsCheckButton.StateCheckedNormal.Content.ShortText.Color1 = System.Drawing.Color.White;
-            this.FrontsCheckButton.StateCheckedNormal.Content.ShortText.Font = new System.Drawing.Font("Segoe UI Light", 19.69F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.FrontsCheckButton.StateCheckedPressed.Border.Color1 = System.Drawing.Color.White;
-            this.FrontsCheckButton.StateCheckedPressed.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.FrontsCheckButton.StateCheckedTracking.Back.Color1 = System.Drawing.Color.Transparent;
-            this.FrontsCheckButton.StateCheckedTracking.Border.Color1 = System.Drawing.Color.White;
-            this.FrontsCheckButton.StateCheckedTracking.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.FrontsCheckButton.StateCommon.Back.Color1 = System.Drawing.Color.Transparent;
-            this.FrontsCheckButton.StateCommon.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.FrontsCheckButton.StateCommon.Border.Color1 = System.Drawing.Color.White;
-            this.FrontsCheckButton.StateCommon.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.FrontsCheckButton.StateCommon.Border.Draw = ComponentFactory.Krypton.Toolkit.InheritBool.True;
-            this.FrontsCheckButton.StateCommon.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.FrontsCheckButton.StateCommon.Content.ShortText.Color1 = System.Drawing.Color.White;
-            this.FrontsCheckButton.StateCommon.Content.ShortText.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.FrontsCheckButton.StateCommon.Content.ShortText.Font = new System.Drawing.Font("Segoe UI Light", 19.69F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.FrontsCheckButton.StateCommon.Content.ShortText.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
-            this.FrontsCheckButton.StateCommon.Content.ShortText.TextV = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
-            this.FrontsCheckButton.StateTracking.Back.Color1 = System.Drawing.Color.Transparent;
-            this.FrontsCheckButton.StateTracking.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.FrontsCheckButton.StateTracking.Border.Color1 = System.Drawing.Color.White;
-            this.FrontsCheckButton.StateTracking.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.FrontsCheckButton.TabIndex = 197;
-            this.FrontsCheckButton.ToWidth = true;
-            this.FrontsCheckButton.TrackingLineColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.FrontsCheckButton.Values.Text = "Фасады";
-            // 
             // kryptonBorderEdge3
             // 
             this.kryptonBorderEdge3.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowOnly;
@@ -441,69 +351,6 @@
             this.kryptonBorderEdge3.StateCommon.Color2 = System.Drawing.Color.Silver;
             this.kryptonBorderEdge3.StateCommon.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
             this.kryptonBorderEdge3.Text = "kryptonBorderEdge3";
-            // 
-            // FrontsOrdersDataGrid
-            // 
-            this.FrontsOrdersDataGrid.AllowUserToAddRows = false;
-            this.FrontsOrdersDataGrid.AllowUserToDeleteRows = false;
-            this.FrontsOrdersDataGrid.AllowUserToResizeRows = false;
-            this.FrontsOrdersDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.FrontsOrdersDataGrid.BackText = "Нет данных";
-            this.FrontsOrdersDataGrid.ColumnHeadersHeight = 40;
-            this.FrontsOrdersDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.FrontsOrdersDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.FrontsOrdersDataGrid.HideOuterBorders = true;
-            this.FrontsOrdersDataGrid.Location = new System.Drawing.Point(0, 0);
-            this.FrontsOrdersDataGrid.MultiSelect = false;
-            this.FrontsOrdersDataGrid.Name = "FrontsOrdersDataGrid";
-            this.FrontsOrdersDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.FrontsOrdersDataGrid.PercentLineWidth = 0;
-            this.FrontsOrdersDataGrid.RowHeadersVisible = false;
-            this.FrontsOrdersDataGrid.RowTemplate.Height = 30;
-            this.FrontsOrdersDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
-            this.FrontsOrdersDataGrid.Size = new System.Drawing.Size(1264, 398);
-            this.FrontsOrdersDataGrid.StandardStyle = false;
-            this.FrontsOrdersDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
-            this.FrontsOrdersDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.White;
-            this.FrontsOrdersDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.FrontsOrdersDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
-            this.FrontsOrdersDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
-            this.FrontsOrdersDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.FrontsOrdersDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
-            this.FrontsOrdersDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.FrontsOrdersDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.FrontsOrdersDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
-            this.FrontsOrdersDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.FrontsOrdersDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(160)))), ((int)(((byte)(160)))));
-            this.FrontsOrdersDataGrid.StateCommon.HeaderColumn.Back.Color2 = System.Drawing.Color.Transparent;
-            this.FrontsOrdersDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.FrontsOrdersDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
-            this.FrontsOrdersDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.FrontsOrdersDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.FrontsOrdersDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
-            this.FrontsOrdersDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
-            this.FrontsOrdersDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.FrontsOrdersDataGrid.StateCommon.HeaderColumn.Content.MultiLine = ComponentFactory.Krypton.Toolkit.InheritBool.True;
-            this.FrontsOrdersDataGrid.StateCommon.HeaderColumn.Content.MultiLineH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
-            this.FrontsOrdersDataGrid.StateCommon.HeaderColumn.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
-            this.FrontsOrdersDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(158)))), ((int)(((byte)(0)))));
-            this.FrontsOrdersDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.FrontsOrdersDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.FrontsOrdersDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
-            this.FrontsOrdersDataGrid.StateSelected.HeaderRow.Border.Color1 = System.Drawing.Color.White;
-            this.FrontsOrdersDataGrid.StateSelected.HeaderRow.Border.Color2 = System.Drawing.Color.White;
-            this.FrontsOrdersDataGrid.StateSelected.HeaderRow.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.FrontsOrdersDataGrid.TabIndex = 5;
-            this.FrontsOrdersDataGrid.UseCustomBackColor = true;
-            this.FrontsOrdersDataGrid.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.FrontsOrdersDataGrid_EditingControlShowing);
-            this.FrontsOrdersDataGrid.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.MainOrdersFrontsOrdersDataGrid_RowsAdded);
-            this.FrontsOrdersDataGrid.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.FrontsOrdersDataGrid_RowsRemoved);
             // 
             // MainOrdersDecorTabControl
             // 
@@ -528,11 +375,13 @@
             this.FrontsComboBox.DropDownWidth = 251;
             this.FrontsComboBox.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.FrontsComboBox.FormattingEnabled = true;
+            this.FrontsComboBox.IntegralHeight = false;
             this.FrontsComboBox.Location = new System.Drawing.Point(5, 24);
             this.FrontsComboBox.Name = "FrontsComboBox";
             this.FrontsComboBox.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.FrontsComboBox.Size = new System.Drawing.Size(174, 21);
             this.FrontsComboBox.StateCommon.ComboBox.Content.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.FrontsComboBox.StateCommon.ComboBox.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.FrontsComboBox.StateCommon.Item.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.FrontsComboBox.TabIndex = 361;
             this.FrontsComboBox.SelectionChangeCommitted += new System.EventHandler(this.FrontsComboBox_SelectionChangeCommitted);
@@ -547,11 +396,13 @@
             this.FrameColorComboBox.DropDownWidth = 251;
             this.FrameColorComboBox.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.FrameColorComboBox.FormattingEnabled = true;
+            this.FrameColorComboBox.IntegralHeight = false;
             this.FrameColorComboBox.Location = new System.Drawing.Point(5, 24);
             this.FrameColorComboBox.Name = "FrameColorComboBox";
             this.FrameColorComboBox.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.FrameColorComboBox.Size = new System.Drawing.Size(174, 21);
             this.FrameColorComboBox.StateCommon.ComboBox.Content.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.FrameColorComboBox.StateCommon.ComboBox.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.FrameColorComboBox.StateCommon.Item.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.FrameColorComboBox.TabIndex = 364;
             this.FrameColorComboBox.SelectionChangeCommitted += new System.EventHandler(this.FrameColorComboBox_SelectionChangeCommitted);
@@ -566,11 +417,13 @@
             this.InsetColorComboBox.DropDownWidth = 251;
             this.InsetColorComboBox.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.InsetColorComboBox.FormattingEnabled = true;
+            this.InsetColorComboBox.IntegralHeight = false;
             this.InsetColorComboBox.Location = new System.Drawing.Point(5, 24);
             this.InsetColorComboBox.Name = "InsetColorComboBox";
             this.InsetColorComboBox.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.InsetColorComboBox.Size = new System.Drawing.Size(173, 21);
             this.InsetColorComboBox.StateCommon.ComboBox.Content.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.InsetColorComboBox.StateCommon.ComboBox.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.InsetColorComboBox.StateCommon.Item.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.InsetColorComboBox.TabIndex = 365;
             this.InsetColorComboBox.SelectionChangeCommitted += new System.EventHandler(this.InsetColorComboBox_SelectionChangeCommitted);
@@ -585,11 +438,13 @@
             this.PatinaComboBox.DropDownWidth = 251;
             this.PatinaComboBox.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.PatinaComboBox.FormattingEnabled = true;
+            this.PatinaComboBox.IntegralHeight = false;
             this.PatinaComboBox.Location = new System.Drawing.Point(5, 24);
             this.PatinaComboBox.Name = "PatinaComboBox";
             this.PatinaComboBox.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.PatinaComboBox.Size = new System.Drawing.Size(174, 21);
             this.PatinaComboBox.StateCommon.ComboBox.Content.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.PatinaComboBox.StateCommon.ComboBox.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.PatinaComboBox.StateCommon.Item.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.PatinaComboBox.TabIndex = 362;
             this.PatinaComboBox.SelectionChangeCommitted += new System.EventHandler(this.PatinaComboBox_SelectionChangeCommitted);
@@ -604,11 +459,13 @@
             this.TechnoInsetTypesComboBox.DropDownWidth = 251;
             this.TechnoInsetTypesComboBox.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.TechnoInsetTypesComboBox.FormattingEnabled = true;
+            this.TechnoInsetTypesComboBox.IntegralHeight = false;
             this.TechnoInsetTypesComboBox.Location = new System.Drawing.Point(5, 24);
             this.TechnoInsetTypesComboBox.Name = "TechnoInsetTypesComboBox";
             this.TechnoInsetTypesComboBox.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.TechnoInsetTypesComboBox.Size = new System.Drawing.Size(174, 21);
             this.TechnoInsetTypesComboBox.StateCommon.ComboBox.Content.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.TechnoInsetTypesComboBox.StateCommon.ComboBox.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.TechnoInsetTypesComboBox.StateCommon.Item.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.TechnoInsetTypesComboBox.TabIndex = 366;
             this.TechnoInsetTypesComboBox.SelectionChangeCommitted += new System.EventHandler(this.TechnoInsetTypesComboBox_SelectionChangeCommitted);
@@ -623,11 +480,13 @@
             this.InsetTypesComboBox.DropDownWidth = 251;
             this.InsetTypesComboBox.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.InsetTypesComboBox.FormattingEnabled = true;
+            this.InsetTypesComboBox.IntegralHeight = false;
             this.InsetTypesComboBox.Location = new System.Drawing.Point(5, 24);
             this.InsetTypesComboBox.Name = "InsetTypesComboBox";
             this.InsetTypesComboBox.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.InsetTypesComboBox.Size = new System.Drawing.Size(173, 21);
             this.InsetTypesComboBox.StateCommon.ComboBox.Content.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.InsetTypesComboBox.StateCommon.ComboBox.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.InsetTypesComboBox.StateCommon.Item.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.InsetTypesComboBox.TabIndex = 363;
             this.InsetTypesComboBox.SelectionChangeCommitted += new System.EventHandler(this.InsetTypesComboBox_SelectionChangeCommitted);
@@ -640,11 +499,13 @@
             this.FrontsWidthComboBox.DropDownWidth = 121;
             this.FrontsWidthComboBox.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.FrontsWidthComboBox.FormattingEnabled = true;
+            this.FrontsWidthComboBox.IntegralHeight = false;
             this.FrontsWidthComboBox.Location = new System.Drawing.Point(89, 24);
             this.FrontsWidthComboBox.Name = "FrontsWidthComboBox";
             this.FrontsWidthComboBox.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.FrontsWidthComboBox.Size = new System.Drawing.Size(74, 21);
             this.FrontsWidthComboBox.StateCommon.ComboBox.Content.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.FrontsWidthComboBox.StateCommon.ComboBox.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.FrontsWidthComboBox.StateCommon.Item.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.FrontsWidthComboBox.TabIndex = 368;
             this.FrontsWidthComboBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FrontsWidthComboBox_KeyDown);
@@ -655,11 +516,13 @@
             this.FrontsHeightComboBox.DropDownWidth = 121;
             this.FrontsHeightComboBox.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.FrontsHeightComboBox.FormattingEnabled = true;
+            this.FrontsHeightComboBox.IntegralHeight = false;
             this.FrontsHeightComboBox.Location = new System.Drawing.Point(6, 24);
             this.FrontsHeightComboBox.Name = "FrontsHeightComboBox";
             this.FrontsHeightComboBox.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.FrontsHeightComboBox.Size = new System.Drawing.Size(74, 21);
             this.FrontsHeightComboBox.StateCommon.ComboBox.Content.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.FrontsHeightComboBox.StateCommon.ComboBox.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.FrontsHeightComboBox.StateCommon.Item.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.FrontsHeightComboBox.TabIndex = 367;
             this.FrontsHeightComboBox.SelectedIndexChanged += new System.EventHandler(this.FrontsHeightComboBox_SelectedIndexChanged);
@@ -817,7 +680,6 @@
             // 
             // cbOnlyExcluzive
             // 
-            this.cbOnlyExcluzive.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalControl;
             this.cbOnlyExcluzive.Location = new System.Drawing.Point(1002, 162);
             this.cbOnlyExcluzive.Name = "cbOnlyExcluzive";
             this.cbOnlyExcluzive.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -825,8 +687,8 @@
             this.cbOnlyExcluzive.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
             this.cbOnlyExcluzive.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.cbOnlyExcluzive.TabIndex = 390;
-            this.cbOnlyExcluzive.Text = "ТОЛЬКО ЭКСКЛЮЗИВ";
             this.cbOnlyExcluzive.Values.Text = "ТОЛЬКО ЭКСКЛЮЗИВ";
+            this.cbOnlyExcluzive.Visible = false;
             this.cbOnlyExcluzive.CheckedChanged += new System.EventHandler(this.cbOnlyExcluzive_CheckedChanged);
             // 
             // MainOrderNotes
@@ -840,7 +702,6 @@
             // 
             // OrdersSetCheckBox
             // 
-            this.OrdersSetCheckBox.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalControl;
             this.OrdersSetCheckBox.Location = new System.Drawing.Point(1002, 2);
             this.OrdersSetCheckBox.Name = "OrdersSetCheckBox";
             this.OrdersSetCheckBox.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -848,7 +709,6 @@
             this.OrdersSetCheckBox.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
             this.OrdersSetCheckBox.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.OrdersSetCheckBox.TabIndex = 384;
-            this.OrdersSetCheckBox.Text = "Комплекты";
             this.OrdersSetCheckBox.Values.Text = "Комплекты";
             this.OrdersSetCheckBox.CheckedChanged += new System.EventHandler(this.OrdersSetCheckBox_CheckedChanged);
             // 
@@ -953,11 +813,13 @@
             this.TechnoProfilesComboBox.DropDownWidth = 251;
             this.TechnoProfilesComboBox.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.TechnoProfilesComboBox.FormattingEnabled = true;
+            this.TechnoProfilesComboBox.IntegralHeight = false;
             this.TechnoProfilesComboBox.Location = new System.Drawing.Point(5, 24);
             this.TechnoProfilesComboBox.Name = "TechnoProfilesComboBox";
             this.TechnoProfilesComboBox.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.TechnoProfilesComboBox.Size = new System.Drawing.Size(174, 21);
             this.TechnoProfilesComboBox.StateCommon.ComboBox.Content.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.TechnoProfilesComboBox.StateCommon.ComboBox.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.TechnoProfilesComboBox.StateCommon.Item.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.TechnoProfilesComboBox.TabIndex = 366;
             this.TechnoProfilesComboBox.SelectionChangeCommitted += new System.EventHandler(this.TechnoProfilesComboBox_SelectionChangeCommitted);
@@ -1014,11 +876,13 @@
             this.TechnoFrameColorComboBox.DropDownWidth = 251;
             this.TechnoFrameColorComboBox.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.TechnoFrameColorComboBox.FormattingEnabled = true;
+            this.TechnoFrameColorComboBox.IntegralHeight = false;
             this.TechnoFrameColorComboBox.Location = new System.Drawing.Point(5, 24);
             this.TechnoFrameColorComboBox.Name = "TechnoFrameColorComboBox";
             this.TechnoFrameColorComboBox.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.TechnoFrameColorComboBox.Size = new System.Drawing.Size(174, 21);
             this.TechnoFrameColorComboBox.StateCommon.ComboBox.Content.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.TechnoFrameColorComboBox.StateCommon.ComboBox.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.TechnoFrameColorComboBox.StateCommon.Item.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.TechnoFrameColorComboBox.TabIndex = 366;
             this.TechnoFrameColorComboBox.SelectionChangeCommitted += new System.EventHandler(this.TechnoFrameColorComboBox_SelectionChangeCommitted);
@@ -1111,6 +975,7 @@
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.StandardButtonsPalette.ButtonStyles.ButtonCommon.StateTracking.Border.Rounding = 0;
+            this.StandardButtonsPalette.CustomisedKryptonPaletteFilePath = null;
             // 
             // ExportContextMenuButton
             // 
@@ -1310,11 +1175,13 @@
             this.TechnoInsetColorsComboBox.DropDownWidth = 251;
             this.TechnoInsetColorsComboBox.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.TechnoInsetColorsComboBox.FormattingEnabled = true;
+            this.TechnoInsetColorsComboBox.IntegralHeight = false;
             this.TechnoInsetColorsComboBox.Location = new System.Drawing.Point(5, 24);
             this.TechnoInsetColorsComboBox.Name = "TechnoInsetColorsComboBox";
             this.TechnoInsetColorsComboBox.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.TechnoInsetColorsComboBox.Size = new System.Drawing.Size(174, 21);
             this.TechnoInsetColorsComboBox.StateCommon.ComboBox.Content.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.TechnoInsetColorsComboBox.StateCommon.ComboBox.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.TechnoInsetColorsComboBox.StateCommon.Item.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.TechnoInsetColorsComboBox.TabIndex = 366;
             this.TechnoInsetColorsComboBox.SelectionChangeCommitted += new System.EventHandler(this.TechnoInsetColorsComboBox_SelectionChangeCommitted);
@@ -1391,11 +1258,13 @@
             this.cbImpostMargin.DropDownWidth = 121;
             this.cbImpostMargin.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.cbImpostMargin.FormattingEnabled = true;
+            this.cbImpostMargin.IntegralHeight = false;
             this.cbImpostMargin.Location = new System.Drawing.Point(255, 24);
             this.cbImpostMargin.Name = "cbImpostMargin";
             this.cbImpostMargin.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.cbImpostMargin.Size = new System.Drawing.Size(74, 21);
             this.cbImpostMargin.StateCommon.ComboBox.Content.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.cbImpostMargin.StateCommon.ComboBox.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.cbImpostMargin.StateCommon.Item.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.cbImpostMargin.TabIndex = 381;
             // 
@@ -1404,11 +1273,13 @@
             this.FrontsCountComboBox.DropDownWidth = 121;
             this.FrontsCountComboBox.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.FrontsCountComboBox.FormattingEnabled = true;
+            this.FrontsCountComboBox.IntegralHeight = false;
             this.FrontsCountComboBox.Location = new System.Drawing.Point(172, 24);
             this.FrontsCountComboBox.Name = "FrontsCountComboBox";
             this.FrontsCountComboBox.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.FrontsCountComboBox.Size = new System.Drawing.Size(74, 21);
             this.FrontsCountComboBox.StateCommon.ComboBox.Content.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.FrontsCountComboBox.StateCommon.ComboBox.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.FrontsCountComboBox.StateCommon.Item.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.FrontsCountComboBox.TabIndex = 379;
             this.FrontsCountComboBox.Text = "1";
@@ -1812,11 +1683,13 @@
             this.DecorProductsComboBox.DropDownWidth = 251;
             this.DecorProductsComboBox.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.DecorProductsComboBox.FormattingEnabled = true;
+            this.DecorProductsComboBox.IntegralHeight = false;
             this.DecorProductsComboBox.Location = new System.Drawing.Point(5, 24);
             this.DecorProductsComboBox.Name = "DecorProductsComboBox";
             this.DecorProductsComboBox.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.DecorProductsComboBox.Size = new System.Drawing.Size(224, 21);
             this.DecorProductsComboBox.StateCommon.ComboBox.Content.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.DecorProductsComboBox.StateCommon.ComboBox.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.DecorProductsComboBox.StateCommon.Item.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.DecorProductsComboBox.TabIndex = 0;
             this.DecorProductsComboBox.SelectionChangeCommitted += new System.EventHandler(this.DecorProductsComboBox_SelectionChangeCommitted);
@@ -1886,11 +1759,13 @@
             this.DecorItemsComboBox.DropDownWidth = 251;
             this.DecorItemsComboBox.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.DecorItemsComboBox.FormattingEnabled = true;
+            this.DecorItemsComboBox.IntegralHeight = false;
             this.DecorItemsComboBox.Location = new System.Drawing.Point(5, 24);
             this.DecorItemsComboBox.Name = "DecorItemsComboBox";
             this.DecorItemsComboBox.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.DecorItemsComboBox.Size = new System.Drawing.Size(224, 21);
             this.DecorItemsComboBox.StateCommon.ComboBox.Content.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.DecorItemsComboBox.StateCommon.ComboBox.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.DecorItemsComboBox.StateCommon.Item.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.DecorItemsComboBox.TabIndex = 1;
             this.DecorItemsComboBox.SelectionChangeCommitted += new System.EventHandler(this.DecorItemsComboBox_SelectionChangeCommitted);
@@ -1967,11 +1842,13 @@
             this.DecorColorsComboBox.DropDownWidth = 251;
             this.DecorColorsComboBox.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.DecorColorsComboBox.FormattingEnabled = true;
+            this.DecorColorsComboBox.IntegralHeight = false;
             this.DecorColorsComboBox.Location = new System.Drawing.Point(5, 18);
             this.DecorColorsComboBox.Name = "DecorColorsComboBox";
             this.DecorColorsComboBox.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.DecorColorsComboBox.Size = new System.Drawing.Size(223, 21);
             this.DecorColorsComboBox.StateCommon.ComboBox.Content.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.DecorColorsComboBox.StateCommon.ComboBox.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.DecorColorsComboBox.StateCommon.Item.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.DecorColorsComboBox.TabIndex = 2;
             this.DecorColorsComboBox.SelectionChangeCommitted += new System.EventHandler(this.DecorColorsComboBox_SelectionChangeCommitted);
@@ -2027,11 +1904,13 @@
             this.DecorPatinaComboBox.DropDownWidth = 251;
             this.DecorPatinaComboBox.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.DecorPatinaComboBox.FormattingEnabled = true;
+            this.DecorPatinaComboBox.IntegralHeight = false;
             this.DecorPatinaComboBox.Location = new System.Drawing.Point(5, 18);
             this.DecorPatinaComboBox.Name = "DecorPatinaComboBox";
             this.DecorPatinaComboBox.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.DecorPatinaComboBox.Size = new System.Drawing.Size(223, 21);
             this.DecorPatinaComboBox.StateCommon.ComboBox.Content.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.DecorPatinaComboBox.StateCommon.ComboBox.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.DecorPatinaComboBox.StateCommon.Item.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.DecorPatinaComboBox.TabIndex = 3;
             this.DecorPatinaComboBox.SelectionChangeCommitted += new System.EventHandler(this.DecorPatinaComboBox_SelectionChangeCommitted);
@@ -2096,11 +1975,13 @@
             this.DecorInsetTypesComboBox.DropDownWidth = 251;
             this.DecorInsetTypesComboBox.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.DecorInsetTypesComboBox.FormattingEnabled = true;
+            this.DecorInsetTypesComboBox.IntegralHeight = false;
             this.DecorInsetTypesComboBox.Location = new System.Drawing.Point(5, 18);
             this.DecorInsetTypesComboBox.Name = "DecorInsetTypesComboBox";
             this.DecorInsetTypesComboBox.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.DecorInsetTypesComboBox.Size = new System.Drawing.Size(223, 21);
             this.DecorInsetTypesComboBox.StateCommon.ComboBox.Content.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.DecorInsetTypesComboBox.StateCommon.ComboBox.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.DecorInsetTypesComboBox.StateCommon.Item.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.DecorInsetTypesComboBox.TabIndex = 2;
             this.DecorInsetTypesComboBox.SelectionChangeCommitted += new System.EventHandler(this.DecorInsetTypesComboBox_SelectionChangeCommitted);
@@ -2156,11 +2037,13 @@
             this.DecorInsetColorsComboBox.DropDownWidth = 251;
             this.DecorInsetColorsComboBox.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.DecorInsetColorsComboBox.FormattingEnabled = true;
+            this.DecorInsetColorsComboBox.IntegralHeight = false;
             this.DecorInsetColorsComboBox.Location = new System.Drawing.Point(5, 18);
             this.DecorInsetColorsComboBox.Name = "DecorInsetColorsComboBox";
             this.DecorInsetColorsComboBox.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.DecorInsetColorsComboBox.Size = new System.Drawing.Size(223, 21);
             this.DecorInsetColorsComboBox.StateCommon.ComboBox.Content.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.DecorInsetColorsComboBox.StateCommon.ComboBox.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.DecorInsetColorsComboBox.StateCommon.Item.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.DecorInsetColorsComboBox.TabIndex = 3;
             this.DecorInsetColorsComboBox.SelectionChangeCommitted += new System.EventHandler(this.DecorInsetColorsComboBox_SelectionChangeCommitted);
@@ -2206,11 +2089,13 @@
             this.DecorLengthComboBox.DropDownWidth = 121;
             this.DecorLengthComboBox.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.DecorLengthComboBox.FormattingEnabled = true;
+            this.DecorLengthComboBox.IntegralHeight = false;
             this.DecorLengthComboBox.Location = new System.Drawing.Point(5, 18);
             this.DecorLengthComboBox.Name = "DecorLengthComboBox";
             this.DecorLengthComboBox.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.DecorLengthComboBox.Size = new System.Drawing.Size(74, 21);
             this.DecorLengthComboBox.StateCommon.ComboBox.Content.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.DecorLengthComboBox.StateCommon.ComboBox.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.DecorLengthComboBox.StateCommon.Item.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.DecorLengthComboBox.TabIndex = 4;
             this.DecorLengthComboBox.SelectedIndexChanged += new System.EventHandler(this.DecorLengthComboBox_SelectedIndexChanged);
@@ -2244,11 +2129,13 @@
             this.DecorHeightComboBox.DropDownWidth = 121;
             this.DecorHeightComboBox.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.DecorHeightComboBox.FormattingEnabled = true;
+            this.DecorHeightComboBox.IntegralHeight = false;
             this.DecorHeightComboBox.Location = new System.Drawing.Point(5, 18);
             this.DecorHeightComboBox.Name = "DecorHeightComboBox";
             this.DecorHeightComboBox.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.DecorHeightComboBox.Size = new System.Drawing.Size(74, 21);
             this.DecorHeightComboBox.StateCommon.ComboBox.Content.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.DecorHeightComboBox.StateCommon.ComboBox.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.DecorHeightComboBox.StateCommon.Item.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.DecorHeightComboBox.TabIndex = 5;
             this.DecorHeightComboBox.SelectedIndexChanged += new System.EventHandler(this.DecorHeightComboBox_SelectedIndexChanged);
@@ -2282,11 +2169,13 @@
             this.DecorWidthComboBox.DropDownWidth = 121;
             this.DecorWidthComboBox.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.DecorWidthComboBox.FormattingEnabled = true;
+            this.DecorWidthComboBox.IntegralHeight = false;
             this.DecorWidthComboBox.Location = new System.Drawing.Point(5, 18);
             this.DecorWidthComboBox.Name = "DecorWidthComboBox";
             this.DecorWidthComboBox.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.DecorWidthComboBox.Size = new System.Drawing.Size(74, 21);
             this.DecorWidthComboBox.StateCommon.ComboBox.Content.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.DecorWidthComboBox.StateCommon.ComboBox.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.DecorWidthComboBox.StateCommon.Item.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.DecorWidthComboBox.TabIndex = 6;
             this.DecorWidthComboBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.DecorWidthComboBox_KeyDown);
@@ -2319,22 +2208,17 @@
             this.DecorCountNumUpDown.DropDownWidth = 121;
             this.DecorCountNumUpDown.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.DecorCountNumUpDown.FormattingEnabled = true;
+            this.DecorCountNumUpDown.IntegralHeight = false;
             this.DecorCountNumUpDown.Location = new System.Drawing.Point(5, 18);
             this.DecorCountNumUpDown.Name = "DecorCountNumUpDown";
             this.DecorCountNumUpDown.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.DecorCountNumUpDown.Size = new System.Drawing.Size(74, 21);
             this.DecorCountNumUpDown.StateCommon.ComboBox.Content.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.DecorCountNumUpDown.StateCommon.ComboBox.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.DecorCountNumUpDown.StateCommon.Item.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.DecorCountNumUpDown.TabIndex = 7;
             this.DecorCountNumUpDown.KeyDown += new System.Windows.Forms.KeyEventHandler(this.DecorCountNumUpDown_KeyDown);
             this.DecorCountNumUpDown.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.DecorCountNumUpDown_KeyPress);
-            // 
-            // kryptonCheckSet1
-            // 
-            this.kryptonCheckSet1.CheckButtons.Add(this.DecorCheckButton);
-            this.kryptonCheckSet1.CheckButtons.Add(this.FrontsCheckButton);
-            this.kryptonCheckSet1.CheckedButton = this.FrontsCheckButton;
-            this.kryptonCheckSet1.CheckedButtonChanged += new System.EventHandler(this.kryptonCheckSet1_CheckedButtonChanged);
             // 
             // PanelSelectPalette
             // 
@@ -2401,6 +2285,7 @@
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.PanelSelectPalette.ButtonStyles.ButtonCommon.StateTracking.Border.Rounding = 0;
+            this.PanelSelectPalette.CustomisedKryptonPaletteFilePath = null;
             // 
             // panel9
             // 
@@ -2440,6 +2325,7 @@
             // xtraTabPage1
             // 
             this.xtraTabPage1.Controls.Add(this.panel19);
+            this.xtraTabPage1.Enabled = true;
             this.xtraTabPage1.Name = "xtraTabPage1";
             this.xtraTabPage1.Size = new System.Drawing.Size(1264, 398);
             this.xtraTabPage1.Text = "      Фасады      ";
@@ -2456,6 +2342,7 @@
             // xtraTabPage2
             // 
             this.xtraTabPage2.Controls.Add(this.panel20);
+            this.xtraTabPage2.Enabled = true;
             this.xtraTabPage2.Name = "xtraTabPage2";
             this.xtraTabPage2.Size = new System.Drawing.Size(1264, 398);
             this.xtraTabPage2.Text = "      Декор      ";
@@ -2530,6 +2417,165 @@
             this.CupboardsFormShowButton.Text = "Шкафы";
             this.CupboardsFormShowButton.Click += new System.EventHandler(this.CupboardsFormShowButton_Click);
             // 
+            // DecorCheckButton
+            // 
+            this.DecorCheckButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.DecorCheckButton.CommonLineColor = System.Drawing.Color.White;
+            this.DecorCheckButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.DecorCheckButton.LineWidth = 4;
+            this.DecorCheckButton.Location = new System.Drawing.Point(984, 6);
+            this.DecorCheckButton.Margin = new System.Windows.Forms.Padding(0);
+            this.DecorCheckButton.Name = "DecorCheckButton";
+            this.DecorCheckButton.OverrideDefault.Back.Color1 = System.Drawing.Color.Transparent;
+            this.DecorCheckButton.OverrideDefault.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.DecorCheckButton.OverrideDefault.Border.Color1 = System.Drawing.Color.White;
+            this.DecorCheckButton.OverrideDefault.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.DecorCheckButton.Size = new System.Drawing.Size(181, 42);
+            this.DecorCheckButton.StateCheckedNormal.Back.Color1 = System.Drawing.Color.Transparent;
+            this.DecorCheckButton.StateCheckedNormal.Border.Color1 = System.Drawing.Color.White;
+            this.DecorCheckButton.StateCheckedNormal.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.DecorCheckButton.StateCheckedNormal.Content.ShortText.Color1 = System.Drawing.Color.White;
+            this.DecorCheckButton.StateCheckedNormal.Content.ShortText.Font = new System.Drawing.Font("Segoe UI Light", 19.69F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.DecorCheckButton.StateCheckedPressed.Border.Color1 = System.Drawing.Color.White;
+            this.DecorCheckButton.StateCheckedPressed.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.DecorCheckButton.StateCheckedTracking.Back.Color1 = System.Drawing.Color.Transparent;
+            this.DecorCheckButton.StateCheckedTracking.Border.Color1 = System.Drawing.Color.White;
+            this.DecorCheckButton.StateCheckedTracking.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.DecorCheckButton.StateCommon.Back.Color1 = System.Drawing.Color.Transparent;
+            this.DecorCheckButton.StateCommon.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.DecorCheckButton.StateCommon.Border.Color1 = System.Drawing.Color.White;
+            this.DecorCheckButton.StateCommon.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.DecorCheckButton.StateCommon.Border.Draw = ComponentFactory.Krypton.Toolkit.InheritBool.True;
+            this.DecorCheckButton.StateCommon.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.DecorCheckButton.StateCommon.Content.ShortText.Color1 = System.Drawing.Color.White;
+            this.DecorCheckButton.StateCommon.Content.ShortText.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.DecorCheckButton.StateCommon.Content.ShortText.Font = new System.Drawing.Font("Segoe UI Light", 19.69F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.DecorCheckButton.StateCommon.Content.ShortText.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.DecorCheckButton.StateCommon.Content.ShortText.TextV = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.DecorCheckButton.StateTracking.Back.Color1 = System.Drawing.Color.Transparent;
+            this.DecorCheckButton.StateTracking.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.DecorCheckButton.StateTracking.Border.Color1 = System.Drawing.Color.White;
+            this.DecorCheckButton.StateTracking.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.DecorCheckButton.TabIndex = 198;
+            this.DecorCheckButton.ToWidth = true;
+            this.DecorCheckButton.TrackingLineColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.DecorCheckButton.Values.Text = "Декор";
+            // 
+            // FrontsCheckButton
+            // 
+            this.FrontsCheckButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.FrontsCheckButton.Checked = true;
+            this.FrontsCheckButton.CommonLineColor = System.Drawing.Color.White;
+            this.FrontsCheckButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.FrontsCheckButton.LineWidth = 4;
+            this.FrontsCheckButton.Location = new System.Drawing.Point(804, 6);
+            this.FrontsCheckButton.Margin = new System.Windows.Forms.Padding(0);
+            this.FrontsCheckButton.Name = "FrontsCheckButton";
+            this.FrontsCheckButton.OverrideDefault.Back.Color1 = System.Drawing.Color.Transparent;
+            this.FrontsCheckButton.OverrideDefault.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.FrontsCheckButton.OverrideDefault.Border.Color1 = System.Drawing.Color.White;
+            this.FrontsCheckButton.OverrideDefault.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.FrontsCheckButton.Size = new System.Drawing.Size(181, 42);
+            this.FrontsCheckButton.StateCheckedNormal.Back.Color1 = System.Drawing.Color.Transparent;
+            this.FrontsCheckButton.StateCheckedNormal.Border.Color1 = System.Drawing.Color.White;
+            this.FrontsCheckButton.StateCheckedNormal.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.FrontsCheckButton.StateCheckedNormal.Content.ShortText.Color1 = System.Drawing.Color.White;
+            this.FrontsCheckButton.StateCheckedNormal.Content.ShortText.Font = new System.Drawing.Font("Segoe UI Light", 19.69F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.FrontsCheckButton.StateCheckedPressed.Border.Color1 = System.Drawing.Color.White;
+            this.FrontsCheckButton.StateCheckedPressed.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.FrontsCheckButton.StateCheckedTracking.Back.Color1 = System.Drawing.Color.Transparent;
+            this.FrontsCheckButton.StateCheckedTracking.Border.Color1 = System.Drawing.Color.White;
+            this.FrontsCheckButton.StateCheckedTracking.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.FrontsCheckButton.StateCommon.Back.Color1 = System.Drawing.Color.Transparent;
+            this.FrontsCheckButton.StateCommon.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.FrontsCheckButton.StateCommon.Border.Color1 = System.Drawing.Color.White;
+            this.FrontsCheckButton.StateCommon.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.FrontsCheckButton.StateCommon.Border.Draw = ComponentFactory.Krypton.Toolkit.InheritBool.True;
+            this.FrontsCheckButton.StateCommon.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.FrontsCheckButton.StateCommon.Content.ShortText.Color1 = System.Drawing.Color.White;
+            this.FrontsCheckButton.StateCommon.Content.ShortText.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.FrontsCheckButton.StateCommon.Content.ShortText.Font = new System.Drawing.Font("Segoe UI Light", 19.69F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.FrontsCheckButton.StateCommon.Content.ShortText.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.FrontsCheckButton.StateCommon.Content.ShortText.TextV = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.FrontsCheckButton.StateTracking.Back.Color1 = System.Drawing.Color.Transparent;
+            this.FrontsCheckButton.StateTracking.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.FrontsCheckButton.StateTracking.Border.Color1 = System.Drawing.Color.White;
+            this.FrontsCheckButton.StateTracking.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.FrontsCheckButton.TabIndex = 197;
+            this.FrontsCheckButton.ToWidth = true;
+            this.FrontsCheckButton.TrackingLineColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.FrontsCheckButton.Values.Text = "Фасады";
+            // 
+            // FrontsOrdersDataGrid
+            // 
+            this.FrontsOrdersDataGrid.AllowUserToAddRows = false;
+            this.FrontsOrdersDataGrid.AllowUserToDeleteRows = false;
+            this.FrontsOrdersDataGrid.AllowUserToResizeRows = false;
+            this.FrontsOrdersDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.FrontsOrdersDataGrid.BackText = "Нет данных";
+            this.FrontsOrdersDataGrid.ColumnHeadersHeight = 40;
+            this.FrontsOrdersDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.FrontsOrdersDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.FrontsOrdersDataGrid.HideOuterBorders = true;
+            this.FrontsOrdersDataGrid.Location = new System.Drawing.Point(0, 0);
+            this.FrontsOrdersDataGrid.MultiSelect = false;
+            this.FrontsOrdersDataGrid.Name = "FrontsOrdersDataGrid";
+            this.FrontsOrdersDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.FrontsOrdersDataGrid.PercentLineWidth = 0;
+            this.FrontsOrdersDataGrid.RowHeadersVisible = false;
+            this.FrontsOrdersDataGrid.RowTemplate.Height = 30;
+            this.FrontsOrdersDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
+            this.FrontsOrdersDataGrid.Size = new System.Drawing.Size(1264, 398);
+            this.FrontsOrdersDataGrid.StandardStyle = false;
+            this.FrontsOrdersDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
+            this.FrontsOrdersDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.White;
+            this.FrontsOrdersDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.FrontsOrdersDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
+            this.FrontsOrdersDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
+            this.FrontsOrdersDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.FrontsOrdersDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
+            this.FrontsOrdersDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.FrontsOrdersDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.FrontsOrdersDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
+            this.FrontsOrdersDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.FrontsOrdersDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(160)))), ((int)(((byte)(160)))));
+            this.FrontsOrdersDataGrid.StateCommon.HeaderColumn.Back.Color2 = System.Drawing.Color.Transparent;
+            this.FrontsOrdersDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.FrontsOrdersDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
+            this.FrontsOrdersDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.FrontsOrdersDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.FrontsOrdersDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
+            this.FrontsOrdersDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
+            this.FrontsOrdersDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.FrontsOrdersDataGrid.StateCommon.HeaderColumn.Content.MultiLine = ComponentFactory.Krypton.Toolkit.InheritBool.True;
+            this.FrontsOrdersDataGrid.StateCommon.HeaderColumn.Content.MultiLineH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.FrontsOrdersDataGrid.StateCommon.HeaderColumn.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.FrontsOrdersDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(158)))), ((int)(((byte)(0)))));
+            this.FrontsOrdersDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.FrontsOrdersDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.FrontsOrdersDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
+            this.FrontsOrdersDataGrid.StateSelected.HeaderRow.Border.Color1 = System.Drawing.Color.White;
+            this.FrontsOrdersDataGrid.StateSelected.HeaderRow.Border.Color2 = System.Drawing.Color.White;
+            this.FrontsOrdersDataGrid.StateSelected.HeaderRow.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.FrontsOrdersDataGrid.TabIndex = 5;
+            this.FrontsOrdersDataGrid.UseCustomBackColor = true;
+            this.FrontsOrdersDataGrid.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.FrontsOrdersDataGrid_EditingControlShowing);
+            this.FrontsOrdersDataGrid.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.MainOrdersFrontsOrdersDataGrid_RowsAdded);
+            this.FrontsOrdersDataGrid.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.FrontsOrdersDataGrid_RowsRemoved);
+            // 
+            // kryptonCheckSet1
+            // 
+            this.kryptonCheckSet1.CheckButtons.Add(this.DecorCheckButton);
+            this.kryptonCheckSet1.CheckButtons.Add(this.FrontsCheckButton);
+            this.kryptonCheckSet1.CheckedButton = this.FrontsCheckButton;
+            this.kryptonCheckSet1.CheckedButtonChanged += new System.EventHandler(this.kryptonCheckSet1_CheckedButtonChanged);
+            // 
             // AddMarketingNewOrdersForm
             // 
             this.AccessibleName = "false";
@@ -2553,7 +2599,6 @@
             this.Shown += new System.EventHandler(this.AddMarketMainOrdersForm_Shown);
             this.NavigatePanel.ResumeLayout(false);
             this.NavigatePanel.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.FrontsOrdersDataGrid)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.MainOrdersDecorTabControl)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.FrontsComboBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.FrameColorComboBox)).EndInit();
@@ -2632,14 +2677,13 @@
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DecorCountNumUpDown)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.kryptonCheckSet1)).EndInit();
             this.panel9.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.MainOrdersTabControl)).EndInit();
             this.MainOrdersTabControl.ResumeLayout(false);
-            this.xtraTabPage1.ResumeLayout(false);
             this.panel19.ResumeLayout(false);
-            this.xtraTabPage2.ResumeLayout(false);
             this.panel20.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.FrontsOrdersDataGrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.kryptonCheckSet1)).EndInit();
             this.ResumeLayout(false);
 
         }

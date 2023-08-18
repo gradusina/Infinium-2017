@@ -46,10 +46,6 @@
     <Reference Include="BarcodeLib">
       <HintPath>..\..\gradusina\Infinium\bin\Debug\BarcodeLib.dll</HintPath>
     </Reference>
-    <Reference Include="ComponentFactory.Krypton.Toolkit, Version=4.4.0.0, Culture=neutral, PublicKeyToken=a87e673e9ecb6e8e, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\gradusina\Infinium\bin\Debug\ComponentFactory.Krypton.Toolkit.dll</HintPath>
-    </Reference>
     <Reference Include="DevExpress.Charts.v12.1.Core, Version=12.1.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\gradusina\Infinium\bin\Debug\DevExpress.Charts.v12.1.Core.dll</HintPath>
@@ -94,20 +90,16 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\gradusina\Infinium\bin\Debug\DevExpress.XtraLayout.v12.1.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.XtraNavBar.v12.1, Version=12.1.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\gradusina\Infinium\bin\Debug\DevExpress.XtraNavBar.v12.1.dll</HintPath>
-    </Reference>
     <Reference Include="DevExpress.XtraRichEdit.v12.1, Version=12.1.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\gradusina\Infinium\bin\Debug\DevExpress.XtraRichEdit.v12.1.dll</HintPath>
     </Reference>
+    <Reference Include="Krypton.Toolkit, Version=5.490.2202.0, Culture=neutral, PublicKeyToken=a87e673e9ecb6e8e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Krypton.Toolkit.5.490.2200\lib\net471\Krypton.Toolkit.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="NLog">
-      <HintPath>..\..\gradusina\Infinium\bin\Debug\NLog.dll</HintPath>
     </Reference>
     <Reference Include="NPOI">
       <HintPath>..\..\..\..\..\..\Program Files (x86)\InfiniumAgent\NPOI.dll</HintPath>
@@ -130,6 +122,7 @@
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Design" />
     <Reference Include="System.Management" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -616,12 +609,6 @@
     <Compile Include="Modules\CabFurnitureAssignments\CabFurnitureCoversForm.designer.cs">
       <DependentUpon>CabFurnitureCoversForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Modules\CabFurnitureAssignments\iiCabFurnitureModuleForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Modules\CabFurnitureAssignments\iiCabFurnitureModuleForm.designer.cs">
-      <DependentUpon>iiCabFurnitureModuleForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Modules\CabFurnitureAssignments\CabFurnitureOperationsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -678,18 +665,6 @@
     <Compile Include="Modules\ClientCatalog\CatalogForm.designer.cs">
       <DependentUpon>CatalogForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Modules\ClientCatalog\CatalogMarketingPriceForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Modules\ClientCatalog\CatalogMarketingPriceForm.designer.cs">
-      <DependentUpon>CatalogMarketingPriceForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Modules\ClientCatalog\CatalogZOVPriceForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Modules\ClientCatalog\CatalogZOVPriceForm.designer.cs">
-      <DependentUpon>CatalogZOVPriceForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Modules\ClientCatalog\ClientDecorPrice.cs" />
     <Compile Include="Modules\ClientCatalog\ClientFrontsPrice.cs" />
     <Compile Include="Modules\ClientCatalog\DecorPictureEditForm.cs">
@@ -715,6 +690,12 @@
     </Compile>
     <Compile Include="Modules\ClientCatalog\ProductDescriptionForm.designer.cs">
       <DependentUpon>ProductDescriptionForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\ClientCatalog\CatalogImageDownloadForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modules\ClientCatalog\CatalogImageDownloadForm.designer.cs">
+      <DependentUpon>CatalogImageDownloadForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Modules\ClientCatalog\SampleDecorLabelInfoMenu.cs">
       <SubType>Form</SubType>
@@ -932,6 +913,25 @@
     <Compile Include="Modules\ExpeditionZOV\ZOVExpeditionForm.designer.cs">
       <DependentUpon>ZOVExpeditionForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Modules\LoadCalculations\LoadCalculations.cs" />
+    <Compile Include="Modules\LoadCalculations\LoadCalculationsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modules\LoadCalculations\LoadCalculationsForm.designer.cs">
+      <DependentUpon>LoadCalculationsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\LoadCalculations\UserControls\MachineControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Modules\LoadCalculations\UserControls\MachineControl.designer.cs">
+      <DependentUpon>MachineControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\LoadCalculations\UserControls\SectorControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Modules\LoadCalculations\UserControls\SectorControl.designer.cs">
+      <DependentUpon>SectorControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Modules\Marketing\ClientMessages\ClientMessages.cs" />
     <Compile Include="Modules\Marketing\ClientMessages\ClientsMessagesForm.cs">
       <SubType>Form</SubType>
@@ -1107,6 +1107,12 @@
     <Compile Include="Modules\Marketing\NewOrders\SaveDBFReportMenu.designer.cs">
       <DependentUpon>SaveDBFReportMenu.cs</DependentUpon>
     </Compile>
+    <Compile Include="Modules\Marketing\NewOrders\SetOrderAgreedDateForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modules\Marketing\NewOrders\SetOrderAgreedDateForm.designer.cs">
+      <DependentUpon>SetOrderAgreedDateForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Modules\Marketing\NewOrders\SetOrderStatusForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -1243,6 +1249,12 @@
     </Compile>
     <Compile Include="Modules\Packages\MarketingPackagesAllocation\SplitOrdersForm.designer.cs">
       <DependentUpon>SplitOrdersForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\Packages\MarketingPrintPackages\MarketingPackagesClientForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modules\Packages\MarketingPrintPackages\MarketingPackagesClientForm.designer.cs">
+      <DependentUpon>MarketingPackagesClientForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Modules\Packages\MarketingPrintPackages\MarketingFilterProductsForm.cs">
       <SubType>Form</SubType>
@@ -2046,6 +2058,7 @@
     </Compile>
     <EmbeddedResource Include="AccessDeniedForm.resx">
       <DependentUpon>AccessDeniedForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="CoverWaitForm.resx">
       <DependentUpon>CoverWaitForm.cs</DependentUpon>
@@ -2278,9 +2291,6 @@
     <EmbeddedResource Include="Modules\CabFurnitureAssignments\CabFurnitureCoversForm.resx">
       <DependentUpon>CabFurnitureCoversForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Modules\CabFurnitureAssignments\iiCabFurnitureModuleForm.resx">
-      <DependentUpon>iiCabFurnitureModuleForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Modules\CabFurnitureAssignments\CabFurnitureOperationsForm.resx">
       <DependentUpon>CabFurnitureOperationsForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -2308,12 +2318,6 @@
     <EmbeddedResource Include="Modules\ClientCatalog\CatalogForm.resx">
       <DependentUpon>CatalogForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Modules\ClientCatalog\CatalogMarketingPriceForm.resx">
-      <DependentUpon>CatalogMarketingPriceForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Modules\ClientCatalog\CatalogZOVPriceForm.resx">
-      <DependentUpon>CatalogZOVPriceForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Modules\ClientCatalog\DecorPictureEditForm.resx">
       <DependentUpon>DecorPictureEditForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -2325,6 +2329,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Modules\ClientCatalog\ProductDescriptionForm.resx">
       <DependentUpon>ProductDescriptionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modules\ClientCatalog\CatalogImageDownloadForm.resx">
+      <DependentUpon>CatalogImageDownloadForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Modules\ClientCatalog\SampleDecorLabelInfoMenu.resx">
       <DependentUpon>SampleDecorLabelInfoMenu.cs</DependentUpon>
@@ -2425,6 +2432,15 @@
     <EmbeddedResource Include="Modules\ExpeditionZOV\ZOVExpeditionForm.resx">
       <DependentUpon>ZOVExpeditionForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Modules\LoadCalculations\LoadCalculationsForm.resx">
+      <DependentUpon>LoadCalculationsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modules\LoadCalculations\UserControls\MachineControl.resx">
+      <DependentUpon>MachineControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modules\LoadCalculations\UserControls\SectorControl.resx">
+      <DependentUpon>SectorControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Modules\Marketing\ClientMessages\ClientsMessagesForm.resx">
       <DependentUpon>ClientsMessagesForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -2497,6 +2513,9 @@
     <EmbeddedResource Include="Modules\Marketing\NewOrders\SaveDBFReportMenu.resx">
       <DependentUpon>SaveDBFReportMenu.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Modules\Marketing\NewOrders\SetOrderAgreedDateForm.resx">
+      <DependentUpon>SetOrderAgreedDateForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Modules\Marketing\NewOrders\SetOrderStatusForm.resx">
       <DependentUpon>SetOrderStatusForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -2559,6 +2578,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Modules\Packages\MarketingPackagesAllocation\SplitOrdersForm.resx">
       <DependentUpon>SplitOrdersForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modules\Packages\MarketingPrintPackages\MarketingPackagesClientForm.resx">
+      <DependentUpon>MarketingPackagesClientForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Modules\Packages\MarketingPrintPackages\MarketingFilterProductsForm.resx">
       <DependentUpon>MarketingFilterProductsForm.cs</DependentUpon>
@@ -3183,9 +3205,6 @@
     <None Include="Resources\zoom_in_32x32.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\ZOVPROFIL.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\ZOVTPS.png" />
   </ItemGroup>
   <ItemGroup>
@@ -3442,6 +3461,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\n21.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ZOVPROFIL.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ZOVPROFIL.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\n2.jpg" />

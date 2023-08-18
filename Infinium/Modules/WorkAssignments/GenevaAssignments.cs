@@ -484,7 +484,7 @@ namespace Infinium.Modules.WorkAssignments
 
         private void GetAppliqueFronts(DataTable SourceDT, ref DataTable DestinationDT)
         {
-            DataRow[] rows = SourceDT.Select("FrontID IN (15760, 3737, 3728,3731,3732,3739,3740,3741,3744,3745,3746)");
+            DataRow[] rows = SourceDT.Select("FrontID IN (15759,15759,15760, 3737, 3728,3731,3732,3739,3740,3741,3744,3745,3746)");
             foreach (DataRow dr in rows)
                 DestinationDT.Rows.Add(dr.ItemArray);
         }
@@ -499,7 +499,7 @@ namespace Infinium.Modules.WorkAssignments
 
         private void GetSimpleFronts(DataTable SourceDT, ref DataTable DestinationDT)
         {
-            DataRow[] rows = SourceDT.Select("FrontID NOT IN (15760, 3737, 3728,3731,3732,3739,3740,3741,3744,3745,3746,3729) AND InsetTypeID NOT IN (685,686,687,688,29470,29471)");
+            DataRow[] rows = SourceDT.Select("FrontID NOT IN (15759,15760, 3737, 3728,3731,3732,3739,3740,3741,3744,3745,3746,3729) AND InsetTypeID NOT IN (685,686,687,688,29470,29471)");
             foreach (DataRow dr in rows)
                 DestinationDT.Rows.Add(dr.ItemArray);
         }
@@ -511,14 +511,14 @@ namespace Infinium.Modules.WorkAssignments
             
             SelectCommand = $"SELECT FrontsOrdersID, MainOrderID, FrontID, PatinaID, InsetTypeID, " +
                 $"ColorID, InsetColorID, Height, Width, Count, FrontConfigID, Notes FROM FrontsOrders " +
-                $"WHERE Width<>-1 AND FrontID IN (30501,30502,30503,30504,30505,30506,16269,30364,30366,30367,28945,41327,41328,41331,15760, { Convert.ToInt32(Fronts.Grand)}, " +
+                $"WHERE Width<>-1 AND FrontID IN (30501,30502,30503,30504,30505,30506,16269,30364,30366,30367,28945,41327,41328,41331,15759,15760, { Convert.ToInt32(Fronts.Grand)}, " +
                 $" {Convert.ToInt32(Fronts.GrandVg)}, {Convert.ToInt32(Fronts.Polo)}, {Convert.ToInt32(Fronts.PoloVg)}, " +
                 $"3737, 3727,3728,3729,3730,3731,3732,3733,3734,3735,3736,3737,3739,3740,3741,3742,3743,3744,3745,3746,3747,3748,15108,29597,27914) " +
                 $"AND MainOrderID IN (SELECT MainOrderID FROM BatchDetails WHERE BatchID IN (SELECT BatchID FROM Batch WHERE ProfilWorkAssignmentID={ WorkAssignmentID }))";
             if (FactoryID == 2)
                 SelectCommand = $"SELECT FrontsOrdersID, MainOrderID, FrontID, PatinaID, InsetTypeID, " +
                 $"ColorID, InsetColorID, Height, Width, Count, FrontConfigID, Notes FROM FrontsOrders " +
-                $"WHERE Width<>-1 AND FrontID IN (30501,30502,30503,30504,30505,30506,16269,30364,30366,30367,28945,41327,41328,41331,15760, { Convert.ToInt32(Fronts.Grand)}, " +
+                $"WHERE Width<>-1 AND FrontID IN (30501,30502,30503,30504,30505,30506,16269,30364,30366,30367,28945,41327,41328,41331,15759,15760, { Convert.ToInt32(Fronts.Grand)}, " +
                 $" {Convert.ToInt32(Fronts.GrandVg)}, {Convert.ToInt32(Fronts.Polo)}, {Convert.ToInt32(Fronts.PoloVg)}, " +
                 $"3737, 3727,3728,3729,3730,3731,3732,3733,3734,3735,3736,3737,3739,3740,3741,3742,3743,3744,3745,3746,3747,3748,15108,29597,27914) " +
                 $"AND MainOrderID IN (SELECT MainOrderID FROM BatchDetails WHERE BatchID IN (SELECT BatchID FROM Batch WHERE TPSWorkAssignmentID={ WorkAssignmentID }))";

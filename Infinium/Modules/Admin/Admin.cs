@@ -2215,8 +2215,8 @@ namespace Infinium
         public DataTable ModulesDataTable;
         public DataTable ModulesAccessDataTable;
 
-        private readonly PercentageDataGrid ModulesDataGrid;
-        private readonly PercentageDataGrid UsersDataGrid;
+        private readonly DataGridView ModulesDataGrid;
+        private readonly DataGridView UsersDataGrid;
 
         public BindingSource ModulesBindingSource;
         public BindingSource UsersBindingSource;
@@ -2224,7 +2224,7 @@ namespace Infinium
         private SqlDataAdapter ModulesAccessDataAdapter;
         private SqlCommandBuilder ModulesAccessCommandBuilder;
 
-        public AdminModulesAccess(ref PercentageDataGrid tModulesDataGrid, ref PercentageDataGrid tUsersDataGrid)
+        public AdminModulesAccess(ref DataGridView tModulesDataGrid, ref DataGridView tUsersDataGrid)
         {
             ModulesDataGrid = tModulesDataGrid;
             UsersDataGrid = tUsersDataGrid;
@@ -3257,7 +3257,7 @@ namespace Infinium
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT UserID, ShortName FROM Users WHERE Fired <> 1 ORDER BY ShortName",
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT UserID, ShortName FROM Users ORDER BY ShortName",
                 ConnectionStrings.UsersConnectionString))
             {
                 DA.Fill(UsersDataTable);

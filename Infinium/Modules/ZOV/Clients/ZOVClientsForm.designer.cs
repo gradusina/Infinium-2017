@@ -41,6 +41,7 @@
             this.kryptonContextMenuItems1 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItems();
             this.CopyContextMenuItem = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
             this.SaveClientsMenuItem = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
+            this.ExportToExcelMenuItem = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
             this.PanelSelectPalette = new ComponentFactory.Krypton.Toolkit.KryptonPalette(this.components);
             this.StandardButtonsPalette = new ComponentFactory.Krypton.Toolkit.KryptonPalette(this.components);
             this.ToolsPanel = new System.Windows.Forms.Panel();
@@ -48,6 +49,7 @@
             this.kryptonBorderEdge12 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge15 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.ClientsOperationsPanel = new System.Windows.Forms.Panel();
+            this.ExportToExcelButton = new ComponentFactory.Krypton.Toolkit.KryptonButton();
             this.ClientsEditButton = new ComponentFactory.Krypton.Toolkit.KryptonButton();
             this.ClientsNewClientButton = new ComponentFactory.Krypton.Toolkit.KryptonButton();
             this.kryptonBorderEdge21 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
@@ -56,16 +58,19 @@
             this.ClientsSplitContainer = new ComponentFactory.Krypton.Toolkit.KryptonSplitContainer();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.ShopAddressesDataGrid = new Infinium.PercentageDataGrid();
             this.kryptonBorderEdge1 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge2 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge4 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge5 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.panel35 = new System.Windows.Forms.Panel();
+            this.ClientsDataGrid = new Infinium.PercentageDataGrid();
             this.kryptonBorderEdge55 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge56 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge57 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge58 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.panel36 = new System.Windows.Forms.Panel();
+            this.ClientsContactsDataGrid = new Infinium.PercentageDataGrid();
             this.kryptonBorderEdge59 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge60 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge61 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
@@ -74,19 +79,14 @@
             this.tabOrdersOnExp = new System.Windows.Forms.TabControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.btnSaveClientsGroups = new ComponentFactory.Krypton.Toolkit.KryptonButton();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.label3 = new System.Windows.Forms.Label();
-            this.ExportToExcelMenuItem = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
-            this.ExportToExcelButton = new ComponentFactory.Krypton.Toolkit.KryptonButton();
             this.btnSaveManagers = new ComponentFactory.Krypton.Toolkit.KryptonButton();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.label2 = new System.Windows.Forms.Label();
-            this.ShopAddressesDataGrid = new Infinium.PercentageDataGrid();
-            this.ClientsDataGrid = new Infinium.PercentageDataGrid();
-            this.ClientsContactsDataGrid = new Infinium.PercentageDataGrid();
             this.dgvManagers = new Infinium.PercentageDataGrid();
+            this.label2 = new System.Windows.Forms.Label();
+            this.btnSaveClientsGroups = new ComponentFactory.Krypton.Toolkit.KryptonButton();
+            this.panel2 = new System.Windows.Forms.Panel();
             this.dgvClientsGroupsDataGrid = new Infinium.PercentageDataGrid();
+            this.label3 = new System.Windows.Forms.Label();
             this.NavigatePanel.SuspendLayout();
             this.ToolsPanel.SuspendLayout();
             this.PaymentsToolsPanel.SuspendLayout();
@@ -100,17 +100,17 @@
             this.ClientsSplitContainer.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ShopAddressesDataGrid)).BeginInit();
             this.panel35.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ClientsDataGrid)).BeginInit();
             this.panel36.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ClientsContactsDataGrid)).BeginInit();
             this.tabOrdersOnExp.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tabPage1.SuspendLayout();
-            this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ShopAddressesDataGrid)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ClientsDataGrid)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ClientsContactsDataGrid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvManagers)).BeginInit();
+            this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvClientsGroupsDataGrid)).BeginInit();
             this.SuspendLayout();
             // 
@@ -163,6 +163,7 @@
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.NavigateMenuButtonsPalette.ButtonStyles.ButtonCommon.StateTracking.Border.Rounding = 0;
             this.NavigateMenuButtonsPalette.ButtonStyles.ButtonCommon.StateTracking.Border.Width = 1;
+            this.NavigateMenuButtonsPalette.CustomisedKryptonPaletteFilePath = null;
             // 
             // NavigateMenuCloseButton
             // 
@@ -254,6 +255,11 @@
             this.SaveClientsMenuItem.Text = "Сохранить";
             this.SaveClientsMenuItem.Click += new System.EventHandler(this.SaveClientsMenuItem_Click);
             // 
+            // ExportToExcelMenuItem
+            // 
+            this.ExportToExcelMenuItem.Text = "Экспорт в Excel";
+            this.ExportToExcelMenuItem.Click += new System.EventHandler(this.ExportToExcelMenuItem_Click);
+            // 
             // PanelSelectPalette
             // 
             this.PanelSelectPalette.ButtonStyles.ButtonCommon.OverrideDefault.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(140)))), ((int)(((byte)(140)))), ((int)(((byte)(140)))));
@@ -319,6 +325,7 @@
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.PanelSelectPalette.ButtonStyles.ButtonCommon.StateTracking.Border.Rounding = 0;
+            this.PanelSelectPalette.CustomisedKryptonPaletteFilePath = null;
             // 
             // StandardButtonsPalette
             // 
@@ -360,6 +367,7 @@
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.StandardButtonsPalette.ButtonStyles.ButtonCommon.StateTracking.Border.Rounding = 0;
+            this.StandardButtonsPalette.CustomisedKryptonPaletteFilePath = null;
             // 
             // ToolsPanel
             // 
@@ -424,6 +432,43 @@
             this.ClientsOperationsPanel.Name = "ClientsOperationsPanel";
             this.ClientsOperationsPanel.Size = new System.Drawing.Size(1256, 136);
             this.ClientsOperationsPanel.TabIndex = 372;
+            // 
+            // ExportToExcelButton
+            // 
+            this.ExportToExcelButton.Location = new System.Drawing.Point(239, 17);
+            this.ExportToExcelButton.Margin = new System.Windows.Forms.Padding(4);
+            this.ExportToExcelButton.Name = "ExportToExcelButton";
+            this.ExportToExcelButton.OverrideDefault.Back.Color1 = System.Drawing.Color.Transparent;
+            this.ExportToExcelButton.OverrideDefault.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.ExportToExcelButton.OverrideDefault.Border.Color1 = System.Drawing.Color.Transparent;
+            this.ExportToExcelButton.OverrideDefault.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.ExportToExcelButton.OverrideDefault.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.ExportToExcelButton.OverrideDefault.Border.Rounding = 0;
+            this.ExportToExcelButton.Palette = this.StandardButtonsPalette;
+            this.ExportToExcelButton.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Custom;
+            this.ExportToExcelButton.Size = new System.Drawing.Size(108, 102);
+            this.ExportToExcelButton.StateCommon.Back.Color1 = System.Drawing.Color.Transparent;
+            this.ExportToExcelButton.StateCommon.Content.Image.ImageH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.ExportToExcelButton.StateCommon.Content.Image.ImageV = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
+            this.ExportToExcelButton.StateCommon.Content.LongText.Color1 = System.Drawing.Color.White;
+            this.ExportToExcelButton.StateCommon.Content.LongText.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.ExportToExcelButton.StateCommon.Content.ShortText.Color1 = System.Drawing.Color.White;
+            this.ExportToExcelButton.StateCommon.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.ExportToExcelButton.StateTracking.Border.Color1 = System.Drawing.Color.Silver;
+            this.ExportToExcelButton.StateTracking.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.ExportToExcelButton.StateTracking.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.ExportToExcelButton.StateTracking.Border.Rounding = 0;
+            this.ExportToExcelButton.TabIndex = 372;
+            this.ExportToExcelButton.TabStop = false;
+            this.ExportToExcelButton.Tag = "33";
+            this.ExportToExcelButton.Values.ExtraText = "Экспорт в\r\nExcel";
+            this.ExportToExcelButton.Values.Image = ((System.Drawing.Image)(resources.GetObject("ExportToExcelButton.Values.Image")));
+            this.ExportToExcelButton.Values.Text = "";
+            this.ExportToExcelButton.Click += new System.EventHandler(this.ExportToExcelButton_Click);
             // 
             // ClientsEditButton
             // 
@@ -595,6 +640,66 @@
             this.panel1.Size = new System.Drawing.Size(372, 305);
             this.panel1.TabIndex = 56;
             // 
+            // ShopAddressesDataGrid
+            // 
+            this.ShopAddressesDataGrid.AllowUserToAddRows = false;
+            this.ShopAddressesDataGrid.AllowUserToDeleteRows = false;
+            this.ShopAddressesDataGrid.AllowUserToResizeColumns = false;
+            this.ShopAddressesDataGrid.AllowUserToResizeRows = false;
+            this.ShopAddressesDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.ShopAddressesDataGrid.BackText = "Нет данных";
+            this.ShopAddressesDataGrid.ColumnHeadersHeight = 40;
+            this.ShopAddressesDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ShopAddressesDataGrid.Location = new System.Drawing.Point(1, 1);
+            this.ShopAddressesDataGrid.MultiSelect = false;
+            this.ShopAddressesDataGrid.Name = "ShopAddressesDataGrid";
+            this.ShopAddressesDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.ShopAddressesDataGrid.PercentLineWidth = 0;
+            this.ShopAddressesDataGrid.ReadOnly = true;
+            this.ShopAddressesDataGrid.RowHeadersVisible = false;
+            this.ShopAddressesDataGrid.RowTemplate.Height = 31;
+            this.ShopAddressesDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.ShopAddressesDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Green;
+            this.ShopAddressesDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.ShopAddressesDataGrid.Size = new System.Drawing.Size(370, 303);
+            this.ShopAddressesDataGrid.StandardStyle = false;
+            this.ShopAddressesDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
+            this.ShopAddressesDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
+            this.ShopAddressesDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.ShopAddressesDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
+            this.ShopAddressesDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
+            this.ShopAddressesDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.ShopAddressesDataGrid.StateCommon.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.ShopAddressesDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
+            this.ShopAddressesDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.ShopAddressesDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.ShopAddressesDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
+            this.ShopAddressesDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.ShopAddressesDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.ShopAddressesDataGrid.StateCommon.HeaderColumn.Back.Color2 = System.Drawing.Color.Transparent;
+            this.ShopAddressesDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.ShopAddressesDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
+            this.ShopAddressesDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.ShopAddressesDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.ShopAddressesDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
+            this.ShopAddressesDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
+            this.ShopAddressesDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.ShopAddressesDataGrid.StateCommon.HeaderColumn.Content.MultiLine = ComponentFactory.Krypton.Toolkit.InheritBool.True;
+            this.ShopAddressesDataGrid.StateCommon.HeaderColumn.Content.MultiLineH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.ShopAddressesDataGrid.StateCommon.HeaderColumn.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.ShopAddressesDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(158)))), ((int)(((byte)(0)))));
+            this.ShopAddressesDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.ShopAddressesDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.ShopAddressesDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
+            this.ShopAddressesDataGrid.TabIndex = 54;
+            this.ShopAddressesDataGrid.UseCustomBackColor = true;
+            this.ShopAddressesDataGrid.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.ShopAddressesDataGrid_CellDoubleClick);
+            this.ShopAddressesDataGrid.CellMouseEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.ShopAddressesDataGrid_CellMouseEnter);
+            // 
             // kryptonBorderEdge1
             // 
             this.kryptonBorderEdge1.Dock = System.Windows.Forms.DockStyle.Left;
@@ -647,6 +752,69 @@
             this.panel35.Size = new System.Drawing.Size(876, 305);
             this.panel35.TabIndex = 55;
             // 
+            // ClientsDataGrid
+            // 
+            this.ClientsDataGrid.AllowUserToAddRows = false;
+            this.ClientsDataGrid.AllowUserToDeleteRows = false;
+            this.ClientsDataGrid.AllowUserToResizeColumns = false;
+            this.ClientsDataGrid.AllowUserToResizeRows = false;
+            this.ClientsDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.ClientsDataGrid.BackText = "Нет данных";
+            this.ClientsDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.ClientsDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ClientsDataGrid.HideOuterBorders = true;
+            this.ClientsDataGrid.Location = new System.Drawing.Point(1, 1);
+            this.ClientsDataGrid.Name = "ClientsDataGrid";
+            this.ClientsDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.ClientsDataGrid.PercentLineWidth = 0;
+            this.ClientsDataGrid.RowHeadersVisible = false;
+            this.ClientsDataGrid.RowTemplate.Height = 31;
+            this.ClientsDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.ClientsDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
+            this.ClientsDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.ClientsDataGrid.Size = new System.Drawing.Size(874, 303);
+            this.ClientsDataGrid.StandardStyle = false;
+            this.ClientsDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
+            this.ClientsDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
+            this.ClientsDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.ClientsDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
+            this.ClientsDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
+            this.ClientsDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.ClientsDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
+            this.ClientsDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.ClientsDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.ClientsDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
+            this.ClientsDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.ClientsDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.ClientsDataGrid.StateCommon.HeaderColumn.Back.Color2 = System.Drawing.Color.Transparent;
+            this.ClientsDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.ClientsDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
+            this.ClientsDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.ClientsDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.ClientsDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
+            this.ClientsDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
+            this.ClientsDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.ClientsDataGrid.StateCommon.HeaderColumn.Content.MultiLine = ComponentFactory.Krypton.Toolkit.InheritBool.True;
+            this.ClientsDataGrid.StateCommon.HeaderColumn.Content.MultiLineH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.ClientsDataGrid.StateCommon.HeaderColumn.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.ClientsDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(121)))), ((int)(((byte)(177)))), ((int)(((byte)(229)))));
+            this.ClientsDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.ClientsDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.ClientsDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
+            this.ClientsDataGrid.StateSelected.HeaderRow.Border.Color1 = System.Drawing.Color.White;
+            this.ClientsDataGrid.StateSelected.HeaderRow.Border.Color2 = System.Drawing.Color.White;
+            this.ClientsDataGrid.StateSelected.HeaderRow.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.ClientsDataGrid.TabIndex = 55;
+            this.ClientsDataGrid.UseCustomBackColor = true;
+            this.ClientsDataGrid.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.ClientsDataGrid_CellMouseDown);
+            this.ClientsDataGrid.SelectionChanged += new System.EventHandler(this.ClientsDataGrid_SelectionChanged);
+            // 
             // kryptonBorderEdge55
             // 
             this.kryptonBorderEdge55.Dock = System.Windows.Forms.DockStyle.Left;
@@ -698,6 +866,65 @@
             this.panel36.Name = "panel36";
             this.panel36.Size = new System.Drawing.Size(1260, 189);
             this.panel36.TabIndex = 56;
+            // 
+            // ClientsContactsDataGrid
+            // 
+            this.ClientsContactsDataGrid.AllowUserToAddRows = false;
+            this.ClientsContactsDataGrid.AllowUserToDeleteRows = false;
+            this.ClientsContactsDataGrid.AllowUserToResizeColumns = false;
+            this.ClientsContactsDataGrid.AllowUserToResizeRows = false;
+            this.ClientsContactsDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.ClientsContactsDataGrid.BackText = "Нет данных";
+            this.ClientsContactsDataGrid.ColumnHeadersHeight = 40;
+            this.ClientsContactsDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.ClientsContactsDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ClientsContactsDataGrid.Location = new System.Drawing.Point(1, 1);
+            this.ClientsContactsDataGrid.MultiSelect = false;
+            this.ClientsContactsDataGrid.Name = "ClientsContactsDataGrid";
+            this.ClientsContactsDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.ClientsContactsDataGrid.PercentLineWidth = 0;
+            this.ClientsContactsDataGrid.ReadOnly = true;
+            this.ClientsContactsDataGrid.RowHeadersVisible = false;
+            this.ClientsContactsDataGrid.RowTemplate.Height = 31;
+            this.ClientsContactsDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.ClientsContactsDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Green;
+            this.ClientsContactsDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.ClientsContactsDataGrid.Size = new System.Drawing.Size(1258, 187);
+            this.ClientsContactsDataGrid.StandardStyle = false;
+            this.ClientsContactsDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
+            this.ClientsContactsDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
+            this.ClientsContactsDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.ClientsContactsDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
+            this.ClientsContactsDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
+            this.ClientsContactsDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.ClientsContactsDataGrid.StateCommon.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.ClientsContactsDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
+            this.ClientsContactsDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.ClientsContactsDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.ClientsContactsDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
+            this.ClientsContactsDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.ClientsContactsDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.ClientsContactsDataGrid.StateCommon.HeaderColumn.Back.Color2 = System.Drawing.Color.Transparent;
+            this.ClientsContactsDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.ClientsContactsDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
+            this.ClientsContactsDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.ClientsContactsDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.ClientsContactsDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
+            this.ClientsContactsDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
+            this.ClientsContactsDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.ClientsContactsDataGrid.StateCommon.HeaderColumn.Content.MultiLine = ComponentFactory.Krypton.Toolkit.InheritBool.True;
+            this.ClientsContactsDataGrid.StateCommon.HeaderColumn.Content.MultiLineH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.ClientsContactsDataGrid.StateCommon.HeaderColumn.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.ClientsContactsDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(158)))), ((int)(((byte)(0)))));
+            this.ClientsContactsDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.ClientsContactsDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.ClientsContactsDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
+            this.ClientsContactsDataGrid.TabIndex = 54;
+            this.ClientsContactsDataGrid.UseCustomBackColor = true;
             // 
             // kryptonBorderEdge59
             // 
@@ -780,96 +1007,6 @@
             this.tabPage1.Text = "  Группы клиентов и менеджеры  ";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // btnSaveClientsGroups
-            // 
-            this.btnSaveClientsGroups.Location = new System.Drawing.Point(429, 18);
-            this.btnSaveClientsGroups.Name = "btnSaveClientsGroups";
-            this.btnSaveClientsGroups.OverrideDefault.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(158)))), ((int)(((byte)(0)))));
-            this.btnSaveClientsGroups.Palette = this.StandardButtonsPalette;
-            this.btnSaveClientsGroups.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Custom;
-            this.btnSaveClientsGroups.Size = new System.Drawing.Size(96, 39);
-            this.btnSaveClientsGroups.StateCommon.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(158)))), ((int)(((byte)(0)))));
-            this.btnSaveClientsGroups.StateCommon.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.btnSaveClientsGroups.StateCommon.Content.Image.ImageH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
-            this.btnSaveClientsGroups.StateCommon.Content.Image.ImageV = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
-            this.btnSaveClientsGroups.StateCommon.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.btnSaveClientsGroups.StateCommon.Content.ShortText.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
-            this.btnSaveClientsGroups.StateCommon.Content.ShortText.TextV = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
-            this.btnSaveClientsGroups.StatePressed.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(158)))), ((int)(((byte)(0)))));
-            this.btnSaveClientsGroups.StateTracking.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(253)))), ((int)(((byte)(164)))), ((int)(((byte)(61)))));
-            this.btnSaveClientsGroups.StateTracking.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.btnSaveClientsGroups.TabIndex = 460;
-            this.btnSaveClientsGroups.TabStop = false;
-            this.btnSaveClientsGroups.Tag = "25";
-            this.btnSaveClientsGroups.Values.Text = "Сохранить";
-            this.btnSaveClientsGroups.Click += new System.EventHandler(this.btnSave_Click);
-            // 
-            // panel2
-            // 
-            this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel2.Controls.Add(this.dgvClientsGroupsDataGrid);
-            this.panel2.Location = new System.Drawing.Point(10, 62);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(515, 585);
-            this.panel2.TabIndex = 459;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.label3.ForeColor = System.Drawing.Color.Black;
-            this.label3.Location = new System.Drawing.Point(6, 31);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(172, 28);
-            this.label3.TabIndex = 458;
-            this.label3.Text = "Группа клиентов:";
-            // 
-            // ExportToExcelMenuItem
-            // 
-            this.ExportToExcelMenuItem.Text = "Экспорт в Excel";
-            this.ExportToExcelMenuItem.Click += new System.EventHandler(this.ExportToExcelMenuItem_Click);
-            // 
-            // ExportToExcelButton
-            // 
-            this.ExportToExcelButton.Location = new System.Drawing.Point(239, 17);
-            this.ExportToExcelButton.Margin = new System.Windows.Forms.Padding(4);
-            this.ExportToExcelButton.Name = "ExportToExcelButton";
-            this.ExportToExcelButton.OverrideDefault.Back.Color1 = System.Drawing.Color.Transparent;
-            this.ExportToExcelButton.OverrideDefault.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.ExportToExcelButton.OverrideDefault.Border.Color1 = System.Drawing.Color.Transparent;
-            this.ExportToExcelButton.OverrideDefault.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.ExportToExcelButton.OverrideDefault.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.ExportToExcelButton.OverrideDefault.Border.Rounding = 0;
-            this.ExportToExcelButton.Palette = this.StandardButtonsPalette;
-            this.ExportToExcelButton.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Custom;
-            this.ExportToExcelButton.Size = new System.Drawing.Size(108, 102);
-            this.ExportToExcelButton.StateCommon.Back.Color1 = System.Drawing.Color.Transparent;
-            this.ExportToExcelButton.StateCommon.Content.Image.ImageH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
-            this.ExportToExcelButton.StateCommon.Content.Image.ImageV = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
-            this.ExportToExcelButton.StateCommon.Content.LongText.Color1 = System.Drawing.Color.White;
-            this.ExportToExcelButton.StateCommon.Content.LongText.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.ExportToExcelButton.StateCommon.Content.ShortText.Color1 = System.Drawing.Color.White;
-            this.ExportToExcelButton.StateCommon.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.ExportToExcelButton.StateTracking.Border.Color1 = System.Drawing.Color.Silver;
-            this.ExportToExcelButton.StateTracking.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.ExportToExcelButton.StateTracking.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.ExportToExcelButton.StateTracking.Border.Rounding = 0;
-            this.ExportToExcelButton.TabIndex = 372;
-            this.ExportToExcelButton.TabStop = false;
-            this.ExportToExcelButton.Tag = "33";
-            this.ExportToExcelButton.Values.ExtraText = "Экспорт в\r\nExcel";
-            this.ExportToExcelButton.Values.Image = ((System.Drawing.Image)(resources.GetObject("CostToExcelButton.Values.Image")));
-            this.ExportToExcelButton.Values.Text = "";
-            this.ExportToExcelButton.Click += new System.EventHandler(this.ExportToExcelButton_Click);
-            // 
             // btnSaveManagers
             // 
             this.btnSaveManagers.Location = new System.Drawing.Point(968, 18);
@@ -906,200 +1043,6 @@
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(515, 585);
             this.panel3.TabIndex = 462;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.label2.ForeColor = System.Drawing.Color.Black;
-            this.label2.Location = new System.Drawing.Point(545, 31);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(128, 28);
-            this.label2.TabIndex = 461;
-            this.label2.Text = "Менеджеры:";
-            // 
-            // ShopAddressesDataGrid
-            // 
-            this.ShopAddressesDataGrid.AllowUserToAddRows = false;
-            this.ShopAddressesDataGrid.AllowUserToDeleteRows = false;
-            this.ShopAddressesDataGrid.AllowUserToResizeColumns = false;
-            this.ShopAddressesDataGrid.AllowUserToResizeRows = false;
-            this.ShopAddressesDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.ShopAddressesDataGrid.BackText = "Нет данных";
-            this.ShopAddressesDataGrid.ColumnHeadersHeight = 40;
-            this.ShopAddressesDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.ShopAddressesDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ShopAddressesDataGrid.Location = new System.Drawing.Point(1, 1);
-            this.ShopAddressesDataGrid.MultiSelect = false;
-            this.ShopAddressesDataGrid.Name = "ShopAddressesDataGrid";
-            this.ShopAddressesDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.ShopAddressesDataGrid.PercentLineWidth = 0;
-            this.ShopAddressesDataGrid.ReadOnly = true;
-            this.ShopAddressesDataGrid.RowHeadersVisible = false;
-            this.ShopAddressesDataGrid.RowTemplate.Height = 31;
-            this.ShopAddressesDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.ShopAddressesDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Green;
-            this.ShopAddressesDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.ShopAddressesDataGrid.Size = new System.Drawing.Size(370, 303);
-            this.ShopAddressesDataGrid.StandardStyle = false;
-            this.ShopAddressesDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
-            this.ShopAddressesDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
-            this.ShopAddressesDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.ShopAddressesDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
-            this.ShopAddressesDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
-            this.ShopAddressesDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.ShopAddressesDataGrid.StateCommon.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.ShopAddressesDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
-            this.ShopAddressesDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.ShopAddressesDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.ShopAddressesDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
-            this.ShopAddressesDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.ShopAddressesDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
-            this.ShopAddressesDataGrid.StateCommon.HeaderColumn.Back.Color2 = System.Drawing.Color.Transparent;
-            this.ShopAddressesDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.ShopAddressesDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
-            this.ShopAddressesDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.ShopAddressesDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.ShopAddressesDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
-            this.ShopAddressesDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
-            this.ShopAddressesDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.ShopAddressesDataGrid.StateCommon.HeaderColumn.Content.MultiLine = ComponentFactory.Krypton.Toolkit.InheritBool.True;
-            this.ShopAddressesDataGrid.StateCommon.HeaderColumn.Content.MultiLineH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
-            this.ShopAddressesDataGrid.StateCommon.HeaderColumn.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
-            this.ShopAddressesDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(158)))), ((int)(((byte)(0)))));
-            this.ShopAddressesDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.ShopAddressesDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.ShopAddressesDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
-            this.ShopAddressesDataGrid.TabIndex = 54;
-            this.ShopAddressesDataGrid.UseCustomBackColor = true;
-            this.ShopAddressesDataGrid.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.ShopAddressesDataGrid_CellDoubleClick);
-            this.ShopAddressesDataGrid.CellMouseEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.ShopAddressesDataGrid_CellMouseEnter);
-            // 
-            // ClientsDataGrid
-            // 
-            this.ClientsDataGrid.AllowUserToAddRows = false;
-            this.ClientsDataGrid.AllowUserToDeleteRows = false;
-            this.ClientsDataGrid.AllowUserToResizeColumns = false;
-            this.ClientsDataGrid.AllowUserToResizeRows = false;
-            this.ClientsDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.ClientsDataGrid.BackText = "Нет данных";
-            this.ClientsDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.ClientsDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ClientsDataGrid.HideOuterBorders = true;
-            this.ClientsDataGrid.Location = new System.Drawing.Point(1, 1);
-            this.ClientsDataGrid.Name = "ClientsDataGrid";
-            this.ClientsDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.ClientsDataGrid.PercentLineWidth = 0;
-            this.ClientsDataGrid.RowHeadersVisible = false;
-            this.ClientsDataGrid.RowTemplate.Height = 31;
-            this.ClientsDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.ClientsDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
-            this.ClientsDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.ClientsDataGrid.Size = new System.Drawing.Size(874, 303);
-            this.ClientsDataGrid.StandardStyle = false;
-            this.ClientsDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
-            this.ClientsDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
-            this.ClientsDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.ClientsDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
-            this.ClientsDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
-            this.ClientsDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.ClientsDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
-            this.ClientsDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.ClientsDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.ClientsDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
-            this.ClientsDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.ClientsDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
-            this.ClientsDataGrid.StateCommon.HeaderColumn.Back.Color2 = System.Drawing.Color.Transparent;
-            this.ClientsDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.ClientsDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
-            this.ClientsDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.ClientsDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.ClientsDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
-            this.ClientsDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
-            this.ClientsDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.ClientsDataGrid.StateCommon.HeaderColumn.Content.MultiLine = ComponentFactory.Krypton.Toolkit.InheritBool.True;
-            this.ClientsDataGrid.StateCommon.HeaderColumn.Content.MultiLineH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
-            this.ClientsDataGrid.StateCommon.HeaderColumn.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
-            this.ClientsDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(121)))), ((int)(((byte)(177)))), ((int)(((byte)(229)))));
-            this.ClientsDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.ClientsDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.ClientsDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
-            this.ClientsDataGrid.StateSelected.HeaderRow.Border.Color1 = System.Drawing.Color.White;
-            this.ClientsDataGrid.StateSelected.HeaderRow.Border.Color2 = System.Drawing.Color.White;
-            this.ClientsDataGrid.StateSelected.HeaderRow.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.ClientsDataGrid.TabIndex = 55;
-            this.ClientsDataGrid.UseCustomBackColor = true;
-            this.ClientsDataGrid.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.ClientsDataGrid_CellMouseDown);
-            this.ClientsDataGrid.SelectionChanged += new System.EventHandler(this.ClientsDataGrid_SelectionChanged);
-            // 
-            // ClientsContactsDataGrid
-            // 
-            this.ClientsContactsDataGrid.AllowUserToAddRows = false;
-            this.ClientsContactsDataGrid.AllowUserToDeleteRows = false;
-            this.ClientsContactsDataGrid.AllowUserToResizeColumns = false;
-            this.ClientsContactsDataGrid.AllowUserToResizeRows = false;
-            this.ClientsContactsDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.ClientsContactsDataGrid.BackText = "Нет данных";
-            this.ClientsContactsDataGrid.ColumnHeadersHeight = 40;
-            this.ClientsContactsDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.ClientsContactsDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ClientsContactsDataGrid.Location = new System.Drawing.Point(1, 1);
-            this.ClientsContactsDataGrid.MultiSelect = false;
-            this.ClientsContactsDataGrid.Name = "ClientsContactsDataGrid";
-            this.ClientsContactsDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.ClientsContactsDataGrid.PercentLineWidth = 0;
-            this.ClientsContactsDataGrid.ReadOnly = true;
-            this.ClientsContactsDataGrid.RowHeadersVisible = false;
-            this.ClientsContactsDataGrid.RowTemplate.Height = 31;
-            this.ClientsContactsDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.ClientsContactsDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Green;
-            this.ClientsContactsDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.ClientsContactsDataGrid.Size = new System.Drawing.Size(1258, 187);
-            this.ClientsContactsDataGrid.StandardStyle = false;
-            this.ClientsContactsDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
-            this.ClientsContactsDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
-            this.ClientsContactsDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.ClientsContactsDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
-            this.ClientsContactsDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
-            this.ClientsContactsDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.ClientsContactsDataGrid.StateCommon.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.ClientsContactsDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
-            this.ClientsContactsDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.ClientsContactsDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.ClientsContactsDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
-            this.ClientsContactsDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.ClientsContactsDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
-            this.ClientsContactsDataGrid.StateCommon.HeaderColumn.Back.Color2 = System.Drawing.Color.Transparent;
-            this.ClientsContactsDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.ClientsContactsDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
-            this.ClientsContactsDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.ClientsContactsDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.ClientsContactsDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
-            this.ClientsContactsDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
-            this.ClientsContactsDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.ClientsContactsDataGrid.StateCommon.HeaderColumn.Content.MultiLine = ComponentFactory.Krypton.Toolkit.InheritBool.True;
-            this.ClientsContactsDataGrid.StateCommon.HeaderColumn.Content.MultiLineH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
-            this.ClientsContactsDataGrid.StateCommon.HeaderColumn.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
-            this.ClientsContactsDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(158)))), ((int)(((byte)(0)))));
-            this.ClientsContactsDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.ClientsContactsDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.ClientsContactsDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
-            this.ClientsContactsDataGrid.TabIndex = 54;
-            this.ClientsContactsDataGrid.UseCustomBackColor = true;
             // 
             // dgvManagers
             // 
@@ -1165,6 +1108,54 @@
             this.dgvManagers.TabIndex = 54;
             this.dgvManagers.UseCustomBackColor = true;
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.label2.ForeColor = System.Drawing.Color.Black;
+            this.label2.Location = new System.Drawing.Point(545, 31);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(128, 28);
+            this.label2.TabIndex = 461;
+            this.label2.Text = "Менеджеры:";
+            // 
+            // btnSaveClientsGroups
+            // 
+            this.btnSaveClientsGroups.Location = new System.Drawing.Point(429, 18);
+            this.btnSaveClientsGroups.Name = "btnSaveClientsGroups";
+            this.btnSaveClientsGroups.OverrideDefault.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(158)))), ((int)(((byte)(0)))));
+            this.btnSaveClientsGroups.Palette = this.StandardButtonsPalette;
+            this.btnSaveClientsGroups.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Custom;
+            this.btnSaveClientsGroups.Size = new System.Drawing.Size(96, 39);
+            this.btnSaveClientsGroups.StateCommon.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(158)))), ((int)(((byte)(0)))));
+            this.btnSaveClientsGroups.StateCommon.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.btnSaveClientsGroups.StateCommon.Content.Image.ImageH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.btnSaveClientsGroups.StateCommon.Content.Image.ImageV = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.btnSaveClientsGroups.StateCommon.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.btnSaveClientsGroups.StateCommon.Content.ShortText.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.btnSaveClientsGroups.StateCommon.Content.ShortText.TextV = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.btnSaveClientsGroups.StatePressed.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(158)))), ((int)(((byte)(0)))));
+            this.btnSaveClientsGroups.StateTracking.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(253)))), ((int)(((byte)(164)))), ((int)(((byte)(61)))));
+            this.btnSaveClientsGroups.StateTracking.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.btnSaveClientsGroups.TabIndex = 460;
+            this.btnSaveClientsGroups.TabStop = false;
+            this.btnSaveClientsGroups.Tag = "25";
+            this.btnSaveClientsGroups.Values.Text = "Сохранить";
+            this.btnSaveClientsGroups.Click += new System.EventHandler(this.btnSave_Click);
+            // 
+            // panel2
+            // 
+            this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel2.Controls.Add(this.dgvClientsGroupsDataGrid);
+            this.panel2.Location = new System.Drawing.Point(10, 62);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(515, 585);
+            this.panel2.TabIndex = 459;
+            // 
             // dgvClientsGroupsDataGrid
             // 
             this.dgvClientsGroupsDataGrid.AllowUserToDeleteRows = false;
@@ -1229,6 +1220,17 @@
             this.dgvClientsGroupsDataGrid.TabIndex = 54;
             this.dgvClientsGroupsDataGrid.UseCustomBackColor = true;
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.label3.ForeColor = System.Drawing.Color.Black;
+            this.label3.Location = new System.Drawing.Point(6, 31);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(172, 28);
+            this.label3.TabIndex = 458;
+            this.label3.Text = "Группа клиентов:";
+            // 
             // ZOVClientsForm
             // 
             this.AccessibleName = "false";
@@ -1266,20 +1268,20 @@
             this.tableLayoutPanel1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ShopAddressesDataGrid)).EndInit();
             this.panel35.ResumeLayout(false);
             this.panel35.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ClientsDataGrid)).EndInit();
             this.panel36.ResumeLayout(false);
             this.panel36.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ClientsContactsDataGrid)).EndInit();
             this.tabOrdersOnExp.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
-            this.panel2.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.ShopAddressesDataGrid)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ClientsDataGrid)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ClientsContactsDataGrid)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvManagers)).EndInit();
+            this.panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvClientsGroupsDataGrid)).EndInit();
             this.ResumeLayout(false);
 

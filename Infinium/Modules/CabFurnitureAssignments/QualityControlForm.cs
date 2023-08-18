@@ -313,5 +313,10 @@ namespace Infinium
             //    grid.Rows[e.RowIndex].DefaultCellStyle.SelectionForeColor = Color.Red;
             //}
         }
+
+        private void kryptonButton1_Click(object sender, EventArgs e)
+        {
+            storagePackagesManager.ClearQualityControl();
+        }
     }
 }

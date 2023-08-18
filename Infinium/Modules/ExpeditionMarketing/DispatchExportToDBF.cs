@@ -7,6 +7,7 @@ using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Text;
 
 namespace Infinium.Modules.Marketing.Dispatch
 {
@@ -18,6 +19,7 @@ namespace Infinium.Modules.Marketing.Dispatch
         public bool Save = false;
         public bool Send = false;
 
+        private DataTable _reportDataTable = null;
         private DataTable ClientsDataTable = null;
 
         private DataTable FrontsResultDataTable = null;
@@ -27,6 +29,7 @@ namespace Infinium.Modules.Marketing.Dispatch
 
         public DataTable ReportTable = null;
 
+        private DataTable moduleOnlineNamesConverterDt = null;
         private FrontsCalculate FrontsCalculate = null;
 
         private DataTable FrontsOrdersDataTable = null;
@@ -55,10 +58,37 @@ namespace Infinium.Modules.Marketing.Dispatch
 
         private void Create()
         {
+            _reportDataTable = new DataTable();
+            _reportDataTable.Columns.Add("number", typeof(int));
+            _reportDataTable.Columns.Add("name", typeof(string));
+            _reportDataTable.Columns.Add("measure", typeof(string));
+            _reportDataTable.Columns.Add("count", typeof(int));
+            _reportDataTable.Columns.Add("price", typeof(decimal));
+            _reportDataTable.Columns.Add("cost", typeof(decimal));
+            _reportDataTable.Columns.Add("vat", typeof(decimal));
+            _reportDataTable.Columns.Add("costVat", typeof(decimal));
+            _reportDataTable.Columns.Add("costWithVat", typeof(decimal));
+            _reportDataTable.Columns.Add("packCount", typeof(int));
+            _reportDataTable.Columns.Add("weight", typeof(decimal));
+            _reportDataTable.Columns.Add("accountingName", typeof(string));
+            _reportDataTable.Columns.Add("front", typeof(string));
+            _reportDataTable.Columns.Add("inset", typeof(string));
+            _reportDataTable.Columns.Add("color", typeof(string));
+            _reportDataTable.Columns.Add("height", typeof(int));
+            _reportDataTable.Columns.Add("width", typeof(int));
+
             FrontsOrdersDataTable = new DataTable();
             FrontsResultDataTable = new DataTable();
             DecorResultDataTable = new DataTable[decorCatalogOrder.DecorProductsCount];
             DecorOrdersDataTable = new DataTable();
+
+            moduleOnlineNamesConverterDt = new DataTable();
+            var selectCommand = "SELECT * from moduleOnlineNamesConverter";
+            using (var da = new SqlDataAdapter(selectCommand,
+                       ConnectionStrings.CatalogConnectionString))
+            {
+                da.Fill(moduleOnlineNamesConverterDt);
+            }
         }
 
         private void CreateFrontsDataTable()
@@ -161,6 +191,88 @@ namespace Infinium.Modules.Marketing.Dispatch
             if (Rows.Count() > 0)
                 Rows[0]["ClientName"].ToString();
             return ClientName;
+        }
+
+        public Tuple<string, bool, bool, bool, bool> GetConvertName(int itemId)
+        {
+            string itemName = string.Empty;
+            bool name = false;
+            bool proportions = false;
+            bool dimenstionsMM = false;
+            bool color = false;
+
+            DataRow[] Rows = moduleOnlineNamesConverterDt.Select("itemId = " + itemId);
+            if (Rows.Any())
+            {
+                itemName = Rows[0]["itemName"].ToString();
+                name = Convert.ToBoolean(Rows[0]["name"]);
+                proportions = Convert.ToBoolean(Rows[0]["proportions"]);
+                color = Convert.ToBoolean(Rows[0]["color"]);
+                dimenstionsMM = Convert.ToBoolean(Rows[0]["dimenstionsMM"]);
+            }
+
+            return new Tuple<string, bool, bool, bool, bool>(itemName, name, dimenstionsMM, proportions, color);
+        }
+
+        public string GetShortFrontName(int FrontID)
+        {
+            var FrontName = "";
+            var shortName = "";
+            DataRow[] Rows = frontsCatalogOrder.ConstFrontsDataTable.Select("FrontID = " + FrontID);
+            if (Rows.Any())
+            {
+                FrontName = Rows[0]["FrontName"].ToString();
+
+                string first2Symbols = FrontName.Substring(0, 2);
+                string first3Symbols = FrontName.Substring(0, 3);
+                string first4Symbols = FrontName.Substring(0, 4);
+
+                if (first2Symbols == "П-" || first3Symbols == "ЭП-" || first4Symbols == "ЭПШ-")
+                {
+                    var index = FrontName.LastIndexOf(" ");
+                    if (index != -1)
+                        shortName = FrontName.Substring(index + 1, FrontName.Length - index - 1);
+                }
+                else
+                {
+                    var index = FrontName.IndexOf(" ");
+                    if (index != -1)
+                        shortName = FrontName.Substring(0, index);
+                }
+            }
+
+            return shortName;
+        }
+
+        public string GetShortColorName(int ColorID)
+        {
+            var name = "";
+            var shortName = "";
+            DataRow[] Rows = frontsCatalogOrder.ConstColorsDataTable.Select("ColorID = " + ColorID);
+            if (Rows.Any())
+            {
+                name = Rows[0]["ColorName"].ToString();
+
+                string first2Symbols = name.Substring(0, 2);
+                string first3Symbols = name.Substring(0, 3);
+
+                if (first2Symbols == "ПП" || first3Symbols == "ПВХ")
+                {
+                    var index = name.LastIndexOf(" ");
+                    if (index != -1)
+                        shortName = name.Substring(index + 1, name.Length - index - 1);
+                }
+                else
+                {
+                    var index = name.IndexOf(" ");
+                    if (index != -1)
+                        shortName = name.Substring(0, index);
+                    else
+                        shortName = name;
+                }
+            }
+
+            return shortName;
         }
 
         public string GetFrontName(int FrontID)
@@ -339,7 +451,7 @@ namespace Infinium.Modules.Marketing.Dispatch
                 INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID
                 INNER JOIN  Packages ON PackageDetails.PackageID = Packages.PackageID AND Packages.ProductType = 0 AND Packages.MainOrderID = " + MainOrderID + @" AND DispatchID IN (" + string.Join(",", DispatchID) + @")
                 INNER JOIN infiniu2_catalog.dbo.FrontsConfig ON FrontsOrders.FrontConfigID = infiniu2_catalog.dbo.FrontsConfig.FrontConfigID
-                WHERE InvNumber IS NOT NULL ORDER BY InvNumber";
+                WHERE InvNumber IS NOT NULL ORDER BY mainOrderId";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand,
                 ConnectionStrings.MarketingOrdersConnectionString))
             {
@@ -356,7 +468,7 @@ namespace Infinium.Modules.Marketing.Dispatch
                 INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID
                 INNER JOIN  Packages ON PackageDetails.PackageID = Packages.PackageID AND Packages.ProductType = 1 AND Packages.MainOrderID = " + MainOrderID + @" AND DispatchID IN (" + string.Join(",", DispatchID) + @")
                 INNER JOIN infiniu2_catalog.dbo.DecorConfig ON DecorOrders.DecorConfigID = infiniu2_catalog.dbo.DecorConfig.DecorConfigID
-                WHERE InvNumber IS NOT NULL ORDER BY InvNumber";
+                WHERE InvNumber IS NOT NULL ORDER BY mainOrderId";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand,
                 ConnectionStrings.MarketingOrdersConnectionString))
             {
@@ -520,6 +632,409 @@ namespace Infinium.Modules.Marketing.Dispatch
             return IsComplaint;
         }
 
+        //public void ModuleOnline(int[] DispatchID)
+        //{
+        //    _reportDataTable.Clear();
+        //    int number = 1;
+
+        //    var selectCommand = @"SELECT Packages.PackageStatusId, PackageDetails.Count AS Count, (FrontsOrders.Weight * PackageDetails.Count / FrontsOrders.Count) AS Weight, (FrontsOrders.Square * PackageDetails.Count / FrontsOrders.Count) AS Square, (FrontsOrders.CurrencyCost * PackageDetails.Count / FrontsOrders.Count) AS CurrencyCost, FrontsOrders.frontId, FrontsOrders.currencyCost, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, MegaOrders.Rate, MegaOrders.PaymentRate, MegaOrders.ConfirmDateTime FROM PackageDetails
+        //        INNER JOIN FrontsOrders ON PackageDetails.OrderID = FrontsOrders.FrontsOrdersID
+        //        INNER JOIN MainOrders ON FrontsOrders.MainOrderID = MainOrders.MainOrderID
+        //        INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID
+        //        INNER JOIN  Packages ON PackageDetails.PackageID = Packages.PackageID AND Packages.ProductType = 0 AND DispatchID IN (" + string.Join(",", DispatchID) + @")
+        //        INNER JOIN infiniu2_catalog.dbo.FrontsConfig ON FrontsOrders.FrontConfigID = infiniu2_catalog.dbo.FrontsConfig.FrontConfigID
+        //        WHERE InvNumber IS NOT NULL ORDER BY PackageDetails.OrderId";
+        //    using (var da = new SqlDataAdapter(selectCommand,
+        //               ConnectionStrings.MarketingOrdersConnectionString))
+        //    {
+        //        using (var dt = new DataTable())
+        //        {
+        //            if (da.Fill(dt) == 0)
+        //                return;
+        //            for (var i = 0; i < dt.Rows.Count; i++)
+        //            {
+        //                var accountingName = string.Empty;
+        //                const string measure = "шт";
+        //                var count = 1;
+        //                decimal price = 1;
+        //                decimal cost = 1;
+        //                decimal weight = 1;
+        //                const decimal vat = 0.2m;
+        //                decimal costVat = 1;
+        //                decimal costWithVat = 1;
+
+        //                if (dt.Rows[i]["accountingName"] != DBNull.Value)
+        //                    accountingName = dt.Rows[i]["accountingName"].ToString();
+        //                if (dt.Rows[i]["count"] != DBNull.Value)
+        //                    count = Convert.ToInt32(dt.Rows[i]["count"]);
+        //                if (dt.Rows[i]["CurrencyCost"] != DBNull.Value)
+        //                    cost = Convert.ToDecimal(dt.Rows[i]["CurrencyCost"]);
+        //                if (dt.Rows[i]["weight"] != DBNull.Value)
+        //                    weight = Convert.ToDecimal(dt.Rows[i]["weight"]);
+        //                if (count != 0)
+        //                    price = cost / count;
+        //                costVat = cost * vat;
+        //                costWithVat = cost + costVat;
+
+        //                price = decimal.Round(price, 2, MidpointRounding.AwayFromZero);
+        //                cost = decimal.Round(cost, 2, MidpointRounding.AwayFromZero);
+        //                costVat = decimal.Round(costVat, 2, MidpointRounding.AwayFromZero);
+        //                costWithVat = decimal.Round(costWithVat, 2, MidpointRounding.AwayFromZero);
+
+        //                var newRow = _reportDataTable.NewRow();
+        //                newRow["number"] = number++;
+        //                newRow["name"] = GetFrontName(Convert.ToInt32(dt.Rows[i]["frontId"]));
+        //                newRow["measure"] = measure;
+        //                newRow["count"] = count;
+        //                newRow["price"] = price;
+        //                newRow["cost"] = cost;
+        //                newRow["vat"] = vat;
+        //                newRow["costVat"] = costVat;
+        //                newRow["costWithVat"] = costWithVat;
+        //                newRow["packCount"] = count;
+        //                newRow["weight"] = weight;
+        //                newRow["accountingName"] = accountingName;
+        //                _reportDataTable.Rows.Add(newRow);
+        //            }
+        //        }
+        //    }
+
+        //    selectCommand = @"SELECT Packages.PackageStatusId, PackageDetails.Count AS Count, (DecorOrders.Weight * PackageDetails.Count / DecorOrders.Count) AS Weight, (DecorOrders.CurrencyCost * PackageDetails.Count / DecorOrders.Count) AS CurrencyCost, DecorOrders.productId, DecorOrders.decorId, DecorOrders.currencyCost, infiniu2_catalog.dbo.DecorConfig.AccountingName, infiniu2_catalog.dbo.DecorConfig.InvNumber, MegaOrders.Rate, MegaOrders.PaymentRate, MegaOrders.ConfirmDateTime FROM PackageDetails
+        //        INNER JOIN DecorOrders ON PackageDetails.OrderID = DecorOrders.DecorOrderID
+        //        INNER JOIN MainOrders ON DecorOrders.MainOrderID = MainOrders.MainOrderID
+        //        INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID
+        //        INNER JOIN  Packages ON PackageDetails.PackageID = Packages.PackageID AND Packages.ProductType = 1 AND DispatchID IN (" + string.Join(",", DispatchID) + @")
+        //        INNER JOIN infiniu2_catalog.dbo.DecorConfig ON DecorOrders.DecorConfigID = infiniu2_catalog.dbo.DecorConfig.DecorConfigID
+        //        WHERE InvNumber IS NOT NULL ORDER BY PackageDetails.OrderId";
+        //    using (var da = new SqlDataAdapter(selectCommand,
+        //               ConnectionStrings.MarketingOrdersConnectionString))
+        //    {
+        //        using (var dt = new DataTable())
+        //        {
+        //            if (da.Fill(dt) == 0)
+        //                return;
+        //            for (var i = 0; i < dt.Rows.Count; i++)
+        //            {
+        //                var accountingName = string.Empty;
+        //                const string measure = "шт";
+        //                var count = 1;
+        //                decimal price = 1;
+        //                decimal cost = 1;
+        //                decimal weight = 1;
+        //                const decimal vat = 0.2m;
+        //                decimal costVat = 1;
+        //                decimal costWithVat = 1;
+
+        //                if (dt.Rows[i]["accountingName"] != DBNull.Value)
+        //                    accountingName = dt.Rows[i]["accountingName"].ToString();
+        //                if (dt.Rows[i]["count"] != DBNull.Value)
+        //                    count = Convert.ToInt32(dt.Rows[i]["count"]);
+        //                if (dt.Rows[i]["CurrencyCost"] != DBNull.Value)
+        //                    cost = Convert.ToDecimal(dt.Rows[i]["CurrencyCost"]);
+        //                if (dt.Rows[i]["weight"] != DBNull.Value)
+        //                    weight = Convert.ToDecimal(dt.Rows[i]["weight"]);
+        //                if (count != 0)
+        //                    price = cost / count;
+        //                costVat = cost * vat;
+        //                costWithVat = cost + costVat;
+
+        //                price = decimal.Round(price, 2, MidpointRounding.AwayFromZero);
+        //                cost = decimal.Round(cost, 2, MidpointRounding.AwayFromZero);
+        //                costVat = decimal.Round(costVat, 2, MidpointRounding.AwayFromZero);
+        //                costWithVat = decimal.Round(costWithVat, 2, MidpointRounding.AwayFromZero);
+
+        //                var newRow = _reportDataTable.NewRow();
+        //                newRow["number"] = number++;
+        //                newRow["name"] = decorCatalogOrder.GetProductName(Convert.ToInt32(dt.Rows[i]["productId"])) + " " +
+        //                                 decorCatalogOrder.GetItemName(Convert.ToInt32(dt.Rows[i]["decorId"]));
+        //                newRow["measure"] = measure;
+        //                newRow["count"] = count;
+        //                newRow["price"] = price;
+        //                newRow["cost"] = cost;
+        //                newRow["vat"] = vat;
+        //                newRow["costVat"] = costVat;
+        //                newRow["costWithVat"] = costWithVat;
+        //                newRow["packCount"] = count;
+        //                newRow["weight"] = weight;
+        //                newRow["accountingName"] = accountingName;
+        //                _reportDataTable.Rows.Add(newRow);
+        //            }
+        //        }
+        //    }
+        //}
+
+        public void ModuleOnline(int[] DispatchID)
+        {
+            _reportDataTable.Clear();
+            DataTable tempDt = _reportDataTable.Clone();
+
+            int number = 1;
+
+            var selectCommand = @"SELECT Packages.PackageStatusId, PackageDetails.Count AS Count, (DecorOrders.Weight * PackageDetails.Count / DecorOrders.Count) AS Weight, (DecorOrders.CurrencyCost * PackageDetails.Count / DecorOrders.Count) AS CurrencyCost, DecorOrders.productId, DecorOrders.decorId, 
+DecorOrders.currencyCost, DecorOrders.colorId, DecorOrders.height, DecorOrders.length, DecorOrders.width, infiniu2_catalog.dbo.DecorConfig.AccountingName, infiniu2_catalog.dbo.DecorConfig.InvNumber, MegaOrders.Rate, MegaOrders.PaymentRate, MegaOrders.ConfirmDateTime FROM PackageDetails
+                INNER JOIN DecorOrders ON PackageDetails.OrderID = DecorOrders.DecorOrderID
+                INNER JOIN MainOrders ON DecorOrders.MainOrderID = MainOrders.MainOrderID
+                INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID
+                INNER JOIN  Packages ON PackageDetails.PackageID = Packages.PackageID AND Packages.ProductType = 1 AND DispatchID IN (" + string.Join(",", DispatchID) + @")
+                INNER JOIN infiniu2_catalog.dbo.DecorConfig ON DecorOrders.DecorConfigID = infiniu2_catalog.dbo.DecorConfig.DecorConfigID
+                WHERE InvNumber IS NOT NULL ORDER BY PackageDetails.OrderId";
+            using (var da = new SqlDataAdapter(selectCommand,
+                       ConnectionStrings.MarketingOrdersConnectionString))
+            {
+                using (var dt = new DataTable())
+                {
+                    if (da.Fill(dt) > 0)
+                    {
+                        for (var i = 0; i < dt.Rows.Count; i++)
+                        {
+                            var accountingName = string.Empty;
+                            const string measure = "шт";
+                            var height = -1;
+                            var length = -1;
+                            var width = -1;
+                            var count = 1;
+                            decimal price = 1;
+                            decimal cost = 1;
+                            decimal weight = 1;
+                            const decimal vat = 0.2m;
+                            decimal costVat = 1;
+                            decimal costWithVat = 1;
+
+                            var decorId = Convert.ToInt32(dt.Rows[i]["decorId"]);
+
+                            if (dt.Rows[i]["height"] != DBNull.Value)
+                                height = Convert.ToInt32(dt.Rows[i]["height"]);
+                            if (dt.Rows[i]["length"] != DBNull.Value)
+                                length = Convert.ToInt32(dt.Rows[i]["length"]);
+                            if (dt.Rows[i]["width"] != DBNull.Value)
+                                width = Convert.ToInt32(dt.Rows[i]["width"]);
+
+                            if (dt.Rows[i]["accountingName"] != DBNull.Value)
+                                accountingName = dt.Rows[i]["accountingName"].ToString();
+                            if (dt.Rows[i]["count"] != DBNull.Value)
+                                count = Convert.ToInt32(dt.Rows[i]["count"]);
+                            if (dt.Rows[i]["CurrencyCost"] != DBNull.Value)
+                                cost = Convert.ToDecimal(dt.Rows[i]["CurrencyCost"]);
+                            if (dt.Rows[i]["weight"] != DBNull.Value)
+                                weight = Convert.ToDecimal(dt.Rows[i]["weight"]);
+                            if (count != 0)
+                                price = cost / count;
+                            costVat = cost * vat;
+                            costWithVat = cost + costVat;
+
+                            price = decimal.Round(price, 2, MidpointRounding.AwayFromZero);
+                            cost = decimal.Round(cost, 2, MidpointRounding.AwayFromZero);
+                            costVat = decimal.Round(costVat, 2, MidpointRounding.AwayFromZero);
+                            costWithVat = decimal.Round(costWithVat, 2, MidpointRounding.AwayFromZero);
+
+                            var tuple = GetConvertName(decorId);
+
+                            var sb = new StringBuilder(tuple.Item1);
+
+                            if (tuple.Item2)
+                                sb.Append($" {GetFrontName(Convert.ToInt32(dt.Rows[i]["decorId"]))}");
+                            if (tuple.Item3)
+                            {
+                                sb.Append($" {length} мм");
+                            }
+
+                            if (tuple.Item4)
+                            {
+                                if (height != -1 && width != -1)
+                                    sb.Append($" {height}x{width}");
+                                if (length != -1 && width != -1)
+                                    sb.Append($" {length}x{width}");
+                                if (height != -1 && length != -1)
+                                    sb.Append($" {height}x{length}");
+                            }
+
+                            if (tuple.Item5)
+                                sb.Append($", {GetShortColorName(Convert.ToInt32(dt.Rows[i]["colorId"])).ToUpper()}");
+
+                            var name = sb.ToString();
+
+                            var newRow = tempDt.NewRow();
+                            newRow["name"] = name;
+                            newRow["measure"] = measure;
+                            newRow["count"] = count;
+                            newRow["price"] = price;
+                            newRow["cost"] = cost;
+                            newRow["vat"] = vat;
+                            newRow["costVat"] = costVat;
+                            newRow["costWithVat"] = costWithVat;
+                            newRow["packCount"] = count;
+                            newRow["weight"] = weight;
+                            newRow["accountingName"] = accountingName;
+                            tempDt.Rows.Add(newRow);
+                        }
+
+                        using (var dv = new DataView(tempDt))
+                        {
+                            dv.Sort = "name";
+                            var dt1 = dv.ToTable(true, "name");
+
+                            foreach (DataRow row in dt1.Rows)
+                            {
+                                var name = row["name"].ToString();
+
+                                var dataRows1 = tempDt.Select($"name='{name}'");
+
+                                foreach (var r in dataRows1)
+                                {
+                                    var dataRows2 = _reportDataTable.Select($"name='{name}'");
+
+                                    if (!dataRows2.Any())
+                                    {
+                                        var newRow = _reportDataTable.NewRow();
+                                        newRow.ItemArray = r.ItemArray;
+                                        newRow["number"] = number++;
+                                        _reportDataTable.Rows.Add(newRow);
+                                    }
+                                    else
+                                    {
+                                        dataRows2[0]["count"] = Convert.ToInt32(dataRows2[0]["count"]) + Convert.ToInt32(r["count"]);
+                                        dataRows2[0]["cost"] = Convert.ToDecimal(dataRows2[0]["cost"]) + Convert.ToDecimal(r["cost"]);
+                                        dataRows2[0]["costVat"] = Convert.ToDecimal(dataRows2[0]["costVat"]) + Convert.ToDecimal(r["costVat"]);
+                                        dataRows2[0]["costWithVat"] = Convert.ToDecimal(dataRows2[0]["costWithVat"]) + Convert.ToDecimal(r["costWithVat"]);
+                                        dataRows2[0]["packCount"] = Convert.ToInt32(dataRows2[0]["packCount"]) + Convert.ToInt32(r["packCount"]);
+                                        dataRows2[0]["weight"] = Convert.ToDecimal(dataRows2[0]["weight"]) + Convert.ToDecimal(r["weight"]);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            tempDt.Clear();
+
+            selectCommand = @"SELECT Packages.PackageStatusId, PackageDetails.Count AS Count, (FrontsOrders.Weight * PackageDetails.Count / FrontsOrders.Count) AS Weight, (FrontsOrders.Square * PackageDetails.Count / FrontsOrders.Count) AS Square, (FrontsOrders.CurrencyCost * PackageDetails.Count / FrontsOrders.Count) AS CurrencyCost, 
+FrontsOrders.frontId, FrontsOrders.colorId, FrontsOrders.insetTypeId, FrontsOrders.currencyCost, FrontsOrders.height, FrontsOrders.width, FrontsOrders.notes, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, MegaOrders.Rate, MegaOrders.PaymentRate, MegaOrders.ConfirmDateTime FROM PackageDetails
+                INNER JOIN FrontsOrders ON PackageDetails.OrderID = FrontsOrders.FrontsOrdersID
+                INNER JOIN MainOrders ON FrontsOrders.MainOrderID = MainOrders.MainOrderID
+                INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID
+                INNER JOIN  Packages ON PackageDetails.PackageID = Packages.PackageID AND Packages.ProductType = 0 AND DispatchID IN (" + string.Join(",", DispatchID) + @")
+                INNER JOIN infiniu2_catalog.dbo.FrontsConfig ON FrontsOrders.FrontConfigID = infiniu2_catalog.dbo.FrontsConfig.FrontConfigID
+                WHERE InvNumber IS NOT NULL ORDER BY FrontsOrders.frontId, FrontsOrders.ColorId, FrontsOrders.height, FrontsOrders.width";
+            using (var da = new SqlDataAdapter(selectCommand,
+                       ConnectionStrings.MarketingOrdersConnectionString))
+            {
+                using (var dt = new DataTable())
+                {
+                    if (da.Fill(dt) > 0)
+                    {
+                        for (var i = 0; i < dt.Rows.Count; i++)
+                        {
+                            var accountingName = string.Empty;
+                            var notes = string.Empty;
+                            const string measure = "шт";
+                            var count = 1;
+                            decimal price = 1;
+                            decimal cost = 1;
+                            decimal weight = 1;
+                            const decimal vat = 0.2m;
+                            decimal costVat = 1;
+                            decimal costWithVat = 1;
+
+                            if (dt.Rows[i]["accountingName"] != DBNull.Value)
+                                accountingName = dt.Rows[i]["accountingName"].ToString();
+                            if (dt.Rows[i]["notes"] != DBNull.Value)
+                                notes = dt.Rows[i]["notes"].ToString();
+                            if (dt.Rows[i]["count"] != DBNull.Value)
+                                count = Convert.ToInt32(dt.Rows[i]["count"]);
+                            if (dt.Rows[i]["CurrencyCost"] != DBNull.Value)
+                                cost = Convert.ToDecimal(dt.Rows[i]["CurrencyCost"]);
+                            if (dt.Rows[i]["weight"] != DBNull.Value)
+                                weight = Convert.ToDecimal(dt.Rows[i]["weight"]);
+                            if (count != 0)
+                                price = cost / count;
+                            costVat = cost * vat;
+                            costWithVat = cost + costVat;
+
+                            price = decimal.Round(price, 2, MidpointRounding.AwayFromZero);
+                            cost = decimal.Round(cost, 2, MidpointRounding.AwayFromZero);
+                            costVat = decimal.Round(costVat, 2, MidpointRounding.AwayFromZero);
+                            costWithVat = decimal.Round(costWithVat, 2, MidpointRounding.AwayFromZero);
+
+                            var name = $"Панель фасадная {Convert.ToInt32(dt.Rows[i]["height"])}x{Convert.ToInt32(dt.Rows[i]["width"])}";
+                            var front = GetShortFrontName(Convert.ToInt32(dt.Rows[i]["frontId"])).ToUpper();
+                            var inset = "";
+                            var color = GetShortColorName(Convert.ToInt32(dt.Rows[i]["colorId"])).ToUpper();
+
+                            StringBuilder sb = new StringBuilder(name);
+
+                            if (Convert.ToInt32(dt.Rows[i]["insetTypeId"]) == 1 ||
+                                Convert.ToInt32(dt.Rows[i]["insetTypeId"]) == 2)
+                            {
+                                inset = "ВТ";
+                                sb.Append(" ВТ");
+                            }
+
+                            sb.Append(
+                                $@", {front} {color}");
+                            if (notes.Contains("б/р"))
+                                sb.Append(" БР");
+
+                            name = sb.ToString();
+
+                            var newRow = tempDt.NewRow();
+                            newRow["name"] = name;
+                            newRow["measure"] = measure;
+                            newRow["count"] = count;
+                            newRow["price"] = price;
+                            newRow["cost"] = cost;
+                            newRow["vat"] = vat;
+                            newRow["costVat"] = costVat;
+                            newRow["costWithVat"] = costWithVat;
+                            newRow["packCount"] = count;
+                            newRow["weight"] = weight;
+                            newRow["accountingName"] = accountingName;
+                            newRow["front"] = front;
+                            newRow["inset"] = inset;
+                            newRow["color"] = color;
+                            newRow["height"] = Convert.ToInt32(dt.Rows[i]["height"]);
+                            newRow["width"] = Convert.ToInt32(dt.Rows[i]["width"]);
+                            tempDt.Rows.Add(newRow);
+                        }
+
+                        using (var dv = new DataView(tempDt))
+                        {
+                            dv.Sort = "front, color, inset, height, width";
+                            var dt1 = dv.ToTable(true, "name");
+
+                            foreach (DataRow row in dt1.Rows)
+                            {
+                                var name = row["name"].ToString();
+
+                                var dataRows1 = tempDt.Select($"name='{name}'");
+
+                                foreach (var r in dataRows1)
+                                {
+                                    var dataRows2 = _reportDataTable.Select($"name='{name}'");
+
+                                    if (!dataRows2.Any())
+                                    {
+                                        var newRow = _reportDataTable.NewRow();
+                                        newRow.ItemArray = r.ItemArray;
+                                        newRow["number"] = number++;
+                                        _reportDataTable.Rows.Add(newRow);
+                                    }
+                                    else
+                                    {
+                                        dataRows2[0]["count"] = Convert.ToInt32(dataRows2[0]["count"]) + Convert.ToInt32(r["count"]);
+                                        dataRows2[0]["cost"] = Convert.ToDecimal(dataRows2[0]["cost"]) + Convert.ToDecimal(r["cost"]);
+                                        dataRows2[0]["costVat"] = Convert.ToDecimal(dataRows2[0]["costVat"]) + Convert.ToDecimal(r["costVat"]);
+                                        dataRows2[0]["costWithVat"] = Convert.ToDecimal(dataRows2[0]["costWithVat"]) + Convert.ToDecimal(r["costWithVat"]);
+                                        dataRows2[0]["packCount"] = Convert.ToInt32(dataRows2[0]["packCount"]) + Convert.ToInt32(r["packCount"]);
+                                        dataRows2[0]["weight"] = Convert.ToDecimal(dataRows2[0]["weight"]) + Convert.ToDecimal(r["weight"]);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
         public void GetDispatchInfo(int[] DispatchID, ref int[] OrderNumbers, ref decimal ComplaintProfilCost, ref decimal ComplaintTPSCost, ref decimal TransportCost, ref decimal AdditionalCost, ref int CurrencyTypeID, ref decimal TotalWeight)
         {
             string SelectCommand = @"SELECT MegaOrderID, OrderNumber, TransportCost, AdditionalCost, PaymentRate, CurrencyTypeID, Weight FROM MegaOrders
@@ -1528,6 +2043,328 @@ namespace Infinium.Modules.Marketing.Dispatch
                 ref hssfworkbook, ref sheet1,
                 DispatchID, OrderNumbers, MainOrdersIDs, ClientID, ClientName, ComplaintProfilCost, ComplaintTPSCost,
                 TransportCost, AdditionalCost, TotalCost, CurrencyTypeID, TotalWeight, RowIndex, ProfilVerify, TPSVerify, DiscountPaymentConditionID, IsSample);
+        }
+
+        public void ReportModuleOnline(ref HSSFWorkbook hssfworkbook, int[] dispatchIds)
+        {
+            ClearReport();
+            ModuleOnline(dispatchIds);
+
+            #region Create fonts and styles
+
+            HSSFFont HeaderF1 = hssfworkbook.CreateFont();
+            HeaderF1.FontHeightInPoints = 13;
+            HeaderF1.Boldweight = 13 * 256;
+            HeaderF1.FontName = "Calibri";
+
+            HSSFFont HeaderF2 = hssfworkbook.CreateFont();
+            HeaderF2.FontHeightInPoints = 12;
+            HeaderF2.Boldweight = 12 * 256;
+            HeaderF2.FontName = "Calibri";
+
+            HSSFFont HeaderF3 = hssfworkbook.CreateFont();
+            HeaderF3.FontHeightInPoints = 9;
+            HeaderF3.FontName = "Calibri";
+
+            HSSFFont SimpleF = hssfworkbook.CreateFont();
+            SimpleF.FontHeightInPoints = 9;
+            SimpleF.FontName = "Calibri";
+
+            HSSFCellStyle SimpleCS = hssfworkbook.CreateCellStyle();
+            SimpleCS.VerticalAlignment = HSSFCellStyle.VERTICAL_CENTER;
+            SimpleCS.Alignment = HSSFCellStyle.ALIGN_CENTER;
+            SimpleCS.BorderBottom = HSSFCellStyle.BORDER_THIN;
+            SimpleCS.VerticalAlignment = HSSFCellStyle.VERTICAL_CENTER;
+            SimpleCS.BorderBottom = HSSFCellStyle.BORDER_THIN;
+            SimpleCS.BottomBorderColor = HSSFColor.BLACK.index;
+            SimpleCS.BorderLeft = HSSFCellStyle.BORDER_THIN;
+            SimpleCS.LeftBorderColor = HSSFColor.BLACK.index;
+            SimpleCS.BorderRight = HSSFCellStyle.BORDER_THIN;
+            SimpleCS.RightBorderColor = HSSFColor.BLACK.index;
+            SimpleCS.BorderTop = HSSFCellStyle.BORDER_THIN;
+            SimpleCS.TopBorderColor = HSSFColor.BLACK.index;
+            SimpleCS.SetFont(SimpleF);
+
+            HSSFCellStyle SimpleLeftCS = hssfworkbook.CreateCellStyle();
+            SimpleLeftCS.BorderBottom = HSSFCellStyle.BORDER_THIN;
+            SimpleLeftCS.VerticalAlignment = HSSFCellStyle.VERTICAL_CENTER;
+            SimpleLeftCS.BorderBottom = HSSFCellStyle.BORDER_THIN;
+            SimpleLeftCS.BottomBorderColor = HSSFColor.BLACK.index;
+            SimpleLeftCS.BorderLeft = HSSFCellStyle.BORDER_THIN;
+            SimpleLeftCS.LeftBorderColor = HSSFColor.BLACK.index;
+            SimpleLeftCS.BorderRight = HSSFCellStyle.BORDER_THIN;
+            SimpleLeftCS.RightBorderColor = HSSFColor.BLACK.index;
+            SimpleLeftCS.BorderTop = HSSFCellStyle.BORDER_THIN;
+            SimpleLeftCS.TopBorderColor = HSSFColor.BLACK.index;
+            SimpleLeftCS.SetFont(SimpleF);
+
+            HSSFCellStyle SimpleDecCS = hssfworkbook.CreateCellStyle();
+            SimpleDecCS.VerticalAlignment = HSSFCellStyle.VERTICAL_CENTER;
+            SimpleDecCS.Alignment = HSSFCellStyle.ALIGN_CENTER;
+            SimpleDecCS.DataFormat = HSSFDataFormat.GetBuiltinFormat("0.00");
+            SimpleDecCS.BorderBottom = HSSFCellStyle.BORDER_THIN;
+            SimpleDecCS.BottomBorderColor = HSSFColor.BLACK.index;
+            SimpleDecCS.BorderLeft = HSSFCellStyle.BORDER_THIN;
+            SimpleDecCS.LeftBorderColor = HSSFColor.BLACK.index;
+            SimpleDecCS.BorderRight = HSSFCellStyle.BORDER_THIN;
+            SimpleDecCS.RightBorderColor = HSSFColor.BLACK.index;
+            SimpleDecCS.BorderTop = HSSFCellStyle.BORDER_THIN;
+            SimpleDecCS.TopBorderColor = HSSFColor.BLACK.index;
+            SimpleDecCS.SetFont(SimpleF);
+
+            HSSFCellStyle SimpleDec3CS = hssfworkbook.CreateCellStyle();
+            SimpleDec3CS.VerticalAlignment = HSSFCellStyle.VERTICAL_CENTER;
+            SimpleDec3CS.Alignment = HSSFCellStyle.ALIGN_CENTER;
+            SimpleDecCS.DataFormat = HSSFDataFormat.GetBuiltinFormat("0.000");
+            SimpleDecCS.BorderBottom = HSSFCellStyle.BORDER_THIN;
+            SimpleDecCS.BottomBorderColor = HSSFColor.BLACK.index;
+            SimpleDecCS.BorderLeft = HSSFCellStyle.BORDER_THIN;
+            SimpleDecCS.LeftBorderColor = HSSFColor.BLACK.index;
+            SimpleDecCS.BorderRight = HSSFCellStyle.BORDER_THIN;
+            SimpleDecCS.RightBorderColor = HSSFColor.BLACK.index;
+            SimpleDecCS.BorderTop = HSSFCellStyle.BORDER_THIN;
+            SimpleDecCS.TopBorderColor = HSSFColor.BLACK.index;
+            SimpleDecCS.SetFont(SimpleF);
+
+            HSSFCellStyle SimpleHeaderCS = hssfworkbook.CreateCellStyle();
+            SimpleHeaderCS.VerticalAlignment = HSSFCellStyle.VERTICAL_CENTER;
+            SimpleHeaderCS.Alignment = HSSFCellStyle.ALIGN_CENTER;
+            SimpleHeaderCS.BorderBottom = HSSFCellStyle.BORDER_MEDIUM;
+            SimpleHeaderCS.BottomBorderColor = HSSFColor.BLACK.index;
+            SimpleHeaderCS.BorderLeft = HSSFCellStyle.BORDER_MEDIUM;
+            SimpleHeaderCS.LeftBorderColor = HSSFColor.BLACK.index;
+            SimpleHeaderCS.BorderRight = HSSFCellStyle.BORDER_MEDIUM;
+            SimpleHeaderCS.RightBorderColor = HSSFColor.BLACK.index;
+            SimpleHeaderCS.BorderTop = HSSFCellStyle.BORDER_MEDIUM;
+            SimpleHeaderCS.TopBorderColor = HSSFColor.BLACK.index;
+            SimpleHeaderCS.WrapText = true;
+            SimpleHeaderCS.SetFont(HeaderF3);
+
+            HSSFCellStyle SimpleHeader1CS = hssfworkbook.CreateCellStyle();
+            SimpleHeader1CS.VerticalAlignment = HSSFCellStyle.VERTICAL_CENTER;
+            SimpleHeader1CS.Alignment = HSSFCellStyle.ALIGN_CENTER;
+            SimpleHeader1CS.SetFont(HeaderF2);
+
+            #endregion
+
+            HSSFSheet sheet1 = hssfworkbook.CreateSheet("Приложение");
+            sheet1.PrintSetup.PaperSize = (short)PaperSizeType.A4;
+
+            sheet1.SetMargin(HSSFSheet.LeftMargin, (double).12);
+            sheet1.SetMargin(HSSFSheet.RightMargin, (double).07);
+            sheet1.SetMargin(HSSFSheet.TopMargin, (double).20);
+            sheet1.SetMargin(HSSFSheet.BottomMargin, (double).20);
+
+            int DisplayIndex = 0;
+
+            sheet1.SetColumnWidth(DisplayIndex++, 8 * 256);
+            sheet1.SetColumnWidth(DisplayIndex++, 45 * 256);
+            sheet1.SetColumnWidth(DisplayIndex++, 8 * 256);
+            sheet1.SetColumnWidth(DisplayIndex++, 8 * 256);
+            sheet1.SetColumnWidth(DisplayIndex++, 8 * 256);
+            sheet1.SetColumnWidth(DisplayIndex++, 10 * 256);
+            sheet1.SetColumnWidth(DisplayIndex++, 10 * 256);
+            sheet1.SetColumnWidth(DisplayIndex++, 10 * 256);
+            sheet1.SetColumnWidth(DisplayIndex++, 10 * 256);
+            sheet1.SetColumnWidth(DisplayIndex++, 10 * 256);
+            sheet1.SetColumnWidth(DisplayIndex++, 8 * 256);
+            sheet1.SetColumnWidth(DisplayIndex++, 45 * 256);
+
+            int RowIndex = 0;
+
+            HSSFCell Cell1;
+
+            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(0);
+            Cell1.SetCellValue(
+                $@"Приложение №1 к ТОВАРНО-ТРАНСПОРТНОЙ НАКЛАДНОЙ серии от {DateTime.Now.ToShortDateString()} г");
+            Cell1.CellStyle = SimpleHeader1CS;
+            sheet1.AddMergedRegion(new Region(RowIndex, 0, RowIndex, _reportDataTable.Columns.Count - 6));
+
+            DisplayIndex = 0;
+            RowIndex++;
+
+            if (_reportDataTable.Rows.Count != 0)
+            {
+                Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                Cell1.SetCellValue("№ п/п");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                Cell1.SetCellValue("Наименование товара");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                Cell1.SetCellValue("Единица измерения");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                Cell1.SetCellValue("Кол-во");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                Cell1.SetCellValue("Цена, руб. коп.");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                Cell1.SetCellValue("Стоимость, руб. коп.");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                Cell1.SetCellValue("Ставка НДС, % ");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                Cell1.SetCellValue("Сумма НДС, руб. коп.");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                Cell1.SetCellValue("Стоимость с НДС, руб. коп.");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                Cell1.SetCellValue("Количество грузовых мест");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                Cell1.SetCellValue("Масса груза, кг");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                Cell1.SetCellValue("Примечание наименование в ТТН");
+                Cell1.CellStyle = SimpleHeaderCS;
+            }
+
+            DisplayIndex = 0;
+            RowIndex++;
+
+            for (int i = 0; i < _reportDataTable.Columns.Count; i++)
+            {
+                if (_reportDataTable.Columns[i].ColumnName == "front")
+                    break;
+                Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                Cell1.SetCellValue(i);
+                Cell1.CellStyle = SimpleHeaderCS;
+            }
+
+            RowIndex++;
+
+            int count = 0;
+            int packCount = 0;
+            double cost = 0;
+            double costVat = 0;
+            double costWithVat = 0;
+            double weight = 0;
+
+            for (int i = 0; i < _reportDataTable.Rows.Count; i++)
+            {
+                DisplayIndex = 0;
+
+                Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                Cell1.SetCellValue(Convert.ToInt32(_reportDataTable.Rows[i]["number"]));
+                Cell1.CellStyle = SimpleCS;
+
+                Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                Cell1.SetCellValue(_reportDataTable.Rows[i]["name"].ToString());
+                Cell1.CellStyle = SimpleLeftCS;
+
+                Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                Cell1.SetCellValue(_reportDataTable.Rows[i]["measure"].ToString());
+                Cell1.CellStyle = SimpleCS;
+
+                Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                Cell1.SetCellValue(Convert.ToInt32(_reportDataTable.Rows[i]["count"]));
+                Cell1.CellStyle = SimpleCS;
+                count += Convert.ToInt32(_reportDataTable.Rows[i]["count"]);
+
+                Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                Cell1.SetCellValue(Convert.ToDouble(_reportDataTable.Rows[i]["price"]));
+                Cell1.CellStyle = SimpleDecCS;
+
+                Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                Cell1.SetCellValue(Convert.ToDouble(_reportDataTable.Rows[i]["cost"]));
+                Cell1.CellStyle = SimpleDecCS;
+                cost += Convert.ToDouble(_reportDataTable.Rows[i]["cost"]);
+
+                Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                Cell1.SetCellValue(Convert.ToDouble(_reportDataTable.Rows[i]["vat"]));
+                Cell1.CellStyle = SimpleDecCS;
+
+                Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                Cell1.SetCellValue(Convert.ToDouble(_reportDataTable.Rows[i]["costVat"]));
+                Cell1.CellStyle = SimpleDecCS;
+                costVat += Convert.ToDouble(_reportDataTable.Rows[i]["costVat"]);
+
+                Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                Cell1.SetCellValue(Convert.ToDouble(_reportDataTable.Rows[i]["costWithVat"]));
+                Cell1.CellStyle = SimpleDecCS;
+                costWithVat += Convert.ToDouble(_reportDataTable.Rows[i]["costWithVat"]);
+
+                Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                Cell1.SetCellValue(Convert.ToInt32(_reportDataTable.Rows[i]["packCount"]));
+                Cell1.CellStyle = SimpleCS;
+                packCount += Convert.ToInt32(_reportDataTable.Rows[i]["packCount"]);
+
+                Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                Cell1.SetCellValue(Convert.ToDouble(_reportDataTable.Rows[i]["weight"]));
+                Cell1.CellStyle = SimpleDecCS;
+                weight += Convert.ToDouble(_reportDataTable.Rows[i]["weight"]);
+
+                Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                Cell1.SetCellValue(_reportDataTable.Rows[i]["accountingName"].ToString());
+                Cell1.CellStyle = SimpleCS;
+
+                RowIndex++;
+            }
+
+            DisplayIndex = 0;
+            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+            Cell1.SetCellValue("ИТОГО");
+            Cell1.CellStyle = SimpleCS;
+
+            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+            Cell1.SetCellValue("");
+            Cell1.CellStyle = SimpleCS;
+
+            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+            Cell1.SetCellValue("шт");
+            Cell1.CellStyle = SimpleCS;
+
+            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+            Cell1.SetCellValue(count);
+            Cell1.CellStyle = SimpleCS;
+
+            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+            Cell1.SetCellValue("X");
+            Cell1.CellStyle = SimpleCS;
+
+            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+            Cell1.SetCellValue(cost);
+            Cell1.CellStyle = SimpleDecCS;
+
+            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+            Cell1.SetCellValue("X");
+            Cell1.CellStyle = SimpleCS;
+
+            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+            Cell1.SetCellValue(costVat);
+            Cell1.CellStyle = SimpleDecCS;
+
+            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+            Cell1.SetCellValue(costWithVat);
+            Cell1.CellStyle = SimpleDecCS;
+
+            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+            Cell1.SetCellValue(packCount);
+            Cell1.CellStyle = SimpleCS;
+
+            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+            Cell1.SetCellValue(weight);
+            Cell1.CellStyle = SimpleDecCS;
+
+            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+            Cell1.SetCellValue("X");
+            Cell1.CellStyle = SimpleCS;
+
         }
 
         public void ClearReport()

@@ -200,6 +200,9 @@ namespace Infinium
             
             _ordersManager.CurrencyTypeID = currencyTypeId;
 
+            if (confirmDateTime != DBNull.Value)
+                _ordersCalculate.ConfirmDateTime = Convert.ToDateTime(confirmDateTime);
+
             Tuple<bool, decimal, decimal, decimal> clientRates =
                 _ordersCalculate.GetFixedPaymentRate(_ordersManager.CurrentClientID, _ordersCalculate.ConfirmDateTime);
 

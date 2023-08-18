@@ -81,8 +81,6 @@ namespace Infinium
             this.PrintDocColumn = new ComponentFactory.Krypton.Toolkit.KryptonDataGridViewButtonColumn();
             this.panel17 = new System.Windows.Forms.Panel();
             this.dgvAllAssignments = new Infinium.PercentageDataGrid();
-            this.InProdColumn = new ComponentFactory.Krypton.Toolkit.KryptonDataGridViewButtonColumn();
-            this.OutProdColumn = new ComponentFactory.Krypton.Toolkit.KryptonDataGridViewButtonColumn();
             this.MainMenuPalette = new ComponentFactory.Krypton.Toolkit.KryptonPalette(this.components);
             this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
             this.cbtnAllAssignments = new ComponentFactory.Krypton.Toolkit.KryptonCheckButton();
@@ -92,6 +90,7 @@ namespace Infinium
             this.cbtnOrdersCondition = new ComponentFactory.Krypton.Toolkit.KryptonCheckButton();
             this.cbtnPackagesScan = new ComponentFactory.Krypton.Toolkit.KryptonCheckButton();
             this.cbtnStorage = new ComponentFactory.Krypton.Toolkit.KryptonCheckButton();
+            this.cbtnStatistics = new ComponentFactory.Krypton.Toolkit.KryptonCheckButton();
             this.kryptonCheckSet3 = new ComponentFactory.Krypton.Toolkit.KryptonCheckSet(this.components);
             this.kryptonContextMenu2 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenu();
             this.kryptonContextMenuItems1 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItems();
@@ -358,6 +357,13 @@ namespace Infinium
             this.btnAddCell = new ComponentFactory.Krypton.Toolkit.KryptonButton();
             this.btnEditRack = new ComponentFactory.Krypton.Toolkit.KryptonButton();
             this.btnRemoveRack = new ComponentFactory.Krypton.Toolkit.KryptonButton();
+            this.tabPage8 = new System.Windows.Forms.TabPage();
+            this.percentageDataGrid2 = new Infinium.PercentageDataGrid();
+            this.kryptonPanel1 = new ComponentFactory.Krypton.Toolkit.KryptonPanel();
+            this.label58 = new System.Windows.Forms.Label();
+            this.label56 = new System.Windows.Forms.Label();
+            this.label57 = new System.Windows.Forms.Label();
+            this.kryptonBorderEdge65 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.PrintDialog = new System.Windows.Forms.PrintDialog();
             this.kryptonContextMenu3 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenu();
             this.kryptonContextMenuItems9 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItems();
@@ -386,6 +392,48 @@ namespace Infinium
             this.kryptonContextMenu9 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenu();
             this.kryptonContextMenuItems16 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItems();
             this.kryptonContextMenuItem5 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
+            this.MenuPanel2 = new System.Windows.Forms.Panel();
+            this.panel43 = new System.Windows.Forms.Panel();
+            this.kryptonRadioButton10 = new ComponentFactory.Krypton.Toolkit.KryptonRadioButton();
+            this.kryptonRadioButton9 = new ComponentFactory.Krypton.Toolkit.KryptonRadioButton();
+            this.kryptonRadioButton8 = new ComponentFactory.Krypton.Toolkit.KryptonRadioButton();
+            this.kryptonRadioButton7 = new ComponentFactory.Krypton.Toolkit.KryptonRadioButton();
+            this.kryptonRadioButton6 = new ComponentFactory.Krypton.Toolkit.KryptonRadioButton();
+            this.kryptonRadioButton5 = new ComponentFactory.Krypton.Toolkit.KryptonRadioButton();
+            this.kryptonRadioButton4 = new ComponentFactory.Krypton.Toolkit.KryptonRadioButton();
+            this.kryptonRadioButton3 = new ComponentFactory.Krypton.Toolkit.KryptonRadioButton();
+            this.kryptonRadioButton2 = new ComponentFactory.Krypton.Toolkit.KryptonRadioButton();
+            this.kryptonRadioButton1 = new ComponentFactory.Krypton.Toolkit.KryptonRadioButton();
+            this.label59 = new System.Windows.Forms.Label();
+            this.panel46 = new System.Windows.Forms.Panel();
+            this.kryptonButton3 = new ComponentFactory.Krypton.Toolkit.KryptonButton();
+            this.kryptonButton7 = new ComponentFactory.Krypton.Toolkit.KryptonButton();
+            this.kryptonDateTimePicker9 = new ComponentFactory.Krypton.Toolkit.KryptonDateTimePicker();
+            this.kryptonDateTimePicker10 = new ComponentFactory.Krypton.Toolkit.KryptonDateTimePicker();
+            this.label69 = new System.Windows.Forms.Label();
+            this.label70 = new System.Windows.Forms.Label();
+            this.label35t = new System.Windows.Forms.Label();
+            this.panel31t = new System.Windows.Forms.Panel();
+            this.kryptonCheckBox9t = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
+            this.kryptonCheckBox10t = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
+            this.kryptonCheckBox12t = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
+            this.kryptonCheckBox13t = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
+            this.label33t = new System.Windows.Forms.Label();
+            this.panel30t = new System.Windows.Forms.Panel();
+            this.kryptonCheckBox18 = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
+            this.kryptonCheckBox17 = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
+            this.kryptonCheckBox16 = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
+            this.kryptonCheckBox2t = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
+            this.kryptonCheckBox3t = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
+            this.kryptonCheckBox4t = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
+            this.kryptonBorderEdge38t = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
+            this.kryptonBorderEdge39t = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
+            this.kryptonBorderEdge40t = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
+            this.kryptonBorderEdge41t = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.InProdColumn = new ComponentFactory.Krypton.Toolkit.KryptonDataGridViewButtonColumn();
+            this.OutProdColumn = new ComponentFactory.Krypton.Toolkit.KryptonDataGridViewButtonColumn();
             this.NavigatePanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cmbxPatina)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cmbxCovers)).BeginInit();
@@ -499,6 +547,16 @@ namespace Infinium
             this.panel41.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvStoragePackagesDetails)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cmbxRacks)).BeginInit();
+            this.tabPage8.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.percentageDataGrid2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.kryptonPanel1)).BeginInit();
+            this.kryptonPanel1.SuspendLayout();
+            this.MenuPanel2.SuspendLayout();
+            this.panel43.SuspendLayout();
+            this.panel46.SuspendLayout();
+            this.panel31t.SuspendLayout();
+            this.panel30t.SuspendLayout();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // AnimateTimer
@@ -565,6 +623,7 @@ namespace Infinium
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.NavigateMenuButtonsPalette.ButtonStyles.ButtonCommon.StateTracking.Border.Rounding = 0;
             this.NavigateMenuButtonsPalette.ButtonStyles.ButtonCommon.StateTracking.Border.Width = 1;
+            this.NavigateMenuButtonsPalette.CustomisedKryptonPaletteFilePath = null;
             // 
             // label1
             // 
@@ -706,6 +765,7 @@ namespace Infinium
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.StandardButtonsPalette.ButtonStyles.ButtonCommon.StateTracking.Border.Rounding = 0;
+            this.StandardButtonsPalette.CustomisedKryptonPaletteFilePath = null;
             // 
             // tbCount
             // 
@@ -756,12 +816,14 @@ namespace Infinium
             this.cmbxPatina.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.cmbxPatina.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cmbxPatina.DropDownWidth = 300;
+            this.cmbxPatina.IntegralHeight = false;
             this.cmbxPatina.Location = new System.Drawing.Point(605, 31);
             this.cmbxPatina.Name = "cmbxPatina";
             this.cmbxPatina.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.cmbxPatina.Size = new System.Drawing.Size(140, 25);
             this.cmbxPatina.StateCommon.ComboBox.Content.Color1 = System.Drawing.Color.Black;
             this.cmbxPatina.StateCommon.ComboBox.Content.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.cmbxPatina.StateCommon.ComboBox.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.cmbxPatina.StateCommon.Item.Content.ShortText.Color1 = System.Drawing.Color.Black;
             this.cmbxPatina.StateCommon.Item.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.cmbxPatina.TabIndex = 449;
@@ -782,12 +844,14 @@ namespace Infinium
             this.cmbxCovers.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.cmbxCovers.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cmbxCovers.DropDownWidth = 300;
+            this.cmbxCovers.IntegralHeight = false;
             this.cmbxCovers.Location = new System.Drawing.Point(459, 31);
             this.cmbxCovers.Name = "cmbxCovers";
             this.cmbxCovers.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.cmbxCovers.Size = new System.Drawing.Size(140, 25);
             this.cmbxCovers.StateCommon.ComboBox.Content.Color1 = System.Drawing.Color.Black;
             this.cmbxCovers.StateCommon.ComboBox.Content.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.cmbxCovers.StateCommon.ComboBox.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.cmbxCovers.StateCommon.Item.Content.ShortText.Color1 = System.Drawing.Color.Black;
             this.cmbxCovers.StateCommon.Item.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.cmbxCovers.TabIndex = 447;
@@ -884,12 +948,14 @@ namespace Infinium
             this.cmbxTechStore.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.cmbxTechStore.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cmbxTechStore.DropDownWidth = 300;
+            this.cmbxTechStore.IntegralHeight = false;
             this.cmbxTechStore.Location = new System.Drawing.Point(291, 31);
             this.cmbxTechStore.Name = "cmbxTechStore";
             this.cmbxTechStore.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.cmbxTechStore.Size = new System.Drawing.Size(162, 25);
             this.cmbxTechStore.StateCommon.ComboBox.Content.Color1 = System.Drawing.Color.Black;
             this.cmbxTechStore.StateCommon.ComboBox.Content.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.cmbxTechStore.StateCommon.ComboBox.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.cmbxTechStore.StateCommon.Item.Content.ShortText.Color1 = System.Drawing.Color.Black;
             this.cmbxTechStore.StateCommon.Item.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.cmbxTechStore.TabIndex = 441;
@@ -911,12 +977,14 @@ namespace Infinium
             this.cmbxTechStoreSubGroups.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.cmbxTechStoreSubGroups.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cmbxTechStoreSubGroups.DropDownWidth = 300;
+            this.cmbxTechStoreSubGroups.IntegralHeight = false;
             this.cmbxTechStoreSubGroups.Location = new System.Drawing.Point(135, 31);
             this.cmbxTechStoreSubGroups.Name = "cmbxTechStoreSubGroups";
             this.cmbxTechStoreSubGroups.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.cmbxTechStoreSubGroups.Size = new System.Drawing.Size(150, 25);
             this.cmbxTechStoreSubGroups.StateCommon.ComboBox.Content.Color1 = System.Drawing.Color.Black;
             this.cmbxTechStoreSubGroups.StateCommon.ComboBox.Content.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.cmbxTechStoreSubGroups.StateCommon.ComboBox.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.cmbxTechStoreSubGroups.StateCommon.Item.Content.ShortText.Color1 = System.Drawing.Color.Black;
             this.cmbxTechStoreSubGroups.StateCommon.Item.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.cmbxTechStoreSubGroups.TabIndex = 439;
@@ -938,12 +1006,14 @@ namespace Infinium
             this.cmbxTechStoreGroups.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.cmbxTechStoreGroups.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cmbxTechStoreGroups.DropDownWidth = 300;
+            this.cmbxTechStoreGroups.IntegralHeight = false;
             this.cmbxTechStoreGroups.Location = new System.Drawing.Point(16, 31);
             this.cmbxTechStoreGroups.Name = "cmbxTechStoreGroups";
             this.cmbxTechStoreGroups.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.cmbxTechStoreGroups.Size = new System.Drawing.Size(113, 25);
             this.cmbxTechStoreGroups.StateCommon.ComboBox.Content.Color1 = System.Drawing.Color.Black;
             this.cmbxTechStoreGroups.StateCommon.ComboBox.Content.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.cmbxTechStoreGroups.StateCommon.ComboBox.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.cmbxTechStoreGroups.StateCommon.Item.Content.ShortText.Color1 = System.Drawing.Color.Black;
             this.cmbxTechStoreGroups.StateCommon.Item.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.cmbxTechStoreGroups.TabIndex = 437;
@@ -1047,6 +1117,7 @@ namespace Infinium
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.PanelSelectPalette.ButtonStyles.ButtonCommon.StateTracking.Border.Rounding = 0;
+            this.PanelSelectPalette.CustomisedKryptonPaletteFilePath = null;
             // 
             // label12
             // 
@@ -1088,6 +1159,7 @@ namespace Infinium
             // btnEditAssignment
             // 
             this.btnEditAssignment.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnEditAssignment.Enabled = false;
             this.btnEditAssignment.Location = new System.Drawing.Point(411, 10);
             this.btnEditAssignment.Name = "btnEditAssignment";
             this.btnEditAssignment.OverrideDefault.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(158)))), ((int)(((byte)(0)))));
@@ -1139,6 +1211,7 @@ namespace Infinium
             // btnAddAssignment
             // 
             this.btnAddAssignment.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnAddAssignment.Enabled = false;
             this.btnAddAssignment.Location = new System.Drawing.Point(363, 10);
             this.btnAddAssignment.Name = "btnAddAssignment";
             this.btnAddAssignment.OverrideDefault.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(158)))), ((int)(((byte)(0)))));
@@ -1330,24 +1403,6 @@ namespace Infinium
             this.dgvAllAssignments.SelectionChanged += new System.EventHandler(this.dgvAllAssignments_SelectionChanged);
             this.dgvAllAssignments.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dgvAllAssignments_KeyDown);
             // 
-            // InProdColumn
-            // 
-            this.InProdColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.InProdColumn.HeaderText = "";
-            this.InProdColumn.MinimumWidth = 95;
-            this.InProdColumn.Name = "InProdColumn";
-            this.InProdColumn.Text = "В производство";
-            this.InProdColumn.UseColumnTextForButtonValue = true;
-            // 
-            // OutProdColumn
-            // 
-            this.OutProdColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.OutProdColumn.HeaderText = "";
-            this.OutProdColumn.MinimumWidth = 95;
-            this.OutProdColumn.Name = "OutProdColumn";
-            this.OutProdColumn.Text = "Вышло из пр-ва";
-            this.OutProdColumn.UseColumnTextForButtonValue = true;
-            // 
             // MainMenuPalette
             // 
             this.MainMenuPalette.ButtonStyles.ButtonCommon.OverrideDefault.Back.Color1 = System.Drawing.Color.Transparent;
@@ -1400,6 +1455,7 @@ namespace Infinium
             this.MainMenuPalette.ButtonStyles.ButtonCommon.StateTracking.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.MainMenuPalette.CustomisedKryptonPaletteFilePath = null;
             // 
             // flowLayoutPanel3
             // 
@@ -1412,6 +1468,7 @@ namespace Infinium
             this.flowLayoutPanel3.Controls.Add(this.btnCoversManager);
             this.flowLayoutPanel3.Controls.Add(this.cbtnPackagesScan);
             this.flowLayoutPanel3.Controls.Add(this.cbtnStorage);
+            this.flowLayoutPanel3.Controls.Add(this.cbtnStatistics);
             this.flowLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Top;
             this.flowLayoutPanel3.Location = new System.Drawing.Point(0, 54);
             this.flowLayoutPanel3.Name = "flowLayoutPanel3";
@@ -1490,6 +1547,16 @@ namespace Infinium
             this.cbtnStorage.TabIndex = 448;
             this.cbtnStorage.Values.Text = "Склад";
             // 
+            // cbtnStatistics
+            // 
+            this.cbtnStatistics.Location = new System.Drawing.Point(1092, 3);
+            this.cbtnStatistics.Name = "cbtnStatistics";
+            this.cbtnStatistics.Palette = this.PanelSelectPalette;
+            this.cbtnStatistics.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Custom;
+            this.cbtnStatistics.Size = new System.Drawing.Size(124, 34);
+            this.cbtnStatistics.TabIndex = 449;
+            this.cbtnStatistics.Values.Text = "Статистика";
+            // 
             // kryptonCheckSet3
             // 
             this.kryptonCheckSet3.CheckButtons.Add(this.cbtnAllAssignments);
@@ -1499,6 +1566,7 @@ namespace Infinium
             this.kryptonCheckSet3.CheckButtons.Add(this.cbtnPackages);
             this.kryptonCheckSet3.CheckButtons.Add(this.cbtnPackagesScan);
             this.kryptonCheckSet3.CheckButtons.Add(this.cbtnStorage);
+            this.kryptonCheckSet3.CheckButtons.Add(this.cbtnStatistics);
             this.kryptonCheckSet3.CheckedButton = this.cbtnAllAssignments;
             this.kryptonCheckSet3.CheckedButtonChanged += new System.EventHandler(this.kryptonCheckSet3_CheckedButtonChanged);
             // 
@@ -1522,6 +1590,7 @@ namespace Infinium
             // 
             // kryptonContextMenuItem3
             // 
+            this.kryptonContextMenuItem3.Enabled = false;
             this.kryptonContextMenuItem3.Text = "Открыть";
             this.kryptonContextMenuItem3.Click += new System.EventHandler(this.kryptonContextMenuItem3_Click);
             // 
@@ -2776,7 +2845,6 @@ namespace Infinium
             // 
             this.kryptonCheckBox1.Checked = true;
             this.kryptonCheckBox1.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.kryptonCheckBox1.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalControl;
             this.kryptonCheckBox1.Location = new System.Drawing.Point(3, 7);
             this.kryptonCheckBox1.Name = "kryptonCheckBox1";
             this.kryptonCheckBox1.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -2784,7 +2852,6 @@ namespace Infinium
             this.kryptonCheckBox1.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
             this.kryptonCheckBox1.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 15.94F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.kryptonCheckBox1.TabIndex = 414;
-            this.kryptonCheckBox1.Text = "С клиентом";
             this.kryptonCheckBox1.Values.Text = "С клиентом";
             this.kryptonCheckBox1.CheckedChanged += new System.EventHandler(this.kryptonCheckBox1_CheckedChanged);
             // 
@@ -2868,6 +2935,7 @@ namespace Infinium
             this.CreateDateTimePicker2.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.CreateDateTimePicker2.Size = new System.Drawing.Size(146, 25);
             this.CreateDateTimePicker2.StateCommon.Content.Font = new System.Drawing.Font("Segoe UI", 14.06F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.CreateDateTimePicker2.StateCommon.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Inherit;
             this.CreateDateTimePicker2.TabIndex = 433;
             // 
             // CreateDateTimePicker1
@@ -2878,6 +2946,7 @@ namespace Infinium
             this.CreateDateTimePicker1.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.CreateDateTimePicker1.Size = new System.Drawing.Size(146, 25);
             this.CreateDateTimePicker1.StateCommon.Content.Font = new System.Drawing.Font("Segoe UI", 14.06F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.CreateDateTimePicker1.StateCommon.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Inherit;
             this.CreateDateTimePicker1.TabIndex = 432;
             // 
             // kryptonBorderEdge55
@@ -2893,7 +2962,6 @@ namespace Infinium
             // 
             this.cbAgreedAssingments.Checked = true;
             this.cbAgreedAssingments.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbAgreedAssingments.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalControl;
             this.cbAgreedAssingments.Location = new System.Drawing.Point(3, 7);
             this.cbAgreedAssingments.Name = "cbAgreedAssingments";
             this.cbAgreedAssingments.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -2901,7 +2969,6 @@ namespace Infinium
             this.cbAgreedAssingments.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
             this.cbAgreedAssingments.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 15.94F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.cbAgreedAssingments.TabIndex = 411;
-            this.cbAgreedAssingments.Text = "Согласовано";
             this.cbAgreedAssingments.Values.Text = "Согласовано";
             this.cbAgreedAssingments.CheckedChanged += new System.EventHandler(this.cbAgreedAssingments_CheckedChanged);
             // 
@@ -2909,7 +2976,6 @@ namespace Infinium
             // 
             this.cbPrintedAssingments.Checked = true;
             this.cbPrintedAssingments.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbPrintedAssingments.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalControl;
             this.cbPrintedAssingments.Location = new System.Drawing.Point(3, 80);
             this.cbPrintedAssingments.Name = "cbPrintedAssingments";
             this.cbPrintedAssingments.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -2917,7 +2983,6 @@ namespace Infinium
             this.cbPrintedAssingments.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
             this.cbPrintedAssingments.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 15.94F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.cbPrintedAssingments.TabIndex = 412;
-            this.cbPrintedAssingments.Text = "Распечатано полностью";
             this.cbPrintedAssingments.Values.Text = "Распечатано полностью";
             this.cbPrintedAssingments.CheckedChanged += new System.EventHandler(this.cbPrintedAssingments_CheckedChanged);
             // 
@@ -2925,7 +2990,6 @@ namespace Infinium
             // 
             this.cbNotAgreedAssingments.Checked = true;
             this.cbNotAgreedAssingments.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbNotAgreedAssingments.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalControl;
             this.cbNotAgreedAssingments.Location = new System.Drawing.Point(3, 33);
             this.cbNotAgreedAssingments.Name = "cbNotAgreedAssingments";
             this.cbNotAgreedAssingments.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -2933,7 +2997,6 @@ namespace Infinium
             this.cbNotAgreedAssingments.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
             this.cbNotAgreedAssingments.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 15.94F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.cbNotAgreedAssingments.TabIndex = 413;
-            this.cbNotAgreedAssingments.Text = "Не согласовано";
             this.cbNotAgreedAssingments.Values.Text = "Не согласовано";
             this.cbNotAgreedAssingments.CheckedChanged += new System.EventHandler(this.cbNotAgreedAssingments_CheckedChanged);
             // 
@@ -2941,7 +3004,6 @@ namespace Infinium
             // 
             this.cbNotPrintedAssingments.Checked = true;
             this.cbNotPrintedAssingments.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbNotPrintedAssingments.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalControl;
             this.cbNotPrintedAssingments.Location = new System.Drawing.Point(3, 110);
             this.cbNotPrintedAssingments.Name = "cbNotPrintedAssingments";
             this.cbNotPrintedAssingments.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -2949,7 +3011,6 @@ namespace Infinium
             this.cbNotPrintedAssingments.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
             this.cbNotPrintedAssingments.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 15.94F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.cbNotPrintedAssingments.TabIndex = 414;
-            this.cbNotPrintedAssingments.Text = "Не распечатано";
             this.cbNotPrintedAssingments.Values.Text = "Не распечатано";
             this.cbNotPrintedAssingments.CheckedChanged += new System.EventHandler(this.cbNotPrintedAssingments_CheckedChanged);
             // 
@@ -2957,7 +3018,6 @@ namespace Infinium
             // 
             this.cbPartPrintedAssingments.Checked = true;
             this.cbPartPrintedAssingments.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbPartPrintedAssingments.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalControl;
             this.cbPartPrintedAssingments.Location = new System.Drawing.Point(3, 142);
             this.cbPartPrintedAssingments.Name = "cbPartPrintedAssingments";
             this.cbPartPrintedAssingments.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -2965,7 +3025,6 @@ namespace Infinium
             this.cbPartPrintedAssingments.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
             this.cbPartPrintedAssingments.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 15.94F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.cbPartPrintedAssingments.TabIndex = 419;
-            this.cbPartPrintedAssingments.Text = "Распечатано частично";
             this.cbPartPrintedAssingments.Values.Text = "Распечатано частично";
             this.cbPartPrintedAssingments.CheckedChanged += new System.EventHandler(this.cbPartPrintedAssingments_CheckedChanged);
             // 
@@ -2998,7 +3057,6 @@ namespace Infinium
             // 
             this.kryptonCheckBox8.Checked = true;
             this.kryptonCheckBox8.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.kryptonCheckBox8.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalControl;
             this.kryptonCheckBox8.Location = new System.Drawing.Point(3, 169);
             this.kryptonCheckBox8.Name = "kryptonCheckBox8";
             this.kryptonCheckBox8.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -3006,7 +3064,6 @@ namespace Infinium
             this.kryptonCheckBox8.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
             this.kryptonCheckBox8.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 15.94F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.kryptonCheckBox8.TabIndex = 425;
-            this.kryptonCheckBox8.Text = "Упаковано частично";
             this.kryptonCheckBox8.Values.Text = "Упаковано частично";
             this.kryptonCheckBox8.CheckedChanged += new System.EventHandler(this.kryptonCheckBox8_CheckedChanged);
             // 
@@ -3014,7 +3071,6 @@ namespace Infinium
             // 
             this.kryptonCheckBox9.Checked = true;
             this.kryptonCheckBox9.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.kryptonCheckBox9.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalControl;
             this.kryptonCheckBox9.Location = new System.Drawing.Point(3, 137);
             this.kryptonCheckBox9.Name = "kryptonCheckBox9";
             this.kryptonCheckBox9.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -3022,7 +3078,6 @@ namespace Infinium
             this.kryptonCheckBox9.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
             this.kryptonCheckBox9.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 15.94F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.kryptonCheckBox9.TabIndex = 424;
-            this.kryptonCheckBox9.Text = "Не упаковано";
             this.kryptonCheckBox9.Values.Text = "Не упаковано";
             this.kryptonCheckBox9.CheckedChanged += new System.EventHandler(this.kryptonCheckBox9_CheckedChanged);
             // 
@@ -3030,7 +3085,6 @@ namespace Infinium
             // 
             this.kryptonCheckBox10.Checked = true;
             this.kryptonCheckBox10.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.kryptonCheckBox10.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalControl;
             this.kryptonCheckBox10.Location = new System.Drawing.Point(3, 107);
             this.kryptonCheckBox10.Name = "kryptonCheckBox10";
             this.kryptonCheckBox10.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -3038,7 +3092,6 @@ namespace Infinium
             this.kryptonCheckBox10.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
             this.kryptonCheckBox10.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 15.94F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.kryptonCheckBox10.TabIndex = 423;
-            this.kryptonCheckBox10.Text = "Упаковано полностью";
             this.kryptonCheckBox10.Values.Text = "Упаковано полностью";
             this.kryptonCheckBox10.CheckedChanged += new System.EventHandler(this.kryptonCheckBox10_CheckedChanged);
             // 
@@ -3046,7 +3099,6 @@ namespace Infinium
             // 
             this.kryptonCheckBox11.Checked = true;
             this.kryptonCheckBox11.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.kryptonCheckBox11.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalControl;
             this.kryptonCheckBox11.Location = new System.Drawing.Point(3, 69);
             this.kryptonCheckBox11.Name = "kryptonCheckBox11";
             this.kryptonCheckBox11.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -3054,7 +3106,6 @@ namespace Infinium
             this.kryptonCheckBox11.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
             this.kryptonCheckBox11.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 15.94F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.kryptonCheckBox11.TabIndex = 422;
-            this.kryptonCheckBox11.Text = "Распечатано частично";
             this.kryptonCheckBox11.Values.Text = "Распечатано частично";
             this.kryptonCheckBox11.CheckedChanged += new System.EventHandler(this.kryptonCheckBox11_CheckedChanged);
             // 
@@ -3062,7 +3113,6 @@ namespace Infinium
             // 
             this.kryptonCheckBox12.Checked = true;
             this.kryptonCheckBox12.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.kryptonCheckBox12.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalControl;
             this.kryptonCheckBox12.Location = new System.Drawing.Point(3, 37);
             this.kryptonCheckBox12.Name = "kryptonCheckBox12";
             this.kryptonCheckBox12.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -3070,7 +3120,6 @@ namespace Infinium
             this.kryptonCheckBox12.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
             this.kryptonCheckBox12.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 15.94F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.kryptonCheckBox12.TabIndex = 421;
-            this.kryptonCheckBox12.Text = "Не распечатано";
             this.kryptonCheckBox12.Values.Text = "Не распечатано";
             this.kryptonCheckBox12.CheckedChanged += new System.EventHandler(this.kryptonCheckBox12_CheckedChanged);
             // 
@@ -3078,7 +3127,6 @@ namespace Infinium
             // 
             this.kryptonCheckBox13.Checked = true;
             this.kryptonCheckBox13.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.kryptonCheckBox13.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalControl;
             this.kryptonCheckBox13.Location = new System.Drawing.Point(3, 7);
             this.kryptonCheckBox13.Name = "kryptonCheckBox13";
             this.kryptonCheckBox13.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -3086,7 +3134,6 @@ namespace Infinium
             this.kryptonCheckBox13.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
             this.kryptonCheckBox13.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 15.94F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.kryptonCheckBox13.TabIndex = 420;
-            this.kryptonCheckBox13.Text = "Распечатано полностью";
             this.kryptonCheckBox13.Values.Text = "Распечатано полностью";
             this.kryptonCheckBox13.CheckedChanged += new System.EventHandler(this.kryptonCheckBox13_CheckedChanged);
             // 
@@ -3180,6 +3227,7 @@ namespace Infinium
             this.DateTimePicker2.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.DateTimePicker2.Size = new System.Drawing.Size(146, 25);
             this.DateTimePicker2.StateCommon.Content.Font = new System.Drawing.Font("Segoe UI", 14.06F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.DateTimePicker2.StateCommon.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Inherit;
             this.DateTimePicker2.TabIndex = 428;
             // 
             // DateTimePicker1
@@ -3190,13 +3238,13 @@ namespace Infinium
             this.DateTimePicker1.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.DateTimePicker1.Size = new System.Drawing.Size(146, 25);
             this.DateTimePicker1.StateCommon.Content.Font = new System.Drawing.Font("Segoe UI", 14.06F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.DateTimePicker1.StateCommon.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Inherit;
             this.DateTimePicker1.TabIndex = 427;
             // 
             // kryptonCheckBox5
             // 
             this.kryptonCheckBox5.Checked = true;
             this.kryptonCheckBox5.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.kryptonCheckBox5.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalControl;
             this.kryptonCheckBox5.Location = new System.Drawing.Point(3, 169);
             this.kryptonCheckBox5.Name = "kryptonCheckBox5";
             this.kryptonCheckBox5.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -3204,7 +3252,6 @@ namespace Infinium
             this.kryptonCheckBox5.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
             this.kryptonCheckBox5.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 15.94F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.kryptonCheckBox5.TabIndex = 425;
-            this.kryptonCheckBox5.Text = "Упаковано частично";
             this.kryptonCheckBox5.Values.Text = "Упаковано частично";
             this.kryptonCheckBox5.CheckedChanged += new System.EventHandler(this.kryptonCheckBox5_CheckedChanged);
             // 
@@ -3212,7 +3259,6 @@ namespace Infinium
             // 
             this.kryptonCheckBox6.Checked = true;
             this.kryptonCheckBox6.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.kryptonCheckBox6.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalControl;
             this.kryptonCheckBox6.Location = new System.Drawing.Point(3, 137);
             this.kryptonCheckBox6.Name = "kryptonCheckBox6";
             this.kryptonCheckBox6.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -3220,7 +3266,6 @@ namespace Infinium
             this.kryptonCheckBox6.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
             this.kryptonCheckBox6.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 15.94F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.kryptonCheckBox6.TabIndex = 424;
-            this.kryptonCheckBox6.Text = "Не упаковано";
             this.kryptonCheckBox6.Values.Text = "Не упаковано";
             this.kryptonCheckBox6.CheckedChanged += new System.EventHandler(this.kryptonCheckBox6_CheckedChanged);
             // 
@@ -3228,7 +3273,6 @@ namespace Infinium
             // 
             this.kryptonCheckBox7.Checked = true;
             this.kryptonCheckBox7.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.kryptonCheckBox7.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalControl;
             this.kryptonCheckBox7.Location = new System.Drawing.Point(3, 107);
             this.kryptonCheckBox7.Name = "kryptonCheckBox7";
             this.kryptonCheckBox7.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -3236,7 +3280,6 @@ namespace Infinium
             this.kryptonCheckBox7.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
             this.kryptonCheckBox7.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 15.94F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.kryptonCheckBox7.TabIndex = 423;
-            this.kryptonCheckBox7.Text = "Упаковано полностью";
             this.kryptonCheckBox7.Values.Text = "Упаковано полностью";
             this.kryptonCheckBox7.CheckedChanged += new System.EventHandler(this.kryptonCheckBox7_CheckedChanged);
             // 
@@ -3244,7 +3287,6 @@ namespace Infinium
             // 
             this.kryptonCheckBox2.Checked = true;
             this.kryptonCheckBox2.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.kryptonCheckBox2.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalControl;
             this.kryptonCheckBox2.Location = new System.Drawing.Point(3, 69);
             this.kryptonCheckBox2.Name = "kryptonCheckBox2";
             this.kryptonCheckBox2.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -3252,7 +3294,6 @@ namespace Infinium
             this.kryptonCheckBox2.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
             this.kryptonCheckBox2.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 15.94F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.kryptonCheckBox2.TabIndex = 422;
-            this.kryptonCheckBox2.Text = "Распечатано частично";
             this.kryptonCheckBox2.Values.Text = "Распечатано частично";
             this.kryptonCheckBox2.CheckedChanged += new System.EventHandler(this.kryptonCheckBox2_CheckedChanged);
             // 
@@ -3260,7 +3301,6 @@ namespace Infinium
             // 
             this.kryptonCheckBox3.Checked = true;
             this.kryptonCheckBox3.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.kryptonCheckBox3.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalControl;
             this.kryptonCheckBox3.Location = new System.Drawing.Point(3, 37);
             this.kryptonCheckBox3.Name = "kryptonCheckBox3";
             this.kryptonCheckBox3.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -3268,7 +3308,6 @@ namespace Infinium
             this.kryptonCheckBox3.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
             this.kryptonCheckBox3.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 15.94F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.kryptonCheckBox3.TabIndex = 421;
-            this.kryptonCheckBox3.Text = "Не распечатано";
             this.kryptonCheckBox3.Values.Text = "Не распечатано";
             this.kryptonCheckBox3.CheckedChanged += new System.EventHandler(this.kryptonCheckBox3_CheckedChanged);
             // 
@@ -3276,7 +3315,6 @@ namespace Infinium
             // 
             this.kryptonCheckBox4.Checked = true;
             this.kryptonCheckBox4.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.kryptonCheckBox4.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalControl;
             this.kryptonCheckBox4.Location = new System.Drawing.Point(3, 7);
             this.kryptonCheckBox4.Name = "kryptonCheckBox4";
             this.kryptonCheckBox4.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -3284,7 +3322,6 @@ namespace Infinium
             this.kryptonCheckBox4.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
             this.kryptonCheckBox4.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 15.94F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.kryptonCheckBox4.TabIndex = 420;
-            this.kryptonCheckBox4.Text = "Распечатано полностью";
             this.kryptonCheckBox4.Values.Text = "Распечатано полностью";
             this.kryptonCheckBox4.CheckedChanged += new System.EventHandler(this.kryptonCheckBox4_CheckedChanged);
             // 
@@ -3371,6 +3408,8 @@ namespace Infinium
             this.kryptonMonthCalendar2.Margin = new System.Windows.Forms.Padding(4);
             this.kryptonMonthCalendar2.MaxSelectionCount = 1;
             this.kryptonMonthCalendar2.Name = "kryptonMonthCalendar2";
+            this.kryptonMonthCalendar2.SelectionEnd = new System.DateTime(2023, 2, 28, 0, 0, 0, 0);
+            this.kryptonMonthCalendar2.SelectionStart = new System.DateTime(2023, 2, 28, 0, 0, 0, 0);
             this.kryptonMonthCalendar2.Size = new System.Drawing.Size(230, 184);
             this.kryptonMonthCalendar2.StateCommon.Day.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.kryptonMonthCalendar2.StateCommon.DayOfWeek.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
@@ -3407,6 +3446,7 @@ namespace Infinium
             this.tabControl1.Controls.Add(this.tabPage5);
             this.tabControl1.Controls.Add(this.tabPage6);
             this.tabControl1.Controls.Add(this.tabPage7);
+            this.tabControl1.Controls.Add(this.tabPage8);
             this.tabControl1.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.tabControl1.Location = new System.Drawing.Point(0, 63);
             this.tabControl1.Name = "tabControl1";
@@ -3557,12 +3597,14 @@ namespace Infinium
             this.cmbxInsetColors.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.cmbxInsetColors.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cmbxInsetColors.DropDownWidth = 300;
+            this.cmbxInsetColors.IntegralHeight = false;
             this.cmbxInsetColors.Location = new System.Drawing.Point(751, 31);
             this.cmbxInsetColors.Name = "cmbxInsetColors";
             this.cmbxInsetColors.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.cmbxInsetColors.Size = new System.Drawing.Size(140, 25);
             this.cmbxInsetColors.StateCommon.ComboBox.Content.Color1 = System.Drawing.Color.Black;
             this.cmbxInsetColors.StateCommon.ComboBox.Content.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.cmbxInsetColors.StateCommon.ComboBox.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.cmbxInsetColors.StateCommon.Item.Content.ShortText.Color1 = System.Drawing.Color.Black;
             this.cmbxInsetColors.StateCommon.Item.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.cmbxInsetColors.TabIndex = 454;
@@ -4828,6 +4870,7 @@ namespace Infinium
             this.BarcodeTextBox.Size = new System.Drawing.Size(222, 47);
             this.BarcodeTextBox.StateCommon.Content.Color1 = System.Drawing.Color.Black;
             this.BarcodeTextBox.StateCommon.Content.Font = new System.Drawing.Font("Segoe UI", 30F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.BarcodeTextBox.StateCommon.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Inherit;
             this.BarcodeTextBox.TabIndex = 108;
             this.BarcodeTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.BarcodeTextBox_KeyDown);
             this.BarcodeTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.BarcodeTextBox_KeyPress);
@@ -4967,12 +5010,14 @@ namespace Infinium
             this.cbInsetColorsSearch.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.cbInsetColorsSearch.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cbInsetColorsSearch.DropDownWidth = 300;
+            this.cbInsetColorsSearch.IntegralHeight = false;
             this.cbInsetColorsSearch.Location = new System.Drawing.Point(685, 21);
             this.cbInsetColorsSearch.Name = "cbInsetColorsSearch";
             this.cbInsetColorsSearch.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.cbInsetColorsSearch.Size = new System.Drawing.Size(111, 23);
             this.cbInsetColorsSearch.StateCommon.ComboBox.Content.Color1 = System.Drawing.Color.Black;
             this.cbInsetColorsSearch.StateCommon.ComboBox.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.cbInsetColorsSearch.StateCommon.ComboBox.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.cbInsetColorsSearch.StateCommon.Item.Content.ShortText.Color1 = System.Drawing.Color.Black;
             this.cbInsetColorsSearch.StateCommon.Item.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.cbInsetColorsSearch.TabIndex = 466;
@@ -4993,12 +5038,14 @@ namespace Infinium
             this.cbPatinaSearch.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.cbPatinaSearch.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cbPatinaSearch.DropDownWidth = 300;
+            this.cbPatinaSearch.IntegralHeight = false;
             this.cbPatinaSearch.Location = new System.Drawing.Point(568, 21);
             this.cbPatinaSearch.Name = "cbPatinaSearch";
             this.cbPatinaSearch.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.cbPatinaSearch.Size = new System.Drawing.Size(111, 23);
             this.cbPatinaSearch.StateCommon.ComboBox.Content.Color1 = System.Drawing.Color.Black;
             this.cbPatinaSearch.StateCommon.ComboBox.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.cbPatinaSearch.StateCommon.ComboBox.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.cbPatinaSearch.StateCommon.Item.Content.ShortText.Color1 = System.Drawing.Color.Black;
             this.cbPatinaSearch.StateCommon.Item.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.cbPatinaSearch.TabIndex = 464;
@@ -5019,12 +5066,14 @@ namespace Infinium
             this.cbCoversSearch.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.cbCoversSearch.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cbCoversSearch.DropDownWidth = 300;
+            this.cbCoversSearch.IntegralHeight = false;
             this.cbCoversSearch.Location = new System.Drawing.Point(451, 21);
             this.cbCoversSearch.Name = "cbCoversSearch";
             this.cbCoversSearch.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.cbCoversSearch.Size = new System.Drawing.Size(111, 23);
             this.cbCoversSearch.StateCommon.ComboBox.Content.Color1 = System.Drawing.Color.Black;
             this.cbCoversSearch.StateCommon.ComboBox.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.cbCoversSearch.StateCommon.ComboBox.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.cbCoversSearch.StateCommon.Item.Content.ShortText.Color1 = System.Drawing.Color.Black;
             this.cbCoversSearch.StateCommon.Item.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.cbCoversSearch.TabIndex = 462;
@@ -5045,12 +5094,14 @@ namespace Infinium
             this.cbTStoreSearch.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.cbTStoreSearch.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cbTStoreSearch.DropDownWidth = 300;
+            this.cbTStoreSearch.IntegralHeight = false;
             this.cbTStoreSearch.Location = new System.Drawing.Point(283, 21);
             this.cbTStoreSearch.Name = "cbTStoreSearch";
             this.cbTStoreSearch.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.cbTStoreSearch.Size = new System.Drawing.Size(162, 23);
             this.cbTStoreSearch.StateCommon.ComboBox.Content.Color1 = System.Drawing.Color.Black;
             this.cbTStoreSearch.StateCommon.ComboBox.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.cbTStoreSearch.StateCommon.ComboBox.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.cbTStoreSearch.StateCommon.Item.Content.ShortText.Color1 = System.Drawing.Color.Black;
             this.cbTStoreSearch.StateCommon.Item.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.cbTStoreSearch.TabIndex = 460;
@@ -5071,12 +5122,14 @@ namespace Infinium
             this.cbTSSubGroupsSearch.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.cbTSSubGroupsSearch.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cbTSSubGroupsSearch.DropDownWidth = 300;
+            this.cbTSSubGroupsSearch.IntegralHeight = false;
             this.cbTSSubGroupsSearch.Location = new System.Drawing.Point(127, 21);
             this.cbTSSubGroupsSearch.Name = "cbTSSubGroupsSearch";
             this.cbTSSubGroupsSearch.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.cbTSSubGroupsSearch.Size = new System.Drawing.Size(150, 23);
             this.cbTSSubGroupsSearch.StateCommon.ComboBox.Content.Color1 = System.Drawing.Color.Black;
             this.cbTSSubGroupsSearch.StateCommon.ComboBox.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.cbTSSubGroupsSearch.StateCommon.ComboBox.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.cbTSSubGroupsSearch.StateCommon.Item.Content.ShortText.Color1 = System.Drawing.Color.Black;
             this.cbTSSubGroupsSearch.StateCommon.Item.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.cbTSSubGroupsSearch.TabIndex = 458;
@@ -5098,12 +5151,14 @@ namespace Infinium
             this.cbTSGroupsSearch.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.cbTSGroupsSearch.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cbTSGroupsSearch.DropDownWidth = 300;
+            this.cbTSGroupsSearch.IntegralHeight = false;
             this.cbTSGroupsSearch.Location = new System.Drawing.Point(6, 21);
             this.cbTSGroupsSearch.Name = "cbTSGroupsSearch";
             this.cbTSGroupsSearch.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.cbTSGroupsSearch.Size = new System.Drawing.Size(113, 23);
             this.cbTSGroupsSearch.StateCommon.ComboBox.Content.Color1 = System.Drawing.Color.Black;
             this.cbTSGroupsSearch.StateCommon.ComboBox.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.cbTSGroupsSearch.StateCommon.ComboBox.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.cbTSGroupsSearch.StateCommon.Item.Content.ShortText.Color1 = System.Drawing.Color.Black;
             this.cbTSGroupsSearch.StateCommon.Item.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.cbTSGroupsSearch.TabIndex = 456;
@@ -5331,11 +5386,13 @@ namespace Infinium
             this.cmbxWorkShops.DropDownWidth = 121;
             this.cmbxWorkShops.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.cmbxWorkShops.FormattingEnabled = true;
+            this.cmbxWorkShops.IntegralHeight = false;
             this.cmbxWorkShops.Location = new System.Drawing.Point(11, 86);
             this.cmbxWorkShops.Name = "cmbxWorkShops";
             this.cmbxWorkShops.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.cmbxWorkShops.Size = new System.Drawing.Size(274, 25);
             this.cmbxWorkShops.StateCommon.ComboBox.Content.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.cmbxWorkShops.StateCommon.ComboBox.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.cmbxWorkShops.StateCommon.Item.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.cmbxWorkShops.TabIndex = 416;
             this.cmbxWorkShops.SelectedValueChanged += new System.EventHandler(this.cmbxWorkShops_SelectedValueChanged);
@@ -5681,11 +5738,13 @@ namespace Infinium
             this.cmbxRacks.DropDownWidth = 121;
             this.cmbxRacks.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.cmbxRacks.FormattingEnabled = true;
+            this.cmbxRacks.IntegralHeight = false;
             this.cmbxRacks.Location = new System.Drawing.Point(11, 135);
             this.cmbxRacks.Name = "cmbxRacks";
             this.cmbxRacks.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.cmbxRacks.Size = new System.Drawing.Size(310, 25);
             this.cmbxRacks.StateCommon.ComboBox.Content.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.cmbxRacks.StateCommon.ComboBox.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.cmbxRacks.StateCommon.Item.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.cmbxRacks.TabIndex = 463;
             this.cmbxRacks.SelectedValueChanged += new System.EventHandler(this.cmbxRacks_SelectedValueChanged);
@@ -5779,6 +5838,130 @@ namespace Infinium
             this.btnRemoveRack.Values.Image = global::Infinium.Properties.Resources.Small_Red_Remove;
             this.btnRemoveRack.Values.Text = "";
             this.btnRemoveRack.Click += new System.EventHandler(this.btnRemoveRack_Click);
+            // 
+            // tabPage8
+            // 
+            this.tabPage8.Controls.Add(this.percentageDataGrid2);
+            this.tabPage8.Controls.Add(this.kryptonPanel1);
+            this.tabPage8.Location = new System.Drawing.Point(4, 30);
+            this.tabPage8.Name = "tabPage8";
+            this.tabPage8.Size = new System.Drawing.Size(1262, 643);
+            this.tabPage8.TabIndex = 7;
+            this.tabPage8.Text = "tabPage8";
+            this.tabPage8.UseVisualStyleBackColor = true;
+            // 
+            // percentageDataGrid2
+            // 
+            this.percentageDataGrid2.AllowUserToAddRows = false;
+            this.percentageDataGrid2.AllowUserToDeleteRows = false;
+            this.percentageDataGrid2.AllowUserToResizeColumns = false;
+            this.percentageDataGrid2.AllowUserToResizeRows = false;
+            this.percentageDataGrid2.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.percentageDataGrid2.BackText = "Нет данных";
+            this.percentageDataGrid2.ColumnHeadersHeight = 40;
+            this.percentageDataGrid2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.percentageDataGrid2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.percentageDataGrid2.HideOuterBorders = true;
+            this.percentageDataGrid2.Location = new System.Drawing.Point(0, 0);
+            this.percentageDataGrid2.MultiSelect = false;
+            this.percentageDataGrid2.Name = "percentageDataGrid2";
+            this.percentageDataGrid2.PercentLineWidth = 0;
+            this.percentageDataGrid2.RowHeadersVisible = false;
+            this.percentageDataGrid2.RowHeadersWidth = 102;
+            this.percentageDataGrid2.RowTemplate.Height = 30;
+            this.percentageDataGrid2.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
+            this.percentageDataGrid2.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.percentageDataGrid2.Size = new System.Drawing.Size(1262, 565);
+            this.percentageDataGrid2.StandardStyle = false;
+            this.percentageDataGrid2.StateCommon.Background.Color1 = System.Drawing.Color.White;
+            this.percentageDataGrid2.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.percentageDataGrid2.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
+            this.percentageDataGrid2.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
+            this.percentageDataGrid2.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
+            this.percentageDataGrid2.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.percentageDataGrid2.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.percentageDataGrid2.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
+            this.percentageDataGrid2.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.percentageDataGrid2.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.percentageDataGrid2.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.percentageDataGrid2.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
+            this.percentageDataGrid2.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.percentageDataGrid2.StateCommon.HeaderColumn.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)(((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.percentageDataGrid2.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
+            this.percentageDataGrid2.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.percentageDataGrid2.StateDisabled.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
+            this.percentageDataGrid2.StateDisabled.DataCell.Border.Color1 = System.Drawing.Color.DimGray;
+            this.percentageDataGrid2.StateDisabled.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.percentageDataGrid2.StateDisabled.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.percentageDataGrid2.StateDisabled.DataCell.Content.Color1 = System.Drawing.Color.Gray;
+            this.percentageDataGrid2.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(121)))), ((int)(((byte)(177)))), ((int)(((byte)(229)))));
+            this.percentageDataGrid2.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.percentageDataGrid2.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
+            this.percentageDataGrid2.TabIndex = 76;
+            this.percentageDataGrid2.UseCustomBackColor = true;
+            this.percentageDataGrid2.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.percentageDataGrid2_CellMouseDown);
+            // 
+            // kryptonPanel1
+            // 
+            this.kryptonPanel1.Controls.Add(this.label58);
+            this.kryptonPanel1.Controls.Add(this.label56);
+            this.kryptonPanel1.Controls.Add(this.label57);
+            this.kryptonPanel1.Controls.Add(this.kryptonBorderEdge65);
+            this.kryptonPanel1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.kryptonPanel1.Location = new System.Drawing.Point(0, 565);
+            this.kryptonPanel1.Name = "kryptonPanel1";
+            this.kryptonPanel1.Size = new System.Drawing.Size(1262, 78);
+            this.kryptonPanel1.StateCommon.Color1 = System.Drawing.Color.White;
+            this.kryptonPanel1.TabIndex = 77;
+            // 
+            // label58
+            // 
+            this.label58.BackColor = System.Drawing.Color.White;
+            this.label58.Font = new System.Drawing.Font("Segoe UI", 19.69F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.label58.Location = new System.Drawing.Point(3, 7);
+            this.label58.Name = "label58";
+            this.label58.Size = new System.Drawing.Size(108, 32);
+            this.label58.TabIndex = 10;
+            this.label58.Text = "Итого:";
+            this.label58.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label56
+            // 
+            this.label56.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.label56.Font = new System.Drawing.Font("Segoe UI", 17.81F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.label56.Location = new System.Drawing.Point(3, 8);
+            this.label56.Name = "label56";
+            this.label56.Size = new System.Drawing.Size(1254, 28);
+            this.label56.TabIndex = 8;
+            this.label56.Text = "Общая стоимость:";
+            this.label56.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // label57
+            // 
+            this.label57.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.label57.Font = new System.Drawing.Font("Segoe UI", 17.81F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.label57.Location = new System.Drawing.Point(3, 32);
+            this.label57.Name = "label57";
+            this.label57.Size = new System.Drawing.Size(1257, 39);
+            this.label57.TabIndex = 9;
+            this.label57.Text = "Количество:";
+            this.label57.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // kryptonBorderEdge65
+            // 
+            this.kryptonBorderEdge65.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.kryptonBorderEdge65.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowOnly;
+            this.kryptonBorderEdge65.Location = new System.Drawing.Point(1, 0);
+            this.kryptonBorderEdge65.Name = "kryptonBorderEdge65";
+            this.kryptonBorderEdge65.Size = new System.Drawing.Size(1256, 3);
+            this.kryptonBorderEdge65.StateCommon.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(158)))), ((int)(((byte)(0)))));
+            this.kryptonBorderEdge65.Text = "kryptonBorderEdge65";
             // 
             // PrintDialog
             // 
@@ -5926,12 +6109,530 @@ namespace Infinium
             this.kryptonContextMenuItem5.Text = "Отвязать от ячейки";
             this.kryptonContextMenuItem5.Click += new System.EventHandler(this.kryptonContextMenuItem5_Click_1);
             // 
+            // MenuPanel2
+            // 
+            this.MenuPanel2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.MenuPanel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(140)))), ((int)(((byte)(140)))), ((int)(((byte)(140)))));
+            this.MenuPanel2.Controls.Add(this.panel43);
+            this.MenuPanel2.Controls.Add(this.label59);
+            this.MenuPanel2.Controls.Add(this.panel46);
+            this.MenuPanel2.Controls.Add(this.label35t);
+            this.MenuPanel2.Controls.Add(this.panel31t);
+            this.MenuPanel2.Controls.Add(this.label33t);
+            this.MenuPanel2.Controls.Add(this.panel30t);
+            this.MenuPanel2.Controls.Add(this.kryptonBorderEdge38t);
+            this.MenuPanel2.Controls.Add(this.kryptonBorderEdge39t);
+            this.MenuPanel2.Controls.Add(this.kryptonBorderEdge40t);
+            this.MenuPanel2.Controls.Add(this.kryptonBorderEdge41t);
+            this.MenuPanel2.ForeColor = System.Drawing.Color.White;
+            this.MenuPanel2.Location = new System.Drawing.Point(807, 52);
+            this.MenuPanel2.Name = "MenuPanel2";
+            this.MenuPanel2.Size = new System.Drawing.Size(463, 488);
+            this.MenuPanel2.TabIndex = 516;
+            this.MenuPanel2.Visible = false;
+            // 
+            // panel43
+            // 
+            this.panel43.Controls.Add(this.kryptonRadioButton10);
+            this.panel43.Controls.Add(this.kryptonRadioButton9);
+            this.panel43.Controls.Add(this.kryptonRadioButton8);
+            this.panel43.Controls.Add(this.kryptonRadioButton7);
+            this.panel43.Controls.Add(this.kryptonRadioButton6);
+            this.panel43.Controls.Add(this.kryptonRadioButton5);
+            this.panel43.Controls.Add(this.kryptonRadioButton4);
+            this.panel43.Controls.Add(this.kryptonRadioButton3);
+            this.panel43.Controls.Add(this.kryptonRadioButton2);
+            this.panel43.Controls.Add(this.kryptonRadioButton1);
+            this.panel43.Font = new System.Drawing.Font("Segoe UI", 15.94F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.panel43.Location = new System.Drawing.Point(7, 40);
+            this.panel43.Name = "panel43";
+            this.panel43.Size = new System.Drawing.Size(221, 318);
+            this.panel43.TabIndex = 459;
+            // 
+            // kryptonRadioButton10
+            // 
+            this.kryptonRadioButton10.Location = new System.Drawing.Point(3, 287);
+            this.kryptonRadioButton10.Name = "kryptonRadioButton10";
+            this.kryptonRadioButton10.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.kryptonRadioButton10.Size = new System.Drawing.Size(136, 26);
+            this.kryptonRadioButton10.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
+            this.kryptonRadioButton10.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 15.94F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.kryptonRadioButton10.TabIndex = 370;
+            this.kryptonRadioButton10.Values.Text = "Принято с ОТК";
+            // 
+            // kryptonRadioButton9
+            // 
+            this.kryptonRadioButton9.Location = new System.Drawing.Point(3, 257);
+            this.kryptonRadioButton9.Name = "kryptonRadioButton9";
+            this.kryptonRadioButton9.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.kryptonRadioButton9.Size = new System.Drawing.Size(173, 26);
+            this.kryptonRadioButton9.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
+            this.kryptonRadioButton9.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 15.94F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.kryptonRadioButton9.TabIndex = 370;
+            this.kryptonRadioButton9.Values.Text = "Отправлено на ОТК";
+            // 
+            // kryptonRadioButton8
+            // 
+            this.kryptonRadioButton8.Location = new System.Drawing.Point(3, 227);
+            this.kryptonRadioButton8.Name = "kryptonRadioButton8";
+            this.kryptonRadioButton8.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.kryptonRadioButton8.Size = new System.Drawing.Size(164, 26);
+            this.kryptonRadioButton8.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
+            this.kryptonRadioButton8.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 15.94F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.kryptonRadioButton8.TabIndex = 370;
+            this.kryptonRadioButton8.Values.Text = "Списано со склада";
+            // 
+            // kryptonRadioButton7
+            // 
+            this.kryptonRadioButton7.Checked = true;
+            this.kryptonRadioButton7.Location = new System.Drawing.Point(3, 197);
+            this.kryptonRadioButton7.Name = "kryptonRadioButton7";
+            this.kryptonRadioButton7.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.kryptonRadioButton7.Size = new System.Drawing.Size(203, 26);
+            this.kryptonRadioButton7.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
+            this.kryptonRadioButton7.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 15.94F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.kryptonRadioButton7.TabIndex = 370;
+            this.kryptonRadioButton7.Values.Text = "Дата принятия на склад";
+            // 
+            // kryptonRadioButton6
+            // 
+            this.kryptonRadioButton6.Location = new System.Drawing.Point(3, 167);
+            this.kryptonRadioButton6.Name = "kryptonRadioButton6";
+            this.kryptonRadioButton6.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.kryptonRadioButton6.Size = new System.Drawing.Size(115, 26);
+            this.kryptonRadioButton6.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
+            this.kryptonRadioButton6.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 15.94F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.kryptonRadioButton6.TabIndex = 370;
+            this.kryptonRadioButton6.Values.Text = "Дата печати";
+            // 
+            // kryptonRadioButton5
+            // 
+            this.kryptonRadioButton5.Location = new System.Drawing.Point(3, 127);
+            this.kryptonRadioButton5.Name = "kryptonRadioButton5";
+            this.kryptonRadioButton5.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.kryptonRadioButton5.Size = new System.Drawing.Size(118, 26);
+            this.kryptonRadioButton5.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
+            this.kryptonRadioButton5.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 15.94F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.kryptonRadioButton5.TabIndex = 370;
+            this.kryptonRadioButton5.Values.Text = "Дата выхода";
+            // 
+            // kryptonRadioButton4
+            // 
+            this.kryptonRadioButton4.Location = new System.Drawing.Point(3, 97);
+            this.kryptonRadioButton4.Name = "kryptonRadioButton4";
+            this.kryptonRadioButton4.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.kryptonRadioButton4.Size = new System.Drawing.Size(120, 26);
+            this.kryptonRadioButton4.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
+            this.kryptonRadioButton4.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 15.94F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.kryptonRadioButton4.TabIndex = 370;
+            this.kryptonRadioButton4.Values.Text = "Дата запуска";
+            // 
+            // kryptonRadioButton3
+            // 
+            this.kryptonRadioButton3.Location = new System.Drawing.Point(3, 67);
+            this.kryptonRadioButton3.Name = "kryptonRadioButton3";
+            this.kryptonRadioButton3.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.kryptonRadioButton3.Size = new System.Drawing.Size(165, 26);
+            this.kryptonRadioButton3.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
+            this.kryptonRadioButton3.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 15.94F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.kryptonRadioButton3.TabIndex = 370;
+            this.kryptonRadioButton3.Values.Text = "Дата согласования";
+            // 
+            // kryptonRadioButton2
+            // 
+            this.kryptonRadioButton2.Location = new System.Drawing.Point(3, 37);
+            this.kryptonRadioButton2.Name = "kryptonRadioButton2";
+            this.kryptonRadioButton2.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.kryptonRadioButton2.Size = new System.Drawing.Size(128, 26);
+            this.kryptonRadioButton2.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
+            this.kryptonRadioButton2.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 15.94F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.kryptonRadioButton2.TabIndex = 370;
+            this.kryptonRadioButton2.Values.Text = "Дата отгрузки";
+            // 
+            // kryptonRadioButton1
+            // 
+            this.kryptonRadioButton1.Location = new System.Drawing.Point(3, 7);
+            this.kryptonRadioButton1.Name = "kryptonRadioButton1";
+            this.kryptonRadioButton1.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.kryptonRadioButton1.Size = new System.Drawing.Size(132, 26);
+            this.kryptonRadioButton1.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
+            this.kryptonRadioButton1.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 15.94F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.kryptonRadioButton1.TabIndex = 369;
+            this.kryptonRadioButton1.Values.Text = "Дата создания";
+            // 
+            // label59
+            // 
+            this.label59.AutoSize = true;
+            this.label59.Font = new System.Drawing.Font("Segoe UI", 17.81F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.label59.ForeColor = System.Drawing.Color.White;
+            this.label59.Location = new System.Drawing.Point(7, 12);
+            this.label59.Name = "label59";
+            this.label59.Size = new System.Drawing.Size(89, 25);
+            this.label59.TabIndex = 458;
+            this.label59.Text = "Тип даты:";
+            // 
+            // panel46
+            // 
+            this.panel46.Controls.Add(this.kryptonButton3);
+            this.panel46.Controls.Add(this.kryptonButton7);
+            this.panel46.Controls.Add(this.kryptonDateTimePicker9);
+            this.panel46.Controls.Add(this.kryptonDateTimePicker10);
+            this.panel46.Controls.Add(this.label69);
+            this.panel46.Controls.Add(this.label70);
+            this.panel46.Location = new System.Drawing.Point(7, 356);
+            this.panel46.Name = "panel46";
+            this.panel46.Size = new System.Drawing.Size(221, 124);
+            this.panel46.TabIndex = 457;
+            // 
+            // kryptonButton3
+            // 
+            this.kryptonButton3.Location = new System.Drawing.Point(121, 83);
+            this.kryptonButton3.Name = "kryptonButton3";
+            this.kryptonButton3.Palette = this.StandardButtonsPalette;
+            this.kryptonButton3.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Custom;
+            this.kryptonButton3.Size = new System.Drawing.Size(81, 27);
+            this.kryptonButton3.StateCommon.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.kryptonButton3.StateCommon.Content.Image.ImageH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.kryptonButton3.StateCommon.Content.Image.ImageV = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
+            this.kryptonButton3.StateCommon.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.kryptonButton3.StateCommon.Content.ShortText.TextV = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.kryptonButton3.StateTracking.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(253)))), ((int)(((byte)(164)))), ((int)(((byte)(61)))));
+            this.kryptonButton3.StateTracking.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.kryptonButton3.TabIndex = 447;
+            this.kryptonButton3.TabStop = false;
+            this.kryptonButton3.Values.Text = "Отмена";
+            this.kryptonButton3.Click += new System.EventHandler(this.kryptonButton3_Click);
+            // 
+            // kryptonButton7
+            // 
+            this.kryptonButton7.Location = new System.Drawing.Point(19, 83);
+            this.kryptonButton7.Name = "kryptonButton7";
+            this.kryptonButton7.Palette = this.StandardButtonsPalette;
+            this.kryptonButton7.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Custom;
+            this.kryptonButton7.Size = new System.Drawing.Size(81, 27);
+            this.kryptonButton7.StateCommon.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.kryptonButton7.StateCommon.Content.Image.ImageH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.kryptonButton7.StateCommon.Content.Image.ImageV = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
+            this.kryptonButton7.StateCommon.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.kryptonButton7.StateCommon.Content.ShortText.TextV = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.kryptonButton7.StateTracking.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(253)))), ((int)(((byte)(164)))), ((int)(((byte)(61)))));
+            this.kryptonButton7.StateTracking.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.kryptonButton7.TabIndex = 446;
+            this.kryptonButton7.TabStop = false;
+            this.kryptonButton7.Values.Text = "Поиск";
+            this.kryptonButton7.Click += new System.EventHandler(this.kryptonButton7_Click);
+            // 
+            // kryptonDateTimePicker9
+            // 
+            this.kryptonDateTimePicker9.Location = new System.Drawing.Point(46, 47);
+            this.kryptonDateTimePicker9.Name = "kryptonDateTimePicker9";
+            this.kryptonDateTimePicker9.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.kryptonDateTimePicker9.Size = new System.Drawing.Size(156, 27);
+            this.kryptonDateTimePicker9.StateCommon.Content.Font = new System.Drawing.Font("Segoe UI", 15.94F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.kryptonDateTimePicker9.StateCommon.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Inherit;
+            this.kryptonDateTimePicker9.TabIndex = 445;
+            // 
+            // kryptonDateTimePicker10
+            // 
+            this.kryptonDateTimePicker10.Location = new System.Drawing.Point(46, 6);
+            this.kryptonDateTimePicker10.Name = "kryptonDateTimePicker10";
+            this.kryptonDateTimePicker10.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.kryptonDateTimePicker10.Size = new System.Drawing.Size(156, 27);
+            this.kryptonDateTimePicker10.StateCommon.Content.Font = new System.Drawing.Font("Segoe UI", 15.94F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.kryptonDateTimePicker10.StateCommon.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Inherit;
+            this.kryptonDateTimePicker10.TabIndex = 444;
+            // 
+            // label69
+            // 
+            this.label69.AutoSize = true;
+            this.label69.Font = new System.Drawing.Font("Segoe UI", 17.81F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.label69.Location = new System.Drawing.Point(3, 48);
+            this.label69.Name = "label69";
+            this.label69.Size = new System.Drawing.Size(39, 25);
+            this.label69.TabIndex = 443;
+            this.label69.Text = "До:";
+            // 
+            // label70
+            // 
+            this.label70.AutoSize = true;
+            this.label70.Font = new System.Drawing.Font("Segoe UI", 17.81F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.label70.Location = new System.Drawing.Point(3, 7);
+            this.label70.Name = "label70";
+            this.label70.Size = new System.Drawing.Size(37, 25);
+            this.label70.TabIndex = 441;
+            this.label70.Text = "Oт:";
+            // 
+            // label35t
+            // 
+            this.label35t.AutoSize = true;
+            this.label35t.Font = new System.Drawing.Font("Segoe UI", 17.81F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.label35t.ForeColor = System.Drawing.Color.White;
+            this.label35t.Location = new System.Drawing.Point(235, 12);
+            this.label35t.Name = "label35t";
+            this.label35t.Size = new System.Drawing.Size(93, 25);
+            this.label35t.TabIndex = 431;
+            this.label35t.Text = "Упаковка:";
+            // 
+            // panel31t
+            // 
+            this.panel31t.Controls.Add(this.kryptonCheckBox9t);
+            this.panel31t.Controls.Add(this.kryptonCheckBox10t);
+            this.panel31t.Controls.Add(this.kryptonCheckBox12t);
+            this.panel31t.Controls.Add(this.kryptonCheckBox13t);
+            this.panel31t.Location = new System.Drawing.Point(235, 40);
+            this.panel31t.Name = "panel31t";
+            this.panel31t.Size = new System.Drawing.Size(221, 143);
+            this.panel31t.TabIndex = 430;
+            // 
+            // kryptonCheckBox9t
+            // 
+            this.kryptonCheckBox9t.Checked = true;
+            this.kryptonCheckBox9t.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.kryptonCheckBox9t.Location = new System.Drawing.Point(3, 107);
+            this.kryptonCheckBox9t.Name = "kryptonCheckBox9t";
+            this.kryptonCheckBox9t.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.kryptonCheckBox9t.Size = new System.Drawing.Size(129, 26);
+            this.kryptonCheckBox9t.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
+            this.kryptonCheckBox9t.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 15.94F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.kryptonCheckBox9t.TabIndex = 424;
+            this.kryptonCheckBox9t.Values.Text = "Не упаковано";
+            this.kryptonCheckBox9t.CheckedChanged += new System.EventHandler(this.kryptonCheckBox9t_CheckedChanged);
+            // 
+            // kryptonCheckBox10t
+            // 
+            this.kryptonCheckBox10t.Checked = true;
+            this.kryptonCheckBox10t.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.kryptonCheckBox10t.Location = new System.Drawing.Point(3, 77);
+            this.kryptonCheckBox10t.Name = "kryptonCheckBox10t";
+            this.kryptonCheckBox10t.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.kryptonCheckBox10t.Size = new System.Drawing.Size(106, 26);
+            this.kryptonCheckBox10t.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
+            this.kryptonCheckBox10t.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 15.94F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.kryptonCheckBox10t.TabIndex = 423;
+            this.kryptonCheckBox10t.Values.Text = "Упаковано";
+            this.kryptonCheckBox10t.CheckedChanged += new System.EventHandler(this.kryptonCheckBox10t_CheckedChanged);
+            // 
+            // kryptonCheckBox12t
+            // 
+            this.kryptonCheckBox12t.Checked = true;
+            this.kryptonCheckBox12t.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.kryptonCheckBox12t.Location = new System.Drawing.Point(3, 37);
+            this.kryptonCheckBox12t.Name = "kryptonCheckBox12t";
+            this.kryptonCheckBox12t.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.kryptonCheckBox12t.Size = new System.Drawing.Size(145, 26);
+            this.kryptonCheckBox12t.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
+            this.kryptonCheckBox12t.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 15.94F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.kryptonCheckBox12t.TabIndex = 421;
+            this.kryptonCheckBox12t.Values.Text = "Не распечатано";
+            this.kryptonCheckBox12t.CheckedChanged += new System.EventHandler(this.kryptonCheckBox12t_CheckedChanged);
+            // 
+            // kryptonCheckBox13t
+            // 
+            this.kryptonCheckBox13t.Checked = true;
+            this.kryptonCheckBox13t.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.kryptonCheckBox13t.Location = new System.Drawing.Point(3, 7);
+            this.kryptonCheckBox13t.Name = "kryptonCheckBox13t";
+            this.kryptonCheckBox13t.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.kryptonCheckBox13t.Size = new System.Drawing.Size(120, 26);
+            this.kryptonCheckBox13t.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
+            this.kryptonCheckBox13t.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 15.94F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.kryptonCheckBox13t.TabIndex = 420;
+            this.kryptonCheckBox13t.Values.Text = "Распечатано";
+            this.kryptonCheckBox13t.CheckedChanged += new System.EventHandler(this.kryptonCheckBox13t_CheckedChanged);
+            // 
+            // label33t
+            // 
+            this.label33t.AutoSize = true;
+            this.label33t.Font = new System.Drawing.Font("Segoe UI", 17.81F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.label33t.ForeColor = System.Drawing.Color.White;
+            this.label33t.Location = new System.Drawing.Point(235, 186);
+            this.label33t.Name = "label33t";
+            this.label33t.Size = new System.Drawing.Size(159, 25);
+            this.label33t.TabIndex = 425;
+            this.label33t.Text = "Состояние заказа:";
+            // 
+            // panel30t
+            // 
+            this.panel30t.Controls.Add(this.kryptonCheckBox18);
+            this.panel30t.Controls.Add(this.kryptonCheckBox17);
+            this.panel30t.Controls.Add(this.kryptonCheckBox16);
+            this.panel30t.Controls.Add(this.kryptonCheckBox2t);
+            this.panel30t.Controls.Add(this.kryptonCheckBox3t);
+            this.panel30t.Controls.Add(this.kryptonCheckBox4t);
+            this.panel30t.Location = new System.Drawing.Point(235, 216);
+            this.panel30t.Name = "panel30t";
+            this.panel30t.Size = new System.Drawing.Size(221, 198);
+            this.panel30t.TabIndex = 424;
+            // 
+            // kryptonCheckBox18
+            // 
+            this.kryptonCheckBox18.Checked = true;
+            this.kryptonCheckBox18.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.kryptonCheckBox18.Location = new System.Drawing.Point(3, 171);
+            this.kryptonCheckBox18.Name = "kryptonCheckBox18";
+            this.kryptonCheckBox18.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.kryptonCheckBox18.Size = new System.Drawing.Size(231, 26);
+            this.kryptonCheckBox18.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
+            this.kryptonCheckBox18.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 15.94F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.kryptonCheckBox18.TabIndex = 434;
+            this.kryptonCheckBox18.Values.Text = "Не вышло из производства";
+            this.kryptonCheckBox18.CheckedChanged += new System.EventHandler(this.kryptonCheckBox18_CheckedChanged);
+            // 
+            // kryptonCheckBox17
+            // 
+            this.kryptonCheckBox17.Checked = true;
+            this.kryptonCheckBox17.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.kryptonCheckBox17.Location = new System.Drawing.Point(3, 139);
+            this.kryptonCheckBox17.Name = "kryptonCheckBox17";
+            this.kryptonCheckBox17.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.kryptonCheckBox17.Size = new System.Drawing.Size(167, 26);
+            this.kryptonCheckBox17.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
+            this.kryptonCheckBox17.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 15.94F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.kryptonCheckBox17.TabIndex = 433;
+            this.kryptonCheckBox17.Values.Text = "Не в производстве";
+            this.kryptonCheckBox17.CheckedChanged += new System.EventHandler(this.kryptonCheckBox17_CheckedChanged);
+            // 
+            // kryptonCheckBox16
+            // 
+            this.kryptonCheckBox16.Checked = true;
+            this.kryptonCheckBox16.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.kryptonCheckBox16.Location = new System.Drawing.Point(3, 109);
+            this.kryptonCheckBox16.Name = "kryptonCheckBox16";
+            this.kryptonCheckBox16.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.kryptonCheckBox16.Size = new System.Drawing.Size(101, 26);
+            this.kryptonCheckBox16.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
+            this.kryptonCheckBox16.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 15.94F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.kryptonCheckBox16.TabIndex = 432;
+            this.kryptonCheckBox16.Values.Text = "Не создан";
+            this.kryptonCheckBox16.CheckedChanged += new System.EventHandler(this.kryptonCheckBox16_CheckedChanged);
+            // 
+            // kryptonCheckBox2t
+            // 
+            this.kryptonCheckBox2t.Checked = true;
+            this.kryptonCheckBox2t.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.kryptonCheckBox2t.Location = new System.Drawing.Point(3, 69);
+            this.kryptonCheckBox2t.Name = "kryptonCheckBox2t";
+            this.kryptonCheckBox2t.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.kryptonCheckBox2t.Size = new System.Drawing.Size(207, 26);
+            this.kryptonCheckBox2t.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
+            this.kryptonCheckBox2t.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 15.94F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.kryptonCheckBox2t.TabIndex = 422;
+            this.kryptonCheckBox2t.Values.Text = "Вышло из производства";
+            this.kryptonCheckBox2t.CheckedChanged += new System.EventHandler(this.kryptonCheckBox2t_CheckedChanged);
+            // 
+            // kryptonCheckBox3t
+            // 
+            this.kryptonCheckBox3t.Checked = true;
+            this.kryptonCheckBox3t.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.kryptonCheckBox3t.Location = new System.Drawing.Point(3, 37);
+            this.kryptonCheckBox3t.Name = "kryptonCheckBox3t";
+            this.kryptonCheckBox3t.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.kryptonCheckBox3t.Size = new System.Drawing.Size(143, 26);
+            this.kryptonCheckBox3t.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
+            this.kryptonCheckBox3t.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 15.94F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.kryptonCheckBox3t.TabIndex = 421;
+            this.kryptonCheckBox3t.Values.Text = "В производстве";
+            this.kryptonCheckBox3t.CheckedChanged += new System.EventHandler(this.kryptonCheckBox3t_CheckedChanged);
+            // 
+            // kryptonCheckBox4t
+            // 
+            this.kryptonCheckBox4t.Checked = true;
+            this.kryptonCheckBox4t.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.kryptonCheckBox4t.Location = new System.Drawing.Point(3, 7);
+            this.kryptonCheckBox4t.Name = "kryptonCheckBox4t";
+            this.kryptonCheckBox4t.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.kryptonCheckBox4t.Size = new System.Drawing.Size(79, 26);
+            this.kryptonCheckBox4t.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
+            this.kryptonCheckBox4t.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 15.94F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.kryptonCheckBox4t.TabIndex = 420;
+            this.kryptonCheckBox4t.Values.Text = "Создан";
+            this.kryptonCheckBox4t.CheckedChanged += new System.EventHandler(this.kryptonCheckBox4t_CheckedChanged);
+            // 
+            // kryptonBorderEdge38t
+            // 
+            this.kryptonBorderEdge38t.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.kryptonBorderEdge38t.AutoSize = false;
+            this.kryptonBorderEdge38t.Location = new System.Drawing.Point(2288, 1);
+            this.kryptonBorderEdge38t.Name = "kryptonBorderEdge38t";
+            this.kryptonBorderEdge38t.Orientation = System.Windows.Forms.Orientation.Vertical;
+            this.kryptonBorderEdge38t.Size = new System.Drawing.Size(1, 1425);
+            this.kryptonBorderEdge38t.StateCommon.Color1 = System.Drawing.Color.White;
+            this.kryptonBorderEdge38t.Text = "kryptonBorderEdge38t";
+            // 
+            // kryptonBorderEdge39t
+            // 
+            this.kryptonBorderEdge39t.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.kryptonBorderEdge39t.AutoSize = false;
+            this.kryptonBorderEdge39t.Location = new System.Drawing.Point(1, 1425);
+            this.kryptonBorderEdge39t.Name = "kryptonBorderEdge39t";
+            this.kryptonBorderEdge39t.Size = new System.Drawing.Size(2288, 1);
+            this.kryptonBorderEdge39t.StateCommon.Color1 = System.Drawing.Color.White;
+            this.kryptonBorderEdge39t.Text = "kryptonBorderEdge39t";
+            // 
+            // kryptonBorderEdge40t
+            // 
+            this.kryptonBorderEdge40t.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.kryptonBorderEdge40t.AutoSize = false;
+            this.kryptonBorderEdge40t.Location = new System.Drawing.Point(1, 1);
+            this.kryptonBorderEdge40t.Name = "kryptonBorderEdge40t";
+            this.kryptonBorderEdge40t.Size = new System.Drawing.Size(2288, 1);
+            this.kryptonBorderEdge40t.StateCommon.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(123)))), ((int)(((byte)(97)))));
+            this.kryptonBorderEdge40t.Text = "kryptonBorderEdge40t";
+            // 
+            // kryptonBorderEdge41t
+            // 
+            this.kryptonBorderEdge41t.Location = new System.Drawing.Point(0, 0);
+            this.kryptonBorderEdge41t.Name = "kryptonBorderEdge41t";
+            this.kryptonBorderEdge41t.Size = new System.Drawing.Size(50, 1);
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(40, 40);
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem1});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(172, 26);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(171, 22);
+            this.toolStripMenuItem1.Text = "Отправить в Excel";
+            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
+            // 
+            // InProdColumn
+            // 
+            this.InProdColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.InProdColumn.HeaderText = "";
+            this.InProdColumn.MinimumWidth = 95;
+            this.InProdColumn.Name = "InProdColumn";
+            this.InProdColumn.Text = "В производство";
+            this.InProdColumn.UseColumnTextForButtonValue = true;
+            // 
+            // OutProdColumn
+            // 
+            this.OutProdColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.OutProdColumn.HeaderText = "";
+            this.OutProdColumn.MinimumWidth = 95;
+            this.OutProdColumn.Name = "OutProdColumn";
+            this.OutProdColumn.Text = "Вышло из пр-ва";
+            this.OutProdColumn.UseColumnTextForButtonValue = true;
+            // 
             // CabFurnitureModuleForm
             // 
             this.AccessibleName = "false";
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1270, 740);
+            this.Controls.Add(this.MenuPanel2);
             this.Controls.Add(this.flowLayoutPanel3);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.NavigatePanel);
@@ -6087,6 +6788,22 @@ namespace Infinium
             this.panel41.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvStoragePackagesDetails)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cmbxRacks)).EndInit();
+            this.tabPage8.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.percentageDataGrid2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.kryptonPanel1)).EndInit();
+            this.kryptonPanel1.ResumeLayout(false);
+            this.kryptonPanel1.PerformLayout();
+            this.MenuPanel2.ResumeLayout(false);
+            this.MenuPanel2.PerformLayout();
+            this.panel43.ResumeLayout(false);
+            this.panel43.PerformLayout();
+            this.panel46.ResumeLayout(false);
+            this.panel46.PerformLayout();
+            this.panel31t.ResumeLayout(false);
+            this.panel31t.PerformLayout();
+            this.panel30t.ResumeLayout(false);
+            this.panel30t.PerformLayout();
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -6432,8 +7149,6 @@ namespace Infinium
         private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge63;
         private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge64;
         private ComponentFactory.Krypton.Toolkit.KryptonButton btnUpdateStorePackages;
-        private ComponentFactory.Krypton.Toolkit.KryptonDataGridViewButtonColumn InProdColumn;
-        private ComponentFactory.Krypton.Toolkit.KryptonDataGridViewButtonColumn OutProdColumn;
         private ComponentFactory.Krypton.Toolkit.KryptonButton kryptonButton2;
         private System.Windows.Forms.Label label54;
         private System.Windows.Forms.Label label55;
@@ -6447,5 +7162,55 @@ namespace Infinium
         private ComponentFactory.Krypton.Toolkit.KryptonContextMenu kryptonContextMenu9;
         private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItems kryptonContextMenuItems16;
         private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem kryptonContextMenuItem5;
+        private System.Windows.Forms.Panel MenuPanel2;
+        private System.Windows.Forms.Panel panel43;
+        private System.Windows.Forms.Label label59;
+        private System.Windows.Forms.Panel panel46;
+        private ComponentFactory.Krypton.Toolkit.KryptonDateTimePicker kryptonDateTimePicker10;
+        private System.Windows.Forms.Label label69;
+        private System.Windows.Forms.Label label70;
+        private System.Windows.Forms.Label label35t;
+        private System.Windows.Forms.Panel panel31t;
+        private ComponentFactory.Krypton.Toolkit.KryptonCheckBox kryptonCheckBox9t;
+        private ComponentFactory.Krypton.Toolkit.KryptonCheckBox kryptonCheckBox10t;
+        private ComponentFactory.Krypton.Toolkit.KryptonCheckBox kryptonCheckBox12t;
+        private ComponentFactory.Krypton.Toolkit.KryptonCheckBox kryptonCheckBox13t;
+        private System.Windows.Forms.Label label33t;
+        private System.Windows.Forms.Panel panel30t;
+        private ComponentFactory.Krypton.Toolkit.KryptonCheckBox kryptonCheckBox2t;
+        private ComponentFactory.Krypton.Toolkit.KryptonCheckBox kryptonCheckBox3t;
+        private ComponentFactory.Krypton.Toolkit.KryptonCheckBox kryptonCheckBox4t;
+        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge38t;
+        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge39t;
+        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge40t;
+        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge41t;
+        private ComponentFactory.Krypton.Toolkit.KryptonRadioButton kryptonRadioButton10;
+        private ComponentFactory.Krypton.Toolkit.KryptonRadioButton kryptonRadioButton9;
+        private ComponentFactory.Krypton.Toolkit.KryptonRadioButton kryptonRadioButton8;
+        private ComponentFactory.Krypton.Toolkit.KryptonRadioButton kryptonRadioButton7;
+        private ComponentFactory.Krypton.Toolkit.KryptonRadioButton kryptonRadioButton6;
+        private ComponentFactory.Krypton.Toolkit.KryptonRadioButton kryptonRadioButton5;
+        private ComponentFactory.Krypton.Toolkit.KryptonRadioButton kryptonRadioButton4;
+        private ComponentFactory.Krypton.Toolkit.KryptonRadioButton kryptonRadioButton3;
+        private ComponentFactory.Krypton.Toolkit.KryptonRadioButton kryptonRadioButton2;
+        private ComponentFactory.Krypton.Toolkit.KryptonRadioButton kryptonRadioButton1;
+        private ComponentFactory.Krypton.Toolkit.KryptonDateTimePicker kryptonDateTimePicker9;
+        private ComponentFactory.Krypton.Toolkit.KryptonButton kryptonButton3;
+        private ComponentFactory.Krypton.Toolkit.KryptonButton kryptonButton7;
+        private ComponentFactory.Krypton.Toolkit.KryptonCheckBox kryptonCheckBox18;
+        private ComponentFactory.Krypton.Toolkit.KryptonCheckBox kryptonCheckBox17;
+        private ComponentFactory.Krypton.Toolkit.KryptonCheckBox kryptonCheckBox16;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.TabPage tabPage8;
+        private PercentageDataGrid percentageDataGrid2;
+        private ComponentFactory.Krypton.Toolkit.KryptonPanel kryptonPanel1;
+        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge65;
+        public System.Windows.Forms.Label label58;
+        private System.Windows.Forms.Label label56;
+        private System.Windows.Forms.Label label57;
+        private ComponentFactory.Krypton.Toolkit.KryptonCheckButton cbtnStatistics;
+        private ComponentFactory.Krypton.Toolkit.KryptonDataGridViewButtonColumn InProdColumn;
+        private ComponentFactory.Krypton.Toolkit.KryptonDataGridViewButtonColumn OutProdColumn;
     }
 }

@@ -1500,6 +1500,7 @@ namespace Infinium.Modules.Marketing.NewOrders.InvoiceReportToDbf
             }
             TransportCost = TransportCost / VAT;
             AdditionalCost = AdditionalCost / VAT;
+            
             FrontsReport.Report(MainOrdersIDs);
             DecorReport.Report(MainOrdersIDs);
 

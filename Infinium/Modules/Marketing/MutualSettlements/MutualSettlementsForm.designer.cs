@@ -251,6 +251,7 @@
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.NavigateMenuButtonsPalette.ButtonStyles.ButtonCommon.StateTracking.Border.Rounding = 0;
             this.NavigateMenuButtonsPalette.ButtonStyles.ButtonCommon.StateTracking.Border.Width = 1;
+            this.NavigateMenuButtonsPalette.CustomisedKryptonPaletteFilePath = null;
             // 
             // label1
             // 
@@ -358,6 +359,7 @@
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.StandardButtonsPalette.ButtonStyles.ButtonCommon.StateTracking.Border.Rounding = 0;
+            this.StandardButtonsPalette.CustomisedKryptonPaletteFilePath = null;
             // 
             // MainMenuPalette
             // 
@@ -396,6 +398,7 @@
             this.MainMenuPalette.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Color1 = System.Drawing.Color.White;
             this.MainMenuPalette.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.MainMenuPalette.ButtonStyles.ButtonCommon.StateTracking.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(198)))), ((int)(((byte)(0)))));
+            this.MainMenuPalette.CustomisedKryptonPaletteFilePath = null;
             // 
             // PanelSelectPalette
             // 
@@ -462,6 +465,7 @@
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.PanelSelectPalette.ButtonStyles.ButtonCommon.StateTracking.Border.Rounding = 0;
+            this.PanelSelectPalette.CustomisedKryptonPaletteFilePath = null;
             // 
             // kryptonContextMenuCheckButton1
             // 
@@ -1694,7 +1698,6 @@
             // 
             this.cbResult3.Checked = true;
             this.cbResult3.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbResult3.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalControl;
             this.cbResult3.Location = new System.Drawing.Point(418, 3);
             this.cbResult3.Name = "cbResult3";
             this.cbResult3.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -1702,7 +1705,6 @@
             this.cbResult3.StateCommon.ShortText.Color1 = System.Drawing.Color.Green;
             this.cbResult3.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 15.94F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.cbResult3.TabIndex = 367;
-            this.cbResult3.Text = "Предоплата";
             this.cbResult3.Values.Text = "Предоплата";
             this.cbResult3.CheckedChanged += new System.EventHandler(this.cbResult3_CheckedChanged);
             // 
@@ -1710,7 +1712,6 @@
             // 
             this.cbResult2.Checked = true;
             this.cbResult2.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbResult2.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalControl;
             this.cbResult2.Location = new System.Drawing.Point(418, 29);
             this.cbResult2.Name = "cbResult2";
             this.cbResult2.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -1718,7 +1719,6 @@
             this.cbResult2.StateCommon.ShortText.Color1 = System.Drawing.Color.Red;
             this.cbResult2.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 15.94F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.cbResult2.TabIndex = 368;
-            this.cbResult2.Text = "Не оплаченные";
             this.cbResult2.Values.Text = "Не оплаченные";
             this.cbResult2.CheckedChanged += new System.EventHandler(this.cbResult2_CheckedChanged);
             // 
@@ -1726,7 +1726,6 @@
             // 
             this.cbResult0.Checked = true;
             this.cbResult0.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbResult0.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalControl;
             this.cbResult0.Location = new System.Drawing.Point(245, 3);
             this.cbResult0.Name = "cbResult0";
             this.cbResult0.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -1734,7 +1733,6 @@
             this.cbResult0.StateCommon.ShortText.Color1 = System.Drawing.Color.Black;
             this.cbResult0.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 15.94F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.cbResult0.TabIndex = 365;
-            this.cbResult0.Text = "Новые";
             this.cbResult0.Values.Text = "Новые";
             this.cbResult0.CheckedChanged += new System.EventHandler(this.cbResult0_CheckedChanged);
             // 
@@ -1742,7 +1740,6 @@
             // 
             this.cbResult1.Checked = true;
             this.cbResult1.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbResult1.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalControl;
             this.cbResult1.Location = new System.Drawing.Point(245, 29);
             this.cbResult1.Name = "cbResult1";
             this.cbResult1.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -1750,7 +1747,6 @@
             this.cbResult1.StateCommon.ShortText.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
             this.cbResult1.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 15.94F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.cbResult1.TabIndex = 366;
-            this.cbResult1.Text = "Закрытые сделки";
             this.cbResult1.Values.Text = "Закрытые сделки";
             this.cbResult1.CheckedChanged += new System.EventHandler(this.cbResult1_CheckedChanged);
             // 
@@ -1840,6 +1836,7 @@
             this.NotesRichTextBox.StateCommon.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(140)))), ((int)(((byte)(140)))), ((int)(((byte)(140)))));
             this.NotesRichTextBox.StateCommon.Content.Color1 = System.Drawing.Color.White;
             this.NotesRichTextBox.StateCommon.Content.Font = new System.Drawing.Font("Segoe UI", 15.94F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.NotesRichTextBox.StateCommon.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Inherit;
             this.NotesRichTextBox.TabIndex = 335;
             this.NotesRichTextBox.Text = resources.GetString("NotesRichTextBox.Text");
             // 

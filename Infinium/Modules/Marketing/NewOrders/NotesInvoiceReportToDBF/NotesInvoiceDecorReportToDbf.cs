@@ -1,4 +1,6 @@
-﻿using System;
+﻿using NPOI.HSSF.Record.Formula.Functions;
+
+using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
@@ -234,11 +236,15 @@ DecorOrders.*, infiniu2_catalog.dbo.DecorConfig.AccountingName, infiniu2_catalog
                     int PatinaID = Convert.ToInt32(Items.Rows[i]["PatinaID"]);
                     string InvNumber = Items.Rows[i]["InvNumber"].ToString();
                     string Notes = Items.Rows[i]["Notes"].ToString();
-                    DataRow[] ItemsRows = DecorOrdersDataTable.Select("PaymentRate = '" + PaymentRate.ToString() + "' AND InvNumber = '" + InvNumber +
-                                                                      "' AND Notes = '" + Notes +
-                                                                      "' AND ColorID=" + ColorID + " AND PatinaID=" + PatinaID,
-                        "Price ASC");
+                    
+                    var filter = "PaymentRate = '" + PaymentRate.ToString() + "' AND InvNumber = '" + InvNumber +
+                                 "' AND Notes = '" + Notes +
+                                 "' AND ColorID=" + ColorID + " AND PatinaID=" + PatinaID;
+                    if (Notes.Length == 0)
+                        filter = "PaymentRate = '" + PaymentRate.ToString() + "' AND InvNumber = '" + InvNumber +
+                                                    "' AND ColorID=" + ColorID + " AND PatinaID=" + PatinaID;
 
+                    DataRow[] ItemsRows = DecorOrdersDataTable.Select(filter, "Price ASC");
                     if (ItemsRows.Count() == 0)
                         continue;
                     int DecorConfigID = Convert.ToInt32(ItemsRows[0]["DecorConfigID"]);

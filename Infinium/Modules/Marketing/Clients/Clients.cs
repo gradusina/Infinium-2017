@@ -6,9 +6,13 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
+using System.Security.Policy;
 using System.Text;
 using System.Windows.Forms;
 using System.Xml;
+using System.Xml.Linq;
+
+using static Infinium.UserProfile;
 
 namespace Infinium.Modules.Marketing.Clients
 {
@@ -17,6 +21,9 @@ namespace Infinium.Modules.Marketing.Clients
         private PercentageDataGrid ClientsDataGrid = null;
         private PercentageDataGrid ContactsDataGrid = null;
         private PercentageDataGrid ShopAddressesDataGrid = null;
+
+        public DataTable clientsExcluziveCountriesDt = null;
+        public DataTable excluziveCountriesDt = null;
 
         public DataTable ClientRatesDataTable = null;
         public DataTable ClientsDataTable = null;
@@ -46,6 +53,7 @@ namespace Infinium.Modules.Marketing.Clients
         public SqlCommandBuilder ClientsCommandBuilder = null;
         public SqlCommandBuilder ShopAddressesCommandBuilder = null;
 
+        public BindingSource excluziveCountriesBs = null;
         public BindingSource FrontsPriceGroupsBindingSource = null;
         public BindingSource DecorPriceGroupsBindingSource = null;
         public BindingSource ContactsBindingSource = null;
@@ -76,6 +84,9 @@ namespace Infinium.Modules.Marketing.Clients
         private void Create()
         {
             prepareTranslit();
+            clientsExcluziveCountriesDt = new DataTable();
+            excluziveCountriesDt = new DataTable();
+
             FrontsPriceGroupsDataTable = new DataTable();
             DecorPriceGroupsDataTable = new DataTable();
             ClientRatesDataTable = new DataTable();
@@ -101,6 +112,23 @@ namespace Infinium.Modules.Marketing.Clients
 
         private void Fill()
         {
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM ClientsExcluziveCountries order by clientId",
+                ConnectionStrings.MarketingReferenceConnectionString))
+            {
+                DA.Fill(clientsExcluziveCountriesDt);
+            }
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Countries ORDER BY Name",
+                ConnectionStrings.CatalogConnectionString))
+            {
+                DA.Fill(excluziveCountriesDt);
+            }
+            var column1 = new DataColumn("check")
+            {
+                DataType = typeof(bool),
+                DefaultValue = 0
+            };
+            excluziveCountriesDt.Columns.Add(column1);
+
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM FrontsPriceGroups",
                 ConnectionStrings.MarketingReferenceConnectionString))
             {
@@ -149,6 +177,19 @@ namespace Infinium.Modules.Marketing.Clients
             ClientsCommandBuilder = new SqlCommandBuilder(ClientsDataAdapter);
             ClientsDataAdapter.Fill(ClientsDataTable);
 
+            var column2 = new DataColumn("ExcluziveCountries")
+            {
+                DataType = typeof(string),
+                DefaultValue = string.Empty
+            };
+            ClientsDataTable.Columns.Add(column2);
+            ClientsDataTable.Columns.Add(new DataColumn("USD", typeof(decimal)));
+            ClientsDataTable.Columns.Add(new DataColumn("RUB", typeof(decimal)));
+            ClientsDataTable.Columns.Add(new DataColumn("BYN", typeof(decimal)));
+
+            FillСlientsExcluziveCountries();
+            FillClientRates();
+
             ShopAddressesDataAdapter = new SqlDataAdapter("SELECT TOP 0 * FROM ShopAddresses ORDER BY Address",
                 ConnectionStrings.MarketingReferenceConnectionString);
             ShopAddressesCommandBuilder = new SqlCommandBuilder(ShopAddressesDataAdapter);
@@ -157,6 +198,11 @@ namespace Infinium.Modules.Marketing.Clients
 
         private void Binding()
         {
+            excluziveCountriesBs = new BindingSource()
+            {
+                DataSource = excluziveCountriesDt
+            };
+
             FrontsPriceGroupsBindingSource.DataSource = FrontsPriceGroupsDataTable;
             DecorPriceGroupsBindingSource.DataSource = DecorPriceGroupsDataTable;
 
@@ -216,6 +262,7 @@ namespace Infinium.Modules.Marketing.Clients
             ClientsDataGrid.Columns["Email"].HeaderText = "E-mail";
             ClientsDataGrid.Columns["Site"].HeaderText = "Сайт";
             ClientsDataGrid.Columns["UNN"].HeaderText = "УНН";
+            ClientsDataGrid.Columns["ExcluziveCountries"].HeaderText = "Страны по\r\nэксклюзиву";
             ClientsDataGrid.Columns["NonStandard"].HeaderText = "Учет\r\nнестандарта";
 
             ClientsDataGrid.AutoGenerateColumns = false;
@@ -241,9 +288,17 @@ namespace Infinium.Modules.Marketing.Clients
             ClientsDataGrid.Columns["UNN"].MinimumWidth = 100;
             ClientsDataGrid.Columns["Site"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             ClientsDataGrid.Columns["Site"].MinimumWidth = 70;
+            ClientsDataGrid.Columns["ExcluziveCountries"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            ClientsDataGrid.Columns["ExcluziveCountries"].MinimumWidth = 70;
             //ClientsDataGrid.Columns["Login"].MinimumWidth = 60;
             ClientsDataGrid.Columns["NonStandard"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
             ClientsDataGrid.Columns["NonStandard"].Width = 120;
+            ClientsDataGrid.Columns["USD"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            ClientsDataGrid.Columns["USD"].Width = 50;
+            ClientsDataGrid.Columns["RUB"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            ClientsDataGrid.Columns["RUB"].Width = 50;
+            ClientsDataGrid.Columns["BYN"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            ClientsDataGrid.Columns["BYN"].Width = 50;
 
             int DisplayIndex = 0;
             ClientsDataGrid.Columns["ClientID"].DisplayIndex = DisplayIndex++;
@@ -258,8 +313,12 @@ namespace Infinium.Modules.Marketing.Clients
             ClientsDataGrid.Columns["DelayOfPayment"].DisplayIndex = DisplayIndex++;
             ClientsDataGrid.Columns["PriceGroup"].DisplayIndex = DisplayIndex++;
             ClientsDataGrid.Columns["Enabled"].DisplayIndex = DisplayIndex++;
+            ClientsDataGrid.Columns["USD"].DisplayIndex = DisplayIndex++;
+            ClientsDataGrid.Columns["RUB"].DisplayIndex = DisplayIndex++;
+            ClientsDataGrid.Columns["BYN"].DisplayIndex = DisplayIndex++;
             ClientsDataGrid.Columns["Site"].DisplayIndex = DisplayIndex++;
             ClientsDataGrid.Columns["Email"].DisplayIndex = DisplayIndex++;
+            ClientsDataGrid.Columns["ExcluziveCountries"].DisplayIndex = DisplayIndex++;
 
             ClientsDataGrid.Columns["ManagerColumn"].ReadOnly = true;
             ClientsDataGrid.Columns["ClientGroupColumn"].ReadOnly = true;
@@ -451,6 +510,13 @@ namespace Infinium.Modules.Marketing.Clients
             return Row[0]["ClientName"].ToString();
         }
 
+        public string GetCountryName(int CountryID)
+        {
+            DataRow[] Row = CountriesDataTable.Select("CountryID = " + CountryID);
+
+            return Row[0]["Name"].ToString();
+        }
+
         public void CreateNewContactsDataTable(ref PercentageDataGrid DataGrid, ref PercentageDataGrid tShopAddressesDataGrid)
         {
             if (NewContactsDataTable == null)
@@ -572,6 +638,107 @@ namespace Infinium.Modules.Marketing.Clients
             NewShopAddressesBindingSource.DataSource = NewShopAddressesDataTable;
         }
 
+        private void AddСlientsExcluziveCountries(int clientId)
+        {
+            for (var i = 0; i < excluziveCountriesDt.Rows.Count; i++)
+            {
+                var check = Convert.ToBoolean(excluziveCountriesDt.Rows[i]["check"]);
+
+                if (!check)
+                    continue;
+                
+                var countryId = Convert.ToInt32(excluziveCountriesDt.Rows[i]["countryId"]);
+
+                var rows = clientsExcluziveCountriesDt.Select($"clientId={clientId} and countryId={countryId}");
+                if (rows.Any()) continue;
+
+                var row = clientsExcluziveCountriesDt.NewRow();
+                row["clientId"] = clientId;
+                row["countryId"] = countryId;
+                clientsExcluziveCountriesDt.Rows.Add(row);
+            }
+        }
+
+        private void RemoveСlientsExcluziveCountries(int clientId)
+        {
+            for (var i = excluziveCountriesDt.Rows.Count - 1; i >= 0; i--)
+            {
+                var check = Convert.ToBoolean(excluziveCountriesDt.Rows[i]["check"]);
+
+                if (check)
+                    continue;
+                
+                var countryId = Convert.ToInt32(excluziveCountriesDt.Rows[i]["countryId"]);
+
+                var rows = clientsExcluziveCountriesDt.Select($"clientId={clientId} and countryId={countryId}");
+                if (!rows.Any()) continue;
+
+                rows[0].Delete();
+            }
+        }
+
+        private void FillСlientsExcluziveCountries()
+        {
+            for (var i = ClientsDataTable.Rows.Count - 1; i >= 0; i--)
+            {
+
+                var rows = clientsExcluziveCountriesDt.Select($"clientId={Convert.ToInt32(ClientsDataTable.Rows[i]["clientId"])}");
+                if (!rows.Any()) continue;
+
+                var countryId = Convert.ToInt32(rows[0]["countryId"]);
+                var sb = new StringBuilder(GetCountryName(Convert.ToInt32(rows[0]["countryId"])) + ", ");
+
+                for (var j = 1; j < rows.Length; j++)
+                {
+                    if (Convert.ToInt32(rows[j]["countryId"]) == countryId)
+                        continue;
+                    sb.Append(GetCountryName(Convert.ToInt32(rows[j]["countryId"])) + ", ");
+                }
+
+                var countriesList = sb.ToString();
+                if (countriesList.Length > 0)
+                    countriesList = countriesList.Substring(0, countriesList.Length - 2);
+                ClientsDataTable.Rows[i]["ExcluziveCountries"] = countriesList;
+            }
+        }
+
+        public void GetСlientsExcluziveCountries(int clientId)
+        {
+            for (var i = 0; i < excluziveCountriesDt.Rows.Count; i++)
+            {
+                excluziveCountriesDt.Rows[i]["check"] = false;
+            }
+            for (var i = 0; i < clientsExcluziveCountriesDt.Rows.Count; i++)
+            {
+                if (clientId != Convert.ToInt32(clientsExcluziveCountriesDt.Rows[i]["clientId"]))
+                    continue;
+                
+                var countryId = Convert.ToInt32(clientsExcluziveCountriesDt.Rows[i]["countryId"]);
+
+                var rows = excluziveCountriesDt.Select($"countryId={countryId}");
+                if (!rows.Any()) continue;
+
+                rows[0]["check"] = true;
+            }
+        }
+
+        public void SaveСlientsExcluziveCountries(int clientId)
+        {
+            AddСlientsExcluziveCountries(clientId);
+            RemoveСlientsExcluziveCountries(clientId);
+
+            const string selectCommand = @"SELECT * FROM ClientsExcluziveCountries order by clientId";
+            using (var da = new SqlDataAdapter(selectCommand, ConnectionStrings.MarketingReferenceConnectionString))
+            {
+                using (new SqlCommandBuilder(da))
+                {
+                    da.Update(clientsExcluziveCountriesDt);
+                    clientsExcluziveCountriesDt.Clear();
+                    da.Fill(clientsExcluziveCountriesDt);
+                }
+            }
+        }
+
         public void SaveClient(string Name, int CountryID, string City, int ClientGroupID, string Site, string Email, int ManagerID, string UNN,
                                int NonStandard, decimal PriceGroup, int DelayOfPayment, bool Enabled, int ClientID)
         {
@@ -625,6 +792,7 @@ namespace Infinium.Modules.Marketing.Clients
                             DA.Update(DT);
                             ClientsDataTable.Clear();
                             ClientsDataAdapter.Fill(ClientsDataTable);
+                            FillСlientsExcluziveCountries();
                             ClientsBindingSource.Position = ClientsBindingSource.Find("ClientID", ClientID);
                         }
                     }
@@ -993,6 +1161,41 @@ infiniumdevelopers@gmail.com";
             }
         }
 
+        private void FillClientRates()
+        {
+            var confirmDateTime = DateTime.Now;
+
+            using (var da = new SqlDataAdapter(@"SELECT * FROM ClientRates WHERE CAST(Date AS Date) <= 
+                    '" + confirmDateTime.ToString("yyyy-MM-dd") + "' ORDER BY clientId, Date DESC",
+                       ConnectionStrings.MarketingReferenceConnectionString))
+            {
+                using (var dt = new DataTable())
+                {
+                    da.Fill(dt);
+                    for (var i = 0; i < dt.Rows.Count; i++)
+                    {
+                        var clientId = Convert.ToInt32(dt.Rows[i]["clientId"]);
+                        if (i > 0 && i < dt.Rows.Count)
+                        {
+                            if (clientId == Convert.ToInt32(dt.Rows[i - 1]["clientId"]))
+                                continue;
+                        }
+
+                        if (dt.Rows[i]["USD"] == DBNull.Value || dt.Rows[i]["RUB"] == DBNull.Value ||
+                            dt.Rows[i]["BYN"] == DBNull.Value)
+                            continue;
+
+                        var rows = ClientsDataTable.Select($"clientId={clientId}");
+                        if (!rows.Any()) continue;
+
+                        rows[0]["USD"] = Convert.ToDecimal(dt.Rows[i]["USD"]);
+                        rows[0]["RUB"] = Convert.ToDecimal(dt.Rows[i]["RUB"]);
+                        rows[0]["BYN"] = Convert.ToDecimal(dt.Rows[i]["BYN"]);
+                    }
+                }
+            }
+        }
+
         public void GetFixedPaymentRate(int ClientID, DateTime ConfirmDateTime, ref bool FixedPaymentRate, ref decimal USD, ref decimal RUB, ref decimal BYN)
         {
             using (DataTable DT = new DataTable())
@@ -1155,6 +1358,7 @@ infiniumdevelopers@gmail.com";
                         da.Fill(dtTable);
                         ClientsDataTable.Clear();
                         ClientsDataAdapter.Fill(ClientsDataTable);
+                        FillСlientsExcluziveCountries();
                     }
                 }
             }

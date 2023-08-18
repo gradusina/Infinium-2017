@@ -426,8 +426,15 @@ PackageDetailID, PackageDetails.Count AS Count, (FrontsOrders.Square * PackageDe
             string ColorName = string.Empty;
             try
             {
-                DataRow[] Rows = frontsCatalogOrder.ConstColorsDataTable.Select($"Cvet = '{ Cvet } '");
-                ColorName = Rows[0]["ColorName"].ToString();
+                var Rows = frontsCatalogOrder.FrameColorsDataTable.Select($"Cvet = '{ Cvet } '");
+                if (Rows.Any())
+                    ColorName = Rows[0]["ColorName"].ToString();
+                else
+                {
+                    Rows = frontsCatalogOrder.InsetColorsDataTable.Select($"Cvet = '{ Cvet } '");
+                    if (Rows.Any())
+                        ColorName = Rows[0]["InsetColorName"].ToString();
+                }
             }
             catch
             {
@@ -1419,7 +1426,10 @@ PackageDetailID, PackageDetails.Count AS Count, (FrontsOrders.Square * PackageDe
 
                 if (CountPP > 0)
                 {
-                    DataTable ddt = OrdersDataTable.Select("InsetTypeID IN (685,686,687,688,29470,29471)").CopyToDataTable();
+                    DataTable ddt = OrdersDataTable.Select("ColorID = " + Fronts.Rows[i]["ColorID"].ToString() +
+                                                           " AND PatinaID = " + Fronts.Rows[i]["PatinaID"].ToString() +
+                                                           " AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString()+
+                                                           " and InsetTypeID IN (685,686,687,688,29470,29471)").CopyToDataTable();
                     for (int x = 0; x < ddt.Rows.Count; x++)
                     {
                         decimal d = GetInsetSquare(Convert.ToInt32(ddt.Rows[x]["FrontID"]), Convert.ToInt32(ddt.Rows[x]["Height"]),

@@ -136,7 +136,7 @@ namespace Infinium.Modules.Admin
             {
                 da.Fill(_staffListDataTable);
             }
-            using (SqlDataAdapter da = new SqlDataAdapter("SELECT UserID, Name, ShortName FROM Users WHERE Fired<>1 ORDER BY Name", ConnectionStrings.UsersConnectionString))
+            using (SqlDataAdapter da = new SqlDataAdapter("SELECT UserID, Name, ShortName FROM Users ORDER BY Name", ConnectionStrings.UsersConnectionString))
             {
                 da.Fill(_usersDataTable);
             }

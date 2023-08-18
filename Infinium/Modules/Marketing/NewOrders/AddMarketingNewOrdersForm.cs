@@ -20,6 +20,7 @@ namespace Infinium
 
         private bool EditAgreedMainOrder = false;
         private bool EditMainOrder = false;
+        private bool ClientOMC = false;
 
         public OrdersManager _ordersManager;
 
@@ -29,7 +30,10 @@ namespace Infinium
         private DecorOrders DecorOrders;
         private OrdersCalculate _ordersCalculate;
 
-        public AddMarketingNewOrdersForm(ref OrdersManager tOrdersManager, bool bEditMainOrder, bool bEditAgreedMainOrder, ref Form tTopForm, ref OrdersCalculate tOrdersCalculate)
+
+
+        public AddMarketingNewOrdersForm(ref OrdersManager tOrdersManager, bool bClientOMC,
+            bool bEditMainOrder, bool bEditAgreedMainOrder, ref Form tTopForm, ref OrdersCalculate tOrdersCalculate)
         {
             TopForm = tTopForm;
 
@@ -39,6 +43,7 @@ namespace Infinium
 
             _ordersManager = tOrdersManager;
             EditMainOrder = bEditMainOrder;
+            ClientOMC = bClientOMC;
             EditAgreedMainOrder = bEditAgreedMainOrder;
             _ordersCalculate = tOrdersCalculate;
 
@@ -173,7 +178,8 @@ namespace Infinium
             TimeSpan ts1 = sw.Elapsed;
             sw.Restart();
 
-            FrontsOrders.HasClientExcluzive(_ordersManager.CurrentClientID);
+            if (!ClientOMC)
+                FrontsOrders.HasClientExcluzive(_ordersManager.CurrentClientID);
 
             sw.Stop();
             TimeSpan ts2 = sw.Elapsed;
@@ -190,7 +196,8 @@ namespace Infinium
             TimeSpan ts4 = sw.Elapsed;
             sw.Restart();
 
-            DecorOrders.HasClientExcluzive(_ordersManager.CurrentClientID);
+            if (!ClientOMC)
+                DecorOrders.HasClientExcluzive(_ordersManager.CurrentClientID);
 
             sw.Stop();
             TimeSpan ts5 = sw.Elapsed;
@@ -205,9 +212,8 @@ namespace Infinium
 
             DecorCatalogOrderBinding();
 
-
-            if (!FrontsOrders.HasExcluzive && !DecorOrders.HasExcluzive)
-                cbOnlyExcluzive.Visible = false;
+            
+            //cbOnlyExcluzive.Visible = false;
             if (EditMainOrder)
             {
                 DateTime DispatchDate = DateTime.Now;

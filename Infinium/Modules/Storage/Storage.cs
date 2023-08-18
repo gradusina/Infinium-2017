@@ -23207,10 +23207,22 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
                                     Length = Convert.ToDecimal(StoreDT.Rows[i]["SHeight"]);
                             }
                         }
+
                         if (StoreDT.Rows[i]["Width"] != DBNull.Value)
                             Width = Convert.ToDecimal(StoreDT.Rows[i]["Width"]);
                         else
-                            Width = Convert.ToDecimal(StoreDT.Rows[i]["SWidth"]);
+                        {
+                            if (StoreDT.Rows[i]["Height"] != DBNull.Value)
+                                Width = Convert.ToDecimal(StoreDT.Rows[i]["Height"]);
+                            else
+                            {
+                                if (StoreDT.Rows[i]["SWidth"] != DBNull.Value)
+                                    Width = Convert.ToDecimal(StoreDT.Rows[i]["SWidth"]);
+                                else
+                                if (StoreDT.Rows[i]["SHeight"] != DBNull.Value)
+                                    Width = Convert.ToDecimal(StoreDT.Rows[i]["SHeight"]);
+                            }
+                        }
 
                         if (StoreDT.Rows[i]["InvoiceCount"] != DBNull.Value)
                             InvoiceCount = Length * Width * Convert.ToDecimal(StoreDT.Rows[i]["InvoiceCount"]) / 1000000;
@@ -23422,7 +23434,7 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
             SimpleCS.TopBorderColor = HSSFColor.BLACK.index;
             SimpleCS.SetFont(SimpleF);
             HSSFCellStyle CostCS = hssfworkbook.CreateCellStyle();
-            CostCS.DataFormat = hssfworkbook.CreateDataFormat().GetFormat("### ### ##0.00");
+            CostCS.DataFormat = hssfworkbook.CreateDataFormat().GetFormat("### ### ##0.000");
             CostCS.BorderBottom = HSSFCellStyle.BORDER_THIN;
             CostCS.BottomBorderColor = HSSFColor.BLACK.index;
             CostCS.BorderLeft = HSSFCellStyle.BORDER_THIN;

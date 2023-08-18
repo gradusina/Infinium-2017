@@ -39,7 +39,6 @@
             this.AnimateTimer = new System.Windows.Forms.Timer(this.components);
             this.ClientNameTextBox = new System.Windows.Forms.TextBox();
             this.panel36 = new System.Windows.Forms.Panel();
-            this.ClientsContactsDataGrid = new Infinium.PercentageDataGrid();
             this.kryptonBorderEdge59 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge60 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge61 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
@@ -71,7 +70,6 @@
             this.btnEditClientRates = new ComponentFactory.Krypton.Toolkit.KryptonButton();
             this.label8 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.ShopsAddressesDataGrid = new Infinium.PercentageDataGrid();
             this.kryptonBorderEdge1 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge2 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge3 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
@@ -80,15 +78,26 @@
             this.cbClientGroups = new ComponentFactory.Krypton.Toolkit.KryptonComboBox();
             this.label9 = new System.Windows.Forms.Label();
             this.btnEditCountries = new ComponentFactory.Krypton.Toolkit.KryptonButton();
+            this.label15 = new System.Windows.Forms.Label();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.kryptonBorderEdge5 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
+            this.kryptonBorderEdge6 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
+            this.kryptonBorderEdge7 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
+            this.kryptonBorderEdge8 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
+            this.dgvClientsExcluziveCountries = new System.Windows.Forms.DataGridView();
+            this.ShopsAddressesDataGrid = new Infinium.PercentageDataGrid();
+            this.ClientsContactsDataGrid = new Infinium.PercentageDataGrid();
             this.panel1.SuspendLayout();
             this.panel36.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ClientsContactsDataGrid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NonStandardComboBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cbManager)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cbCountry)).BeginInit();
             this.panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ShopsAddressesDataGrid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cbClientGroups)).BeginInit();
+            this.panel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvClientsExcluziveCountries)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ShopsAddressesDataGrid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ClientsContactsDataGrid)).BeginInit();
             this.SuspendLayout();
             // 
             // kryptonBorderEdge20
@@ -97,7 +106,7 @@
             this.kryptonBorderEdge20.Location = new System.Drawing.Point(1164, 0);
             this.kryptonBorderEdge20.Name = "kryptonBorderEdge20";
             this.kryptonBorderEdge20.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge20.Size = new System.Drawing.Size(1, 670);
+            this.kryptonBorderEdge20.Size = new System.Drawing.Size(1, 728);
             this.kryptonBorderEdge20.StateCommon.Color1 = System.Drawing.Color.Black;
             this.kryptonBorderEdge20.Text = "kryptonBorderEdge20";
             // 
@@ -107,14 +116,14 @@
             this.kryptonBorderEdge21.Location = new System.Drawing.Point(0, 0);
             this.kryptonBorderEdge21.Name = "kryptonBorderEdge21";
             this.kryptonBorderEdge21.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge21.Size = new System.Drawing.Size(1, 670);
+            this.kryptonBorderEdge21.Size = new System.Drawing.Size(1, 728);
             this.kryptonBorderEdge21.StateCommon.Color1 = System.Drawing.Color.Black;
             this.kryptonBorderEdge21.Text = "kryptonBorderEdge21";
             // 
             // kryptonBorderEdge22
             // 
             this.kryptonBorderEdge22.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.kryptonBorderEdge22.Location = new System.Drawing.Point(1, 669);
+            this.kryptonBorderEdge22.Location = new System.Drawing.Point(1, 727);
             this.kryptonBorderEdge22.Name = "kryptonBorderEdge22";
             this.kryptonBorderEdge22.Size = new System.Drawing.Size(1163, 1);
             this.kryptonBorderEdge22.StateCommon.Color1 = System.Drawing.Color.Black;
@@ -168,6 +177,7 @@
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.StandardButtonsPalette.ButtonStyles.ButtonCommon.StateTracking.Border.Rounding = 0;
+            this.StandardButtonsPalette.CustomisedKryptonPaletteFilePath = null;
             // 
             // panel1
             // 
@@ -207,73 +217,16 @@
             // 
             // panel36
             // 
+            this.panel36.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.panel36.Controls.Add(this.ClientsContactsDataGrid);
             this.panel36.Controls.Add(this.kryptonBorderEdge59);
             this.panel36.Controls.Add(this.kryptonBorderEdge60);
             this.panel36.Controls.Add(this.kryptonBorderEdge61);
             this.panel36.Controls.Add(this.kryptonBorderEdge62);
-            this.panel36.Location = new System.Drawing.Point(11, 342);
+            this.panel36.Location = new System.Drawing.Point(11, 400);
             this.panel36.Name = "panel36";
             this.panel36.Size = new System.Drawing.Size(594, 179);
             this.panel36.TabIndex = 408;
-            // 
-            // ClientsContactsDataGrid
-            // 
-            this.ClientsContactsDataGrid.AllowUserToDeleteRows = false;
-            this.ClientsContactsDataGrid.AllowUserToResizeColumns = false;
-            this.ClientsContactsDataGrid.AllowUserToResizeRows = false;
-            this.ClientsContactsDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.ClientsContactsDataGrid.BackText = "Нет данных";
-            this.ClientsContactsDataGrid.ColumnHeadersHeight = 40;
-            this.ClientsContactsDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.ClientsContactsDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ClientsContactsDataGrid.HideOuterBorders = true;
-            this.ClientsContactsDataGrid.Location = new System.Drawing.Point(1, 1);
-            this.ClientsContactsDataGrid.Name = "ClientsContactsDataGrid";
-            this.ClientsContactsDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.ClientsContactsDataGrid.PercentLineWidth = 0;
-            this.ClientsContactsDataGrid.RowHeadersVisible = false;
-            this.ClientsContactsDataGrid.RowTemplate.Height = 30;
-            this.ClientsContactsDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.ClientsContactsDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
-            this.ClientsContactsDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.ClientsContactsDataGrid.Size = new System.Drawing.Size(592, 177);
-            this.ClientsContactsDataGrid.StandardStyle = false;
-            this.ClientsContactsDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
-            this.ClientsContactsDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
-            this.ClientsContactsDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.ClientsContactsDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
-            this.ClientsContactsDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
-            this.ClientsContactsDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.ClientsContactsDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
-            this.ClientsContactsDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.ClientsContactsDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.ClientsContactsDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
-            this.ClientsContactsDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.ClientsContactsDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
-            this.ClientsContactsDataGrid.StateCommon.HeaderColumn.Back.Color2 = System.Drawing.Color.Transparent;
-            this.ClientsContactsDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.ClientsContactsDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
-            this.ClientsContactsDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.ClientsContactsDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.ClientsContactsDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
-            this.ClientsContactsDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
-            this.ClientsContactsDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.ClientsContactsDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(121)))), ((int)(((byte)(177)))), ((int)(((byte)(229)))));
-            this.ClientsContactsDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.ClientsContactsDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.ClientsContactsDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
-            this.ClientsContactsDataGrid.StateSelected.HeaderRow.Border.Color1 = System.Drawing.Color.White;
-            this.ClientsContactsDataGrid.StateSelected.HeaderRow.Border.Color2 = System.Drawing.Color.White;
-            this.ClientsContactsDataGrid.StateSelected.HeaderRow.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.ClientsContactsDataGrid.TabIndex = 55;
-            this.ClientsContactsDataGrid.UseCustomBackColor = true;
             // 
             // kryptonBorderEdge59
             // 
@@ -348,14 +301,16 @@
             this.NonStandardComboBox.DropDownWidth = 121;
             this.NonStandardComboBox.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.NonStandardComboBox.FormattingEnabled = true;
+            this.NonStandardComboBox.IntegralHeight = false;
             this.NonStandardComboBox.Items.AddRange(new object[] {
             "Нет",
             "Да"});
-            this.NonStandardComboBox.Location = new System.Drawing.Point(210, 224);
+            this.NonStandardComboBox.Location = new System.Drawing.Point(209, 224);
             this.NonStandardComboBox.Name = "NonStandardComboBox";
             this.NonStandardComboBox.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.NonStandardComboBox.Size = new System.Drawing.Size(168, 27);
             this.NonStandardComboBox.StateCommon.ComboBox.Content.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.NonStandardComboBox.StateCommon.ComboBox.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.NonStandardComboBox.StateCommon.Item.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.NonStandardComboBox.TabIndex = 414;
             // 
@@ -413,7 +368,7 @@
             // 
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.label10.Location = new System.Drawing.Point(12, 224);
+            this.label10.Location = new System.Drawing.Point(11, 224);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(192, 25);
             this.label10.TabIndex = 422;
@@ -421,9 +376,10 @@
             // 
             // label4
             // 
+            this.label4.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.label4.Location = new System.Drawing.Point(7, 314);
+            this.label4.Location = new System.Drawing.Point(7, 372);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(214, 25);
             this.label4.TabIndex = 423;
@@ -431,8 +387,8 @@
             // 
             // ClientsSaveButton
             // 
-            this.ClientsSaveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.ClientsSaveButton.Location = new System.Drawing.Point(806, 609);
+            this.ClientsSaveButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.ClientsSaveButton.Location = new System.Drawing.Point(806, 667);
             this.ClientsSaveButton.Name = "ClientsSaveButton";
             this.ClientsSaveButton.OverrideDefault.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(158)))), ((int)(((byte)(0)))));
             this.ClientsSaveButton.Palette = this.StandardButtonsPalette;
@@ -457,7 +413,8 @@
             // 
             // RemoveContactButton
             // 
-            this.RemoveContactButton.Location = new System.Drawing.Point(11, 541);
+            this.RemoveContactButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.RemoveContactButton.Location = new System.Drawing.Point(11, 599);
             this.RemoveContactButton.Name = "RemoveContactButton";
             this.RemoveContactButton.OverrideDefault.Back.Color1 = System.Drawing.Color.Red;
             this.RemoveContactButton.Palette = this.StandardButtonsPalette;
@@ -482,8 +439,8 @@
             // 
             // ClientsCancelButton
             // 
-            this.ClientsCancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.ClientsCancelButton.Location = new System.Drawing.Point(982, 609);
+            this.ClientsCancelButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.ClientsCancelButton.Location = new System.Drawing.Point(982, 667);
             this.ClientsCancelButton.Name = "ClientsCancelButton";
             this.ClientsCancelButton.OverrideDefault.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(150)))), ((int)(((byte)(201)))));
             this.ClientsCancelButton.Palette = this.StandardButtonsPalette;
@@ -530,7 +487,7 @@
             // 
             this.label12.AutoSize = true;
             this.label12.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.label12.Location = new System.Drawing.Point(794, 175);
+            this.label12.Location = new System.Drawing.Point(11, 278);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(90, 25);
             this.label12.TabIndex = 439;
@@ -543,14 +500,16 @@
             this.cbManager.DropDownWidth = 121;
             this.cbManager.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.cbManager.FormattingEnabled = true;
+            this.cbManager.IntegralHeight = false;
             this.cbManager.Items.AddRange(new object[] {
             "Нет",
             "Да"});
-            this.cbManager.Location = new System.Drawing.Point(890, 175);
+            this.cbManager.Location = new System.Drawing.Point(107, 278);
             this.cbManager.Name = "cbManager";
             this.cbManager.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.cbManager.Size = new System.Drawing.Size(263, 27);
+            this.cbManager.Size = new System.Drawing.Size(270, 27);
             this.cbManager.StateCommon.ComboBox.Content.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.cbManager.StateCommon.ComboBox.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.cbManager.StateCommon.Item.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.cbManager.TabIndex = 438;
             // 
@@ -575,15 +534,13 @@
             // 
             // cbClientEnable
             // 
-            this.cbClientEnable.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalControl;
-            this.cbClientEnable.Location = new System.Drawing.Point(1042, 224);
+            this.cbClientEnable.Location = new System.Drawing.Point(259, 327);
             this.cbClientEnable.Name = "cbClientEnable";
             this.cbClientEnable.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.cbClientEnable.Size = new System.Drawing.Size(95, 24);
             this.cbClientEnable.StateCommon.ShortText.Color1 = System.Drawing.Color.Black;
             this.cbClientEnable.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.cbClientEnable.TabIndex = 447;
-            this.cbClientEnable.Text = "Активный";
             this.cbClientEnable.Values.Text = "Активный";
             // 
             // cbCountry
@@ -593,6 +550,7 @@
             this.cbCountry.DropDownWidth = 121;
             this.cbCountry.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.cbCountry.FormattingEnabled = true;
+            this.cbCountry.IntegralHeight = false;
             this.cbCountry.Items.AddRange(new object[] {
             "Нет",
             "Да"});
@@ -601,6 +559,7 @@
             this.cbCountry.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.cbCountry.Size = new System.Drawing.Size(247, 27);
             this.cbCountry.StateCommon.ComboBox.Content.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.cbCountry.StateCommon.ComboBox.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.cbCountry.StateCommon.Item.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.cbCountry.TabIndex = 452;
             // 
@@ -608,7 +567,7 @@
             // 
             this.label14.AutoSize = true;
             this.label14.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.label14.Location = new System.Drawing.Point(795, 224);
+            this.label14.Location = new System.Drawing.Point(12, 327);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(91, 25);
             this.label14.TabIndex = 458;
@@ -617,7 +576,7 @@
             // tbDelayOfPayment
             // 
             this.tbDelayOfPayment.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.tbDelayOfPayment.Location = new System.Drawing.Point(890, 221);
+            this.tbDelayOfPayment.Location = new System.Drawing.Point(107, 324);
             this.tbDelayOfPayment.Name = "tbDelayOfPayment";
             this.tbDelayOfPayment.Size = new System.Drawing.Size(72, 27);
             this.tbDelayOfPayment.TabIndex = 457;
@@ -625,8 +584,8 @@
             // 
             // btnEditClientRates
             // 
-            this.btnEditClientRates.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnEditClientRates.Location = new System.Drawing.Point(596, 609);
+            this.btnEditClientRates.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.btnEditClientRates.Location = new System.Drawing.Point(596, 667);
             this.btnEditClientRates.Name = "btnEditClientRates";
             this.btnEditClientRates.OverrideDefault.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(158)))), ((int)(((byte)(0)))));
             this.btnEditClientRates.Palette = this.StandardButtonsPalette;
@@ -651,9 +610,10 @@
             // 
             // label8
             // 
+            this.label8.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.label8.Location = new System.Drawing.Point(606, 314);
+            this.label8.Location = new System.Drawing.Point(606, 372);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(75, 25);
             this.label8.TabIndex = 471;
@@ -661,15 +621,218 @@
             // 
             // panel2
             // 
+            this.panel2.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.panel2.Controls.Add(this.ShopsAddressesDataGrid);
             this.panel2.Controls.Add(this.kryptonBorderEdge1);
             this.panel2.Controls.Add(this.kryptonBorderEdge2);
             this.panel2.Controls.Add(this.kryptonBorderEdge3);
             this.panel2.Controls.Add(this.kryptonBorderEdge4);
-            this.panel2.Location = new System.Drawing.Point(611, 342);
+            this.panel2.Location = new System.Drawing.Point(611, 400);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(541, 179);
             this.panel2.TabIndex = 470;
+            // 
+            // kryptonBorderEdge1
+            // 
+            this.kryptonBorderEdge1.Dock = System.Windows.Forms.DockStyle.Left;
+            this.kryptonBorderEdge1.Location = new System.Drawing.Point(0, 1);
+            this.kryptonBorderEdge1.Margin = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.kryptonBorderEdge1.Name = "kryptonBorderEdge1";
+            this.kryptonBorderEdge1.Orientation = System.Windows.Forms.Orientation.Vertical;
+            this.kryptonBorderEdge1.Size = new System.Drawing.Size(1, 177);
+            this.kryptonBorderEdge1.StateCommon.Color1 = System.Drawing.Color.Black;
+            this.kryptonBorderEdge1.Text = "kryptonBorderEdge1";
+            // 
+            // kryptonBorderEdge2
+            // 
+            this.kryptonBorderEdge2.Dock = System.Windows.Forms.DockStyle.Right;
+            this.kryptonBorderEdge2.Location = new System.Drawing.Point(540, 1);
+            this.kryptonBorderEdge2.Name = "kryptonBorderEdge2";
+            this.kryptonBorderEdge2.Orientation = System.Windows.Forms.Orientation.Vertical;
+            this.kryptonBorderEdge2.Size = new System.Drawing.Size(1, 177);
+            this.kryptonBorderEdge2.StateCommon.Color1 = System.Drawing.Color.Black;
+            this.kryptonBorderEdge2.Text = "kryptonBorderEdge2";
+            // 
+            // kryptonBorderEdge3
+            // 
+            this.kryptonBorderEdge3.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.kryptonBorderEdge3.Location = new System.Drawing.Point(0, 178);
+            this.kryptonBorderEdge3.Name = "kryptonBorderEdge3";
+            this.kryptonBorderEdge3.Size = new System.Drawing.Size(541, 1);
+            this.kryptonBorderEdge3.StateCommon.Color1 = System.Drawing.Color.Black;
+            this.kryptonBorderEdge3.Text = "kryptonBorderEdge3";
+            // 
+            // kryptonBorderEdge4
+            // 
+            this.kryptonBorderEdge4.Dock = System.Windows.Forms.DockStyle.Top;
+            this.kryptonBorderEdge4.Location = new System.Drawing.Point(0, 0);
+            this.kryptonBorderEdge4.Name = "kryptonBorderEdge4";
+            this.kryptonBorderEdge4.Size = new System.Drawing.Size(541, 1);
+            this.kryptonBorderEdge4.StateCommon.Color1 = System.Drawing.Color.Black;
+            this.kryptonBorderEdge4.Text = "kryptonBorderEdge4";
+            // 
+            // kryptonButton1
+            // 
+            this.kryptonButton1.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.kryptonButton1.Location = new System.Drawing.Point(982, 599);
+            this.kryptonButton1.Name = "kryptonButton1";
+            this.kryptonButton1.OverrideDefault.Back.Color1 = System.Drawing.Color.Red;
+            this.kryptonButton1.Palette = this.StandardButtonsPalette;
+            this.kryptonButton1.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Custom;
+            this.kryptonButton1.Size = new System.Drawing.Size(170, 39);
+            this.kryptonButton1.StateCommon.Back.Color1 = System.Drawing.Color.Red;
+            this.kryptonButton1.StateCommon.Content.Image.ImageH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
+            this.kryptonButton1.StateCommon.Content.Padding = new System.Windows.Forms.Padding(6, -1, 5, -1);
+            this.kryptonButton1.StateCommon.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 17.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.kryptonButton1.StateCommon.Content.ShortText.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.kryptonButton1.StateCommon.Content.ShortText.TextV = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.kryptonButton1.StateTracking.Back.Color1 = System.Drawing.Color.Red;
+            this.kryptonButton1.StateTracking.Border.Color1 = System.Drawing.Color.White;
+            this.kryptonButton1.StateTracking.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.kryptonButton1.StateTracking.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.kryptonButton1.StateTracking.Border.Rounding = 0;
+            this.kryptonButton1.TabIndex = 472;
+            this.kryptonButton1.Values.Text = "Удалить";
+            this.kryptonButton1.Click += new System.EventHandler(this.kryptonButton1_Click);
+            // 
+            // cbClientGroups
+            // 
+            this.cbClientGroups.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.cbClientGroups.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.cbClientGroups.DropDownWidth = 121;
+            this.cbClientGroups.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.cbClientGroups.FormattingEnabled = true;
+            this.cbClientGroups.IntegralHeight = false;
+            this.cbClientGroups.Items.AddRange(new object[] {
+            "Нет",
+            "Да"});
+            this.cbClientGroups.Location = new System.Drawing.Point(966, 100);
+            this.cbClientGroups.Name = "cbClientGroups";
+            this.cbClientGroups.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.cbClientGroups.Size = new System.Drawing.Size(186, 27);
+            this.cbClientGroups.StateCommon.ComboBox.Content.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.cbClientGroups.StateCommon.ComboBox.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
+            this.cbClientGroups.StateCommon.Item.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.cbClientGroups.TabIndex = 478;
+            this.cbClientGroups.SelectedIndexChanged += new System.EventHandler(this.kryptonComboBox1_SelectedIndexChanged);
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.label9.Location = new System.Drawing.Point(961, 72);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(69, 25);
+            this.label9.TabIndex = 477;
+            this.label9.Text = "Группа";
+            this.label9.Click += new System.EventHandler(this.label9_Click);
+            // 
+            // btnEditCountries
+            // 
+            this.btnEditCountries.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.btnEditCountries.Location = new System.Drawing.Point(463, 667);
+            this.btnEditCountries.Name = "btnEditCountries";
+            this.btnEditCountries.OverrideDefault.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(158)))), ((int)(((byte)(0)))));
+            this.btnEditCountries.Palette = this.StandardButtonsPalette;
+            this.btnEditCountries.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Custom;
+            this.btnEditCountries.Size = new System.Drawing.Size(127, 39);
+            this.btnEditCountries.StateCommon.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(158)))), ((int)(((byte)(0)))));
+            this.btnEditCountries.StateCommon.Content.Image.ImageH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
+            this.btnEditCountries.StateCommon.Content.Padding = new System.Windows.Forms.Padding(6, -1, 5, -1);
+            this.btnEditCountries.StateCommon.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 17.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.btnEditCountries.StateCommon.Content.ShortText.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.btnEditCountries.StateCommon.Content.ShortText.TextV = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.btnEditCountries.StateTracking.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(158)))), ((int)(((byte)(0)))));
+            this.btnEditCountries.StateTracking.Border.Color1 = System.Drawing.Color.White;
+            this.btnEditCountries.StateTracking.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.btnEditCountries.StateTracking.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.btnEditCountries.StateTracking.Border.Rounding = 0;
+            this.btnEditCountries.TabIndex = 483;
+            this.btnEditCountries.Values.Text = "Страны";
+            this.btnEditCountries.Click += new System.EventHandler(this.btnEditCountries_Click);
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.label15.Location = new System.Drawing.Point(801, 147);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(199, 25);
+            this.label15.TabIndex = 489;
+            this.label15.Text = "Страны по эксклюзиву";
+            // 
+            // panel3
+            // 
+            this.panel3.Controls.Add(this.dgvClientsExcluziveCountries);
+            this.panel3.Controls.Add(this.kryptonBorderEdge5);
+            this.panel3.Controls.Add(this.kryptonBorderEdge6);
+            this.panel3.Controls.Add(this.kryptonBorderEdge7);
+            this.panel3.Controls.Add(this.kryptonBorderEdge8);
+            this.panel3.Location = new System.Drawing.Point(806, 175);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(345, 177);
+            this.panel3.TabIndex = 488;
+            // 
+            // kryptonBorderEdge5
+            // 
+            this.kryptonBorderEdge5.Dock = System.Windows.Forms.DockStyle.Left;
+            this.kryptonBorderEdge5.Location = new System.Drawing.Point(0, 1);
+            this.kryptonBorderEdge5.Margin = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.kryptonBorderEdge5.Name = "kryptonBorderEdge5";
+            this.kryptonBorderEdge5.Orientation = System.Windows.Forms.Orientation.Vertical;
+            this.kryptonBorderEdge5.Size = new System.Drawing.Size(1, 175);
+            this.kryptonBorderEdge5.StateCommon.Color1 = System.Drawing.Color.Black;
+            this.kryptonBorderEdge5.Text = "kryptonBorderEdge5";
+            // 
+            // kryptonBorderEdge6
+            // 
+            this.kryptonBorderEdge6.Dock = System.Windows.Forms.DockStyle.Right;
+            this.kryptonBorderEdge6.Location = new System.Drawing.Point(344, 1);
+            this.kryptonBorderEdge6.Name = "kryptonBorderEdge6";
+            this.kryptonBorderEdge6.Orientation = System.Windows.Forms.Orientation.Vertical;
+            this.kryptonBorderEdge6.Size = new System.Drawing.Size(1, 175);
+            this.kryptonBorderEdge6.StateCommon.Color1 = System.Drawing.Color.Black;
+            this.kryptonBorderEdge6.Text = "kryptonBorderEdge6";
+            // 
+            // kryptonBorderEdge7
+            // 
+            this.kryptonBorderEdge7.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.kryptonBorderEdge7.Location = new System.Drawing.Point(0, 176);
+            this.kryptonBorderEdge7.Name = "kryptonBorderEdge7";
+            this.kryptonBorderEdge7.Size = new System.Drawing.Size(345, 1);
+            this.kryptonBorderEdge7.StateCommon.Color1 = System.Drawing.Color.Black;
+            this.kryptonBorderEdge7.Text = "kryptonBorderEdge7";
+            // 
+            // kryptonBorderEdge8
+            // 
+            this.kryptonBorderEdge8.Dock = System.Windows.Forms.DockStyle.Top;
+            this.kryptonBorderEdge8.Location = new System.Drawing.Point(0, 0);
+            this.kryptonBorderEdge8.Name = "kryptonBorderEdge8";
+            this.kryptonBorderEdge8.Size = new System.Drawing.Size(345, 1);
+            this.kryptonBorderEdge8.StateCommon.Color1 = System.Drawing.Color.Black;
+            this.kryptonBorderEdge8.Text = "kryptonBorderEdge8";
+            // 
+            // dgvClientsExcluziveCountries
+            // 
+            this.dgvClientsExcluziveCountries.AllowUserToAddRows = false;
+            this.dgvClientsExcluziveCountries.AllowUserToDeleteRows = false;
+            this.dgvClientsExcluziveCountries.AllowUserToResizeColumns = false;
+            this.dgvClientsExcluziveCountries.AllowUserToResizeRows = false;
+            this.dgvClientsExcluziveCountries.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvClientsExcluziveCountries.BackgroundColor = System.Drawing.SystemColors.ControlLightLight;
+            this.dgvClientsExcluziveCountries.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvClientsExcluziveCountries.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvClientsExcluziveCountries.ColumnHeadersVisible = false;
+            this.dgvClientsExcluziveCountries.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvClientsExcluziveCountries.Location = new System.Drawing.Point(1, 1);
+            this.dgvClientsExcluziveCountries.Name = "dgvClientsExcluziveCountries";
+            this.dgvClientsExcluziveCountries.RowHeadersVisible = false;
+            this.dgvClientsExcluziveCountries.Size = new System.Drawing.Size(343, 175);
+            this.dgvClientsExcluziveCountries.TabIndex = 60;
             // 
             // ShopsAddressesDataGrid
             // 
@@ -731,131 +894,71 @@
             this.ShopsAddressesDataGrid.UseCustomBackColor = true;
             this.ShopsAddressesDataGrid.DefaultValuesNeeded += new System.Windows.Forms.DataGridViewRowEventHandler(this.ShopsAddressesDataGrid_DefaultValuesNeeded);
             // 
-            // kryptonBorderEdge1
+            // ClientsContactsDataGrid
             // 
-            this.kryptonBorderEdge1.Dock = System.Windows.Forms.DockStyle.Left;
-            this.kryptonBorderEdge1.Location = new System.Drawing.Point(0, 1);
-            this.kryptonBorderEdge1.Margin = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.kryptonBorderEdge1.Name = "kryptonBorderEdge1";
-            this.kryptonBorderEdge1.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge1.Size = new System.Drawing.Size(1, 177);
-            this.kryptonBorderEdge1.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge1.Text = "kryptonBorderEdge1";
-            // 
-            // kryptonBorderEdge2
-            // 
-            this.kryptonBorderEdge2.Dock = System.Windows.Forms.DockStyle.Right;
-            this.kryptonBorderEdge2.Location = new System.Drawing.Point(540, 1);
-            this.kryptonBorderEdge2.Name = "kryptonBorderEdge2";
-            this.kryptonBorderEdge2.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge2.Size = new System.Drawing.Size(1, 177);
-            this.kryptonBorderEdge2.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge2.Text = "kryptonBorderEdge2";
-            // 
-            // kryptonBorderEdge3
-            // 
-            this.kryptonBorderEdge3.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.kryptonBorderEdge3.Location = new System.Drawing.Point(0, 178);
-            this.kryptonBorderEdge3.Name = "kryptonBorderEdge3";
-            this.kryptonBorderEdge3.Size = new System.Drawing.Size(541, 1);
-            this.kryptonBorderEdge3.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge3.Text = "kryptonBorderEdge3";
-            // 
-            // kryptonBorderEdge4
-            // 
-            this.kryptonBorderEdge4.Dock = System.Windows.Forms.DockStyle.Top;
-            this.kryptonBorderEdge4.Location = new System.Drawing.Point(0, 0);
-            this.kryptonBorderEdge4.Name = "kryptonBorderEdge4";
-            this.kryptonBorderEdge4.Size = new System.Drawing.Size(541, 1);
-            this.kryptonBorderEdge4.StateCommon.Color1 = System.Drawing.Color.Black;
-            this.kryptonBorderEdge4.Text = "kryptonBorderEdge4";
-            // 
-            // kryptonButton1
-            // 
-            this.kryptonButton1.Location = new System.Drawing.Point(982, 541);
-            this.kryptonButton1.Name = "kryptonButton1";
-            this.kryptonButton1.OverrideDefault.Back.Color1 = System.Drawing.Color.Red;
-            this.kryptonButton1.Palette = this.StandardButtonsPalette;
-            this.kryptonButton1.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Custom;
-            this.kryptonButton1.Size = new System.Drawing.Size(170, 39);
-            this.kryptonButton1.StateCommon.Back.Color1 = System.Drawing.Color.Red;
-            this.kryptonButton1.StateCommon.Content.Image.ImageH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
-            this.kryptonButton1.StateCommon.Content.Padding = new System.Windows.Forms.Padding(6, -1, 5, -1);
-            this.kryptonButton1.StateCommon.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 17.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.kryptonButton1.StateCommon.Content.ShortText.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
-            this.kryptonButton1.StateCommon.Content.ShortText.TextV = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
-            this.kryptonButton1.StateTracking.Back.Color1 = System.Drawing.Color.Red;
-            this.kryptonButton1.StateTracking.Border.Color1 = System.Drawing.Color.White;
-            this.kryptonButton1.StateTracking.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.kryptonButton1.StateTracking.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            this.ClientsContactsDataGrid.AllowUserToDeleteRows = false;
+            this.ClientsContactsDataGrid.AllowUserToResizeColumns = false;
+            this.ClientsContactsDataGrid.AllowUserToResizeRows = false;
+            this.ClientsContactsDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.ClientsContactsDataGrid.BackText = "Нет данных";
+            this.ClientsContactsDataGrid.ColumnHeadersHeight = 40;
+            this.ClientsContactsDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.ClientsContactsDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ClientsContactsDataGrid.HideOuterBorders = true;
+            this.ClientsContactsDataGrid.Location = new System.Drawing.Point(1, 1);
+            this.ClientsContactsDataGrid.Name = "ClientsContactsDataGrid";
+            this.ClientsContactsDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.ClientsContactsDataGrid.PercentLineWidth = 0;
+            this.ClientsContactsDataGrid.RowHeadersVisible = false;
+            this.ClientsContactsDataGrid.RowTemplate.Height = 30;
+            this.ClientsContactsDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.ClientsContactsDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
+            this.ClientsContactsDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.ClientsContactsDataGrid.Size = new System.Drawing.Size(592, 177);
+            this.ClientsContactsDataGrid.StandardStyle = false;
+            this.ClientsContactsDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
+            this.ClientsContactsDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
+            this.ClientsContactsDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.ClientsContactsDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
+            this.ClientsContactsDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
+            this.ClientsContactsDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.ClientsContactsDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
+            this.ClientsContactsDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.ClientsContactsDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.kryptonButton1.StateTracking.Border.Rounding = 0;
-            this.kryptonButton1.TabIndex = 472;
-            this.kryptonButton1.Values.Text = "Удалить";
-            this.kryptonButton1.Click += new System.EventHandler(this.kryptonButton1_Click);
-            // 
-            // cbClientGroups
-            // 
-            this.cbClientGroups.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.cbClientGroups.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.cbClientGroups.DropDownWidth = 121;
-            this.cbClientGroups.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.cbClientGroups.FormattingEnabled = true;
-            this.cbClientGroups.Items.AddRange(new object[] {
-            "Нет",
-            "Да"});
-            this.cbClientGroups.Location = new System.Drawing.Point(966, 100);
-            this.cbClientGroups.Name = "cbClientGroups";
-            this.cbClientGroups.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.cbClientGroups.Size = new System.Drawing.Size(186, 27);
-            this.cbClientGroups.StateCommon.ComboBox.Content.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.cbClientGroups.StateCommon.Item.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.cbClientGroups.TabIndex = 478;
-            this.cbClientGroups.SelectedIndexChanged += new System.EventHandler(this.kryptonComboBox1_SelectedIndexChanged);
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.label9.Location = new System.Drawing.Point(961, 72);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(69, 25);
-            this.label9.TabIndex = 477;
-            this.label9.Text = "Группа";
-            this.label9.Click += new System.EventHandler(this.label9_Click);
-            // 
-            // btnEditCountries
-            // 
-            this.btnEditCountries.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnEditCountries.Location = new System.Drawing.Point(463, 609);
-            this.btnEditCountries.Name = "btnEditCountries";
-            this.btnEditCountries.OverrideDefault.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(158)))), ((int)(((byte)(0)))));
-            this.btnEditCountries.Palette = this.StandardButtonsPalette;
-            this.btnEditCountries.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Custom;
-            this.btnEditCountries.Size = new System.Drawing.Size(127, 39);
-            this.btnEditCountries.StateCommon.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(158)))), ((int)(((byte)(0)))));
-            this.btnEditCountries.StateCommon.Content.Image.ImageH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
-            this.btnEditCountries.StateCommon.Content.Padding = new System.Windows.Forms.Padding(6, -1, 5, -1);
-            this.btnEditCountries.StateCommon.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 17.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.btnEditCountries.StateCommon.Content.ShortText.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
-            this.btnEditCountries.StateCommon.Content.ShortText.TextV = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
-            this.btnEditCountries.StateTracking.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(158)))), ((int)(((byte)(0)))));
-            this.btnEditCountries.StateTracking.Border.Color1 = System.Drawing.Color.White;
-            this.btnEditCountries.StateTracking.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.btnEditCountries.StateTracking.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            this.ClientsContactsDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
+            this.ClientsContactsDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.ClientsContactsDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.ClientsContactsDataGrid.StateCommon.HeaderColumn.Back.Color2 = System.Drawing.Color.Transparent;
+            this.ClientsContactsDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.ClientsContactsDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
+            this.ClientsContactsDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.ClientsContactsDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.btnEditCountries.StateTracking.Border.Rounding = 0;
-            this.btnEditCountries.TabIndex = 483;
-            this.btnEditCountries.Values.Text = "Страны";
-            this.btnEditCountries.Click += new System.EventHandler(this.btnEditCountries_Click);
+            this.ClientsContactsDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
+            this.ClientsContactsDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
+            this.ClientsContactsDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.ClientsContactsDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(121)))), ((int)(((byte)(177)))), ((int)(((byte)(229)))));
+            this.ClientsContactsDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.ClientsContactsDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.ClientsContactsDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
+            this.ClientsContactsDataGrid.StateSelected.HeaderRow.Border.Color1 = System.Drawing.Color.White;
+            this.ClientsContactsDataGrid.StateSelected.HeaderRow.Border.Color2 = System.Drawing.Color.White;
+            this.ClientsContactsDataGrid.StateSelected.HeaderRow.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.ClientsContactsDataGrid.TabIndex = 55;
+            this.ClientsContactsDataGrid.UseCustomBackColor = true;
             // 
             // NewMarketingClientForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1165, 670);
+            this.ClientSize = new System.Drawing.Size(1165, 728);
+            this.Controls.Add(this.label15);
+            this.Controls.Add(this.panel3);
             this.Controls.Add(this.btnEditCountries);
             this.Controls.Add(this.cbClientGroups);
             this.Controls.Add(this.label9);
@@ -905,14 +1008,17 @@
             this.panel1.PerformLayout();
             this.panel36.ResumeLayout(false);
             this.panel36.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ClientsContactsDataGrid)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.NonStandardComboBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cbManager)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cbCountry)).EndInit();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ShopsAddressesDataGrid)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cbClientGroups)).EndInit();
+            this.panel3.ResumeLayout(false);
+            this.panel3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvClientsExcluziveCountries)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ShopsAddressesDataGrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ClientsContactsDataGrid)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -971,5 +1077,12 @@
         private ComponentFactory.Krypton.Toolkit.KryptonComboBox cbClientGroups;
         private System.Windows.Forms.Label label9;
         private ComponentFactory.Krypton.Toolkit.KryptonButton btnEditCountries;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.Panel panel3;
+        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge5;
+        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge6;
+        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge7;
+        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge8;
+        private System.Windows.Forms.DataGridView dgvClientsExcluziveCountries;
     }
 }

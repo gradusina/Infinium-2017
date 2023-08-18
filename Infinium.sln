@@ -1,14 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.1500
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.33328.57
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infinium", "Infinium\Infinium.csproj", "{3DEF0954-AFE1-482F-A7FD-FFCC1C6B5AD8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testing", "Testing\Testing.csproj", "{240B494B-73A8-4466-BAAC-E799B8799AE2}"
+EndProject
 Global
-	GlobalSection(Performance) = preSolution
-		HasPerformanceSessions = true
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -18,11 +17,18 @@ Global
 		{3DEF0954-AFE1-482F-A7FD-FFCC1C6B5AD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3DEF0954-AFE1-482F-A7FD-FFCC1C6B5AD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3DEF0954-AFE1-482F-A7FD-FFCC1C6B5AD8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{240B494B-73A8-4466-BAAC-E799B8799AE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{240B494B-73A8-4466-BAAC-E799B8799AE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{240B494B-73A8-4466-BAAC-E799B8799AE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{240B494B-73A8-4466-BAAC-E799B8799AE2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BF87AEAC-F75C-4230-895C-D42562CC6C55}
+	EndGlobalSection
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
 	EndGlobalSection
 EndGlobal

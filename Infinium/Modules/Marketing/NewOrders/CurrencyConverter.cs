@@ -11,7 +11,7 @@ namespace Infinium.Modules.Marketing.NewOrders
 
     public class CurrencyConverter
     {
-        private class Currency
+        public class Currency
         {
             public int Cur_ID { get; set; }
             public DateTime Date { get; set; }
@@ -23,7 +23,8 @@ namespace Infinium.Modules.Marketing.NewOrders
 
         public static decimal NbrbDailyRates(DateTime date)
         {
-            string url = $"https://www.nbrb.by/api/exrates/rates?periodicity=0&ondate={date:yyyy-MM-dd}";
+            //string url = $"https://www.nbrb.by/api/exrates/rates?periodicity=0&ondate={date:yyyy-MM-dd}";
+            string url = $"https://api.nbrb.by/exrates/rates?periodicity=0&ondate={date:yyyy-MM-dd}";
 
             HttpWebResponse myHttpWebResponse = null;
 

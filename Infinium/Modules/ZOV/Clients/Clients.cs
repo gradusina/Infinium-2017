@@ -5,22 +5,26 @@ using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
+using System.Xml.Linq;
+
+using static Infinium.UserProfile;
 
 namespace Infinium.Modules.ZOV.Clients
 {
     public class Clients
     {
-        private PercentageDataGrid ClientsDataGrid = null;
-        private PercentageDataGrid ClientsGroupsDataGrid = null;
-        private PercentageDataGrid ManagersDataGrid = null;
-        private PercentageDataGrid ContactsDataGrid = null;
-        private PercentageDataGrid ShopAddressesDataGrid = null;
+        private PercentageDataGrid _clientsDataGrid = null;
+        private PercentageDataGrid _clientsGroupsDataGrid = null;
+        private PercentageDataGrid _managersDataGrid = null;
+        private PercentageDataGrid _contactsDataGrid = null;
+        private PercentageDataGrid _shopAddressesDataGrid = null;
 
-        private DataTable ClientsGroupsDataTable = null;
+        private DataTable _clientsGroupsDataTable = null;
         public DataTable AllClientsDataTable = null;
-        private DataTable ClientsDataTable = null;
-        private DataTable ManagersDataTable = null;
+        private DataTable _clientsDataTable = null;
+        private DataTable _managersDataTable = null;
 
         public bool NewClient = false;
 
@@ -56,11 +60,11 @@ namespace Infinium.Modules.ZOV.Clients
             ref PercentageDataGrid tManagersDataGrid,
             ref PercentageDataGrid tContactsDataGrid, ref PercentageDataGrid tShopAddressesDataGrid)
         {
-            ClientsDataGrid = tClientsDataGrid;
-            ClientsGroupsDataGrid = tClientsGroupsDataGrid;
-            ManagersDataGrid = tManagersDataGrid;
-            ContactsDataGrid = tContactsDataGrid;
-            ShopAddressesDataGrid = tShopAddressesDataGrid;
+            _clientsDataGrid = tClientsDataGrid;
+            _clientsGroupsDataGrid = tClientsGroupsDataGrid;
+            _managersDataGrid = tManagersDataGrid;
+            _contactsDataGrid = tContactsDataGrid;
+            _shopAddressesDataGrid = tShopAddressesDataGrid;
 
             Initialize();
         }
@@ -68,9 +72,9 @@ namespace Infinium.Modules.ZOV.Clients
         private void Create()
         {
             AllClientsDataTable = new DataTable();
-            ClientsGroupsDataTable = new DataTable();
-            ClientsDataTable = new DataTable();
-            ManagersDataTable = new DataTable();
+            _clientsGroupsDataTable = new DataTable();
+            _clientsDataTable = new DataTable();
+            _managersDataTable = new DataTable();
             ShopAddressesDataTable = new DataTable();
 
             ContactsBindingSource = new BindingSource();
@@ -87,19 +91,19 @@ namespace Infinium.Modules.ZOV.Clients
             ManagersDataAdapter = new SqlDataAdapter("SELECT ManagerID, Name FROM Managers ORDER BY Name",
                 ConnectionStrings.ZOVReferenceConnectionString);
             ManagersCommandBuilder = new SqlCommandBuilder(ManagersDataAdapter);
-            ManagersDataAdapter.Fill(ManagersDataTable);
+            ManagersDataAdapter.Fill(_managersDataTable);
 
             ClientsGroupsDataAdapter = new SqlDataAdapter("SELECT * FROM ClientsGroups ORDER BY ClientGroupName",
                 ConnectionStrings.ZOVReferenceConnectionString);
             ClientsGroupsCommandBuilder = new SqlCommandBuilder(ClientsGroupsDataAdapter);
-            ClientsGroupsDataAdapter.Fill(ClientsGroupsDataTable);
+            ClientsGroupsDataAdapter.Fill(_clientsGroupsDataTable);
             
             ClientsDataAdapter = new SqlDataAdapter("SELECT * FROM Clients ORDER BY ClientName",
                 ConnectionStrings.ZOVReferenceConnectionString);
             ClientsCommandBuilder = new SqlCommandBuilder(ClientsDataAdapter);
-            ClientsDataAdapter.Fill(ClientsDataTable);
+            ClientsDataAdapter.Fill(_clientsDataTable);
 
-            using (SqlDataAdapter da = new SqlDataAdapter(@"SELECT Clients.ClientName, ClientsGroups.ClientGroupName, Managers.Name
+            using (var da = new SqlDataAdapter(@"SELECT Clients.ClientName, ClientsGroups.ClientGroupName, Managers.Name
 FROM Clients 
 INNER JOIN Managers ON Clients.ManagerID = Managers.ManagerID 
 INNER JOIN ClientsGroups ON Clients.ClientGroupID = ClientsGroups.ClientGroupID
@@ -116,17 +120,17 @@ ORDER BY Clients.ClientName", ConnectionStrings.ZOVReferenceConnectionString))
 
         private void Binding()
         {
-            ClientsGroupsBindingSource.DataSource = ClientsGroupsDataTable;
-            ClientsBindingSource.DataSource = ClientsDataTable;
-            ManagersBindingSource.DataSource = ManagersDataTable;
+            ClientsGroupsBindingSource.DataSource = _clientsGroupsDataTable;
+            ClientsBindingSource.DataSource = _clientsDataTable;
+            ManagersBindingSource.DataSource = _managersDataTable;
             ContactsBindingSource.DataSource = ContactsDataTable;
             ShopAddressesBindingSource.DataSource = ShopAddressesDataTable;
 
-            ManagersDataGrid.DataSource = ManagersBindingSource;
-            ClientsGroupsDataGrid.DataSource = ClientsGroupsBindingSource;
-            ClientsDataGrid.DataSource = ClientsBindingSource;
-            ContactsDataGrid.DataSource = ContactsBindingSource;
-            ShopAddressesDataGrid.DataSource = ShopAddressesBindingSource;
+            _managersDataGrid.DataSource = ManagersBindingSource;
+            _clientsGroupsDataGrid.DataSource = ClientsGroupsBindingSource;
+            _clientsDataGrid.DataSource = ClientsBindingSource;
+            _contactsDataGrid.DataSource = ContactsBindingSource;
+            _shopAddressesDataGrid.DataSource = ShopAddressesBindingSource;
 
             ClientsBindingSourceDisplayMember = "ClientName";
 
@@ -135,30 +139,30 @@ ORDER BY Clients.ClientName", ConnectionStrings.ZOVReferenceConnectionString))
 
         private void SetClientsDataGrid()
         {
-            ClientsDataGrid.Columns.Add(ClientsGroupsColumn);
-            ClientsDataGrid.Columns.Add(ManagerColumn);
+            _clientsDataGrid.Columns.Add(ClientsGroupsColumn);
+            _clientsDataGrid.Columns.Add(ManagerColumn);
 
-            foreach (DataGridViewColumn Column in ClientsDataGrid.Columns)
+            foreach (DataGridViewColumn column in _clientsDataGrid.Columns)
             {
-                Column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
             }
 
-            ManagersDataGrid.Columns["Name"].HeaderText = "Менеджер";
+            _managersDataGrid.Columns["Name"].HeaderText = "Менеджер";
 
-            ClientsGroupsDataGrid.Columns["ClientGroupName"].HeaderText = "Название";
+            _clientsGroupsDataGrid.Columns["ClientGroupName"].HeaderText = "Название";
 
-            ClientsDataGrid.Columns["ClientGroupID"].Visible = false;
-            ClientsDataGrid.Columns["ManagerID"].Visible = false;
-            ClientsDataGrid.Columns["Contacts"].Visible = false;
-            ClientsDataGrid.Columns["MoveOk"].Visible = false;
+            _clientsDataGrid.Columns["ClientGroupID"].Visible = false;
+            _clientsDataGrid.Columns["ManagerID"].Visible = false;
+            _clientsDataGrid.Columns["Contacts"].Visible = false;
+            _clientsDataGrid.Columns["MoveOk"].Visible = false;
 
-            ClientsDataGrid.Columns["ClientID"].HeaderText = "ID";
-            ClientsDataGrid.Columns["ClientName"].HeaderText = "Название организации";
+            _clientsDataGrid.Columns["ClientID"].HeaderText = "ID";
+            _clientsDataGrid.Columns["ClientName"].HeaderText = "Название организации";
 
-            ClientsDataGrid.AutoGenerateColumns = false;
+            _clientsDataGrid.AutoGenerateColumns = false;
 
-            ClientsDataGrid.Columns["ClientID"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            ClientsDataGrid.Columns["ClientID"].Width = 50;
+            _clientsDataGrid.Columns["ClientID"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            _clientsDataGrid.Columns["ClientID"].Width = 50;
             //ClientsDataGrid.Columns["ClientName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             //ClientsDataGrid.Columns["ClientName"].MinimumWidth = 150;
             //ClientsDataGrid.Columns["ManagerColumn"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
@@ -166,31 +170,31 @@ ORDER BY Clients.ClientName", ConnectionStrings.ZOVReferenceConnectionString))
             //ClientsDataGrid.Columns["ClientsGroupsColumn"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             //ClientsDataGrid.Columns["ClientsGroupsColumn"].MinimumWidth = 150;
 
-            int DisplayIndex = 0;
-            ClientsDataGrid.Columns["ClientID"].DisplayIndex = DisplayIndex++;
-            ClientsDataGrid.Columns["ClientName"].DisplayIndex = DisplayIndex++;
-            ClientsDataGrid.Columns["ClientsGroupsColumn"].DisplayIndex = DisplayIndex++;
-            ClientsDataGrid.Columns["ManagerColumn"].DisplayIndex = DisplayIndex++;
+            var displayIndex = 0;
+            _clientsDataGrid.Columns["ClientID"].DisplayIndex = displayIndex++;
+            _clientsDataGrid.Columns["ClientName"].DisplayIndex = displayIndex++;
+            _clientsDataGrid.Columns["ClientsGroupsColumn"].DisplayIndex = displayIndex++;
+            _clientsDataGrid.Columns["ManagerColumn"].DisplayIndex = displayIndex++;
         }
 
         private DataGridViewComboBoxColumn ManagerColumn
         {
             get
             {
-                DataGridViewComboBoxColumn Column = new DataGridViewComboBoxColumn()
+                var column = new DataGridViewComboBoxColumn()
                 {
                     Name = "ManagerColumn",
                     HeaderText = "Менеджер",
                     DataPropertyName = "ManagerID",
 
-                    DataSource = new DataView(ManagersDataTable),
+                    DataSource = new DataView(_managersDataTable),
                     ValueMember = "ManagerID",
                     DisplayMember = "Name",
                     DisplayStyle = DataGridViewComboBoxDisplayStyle.Nothing,
                     SortMode = DataGridViewColumnSortMode.Automatic,
                     ReadOnly = false
                 };
-                return Column;
+                return column;
             }
         }
 
@@ -198,41 +202,49 @@ ORDER BY Clients.ClientName", ConnectionStrings.ZOVReferenceConnectionString))
         {
             get
             {
-                DataGridViewComboBoxColumn Column = new DataGridViewComboBoxColumn()
+                var column = new DataGridViewComboBoxColumn()
                 {
                     Name = "ClientsGroupsColumn",
                     HeaderText = "Группа клиентов",
                     DataPropertyName = "ClientGroupID",
 
-                    DataSource = new DataView(ClientsGroupsDataTable),
+                    DataSource = new DataView(_clientsGroupsDataTable),
                     ValueMember = "ClientGroupID",
                     DisplayMember = "ClientGroupName",
                     DisplayStyle = DataGridViewComboBoxDisplayStyle.Nothing,
                     SortMode = DataGridViewColumnSortMode.Automatic,
                     ReadOnly = false
                 };
-                return Column;
+                return column;
             }
         }
 
         private void SetContactsDataGrid()
         {
-            ContactsDataGrid.Columns["Name"].HeaderText = "Имя";
-            ContactsDataGrid.Columns["Position"].HeaderText = "Должность";
-            ContactsDataGrid.Columns["Phone"].HeaderText = "Телефон";
-            ContactsDataGrid.Columns["Email"].HeaderText = "E-mail";
-            ContactsDataGrid.Columns["ICQ"].HeaderText = "ICQ";
-            ContactsDataGrid.Columns["Notes"].HeaderText = "Примечание";
+            _contactsDataGrid.Columns["Name"].HeaderText = "Имя";
+            _contactsDataGrid.Columns["Position"].HeaderText = "Должность";
+            _contactsDataGrid.Columns["Phone"].HeaderText = "Телефон";
+            _contactsDataGrid.Columns["Email"].HeaderText = "E-mail";
+            _contactsDataGrid.Columns["ICQ"].HeaderText = "ICQ";
+            _contactsDataGrid.Columns["Notes"].HeaderText = "Примечание";
 
-            ContactsDataGrid.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            _contactsDataGrid.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
 
-            ShopAddressesDataGrid.Columns["ShopAddressID"].Visible = false;
-            ShopAddressesDataGrid.Columns["ClientID"].Visible = false;
-            ShopAddressesDataGrid.Columns["Address"].HeaderText = "Адреса салонов";
+            _shopAddressesDataGrid.Columns["Lat"].Visible = false;
+            _shopAddressesDataGrid.Columns["Long"].Visible = false;
+            _shopAddressesDataGrid.Columns["ShopAddressID"].Visible = false;
+            _shopAddressesDataGrid.Columns["ClientID"].Visible = false;
+            _shopAddressesDataGrid.Columns["City"].HeaderText = "Город";
+            _shopAddressesDataGrid.Columns["Country"].HeaderText = "Страна";
+            _shopAddressesDataGrid.Columns["Phone"].HeaderText = "Телефон";
+            _shopAddressesDataGrid.Columns["Address"].HeaderText = "Адрес салона";
+            _shopAddressesDataGrid.Columns["IsFronts"].HeaderText = "Фасады";
+            _shopAddressesDataGrid.Columns["IsProfile"].HeaderText = "Погонаж";
+            _shopAddressesDataGrid.Columns["IsFurniture"].HeaderText = "Фурнитура";
 
-            ShopAddressesDataGrid.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            ShopAddressesDataGrid.Columns["Address"].DefaultCellStyle.ForeColor = System.Drawing.Color.Blue;
-            ShopAddressesDataGrid.Columns["Address"].DefaultCellStyle.Font = new System.Drawing.Font("SEGOE UI", 13.0F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+            _shopAddressesDataGrid.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            _shopAddressesDataGrid.Columns["Address"].DefaultCellStyle.ForeColor = System.Drawing.Color.Blue;
+            _shopAddressesDataGrid.Columns["Address"].DefaultCellStyle.Font = new System.Drawing.Font("SEGOE UI", 13.0F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
         }
 
         private void Initialize()
@@ -245,36 +257,36 @@ ORDER BY Clients.ClientName", ConnectionStrings.ZOVReferenceConnectionString))
             SetContactsDataGrid();
         }
 
-        private string GetContactsXML(DataTable DT)
+        private string GetContactsXml(DataTable dt)
         {
-            StringWriter SW = new StringWriter();
-            DT.WriteXml(SW);
+            var sw = new StringWriter();
+            dt.WriteXml(sw);
 
-            return SW.ToString();
+            return sw.ToString();
         }
 
-        public void FillContactsDataTable(int ClientID)
+        public void FillContactsDataTable(int clientId)
         {
             ContactsDataTable.Clear();
 
-            DataRow[] Rows = ClientsDataTable.Select("ClientID = " + ClientID);
+            var rows = _clientsDataTable.Select("ClientID = " + clientId);
 
-            if (Rows[0]["Contacts"].ToString().Length == 0)
+            if (rows[0]["Contacts"].ToString().Length == 0)
                 return;
 
-            string ContactXML = Rows[0]["Contacts"].ToString();
+            var contactXml = rows[0]["Contacts"].ToString();
 
-            using (StringReader SR = new StringReader(ContactXML))
+            using (var sr = new StringReader(contactXml))
             {
-                ContactsDataTable.ReadXml(SR);
+                ContactsDataTable.ReadXml(sr);
             }
         }
 
-        public void FillShopAddressesDataTable(int ClientID)
+        public void FillShopAddressesDataTable(int clientId)
         {
             ShopAddressesDataAdapter.Dispose();
             ShopAddressesCommandBuilder.Dispose();
-            ShopAddressesDataAdapter = new SqlDataAdapter("SELECT * FROM ShopAddresses WHERE ClientID=" + ClientID + " ORDER BY Address",
+            ShopAddressesDataAdapter = new SqlDataAdapter("SELECT * FROM ShopAddresses WHERE ClientID=" + clientId + " ORDER BY Address",
                 ConnectionStrings.ZOVReferenceConnectionString);
             ShopAddressesCommandBuilder = new SqlCommandBuilder(ShopAddressesDataAdapter);
             ShopAddressesDataTable.Clear();
@@ -295,7 +307,7 @@ ORDER BY Clients.ClientName", ConnectionStrings.ZOVReferenceConnectionString))
             ContactsDataTable.Columns.Add(new DataColumn("Notes", Type.GetType("System.String")));
         }
 
-        public void CreateNewContactsDataTable(ref PercentageDataGrid DataGrid, ref PercentageDataGrid tShopAddressesDataGrid)
+        public void CreateNewContactsDataTable(ref PercentageDataGrid dataGrid, ref PercentageDataGrid tShopAddressesDataGrid)
         {
             if (NewContactsDataTable == null)
             {
@@ -306,16 +318,16 @@ ORDER BY Clients.ClientName", ConnectionStrings.ZOVReferenceConnectionString))
                 NewContactsDataTable.Clear();
 
             NewContactsBindingSource.DataSource = NewContactsDataTable;
-            DataGrid.DataSource = NewContactsBindingSource;
+            dataGrid.DataSource = NewContactsBindingSource;
 
-            DataGrid.Columns["Name"].HeaderText = "Имя";
-            DataGrid.Columns["Position"].HeaderText = "Должность";
-            DataGrid.Columns["Phone"].HeaderText = "Телефон";
-            DataGrid.Columns["Email"].HeaderText = "E-mail";
-            DataGrid.Columns["ICQ"].HeaderText = "ICQ";
-            DataGrid.Columns["Notes"].HeaderText = "Примечание";
+            dataGrid.Columns["Name"].HeaderText = "Имя";
+            dataGrid.Columns["Position"].HeaderText = "Должность";
+            dataGrid.Columns["Phone"].HeaderText = "Телефон";
+            dataGrid.Columns["Email"].HeaderText = "E-mail";
+            dataGrid.Columns["ICQ"].HeaderText = "ICQ";
+            dataGrid.Columns["Notes"].HeaderText = "Примечание";
 
-            DataGrid.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dataGrid.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
 
             if (NewShopAddressesDataTable == null)
             {
@@ -327,9 +339,17 @@ ORDER BY Clients.ClientName", ConnectionStrings.ZOVReferenceConnectionString))
             NewShopAddressesBindingSource.DataSource = NewShopAddressesDataTable;
             tShopAddressesDataGrid.DataSource = NewShopAddressesBindingSource;
 
+            tShopAddressesDataGrid.Columns["Lat"].Visible = false;
+            tShopAddressesDataGrid.Columns["Long"].Visible = false;
             tShopAddressesDataGrid.Columns["ShopAddressID"].Visible = false;
             tShopAddressesDataGrid.Columns["ClientID"].Visible = false;
-            tShopAddressesDataGrid.Columns["Address"].HeaderText = "Адреса салонов";
+            tShopAddressesDataGrid.Columns["City"].HeaderText = "Город";
+            tShopAddressesDataGrid.Columns["Country"].HeaderText = "Страна";
+            tShopAddressesDataGrid.Columns["Phone"].HeaderText = "Телефон";
+            tShopAddressesDataGrid.Columns["Address"].HeaderText = "Адрес салона";
+            tShopAddressesDataGrid.Columns["IsFronts"].HeaderText = "Фасады";
+            tShopAddressesDataGrid.Columns["IsProfile"].HeaderText = "Погонаж";
+            tShopAddressesDataGrid.Columns["IsFurniture"].HeaderText = "Фурнитура";
 
             tShopAddressesDataGrid.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             //tShopAddressesDataGrid.Columns["Address"].DefaultCellStyle.ForeColor = System.Drawing.Color.Blue;
@@ -338,46 +358,46 @@ ORDER BY Clients.ClientName", ConnectionStrings.ZOVReferenceConnectionString))
 
         public void SaveClientsGroups()
         {
-            ClientsGroupsDataAdapter.Update(ClientsGroupsDataTable);
-            ClientsGroupsDataTable.Clear();
-            ClientsGroupsDataAdapter.Fill(ClientsGroupsDataTable);
+            ClientsGroupsDataAdapter.Update(_clientsGroupsDataTable);
+            _clientsGroupsDataTable.Clear();
+            ClientsGroupsDataAdapter.Fill(_clientsGroupsDataTable);
         }
 
         public void SaveAllClients()
         {
-            ClientsDataAdapter.Update(ClientsDataTable);
-            ClientsDataTable.Clear();
-            ClientsDataAdapter.Fill(ClientsDataTable);
+            ClientsDataAdapter.Update(_clientsDataTable);
+            _clientsDataTable.Clear();
+            ClientsDataAdapter.Fill(_clientsDataTable);
         }
 
         public void SaveManagers()
         {
-            ManagersDataAdapter.Update(ManagersDataTable);
-            ManagersDataTable.Clear();
-            ManagersDataAdapter.Fill(ManagersDataTable);
+            ManagersDataAdapter.Update(_managersDataTable);
+            _managersDataTable.Clear();
+            ManagersDataAdapter.Fill(_managersDataTable);
         }
 
-        public void AddClient(string Name, int ClientGroupID, int ManagerID)
+        public void AddClient(string name, int clientGroupId, int managerId)
         {
-            string Contacts = GetContactsXML(NewContactsDataTable);
+            var contacts = GetContactsXml(NewContactsDataTable);
 
-            DataRow Row = ClientsDataTable.NewRow();
-            Row["ManagerID"] = ManagerID;
-            Row["ClientName"] = Name;
-            Row["ClientGroupID"] = ClientGroupID;
-            Row["Contacts"] = Contacts;
+            var row = _clientsDataTable.NewRow();
+            row["ManagerID"] = managerId;
+            row["ClientName"] = name;
+            row["ClientGroupID"] = clientGroupId;
+            row["Contacts"] = contacts;
 
-            ClientsDataTable.Rows.Add(Row);
-            ClientsDataAdapter.Update(ClientsDataTable);
-            ClientsDataTable.Clear();
-            ClientsDataAdapter.Fill(ClientsDataTable);
+            _clientsDataTable.Rows.Add(row);
+            ClientsDataAdapter.Update(_clientsDataTable);
+            _clientsDataTable.Clear();
+            ClientsDataAdapter.Fill(_clientsDataTable);
         }
 
-        public void EditClient(ref string ClientsName, ref int ClientGroupID, ref int ManagerID)
+        public void EditClient(ref string clientsName, ref int clientGroupId, ref int managerId)
         {
-            ClientsName = ((DataRowView)ClientsBindingSource.Current)["ClientName"].ToString();
-            ClientGroupID = Convert.ToInt32(((DataRowView)ClientsBindingSource.Current)["ClientGroupID"]);
-            ManagerID = Convert.ToInt32(((DataRowView)ClientsBindingSource.Current)["ManagerID"]);
+            clientsName = ((DataRowView)ClientsBindingSource.Current)["ClientName"].ToString();
+            clientGroupId = Convert.ToInt32(((DataRowView)ClientsBindingSource.Current)["ClientGroupID"]);
+            managerId = Convert.ToInt32(((DataRowView)ClientsBindingSource.Current)["ManagerID"]);
 
             NewContactsDataTable.Clear();
             NewContactsDataTable = ContactsDataTable.Copy();
@@ -388,32 +408,32 @@ ORDER BY Clients.ClientName", ConnectionStrings.ZOVReferenceConnectionString))
             NewShopAddressesBindingSource.DataSource = NewShopAddressesDataTable;
         }
 
-        public void SaveClient(string Name, int ClientGroupID, int ManagerID, int ClientID)
+        public void SaveClient(string name, int clientGroupId, int managerId, int clientId)
         {
-            string Contacts = GetContactsXML(NewContactsDataTable);
+            var contacts = GetContactsXml(NewContactsDataTable);
 
-            int index = ClientsBindingSource.Position;
+            var index = ClientsBindingSource.Position;
 
-            using (SqlDataAdapter DA = new SqlDataAdapter(@"SELECT * FROM Clients WHERE ClientID = " + ClientID + " ORDER BY ClientName",
+            using (var da = new SqlDataAdapter(@"SELECT * FROM Clients WHERE ClientID = " + clientId + " ORDER BY ClientName",
                 ConnectionStrings.ZOVReferenceConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var cb = new SqlCommandBuilder(da))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var dt = new DataTable())
                     {
-                        DA.Fill(DT);
-                        if (DT.Rows.Count > 0)
+                        da.Fill(dt);
+                        if (dt.Rows.Count > 0)
                         {
-                            DT.Rows[0]["ClientName"] = Name;
-                            DT.Rows[0]["ClientGroupID"] = ClientGroupID;
+                            dt.Rows[0]["ClientName"] = name;
+                            dt.Rows[0]["ClientGroupID"] = clientGroupId;
 
-                            DT.Rows[0]["Contacts"] = Contacts;
-                            DT.Rows[0]["ManagerID"] = ManagerID;
+                            dt.Rows[0]["Contacts"] = contacts;
+                            dt.Rows[0]["ManagerID"] = managerId;
 
-                            DA.Update(DT);
-                            ClientsDataTable.Clear();
-                            ClientsDataAdapter.Fill(ClientsDataTable);
-                            ClientsBindingSource.Position = ClientsBindingSource.Find("ClientID", ClientID);
+                            da.Update(dt);
+                            _clientsDataTable.Clear();
+                            ClientsDataAdapter.Fill(_clientsDataTable);
+                            ClientsBindingSource.Position = ClientsBindingSource.Find("ClientID", clientId);
                         }
                     }
                 }
@@ -426,134 +446,204 @@ ORDER BY Clients.ClientName", ConnectionStrings.ZOVReferenceConnectionString))
             ShopAddressesDataTable.Clear();
             ShopAddressesDataAdapter.Fill(ShopAddressesDataTable);
         }
+
+        public void ExportShopAddressesFromExcel()
+        {
+            var table = new DataTable();
+            table.Columns.Add("id", typeof(int));
+            table.Columns.Add("diler", typeof(string));
+            table.Columns.Add("clientName", typeof(string));
+            table.Columns.Add("Address", typeof(string));
+            table.Columns.Add("City", typeof(string));
+            table.Columns.Add("Phone", typeof(string));
+            table.Columns.Add("Site", typeof(string));
+            table.Columns.Add("Email", typeof(string));
+            table.Columns.Add("Country", typeof(string));
+            table.TableName = "ImportedTable";
+
+            var s = Clipboard.GetText();
+            var lines = s.Split('\n');
+            var data = new System.Collections.Generic.List<string>(lines);
+
+            if (data.Count > 0 && string.IsNullOrWhiteSpace(data[data.Count - 1]))
+            {
+                data.RemoveAt(data.Count - 1);
+            }
+
+            foreach (var iterationRow in data)
+            {
+                var row = iterationRow;
+                if (row.EndsWith("\r"))
+                {
+                    row = row.Substring(0, row.Length - "\r".Length);
+                }
+
+                var rowData = row.Split(new char[] { '\r', '\x09' });
+                var newRow = table.NewRow();
+
+                for (var i = 0; i < rowData.Length; i++)
+                {
+                    if (i >= table.Columns.Count) break;
+                    if (rowData[i].Length > 0)
+                        newRow[i] = rowData[i];
+                }
+                table.Rows.Add(newRow);
+            }
+
+            using (var da = new SqlDataAdapter(@"SELECT * FROM ShopAddresses",
+                ConnectionStrings.ZOVReferenceConnectionString))
+            {
+                using (var cb = new SqlCommandBuilder(da))
+                {
+                    using (var dt = new DataTable())
+                    {
+                        da.Fill(dt);
+                        for (var i = 0; i < table.Rows.Count; i++)
+                        {
+                            var row = dt.NewRow();
+                            row["Country"] = table.Rows[i]["Country"];
+                            row["City"] = table.Rows[i]["City"];
+                            row["Address"] = table.Rows[i]["Address"];
+                            row["Site"] = table.Rows[i]["Site"];
+                            row["Phone"] = table.Rows[i]["Phone"];
+                            row["Email"] = table.Rows[i]["Email"];
+                            row["ClientID"] = table.Rows[i]["id"];
+
+                            dt.Rows.Add(row);
+                        }
+                        da.Update(dt);
+                    }
+                }
+            }
+        }
     }
 
-    public class ZOVClientsToExcel
+    public class ZovClientsToExcel
     {
-        private int pos01 = 0;
+        private int _pos01 = 0;
 
-        private HSSFWorkbook hssfworkbook;
+        private HSSFWorkbook _hssfworkbook;
 
-        private HSSFFont fConfirm;
-        private HSSFFont fHeader;
-        private HSSFFont fColumnName;
-        private HSSFFont fMainContent;
-        private HSSFFont fTotalInfo;
+        private HSSFFont _fConfirm;
+        private HSSFFont _fHeader;
+        private HSSFFont _fColumnName;
+        private HSSFFont _fMainContent;
+        private HSSFFont _fTotalInfo;
 
-        private HSSFCellStyle csConfirm;
-        private HSSFCellStyle csHeader;
-        private HSSFCellStyle csColumnName;
-        private HSSFCellStyle csMainContent;
-        private HSSFCellStyle csTotalInfo;
+        private HSSFCellStyle _csConfirm;
+        private HSSFCellStyle _csHeader;
+        private HSSFCellStyle _csColumnName;
+        private HSSFCellStyle _csMainContent;
+        private HSSFCellStyle _csTotalInfo;
 
-        public ZOVClientsToExcel()
+        public ZovClientsToExcel()
         {
-            hssfworkbook = new HSSFWorkbook();
+            _hssfworkbook = new HSSFWorkbook();
             CreateFonts();
             CreateCellStyles();
         }
 
         private void CreateFonts()
         {
-            fConfirm = hssfworkbook.CreateFont();
-            fConfirm.FontHeightInPoints = 12;
-            fConfirm.FontName = "Calibri";
+            _fConfirm = _hssfworkbook.CreateFont();
+            _fConfirm.FontHeightInPoints = 12;
+            _fConfirm.FontName = "Calibri";
 
-            fHeader = hssfworkbook.CreateFont();
-            fHeader.FontHeightInPoints = 12;
-            fHeader.Boldweight = 12 * 256;
-            fHeader.FontName = "Calibri";
+            _fHeader = _hssfworkbook.CreateFont();
+            _fHeader.FontHeightInPoints = 12;
+            _fHeader.Boldweight = 12 * 256;
+            _fHeader.FontName = "Calibri";
 
-            fColumnName = hssfworkbook.CreateFont();
-            fColumnName.FontHeightInPoints = 12;
-            fColumnName.Boldweight = 12 * 256;
-            fColumnName.FontName = "Calibri";
+            _fColumnName = _hssfworkbook.CreateFont();
+            _fColumnName.FontHeightInPoints = 12;
+            _fColumnName.Boldweight = 12 * 256;
+            _fColumnName.FontName = "Calibri";
 
-            fMainContent = hssfworkbook.CreateFont();
-            fMainContent.FontHeightInPoints = 11;
-            fMainContent.FontName = "Calibri";
+            _fMainContent = _hssfworkbook.CreateFont();
+            _fMainContent.FontHeightInPoints = 11;
+            _fMainContent.FontName = "Calibri";
 
-            fTotalInfo = hssfworkbook.CreateFont();
-            fTotalInfo.FontHeightInPoints = 11;
-            fTotalInfo.Boldweight = 11 * 256;
-            fTotalInfo.FontName = "Calibri";
+            _fTotalInfo = _hssfworkbook.CreateFont();
+            _fTotalInfo.FontHeightInPoints = 11;
+            _fTotalInfo.Boldweight = 11 * 256;
+            _fTotalInfo.FontName = "Calibri";
         }
 
         private void CreateCellStyles()
         {
-            csConfirm = hssfworkbook.CreateCellStyle();
-            csConfirm.SetFont(fConfirm);
+            _csConfirm = _hssfworkbook.CreateCellStyle();
+            _csConfirm.SetFont(_fConfirm);
 
-            csHeader = hssfworkbook.CreateCellStyle();
-            csHeader.SetFont(fHeader);
+            _csHeader = _hssfworkbook.CreateCellStyle();
+            _csHeader.SetFont(_fHeader);
 
-            csColumnName = hssfworkbook.CreateCellStyle();
-            csColumnName.BorderBottom = HSSFCellStyle.BORDER_THIN;
-            csColumnName.BottomBorderColor = HSSFColor.BLACK.index;
-            csColumnName.BorderLeft = HSSFCellStyle.BORDER_THIN;
-            csColumnName.LeftBorderColor = HSSFColor.BLACK.index;
-            csColumnName.BorderRight = HSSFCellStyle.BORDER_THIN;
-            csColumnName.RightBorderColor = HSSFColor.BLACK.index;
-            csColumnName.BorderTop = HSSFCellStyle.BORDER_THIN;
-            csColumnName.TopBorderColor = HSSFColor.BLACK.index;
-            csColumnName.Alignment = HSSFCellStyle.ALIGN_CENTER;
-            csColumnName.VerticalAlignment = HSSFCellStyle.VERTICAL_CENTER;
-            csColumnName.WrapText = true;
-            csColumnName.SetFont(fColumnName);
+            _csColumnName = _hssfworkbook.CreateCellStyle();
+            _csColumnName.BorderBottom = HSSFCellStyle.BORDER_THIN;
+            _csColumnName.BottomBorderColor = HSSFColor.BLACK.index;
+            _csColumnName.BorderLeft = HSSFCellStyle.BORDER_THIN;
+            _csColumnName.LeftBorderColor = HSSFColor.BLACK.index;
+            _csColumnName.BorderRight = HSSFCellStyle.BORDER_THIN;
+            _csColumnName.RightBorderColor = HSSFColor.BLACK.index;
+            _csColumnName.BorderTop = HSSFCellStyle.BORDER_THIN;
+            _csColumnName.TopBorderColor = HSSFColor.BLACK.index;
+            _csColumnName.Alignment = HSSFCellStyle.ALIGN_CENTER;
+            _csColumnName.VerticalAlignment = HSSFCellStyle.VERTICAL_CENTER;
+            _csColumnName.WrapText = true;
+            _csColumnName.SetFont(_fColumnName);
 
-            csMainContent = hssfworkbook.CreateCellStyle();
-            csMainContent.BorderBottom = HSSFCellStyle.BORDER_THIN;
-            csMainContent.BottomBorderColor = HSSFColor.BLACK.index;
-            csMainContent.BorderLeft = HSSFCellStyle.BORDER_THIN;
-            csMainContent.LeftBorderColor = HSSFColor.BLACK.index;
-            csMainContent.BorderRight = HSSFCellStyle.BORDER_THIN;
-            csMainContent.RightBorderColor = HSSFColor.BLACK.index;
-            csMainContent.BorderTop = HSSFCellStyle.BORDER_THIN;
-            csMainContent.TopBorderColor = HSSFColor.BLACK.index;
-            csMainContent.VerticalAlignment = HSSFCellStyle.ALIGN_RIGHT;
-            csMainContent.SetFont(fMainContent);
+            _csMainContent = _hssfworkbook.CreateCellStyle();
+            _csMainContent.BorderBottom = HSSFCellStyle.BORDER_THIN;
+            _csMainContent.BottomBorderColor = HSSFColor.BLACK.index;
+            _csMainContent.BorderLeft = HSSFCellStyle.BORDER_THIN;
+            _csMainContent.LeftBorderColor = HSSFColor.BLACK.index;
+            _csMainContent.BorderRight = HSSFCellStyle.BORDER_THIN;
+            _csMainContent.RightBorderColor = HSSFColor.BLACK.index;
+            _csMainContent.BorderTop = HSSFCellStyle.BORDER_THIN;
+            _csMainContent.TopBorderColor = HSSFColor.BLACK.index;
+            _csMainContent.VerticalAlignment = HSSFCellStyle.ALIGN_RIGHT;
+            _csMainContent.SetFont(_fMainContent);
 
-            csTotalInfo = hssfworkbook.CreateCellStyle();
-            csTotalInfo.BorderBottom = HSSFCellStyle.BORDER_THIN;
-            csTotalInfo.BottomBorderColor = HSSFColor.BLACK.index;
-            csTotalInfo.BorderLeft = HSSFCellStyle.BORDER_THIN;
-            csTotalInfo.LeftBorderColor = HSSFColor.BLACK.index;
-            csTotalInfo.BorderRight = HSSFCellStyle.BORDER_THIN;
-            csTotalInfo.RightBorderColor = HSSFColor.BLACK.index;
-            csTotalInfo.BorderTop = HSSFCellStyle.BORDER_THIN;
-            csTotalInfo.TopBorderColor = HSSFColor.BLACK.index;
-            csTotalInfo.Alignment = HSSFCellStyle.ALIGN_LEFT;
-            csTotalInfo.SetFont(fTotalInfo);
+            _csTotalInfo = _hssfworkbook.CreateCellStyle();
+            _csTotalInfo.BorderBottom = HSSFCellStyle.BORDER_THIN;
+            _csTotalInfo.BottomBorderColor = HSSFColor.BLACK.index;
+            _csTotalInfo.BorderLeft = HSSFCellStyle.BORDER_THIN;
+            _csTotalInfo.LeftBorderColor = HSSFColor.BLACK.index;
+            _csTotalInfo.BorderRight = HSSFCellStyle.BORDER_THIN;
+            _csTotalInfo.RightBorderColor = HSSFColor.BLACK.index;
+            _csTotalInfo.BorderTop = HSSFCellStyle.BORDER_THIN;
+            _csTotalInfo.TopBorderColor = HSSFColor.BLACK.index;
+            _csTotalInfo.Alignment = HSSFCellStyle.ALIGN_LEFT;
+            _csTotalInfo.SetFont(_fTotalInfo);
         }
 
         public void ClearReport()
         {
-            hssfworkbook = new HSSFWorkbook();
+            _hssfworkbook = new HSSFWorkbook();
             CreateFonts();
             CreateCellStyles();
         }
 
         public void Export(DataTable table1)
         {
-            HSSFSheet sheet01 = hssfworkbook.CreateSheet("Клиенты");
+            var sheet01 = _hssfworkbook.CreateSheet("Клиенты");
             sheet01.PrintSetup.PaperSize = (short)PaperSizeType.A4;
             sheet01.SetMargin(HSSFSheet.LeftMargin, (double).12);
             sheet01.SetMargin(HSSFSheet.RightMargin, (double).07);
             sheet01.SetMargin(HSSFSheet.TopMargin, (double).20);
             sheet01.SetMargin(HSSFSheet.BottomMargin, (double).20);
-            pos01 = 0;
+            _pos01 = 0;
 
-            int displayIndex = 0;
+            var displayIndex = 0;
             {
                 HSSFCell cell1 = null;
-                for (int i = 0; i < table1.Columns.Count; i++)
+                for (var i = 0; i < table1.Columns.Count; i++)
                 {
                     sheet01.SetColumnWidth(i, 15 * 256);
-                    string colName = table1.Columns[i].ToString();
+                    var colName = table1.Columns[i].ToString();
 
-                    cell1 = sheet01.CreateRow(pos01).CreateCell(displayIndex++);
+                    cell1 = sheet01.CreateRow(_pos01).CreateCell(displayIndex++);
                     cell1.SetCellValue(colName);
-                    cell1.CellStyle = csColumnName;
+                    cell1.CellStyle = _csColumnName;
                     switch (colName)
                     {
                         case "ClientName":
@@ -571,52 +661,52 @@ ORDER BY Clients.ClientName", ConnectionStrings.ZOVReferenceConnectionString))
                     }
                 }
 
-                pos01++;
+                _pos01++;
 
                 //Содержимое таблицы
-                for (int x = 0; x < table1.Rows.Count; x++)
+                for (var x = 0; x < table1.Rows.Count; x++)
                 {
-                    for (int y = 0; y < table1.Columns.Count; y++)
+                    for (var y = 0; y < table1.Columns.Count; y++)
                     {
-                        Type t = table1.Rows[x][y].GetType();
+                        var t = table1.Rows[x][y].GetType();
 
                         switch (t.Name)
                         {
                             case "Int32":
-                                cell1 = sheet01.CreateRow(pos01).CreateCell(y);
+                                cell1 = sheet01.CreateRow(_pos01).CreateCell(y);
                                 cell1.SetCellValue(Convert.ToInt32(table1.Rows[x][y]));
-                                cell1.CellStyle = csMainContent;
+                                cell1.CellStyle = _csMainContent;
                                 continue;
                             case "String":
                             case "DBNull":
-                                cell1 = sheet01.CreateRow(pos01).CreateCell(y);
+                                cell1 = sheet01.CreateRow(_pos01).CreateCell(y);
                                 cell1.SetCellValue(table1.Rows[x][y].ToString());
-                                cell1.CellStyle = csMainContent;
+                                cell1.CellStyle = _csMainContent;
                                 continue;
                         }
                     }
 
-                    pos01++;
+                    _pos01++;
                 }
             }
 
-            pos01++;
-            pos01++;
+            _pos01++;
+            _pos01++;
         }
 
-        public void SaveFile(string FileName, bool bOpenFile)
+        public void SaveFile(string fileName, bool bOpenFile)
         {
-            string tempFolder = System.Environment.GetEnvironmentVariable("TEMP");
-            FileInfo file = new FileInfo(tempFolder + @"\" + FileName + ".xls");
-            int j = 1;
+            var tempFolder = System.Environment.GetEnvironmentVariable("TEMP");
+            var file = new FileInfo(tempFolder + @"\" + fileName + ".xls");
+            var j = 1;
             while (file.Exists == true)
             {
-                file = new FileInfo(tempFolder + @"\" + FileName + "(" + j++ + ").xls");
+                file = new FileInfo(tempFolder + @"\" + fileName + "(" + j++ + ").xls");
             }
 
-            FileStream NewFile = new FileStream(file.FullName, FileMode.Create);
-            hssfworkbook.Write(NewFile);
-            NewFile.Close();
+            var newFile = new FileStream(file.FullName, FileMode.Create);
+            _hssfworkbook.Write(newFile);
+            newFile.Close();
             ClearReport();
 
             if (bOpenFile)

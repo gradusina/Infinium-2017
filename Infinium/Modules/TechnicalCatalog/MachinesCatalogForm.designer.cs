@@ -929,6 +929,7 @@ namespace Infinium
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.NavigateMenuButtonsPalette.ButtonStyles.ButtonCommon.StateTracking.Border.Rounding = 0;
             this.NavigateMenuButtonsPalette.ButtonStyles.ButtonCommon.StateTracking.Border.Width = 1;
+            this.NavigateMenuButtonsPalette.CustomisedKryptonPaletteFilePath = null;
             // 
             // lblMachineName
             // 
@@ -1022,6 +1023,7 @@ namespace Infinium
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.StandardButtonsPalette.ButtonStyles.ButtonCommon.StateTracking.Border.Rounding = 0;
+            this.StandardButtonsPalette.CustomisedKryptonPaletteFilePath = null;
             // 
             // MainMenuPalette
             // 
@@ -1060,6 +1062,7 @@ namespace Infinium
             this.MainMenuPalette.ButtonStyles.ButtonCommon.StateCommon.Content.Padding = new System.Windows.Forms.Padding(-1, -1, -1, -4);
             this.MainMenuPalette.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Color1 = System.Drawing.Color.White;
             this.MainMenuPalette.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Font = new System.Drawing.Font("Segoe UI Symbol", 21F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.MainMenuPalette.CustomisedKryptonPaletteFilePath = null;
             // 
             // pnlMainPage
             // 
@@ -1215,6 +1218,7 @@ namespace Infinium
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.tbMachineSearch.StateCommon.Content.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.tbMachineSearch.StateCommon.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Inherit;
             this.tbMachineSearch.TabIndex = 394;
             this.tbMachineSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbMachineSearch_KeyDown);
             // 
@@ -1861,6 +1865,7 @@ namespace Infinium
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.rtbTechnicalNotes.StateCommon.Content.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.rtbTechnicalNotes.StateCommon.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Inherit;
             this.rtbTechnicalNotes.TabIndex = 494;
             this.rtbTechnicalNotes.Text = "";
             // 
@@ -2098,12 +2103,14 @@ namespace Infinium
             // 
             this.cbPagesNavigation1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbPagesNavigation1.DropDownWidth = 363;
+            this.cbPagesNavigation1.IntegralHeight = false;
             this.cbPagesNavigation1.Location = new System.Drawing.Point(63, 12);
             this.cbPagesNavigation1.Name = "cbPagesNavigation1";
             this.cbPagesNavigation1.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.cbPagesNavigation1.Size = new System.Drawing.Size(284, 29);
             this.cbPagesNavigation1.StateCommon.ComboBox.Content.Color1 = System.Drawing.Color.Black;
             this.cbPagesNavigation1.StateCommon.ComboBox.Content.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.cbPagesNavigation1.StateCommon.ComboBox.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.cbPagesNavigation1.StateCommon.Item.Content.ShortText.Color1 = System.Drawing.Color.Black;
             this.cbPagesNavigation1.StateCommon.Item.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.cbPagesNavigation1.TabIndex = 495;
@@ -2141,6 +2148,7 @@ namespace Infinium
             this.tbMachineWeight.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.tbMachineWeight.Size = new System.Drawing.Size(150, 27);
             this.tbMachineWeight.StateCommon.Content.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.tbMachineWeight.StateCommon.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Inherit;
             this.tbMachineWeight.TabIndex = 411;
             this.tbMachineWeight.Tag = "";
             // 
@@ -2176,6 +2184,7 @@ namespace Infinium
             this.tbMachineSizes.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.tbMachineSizes.Size = new System.Drawing.Size(150, 27);
             this.tbMachineSizes.StateCommon.Content.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.tbMachineSizes.StateCommon.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Inherit;
             this.tbMachineSizes.TabIndex = 408;
             // 
             // pnlElectricsPage
@@ -2446,6 +2455,7 @@ namespace Infinium
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.rtbElectricsDescription.StateCommon.Content.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.rtbElectricsDescription.StateCommon.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Inherit;
             this.rtbElectricsDescription.TabIndex = 484;
             this.rtbElectricsDescription.Text = "";
             // 
@@ -2482,6 +2492,7 @@ namespace Infinium
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.rtbElectricsNotes.StateCommon.Content.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.rtbElectricsNotes.StateCommon.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Inherit;
             this.rtbElectricsNotes.TabIndex = 488;
             this.rtbElectricsNotes.Text = "";
             // 
@@ -2546,12 +2557,14 @@ namespace Infinium
             // 
             this.cbPagesNavigation3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbPagesNavigation3.DropDownWidth = 363;
+            this.cbPagesNavigation3.IntegralHeight = false;
             this.cbPagesNavigation3.Location = new System.Drawing.Point(63, 12);
             this.cbPagesNavigation3.Name = "cbPagesNavigation3";
             this.cbPagesNavigation3.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.cbPagesNavigation3.Size = new System.Drawing.Size(284, 29);
             this.cbPagesNavigation3.StateCommon.ComboBox.Content.Color1 = System.Drawing.Color.Black;
             this.cbPagesNavigation3.StateCommon.ComboBox.Content.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.cbPagesNavigation3.StateCommon.ComboBox.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.cbPagesNavigation3.StateCommon.Item.Content.ShortText.Color1 = System.Drawing.Color.Black;
             this.cbPagesNavigation3.StateCommon.Item.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.cbPagesNavigation3.TabIndex = 496;
@@ -2741,12 +2754,14 @@ namespace Infinium
             // 
             this.cbPagesNavigation6.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbPagesNavigation6.DropDownWidth = 363;
+            this.cbPagesNavigation6.IntegralHeight = false;
             this.cbPagesNavigation6.Location = new System.Drawing.Point(63, 12);
             this.cbPagesNavigation6.Name = "cbPagesNavigation6";
             this.cbPagesNavigation6.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.cbPagesNavigation6.Size = new System.Drawing.Size(284, 29);
             this.cbPagesNavigation6.StateCommon.ComboBox.Content.Color1 = System.Drawing.Color.Black;
             this.cbPagesNavigation6.StateCommon.ComboBox.Content.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.cbPagesNavigation6.StateCommon.ComboBox.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.cbPagesNavigation6.StateCommon.Item.Content.ShortText.Color1 = System.Drawing.Color.Black;
             this.cbPagesNavigation6.StateCommon.Item.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.cbPagesNavigation6.TabIndex = 496;
@@ -2831,6 +2846,7 @@ namespace Infinium
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.rtbPneumaticsDescription.StateCommon.Content.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.rtbPneumaticsDescription.StateCommon.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Inherit;
             this.rtbPneumaticsDescription.TabIndex = 484;
             this.rtbPneumaticsDescription.Text = "";
             // 
@@ -2867,6 +2883,7 @@ namespace Infinium
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.rtbPneumaticsNotes.StateCommon.Content.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.rtbPneumaticsNotes.StateCommon.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Inherit;
             this.rtbPneumaticsNotes.TabIndex = 488;
             this.rtbPneumaticsNotes.Text = "";
             // 
@@ -3137,6 +3154,7 @@ namespace Infinium
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.rtbHydraulicsDescription.StateCommon.Content.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.rtbHydraulicsDescription.StateCommon.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Inherit;
             this.rtbHydraulicsDescription.TabIndex = 486;
             this.rtbHydraulicsDescription.Text = "";
             // 
@@ -3173,6 +3191,7 @@ namespace Infinium
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.rtbHydraulicsNotes.StateCommon.Content.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.rtbHydraulicsNotes.StateCommon.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Inherit;
             this.rtbHydraulicsNotes.TabIndex = 488;
             this.rtbHydraulicsNotes.Text = "";
             // 
@@ -3237,12 +3256,14 @@ namespace Infinium
             // 
             this.cbPagesNavigation5.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbPagesNavigation5.DropDownWidth = 363;
+            this.cbPagesNavigation5.IntegralHeight = false;
             this.cbPagesNavigation5.Location = new System.Drawing.Point(63, 12);
             this.cbPagesNavigation5.Name = "cbPagesNavigation5";
             this.cbPagesNavigation5.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.cbPagesNavigation5.Size = new System.Drawing.Size(284, 29);
             this.cbPagesNavigation5.StateCommon.ComboBox.Content.Color1 = System.Drawing.Color.Black;
             this.cbPagesNavigation5.StateCommon.ComboBox.Content.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.cbPagesNavigation5.StateCommon.ComboBox.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.cbPagesNavigation5.StateCommon.Item.Content.ShortText.Color1 = System.Drawing.Color.Black;
             this.cbPagesNavigation5.StateCommon.Item.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.cbPagesNavigation5.TabIndex = 496;
@@ -3541,12 +3562,14 @@ namespace Infinium
             // 
             this.cbPagesNavigation9.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbPagesNavigation9.DropDownWidth = 363;
+            this.cbPagesNavigation9.IntegralHeight = false;
             this.cbPagesNavigation9.Location = new System.Drawing.Point(63, 12);
             this.cbPagesNavigation9.Name = "cbPagesNavigation9";
             this.cbPagesNavigation9.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.cbPagesNavigation9.Size = new System.Drawing.Size(284, 29);
             this.cbPagesNavigation9.StateCommon.ComboBox.Content.Color1 = System.Drawing.Color.Black;
             this.cbPagesNavigation9.StateCommon.ComboBox.Content.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.cbPagesNavigation9.StateCommon.ComboBox.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.cbPagesNavigation9.StateCommon.Item.Content.ShortText.Color1 = System.Drawing.Color.Black;
             this.cbPagesNavigation9.StateCommon.Item.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.cbPagesNavigation9.TabIndex = 496;
@@ -3967,6 +3990,7 @@ namespace Infinium
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.kryptonTextBox4.StateCommon.Content.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.kryptonTextBox4.StateCommon.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Inherit;
             this.kryptonTextBox4.TabIndex = 492;
             this.kryptonTextBox4.KeyDown += new System.Windows.Forms.KeyEventHandler(this.kryptonTextBox4_KeyDown);
             // 
@@ -4310,6 +4334,7 @@ namespace Infinium
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.kryptonTextBox3.StateCommon.Content.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.kryptonTextBox3.StateCommon.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Inherit;
             this.kryptonTextBox3.TabIndex = 492;
             this.kryptonTextBox3.KeyDown += new System.Windows.Forms.KeyEventHandler(this.kryptonTextBox3_KeyDown);
             // 
@@ -4653,6 +4678,7 @@ namespace Infinium
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.kryptonTextBox2.StateCommon.Content.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.kryptonTextBox2.StateCommon.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Inherit;
             this.kryptonTextBox2.TabIndex = 492;
             this.kryptonTextBox2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.kryptonTextBox2_KeyDown);
             // 
@@ -4996,6 +5022,7 @@ namespace Infinium
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.kryptonTextBox1.StateCommon.Content.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.kryptonTextBox1.StateCommon.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Inherit;
             this.kryptonTextBox1.TabIndex = 492;
             this.kryptonTextBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.kryptonTextBox1_KeyDown);
             // 
@@ -5340,6 +5367,7 @@ namespace Infinium
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.tbDetailSearch.StateCommon.Content.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.tbDetailSearch.StateCommon.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Inherit;
             this.tbDetailSearch.TabIndex = 492;
             this.tbDetailSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbDetailSearch_KeyDown);
             // 
@@ -6310,12 +6338,14 @@ namespace Infinium
             // 
             this.cbPagesNavigation7.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbPagesNavigation7.DropDownWidth = 363;
+            this.cbPagesNavigation7.IntegralHeight = false;
             this.cbPagesNavigation7.Location = new System.Drawing.Point(63, 12);
             this.cbPagesNavigation7.Name = "cbPagesNavigation7";
             this.cbPagesNavigation7.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.cbPagesNavigation7.Size = new System.Drawing.Size(284, 29);
             this.cbPagesNavigation7.StateCommon.ComboBox.Content.Color1 = System.Drawing.Color.Black;
             this.cbPagesNavigation7.StateCommon.ComboBox.Content.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.cbPagesNavigation7.StateCommon.ComboBox.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.cbPagesNavigation7.StateCommon.Item.Content.ShortText.Color1 = System.Drawing.Color.Black;
             this.cbPagesNavigation7.StateCommon.Item.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.cbPagesNavigation7.TabIndex = 495;
@@ -6345,6 +6375,7 @@ namespace Infinium
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.rtbEquipmentNotes.StateCommon.Content.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.rtbEquipmentNotes.StateCommon.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Inherit;
             this.rtbEquipmentNotes.TabIndex = 494;
             this.rtbEquipmentNotes.Text = "";
             // 
@@ -7704,12 +7735,14 @@ namespace Infinium
             // 
             this.cbPagesNavigation10.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbPagesNavigation10.DropDownWidth = 363;
+            this.cbPagesNavigation10.IntegralHeight = false;
             this.cbPagesNavigation10.Location = new System.Drawing.Point(63, 12);
             this.cbPagesNavigation10.Name = "cbPagesNavigation10";
             this.cbPagesNavigation10.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.cbPagesNavigation10.Size = new System.Drawing.Size(284, 29);
             this.cbPagesNavigation10.StateCommon.ComboBox.Content.Color1 = System.Drawing.Color.Black;
             this.cbPagesNavigation10.StateCommon.ComboBox.Content.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.cbPagesNavigation10.StateCommon.ComboBox.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.cbPagesNavigation10.StateCommon.Item.Content.ShortText.Color1 = System.Drawing.Color.Black;
             this.cbPagesNavigation10.StateCommon.Item.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.cbPagesNavigation10.TabIndex = 496;
@@ -7799,12 +7832,14 @@ namespace Infinium
             // 
             this.cbPagesNavigation8.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbPagesNavigation8.DropDownWidth = 363;
+            this.cbPagesNavigation8.IntegralHeight = false;
             this.cbPagesNavigation8.Location = new System.Drawing.Point(63, 12);
             this.cbPagesNavigation8.Name = "cbPagesNavigation8";
             this.cbPagesNavigation8.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.cbPagesNavigation8.Size = new System.Drawing.Size(284, 29);
             this.cbPagesNavigation8.StateCommon.ComboBox.Content.Color1 = System.Drawing.Color.Black;
             this.cbPagesNavigation8.StateCommon.ComboBox.Content.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.cbPagesNavigation8.StateCommon.ComboBox.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.cbPagesNavigation8.StateCommon.Item.Content.ShortText.Color1 = System.Drawing.Color.Black;
             this.cbPagesNavigation8.StateCommon.Item.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.cbPagesNavigation8.TabIndex = 496;
@@ -9143,6 +9178,7 @@ namespace Infinium
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.rtbPermanentWorks.StateCommon.Content.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.rtbPermanentWorks.StateCommon.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Inherit;
             this.rtbPermanentWorks.TabIndex = 506;
             this.rtbPermanentWorks.Text = "";
             // 
@@ -10083,12 +10119,14 @@ namespace Infinium
             // 
             this.cbPagesNavigation11.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbPagesNavigation11.DropDownWidth = 363;
+            this.cbPagesNavigation11.IntegralHeight = false;
             this.cbPagesNavigation11.Location = new System.Drawing.Point(63, 12);
             this.cbPagesNavigation11.Name = "cbPagesNavigation11";
             this.cbPagesNavigation11.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.cbPagesNavigation11.Size = new System.Drawing.Size(284, 29);
             this.cbPagesNavigation11.StateCommon.ComboBox.Content.Color1 = System.Drawing.Color.Black;
             this.cbPagesNavigation11.StateCommon.ComboBox.Content.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.cbPagesNavigation11.StateCommon.ComboBox.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.cbPagesNavigation11.StateCommon.Item.Content.ShortText.Color1 = System.Drawing.Color.Black;
             this.cbPagesNavigation11.StateCommon.Item.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.cbPagesNavigation11.TabIndex = 496;
@@ -10356,12 +10394,14 @@ namespace Infinium
             // 
             this.cbPagesNavigation4.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbPagesNavigation4.DropDownWidth = 363;
+            this.cbPagesNavigation4.IntegralHeight = false;
             this.cbPagesNavigation4.Location = new System.Drawing.Point(63, 12);
             this.cbPagesNavigation4.Name = "cbPagesNavigation4";
             this.cbPagesNavigation4.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.cbPagesNavigation4.Size = new System.Drawing.Size(284, 29);
             this.cbPagesNavigation4.StateCommon.ComboBox.Content.Color1 = System.Drawing.Color.Black;
             this.cbPagesNavigation4.StateCommon.ComboBox.Content.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.cbPagesNavigation4.StateCommon.ComboBox.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.cbPagesNavigation4.StateCommon.Item.Content.ShortText.Color1 = System.Drawing.Color.Black;
             this.cbPagesNavigation4.StateCommon.Item.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.cbPagesNavigation4.TabIndex = 496;
@@ -10446,6 +10486,7 @@ namespace Infinium
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.rtbMechanicsDescription.StateCommon.Content.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.rtbMechanicsDescription.StateCommon.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Inherit;
             this.rtbMechanicsDescription.TabIndex = 484;
             this.rtbMechanicsDescription.Text = "";
             // 
@@ -10482,6 +10523,7 @@ namespace Infinium
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.rtbMechanicsNotes.StateCommon.Content.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.rtbMechanicsNotes.StateCommon.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Inherit;
             this.rtbMechanicsNotes.TabIndex = 488;
             this.rtbMechanicsNotes.Text = "";
             // 
@@ -10663,6 +10705,7 @@ namespace Infinium
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.rtbAspirationDescription.StateCommon.Content.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.rtbAspirationDescription.StateCommon.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Inherit;
             this.rtbAspirationDescription.TabIndex = 484;
             this.rtbAspirationDescription.Text = "";
             // 
@@ -10699,6 +10742,7 @@ namespace Infinium
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.rtbAspirationNotes.StateCommon.Content.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.rtbAspirationNotes.StateCommon.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Inherit;
             this.rtbAspirationNotes.TabIndex = 488;
             this.rtbAspirationNotes.Text = "";
             // 
@@ -10763,12 +10807,14 @@ namespace Infinium
             // 
             this.cbPagesNavigation2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbPagesNavigation2.DropDownWidth = 363;
+            this.cbPagesNavigation2.IntegralHeight = false;
             this.cbPagesNavigation2.Location = new System.Drawing.Point(63, 12);
             this.cbPagesNavigation2.Name = "cbPagesNavigation2";
             this.cbPagesNavigation2.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.cbPagesNavigation2.Size = new System.Drawing.Size(284, 29);
             this.cbPagesNavigation2.StateCommon.ComboBox.Content.Color1 = System.Drawing.Color.Black;
             this.cbPagesNavigation2.StateCommon.ComboBox.Content.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.cbPagesNavigation2.StateCommon.ComboBox.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.cbPagesNavigation2.StateCommon.Item.Content.ShortText.Color1 = System.Drawing.Color.Black;
             this.cbPagesNavigation2.StateCommon.Item.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.cbPagesNavigation2.TabIndex = 496;
@@ -11000,6 +11046,7 @@ namespace Infinium
             this.MainMenuPalette1.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Font = new System.Drawing.Font("Segoe UI Symbol", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.MainMenuPalette1.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.MultiLineH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
             this.MainMenuPalette1.ButtonStyles.ButtonCommon.StateTracking.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(198)))), ((int)(((byte)(0)))));
+            this.MainMenuPalette1.CustomisedKryptonPaletteFilePath = null;
             // 
             // panel4
             // 

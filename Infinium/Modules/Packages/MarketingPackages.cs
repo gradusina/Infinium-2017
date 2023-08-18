@@ -8942,7 +8942,7 @@ WHERE dbo.TechCatalogOperationsDetail.TechCatalogOperationsGroupID IN
     {
         private int FactoryID = 1;
 
-        private DataTable ClientsDataTable = null;
+        public DataTable ClientsDataTable = null;
 
         private DataTable FrontsResultDataTable = null;
         private DataTable DecorResultDataTable = null;
@@ -9069,7 +9069,7 @@ WHERE dbo.TechCatalogOperationsDetail.TechCatalogOperationsGroupID IN
 
 
             ClientsDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Clients",
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT ClientId, ClientName FROM Clients ORDER BY ClientName",
                 ConnectionStrings.MarketingReferenceConnectionString))
             {
                 DA.Fill(ClientsDataTable);
@@ -9193,7 +9193,7 @@ WHERE dbo.TechCatalogOperationsDetail.TechCatalogOperationsGroupID IN
             }
             return OrderNumber;
         }
-
+        
         public string GetClientName(int MainOrderID)
         {
             int ClientID = 0;
@@ -9878,6 +9878,7 @@ WHERE dbo.TechCatalogOperationsDetail.TechCatalogOperationsGroupID IN
         public string Phone;
         public string Produced;
         public string Group;
+        public int clientId;
     }
 
 
@@ -9918,7 +9919,7 @@ WHERE dbo.TechCatalogOperationsDetail.TechCatalogOperationsGroupID IN
         private LabelParam labelParam;
         public ArrayList LabelInfo;
 
-        public LabelParam GetLabelParams()
+        public LabelParam GetLabelParams(string firm, int clientId)
         {
             LabelParam param = new LabelParam();
             string SelectCommand = @"SELECT RussianParam FROM LabelParams";
@@ -9951,6 +9952,10 @@ WHERE dbo.TechCatalogOperationsDetail.TechCatalogOperationsGroupID IN
                         param.Phone = DT.Rows[16][0].ToString();
                         param.Produced = DT.Rows[17][0].ToString();
                         param.Group = DT.Rows[18][0].ToString();
+                        param.clientId = clientId;
+
+                        if (firm != "")
+                            param.Firm = firm;
                     }
                 }
             }
@@ -10336,10 +10341,10 @@ WHERE dbo.TechCatalogOperationsDetail.TechCatalogOperationsGroupID IN
             GC.Collect();
         }
 
-        public void AddLabelInfo(int iLanguage, ref Info LabelInfoItem)
+        public void AddLabelInfo(int iLanguage, int clientId, string firm, ref Info LabelInfoItem)
         {
             Language = iLanguage;
-            labelParam = GetLabelParams();
+            labelParam = GetLabelParams(firm, clientId);
             LabelInfo.Add(LabelInfoItem);
         }
 
@@ -10419,7 +10424,8 @@ WHERE dbo.TechCatalogOperationsDetail.TechCatalogOperationsGroupID IN
             }
             else
             {
-                ev.Graphics.DrawImage(ZTProfil, 249, 320, 37, 45);
+                if (labelParam.clientId == 232)
+                    ev.Graphics.DrawImage(ZTProfil, 249, 320, 37, 45);
             }
 
             ev.Graphics.DrawImage(STB, 418, 319, 39, 27);
@@ -10430,20 +10436,27 @@ WHERE dbo.TechCatalogOperationsDetail.TechCatalogOperationsGroupID IN
 
             ev.Graphics.DrawString(labelParam.TU, InfoFont, FontBrush, 305, 320);
 
+            if (labelParam.Firm.Length > 25)
+                labelParam.Firm = labelParam.Firm.Substring(0, 25);
+
             if (((Info)LabelInfo[CurrentLabelNumber]).FactoryType == 2)
                 ev.Graphics.DrawString(labelParam.Firm, InfoFont, FontBrush, 305, 332);
             else
                 ev.Graphics.DrawString(labelParam.Firm, InfoFont, FontBrush, 305, 332);
 
-            ev.Graphics.DrawString(labelParam.Country, InfoFont, FontBrush, 305, 344);
+            if (labelParam.clientId == 232)
+            {
+                ev.Graphics.DrawString(labelParam.Country, InfoFont, FontBrush, 305, 344);
 
-            ev.Graphics.DrawString(labelParam.City, InfoFont, FontBrush, 305, 356);
+                ev.Graphics.DrawString(labelParam.City, InfoFont, FontBrush, 305, 356);
 
-            ev.Graphics.DrawString(labelParam.Phone, InfoFont, FontBrush, 305, 368);
+                ev.Graphics.DrawString(labelParam.Phone, InfoFont, FontBrush, 305, 368);
+            }
 
             ev.Graphics.DrawString(labelParam.Produced + ": " + ((Info)LabelInfo[CurrentLabelNumber]).DocDateTime, InfoFont, FontBrush, 305, 380);
 
-            ev.Graphics.DrawString(labelParam.Group + ": " + ((Info)LabelInfo[CurrentLabelNumber]).GroupType, InfoFont, FontBrush, 250, 364);
+            if (labelParam.clientId == 232)
+                ev.Graphics.DrawString(labelParam.Group + ": " + ((Info)LabelInfo[CurrentLabelNumber]).GroupType, InfoFont, FontBrush, 250, 364);
 
             ev.Graphics.DrawString(((Info)LabelInfo[CurrentLabelNumber]).DispatchDate, DispatchFont, FontBrush, 237, 374);
 

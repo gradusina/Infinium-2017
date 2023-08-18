@@ -1,4 +1,6 @@
 ﻿
+using NPOI.HSSF.Record.Formula.Functions;
+
 using System;
 using System.Data;
 using System.Data.SqlClient;
@@ -13,56 +15,56 @@ namespace Infinium.Modules.Marketing.Orders
         private ComponentFactory.Krypton.Toolkit.KryptonComboBox HeightEdit;
         private ComponentFactory.Krypton.Toolkit.KryptonComboBox WidthEdit;
 
-        public int DecorProductsCount = 0;
+        public int DecorProductsCount;
 
-        public DataTable ItemsDataTable = null;
-        public DataTable ColorsDataTable = null;
-        public DataTable PatinaDataTable = null;
-        public DataTable PatinaRALDataTable = null;
-        public DataTable InsetTypesDataTable = null;
-        public DataTable InsetColorsDataTable = null;
+        public DataTable ItemsDataTable;
+        public DataTable ColorsDataTable;
+        public DataTable PatinaDataTable;
+        public DataTable PatinaRALDataTable;
+        public DataTable InsetTypesDataTable;
+        public DataTable InsetColorsDataTable;
 
-        public DataTable DecorProductsDataTable = null;
-        public DataTable DecorDataTable = null;
-        public DataTable DecorConfigDataTable = null;
-        public DataTable DecorParametersDataTable = null;
+        public DataTable DecorProductsDataTable;
+        public DataTable DecorDataTable;
+        public DataTable DecorConfigDataTable;
+        public DataTable DecorParametersDataTable;
 
-        public DataTable TempItemsDataTable = null;
-        public DataTable ItemColorsDataTable = null;
-        public DataTable ItemPatinaDataTable = null;
-        public DataTable ItemLengthDataTable = null;
-        public DataTable ItemHeightDataTable = null;
-        public DataTable ItemWidthDataTable = null;
-        public DataTable ItemInsetTypesDataTable = null;
-        public DataTable ItemInsetColorsDataTable = null;
-        public DataTable TechStoreDataTable = null;
-        public DataTable CurrencyTypesDT = null;
+        public DataTable TempItemsDataTable;
+        public DataTable ItemColorsDataTable;
+        public DataTable ItemPatinaDataTable;
+        public DataTable ItemLengthDataTable;
+        public DataTable ItemHeightDataTable;
+        public DataTable ItemWidthDataTable;
+        public DataTable ItemInsetTypesDataTable;
+        public DataTable ItemInsetColorsDataTable;
+        public DataTable TechStoreDataTable;
+        public DataTable CurrencyTypesDT;
 
-        public BindingSource DecorProductsBindingSource = null;
-        public BindingSource DecorBindingSource = null;
-        public BindingSource ItemsBindingSource = null;
-        public BindingSource ItemColorsBindingSource = null;
-        public BindingSource ItemPatinaBindingSource = null;
-        public BindingSource ItemLengthBindingSource = null;
-        public BindingSource ItemHeightBindingSource = null;
-        public BindingSource ItemWidthBindingSource = null;
-        public BindingSource ColorsBindingSource = null;
-        public BindingSource PatinaBindingSource = null;
-        public BindingSource ItemInsetTypesBindingSource = null;
-        public BindingSource ItemInsetColorsBindingSource = null;
+        public BindingSource DecorProductsBindingSource;
+        public BindingSource DecorBindingSource;
+        public BindingSource ItemsBindingSource;
+        public BindingSource ItemColorsBindingSource;
+        public BindingSource ItemPatinaBindingSource;
+        public BindingSource ItemLengthBindingSource;
+        public BindingSource ItemHeightBindingSource;
+        public BindingSource ItemWidthBindingSource;
+        public BindingSource ColorsBindingSource;
+        public BindingSource PatinaBindingSource;
+        public BindingSource ItemInsetTypesBindingSource;
+        public BindingSource ItemInsetColorsBindingSource;
 
-        public String DecorProductsBindingSourceDisplayMember = null;
-        public String ItemsBindingSourceDisplayMember = null;
-        public String ItemColorsBindingSourceDisplayMember = null;
-        public String ItemPatinaBindingSourceDisplayMember = null;
-        public String ItemLengthBindingSourceDisplayMember = null;
-        public String ItemHeightBindingSourceDisplayMember = null;
-        public String ItemWidthBindingSourceDisplayMember = null;
+        public string DecorProductsBindingSourceDisplayMember;
+        public string ItemsBindingSourceDisplayMember;
+        public string ItemColorsBindingSourceDisplayMember;
+        public string ItemPatinaBindingSourceDisplayMember;
+        public string ItemLengthBindingSourceDisplayMember;
+        public string ItemHeightBindingSourceDisplayMember;
+        public string ItemWidthBindingSourceDisplayMember;
 
-        public String DecorProductsBindingSourceValueMember = null;
-        public String ItemsBindingSourceValueMember = null;
-        public String ItemColorsBindingSourceValueMember = null;
-        public String ItemPatinaBindingSourceValueMember = null;
+        public string DecorProductsBindingSourceValueMember;
+        public string ItemsBindingSourceValueMember;
+        public string ItemColorsBindingSourceValueMember;
+        public string ItemPatinaBindingSourceValueMember;
 
         public DecorCatalogOrder()
         {
@@ -103,61 +105,62 @@ namespace Infinium.Modules.Marketing.Orders
             PatinaBindingSource = new BindingSource();
         }
 
-        private void GetColorsDT()
+        private void GetColorsDt()
         {
             ColorsDataTable = new DataTable();
             ColorsDataTable.Columns.Add(new DataColumn("ColorID", Type.GetType("System.Int64")));
             ColorsDataTable.Columns.Add(new DataColumn("ColorName", Type.GetType("System.String")));
             ColorsDataTable.Columns.Add(new DataColumn("Cvet", Type.GetType("System.String")));
             ColorsDataTable.Columns.Add(new DataColumn("Excluzive", Type.GetType("System.Int32")));
-            string SelectCommand = @"SELECT TechStoreID, TechStoreName, Cvet FROM TechStore
+            var selectCommand = @"SELECT TechStoreID, TechStoreName, Cvet FROM TechStore
                 WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)
                 ORDER BY TechStoreName";
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
+            using (var da = new SqlDataAdapter(selectCommand, ConnectionStrings.CatalogConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var dt = new DataTable())
                 {
-                    DA.Fill(DT);
+                    da.Fill(dt);
                     {
-                        DataRow NewRow = ColorsDataTable.NewRow();
-                        NewRow["ColorID"] = -1;
-                        NewRow["ColorName"] = "-";
-                        NewRow["Cvet"] = "000";
-                        ColorsDataTable.Rows.Add(NewRow);
+                        var newRow = ColorsDataTable.NewRow();
+                        newRow["ColorID"] = -1;
+                        newRow["ColorName"] = "-";
+                        newRow["Cvet"] = "000";
+                        ColorsDataTable.Rows.Add(newRow);
                     }
                     {
-                        DataRow NewRow = ColorsDataTable.NewRow();
-                        NewRow["ColorID"] = 0;
-                        NewRow["ColorName"] = "на выбор";
-                        NewRow["Cvet"] = "0000000";
-                        ColorsDataTable.Rows.Add(NewRow);
+                        var newRow = ColorsDataTable.NewRow();
+                        newRow["ColorID"] = 0;
+                        newRow["ColorName"] = "на выбор";
+                        newRow["Cvet"] = "0000000";
+                        ColorsDataTable.Rows.Add(newRow);
                     }
-                    for (int i = 0; i < DT.Rows.Count; i++)
+                    for (var i = 0; i < dt.Rows.Count; i++)
                     {
-                        DataRow NewRow = ColorsDataTable.NewRow();
-                        NewRow["ColorID"] = Convert.ToInt64(DT.Rows[i]["TechStoreID"]);
-                        NewRow["ColorName"] = DT.Rows[i]["TechStoreName"].ToString();
-                        NewRow["Cvet"] = DT.Rows[i]["Cvet"].ToString();
-                        ColorsDataTable.Rows.Add(NewRow);
+                        var newRow = ColorsDataTable.NewRow();
+                        newRow["ColorID"] = Convert.ToInt64(dt.Rows[i]["TechStoreID"]);
+                        newRow["ColorName"] = dt.Rows[i]["TechStoreName"].ToString();
+                        newRow["Cvet"] = dt.Rows[i]["Cvet"].ToString();
+                        ColorsDataTable.Rows.Add(newRow);
                     }
                 }
             }
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM InsetColors WHERE GroupID IN (2,3,4,5,6,21,22)", ConnectionStrings.CatalogConnectionString))
+            using (var da = new SqlDataAdapter(@"SELECT InsetColors.*, T.Cvet FROM InsetColors  LEFT OUTER JOIN
+            TechStore AS T ON InsetColors.InsetColorID = T.TechStoreID WHERE GroupID IN (2,3,4,5,6,21,22)", ConnectionStrings.CatalogConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var dt = new DataTable())
                 {
-                    DA.Fill(DT);
+                    da.Fill(dt);
 
-                    for (int i = 0; i < DT.Rows.Count; i++)
+                    for (var i = 0; i < dt.Rows.Count; i++)
                     {
-                        DataRow[] rows = ColorsDataTable.Select("ColorID=" + Convert.ToInt32(DT.Rows[i]["InsetColorID"]));
-                        if (rows.Count() == 0)
+                        var rows = ColorsDataTable.Select("ColorID=" + Convert.ToInt32(dt.Rows[i]["InsetColorID"]));
+                        if (!rows.Any())
                         {
-                            DataRow NewRow = ColorsDataTable.NewRow();
-                            NewRow["ColorID"] = Convert.ToInt64(DT.Rows[i]["InsetColorID"]);
-                            NewRow["ColorName"] = DT.Rows[i]["InsetColorName"].ToString();
-                            NewRow["Cvet"] = DT.Rows[i]["InsetColorName"].ToString();
-                            ColorsDataTable.Rows.Add(NewRow);
+                            var newRow = ColorsDataTable.NewRow();
+                            newRow["ColorID"] = Convert.ToInt64(dt.Rows[i]["InsetColorID"]);
+                            newRow["ColorName"] = dt.Rows[i]["InsetColorName"].ToString();
+                            newRow["Cvet"] = dt.Rows[i]["Cvet"].ToString();
+                            ColorsDataTable.Rows.Add(newRow);
                         }
                     }
                 }
@@ -168,19 +171,19 @@ namespace Infinium.Modules.Marketing.Orders
         private void GetInsetColorsDT()
         {
             InsetColorsDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT InsetColors.InsetColorID, InsetColors.GroupID, infiniu2_catalog.dbo.TechStore.TechStoreName AS InsetColorName FROM InsetColors" +
-                " INNER JOIN infiniu2_catalog.dbo.TechStore ON InsetColors.InsetColorID = infiniu2_catalog.dbo.TechStore.TechStoreID ORDER BY TechStoreName", ConnectionStrings.CatalogConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT InsetColors.InsetColorID, InsetColors.GroupID, infiniu2_catalog.dbo.TechStore.TechStoreName AS InsetColorName FROM InsetColors" +
+                                               " INNER JOIN infiniu2_catalog.dbo.TechStore ON InsetColors.InsetColorID = infiniu2_catalog.dbo.TechStore.TechStoreID ORDER BY TechStoreName", ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(InsetColorsDataTable);
                 {
-                    DataRow NewRow = InsetColorsDataTable.NewRow();
+                    var NewRow = InsetColorsDataTable.NewRow();
                     NewRow["InsetColorID"] = -1;
                     NewRow["GroupID"] = -1;
                     NewRow["InsetColorName"] = "-";
                     InsetColorsDataTable.Rows.Add(NewRow);
                 }
                 {
-                    DataRow NewRow = InsetColorsDataTable.NewRow();
+                    var NewRow = InsetColorsDataTable.NewRow();
                     NewRow["InsetColorID"] = 0;
                     NewRow["GroupID"] = -1;
                     NewRow["InsetColorName"] = "на выбор";
@@ -193,10 +196,10 @@ namespace Infinium.Modules.Marketing.Orders
 
         private void Fill()
         {
-            string SelectCommand = @"SELECT ProductID, ProductName, MeasureID, ReportParam FROM DecorProducts" +
-                " WHERE ProductID IN (SELECT ProductID FROM DecorConfig WHERE (AccountingName IS NOT NULL AND InvNumber IS NOT NULL)) ORDER BY ProductName ASC";
+            var SelectCommand = @"SELECT ProductID, ProductName, MeasureID, ReportParam FROM DecorProducts" +
+                                " WHERE ProductID IN (SELECT ProductID FROM DecorConfig WHERE (AccountingName IS NOT NULL AND InvNumber IS NOT NULL)) ORDER BY ProductName ASC";
             DecorProductsDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
+            using (var DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(DecorProductsDataTable);
                 DecorProductsDataTable.Columns.Add(new DataColumn("Excluzive", Type.GetType("System.Int32")));
@@ -204,56 +207,56 @@ namespace Infinium.Modules.Marketing.Orders
             DecorDataTable = new DataTable();
             SelectCommand = @"SELECT DISTINCT TechStore.TechStoreID AS DecorID, TechStore.TechStoreName AS Name, DecorConfig.ProductID FROM TechStore 
                 INNER JOIN DecorConfig ON TechStore.TechStoreID = DecorConfig.DecorID AND AccountingName IS NOT NULL AND InvNumber IS NOT NULL ORDER BY TechStoreName";
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
+            using (var DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(DecorDataTable);
                 DecorDataTable.Columns.Add(new DataColumn("Excluzive", Type.GetType("System.Int32")));
             }
-            GetColorsDT();
+            GetColorsDt();
             GetInsetColorsDT();
 
             CurrencyTypesDT = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM CurrencyTypes", ConnectionStrings.CatalogConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM CurrencyTypes", ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(CurrencyTypesDT);
             }
 
             InsetTypesDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM InsetTypes",
+            using (var DA = new SqlDataAdapter("SELECT * FROM InsetTypes",
                 ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(InsetTypesDataTable);
             }
             PatinaDataTable = new DataTable();
             SelectCommand = @"SELECT * FROM Patina ORDER BY PatinaName";
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
+            using (var DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(PatinaDataTable);
                 PatinaDataTable.Columns.Add(new DataColumn("Excluzive", Type.GetType("System.Int32")));
             }
             PatinaRALDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT PatinaRAL.*, Patina.Patina FROM PatinaRAL INNER JOIN Patina ON Patina.PatinaID=PatinaRAL.PatinaID WHERE PatinaRAL.Enabled=1",
+            using (var DA = new SqlDataAdapter("SELECT PatinaRAL.*, Patina.Patina FROM PatinaRAL INNER JOIN Patina ON Patina.PatinaID=PatinaRAL.PatinaID WHERE PatinaRAL.Enabled=1",
                 ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(PatinaRALDataTable);
             }
             foreach (DataRow item in PatinaRALDataTable.Rows)
             {
-                DataRow NewRow = PatinaDataTable.NewRow();
+                var NewRow = PatinaDataTable.NewRow();
                 NewRow["PatinaID"] = item["PatinaRALID"];
                 NewRow["PatinaName"] = item["PatinaRAL"]; NewRow["Patina"] = item["Patina"];
                 NewRow["DisplayName"] = item["DisplayName"];
                 PatinaDataTable.Rows.Add(NewRow);
             }
             DecorParametersDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DecorParameters", ConnectionStrings.CatalogConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM DecorParameters", ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(DecorParametersDataTable);
             }
 
             TempItemsDataTable = DecorDataTable.Clone();
 
-            using (DataView DV = new DataView(DecorDataTable))
+            using (var DV = new DataView(DecorDataTable))
             {
                 ItemsDataTable = DV.ToTable(true, new string[] { "Name" });
             }
@@ -323,16 +326,16 @@ namespace Infinium.Modules.Marketing.Orders
         }
 
         //External
-        public bool HasParameter(int ProductID, String Parameter)
+        public bool HasParameter(int ProductID, string Parameter)
         {
-            DataRow[] Rows = DecorParametersDataTable.Select("ProductID = " + ProductID);
+            var Rows = DecorParametersDataTable.Select("ProductID = " + ProductID);
 
             return Convert.ToBoolean(Rows[0][Parameter]);
         }
 
         private bool HasColorParameter(DataRow[] Rows, int ColorID)
         {
-            foreach (DataRow Row in Rows)
+            foreach (var Row in Rows)
             {
                 if (Row["ColorID"].ToString() == ColorID.ToString())
                     return true;
@@ -343,7 +346,7 @@ namespace Infinium.Modules.Marketing.Orders
 
         private bool HasPatinaParameter(DataRow[] Rows, int ColorID)
         {
-            foreach (DataRow Row in Rows)
+            foreach (var Row in Rows)
             {
                 if (Row["PatinaID"].ToString() == ColorID.ToString())
                     return true;
@@ -354,7 +357,7 @@ namespace Infinium.Modules.Marketing.Orders
 
         private bool HasHeightParameter(DataRow[] Rows, int Height)
         {
-            foreach (DataRow Row in Rows)
+            foreach (var Row in Rows)
             {
                 if (Row["Height"].ToString() == Height.ToString())
                     return true;
@@ -365,7 +368,7 @@ namespace Infinium.Modules.Marketing.Orders
 
         private bool HasLengthParameter(DataRow[] Rows, int Length)
         {
-            foreach (DataRow Row in Rows)
+            foreach (var Row in Rows)
             {
                 if (Row["Length"].ToString() == Length.ToString())
                     return true;
@@ -376,7 +379,7 @@ namespace Infinium.Modules.Marketing.Orders
 
         private bool HasWidthParameter(DataRow[] Rows, int Width)
         {
-            foreach (DataRow Row in Rows)
+            foreach (var Row in Rows)
             {
                 if (Row["Width"].ToString() == Width.ToString())
                     return true;
@@ -402,11 +405,11 @@ namespace Infinium.Modules.Marketing.Orders
 
             if (PatinaID > 1000)
             {
-                DataRow[] fRows = PatinaRALDataTable.Select("PatinaRALID=" + PatinaID);
+                var fRows = PatinaRALDataTable.Select("PatinaRALID=" + PatinaID);
                 if (fRows.Count() > 0)
                     PatinaID = Convert.ToInt32(fRows[0]["PatinaID"]);
             }
-            DataRow[] Rows = DecorConfigDataTable.Select(
+            var Rows = DecorConfigDataTable.Select(
                             "ProductID = " + Convert.ToInt32(ProductID) + " AND " +
                             "DecorID = " + Convert.ToInt32(DecorID));
 
@@ -476,14 +479,14 @@ namespace Infinium.Modules.Marketing.Orders
         {
             TempItemsDataTable.Clear();
             TempItemsDataTable = DecorDataTable;
-            using (DataView DV = new DataView(TempItemsDataTable))
+            using (var DV = new DataView(TempItemsDataTable))
             {
                 DV.RowFilter = "Name='" + Name + "'";
 
                 TempItemsDataTable = DV.ToTable();
             }
-            string filter = string.Empty;
-            for (int i = 0; i < TempItemsDataTable.Rows.Count; i++)
+            var filter = string.Empty;
+            for (var i = 0; i < TempItemsDataTable.Rows.Count; i++)
                 filter += Convert.ToInt32(TempItemsDataTable.Rows[i]["DecorID"]) + ",";
             if (filter.Length > 0)
             {
@@ -503,11 +506,11 @@ namespace Infinium.Modules.Marketing.Orders
 
             if (PatinaID > 1000)
             {
-                DataRow[] fRows = PatinaRALDataTable.Select("PatinaRALID=" + PatinaID);
+                var fRows = PatinaRALDataTable.Select("PatinaRALID=" + PatinaID);
                 if (fRows.Count() > 0)
                     PatinaID = Convert.ToInt32(fRows[0]["PatinaID"]);
             }
-            DataRow[] Rows = DecorConfigDataTable.Select(
+            var Rows = DecorConfigDataTable.Select(
                             "ProductID = " + Convert.ToInt32(ProductID) + " AND " + filter);
 
 
@@ -574,10 +577,10 @@ namespace Infinium.Modules.Marketing.Orders
 
         private string GetDecorName(int DecorID)
         {
-            string Name = string.Empty;
+            var Name = string.Empty;
             try
             {
-                DataRow[] Rows = DecorDataTable.Select("DecorID = " + DecorID);
+                var Rows = DecorDataTable.Select("DecorID = " + DecorID);
                 Name = Rows[0]["Name"].ToString();
             }
             catch
@@ -589,10 +592,10 @@ namespace Infinium.Modules.Marketing.Orders
 
         public string GetColorName(int ColorID)
         {
-            string ColorName = string.Empty;
+            var ColorName = string.Empty;
             try
             {
-                DataRow[] Rows = ColorsDataTable.Select("ColorID = " + ColorID);
+                var Rows = ColorsDataTable.Select("ColorID = " + ColorID);
                 ColorName = Rows[0]["ColorName"].ToString();
             }
             catch
@@ -604,10 +607,10 @@ namespace Infinium.Modules.Marketing.Orders
 
         public string GetPatinaName(int PatinaID)
         {
-            string PatinaName = string.Empty;
+            var PatinaName = string.Empty;
             try
             {
-                DataRow[] Rows = PatinaDataTable.Select("PatinaID = " + PatinaID);
+                var Rows = PatinaDataTable.Select("PatinaID = " + PatinaID);
                 PatinaName = Rows[0]["PatinaName"].ToString();
             }
             catch
@@ -619,10 +622,10 @@ namespace Infinium.Modules.Marketing.Orders
 
         public string GetInsetTypeName(int InsetTypeID)
         {
-            string InsetTypeName = string.Empty;
+            var InsetTypeName = string.Empty;
             try
             {
-                DataRow[] Rows = InsetTypesDataTable.Select("InsetTypeID = " + InsetTypeID);
+                var Rows = InsetTypesDataTable.Select("InsetTypeID = " + InsetTypeID);
                 InsetTypeName = Rows[0]["InsetTypeName"].ToString();
             }
             catch
@@ -634,10 +637,10 @@ namespace Infinium.Modules.Marketing.Orders
 
         public string GetInsetColorName(int InsetColorID)
         {
-            string InsetColorName = string.Empty;
+            var InsetColorName = string.Empty;
             try
             {
-                DataRow[] Rows = InsetColorsDataTable.Select("InsetColorID = " + InsetColorID);
+                var Rows = InsetColorsDataTable.Select("InsetColorID = " + InsetColorID);
                 InsetColorName = Rows[0]["InsetColorName"].ToString();
             }
             catch
@@ -647,9 +650,14 @@ namespace Infinium.Modules.Marketing.Orders
             return InsetColorName;
         }
 
+        public string GetProductName(int ProductId)
+        {
+            return DecorProductsDataTable.Select("ProductId = " + ProductId)[0]["ProductName"].ToString();
+        }
+
         public string PatinaDisplayName(int PatinaID)
         {
-            DataRow[] rows = PatinaDataTable.Select("PatinaID = " + PatinaID);
+            var rows = PatinaDataTable.Select("PatinaID = " + PatinaID);
             if (rows.Count() > 0)
                 return rows[0]["DisplayName"].ToString();
             return string.Empty;
@@ -680,7 +688,7 @@ namespace Infinium.Modules.Marketing.Orders
             ItemLengthDataTable.Clear();
             ItemHeightDataTable.Clear();
             ItemWidthDataTable.Clear();
-            string RowFilter = "Excluzive=1";
+            var RowFilter = "Excluzive=1";
             if (!bExcluzive)
                 RowFilter = "Excluzive IS NULL OR Excluzive<>0";
 
@@ -692,8 +700,8 @@ namespace Infinium.Modules.Marketing.Orders
         {
             TempItemsDataTable.Clear();
             TempItemsDataTable = DecorDataTable;
-            string RowFilter = "ProductID=" + ProductID;
-            using (DataView DV = new DataView(TempItemsDataTable))
+            var RowFilter = "ProductID=" + ProductID;
+            using (var DV = new DataView(TempItemsDataTable))
             {
                 if (bExcluzive)
                     RowFilter += " AND (Excluzive=1)";
@@ -704,9 +712,9 @@ namespace Infinium.Modules.Marketing.Orders
             }
 
             ItemsDataTable.Clear();
-            for (int d = 0; d < TempItemsDataTable.Rows.Count; d++)
+            for (var d = 0; d < TempItemsDataTable.Rows.Count; d++)
             {
-                DataRow NewRow = ItemsDataTable.NewRow();
+                var NewRow = ItemsDataTable.NewRow();
                 NewRow["Name"] = TempItemsDataTable.Rows[d]["Name"].ToString();
                 ItemsDataTable.Rows.Add(NewRow);
             }
@@ -717,14 +725,14 @@ namespace Infinium.Modules.Marketing.Orders
         {
             TempItemsDataTable.Clear();
             TempItemsDataTable = DecorDataTable;
-            using (DataView DV = new DataView(TempItemsDataTable))
+            using (var DV = new DataView(TempItemsDataTable))
             {
                 DV.RowFilter = "Name='" + Name + "'";
 
                 TempItemsDataTable = DV.ToTable();
             }
-            string filter = string.Empty;
-            for (int i = 0; i < TempItemsDataTable.Rows.Count; i++)
+            var filter = string.Empty;
+            for (var i = 0; i < TempItemsDataTable.Rows.Count; i++)
                 filter += Convert.ToInt32(TempItemsDataTable.Rows[i]["DecorID"]) + ",";
             if (filter.Length > 0)
             {
@@ -741,14 +749,14 @@ namespace Infinium.Modules.Marketing.Orders
             ItemColorsDataTable.Clear();
             ItemColorsDataTable.AcceptChanges();
 
-            DataRow[] DCR = DecorConfigDataTable.Select(filter);
+            var DCR = DecorConfigDataTable.Select(filter);
 
 
-            for (int d = 0; d < DCR.Count(); d++)
+            for (var d = 0; d < DCR.Count(); d++)
             {
                 if (d == 0)
                 {
-                    DataRow NewRow = ItemColorsDataTable.NewRow();
+                    var NewRow = ItemColorsDataTable.NewRow();
                     NewRow["ColorID"] = (DCR[d]["ColorID"]);
                     NewRow["ColorName"] = GetColorName(Convert.ToInt32(DCR[d]["ColorID"]));
                     ItemColorsDataTable.Rows.Add(NewRow);
@@ -756,14 +764,14 @@ namespace Infinium.Modules.Marketing.Orders
                 }
 
 
-                for (int i = 0; i < ItemColorsDataTable.Rows.Count; i++)
+                for (var i = 0; i < ItemColorsDataTable.Rows.Count; i++)
                 {
                     if (ItemColorsDataTable.Rows[i]["ColorID"].ToString() == DCR[d]["ColorID"].ToString())
                         break;
 
                     if (i == ItemColorsDataTable.Rows.Count - 1)
                     {
-                        DataRow NewRow = ItemColorsDataTable.NewRow();
+                        var NewRow = ItemColorsDataTable.NewRow();
                         NewRow["ColorID"] = (DCR[d]["ColorID"]);
                         NewRow["ColorName"] = GetColorName(Convert.ToInt32(DCR[d]["ColorID"]));
                         ItemColorsDataTable.Rows.Add(NewRow);
@@ -785,14 +793,14 @@ namespace Infinium.Modules.Marketing.Orders
         {
             TempItemsDataTable.Clear();
             TempItemsDataTable = DecorDataTable;
-            using (DataView DV = new DataView(TempItemsDataTable))
+            using (var DV = new DataView(TempItemsDataTable))
             {
                 DV.RowFilter = "Name='" + Name + "'";
 
                 TempItemsDataTable = DV.ToTable();
             }
-            string filter = string.Empty;
-            for (int i = 0; i < TempItemsDataTable.Rows.Count; i++)
+            var filter = string.Empty;
+            for (var i = 0; i < TempItemsDataTable.Rows.Count; i++)
                 filter += Convert.ToInt32(TempItemsDataTable.Rows[i]["DecorID"]) + ",";
             if (filter.Length > 0)
             {
@@ -809,14 +817,14 @@ namespace Infinium.Modules.Marketing.Orders
             ItemPatinaDataTable.Clear();
             ItemPatinaDataTable.AcceptChanges();
 
-            DataRow[] DCR = DecorConfigDataTable.Select(filter + " AND ColorID = " + ColorID.ToString());
+            var DCR = DecorConfigDataTable.Select(filter + " AND ColorID = " + ColorID.ToString());
 
 
-            for (int d = 0; d < DCR.Count(); d++)
+            for (var d = 0; d < DCR.Count(); d++)
             {
                 if (d == 0)
                 {
-                    DataRow NewRow = ItemPatinaDataTable.NewRow();
+                    var NewRow = ItemPatinaDataTable.NewRow();
                     NewRow["PatinaID"] = (DCR[d]["PatinaID"]);
                     NewRow["PatinaName"] = GetPatinaName(Convert.ToInt32(DCR[d]["PatinaID"]));
                     ItemPatinaDataTable.Rows.Add(NewRow);
@@ -824,14 +832,14 @@ namespace Infinium.Modules.Marketing.Orders
                 }
 
 
-                for (int i = 0; i < ItemPatinaDataTable.Rows.Count; i++)
+                for (var i = 0; i < ItemPatinaDataTable.Rows.Count; i++)
                 {
                     if (ItemPatinaDataTable.Rows[i]["PatinaID"].ToString() == DCR[d]["PatinaID"].ToString())
                         break;
 
                     if (i == ItemPatinaDataTable.Rows.Count - 1)
                     {
-                        DataRow NewRow = ItemPatinaDataTable.NewRow();
+                        var NewRow = ItemPatinaDataTable.NewRow();
                         NewRow["PatinaID"] = (DCR[d]["PatinaID"]);
                         NewRow["PatinaName"] = GetPatinaName(Convert.ToInt32(DCR[d]["PatinaID"]));
                         ItemPatinaDataTable.Rows.Add(NewRow);
@@ -840,12 +848,12 @@ namespace Infinium.Modules.Marketing.Orders
                 }
             }
 
-            bool HasPatinaRAL = false;
+            var HasPatinaRAL = false;
             if (ItemPatinaDataTable.Rows.Count > 0)
             {
-                for (int i = 0; i < ItemPatinaDataTable.Rows.Count; i++)
+                for (var i = 0; i < ItemPatinaDataTable.Rows.Count; i++)
                 {
-                    DataRow[] fRows = PatinaRALDataTable.Select("PatinaID=" + Convert.ToInt32(ItemPatinaDataTable.Rows[i]["PatinaID"]));
+                    var fRows = PatinaRALDataTable.Select("PatinaID=" + Convert.ToInt32(ItemPatinaDataTable.Rows[i]["PatinaID"]));
                     if (fRows.Count() > 0)
                     {
                         HasPatinaRAL = true;
@@ -855,7 +863,7 @@ namespace Infinium.Modules.Marketing.Orders
             }
             if (ItemPatinaDataTable.Rows.Count > 0 && HasPatinaRAL)
             {
-                DataTable ddd = ItemPatinaDataTable.Copy();
+                var ddd = ItemPatinaDataTable.Copy();
                 ItemPatinaDataTable.Clear();
                 ItemPatinaDataTable.AcceptChanges();
 
@@ -863,14 +871,14 @@ namespace Infinium.Modules.Marketing.Orders
                 {
                     if (Convert.ToInt32(Row["PatinaID"]) == -1)
                     {
-                        DataRow NewRow = ItemPatinaDataTable.NewRow();
+                        var NewRow = ItemPatinaDataTable.NewRow();
                         NewRow["PatinaID"] = Convert.ToInt32(Row["PatinaID"]);
                         NewRow["PatinaName"] = GetPatinaName(Convert.ToInt32(Row["PatinaID"]));
                         ItemPatinaDataTable.Rows.Add(NewRow);
                     }
-                    foreach (DataRow item in PatinaRALDataTable.Select("PatinaID=" + Convert.ToInt32(Row["PatinaID"])))
+                    foreach (var item in PatinaRALDataTable.Select("PatinaID=" + Convert.ToInt32(Row["PatinaID"])))
                     {
-                        DataRow NewRow = ItemPatinaDataTable.NewRow();
+                        var NewRow = ItemPatinaDataTable.NewRow();
                         NewRow["PatinaID"] = item["PatinaRALID"];
                         NewRow["PatinaName"] = item["PatinaRAL"]; NewRow["Patina"] = item["Patina"];
                         NewRow["DisplayName"] = item["DisplayName"];
@@ -892,14 +900,14 @@ namespace Infinium.Modules.Marketing.Orders
         {
             TempItemsDataTable.Clear();
             TempItemsDataTable = DecorDataTable;
-            using (DataView DV = new DataView(TempItemsDataTable))
+            using (var DV = new DataView(TempItemsDataTable))
             {
                 DV.RowFilter = "Name='" + Name + "'";
 
                 TempItemsDataTable = DV.ToTable();
             }
-            string filter = string.Empty;
-            for (int i = 0; i < TempItemsDataTable.Rows.Count; i++)
+            var filter = string.Empty;
+            for (var i = 0; i < TempItemsDataTable.Rows.Count; i++)
                 filter += Convert.ToInt32(TempItemsDataTable.Rows[i]["DecorID"]) + ",";
             if (filter.Length > 0)
             {
@@ -918,19 +926,19 @@ namespace Infinium.Modules.Marketing.Orders
 
             if (PatinaID > 1000)
             {
-                DataRow[] fRows = PatinaRALDataTable.Select("PatinaRALID=" + PatinaID);
+                var fRows = PatinaRALDataTable.Select("PatinaRALID=" + PatinaID);
                 if (fRows.Count() > 0)
                     PatinaID = Convert.ToInt32(fRows[0]["PatinaID"]);
             }
-            DataRow[] DCR = DecorConfigDataTable.Select(filter + " AND ColorID = " + ColorID.ToString()
-                + " AND PatinaID = " + PatinaID.ToString());
+            var DCR = DecorConfigDataTable.Select(filter + " AND ColorID = " + ColorID.ToString()
+                                                  + " AND PatinaID = " + PatinaID.ToString());
 
 
-            for (int d = 0; d < DCR.Count(); d++)
+            for (var d = 0; d < DCR.Count(); d++)
             {
                 if (d == 0)
                 {
-                    DataRow NewRow = ItemInsetTypesDataTable.NewRow();
+                    var NewRow = ItemInsetTypesDataTable.NewRow();
                     NewRow["InsetTypeID"] = (DCR[d]["InsetTypeID"]);
                     NewRow["InsetTypeName"] = GetInsetTypeName(Convert.ToInt32(DCR[d]["InsetTypeID"]));
                     ItemInsetTypesDataTable.Rows.Add(NewRow);
@@ -938,14 +946,14 @@ namespace Infinium.Modules.Marketing.Orders
                 }
 
 
-                for (int i = 0; i < ItemInsetTypesDataTable.Rows.Count; i++)
+                for (var i = 0; i < ItemInsetTypesDataTable.Rows.Count; i++)
                 {
                     if (ItemInsetTypesDataTable.Rows[i]["InsetTypeID"].ToString() == DCR[d]["InsetTypeID"].ToString())
                         break;
 
                     if (i == ItemInsetTypesDataTable.Rows.Count - 1)
                     {
-                        DataRow NewRow = ItemInsetTypesDataTable.NewRow();
+                        var NewRow = ItemInsetTypesDataTable.NewRow();
                         NewRow["InsetTypeID"] = (DCR[d]["InsetTypeID"]);
                         NewRow["InsetTypeName"] = GetInsetTypeName(Convert.ToInt32(DCR[d]["InsetTypeID"]));
                         ItemInsetTypesDataTable.Rows.Add(NewRow);
@@ -968,14 +976,14 @@ namespace Infinium.Modules.Marketing.Orders
         {
             TempItemsDataTable.Clear();
             TempItemsDataTable = DecorDataTable;
-            using (DataView DV = new DataView(TempItemsDataTable))
+            using (var DV = new DataView(TempItemsDataTable))
             {
                 DV.RowFilter = "Name='" + Name + "'";
 
                 TempItemsDataTable = DV.ToTable();
             }
-            string filter = string.Empty;
-            for (int i = 0; i < TempItemsDataTable.Rows.Count; i++)
+            var filter = string.Empty;
+            for (var i = 0; i < TempItemsDataTable.Rows.Count; i++)
                 filter += Convert.ToInt32(TempItemsDataTable.Rows[i]["DecorID"]) + ",";
             if (filter.Length > 0)
             {
@@ -994,19 +1002,19 @@ namespace Infinium.Modules.Marketing.Orders
 
             if (PatinaID > 1000)
             {
-                DataRow[] fRows = PatinaRALDataTable.Select("PatinaRALID=" + PatinaID);
+                var fRows = PatinaRALDataTable.Select("PatinaRALID=" + PatinaID);
                 if (fRows.Count() > 0)
                     PatinaID = Convert.ToInt32(fRows[0]["PatinaID"]);
             }
-            DataRow[] DCR = DecorConfigDataTable.Select(filter + " AND ColorID = " + ColorID.ToString()
-                + " AND PatinaID = " + PatinaID.ToString() + " AND InsetTypeID = " + InsetTypeID.ToString());
+            var DCR = DecorConfigDataTable.Select(filter + " AND ColorID = " + ColorID.ToString()
+                                                  + " AND PatinaID = " + PatinaID.ToString() + " AND InsetTypeID = " + InsetTypeID.ToString());
 
 
-            for (int d = 0; d < DCR.Count(); d++)
+            for (var d = 0; d < DCR.Count(); d++)
             {
                 if (d == 0)
                 {
-                    DataRow NewRow = ItemInsetColorsDataTable.NewRow();
+                    var NewRow = ItemInsetColorsDataTable.NewRow();
                     NewRow["InsetColorID"] = (DCR[d]["InsetColorID"]);
                     NewRow["InsetColorName"] = GetInsetColorName(Convert.ToInt32(DCR[d]["InsetColorID"]));
                     ItemInsetColorsDataTable.Rows.Add(NewRow);
@@ -1014,14 +1022,14 @@ namespace Infinium.Modules.Marketing.Orders
                 }
 
 
-                for (int i = 0; i < ItemInsetColorsDataTable.Rows.Count; i++)
+                for (var i = 0; i < ItemInsetColorsDataTable.Rows.Count; i++)
                 {
                     if (ItemInsetColorsDataTable.Rows[i]["InsetColorID"].ToString() == DCR[d]["InsetColorID"].ToString())
                         break;
 
                     if (i == ItemInsetColorsDataTable.Rows.Count - 1)
                     {
-                        DataRow NewRow = ItemInsetColorsDataTable.NewRow();
+                        var NewRow = ItemInsetColorsDataTable.NewRow();
                         NewRow["InsetColorID"] = (DCR[d]["InsetColorID"]);
                         NewRow["InsetColorName"] = GetInsetColorName(Convert.ToInt32(DCR[d]["InsetColorID"]));
                         ItemInsetColorsDataTable.Rows.Add(NewRow);
@@ -1044,14 +1052,14 @@ namespace Infinium.Modules.Marketing.Orders
         {
             TempItemsDataTable.Clear();
             TempItemsDataTable = DecorDataTable;
-            using (DataView DV = new DataView(TempItemsDataTable))
+            using (var DV = new DataView(TempItemsDataTable))
             {
                 DV.RowFilter = "Name='" + Name + "'";
 
                 TempItemsDataTable = DV.ToTable();
             }
-            string filter = string.Empty;
-            for (int i = 0; i < TempItemsDataTable.Rows.Count; i++)
+            var filter = string.Empty;
+            for (var i = 0; i < TempItemsDataTable.Rows.Count; i++)
                 filter += Convert.ToInt32(TempItemsDataTable.Rows[i]["DecorID"]) + ",";
             if (filter.Length > 0)
             {
@@ -1066,37 +1074,37 @@ namespace Infinium.Modules.Marketing.Orders
 
             if (PatinaID > 1000)
             {
-                DataRow[] fRows = PatinaRALDataTable.Select("PatinaRALID=" + PatinaID);
+                var fRows = PatinaRALDataTable.Select("PatinaRALID=" + PatinaID);
                 if (fRows.Count() > 0)
                     PatinaID = Convert.ToInt32(fRows[0]["PatinaID"]);
             }
-            DataRow[] DCR = DecorConfigDataTable.Select(filter + " AND ColorID = " + ColorID.ToString()
-                + " AND PatinaID = " + PatinaID.ToString() + " AND InsetTypeID = " + InsetTypeID.ToString() + " AND InsetColorID = " + InsetColorID.ToString());
+            var DCR = DecorConfigDataTable.Select(filter + " AND ColorID = " + ColorID.ToString()
+                                                  + " AND PatinaID = " + PatinaID.ToString() + " AND InsetTypeID = " + InsetTypeID.ToString() + " AND InsetColorID = " + InsetColorID.ToString());
 
 
-            for (int d = 0; d < DCR.Count(); d++)
+            for (var d = 0; d < DCR.Count(); d++)
             {
                 if (d == 0)
                 {
-                    int Length = Convert.ToInt32(DCR[d]["Length"]);
+                    var Length = Convert.ToInt32(DCR[d]["Length"]);
 
-                    DataRow NewRow = ItemLengthDataTable.NewRow();
+                    var NewRow = ItemLengthDataTable.NewRow();
                     NewRow["Length"] = Length;
                     ItemLengthDataTable.Rows.Add(NewRow);
                     continue;
                 }
 
 
-                for (int i = 0; i < ItemLengthDataTable.Rows.Count; i++)
+                for (var i = 0; i < ItemLengthDataTable.Rows.Count; i++)
                 {
                     if (ItemLengthDataTable.Rows[i]["Length"].ToString() == DCR[d]["Length"].ToString())
                         break;
 
                     if (i == ItemLengthDataTable.Rows.Count - 1)
                     {
-                        int Height = Convert.ToInt32(DCR[d]["Length"]);
+                        var Height = Convert.ToInt32(DCR[d]["Length"]);
 
-                        DataRow NewRow = ItemLengthDataTable.NewRow();
+                        var NewRow = ItemLengthDataTable.NewRow();
                         NewRow["Length"] = Height;
                         ItemLengthDataTable.Rows.Add(NewRow);
                         break;
@@ -1136,14 +1144,14 @@ namespace Infinium.Modules.Marketing.Orders
         {
             TempItemsDataTable.Clear();
             TempItemsDataTable = DecorDataTable;
-            using (DataView DV = new DataView(TempItemsDataTable))
+            using (var DV = new DataView(TempItemsDataTable))
             {
                 DV.RowFilter = "Name='" + Name + "'";
 
                 TempItemsDataTable = DV.ToTable();
             }
-            string filter = string.Empty;
-            for (int i = 0; i < TempItemsDataTable.Rows.Count; i++)
+            var filter = string.Empty;
+            for (var i = 0; i < TempItemsDataTable.Rows.Count; i++)
                 filter += Convert.ToInt32(TempItemsDataTable.Rows[i]["DecorID"]) + ",";
             if (filter.Length > 0)
             {
@@ -1158,38 +1166,38 @@ namespace Infinium.Modules.Marketing.Orders
 
             if (PatinaID > 1000)
             {
-                DataRow[] fRows = PatinaRALDataTable.Select("PatinaRALID=" + PatinaID);
+                var fRows = PatinaRALDataTable.Select("PatinaRALID=" + PatinaID);
                 if (fRows.Count() > 0)
                     PatinaID = Convert.ToInt32(fRows[0]["PatinaID"]);
             }
-            DataRow[] DCR = DecorConfigDataTable.Select(filter + " AND ColorID = " + ColorID.ToString()
-                + " AND InsetTypeID = " + InsetTypeID.ToString() + " AND InsetColorID = " + InsetColorID.ToString()
-                + " AND PatinaID = " + PatinaID.ToString() + " AND Length = " + Length.ToString());
+            var DCR = DecorConfigDataTable.Select(filter + " AND ColorID = " + ColorID.ToString()
+                                                  + " AND InsetTypeID = " + InsetTypeID.ToString() + " AND InsetColorID = " + InsetColorID.ToString()
+                                                  + " AND PatinaID = " + PatinaID.ToString() + " AND Length = " + Length.ToString());
 
 
-            for (int d = 0; d < DCR.Count(); d++)
+            for (var d = 0; d < DCR.Count(); d++)
             {
                 if (d == 0)
                 {
-                    int Height = Convert.ToInt32(DCR[d]["Height"]);
+                    var Height = Convert.ToInt32(DCR[d]["Height"]);
 
-                    DataRow NewRow = ItemHeightDataTable.NewRow();
+                    var NewRow = ItemHeightDataTable.NewRow();
                     NewRow["Height"] = Height;
                     ItemHeightDataTable.Rows.Add(NewRow);
                     continue;
                 }
 
 
-                for (int i = 0; i < ItemHeightDataTable.Rows.Count; i++)
+                for (var i = 0; i < ItemHeightDataTable.Rows.Count; i++)
                 {
                     if (ItemHeightDataTable.Rows[i]["Height"].ToString() == DCR[d]["Height"].ToString())
                         break;
 
                     if (i == ItemHeightDataTable.Rows.Count - 1)
                     {
-                        int Height = Convert.ToInt32(DCR[d]["Height"]);
+                        var Height = Convert.ToInt32(DCR[d]["Height"]);
 
-                        DataRow NewRow = ItemHeightDataTable.NewRow();
+                        var NewRow = ItemHeightDataTable.NewRow();
                         NewRow["Height"] = Height;
                         ItemHeightDataTable.Rows.Add(NewRow);
                         break;
@@ -1229,14 +1237,14 @@ namespace Infinium.Modules.Marketing.Orders
         {
             TempItemsDataTable.Clear();
             TempItemsDataTable = DecorDataTable;
-            using (DataView DV = new DataView(TempItemsDataTable))
+            using (var DV = new DataView(TempItemsDataTable))
             {
                 DV.RowFilter = "Name='" + Name + "'";
 
                 TempItemsDataTable = DV.ToTable();
             }
-            string filter = string.Empty;
-            for (int i = 0; i < TempItemsDataTable.Rows.Count; i++)
+            var filter = string.Empty;
+            for (var i = 0; i < TempItemsDataTable.Rows.Count; i++)
                 filter += Convert.ToInt32(TempItemsDataTable.Rows[i]["DecorID"]) + ",";
             if (filter.Length > 0)
             {
@@ -1251,39 +1259,39 @@ namespace Infinium.Modules.Marketing.Orders
 
             if (PatinaID > 1000)
             {
-                DataRow[] fRows = PatinaRALDataTable.Select("PatinaRALID=" + PatinaID);
+                var fRows = PatinaRALDataTable.Select("PatinaRALID=" + PatinaID);
                 if (fRows.Count() > 0)
                     PatinaID = Convert.ToInt32(fRows[0]["PatinaID"]);
             }
-            DataRow[] DCR = DecorConfigDataTable.Select(filter
-                + " AND ColorID = " + ColorID.ToString() + " AND PatinaID = " + PatinaID.ToString()
-                + " AND InsetTypeID = " + InsetTypeID.ToString() + " AND InsetColorID = " + InsetColorID.ToString() +
-                " AND Length = " + Length.ToString() + " AND Height = " + Height.ToString());
+            var DCR = DecorConfigDataTable.Select(filter
+                                                  + " AND ColorID = " + ColorID.ToString() + " AND PatinaID = " + PatinaID.ToString()
+                                                  + " AND InsetTypeID = " + InsetTypeID.ToString() + " AND InsetColorID = " + InsetColorID.ToString() +
+                                                  " AND Length = " + Length.ToString() + " AND Height = " + Height.ToString());
 
 
-            for (int d = 0; d < DCR.Count(); d++)
+            for (var d = 0; d < DCR.Count(); d++)
             {
                 if (d == 0)
                 {
-                    int Width = Convert.ToInt32(DCR[d]["Width"]);
+                    var Width = Convert.ToInt32(DCR[d]["Width"]);
 
-                    DataRow NewRow = ItemWidthDataTable.NewRow();
+                    var NewRow = ItemWidthDataTable.NewRow();
                     NewRow["Width"] = Width;
                     ItemWidthDataTable.Rows.Add(NewRow);
                     continue;
                 }
 
 
-                for (int i = 0; i < ItemWidthDataTable.Rows.Count; i++)
+                for (var i = 0; i < ItemWidthDataTable.Rows.Count; i++)
                 {
                     if (ItemWidthDataTable.Rows[i]["Width"].ToString() == DCR[d]["Width"].ToString())
                         break;
 
                     if (i == ItemWidthDataTable.Rows.Count - 1)
                     {
-                        int Width = Convert.ToInt32(DCR[d]["Width"]);
+                        var Width = Convert.ToInt32(DCR[d]["Width"]);
 
-                        DataRow NewRow = ItemWidthDataTable.NewRow();
+                        var NewRow = ItemWidthDataTable.NewRow();
                         NewRow["Width"] = Width;
                         ItemWidthDataTable.Rows.Add(NewRow);
                         break;
