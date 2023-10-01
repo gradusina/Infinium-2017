@@ -8,6 +8,7 @@ using System.Media;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
+using Infinium.Classes;
 
 namespace Infinium
 {
@@ -324,7 +325,6 @@ namespace Infinium
 
                 Thread.Sleep(_iRefreshTime);
             }
-
         }
 
         public void HideForm(Form form)
@@ -860,8 +860,10 @@ namespace Infinium
                 }
         }
 
-        private void kryptonButton1_Click(object sender, EventArgs e)
+        private void RefreshButton_Click(object sender, EventArgs e)
         {
+            TablesManager.UpdateData.SetUpdate();
+            InfiniumTips.ShowTip(this, 50, 85, "Данные были обновлены", 4000);
         }
     }
 }

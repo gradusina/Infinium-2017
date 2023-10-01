@@ -1,7 +1,5 @@
 ﻿using Microsoft.VisualBasic.Devices;
 
-using NPOI.HSSF.Record;
-
 using System;
 using System.Collections;
 using System.Configuration;
@@ -17,7 +15,6 @@ using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
 using System.Windows.Forms;
-using BarcodeLib;
 
 
 namespace Infinium
@@ -26,15 +23,15 @@ namespace Infinium
     {
         public static void AddEvent(int ClientID, string Event, string ModuleName)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM ClientEventsJournal", ConnectionStrings.MarketingReferenceConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 0 * FROM ClientEventsJournal", ConnectionStrings.MarketingReferenceConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
-                        DataRow NewRow = DT.NewRow();
+                        var NewRow = DT.NewRow();
                         NewRow["ClientEvent"] = Event;
                         NewRow["ModuleName"] = ModuleName;
                         NewRow["ClientID"] = ClientID;
@@ -49,24 +46,43 @@ namespace Infinium
         }
     }
 
+
     public static class TablesManager
     {
-        private static DataTable FrontsAllConfigDT;
-        private static DataTable FrontsConfigDT;
-        private static DataTable DecorAllConfigDT;
-        private static DataTable DecorConfigDT;
-        private static DataTable TechStoreDT;
+        private static DataTable _frontsAllConfigDt;
+        private static DataTable _frontsConfigDt;
+        private static DataTable _decorAllConfigDt;
+        private static DataTable _decorConfigDt;
+        private static DataTable _techStoreDt;
         private static DataTable _usersDataTable;
         private static DataTable _usersPhotoDataTable;
         private static DataTable _departmentsDataTable;
         private static DataTable _positionsDataTable;
         private static DataTable _modulesDataTable;
 
+        public static class UpdateData
+        {
+            public static bool UpdateFrontsConfigDataTableAll = true;
+            public static bool UpdateFrontsConfigDataTable = true;
+            public static bool UpdateDecorConfigDataTableAll = true;
+            public static bool UpdateDecorConfigDataTable = true;
+            public static bool UpdateTechStoreDataTable = true;
+
+            public static void SetUpdate()
+            {
+                UpdateFrontsConfigDataTableAll = true;
+                UpdateFrontsConfigDataTable = true;
+                UpdateDecorConfigDataTableAll = true;
+                UpdateDecorConfigDataTable = true;
+                UpdateTechStoreDataTable = true;
+            }
+        }
+
         public static DataTable GetDataTableByAdapter(string query, string connectionString)
         {
-            DataTable dt = new DataTable();
-            using (SqlConnection sqlConn = new SqlConnection(connectionString))
-            using (SqlCommand cmd = new SqlCommand(query, sqlConn))
+            var dt = new DataTable();
+            using (var sqlConn = new SqlConnection(connectionString))
+            using (var cmd = new SqlCommand(query, sqlConn))
             {
                 sqlConn.Open();
                 new SqlDataAdapter(query, sqlConn).Fill(dt);
@@ -77,12 +93,12 @@ namespace Infinium
 
         public static DataTable GetDataTableFromDataReader(IDataReader dataReader)
         {
-            DataTable schemaTable = dataReader.GetSchemaTable();
-            DataTable resultTable = new DataTable();
+            var schemaTable = dataReader.GetSchemaTable();
+            var resultTable = new DataTable();
 
             foreach (DataRow dataRow in schemaTable.Rows)
             {
-                DataColumn dataColumn = new DataColumn();
+                var dataColumn = new DataColumn();
                 dataColumn.ColumnName = dataRow["ColumnName"].ToString();
                 dataColumn.DataType = Type.GetType(dataRow["DataType"].ToString());
                 dataColumn.ReadOnly = (bool)dataRow["IsReadOnly"];
@@ -94,8 +110,8 @@ namespace Infinium
 
             while (dataReader.Read())
             {
-                DataRow dataRow = resultTable.NewRow();
-                for (int i = 0; i < resultTable.Columns.Count - 1; i++)
+                var dataRow = resultTable.NewRow();
+                for (var i = 0; i < resultTable.Columns.Count - 1; i++)
                 {
                     dataRow[i] = dataReader[i];
                 }
@@ -109,22 +125,25 @@ namespace Infinium
         {
             get
             {
-                if (FrontsAllConfigDT == null)
+                if (_frontsAllConfigDt == null)
+                    _frontsAllConfigDt = new DataTable();
+
+                if (UpdateData.UpdateFrontsConfigDataTableAll)
                 {
-                    FrontsAllConfigDT = new DataTable();
-                    string SelectCommand = "SELECT * FROM FrontsConfig WHERE AccountingName IS NOT NULL AND InvNumber IS NOT NULL";
+                    var selectCommand = "SELECT * FROM FrontsConfig WHERE AccountingName IS NOT NULL AND InvNumber IS NOT NULL";
                     //using (
                     //    SqlDataAdapter DA =
                     //        new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
                     //{
                     //    DA.Fill(FrontsAllConfigDT);
                     //}
-                    FrontsAllConfigDT.Clear();
-                    FrontsAllConfigDT = TablesManager.GetDataTableByAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString);
+                    _frontsAllConfigDt.Clear();
+                    _frontsAllConfigDt = TablesManager.GetDataTableByAdapter(selectCommand, ConnectionStrings.CatalogConnectionString);
+                    UpdateData.UpdateFrontsConfigDataTableAll = false;
                 }
-                if (FrontsAllConfigDT.Columns.Contains("Excluzive"))
-                    FrontsAllConfigDT.Columns.Remove("Excluzive");
-                return FrontsAllConfigDT;
+                if (_frontsAllConfigDt.Columns.Contains("Excluzive"))
+                    _frontsAllConfigDt.Columns.Remove("Excluzive");
+                return _frontsAllConfigDt;
             }
         }
 
@@ -132,21 +151,26 @@ namespace Infinium
         {
             get
             {
-                if (FrontsConfigDT == null)
+                if (_frontsConfigDt == null)
+                    _frontsConfigDt = new DataTable();
+
+                if (UpdateData.UpdateFrontsConfigDataTable)
                 {
-                    FrontsConfigDT = new DataTable();
                     using (
-                        SqlDataAdapter DA =
-                            new SqlDataAdapter(
-                                "SELECT * FROM FrontsConfig WHERE Enabled = 1 AND AccountingName IS NOT NULL AND InvNumber IS NOT NULL",
-                                ConnectionStrings.CatalogConnectionString))
+                        var da =
+                        new SqlDataAdapter(
+                            "SELECT * FROM FrontsConfig WHERE Enabled = 1 AND AccountingName IS NOT NULL AND InvNumber IS NOT NULL",
+                            ConnectionStrings.CatalogConnectionString))
                     {
-                        DA.Fill(FrontsConfigDT);
+                        _frontsConfigDt.Clear();
+                        da.Fill(_frontsConfigDt);
                     }
+                    UpdateData.UpdateFrontsConfigDataTable = false;
                 }
-                if (FrontsConfigDT.Columns.Contains("Excluzive"))
-                    FrontsConfigDT.Columns.Remove("Excluzive");
-                return FrontsConfigDT;
+
+                if (_frontsConfigDt.Columns.Contains("Excluzive"))
+                    _frontsConfigDt.Columns.Remove("Excluzive");
+                return _frontsConfigDt;
             }
         }
 
@@ -154,10 +178,12 @@ namespace Infinium
         {
             get
             {
-                if (DecorAllConfigDT == null)
+                if (_decorAllConfigDt == null)
+                    _decorAllConfigDt = new DataTable();
+
+                if (UpdateData.UpdateDecorConfigDataTableAll)
                 {
-                    DecorAllConfigDT = new DataTable();
-                    string SelectCommand = $@"SELECT *, Decor.TechStoreName FROM DecorConfig LEFT JOIN
+                    var selectCommand = $@"SELECT *, Decor.TechStoreName FROM DecorConfig LEFT JOIN
                     infiniu2_catalog.dbo.TechStore AS Decor ON DecorConfig.DecorID = Decor.TechStoreID WHERE AccountingName IS NOT NULL AND InvNumber IS NOT NULL";
                     //using (
                     //    SqlDataAdapter DA =
@@ -166,22 +192,23 @@ namespace Infinium
                     //    DecorAllConfigDT.Clear();
                     //    DA.Fill(DecorAllConfigDT);
                     //}
-                    DecorAllConfigDT.Clear();
-                    DecorAllConfigDT = TablesManager.GetDataTableByAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString);
+                    _decorAllConfigDt.Clear();
+                    _decorAllConfigDt = TablesManager.GetDataTableByAdapter(selectCommand, ConnectionStrings.CatalogConnectionString);
+                    UpdateData.UpdateDecorConfigDataTableAll = false;
                 }
 
                 //ddddd();
-                if (DecorAllConfigDT.Columns.Contains("Excluzive"))
-                    DecorAllConfigDT.Columns.Remove("Excluzive");
-                return DecorAllConfigDT;
+                if (_decorAllConfigDt.Columns.Contains("Excluzive"))
+                    _decorAllConfigDt.Columns.Remove("Excluzive");
+                return _decorAllConfigDt;
             }
         }
 
-        public static void ddddd()
+        public static void Ddddd()
         {
-            string SelectCommand = $@"SELECT DecorOrderID, DecorID, DecorConfigID, mainOrderId
+            var selectCommand = $@"SELECT DecorOrderID, DecorID, DecorConfigID, mainOrderId
 FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.dbo.TechStore)";
-            using (var da = new SqlDataAdapter(SelectCommand,
+            using (var da = new SqlDataAdapter(selectCommand,
                        ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (new SqlCommandBuilder(da))
@@ -189,19 +216,15 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
                     using (var dt = new DataTable())
                     {
                         da.Fill(dt);
-                        for (int i = 0; i < dt.Rows.Count; i++)
+                        for (var i = 0; i < dt.Rows.Count; i++)
                         {
-                            var decorConfigID = Convert.ToInt32(dt.Rows[i]["decorConfigID"]);
+                            var decorConfigId = Convert.ToInt32(dt.Rows[i]["decorConfigID"]);
                             var mainOrderId = Convert.ToInt32(dt.Rows[i]["mainOrderId"]);
 
-                            var decorId = GetDecorId(decorConfigID);
+                            var decorId = GetDecorId(decorConfigId);
                             if (decorId != -1)
                             {
                                 dt.Rows[i]["decorId"] = decorId;
-                            }
-                            else
-                            {
-                                
                             }
                         }
                         da.Update(dt);
@@ -210,9 +233,9 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
             }
         }
 
-        private static int GetDecorId(int decorConfigID)
+        private static int GetDecorId(int decorConfigId)
         {
-            DataRow[] rows = DecorAllConfigDT.Select("decorConfigID = " + decorConfigID);
+            var rows = _decorAllConfigDt.Select("decorConfigID = " + decorConfigId);
             if (rows.Length == 0)
                 return -1;
 
@@ -223,21 +246,26 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
         {
             get
             {
-                if (DecorConfigDT == null)
+                if (_decorConfigDt == null)
+                    _decorConfigDt = new DataTable();
+
+                if (UpdateData.UpdateDecorConfigDataTable)
                 {
-                    DecorConfigDT = new DataTable();
                     using (
-                        SqlDataAdapter DA =
-                            new SqlDataAdapter(
-                                "SELECT * FROM DecorConfig WHERE Enabled = 1 AND AccountingName IS NOT NULL AND InvNumber IS NOT NULL",
-                                ConnectionStrings.CatalogConnectionString))
+                        var da =
+                        new SqlDataAdapter(
+                            "SELECT * FROM DecorConfig WHERE Enabled = 1 AND AccountingName IS NOT NULL AND InvNumber IS NOT NULL",
+                            ConnectionStrings.CatalogConnectionString))
                     {
-                        DA.Fill(DecorConfigDT);
+                        _decorConfigDt.Clear();
+                        da.Fill(_decorConfigDt);
+                        UpdateData.UpdateDecorConfigDataTable = false;
                     }
                 }
-                if (DecorConfigDT.Columns.Contains("Excluzive"))
-                    DecorConfigDT.Columns.Remove("Excluzive");
-                return DecorConfigDT;
+
+                if (_decorConfigDt.Columns.Contains("Excluzive"))
+                    _decorConfigDt.Columns.Remove("Excluzive");
+                return _decorConfigDt;
             }
         }
 
@@ -245,17 +273,20 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
         {
             get
             {
-                if (TechStoreDT == null)
+                if (_techStoreDt == null)
+                    _techStoreDt = new DataTable();
+
+                if (!UpdateData.UpdateTechStoreDataTable) return _techStoreDt;
+
+                using (
+                    var da = new SqlDataAdapter("SELECT * FROM TechStore",
+                        ConnectionStrings.CatalogConnectionString))
                 {
-                    TechStoreDT = new DataTable();
-                    using (
-                        SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM TechStore",
-                            ConnectionStrings.CatalogConnectionString))
-                    {
-                        DA.Fill(TechStoreDT);
-                    }
+                    _techStoreDt.Clear();
+                    da.Fill(_techStoreDt);
                 }
-                return TechStoreDT;
+                UpdateData.UpdateTechStoreDataTable = false;
+                return _techStoreDt;
             }
         }
 
@@ -264,13 +295,13 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
             get
             {
                 if (_usersDataTable == null)
-                {
                     _usersDataTable = new DataTable();
-                    using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Users WHERE Fired <> 1 ORDER BY Name", ConnectionStrings.UsersConnectionString))
-                    {
-                        DA.Fill(_usersDataTable);
-                    }
+
+                using (var da = new SqlDataAdapter("SELECT * FROM Users WHERE Fired <> 1 ORDER BY Name", ConnectionStrings.UsersConnectionString))
+                {
+                    da.Fill(_usersDataTable);
                 }
+
                 return _usersDataTable;
             }
         }
@@ -280,12 +311,11 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
             get
             {
                 if (_usersPhotoDataTable == null)
-                {
                     _usersPhotoDataTable = new DataTable();
-                    using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM UsersPhoto", ConnectionStrings.UsersConnectionString))
-                    {
-                        DA.Fill(_usersPhotoDataTable);
-                    }
+
+                using (var da = new SqlDataAdapter("SELECT * FROM UsersPhoto", ConnectionStrings.UsersConnectionString))
+                {
+                    da.Fill(_usersPhotoDataTable);
                 }
                 return _usersPhotoDataTable;
             }
@@ -298,9 +328,9 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
                 if (_departmentsDataTable == null)
                 {
                     _departmentsDataTable = new DataTable();
-                    using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Departments ORDER BY DepartmentName", ConnectionStrings.LightConnectionString))
+                    using (var da = new SqlDataAdapter("SELECT * FROM Departments ORDER BY DepartmentName", ConnectionStrings.LightConnectionString))
                     {
-                        DA.Fill(_departmentsDataTable);
+                        da.Fill(_departmentsDataTable);
                     }
                 }
                 return _departmentsDataTable;
@@ -314,9 +344,9 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
                 if (_positionsDataTable == null)
                 {
                     _positionsDataTable = new DataTable();
-                    using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Positions ORDER BY Position", ConnectionStrings.LightConnectionString))
+                    using (var da = new SqlDataAdapter("SELECT * FROM Positions ORDER BY Position", ConnectionStrings.LightConnectionString))
                     {
-                        DA.Fill(_positionsDataTable);
+                        da.Fill(_positionsDataTable);
                     }
                 }
                 return _positionsDataTable;
@@ -330,9 +360,9 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
                 if (_modulesDataTable == null)
                 {
                     _modulesDataTable = new DataTable();
-                    using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Modules", ConnectionStrings.UsersConnectionString))
+                    using (var da = new SqlDataAdapter("SELECT * FROM Modules", ConnectionStrings.UsersConnectionString))
                     {
-                        DA.Fill(_modulesDataTable);
+                        da.Fill(_modulesDataTable);
                     }
                 }
                 return _modulesDataTable;
@@ -345,28 +375,28 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
             //    _usersDataTable = new DataTable();
             if (_usersDataTable == null)
                 _usersDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Users  WHERE Fired <> 1 ORDER BY Name", ConnectionStrings.UsersConnectionString))
+            using (var da = new SqlDataAdapter("SELECT * FROM Users  WHERE Fired <> 1 ORDER BY Name", ConnectionStrings.UsersConnectionString))
             {
                 _usersDataTable.Clear();
-                DA.Fill(_usersDataTable);
+                da.Fill(_usersDataTable);
             }
         }
 
         public static void RefreshUsersPhotoDataTable()
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM UsersPhoto", ConnectionStrings.UsersConnectionString))
+            using (var da = new SqlDataAdapter("SELECT * FROM UsersPhoto", ConnectionStrings.UsersConnectionString))
             {
                 _usersPhotoDataTable.Clear();
-                DA.Fill(_usersPhotoDataTable);
+                da.Fill(_usersPhotoDataTable);
             }
         }
 
         public static void RefreshDepartmentsDataTable()
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Departments ORDER BY DepartmentName", ConnectionStrings.LightConnectionString))
+            using (var da = new SqlDataAdapter("SELECT * FROM Departments ORDER BY DepartmentName", ConnectionStrings.LightConnectionString))
             {
                 _departmentsDataTable.Clear();
-                DA.Fill(_departmentsDataTable);
+                da.Fill(_departmentsDataTable);
             }
         }
 
@@ -374,108 +404,108 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
         {
             if (_positionsDataTable == null)
                 _positionsDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Positions ORDER BY Position", ConnectionStrings.LightConnectionString))
+            using (var da = new SqlDataAdapter("SELECT * FROM Positions ORDER BY Position", ConnectionStrings.LightConnectionString))
             {
                 _positionsDataTable.Clear();
-                DA.Fill(_positionsDataTable);
+                da.Fill(_positionsDataTable);
             }
         }
 
         public static void RefreshModulesDataTable()
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Modules", ConnectionStrings.UsersConnectionString))
+            using (var da = new SqlDataAdapter("SELECT * FROM Modules", ConnectionStrings.UsersConnectionString))
             {
                 _modulesDataTable.Clear();
-                DA.Fill(_modulesDataTable);
+                da.Fill(_modulesDataTable);
             }
         }
 
-        public static Tuple<string, decimal> GetTechStoreNameAndBalance(int DecorConfigID)
+        public static Tuple<string, decimal> GetTechStoreNameAndBalance(int decorConfigId)
         {
-            string TechStoreName = "";
-            decimal MinBalanceOnStorage = 0;
+            var techStoreName = "";
+            decimal minBalanceOnStorage = 0;
 
-            DataRow[] Rows = DecorAllConfigDT.Select("DecorConfigID = " + DecorConfigID);
-            if (Rows.Count() > 0)
+            var rows = _decorAllConfigDt.Select("DecorConfigID = " + decorConfigId);
+            if (rows.Count() > 0)
             {
-                TechStoreName = Rows[0]["TechStoreName"].ToString();
-                MinBalanceOnStorage = Convert.ToInt32(Rows[0]["MinBalanceOnStorage"]);
+                techStoreName = rows[0]["TechStoreName"].ToString();
+                minBalanceOnStorage = Convert.ToInt32(rows[0]["MinBalanceOnStorage"]);
             }
 
-            return new Tuple<string, decimal>(TechStoreName, MinBalanceOnStorage);
+            return new Tuple<string, decimal>(techStoreName, minBalanceOnStorage);
         }
 
-        public static string GetTechStoreNameByConfigID(int DecorConfigID)
+        public static string GetTechStoreNameByConfigId(int decorConfigId)
         {
-            string TechStoreName = "";
+            var techStoreName = "";
 
-            DataRow[] Rows = DecorAllConfigDT.Select("DecorConfigID = " + DecorConfigID);
-            if (Rows.Count() > 0)
+            var rows = _decorAllConfigDt.Select("DecorConfigID = " + decorConfigId);
+            if (rows.Count() > 0)
             {
-                TechStoreName = Rows[0]["TechStoreName"].ToString();
+                techStoreName = rows[0]["TechStoreName"].ToString();
             }
 
-            return TechStoreName;
+            return techStoreName;
         }
 
-        public static string GetTechStoreNameByDecorID(int DecorID)
+        public static string GetTechStoreNameByDecorId(int decorId)
         {
-            string TechStoreName = "";
+            var techStoreName = "";
 
-            DataRow[] Rows = DecorAllConfigDT.Select("DecorID = " + DecorID);
-            if (Rows.Count() > 0)
+            var rows = _decorAllConfigDt.Select("DecorID = " + decorId);
+            if (rows.Count() > 0)
             {
-                TechStoreName = Rows[0]["TechStoreName"].ToString();
+                techStoreName = rows[0]["TechStoreName"].ToString();
             }
 
-            return TechStoreName;
+            return techStoreName;
         }
 
-        public static bool IsInsetTypePressed(int TechStoreID)
+        public static bool IsInsetTypePressed(int techStoreId)
         {
-            int ConstTechStoreSubGroupID = 65;
-            int TechStoreSubGroupID = 0;
+            var constTechStoreSubGroupId = 65;
+            var techStoreSubGroupId = 0;
 
-            DataRow[] Rows = TechStoreDT.Select("TechStoreID = " + TechStoreID);
-            if (Rows.Count() > 0)
+            var rows = _techStoreDt.Select("TechStoreID = " + techStoreId);
+            if (rows.Count() > 0)
             {
-                TechStoreSubGroupID = Convert.ToInt32(Rows[0]["TechStoreSubGroupID"]);
+                techStoreSubGroupId = Convert.ToInt32(rows[0]["TechStoreSubGroupID"]);
             }
 
-            if (TechStoreSubGroupID == ConstTechStoreSubGroupID)
+            if (techStoreSubGroupId == constTechStoreSubGroupId)
                 return true;
             else
                 return false;
         }
 
-        public static decimal GetWidthMin(int TechStoreID)
+        public static decimal GetWidthMin(int techStoreId)
         {
-            decimal WidthMin = 0;
+            decimal widthMin = 0;
 
-            DataRow[] Rows = TechStoreDT.Select("TechStoreID = " + TechStoreID);
-            if (Rows.Count() > 0)
+            var rows = _techStoreDt.Select("TechStoreID = " + techStoreId);
+            if (rows.Count() > 0)
             {
-                WidthMin = Convert.ToDecimal(Rows[0]["WidthMin"]);
+                widthMin = Convert.ToDecimal(rows[0]["WidthMin"]);
             }
 
-            return WidthMin;
+            return widthMin;
         }
-        
-        public static TechStoreDimensions GetTechStoreDimensions(int TechStoreID)
-        {
-            TechStoreDimensions dimensions = new TechStoreDimensions();
 
-            DataRow[] Rows = TechStoreDT.Select("TechStoreID = " + TechStoreID);
-            if (Rows.Count() > 0)
+        public static TechStoreDimensions GetTechStoreDimensions(int techStoreId)
+        {
+            var dimensions = new TechStoreDimensions();
+
+            var rows = _techStoreDt.Select("TechStoreID = " + techStoreId);
+            if (rows.Any())
             {
-                if (Rows[0]["HeightMin"] != DBNull.Value)
-                    dimensions.HeightMin = Convert.ToDecimal(Rows[0]["HeightMin"]);
-                if (Rows[0]["HeightMax"] != DBNull.Value)
-                    dimensions.HeightMax = Convert.ToDecimal(Rows[0]["HeightMax"]);
-                if (Rows[0]["WidthMin"] != DBNull.Value)
-                    dimensions.WidthMin = Convert.ToDecimal(Rows[0]["WidthMin"]);
-                if (Rows[0]["WidthMax"] != DBNull.Value)
-                    dimensions.WidthMax = Convert.ToDecimal(Rows[0]["WidthMax"]);
+                if (rows[0]["HeightMin"] != DBNull.Value)
+                    dimensions.HeightMin = Convert.ToDecimal(rows[0]["HeightMin"]);
+                if (rows[0]["HeightMax"] != DBNull.Value)
+                    dimensions.HeightMax = Convert.ToDecimal(rows[0]["HeightMax"]);
+                if (rows[0]["WidthMin"] != DBNull.Value)
+                    dimensions.WidthMin = Convert.ToDecimal(rows[0]["WidthMin"]);
+                if (rows[0]["WidthMax"] != DBNull.Value)
+                    dimensions.WidthMax = Convert.ToDecimal(rows[0]["WidthMax"]);
             }
 
             return dimensions;
@@ -483,14 +513,13 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         public struct TechStoreDimensions
         {
-            public int TechStoreID;
+            public int TechStoreId;
             public decimal HeightMin;
             public decimal HeightMax;
             public decimal WidthMin;
             public decimal WidthMax;
         }
     }
-
 
     public enum InvoiceReportType
     {
@@ -581,15 +610,15 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         private bool Fill()
         {
-            string SelectCommand = @"SELECT ProductID FROM DecorProducts WHERE IsCabFur=1";
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
+            var SelectCommand = @"SELECT ProductID FROM DecorProducts WHERE IsCabFur=1";
+            using (var DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     if (DA.Fill(DT) > 0)
                     {
                         CabFurIds = new int[DT.Rows.Count];
-                        for (int i = 0; i < DT.Rows.Count; i++)
+                        for (var i = 0; i < DT.Rows.Count; i++)
                         {
                             CabFurIds[i] = Convert.ToInt32(DT.Rows[i]["ProductID"]);
                         }
@@ -599,14 +628,14 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
 
             SelectCommand = @"SELECT * FROM FrontsSquareCalculate";
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
+            using (var DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     if (DA.Fill(DT) > 0)
                     {
                         FrontsSquareCalcIds = new int[DT.Rows.Count];
-                        for (int i = 0; i < DT.Rows.Count; i++)
+                        for (var i = 0; i < DT.Rows.Count; i++)
                         {
                             FrontsSquareCalcIds[i] = Convert.ToInt32(DT.Rows[i]["frontId"]);
                         }
@@ -614,7 +643,7 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
                 }
             }
 
-            string error = string.Empty;
+            var error = string.Empty;
             try
             {
                 UsersDataAdapter = new SqlDataAdapter("SELECT UserID, Name, Coding, PriceAccess, Password, AuthorizationCode FROM Users WHERE Fired <> 1 ORDER BY Name", UsersConnectionString);
@@ -641,7 +670,7 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
         public bool Initialize()
         {
             Create();
-            bool bError = Fill();
+            var bError = Fill();
             Binding();
 
             return bError;
@@ -649,22 +678,22 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         public static bool IsAccessGrant(string ModuleButtonName)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT ModuleID, SecurityAccess FROM Modules WHERE ModuleButtonName = '" + ModuleButtonName + "'",
+            using (var DA = new SqlDataAdapter("SELECT ModuleID, SecurityAccess FROM Modules WHERE ModuleButtonName = '" + ModuleButtonName + "'",
                 ConnectionStrings.UsersConnectionString))
             {
-                using (DataTable ModulesDataTable = new DataTable())
+                using (var ModulesDataTable = new DataTable())
                 {
                     DA.Fill(ModulesDataTable);
 
                     if (Convert.ToBoolean(ModulesDataTable.Rows[0]["SecurityAccess"]) == false)
                         return true;
 
-                    int ModuleID = Convert.ToInt32(ModulesDataTable.Rows[0]["ModuleID"]);
+                    var ModuleID = Convert.ToInt32(ModulesDataTable.Rows[0]["ModuleID"]);
 
-                    using (SqlDataAdapter aDA = new SqlDataAdapter("SELECT * FROM ModulesAccess WHERE UserID = " + Security.CurrentUserID +
-                                                                   " AND ModuleID = " + ModuleID, ConnectionStrings.UsersConnectionString))
+                    using (var aDA = new SqlDataAdapter("SELECT * FROM ModulesAccess WHERE UserID = " + Security.CurrentUserID +
+                                                        " AND ModuleID = " + ModuleID, ConnectionStrings.UsersConnectionString))
                     {
-                        using (DataTable DT = new DataTable())
+                        using (var DT = new DataTable())
                         {
                             return aDA.Fill(DT) > 0;
                         }
@@ -675,7 +704,7 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
 
         }
-        
+
         public string GetDBFSaveFilePath()
         {
             if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/Infinium") == false)//not exists
@@ -685,7 +714,7 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
             if (File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/Infinium/DBFsave.txt") == true)
             {
-                using (System.IO.StreamReader sr = new System.IO.StreamReader(Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/Infinium/DBFsave.txt"))
+                using (var sr = new System.IO.StreamReader(Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/Infinium/DBFsave.txt"))
                 {
                     return sr.ReadToEnd();
                 }
@@ -701,7 +730,7 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
                 Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/Infinium");
             }
 
-            using (System.IO.StreamWriter sr = new System.IO.StreamWriter(Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/Infinium/DBFsave.txt"))
+            using (var sr = new System.IO.StreamWriter(Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/Infinium/DBFsave.txt"))
             {
                 sr.Write(Path);
             }
@@ -716,7 +745,7 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
             if (File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/Infinium/muttlementsave.txt") == true)
             {
-                using (System.IO.StreamReader sr = new System.IO.StreamReader(Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/Infinium/muttlementsave.txt"))
+                using (var sr = new System.IO.StreamReader(Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/Infinium/muttlementsave.txt"))
                 {
                     return sr.ReadToEnd();
                 }
@@ -732,7 +761,7 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
                 Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/Infinium");
             }
 
-            using (System.IO.StreamWriter sr = new System.IO.StreamWriter(Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/Infinium/muttlementsave.txt"))
+            using (var sr = new System.IO.StreamWriter(Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/Infinium/muttlementsave.txt"))
             {
                 sr.Write(Path);
             }
@@ -747,7 +776,7 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
             if (File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/Infinium/currentuser.txt") == true)
             {
-                using (System.IO.StreamReader sr = new System.IO.StreamReader(Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/Infinium/currentuser.txt"))
+                using (var sr = new System.IO.StreamReader(Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/Infinium/currentuser.txt"))
                 {
                     return (Convert.ToInt32(sr.ReadToEnd()));
                 }
@@ -763,7 +792,7 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
                 Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/Infinium");
             }
 
-            using (System.IO.StreamWriter sr = new System.IO.StreamWriter(Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/Infinium/currentuser.txt"))
+            using (var sr = new System.IO.StreamWriter(Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/Infinium/currentuser.txt"))
             {
                 sr.Write(UserID);
             }
@@ -805,11 +834,11 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         public void SetForciblyOffline(int UserID, bool b)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT UserID, ForciblyOffline FROM Users WHERE UserID = " + UserID, ConnectionStrings.UsersConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT UserID, ForciblyOffline FROM Users WHERE UserID = " + UserID, ConnectionStrings.UsersConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         try
                         {
@@ -845,19 +874,19 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
             if (NotifyForm.bShowed)
                 NotifyForm.bCloseNotify = true;
 
-            DataTable ModulesDataTable = new DataTable();
+            var ModulesDataTable = new DataTable();
 
-            int ModuleID = GetModuleIDFromName(FormName);
+            var ModuleID = GetModuleIDFromName(FormName);
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM ModulesJournal", ConnectionStrings.UsersConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 0 * FROM ModulesJournal", ConnectionStrings.UsersConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
-                        DataRow NewRow = DT.NewRow();
+                        var NewRow = DT.NewRow();
                         NewRow["LoginJournalID"] = CurrentLoginJournalID;
                         NewRow["ModuleID"] = ModuleID;
                         CurrentModuleID = ModuleID;
@@ -875,13 +904,13 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         public static void ExitFromModule(string FormName)
         {
-            int ModuleID = GetModuleIDFromName(FormName);
+            var ModuleID = GetModuleIDFromName(FormName);
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM ModulesJournal WHERE UserID = " + CurrentUserID + " AND ModuleID = " + ModuleID + " ORDER BY ModulesJournalID DESC", ConnectionStrings.UsersConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM ModulesJournal WHERE UserID = " + CurrentUserID + " AND ModuleID = " + ModuleID + " ORDER BY ModulesJournalID DESC", ConnectionStrings.UsersConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -901,9 +930,9 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         public static int GetModuleIDFromName(string FormName)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT ModuleID FROM Modules WHERE FormName = '" + FormName + "'", ConnectionStrings.UsersConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT ModuleID FROM Modules WHERE FormName = '" + FormName + "'", ConnectionStrings.UsersConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -914,26 +943,26 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         private string GetUserName(int UserID)
         {
-            DataRow[] Rows = UsersDataTable.Select("UserID = " + UserID);
+            var Rows = UsersDataTable.Select("UserID = " + UserID);
             return Rows[0]["Name"].ToString();
         }
 
         private void GetPriceAccess(int UserID)
         {
-            DataRow[] Rows = UsersDataTable.Select("UserID = " + UserID);
+            var Rows = UsersDataTable.Select("UserID = " + UserID);
             PriceAccess = Convert.ToBoolean(Rows[0]["PriceAccess"]);
         }
 
         private static string GetMD5(string text)
         {
-            using (MD5 Hasher = MD5.Create())
+            using (var Hasher = MD5.Create())
             {
-                byte[] data = Hasher.ComputeHash(Encoding.Default.GetBytes(text));
+                var data = Hasher.ComputeHash(Encoding.Default.GetBytes(text));
 
-                StringBuilder sBuilder = new StringBuilder();
+                var sBuilder = new StringBuilder();
 
                 //преобразование в HEX
-                for (int i = 0; i < data.Length; i++)
+                for (var i = 0; i < data.Length; i++)
                 {
                     sBuilder.Append(data[i].ToString("x2"));
                 }
@@ -944,8 +973,8 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         public int Enter(int UserID, string Password)
         {
-            DataRow[] Rows = UsersDataTable.Select("UserID = " + UserID);
-            string passMD5 = GetMD5(Password);
+            var Rows = UsersDataTable.Select("UserID = " + UserID);
+            var passMD5 = GetMD5(Password);
 
             if (Rows[0]["Password"].ToString() == passMD5)
             {
@@ -972,11 +1001,11 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         public static bool IsUserOnline(int UserID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT UserID, Online, OnlineRefreshDateTime, GetDate() AS Date FROM USERS WHERE UserID = " + UserID + " AND Online = 1", ConnectionStrings.UsersConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT UserID, Online, OnlineRefreshDateTime, GetDate() AS Date FROM USERS WHERE UserID = " + UserID + " AND Online = 1", ConnectionStrings.UsersConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         if (DA.Fill(DT) == 0)
                         {
@@ -1012,9 +1041,9 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         public static DateTime GetCurrentDate()
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT GETDATE()", ConnectionStrings.UsersConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT GETDATE()", ConnectionStrings.UsersConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -1044,17 +1073,17 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         public void CreateJournalRecord()
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM LoginJournal", UsersConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 0 * FROM LoginJournal", UsersConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
                         CurrentEnterDateEnter = GetCurrentDate();
 
-                        DataRow Row = DT.NewRow();
+                        var Row = DT.NewRow();
                         Row["UserID"] = CurrentUserID;
                         Row["DateEnter"] = CurrentEnterDateEnter;
 
@@ -1087,9 +1116,9 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         private int GetCurrentLoginJournalID(DateTime Date)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT LoginJournalID FROM LoginJournal WHERE UserID = " + CurrentUserID + " AND DateEnter = '" + Date.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'", UsersConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT LoginJournalID FROM LoginJournal WHERE UserID = " + CurrentUserID + " AND DateEnter = '" + Date.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'", UsersConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     if (DA.Fill(DT) > 0)
                         return Convert.ToInt32(DT.Rows[0]["LoginJournalID"]);
@@ -1101,13 +1130,13 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         public void CloseJournalRecord()
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM LoginJournal WHERE UserID = " +
-                                                          CurrentUserID +
-                                                          " AND DateEnter = '" + CurrentEnterDateEnter.ToString("yyyy-MM-dd HH:mm:ss") + "'", UsersConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM LoginJournal WHERE UserID = " +
+                                               CurrentUserID +
+                                               " AND DateEnter = '" + CurrentEnterDateEnter.ToString("yyyy-MM-dd HH:mm:ss") + "'", UsersConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         try
                         {
@@ -1134,11 +1163,11 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         public void UserOnOffLine(bool bOnline)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT UserID, Online FROM Users WHERE UserID = " + CurrentUserID, ConnectionStrings.UsersConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT UserID, Online FROM Users WHERE UserID = " + CurrentUserID, ConnectionStrings.UsersConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -1152,11 +1181,11 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         public bool CheckPass(string Pass)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT UserID, Password FROM Users WHERE UserID = " + CurrentUserID, ConnectionStrings.UsersConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT UserID, Password FROM Users WHERE UserID = " + CurrentUserID, ConnectionStrings.UsersConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -1172,11 +1201,11 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
         public void CheckConding(int UserID)
         {
             using (
-                SqlDataAdapter DA =
+                var DA =
                     new SqlDataAdapter("SELECT UserID, Conding FROM Users WHERE UserID = " + UserID,
                         ConnectionStrings.UsersConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -1188,11 +1217,11 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         public static bool CheckAuth(string Pass)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT UserID, AuthorizationCode FROM Users WHERE UserID = " + CurrentUserID, ConnectionStrings.UsersConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT UserID, AuthorizationCode FROM Users WHERE UserID = " + CurrentUserID, ConnectionStrings.UsersConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -1210,11 +1239,11 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         public static bool CheckAuthNull()
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT UserID, AuthorizationCode FROM Users WHERE UserID = " + CurrentUserID, ConnectionStrings.UsersConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT UserID, AuthorizationCode FROM Users WHERE UserID = " + CurrentUserID, ConnectionStrings.UsersConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -1229,11 +1258,11 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         public void ChangePassword(string OldPass, string NewPass)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT UserID, Password FROM Users WHERE UserID = " + CurrentUserID, ConnectionStrings.UsersConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT UserID, Password FROM Users WHERE UserID = " + CurrentUserID, ConnectionStrings.UsersConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -1247,11 +1276,11 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         public void ChangeAuth(string NewPass)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT UserID, AuthorizationCode FROM Users WHERE UserID = " + CurrentUserID, ConnectionStrings.UsersConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT UserID, AuthorizationCode FROM Users WHERE UserID = " + CurrentUserID, ConnectionStrings.UsersConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -1265,10 +1294,10 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         public string GetUserName()
         {
-            string OriginalUserName = UsersDataTable.Select("UserID = " + CurrentUserID)[0]["Name"].ToString();
-            string ResultUserName = "";
+            var OriginalUserName = UsersDataTable.Select("UserID = " + CurrentUserID)[0]["Name"].ToString();
+            var ResultUserName = "";
 
-            for (int i = 0; i < OriginalUserName.Length; i++)
+            for (var i = 0; i < OriginalUserName.Length; i++)
             {
                 if (OriginalUserName[i] == ' ')
                 {
@@ -1282,9 +1311,9 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         public static string GetUserNameByID(int UserID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT UserID, Name FROM Users WHERE UserID = " + UserID, ConnectionStrings.UsersConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT UserID, Name FROM Users WHERE UserID = " + UserID, ConnectionStrings.UsersConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -1295,9 +1324,9 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         public static string GetUserShortNameByID(int UserID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT UserID, ShortName FROM Users WHERE UserID = " + UserID, ConnectionStrings.UsersConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT UserID, ShortName FROM Users WHERE UserID = " + UserID, ConnectionStrings.UsersConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -1308,9 +1337,9 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         public static Color GetStandardFormBackColor()
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT UserID, GridsBackColor FROM USERS WHERE UserID = " + Security.CurrentUserID, ConnectionStrings.UsersConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT UserID, GridsBackColor FROM USERS WHERE UserID = " + Security.CurrentUserID, ConnectionStrings.UsersConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -1323,15 +1352,15 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         private static Color GetColorFromString(string cColor)
         {
-            string temp = "";
+            var temp = "";
 
-            int R = 255;
-            int G = 255;
-            int B = 255;
+            var R = 255;
+            var G = 255;
+            var B = 255;
 
-            int c = 0;
+            var c = 0;
 
-            for (int i = 0; i < cColor.Length; i++)
+            for (var i = 0; i < cColor.Length; i++)
             {
                 if (i == cColor.Length - 1)
                 {
@@ -1361,11 +1390,11 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
         {
             GridsBackColor = Color;
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT UserID, GridsBackColor FROM USERS WHERE UserID = " + Security.CurrentUserID, ConnectionStrings.UsersConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT UserID, GridsBackColor FROM USERS WHERE UserID = " + Security.CurrentUserID, ConnectionStrings.UsersConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -1385,7 +1414,7 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
             searcher = new ManagementObjectSearcher("root\\CIMV2",
                 "Select domain, Name, UserName, Manufacturer, Model, TotalPhysicalMemory FROM Win32_ComputerSystem");
 
-            DataRow NewRow = CompParamsDataTable.NewRow();
+            var NewRow = CompParamsDataTable.NewRow();
             NewRow["Domain"] = GetParam("Domain");
             NewRow["ComputerName"] = GetParam("Name");
             NewRow["LoginName"] = GetParam("UserName");
@@ -1400,7 +1429,7 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
             NewRow["ProcessorName"] = GetParam("Name");
             NewRow["ProcessorCores"] = GetParam("NumberOfCores") + " x " + GetParam("CurrentClockSpeed") + " MHz";
 
-            ComputerInfo CI = new ComputerInfo();
+            var CI = new ComputerInfo();
             NewRow["OSName"] = CI.OSFullName;
             NewRow["OSPlatform"] = CI.OSPlatform;
             NewRow["OSVersion"] = CI.OSVersion;
@@ -1410,7 +1439,7 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         private string GetParam(string param)
         {
-            String processorID = "";
+            var processorID = "";
             try
             {
 
@@ -1435,7 +1464,7 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         public static bool IsConnect()
         {
-            SqlConnection Connection = new SqlConnection(ConnectionStrings.LightConnectionString);
+            var Connection = new SqlConnection(ConnectionStrings.LightConnectionString);
 
             try
             {
@@ -1474,17 +1503,17 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         public static void KillProcess()
         {
-            string name = "Infinium";
-            System.Diagnostics.Process[] CurrentProcesses = System.Diagnostics.Process.GetProcesses();
-            ArrayList InfiniumProcesses = new ArrayList();
-            foreach (System.Diagnostics.Process item in CurrentProcesses)
+            var name = "Infinium";
+            var CurrentProcesses = System.Diagnostics.Process.GetProcesses();
+            var InfiniumProcesses = new ArrayList();
+            foreach (var item in CurrentProcesses)
                 if (item.ProcessName.ToLower().Contains(name.ToLower()))
                 {
                     InfiniumProcesses.Add(item);
                 }
             if (InfiniumProcesses.Count > 1)
             {
-                DateTime StartTime = ((System.Diagnostics.Process)InfiniumProcesses[0]).StartTime;
+                var StartTime = ((System.Diagnostics.Process)InfiniumProcesses[0]).StartTime;
                 if (StartTime > ((System.Diagnostics.Process)InfiniumProcesses[1]).StartTime)
                     ((System.Diagnostics.Process)InfiniumProcesses[1]).Kill();
                 else
@@ -1494,15 +1523,15 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         public static void IamOnline(int ModuleID, bool TopMost)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT UserID, Online, OnlineRefreshDateTime, TopModule, IdleTime, TopMost, GetDate() AS DateTime FROM Users WHERE ForciblyOffline=0 AND UserID = " + Security.CurrentUserID, ConnectionStrings.UsersConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT UserID, Online, OnlineRefreshDateTime, TopModule, IdleTime, TopMost, GetDate() AS DateTime FROM Users WHERE ForciblyOffline=0 AND UserID = " + Security.CurrentUserID, ConnectionStrings.UsersConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         if (DA.Fill(DT) > 0)
                         {
-                            string s = "";
+                            var s = "";
 
                             DT.Rows[0]["Online"] = true;
                             DT.Rows[0]["OnlineRefreshDateTime"] = DT.Rows[0]["DateTime"];
@@ -1534,11 +1563,11 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         public static void SetOffline()
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT UserID, Online FROM Users WHERE Online = 'TRUE' AND ((DATEADD(second, 8, OnlineRefreshDateTime) < GetDate())) OR OnlineRefreshDateTime IS NULL", ConnectionStrings.UsersConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT UserID, Online FROM Users WHERE Online = 'TRUE' AND ((DATEADD(second, 8, OnlineRefreshDateTime) < GetDate())) OR OnlineRefreshDateTime IS NULL", ConnectionStrings.UsersConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         try
                         {
@@ -1571,11 +1600,11 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         public static void SetForciblyOffline(bool b)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT UserID, ForciblyOffline FROM Users WHERE UserID = " + Security.CurrentUserID, ConnectionStrings.UsersConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT UserID, ForciblyOffline FROM Users WHERE UserID = " + Security.CurrentUserID, ConnectionStrings.UsersConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         try
                         {
@@ -1608,14 +1637,14 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         public static bool GetForciblyOffline()
         {
-            bool ForciblyOffline = false;
-            using (SqlDataAdapter DA = new SqlDataAdapter(
+            var ForciblyOffline = false;
+            using (var DA = new SqlDataAdapter(
                        "SELECT UserID, ForciblyOffline FROM Users WHERE UserID = " + Security.CurrentUserID,
                        ConnectionStrings.UsersConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
-                    if (DA.Fill(DT) >0)
+                    if (DA.Fill(DT) > 0)
                         ForciblyOffline = Convert.ToBoolean(DT.Rows[0]["ForciblyOffline"]);
                 }
             }
@@ -1625,11 +1654,11 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         public static void SetOfflineClient()
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT ClientID, Online FROM Clients WHERE Online = 'TRUE' AND ((DATEADD(second, 20, OnlineRefreshDateTime) < GetDate())) OR OnlineRefreshDateTime IS NULL", ConnectionStrings.MarketingReferenceConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT ClientID, Online FROM Clients WHERE Online = 'TRUE' AND ((DATEADD(second, 20, OnlineRefreshDateTime) < GetDate())) OR OnlineRefreshDateTime IS NULL", ConnectionStrings.MarketingReferenceConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         try
                         {
@@ -1661,11 +1690,11 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         public static void SetOfflineManager()
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT ManagerID, Online FROM Managers WHERE Online = 'TRUE' AND ((DATEADD(second, 20, OnlineRefreshDateTime) < GetDate())) OR OnlineRefreshDateTime IS NULL", ConnectionStrings.ZOVReferenceConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT ManagerID, Online FROM Managers WHERE Online = 'TRUE' AND ((DATEADD(second, 20, OnlineRefreshDateTime) < GetDate())) OR OnlineRefreshDateTime IS NULL", ConnectionStrings.ZOVReferenceConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         try
                         {
@@ -1698,11 +1727,11 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         public static int GetIdleTime(ref string LastInputTime)
         {
-            int systemUptime = Environment.TickCount;
-            int LastInputTicks = 0;
-            int IdleTicks = 0;
+            var systemUptime = Environment.TickCount;
+            var LastInputTicks = 0;
+            var IdleTicks = 0;
 
-            LASTINPUTINFO LastInputInfo = new LASTINPUTINFO();
+            var LastInputInfo = new LASTINPUTINFO();
             LastInputInfo.cbSize = (uint)Marshal.SizeOf(LastInputInfo);
             LastInputInfo.dwTime = 0;
 
@@ -1781,7 +1810,7 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         public void ReadAnimationFlag(String FileName)
         {
-            using (System.IO.StreamReader sr = new System.IO.StreamReader(FileName))
+            using (var sr = new System.IO.StreamReader(FileName))
             {
                 Animation = Convert.ToBoolean(sr.ReadToEnd());
             }
@@ -1789,7 +1818,7 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         public string ReadConfig(String FileName)
         {
-            using (System.IO.StreamReader sr = new System.IO.StreamReader(FileName))
+            using (var sr = new System.IO.StreamReader(FileName))
             {
                 sConnectionString = sr.ReadToEnd();
             }
@@ -1799,9 +1828,9 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         public string ReadConfig(String FileName, int BytesToRead, int StartByte)
         {
-            using (System.IO.StreamReader sr = new System.IO.StreamReader(FileName))
+            using (var sr = new System.IO.StreamReader(FileName))
             {
-                string s = sr.ReadToEnd();
+                var s = sr.ReadToEnd();
 
                 sConnectionString = s.Substring(StartByte, BytesToRead);
             }
@@ -1862,16 +1891,16 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         public void GetPermissions(int UserID, string FormName)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM UserRoles WHERE UserID = " + UserID +
-                " AND RoleID IN (SELECT RoleID FROM Roles WHERE ModuleID IN " +
-                " (SELECT ModuleID FROM Modules WHERE FormName = '" + FormName + "'))", ConnectionStrings.UsersConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM UserRoles WHERE UserID = " + UserID +
+                                               " AND RoleID IN (SELECT RoleID FROM Roles WHERE ModuleID IN " +
+                                               " (SELECT ModuleID FROM Modules WHERE FormName = '" + FormName + "'))", ConnectionStrings.UsersConnectionString))
             {
                 DA.Fill(dtRolePermissions);
             }
         }
         public bool PermissionGranted(int RoleID)
         {
-            DataRow[] Rows = dtRolePermissions.Select("RoleID = " + RoleID);
+            var Rows = dtRolePermissions.Select("RoleID = " + RoleID);
             return Rows.Count() > 0;
         }
         public UserProfile()
@@ -1880,7 +1909,7 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
             UsersDataTable = new DataTable();
             UsersBindingSource = new BindingSource();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT UserID, Name FROM Users  WHERE Fired <> 1 ORDER BY Name", ConnectionStrings.UsersConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT UserID, Name FROM Users  WHERE Fired <> 1 ORDER BY Name", ConnectionStrings.UsersConnectionString))
             {
                 DA.Fill(UsersDataTable);
             }
@@ -1889,13 +1918,13 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
             PositionsDataTable = new DataTable();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Positions ORDER BY Position", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM Positions ORDER BY Position", ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(PositionsDataTable);
             }
 
             UsersPositionsDT = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter(@"SELECT DISTINCT UserID, FactoryID, DepartmentID, PositionID, Rate FROM StaffList", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter(@"SELECT DISTINCT UserID, FactoryID, DepartmentID, PositionID, Rate FROM StaffList", ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(UsersPositionsDT);
             }
@@ -1908,22 +1937,22 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         public void SaveUsersPhotoToFile()
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Users", ConnectionStrings.UsersConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM Users", ConnectionStrings.UsersConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     if (DA.Fill(DT) == 0)
                         return;
 
-                    for (int i = 0; i < DT.Rows.Count; i++)
+                    for (var i = 0; i < DT.Rows.Count; i++)
                     {
-                        int userId = Convert.ToInt32(DT.Rows[i]["UserID"]);
+                        var userId = Convert.ToInt32(DT.Rows[i]["UserID"]);
                         if (DT.Rows[i]["Photo"] == DBNull.Value)
                             continue;
-                        byte[] b = (byte[])DT.Rows[i]["Photo"];
-                        using (MemoryStream ms = new MemoryStream(b))
+                        var b = (byte[])DT.Rows[i]["Photo"];
+                        using (var ms = new MemoryStream(b))
                         {
-                            PictureBox pb = new PictureBox { Image = Image.FromStream(ms) };
+                            var pb = new PictureBox { Image = Image.FromStream(ms) };
                             SetUserPhoto(pb.Image, userId);
                             pb.Image.Save(@"D:\UserPhoto\" + userId + ".jpg", ImageFormat.Jpeg);
                         }
@@ -1939,9 +1968,9 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         public string PhoneFormatToNumberFormat(string PhoneFormatString)
         {
-            string result = "";
+            var result = "";
 
-            foreach (char c in PhoneFormatString)
+            foreach (var c in PhoneFormatString)
             {
                 if (c != ' ')
                     result += c;
@@ -1952,11 +1981,11 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         public void SetContacts(Contacts Contacts)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT UserID, AccessToken, PersonalMobilePhone, WorkMobilePhone, WorkStatPhone, WorkExtPhone, Skype, Email, ICQ, NeedSpam FROM Users WHERE UserID = " + Security.CurrentUserID, ConnectionStrings.UsersConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT UserID, AccessToken, PersonalMobilePhone, WorkMobilePhone, WorkStatPhone, WorkExtPhone, Skype, Email, ICQ, NeedSpam FROM Users WHERE UserID = " + Security.CurrentUserID, ConnectionStrings.UsersConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -1978,13 +2007,13 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         public Contacts GetContacts()
         {
-            Contacts Contacts = new Contacts();
+            var Contacts = new Contacts();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT UserID, PersonalMobilePhone, WorkMobilePhone, WorkStatPhone, WorkExtPhone, Skype, Email, ICQ, NeedSpam FROM Users WHERE UserID = " + Security.CurrentUserID, ConnectionStrings.UsersConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT UserID, PersonalMobilePhone, WorkMobilePhone, WorkStatPhone, WorkExtPhone, Skype, Email, ICQ, NeedSpam FROM Users WHERE UserID = " + Security.CurrentUserID, ConnectionStrings.UsersConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -2005,14 +2034,14 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         private string GetMD5(string text)
         {
-            using (System.Security.Cryptography.MD5 Hasher = System.Security.Cryptography.MD5.Create())
+            using (var Hasher = System.Security.Cryptography.MD5.Create())
             {
-                byte[] data = Hasher.ComputeHash(Encoding.Default.GetBytes(text));
+                var data = Hasher.ComputeHash(Encoding.Default.GetBytes(text));
 
-                StringBuilder sBuilder = new StringBuilder();
+                var sBuilder = new StringBuilder();
 
                 //преобразование в HEX
-                for (int i = 0; i < data.Length; i++)
+                for (var i = 0; i < data.Length; i++)
                 {
                     sBuilder.Append(data[i].ToString("x2"));
                 }
@@ -2023,12 +2052,12 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         public string GenAccessToken(int UserID)
         {
-            string AccessToken = string.Empty;
-            string Email = GetEmail(UserID);
+            var AccessToken = string.Empty;
+            var Email = GetEmail(UserID);
             if (Email.Length > 0)
             {
-                Guid g = Guid.NewGuid();
-                string GuidString = Convert.ToBase64String(g.ToByteArray());
+                var g = Guid.NewGuid();
+                var GuidString = Convert.ToBase64String(g.ToByteArray());
                 AccessToken = GetMD5(Email) + GetMD5(GuidString);
             }
             return AccessToken;
@@ -2036,12 +2065,12 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         private string GetEmail(int UserID)
         {
-            string Email = string.Empty;
-            DataRow[] Rows = UsersDataTable.Select("UserID = " + UserID);
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT Email FROM Users WHERE UserID=" + UserID,
+            var Email = string.Empty;
+            var Rows = UsersDataTable.Select("UserID = " + UserID);
+            using (var DA = new SqlDataAdapter("SELECT Email FROM Users WHERE UserID=" + UserID,
                 ConnectionStrings.UsersConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     if (DA.Fill(DT) > 0 && DT.Rows[0]["Email"] != DBNull.Value)
                         Email = DT.Rows[0]["Email"].ToString();
@@ -2053,9 +2082,9 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         public static string GetDepartmentName(int DepartmentID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT DepartmentName FROM Departments WHERE DepartmentID = " + DepartmentID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT DepartmentName FROM Departments WHERE DepartmentID = " + DepartmentID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     if (DA.Fill(DT) > 0)
                         return DT.Rows[0]["DepartmentName"].ToString();
@@ -2066,8 +2095,8 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         public DataTable GetUsersPositions(int FactoryID, int UserID)
         {
-            DataTable dt = new DataTable();
-            using (DataView DV = new DataView(UsersPositionsDT, "UserID=" + UserID + " AND FactoryID=" + FactoryID, string.Empty, DataViewRowState.CurrentRows))
+            var dt = new DataTable();
+            using (var DV = new DataView(UsersPositionsDT, "UserID=" + UserID + " AND FactoryID=" + FactoryID, string.Empty, DataViewRowState.CurrentRows))
             {
                 dt = DV.ToTable(true, new string[] { "DepartmentID", "PositionID", "Rate" });
             }
@@ -2076,13 +2105,13 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         public PersonalInform GetPersonalInform()
         {
-            PersonalInform PersonalInform = new PersonalInform();
+            var PersonalInform = new PersonalInform();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT UserID, BirthDate, PositionID, DepartmentID, Education, EducationPlace, Language, DriveA, DriveB, DriveC, DriveD, DriveE, CombatArm, MilitaryRank FROM Users WHERE UserID = " + Security.CurrentUserID, ConnectionStrings.UsersConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT UserID, BirthDate, PositionID, DepartmentID, Education, EducationPlace, Language, DriveA, DriveB, DriveC, DriveD, DriveE, CombatArm, MilitaryRank FROM Users WHERE UserID = " + Security.CurrentUserID, ConnectionStrings.UsersConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -2113,13 +2142,13 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         public InfiniumSettings GetInfiniumSettings()
         {
-            InfiniumSettings InfiniumSettings = new InfiniumSettings();
+            var InfiniumSettings = new InfiniumSettings();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT UserID, InfinumBackColorIndex, InfiniumTilesStyleIndex FROM Users WHERE UserID = " + Security.CurrentUserID, ConnectionStrings.UsersConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT UserID, InfinumBackColorIndex, InfiniumTilesStyleIndex FROM Users WHERE UserID = " + Security.CurrentUserID, ConnectionStrings.UsersConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -2134,11 +2163,11 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         public void SetInfiniumSettings(InfiniumSettings InfiniumSettings)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT UserID, InfinumBackColorIndex, InfiniumTilesStyleIndex FROM Users WHERE UserID = " + Security.CurrentUserID, ConnectionStrings.UsersConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT UserID, InfinumBackColorIndex, InfiniumTilesStyleIndex FROM Users WHERE UserID = " + Security.CurrentUserID, ConnectionStrings.UsersConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -2153,11 +2182,11 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         public void SetPersonalInform(PersonalInform PersonalInform)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT UserID, BirthDate, PositionID, Education, EducationPlace, Language, DriveA, DriveB, DriveC, DriveD, DriveE, CombatArm, MilitaryRank FROM Users WHERE UserID = " + Security.CurrentUserID, ConnectionStrings.UsersConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT UserID, BirthDate, PositionID, Education, EducationPlace, Language, DriveA, DriveB, DriveC, DriveD, DriveE, CombatArm, MilitaryRank FROM Users WHERE UserID = " + Security.CurrentUserID, ConnectionStrings.UsersConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -2199,13 +2228,13 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         public Contacts GetContacts(int UserID)
         {
-            Contacts Contacts = new Contacts();
+            var Contacts = new Contacts();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT UserID, PersonalMobilePhone, WorkMobilePhone, WorkStatPhone, WorkExtPhone, Skype, Email, ICQ, NeedSpam FROM Users WHERE UserID = " + UserID, ConnectionStrings.UsersConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT UserID, PersonalMobilePhone, WorkMobilePhone, WorkStatPhone, WorkExtPhone, Skype, Email, ICQ, NeedSpam FROM Users WHERE UserID = " + UserID, ConnectionStrings.UsersConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -2226,13 +2255,13 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         public PersonalInform GetPersonalInform(int UserID)
         {
-            PersonalInform PersonalInform = new PersonalInform();
+            var PersonalInform = new PersonalInform();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT UserID, BirthDate, PositionID, DepartmentID, Education, EducationPlace, Language, DriveA, DriveB, DriveC, DriveD, DriveE, CombatArm, MilitaryRank FROM Users WHERE UserID = " + UserID, ConnectionStrings.UsersConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT UserID, BirthDate, PositionID, DepartmentID, Education, EducationPlace, Language, DriveA, DriveB, DriveC, DriveD, DriveE, CombatArm, MilitaryRank FROM Users WHERE UserID = " + UserID, ConnectionStrings.UsersConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -2263,11 +2292,11 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         public void SetPersonalInform(int UserID, PersonalInform PersonalInform)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT UserID, BirthDate, PositionID, Education, EducationPlace, Language, DriveA, DriveB, DriveC, DriveD, DriveE, CombatArm, MilitaryRank FROM Users WHERE UserID = " + UserID, ConnectionStrings.UsersConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT UserID, BirthDate, PositionID, Education, EducationPlace, Language, DriveA, DriveB, DriveC, DriveD, DriveE, CombatArm, MilitaryRank FROM Users WHERE UserID = " + UserID, ConnectionStrings.UsersConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -2306,16 +2335,16 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
         public void dd()
         {
 
-            using (SqlDataAdapter da = new SqlDataAdapter("SELECT UserID, AccessToken FROM Users  WHERE (Email IS NOT NULL) AND ({ fn LENGTH(Email) } > 0) AND Fired <> 1 ORDER BY Name", ConnectionStrings.UsersConnectionString))
+            using (var da = new SqlDataAdapter("SELECT UserID, AccessToken FROM Users  WHERE (Email IS NOT NULL) AND ({ fn LENGTH(Email) } > 0) AND Fired <> 1 ORDER BY Name", ConnectionStrings.UsersConnectionString))
             {
                 using (new SqlCommandBuilder(da))
                 {
-                    using (DataTable dt = new DataTable())
+                    using (var dt = new DataTable())
                     {
                         da.Fill(dt);
-                        for (int i = 0; i < dt.Rows.Count; i++)
+                        for (var i = 0; i < dt.Rows.Count; i++)
                         {
-                            int userId = Convert.ToInt32(dt.Rows[i]["UserID"]);
+                            var userId = Convert.ToInt32(dt.Rows[i]["UserID"]);
                             dt.Rows[i]["AccessToken"] = GenAccessToken(userId);
                         }
                         da.Update(dt);
@@ -2326,11 +2355,11 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         public void SetContacts(int UserID, Contacts Contacts)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT UserID, AccessToken, PersonalMobilePhone, WorkMobilePhone, WorkStatPhone, WorkExtPhone, Skype, Email, ICQ, NeedSpam FROM Users WHERE UserID = " + UserID, ConnectionStrings.UsersConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT UserID, AccessToken, PersonalMobilePhone, WorkMobilePhone, WorkStatPhone, WorkExtPhone, Skype, Email, ICQ, NeedSpam FROM Users WHERE UserID = " + UserID, ConnectionStrings.UsersConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -2354,11 +2383,11 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         public string GetUserName(int UserID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT UserID, Name FROM Users WHERE UserID = " + UserID, ConnectionStrings.UsersConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT UserID, Name FROM Users WHERE UserID = " + UserID, ConnectionStrings.UsersConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
                         return DT.Rows[0]["Name"].ToString();
@@ -2369,7 +2398,7 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         public Image GetUserPhoto(int UserID)
         {
-            DataRow[] Rows = TablesManager.UsersPhotoDataTable.Select("UserID = " + UserID);
+            var Rows = TablesManager.UsersPhotoDataTable.Select("UserID = " + UserID);
             if (!Rows.Any())
                 return null;
             if (Rows[0]["Photo"] == DBNull.Value)
@@ -2378,7 +2407,7 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
             {
                 try
                 {
-                    using (MemoryStream ms = new MemoryStream(
+                    using (var ms = new MemoryStream(
                         FM.ReadFile(Configs.DocumentsZOVTPSPath + FileManager.GetPath("UsersPhoto") + "/" + Rows[0]["Photo"],
                         Convert.ToInt64(Rows[0]["FileSize"]), Configs.FTPType)))
                     {
@@ -2399,19 +2428,19 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         public void SetUserPhoto(Image Photo, int UserID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM UsersPhoto WHERE UserID = " + UserID, ConnectionStrings.UsersConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM UsersPhoto WHERE UserID = " + UserID, ConnectionStrings.UsersConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
-                        string tempFolder = System.Environment.GetEnvironmentVariable("TEMP");
-                        string sDestFolder = Configs.DocumentsZOVTPSPath + FileManager.GetPath("UsersPhoto");
+                        var tempFolder = System.Environment.GetEnvironmentVariable("TEMP");
+                        var sDestFolder = Configs.DocumentsZOVTPSPath + FileManager.GetPath("UsersPhoto");
                         if (DA.Fill(DT) > 0)
                         {
                             if (Photo != null)
                             {
-                                string sFileName = UserID + ".jpg";
+                                var sFileName = UserID + ".jpg";
 
                                 Int64 FileSize = 0;
                                 using (var ms = new MemoryStream())
@@ -2436,11 +2465,11 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
                                 FileSize = ms.Length;
                             }
 
-                            string sFileName = UserID + ".jpg";
+                            var sFileName = UserID + ".jpg";
                             Photo.Save(tempFolder + "/" + sFileName, ImageFormat.Jpeg);
                             FM.UploadFile(tempFolder + "/" + sFileName,
                                 sDestFolder + "/" + sFileName, Configs.FTPType);
-                            DataRow NewRow = DT.NewRow();
+                            var NewRow = DT.NewRow();
                             NewRow["UserID"] = UserID;
                             NewRow["Photo"] = UserID + ".jpg";
                             NewRow["FileSize"] = FileSize;
@@ -2458,10 +2487,10 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         public bool IsUserClientManager(int UserID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM ClientsManagers WHERE UserID = " + UserID,
+            using (var DA = new SqlDataAdapter("SELECT * FROM ClientsManagers WHERE UserID = " + UserID,
                 ConnectionStrings.MarketingReferenceConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                     return DA.Fill(DT) > 0;
@@ -2471,12 +2500,12 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         public void DeleteClientManager(int UserID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM ClientsManagers WHERE UserID = " + UserID,
+            using (var DA = new SqlDataAdapter("SELECT * FROM ClientsManagers WHERE UserID = " + UserID,
                 ConnectionStrings.MarketingReferenceConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         if (DA.Fill(DT) > 0)
                         {
@@ -2489,21 +2518,21 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
         }
         public void SaveClientManager(int UserID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter(@"SELECT TOP 0 * FROM ClientsManagers WHERE UserID=" + UserID,
+            using (var DA = new SqlDataAdapter(@"SELECT TOP 0 * FROM ClientsManagers WHERE UserID=" + UserID,
                 ConnectionStrings.MarketingReferenceConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
                         if (DT.Rows.Count == 0)
                         {
-                            string Name = GetUserName(UserID);
-                            string fullName = Name;
-                            string firstName = Name;
-                            string lastName = string.Empty;
-                            string middleName = string.Empty;
+                            var Name = GetUserName(UserID);
+                            var fullName = Name;
+                            var firstName = Name;
+                            var lastName = string.Empty;
+                            var middleName = string.Empty;
 
                             var names = fullName.Split(' ');
                             if (names.Count() == 1)
@@ -2520,7 +2549,7 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
                                 middleName = names[2];
                             }
 
-                            string ShortName = Name;
+                            var ShortName = Name;
                             if (Name.IndexOf(' ') > -1)
                             {
                                 if (lastName.Length > 0)
@@ -2530,7 +2559,7 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
                                 if (middleName.Length > 0)
                                     ShortName += middleName.Substring(0, 1) + ".";
                             }
-                            DataRow NewRow = DT.NewRow();
+                            var NewRow = DT.NewRow();
                             NewRow["Name"] = lastName + " " + firstName;
                             NewRow["ShortName"] = ShortName;
                             NewRow["UserID"] = UserID;
@@ -2547,11 +2576,11 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         public string GetUserName()
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT UserID, Name FROM Users WHERE UserID = " + Security.CurrentUserID, ConnectionStrings.UsersConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT UserID, Name FROM Users WHERE UserID = " + Security.CurrentUserID, ConnectionStrings.UsersConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
                         return DT.Rows[0]["Name"].ToString();
@@ -2562,17 +2591,17 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         public static Image GetUserPhoto()
         {
-            DataRow[] Rows = TablesManager.UsersPhotoDataTable.Select("UserID = " + Security.CurrentUserID);
+            var Rows = TablesManager.UsersPhotoDataTable.Select("UserID = " + Security.CurrentUserID);
             if (!Rows.Any())
                 return null;
             if (Rows[0]["Photo"] == DBNull.Value)
                 return null;
-            FileManager FM1 = new FileManager();
+            var FM1 = new FileManager();
             if (FM1.FileExist(Configs.DocumentsZOVTPSPath + FileManager.GetPath("UsersPhoto") + "/" + Rows[0]["Photo"], Configs.FTPType))
             {
                 try
                 {
-                    using (MemoryStream ms = new MemoryStream(
+                    using (var ms = new MemoryStream(
                         FM1.ReadFile(Configs.DocumentsZOVTPSPath + FileManager.GetPath("UsersPhoto") + "/" + Rows[0]["Photo"],
                         Convert.ToInt64(Rows[0]["FileSize"]), Configs.FTPType)))
                     {
@@ -2606,19 +2635,19 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         public void SetUserPhoto(Image Photo)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM UsersPhoto WHERE UserID = " + Security.CurrentUserID, ConnectionStrings.UsersConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM UsersPhoto WHERE UserID = " + Security.CurrentUserID, ConnectionStrings.UsersConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
-                        string tempFolder = System.Environment.GetEnvironmentVariable("TEMP");
-                        string sDestFolder = Configs.DocumentsZOVTPSPath + FileManager.GetPath("UsersPhoto");
+                        var tempFolder = System.Environment.GetEnvironmentVariable("TEMP");
+                        var sDestFolder = Configs.DocumentsZOVTPSPath + FileManager.GetPath("UsersPhoto");
                         if (DA.Fill(DT) > 0)
                         {
                             if (Photo != null)
                             {
-                                string sFileName = Security.CurrentUserID + ".jpg";
+                                var sFileName = Security.CurrentUserID + ".jpg";
 
                                 Int64 FileSize = 0;
                                 using (var ms = new MemoryStream())
@@ -2643,11 +2672,11 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
                                 FileSize = ms.Length;
                             }
 
-                            string sFileName = Security.CurrentUserID + ".jpg";
+                            var sFileName = Security.CurrentUserID + ".jpg";
                             Photo.Save(tempFolder + "/" + sFileName, ImageFormat.Jpeg);
                             FM.UploadFile(tempFolder + "/" + sFileName,
                                 sDestFolder + "/" + sFileName, Configs.FTPType);
-                            DataRow NewRow = DT.NewRow();
+                            var NewRow = DT.NewRow();
                             NewRow["UserID"] = Security.CurrentUserID;
                             NewRow["Photo"] = sFileName;
                             NewRow["FileSize"] = FileSize;
@@ -2664,7 +2693,7 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         public void UpdateUsersDataTable()
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Users  WHERE Fired <> 1 ORDER BY Name", ConnectionStrings.UsersConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM Users  WHERE Fired <> 1 ORDER BY Name", ConnectionStrings.UsersConnectionString))
             {
                 UsersDataTable.Clear();
                 DA.Fill(UsersDataTable);
@@ -2679,11 +2708,11 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
         public static string Encrypt(string ToEncrypt, bool useHasing, string Password)
         {
             byte[] keyArray;
-            byte[] toEncryptArray = UTF8Encoding.UTF8.GetBytes(ToEncrypt);
+            var toEncryptArray = UTF8Encoding.UTF8.GetBytes(ToEncrypt);
             //System.Configuration.AppSettingsReader settingsReader = new     AppSettingsReader();
             if (useHasing)
             {
-                MD5CryptoServiceProvider hashmd5 = new MD5CryptoServiceProvider();
+                var hashmd5 = new MD5CryptoServiceProvider();
                 keyArray = hashmd5.ComputeHash(UTF8Encoding.UTF8.GetBytes(Password));
                 hashmd5.Clear();
             }
@@ -2691,14 +2720,14 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
             {
                 keyArray = UTF8Encoding.UTF8.GetBytes(Password);
             }
-            TripleDESCryptoServiceProvider tDes = new TripleDESCryptoServiceProvider()
+            var tDes = new TripleDESCryptoServiceProvider()
             {
                 Key = keyArray,
                 Mode = CipherMode.ECB,
                 Padding = PaddingMode.PKCS7
             };
-            ICryptoTransform cTransform = tDes.CreateEncryptor();
-            byte[] resultArray = cTransform.TransformFinalBlock(toEncryptArray, 0, toEncryptArray.Length);
+            var cTransform = tDes.CreateEncryptor();
+            var resultArray = cTransform.TransformFinalBlock(toEncryptArray, 0, toEncryptArray.Length);
             tDes.Clear();
             return Convert.ToBase64String(resultArray, 0, resultArray.Length);
         }
@@ -2706,12 +2735,12 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
         public static string Decrypt(string cypherString, bool useHasing, string Password)
         {
             byte[] keyArray;
-            byte[] toDecryptArray = Convert.FromBase64String(cypherString);
+            var toDecryptArray = Convert.FromBase64String(cypherString);
             //byte[] toEncryptArray = Convert.FromBase64String(cypherString);
             //System.Configuration.AppSettingsReader settingReader = new     AppSettingsReader();
             if (useHasing)
             {
-                MD5CryptoServiceProvider hashmd = new MD5CryptoServiceProvider();
+                var hashmd = new MD5CryptoServiceProvider();
                 keyArray = hashmd.ComputeHash(UTF8Encoding.UTF8.GetBytes(Password));
                 hashmd.Clear();
             }
@@ -2719,16 +2748,16 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
             {
                 keyArray = UTF8Encoding.UTF8.GetBytes(Password);
             }
-            TripleDESCryptoServiceProvider tDes = new TripleDESCryptoServiceProvider()
+            var tDes = new TripleDESCryptoServiceProvider()
             {
                 Key = keyArray,
                 Mode = CipherMode.ECB,
                 Padding = PaddingMode.PKCS7
             };
-            ICryptoTransform cTransform = tDes.CreateDecryptor();
+            var cTransform = tDes.CreateDecryptor();
             try
             {
-                byte[] resultArray = cTransform.TransformFinalBlock(toDecryptArray, 0, toDecryptArray.Length);
+                var resultArray = cTransform.TransformFinalBlock(toDecryptArray, 0, toDecryptArray.Length);
 
                 tDes.Clear();
                 return UTF8Encoding.UTF8.GetString(resultArray, 0, resultArray.Length);
@@ -2789,32 +2818,32 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
         static public bool IsCabFurniture(int ProductID)
         {
             //также необходимо добавить новые id корп. мебели в файлы ClientCatalog, CabFurStorage, CabFurnitureAssignments
-            for (int i = 0; i < Security.CabFurIds.Count(); i++)
+            for (var i = 0; i < Security.CabFurIds.Count(); i++)
             {
                 if (ProductID == Security.CabFurIds[i])
                     return true;
             }
             return false;
         }
-        
+
         static private ArrayList GetMegaOrdersInDispatch(ArrayList DispatchIDs)
         {
-            string OrdersConnectionString = ConnectionStrings.MarketingOrdersConnectionString;
+            var OrdersConnectionString = ConnectionStrings.MarketingOrdersConnectionString;
 
-            ArrayList MegaOrders = new ArrayList();
+            var MegaOrders = new ArrayList();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter(@"SELECT MegaOrderID FROM MegaOrders
+            using (var DA = new SqlDataAdapter(@"SELECT MegaOrderID FROM MegaOrders
 				WHERE MegaOrderID IN (SELECT DISTINCT MegaOrderID FROM MainOrders
 				WHERE MainOrderID IN (SELECT DISTINCT MainOrderID FROM Packages WHERE DispatchID IN (" +
-                                                          string.Join(",", DispatchIDs.OfType<Int32>().ToArray()) +
-                                                          ")))",
+                                               string.Join(",", DispatchIDs.OfType<Int32>().ToArray()) +
+                                               ")))",
                 OrdersConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     if (DA.Fill(DT) > 0 && DT.Rows[0]["MegaOrderID"] != DBNull.Value)
                     {
-                        for (int i = 0; i < DT.Rows.Count; i++)
+                        for (var i = 0; i < DT.Rows.Count; i++)
                             MegaOrders.Add(Convert.ToInt32(DT.Rows[i]["MegaOrderID"]));
                     }
                 }
@@ -2825,20 +2854,20 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         static private ArrayList GetMegaOrdersInTray(int TrayID)
         {
-            string OrdersConnectionString = ConnectionStrings.MarketingOrdersConnectionString;
+            var OrdersConnectionString = ConnectionStrings.MarketingOrdersConnectionString;
 
-            ArrayList MegaOrders = new ArrayList();
+            var MegaOrders = new ArrayList();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter(@"SELECT MegaOrderID FROM MegaOrders
+            using (var DA = new SqlDataAdapter(@"SELECT MegaOrderID FROM MegaOrders
 				WHERE AgreementStatusID = 2 AND MegaOrderID IN (SELECT DISTINCT MegaOrderID FROM MainOrders
 				WHERE MainOrderID IN (SELECT DISTINCT MainOrderID FROM Packages WHERE TrayID = " + TrayID + "))",
                 OrdersConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     if (DA.Fill(DT) > 0 && DT.Rows[0]["MegaOrderID"] != DBNull.Value)
                     {
-                        for (int i = 0; i < DT.Rows.Count; i++)
+                        for (var i = 0; i < DT.Rows.Count; i++)
                             MegaOrders.Add(Convert.ToInt32(DT.Rows[i]["MegaOrderID"]));
                     }
                 }
@@ -2849,34 +2878,34 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         static private int GetMainOrderPackCount(bool Marketing, int MainOrderID, int FactoryID)
         {
-            string OrdersConnectionString = ConnectionStrings.MarketingOrdersConnectionString;
+            var OrdersConnectionString = ConnectionStrings.MarketingOrdersConnectionString;
 
             if (!Marketing)
                 OrdersConnectionString = ConnectionStrings.ZOVOrdersConnectionString;
 
-            int Count = 0;
-            DataTable FrontsDT = new DataTable();
-            DataTable DecorDT = new DataTable();
+            var Count = 0;
+            var FrontsDT = new DataTable();
+            var DecorDT = new DataTable();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT PackNumber FROM PackageDetails WHERE PackageID IN " +
-                                                          "(SELECT PackageID FROM Packages WHERE MainOrderID = " +
-                                                          MainOrderID +
-                                                          " AND ProductType = 0" + " AND FactoryID=" + FactoryID + ")",
+            using (var DA = new SqlDataAdapter("SELECT PackNumber FROM PackageDetails WHERE PackageID IN " +
+                                               "(SELECT PackageID FROM Packages WHERE MainOrderID = " +
+                                               MainOrderID +
+                                               " AND ProductType = 0" + " AND FactoryID=" + FactoryID + ")",
                 OrdersConnectionString))
             {
                 DA.Fill(FrontsDT);
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT PackNumber FROM PackageDetails WHERE PackageID IN " +
-                                                          "(SELECT PackageID FROM Packages WHERE MainOrderID = " +
-                                                          MainOrderID +
-                                                          " AND ProductType = 1" + " AND FactoryID=" + FactoryID + ")",
+            using (var DA = new SqlDataAdapter("SELECT PackNumber FROM PackageDetails WHERE PackageID IN " +
+                                               "(SELECT PackageID FROM Packages WHERE MainOrderID = " +
+                                               MainOrderID +
+                                               " AND ProductType = 1" + " AND FactoryID=" + FactoryID + ")",
                 OrdersConnectionString))
             {
                 DA.Fill(DecorDT);
             }
 
-            DataTable DT = new DataTable();
+            var DT = new DataTable();
             DT.Columns.Add(new DataColumn("PackNumber", Type.GetType("System.Int32")));
 
             foreach (DataRow Row in FrontsDT.Rows)
@@ -2892,7 +2921,7 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
             }
 
 
-            using (DataView DV = new DataView(DT.Copy()))
+            using (var DV = new DataView(DT.Copy()))
             {
                 DT.Clear();
 
@@ -2900,7 +2929,7 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
                 DT = DV.ToTable(true, new string[] { "PackNumber" });
             }
 
-            for (int i = 0; i < DT.Rows.Count; i++)
+            for (var i = 0; i < DT.Rows.Count; i++)
             {
                 Count++;
             }
@@ -2919,30 +2948,30 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
         /// <returns>возвращает false, если в таблице Packages нет ни одной строки для подзаказа (ещё не распределен)</returns>
         static private bool GetPackageStatuses(bool Marketing, int FactoryID, int MainOrderID, ref PackageStatues PS)
         {
-            string OrdersConnectionString = ConnectionStrings.MarketingOrdersConnectionString;
+            var OrdersConnectionString = ConnectionStrings.MarketingOrdersConnectionString;
 
             if (!Marketing)
                 OrdersConnectionString = ConnectionStrings.ZOVOrdersConnectionString;
 
             //int AllPackages = 0;
-            int ProfilPackages = 0;
-            int TPSPackages = 0;
+            var ProfilPackages = 0;
+            var TPSPackages = 0;
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Packages" +
-                                                          " WHERE MainOrderID = " + MainOrderID +
-                                                          " ORDER BY DispatchDateTime",
+            using (var DA = new SqlDataAdapter("SELECT * FROM Packages" +
+                                               " WHERE MainOrderID = " + MainOrderID +
+                                               " ORDER BY DispatchDateTime",
                 OrdersConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     if (DA.Fill(DT) > 0)
                     {
                         //общее кол-во упаковок
-                        DataRow[] ProfilRows = DT.Select("FactoryID = 1");
+                        var ProfilRows = DT.Select("FactoryID = 1");
                         if (ProfilRows.Count() > 0)
                             ProfilPackages = ProfilRows.Count();
 
-                        DataRow[] TPSRows = DT.Select("FactoryID = 2");
+                        var TPSRows = DT.Select("FactoryID = 2");
                         if (TPSRows.Count() > 0)
                             TPSPackages = TPSRows.Count();
 
@@ -2954,7 +2983,7 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
                         if (FactoryID == 1)
                         {
                             //упаковки со статусом НЕ Упаковано
-                            DataRow[] NPRows = DT.Select("PackageStatusID = 0");
+                            var NPRows = DT.Select("PackageStatusID = 0");
                             {
                                 if (NPRows.Count() > 0)
                                 {
@@ -2968,7 +2997,7 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
                             }
 
                             //упаковки со статусом Упаковано
-                            DataRow[] PRows = DT.Select("PackageStatusID = 1");
+                            var PRows = DT.Select("PackageStatusID = 1");
                             {
                                 if (PRows.Count() > 0)
                                 {
@@ -2982,7 +3011,7 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
                             }
 
                             //упаковки со статусом Склад
-                            DataRow[] SRows = DT.Select("PackageStatusID = 2");
+                            var SRows = DT.Select("PackageStatusID = 2");
                             {
                                 if (SRows.Count() > 0)
                                 {
@@ -2996,7 +3025,7 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
                             }
 
                             //упаковки со статусом Экспедиция
-                            DataRow[] ERows = DT.Select("PackageStatusID = 4");
+                            var ERows = DT.Select("PackageStatusID = 4");
                             {
                                 if (ERows.Count() > 0)
                                 {
@@ -3010,7 +3039,7 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
                             }
 
                             //упаковки со статусом Отгружено
-                            DataRow[] DRows = DT.Select("PackageStatusID = 3");
+                            var DRows = DT.Select("PackageStatusID = 3");
                             {
                                 if (DRows.Count() > 0)
                                 {
@@ -3034,7 +3063,7 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
                         if (FactoryID == 2)
                         {
-                            DataRow[] NPRows = DT.Select("PackageStatusID = 0");
+                            var NPRows = DT.Select("PackageStatusID = 0");
                             {
                                 if (NPRows.Count() > 0)
                                 {
@@ -3047,7 +3076,7 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
                                     PS.TPSNotPacked = 0;
                             }
 
-                            DataRow[] PRows = DT.Select("PackageStatusID = 1");
+                            var PRows = DT.Select("PackageStatusID = 1");
                             {
                                 if (PRows.Count() > 0)
                                 {
@@ -3060,7 +3089,7 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
                                     PS.TPSPacked = 0;
                             }
 
-                            DataRow[] SRows = DT.Select("PackageStatusID = 2");
+                            var SRows = DT.Select("PackageStatusID = 2");
                             {
                                 if (SRows.Count() > 0)
                                 {
@@ -3073,7 +3102,7 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
                                     PS.TPSStore = 0;
                             }
 
-                            DataRow[] ERows = DT.Select("PackageStatusID = 4");
+                            var ERows = DT.Select("PackageStatusID = 4");
                             {
                                 if (ERows.Count() > 0)
                                 {
@@ -3086,7 +3115,7 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
                                     PS.TPSExp = 0;
                             }
 
-                            DataRow[] DRows = DT.Select("PackageStatusID = 3");
+                            var DRows = DT.Select("PackageStatusID = 3");
                             {
                                 if (DRows.Count() > 0)
                                 {
@@ -3111,7 +3140,7 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
                         if (FactoryID == 0)
                         {
                             //ПРОФИЛЬ
-                            DataRow[] NPRows = DT.Select("PackageStatusID = 0 AND FactoryID = 1");
+                            var NPRows = DT.Select("PackageStatusID = 0 AND FactoryID = 1");
                             {
                                 if (NPRows.Count() > 0)
                                 {
@@ -3124,7 +3153,7 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
                                     PS.ProfilNotPacked = 0;
                             }
 
-                            DataRow[] PRows = DT.Select("PackageStatusID = 1 AND FactoryID = 1");
+                            var PRows = DT.Select("PackageStatusID = 1 AND FactoryID = 1");
                             {
                                 if (PRows.Count() > 0)
                                 {
@@ -3137,7 +3166,7 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
                                     PS.ProfilPacked = 0;
                             }
 
-                            DataRow[] SRows = DT.Select("PackageStatusID = 2 AND FactoryID = 1");
+                            var SRows = DT.Select("PackageStatusID = 2 AND FactoryID = 1");
                             {
                                 if (SRows.Count() > 0)
                                 {
@@ -3150,7 +3179,7 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
                                     PS.ProfilStore = 0;
                             }
 
-                            DataRow[] ERows = DT.Select("PackageStatusID = 4 AND FactoryID = 1");
+                            var ERows = DT.Select("PackageStatusID = 4 AND FactoryID = 1");
                             {
                                 if (ERows.Count() > 0)
                                 {
@@ -3163,7 +3192,7 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
                                     PS.ProfilExp = 0;
                             }
 
-                            DataRow[] DRows = DT.Select("PackageStatusID = 3 AND FactoryID = 1");
+                            var DRows = DT.Select("PackageStatusID = 3 AND FactoryID = 1");
                             {
                                 if (DRows.Count() > 0)
                                 {
@@ -3181,7 +3210,7 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
                             }
 
                             //ТПС
-                            DataRow[] NPRowsTPS = DT.Select("PackageStatusID = 0 AND FactoryID = 2");
+                            var NPRowsTPS = DT.Select("PackageStatusID = 0 AND FactoryID = 2");
                             {
                                 if (NPRowsTPS.Count() > 0)
                                 {
@@ -3194,7 +3223,7 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
                                     PS.TPSNotPacked = 0;
                             }
 
-                            DataRow[] PRowsTPS = DT.Select("PackageStatusID = 1 AND FactoryID = 2");
+                            var PRowsTPS = DT.Select("PackageStatusID = 1 AND FactoryID = 2");
                             {
                                 if (PRowsTPS.Count() > 0)
                                 {
@@ -3207,7 +3236,7 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
                                     PS.TPSPacked = 0;
                             }
 
-                            DataRow[] SRowsTPS = DT.Select("PackageStatusID = 2 AND FactoryID = 2");
+                            var SRowsTPS = DT.Select("PackageStatusID = 2 AND FactoryID = 2");
                             {
                                 if (SRowsTPS.Count() > 0)
                                 {
@@ -3220,7 +3249,7 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
                                     PS.TPSStore = 0;
                             }
 
-                            DataRow[] ERowsTPS = DT.Select("PackageStatusID = 4 AND FactoryID = 2");
+                            var ERowsTPS = DT.Select("PackageStatusID = 4 AND FactoryID = 2");
                             {
                                 if (ERowsTPS.Count() > 0)
                                 {
@@ -3233,7 +3262,7 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
                                     PS.TPSExp = 0;
                             }
 
-                            DataRow[] DRowsTPS = DT.Select("PackageStatusID = 3 AND FactoryID = 2");
+                            var DRowsTPS = DT.Select("PackageStatusID = 3 AND FactoryID = 2");
                             {
                                 if (DRowsTPS.Count() > 0)
                                 {
@@ -3264,35 +3293,35 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         static public void CopySampleOrders(bool Marketing, int MainOrderID, object DispDate)
         {
-            string OrdersConnectionString = ConnectionStrings.MarketingOrdersConnectionString;
+            var OrdersConnectionString = ConnectionStrings.MarketingOrdersConnectionString;
 
             if (!Marketing)
                 OrdersConnectionString = ConnectionStrings.ZOVOrdersConnectionString;
 
-            DataTable TempDT = new DataTable();
-            string SelectCommand = @"SELECT * FROM MainOrders WHERE MainOrderID = " + MainOrderID;
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, OrdersConnectionString))
+            var TempDT = new DataTable();
+            var SelectCommand = @"SELECT * FROM MainOrders WHERE MainOrderID = " + MainOrderID;
+            using (var DA = new SqlDataAdapter(SelectCommand, OrdersConnectionString))
             {
                 DA.Fill(TempDT);
             }
 
             SelectCommand = @"SELECT * FROM SampleMainOrders WHERE MainOrderID = " + MainOrderID;
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, OrdersConnectionString))
+            using (var DA = new SqlDataAdapter(SelectCommand, OrdersConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
                         if (TempDT.Rows.Count > 0)
                         {
-                            for (int i = 0; i < TempDT.Rows.Count; i++)
+                            for (var i = 0; i < TempDT.Rows.Count; i++)
                             {
-                                DataRow[] Rows =
+                                var Rows =
                                     DT.Select("MainOrderID=" + Convert.ToInt32(TempDT.Rows[i]["MainOrderID"]));
                                 if (Rows.Count() > 0)
                                     continue;
-                                DataRow NewRow = DT.NewRow();
+                                var NewRow = DT.NewRow();
                                 NewRow.ItemArray = TempDT.Rows[i].ItemArray;
                                 if (DispDate != DBNull.Value)
                                     NewRow["DispDate"] = DispDate;
@@ -3308,28 +3337,28 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
             TempDT.Dispose();
             TempDT = new DataTable();
             SelectCommand = @"SELECT * FROM FrontsOrders WHERE MainOrderID = " + MainOrderID;
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, OrdersConnectionString))
+            using (var DA = new SqlDataAdapter(SelectCommand, OrdersConnectionString))
             {
                 DA.Fill(TempDT);
             }
 
             SelectCommand = @"SELECT * FROM SampleFrontsOrders WHERE MainOrderID = " + MainOrderID;
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, OrdersConnectionString))
+            using (var DA = new SqlDataAdapter(SelectCommand, OrdersConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
                         if (TempDT.Rows.Count > 0)
                         {
-                            for (int i = 0; i < TempDT.Rows.Count; i++)
+                            for (var i = 0; i < TempDT.Rows.Count; i++)
                             {
-                                DataRow[] Rows =
+                                var Rows =
                                     DT.Select("FrontsOrdersID=" + Convert.ToInt32(TempDT.Rows[i]["FrontsOrdersID"]));
                                 if (Rows.Count() > 0)
                                     continue;
-                                DataRow NewRow = DT.NewRow();
+                                var NewRow = DT.NewRow();
                                 NewRow.ItemArray = TempDT.Rows[i].ItemArray;
                                 DT.Rows.Add(NewRow);
                             }
@@ -3343,28 +3372,28 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
             TempDT.Dispose();
             TempDT = new DataTable();
             SelectCommand = @"SELECT * FROM DecorOrders WHERE MainOrderID = " + MainOrderID;
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, OrdersConnectionString))
+            using (var DA = new SqlDataAdapter(SelectCommand, OrdersConnectionString))
             {
                 DA.Fill(TempDT);
             }
 
             SelectCommand = @"SELECT * FROM SampleDecorOrders WHERE MainOrderID = " + MainOrderID;
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, OrdersConnectionString))
+            using (var DA = new SqlDataAdapter(SelectCommand, OrdersConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
                         if (TempDT.Rows.Count > 0)
                         {
-                            for (int i = 0; i < TempDT.Rows.Count; i++)
+                            for (var i = 0; i < TempDT.Rows.Count; i++)
                             {
-                                DataRow[] Rows =
+                                var Rows =
                                     DT.Select("DecorOrderID=" + Convert.ToInt32(TempDT.Rows[i]["DecorOrderID"]));
                                 if (Rows.Count() > 0)
                                     continue;
-                                DataRow NewRow = DT.NewRow();
+                                var NewRow = DT.NewRow();
                                 NewRow.ItemArray = TempDT.Rows[i].ItemArray;
                                 DT.Rows.Add(NewRow);
                             }
@@ -3378,44 +3407,44 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         static public void SetMainOrderStatusForDispatch(bool Marketing, ArrayList DispatchIDs)
         {
-            string OrdersConnectionString = ConnectionStrings.MarketingOrdersConnectionString;
+            var OrdersConnectionString = ConnectionStrings.MarketingOrdersConnectionString;
 
             if (!Marketing)
                 OrdersConnectionString = ConnectionStrings.ZOVOrdersConnectionString;
 
-            bool IsAllocPack = false;
+            var IsAllocPack = false;
 
-            int FactoryID = -1;
-            int ProfilProductionStatusID = 0;
-            int ProfilStorageStatusID = 0;
-            int ProfilExpeditionStatusID = 0;
-            int ProfilDispatchStatusID = 0;
-            int TPSProductionStatusID = 0;
-            int TPSStorageStatusID = 0;
-            int TPSExpeditionStatusID = 0;
-            int TPSDispatchStatusID = 0;
+            var FactoryID = -1;
+            var ProfilProductionStatusID = 0;
+            var ProfilStorageStatusID = 0;
+            var ProfilExpeditionStatusID = 0;
+            var ProfilDispatchStatusID = 0;
+            var TPSProductionStatusID = 0;
+            var TPSStorageStatusID = 0;
+            var TPSExpeditionStatusID = 0;
+            var TPSDispatchStatusID = 0;
 
             if (Marketing)
             {
-                string SelectCommand = "SELECT MainOrderID, IsSample, FactoryID," +
-                                       " ProfilProductionStatusID, ProfilStorageStatusID, ProfilExpeditionStatusID, ProfilDispatchStatusID, " +
-                                       " TPSProductionStatusID, TPSStorageStatusID, TPSExpeditionStatusID, TPSDispatchStatusID FROM MainOrders WHERE MainOrderID IN" +
-                                       " (SELECT DISTINCT MainOrderID FROM Packages WHERE DispatchID IN (" +
-                                       string.Join(",", DispatchIDs.OfType<Int32>().ToArray()) + "))";
-                PackageStatues PS = new PackageStatues();
+                var SelectCommand = "SELECT MainOrderID, IsSample, FactoryID," +
+                                    " ProfilProductionStatusID, ProfilStorageStatusID, ProfilExpeditionStatusID, ProfilDispatchStatusID, " +
+                                    " TPSProductionStatusID, TPSStorageStatusID, TPSExpeditionStatusID, TPSDispatchStatusID FROM MainOrders WHERE MainOrderID IN" +
+                                    " (SELECT DISTINCT MainOrderID FROM Packages WHERE DispatchID IN (" +
+                                    string.Join(",", DispatchIDs.OfType<Int32>().ToArray()) + "))";
+                var PS = new PackageStatues();
 
-                using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand,
+                using (var DA = new SqlDataAdapter(SelectCommand,
                     ConnectionStrings.MarketingOrdersConnectionString))
                 {
-                    using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                    using (var CB = new SqlCommandBuilder(DA))
                     {
-                        using (DataTable DT = new DataTable())
+                        using (var DT = new DataTable())
                         {
                             if (DA.Fill(DT) > 0)
                             {
-                                for (int i = 0; i < DT.Rows.Count; i++)
+                                for (var i = 0; i < DT.Rows.Count; i++)
                                 {
-                                    bool IsSample = Convert.ToBoolean(DT.Rows[i]["IsSample"]);
+                                    var IsSample = Convert.ToBoolean(DT.Rows[i]["IsSample"]);
                                     FactoryID = Convert.ToInt32(DT.Rows[i]["FactoryID"]);
                                     ProfilProductionStatusID = Convert.ToInt32(DT.Rows[i]["ProfilProductionStatusID"]);
                                     ProfilStorageStatusID = Convert.ToInt32(DT.Rows[i]["ProfilStorageStatusID"]);
@@ -3531,18 +3560,18 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
                                 " (SELECT DISTINCT MainOrderID FROM Packages WHERE DispatchID IN (" +
                                 string.Join(",", DispatchIDs.OfType<Int32>().ToArray()) + "))";
                 PS = new PackageStatues();
-                using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand,
+                using (var DA = new SqlDataAdapter(SelectCommand,
                     ConnectionStrings.MarketingOrdersConnectionString))
                 {
-                    using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                    using (var CB = new SqlCommandBuilder(DA))
                     {
-                        using (DataTable DT = new DataTable())
+                        using (var DT = new DataTable())
                         {
                             if (DA.Fill(DT) > 0)
                             {
-                                for (int i = 0; i < DT.Rows.Count; i++)
+                                for (var i = 0; i < DT.Rows.Count; i++)
                                 {
-                                    bool IsSample = Convert.ToBoolean(DT.Rows[i]["IsSample"]);
+                                    var IsSample = Convert.ToBoolean(DT.Rows[i]["IsSample"]);
                                     FactoryID = Convert.ToInt32(DT.Rows[i]["FactoryID"]);
                                     ProfilProductionStatusID = Convert.ToInt32(DT.Rows[i]["ProfilProductionStatusID"]);
                                     ProfilStorageStatusID = Convert.ToInt32(DT.Rows[i]["ProfilStorageStatusID"]);
@@ -3645,25 +3674,25 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
             }
             else
             {
-                string SelectCommand = "SELECT MainOrderID, IsSample, FactoryID," +
-                                       " ProfilProductionStatusID, ProfilStorageStatusID, ProfilExpeditionStatusID, ProfilDispatchStatusID, " +
-                                       " TPSProductionStatusID, TPSStorageStatusID, TPSExpeditionStatusID, TPSDispatchStatusID FROM MainOrders WHERE MainOrderID IN" +
-                                       " (SELECT DISTINCT MainOrderID FROM Packages WHERE DispatchID IN (" +
-                                       string.Join(",", DispatchIDs.OfType<Int32>().ToArray()) + "))";
-                PackageStatues PS = new PackageStatues();
+                var SelectCommand = "SELECT MainOrderID, IsSample, FactoryID," +
+                                    " ProfilProductionStatusID, ProfilStorageStatusID, ProfilExpeditionStatusID, ProfilDispatchStatusID, " +
+                                    " TPSProductionStatusID, TPSStorageStatusID, TPSExpeditionStatusID, TPSDispatchStatusID FROM MainOrders WHERE MainOrderID IN" +
+                                    " (SELECT DISTINCT MainOrderID FROM Packages WHERE DispatchID IN (" +
+                                    string.Join(",", DispatchIDs.OfType<Int32>().ToArray()) + "))";
+                var PS = new PackageStatues();
 
-                using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand,
+                using (var DA = new SqlDataAdapter(SelectCommand,
                     ConnectionStrings.ZOVOrdersConnectionString))
                 {
-                    using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                    using (var CB = new SqlCommandBuilder(DA))
                     {
-                        using (DataTable DT = new DataTable())
+                        using (var DT = new DataTable())
                         {
                             if (DA.Fill(DT) > 0)
                             {
-                                for (int i = 0; i < DT.Rows.Count; i++)
+                                for (var i = 0; i < DT.Rows.Count; i++)
                                 {
-                                    bool IsSample = Convert.ToBoolean(DT.Rows[i]["IsSample"]);
+                                    var IsSample = Convert.ToBoolean(DT.Rows[i]["IsSample"]);
                                     FactoryID = Convert.ToInt32(DT.Rows[i]["FactoryID"]);
                                     ProfilProductionStatusID = Convert.ToInt32(DT.Rows[i]["ProfilProductionStatusID"]);
                                     ProfilStorageStatusID = Convert.ToInt32(DT.Rows[i]["ProfilStorageStatusID"]);
@@ -3765,40 +3794,40 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         static public void SetMainOrderStatus(bool Marketing, int MainOrderID, bool IsTray)
         {
-            bool IsAllocPack = false;
-            int FactoryID = -1;
-            int ProfilProductionStatusID = 0;
-            int ProfilStorageStatusID = 0;
-            int ProfilExpeditionStatusID = 0;
-            int ProfilDispatchStatusID = 0;
-            int TPSProductionStatusID = 0;
-            int TPSStorageStatusID = 0;
-            int TPSExpeditionStatusID = 0;
-            int TPSDispatchStatusID = 0;
+            var IsAllocPack = false;
+            var FactoryID = -1;
+            var ProfilProductionStatusID = 0;
+            var ProfilStorageStatusID = 0;
+            var ProfilExpeditionStatusID = 0;
+            var ProfilDispatchStatusID = 0;
+            var TPSProductionStatusID = 0;
+            var TPSStorageStatusID = 0;
+            var TPSExpeditionStatusID = 0;
+            var TPSDispatchStatusID = 0;
             if (Marketing)
             {
-                string SelectCommand = "SELECT MainOrderID, IsSample, FactoryID," +
-                                       " ProfilProductionStatusID, ProfilStorageStatusID, ProfilExpeditionStatusID, ProfilDispatchStatusID, " +
-                                       " TPSProductionStatusID, TPSStorageStatusID, TPSExpeditionStatusID, TPSDispatchStatusID FROM MainOrders WHERE MainOrderID = " +
-                                       MainOrderID;
+                var SelectCommand = "SELECT MainOrderID, IsSample, FactoryID," +
+                                    " ProfilProductionStatusID, ProfilStorageStatusID, ProfilExpeditionStatusID, ProfilDispatchStatusID, " +
+                                    " TPSProductionStatusID, TPSStorageStatusID, TPSExpeditionStatusID, TPSDispatchStatusID FROM MainOrders WHERE MainOrderID = " +
+                                    MainOrderID;
                 if (IsTray)
                     SelectCommand = "SELECT MainOrderID, IsSample, FactoryID," +
                                     " ProfilProductionStatusID, ProfilStorageStatusID, ProfilExpeditionStatusID, ProfilDispatchStatusID, " +
                                     " TPSProductionStatusID, TPSStorageStatusID, TPSExpeditionStatusID, TPSDispatchStatusID FROM MainOrders WHERE MainOrderID IN" +
                                     " (SELECT DISTINCT MainOrderID FROM Packages WHERE TrayID = " + MainOrderID + ")";
-                PackageStatues PS = new PackageStatues();
-                using (SqlDataAdapter DA =
+                var PS = new PackageStatues();
+                using (var DA =
                     new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
                 {
-                    using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                    using (var CB = new SqlCommandBuilder(DA))
                     {
-                        using (DataTable DT = new DataTable())
+                        using (var DT = new DataTable())
                         {
                             if (DA.Fill(DT) > 0)
                             {
-                                for (int i = 0; i < DT.Rows.Count; i++)
+                                for (var i = 0; i < DT.Rows.Count; i++)
                                 {
-                                    bool IsSample = Convert.ToBoolean(DT.Rows[i]["IsSample"]);
+                                    var IsSample = Convert.ToBoolean(DT.Rows[i]["IsSample"]);
                                     FactoryID = Convert.ToInt32(DT.Rows[i]["FactoryID"]);
                                     ProfilProductionStatusID = Convert.ToInt32(DT.Rows[i]["ProfilProductionStatusID"]);
                                     ProfilStorageStatusID = Convert.ToInt32(DT.Rows[i]["ProfilStorageStatusID"]);
@@ -3909,18 +3938,18 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
                                     " TPSProductionStatusID, TPSStorageStatusID, TPSExpeditionStatusID, TPSDispatchStatusID FROM NewMainOrders WHERE MainOrderID IN" +
                                     " (SELECT DISTINCT MainOrderID FROM Packages WHERE TrayID = " + MainOrderID + ")";
                 PS = new PackageStatues();
-                using (SqlDataAdapter DA =
+                using (var DA =
                     new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
                 {
-                    using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                    using (var CB = new SqlCommandBuilder(DA))
                     {
-                        using (DataTable DT = new DataTable())
+                        using (var DT = new DataTable())
                         {
                             if (DA.Fill(DT) > 0)
                             {
-                                for (int i = 0; i < DT.Rows.Count; i++)
+                                for (var i = 0; i < DT.Rows.Count; i++)
                                 {
-                                    bool IsSample = Convert.ToBoolean(DT.Rows[i]["IsSample"]);
+                                    var IsSample = Convert.ToBoolean(DT.Rows[i]["IsSample"]);
                                     FactoryID = Convert.ToInt32(DT.Rows[i]["FactoryID"]);
                                     ProfilProductionStatusID = Convert.ToInt32(DT.Rows[i]["ProfilProductionStatusID"]);
                                     ProfilStorageStatusID = Convert.ToInt32(DT.Rows[i]["ProfilStorageStatusID"]);
@@ -4011,28 +4040,28 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
             }
             else
             {
-                string SelectCommand = "SELECT MainOrderID, IsSample, FactoryID," +
-                                       " ProfilProductionStatusID, ProfilStorageStatusID, ProfilExpeditionStatusID, ProfilDispatchStatusID, " +
-                                       " TPSProductionStatusID, TPSStorageStatusID, TPSExpeditionStatusID, TPSDispatchStatusID FROM MainOrders WHERE MainOrderID = " +
-                                       MainOrderID;
+                var SelectCommand = "SELECT MainOrderID, IsSample, FactoryID," +
+                                    " ProfilProductionStatusID, ProfilStorageStatusID, ProfilExpeditionStatusID, ProfilDispatchStatusID, " +
+                                    " TPSProductionStatusID, TPSStorageStatusID, TPSExpeditionStatusID, TPSDispatchStatusID FROM MainOrders WHERE MainOrderID = " +
+                                    MainOrderID;
                 if (IsTray)
                     SelectCommand = "SELECT MainOrderID, IsSample, FactoryID," +
                                     " ProfilProductionStatusID, ProfilStorageStatusID, ProfilExpeditionStatusID, ProfilDispatchStatusID, " +
                                     " TPSProductionStatusID, TPSStorageStatusID, TPSExpeditionStatusID, TPSDispatchStatusID FROM MainOrders WHERE MainOrderID IN" +
                                     " (SELECT DISTINCT MainOrderID FROM Packages WHERE TrayID = " + MainOrderID + ")";
-                PackageStatues PS = new PackageStatues();
-                using (SqlDataAdapter DA =
+                var PS = new PackageStatues();
+                using (var DA =
                     new SqlDataAdapter(SelectCommand, ConnectionStrings.ZOVOrdersConnectionString))
                 {
-                    using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                    using (var CB = new SqlCommandBuilder(DA))
                     {
-                        using (DataTable DT = new DataTable())
+                        using (var DT = new DataTable())
                         {
                             if (DA.Fill(DT) > 0)
                             {
-                                for (int i = 0; i < DT.Rows.Count; i++)
+                                for (var i = 0; i < DT.Rows.Count; i++)
                                 {
-                                    bool IsSample = Convert.ToBoolean(DT.Rows[i]["IsSample"]);
+                                    var IsSample = Convert.ToBoolean(DT.Rows[i]["IsSample"]);
                                     FactoryID = Convert.ToInt32(DT.Rows[i]["FactoryID"]);
                                     ProfilProductionStatusID = Convert.ToInt32(DT.Rows[i]["ProfilProductionStatusID"]);
                                     ProfilStorageStatusID = Convert.ToInt32(DT.Rows[i]["ProfilStorageStatusID"]);
@@ -4664,37 +4693,37 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         static public void SetMainOrderDispatch(int MainOrderID)
         {
-            int FactoryID = -1;
-            int ProfilProductionStatusID = 0;
-            int ProfilStorageStatusID = 0;
-            int ProfilExpeditionStatusID = 0;
-            int ProfilDispatchStatusID = 0;
-            int TPSProductionStatusID = 0;
-            int TPSStorageStatusID = 0;
-            int TPSExpeditionStatusID = 0;
-            int TPSDispatchStatusID = 0;
-            int ProfilPackAllocStatusID = 0;
-            int TPSPackAllocStatusID = 0;
-            string SelectCommand =
+            var FactoryID = -1;
+            var ProfilProductionStatusID = 0;
+            var ProfilStorageStatusID = 0;
+            var ProfilExpeditionStatusID = 0;
+            var ProfilDispatchStatusID = 0;
+            var TPSProductionStatusID = 0;
+            var TPSStorageStatusID = 0;
+            var TPSExpeditionStatusID = 0;
+            var TPSDispatchStatusID = 0;
+            var ProfilPackAllocStatusID = 0;
+            var TPSPackAllocStatusID = 0;
+            var SelectCommand =
                 "SELECT MainOrderID, IsSample, FactoryID, ProfilPackAllocStatusID, TPSPackAllocStatusID," +
                 " ProfilProductionStatusID, ProfilStorageStatusID, ProfilExpeditionStatusID, ProfilDispatchStatusID, " +
                 " TPSProductionStatusID, TPSStorageStatusID, TPSExpeditionStatusID, TPSDispatchStatusID FROM MainOrders WHERE MainOrderID = " +
                 MainOrderID;
 
-            DateTime DispDate = Security.GetCurrentDate();
+            var DispDate = Security.GetCurrentDate();
             //PackageStatues PS = new PackageStatues();
-            using (SqlDataAdapter DA =
+            using (var DA =
                 new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         if (DA.Fill(DT) > 0)
                         {
-                            for (int i = 0; i < DT.Rows.Count; i++)
+                            for (var i = 0; i < DT.Rows.Count; i++)
                             {
-                                bool IsSample = Convert.ToBoolean(DT.Rows[i]["IsSample"]);
+                                var IsSample = Convert.ToBoolean(DT.Rows[i]["IsSample"]);
                                 FactoryID = Convert.ToInt32(DT.Rows[i]["FactoryID"]);
 
                                 if (IsSample)
@@ -4786,18 +4815,18 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
                             MainOrderID;
 
             //PS = new PackageStatues();
-            using (SqlDataAdapter DA =
+            using (var DA =
                 new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         if (DA.Fill(DT) > 0)
                         {
-                            for (int i = 0; i < DT.Rows.Count; i++)
+                            for (var i = 0; i < DT.Rows.Count; i++)
                             {
-                                bool IsSample = Convert.ToBoolean(DT.Rows[i]["IsSample"]);
+                                var IsSample = Convert.ToBoolean(DT.Rows[i]["IsSample"]);
                                 FactoryID = Convert.ToInt32(DT.Rows[i]["FactoryID"]);
                                 if (IsSample)
                                 {
@@ -4869,17 +4898,17 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         static public void SetNewMegaOrderStatus(int MegaOrderID)
         {
-            int MegaOrderStatusID = -1;
-            int PS = -1;
-            int TS = -1;
+            var MegaOrderStatusID = -1;
+            var PS = -1;
+            var TS = -1;
 
-            using (SqlDataAdapter DA = new SqlDataAdapter(
+            using (var DA = new SqlDataAdapter(
                 "SELECT MainOrderID, ProfilProductionStatusID, ProfilStorageStatusID, ProfilExpeditionStatusID, ProfilDispatchStatusID," +
                 " TPSProductionStatusID, TPSStorageStatusID, TPSExpeditionStatusID, TPSDispatchStatusID" +
                 " FROM NewMainOrders WHERE MegaOrderID = " + MegaOrderID,
                 ConnectionStrings.MarketingOrdersConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
 
                     DA.Fill(DT);
@@ -4887,20 +4916,20 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
                     //////////////////////////////////////////////////////////////////////////////////////////////////////////////
                     //1) Определение статуса каждого подзаказа отдельно для профиля и тпс
 
-                    int[] PMOST = new int[DT.Rows.Count];
-                    int[] TMOST = new int[DT.Rows.Count];
+                    var PMOST = new int[DT.Rows.Count];
+                    var TMOST = new int[DT.Rows.Count];
 
-                    for (int i = 0; i < DT.Rows.Count; i++)
+                    for (var i = 0; i < DT.Rows.Count; i++)
                     {
-                        int ProfilProductionStatusID = Convert.ToInt32(DT.Rows[i]["ProfilProductionStatusID"]);
-                        int ProfilStorageStatusID = Convert.ToInt32(DT.Rows[i]["ProfilStorageStatusID"]);
-                        int ProfilExpeditionStatusID = Convert.ToInt32(DT.Rows[i]["ProfilExpeditionStatusID"]);
-                        int ProfilDispatchStatusID = Convert.ToInt32(DT.Rows[i]["ProfilDispatchStatusID"]);
+                        var ProfilProductionStatusID = Convert.ToInt32(DT.Rows[i]["ProfilProductionStatusID"]);
+                        var ProfilStorageStatusID = Convert.ToInt32(DT.Rows[i]["ProfilStorageStatusID"]);
+                        var ProfilExpeditionStatusID = Convert.ToInt32(DT.Rows[i]["ProfilExpeditionStatusID"]);
+                        var ProfilDispatchStatusID = Convert.ToInt32(DT.Rows[i]["ProfilDispatchStatusID"]);
 
-                        int TPSProductionStatusID = Convert.ToInt32(DT.Rows[i]["TPSProductionStatusID"]);
-                        int TPSStorageStatusID = Convert.ToInt32(DT.Rows[i]["TPSStorageStatusID"]);
-                        int TPSExpeditionStatusID = Convert.ToInt32(DT.Rows[i]["TPSExpeditionStatusID"]);
-                        int TPSDispatchStatusID = Convert.ToInt32(DT.Rows[i]["TPSDispatchStatusID"]);
+                        var TPSProductionStatusID = Convert.ToInt32(DT.Rows[i]["TPSProductionStatusID"]);
+                        var TPSStorageStatusID = Convert.ToInt32(DT.Rows[i]["TPSStorageStatusID"]);
+                        var TPSExpeditionStatusID = Convert.ToInt32(DT.Rows[i]["TPSExpeditionStatusID"]);
+                        var TPSDispatchStatusID = Convert.ToInt32(DT.Rows[i]["TPSDispatchStatusID"]);
 
                         //0	нет производства
                         //1	не был в производстве
@@ -5024,17 +5053,17 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
                     /////////////////////////////////////////////////////////////////////////////////////////////////////////
                     //2) Определение статуса заказа по фирмам
 
-                    int No = 0;
-                    int NotProd = 0;
-                    int Prod = 0;
-                    int OnProd = 0;
-                    int Stor = 0;
-                    int Exp = 0;
-                    int Disp = 0;
-                    int ALL = PMOST.Count();
+                    var No = 0;
+                    var NotProd = 0;
+                    var Prod = 0;
+                    var OnProd = 0;
+                    var Stor = 0;
+                    var Exp = 0;
+                    var Disp = 0;
+                    var ALL = PMOST.Count();
 
                     //ProfilStatus
-                    for (int i = 0; i < PMOST.Count(); i++)
+                    for (var i = 0; i < PMOST.Count(); i++)
                     {
                         if (PMOST[i] == 0)
                             No++;
@@ -5090,7 +5119,7 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
                     OnProd = 0;
 
                     //TPSStatus
-                    for (int i = 0; i < TMOST.Count(); i++)
+                    for (var i = 0; i < TMOST.Count(); i++)
                     {
                         if (TMOST[i] == 0)
                             No++;
@@ -5194,14 +5223,14 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
             if (MegaOrderStatusID == -1)
                 MegaOrderStatusID = 0;
 
-            using (SqlDataAdapter DA = new SqlDataAdapter(
+            using (var DA = new SqlDataAdapter(
                 "SELECT MegaOrderID, ProfilOrderStatusID, TPSOrderStatusID, OrderStatusID" +
                 " FROM NewMegaOrders WHERE MegaOrderID = " + MegaOrderID,
                 ConnectionStrings.MarketingOrdersConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -5220,17 +5249,17 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         static public void SetMegaOrderStatus(int MegaOrderID)
         {
-            int MegaOrderStatusID = -1;
-            int PS = -1;
-            int TS = -1;
+            var MegaOrderStatusID = -1;
+            var PS = -1;
+            var TS = -1;
 
-            using (SqlDataAdapter DA = new SqlDataAdapter(
+            using (var DA = new SqlDataAdapter(
                 "SELECT MainOrderID, ProfilProductionStatusID, ProfilStorageStatusID, ProfilExpeditionStatusID, ProfilDispatchStatusID," +
                 " TPSProductionStatusID, TPSStorageStatusID, TPSExpeditionStatusID, TPSDispatchStatusID" +
                 " FROM MainOrders WHERE MegaOrderID = " + MegaOrderID,
                 ConnectionStrings.MarketingOrdersConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
 
                     DA.Fill(DT);
@@ -5238,20 +5267,20 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
                     //////////////////////////////////////////////////////////////////////////////////////////////////////////////
                     //1) Определение статуса каждого подзаказа отдельно для профиля и тпс
 
-                    int[] PMOST = new int[DT.Rows.Count];
-                    int[] TMOST = new int[DT.Rows.Count];
+                    var PMOST = new int[DT.Rows.Count];
+                    var TMOST = new int[DT.Rows.Count];
 
-                    for (int i = 0; i < DT.Rows.Count; i++)
+                    for (var i = 0; i < DT.Rows.Count; i++)
                     {
-                        int ProfilProductionStatusID = Convert.ToInt32(DT.Rows[i]["ProfilProductionStatusID"]);
-                        int ProfilStorageStatusID = Convert.ToInt32(DT.Rows[i]["ProfilStorageStatusID"]);
-                        int ProfilExpeditionStatusID = Convert.ToInt32(DT.Rows[i]["ProfilExpeditionStatusID"]);
-                        int ProfilDispatchStatusID = Convert.ToInt32(DT.Rows[i]["ProfilDispatchStatusID"]);
+                        var ProfilProductionStatusID = Convert.ToInt32(DT.Rows[i]["ProfilProductionStatusID"]);
+                        var ProfilStorageStatusID = Convert.ToInt32(DT.Rows[i]["ProfilStorageStatusID"]);
+                        var ProfilExpeditionStatusID = Convert.ToInt32(DT.Rows[i]["ProfilExpeditionStatusID"]);
+                        var ProfilDispatchStatusID = Convert.ToInt32(DT.Rows[i]["ProfilDispatchStatusID"]);
 
-                        int TPSProductionStatusID = Convert.ToInt32(DT.Rows[i]["TPSProductionStatusID"]);
-                        int TPSStorageStatusID = Convert.ToInt32(DT.Rows[i]["TPSStorageStatusID"]);
-                        int TPSExpeditionStatusID = Convert.ToInt32(DT.Rows[i]["TPSExpeditionStatusID"]);
-                        int TPSDispatchStatusID = Convert.ToInt32(DT.Rows[i]["TPSDispatchStatusID"]);
+                        var TPSProductionStatusID = Convert.ToInt32(DT.Rows[i]["TPSProductionStatusID"]);
+                        var TPSStorageStatusID = Convert.ToInt32(DT.Rows[i]["TPSStorageStatusID"]);
+                        var TPSExpeditionStatusID = Convert.ToInt32(DT.Rows[i]["TPSExpeditionStatusID"]);
+                        var TPSDispatchStatusID = Convert.ToInt32(DT.Rows[i]["TPSDispatchStatusID"]);
 
                         //0	нет производства
                         //1	не был в производстве
@@ -5375,17 +5404,17 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
                     /////////////////////////////////////////////////////////////////////////////////////////////////////////
                     //2) Определение статуса заказа по фирмам
 
-                    int No = 0;
-                    int NotProd = 0;
-                    int Prod = 0;
-                    int OnProd = 0;
-                    int Stor = 0;
-                    int Exp = 0;
-                    int Disp = 0;
-                    int ALL = PMOST.Count();
+                    var No = 0;
+                    var NotProd = 0;
+                    var Prod = 0;
+                    var OnProd = 0;
+                    var Stor = 0;
+                    var Exp = 0;
+                    var Disp = 0;
+                    var ALL = PMOST.Count();
 
                     //ProfilStatus
-                    for (int i = 0; i < PMOST.Count(); i++)
+                    for (var i = 0; i < PMOST.Count(); i++)
                     {
                         if (PMOST[i] == 0)
                             No++;
@@ -5441,7 +5470,7 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
                     OnProd = 0;
 
                     //TPSStatus
-                    for (int i = 0; i < TMOST.Count(); i++)
+                    for (var i = 0; i < TMOST.Count(); i++)
                     {
                         if (TMOST[i] == 0)
                             No++;
@@ -5490,13 +5519,13 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter(
+            using (var DA = new SqlDataAdapter(
                 "SELECT MainOrderID, ProfilProductionStatusID, ProfilStorageStatusID, ProfilExpeditionStatusID, ProfilDispatchStatusID," +
                 " TPSProductionStatusID, TPSStorageStatusID, TPSExpeditionStatusID, TPSDispatchStatusID" +
                 " FROM NewMainOrders WHERE MegaOrderID = " + MegaOrderID,
                 ConnectionStrings.MarketingOrdersConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
 
                     DA.Fill(DT);
@@ -5504,20 +5533,20 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
                     //////////////////////////////////////////////////////////////////////////////////////////////////////////////
                     //1) Определение статуса каждого подзаказа отдельно для профиля и тпс
 
-                    int[] PMOST = new int[DT.Rows.Count];
-                    int[] TMOST = new int[DT.Rows.Count];
+                    var PMOST = new int[DT.Rows.Count];
+                    var TMOST = new int[DT.Rows.Count];
 
-                    for (int i = 0; i < DT.Rows.Count; i++)
+                    for (var i = 0; i < DT.Rows.Count; i++)
                     {
-                        int ProfilProductionStatusID = Convert.ToInt32(DT.Rows[i]["ProfilProductionStatusID"]);
-                        int ProfilStorageStatusID = Convert.ToInt32(DT.Rows[i]["ProfilStorageStatusID"]);
-                        int ProfilExpeditionStatusID = Convert.ToInt32(DT.Rows[i]["ProfilExpeditionStatusID"]);
-                        int ProfilDispatchStatusID = Convert.ToInt32(DT.Rows[i]["ProfilDispatchStatusID"]);
+                        var ProfilProductionStatusID = Convert.ToInt32(DT.Rows[i]["ProfilProductionStatusID"]);
+                        var ProfilStorageStatusID = Convert.ToInt32(DT.Rows[i]["ProfilStorageStatusID"]);
+                        var ProfilExpeditionStatusID = Convert.ToInt32(DT.Rows[i]["ProfilExpeditionStatusID"]);
+                        var ProfilDispatchStatusID = Convert.ToInt32(DT.Rows[i]["ProfilDispatchStatusID"]);
 
-                        int TPSProductionStatusID = Convert.ToInt32(DT.Rows[i]["TPSProductionStatusID"]);
-                        int TPSStorageStatusID = Convert.ToInt32(DT.Rows[i]["TPSStorageStatusID"]);
-                        int TPSExpeditionStatusID = Convert.ToInt32(DT.Rows[i]["TPSExpeditionStatusID"]);
-                        int TPSDispatchStatusID = Convert.ToInt32(DT.Rows[i]["TPSDispatchStatusID"]);
+                        var TPSProductionStatusID = Convert.ToInt32(DT.Rows[i]["TPSProductionStatusID"]);
+                        var TPSStorageStatusID = Convert.ToInt32(DT.Rows[i]["TPSStorageStatusID"]);
+                        var TPSExpeditionStatusID = Convert.ToInt32(DT.Rows[i]["TPSExpeditionStatusID"]);
+                        var TPSDispatchStatusID = Convert.ToInt32(DT.Rows[i]["TPSDispatchStatusID"]);
 
                         //0	нет производства
                         //1	не был в производстве
@@ -5641,17 +5670,17 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
                     /////////////////////////////////////////////////////////////////////////////////////////////////////////
                     //2) Определение статуса заказа по фирмам
 
-                    int No = 0;
-                    int NotProd = 0;
-                    int Prod = 0;
-                    int OnProd = 0;
-                    int Stor = 0;
-                    int Exp = 0;
-                    int Disp = 0;
-                    int ALL = PMOST.Count();
+                    var No = 0;
+                    var NotProd = 0;
+                    var Prod = 0;
+                    var OnProd = 0;
+                    var Stor = 0;
+                    var Exp = 0;
+                    var Disp = 0;
+                    var ALL = PMOST.Count();
 
                     //ProfilStatus
-                    for (int i = 0; i < PMOST.Count(); i++)
+                    for (var i = 0; i < PMOST.Count(); i++)
                     {
                         if (PMOST[i] == 0)
                             No++;
@@ -5707,7 +5736,7 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
                     OnProd = 0;
 
                     //TPSStatus
-                    for (int i = 0; i < TMOST.Count(); i++)
+                    for (var i = 0; i < TMOST.Count(); i++)
                     {
                         if (TMOST[i] == 0)
                             No++;
@@ -5811,14 +5840,14 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
             if (MegaOrderStatusID == -1)
                 MegaOrderStatusID = 0;
 
-            using (SqlDataAdapter DA = new SqlDataAdapter(
+            using (var DA = new SqlDataAdapter(
                 "SELECT MegaOrderID, ProfilOrderStatusID, TPSOrderStatusID, OrderStatusID" +
                 " FROM MegaOrders WHERE MegaOrderID = " + MegaOrderID,
                 ConnectionStrings.MarketingOrdersConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -5834,14 +5863,14 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter(
+            using (var DA = new SqlDataAdapter(
                 "SELECT MegaOrderID, ProfilOrderStatusID, TPSOrderStatusID, OrderStatusID" +
                 " FROM NewMegaOrders WHERE MegaOrderID = " + MegaOrderID,
                 ConnectionStrings.MarketingOrdersConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -5860,38 +5889,38 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         static public void CheckAllocPack(bool Marketing, int MegaOrderID)
         {
-            string OrdersConnectionString = ConnectionStrings.MarketingOrdersConnectionString;
+            var OrdersConnectionString = ConnectionStrings.MarketingOrdersConnectionString;
 
             if (!Marketing)
                 OrdersConnectionString = ConnectionStrings.ZOVOrdersConnectionString;
 
-            int MainOrderID = 0;
+            var MainOrderID = 0;
 
-            int FrontsOrdersCount = 0;
-            int FrontsPackCount = 0;
-            int DecorOrdersCount = 0;
-            int DecorPackCount = 0;
+            var FrontsOrdersCount = 0;
+            var FrontsPackCount = 0;
+            var DecorOrdersCount = 0;
+            var DecorPackCount = 0;
 
-            int MainProfilPackCount = 0;
-            int MainTPSPackCount = 0;
-            int MainFrontsPackageAllocStatus = 0;
-            int MainDecorPackageAllocStatus = 0;
-            int MainProfilPackAllocStatusID = 0;
-            int MainTPSPackAllocStatusID = 0;
+            var MainProfilPackCount = 0;
+            var MainTPSPackCount = 0;
+            var MainFrontsPackageAllocStatus = 0;
+            var MainDecorPackageAllocStatus = 0;
+            var MainProfilPackAllocStatusID = 0;
+            var MainTPSPackAllocStatusID = 0;
 
-            int MegaProfilPackCount = 0;
-            int MegaTPSPackCount = 0;
-            int MegaProfilPackAllocStatusID = 1;
-            int MegaTPSPackAllocStatusID = 1;
+            var MegaProfilPackCount = 0;
+            var MegaTPSPackCount = 0;
+            var MegaProfilPackAllocStatusID = 1;
+            var MegaTPSPackAllocStatusID = 1;
 
-            DataTable MegaOrdersDT = new DataTable();
-            DataTable MainOrdersDT = new DataTable();
-            DataTable FrontsOrdersDT = new DataTable();
-            DataTable FrontsPackagesDT = new DataTable();
-            DataTable DecorOrdersDT = new DataTable();
-            DataTable DecorPackagesDT = new DataTable();
+            var MegaOrdersDT = new DataTable();
+            var MainOrdersDT = new DataTable();
+            var FrontsOrdersDT = new DataTable();
+            var FrontsPackagesDT = new DataTable();
+            var DecorOrdersDT = new DataTable();
+            var DecorPackagesDT = new DataTable();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter(
+            using (var DA = new SqlDataAdapter(
                 "SELECT MainOrderID, FactoryID, Count FROM FrontsOrders WHERE MainOrderID IN " +
                 " (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = " + MegaOrderID + ")",
                 OrdersConnectionString))
@@ -5899,7 +5928,7 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
                 DA.Fill(FrontsOrdersDT);
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter(
+            using (var DA = new SqlDataAdapter(
                 "SELECT MainOrderID, FactoryID, Count FROM DecorOrders WHERE MainOrderID IN " +
                 " (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = " + MegaOrderID + ")",
                 OrdersConnectionString))
@@ -5907,7 +5936,7 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
                 DA.Fill(DecorOrdersDT);
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter(
+            using (var DA = new SqlDataAdapter(
                 "SELECT PackageDetails.PackageID, Packages.MainOrderID, Packages.FactoryID, Count FROM PackageDetails" +
                 " INNER JOIN Packages ON PackageDetails.PackageID = Packages.PackageID" +
                 " WHERE PackageDetails.PackageID IN" +
@@ -5919,7 +5948,7 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
                 DA.Fill(FrontsPackagesDT);
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter(
+            using (var DA = new SqlDataAdapter(
                 "SELECT PackageDetails.PackageID, Packages.MainOrderID, Packages.FactoryID, Count FROM PackageDetails" +
                 " INNER JOIN Packages ON PackageDetails.PackageID = Packages.PackageID" +
                 " WHERE PackageDetails.PackageID IN" +
@@ -5933,17 +5962,17 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
             #region MainOrders
 
-            using (SqlDataAdapter DA = new SqlDataAdapter(
+            using (var DA = new SqlDataAdapter(
                 "SELECT MainOrderID, FactoryID, ProfilPackAllocStatusID, TPSPackAllocStatusID," +
                 " ProfilPackCount, TPSPackCount FROM MainOrders" +
                 " WHERE MegaOrderID = " + MegaOrderID,
                 OrdersConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
                     if (DA.Fill(MainOrdersDT) > 0)
                     {
-                        for (int i = 0; i < MainOrdersDT.Rows.Count; i++)
+                        for (var i = 0; i < MainOrdersDT.Rows.Count; i++)
                         {
                             MainOrderID = Convert.ToInt32(MainOrdersDT.Rows[i]["MainOrderID"]);
                             FrontsOrdersCount = 0;
@@ -5961,17 +5990,17 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
                             if (Convert.ToInt32(MainOrdersDT.Rows[i]["FactoryID"]) == 1)
                             {
-                                DataRow[] ProfilFProws =
+                                var ProfilFProws =
                                     FrontsPackagesDT.Select("FactoryID = 1 AND MainOrderID = " + MainOrderID);
-                                foreach (DataRow row in ProfilFProws)
+                                foreach (var row in ProfilFProws)
                                 {
                                     if (row["Count"] != DBNull.Value)
                                         FrontsPackCount += Convert.ToInt32(row["Count"]);
                                 }
 
-                                DataRow[] ProfilFOrows =
+                                var ProfilFOrows =
                                     FrontsOrdersDT.Select("FactoryID = 1 AND MainOrderID = " + MainOrderID);
-                                foreach (DataRow row in ProfilFProws)
+                                foreach (var row in ProfilFProws)
                                 {
                                     if (row["Count"] != DBNull.Value)
                                         FrontsOrdersCount += Convert.ToInt32(row["Count"]);
@@ -5987,17 +6016,17 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
                                         MainFrontsPackageAllocStatus = 1;
                                 }
 
-                                DataRow[] ProfilDProws =
+                                var ProfilDProws =
                                     DecorPackagesDT.Select("FactoryID = 1 AND MainOrderID = " + MainOrderID);
-                                foreach (DataRow row in ProfilDProws)
+                                foreach (var row in ProfilDProws)
                                 {
                                     if (row["Count"] != DBNull.Value)
                                         DecorPackCount += Convert.ToInt32(row["Count"]);
                                 }
 
-                                DataRow[] ProfilDOrows =
+                                var ProfilDOrows =
                                     DecorOrdersDT.Select("FactoryID = 1 AND MainOrderID = " + MainOrderID);
-                                foreach (DataRow row in ProfilDOrows)
+                                foreach (var row in ProfilDOrows)
                                 {
                                     if (row["Count"] != DBNull.Value)
                                         DecorOrdersCount += Convert.ToInt32(row["Count"]);
@@ -6039,17 +6068,17 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
                             if (Convert.ToInt32(MainOrdersDT.Rows[i]["FactoryID"]) == 2)
                             {
-                                DataRow[] TPSFProws =
+                                var TPSFProws =
                                     FrontsPackagesDT.Select("FactoryID = 2 AND MainOrderID = " + MainOrderID);
-                                foreach (DataRow row in TPSFProws)
+                                foreach (var row in TPSFProws)
                                 {
                                     if (row["Count"] != DBNull.Value)
                                         FrontsPackCount += Convert.ToInt32(row["Count"]);
                                 }
 
-                                DataRow[] TPSFOrows =
+                                var TPSFOrows =
                                     FrontsOrdersDT.Select("FactoryID = 2 AND MainOrderID = " + MainOrderID);
-                                foreach (DataRow row in TPSFProws)
+                                foreach (var row in TPSFProws)
                                 {
                                     if (row["Count"] != DBNull.Value)
                                         FrontsOrdersCount += Convert.ToInt32(row["Count"]);
@@ -6065,17 +6094,17 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
                                         MainFrontsPackageAllocStatus = 1;
                                 }
 
-                                DataRow[] TPSDProws =
+                                var TPSDProws =
                                     DecorPackagesDT.Select("FactoryID = 2 AND MainOrderID = " + MainOrderID);
-                                foreach (DataRow row in TPSDProws)
+                                foreach (var row in TPSDProws)
                                 {
                                     if (row["Count"] != DBNull.Value)
                                         DecorPackCount += Convert.ToInt32(row["Count"]);
                                 }
 
-                                DataRow[] TPSDOrows =
+                                var TPSDOrows =
                                     DecorOrdersDT.Select("FactoryID = 2 AND MainOrderID = " + MainOrderID);
-                                foreach (DataRow row in TPSDProws)
+                                foreach (var row in TPSDProws)
                                 {
                                     if (row["Count"] != DBNull.Value)
                                         DecorOrdersCount += Convert.ToInt32(row["Count"]);
@@ -6118,17 +6147,17 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
                             if (Convert.ToInt32(MainOrdersDT.Rows[i]["FactoryID"]) == 0)
                             {
                                 // ПРОФИЛЬ
-                                DataRow[] ProfilFProws =
+                                var ProfilFProws =
                                     FrontsPackagesDT.Select("FactoryID = 1 AND MainOrderID = " + MainOrderID);
-                                foreach (DataRow row in ProfilFProws)
+                                foreach (var row in ProfilFProws)
                                 {
                                     if (row["Count"] != DBNull.Value)
                                         FrontsPackCount += Convert.ToInt32(row["Count"]);
                                 }
 
-                                DataRow[] ProfilFOrows =
+                                var ProfilFOrows =
                                     FrontsOrdersDT.Select("FactoryID = 1 AND MainOrderID = " + MainOrderID);
-                                foreach (DataRow row in ProfilFProws)
+                                foreach (var row in ProfilFProws)
                                 {
                                     if (row["Count"] != DBNull.Value)
                                         FrontsOrdersCount += Convert.ToInt32(row["Count"]);
@@ -6144,17 +6173,17 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
                                         MainFrontsPackageAllocStatus = 1;
                                 }
 
-                                DataRow[] ProfilDProws =
+                                var ProfilDProws =
                                     DecorPackagesDT.Select("FactoryID = 1 AND MainOrderID = " + MainOrderID);
-                                foreach (DataRow row in ProfilDProws)
+                                foreach (var row in ProfilDProws)
                                 {
                                     if (row["Count"] != DBNull.Value)
                                         DecorPackCount += Convert.ToInt32(row["Count"]);
                                 }
 
-                                DataRow[] ProfilDOrows =
+                                var ProfilDOrows =
                                     DecorOrdersDT.Select("FactoryID = 1 AND MainOrderID = " + MainOrderID);
-                                foreach (DataRow row in ProfilDOrows)
+                                foreach (var row in ProfilDOrows)
                                 {
                                     if (row["Count"] != DBNull.Value)
                                         DecorOrdersCount += Convert.ToInt32(row["Count"]);
@@ -6190,17 +6219,17 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
                                 MainOrdersDT.Rows[i]["ProfilPackAllocStatusID"] = MainProfilPackAllocStatusID;
 
                                 // ТПС
-                                DataRow[] TPSFProws =
+                                var TPSFProws =
                                     FrontsPackagesDT.Select("FactoryID = 2 AND MainOrderID = " + MainOrderID);
-                                foreach (DataRow row in TPSFProws)
+                                foreach (var row in TPSFProws)
                                 {
                                     if (row["Count"] != DBNull.Value)
                                         FrontsPackCount += Convert.ToInt32(row["Count"]);
                                 }
 
-                                DataRow[] TPSFOrows =
+                                var TPSFOrows =
                                     FrontsOrdersDT.Select("FactoryID = 2 AND MainOrderID = " + MainOrderID);
-                                foreach (DataRow row in TPSFProws)
+                                foreach (var row in TPSFProws)
                                 {
                                     if (row["Count"] != DBNull.Value)
                                         FrontsOrdersCount += Convert.ToInt32(row["Count"]);
@@ -6216,17 +6245,17 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
                                         MainFrontsPackageAllocStatus = 1;
                                 }
 
-                                DataRow[] TPSDProws =
+                                var TPSDProws =
                                     DecorPackagesDT.Select("FactoryID = 2 AND MainOrderID = " + MainOrderID);
-                                foreach (DataRow row in TPSDProws)
+                                foreach (var row in TPSDProws)
                                 {
                                     if (row["Count"] != DBNull.Value)
                                         DecorPackCount += Convert.ToInt32(row["Count"]);
                                 }
 
-                                DataRow[] TPSDOrows =
+                                var TPSDOrows =
                                     DecorOrdersDT.Select("FactoryID = 2 AND MainOrderID = " + MainOrderID);
-                                foreach (DataRow row in TPSDProws)
+                                foreach (var row in TPSDProws)
                                 {
                                     if (row["Count"] != DBNull.Value)
                                         DecorOrdersCount += Convert.ToInt32(row["Count"]);
@@ -6277,24 +6306,24 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
             #region MegaOrders
 
-            using (SqlDataAdapter DA = new SqlDataAdapter(
+            using (var DA = new SqlDataAdapter(
                 "SELECT MegaOrderID, ProfilPackAllocStatusID, TPSPackAllocStatusID," +
                 " ProfilPackCount, TPSPackCount FROM MegaOrders WHERE MegaOrderID = " + MegaOrderID,
                 OrdersConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
                     if (DA.Fill(MegaOrdersDT) > 0)
                     {
-                        int ProfilNotPacked = 0;
-                        int ProfilPartPacked = 0;
-                        int ProfilAllPacked = 0;
-                        int TPSNotPacked = 0;
-                        int TPSPartPacked = 0;
-                        int TPSAllPacked = 0;
+                        var ProfilNotPacked = 0;
+                        var ProfilPartPacked = 0;
+                        var ProfilAllPacked = 0;
+                        var TPSNotPacked = 0;
+                        var TPSPartPacked = 0;
+                        var TPSAllPacked = 0;
 
-                        DataRow[] ProfilRows = MainOrdersDT.Select("FactoryID = 1 OR FactoryID = 0");
-                        foreach (DataRow row in ProfilRows)
+                        var ProfilRows = MainOrdersDT.Select("FactoryID = 1 OR FactoryID = 0");
+                        foreach (var row in ProfilRows)
                         {
                             if (Convert.ToInt32(row["ProfilPackAllocStatusID"]) == 0)
                                 ProfilNotPacked++;
@@ -6304,8 +6333,8 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
                                 ProfilAllPacked++;
                         }
 
-                        DataRow[] TPSRows = MainOrdersDT.Select("FactoryID = 2 OR FactoryID = 0");
-                        foreach (DataRow row in TPSRows)
+                        var TPSRows = MainOrdersDT.Select("FactoryID = 2 OR FactoryID = 0");
+                        foreach (var row in TPSRows)
                         {
                             if (Convert.ToInt32(row["TPSPackAllocStatusID"]) == 0)
                                 TPSNotPacked++;
@@ -6355,17 +6384,17 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
 
         static private void CheckPackagesInMegaOrder(int MegaOrderID)
         {
-            string OrdersConnectionString = ConnectionStrings.MarketingOrdersConnectionString;
-            string selectCommandText = $@"SELECT * FROM PackageDetails WHERE PackageID IN 
+            var OrdersConnectionString = ConnectionStrings.MarketingOrdersConnectionString;
+            var selectCommandText = $@"SELECT * FROM PackageDetails WHERE PackageID IN 
 (SELECT PackageID FROM Packages WHERE ProductType = 0 
 AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = { MegaOrderID })) 
 AND OrderID NOT IN (SELECT FrontsOrdersID FROM FrontsOrders WHERE MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = { MegaOrderID }))";
 
-            using (SqlDataAdapter DA = new SqlDataAdapter(selectCommandText, OrdersConnectionString))
+            using (var DA = new SqlDataAdapter(selectCommandText, OrdersConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         if (DA.Fill(DT) > 0)
                         {
@@ -6383,11 +6412,11 @@ AND OrderID NOT IN (SELECT FrontsOrdersID FROM FrontsOrders WHERE MainOrderID IN
 (SELECT PackageID FROM Packages WHERE ProductType = 1 
 AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = { MegaOrderID })) 
 AND OrderID NOT IN (SELECT DecorOrderID FROM DecorOrders WHERE MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = { MegaOrderID }))";
-            using (SqlDataAdapter DA = new SqlDataAdapter(selectCommandText, OrdersConnectionString))
+            using (var DA = new SqlDataAdapter(selectCommandText, OrdersConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         if (DA.Fill(DT) > 0)
                         {
@@ -6402,14 +6431,14 @@ AND OrderID NOT IN (SELECT DecorOrderID FROM DecorOrders WHERE MainOrderID IN (S
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter($@"SELECT * FROM Packages WHERE PackageID NOT IN 
+            using (var DA = new SqlDataAdapter($@"SELECT * FROM Packages WHERE PackageID NOT IN 
 (SELECT PackageID FROM PackageDetails) 
 AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = { MegaOrderID })",
                 OrdersConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         if (DA.Fill(DT) > 0)
                         {
@@ -6424,24 +6453,24 @@ AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = { Meg
                 }
             }
         }
-        
+
         static private void CheckPackages(bool Marketing, int MainOrderID)
         {
-            string OrdersConnectionString = ConnectionStrings.MarketingOrdersConnectionString;
+            var OrdersConnectionString = ConnectionStrings.MarketingOrdersConnectionString;
 
             if (!Marketing)
                 OrdersConnectionString = ConnectionStrings.ZOVOrdersConnectionString;
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM PackageDetails WHERE PackageID IN" +
-                                                          " (SELECT PackageID FROM Packages WHERE ProductType = 0 AND MainOrderID = " +
-                                                          MainOrderID + ")" +
-                                                          " AND OrderID NOT IN (SELECT FrontsOrdersID FROM FrontsOrders WHERE MainOrderID = " +
-                                                          MainOrderID + ")",
+            using (var DA = new SqlDataAdapter("SELECT * FROM PackageDetails WHERE PackageID IN" +
+                                               " (SELECT PackageID FROM Packages WHERE ProductType = 0 AND MainOrderID = " +
+                                               MainOrderID + ")" +
+                                               " AND OrderID NOT IN (SELECT FrontsOrdersID FROM FrontsOrders WHERE MainOrderID = " +
+                                               MainOrderID + ")",
                 OrdersConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         if (DA.Fill(DT) > 0)
                         {
@@ -6456,16 +6485,16 @@ AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = { Meg
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM PackageDetails WHERE PackageID IN" +
-                                                          " (SELECT PackageID FROM Packages WHERE ProductType = 1 AND MainOrderID = " +
-                                                          MainOrderID + ")" +
-                                                          " AND OrderID NOT IN (SELECT DecorOrderID FROM DecorOrders WHERE MainOrderID = " +
-                                                          MainOrderID + ")",
+            using (var DA = new SqlDataAdapter("SELECT * FROM PackageDetails WHERE PackageID IN" +
+                                               " (SELECT PackageID FROM Packages WHERE ProductType = 1 AND MainOrderID = " +
+                                               MainOrderID + ")" +
+                                               " AND OrderID NOT IN (SELECT DecorOrderID FROM DecorOrders WHERE MainOrderID = " +
+                                               MainOrderID + ")",
                 OrdersConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         if (DA.Fill(DT) > 0)
                         {
@@ -6480,14 +6509,14 @@ AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = { Meg
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Packages WHERE PackageID NOT IN" +
-                                                          " (SELECT PackageID FROM PackageDetails) AND MainOrderID = " +
-                                                          MainOrderID,
+            using (var DA = new SqlDataAdapter("SELECT * FROM Packages WHERE PackageID NOT IN" +
+                                               " (SELECT PackageID FROM PackageDetails) AND MainOrderID = " +
+                                               MainOrderID,
                 OrdersConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         if (DA.Fill(DT) > 0)
                         {
@@ -6505,30 +6534,30 @@ AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = { Meg
 
         static public void SetStatusMarketingForMainOrder(int MegaOrderID, int MainOrderID)
         {
-            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            var sw = new System.Diagnostics.Stopwatch();
             sw.Start();
 
             SetMainOrderStatus(true, MainOrderID, false);
             SetMegaOrderStatus(MegaOrderID);
 
             sw.Stop();
-            double G = sw.Elapsed.TotalMilliseconds;
+            var G = sw.Elapsed.TotalMilliseconds;
         }
 
         static public void SetStatusMarketingForDispatch(ArrayList DispatchIDs)
         {
-            int MegaOrderID = 0;
+            var MegaOrderID = 0;
 
-            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            var sw = new System.Diagnostics.Stopwatch();
             sw.Start();
 
-            ArrayList MegaOrders = GetMegaOrdersInDispatch(DispatchIDs);
+            var MegaOrders = GetMegaOrdersInDispatch(DispatchIDs);
             if (MegaOrders.Count == 0)
                 return;
 
             SetMainOrderStatusForDispatch(true, DispatchIDs);
 
-            for (int i = 0; i < MegaOrders.Count; i++)
+            for (var i = 0; i < MegaOrders.Count; i++)
             {
                 MegaOrderID = Convert.ToInt32(MegaOrders[i]);
 
@@ -6536,34 +6565,34 @@ AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = { Meg
             }
 
             sw.Stop();
-            double G = sw.Elapsed.TotalMilliseconds;
+            var G = sw.Elapsed.TotalMilliseconds;
         }
 
         static public void SetStatusZOVForDispatch(ArrayList DispatchIDs)
         {
-            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            var sw = new System.Diagnostics.Stopwatch();
             sw.Start();
 
             SetMainOrderStatusForDispatch(false, DispatchIDs);
 
             sw.Stop();
-            double G = sw.Elapsed.TotalMilliseconds;
+            var G = sw.Elapsed.TotalMilliseconds;
         }
 
         static public void SetStatusMarketingForTray(int TrayID)
         {
-            int MegaOrderID = 0;
+            var MegaOrderID = 0;
 
-            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            var sw = new System.Diagnostics.Stopwatch();
             sw.Start();
 
-            ArrayList MegaOrders = GetMegaOrdersInTray(TrayID);
+            var MegaOrders = GetMegaOrdersInTray(TrayID);
             if (MegaOrders.Count == 0)
                 return;
 
             SetMainOrderStatus(true, TrayID, true);
 
-            for (int i = 0; i < MegaOrders.Count; i++)
+            for (var i = 0; i < MegaOrders.Count; i++)
             {
                 MegaOrderID = Convert.ToInt32(MegaOrders[i]);
 
@@ -6571,12 +6600,12 @@ AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = { Meg
             }
 
             sw.Stop();
-            double G = sw.Elapsed.TotalMilliseconds;
+            var G = sw.Elapsed.TotalMilliseconds;
         }
 
         static public void SetStatusZOV(int MainOrderID, bool IsTray)
         {
-            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            var sw = new System.Diagnostics.Stopwatch();
             sw.Start();
 
             //Если сканируется поддон на отгрузке
@@ -6597,18 +6626,18 @@ AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = { Meg
 
         static public void DispatchMegaOrder(int MegaOrderID)
         {
-            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            var sw = new System.Diagnostics.Stopwatch();
             sw.Start();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter(
+            using (var DA = new SqlDataAdapter(
                 "SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = " + MegaOrderID,
                 ConnectionStrings.MarketingOrdersConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     if (DA.Fill(DT) > 0)
                     {
-                        for (int i = 0; i < DT.Rows.Count; i++)
+                        for (var i = 0; i < DT.Rows.Count; i++)
                         {
                             SetMainOrderDispatch(Convert.ToInt32(DT.Rows[i]["MainOrderID"]));
                         }
@@ -6618,15 +6647,15 @@ AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = { Meg
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter(
+            using (var DA = new SqlDataAdapter(
                 "SELECT MainOrderID FROM NewMainOrders WHERE MegaOrderID = " + MegaOrderID,
                 ConnectionStrings.MarketingOrdersConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     if (DA.Fill(DT) > 0)
                     {
-                        for (int i = 0; i < DT.Rows.Count; i++)
+                        for (var i = 0; i < DT.Rows.Count; i++)
                         {
                             SetMainOrderDispatch(Convert.ToInt32(DT.Rows[i]["MainOrderID"]));
                         }
@@ -6642,21 +6671,21 @@ AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = { Meg
 
         static public void GGBet(int MegaOrderID)
         {
-            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            var sw = new System.Diagnostics.Stopwatch();
             sw.Start();
 
             CheckPackagesInMegaOrder(MegaOrderID);
-            DataTable mainOrdersDataTable = new DataTable();
+            var mainOrdersDataTable = new DataTable();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter(
+            using (var DA = new SqlDataAdapter(
                 "SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = " + MegaOrderID,
                 ConnectionStrings.MarketingOrdersConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     if (DA.Fill(DT) > 0)
                     {
-                        for (int i = 0; i < DT.Rows.Count; i++)
+                        for (var i = 0; i < DT.Rows.Count; i++)
                         {
                             SetMainOrderStatus(true, Convert.ToInt32(DT.Rows[i]["MainOrderID"]), false);
                         }
@@ -6666,15 +6695,15 @@ AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = { Meg
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter(
+            using (var DA = new SqlDataAdapter(
                 "SELECT MainOrderID FROM NewMainOrders WHERE MegaOrderID = " + MegaOrderID,
                 ConnectionStrings.MarketingOrdersConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     if (DA.Fill(DT) > 0)
                     {
-                        for (int i = 0; i < DT.Rows.Count; i++)
+                        for (var i = 0; i < DT.Rows.Count; i++)
                         {
                             SetMainOrderStatus(true, Convert.ToInt32(DT.Rows[i]["MainOrderID"]), false);
                         }
@@ -6690,8 +6719,8 @@ AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = { Meg
 
         static public void GG(int MegaOrderID)
         {
-            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
-            System.Diagnostics.Stopwatch sw1 = new System.Diagnostics.Stopwatch();
+            var sw = new System.Diagnostics.Stopwatch();
+            var sw1 = new System.Diagnostics.Stopwatch();
 
             double packagesTime = 0;
             double mainOrdersTime = 0;
@@ -6705,15 +6734,15 @@ AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = { Meg
 
             sw.Reset();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter(
+            using (var DA = new SqlDataAdapter(
                 "SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = " + MegaOrderID,
                 ConnectionStrings.MarketingOrdersConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     if (DA.Fill(DT) > 0)
                     {
-                        for (int i = 0; i < DT.Rows.Count; i++)
+                        for (var i = 0; i < DT.Rows.Count; i++)
                         {
                             sw.Start();
                             CheckPackages(true, Convert.ToInt32(DT.Rows[i]["MainOrderID"]));
@@ -6736,15 +6765,15 @@ AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = { Meg
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter(
+            using (var DA = new SqlDataAdapter(
                 "SELECT MainOrderID FROM NewMainOrders WHERE MegaOrderID = " + MegaOrderID,
                 ConnectionStrings.MarketingOrdersConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     if (DA.Fill(DT) > 0)
                     {
-                        for (int i = 0; i < DT.Rows.Count; i++)
+                        for (var i = 0; i < DT.Rows.Count; i++)
                         {
                             CheckPackages(true, Convert.ToInt32(DT.Rows[i]["MainOrderID"]));
                             SetMainOrderStatus(true, Convert.ToInt32(DT.Rows[i]["MainOrderID"]), false);
@@ -6767,8 +6796,8 @@ AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = { Meg
             bool Dispatched,
             int FactoryID)
         {
-            string FactoryFilter = string.Empty;
-            string OrdersProductionStatus = string.Empty;
+            var FactoryFilter = string.Empty;
+            var OrdersProductionStatus = string.Empty;
 
             if (FactoryID != 0)
                 FactoryFilter = " AND (FactoryID = 0 OR FactoryID = " + FactoryID + ")";
@@ -6886,16 +6915,16 @@ AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = { Meg
 
             #endregion
 
-            string SelectionCommand = "SELECT * FROM MainOrders" +
-                                      " WHERE MegaOrderID = " + MegaOrderID + FactoryFilter + OrdersProductionStatus;
+            var SelectionCommand = "SELECT * FROM MainOrders" +
+                                   " WHERE MegaOrderID = " + MegaOrderID + FactoryFilter + OrdersProductionStatus;
 
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectionCommand,
+            using (var DA = new SqlDataAdapter(SelectionCommand,
                 ConnectionStrings.ZOVOrdersConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
-                    for (int i = 0; i < DT.Rows.Count; i++)
+                    for (var i = 0; i < DT.Rows.Count; i++)
                     {
                         CheckPackages(false, Convert.ToInt32(DT.Rows[i]["MainOrderID"]));
                         SetMainOrderStatus(false, Convert.ToInt32(DT.Rows[i]["MainOrderID"]), false);
@@ -6908,18 +6937,18 @@ AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = { Meg
         {
             if (Packages.Count() > 0)
             {
-                using (SqlDataAdapter DA = new SqlDataAdapter(
+                using (var DA = new SqlDataAdapter(
                     "SELECT PackageID, PackageStatusID, PackingDateTime, StorageDateTime, ExpUserID, ExpeditionDateTime, DispUserID, DispatchDateTime FROM Packages" +
                     " WHERE PackageID IN (" + string.Join(",", Packages) + ")",
                     ConnectionStrings.MarketingOrdersConnectionString))
                 {
-                    using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                    using (var CB = new SqlCommandBuilder(DA))
                     {
-                        using (DataTable DT = new DataTable())
+                        using (var DT = new DataTable())
                         {
                             if (DA.Fill(DT) > 0)
                             {
-                                for (int i = 0; i < DT.Rows.Count; i++)
+                                for (var i = 0; i < DT.Rows.Count; i++)
                                 {
                                     DT.Rows[i]["PackageStatusID"] = 3;
                                     if (DT.Rows[i]["PackingDateTime"] == DBNull.Value)
@@ -6947,37 +6976,37 @@ AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = { Meg
                 }
             }
 
-            DateTime DispDate = Security.GetCurrentDate();
+            var DispDate = Security.GetCurrentDate();
             if (true)
             {
-                int ProfilProductionStatusID = 0;
-                int ProfilStorageStatusID = 0;
-                int ProfilExpeditionStatusID = 0;
-                int ProfilDispatchStatusID = 0;
-                int TPSProductionStatusID = 0;
-                int TPSStorageStatusID = 0;
-                int TPSExpeditionStatusID = 0;
-                int TPSDispatchStatusID = 0;
-                int ProfilPackAllocStatusID = 0;
-                int TPSPackAllocStatusID = 0;
-                string SelectCommand = "SELECT MainOrderID, IsSample, FactoryID," +
-                                       " ProfilProductionStatusID, ProfilStorageStatusID, ProfilExpeditionStatusID, ProfilDispatchStatusID, ProfilPackAllocStatusID, " +
-                                       " TPSProductionStatusID, TPSStorageStatusID, TPSExpeditionStatusID, TPSDispatchStatusID, TPSPackAllocStatusID FROM MainOrders WHERE MainOrderID = " +
-                                       MainOrderID;
+                var ProfilProductionStatusID = 0;
+                var ProfilStorageStatusID = 0;
+                var ProfilExpeditionStatusID = 0;
+                var ProfilDispatchStatusID = 0;
+                var TPSProductionStatusID = 0;
+                var TPSStorageStatusID = 0;
+                var TPSExpeditionStatusID = 0;
+                var TPSDispatchStatusID = 0;
+                var ProfilPackAllocStatusID = 0;
+                var TPSPackAllocStatusID = 0;
+                var SelectCommand = "SELECT MainOrderID, IsSample, FactoryID," +
+                                    " ProfilProductionStatusID, ProfilStorageStatusID, ProfilExpeditionStatusID, ProfilDispatchStatusID, ProfilPackAllocStatusID, " +
+                                    " TPSProductionStatusID, TPSStorageStatusID, TPSExpeditionStatusID, TPSDispatchStatusID, TPSPackAllocStatusID FROM MainOrders WHERE MainOrderID = " +
+                                    MainOrderID;
 
-                using (SqlDataAdapter DA =
+                using (var DA =
                     new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
                 {
-                    using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                    using (var CB = new SqlCommandBuilder(DA))
                     {
-                        using (DataTable DT = new DataTable())
+                        using (var DT = new DataTable())
                         {
                             if (DA.Fill(DT) > 0)
                             {
-                                for (int i = 0; i < DT.Rows.Count; i++)
+                                for (var i = 0; i < DT.Rows.Count; i++)
                                 {
-                                    bool IsSample = Convert.ToBoolean(DT.Rows[i]["IsSample"]);
-                                    int FactoryID = Convert.ToInt32(DT.Rows[i]["FactoryID"]);
+                                    var IsSample = Convert.ToBoolean(DT.Rows[i]["IsSample"]);
+                                    var FactoryID = Convert.ToInt32(DT.Rows[i]["FactoryID"]);
                                     if (IsSample)
                                     {
                                         CopySampleOrders(true, Convert.ToInt32(DT.Rows[i]["MainOrderID"]), DispDate);
@@ -7066,19 +7095,19 @@ AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = { Meg
                                 " TPSProductionStatusID, TPSStorageStatusID, TPSExpeditionStatusID, TPSDispatchStatusID FROM NewMainOrders WHERE MainOrderID = " +
                                 MainOrderID;
 
-                using (SqlDataAdapter DA =
+                using (var DA =
                     new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
                 {
-                    using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                    using (var CB = new SqlCommandBuilder(DA))
                     {
-                        using (DataTable DT = new DataTable())
+                        using (var DT = new DataTable())
                         {
                             if (DA.Fill(DT) > 0)
                             {
-                                for (int i = 0; i < DT.Rows.Count; i++)
+                                for (var i = 0; i < DT.Rows.Count; i++)
                                 {
-                                    bool IsSample = Convert.ToBoolean(DT.Rows[i]["IsSample"]);
-                                    int FactoryID = Convert.ToInt32(DT.Rows[i]["FactoryID"]);
+                                    var IsSample = Convert.ToBoolean(DT.Rows[i]["IsSample"]);
+                                    var FactoryID = Convert.ToInt32(DT.Rows[i]["FactoryID"]);
                                     if (IsSample)
                                     {
                                         CopySampleOrders(true, Convert.ToInt32(DT.Rows[i]["MainOrderID"]), DispDate);
@@ -7156,22 +7185,22 @@ AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = { Meg
 
         static public void SetToDispatchZOV(DateTime date, int[] Packages, int MainOrderID)
         {
-            bool HasPackages = false;
+            var HasPackages = false;
             if (Packages.Count() > 0)
             {
-                using (SqlDataAdapter DA = new SqlDataAdapter(
+                using (var DA = new SqlDataAdapter(
                     "SELECT PackageID, PackageStatusID, PackingDateTime, StorageDateTime, ExpUserID, ExpeditionDateTime, DispUserID, DispatchDateTime FROM Packages" +
                     " WHERE PackageID IN (" + string.Join(",", Packages) + ")",
                     ConnectionStrings.ZOVOrdersConnectionString))
                 {
-                    using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                    using (var CB = new SqlCommandBuilder(DA))
                     {
-                        using (DataTable DT = new DataTable())
+                        using (var DT = new DataTable())
                         {
                             if (DA.Fill(DT) > 0)
                             {
                                 HasPackages = true;
-                                for (int i = 0; i < DT.Rows.Count; i++)
+                                for (var i = 0; i < DT.Rows.Count; i++)
                                 {
                                     DT.Rows[i]["PackageStatusID"] = 3;
                                     if (DT.Rows[i]["PackingDateTime"] == DBNull.Value)
@@ -7199,35 +7228,35 @@ AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = { Meg
                 }
             }
 
-            DateTime DispDate = Security.GetCurrentDate();
+            var DispDate = Security.GetCurrentDate();
             if (!HasPackages)
             {
-                int ProfilProductionStatusID = 0;
-                int ProfilStorageStatusID = 0;
-                int ProfilExpeditionStatusID = 0;
-                int ProfilDispatchStatusID = 0;
-                int TPSProductionStatusID = 0;
-                int TPSStorageStatusID = 0;
-                int TPSExpeditionStatusID = 0;
-                int TPSDispatchStatusID = 0;
-                string SelectCommand = "SELECT MainOrderID, IsSample, FactoryID," +
-                                       " ProfilProductionStatusID, ProfilStorageStatusID, ProfilExpeditionStatusID, ProfilDispatchStatusID, " +
-                                       " TPSProductionStatusID, TPSStorageStatusID, TPSExpeditionStatusID, TPSDispatchStatusID FROM MainOrders WHERE MainOrderID = " +
-                                       MainOrderID;
+                var ProfilProductionStatusID = 0;
+                var ProfilStorageStatusID = 0;
+                var ProfilExpeditionStatusID = 0;
+                var ProfilDispatchStatusID = 0;
+                var TPSProductionStatusID = 0;
+                var TPSStorageStatusID = 0;
+                var TPSExpeditionStatusID = 0;
+                var TPSDispatchStatusID = 0;
+                var SelectCommand = "SELECT MainOrderID, IsSample, FactoryID," +
+                                    " ProfilProductionStatusID, ProfilStorageStatusID, ProfilExpeditionStatusID, ProfilDispatchStatusID, " +
+                                    " TPSProductionStatusID, TPSStorageStatusID, TPSExpeditionStatusID, TPSDispatchStatusID FROM MainOrders WHERE MainOrderID = " +
+                                    MainOrderID;
 
-                using (SqlDataAdapter DA =
+                using (var DA =
                     new SqlDataAdapter(SelectCommand, ConnectionStrings.ZOVOrdersConnectionString))
                 {
-                    using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                    using (var CB = new SqlCommandBuilder(DA))
                     {
-                        using (DataTable DT = new DataTable())
+                        using (var DT = new DataTable())
                         {
                             if (DA.Fill(DT) > 0)
                             {
-                                for (int i = 0; i < DT.Rows.Count; i++)
+                                for (var i = 0; i < DT.Rows.Count; i++)
                                 {
-                                    bool IsSample = Convert.ToBoolean(DT.Rows[i]["IsSample"]);
-                                    int FactoryID = Convert.ToInt32(DT.Rows[i]["FactoryID"]);
+                                    var IsSample = Convert.ToBoolean(DT.Rows[i]["IsSample"]);
+                                    var FactoryID = Convert.ToInt32(DT.Rows[i]["FactoryID"]);
                                     if (IsSample)
                                     {
                                         CopySampleOrders(false, Convert.ToInt32(DT.Rows[i]["MainOrderID"]), DispDate);
@@ -7297,17 +7326,17 @@ AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = { Meg
 
         static public void SetToNotPack(int[] Packages)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Packages" +
-                                                          " WHERE PackageID IN (" + string.Join(",", Packages) + ")",
+            using (var DA = new SqlDataAdapter("SELECT * FROM Packages" +
+                                               " WHERE PackageID IN (" + string.Join(",", Packages) + ")",
                 ConnectionStrings.MarketingOrdersConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         if (DA.Fill(DT) > 0)
                         {
-                            for (int i = 0; i < DT.Rows.Count; i++)
+                            for (var i = 0; i < DT.Rows.Count; i++)
                             {
                                 DT.Rows[i]["PackageStatusID"] = 0;
                                 DT.Rows[i]["PackingDateTime"] = DBNull.Value;
@@ -7329,17 +7358,17 @@ AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = { Meg
 
         static public void SetToPack(DateTime date, int[] Packages)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Packages" +
-                                                          " WHERE PackageID IN (" + string.Join(",", Packages) + ")",
+            using (var DA = new SqlDataAdapter("SELECT * FROM Packages" +
+                                               " WHERE PackageID IN (" + string.Join(",", Packages) + ")",
                 ConnectionStrings.MarketingOrdersConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         if (DA.Fill(DT) > 0)
                         {
-                            for (int i = 0; i < DT.Rows.Count; i++)
+                            for (var i = 0; i < DT.Rows.Count; i++)
                             {
                                 DT.Rows[i]["PackageStatusID"] = 1;
 
@@ -7362,17 +7391,17 @@ AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = { Meg
 
         static public void SetToStorage(DateTime date, int[] Packages)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Packages" +
-                                                          " WHERE PackageID IN (" + string.Join(",", Packages) + ")",
+            using (var DA = new SqlDataAdapter("SELECT * FROM Packages" +
+                                               " WHERE PackageID IN (" + string.Join(",", Packages) + ")",
                 ConnectionStrings.MarketingOrdersConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         if (DA.Fill(DT) > 0)
                         {
-                            for (int i = 0; i < DT.Rows.Count; i++)
+                            for (var i = 0; i < DT.Rows.Count; i++)
                             {
                                 DT.Rows[i]["PackageStatusID"] = 2;
                                 DT.Rows[i]["PackingDateTime"] = date;
@@ -7393,17 +7422,17 @@ AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = { Meg
 
         static public void SetToExpedition(DateTime date, int[] Packages)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Packages" +
-                                                          " WHERE PackageID IN (" + string.Join(",", Packages) + ")",
+            using (var DA = new SqlDataAdapter("SELECT * FROM Packages" +
+                                               " WHERE PackageID IN (" + string.Join(",", Packages) + ")",
                 ConnectionStrings.MarketingOrdersConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         if (DA.Fill(DT) > 0)
                         {
-                            for (int i = 0; i < DT.Rows.Count; i++)
+                            for (var i = 0; i < DT.Rows.Count; i++)
                             {
                                 DT.Rows[i]["PackingDateTime"] = date;
                                 DT.Rows[i]["StorageDateTime"] = date;
@@ -7441,7 +7470,7 @@ AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = { Meg
 
         private string ReadConnectionString(String FileName)
         {
-            using (System.IO.StreamReader sr = new System.IO.StreamReader(FileName))
+            using (var sr = new System.IO.StreamReader(FileName))
             {
                 sConnectionString = sr.ReadToEnd();
             }
@@ -7451,20 +7480,20 @@ AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = { Meg
 
         private string EncryptString(string inputString, int dwKeySize, string xmlString)
         {
-            RSACryptoServiceProvider rsaCryptoServiceProvider = new RSACryptoServiceProvider(dwKeySize);
+            var rsaCryptoServiceProvider = new RSACryptoServiceProvider(dwKeySize);
             rsaCryptoServiceProvider.FromXmlString(xmlString);
-            int keySize = dwKeySize / 8;
-            byte[] bytes = Encoding.UTF32.GetBytes(inputString);
+            var keySize = dwKeySize / 8;
+            var bytes = Encoding.UTF32.GetBytes(inputString);
 
-            int maxLength = keySize - 42;
-            int dataLength = bytes.Length;
-            int iterations = dataLength / maxLength;
-            StringBuilder stringBuilder = new StringBuilder();
-            for (int i = 0; i <= iterations; i++)
+            var maxLength = keySize - 42;
+            var dataLength = bytes.Length;
+            var iterations = dataLength / maxLength;
+            var stringBuilder = new StringBuilder();
+            for (var i = 0; i <= iterations; i++)
             {
-                byte[] tempBytes = new byte[(dataLength - maxLength * i > maxLength) ? maxLength : dataLength - maxLength * i];
+                var tempBytes = new byte[(dataLength - maxLength * i > maxLength) ? maxLength : dataLength - maxLength * i];
                 Buffer.BlockCopy(bytes, maxLength * i, tempBytes, 0, tempBytes.Length);
-                byte[] encryptedBytes = rsaCryptoServiceProvider.Encrypt(tempBytes, true);
+                var encryptedBytes = rsaCryptoServiceProvider.Encrypt(tempBytes, true);
 
                 Array.Reverse(encryptedBytes);
 
@@ -7475,14 +7504,14 @@ AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = { Meg
 
         private string DecryptString(string inputString, int dwKeySize, string xmlString)
         {
-            RSACryptoServiceProvider rsaCryptoServiceProvider = new RSACryptoServiceProvider(dwKeySize);
+            var rsaCryptoServiceProvider = new RSACryptoServiceProvider(dwKeySize);
             rsaCryptoServiceProvider.FromXmlString(xmlString);
-            int base64BlockSize = ((dwKeySize / 8) % 3 != 0) ? (((dwKeySize / 8) / 3) * 4) + 4 : ((dwKeySize / 8) / 3) * 4;
-            int iterations = inputString.Length / base64BlockSize;
-            ArrayList arrayList = new ArrayList();
-            for (int i = 0; i < iterations; i++)
+            var base64BlockSize = ((dwKeySize / 8) % 3 != 0) ? (((dwKeySize / 8) / 3) * 4) + 4 : ((dwKeySize / 8) / 3) * 4;
+            var iterations = inputString.Length / base64BlockSize;
+            var arrayList = new ArrayList();
+            for (var i = 0; i < iterations; i++)
             {
-                byte[] encryptedBytes = Convert.FromBase64String(inputString.Substring(base64BlockSize * i, base64BlockSize));
+                var encryptedBytes = Convert.FromBase64String(inputString.Substring(base64BlockSize * i, base64BlockSize));
 
                 Array.Reverse(encryptedBytes);
                 arrayList.AddRange(rsaCryptoServiceProvider.Decrypt(encryptedBytes, true));
@@ -7494,10 +7523,10 @@ AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = { Meg
         {
             try
             {
-                string EncryptedConnectionString = ReadConnectionString(FileName);
-                int Index = EncryptedConnectionString.IndexOf("Password");
-                string Password = EncryptedConnectionString.Substring(Index + 9, EncryptedConnectionString.Length - Index - 9);
-                string privateKey = "<RSAKeyValue><Modulus>pqJ+ilhHSM5N3XGPCAYdrpFjHlvcQQoaNPiTvUHut5dIwx40olIKRjvequY8WeGb</Modulus><Exponent>AQAB</Exponent><P>2UlRsj0mJoeGxD4AtwOEn02oCEjlYifD</P><Q>xFLlKWJuoE3mb88iI8v24/7Qt1Wvc5lJ</Q><DP>s8j4sfPqpyKoHaP3z3Y3u9/zUreOJIMl</DP><DQ>YhIOy8eR/54qeLv+D+e5o1cNKCgzhwmR</DQ><InverseQ>kU9Phb5ynWsB6ZFQoAnUPAzmirRIlqDR</InverseQ><D>J1Q64ZQsXvayUg23YIFxB/6wkj3EImWroC3gjjCvYa+fjojM1XXvE/tE5t8mnnzB</D></RSAKeyValue>";
+                var EncryptedConnectionString = ReadConnectionString(FileName);
+                var Index = EncryptedConnectionString.IndexOf("Password");
+                var Password = EncryptedConnectionString.Substring(Index + 9, EncryptedConnectionString.Length - Index - 9);
+                var privateKey = "<RSAKeyValue><Modulus>pqJ+ilhHSM5N3XGPCAYdrpFjHlvcQQoaNPiTvUHut5dIwx40olIKRjvequY8WeGb</Modulus><Exponent>AQAB</Exponent><P>2UlRsj0mJoeGxD4AtwOEn02oCEjlYifD</P><Q>xFLlKWJuoE3mb88iI8v24/7Qt1Wvc5lJ</Q><DP>s8j4sfPqpyKoHaP3z3Y3u9/zUreOJIMl</DP><DQ>YhIOy8eR/54qeLv+D+e5o1cNKCgzhwmR</DQ><InverseQ>kU9Phb5ynWsB6ZFQoAnUPAzmirRIlqDR</InverseQ><D>J1Q64ZQsXvayUg23YIFxB/6wkj3EImWroC3gjjCvYa+fjojM1XXvE/tE5t8mnnzB</D></RSAKeyValue>";
                 sConnectionString = EncryptedConnectionString.Replace(Password, DecryptString(Password, 384, privateKey));
             }
             catch (ArgumentNullException)
@@ -7511,9 +7540,9 @@ AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = { Meg
         {
             try
             {
-                int Index = EncryptedConnectionString.IndexOf("Password");
-                string Password = EncryptedConnectionString.Substring(Index + 9, EncryptedConnectionString.Length - Index - 9);
-                string privateKey = "<RSAKeyValue><Modulus>pqJ+ilhHSM5N3XGPCAYdrpFjHlvcQQoaNPiTvUHut5dIwx40olIKRjvequY8WeGb</Modulus><Exponent>AQAB</Exponent><P>2UlRsj0mJoeGxD4AtwOEn02oCEjlYifD</P><Q>xFLlKWJuoE3mb88iI8v24/7Qt1Wvc5lJ</Q><DP>s8j4sfPqpyKoHaP3z3Y3u9/zUreOJIMl</DP><DQ>YhIOy8eR/54qeLv+D+e5o1cNKCgzhwmR</DQ><InverseQ>kU9Phb5ynWsB6ZFQoAnUPAzmirRIlqDR</InverseQ><D>J1Q64ZQsXvayUg23YIFxB/6wkj3EImWroC3gjjCvYa+fjojM1XXvE/tE5t8mnnzB</D></RSAKeyValue>";
+                var Index = EncryptedConnectionString.IndexOf("Password");
+                var Password = EncryptedConnectionString.Substring(Index + 9, EncryptedConnectionString.Length - Index - 9);
+                var privateKey = "<RSAKeyValue><Modulus>pqJ+ilhHSM5N3XGPCAYdrpFjHlvcQQoaNPiTvUHut5dIwx40olIKRjvequY8WeGb</Modulus><Exponent>AQAB</Exponent><P>2UlRsj0mJoeGxD4AtwOEn02oCEjlYifD</P><Q>xFLlKWJuoE3mb88iI8v24/7Qt1Wvc5lJ</Q><DP>s8j4sfPqpyKoHaP3z3Y3u9/zUreOJIMl</DP><DQ>YhIOy8eR/54qeLv+D+e5o1cNKCgzhwmR</DQ><InverseQ>kU9Phb5ynWsB6ZFQoAnUPAzmirRIlqDR</InverseQ><D>J1Q64ZQsXvayUg23YIFxB/6wkj3EImWroC3gjjCvYa+fjojM1XXvE/tE5t8mnnzB</D></RSAKeyValue>";
                 sConnectionString = EncryptedConnectionString.Replace(Password, DecryptString(Password, 384, privateKey));
             }
             catch (ArgumentNullException)
@@ -7684,9 +7713,9 @@ AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = { Meg
 
         public static string GetPath(string DocumentsType)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT DocumentsPath FROM DocumentsPath WHERE DocumentsType = '" + DocumentsType + "'", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT DocumentsPath FROM DocumentsPath WHERE DocumentsType = '" + DocumentsType + "'", ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -7697,7 +7726,7 @@ AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = { Meg
 
         public bool DownloadFile(string sSourceFileName, string sDestFileName, Int64 FileSize, int FTPType)
         {
-            FileStream writeStream = new FileStream(sDestFileName, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
+            var writeStream = new FileStream(sDestFileName, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
 
             CurrentSpeed = 0;
             iTransData = 0;
@@ -7706,7 +7735,7 @@ AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = { Meg
 
             try
             {
-                FtpWebRequest ftpClient = (FtpWebRequest)WebRequest.Create(sSourceFileName);
+                var ftpClient = (FtpWebRequest)WebRequest.Create(sSourceFileName);
 
                 if (FTPType == 4)
                     ftpClient.Credentials = new NetworkCredential(ZOVTPSHostFTPLogin, ZOVTPSHostFTPPass);
@@ -7725,15 +7754,15 @@ AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = { Meg
                 TotalFileSize = FileSize;
 
                 ftpClient.Method = WebRequestMethods.Ftp.DownloadFile;
-                FtpWebResponse response = (FtpWebResponse)ftpClient.GetResponse();
+                var response = (FtpWebResponse)ftpClient.GetResponse();
 
                 //write file
-                Stream responseStream = response.GetResponseStream();
+                var responseStream = response.GetResponseStream();
 
                 Timer.Enabled = true;
 
-                Byte[] buffer = new Byte[4096];
-                int bytesRead = responseStream.Read(buffer, 0, 1);
+                var buffer = new Byte[4096];
+                var bytesRead = responseStream.Read(buffer, 0, 1);
                 Position += bytesRead;
 
                 while (bytesRead > 0)
@@ -7781,7 +7810,7 @@ AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = { Meg
 
             try
             {
-                FtpWebRequest ftpClient = (FtpWebRequest)WebRequest.Create(sDestFileName);
+                var ftpClient = (FtpWebRequest)WebRequest.Create(sDestFileName);
 
                 if (FTPType == 4)
                     ftpClient.Credentials = new NetworkCredential(ZOVTPSHostFTPLogin, ZOVTPSHostFTPPass);
@@ -7798,13 +7827,13 @@ AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = { Meg
                 ftpClient.UseBinary = true;
                 ftpClient.KeepAlive = true;
 
-                System.IO.FileInfo fi = new System.IO.FileInfo(sSourceFileName);
+                var fi = new System.IO.FileInfo(sSourceFileName);
                 ftpClient.ContentLength = fi.Length;
                 TotalFileSize = fi.Length;
 
-                byte[] buffer = new byte[4097];
-                int bytes = 0;
-                int total_bytes = (int)fi.Length;
+                var buffer = new byte[4097];
+                var bytes = 0;
+                var total_bytes = (int)fi.Length;
 
                 System.IO.FileStream fs = null;
 
@@ -7824,7 +7853,7 @@ AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = { Meg
 
                 catch (Exception ex)
                 {
-                    string m = ex.Message;
+                    var m = ex.Message;
                     return false;
                 }
                 Timer.Enabled = true;
@@ -7866,7 +7895,7 @@ AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = { Meg
         {
             try
             {
-                FtpWebRequest ftpClient = (FtpWebRequest)WebRequest.Create(sFtpFileName);
+                var ftpClient = (FtpWebRequest)WebRequest.Create(sFtpFileName);
 
                 if (FTPType == 4)
                     ftpClient.Credentials = new NetworkCredential(ZOVTPSHostFTPLogin, ZOVTPSHostFTPPass);
@@ -7883,7 +7912,7 @@ AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = { Meg
                 ftpClient.UseBinary = true;
                 ftpClient.KeepAlive = true;
 
-                FtpWebResponse response = (FtpWebResponse)ftpClient.GetResponse();
+                var response = (FtpWebResponse)ftpClient.GetResponse();
             }
             catch
             {
@@ -7897,7 +7926,7 @@ AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = { Meg
         {
             try
             {
-                FtpWebRequest ftpClient = (FtpWebRequest)WebRequest.Create(sFtpFileName);
+                var ftpClient = (FtpWebRequest)WebRequest.Create(sFtpFileName);
 
                 if (FTPType == 4)
                     ftpClient.Credentials = new NetworkCredential(ZOVTPSHostFTPLogin, ZOVTPSHostFTPPass);
@@ -7917,11 +7946,11 @@ AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = { Meg
 
                 try
                 {
-                    FtpWebResponse response = (FtpWebResponse)ftpClient.GetResponse();
+                    var response = (FtpWebResponse)ftpClient.GetResponse();
                 }
                 catch (WebException ex)
                 {
-                    FtpWebResponse response = (FtpWebResponse)ex.Response;
+                    var response = (FtpWebResponse)ex.Response;
                     if (response.StatusCode ==
                         FtpStatusCode.ActionNotTakenFileUnavailable)
                     {
@@ -7941,7 +7970,7 @@ AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = { Meg
         {
             try
             {
-                FtpWebRequest ftpClient = (FtpWebRequest)WebRequest.Create(sSourceFileName);
+                var ftpClient = (FtpWebRequest)WebRequest.Create(sSourceFileName);
 
 
                 ftpClient.Method = WebRequestMethods.Ftp.Rename;
@@ -7960,7 +7989,7 @@ AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = { Meg
                 if (FTPType == 0)
                     ftpClient.Credentials = new NetworkCredential(ServerFTPLogin, ServerFTPPass);
 
-                FtpWebResponse response = (FtpWebResponse)ftpClient.GetResponse();
+                var response = (FtpWebResponse)ftpClient.GetResponse();
             }
             catch
             {
@@ -7972,7 +8001,7 @@ AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = { Meg
 
         public int CreateFolder(string Path, string FolderName, int FTPType)
         {
-            FtpWebRequest ftpClient = (FtpWebRequest)WebRequest.Create(Path + FolderName);
+            var ftpClient = (FtpWebRequest)WebRequest.Create(Path + FolderName);
 
             if (FTPType == 4)
                 ftpClient.Credentials = new NetworkCredential(ZOVTPSHostFTPLogin, ZOVTPSHostFTPPass);
@@ -8006,7 +8035,7 @@ AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = { Meg
 
         public bool DeleteFolder(string Path, int FTPType)
         {
-            FtpWebRequest ftpClient = (FtpWebRequest)WebRequest.Create(Path);
+            var ftpClient = (FtpWebRequest)WebRequest.Create(Path);
 
             if (FTPType == 4)
                 ftpClient.Credentials = new NetworkCredential(ZOVTPSHostFTPLogin, ZOVTPSHostFTPPass);
@@ -8042,13 +8071,13 @@ AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = { Meg
             Position = 0;
             TotalFileSize = 0;
 
-            Byte[] buffer = new Byte[2048];
+            var buffer = new Byte[2048];
 
-            using (MemoryStream ms = new MemoryStream())
+            using (var ms = new MemoryStream())
             {
                 try
                 {
-                    FtpWebRequest ftpClient = (FtpWebRequest)WebRequest.Create(Path);
+                    var ftpClient = (FtpWebRequest)WebRequest.Create(Path);
 
                     if (FTPType == 4)
                         ftpClient.Credentials = new NetworkCredential(ZOVTPSHostFTPLogin, ZOVTPSHostFTPPass);
@@ -8067,15 +8096,15 @@ AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = { Meg
                     TotalFileSize = FileSize;
 
                     ftpClient.Method = WebRequestMethods.Ftp.DownloadFile;
-                    FtpWebResponse response = (FtpWebResponse)ftpClient.GetResponse();
+                    var response = (FtpWebResponse)ftpClient.GetResponse();
 
                     //write file
-                    Stream responseStream = response.GetResponseStream();
+                    var responseStream = response.GetResponseStream();
 
                     Timer.Enabled = true;
 
 
-                    int bytesRead = responseStream.Read(buffer, 0, buffer.Length);
+                    var bytesRead = responseStream.Read(buffer, 0, buffer.Length);
                     Position += bytesRead;
 
                     if (bytesRead > 0)
@@ -8109,7 +8138,7 @@ AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = { Meg
                 }
                 catch (InvalidOperationException ex)
                 {
-                    string m = ex.Message;
+                    var m = ex.Message;
                     Timer.Enabled = false;
                     bStopTransfer = false;
                     GC.Collect();
@@ -8117,7 +8146,7 @@ AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = { Meg
                 }
                 catch (Exception ex)
                 {
-                    string m = ex.Message;
+                    var m = ex.Message;
                     Timer.Enabled = false;
                     bStopTransfer = false;
                     GC.Collect();
@@ -8135,21 +8164,21 @@ AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = { Meg
     {
         public static void ShowTipModal(string sText, Form ParentForm, int Left, int Top, int Time)
         {
-            InfiniumTipForm F2 = new InfiniumTipForm(ParentForm.Left + Left, ParentForm.Top + Top, 2000, sText);
+            var F2 = new InfiniumTipForm(ParentForm.Left + Left, ParentForm.Top + Top, 2000, sText);
             F2.ShowDialog();
             F2.Focus();
         }
 
         public static void ShowTipModal(Form ParentForm, int LeftPercents, int TopPercents, string sText, int Time)
         {
-            InfiniumTipForm F2 = new InfiniumTipForm(ParentForm, LeftPercents, TopPercents, Time, sText);
+            var F2 = new InfiniumTipForm(ParentForm, LeftPercents, TopPercents, Time, sText);
             F2.ShowDialog();
             F2 = null;
         }
 
         public static void ShowTip(Form ParentForm, int LeftPercents, int TopPercents, string sText, int Time)
         {
-            InfiniumTipForm F2 = new InfiniumTipForm(ParentForm, LeftPercents, TopPercents, Time, sText);
+            var F2 = new InfiniumTipForm(ParentForm, LeftPercents, TopPercents, Time, sText);
             F2.Show();
             F2 = null;
         }
@@ -8163,10 +8192,10 @@ AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = { Meg
     {
         public static bool Show(ref Form TopForm, bool ShowCancelButton, string Text, string HeaderText)
         {
-            PhantomForm PhantomForm = new Infinium.PhantomForm();
+            var PhantomForm = new Infinium.PhantomForm();
             PhantomForm.Show();
 
-            LightMessageBoxForm LightMessageBoxForm = new LightMessageBoxForm(ShowCancelButton, Text, HeaderText);
+            var LightMessageBoxForm = new LightMessageBoxForm(ShowCancelButton, Text, HeaderText);
 
             TopForm = LightMessageBoxForm;
             LightMessageBoxForm.ShowDialog();
@@ -8180,13 +8209,13 @@ AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = { Meg
             return LightMessageBoxForm.OKCancel;
         }
 
-        public static bool Show(ref Form TopForm, bool ShowCancelButton, string Text, string HeaderText, 
+        public static bool Show(ref Form TopForm, bool ShowCancelButton, string Text, string HeaderText,
             string OKMessageButtonText, string CancelMessageButtonText)
         {
-            PhantomForm PhantomForm = new Infinium.PhantomForm();
+            var PhantomForm = new Infinium.PhantomForm();
             PhantomForm.Show();
 
-            LightMessageBoxForm LightMessageBoxForm = new LightMessageBoxForm(ShowCancelButton, Text, HeaderText, OKMessageButtonText, CancelMessageButtonText);
+            var LightMessageBoxForm = new LightMessageBoxForm(ShowCancelButton, Text, HeaderText, OKMessageButtonText, CancelMessageButtonText);
 
             TopForm = LightMessageBoxForm;
             LightMessageBoxForm.ShowDialog();
@@ -8202,10 +8231,10 @@ AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = { Meg
 
         public static bool ShowClientDeleteForm(ref Form TopForm, ref bool bDeleteOrders)
         {
-            PhantomForm PhantomForm = new Infinium.PhantomForm();
+            var PhantomForm = new Infinium.PhantomForm();
             PhantomForm.Show();
 
-            ClientDeleteForm clientDeleteForm = new ClientDeleteForm();
+            var clientDeleteForm = new ClientDeleteForm();
 
             TopForm = clientDeleteForm;
             clientDeleteForm.ShowDialog();

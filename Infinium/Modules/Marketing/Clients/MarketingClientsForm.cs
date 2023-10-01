@@ -1,4 +1,8 @@
-﻿using NPOI.HSSF.UserModel;
+﻿using Infinium.Modules.Marketing.Clients;
+using Infinium.Modules.ZOV;
+using Infinium.Modules.ZOV.Clients;
+
+using NPOI.HSSF.UserModel;
 
 using System;
 using System.Data;
@@ -44,6 +48,7 @@ namespace Infinium
             if (Clients.PermissionGranted(iAdmin))
             {
                 btnDeleteClient.Visible = true;
+                btnClientsToExcel.Visible = true;
                 bPriceGroup = true;
             }
             if (Clients.PermissionGranted(iMarket))
@@ -53,6 +58,7 @@ namespace Infinium
             if (Clients.PermissionGranted(iDirector))
             {
                 btnDeleteClient.Visible = true;
+                btnClientsToExcel.Visible = true;
                 bPriceGroup = true;
             }
             if (!Clients.PermissionGranted(iAdmin) && !Clients.PermissionGranted(iMarket) && !Clients.PermissionGranted(iDirector))
@@ -604,6 +610,21 @@ namespace Infinium
             }
             Clients.RemoveClient(ClientID);
             Clients.FixOrderEvent(ClientID, "Клиент удален");
+
+            while (SplashWindow.bSmallCreated)
+                SmallWaitForm.CloseS = true;
+        }
+
+        private void btnClientsToExcel_Click(object sender, EventArgs e)
+        {
+            Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Загрузка данных с сервера.\r\nПодождите..."); });
+            T.Start();
+
+            while (!SplashWindow.bSmallCreated) ;
+
+            ClientsToExcel clientsToExcel = new ClientsToExcel();
+            
+            clientsToExcel.CreateReport("Клиенты");
 
             while (SplashWindow.bSmallCreated)
                 SmallWaitForm.CloseS = true;

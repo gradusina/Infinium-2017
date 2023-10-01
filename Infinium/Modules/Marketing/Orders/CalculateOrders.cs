@@ -2243,7 +2243,7 @@ namespace Infinium.Modules.Marketing.Orders
                 MinBalanceOnStorage = Convert.ToDecimal(Rows[0]["MinBalanceOnStorage"]);
                 if (MinBalanceOnStorage != 0)
                     BaseProfile = true;
-                TechStoreName = TablesManager.GetTechStoreNameByDecorID(Convert.ToInt32(decorOrderRow["DecorID"]));
+                TechStoreName = TablesManager.GetTechStoreNameByDecorId(Convert.ToInt32(decorOrderRow["DecorID"]));
 
                 //TechStoreName = GetTechStoreName(Convert.ToInt32(DecorOrderRow["DecorID"]));
             }

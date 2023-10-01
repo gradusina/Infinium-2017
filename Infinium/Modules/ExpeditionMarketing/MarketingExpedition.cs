@@ -1,7 +1,5 @@
-﻿using Infinium.Modules.Marketing.NewOrders;
-
+﻿
 using NPOI.HPSF;
-using NPOI.HSSF.Record.Formula.Functions;
 using NPOI.HSSF.UserModel;
 using NPOI.HSSF.UserModel.Contrib;
 using NPOI.HSSF.Util;
@@ -4716,7 +4714,7 @@ namespace Infinium.Modules.Marketing.Expedition
 
             return Weight;
         }
-        
+
         public void GetMegaBatchNumbers(DateTime PrepareDispatchDateTime)
         {
             string SelectCommand = @"SELECT Batch.MegaBatchID, BatchDetails.MainOrderID FROM BatchDetails 
@@ -4813,7 +4811,7 @@ namespace Infinium.Modules.Marketing.Expedition
                                 break;
                             }
                             d -= Convert.ToDecimal(dr["IncomeSum"]);
-                            dr["IncomeSum"] = 0;
+                            //dr["IncomeSum"] = 0;
                         }
 
                         if (d <= 0)
@@ -4829,7 +4827,11 @@ namespace Infinium.Modules.Marketing.Expedition
                             NewRow["Deadline"] = Deadline;
                             NewRow["TotalDays"] = -(DateTime.Now - Deadline).TotalDays;
                             if (Deadline < DateTime.Now)
+                            {
                                 NewRow["Overdue"] = true;
+                                if (d == 0)
+                                    NewRow["Overdue"] = false;
+                            }
                         }
                         NewRow["MutualSettlementID"] = DispDT.Rows[i]["MutualSettlementID"];
                         NewRow["FactoryID"] = DispDT.Rows[i]["FactoryID"];
@@ -4851,6 +4853,7 @@ namespace Infinium.Modules.Marketing.Expedition
                 {
                     int CurrencyTypeID = Convert.ToInt32(DispDT.Rows[i]["CurrencyTypeID"]);
                     DataRow NewRow = ClientsDispatchesDT.NewRow();
+                    decimal debt = Convert.ToDecimal(DispDT.Rows[i]["DispatchSum"]);
                     NewRow["Overdue"] = false;
                     if (DispDT.Rows[i]["DispatchDateTime"] != DBNull.Value)
                     {
@@ -4861,7 +4864,11 @@ namespace Infinium.Modules.Marketing.Expedition
                         NewRow["Deadline"] = Deadline;
                         NewRow["TotalDays"] = -(DateTime.Now - Deadline).TotalDays;
                         if (Deadline < DateTime.Now)
+                        {
                             NewRow["Overdue"] = true;
+                            if (debt == 0)
+                                NewRow["Overdue"] = false;
+                        }
                     }
                     NewRow["MutualSettlementID"] = DispDT.Rows[i]["MutualSettlementID"];
                     NewRow["FactoryID"] = DispDT.Rows[i]["FactoryID"];
@@ -4893,7 +4900,7 @@ namespace Infinium.Modules.Marketing.Expedition
             decimal TotalIncomeSum = 0;
             if (MutualSettlementID > 0)
             {
-                DataRow[] Rows1 = ClientsIncomesDT.Select("DiscountPaymentConditionID IN (2,3) AND MutualSettlementID = " + MutualSettlementID);
+                DataRow[] Rows1 = ClientsIncomesDT.Select("MutualSettlementID = " + MutualSettlementID);
                 if (Rows1.Count() > 0)
                 {
                     TotalIncomeSum += Rows1.Sum(item => Convert.ToDecimal(item["IncomeSum"]));
@@ -5871,7 +5878,54 @@ namespace Infinium.Modules.Marketing.Expedition
                 return false;
             return true;
         }
+
+        public void ClearDispatchPackages(int dispatchId)
+        {
+            var SelectCommand = $@"SELECT PackageID, DispatchID FROM Packages where dispatchId={dispatchId}";
+
+            using (var DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
+            {
+                using (var CB = new SqlCommandBuilder(DA))
+                {
+                    using (var dt = new DataTable())
+                    {
+                        DA.Fill(dt);
+
+                        for (var i = 0; i < dt.Rows.Count; i++)
+                        {
+                            dt.Rows[i]["DispatchID"] = DBNull.Value;
+                        }
+                        DA.Update(dt);
+                    }
+                }
+            }
+        }
+
+        public void DeleteDispatch(int dispatchId)
+        {
+            var SelectCommand = $@"SELECT * FROM Dispatch where dispatchId={dispatchId}";
+
+            using (var DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
+            {
+                using (var CB = new SqlCommandBuilder(DA))
+                {
+                    using (var dt = new DataTable())
+                    {
+                        DA.Fill(dt);
+
+                        for (var i = 0; i < dt.Rows.Count; i++)
+                        {
+                            if (dt.Rows[i]["ConfirmExpDateTime"] == DBNull.Value && dt.Rows[i]["ConfirmDispDateTime"] == DBNull.Value)
+                                dt.Rows[i].Delete();
+                        }
+                        DA.Update(dt);
+                    }
+                }
+            }
+        }
+
     }
+
 
     public struct MegaOrderInfo
     {
@@ -5888,8 +5942,6 @@ namespace Infinium.Modules.Marketing.Expedition
         public decimal PaymentRate;
         public object ConfirmDateTime;
     }
-
-
 
 
     public class NewMarketingDispatch
@@ -6007,47 +6059,47 @@ namespace Infinium.Modules.Marketing.Expedition
             FrameColorsDataTable = new DataTable();
             FrameColorsDataTable.Columns.Add(new DataColumn("ColorID", Type.GetType("System.Int64")));
             FrameColorsDataTable.Columns.Add(new DataColumn("ColorName", Type.GetType("System.String")));
-            string SelectCommand = @"SELECT TechStoreID, TechStoreName FROM TechStore
+            var SelectCommand = @"SELECT TechStoreID, TechStoreName FROM TechStore
                 WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)
                 ORDER BY TechStoreName";
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
+            using (var DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                     {
-                        DataRow NewRow = FrameColorsDataTable.NewRow();
+                        var NewRow = FrameColorsDataTable.NewRow();
                         NewRow["ColorID"] = -1;
                         NewRow["ColorName"] = "-";
                         FrameColorsDataTable.Rows.Add(NewRow);
                     }
                     {
-                        DataRow NewRow = FrameColorsDataTable.NewRow();
+                        var NewRow = FrameColorsDataTable.NewRow();
                         NewRow["ColorID"] = 0;
                         NewRow["ColorName"] = "на выбор";
                         FrameColorsDataTable.Rows.Add(NewRow);
                     }
-                    for (int i = 0; i < DT.Rows.Count; i++)
+                    for (var i = 0; i < DT.Rows.Count; i++)
                     {
-                        DataRow NewRow = FrameColorsDataTable.NewRow();
+                        var NewRow = FrameColorsDataTable.NewRow();
                         NewRow["ColorID"] = Convert.ToInt64(DT.Rows[i]["TechStoreID"]);
                         NewRow["ColorName"] = DT.Rows[i]["TechStoreName"].ToString();
                         FrameColorsDataTable.Rows.Add(NewRow);
                     }
                 }
             }
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM InsetColors WHERE GroupID IN (2,3,4,5,6,21,22)", ConnectionStrings.CatalogConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM InsetColors WHERE GroupID IN (2,3,4,5,6,21,22)", ConnectionStrings.CatalogConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
-                    for (int i = 0; i < DT.Rows.Count; i++)
+                    for (var i = 0; i < DT.Rows.Count; i++)
                     {
-                        DataRow[] rows = FrameColorsDataTable.Select("ColorID=" + Convert.ToInt32(DT.Rows[i]["InsetColorID"]));
+                        var rows = FrameColorsDataTable.Select("ColorID=" + Convert.ToInt32(DT.Rows[i]["InsetColorID"]));
                         if (rows.Count() == 0)
                         {
-                            DataRow NewRow = FrameColorsDataTable.NewRow();
+                            var NewRow = FrameColorsDataTable.NewRow();
                             NewRow["ColorID"] = Convert.ToInt64(DT.Rows[i]["InsetColorID"]);
                             NewRow["ColorName"] = DT.Rows[i]["InsetColorName"].ToString();
                             FrameColorsDataTable.Rows.Add(NewRow);
@@ -6060,19 +6112,19 @@ namespace Infinium.Modules.Marketing.Expedition
         private void GetInsetColorsDT()
         {
             InsetColorsDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT InsetColors.InsetColorID, InsetColors.GroupID, infiniu2_catalog.dbo.TechStore.TechStoreName AS InsetColorName FROM InsetColors" +
-                " INNER JOIN infiniu2_catalog.dbo.TechStore ON InsetColors.InsetColorID = infiniu2_catalog.dbo.TechStore.TechStoreID ORDER BY TechStoreName", ConnectionStrings.CatalogConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT InsetColors.InsetColorID, InsetColors.GroupID, infiniu2_catalog.dbo.TechStore.TechStoreName AS InsetColorName FROM InsetColors" +
+                                               " INNER JOIN infiniu2_catalog.dbo.TechStore ON InsetColors.InsetColorID = infiniu2_catalog.dbo.TechStore.TechStoreID ORDER BY TechStoreName", ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(InsetColorsDataTable);
                 {
-                    DataRow NewRow = InsetColorsDataTable.NewRow();
+                    var NewRow = InsetColorsDataTable.NewRow();
                     NewRow["InsetColorID"] = -1;
                     NewRow["GroupID"] = -1;
                     NewRow["InsetColorName"] = "-";
                     InsetColorsDataTable.Rows.Add(NewRow);
                 }
                 {
-                    DataRow NewRow = InsetColorsDataTable.NewRow();
+                    var NewRow = InsetColorsDataTable.NewRow();
                     NewRow["InsetColorID"] = 0;
                     NewRow["GroupID"] = -1;
                     NewRow["InsetColorName"] = "на выбор";
@@ -6085,89 +6137,89 @@ namespace Infinium.Modules.Marketing.Expedition
 
         private void Fill()
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT COUNT(Packages.PackageID) AS Count, MegaOrders.MegaOrderID, Packages.FactoryID" +
-                " FROM Packages INNER JOIN MainOrders ON Packages.MainOrderID = MainOrders.MainOrderID" +
-                " INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID AND ClientID = " + ClientID +
-                " WHERE (Packages.PackageStatusID <> 0)" +
-                " GROUP BY MegaOrders.MegaOrderID, Packages.FactoryID", ConnectionStrings.MarketingOrdersConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT COUNT(Packages.PackageID) AS Count, MegaOrders.MegaOrderID, Packages.FactoryID" +
+                                               " FROM Packages INNER JOIN MainOrders ON Packages.MainOrderID = MainOrders.MainOrderID" +
+                                               " INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID AND ClientID = " + ClientID +
+                                               " WHERE (Packages.PackageStatusID <> 0)" +
+                                               " GROUP BY MegaOrders.MegaOrderID, Packages.FactoryID", ConnectionStrings.MarketingOrdersConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(PackMegaOrdersDT);
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT COUNT(PackageID) AS Count, MainOrderID, Packages.FactoryID FROM Packages WHERE PackageStatusID <> 0" +
-                " AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID IN (SELECT MegaOrderID FROM MegaOrders WHERE ClientID = " + ClientID + "))" +
-                " GROUP BY MainOrderID, Packages.FactoryID", ConnectionStrings.MarketingOrdersConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT COUNT(PackageID) AS Count, MainOrderID, Packages.FactoryID FROM Packages WHERE PackageStatusID <> 0" +
+                                               " AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID IN (SELECT MegaOrderID FROM MegaOrders WHERE ClientID = " + ClientID + "))" +
+                                               " GROUP BY MainOrderID, Packages.FactoryID", ConnectionStrings.MarketingOrdersConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(PackMainOrdersDT);
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT COUNT(Packages.PackageID) AS Count, MegaOrders.MegaOrderID, Packages.FactoryID" +
-                " FROM Packages INNER JOIN MainOrders ON Packages.MainOrderID = MainOrders.MainOrderID" +
-                " INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID AND ClientID = " + ClientID +
-                " WHERE (Packages.PackageStatusID = 2)" +
-                " GROUP BY MegaOrders.MegaOrderID, Packages.FactoryID", ConnectionStrings.MarketingOrdersConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT COUNT(Packages.PackageID) AS Count, MegaOrders.MegaOrderID, Packages.FactoryID" +
+                                               " FROM Packages INNER JOIN MainOrders ON Packages.MainOrderID = MainOrders.MainOrderID" +
+                                               " INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID AND ClientID = " + ClientID +
+                                               " WHERE (Packages.PackageStatusID = 2)" +
+                                               " GROUP BY MegaOrders.MegaOrderID, Packages.FactoryID", ConnectionStrings.MarketingOrdersConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(StoreMegaOrdersDT);
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT COUNT(PackageID) AS Count, MainOrderID, Packages.FactoryID FROM Packages WHERE PackageStatusID =2 " +
-                " AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID IN (SELECT MegaOrderID FROM MegaOrders WHERE ClientID = " + ClientID + "))" +
-                " GROUP BY MainOrderID, Packages.FactoryID", ConnectionStrings.MarketingOrdersConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT COUNT(PackageID) AS Count, MainOrderID, Packages.FactoryID FROM Packages WHERE PackageStatusID =2 " +
+                                               " AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID IN (SELECT MegaOrderID FROM MegaOrders WHERE ClientID = " + ClientID + "))" +
+                                               " GROUP BY MainOrderID, Packages.FactoryID", ConnectionStrings.MarketingOrdersConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(StoreMainOrdersDT);
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT COUNT(Packages.PackageID) AS Count, MegaOrders.MegaOrderID, Packages.FactoryID" +
-                " FROM Packages INNER JOIN MainOrders ON Packages.MainOrderID = MainOrders.MainOrderID" +
-                " INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID AND ClientID = " + ClientID +
-                " WHERE (Packages.PackageStatusID = 4)" +
-                " GROUP BY MegaOrders.MegaOrderID, Packages.FactoryID", ConnectionStrings.MarketingOrdersConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT COUNT(Packages.PackageID) AS Count, MegaOrders.MegaOrderID, Packages.FactoryID" +
+                                               " FROM Packages INNER JOIN MainOrders ON Packages.MainOrderID = MainOrders.MainOrderID" +
+                                               " INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID AND ClientID = " + ClientID +
+                                               " WHERE (Packages.PackageStatusID = 4)" +
+                                               " GROUP BY MegaOrders.MegaOrderID, Packages.FactoryID", ConnectionStrings.MarketingOrdersConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(ExpMegaOrdersDT);
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT COUNT(PackageID) AS Count, MainOrderID, Packages.FactoryID FROM Packages WHERE PackageStatusID =4 " +
-                " AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID IN (SELECT MegaOrderID FROM MegaOrders WHERE ClientID = " + ClientID + "))" +
-                " GROUP BY MainOrderID, Packages.FactoryID", ConnectionStrings.MarketingOrdersConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT COUNT(PackageID) AS Count, MainOrderID, Packages.FactoryID FROM Packages WHERE PackageStatusID =4 " +
+                                               " AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID IN (SELECT MegaOrderID FROM MegaOrders WHERE ClientID = " + ClientID + "))" +
+                                               " GROUP BY MainOrderID, Packages.FactoryID", ConnectionStrings.MarketingOrdersConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(ExpMainOrdersDT);
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT COUNT(Packages.PackageID) AS Count, MegaOrders.MegaOrderID, Packages.FactoryID" +
-                " FROM Packages INNER JOIN MainOrders ON Packages.MainOrderID = MainOrders.MainOrderID" +
-                " INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID AND ClientID = " + ClientID +
-                " WHERE (Packages.PackageStatusID = 3)" +
-                " GROUP BY MegaOrders.MegaOrderID, Packages.FactoryID", ConnectionStrings.MarketingOrdersConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT COUNT(Packages.PackageID) AS Count, MegaOrders.MegaOrderID, Packages.FactoryID" +
+                                               " FROM Packages INNER JOIN MainOrders ON Packages.MainOrderID = MainOrders.MainOrderID" +
+                                               " INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID AND ClientID = " + ClientID +
+                                               " WHERE (Packages.PackageStatusID = 3)" +
+                                               " GROUP BY MegaOrders.MegaOrderID, Packages.FactoryID", ConnectionStrings.MarketingOrdersConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DispMegaOrdersDT);
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT COUNT(PackageID) AS Count, MainOrderID, Packages.FactoryID FROM Packages WHERE PackageStatusID = 3" +
-                " AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID IN (SELECT MegaOrderID FROM MegaOrders WHERE ClientID = " + ClientID + "))" +
-                " GROUP BY MainOrderID, Packages.FactoryID", ConnectionStrings.MarketingOrdersConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT COUNT(PackageID) AS Count, MainOrderID, Packages.FactoryID FROM Packages WHERE PackageStatusID = 3" +
+                                               " AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID IN (SELECT MegaOrderID FROM MegaOrders WHERE ClientID = " + ClientID + "))" +
+                                               " GROUP BY MainOrderID, Packages.FactoryID", ConnectionStrings.MarketingOrdersConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DispMainOrdersDT);
                 }
@@ -6215,36 +6267,36 @@ namespace Infinium.Modules.Marketing.Expedition
 
             PackagesDT.Columns.Add(new DataColumn("CheckBoxColumn", Type.GetType("System.Boolean")));
 
-            string SelectCommand = @"SELECT ProductID, ProductName FROM DecorProducts" +
-                " WHERE (ProductID IN (SELECT ProductID FROM DecorConfig)) ORDER BY ProductName ASC";
+            var SelectCommand = @"SELECT ProductID, ProductName FROM DecorProducts" +
+                                " WHERE (ProductID IN (SELECT ProductID FROM DecorConfig)) ORDER BY ProductName ASC";
             ProductsDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
+            using (var DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(ProductsDataTable);
             }
             DecorDataTable = new DataTable();
             SelectCommand = @"SELECT DISTINCT TechStore.TechStoreID AS DecorID, TechStore.TechStoreName AS Name, DecorConfig.ProductID FROM TechStore 
                 INNER JOIN DecorConfig ON TechStore.TechStoreID = DecorConfig.DecorID ORDER BY TechStoreName";
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
+            using (var DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(DecorDataTable);
             }
             SelectCommand = @"SELECT TechStoreID AS FrontID, TechStoreName AS FrontName FROM TechStore 
                 WHERE TechStoreID IN (SELECT FrontID FROM FrontsConfig )
                 ORDER BY TechStoreName";
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
+            using (var DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(FrontsDataTable);
             }
             SelectCommand = @"SELECT DISTINCT TechStoreID AS TechnoProfileID, TechStoreName AS TechnoProfileName FROM TechStore 
                 WHERE TechStoreID IN (SELECT TechnoProfileID FROM FrontsConfig )
                 ORDER BY TechStoreName";
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
+            using (var DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
                 TechnoProfilesDataTable = new DataTable();
                 DA.Fill(TechnoProfilesDataTable);
 
-                DataRow NewRow = TechnoProfilesDataTable.NewRow();
+                var NewRow = TechnoProfilesDataTable.NewRow();
                 NewRow["TechnoProfileID"] = -1;
                 NewRow["TechnoProfileName"] = "-";
                 TechnoProfilesDataTable.Rows.InsertAt(NewRow, 0);
@@ -6252,39 +6304,39 @@ namespace Infinium.Modules.Marketing.Expedition
 
             GetColorsDT();
             GetInsetColorsDT();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Patina",
+            using (var DA = new SqlDataAdapter("SELECT * FROM Patina",
                 ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(PatinaDataTable);
             }
             PatinaRALDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT PatinaRAL.*, Patina.Patina FROM PatinaRAL INNER JOIN Patina ON Patina.PatinaID=PatinaRAL.PatinaID",
+            using (var DA = new SqlDataAdapter("SELECT PatinaRAL.*, Patina.Patina FROM PatinaRAL INNER JOIN Patina ON Patina.PatinaID=PatinaRAL.PatinaID",
                 ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(PatinaRALDataTable);
             }
             foreach (DataRow item in PatinaRALDataTable.Rows)
             {
-                DataRow NewRow = PatinaDataTable.NewRow();
+                var NewRow = PatinaDataTable.NewRow();
                 NewRow["PatinaID"] = item["PatinaRALID"];
                 NewRow["PatinaName"] = item["PatinaRAL"]; NewRow["Patina"] = item["Patina"];
                 NewRow["DisplayName"] = item["DisplayName"];
                 PatinaDataTable.Rows.Add(NewRow);
             }
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM InsetTypes",
+            using (var DA = new SqlDataAdapter("SELECT * FROM InsetTypes",
                 ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(InsetTypesDataTable);
             }
 
             SelectCommand = @"SELECT TOP 0  FrontsOrdersID, MainOrderID, FrontID, ColorID, PatinaID, InsetTypeID, InsetColorID, TechnoProfileID, TechnoColorID, TechnoInsetTypeID, TechnoInsetColorID, Height, Width, Count, Square, Notes FROM FrontsOrders";
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
+            using (var DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
             {
                 DA.Fill(FrontsOrdersDT);
             }
             SelectCommand = @"SELECT TOP 0 DecorOrderID, ProductID, DecorID, ColorID, PatinaID, InsetTypeID, InsetColorID, Height, Length, Width, Count, Notes
                 FROM DecorOrders";
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
+            using (var DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
             {
                 DA.Fill(DecorOrdersDT);
             }
@@ -6303,7 +6355,7 @@ namespace Infinium.Modules.Marketing.Expedition
         {
             get
             {
-                DataGridViewComboBoxColumn Column = new DataGridViewComboBoxColumn()
+                var Column = new DataGridViewComboBoxColumn()
                 {
                     Name = "FrontsColumn",
                     HeaderText = "Фасад",
@@ -6321,7 +6373,7 @@ namespace Infinium.Modules.Marketing.Expedition
         {
             get
             {
-                DataGridViewComboBoxColumn Column = new DataGridViewComboBoxColumn();
+                var Column = new DataGridViewComboBoxColumn();
                 Column = new DataGridViewComboBoxColumn()
                 {
                     Name = "FrameColorsColumn",
@@ -6340,7 +6392,7 @@ namespace Infinium.Modules.Marketing.Expedition
         {
             get
             {
-                DataGridViewComboBoxColumn Column = new DataGridViewComboBoxColumn();
+                var Column = new DataGridViewComboBoxColumn();
                 Column = new DataGridViewComboBoxColumn()
                 {
                     Name = "PatinaColumn",
@@ -6359,7 +6411,7 @@ namespace Infinium.Modules.Marketing.Expedition
         {
             get
             {
-                DataGridViewComboBoxColumn Column = new DataGridViewComboBoxColumn();
+                var Column = new DataGridViewComboBoxColumn();
                 Column = new DataGridViewComboBoxColumn()
                 {
                     Name = "InsetTypesColumn",
@@ -6378,7 +6430,7 @@ namespace Infinium.Modules.Marketing.Expedition
         {
             get
             {
-                DataGridViewComboBoxColumn Column = new DataGridViewComboBoxColumn();
+                var Column = new DataGridViewComboBoxColumn();
                 Column = new DataGridViewComboBoxColumn()
                 {
                     Name = "InsetColorsColumn",
@@ -6397,7 +6449,7 @@ namespace Infinium.Modules.Marketing.Expedition
         {
             get
             {
-                DataGridViewComboBoxColumn Column = new DataGridViewComboBoxColumn();
+                var Column = new DataGridViewComboBoxColumn();
                 Column = new DataGridViewComboBoxColumn()
                 {
                     Name = "TechnoProfilesColumn",
@@ -6416,7 +6468,7 @@ namespace Infinium.Modules.Marketing.Expedition
         {
             get
             {
-                DataGridViewComboBoxColumn Column = new DataGridViewComboBoxColumn();
+                var Column = new DataGridViewComboBoxColumn();
                 Column = new DataGridViewComboBoxColumn()
                 {
                     Name = "TechnoFrameColorsColumn",
@@ -6435,7 +6487,7 @@ namespace Infinium.Modules.Marketing.Expedition
         {
             get
             {
-                DataGridViewComboBoxColumn Column = new DataGridViewComboBoxColumn();
+                var Column = new DataGridViewComboBoxColumn();
                 Column = new DataGridViewComboBoxColumn()
                 {
                     Name = "TechnoInsetTypesColumn",
@@ -6454,7 +6506,7 @@ namespace Infinium.Modules.Marketing.Expedition
         {
             get
             {
-                DataGridViewComboBoxColumn Column = new DataGridViewComboBoxColumn();
+                var Column = new DataGridViewComboBoxColumn();
                 Column = new DataGridViewComboBoxColumn()
                 {
                     Name = "TechnoInsetColorsColumn",
@@ -6473,7 +6525,7 @@ namespace Infinium.Modules.Marketing.Expedition
         {
             get
             {
-                DataGridViewComboBoxColumn ProductColumn = new DataGridViewComboBoxColumn()
+                var ProductColumn = new DataGridViewComboBoxColumn()
                 {
                     Name = "ProductColumn",
                     HeaderText = "Продукт",
@@ -6492,7 +6544,7 @@ namespace Infinium.Modules.Marketing.Expedition
         {
             get
             {
-                DataGridViewComboBoxColumn ItemColumn = new DataGridViewComboBoxColumn()
+                var ItemColumn = new DataGridViewComboBoxColumn()
                 {
                     Name = "ItemColumn",
                     HeaderText = "Название",
@@ -6511,7 +6563,7 @@ namespace Infinium.Modules.Marketing.Expedition
         {
             get
             {
-                DataGridViewComboBoxColumn ColorsColumn = new DataGridViewComboBoxColumn()
+                var ColorsColumn = new DataGridViewComboBoxColumn()
                 {
                     Name = "ColorsColumn",
                     HeaderText = "Цвет",
@@ -6530,7 +6582,7 @@ namespace Infinium.Modules.Marketing.Expedition
         {
             get
             {
-                DataGridViewComboBoxColumn PatinaColumn = new DataGridViewComboBoxColumn()
+                var PatinaColumn = new DataGridViewComboBoxColumn()
                 {
                     Name = "PatinaColumn",
                     HeaderText = "Патина",
@@ -6547,7 +6599,7 @@ namespace Infinium.Modules.Marketing.Expedition
 
         public string PatinaDisplayName(int PatinaID)
         {
-            DataRow[] rows = PatinaDataTable.Select("PatinaID = " + PatinaID);
+            var rows = PatinaDataTable.Select("PatinaID = " + PatinaID);
             if (rows.Count() > 0)
                 return rows[0]["DisplayName"].ToString();
             return string.Empty;
@@ -6555,32 +6607,32 @@ namespace Infinium.Modules.Marketing.Expedition
 
         public void FillMainPercentageColumn()
         {
-            int MainOrderProfilPackCount = 0;
-            int MainOrderProfilStoreCount = 0;
-            int MainOrderProfilDispCount = 0;
-            int MainOrderProfilExpCount = 0;
-            int MainOrderProfilAllCount = 0;
+            var MainOrderProfilPackCount = 0;
+            var MainOrderProfilStoreCount = 0;
+            var MainOrderProfilDispCount = 0;
+            var MainOrderProfilExpCount = 0;
+            var MainOrderProfilAllCount = 0;
 
-            int ProfilPackPercentage = 0;
-            int ProfilStorePercentage = 0;
-            int ProfilExpPercentage = 0;
-            int ProfilDispPercentage = 0;
+            var ProfilPackPercentage = 0;
+            var ProfilStorePercentage = 0;
+            var ProfilExpPercentage = 0;
+            var ProfilDispPercentage = 0;
 
             decimal ProfilPackProgressVal = 0;
             decimal ProfilStoreProgressVal = 0;
             decimal ProfilExpProgressVal = 0;
             decimal ProfilDispProgressVal = 0;
 
-            int MainOrderTPSPackCount = 0;
-            int MainOrderTPSStoreCount = 0;
-            int MainOrderTPSDispCount = 0;
-            int MainOrderTPSExpCount = 0;
-            int MainOrderTPSAllCount = 0;
+            var MainOrderTPSPackCount = 0;
+            var MainOrderTPSStoreCount = 0;
+            var MainOrderTPSDispCount = 0;
+            var MainOrderTPSExpCount = 0;
+            var MainOrderTPSAllCount = 0;
 
-            int TPSPackPercentage = 0;
-            int TPSStorePercentage = 0;
-            int TPSExpPercentage = 0;
-            int TPSDispPercentage = 0;
+            var TPSPackPercentage = 0;
+            var TPSStorePercentage = 0;
+            var TPSExpPercentage = 0;
+            var TPSDispPercentage = 0;
 
             decimal TPSPackProgressVal = 0;
             decimal TPSStoreProgressVal = 0;
@@ -6596,12 +6648,12 @@ namespace Infinium.Modules.Marketing.Expedition
             decimal d7 = 0;
             decimal d8 = 0;
 
-            for (int i = 0; i < MainOrdersDT.Rows.Count; i++)
+            for (var i = 0; i < MainOrdersDT.Rows.Count; i++)
             {
-                int MainOrderID = Convert.ToInt32(MainOrdersDT.Rows[i]["MainOrderID"]);
-                int FactoryID = Convert.ToInt32(MainOrdersDT.Rows[i]["FactoryID"]);
-                int ProfilPackAllocStatusID = Convert.ToInt32(MainOrdersDT.Rows[i]["ProfilPackAllocStatusID"]);
-                int TPSPackAllocStatusID = Convert.ToInt32(MainOrdersDT.Rows[i]["TPSPackAllocStatusID"]);
+                var MainOrderID = Convert.ToInt32(MainOrdersDT.Rows[i]["MainOrderID"]);
+                var FactoryID = Convert.ToInt32(MainOrdersDT.Rows[i]["FactoryID"]);
+                var ProfilPackAllocStatusID = Convert.ToInt32(MainOrdersDT.Rows[i]["ProfilPackAllocStatusID"]);
+                var TPSPackAllocStatusID = Convert.ToInt32(MainOrdersDT.Rows[i]["TPSPackAllocStatusID"]);
 
                 MainOrderProfilPackCount = GetMainOrderPackCount(Convert.ToInt32(MainOrdersDT.Rows[i]["MainOrderID"]), 1);
                 MainOrderProfilStoreCount = GetMainOrderStoreCount(Convert.ToInt32(MainOrdersDT.Rows[i]["MainOrderID"]), 1);
@@ -6711,32 +6763,32 @@ namespace Infinium.Modules.Marketing.Expedition
 
         public void FillMegaPercentageColumn()
         {
-            int MegaOrderProfilPackCount = 0;
-            int MegaOrderProfilStoreCount = 0;
-            int MegaOrderProfilExpCount = 0;
-            int MegaOrderProfilDispCount = 0;
-            int MegaOrderProfilAllCount = 0;
+            var MegaOrderProfilPackCount = 0;
+            var MegaOrderProfilStoreCount = 0;
+            var MegaOrderProfilExpCount = 0;
+            var MegaOrderProfilDispCount = 0;
+            var MegaOrderProfilAllCount = 0;
 
-            int ProfilPackPercentage = 0;
-            int ProfilStorePercentage = 0;
-            int ProfilExpPercentage = 0;
-            int ProfilDispPercentage = 0;
+            var ProfilPackPercentage = 0;
+            var ProfilStorePercentage = 0;
+            var ProfilExpPercentage = 0;
+            var ProfilDispPercentage = 0;
 
             decimal ProfilPackProgressVal = 0;
             decimal ProfilStoreProgressVal = 0;
             decimal ProfilExpProgressVal = 0;
             decimal ProfilDispProgressVal = 0;
 
-            int MegaOrderTPSPackCount = 0;
-            int MegaOrderTPSStoreCount = 0;
-            int MegaOrderTPSExpCount = 0;
-            int MegaOrderTPSDispCount = 0;
-            int MegaOrderTPSAllCount = 0;
+            var MegaOrderTPSPackCount = 0;
+            var MegaOrderTPSStoreCount = 0;
+            var MegaOrderTPSExpCount = 0;
+            var MegaOrderTPSDispCount = 0;
+            var MegaOrderTPSAllCount = 0;
 
-            int TPSPackPercentage = 0;
-            int TPSStorePercentage = 0;
-            int TPSExpPercentage = 0;
-            int TPSDispPercentage = 0;
+            var TPSPackPercentage = 0;
+            var TPSStorePercentage = 0;
+            var TPSExpPercentage = 0;
+            var TPSDispPercentage = 0;
 
             decimal TPSPackProgressVal = 0;
             decimal TPSStoreProgressVal = 0;
@@ -6752,12 +6804,12 @@ namespace Infinium.Modules.Marketing.Expedition
             decimal d7 = 0;
             decimal d8 = 0;
 
-            for (int i = 0; i < MegaOrdersDT.Rows.Count; i++)
+            for (var i = 0; i < MegaOrdersDT.Rows.Count; i++)
             {
-                int MegaOrderID = Convert.ToInt32(MegaOrdersDT.Rows[i]["MegaOrderID"]);
-                int FactoryID = Convert.ToInt32(MegaOrdersDT.Rows[i]["FactoryID"]);
-                int ProfilPackAllocStatusID = Convert.ToInt32(MegaOrdersDT.Rows[i]["ProfilPackAllocStatusID"]);
-                int TPSPackAllocStatusID = Convert.ToInt32(MegaOrdersDT.Rows[i]["TPSPackAllocStatusID"]);
+                var MegaOrderID = Convert.ToInt32(MegaOrdersDT.Rows[i]["MegaOrderID"]);
+                var FactoryID = Convert.ToInt32(MegaOrdersDT.Rows[i]["FactoryID"]);
+                var ProfilPackAllocStatusID = Convert.ToInt32(MegaOrdersDT.Rows[i]["ProfilPackAllocStatusID"]);
+                var TPSPackAllocStatusID = Convert.ToInt32(MegaOrdersDT.Rows[i]["TPSPackAllocStatusID"]);
 
                 MegaOrderProfilPackCount = GetMegaOrderPackCount(Convert.ToInt32(MegaOrdersDT.Rows[i]["MegaOrderID"]), 1);
                 MegaOrderProfilStoreCount = GetMegaOrderStoreCount(Convert.ToInt32(MegaOrdersDT.Rows[i]["MegaOrderID"]), 1);
@@ -6868,8 +6920,8 @@ namespace Infinium.Modules.Marketing.Expedition
 
         private int GetMainOrderPackCount(int MainOrderID, int FactoryID)
         {
-            int PackCount = 0;
-            DataRow[] Rows = PackMainOrdersDT.Select("MainOrderID = " + MainOrderID + " AND FactoryID = " + FactoryID);
+            var PackCount = 0;
+            var Rows = PackMainOrdersDT.Select("MainOrderID = " + MainOrderID + " AND FactoryID = " + FactoryID);
 
             if (Rows.Count() > 0)
                 PackCount = Convert.ToInt32(Rows[0]["Count"]);
@@ -6879,8 +6931,8 @@ namespace Infinium.Modules.Marketing.Expedition
 
         private int GetMainOrderDispCount(int MainOrderID, int FactoryID)
         {
-            int DispCount = 0;
-            DataRow[] Rows = DispMainOrdersDT.Select("MainOrderID = " + MainOrderID + " AND FactoryID = " + FactoryID);
+            var DispCount = 0;
+            var Rows = DispMainOrdersDT.Select("MainOrderID = " + MainOrderID + " AND FactoryID = " + FactoryID);
 
             if (Rows.Count() > 0)
                 DispCount = Convert.ToInt32(Rows[0]["Count"]);
@@ -6890,8 +6942,8 @@ namespace Infinium.Modules.Marketing.Expedition
 
         private int GetMegaOrderPackCount(int MegaOrderID, int FactoryID)
         {
-            int PackCount = 0;
-            DataRow[] Rows = PackMegaOrdersDT.Select("MegaOrderID = " + MegaOrderID + " AND FactoryID = " + FactoryID);
+            var PackCount = 0;
+            var Rows = PackMegaOrdersDT.Select("MegaOrderID = " + MegaOrderID + " AND FactoryID = " + FactoryID);
 
             if (Rows.Count() > 0)
                 PackCount = Convert.ToInt32(Rows[0]["Count"]);
@@ -6901,8 +6953,8 @@ namespace Infinium.Modules.Marketing.Expedition
 
         private int GetMegaOrderDispCount(int MegaOrderID, int FactoryID)
         {
-            int DispCount = 0;
-            DataRow[] Rows = DispMegaOrdersDT.Select("MegaOrderID = " + MegaOrderID + " AND FactoryID = " + FactoryID);
+            var DispCount = 0;
+            var Rows = DispMegaOrdersDT.Select("MegaOrderID = " + MegaOrderID + " AND FactoryID = " + FactoryID);
 
             if (Rows.Count() > 0)
                 DispCount = Convert.ToInt32(Rows[0]["Count"]);
@@ -6912,8 +6964,8 @@ namespace Infinium.Modules.Marketing.Expedition
 
         private int GetMainOrderStoreCount(int MainOrderID, int FactoryID)
         {
-            int PackCount = 0;
-            DataRow[] Rows = StoreMainOrdersDT.Select("MainOrderID = " + MainOrderID + " AND FactoryID = " + FactoryID);
+            var PackCount = 0;
+            var Rows = StoreMainOrdersDT.Select("MainOrderID = " + MainOrderID + " AND FactoryID = " + FactoryID);
 
             if (Rows.Count() > 0)
                 PackCount = Convert.ToInt32(Rows[0]["Count"]);
@@ -6923,8 +6975,8 @@ namespace Infinium.Modules.Marketing.Expedition
 
         private int GetMegaOrderStoreCount(int MegaOrderID, int FactoryID)
         {
-            int PackCount = 0;
-            DataRow[] Rows = StoreMegaOrdersDT.Select("MegaOrderID = " + MegaOrderID + " AND FactoryID = " + FactoryID);
+            var PackCount = 0;
+            var Rows = StoreMegaOrdersDT.Select("MegaOrderID = " + MegaOrderID + " AND FactoryID = " + FactoryID);
 
             if (Rows.Count() > 0)
                 PackCount = Convert.ToInt32(Rows[0]["Count"]);
@@ -6934,8 +6986,8 @@ namespace Infinium.Modules.Marketing.Expedition
 
         private int GetMainOrderExpCount(int MainOrderID, int FactoryID)
         {
-            int PackCount = 0;
-            DataRow[] Rows = ExpMainOrdersDT.Select("MainOrderID = " + MainOrderID + " AND FactoryID = " + FactoryID);
+            var PackCount = 0;
+            var Rows = ExpMainOrdersDT.Select("MainOrderID = " + MainOrderID + " AND FactoryID = " + FactoryID);
 
             if (Rows.Count() > 0)
                 PackCount = Convert.ToInt32(Rows[0]["Count"]);
@@ -6945,8 +6997,8 @@ namespace Infinium.Modules.Marketing.Expedition
 
         private int GetMegaOrderExpCount(int MegaOrderID, int FactoryID)
         {
-            int PackCount = 0;
-            DataRow[] Rows = ExpMegaOrdersDT.Select("MegaOrderID = " + MegaOrderID + " AND FactoryID = " + FactoryID);
+            var PackCount = 0;
+            var Rows = ExpMegaOrdersDT.Select("MegaOrderID = " + MegaOrderID + " AND FactoryID = " + FactoryID);
 
             if (Rows.Count() > 0)
                 PackCount = Convert.ToInt32(Rows[0]["Count"]);
@@ -7014,12 +7066,12 @@ namespace Infinium.Modules.Marketing.Expedition
 
         public void ClearConfirmDispInfo()
         {
-            string SelectCommand = "SELECT DispatchID, ConfirmDispDateTime, ConfirmDispUserID FROM Dispatch WHERE DispatchID=" + DispatchID;
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
+            var SelectCommand = "SELECT DispatchID, ConfirmDispDateTime, ConfirmDispUserID FROM Dispatch WHERE DispatchID=" + DispatchID;
+            using (var DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         if (DA.Fill(DT) > 0)
                         {
@@ -7034,12 +7086,12 @@ namespace Infinium.Modules.Marketing.Expedition
 
         public void ClearConfirmExpInfo()
         {
-            string SelectCommand = "SELECT DispatchID, ConfirmExpDateTime, ConfirmExpUserID FROM Dispatch WHERE DispatchID=" + DispatchID;
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
+            var SelectCommand = "SELECT DispatchID, ConfirmExpDateTime, ConfirmExpUserID FROM Dispatch WHERE DispatchID=" + DispatchID;
+            using (var DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         if (DA.Fill(DT) > 0)
                         {
@@ -7054,22 +7106,22 @@ namespace Infinium.Modules.Marketing.Expedition
 
         public void SetDispatchDate(DateTime DispatchDate)
         {
-            int[] MegaOrderID = DistMegaOrders();
-            string SqlCommandText = "SELECT MegaOrderID, ProfilDispatchDate, TPSDispatchDate, FactoryID FROM MegaOrders" +
-                " WHERE MegaOrderID IN (" + string.Join(",", MegaOrderID) + ")";
+            var MegaOrderID = DistMegaOrders();
+            var SqlCommandText = "SELECT MegaOrderID, ProfilDispatchDate, TPSDispatchDate, FactoryID FROM MegaOrders" +
+                                 " WHERE MegaOrderID IN (" + string.Join(",", MegaOrderID) + ")";
 
-            using (SqlDataAdapter DA = new SqlDataAdapter(SqlCommandText, ConnectionStrings.MarketingOrdersConnectionString))
+            using (var DA = new SqlDataAdapter(SqlCommandText, ConnectionStrings.MarketingOrdersConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         if (DA.Fill(DT) > 0)
                         {
 
-                            for (int i = 0; i < DT.Rows.Count; i++)
+                            for (var i = 0; i < DT.Rows.Count; i++)
                             {
-                                int FactoryID = Convert.ToInt32(DT.Rows[i]["FactoryID"]);
+                                var FactoryID = Convert.ToInt32(DT.Rows[i]["FactoryID"]);
                                 if (FactoryID == 1)
                                 {
                                     DT.Rows[i]["ProfilDispatchDate"] = DispatchDate;
@@ -7094,18 +7146,18 @@ namespace Infinium.Modules.Marketing.Expedition
             SqlCommandText = "SELECT MegaOrderID, ProfilDispatchDate, TPSDispatchDate, FactoryID FROM NewMegaOrders" +
                 " WHERE MegaOrderID IN (" + string.Join(",", MegaOrderID) + ")";
 
-            using (SqlDataAdapter DA = new SqlDataAdapter(SqlCommandText, ConnectionStrings.MarketingOrdersConnectionString))
+            using (var DA = new SqlDataAdapter(SqlCommandText, ConnectionStrings.MarketingOrdersConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         if (DA.Fill(DT) > 0)
                         {
 
-                            for (int i = 0; i < DT.Rows.Count; i++)
+                            for (var i = 0; i < DT.Rows.Count; i++)
                             {
-                                int FactoryID = Convert.ToInt32(DT.Rows[i]["FactoryID"]);
+                                var FactoryID = Convert.ToInt32(DT.Rows[i]["FactoryID"]);
                                 if (FactoryID == 1)
                                 {
                                     DT.Rows[i]["ProfilDispatchDate"] = DispatchDate;
@@ -7130,7 +7182,7 @@ namespace Infinium.Modules.Marketing.Expedition
 
         public void SavePackages()
         {
-            for (int i = 0; i < PackagesDT.Rows.Count; i++)
+            for (var i = 0; i < PackagesDT.Rows.Count; i++)
             {
                 if (Convert.ToBoolean(PackagesDT.Rows[i]["CheckBoxColumn"]))
                     PackagesDT.Rows[i]["DispatchID"] = DispatchID;
@@ -7138,11 +7190,11 @@ namespace Infinium.Modules.Marketing.Expedition
                     PackagesDT.Rows[i]["DispatchID"] = DBNull.Value;
             }
 
-            string SelectCommand = "SELECT TOP 0 PackageID, DispatchID FROM Packages";
+            var SelectCommand = "SELECT TOP 0 PackageID, DispatchID FROM Packages";
 
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
+            using (var DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
                     DA.Update(PackagesDT);
                 }
@@ -7151,15 +7203,15 @@ namespace Infinium.Modules.Marketing.Expedition
 
         private int[] DistMegaOrders()
         {
-            DataTable DT = new DataTable();
+            var DT = new DataTable();
             DT.Columns.Add(new DataColumn("MegaOrderID", Type.GetType("System.Int32")));
 
-            using (DataView DV = new DataView(PackagesDT))
+            using (var DV = new DataView(PackagesDT))
             {
                 DT = DV.ToTable(true, new string[] { "MegaOrderID" });
             }
-            int[] MegaOrders = new int[DT.Rows.Count];
-            for (int i = 0; i < DT.Rows.Count; i++)
+            var MegaOrders = new int[DT.Rows.Count];
+            for (var i = 0; i < DT.Rows.Count; i++)
             {
                 MegaOrders[i] = Convert.ToInt32(DT.Rows[i]["MegaOrderID"]);
             }
@@ -7168,15 +7220,15 @@ namespace Infinium.Modules.Marketing.Expedition
 
         public void SetDefaultValueToCheckBoxColumn()
         {
-            for (int i = 0; i < MegaOrdersDT.Rows.Count; i++)
+            for (var i = 0; i < MegaOrdersDT.Rows.Count; i++)
             {
                 MegaOrdersDT.Rows[i]["CheckBoxColumn"] = false;
             }
-            for (int i = 0; i < MainOrdersDT.Rows.Count; i++)
+            for (var i = 0; i < MainOrdersDT.Rows.Count; i++)
             {
                 MainOrdersDT.Rows[i]["CheckBoxColumn"] = false;
             }
-            for (int i = 0; i < PackagesDT.Rows.Count; i++)
+            for (var i = 0; i < PackagesDT.Rows.Count; i++)
             {
                 PackagesDT.Rows[i]["CheckBoxColumn"] = false;
             }
@@ -7190,8 +7242,8 @@ namespace Infinium.Modules.Marketing.Expedition
             bool OnExpedition,
             bool Dispatched)
         {
-            int FactoryID = 0;
-            string OrdersProductionStatus = string.Empty;
+            var FactoryID = 0;
+            var OrdersProductionStatus = string.Empty;
 
             #region Orders
 
@@ -7318,7 +7370,7 @@ namespace Infinium.Modules.Marketing.Expedition
                 OrdersProductionStatus = " AND (" + OrdersProductionStatus + ")";
             }
 
-            string SelectCommand = @"SELECT MegaOrderID, OrderNumber, Weight, FactoryID, ProfilPackAllocStatusID, TPSPackAllocStatusID, ProfilPackCount, TPSPackCount FROM MegaOrders
+            var SelectCommand = @"SELECT MegaOrderID, OrderNumber, Weight, FactoryID, ProfilPackAllocStatusID, TPSPackAllocStatusID, ProfilPackCount, TPSPackCount FROM MegaOrders
                 WHERE NOT (AgreementStatusID=0 AND CreatedByClient=1) AND ClientID = " + ClientID + @" AND MegaOrderID IN (SELECT MegaOrderID FROM MainOrders
                 WHERE MainOrderID IN (SELECT MainOrderID FROM Packages WHERE (DispatchID IS NULL OR DispatchID = " + DispatchID + @")) " + OrdersProductionStatus + ") ORDER BY OrderNumber";
             if (!CanEditDispatch)
@@ -7328,7 +7380,7 @@ namespace Infinium.Modules.Marketing.Expedition
             //            string SelectCommand = @"SELECT MegaOrderID, OrderNumber, Weight, ProfilPackCount, TPSPackCount FROM MegaOrders
             //				WHERE ClientID = " + ClientID + @" AND MegaOrderID IN (SELECT MegaOrderID FROM MainOrders)
             //				ORDER BY OrderNumber";
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
+            using (var DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
             {
                 MegaOrdersDT.Clear();
                 DA.Fill(MegaOrdersDT);
@@ -7343,8 +7395,8 @@ namespace Infinium.Modules.Marketing.Expedition
             bool OnExpedition,
             bool Dispatched)
         {
-            int FactoryID = 0;
-            string OrdersProductionStatus = string.Empty;
+            var FactoryID = 0;
+            var OrdersProductionStatus = string.Empty;
 
             #region Orders
 
@@ -7471,10 +7523,10 @@ namespace Infinium.Modules.Marketing.Expedition
                 OrdersProductionStatus = " AND (" + OrdersProductionStatus + ")";
             }
 
-            string SelectCommand = @"SELECT MainOrderID, MegaOrderID, Weight, MainOrders.FactoryID, ProfilPackAllocStatusID, TPSPackAllocStatusID, ProfilPackCount, TPSPackCount, FactoryName, Notes FROM MainOrders
+            var SelectCommand = @"SELECT MainOrderID, MegaOrderID, Weight, MainOrders.FactoryID, ProfilPackAllocStatusID, TPSPackAllocStatusID, ProfilPackCount, TPSPackCount, FactoryName, Notes FROM MainOrders
                 INNER JOIN infiniu2_catalog.dbo.Factory ON MainOrders.FactoryID = infiniu2_catalog.dbo.Factory.FactoryID
                 WHERE MainOrderID IN (SELECT MainOrderID FROM Packages WHERE (DispatchID IS NULL OR DispatchID = " + DispatchID + @")) AND MegaOrderID IN (SELECT MegaOrderID FROM MegaOrders WHERE NOT (AgreementStatusID=0 AND CreatedByClient=1) AND ClientID = " + ClientID + @")" +
-                OrdersProductionStatus;
+                                OrdersProductionStatus;
             if (!CanEditDispatch)
                 SelectCommand = @"SELECT MainOrderID, MegaOrderID, Weight, MainOrders.FactoryID, ProfilPackAllocStatusID, TPSPackAllocStatusID, ProfilPackCount, TPSPackCount, FactoryName, Notes FROM MainOrders
                 INNER JOIN infiniu2_catalog.dbo.Factory ON MainOrders.FactoryID = infiniu2_catalog.dbo.Factory.FactoryID
@@ -7483,7 +7535,7 @@ namespace Infinium.Modules.Marketing.Expedition
             //            string SelectCommand = @"SELECT MainOrderID, MegaOrderID, Weight, ProfilPackCount, TPSPackCount, FactoryName, Notes FROM MainOrders
             //				INNER JOIN infiniu2_catalog.dbo.Factory ON MainOrders.FactoryID = infiniu2_catalog.dbo.Factory.FactoryID
             //				WHERE MegaOrderID IN (SELECT MegaOrderID FROM MegaOrders WHERE ClientID = " + ClientID + @")";
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
+            using (var DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
             {
                 MainOrdersDT.Clear();
                 DA.Fill(MainOrdersDT);
@@ -7498,8 +7550,8 @@ namespace Infinium.Modules.Marketing.Expedition
             bool OnExpedition,
             bool Dispatched)
         {
-            int FactoryID = 0;
-            string OrdersProductionStatus = string.Empty;
+            var FactoryID = 0;
+            var OrdersProductionStatus = string.Empty;
 
             #region Orders
 
@@ -7626,12 +7678,12 @@ namespace Infinium.Modules.Marketing.Expedition
                 OrdersProductionStatus = " AND (" + OrdersProductionStatus + ")";
             }
 
-            string SelectCommand = @"SELECT Packages.PackNumber, Packages.ProductType, Packages.MainOrderID, MainOrders.MegaOrderID, PackageStatus, FactoryName, Packages.PackingDateTime,
+            var SelectCommand = @"SELECT Packages.PackNumber, Packages.ProductType, Packages.MainOrderID, MainOrders.MegaOrderID, PackageStatus, FactoryName, Packages.PackingDateTime,
                 Packages.StorageDateTime, Packages.ExpeditionDateTime, Packages.DispatchDateTime, Packages.PackageID, Packages.DispatchID, Packages.TrayID FROM Packages
                 INNER JOIN infiniu2_catalog.dbo.Factory ON Packages.FactoryID = infiniu2_catalog.dbo.Factory.FactoryID
                 INNER JOIN infiniu2_catalog.dbo.PackageStatuses ON Packages.PackageStatusID = infiniu2_catalog.dbo.PackageStatuses.PackageStatusID
                 INNER JOIN MainOrders ON Packages.MainOrderID = MainOrders.MainOrderID" + OrdersProductionStatus +
-                @"INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID AND NOT (AgreementStatusID=0 AND CreatedByClient=1)
+                                @"INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID AND NOT (AgreementStatusID=0 AND CreatedByClient=1)
                 AND ClientID = " + ClientID + @" WHERE (DispatchID IS NULL OR DispatchID = " + DispatchID + @")";
             if (!CanEditDispatch)
                 SelectCommand = @"SELECT Packages.PackNumber, Packages.ProductType, Packages.MainOrderID, MainOrders.MegaOrderID, PackageStatus, FactoryName, Packages.PackingDateTime,
@@ -7647,7 +7699,7 @@ namespace Infinium.Modules.Marketing.Expedition
             //				INNER JOIN infiniu2_catalog.dbo.Factory ON Packages.FactoryID = infiniu2_catalog.dbo.Factory.FactoryID
             //				INNER JOIN infiniu2_catalog.dbo.PackageStatuses ON Packages.PackageStatusID = infiniu2_catalog.dbo.PackageStatuses.PackageStatusID
             //				WHERE MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID IN (SELECT MegaOrderID FROM MegaOrders WHERE ClientID = " + ClientID + @"))";
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
+            using (var DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
             {
                 PackagesDT.Clear();
                 DA.Fill(PackagesDT);
@@ -7656,9 +7708,9 @@ namespace Infinium.Modules.Marketing.Expedition
 
         public void UpdateMegaOrders(int MegaOrderID)
         {
-            string SelectCommand = @"SELECT MegaOrderID, OrderNumber, Weight, MegaOrders.FactoryID, ProfilPackAllocStatusID, TPSPackAllocStatusID, ProfilPackCount, TPSPackCount FROM MegaOrders" +
-                " WHERE MegaOrderID = " + MegaOrderID;
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
+            var SelectCommand = @"SELECT MegaOrderID, OrderNumber, Weight, MegaOrders.FactoryID, ProfilPackAllocStatusID, TPSPackAllocStatusID, ProfilPackCount, TPSPackCount FROM MegaOrders" +
+                                " WHERE MegaOrderID = " + MegaOrderID;
+            using (var DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
             {
                 DA.Fill(MegaOrdersDT);
             }
@@ -7666,10 +7718,10 @@ namespace Infinium.Modules.Marketing.Expedition
 
         public void UpdateMainOrders(int MegaOrderID)
         {
-            string SelectCommand = @"SELECT MainOrderID, MegaOrderID, Weight, MainOrders.FactoryID, ProfilPackAllocStatusID, TPSPackAllocStatusID, ProfilPackCount, TPSPackCount, FactoryName, Notes FROM MainOrders
+            var SelectCommand = @"SELECT MainOrderID, MegaOrderID, Weight, MainOrders.FactoryID, ProfilPackAllocStatusID, TPSPackAllocStatusID, ProfilPackCount, TPSPackCount, FactoryName, Notes FROM MainOrders
                 INNER JOIN infiniu2_catalog.dbo.Factory ON MainOrders.FactoryID = infiniu2_catalog.dbo.Factory.FactoryID
                 WHERE MegaOrderID = " + MegaOrderID;
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
+            using (var DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
             {
                 DA.Fill(MainOrdersDT);
             }
@@ -7677,12 +7729,12 @@ namespace Infinium.Modules.Marketing.Expedition
 
         public void UpdatePackages(int MegaOrderID)
         {
-            string SelectCommand = @"SELECT Packages.PackNumber, Packages.ProductType, Packages.MainOrderID, MainOrders.MegaOrderID, PackageStatus, FactoryName, Packages.PackingDateTime,
+            var SelectCommand = @"SELECT Packages.PackNumber, Packages.ProductType, Packages.MainOrderID, MainOrders.MegaOrderID, PackageStatus, FactoryName, Packages.PackingDateTime,
                 Packages.StorageDateTime, Packages.ExpeditionDateTime, Packages.DispatchDateTime, Packages.PackageID, Packages.DispatchID, Packages.TrayID FROM Packages
                 INNER JOIN infiniu2_catalog.dbo.Factory ON Packages.FactoryID = infiniu2_catalog.dbo.Factory.FactoryID
                 INNER JOIN infiniu2_catalog.dbo.PackageStatuses ON Packages.PackageStatusID = infiniu2_catalog.dbo.PackageStatuses.PackageStatusID
                 INNER JOIN MainOrders ON Packages.MainOrderID = MainOrders.MainOrderID AND Packages.MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = " + MegaOrderID + ") ORDER BY PackNumber";
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
+            using (var DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
             {
                 DA.Fill(PackagesDT);
             }
@@ -7702,31 +7754,31 @@ namespace Infinium.Modules.Marketing.Expedition
 
         public bool FilterFrontsOrders(int PackageID, int MainOrderID)
         {
-            DataTable OriginalFrontsOrdersDT = new DataTable();
+            var OriginalFrontsOrdersDT = new DataTable();
             OriginalFrontsOrdersDT = FrontsOrdersDT.Clone();
 
-            string SelectCommand = @"SELECT  FrontsOrdersID, MainOrderID, FrontID, ColorID, PatinaID, InsetTypeID, InsetColorID, TechnoProfileID, TechnoColorID, TechnoInsetTypeID, TechnoInsetColorID, Height, Width, Count, Square, Notes FROM FrontsOrders
+            var SelectCommand = @"SELECT  FrontsOrdersID, MainOrderID, FrontID, ColorID, PatinaID, InsetTypeID, InsetColorID, TechnoProfileID, TechnoColorID, TechnoInsetTypeID, TechnoInsetColorID, Height, Width, Count, Square, Notes FROM FrontsOrders
                 WHERE MainOrderID = " + MainOrderID;
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
+            using (var DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
             {
                 DA.Fill(OriginalFrontsOrdersDT);
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM PackageDetails WHERE PackageID = " + PackageID,
+            using (var DA = new SqlDataAdapter("SELECT * FROM PackageDetails WHERE PackageID = " + PackageID,
                 ConnectionStrings.MarketingOrdersConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     if (DA.Fill(DT) > 0)
                     {
                         foreach (DataRow Row in DT.Rows)
                         {
-                            DataRow[] ORow = OriginalFrontsOrdersDT.Select("FrontsOrdersID = " + Row["OrderID"]);
+                            var ORow = OriginalFrontsOrdersDT.Select("FrontsOrdersID = " + Row["OrderID"]);
 
                             if (ORow.Count() == 0)
                                 continue;
 
-                            DataRow NewRow = FrontsOrdersDT.NewRow();
+                            var NewRow = FrontsOrdersDT.NewRow();
                             NewRow.ItemArray = ORow[0].ItemArray;
                             NewRow["Count"] = Row["Count"];
                             FrontsOrdersDT.Rows.Add(NewRow);
@@ -7736,7 +7788,7 @@ namespace Infinium.Modules.Marketing.Expedition
                     {
                         foreach (DataRow Row in OriginalFrontsOrdersDT.Rows)
                         {
-                            DataRow NewRow = FrontsOrdersDT.NewRow();
+                            var NewRow = FrontsOrdersDT.NewRow();
                             NewRow.ItemArray = Row.ItemArray;
                             FrontsOrdersDT.Rows.Add(NewRow);
                         }
@@ -7750,31 +7802,31 @@ namespace Infinium.Modules.Marketing.Expedition
 
         public bool FilterDecorOrders(int PackageID, int MainOrderID)
         {
-            DataTable OriginalDecorOrdersDT = new DataTable();
+            var OriginalDecorOrdersDT = new DataTable();
             OriginalDecorOrdersDT = DecorOrdersDT.Clone();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter(@"SELECT DecorOrderID, ProductID, DecorID, ColorID, PatinaID, InsetTypeID, InsetColorID, Height, Length, Width, Count, Notes FROM DecorOrders
+            using (var DA = new SqlDataAdapter(@"SELECT DecorOrderID, ProductID, DecorID, ColorID, PatinaID, InsetTypeID, InsetColorID, Height, Length, Width, Count, Notes FROM DecorOrders
                 WHERE MainOrderID = " + MainOrderID,
                 ConnectionStrings.MarketingOrdersConnectionString))
             {
                 DA.Fill(OriginalDecorOrdersDT);
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM PackageDetails WHERE PackageID = " + PackageID,
+            using (var DA = new SqlDataAdapter("SELECT * FROM PackageDetails WHERE PackageID = " + PackageID,
                 ConnectionStrings.MarketingOrdersConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     if (DA.Fill(DT) > 0)
                     {
                         foreach (DataRow Row in DT.Rows)
                         {
-                            DataRow[] ORow = OriginalDecorOrdersDT.Select("DecorOrderID = " + Row["OrderID"]);
+                            var ORow = OriginalDecorOrdersDT.Select("DecorOrderID = " + Row["OrderID"]);
 
                             if (ORow.Count() == 0)
                                 continue;
 
-                            DataRow NewRow = DecorOrdersDT.NewRow();
+                            var NewRow = DecorOrdersDT.NewRow();
                             NewRow.ItemArray = ORow[0].ItemArray;
                             NewRow["Count"] = Row["Count"];
                             DecorOrdersDT.Rows.Add(NewRow);
@@ -7784,7 +7836,7 @@ namespace Infinium.Modules.Marketing.Expedition
                     {
                         foreach (DataRow Row in OriginalDecorOrdersDT.Rows)
                         {
-                            DataRow NewRow = DecorOrdersDT.NewRow();
+                            var NewRow = DecorOrdersDT.NewRow();
                             NewRow.ItemArray = Row.ItemArray;
                             DecorOrdersDT.Rows.Add(NewRow);
                         }
@@ -7798,10 +7850,10 @@ namespace Infinium.Modules.Marketing.Expedition
 
         public bool SetMegaOrderDispatchStatus()
         {
-            for (int i = 0; i < MegaOrdersDT.Rows.Count; i++)
+            for (var i = 0; i < MegaOrdersDT.Rows.Count; i++)
             {
-                DataRow[] DRows = MainOrdersDT.Select("CheckBoxColumn=TRUE AND MegaOrderID=" + MegaOrdersDT.Rows[i]["MegaOrderID"]);
-                DataRow[] MRows = MainOrdersDT.Select("MegaOrderID=" + MegaOrdersDT.Rows[i]["MegaOrderID"]);
+                var DRows = MainOrdersDT.Select("CheckBoxColumn=TRUE AND MegaOrderID=" + MegaOrdersDT.Rows[i]["MegaOrderID"]);
+                var MRows = MainOrdersDT.Select("MegaOrderID=" + MegaOrdersDT.Rows[i]["MegaOrderID"]);
                 if (DRows.Count() > 0 && DRows.Count() == MRows.Count())
                     MegaOrdersDT.Rows[i]["CheckBoxColumn"] = true;
             }
@@ -7810,10 +7862,10 @@ namespace Infinium.Modules.Marketing.Expedition
 
         public bool SetMainOrderDispatchStatus()
         {
-            for (int i = 0; i < MainOrdersDT.Rows.Count; i++)
+            for (var i = 0; i < MainOrdersDT.Rows.Count; i++)
             {
-                DataRow[] DRows = PackagesDT.Select("DispatchID IS NOT NULL AND MainOrderID=" + MainOrdersDT.Rows[i]["MainOrderID"]);
-                DataRow[] MRows = PackagesDT.Select("MainOrderID=" + MainOrdersDT.Rows[i]["MainOrderID"]);
+                var DRows = PackagesDT.Select("DispatchID IS NOT NULL AND MainOrderID=" + MainOrdersDT.Rows[i]["MainOrderID"]);
+                var MRows = PackagesDT.Select("MainOrderID=" + MainOrdersDT.Rows[i]["MainOrderID"]);
                 if (DRows.Count() > 0 && DRows.Count() == MRows.Count())
                     MainOrdersDT.Rows[i]["CheckBoxColumn"] = true;
             }
@@ -7822,7 +7874,7 @@ namespace Infinium.Modules.Marketing.Expedition
 
         public bool SetPackageDispatchStatus()
         {
-            for (int i = 0; i < PackagesDT.Rows.Count; i++)
+            for (var i = 0; i < PackagesDT.Rows.Count; i++)
             {
                 if (PackagesDT.Rows[i]["DispatchID"] != DBNull.Value)
                     PackagesDT.Rows[i]["CheckBoxColumn"] = true;
@@ -7832,8 +7884,8 @@ namespace Infinium.Modules.Marketing.Expedition
 
         public void FlagMainOrders(int MegaOrderID, bool Checked)
         {
-            DataRow[] Rows = MainOrdersDT.Select("MegaOrderID=" + MegaOrderID);
-            foreach (DataRow item in Rows)
+            var Rows = MainOrdersDT.Select("MegaOrderID=" + MegaOrderID);
+            foreach (var item in Rows)
             {
                 item["CheckBoxColumn"] = Checked;
                 FlagPackages(Convert.ToInt32(item["MainOrderID"]), Checked);
@@ -7842,8 +7894,8 @@ namespace Infinium.Modules.Marketing.Expedition
 
         public void FlagPackages(int MainOrderID, bool Checked)
         {
-            DataRow[] Rows = PackagesDT.Select("MainOrderID=" + MainOrderID);
-            foreach (DataRow item in Rows)
+            var Rows = PackagesDT.Select("MainOrderID=" + MainOrderID);
+            foreach (var item in Rows)
             {
                 item["CheckBoxColumn"] = Checked;
             }
@@ -7861,17 +7913,17 @@ namespace Infinium.Modules.Marketing.Expedition
 
         public bool IsCabFur(int DispatchID)
         {
-            string filter = string.Empty;
+            var filter = string.Empty;
 
-            foreach (int item in Security.CabFurIds)
+            foreach (var item in Security.CabFurIds)
                 filter += item.ToString() + ",";
             if (filter.Length > 0)
                 filter = "WHERE ProductID IN (" + filter.Substring(0, filter.Length - 1) + ")";
 
-            string SelectCommand = @"SELECT DispatchID FROM Packages WHERE MainOrderID IN (SELECT MainOrderID FROM DecorOrders " + filter + " ) AND DispatchID=" + DispatchID;
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
+            var SelectCommand = @"SELECT DispatchID FROM Packages WHERE MainOrderID IN (SELECT MainOrderID FROM DecorOrders " + filter + " ) AND DispatchID=" + DispatchID;
+            using (var DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     if (DA.Fill(DT) > 0)
                         return true;
@@ -7882,15 +7934,15 @@ namespace Infinium.Modules.Marketing.Expedition
 
         public void AddDispatch(object PrepareDispatchDateTime)
         {
-            string SelectCommand = "SELECT TOP 0 * FROM Dispatch";
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
+            var SelectCommand = "SELECT TOP 0 * FROM Dispatch";
+            using (var DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
-                        DataRow NewRow = DT.NewRow();
+                        var NewRow = DT.NewRow();
                         NewRow["CreationDateTime"] = Security.GetCurrentDate();
                         if (PrepareDispatchDateTime != null)
                             NewRow["PrepareDispatchDateTime"] = Convert.ToDateTime(PrepareDispatchDateTime);
@@ -7904,15 +7956,15 @@ namespace Infinium.Modules.Marketing.Expedition
 
         public void AddCabFurDispatch(object PrepareDispatchDateTime, int DispatchID)
         {
-            string SelectCommand = "SELECT TOP 0 * FROM CabFurDispatch";
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
+            var SelectCommand = "SELECT TOP 0 * FROM CabFurDispatch";
+            using (var DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
-                        DataRow NewRow = DT.NewRow();
+                        var NewRow = DT.NewRow();
                         NewRow["CreationDateTime"] = Security.GetCurrentDate();
                         if (PrepareDispatchDateTime != null)
                         {
@@ -7928,10 +7980,10 @@ namespace Infinium.Modules.Marketing.Expedition
 
         public int MaxDispatchID()
         {
-            string SelectCommand = "SELECT MAX(DispatchID) AS DispatchID FROM Dispatch";
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
+            var SelectCommand = "SELECT MAX(DispatchID) AS DispatchID FROM Dispatch";
+            using (var DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     if (DA.Fill(DT) > 0)
                         return Convert.ToInt32(DT.Rows[0]["DispatchID"]);
@@ -7947,17 +7999,6 @@ namespace Infinium.Modules.Marketing.Expedition
 
 
 
-
-    public struct PackagesCount
-    {
-        public int ProfilPackedPackages;
-        public int TPSPackedPackages;
-        public int AllPackedPackages;
-
-        public int ProfilPackages;
-        public int TPSPackages;
-        public int AllPackages;
-    }
 
     public class PackingReport : IAllFrontParameterName, IIsMarsel
     {
@@ -10019,7 +10060,7 @@ namespace Infinium.Modules.Marketing.Expedition
             }
             return CabFurOrdersDataTable.Rows.Count > 0;
         }
-        
+
         public bool GetMainOrdersNotes(int[] MegaOrders)
         {
             string SelectCommand = @"SELECT MainOrderID, Notes FROM MainOrders WHERE MegaOrderID IN (" + string.Join(",", MegaOrders) + ")";
@@ -10610,7 +10651,7 @@ namespace Infinium.Modules.Marketing.Expedition
 
                 NewRow["TechStoreName"] = GetTechStoreName(Convert.ToInt32(OrdersDT.Rows[i]["TechStoreID"]));
                 NewRow["CTechStoreName"] = GetTechStoreName(Convert.ToInt32(OrdersDT.Rows[i]["CTechStoreID"]));
-                
+
                 NewRow["Length"] = OrdersDT.Rows[i]["Length"];
                 NewRow["Width"] = OrdersDT.Rows[i]["Width"];
                 NewRow["Height"] = OrdersDT.Rows[i]["Height"];
@@ -10637,7 +10678,7 @@ namespace Infinium.Modules.Marketing.Expedition
 
             return CabFurScanDataTable.Rows.Count > 0;
         }
-        
+
         private bool FillCabFur(DataTable OrdersDT)
         {
             CabFurResultDataTable.Clear();
@@ -10794,7 +10835,7 @@ namespace Infinium.Modules.Marketing.Expedition
 
             CreateCabFurExcel(ref thssfworkbook, ref sheet1, workbookFontsAndStyles, OrderDT, MegaOrders, AssembleDate, ClientName, RowIndex, FactoryID);
         }
-        
+
         public void CreateCabFurScanReport(ref HSSFWorkbook thssfworkbook, WorkbookFontsAndStyles workbookFontsAndStyles,
             OrderInfo orderInfo, DataTable OrderDT, int[] MegaOrders,
             string AssembleDate, string ClientName, int iClientID, int FactoryID)
@@ -11151,7 +11192,7 @@ namespace Infinium.Modules.Marketing.Expedition
             cell10.CellStyle = workbookFontsAndStyles.TotalStyle;
         }
 
-        private void CreateCabFurScanExcel(ref HSSFWorkbook hssfworkbook, ref HSSFSheet sheet1, WorkbookFontsAndStyles workbookFontsAndStyles, 
+        private void CreateCabFurScanExcel(ref HSSFWorkbook hssfworkbook, ref HSSFSheet sheet1, WorkbookFontsAndStyles workbookFontsAndStyles,
             OrderInfo orderInfo, DataTable OrdersDT, int[] MegaOrders, string AssembleDate, string ClientName, int RowIndex, int FactoryID)
         {
             if (RowIndex < 1)
@@ -11168,7 +11209,7 @@ namespace Infinium.Modules.Marketing.Expedition
             string MainOrderNote = string.Empty;
 
             bool IsDecor = false;
-            
+
             GetMainOrdersNotes(new int[1] { orderInfo.MegaOrderID });
             IsDecor = FillCabFurScan(OrdersDT, orderInfo);
 
@@ -11193,7 +11234,7 @@ namespace Infinium.Modules.Marketing.Expedition
             }
 
             PackCount = PackageCabFurSequence.Rows.Count;
-            
+
             int TechStoreID = 0;
             int CoverID = -2;
             int PatinaID = -2;
@@ -11486,10 +11527,21 @@ namespace Infinium.Modules.Marketing.Expedition
         public int ClientID, OrderNumber, MegaOrderID;
     }
 
+    public struct PackagesCount
+    {
+        public int ProfilPackedPackages;
+        public int TPSPackedPackages;
+        public int AllPackedPackages;
+
+        public int ProfilPackages;
+        public int TPSPackages;
+        public int AllPackages;
+    }
+
     public class CabFurAssembleReport
     {
         private CabFurPackingReport PackingReport;
-        private PackagesCount PackagesCount;
+        private PackagesCount packagesCount;
 
         private OrderInfo orderInfo;
         private int ClientID = 0;
@@ -11506,7 +11558,7 @@ namespace Infinium.Modules.Marketing.Expedition
         {
             Create();
         }
-        
+
         private void ClearPackages()
         {
             PackagesDT.Clear();
@@ -11517,7 +11569,7 @@ namespace Infinium.Modules.Marketing.Expedition
             get { return orderInfo; }
             set { orderInfo = value; }
         }
-        
+
         public int CurrentClientID
         {
             get { return ClientID; }
@@ -11722,12 +11774,12 @@ namespace Infinium.Modules.Marketing.Expedition
         {
             SimpleResultDT.Clear();
 
-            PackagesCount.AllPackages = 0;
-            PackagesCount.AllPackedPackages = 0;
-            PackagesCount.ProfilPackages = 0;
-            PackagesCount.ProfilPackedPackages = 0;
-            PackagesCount.TPSPackages = 0;
-            PackagesCount.TPSPackedPackages = 0;
+            packagesCount.AllPackages = 0;
+            packagesCount.AllPackedPackages = 0;
+            packagesCount.ProfilPackages = 0;
+            packagesCount.ProfilPackedPackages = 0;
+            packagesCount.TPSPackages = 0;
+            packagesCount.TPSPackedPackages = 0;
 
             int MainOrderID = 0;
             for (int i = 0; i < MainOrders.Count(); i++)
@@ -11746,17 +11798,17 @@ namespace Infinium.Modules.Marketing.Expedition
                 DecorPackedPackagesCount = GetDispPackagesCount(MainOrders[i], FactoryID, 1);
                 AllPackedPackagesCount = FrontsPackedPackagesCount + DecorPackedPackagesCount;
 
-                PackagesCount.AllPackedPackages += AllPackedPackagesCount;
-                PackagesCount.ProfilPackedPackages += FrontsPackedPackagesCount + DecorPackedPackagesCount;
-                PackagesCount.TPSPackedPackages += FrontsPackedPackagesCount + DecorPackedPackagesCount;
+                packagesCount.AllPackedPackages += AllPackedPackagesCount;
+                packagesCount.ProfilPackedPackages += FrontsPackedPackagesCount + DecorPackedPackagesCount;
+                packagesCount.TPSPackedPackages += FrontsPackedPackagesCount + DecorPackedPackagesCount;
 
                 FrontsPackagesCount = GetPackagesCount(MainOrders[i], FactoryID, 0);
                 DecorPackagesCount = GetPackagesCount(MainOrders[i], FactoryID, 1);
                 AllPackagesCount = FrontsPackagesCount + DecorPackagesCount;
 
-                PackagesCount.AllPackages += AllPackagesCount;
-                PackagesCount.ProfilPackages += FrontsPackagesCount + DecorPackagesCount;
-                PackagesCount.TPSPackages += FrontsPackagesCount + DecorPackagesCount;
+                packagesCount.AllPackages += AllPackagesCount;
+                packagesCount.ProfilPackages += FrontsPackagesCount + DecorPackagesCount;
+                packagesCount.TPSPackages += FrontsPackagesCount + DecorPackagesCount;
 
                 DataRow NewRow = SimpleResultDT.NewRow();
                 NewRow["MainOrder"] = "Подзаказ №" + MainOrders[i];
@@ -11826,7 +11878,7 @@ namespace Infinium.Modules.Marketing.Expedition
                     TPSOrderNumber += TPSOrderNumbers[i] + ", ";
                 TPSOrderNumber = TPSOrderNumber.Substring(0, TPSOrderNumber.Length - 2);
             }
-            
+
             ClientName = ClientName.Replace('/', '-');
 
             if (ProfilMainOrders.Count() == 0 && TPSMainOrders.Count() == 0)
@@ -12065,7 +12117,7 @@ namespace Infinium.Modules.Marketing.Expedition
             if (NeedOpen)
                 System.Diagnostics.Process.Start(file.FullName);
         }
-        
+
         public void CreateCabFurScanReport(DataTable OrdersID, bool NeedOpen, ref string PackagesReportName)
         {
             int[] ProfilMainOrders = GetMainOrders(1);
@@ -12580,12 +12632,12 @@ namespace Infinium.Modules.Marketing.Expedition
 
             if (FactoryID == 1)
             {
-                HSSFCell cell16 = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 0, "Упаковок: " + PackagesCount.ProfilPackedPackages + "/" + PackagesCount.ProfilPackages);
+                HSSFCell cell16 = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 0, "Упаковок: " + packagesCount.ProfilPackedPackages + "/" + packagesCount.ProfilPackages);
                 cell16.CellStyle = TempStyle;
             }
             if (FactoryID == 2)
             {
-                HSSFCell cell16 = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 0, "Упаковок: " + PackagesCount.TPSPackedPackages + "/" + PackagesCount.TPSPackages);
+                HSSFCell cell16 = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 0, "Упаковок: " + packagesCount.TPSPackedPackages + "/" + packagesCount.TPSPackages);
                 cell16.CellStyle = TempStyle;
             }
         }
@@ -12596,7 +12648,7 @@ namespace Infinium.Modules.Marketing.Expedition
     {
         private PackingReport PackingReport;
 
-        private PackagesCount PackagesCount;
+        private PackagesCount packagesCount;
 
         private int ClientID = 0;
         private int PermitID = -1;
@@ -12880,12 +12932,12 @@ namespace Infinium.Modules.Marketing.Expedition
         {
             SimpleResultDT.Clear();
 
-            PackagesCount.AllPackages = 0;
-            PackagesCount.AllPackedPackages = 0;
-            PackagesCount.ProfilPackages = 0;
-            PackagesCount.ProfilPackedPackages = 0;
-            PackagesCount.TPSPackages = 0;
-            PackagesCount.TPSPackedPackages = 0;
+            packagesCount.AllPackages = 0;
+            packagesCount.AllPackedPackages = 0;
+            packagesCount.ProfilPackages = 0;
+            packagesCount.ProfilPackedPackages = 0;
+            packagesCount.TPSPackages = 0;
+            packagesCount.TPSPackedPackages = 0;
 
             int MainOrderID = 0;
             for (int i = 0; i < MainOrders.Count(); i++)
@@ -12904,17 +12956,17 @@ namespace Infinium.Modules.Marketing.Expedition
                 DecorPackedPackagesCount = GetDispPackagesCount(MainOrders[i], FactoryID, 1);
                 AllPackedPackagesCount = FrontsPackedPackagesCount + DecorPackedPackagesCount;
 
-                PackagesCount.AllPackedPackages += AllPackedPackagesCount;
-                PackagesCount.ProfilPackedPackages += FrontsPackedPackagesCount + DecorPackedPackagesCount;
-                PackagesCount.TPSPackedPackages += FrontsPackedPackagesCount + DecorPackedPackagesCount;
+                packagesCount.AllPackedPackages += AllPackedPackagesCount;
+                packagesCount.ProfilPackedPackages += FrontsPackedPackagesCount + DecorPackedPackagesCount;
+                packagesCount.TPSPackedPackages += FrontsPackedPackagesCount + DecorPackedPackagesCount;
 
                 FrontsPackagesCount = GetPackagesCount(MainOrders[i], FactoryID, 0);
                 DecorPackagesCount = GetPackagesCount(MainOrders[i], FactoryID, 1);
                 AllPackagesCount = FrontsPackagesCount + DecorPackagesCount;
 
-                PackagesCount.AllPackages += AllPackagesCount;
-                PackagesCount.ProfilPackages += FrontsPackagesCount + DecorPackagesCount;
-                PackagesCount.TPSPackages += FrontsPackagesCount + DecorPackagesCount;
+                packagesCount.AllPackages += AllPackagesCount;
+                packagesCount.ProfilPackages += FrontsPackagesCount + DecorPackagesCount;
+                packagesCount.TPSPackages += FrontsPackagesCount + DecorPackagesCount;
 
                 DataRow NewRow = SimpleResultDT.NewRow();
                 NewRow["MainOrder"] = "Подзаказ №" + MainOrders[i];
@@ -14204,6 +14256,7 @@ namespace Infinium.Modules.Marketing.Expedition
                 return;
             }
 
+            MailAddressTo = MailAddressTo.Replace(';', ',');
             using (MailMessage message = new MailMessage(from, MailAddressTo))
             {
                 message.Subject = "Отчет по отгрузке " + Convert.ToDateTime(PrepareDispatchDateTime).ToString("dd.MM.yyyy");
@@ -14634,12 +14687,12 @@ namespace Infinium.Modules.Marketing.Expedition
 
             if (FactoryID == 1)
             {
-                HSSFCell cell16 = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 0, "Упаковок: " + PackagesCount.ProfilPackedPackages + "/" + PackagesCount.ProfilPackages);
+                HSSFCell cell16 = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 0, "Упаковок: " + packagesCount.ProfilPackedPackages + "/" + packagesCount.ProfilPackages);
                 cell16.CellStyle = TempStyle;
             }
             if (FactoryID == 2)
             {
-                HSSFCell cell16 = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 0, "Упаковок: " + PackagesCount.TPSPackedPackages + "/" + PackagesCount.TPSPackages);
+                HSSFCell cell16 = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 0, "Упаковок: " + packagesCount.TPSPackedPackages + "/" + packagesCount.TPSPackages);
                 cell16.CellStyle = TempStyle;
             }
 
@@ -14691,17 +14744,6 @@ namespace Infinium.Modules.Marketing.Expedition
         public HSSFCellStyle TotalStyle;
         public HSSFFont TotalFont;
         public HSSFCellStyle TempStyle;
-    }
-
-    public class NotReadyPackagesCount
-    {
-        public int ProfilNotReadyPackages;
-        public int TPSNotReadyPackages;
-        public int AllNotReadyPackages;
-
-        public int ProfilPackages;
-        public int TPSPackages;
-        public int AllPackages;
     }
 
     public class Barcode
@@ -15031,28 +15073,7 @@ namespace Infinium.Modules.Marketing.Expedition
             return Notes;
         }
         #endregion
-
-        //public void GetClientName(int MainOrderID)
-        //{
-        //    ClientID = 0;
-        //    ClientName = string.Empty;
-
-        //    using (DataTable DT = new DataTable())
-        //    {
-        //        using (SqlDataAdapter DA = new SqlDataAdapter("SELECT ClientID FROM MegaOrders" +
-        //            " WHERE MegaOrderID=(SELECT TOP 1 MegaOrderID FROM MainOrders WHERE MainOrderID=" + MainOrderID + ")", ConnectionStrings.MarketingOrdersConnectionString))
-        //        {
-        //            DA.Fill(DT);
-        //            if (DT.Rows.Count > 0)
-        //                ClientID = Convert.ToInt32(DT.Rows[0]["ClientID"]);
-        //        }
-        //    }
-
-        //    DataRow[] Rows = ClientsDataTable.Select("ClientID = " + ClientID);
-        //    if (Rows.Count() > 0)
-        //        ClientName = Rows[0]["ClientName"].ToString();
-        //}
-
+        
         #region Реализация интерфейса
 
         public bool IsMarsel3(int FrontID)
@@ -16163,6 +16184,17 @@ namespace Infinium.Modules.Marketing.Expedition
         private static HSSFCellStyle TempStyle1;
         private static HSSFCellStyle TempStyle2;
         private static HSSFCellStyle TotalStyle;
+
+        public class NotReadyPackagesCount
+        {
+            public int ProfilNotReadyPackages;
+            public int TPSNotReadyPackages;
+            public int AllNotReadyPackages;
+
+            public int ProfilPackages;
+            public int TPSPackages;
+            public int AllPackages;
+        }
 
         private static NotReadyProductsDetails PackingReport;
 

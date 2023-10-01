@@ -118,20 +118,23 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="ExcelFile" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ExcelFile.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="Running" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Running.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="DocumentsSearch" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\DocumentsSearch.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="OtherFileIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\OtherFileIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="ProjectItemStart" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ProjectItemStart.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="ProjectStart" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ProjectStart.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="LikeInActive" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\LikeInActive.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="DocIncomeIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\DocIncomeIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="_1380035188_stock_task" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\1380035188_stock_task.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ag" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ag.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -148,9 +151,6 @@
   <data name="DocAddUser" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\DocAddUser.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="RST" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\RST.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="LikeLiked" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\LikeLiked.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -166,9 +166,6 @@
   <data name="DocAddButton" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\DocAddButton.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="ProjectStart" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ProjectStart.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="DocEdit" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\DocEdit.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -178,17 +175,26 @@
   <data name="ArchiveFile" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ArchiveFile.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="CheckCanceled" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\CheckCanceled.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="RST1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\RST.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ProjectItemCanceled" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ProjectItemCanceled.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ProjectIconCanceled" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ProjectIconCanceled.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="close_icon2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\close-icon2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ProjectGroupUsers" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ProjectGroupUsers.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="checkblack" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\checkblack.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ArrowBackTrackingWhite" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ArrowBackTrackingWhite.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="CloseUser" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\CloseUser.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -199,14 +205,11 @@
   <data name="STB" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\STB.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="TimeDownCommon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\TimeDownCommon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="DocClose" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\DocClose.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="OtherFileIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\OtherFileIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="DocumentsMenuUser" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\DocumentsMenuUser.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ArrowBackTracking" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ArrowBackTracking.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -220,8 +223,8 @@
   <data name="FavouriteNote" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\FavouriteNote.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="ProjectGroupMyGray2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ProjectGroupMyGray2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="_01_01" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\01_01.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Offline" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Offline.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -235,11 +238,11 @@
   <data name="ProjectPause" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ProjectPause.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="checkblack" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\checkblack.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="ProjectItemStart" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ProjectItemStart.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="ExecQuery" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ExecQuery.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="edit" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\edit.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ProjectItemStop" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ProjectItemStop.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -247,17 +250,11 @@
   <data name="ArchiveFileIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ArchiveFileIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="TimeDownTracking" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\TimeDownTracking.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="FileUnchecked" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\FileUnchecked.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="MenuUp" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\MenuUp.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Up" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Up.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ProjectCanceledGray" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ProjectCanceledGray.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -265,29 +262,29 @@
   <data name="DocumentsMenuAllDocs" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\DocumentsMenuAllDocs.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="_1380035188_stock_task" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\1380035188_stock_task.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="CommentsAlbumInactive" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\CommentsAlbumInactive.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="checkwhite" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\checkwhite.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ArrowBackBlack" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ArrowBackBlack.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="ProjectGroupDeps" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ProjectGroupDeps.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="TimeDownTracking" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\TimeDownTracking.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="_01_01" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\01_01.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="DocAdd" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\DocAdd.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ProjectPauseGray" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ProjectPauseGray.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="ProjectStopGray" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ProjectStopGray.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="CheckCanceled" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CheckCanceled.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="ArrowBackTrackingWhite" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ArrowBackTrackingWhite.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="TimeDownPressed" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\TimeDownPressed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ZOVPROFIL" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ZOVPROFIL.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -307,8 +304,14 @@
   <data name="ProjectGroupUsersGray" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ProjectGroupUsersGray.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="ProjectIconAddNews" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ProjectIconAddNews.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="ContractorContactsUp" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ContractorContactsUp.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="print_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\print_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ArrowForwardTrackingWhite" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ArrowForwardTrackingWhite.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -318,12 +321,6 @@
   </data>
   <data name="ExecWeek" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ExecWeek.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="FolderUp" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\FolderUp.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="RST1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\RST.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="CheckDocOK" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\CheckDocOK.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -343,23 +340,23 @@
   <data name="LikePicBigInactive" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\LikePicBigInactive.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="CancelGrid" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CancelGrid.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="PDFFileIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\PDFFileIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ProjectGroupDepsGray2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ProjectGroupDepsGray2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="ProjectStartGray" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ProjectStartGray.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="TimeDownCommon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\TimeDownCommon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="TimeDownPressed" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\TimeDownPressed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="RemoveItem" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\RemoveItem.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Small_Red_Remove" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Small Red Remove.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="NoImage" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\NoImage.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="sndMsgSent" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\sndMsgSent.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -373,8 +370,14 @@
   <data name="ProjectIconDelete" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ProjectIconDelete.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="DocumentsMenuUpdates" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\DocumentsMenuUpdates.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="DocItemEdit" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\DocItemEdit.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="UnlockSmallBlack" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\UnlockSmallBlack.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ArrowBackTrackingBlue" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ArrowBackTrackingBlue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -388,8 +391,8 @@
   <data name="iconfinder_printer_39263" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\iconfinder_printer_39263.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="list_numbered_close" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\list-numbered-close.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Up" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Up.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ProjectStop" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ProjectStop.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -397,26 +400,14 @@
   <data name="Folder" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Folder.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Menu" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Menu.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="ExecDaily" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ExecDaily.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Collapsed" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Collapsed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="zoom_in_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\zoom_in_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Collapsed" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Collapsed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="UnlockSmallBlack" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\UnlockSmallBlack.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="LikePicActive" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\LikePicActive.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="ProjectIconCanceled" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ProjectIconCanceled.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Menu" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Menu.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ProjectGroupUsersGray2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ProjectGroupUsersGray2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -424,17 +415,14 @@
   <data name="Online" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Online.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="NoImage" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\NoImage.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="PDFFile" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\PDFFile.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="LockSmallYellow" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\LockSmallYellow.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="ProjectItemPause" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ProjectItemPause.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="LikeAlbumActive3" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\LikeAlbumActive3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="DocCommentsCount" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\DocCommentsCount.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -451,14 +439,17 @@
   <data name="Explanded" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Explanded.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="TimeUpTracking" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\TimeUpTracking.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="n2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\n2.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="LikePicActive" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\LikePicActive.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ProjectStartGray" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ProjectStartGray.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="WordFile" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\WordFile.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="ProjectGroupAll2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ProjectGroupAll2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ProjectGroupMy" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ProjectGroupMy.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -532,11 +523,14 @@
   <data name="ImageFile" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ImageFile.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="ExcelFile" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ExcelFile.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="ProjectGroupAll2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ProjectGroupAll2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="DocumentsMenuUser" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\DocumentsMenuUser.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="ExecEvent" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ExecEvent.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ProjectGroupDeps" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ProjectGroupDeps.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="WordFileIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\WordFileIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -547,14 +541,14 @@
   <data name="DocOuterIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\DocOuterIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="CancelGrid" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\CancelGrid.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="TimeUpTracking" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\TimeUpTracking.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Lock" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Lock.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="RemoveItem" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\RemoveItem.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="RST" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\RST.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="TimeUpCommon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\TimeUpCommon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -565,8 +559,8 @@
   <data name="OtherFile" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\OtherFile.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="DocumentsMenuUpdates" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\DocumentsMenuUpdates.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="ExecQuery" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ExecQuery.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Closerun2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Closerun2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -574,37 +568,46 @@
   <data name="ProjectsAll" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ProjectsAll.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="ExecEvent" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ExecEvent.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="FolderUp" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\FolderUp.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="LikeAlbumActive" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\LikeAlbumActive.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="ProjectIconAddUser" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ProjectIconAddUser.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="checkwhite" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\checkwhite.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="MESSAGENOTIFY" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\MESSAGENOTIFY.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="edit" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\edit.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="ProjectItemPause" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ProjectItemPause.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="list_numbered_close" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\list-numbered-close.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ProjectStopGray" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ProjectStopGray.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DocumentsSearch" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\DocumentsSearch.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ProjectIconAddUser" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ProjectIconAddUser.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="CloseGrid" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\CloseGrid.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="ProjectIconAddNews" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ProjectIconAddNews.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="DocIncomeIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\DocIncomeIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="DocAdd" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\DocAdd.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="ExecDaily" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ExecDaily.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="print_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\print_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="ProjectGroupMyGray2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ProjectGroupMyGray2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="n2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\n2.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="LikeAlbumActive3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\LikeAlbumActive3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icons8_refresh_30" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\icons8-refresh-30.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

@@ -2901,8 +2901,10 @@ WHERE LabelType=2 AND DecorAssignmentsLabels.DecorAssignmentID=" + iDecorAssignm
             decimal ReadyProgressVal = 0;
             decimal d1 = 0;
 
-            using (SqlDataAdapter DA = new SqlDataAdapter(@"SELECT BatchAssignmentID, DecorAssignmentID, PrevLinkAssignmentID, NextLinkAssignmentID, ProductType, DecorAssignmentStatusID, BarberanNumber, FrezerNumber, FacingMachine FROM DecorAssignments",
-                ConnectionStrings.StorageConnectionString))
+            using (SqlDataAdapter DA = new SqlDataAdapter(
+                       @"SELECT BatchAssignmentID, DecorAssignmentID, PrevLinkAssignmentID, NextLinkAssignmentID, ProductType, 
+DecorAssignmentStatusID, BarberanNumber, FrezerNumber, FacingMachine FROM DecorAssignments",
+                       ConnectionStrings.StorageConnectionString))
             {
                 using (DataTable DT = new DataTable())
                 {

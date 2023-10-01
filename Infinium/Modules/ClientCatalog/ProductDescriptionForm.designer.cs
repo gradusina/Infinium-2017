@@ -53,7 +53,7 @@
             this.kryptonRichTextBox5 = new ComponentFactory.Krypton.Toolkit.KryptonRichTextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.cbBasic = new System.Windows.Forms.CheckBox();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.cmbProductType = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -360,13 +360,14 @@
             this.cbBasic.Text = "Основное";
             this.cbBasic.UseVisualStyleBackColor = true;
             // 
-            // comboBox1
+            // cmbProductType
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(29, 493);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(163, 21);
-            this.comboBox1.TabIndex = 494;
+            this.cmbProductType.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.cmbProductType.FormattingEnabled = true;
+            this.cmbProductType.Location = new System.Drawing.Point(29, 493);
+            this.cmbProductType.Name = "cmbProductType";
+            this.cmbProductType.Size = new System.Drawing.Size(163, 23);
+            this.cmbProductType.TabIndex = 494;
             // 
             // label4
             // 
@@ -384,7 +385,7 @@
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(601, 586);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.cmbProductType);
             this.Controls.Add(this.cbBasic);
             this.Controls.Add(this.kryptonRichTextBox5);
             this.Controls.Add(this.label3);
@@ -446,7 +447,7 @@
         private ComponentFactory.Krypton.Toolkit.KryptonRichTextBox kryptonRichTextBox5;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.CheckBox cbBasic;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox cmbProductType;
         private System.Windows.Forms.Label label4;
     }
 }

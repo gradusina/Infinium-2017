@@ -11,7 +11,11 @@ using System.Text;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Linq;
+using DevExpress.XtraRichEdit.Model;
 
+using NPOI.HSSF.UserModel;
+using NPOI.HSSF.UserModel.Contrib;
+using NPOI.HSSF.Util;
 using static Infinium.UserProfile;
 
 namespace Infinium.Modules.Marketing.Clients
@@ -26,7 +30,7 @@ namespace Infinium.Modules.Marketing.Clients
         public DataTable excluziveCountriesDt = null;
 
         public DataTable ClientRatesDataTable = null;
-        public DataTable ClientsDataTable = null;
+        public DataTable ClientsDt { get; private set; } = null;
         public DataTable NewCountriesDataTable = null;
         public DataTable CountriesDataTable = null;
         public DataTable ManagersDataTable = null;
@@ -90,7 +94,7 @@ namespace Infinium.Modules.Marketing.Clients
             FrontsPriceGroupsDataTable = new DataTable();
             DecorPriceGroupsDataTable = new DataTable();
             ClientRatesDataTable = new DataTable();
-            ClientsDataTable = new DataTable();
+            ClientsDt = new DataTable();
             ClientGroupsDataTable = new DataTable();
             CountriesDataTable = new DataTable();
             ManagersDataTable = new DataTable();
@@ -175,17 +179,17 @@ namespace Infinium.Modules.Marketing.Clients
             ClientsDataAdapter = new SqlDataAdapter("SELECT * FROM Clients ORDER BY ClientName",
                 ConnectionStrings.MarketingReferenceConnectionString);
             ClientsCommandBuilder = new SqlCommandBuilder(ClientsDataAdapter);
-            ClientsDataAdapter.Fill(ClientsDataTable);
+            ClientsDataAdapter.Fill(ClientsDt);
 
             var column2 = new DataColumn("ExcluziveCountries")
             {
                 DataType = typeof(string),
                 DefaultValue = string.Empty
             };
-            ClientsDataTable.Columns.Add(column2);
-            ClientsDataTable.Columns.Add(new DataColumn("USD", typeof(decimal)));
-            ClientsDataTable.Columns.Add(new DataColumn("RUB", typeof(decimal)));
-            ClientsDataTable.Columns.Add(new DataColumn("BYN", typeof(decimal)));
+            ClientsDt.Columns.Add(column2);
+            ClientsDt.Columns.Add(new DataColumn("USD", typeof(decimal)));
+            ClientsDt.Columns.Add(new DataColumn("RUB", typeof(decimal)));
+            ClientsDt.Columns.Add(new DataColumn("BYN", typeof(decimal)));
 
             FillСlientsExcluziveCountries();
             FillClientRates();
@@ -207,7 +211,7 @@ namespace Infinium.Modules.Marketing.Clients
             DecorPriceGroupsBindingSource.DataSource = DecorPriceGroupsDataTable;
 
             ClientRatesBindingSource.DataSource = ClientRatesDataTable;
-            ClientsBindingSource.DataSource = ClientsDataTable;
+            ClientsBindingSource.DataSource = ClientsDt;
             CountriesBindingSource.DataSource = CountriesDataTable;
             UsersBindingSource.DataSource = ManagersDataTable;
             ClientGroupsBindingSource.DataSource = ClientGroupsDataTable;
@@ -447,7 +451,7 @@ namespace Infinium.Modules.Marketing.Clients
         {
             ContactsDataTable.Clear();
 
-            DataRow[] Rows = ClientsDataTable.Select("ClientID = " + ClientID);
+            DataRow[] Rows = ClientsDt.Select("ClientID = " + ClientID);
 
             if (Rows[0]["Contacts"].ToString().Length == 0)
                 return;
@@ -505,7 +509,7 @@ namespace Infinium.Modules.Marketing.Clients
 
         public string GetClientName(int ClientID)
         {
-            DataRow[] Row = ClientsDataTable.Select("ClientID = " + ClientID);
+            DataRow[] Row = ClientsDt.Select("ClientID = " + ClientID);
 
             return Row[0]["ClientName"].ToString();
         }
@@ -579,7 +583,7 @@ namespace Infinium.Modules.Marketing.Clients
             string Contacts = GetContactsXML(NewContactsDataTable);
 
             string Login = GetTranslit(Name);
-            DataRow Row = ClientsDataTable.NewRow();
+            DataRow Row = ClientsDt.NewRow();
             Row["ManagerID"] = ManagerID;
             Row["Login"] = Login;
             Row["Password"] = "b59c67bf196a4758191e42f76670ceba";
@@ -607,10 +611,10 @@ namespace Infinium.Modules.Marketing.Clients
             Row["DelayOfPayment"] = DelayOfPayment;
             Row["Enabled"] = Enabled;
 
-            ClientsDataTable.Rows.Add(Row);
-            ClientsDataAdapter.Update(ClientsDataTable);
-            ClientsDataTable.Clear();
-            ClientsDataAdapter.Fill(ClientsDataTable);
+            ClientsDt.Rows.Add(Row);
+            ClientsDataAdapter.Update(ClientsDt);
+            ClientsDt.Clear();
+            ClientsDataAdapter.Fill(ClientsDt);
         }
 
         public void EditClient(ref string ClientsName, ref int ClientsCountryID, ref string ClientsCity, ref int ClientGroupID,
@@ -679,10 +683,10 @@ namespace Infinium.Modules.Marketing.Clients
 
         private void FillСlientsExcluziveCountries()
         {
-            for (var i = ClientsDataTable.Rows.Count - 1; i >= 0; i--)
+            for (var i = ClientsDt.Rows.Count - 1; i >= 0; i--)
             {
 
-                var rows = clientsExcluziveCountriesDt.Select($"clientId={Convert.ToInt32(ClientsDataTable.Rows[i]["clientId"])}");
+                var rows = clientsExcluziveCountriesDt.Select($"clientId={Convert.ToInt32(ClientsDt.Rows[i]["clientId"])}");
                 if (!rows.Any()) continue;
 
                 var countryId = Convert.ToInt32(rows[0]["countryId"]);
@@ -698,7 +702,7 @@ namespace Infinium.Modules.Marketing.Clients
                 var countriesList = sb.ToString();
                 if (countriesList.Length > 0)
                     countriesList = countriesList.Substring(0, countriesList.Length - 2);
-                ClientsDataTable.Rows[i]["ExcluziveCountries"] = countriesList;
+                ClientsDt.Rows[i]["ExcluziveCountries"] = countriesList;
             }
         }
 
@@ -790,8 +794,8 @@ namespace Infinium.Modules.Marketing.Clients
                             //}
                             DT.Rows[0]["ManagerID"] = ManagerID;
                             DA.Update(DT);
-                            ClientsDataTable.Clear();
-                            ClientsDataAdapter.Fill(ClientsDataTable);
+                            ClientsDt.Clear();
+                            ClientsDataAdapter.Fill(ClientsDt);
                             FillСlientsExcluziveCountries();
                             ClientsBindingSource.Position = ClientsBindingSource.Find("ClientID", ClientID);
                         }
@@ -829,6 +833,7 @@ namespace Infinium.Modules.Marketing.Clients
             if (Skype.Count() > 0)
                 messageBody += "Скайп: " + Skype;
 
+            to = to.Replace(';', ',');
             using (MailMessage message = new MailMessage(from, to))
             {
                 message.Subject = "О смене ответственного лица";
@@ -1107,6 +1112,7 @@ namespace Infinium.Modules.Marketing.Clients
                 return;
             }
 
+            to = to.Replace(';', ',');
             using (MailMessage message = new MailMessage(from, to))
             {
                 message.Subject = "InfiniumAgent";
@@ -1185,7 +1191,7 @@ infiniumdevelopers@gmail.com";
                             dt.Rows[i]["BYN"] == DBNull.Value)
                             continue;
 
-                        var rows = ClientsDataTable.Select($"clientId={clientId}");
+                        var rows = ClientsDt.Select($"clientId={clientId}");
                         if (!rows.Any()) continue;
 
                         rows[0]["USD"] = Convert.ToDecimal(dt.Rows[i]["USD"]);
@@ -1356,8 +1362,8 @@ infiniumdevelopers@gmail.com";
                     using (DataTable dtTable = new DataTable())
                     {
                         da.Fill(dtTable);
-                        ClientsDataTable.Clear();
-                        ClientsDataAdapter.Fill(ClientsDataTable);
+                        ClientsDt.Clear();
+                        ClientsDataAdapter.Fill(ClientsDt);
                         FillСlientsExcluziveCountries();
                     }
                 }
@@ -1521,7 +1527,240 @@ infiniumdevelopers@gmail.com";
             DataRow[] Rows = dtRolePermissions.Select("RoleID = " + RoleID);
             return Rows.Count() > 0;
         }
-
+        
     }
 
+    public class ClientsToExcel
+    {
+        private HSSFWorkbook _hssfworkbook;
+
+        private Dictionary<string, string> dtColumns = new Dictionary<string, string>();
+
+        public ClientsToExcel()
+        {
+            GetClients();
+            prepareColumns();
+        }
+
+        private DataTable _clientsDt;
+
+        private void prepareColumns()
+        {
+            dtColumns.Add("ClientID", "ID");
+            dtColumns.Add("ClientName", "Клиент");
+            dtColumns.Add("Manager", "Менеджер");
+            dtColumns.Add("Country", "Страна");
+            dtColumns.Add("City", "Город");
+            dtColumns.Add("Email", "Email");
+            dtColumns.Add("DelayOfPayment", "Отсрочка");
+            dtColumns.Add("UNN", "UNN");
+            dtColumns.Add("ClientGroupName", "Группа");
+            dtColumns.Add("PriceGroup", "Ценовая группа");
+            dtColumns.Add("Enabled", "Активен");
+        }
+
+        private void GetClients()
+        {
+            _clientsDt = new DataTable();
+
+            const string selectCommand = @"SELECT Clients.ClientID, Clients.ClientName, ClientsManagers.Name as Manager, 
+Countries.Name AS Country, Clients.City, Clients.Email, Clients.DelayOfPayment, Clients.UNN, 
+ClientGroups.ClientGroupName, Clients.PriceGroup, Clients.Enabled FROM Clients AS Clients 
+INNER JOIN ClientsManagers ON Clients.ManagerID = ClientsManagers.ManagerID 
+INNER JOIN ClientGroups ON Clients.ClientGroupID = ClientGroups.ClientGroupID
+INNER JOIN infiniu2_catalog.dbo.Countries AS Countries ON Clients.CountryID = Countries.CountryID order by Clients.ClientName";
+            
+            using (var da = new SqlDataAdapter(selectCommand, ConnectionStrings.MarketingReferenceConnectionString))
+            {
+                da.Fill(_clientsDt);
+            }
+        }
+
+        public void CreateReport(string fileName)
+        {
+            _hssfworkbook = new HSSFWorkbook();
+            
+            #region Create fonts and styles
+
+            var clientNameFont = _hssfworkbook.CreateFont();
+            clientNameFont.FontHeightInPoints = 14;
+            clientNameFont.Boldweight = HSSFFont.BOLDWEIGHT_BOLD;
+            clientNameFont.FontName = "Calibri";
+
+            var mainFont = _hssfworkbook.CreateFont();
+            mainFont.FontHeightInPoints = 13;
+            mainFont.Boldweight = HSSFFont.BOLDWEIGHT_BOLD;
+            mainFont.FontName = "Calibri";
+
+            var clientNameStyle = _hssfworkbook.CreateCellStyle();
+            clientNameStyle.SetFont(clientNameFont);
+
+            var mainStyle = _hssfworkbook.CreateCellStyle();
+            mainStyle.SetFont(mainFont);
+
+            var headerFont = _hssfworkbook.CreateFont();
+            headerFont.FontHeightInPoints = 13;
+            headerFont.Boldweight = HSSFFont.BOLDWEIGHT_BOLD;
+            headerFont.FontName = "Calibri";
+
+            var headerStyle = _hssfworkbook.CreateCellStyle();
+            headerStyle.BorderBottom = HSSFCellStyle.BORDER_THIN;
+            headerStyle.BottomBorderColor = HSSFColor.BLACK.index;
+            headerStyle.BorderLeft = HSSFCellStyle.BORDER_THIN;
+            headerStyle.LeftBorderColor = HSSFColor.BLACK.index;
+            headerStyle.BorderRight = HSSFCellStyle.BORDER_THIN;
+            headerStyle.RightBorderColor = HSSFColor.BLACK.index;
+            headerStyle.BorderTop = HSSFCellStyle.BORDER_THIN;
+            headerStyle.TopBorderColor = HSSFColor.BLACK.index;
+            headerStyle.SetFont(headerFont);
+            
+            var simpleFont = _hssfworkbook.CreateFont();
+            simpleFont.FontHeightInPoints = 12;
+            simpleFont.FontName = "Calibri";
+
+            var simpleCellStyle = _hssfworkbook.CreateCellStyle();
+            simpleCellStyle.BorderBottom = HSSFCellStyle.BORDER_THIN;
+            simpleCellStyle.BottomBorderColor = HSSFColor.BLACK.index;
+            simpleCellStyle.BorderLeft = HSSFCellStyle.BORDER_THIN;
+            simpleCellStyle.LeftBorderColor = HSSFColor.BLACK.index;
+            simpleCellStyle.BorderRight = HSSFCellStyle.BORDER_THIN;
+            simpleCellStyle.RightBorderColor = HSSFColor.BLACK.index;
+            simpleCellStyle.BorderTop = HSSFCellStyle.BORDER_THIN;
+            simpleCellStyle.TopBorderColor = HSSFColor.BLACK.index;
+            simpleCellStyle.SetFont(simpleFont);
+
+            var cellStyle = _hssfworkbook.CreateCellStyle();
+            cellStyle.DataFormat = HSSFDataFormat.GetBuiltinFormat("0.000");
+            cellStyle.BorderBottom = HSSFCellStyle.BORDER_THIN;
+            cellStyle.BottomBorderColor = HSSFColor.BLACK.index;
+            cellStyle.BorderLeft = HSSFCellStyle.BORDER_THIN;
+            cellStyle.LeftBorderColor = HSSFColor.BLACK.index;
+            cellStyle.BorderRight = HSSFCellStyle.BORDER_THIN;
+            cellStyle.RightBorderColor = HSSFColor.BLACK.index;
+            cellStyle.BorderTop = HSSFCellStyle.BORDER_THIN;
+            cellStyle.TopBorderColor = HSSFColor.BLACK.index;
+            cellStyle.SetFont(simpleFont);
+            
+            #endregion
+            
+            Report(headerStyle, simpleCellStyle, cellStyle);
+
+            var tempFolder = System.Environment.GetEnvironmentVariable("TEMP");
+            var file = new FileInfo(tempFolder + @"\" + fileName + ".xls");
+            var j = 1;
+            while (file.Exists == true)
+            {
+                file = new FileInfo(tempFolder + @"\" + fileName + "(" + j++ + ").xls");
+            }
+
+            var newFile = new FileStream(file.FullName, FileMode.Create);
+            _hssfworkbook.Write(newFile);
+            newFile.Close();
+
+            System.Diagnostics.Process.Start(file.FullName);
+        }
+
+
+        private void Report(HSSFCellStyle headerStyle, HSSFCellStyle simpleCellStyle, HSSFCellStyle cellStyle)
+        {
+            var rowIndex = 0;
+            
+            var sheet1 = _hssfworkbook.CreateSheet("Клиенты");
+            sheet1.PrintSetup.PaperSize = (short)PaperSizeType.A4;
+
+            sheet1.SetMargin(HSSFSheet.LeftMargin, .12);
+            sheet1.SetMargin(HSSFSheet.RightMargin, .07);
+            sheet1.SetMargin(HSSFSheet.TopMargin, .20);
+            sheet1.SetMargin(HSSFSheet.BottomMargin, .20);
+
+            //sheet1.SetColumnWidth(0, 13 * 256);
+            //sheet1.SetColumnWidth(1, 50 * 256);
+            //sheet1.SetColumnWidth(2, 15 * 256);
+            //sheet1.SetColumnWidth(3, 10 * 256);
+            //sheet1.SetColumnWidth(4, 25 * 256);
+            //sheet1.SetColumnWidth(5, 30 * 256);
+            //sheet1.SetColumnWidth(6, 22 * 256);
+            //sheet1.SetColumnWidth(7, 40 * 256);
+            //sheet1.SetColumnWidth(8, 10 * 256);
+            //sheet1.SetColumnWidth(9, 13 * 256);
+            //sheet1.SetColumnWidth(10, 30 * 256);
+            
+            //string[] columns = {
+            //"№ задания",
+            //"Наименование объекта корпусной мебели",
+            //"Облицовка",
+            //"Платина",
+            //"Цвет наполнителя",
+            //"Примечание",
+            //"Инвертарный номер",
+            //"Бухгалтерское наименование детали",
+            //"Кол-во",
+            //"Стоимость",
+            //"Дата принятия на склад",
+            //};
+
+            HSSFCell cell4;
+            var i = 0;
+            foreach (var column in dtColumns)
+            {
+                cell4 = HSSFCellUtil.CreateCell(sheet1.CreateRow(rowIndex), i, column.Value);
+                cell4.CellStyle = headerStyle;
+                i++;
+            }
+
+            rowIndex++;
+            
+            for (var x = 0; x < _clientsDt.Rows.Count; x++)
+            {
+                for (var y = 0; y < _clientsDt.Columns.Count; y++)
+                {
+                    var t = _clientsDt.Rows[x][y].GetType();
+
+                    switch (t.Name)
+                    {
+                        case "Decimal":
+                        {
+                            var cell = sheet1.CreateRow(rowIndex).CreateCell(y);
+                            cell.SetCellValue(Convert.ToDouble(_clientsDt.Rows[x][y]));
+
+                            cell.CellStyle = cellStyle;
+                            continue;
+                        }
+                        case "Int32":
+                        {
+                            var cell = sheet1.CreateRow(rowIndex).CreateCell(y);
+                            cell.SetCellValue(Convert.ToInt32(_clientsDt.Rows[x][y]));
+                            cell.CellStyle = simpleCellStyle;
+                            continue;
+                        }
+                        case "Int64":
+                        {
+                            var cell = sheet1.CreateRow(rowIndex).CreateCell(y);
+                            cell.SetCellValue(Convert.ToInt64(_clientsDt.Rows[x][y]));
+                            cell.CellStyle = simpleCellStyle;
+                            continue;
+                        }
+                        case "String":
+                        case "Boolean":
+                        case "DBNull":
+                        {
+                            var cell = sheet1.CreateRow(rowIndex).CreateCell(y);
+                            cell.SetCellValue(_clientsDt.Rows[x][y].ToString());
+                            cell.CellStyle = simpleCellStyle;
+                            continue;
+                        }
+                        case "DateTime":
+                        {
+                            var cell = sheet1.CreateRow(rowIndex).CreateCell(y);
+                            cell.SetCellValue(_clientsDt.Rows[x][y].ToString());
+                            cell.CellStyle = simpleCellStyle;
+                            continue;
+                        }
+                    }
+                }
+                rowIndex++;
+            }
+        }
+
+    }
 }

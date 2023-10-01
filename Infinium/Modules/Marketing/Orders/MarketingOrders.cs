@@ -11656,6 +11656,7 @@ namespace Infinium.Modules.Marketing.Orders
                 return;
             }
 
+            to = to.Replace(';', ',');
             using (MailMessage message = new MailMessage(from, to))
             {
                 if (OrderNumbers.Count() > 1)

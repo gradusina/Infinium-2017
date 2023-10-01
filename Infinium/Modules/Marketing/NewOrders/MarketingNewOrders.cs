@@ -4121,7 +4121,7 @@ namespace Infinium.Modules.Marketing.NewOrders
             int Width = -1;
             string SelectCommand =
                 @"SELECT DecorOrders.FactoryID, DecorOrders.MainOrderID, DecorOrders.DecorConfigID, DecorOrders.DecorOrderID, DecorOrders.Height, DecorOrders.Length, DecorOrders.Width, DecorOrders.Count FROM DecorOrders 
-                WHERE DecorOrders.MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID=" +
+                WHERE OnStorage=0 and DecorOrders.MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID=" +
                 MegaOrderID + ")";
             using (SqlDataAdapter DA =
                    new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
@@ -18262,6 +18262,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                 return;
             }
 
+            to = to.Replace(';', ',');
             using (MailMessage message = new MailMessage(from, to))
             {
                 message.Subject = "Отчет по заказу №" + OrderNumbers;

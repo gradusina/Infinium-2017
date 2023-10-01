@@ -8236,6 +8236,7 @@ namespace Infinium.Modules.ZOV.Expedition
                 return;
             }
 
+            MailAddressTo = MailAddressTo.Replace(';', ',');
             using (MailMessage message = new MailMessage(from, MailAddressTo))
             {
                 message.Subject = "Отчет по отгрузке " + Convert.ToDateTime(PrepareDispatchDateTime).ToString("dd.MM.yyyy");

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 using static Infinium.FrontsCatalog;
@@ -37,6 +38,21 @@ namespace Infinium
 
             InitializeComponent();
 
+            Dictionary<string, int> productTypes;
+            productTypes = new Dictionary<string, int>
+            {
+                { "Фасад", 0 },
+                { "Декорэлемент", 1 },
+                { "Корп. мебель", 2 },
+                { "Категория", 3 },
+                { "РП-", 4 },
+                { "Панель", 5 }
+            };
+
+            cmbProductType.DataSource = new BindingSource(productTypes, null);
+            cmbProductType.DisplayMember = "Key";
+            cmbProductType.ValueMember = "Value";
+
             kryptonRichTextBox4.Text = configImageInfo.Category;
             kryptonRichTextBox5.Text = configImageInfo.Name;
             kryptonRichTextBox1.Text = configImageInfo.Description;
@@ -45,6 +61,7 @@ namespace Infinium
             cbToSite.Checked = configImageInfo.ToSite;
             cbLatest.Checked = configImageInfo.Latest;
             cbBasic.Checked = configImageInfo.Basic;
+            cmbProductType.SelectedValue = configImageInfo.ProductType;
         }
 
         private void AnimateTimer_Tick(object sender, EventArgs e)
@@ -129,6 +146,7 @@ namespace Infinium
             ConfigImageInfo.ToSite = cbToSite.Checked;
             ConfigImageInfo.Latest = cbLatest.Checked;
             ConfigImageInfo.Basic = cbBasic.Checked;
+            ConfigImageInfo.ProductType = Convert.ToInt32(cmbProductType.SelectedValue);
 
             FormEvent = eClose;
             AnimateTimer.Enabled = true;

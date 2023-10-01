@@ -8,6 +8,7 @@ using NPOI.HSSF.Record.Formula.Functions;
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
@@ -2800,6 +2801,7 @@ AND FactoryID={FactoryID}) ORDER BY TechStoreName";
                         info.ConfigId = ConfigId;
                         info.ToSite = Convert.ToBoolean(DT.Rows[0]["ToSite"]);
                         info.Latest = Convert.ToBoolean(DT.Rows[0]["Latest"]);
+                        info.ProductType = Convert.ToInt32(DT.Rows[0]["ProductType"]);
                         info.Basic = Convert.ToBoolean(DT.Rows[0]["Basic"]);
                         info.Category = DT.Rows[0]["Category"].ToString();
                         info.Name = DT.Rows[0]["Name"].ToString();
@@ -2826,6 +2828,7 @@ AND FactoryID={FactoryID}) ORDER BY TechStoreName";
                         {
                             DT.Rows[0]["ToSite"] = configImageInfo.ToSite;
                             DT.Rows[0]["Latest"] = configImageInfo.Latest;
+                            DT.Rows[0]["ProductType"] = configImageInfo.ProductType;
                             DT.Rows[0]["Basic"] = configImageInfo.Basic;
                             if (configImageInfo.Category.Length == 0)
                                 DT.Rows[0]["Category"] = DBNull.Value;
@@ -4069,7 +4072,7 @@ AND FactoryID={FactoryID}) ORDER BY TechStoreName";
         public String ItemsBindingSourceValueMember;
         public String ItemColorsBindingSourceValueMember;
         public String ItemPatinaBindingSourceValueMember;
-
+        
         public DecorCatalog(int tFactoryID, FileManager FM)
         {
             this.FM = FM;
@@ -4079,6 +4082,7 @@ AND FactoryID={FactoryID}) ORDER BY TechStoreName";
 
         private void Create()
         {
+
             ConstProductsDataTable = new DataTable();
             ConstDecorDataTable = new DataTable();
             DecorParametersDataTable = new DataTable();
@@ -6112,6 +6116,7 @@ AND AccountingName IS NOT NULL AND InvNumber IS NOT NULL AND FactoryID={FactoryI
                         info.ConfigId = ConfigId;
                         info.ToSite = Convert.ToBoolean(DT.Rows[0]["ToSite"]);
                         info.Latest = Convert.ToBoolean(DT.Rows[0]["Latest"]);
+                        info.ProductType = Convert.ToInt32(DT.Rows[0]["ProductType"]);
                         info.Basic = Convert.ToBoolean(DT.Rows[0]["Basic"]);
                         info.Category = DT.Rows[0]["Category"].ToString();
                         info.Name = DT.Rows[0]["Name"].ToString();
@@ -6139,6 +6144,8 @@ AND AccountingName IS NOT NULL AND InvNumber IS NOT NULL AND FactoryID={FactoryI
                             DT.Rows[0]["ToSite"] = configImageInfo.ToSite;
                             DT.Rows[0]["Latest"] = configImageInfo.Latest;
                             DT.Rows[0]["Basic"] = configImageInfo.Basic;
+                            DT.Rows[0]["ProductType"] = configImageInfo.ProductType;
+
                             if (configImageInfo.Category.Length == 0)
                                 DT.Rows[0]["Category"] = DBNull.Value;
                             else

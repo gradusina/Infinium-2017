@@ -1268,34 +1268,37 @@ namespace Infinium
                 return;
             }
 
-            using (var form = new ReportTypeForm(this))
-            {
-                var result = form.ShowDialog();
-                if (result == DialogResult.OK)
-                {
-                    var invoiceReportType = form.invoiceReportType;
+            var dbfReport = new NotesInvoiceReportToDbf();
+            InvoiceReportToDBF(dbfReport);
 
-                    if (invoiceReportType == InvoiceReportType.Notes)
-                    {
-                        var dbfReport = new NotesInvoiceReportToDbf();
-                        InvoiceReportToDBF(dbfReport);
-                    }
-                    if (invoiceReportType == InvoiceReportType.Standard)
-                    {
-                        var dbfReport = new InvoiceReportToDbf(FrontsCatalogOrder, DecorCatalogOrder);
-                        InvoiceReportToDBF(dbfReport);
-                    }
-                    if (invoiceReportType == InvoiceReportType.CvetPatina)
-                    {
-                        var dbfReport = new ColorInvoiceReportToDbf();
-                        InvoiceReportToDBF(dbfReport);
-                    }
-                }
-                else
-                {
-                    return;
-                }
-            }
+            //using (var form = new ReportTypeForm(this))
+            //{
+            //    var result = form.ShowDialog();
+            //    if (result == DialogResult.OK)
+            //    {
+            //        var invoiceReportType = form.invoiceReportType;
+
+            //        if (invoiceReportType == InvoiceReportType.Notes)
+            //        {
+            //            var dbfReport = new NotesInvoiceReportToDbf();
+            //            InvoiceReportToDBF(dbfReport);
+            //        }
+            //        if (invoiceReportType == InvoiceReportType.Standard)
+            //        {
+            //            var dbfReport = new InvoiceReportToDbf(FrontsCatalogOrder, DecorCatalogOrder);
+            //            InvoiceReportToDBF(dbfReport);
+            //        }
+            //        if (invoiceReportType == InvoiceReportType.CvetPatina)
+            //        {
+            //            var dbfReport = new ColorInvoiceReportToDbf();
+            //            InvoiceReportToDBF(dbfReport);
+            //        }
+            //    }
+            //    else
+            //    {
+            //        return;
+            //    }
+            //}
         }
 
         private void InvoiceReportToDBF(Modules.Marketing.NewOrders.InvoiceReportToDbf.InvoiceReportToDbf DBFReport)
@@ -3753,35 +3756,38 @@ namespace Infinium
                        "Создание отчета");
                 return;
             }
-            
-            using (var form = new ReportTypeForm(this))
-            {
-                var result = form.ShowDialog();
-                if (result == DialogResult.OK)
-                {
-                    var invoiceReportType = form.invoiceReportType;
 
-                    if (invoiceReportType == InvoiceReportType.Notes)
-                    {
-                        var dbfReport = new Modules.Marketing.NewOrders.PrepareReport.NotesInvoiceReportToDbf.NotesInvoiceReportToDbf();
-                        PrepareInvoiceReportToDBF(dbfReport);
-                    }
-                    if (invoiceReportType == InvoiceReportType.Standard)
-                    {
-                        var dbfReport = new Modules.Marketing.NewOrders.PrepareReport.InvoiceReportToDbf.InvoiceReportToDbf();
-                        PrepareInvoiceReportToDBF(dbfReport);
-                    }
-                    if (invoiceReportType == InvoiceReportType.CvetPatina)
-                    {
-                        var dbfReport = new Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportToDbf.ColorInvoiceReportToDbf();
-                        PrepareInvoiceReportToDBF(dbfReport);
-                    }
-                }
-                else
-                {
-                    return;
-                }
-            }
+            var dbfReport = new Modules.Marketing.NewOrders.PrepareReport.NotesInvoiceReportToDbf.NotesInvoiceReportToDbf();
+            PrepareInvoiceReportToDBF(dbfReport);
+
+            //using (var form = new ReportTypeForm(this))
+            //{
+            //    var result = form.ShowDialog();
+            //    if (result == DialogResult.OK)
+            //    {
+            //        var invoiceReportType = form.invoiceReportType;
+
+            //        if (invoiceReportType == InvoiceReportType.Notes)
+            //        {
+            //            var dbfReport = new Modules.Marketing.NewOrders.PrepareReport.NotesInvoiceReportToDbf.NotesInvoiceReportToDbf();
+            //            PrepareInvoiceReportToDBF(dbfReport);
+            //        }
+            //        if (invoiceReportType == InvoiceReportType.Standard)
+            //        {
+            //            var dbfReport = new Modules.Marketing.NewOrders.PrepareReport.InvoiceReportToDbf.InvoiceReportToDbf();
+            //            PrepareInvoiceReportToDBF(dbfReport);
+            //        }
+            //        if (invoiceReportType == InvoiceReportType.CvetPatina)
+            //        {
+            //            var dbfReport = new Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportToDbf.ColorInvoiceReportToDbf();
+            //            PrepareInvoiceReportToDBF(dbfReport);
+            //        }
+            //    }
+            //    else
+            //    {
+            //        return;
+            //    }
+            //}
         }
 
         private void PrepareInvoiceReportToDBF(Modules.Marketing.NewOrders.PrepareReport.NotesInvoiceReportToDbf.NotesInvoiceReportToDbf DBFReport)

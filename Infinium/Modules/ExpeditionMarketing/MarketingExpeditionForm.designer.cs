@@ -220,6 +220,7 @@
             this.kryptonContextMenuItem23 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
             this.kryptonContextMenuItem20 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
             this.kryptonContextMenuItem21 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
+            this.btnDeleteDispatch = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
             this.NavigatePanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MainOrdersSplitContainer)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.MainOrdersSplitContainer.Panel1)).BeginInit();
@@ -2521,7 +2522,8 @@
             this.kryptonContextMenuItem22,
             this.kryptonContextMenuItem24,
             this.kryptonContextMenuItem6,
-            this.kryptonContextMenuItem14});
+            this.kryptonContextMenuItem14,
+            this.btnDeleteDispatch});
             // 
             // cmiChangeDispatchDate
             // 
@@ -2617,12 +2619,14 @@
             // kryptonContextMenuItem5
             // 
             this.kryptonContextMenuItem5.Text = "Выписать накладную";
-            this.kryptonContextMenuItem5.Click += new System.EventHandler(this.kryptonContextMenuItem5_Click);
+            this.kryptonContextMenuItem5.Visible = false;
+            //this.kryptonContextMenuItem5.Click += new System.EventHandler(this.kryptonContextMenuItem5_Click);
             // 
             // kryptonContextMenuItem22
             // 
             this.kryptonContextMenuItem22.Text = "Выписать накладную (цвет-патина)";
-            this.kryptonContextMenuItem22.Click += new System.EventHandler(this.kryptonContextMenuItem22_Click);
+            this.kryptonContextMenuItem22.Visible = false;
+            //this.kryptonContextMenuItem22.Click += new System.EventHandler(this.kryptonContextMenuItem22_Click);
             // 
             // kryptonContextMenuItem24
             // 
@@ -3169,6 +3173,11 @@
             this.kryptonContextMenuItem21.Text = "Скомплектовать";
             this.kryptonContextMenuItem21.Click += new System.EventHandler(this.kryptonContextMenuItem21_Click);
             // 
+            // kryptonContextMenuItem25
+            // 
+            this.btnDeleteDispatch.Text = "Удалить неутвержденную отгрузку";
+            this.btnDeleteDispatch.Click += new System.EventHandler(this.kryptonContextMenuItem25_Click);
+            // 
             // MarketingExpeditionForm
             // 
             this.AccessibleName = "false";
@@ -3184,8 +3193,8 @@
             this.Controls.Add(this.barDockControlRight);
             this.Controls.Add(this.barDockControlBottom);
             this.Controls.Add(this.barDockControlTop);
-            this.Controls.Add(this.popupControlContainer1);
             this.Controls.Add(this.MenuPanel);
+            this.Controls.Add(this.popupControlContainer1);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MaximizeBox = false;
@@ -3495,5 +3504,6 @@
         private System.Windows.Forms.MonthCalendar monthCalendar1;
         private System.Windows.Forms.MonthCalendar monthCalendar2;
         private System.Windows.Forms.MonthCalendar monthCalendar3;
+        private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem btnDeleteDispatch;
     }
 }
