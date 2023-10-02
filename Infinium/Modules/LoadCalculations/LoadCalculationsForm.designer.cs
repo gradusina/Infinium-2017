@@ -101,6 +101,7 @@
             this.MenuCloseButton = new ComponentFactory.Krypton.Toolkit.KryptonButton();
             this.label5 = new System.Windows.Forms.Label();
             this.coverPanel = new System.Windows.Forms.Panel();
+            this.btnExcelReport = new System.Windows.Forms.Button();
             this.pnlsSectors.SuspendLayout();
             this.panel3.SuspendLayout();
             this.pnlInProduction.SuspendLayout();
@@ -763,6 +764,7 @@
             // panel4
             // 
             this.panel4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel4.Controls.Add(this.btnExcelReport);
             this.panel4.Controls.Add(this.groupBox4);
             this.panel4.Controls.Add(this.groupBox3);
             this.panel4.Controls.Add(this.groupBox2);
@@ -1101,6 +1103,16 @@
             this.coverPanel.Size = new System.Drawing.Size(1270, 740);
             this.coverPanel.TabIndex = 0;
             // 
+            // btnExcelReport
+            // 
+            this.btnExcelReport.Location = new System.Drawing.Point(119, 18);
+            this.btnExcelReport.Name = "btnExcelReport";
+            this.btnExcelReport.Size = new System.Drawing.Size(99, 33);
+            this.btnExcelReport.TabIndex = 13;
+            this.btnExcelReport.Text = "В Excel";
+            this.btnExcelReport.UseVisualStyleBackColor = true;
+            this.btnExcelReport.Click += new System.EventHandler(this.btnExcelReport_Click);
+            // 
             // LoadCalculationsForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -1224,5 +1236,6 @@
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.CheckBox cbFronts;
         private System.Windows.Forms.CheckBox cbDecor;
+        private System.Windows.Forms.Button btnExcelReport;
     }
 }

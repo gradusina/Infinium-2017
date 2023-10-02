@@ -22,7 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <LangVersion>7.1</LangVersion>
+    <LangVersion>latest</LangVersion>
     <CodeAnalysisRuleSet>Infinium.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <Prefer32Bit>false</Prefer32Bit>
@@ -35,7 +35,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <LangVersion>7.1</LangVersion>
+    <LangVersion>latest</LangVersion>
     <CodeAnalysisRuleSet>Infinium.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
@@ -920,6 +920,7 @@
     <Compile Include="Modules\LoadCalculations\LoadCalculationsForm.designer.cs">
       <DependentUpon>LoadCalculationsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Modules\LoadCalculations\LoadCalculationsReport.cs" />
     <Compile Include="Modules\LoadCalculations\UserControls\MachineControl.cs">
       <SubType>UserControl</SubType>
     </Compile>

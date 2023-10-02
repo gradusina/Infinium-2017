@@ -1,4 +1,5 @@
-﻿using Infinium.Modules.Marketing.Clients;
+﻿using Infinium.Modules.LoadCalculations;
+using Infinium.Modules.Marketing.Clients;
 using Infinium.Modules.ZOV;
 using Infinium.Modules.ZOV.Clients;
 
@@ -623,7 +624,7 @@ namespace Infinium
             while (!SplashWindow.bSmallCreated) ;
 
             ClientsToExcel clientsToExcel = new ClientsToExcel();
-            
+
             clientsToExcel.CreateReport("Клиенты");
 
             while (SplashWindow.bSmallCreated)

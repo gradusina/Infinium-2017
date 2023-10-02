@@ -25,6 +25,7 @@ namespace Infinium
         private const string DigitalFormat = "#0,0.000";
 
         private LoadCalculations _loadCalculations;
+        private LoadCalculationsReport _loadCalculationsReport;
 
         private const int SectorControlWidth = 841;
         private const int SectorControlMargin = 40;
@@ -46,12 +47,11 @@ namespace Infinium
             InitializeComponent();
             coverPanel.BringToFront();
 
-            this.panel3.MouseWheel += Panel3_MouseWheel;
+            panel3.MouseWheel += Panel3_MouseWheel;
             LightStartForm = tLightStartForm;
 
-            this.MaximumSize = Screen.PrimaryScreen.WorkingArea.Size;
-
-
+            MaximumSize = Screen.PrimaryScreen.WorkingArea.Size;
+            
             while (!SplashForm.bCreated) ;
         }
 
@@ -73,7 +73,7 @@ namespace Infinium
         {
             if (!DatabaseConfigsManager.Animation)
             {
-                this.Opacity = 1;
+                Opacity = 1;
 
                 if (FormEvent == eClose || FormEvent == eHide)
                 {
@@ -83,7 +83,7 @@ namespace Infinium
                     {
 
                         LightStartForm.CloseForm(this);
-                        this.Close();
+                        Close();
                     }
 
                     if (FormEvent == eHide)
@@ -108,8 +108,8 @@ namespace Infinium
 
             if (FormEvent == eClose || FormEvent == eHide)
             {
-                if (Convert.ToDecimal(this.Opacity) != Convert.ToDecimal(0.00))
-                    this.Opacity = Convert.ToDouble(Convert.ToDecimal(this.Opacity) - Convert.ToDecimal(0.05));
+                if (Convert.ToDecimal(Opacity) != Convert.ToDecimal(0.00))
+                    Opacity = Convert.ToDouble(Convert.ToDecimal(Opacity) - Convert.ToDecimal(0.05));
                 else
                 {
                     AnimateTimer.Enabled = false;
@@ -118,7 +118,7 @@ namespace Infinium
                     {
 
                         LightStartForm.CloseForm(this);
-                        this.Close();
+                        Close();
                     }
 
                     if (FormEvent == eHide)
@@ -135,16 +135,14 @@ namespace Infinium
 
             if (FormEvent == eShow || FormEvent == eShow)
             {
-                if (this.Opacity != 1)
-                    this.Opacity += 0.05;
+                if (Opacity != 1)
+                    Opacity += 0.05;
                 else
                 {
                     NeedSplash = true;
                     AnimateTimer.Enabled = false;
                     SplashForm.CloseS = true;
                 }
-
-                return;
             }
         }
 
@@ -166,6 +164,7 @@ namespace Infinium
             nfi.NumberDecimalSeparator = ",";
             nfi.NumberGroupSeparator = " ";
 
+            _loadCalculationsReport = new LoadCalculationsReport();
             _loadCalculations = new LoadCalculations();
 
             _sectorControls = new List<SectorControl>();
@@ -190,13 +189,13 @@ namespace Infinium
             if (groupBox3.Controls.Count == 0)
                 foreach (var sec in sectorsList)
                 {
-                    var cb = new System.Windows.Forms.CheckBox
+                    var cb = new CheckBox
                     {
                         AutoSize = true,
                         Checked = true,
-                        Location = new System.Drawing.Point(xPos, yPos),
+                        Location = new Point(xPos, yPos),
                         Name = "cb" + sec.Id,
-                        Size = new System.Drawing.Size(114, 17),
+                        Size = new Size(114, 17),
                         Tag = sec.Id,
                         Text = sec.Name,
                         UseVisualStyleBackColor = true
@@ -298,7 +297,6 @@ namespace Infinium
             if (_loadCalculations == null)
             {
                 //_loginForm.Close();
-                return;
             }
 
             //_loginForm.Close();
@@ -392,9 +390,9 @@ namespace Infinium
                     Name = "SectorControl" + i,
                     SectorName = sectorsList[i].Name
                 };
-
                 var sectorId = sectorsList[i].Id;
                 var machinesList = _loadCalculations.GroupByMachines(sectorId);
+                sectorsList[i].Machines = machinesList;
                 sectorControl.AddMachines(machinesList);
 
                 sectorControl.PForm = this;
@@ -438,7 +436,6 @@ namespace Infinium
             {
                 case VisualOrientation.Right:
                     button.Orientation = VisualOrientation.Top;
-                    explandMachines = false;
                     pnlsSectors.Height -= 160;
                     break;
                 case VisualOrientation.Top:
@@ -619,7 +616,7 @@ namespace Infinium
 
             Type control = controlToClone.GetType();
             PropertyInfo[] info = control.GetProperties();
-            object p = control.InvokeMember("", System.Reflection.BindingFlags.CreateInstance, null, controlToClone, null);
+            var p = control.InvokeMember("", BindingFlags.CreateInstance, null, controlToClone, null);
             foreach (PropertyInfo pi in info)
             {
                 if ((pi.CanWrite) && !(pi.Name == "WindowTarget") && !(pi.Name == "Capture"))
@@ -820,6 +817,13 @@ namespace Infinium
             NeedSplash = false;
             FormEvent = eHide;
             AnimateTimer.Enabled = true;
+        }
+
+        private void btnExcelReport_Click(object sender, EventArgs e)
+        {
+            _loadCalculationsReport.DataList = _loadCalculations.GetReportData();
+            _loadCalculationsReport.NeedStartFile = true;
+            _loadCalculationsReport.CreateReport();
         }
     }
 }

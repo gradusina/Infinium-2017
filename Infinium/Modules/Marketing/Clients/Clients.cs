@@ -1,4 +1,8 @@
-﻿using System;
+﻿using NPOI.HSSF.UserModel;
+using NPOI.HSSF.UserModel.Contrib;
+using NPOI.HSSF.Util;
+
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -6,17 +10,9 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
-using System.Security.Policy;
 using System.Text;
 using System.Windows.Forms;
 using System.Xml;
-using System.Xml.Linq;
-using DevExpress.XtraRichEdit.Model;
-
-using NPOI.HSSF.UserModel;
-using NPOI.HSSF.UserModel.Contrib;
-using NPOI.HSSF.Util;
-using static Infinium.UserProfile;
 
 namespace Infinium.Modules.Marketing.Clients
 {
@@ -1532,31 +1528,31 @@ infiniumdevelopers@gmail.com";
 
     public class ClientsToExcel
     {
-        private HSSFWorkbook _hssfworkbook;
+        private HSSFWorkbook _workbook;
 
-        private Dictionary<string, string> dtColumns = new Dictionary<string, string>();
+        private readonly Dictionary<string, string> _engToRusDictionary = new();
 
         public ClientsToExcel()
         {
             GetClients();
-            prepareColumns();
+            PrepareColumns();
         }
 
         private DataTable _clientsDt;
 
-        private void prepareColumns()
+        private void PrepareColumns()
         {
-            dtColumns.Add("ClientID", "ID");
-            dtColumns.Add("ClientName", "Клиент");
-            dtColumns.Add("Manager", "Менеджер");
-            dtColumns.Add("Country", "Страна");
-            dtColumns.Add("City", "Город");
-            dtColumns.Add("Email", "Email");
-            dtColumns.Add("DelayOfPayment", "Отсрочка");
-            dtColumns.Add("UNN", "UNN");
-            dtColumns.Add("ClientGroupName", "Группа");
-            dtColumns.Add("PriceGroup", "Ценовая группа");
-            dtColumns.Add("Enabled", "Активен");
+            _engToRusDictionary.Add("ClientID", "ID");
+            _engToRusDictionary.Add("ClientName", "Клиент");
+            _engToRusDictionary.Add("Manager", "Менеджер");
+            _engToRusDictionary.Add("Country", "Страна");
+            _engToRusDictionary.Add("City", "Город");
+            _engToRusDictionary.Add("Email", "Email");
+            _engToRusDictionary.Add("DelayOfPayment", "Отсрочка");
+            _engToRusDictionary.Add("UNN", "UNN");
+            _engToRusDictionary.Add("ClientGroupName", "Группа");
+            _engToRusDictionary.Add("PriceGroup", "Ценовая группа");
+            _engToRusDictionary.Add("Enabled", "Активен");
         }
 
         private void GetClients()
@@ -1569,41 +1565,39 @@ ClientGroups.ClientGroupName, Clients.PriceGroup, Clients.Enabled FROM Clients A
 INNER JOIN ClientsManagers ON Clients.ManagerID = ClientsManagers.ManagerID 
 INNER JOIN ClientGroups ON Clients.ClientGroupID = ClientGroups.ClientGroupID
 INNER JOIN infiniu2_catalog.dbo.Countries AS Countries ON Clients.CountryID = Countries.CountryID order by Clients.ClientName";
-            
-            using (var da = new SqlDataAdapter(selectCommand, ConnectionStrings.MarketingReferenceConnectionString))
-            {
-                da.Fill(_clientsDt);
-            }
+
+            using var da = new SqlDataAdapter(selectCommand, ConnectionStrings.MarketingReferenceConnectionString);
+            da.Fill(_clientsDt);
         }
 
         public void CreateReport(string fileName)
         {
-            _hssfworkbook = new HSSFWorkbook();
+            _workbook = new HSSFWorkbook();
             
             #region Create fonts and styles
 
-            var clientNameFont = _hssfworkbook.CreateFont();
+            var clientNameFont = _workbook.CreateFont();
             clientNameFont.FontHeightInPoints = 14;
             clientNameFont.Boldweight = HSSFFont.BOLDWEIGHT_BOLD;
             clientNameFont.FontName = "Calibri";
 
-            var mainFont = _hssfworkbook.CreateFont();
+            var mainFont = _workbook.CreateFont();
             mainFont.FontHeightInPoints = 13;
             mainFont.Boldweight = HSSFFont.BOLDWEIGHT_BOLD;
             mainFont.FontName = "Calibri";
 
-            var clientNameStyle = _hssfworkbook.CreateCellStyle();
+            var clientNameStyle = _workbook.CreateCellStyle();
             clientNameStyle.SetFont(clientNameFont);
 
-            var mainStyle = _hssfworkbook.CreateCellStyle();
+            var mainStyle = _workbook.CreateCellStyle();
             mainStyle.SetFont(mainFont);
 
-            var headerFont = _hssfworkbook.CreateFont();
+            var headerFont = _workbook.CreateFont();
             headerFont.FontHeightInPoints = 13;
             headerFont.Boldweight = HSSFFont.BOLDWEIGHT_BOLD;
             headerFont.FontName = "Calibri";
 
-            var headerStyle = _hssfworkbook.CreateCellStyle();
+            var headerStyle = _workbook.CreateCellStyle();
             headerStyle.BorderBottom = HSSFCellStyle.BORDER_THIN;
             headerStyle.BottomBorderColor = HSSFColor.BLACK.index;
             headerStyle.BorderLeft = HSSFCellStyle.BORDER_THIN;
@@ -1614,11 +1608,11 @@ INNER JOIN infiniu2_catalog.dbo.Countries AS Countries ON Clients.CountryID = Co
             headerStyle.TopBorderColor = HSSFColor.BLACK.index;
             headerStyle.SetFont(headerFont);
             
-            var simpleFont = _hssfworkbook.CreateFont();
+            var simpleFont = _workbook.CreateFont();
             simpleFont.FontHeightInPoints = 12;
             simpleFont.FontName = "Calibri";
 
-            var simpleCellStyle = _hssfworkbook.CreateCellStyle();
+            var simpleCellStyle = _workbook.CreateCellStyle();
             simpleCellStyle.BorderBottom = HSSFCellStyle.BORDER_THIN;
             simpleCellStyle.BottomBorderColor = HSSFColor.BLACK.index;
             simpleCellStyle.BorderLeft = HSSFCellStyle.BORDER_THIN;
@@ -1629,7 +1623,7 @@ INNER JOIN infiniu2_catalog.dbo.Countries AS Countries ON Clients.CountryID = Co
             simpleCellStyle.TopBorderColor = HSSFColor.BLACK.index;
             simpleCellStyle.SetFont(simpleFont);
 
-            var cellStyle = _hssfworkbook.CreateCellStyle();
+            var cellStyle = _workbook.CreateCellStyle();
             cellStyle.DataFormat = HSSFDataFormat.GetBuiltinFormat("0.000");
             cellStyle.BorderBottom = HSSFCellStyle.BORDER_THIN;
             cellStyle.BottomBorderColor = HSSFColor.BLACK.index;
@@ -1654,7 +1648,7 @@ INNER JOIN infiniu2_catalog.dbo.Countries AS Countries ON Clients.CountryID = Co
             }
 
             var newFile = new FileStream(file.FullName, FileMode.Create);
-            _hssfworkbook.Write(newFile);
+            _workbook.Write(newFile);
             newFile.Close();
 
             System.Diagnostics.Process.Start(file.FullName);
@@ -1665,7 +1659,7 @@ INNER JOIN infiniu2_catalog.dbo.Countries AS Countries ON Clients.CountryID = Co
         {
             var rowIndex = 0;
             
-            var sheet1 = _hssfworkbook.CreateSheet("Клиенты");
+            var sheet1 = _workbook.CreateSheet("Клиенты");
             sheet1.PrintSetup.PaperSize = (short)PaperSizeType.A4;
 
             sheet1.SetMargin(HSSFSheet.LeftMargin, .12);
@@ -1701,7 +1695,7 @@ INNER JOIN infiniu2_catalog.dbo.Countries AS Countries ON Clients.CountryID = Co
 
             HSSFCell cell4;
             var i = 0;
-            foreach (var column in dtColumns)
+            foreach (var column in _engToRusDictionary)
             {
                 cell4 = HSSFCellUtil.CreateCell(sheet1.CreateRow(rowIndex), i, column.Value);
                 cell4.CellStyle = headerStyle;
