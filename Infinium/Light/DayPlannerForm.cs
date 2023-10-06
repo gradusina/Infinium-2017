@@ -922,6 +922,18 @@ namespace Infinium
                 if (!DayPlannerWorkTimeSheet.IsAbsenceVacation(CalendarFrom.SelectionStart))
                 {
                     MessageBox.Show("Необходимо сохранить Табель в предыдущий рабочий день");
+
+                    var result = MessageBox.Show("Перейти к незакрытому дню?", "Сохранение Табеля", MessageBoxButtons.YesNoCancel);
+                    if (result != DialogResult.Yes) return;
+                    var (b, dateTime) = DayPlannerWorkTimeSheet.GetLastDateTime();
+                    if (b)
+                    {
+                        CalendarFrom.SelectionStart = dateTime.Date;
+
+                        CalendarFrom_DateChanged(null,
+                            new DateRangeEventArgs(CalendarFrom.SelectionStart, CalendarFrom.SelectionStart));
+                    }
+
                     return;
                 }
             }
@@ -1719,7 +1731,8 @@ namespace Infinium
 
         private void btnCancelEnd_Click(object sender, EventArgs e)
         {
-            LightWorkDay.CancelEndWorkDay(Security.CurrentUserID);
+
+            LightWorkDay.CancelEndWorkDay(Security.CurrentUserID, CalendarFrom.SelectionStart);
             StatusToControls();
         }
 

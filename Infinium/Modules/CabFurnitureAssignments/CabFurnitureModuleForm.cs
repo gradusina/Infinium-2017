@@ -1297,27 +1297,27 @@ namespace Infinium
         {
             return;
 
-            if (assignmentsManager == null)
-                return;
-            int CabFurAssignmentID = 0;
-            if (dgvAllAssignments.SelectedRows.Count != 0 && dgvAllAssignments.SelectedRows[0].Cells["CabFurAssignmentID"].Value != DBNull.Value)
-                CabFurAssignmentID = Convert.ToInt32(dgvAllAssignments.SelectedRows[0].Cells["CabFurAssignmentID"].Value);
-            assignmentsManager.CabFurAssignmentID = CabFurAssignmentID;
+            //if (assignmentsManager == null)
+            //    return;
+            //int CabFurAssignmentID = 0;
+            //if (dgvAllAssignments.SelectedRows.Count != 0 && dgvAllAssignments.SelectedRows[0].Cells["CabFurAssignmentID"].Value != DBNull.Value)
+            //    CabFurAssignmentID = Convert.ToInt32(dgvAllAssignments.SelectedRows[0].Cells["CabFurAssignmentID"].Value);
+            //assignmentsManager.CabFurAssignmentID = CabFurAssignmentID;
 
-            Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Загрузка данных.\r\nПодождите..."); });
-            T.Start();
-            while (!SplashForm.bCreated) ;
-            NeedSplash = false;
+            //Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Загрузка данных.\r\nПодождите..."); });
+            //T.Start();
+            //while (!SplashForm.bCreated) ;
+            //NeedSplash = false;
 
-            kryptonCheckSet3.CheckedButton = cbtnNewAssignment;
-            assignmentsManager.NewAssignment = false;
-            assignmentsManager.UpdateNewAssignment(CabFurAssignmentID);
-            tabControl1.SelectedIndex = 1;
-            CheckColumns(ref dgvNewAssignment);
+            //kryptonCheckSet3.CheckedButton = cbtnNewAssignment;
+            //assignmentsManager.NewAssignment = false;
+            //assignmentsManager.UpdateNewAssignment(CabFurAssignmentID);
+            //tabControl1.SelectedIndex = 1;
+            //CheckColumns(ref dgvNewAssignment);
 
-            NeedSplash = true;
-            while (SplashWindow.bSmallCreated)
-                SmallWaitForm.CloseS = true;
+            //NeedSplash = true;
+            //while (SplashWindow.bSmallCreated)
+            //    SmallWaitForm.CloseS = true;
         }
 
         private void dgvAllAssignments_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)

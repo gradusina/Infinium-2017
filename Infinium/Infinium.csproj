@@ -22,7 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <LangVersion>latest</LangVersion>
+    <LangVersion>preview</LangVersion>
     <CodeAnalysisRuleSet>Infinium.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <Prefer32Bit>false</Prefer32Bit>
@@ -35,7 +35,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <LangVersion>latest</LangVersion>
+    <LangVersion>preview</LangVersion>
     <CodeAnalysisRuleSet>Infinium.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
@@ -3470,10 +3470,10 @@
     <None Include="Resources\ZOVPROFIL.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\n2.jpg" />
+    <None Include="Resources\icons8-refresh-30.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\icons8-refresh-30.png" />
+    <None Include="Resources\n2.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

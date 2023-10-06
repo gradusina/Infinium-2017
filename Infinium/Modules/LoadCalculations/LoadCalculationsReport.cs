@@ -167,8 +167,8 @@ INNER JOIN infiniu2_catalog.dbo.Countries AS Countries ON Clients.CountryID = Co
 
             var sheet1 = _workbook.CreateSheet(sheetName);
 
-            var displayIndex = 0;
-            const int firstRowIndex = 2;
+            //var displayIndex = 0;
+            //const int firstRowIndex = 2;
             var rowIndex = 2;
 
             //var row = sheet1.CreateRow(rowIndex++);
@@ -211,7 +211,7 @@ INNER JOIN infiniu2_catalog.dbo.Countries AS Countries ON Clients.CountryID = Co
 
             //sheet1.SetAutoFilter(new CellRangeAddress(firstRowIndex, lastRowIndex, 1, 1));
 
-            displayIndex = 0;
+            var displayIndex = 0;
 
             //if (_workbook.NumberOfSheets > 0)
             //{

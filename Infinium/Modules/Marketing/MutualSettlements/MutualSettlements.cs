@@ -926,153 +926,155 @@ INNER JOIN ClientsManagers ON Clients.ManagerID=ClientsManagers.ManagerID WHERE 
 
         public bool VerifyTransaction(int MutualSettlementID, decimal DispatchSum, ref decimal Discount)
         {
-            bool bVerify = false;
-            int DiscountPaymentConditionID = 0;
-            decimal SevenDaysIncomeSum = 0;
-            decimal DeadlineIncomeSum = 0;
+            return true;
 
-            DataTable MutDT = new DataTable();
-            DataTable DispDT = new DataTable();
-            DataTable IncomeDT = new DataTable();
-            string SelectCommand = @"SELECT * FROM MutualSettlements WHERE MutualSettlementID=" + MutualSettlementID;
-            using (SqlDataAdapter mDA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
-            {
-                mDA.Fill(MutDT);
-                DiscountPaymentConditionID = Convert.ToInt32(MutDT.Rows[0]["DiscountPaymentConditionID"]);
-                if (DiscountPaymentConditionID == 2 || DiscountPaymentConditionID == 3 || DiscountPaymentConditionID == 5)
-                {
-                    DateTime InvoiceDateTime = Convert.ToDateTime(MutDT.Rows[0]["InvoiceDateTime"]);
-                    DateTime SevenDays = InvoiceDateTime.AddDays(7);
+            //bool bVerify = false;
+            //int DiscountPaymentConditionID = 0;
+            //decimal SevenDaysIncomeSum = 0;
+            //decimal DeadlineIncomeSum = 0;
 
-                    if (DiscountPaymentConditionID == 5)
-                    {
-                        SelectCommand = @"SELECT * FROM ClientsIncomes WHERE MutualSettlementID=" + MutualSettlementID;
-                        using (SqlDataAdapter DA1 = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
-                        {
-                            IncomeDT.Clear();
-                            DA1.Fill(IncomeDT);
-                            SevenDaysIncomeSum = 0;
-                            DeadlineIncomeSum = 0;
-                            for (int x = 0; x < IncomeDT.Rows.Count; x++)
-                            {
-                                DateTime IncomeDateTime = Convert.ToDateTime(IncomeDT.Rows[x]["IncomeDateTime"]);
-                                if (IncomeDateTime.Date <= SevenDays.Date)
-                                    SevenDaysIncomeSum += Convert.ToDecimal(IncomeDT.Rows[x]["IncomeSum"]);
-                                if (IncomeDateTime.Date <= DateTime.Now.Date)
-                                    DeadlineIncomeSum += Convert.ToDecimal(IncomeDT.Rows[x]["IncomeSum"]);
-                            }
-                            if (SevenDaysIncomeSum == 0)
-                                Discount = 0;
-                            else
-                            {
-                                if (SevenDaysIncomeSum / DispatchSum < 0.5m)
-                                    Discount = 0;
-                                else
-                                {
-                                    if (SevenDaysIncomeSum / DispatchSum >= 1)
-                                    {
-                                        Discount = 8;
-                                        bVerify = true;
-                                    }
-                                    else
-                                    {
-                                        if (DeadlineIncomeSum / DispatchSum >= 1)
-                                        {
-                                            Discount = 8;
-                                            bVerify = true;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    if (DiscountPaymentConditionID == 2)
-                    {
-                        SelectCommand = @"SELECT * FROM ClientsIncomes WHERE MutualSettlementID=" + MutualSettlementID;
-                        using (SqlDataAdapter DA1 = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
-                        {
-                            IncomeDT.Clear();
-                            DA1.Fill(IncomeDT);
-                            SevenDaysIncomeSum = 0;
-                            DeadlineIncomeSum = 0;
-                            for (int x = 0; x < IncomeDT.Rows.Count; x++)
-                            {
-                                DateTime IncomeDateTime = Convert.ToDateTime(IncomeDT.Rows[x]["IncomeDateTime"]);
-                                if (IncomeDateTime.Date <= SevenDays.Date)
-                                    SevenDaysIncomeSum += Convert.ToDecimal(IncomeDT.Rows[x]["IncomeSum"]);
-                                if (IncomeDateTime.Date <= DateTime.Now.Date)
-                                    DeadlineIncomeSum += Convert.ToDecimal(IncomeDT.Rows[x]["IncomeSum"]);
-                            }
-                            if (SevenDaysIncomeSum == 0)
-                                Discount = 0;
-                            else
-                            {
-                                if (SevenDaysIncomeSum / DispatchSum < 0.5m)
-                                    Discount = 0;
-                                else
-                                {
-                                    if (SevenDaysIncomeSum / DispatchSum >= 1)
-                                    {
-                                        Discount = 6;
-                                        bVerify = true;
-                                    }
-                                    else
-                                    {
-                                        if (DeadlineIncomeSum / DispatchSum >= 1)
-                                        {
-                                            Discount = 6;
-                                            bVerify = true;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    if (DiscountPaymentConditionID == 3)
-                    {
-                        SelectCommand = @"SELECT * FROM ClientsIncomes WHERE MutualSettlementID=" + MutualSettlementID;
-                        using (SqlDataAdapter DA1 = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
-                        {
-                            IncomeDT.Clear();
-                            DA1.Fill(IncomeDT);
-                            SevenDaysIncomeSum = 0;
-                            DeadlineIncomeSum = 0;
-                            for (int x = 0; x < IncomeDT.Rows.Count; x++)
-                            {
-                                DateTime IncomeDateTime = Convert.ToDateTime(IncomeDT.Rows[x]["IncomeDateTime"]);
-                                if (IncomeDateTime.Date <= SevenDays.Date)
-                                    SevenDaysIncomeSum += Convert.ToDecimal(IncomeDT.Rows[x]["IncomeSum"]);
-                                if (IncomeDateTime.Date <= DateTime.Now.Date)
-                                    DeadlineIncomeSum += Convert.ToDecimal(IncomeDT.Rows[x]["IncomeSum"]);
-                            }
-                            if (SevenDaysIncomeSum == 0)
-                                Discount = 0;
-                            else
-                            {
-                                if (SevenDaysIncomeSum / DispatchSum < 0.5m)
-                                    Discount = 0;
-                                else
-                                {
-                                    if (SevenDaysIncomeSum / DispatchSum >= 1)
-                                    {
-                                        Discount = 10;
-                                        bVerify = true;
-                                    }
-                                    else
-                                    {
-                                        if (DeadlineIncomeSum / DispatchSum >= 1)
-                                        {
-                                            Discount = 6;
-                                            bVerify = true;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            return bVerify;
+            //DataTable MutDT = new DataTable();
+            //DataTable DispDT = new DataTable();
+            //DataTable IncomeDT = new DataTable();
+            //string SelectCommand = @"SELECT * FROM MutualSettlements WHERE MutualSettlementID=" + MutualSettlementID;
+            //using (SqlDataAdapter mDA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
+            //{
+            //    mDA.Fill(MutDT);
+            //    DiscountPaymentConditionID = Convert.ToInt32(MutDT.Rows[0]["DiscountPaymentConditionID"]);
+            //    if (DiscountPaymentConditionID == 2 || DiscountPaymentConditionID == 3 || DiscountPaymentConditionID == 5)
+            //    {
+            //        DateTime InvoiceDateTime = Convert.ToDateTime(MutDT.Rows[0]["InvoiceDateTime"]);
+            //        DateTime SevenDays = InvoiceDateTime.AddDays(7);
+
+            //        if (DiscountPaymentConditionID == 5)
+            //        {
+            //            SelectCommand = @"SELECT * FROM ClientsIncomes WHERE MutualSettlementID=" + MutualSettlementID;
+            //            using (SqlDataAdapter DA1 = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
+            //            {
+            //                IncomeDT.Clear();
+            //                DA1.Fill(IncomeDT);
+            //                SevenDaysIncomeSum = 0;
+            //                DeadlineIncomeSum = 0;
+            //                for (int x = 0; x < IncomeDT.Rows.Count; x++)
+            //                {
+            //                    DateTime IncomeDateTime = Convert.ToDateTime(IncomeDT.Rows[x]["IncomeDateTime"]);
+            //                    if (IncomeDateTime.Date <= SevenDays.Date)
+            //                        SevenDaysIncomeSum += Convert.ToDecimal(IncomeDT.Rows[x]["IncomeSum"]);
+            //                    if (IncomeDateTime.Date <= DateTime.Now.Date)
+            //                        DeadlineIncomeSum += Convert.ToDecimal(IncomeDT.Rows[x]["IncomeSum"]);
+            //                }
+            //                if (SevenDaysIncomeSum == 0)
+            //                    Discount = 0;
+            //                else
+            //                {
+            //                    if (SevenDaysIncomeSum / DispatchSum < 0.5m)
+            //                        Discount = 0;
+            //                    else
+            //                    {
+            //                        if (SevenDaysIncomeSum / DispatchSum >= 1)
+            //                        {
+            //                            Discount = 8;
+            //                            bVerify = true;
+            //                        }
+            //                        else
+            //                        {
+            //                            if (DeadlineIncomeSum / DispatchSum >= 1)
+            //                            {
+            //                                Discount = 8;
+            //                                bVerify = true;
+            //                            }
+            //                        }
+            //                    }
+            //                }
+            //            }
+            //        }
+            //        if (DiscountPaymentConditionID == 2)
+            //        {
+            //            SelectCommand = @"SELECT * FROM ClientsIncomes WHERE MutualSettlementID=" + MutualSettlementID;
+            //            using (SqlDataAdapter DA1 = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
+            //            {
+            //                IncomeDT.Clear();
+            //                DA1.Fill(IncomeDT);
+            //                SevenDaysIncomeSum = 0;
+            //                DeadlineIncomeSum = 0;
+            //                for (int x = 0; x < IncomeDT.Rows.Count; x++)
+            //                {
+            //                    DateTime IncomeDateTime = Convert.ToDateTime(IncomeDT.Rows[x]["IncomeDateTime"]);
+            //                    if (IncomeDateTime.Date <= SevenDays.Date)
+            //                        SevenDaysIncomeSum += Convert.ToDecimal(IncomeDT.Rows[x]["IncomeSum"]);
+            //                    if (IncomeDateTime.Date <= DateTime.Now.Date)
+            //                        DeadlineIncomeSum += Convert.ToDecimal(IncomeDT.Rows[x]["IncomeSum"]);
+            //                }
+            //                if (SevenDaysIncomeSum == 0)
+            //                    Discount = 0;
+            //                else
+            //                {
+            //                    if (SevenDaysIncomeSum / DispatchSum < 0.5m)
+            //                        Discount = 0;
+            //                    else
+            //                    {
+            //                        if (SevenDaysIncomeSum / DispatchSum >= 1)
+            //                        {
+            //                            Discount = 6;
+            //                            bVerify = true;
+            //                        }
+            //                        else
+            //                        {
+            //                            if (DeadlineIncomeSum / DispatchSum >= 1)
+            //                            {
+            //                                Discount = 6;
+            //                                bVerify = true;
+            //                            }
+            //                        }
+            //                    }
+            //                }
+            //            }
+            //        }
+            //        if (DiscountPaymentConditionID == 3)
+            //        {
+            //            SelectCommand = @"SELECT * FROM ClientsIncomes WHERE MutualSettlementID=" + MutualSettlementID;
+            //            using (SqlDataAdapter DA1 = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
+            //            {
+            //                IncomeDT.Clear();
+            //                DA1.Fill(IncomeDT);
+            //                SevenDaysIncomeSum = 0;
+            //                DeadlineIncomeSum = 0;
+            //                for (int x = 0; x < IncomeDT.Rows.Count; x++)
+            //                {
+            //                    DateTime IncomeDateTime = Convert.ToDateTime(IncomeDT.Rows[x]["IncomeDateTime"]);
+            //                    if (IncomeDateTime.Date <= SevenDays.Date)
+            //                        SevenDaysIncomeSum += Convert.ToDecimal(IncomeDT.Rows[x]["IncomeSum"]);
+            //                    if (IncomeDateTime.Date <= DateTime.Now.Date)
+            //                        DeadlineIncomeSum += Convert.ToDecimal(IncomeDT.Rows[x]["IncomeSum"]);
+            //                }
+            //                if (SevenDaysIncomeSum == 0)
+            //                    Discount = 0;
+            //                else
+            //                {
+            //                    if (SevenDaysIncomeSum / DispatchSum < 0.5m)
+            //                        Discount = 0;
+            //                    else
+            //                    {
+            //                        if (SevenDaysIncomeSum / DispatchSum >= 1)
+            //                        {
+            //                            Discount = 10;
+            //                            bVerify = true;
+            //                        }
+            //                        else
+            //                        {
+            //                            if (DeadlineIncomeSum / DispatchSum >= 1)
+            //                            {
+            //                                Discount = 6;
+            //                                bVerify = true;
+            //                            }
+            //                        }
+            //                    }
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
+            //return bVerify;
         }
 
         public void GetClientsDispatches(int ClientID, int FactoryID, DateTime date1, DateTime date2)

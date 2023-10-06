@@ -22,6 +22,7 @@ using System.Windows.Forms;
 using System.Xml;
 
 using static Infinium.TablesManager;
+using static System.Net.WebRequestMethods;
 
 using Region = NPOI.HSSF.Util.Region;
 
@@ -14987,6 +14988,7 @@ namespace Infinium.Modules.Marketing.NewOrders
             _reportDataTable.Columns.Add("costWithVat", typeof(decimal));
             _reportDataTable.Columns.Add("packCount", typeof(int));
             _reportDataTable.Columns.Add("weight", typeof(decimal));
+            _reportDataTable.Columns.Add("notes", typeof(string));
             _reportDataTable.Columns.Add("accountingName", typeof(string));
 
             FrontsOrdersDataTable = new DataTable();
@@ -15735,23 +15737,26 @@ namespace Infinium.Modules.Marketing.NewOrders
                             newRow["costWithVat"] = costWithVat;
                             newRow["packCount"] = count;
                             newRow["weight"] = weight;
+                            newRow["notes"] = notes;
                             newRow["accountingName"] = accountingName;
                             tempDt.Rows.Add(newRow);
                         }
                         using (var dv = new DataView(tempDt))
                         {
-                            dv.Sort = "name";
-                            var dt1 = dv.ToTable(true, "name");
+                            dv.Sort = "name, accountingName, notes";
+                            var dt1 = dv.ToTable(true, "name", "notes", "accountingName");
 
                             foreach (DataRow row in dt1.Rows)
                             {
                                 var name = row["name"].ToString();
+                                var accountingName = row["accountingName"].ToString();
+                                var notes = row["notes"].ToString();
 
-                                var dataRows1 = tempDt.Select($"name='{name}'");
+                                var dataRows1 = tempDt.Select($"name='{name}' and accountingName='{accountingName}' and notes='{notes}'");
 
                                 foreach (var r in dataRows1)
                                 {
-                                    var dataRows2 = _reportDataTable.Select($"name='{name}'");
+                                    var dataRows2 = _reportDataTable.Select($"name='{name}' and accountingName='{accountingName}' and notes='{notes}'");
 
                                     if (!dataRows2.Any())
                                     {
@@ -17961,8 +17966,15 @@ namespace Infinium.Modules.Marketing.NewOrders
             SimpleHeader1CS.SetFont(HeaderF2);
 
             #endregion
+            
+            string FileName = "Приложение";
+            int j = 1;
+            while (hssfworkbook.GetSheet(FileName) != null)
+            {
+                FileName = FileName + "(" + j++ + ")";
+            }
 
-            HSSFSheet sheet1 = hssfworkbook.CreateSheet("Приложение");
+            HSSFSheet sheet1 = hssfworkbook.CreateSheet(FileName);
             sheet1.PrintSetup.PaperSize = (short)PaperSizeType.A4;
 
             sheet1.SetMargin(HSSFSheet.LeftMargin, (double).12);

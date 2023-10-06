@@ -72,9 +72,9 @@ namespace Infinium
         {
             MenuItemsDataTable = new DataTable();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM MenuItems WHERE MenuItemID IN " +
-                                                         "(SELECT MenuItemID FROM Modules WHERE SecurityAccess = 0 OR (SecurityAccess = 1 AND ModuleID IN " +
-                                                         "(SELECT ModuleID FROM ModulesAccess WHERE UserID = " + Security.CurrentUserID + "))) OR MenuItemID = 0",
+            using (var DA = new SqlDataAdapter("SELECT * FROM MenuItems WHERE MenuItemID IN " +
+                                               "(SELECT MenuItemID FROM Modules WHERE SecurityAccess = 0 OR (SecurityAccess = 1 AND ModuleID IN " +
+                                               "(SELECT ModuleID FROM ModulesAccess WHERE UserID = " + Security.CurrentUserID + "))) OR MenuItemID = 0",
                                                          ConnectionStrings.UsersConnectionString))
             {
                 DA.Fill(MenuItemsDataTable);
@@ -92,8 +92,8 @@ namespace Infinium
 
             ModulesDataTable = new DataTable();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT ModuleID, ModuleName, Description, FormName, SecurityAccess, PriceView, MenuItemID, ModuleDesigner FROM Modules WHERE SecurityAccess = 0 OR (SecurityAccess = 1 AND ModuleID IN " +
-                                                         "(SELECT ModuleID FROM ModulesAccess WHERE UserID = " + Security.CurrentUserID + "))",
+            using (var DA = new SqlDataAdapter("SELECT ModuleID, ModuleName, Description, FormName, SecurityAccess, PriceView, MenuItemID, ModuleDesigner FROM Modules WHERE SecurityAccess = 0 OR (SecurityAccess = 1 AND ModuleID IN " +
+                                               "(SELECT ModuleID FROM ModulesAccess WHERE UserID = " + Security.CurrentUserID + "))",
                                                          ConnectionStrings.UsersConnectionString))
             {
                 DA.Fill(ModulesDataTable);
@@ -107,12 +107,12 @@ namespace Infinium
             }
 
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT ModuleID, ModuleName, Description, FormName, SecurityAccess, PriceView, MenuItemID, ModuleDesigner FROM Modules WHERE (ModuleID IN (SELECT ModuleID FROM MyModules WHERE UserID = " + Security.CurrentUserID +
-                                                          ") AND (SecurityAccess = 0 OR (SecurityAccess = 1 AND ModuleID IN " +
-                                                         "(SELECT ModuleID FROM ModulesAccess WHERE UserID = " + Security.CurrentUserID + "))))",
+            using (var DA = new SqlDataAdapter("SELECT ModuleID, ModuleName, Description, FormName, SecurityAccess, PriceView, MenuItemID, ModuleDesigner FROM Modules WHERE (ModuleID IN (SELECT ModuleID FROM MyModules WHERE UserID = " + Security.CurrentUserID +
+                                               ") AND (SecurityAccess = 0 OR (SecurityAccess = 1 AND ModuleID IN " +
+                                               "(SELECT ModuleID FROM ModulesAccess WHERE UserID = " + Security.CurrentUserID + "))))",
                                                          ConnectionStrings.UsersConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                     DT.Columns.Add(new DataColumn("Picture", Type.GetType("System.Byte[]")));
@@ -123,7 +123,7 @@ namespace Infinium
                     }
                     foreach (DataRow Row in DT.Rows)
                     {
-                        DataRow NewRow = ModulesDataTable.NewRow();
+                        var NewRow = ModulesDataTable.NewRow();
 
                         foreach (DataColumn Column in DT.Columns)
                         {
@@ -143,25 +143,25 @@ namespace Infinium
 
         public bool AddModuleToFavorite(string FormName)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 1 * FROM MyModules WHERE ModuleID = " +
-                                    ModulesDataTable.Select("FormName = '" + FormName + "'")[0]["ModuleID"] + " AND UserID = " + Security.CurrentUserID, ConnectionStrings.UsersConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 1 * FROM MyModules WHERE ModuleID = " +
+                                               ModulesDataTable.Select("FormName = '" + FormName + "'")[0]["ModuleID"] + " AND UserID = " + Security.CurrentUserID, ConnectionStrings.UsersConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
                         if (DT.Rows.Count > 0)
                             return false;//exists
 
-                        DataRow NewRow = DT.NewRow();
+                        var NewRow = DT.NewRow();
                         NewRow["ModuleID"] = ModulesDataTable.Select("FormName = '" + FormName + "'")[0]["ModuleID"];
                         NewRow["UserID"] = Security.CurrentUserID;
                         DT.Rows.Add(NewRow);
 
-                        DataRow mNewRow = ModulesDataTable.NewRow();
-                        DataRow Row = ModulesDataTable.Select("FormName = '" + FormName + "'")[0];
+                        var mNewRow = ModulesDataTable.NewRow();
+                        var Row = ModulesDataTable.Select("FormName = '" + FormName + "'")[0];
 
                         foreach (DataColumn Column in ModulesDataTable.Columns)
                         {
@@ -184,10 +184,10 @@ namespace Infinium
 
         public void RemoveModuleFromFavorite(string FormName)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM MyModules WHERE ModuleID = " +
-                                    ModulesDataTable.Select("FormName = '" + FormName + "'")[0]["ModuleID"] + " AND UserID = " + Security.CurrentUserID, ConnectionStrings.UsersConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM MyModules WHERE ModuleID = " +
+                                               ModulesDataTable.Select("FormName = '" + FormName + "'")[0]["ModuleID"] + " AND UserID = " + Security.CurrentUserID, ConnectionStrings.UsersConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -254,7 +254,7 @@ namespace Infinium
 
             foreach (DataRow Row in DepartmentsDataTable.Rows)
             {
-                DataRow NewRow = UsersDataTable.NewRow();
+                var NewRow = UsersDataTable.NewRow();
                 NewRow["UserID"] = Row["DepartmentID"];
                 NewRow["Name"] = Row["DepartmentName"];
                 NewRow["SenderTypeID"] = 1;
@@ -263,7 +263,7 @@ namespace Infinium
             }
 
             {
-                DataRow NewRow = DepartmentsDataTable.NewRow();
+                var NewRow = DepartmentsDataTable.NewRow();
                 NewRow["DepartmentID"] = -1;
                 NewRow["DepartmentName"] = "Все отделы";
                 DepartmentsDataTable.Rows.Add(NewRow);
@@ -273,29 +273,29 @@ namespace Infinium
 
             AttachmentsDataTable = new DataTable();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT NewsAttachID, NewsID, FileName, FileSize FROM NewsAttachs", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT NewsAttachID, NewsID, FileName, FileSize FROM NewsAttachs", ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(AttachmentsDataTable);
             }
 
             CommentsDataTable = new DataTable();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM NewsComments", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM NewsComments", ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(CommentsDataTable);
             }
 
             CommentsSubsRecordsDataTable = new DataTable();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT SubscribesRecords.*, NewsComments.NewsID FROM SubscribesRecords INNER JOIN NewsComments ON NewsComments.NewsCommentID = SubscribesRecords.TableItemID WHERE SubscribesItemID = 2 AND UserTypeID = 0 AND SubscribesRecords.UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT SubscribesRecords.*, NewsComments.NewsID FROM SubscribesRecords INNER JOIN NewsComments ON NewsComments.NewsCommentID = SubscribesRecords.TableItemID WHERE SubscribesItemID = 2 AND UserTypeID = 0 AND SubscribesRecords.UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(CommentsSubsRecordsDataTable);
             }
 
             NewsSubsRecordsDataTable = new DataTable();
 
-            using (SqlDataAdapter sDA = new SqlDataAdapter("SELECT * FROM SubscribesRecords WHERE SubscribesItemID = 1 " +
-                                                            " AND UserTypeID = 0 AND UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
+            using (var sDA = new SqlDataAdapter("SELECT * FROM SubscribesRecords WHERE SubscribesItemID = 1 " +
+                                                " AND UserTypeID = 0 AND UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
             {
                 sDA.Fill(NewsSubsRecordsDataTable);
             }
@@ -305,7 +305,7 @@ namespace Infinium
         {
             NewsDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP " + Count + " * FROM News WHERE Pending <> 1 ORDER BY LastCommentDateTime DESC", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP " + Count + " * FROM News WHERE Pending <> 1 ORDER BY LastCommentDateTime DESC", ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(NewsDataTable);
             }
@@ -340,7 +340,7 @@ namespace Infinium
         {
             CommentsDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM NewsComments", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM NewsComments", ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(CommentsDataTable);
             }
@@ -350,15 +350,15 @@ namespace Infinium
         {
             CommentsSubsRecordsDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT SubscribesRecords.*, NewsComments.NewsID FROM SubscribesRecords INNER JOIN NewsComments ON NewsComments.NewsCommentID = SubscribesRecords.TableItemID WHERE SubscribesItemID = 2 AND UserTypeID = 0 AND SubscribesRecords.UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT SubscribesRecords.*, NewsComments.NewsID FROM SubscribesRecords INNER JOIN NewsComments ON NewsComments.NewsCommentID = SubscribesRecords.TableItemID WHERE SubscribesItemID = 2 AND UserTypeID = 0 AND SubscribesRecords.UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(CommentsSubsRecordsDataTable);
             }
 
             NewsSubsRecordsDataTable.Clear();
 
-            using (SqlDataAdapter sDA = new SqlDataAdapter("SELECT * FROM SubscribesRecords WHERE SubscribesItemID = 1 " +
-                                                            " AND UserTypeID = 0 AND UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
+            using (var sDA = new SqlDataAdapter("SELECT * FROM SubscribesRecords WHERE SubscribesItemID = 1 " +
+                                                " AND UserTypeID = 0 AND UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
             {
                 sDA.Fill(NewsSubsRecordsDataTable);
             }
@@ -368,7 +368,7 @@ namespace Infinium
         {
             NewsDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 20 * FROM News WHERE Pending <> 1 ORDER BY LastCommentDateTime DESC", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 20 * FROM News WHERE Pending <> 1 ORDER BY LastCommentDateTime DESC", ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(NewsDataTable);
             }
@@ -401,7 +401,7 @@ namespace Infinium
         {
             NewsLikesDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM NewsLikes", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM NewsLikes", ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(NewsLikesDataTable);
             }
@@ -409,7 +409,7 @@ namespace Infinium
 
             CommentsLikesDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM NewsCommentsLikes", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM NewsCommentsLikes", ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(CommentsLikesDataTable);
             }
@@ -419,7 +419,7 @@ namespace Infinium
         {
             NewsDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP " + Count + " * FROM News WHERE Pending <> 1 ORDER BY LastCommentDateTime DESC", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP " + Count + " * FROM News WHERE Pending <> 1 ORDER BY LastCommentDateTime DESC", ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(NewsDataTable);
             }
@@ -427,9 +427,9 @@ namespace Infinium
 
         public bool IsMoreNews(int Count)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT Count(NewsID) FROM News", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT Count(NewsID) FROM News", ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -442,15 +442,15 @@ namespace Infinium
         {
             DateTime DateTime;
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM News", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 0 * FROM News", ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
-                        DataRow NewRow = DT.NewRow();
+                        var NewRow = DT.NewRow();
                         NewRow["SenderID"] = SenderID;
                         NewRow["SenderTypeID"] = SenderTypeID;
                         NewRow["HeaderText"] = HeaderText;
@@ -475,10 +475,10 @@ namespace Infinium
 
         public void AddSubscribeForNews(DateTime DateTime)
         {
-            using (SqlDataAdapter sDA = new SqlDataAdapter("SELECT * FROM News WHERE DateTime = '" + DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'",
+            using (var sDA = new SqlDataAdapter("SELECT * FROM News WHERE DateTime = '" + DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'",
                                                                        ConnectionStrings.LightConnectionString))
             {
-                using (DataTable sDT = new DataTable())
+                using (var sDT = new DataTable())
                 {
                     sDA.Fill(sDT);
 
@@ -489,12 +489,12 @@ namespace Infinium
 
         public void ClearPending(DateTime DateTime)
         {
-            using (SqlDataAdapter sDA = new SqlDataAdapter("SELECT TOP 1 * FROM News WHERE DateTime = '" + DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'",
+            using (var sDA = new SqlDataAdapter("SELECT TOP 1 * FROM News WHERE DateTime = '" + DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'",
                                                                       ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(sDA))
+                using (var CB = new SqlCommandBuilder(sDA))
                 {
-                    using (DataTable sDT = new DataTable())
+                    using (var sDT = new DataTable())
                     {
                         sDA.Fill(sDT);
 
@@ -512,15 +512,15 @@ namespace Infinium
         {
             DateTime Date;
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM NewsComments", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 0 * FROM NewsComments", ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
-                        DataRow NewRow = DT.NewRow();
+                        var NewRow = DT.NewRow();
                         NewRow["NewsID"] = NewsID;
                         NewRow["NewsComment"] = Text;
                         NewRow["UserID"] = UserID;
@@ -535,11 +535,11 @@ namespace Infinium
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT NewsID, LastCommentDateTime FROM News WHERE NewsID =" + NewsID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT NewsID, LastCommentDateTime FROM News WHERE NewsID =" + NewsID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -556,19 +556,19 @@ namespace Infinium
 
         public void LikeNews(int UserID, int NewsID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM NewsLikes WHERE NewsID = " + NewsID + " AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM NewsLikes WHERE NewsID = " + NewsID + " AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
                         if (DT.Rows.Count > 0)//i like
                         {
-                            using (SqlDataAdapter dDA = new SqlDataAdapter("DELETE FROM NewsLikes WHERE NewsID = " + NewsID + " AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
+                            using (var dDA = new SqlDataAdapter("DELETE FROM NewsLikes WHERE NewsID = " + NewsID + " AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
                             {
-                                using (DataTable dDT = new DataTable())
+                                using (var dDT = new DataTable())
                                 {
                                     dDA.Fill(dDT);
                                 }
@@ -577,7 +577,7 @@ namespace Infinium
                             return;
                         }
 
-                        DataRow NewRow = DT.NewRow();
+                        var NewRow = DT.NewRow();
                         NewRow["NewsID"] = NewsID;
                         NewRow["UserID"] = UserID;
                         DT.Rows.Add(NewRow);
@@ -590,19 +590,19 @@ namespace Infinium
 
         public void LikeComments(int UserID, int NewsID, int NewsCommentID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM NewsCommentsLikes WHERE NewsCommentID = " + NewsCommentID + " AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM NewsCommentsLikes WHERE NewsCommentID = " + NewsCommentID + " AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
                         if (DT.Rows.Count > 0)
                         {
-                            using (SqlDataAdapter dDA = new SqlDataAdapter("DELETE FROM NewsCommentsLikes WHERE NewsCommentID = " + NewsCommentID + " AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
+                            using (var dDA = new SqlDataAdapter("DELETE FROM NewsCommentsLikes WHERE NewsCommentID = " + NewsCommentID + " AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
                             {
-                                using (DataTable dDT = new DataTable())
+                                using (var dDT = new DataTable())
                                 {
                                     dDA.Fill(dDT);
                                 }
@@ -611,7 +611,7 @@ namespace Infinium
                             return;
                         }
 
-                        DataRow NewRow = DT.NewRow();
+                        var NewRow = DT.NewRow();
                         NewRow["NewsID"] = NewsID;
                         NewRow["NewsCommentID"] = NewsCommentID;
                         NewRow["UserID"] = UserID;
@@ -626,11 +626,11 @@ namespace Infinium
 
         public void EditComments(int UserID, int NewsCommentID, string Text)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM NewsComments WHERE NewsCommentID = " + NewsCommentID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM NewsComments WHERE NewsCommentID = " + NewsCommentID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -648,13 +648,13 @@ namespace Infinium
             if (AttachmentsDataTable.Rows.Count == 0)
                 return true;
 
-            bool Ok = true;
+            var Ok = true;
 
             int NewsID;
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT NewsID FROM News WHERE DateTime = '" + NewsDateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT NewsID FROM News WHERE DateTime = '" + NewsDateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'", ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -662,11 +662,11 @@ namespace Infinium
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM NewsAttachs", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 0 * FROM NewsAttachs", ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -685,7 +685,7 @@ namespace Infinium
                                 continue;
                             }
 
-                            DataRow NewRow = DT.NewRow();
+                            var NewRow = DT.NewRow();
                             NewRow["NewsID"] = NewsID;
                             NewRow["FileName"] = Row["FileName"];
                             NewRow["FileSize"] = fi.Length;
@@ -698,9 +698,9 @@ namespace Infinium
             }
 
             //write to ftp
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM NewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM NewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -734,13 +734,13 @@ namespace Infinium
 
         public bool EditAttachments(int NewsID, DataTable AttachmentsDataTable, ref int CurrentUploadedFile, ref int TotalFilesCount)
         {
-            bool Ok = false;
+            var Ok = false;
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT NewsAttachID, NewsID, FileName FROM NewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT NewsAttachID, NewsID, FileName FROM NewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -758,11 +758,11 @@ namespace Infinium
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM NewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 0 * FROM NewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
                         Ok = true;
@@ -788,7 +788,7 @@ namespace Infinium
                                 continue;
                             }
 
-                            DataRow NewRow = DT.NewRow();
+                            var NewRow = DT.NewRow();
                             NewRow["NewsID"] = NewsID;
                             NewRow["FileName"] = Row["FileName"];
                             NewRow["FileSize"] = fi.Length;
@@ -802,9 +802,9 @@ namespace Infinium
 
 
             //write to ftp
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM NewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM NewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -842,7 +842,7 @@ namespace Infinium
         {
             AttachmentsDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT NewsAttachID, NewsID, FileName, FileSize FROM NewsAttachs", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT NewsAttachID, NewsID, FileName, FileSize FROM NewsAttachs", ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(AttachmentsDataTable);
             }
@@ -850,11 +850,11 @@ namespace Infinium
 
         public void EditNews(int NewsID, int SenderID, int SenderTypeID, string HeaderText, string BodyText, int NewsCategoryID, DateTime DateTime)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM News WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM News WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         if (DA.Fill(DT) == 0)
                             return;
@@ -880,9 +880,9 @@ namespace Infinium
 
         public int GetNewsUpdatesCount()
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT Count (SubscribesRecordID) FROM SubscribesRecords WHERE SubscribesItemID = 1 OR SubscribesItemID = 2 AND UserTypeID = 0 AND UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT Count (SubscribesRecordID) FROM SubscribesRecords WHERE SubscribesItemID = 1 OR SubscribesItemID = 2 AND UserTypeID = 0 AND UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     if (DA.Fill(DT) > 0)
                         return Convert.ToInt32(DT.Rows[0][0]);
@@ -894,10 +894,10 @@ namespace Infinium
 
         public int GetNewsIDByDateTime(DateTime DateTime)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM News WHERE DateTime = '" + DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'",
+            using (var DA = new SqlDataAdapter("SELECT * FROM News WHERE DateTime = '" + DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'",
                                                                          ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -910,19 +910,19 @@ namespace Infinium
         {
             ActiveNotifySystem.DeleteSubscribesRecord(1);
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM NewsLikes WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM NewsLikes WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM News WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM News WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
                     }
@@ -942,19 +942,19 @@ namespace Infinium
         {
             DeleteCommentsSubs(NewsID);
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM NewsCommentsLikes WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM NewsCommentsLikes WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM NewsComments WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM NewsComments WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
                     }
@@ -966,17 +966,17 @@ namespace Infinium
 
         public void RemoveComment(int NewsCommentID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM NewsCommentsLikes WHERE NewsCommentID = " + NewsCommentID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM NewsCommentsLikes WHERE NewsCommentID = " + NewsCommentID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM NewsComments WHERE NewsCommentID = " + NewsCommentID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM NewsComments WHERE NewsCommentID = " + NewsCommentID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
@@ -987,9 +987,9 @@ namespace Infinium
 
         public void RemoveAttachments(int NewsID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM NewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM NewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -1002,11 +1002,11 @@ namespace Infinium
                     }
                     catch
                     {
-                        using (SqlDataAdapter fDA = new SqlDataAdapter("DELETE FROM NewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
+                        using (var fDA = new SqlDataAdapter("DELETE FROM NewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
                         {
-                            using (SqlCommandBuilder CB = new SqlCommandBuilder(fDA))
+                            using (var CB = new SqlCommandBuilder(fDA))
                             {
-                                using (DataTable fDT = new DataTable())
+                                using (var fDT = new DataTable())
                                 {
                                     fDA.Fill(fDT);
                                 }
@@ -1022,11 +1022,11 @@ namespace Infinium
 
 
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM NewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM NewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
                     }
@@ -1038,11 +1038,11 @@ namespace Infinium
 
         public void RemoveCurrentAttachments(int NewsID, DataTable AttachmentsDT)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM NewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM NewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -1066,9 +1066,9 @@ namespace Infinium
 
         public DataTable GetAttachments(int NewsID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT NewsAttachID, FileName FROM NewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT NewsAttachID, FileName FROM NewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -1112,13 +1112,13 @@ namespace Infinium
 
         public string SaveFile(int NewsAttachID)//temp folder
         {
-            string tempFolder = Environment.GetEnvironmentVariable("TEMP");
+            var tempFolder = Environment.GetEnvironmentVariable("TEMP");
 
-            string FileName = "";
+            var FileName = "";
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT FileName, FileSize FROM NewsAttachs WHERE NewsAttachID = " + NewsAttachID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT FileName, FileSize FROM NewsAttachs WHERE NewsAttachID = " + NewsAttachID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -1162,13 +1162,13 @@ namespace Infinium
 
         public void SaveFile(int NewsAttachID, string sDestFileName)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT FileName, FileSize FROM NewsAttachs WHERE NewsAttachID = " + NewsAttachID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT FileName, FileSize FROM NewsAttachs WHERE NewsAttachID = " + NewsAttachID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
-                    string FileName = DT.Rows[0]["FileName"].ToString();
+                    var FileName = DT.Rows[0]["FileName"].ToString();
 
                     try
                     {
@@ -1184,10 +1184,10 @@ namespace Infinium
 
         private string SetNumber(string FileName, int Number)
         {
-            string Ext = "";
-            string Name = "";
+            var Ext = "";
+            var Name = "";
 
-            for (int i = FileName.Length - 1; i > 0; i--)
+            for (var i = FileName.Length - 1; i > 0; i--)
             {
                 if (FileName[i] == '.')
                 {
@@ -1202,13 +1202,13 @@ namespace Infinium
 
         private string GetNewFileName(string path, string FileName)
         {
-            FileInfo fileInfo = new FileInfo(path + "\\" + FileName);
+            var fileInfo = new FileInfo(path + "\\" + FileName);
 
             if (!fileInfo.Exists)
                 return FileName;
 
-            bool Ok = false;
-            int n = 1;
+            var Ok = false;
+            var n = 1;
 
             while (!Ok)
             {
@@ -1225,9 +1225,9 @@ namespace Infinium
 
         public void DeleteCommentsSub(int NewsCommentID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM SubscribesRecords WHERE SubscribesItemID = 2 AND TableItemID = " + NewsCommentID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM SubscribesRecords WHERE SubscribesItemID = 2 AND TableItemID = " + NewsCommentID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
@@ -1236,9 +1236,9 @@ namespace Infinium
 
         public void DeleteCommentsSubs(int NewsID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM SubscribesRecords WHERE SubscribesItemID = 2 AND TableItemID IN (SELECT NewsCommentID FROM NewsComments WHERE NewsID = " + NewsID + ")", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM SubscribesRecords WHERE SubscribesItemID = 2 AND TableItemID IN (SELECT NewsCommentID FROM NewsComments WHERE NewsID = " + NewsID + ")", ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
@@ -1247,9 +1247,9 @@ namespace Infinium
 
         public void AddNewsCommentsSubs(int NewsID, int UserID, DateTime DateTime)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT NewsCommentID FROM NewsComments WHERE DateTime = '" + DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT NewsCommentID FROM NewsComments WHERE DateTime = '" + DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'", ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -1313,7 +1313,7 @@ namespace Infinium
 
             foreach (DataRow Row in DepartmentsDataTable.Rows)
             {
-                DataRow NewRow = UsersDataTable.NewRow();
+                var NewRow = UsersDataTable.NewRow();
                 NewRow["UserID"] = Row["DepartmentID"];
                 NewRow["Name"] = Row["DepartmentName"];
                 NewRow["SenderTypeID"] = 1;
@@ -1322,7 +1322,7 @@ namespace Infinium
             }
 
             {
-                DataRow NewRow = DepartmentsDataTable.NewRow();
+                var NewRow = DepartmentsDataTable.NewRow();
                 NewRow["DepartmentID"] = -1;
                 NewRow["DepartmentName"] = "Все отделы";
                 DepartmentsDataTable.Rows.Add(NewRow);
@@ -1332,29 +1332,29 @@ namespace Infinium
 
             AttachmentsDataTable = new DataTable();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT NewsAttachID, NewsID, FileName, FileSize FROM BlogAttachs", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT NewsAttachID, NewsID, FileName, FileSize FROM BlogAttachs", ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(AttachmentsDataTable);
             }
 
             CommentsDataTable = new DataTable();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM BlogComments", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM BlogComments", ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(CommentsDataTable);
             }
 
             CommentsSubsRecordsDataTable = new DataTable();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT SubscribesRecords.*, BlogComments.NewsID FROM SubscribesRecords INNER JOIN BlogComments ON BlogComments.NewsCommentID = SubscribesRecords.TableItemID WHERE SubscribesItemID = 4 AND UserTypeID = 0 AND SubscribesRecords.UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT SubscribesRecords.*, BlogComments.NewsID FROM SubscribesRecords INNER JOIN BlogComments ON BlogComments.NewsCommentID = SubscribesRecords.TableItemID WHERE SubscribesItemID = 4 AND UserTypeID = 0 AND SubscribesRecords.UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(CommentsSubsRecordsDataTable);
             }
 
             NewsSubsRecordsDataTable = new DataTable();
 
-            using (SqlDataAdapter sDA = new SqlDataAdapter("SELECT * FROM SubscribesRecords WHERE SubscribesItemID = 3 " +
-                                                            " AND UserTypeID = 0 AND UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
+            using (var sDA = new SqlDataAdapter("SELECT * FROM SubscribesRecords WHERE SubscribesItemID = 3 " +
+                                                " AND UserTypeID = 0 AND UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
             {
                 sDA.Fill(NewsSubsRecordsDataTable);
             }
@@ -1364,7 +1364,7 @@ namespace Infinium
         {
             BlogNewsDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP " + Count + " * FROM Blog WHERE Pending <> 1  ORDER BY LastCommentDateTime DESC", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP " + Count + " * FROM Blog WHERE Pending <> 1  ORDER BY LastCommentDateTime DESC", ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(BlogNewsDataTable);
             }
@@ -1399,7 +1399,7 @@ namespace Infinium
         {
             CommentsDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM BlogComments", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM BlogComments", ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(CommentsDataTable);
             }
@@ -1409,15 +1409,15 @@ namespace Infinium
         {
             CommentsSubsRecordsDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT SubscribesRecords.*, NewsComments.NewsID FROM SubscribesRecords INNER JOIN NewsComments ON NewsComments.NewsCommentID = SubscribesRecords.TableItemID WHERE SubscribesItemID = 4 AND UserTypeID = 0 AND SubscribesRecords.UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT SubscribesRecords.*, NewsComments.NewsID FROM SubscribesRecords INNER JOIN NewsComments ON NewsComments.NewsCommentID = SubscribesRecords.TableItemID WHERE SubscribesItemID = 4 AND UserTypeID = 0 AND SubscribesRecords.UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(CommentsSubsRecordsDataTable);
             }
 
             NewsSubsRecordsDataTable.Clear();
 
-            using (SqlDataAdapter sDA = new SqlDataAdapter("SELECT * FROM SubscribesRecords WHERE SubscribesItemID = 3 " +
-                                                            " AND UserTypeID = 0 AND UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
+            using (var sDA = new SqlDataAdapter("SELECT * FROM SubscribesRecords WHERE SubscribesItemID = 3 " +
+                                                " AND UserTypeID = 0 AND UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
             {
                 sDA.Fill(NewsSubsRecordsDataTable);
             }
@@ -1466,7 +1466,7 @@ namespace Infinium
         {
             BlogNewsDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 20 * FROM Blog  WHERE Pending <> 1 ORDER BY LastCommentDateTime DESC", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 20 * FROM Blog  WHERE Pending <> 1 ORDER BY LastCommentDateTime DESC", ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(BlogNewsDataTable);
             }
@@ -1526,7 +1526,7 @@ namespace Infinium
         {
             BlogNewsLikesDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM BlogLikes", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM BlogLikes", ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(BlogNewsLikesDataTable);
             }
@@ -1534,7 +1534,7 @@ namespace Infinium
 
             CommentsLikesDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM BlogCommentsLikes", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM BlogCommentsLikes", ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(CommentsLikesDataTable);
             }
@@ -1544,7 +1544,7 @@ namespace Infinium
         {
             BlogNewsDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP " + Count + " * FROM Blog WHERE Pending <> 1  ORDER BY LastCommentDateTime DESC", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP " + Count + " * FROM Blog WHERE Pending <> 1  ORDER BY LastCommentDateTime DESC", ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(BlogNewsDataTable);
             }
@@ -1552,9 +1552,9 @@ namespace Infinium
 
         public bool IsMoreNews(int Count)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT Count(NewsID) FROM Blog", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT Count(NewsID) FROM Blog", ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -1634,15 +1634,15 @@ namespace Infinium
         {
             DateTime DateTime;
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM Blog", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 0 * FROM Blog", ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
-                        DataRow NewRow = DT.NewRow();
+                        var NewRow = DT.NewRow();
                         NewRow["SenderID"] = SenderID;
                         NewRow["SenderTypeID"] = SenderTypeID;
                         NewRow["HeaderText"] = HeaderText;
@@ -1667,10 +1667,10 @@ namespace Infinium
 
         public void AddSubscribeForNews(DateTime DateTime)
         {
-            using (SqlDataAdapter sDA = new SqlDataAdapter("SELECT * FROM Blog WHERE DateTime = '" + DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'",
+            using (var sDA = new SqlDataAdapter("SELECT * FROM Blog WHERE DateTime = '" + DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'",
                                                                        ConnectionStrings.LightConnectionString))
             {
-                using (DataTable sDT = new DataTable())
+                using (var sDT = new DataTable())
                 {
                     sDA.Fill(sDT);
 
@@ -1681,12 +1681,12 @@ namespace Infinium
 
         public void ClearPending(DateTime DateTime)
         {
-            using (SqlDataAdapter sDA = new SqlDataAdapter("SELECT TOP 1 * FROM Blog WHERE DateTime = '" + DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'",
+            using (var sDA = new SqlDataAdapter("SELECT TOP 1 * FROM Blog WHERE DateTime = '" + DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'",
                                                                       ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(sDA))
+                using (var CB = new SqlCommandBuilder(sDA))
                 {
-                    using (DataTable sDT = new DataTable())
+                    using (var sDT = new DataTable())
                     {
                         sDA.Fill(sDT);
 
@@ -1705,15 +1705,15 @@ namespace Infinium
         {
             DateTime Date;
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM BlogComments", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 0 * FROM BlogComments", ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
-                        DataRow NewRow = DT.NewRow();
+                        var NewRow = DT.NewRow();
                         NewRow["NewsID"] = NewsID;
                         NewRow["NewsComment"] = Text;
                         NewRow["UserID"] = UserID;
@@ -1728,11 +1728,11 @@ namespace Infinium
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT NewsID, LastCommentDateTime FROM Blog WHERE NewsID =" + NewsID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT NewsID, LastCommentDateTime FROM Blog WHERE NewsID =" + NewsID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -1748,19 +1748,19 @@ namespace Infinium
 
         public void LikeNews(int UserID, int NewsID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM BlogLikes WHERE NewsID = " + NewsID + " AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM BlogLikes WHERE NewsID = " + NewsID + " AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
                         if (DT.Rows.Count > 0)//i like
                         {
-                            using (SqlDataAdapter dDA = new SqlDataAdapter("DELETE FROM BlogLikes WHERE NewsID = " + NewsID + " AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
+                            using (var dDA = new SqlDataAdapter("DELETE FROM BlogLikes WHERE NewsID = " + NewsID + " AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
                             {
-                                using (DataTable dDT = new DataTable())
+                                using (var dDT = new DataTable())
                                 {
                                     dDA.Fill(dDT);
                                 }
@@ -1769,7 +1769,7 @@ namespace Infinium
                             return;
                         }
 
-                        DataRow NewRow = DT.NewRow();
+                        var NewRow = DT.NewRow();
                         NewRow["NewsID"] = NewsID;
                         NewRow["UserID"] = UserID;
                         DT.Rows.Add(NewRow);
@@ -1782,19 +1782,19 @@ namespace Infinium
 
         public void LikeComments(int UserID, int NewsID, int NewsCommentID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM BlogCommentsLikes WHERE NewsCommentID = " + NewsCommentID + " AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM BlogCommentsLikes WHERE NewsCommentID = " + NewsCommentID + " AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
                         if (DT.Rows.Count > 0)
                         {
-                            using (SqlDataAdapter dDA = new SqlDataAdapter("DELETE FROM BlogCommentsLikes WHERE NewsCommentID = " + NewsCommentID + " AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
+                            using (var dDA = new SqlDataAdapter("DELETE FROM BlogCommentsLikes WHERE NewsCommentID = " + NewsCommentID + " AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
                             {
-                                using (DataTable dDT = new DataTable())
+                                using (var dDT = new DataTable())
                                 {
                                     dDA.Fill(dDT);
                                 }
@@ -1803,7 +1803,7 @@ namespace Infinium
                             return;
                         }
 
-                        DataRow NewRow = DT.NewRow();
+                        var NewRow = DT.NewRow();
                         NewRow["NewsID"] = NewsID;
                         NewRow["NewsCommentID"] = NewsCommentID;
                         NewRow["UserID"] = UserID;
@@ -1817,11 +1817,11 @@ namespace Infinium
 
         public void EditComments(int UserID, int NewsCommentID, string Text)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM BlogComments WHERE NewsCommentID = " + NewsCommentID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM BlogComments WHERE NewsCommentID = " + NewsCommentID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -1838,13 +1838,13 @@ namespace Infinium
             if (AttachmentsDataTable.Rows.Count == 0)
                 return true;
 
-            bool Ok = true;
+            var Ok = true;
 
             int NewsID;
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT NewsID FROM Blog WHERE DateTime = '" + NewsDateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT NewsID FROM Blog WHERE DateTime = '" + NewsDateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'", ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -1852,11 +1852,11 @@ namespace Infinium
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM BlogAttachs", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 0 * FROM BlogAttachs", ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -1875,7 +1875,7 @@ namespace Infinium
                                 continue;
                             }
 
-                            DataRow NewRow = DT.NewRow();
+                            var NewRow = DT.NewRow();
                             NewRow["NewsID"] = NewsID;
                             NewRow["FileName"] = Row["FileName"];
                             NewRow["FileSize"] = fi.Length;
@@ -1888,9 +1888,9 @@ namespace Infinium
             }
 
             //write to ftp
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM BlogAttachs WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM BlogAttachs WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -1923,13 +1923,13 @@ namespace Infinium
 
         public bool EditAttachments(int NewsID, DataTable AttachmentsDataTable, ref int CurrentUploadedFile, ref int TotalFilesCount)
         {
-            bool Ok = false;
+            var Ok = false;
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT NewsAttachID, NewsID, FileName FROM BlogAttachs WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT NewsAttachID, NewsID, FileName FROM BlogAttachs WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -1948,11 +1948,11 @@ namespace Infinium
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM BlogAttachs WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 0 * FROM BlogAttachs WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
                         Ok = true;
@@ -1978,7 +1978,7 @@ namespace Infinium
                                 continue;
                             }
 
-                            DataRow NewRow = DT.NewRow();
+                            var NewRow = DT.NewRow();
                             NewRow["NewsID"] = NewsID;
                             NewRow["FileName"] = Row["FileName"];
                             NewRow["FileSize"] = fi.Length;
@@ -1992,9 +1992,9 @@ namespace Infinium
 
 
             //write to ftp
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM BlogAttachs WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM BlogAttachs WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -2033,7 +2033,7 @@ namespace Infinium
         {
             AttachmentsDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT NewsAttachID, NewsID, FileName, FileSize FROM BlogAttachs", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT NewsAttachID, NewsID, FileName, FileSize FROM BlogAttachs", ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(AttachmentsDataTable);
             }
@@ -2041,11 +2041,11 @@ namespace Infinium
 
         public void EditNews(int NewsID, int SenderID, int SenderTypeID, string HeaderText, string BodyText, int NewsCategoryID, DateTime DateTime)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Blog WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM Blog WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         if (DA.Fill(DT) == 0)
                             return;
@@ -2071,9 +2071,9 @@ namespace Infinium
 
         public int GetNewsUpdatesCount()
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT Count (SubscribesRecordID) FROM SubscribesRecords WHERE SubscribesItemID = 1 OR SubscribesItemID = 2 AND UserTypeID = 0 AND UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT Count (SubscribesRecordID) FROM SubscribesRecords WHERE SubscribesItemID = 1 OR SubscribesItemID = 2 AND UserTypeID = 0 AND UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     if (DA.Fill(DT) > 0)
                         return Convert.ToInt32(DT.Rows[0][0]);
@@ -2085,10 +2085,10 @@ namespace Infinium
 
         public int GetNewsIDByDateTime(DateTime DateTime)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Blog WHERE DateTime = '" + DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'",
+            using (var DA = new SqlDataAdapter("SELECT * FROM Blog WHERE DateTime = '" + DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'",
                                                                          ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -2101,19 +2101,19 @@ namespace Infinium
         {
             ActiveNotifySystem.DeleteSubscribesRecord(3);
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM BlogLikes WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM BlogLikes WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM Blog WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM Blog WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
                     }
@@ -2133,19 +2133,19 @@ namespace Infinium
         {
             DeleteCommentsSubs(NewsID);
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM BlogCommentsLikes WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM BlogCommentsLikes WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM BlogComments WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM BlogComments WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
                     }
@@ -2157,17 +2157,17 @@ namespace Infinium
 
         public void RemoveComment(int NewsCommentID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM BlogCommentsLikes WHERE NewsCommentID = " + NewsCommentID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM BlogCommentsLikes WHERE NewsCommentID = " + NewsCommentID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM BlogComments WHERE NewsCommentID = " + NewsCommentID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM BlogComments WHERE NewsCommentID = " + NewsCommentID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
@@ -2178,9 +2178,9 @@ namespace Infinium
 
         public void RemoveAttachments(int NewsID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM BlogAttachs WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM BlogAttachs WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -2194,11 +2194,11 @@ namespace Infinium
 
 
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM BlogAttachs WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM BlogAttachs WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
                     }
@@ -2210,11 +2210,11 @@ namespace Infinium
 
         public void RemoveCurrentAttachments(int NewsID, DataTable AttachmentsDT)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM BlogAttachs WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM BlogAttachs WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -2239,9 +2239,9 @@ namespace Infinium
 
         public DataTable GetAttachments(int NewsID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT NewsAttachID, FileName FROM BlogAttachs WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT NewsAttachID, FileName FROM BlogAttachs WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -2285,13 +2285,13 @@ namespace Infinium
 
         public string SaveFile(int NewsAttachID)//temp folder
         {
-            string tempFolder = Environment.GetEnvironmentVariable("TEMP");
+            var tempFolder = Environment.GetEnvironmentVariable("TEMP");
 
-            string FileName = "";
+            var FileName = "";
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT FileName, FileSize FROM BlogAttachs WHERE NewsAttachID = " + NewsAttachID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT FileName, FileSize FROM BlogAttachs WHERE NewsAttachID = " + NewsAttachID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -2335,13 +2335,13 @@ namespace Infinium
 
         public void SaveFile(int NewsAttachID, string sDestFileName)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT FileName, FileSize FROM BlogAttachs WHERE NewsAttachID = " + NewsAttachID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT FileName, FileSize FROM BlogAttachs WHERE NewsAttachID = " + NewsAttachID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
-                    string FileName = DT.Rows[0]["FileName"].ToString();
+                    var FileName = DT.Rows[0]["FileName"].ToString();
 
                     try
                     {
@@ -2357,10 +2357,10 @@ namespace Infinium
 
         private string SetNumber(string FileName, int Number)
         {
-            string Ext = "";
-            string Name = "";
+            var Ext = "";
+            var Name = "";
 
-            for (int i = FileName.Length - 1; i > 0; i--)
+            for (var i = FileName.Length - 1; i > 0; i--)
             {
                 if (FileName[i] == '.')
                 {
@@ -2375,13 +2375,13 @@ namespace Infinium
 
         private string GetNewFileName(string path, string FileName)
         {
-            FileInfo fileInfo = new FileInfo(path + "\\" + FileName);
+            var fileInfo = new FileInfo(path + "\\" + FileName);
 
             if (!fileInfo.Exists)
                 return FileName;
 
-            bool Ok = false;
-            int n = 1;
+            var Ok = false;
+            var n = 1;
 
             while (!Ok)
             {
@@ -2398,9 +2398,9 @@ namespace Infinium
 
         public void DeleteCommentsSub(int NewsCommentID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM SubscribesRecords WHERE SubscribesItemID = 4 AND TableItemID = " + NewsCommentID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM SubscribesRecords WHERE SubscribesItemID = 4 AND TableItemID = " + NewsCommentID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
@@ -2409,9 +2409,9 @@ namespace Infinium
 
         public void DeleteCommentsSubs(int NewsID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM SubscribesRecords WHERE SubscribesItemID = 4 AND TableItemID IN (SELECT NewsCommentID FROM NewsComments WHERE NewsID = " + NewsID + ")", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM SubscribesRecords WHERE SubscribesItemID = 4 AND TableItemID IN (SELECT NewsCommentID FROM NewsComments WHERE NewsID = " + NewsID + ")", ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
@@ -2420,9 +2420,9 @@ namespace Infinium
 
         public void AddNewsCommentsSubs(int NewsID, int UserID, DateTime DateTime)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT NewsCommentID FROM BlogComments WHERE DateTime = '" + DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT NewsCommentID FROM BlogComments WHERE DateTime = '" + DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'", ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -2483,19 +2483,19 @@ namespace Infinium
 
         public void Fill()
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM ProjectStatuses", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM ProjectStatuses", ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(ProjectStatusesDataTable);
             }
 
             UsersDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Users ORDER BY Name", ConnectionStrings.UsersConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM Users ORDER BY Name", ConnectionStrings.UsersConnectionString))
             {
                 UsersDataTable.Clear();
                 DA.Fill(UsersDataTable);
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT DepartmentID, DepartmentName FROM Departments", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT DepartmentID, DepartmentName FROM Departments", ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(DepartmentsDataTable);
             }
@@ -2505,7 +2505,7 @@ namespace Infinium
         {
             ProjectsDataTable.Clear();
 
-            string FillExpr = "";
+            var FillExpr = "";
 
             if (StateID == 4)//all states
                 FillExpr = "";
@@ -2556,7 +2556,7 @@ namespace Infinium
             else
                 FillExpr = " WHERE IsProposition = 0";
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Projects " + FillExpr, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM Projects " + FillExpr, ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(ProjectsDataTable);
             }
@@ -2566,7 +2566,7 @@ namespace Infinium
         {
             ProjectsDataTable.Clear();
 
-            string FillExpr = "";
+            var FillExpr = "";
 
             if (ProjectSubsRecordsDataTable.Rows.Count == 0)
                 return;
@@ -2579,7 +2579,7 @@ namespace Infinium
                     FillExpr += " OR ProjectID = " + Row["TableItemID"];
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Projects WHERE " + FillExpr + " AND Pending = 0 AND IsProposition = 0", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM Projects WHERE " + FillExpr + " AND Pending = 0 AND IsProposition = 0", ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(ProjectsDataTable);
             }
@@ -2589,7 +2589,7 @@ namespace Infinium
         {
             ProjectsDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Projects WHERE ProjectID = " + ProjectID + " AND Pending = 0", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM Projects WHERE ProjectID = " + ProjectID + " AND Pending = 0", ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(ProjectsDataTable);
             }
@@ -2599,7 +2599,7 @@ namespace Infinium
         {
             ProjectsDataTable.Clear();
 
-            string FillExpr = "";
+            var FillExpr = "";
 
             foreach (DataRow Row in ProjectNewsSubsRecordsDataTable.Rows)
             {
@@ -2619,7 +2619,7 @@ namespace Infinium
 
 
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Projects WHERE " + FillExpr + " AND Pending = 0", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM Projects WHERE " + FillExpr + " AND Pending = 0", ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(ProjectsDataTable);
             }
@@ -2631,21 +2631,21 @@ namespace Infinium
 
             if (StateID < 4)//not all
             {
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT infiniu2_users.dbo.Users.UserID, infiniu2_users.dbo.Users.Name" +
-                                                              " FROM infiniu2_users.dbo.Users WHERE Fired<> 1 AND  infiniu2_users.dbo.Users.UserID IN" +
-                                                              " (SELECT DISTINCT UserID FROM infiniu2_light.dbo.ProjectMembers WHERE ProjectUserTypeID = 0 AND " +
-                                                              " ProjectID IN (SELECT ProjectID FROM Projects WHERE ProjectStatusID = " + StateID +
-                                                              ")) ORDER BY infiniu2_users.dbo.Users.Name", ConnectionStrings.LightConnectionString))
+                using (var DA = new SqlDataAdapter("SELECT infiniu2_users.dbo.Users.UserID, infiniu2_users.dbo.Users.Name" +
+                                                   " FROM infiniu2_users.dbo.Users WHERE Fired<> 1 AND  infiniu2_users.dbo.Users.UserID IN" +
+                                                   " (SELECT DISTINCT UserID FROM infiniu2_light.dbo.ProjectMembers WHERE ProjectUserTypeID = 0 AND " +
+                                                   " ProjectID IN (SELECT ProjectID FROM Projects WHERE ProjectStatusID = " + StateID +
+                                                   ")) ORDER BY infiniu2_users.dbo.Users.Name", ConnectionStrings.LightConnectionString))
                 {
                     DA.Fill(ProjectUsersMembersDataTable);
                 }
             }
             else
             {
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT infiniu2_users.dbo.Users.UserID, infiniu2_users.dbo.Users.Name" +
-                                                              " FROM infiniu2_users.dbo.Users WHERE Fired<> 1 AND  infiniu2_users.dbo.Users.UserID IN" +
-                                                              " (SELECT DISTINCT UserID FROM infiniu2_light.dbo.ProjectMembers)" +
-                                                              " ORDER BY infiniu2_users.dbo.Users.Name",
+                using (var DA = new SqlDataAdapter("SELECT infiniu2_users.dbo.Users.UserID, infiniu2_users.dbo.Users.Name" +
+                                                   " FROM infiniu2_users.dbo.Users WHERE Fired<> 1 AND  infiniu2_users.dbo.Users.UserID IN" +
+                                                   " (SELECT DISTINCT UserID FROM infiniu2_light.dbo.ProjectMembers)" +
+                                                   " ORDER BY infiniu2_users.dbo.Users.Name",
                                                               ConnectionStrings.LightConnectionString))
                 {
                     DA.Fill(ProjectUsersMembersDataTable);
@@ -2658,21 +2658,21 @@ namespace Infinium
 
             if (StateID < 4)//not all
             {
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT infiniu2_light.dbo.Departments.DepartmentID, infiniu2_light.dbo.Departments.DepartmentName " +
-                                                              " FROM infiniu2_light.dbo.Departments WHERE infiniu2_light.dbo.Departments.DepartmentID IN " +
-                                                              " (SELECT DISTINCT UserID FROM infiniu2_light.dbo.ProjectMembers WHERE ProjectUserTypeID = 1 AND " +
-                                                              " ProjectID IN (SELECT ProjectID FROM Projects WHERE ProjectStatusID = " + StateID +
-                                                              ")) ORDER BY infiniu2_light.dbo.Departments.DepartmentName", ConnectionStrings.LightConnectionString))
+                using (var DA = new SqlDataAdapter("SELECT infiniu2_light.dbo.Departments.DepartmentID, infiniu2_light.dbo.Departments.DepartmentName " +
+                                                   " FROM infiniu2_light.dbo.Departments WHERE infiniu2_light.dbo.Departments.DepartmentID IN " +
+                                                   " (SELECT DISTINCT UserID FROM infiniu2_light.dbo.ProjectMembers WHERE ProjectUserTypeID = 1 AND " +
+                                                   " ProjectID IN (SELECT ProjectID FROM Projects WHERE ProjectStatusID = " + StateID +
+                                                   ")) ORDER BY infiniu2_light.dbo.Departments.DepartmentName", ConnectionStrings.LightConnectionString))
                 {
                     DA.Fill(ProjectDepsMembersDataTable);
                 }
             }
             else
             {
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT infiniu2_light.dbo.Departments.DepartmentID, infiniu2_light.dbo.Departments.DepartmentName " +
-                                                              " FROM infiniu2_light.dbo.Departments WHERE infiniu2_light.dbo.Departments.DepartmentID IN " +
-                                                              " (SELECT DISTINCT UserID FROM infiniu2_light.dbo.ProjectMembers)" +
-                                                              " ORDER BY infiniu2_light.dbo.Departments.DepartmentName",
+                using (var DA = new SqlDataAdapter("SELECT infiniu2_light.dbo.Departments.DepartmentID, infiniu2_light.dbo.Departments.DepartmentName " +
+                                                   " FROM infiniu2_light.dbo.Departments WHERE infiniu2_light.dbo.Departments.DepartmentID IN " +
+                                                   " (SELECT DISTINCT UserID FROM infiniu2_light.dbo.ProjectMembers)" +
+                                                   " ORDER BY infiniu2_light.dbo.Departments.DepartmentName",
                                                                ConnectionStrings.LightConnectionString))
                 {
                     DA.Fill(ProjectDepsMembersDataTable);
@@ -2682,7 +2682,7 @@ namespace Infinium
 
         public void AddSubscribeForNewProject(int ProjectID)
         {
-            DataRow NewRow = ProjectSubsRecordsDataTable.NewRow();
+            var NewRow = ProjectSubsRecordsDataTable.NewRow();
             NewRow["SubscribesItemID"] = 7;
             NewRow["TableItemID"] = ProjectID;
             NewRow["UserID"] = Security.CurrentUserID;
@@ -2693,7 +2693,7 @@ namespace Infinium
         {
             ProjectNewsDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 20 * FROM ProjectNews WHERE Pending <> 1 AND ProjectID = " + ProjectID + " ORDER BY LastCommentDateTime DESC", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 20 * FROM ProjectNews WHERE Pending <> 1 AND ProjectID = " + ProjectID + " ORDER BY LastCommentDateTime DESC", ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(ProjectNewsDataTable);
             }
@@ -2714,7 +2714,7 @@ namespace Infinium
 
             foreach (DataRow Row in ProjectNewsCommentsSubsRecordsDataTable.Rows)
             {
-                DataRow[] Rows = ProjectNewsDataTable.Select("NewsID = " + Row["NewsID"]);
+                var Rows = ProjectNewsDataTable.Select("NewsID = " + Row["NewsID"]);
 
                 if (Rows.Count() > 0)
                     Rows[0]["New"] = 1;
@@ -2725,7 +2725,7 @@ namespace Infinium
         {
             ProjectNewsDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP " + Count + " * FROM ProjectNews WHERE Pending <> 1 AND ProjectID = " + ProjectID + " ORDER BY LastCommentDateTime DESC", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP " + Count + " * FROM ProjectNews WHERE Pending <> 1 AND ProjectID = " + ProjectID + " ORDER BY LastCommentDateTime DESC", ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(ProjectNewsDataTable);
             }
@@ -2758,7 +2758,7 @@ namespace Infinium
         {
             ProjectsDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Projects WHERE IsProposition = 1", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM Projects WHERE IsProposition = 1", ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(ProjectsDataTable);
             }
@@ -2768,7 +2768,7 @@ namespace Infinium
         {
             ProjectNewsCommentsDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM ProjectNewsComments", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM ProjectNewsComments", ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(ProjectNewsCommentsDataTable);
             }
@@ -2778,7 +2778,7 @@ namespace Infinium
         {
             ProjectNewsAttachmentsDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT NewsAttachID, NewsID, FileName, FileSize FROM ProjectNewsAttachs", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT NewsAttachID, NewsID, FileName, FileSize FROM ProjectNewsAttachs", ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(ProjectNewsAttachmentsDataTable);
             }
@@ -2789,8 +2789,8 @@ namespace Infinium
             ProjectNewsCommentsSubsRecordsDataTable.Clear();
 
             //comments
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT SubscribesRecords.*, ProjectNewsComments.ProjectID, ProjectNewsComments.NewsID FROM SubscribesRecords" +
-                                                          " INNER JOIN ProjectNewsComments ON ProjectNewsComments.NewsCommentID = SubscribesRecords.TableItemID WHERE SubscribesItemID = 9 AND UserTypeID = 0 AND SubscribesRecords.UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT SubscribesRecords.*, ProjectNewsComments.ProjectID, ProjectNewsComments.NewsID FROM SubscribesRecords" +
+                                               " INNER JOIN ProjectNewsComments ON ProjectNewsComments.NewsCommentID = SubscribesRecords.TableItemID WHERE SubscribesItemID = 9 AND UserTypeID = 0 AND SubscribesRecords.UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(ProjectNewsCommentsSubsRecordsDataTable);
             }
@@ -2799,8 +2799,8 @@ namespace Infinium
             ProjectNewsSubsRecordsDataTable.Clear();
 
             //news
-            using (SqlDataAdapter sDA = new SqlDataAdapter("SELECT * FROM SubscribesRecords " +
-                                                          " INNER JOIN ProjectNews ON ProjectNews.NewsID = SubscribesRecords.TableItemID WHERE SubscribesItemID = 8 AND UserTypeID = 0 AND SubscribesRecords.UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
+            using (var sDA = new SqlDataAdapter("SELECT * FROM SubscribesRecords " +
+                                                " INNER JOIN ProjectNews ON ProjectNews.NewsID = SubscribesRecords.TableItemID WHERE SubscribesItemID = 8 AND UserTypeID = 0 AND SubscribesRecords.UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
             {
                 sDA.Fill(ProjectNewsSubsRecordsDataTable);
             }
@@ -2809,7 +2809,7 @@ namespace Infinium
             ProjectSubsRecordsDataTable.Clear();
 
             //projects
-            using (SqlDataAdapter sDA = new SqlDataAdapter("SELECT * FROM SubscribesRecords WHERE SubscribesItemID = 7 AND UserTypeID = 0 AND UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
+            using (var sDA = new SqlDataAdapter("SELECT * FROM SubscribesRecords WHERE SubscribesItemID = 7 AND UserTypeID = 0 AND UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
             {
                 sDA.Fill(ProjectSubsRecordsDataTable);
             }
@@ -2819,7 +2819,7 @@ namespace Infinium
         {
             ProjectNewsLikesDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM ProjectNewsLikes", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM ProjectNewsLikes", ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(ProjectNewsLikesDataTable);
             }
@@ -2827,7 +2827,7 @@ namespace Infinium
 
             ProjectNewsCommentsLikesDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM ProjectNewsCommentsLikes", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM ProjectNewsCommentsLikes", ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(ProjectNewsCommentsLikesDataTable);
             }
@@ -2838,10 +2838,10 @@ namespace Infinium
         {
             CurrentProjectUsersDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT infiniu2_users.dbo.Users.UserID, infiniu2_users.dbo.Users.Name" +
-                                                              " FROM infiniu2_users.dbo.Users WHERE Fired<> 1 AND infiniu2_users.dbo.Users.UserID IN" +
-                                                              " (SELECT DISTINCT UserID FROM infiniu2_light.dbo.ProjectMembers WHERE ProjectID = " + ProjectID + ")" +
-                                                              " ORDER BY infiniu2_users.dbo.Users.Name",
+            using (var DA = new SqlDataAdapter("SELECT infiniu2_users.dbo.Users.UserID, infiniu2_users.dbo.Users.Name" +
+                                               " FROM infiniu2_users.dbo.Users WHERE Fired<> 1 AND infiniu2_users.dbo.Users.UserID IN" +
+                                               " (SELECT DISTINCT UserID FROM infiniu2_light.dbo.ProjectMembers WHERE ProjectID = " + ProjectID + ")" +
+                                               " ORDER BY infiniu2_users.dbo.Users.Name",
                                                               ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(CurrentProjectUsersDataTable);
@@ -2851,10 +2851,10 @@ namespace Infinium
 
             CurrentProjectDepartmentsDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT infiniu2_light.dbo.Departments.DepartmentID, infiniu2_light.dbo.Departments.DepartmentName " +
-                                                              " FROM infiniu2_light.dbo.Departments WHERE infiniu2_light.dbo.Departments.DepartmentID IN " +
-                                                              " (SELECT DISTINCT UserID FROM infiniu2_light.dbo.ProjectMembers WHERE ProjectID = " + ProjectID + ")" +
-                                                              " ORDER BY infiniu2_light.dbo.Departments.DepartmentName",
+            using (var DA = new SqlDataAdapter("SELECT infiniu2_light.dbo.Departments.DepartmentID, infiniu2_light.dbo.Departments.DepartmentName " +
+                                               " FROM infiniu2_light.dbo.Departments WHERE infiniu2_light.dbo.Departments.DepartmentID IN " +
+                                               " (SELECT DISTINCT UserID FROM infiniu2_light.dbo.ProjectMembers WHERE ProjectID = " + ProjectID + ")" +
+                                               " ORDER BY infiniu2_light.dbo.Departments.DepartmentName",
                                                                ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(CurrentProjectDepartmentsDataTable);
@@ -2865,7 +2865,7 @@ namespace Infinium
         {
             ProjectNewsAttachmentsDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT NewsAttachID, NewsID, FileName, FileSize FROM ProjectNewsAttachs", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT NewsAttachID, NewsID, FileName, FileSize FROM ProjectNewsAttachs", ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(ProjectNewsAttachmentsDataTable);
             }
@@ -2876,7 +2876,7 @@ namespace Infinium
         {
             ProjectNewsDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP " + Count + " * FROM ProjectNews WHERE Pending <> 1 AND ProjectID = " + ProjectID + " ORDER BY LastCommentDateTime DESC", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP " + Count + " * FROM ProjectNews WHERE Pending <> 1 AND ProjectID = " + ProjectID + " ORDER BY LastCommentDateTime DESC", ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(ProjectNewsDataTable);
             }
@@ -2905,7 +2905,7 @@ namespace Infinium
         {
             ProjectNewsCommentsDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM ProjectNewsComments", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM ProjectNewsComments", ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(ProjectNewsCommentsDataTable);
             }
@@ -2915,7 +2915,7 @@ namespace Infinium
         {
             ProjectNewsCommentsDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM ProjectNewsComments", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM ProjectNewsComments", ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(ProjectNewsCommentsDataTable);
             }
@@ -2924,8 +2924,8 @@ namespace Infinium
             ProjectNewsCommentsSubsRecordsDataTable.Clear();
 
             //comments
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT SubscribesRecords.*, ProjectNewsComments.ProjectID, ProjectNewsComments.NewsID FROM SubscribesRecords" +
-                                                          " INNER JOIN ProjectNewsComments ON ProjectNewsComments.NewsCommentID = SubscribesRecords.TableItemID WHERE SubscribesItemID = 9 AND UserTypeID = 0 AND SubscribesRecords.UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT SubscribesRecords.*, ProjectNewsComments.ProjectID, ProjectNewsComments.NewsID FROM SubscribesRecords" +
+                                               " INNER JOIN ProjectNewsComments ON ProjectNewsComments.NewsCommentID = SubscribesRecords.TableItemID WHERE SubscribesItemID = 9 AND UserTypeID = 0 AND SubscribesRecords.UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(ProjectNewsCommentsSubsRecordsDataTable);
             }
@@ -2934,8 +2934,8 @@ namespace Infinium
             ProjectNewsSubsRecordsDataTable.Clear();
 
             //news
-            using (SqlDataAdapter sDA = new SqlDataAdapter("SELECT * FROM SubscribesRecords " +
-                                                          " INNER JOIN ProjectNews ON ProjectNews.NewsID = SubscribesRecords.TableItemID WHERE SubscribesItemID = 8 AND UserTypeID = 0 AND SubscribesRecords.UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
+            using (var sDA = new SqlDataAdapter("SELECT * FROM SubscribesRecords " +
+                                                " INNER JOIN ProjectNews ON ProjectNews.NewsID = SubscribesRecords.TableItemID WHERE SubscribesItemID = 8 AND UserTypeID = 0 AND SubscribesRecords.UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
             {
                 sDA.Fill(ProjectNewsSubsRecordsDataTable);
             }
@@ -2944,7 +2944,7 @@ namespace Infinium
             ProjectSubsRecordsDataTable.Clear();
 
             //projects
-            using (SqlDataAdapter sDA = new SqlDataAdapter("SELECT * FROM SubscribesRecords WHERE SubscribesItemID = 7 AND UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
+            using (var sDA = new SqlDataAdapter("SELECT * FROM SubscribesRecords WHERE SubscribesItemID = 7 AND UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
             {
                 sDA.Fill(ProjectSubsRecordsDataTable);
             }
@@ -2952,15 +2952,15 @@ namespace Infinium
 
         public void AddSubscribeToUpdates(int ModuleID, int ItemID, int UserID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM SubscribesToUpdates", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 0 * FROM SubscribesToUpdates", ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
-                        DataRow NewRow = DT.NewRow();
+                        var NewRow = DT.NewRow();
                         NewRow["ModuleID"] = ModuleID;
                         NewRow["TableItemID"] = ItemID;
                         NewRow["UserID"] = UserID;
@@ -2974,9 +2974,9 @@ namespace Infinium
 
         public void RemoveSubscribeToUpdates(int ModuleID, int ItemID, int UserID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM SubscribesToUpdates WHERE ModuleID = " + ModuleID + "AND UserID = " + UserID + " AND TableItemID = " + ItemID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM SubscribesToUpdates WHERE ModuleID = " + ModuleID + "AND UserID = " + UserID + " AND TableItemID = " + ItemID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
@@ -2991,16 +2991,16 @@ namespace Infinium
 
         public Image GetUserPhoto(int UserID)
         {
-            DataRow Row = UsersDataTable.Select("UserID = " + UserID)[0];
+            var Row = UsersDataTable.Select("UserID = " + UserID)[0];
 
             if (Row["Photo"] == DBNull.Value)
                 return null;
 
             Image Image = null;
 
-            byte[] b = (byte[])Row["Photo"];
+            var b = (byte[])Row["Photo"];
 
-            using (MemoryStream ms = new MemoryStream(b))
+            using (var ms = new MemoryStream(b))
             {
                 Image = Image.FromStream(ms);
             }
@@ -3012,15 +3012,15 @@ namespace Infinium
         {
             DateTime DateTime;
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM Projects", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 0 * FROM Projects", ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
-                        DataRow NewRow = DT.NewRow();
+                        var NewRow = DT.NewRow();
                         NewRow["ProjectName"] = ProjectName;
                         NewRow["ProjectDescription"] = ProjectDescription;
                         NewRow["AuthorID"] = AuthorID;
@@ -3045,12 +3045,12 @@ namespace Infinium
                 }
             }
 
-            int ProjectID = -1;
+            var ProjectID = -1;
 
             //get project id AND add members
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT ProjectID FROM Projects WHERE CreationDate = '" + DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT ProjectID FROM Projects WHERE CreationDate = '" + DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'", ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -3066,11 +3066,11 @@ namespace Infinium
 
         public int EditProject(TreeView TreeView, bool bNewMembers, string ProjectName, string ProjectDescription, int ProjectID, bool bProposition)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Projects WHERE ProjectID = " + ProjectID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM Projects WHERE ProjectID = " + ProjectID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -3094,26 +3094,26 @@ namespace Infinium
 
         public void AddProjectMembers(TreeView MembersTree, int ProjectID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM ProjectMembers", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 0 * FROM ProjectMembers", ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
-                        for (int i = 0; i < MembersTree.Nodes.Count; i++)
+                        for (var i = 0; i < MembersTree.Nodes.Count; i++)
                         {
-                            bool bAll = true;
+                            var bAll = true;
 
-                            DataTable UDT = new DataTable();
+                            var UDT = new DataTable();
                             UDT.Columns.Add(new DataColumn("UserName", Type.GetType("System.String")));
 
-                            for (int j = 0; j < MembersTree.Nodes[i].Nodes.Count; j++)
+                            for (var j = 0; j < MembersTree.Nodes[i].Nodes.Count; j++)
                             {
                                 if (MembersTree.Nodes[i].Nodes[j].Checked)
                                 {
-                                    DataRow NewRow = UDT.NewRow();
+                                    var NewRow = UDT.NewRow();
                                     NewRow["UserName"] = MembersTree.Nodes[i].Nodes[j].Text;
                                     UDT.Rows.Add(NewRow);
                                 }
@@ -3125,7 +3125,7 @@ namespace Infinium
                             {
                                 UDT.Clear();
 
-                                DataRow NewRow = DT.NewRow();
+                                var NewRow = DT.NewRow();
                                 NewRow["ProjectID"] = ProjectID;
                                 NewRow["UserID"] = DepartmentsDataTable.Select("DepartmentName = '" + MembersTree.Nodes[i].Text + "'")[0]["DepartmentID"];
                                 NewRow["ProjectUserTypeID"] = 1;
@@ -3135,7 +3135,7 @@ namespace Infinium
                             {
                                 foreach (DataRow Row in UDT.Rows)
                                 {
-                                    DataRow NewRow = DT.NewRow();
+                                    var NewRow = DT.NewRow();
                                     NewRow["ProjectID"] = ProjectID;
                                     NewRow["UserID"] = UsersDataTable.Select("Name = '" + Row["UserName"] + "'")[0]["UserID"];
                                     NewRow["ProjectUserTypeID"] = 0;
@@ -3153,13 +3153,13 @@ namespace Infinium
 
         public void EditProjectMembers(TreeView MembersTree, int ProjectID, bool bProposition)
         {
-            DataTable MembersDataTable = new DataTable();
+            var MembersDataTable = new DataTable();
             MembersDataTable.Columns.Add(new DataColumn("UserID", Type.GetType("System.Int32")));
 
             //get old members list
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT UserID, ProjectUserTypeID FROM ProjectMembers WHERE ProjectID = " + ProjectID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT UserID, ProjectUserTypeID FROM ProjectMembers WHERE ProjectID = " + ProjectID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -3167,15 +3167,15 @@ namespace Infinium
                     {
                         if (Row["ProjectUserTypeID"].ToString() == "0")//user
                         {
-                            DataRow NewRow = MembersDataTable.NewRow();
+                            var NewRow = MembersDataTable.NewRow();
                             NewRow["UserID"] = Row["UserID"];
                             MembersDataTable.Rows.Add(NewRow);
                         }
                         else//department
                         {
-                            foreach (DataRow uRow in UsersDataTable.Select("DepartmentID = " + Row["UserID"]))
+                            foreach (var uRow in UsersDataTable.Select("DepartmentID = " + Row["UserID"]))
                             {
-                                DataRow NewRow = MembersDataTable.NewRow();
+                                var NewRow = MembersDataTable.NewRow();
                                 NewRow["UserID"] = uRow["UserID"];
                                 MembersDataTable.Rows.Add(NewRow);
                             }
@@ -3186,11 +3186,11 @@ namespace Infinium
 
 
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM ProjectMembers WHERE ProjectID = " + ProjectID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM ProjectMembers WHERE ProjectID = " + ProjectID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
                     }
@@ -3198,26 +3198,26 @@ namespace Infinium
             }
 
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM ProjectMembers", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 0 * FROM ProjectMembers", ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
-                        for (int i = 0; i < MembersTree.Nodes.Count; i++)
+                        for (var i = 0; i < MembersTree.Nodes.Count; i++)
                         {
-                            bool bAll = true;
+                            var bAll = true;
 
-                            DataTable UDT = new DataTable();
+                            var UDT = new DataTable();
                             UDT.Columns.Add(new DataColumn("UserName", Type.GetType("System.String")));
 
-                            for (int j = 0; j < MembersTree.Nodes[i].Nodes.Count; j++)
+                            for (var j = 0; j < MembersTree.Nodes[i].Nodes.Count; j++)
                             {
                                 if (MembersTree.Nodes[i].Nodes[j].Checked)
                                 {
-                                    DataRow NewRow = UDT.NewRow();
+                                    var NewRow = UDT.NewRow();
                                     NewRow["UserName"] = MembersTree.Nodes[i].Nodes[j].Text;
                                     UDT.Rows.Add(NewRow);
                                 }
@@ -3229,7 +3229,7 @@ namespace Infinium
                             {
                                 UDT.Clear();
 
-                                DataRow NewRow = DT.NewRow();
+                                var NewRow = DT.NewRow();
                                 NewRow["ProjectID"] = ProjectID;
                                 NewRow["UserID"] = DepartmentsDataTable.Select("DepartmentName = '" + MembersTree.Nodes[i].Text + "'")[0]["DepartmentID"];
                                 NewRow["ProjectUserTypeID"] = 1;
@@ -3241,7 +3241,7 @@ namespace Infinium
                             {
                                 foreach (DataRow Row in UDT.Rows)
                                 {
-                                    DataRow NewRow = DT.NewRow();
+                                    var NewRow = DT.NewRow();
                                     NewRow["ProjectID"] = ProjectID;
                                     NewRow["UserID"] = UsersDataTable.Select("Name = '" + Row["UserName"] + "'")[0]["UserID"];
                                     NewRow["ProjectUserTypeID"] = 0;
@@ -3254,29 +3254,29 @@ namespace Infinium
 
 
                         //set new members datatable where department expands to users
-                        DataTable NewMembersDT = new DataTable();
+                        var NewMembersDT = new DataTable();
                         NewMembersDT = MembersDataTable.Clone();
 
                         foreach (DataRow mRow in DT.Rows)
                         {
                             if (mRow["ProjectUserTypeID"].ToString() == "0")//user
                             {
-                                DataRow NewRow = NewMembersDT.NewRow();
+                                var NewRow = NewMembersDT.NewRow();
                                 NewRow["UserID"] = mRow["UserID"];
                                 NewMembersDT.Rows.Add(NewRow);
                             }
                             else//department
                             {
-                                foreach (DataRow uRow in UsersDataTable.Select("DepartmentID = " + mRow["UserID"]))
+                                foreach (var uRow in UsersDataTable.Select("DepartmentID = " + mRow["UserID"]))
                                 {
-                                    DataRow NewRow = NewMembersDT.NewRow();
+                                    var NewRow = NewMembersDT.NewRow();
                                     NewRow["UserID"] = uRow["UserID"];
                                     NewMembersDT.Rows.Add(NewRow);
                                 }
                             }
                         }
 
-                        for (int i = 0; i < MembersDataTable.Rows.Count; i++)
+                        for (var i = 0; i < MembersDataTable.Rows.Count; i++)
                         {
                             if (NewMembersDT.Select("UserID = " + MembersDataTable.Rows[i]["UserID"]).Count() == 0)//was deleted
                             {
@@ -3288,11 +3288,11 @@ namespace Infinium
 
                         foreach (DataRow uRow in NewMembersDT.Rows)
                         {
-                            DataRow[] mRow = MembersDataTable.Select("UserID = " + uRow["UserID"]);
+                            var mRow = MembersDataTable.Select("UserID = " + uRow["UserID"]);
 
                             if (mRow.Count() == 0)//new user
                             {
-                                DataRow NewRow = MembersDataTable.NewRow();
+                                var NewRow = MembersDataTable.NewRow();
                                 NewRow["UserID"] = uRow["UserID"];
                                 MembersDataTable.Rows.Add(NewRow);
                             }
@@ -3310,11 +3310,11 @@ namespace Infinium
 
         public void EditNews(int NewsID, string BodyText)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM ProjectNews WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM ProjectNews WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         if (DA.Fill(DT) == 0)
                             return;
@@ -3329,9 +3329,9 @@ namespace Infinium
 
         public bool CanRemove(int ProjectID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT ProjectID FROM Projects WHERE ProjectID = " + ProjectID + " AND AuthorID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT ProjectID FROM Projects WHERE ProjectID = " + ProjectID + " AND AuthorID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     return (DA.Fill(DT) > 0);//only author can delete project
                 }
@@ -3340,9 +3340,9 @@ namespace Infinium
 
         public bool CanEdit(int ProjectID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT ProjectID FROM Projects WHERE ProjectID = " + ProjectID + " AND AuthorID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT ProjectID FROM Projects WHERE ProjectID = " + ProjectID + " AND AuthorID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     return (DA.Fill(DT) > 0);//only author can delete project
                 }
@@ -3351,65 +3351,65 @@ namespace Infinium
 
         public void RemoveProject(int ProjectID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM Projects WHERE ProjectID = " + ProjectID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM Projects WHERE ProjectID = " + ProjectID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM SubscribesRecords WHERE (SubscribesItemID = 12 OR SubscribesItemID = 7 OR SubscribesItemID = 8 OR SubscribesItemID = 9) AND TableItemID = " + ProjectID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM SubscribesRecords WHERE (SubscribesItemID = 12 OR SubscribesItemID = 7 OR SubscribesItemID = 8 OR SubscribesItemID = 9) AND TableItemID = " + ProjectID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM ProjectNews WHERE ProjectID = " + ProjectID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM ProjectNews WHERE ProjectID = " + ProjectID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM ProjectMembers WHERE ProjectID = " + ProjectID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM ProjectMembers WHERE ProjectID = " + ProjectID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM ProjectNewsAttachs WHERE ProjectID = " + ProjectID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM ProjectNewsAttachs WHERE ProjectID = " + ProjectID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM ProjectNewsComments WHERE ProjectID = " + ProjectID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM ProjectNewsComments WHERE ProjectID = " + ProjectID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM ProjectNewsCommentsLikes WHERE ProjectID = " + ProjectID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM ProjectNewsCommentsLikes WHERE ProjectID = " + ProjectID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM ProjectNewsLikes WHERE ProjectID = " + ProjectID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM ProjectNewsLikes WHERE ProjectID = " + ProjectID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
@@ -3419,9 +3419,9 @@ namespace Infinium
 
         public bool IsProposition(int ProjectID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT ProjectID, IsProposition FROM Projects WHERE ProjectID = " + ProjectID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT ProjectID, IsProposition FROM Projects WHERE ProjectID = " + ProjectID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -3433,13 +3433,13 @@ namespace Infinium
 
         public bool EditAttachments(int NewsID, int ProjectID, DataTable AttachmentsDataTable, ref int CurrentUploadedFile, ref int TotalFilesCount)
         {
-            bool Ok = false;
+            var Ok = false;
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT NewsAttachID, NewsID, FileName FROM ProjectNewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT NewsAttachID, NewsID, FileName FROM ProjectNewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -3458,11 +3458,11 @@ namespace Infinium
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM ProjectNewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 0 * FROM ProjectNewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
                         Ok = true;
@@ -3488,7 +3488,7 @@ namespace Infinium
                                 continue;
                             }
 
-                            DataRow NewRow = DT.NewRow();
+                            var NewRow = DT.NewRow();
                             NewRow["NewsID"] = NewsID;
                             NewRow["ProjectID"] = ProjectID;
                             NewRow["FileName"] = Row["FileName"];
@@ -3503,9 +3503,9 @@ namespace Infinium
 
 
             //write to ftp
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM ProjectNewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM ProjectNewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -3543,9 +3543,9 @@ namespace Infinium
 
         public DataTable GetAttachments(int NewsID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT NewsAttachID, FileName FROM ProjectNewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT NewsAttachID, FileName FROM ProjectNewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -3556,11 +3556,11 @@ namespace Infinium
 
         public int GetPropositionsUpdatesCount()
         {
-            int c = 0;
+            var c = 0;
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT Count (SubscribesRecordID) FROM SubscribesRecords WHERE SubscribesItemID = 12 AND UserTypeID = 0 AND UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT Count (SubscribesRecordID) FROM SubscribesRecords WHERE SubscribesItemID = 12 AND UserTypeID = 0 AND UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     if (DA.Fill(DT) > 0)
                         c += Convert.ToInt32(DT.Rows[0][0]);
@@ -3572,11 +3572,11 @@ namespace Infinium
 
         public int GetNewsUpdatesCount()
         {
-            int c = 0;
+            var c = 0;
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT Count (SubscribesRecordID) FROM SubscribesRecords WHERE SubscribesItemID = 8 OR SubscribesItemID = 9 AND UserTypeID = 0 AND UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT Count (SubscribesRecordID) FROM SubscribesRecords WHERE SubscribesItemID = 8 OR SubscribesItemID = 9 AND UserTypeID = 0 AND UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     if (DA.Fill(DT) > 0)
                         c += Convert.ToInt32(DT.Rows[0][0]);
@@ -3588,11 +3588,11 @@ namespace Infinium
 
         public int GetProjectsUpdatesCount()
         {
-            int c = 0;
+            var c = 0;
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT Count (SubscribesRecordID) FROM SubscribesRecords WHERE SubscribesItemID = 7 AND UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT Count (SubscribesRecordID) FROM SubscribesRecords WHERE SubscribesItemID = 7 AND UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     if (DA.Fill(DT) > 0)
                         c += Convert.ToInt32(DT.Rows[0][0]);
@@ -3606,9 +3606,9 @@ namespace Infinium
         {
             ProjectSubsRecordsDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM SubscribesRecords WHERE SubscribesItemID = 7 AND UserTypeID = 0 AND UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM SubscribesRecords WHERE SubscribesItemID = 7 AND UserTypeID = 0 AND UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(ProjectSubsRecordsDataTable);
                 }
@@ -3620,8 +3620,8 @@ namespace Infinium
             ProjectNewsCommentsSubsRecordsDataTable.Clear();
 
             //comments
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT SubscribesRecords.*, ProjectNewsComments.ProjectID, ProjectNewsComments.NewsID FROM SubscribesRecords" +
-                                                          " INNER JOIN ProjectNewsComments ON ProjectNewsComments.NewsCommentID = SubscribesRecords.TableItemID WHERE SubscribesItemID = 9 AND UserTypeID = 0 AND SubscribesRecords.UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT SubscribesRecords.*, ProjectNewsComments.ProjectID, ProjectNewsComments.NewsID FROM SubscribesRecords" +
+                                               " INNER JOIN ProjectNewsComments ON ProjectNewsComments.NewsCommentID = SubscribesRecords.TableItemID WHERE SubscribesItemID = 9 AND UserTypeID = 0 AND SubscribesRecords.UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(ProjectNewsCommentsSubsRecordsDataTable);
             }
@@ -3630,8 +3630,8 @@ namespace Infinium
             ProjectNewsSubsRecordsDataTable.Clear();
 
             //news
-            using (SqlDataAdapter sDA = new SqlDataAdapter("SELECT * FROM SubscribesRecords " +
-                                                          " INNER JOIN ProjectNews ON ProjectNews.NewsID = SubscribesRecords.TableItemID WHERE SubscribesItemID = 8 AND UserTypeID = 0 AND SubscribesRecords.UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
+            using (var sDA = new SqlDataAdapter("SELECT * FROM SubscribesRecords " +
+                                                " INNER JOIN ProjectNews ON ProjectNews.NewsID = SubscribesRecords.TableItemID WHERE SubscribesItemID = 8 AND UserTypeID = 0 AND SubscribesRecords.UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
             {
                 sDA.Fill(ProjectNewsSubsRecordsDataTable);
             }
@@ -3640,12 +3640,12 @@ namespace Infinium
 
         public void ClearAllSubs()
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM SubscribesRecords WHERE (SubscribesItemID = 7 OR SubscribesItemID = 8 OR SubscribesItemID = 9) AND UserTypeID = 0 AND UserID = " + Security.CurrentUserID,
+            using (var DA = new SqlDataAdapter("DELETE FROM SubscribesRecords WHERE (SubscribesItemID = 7 OR SubscribesItemID = 8 OR SubscribesItemID = 9) AND UserTypeID = 0 AND UserID = " + Security.CurrentUserID,
                                                           ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
                     }
@@ -3656,11 +3656,11 @@ namespace Infinium
 
         public void RemoveCurrentAttachments(int NewsID, DataTable AttachmentsDT)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM ProjectNewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM ProjectNewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -3685,25 +3685,25 @@ namespace Infinium
 
         public void RemoveNews(int NewsID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM ProjectNewsLikes WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM ProjectNewsLikes WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM SubscribesRecords WHERE SubscribesItemID = 8 AND TableItemID = " + NewsID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM SubscribesRecords WHERE SubscribesItemID = 8 AND TableItemID = " + NewsID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM ProjectNews WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM ProjectNews WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
@@ -3718,19 +3718,19 @@ namespace Infinium
         {
             DeleteCommentsSubs(NewsID);
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM ProjectNewsCommentsLikes WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM ProjectNewsCommentsLikes WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM ProjectNewsComments WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM ProjectNewsComments WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
                     }
@@ -3742,9 +3742,9 @@ namespace Infinium
 
         public void DeleteCommentsSub(int NewsCommentID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM SubscribesRecords WHERE SubscribesItemID = 9 AND TableItemID = " + NewsCommentID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM SubscribesRecords WHERE SubscribesItemID = 9 AND TableItemID = " + NewsCommentID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
@@ -3753,10 +3753,10 @@ namespace Infinium
 
         public void DeleteCommentsSubs(int NewsID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM SubscribesRecords WHERE SubscribesItemID = 9 AND TableItemID IN" +
-                                                          "(SELECT NewsCommentID FROM ProjectNewsComments WHERE NewsID = " + NewsID + ")", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM SubscribesRecords WHERE SubscribesItemID = 9 AND TableItemID IN" +
+                                               "(SELECT NewsCommentID FROM ProjectNewsComments WHERE NewsID = " + NewsID + ")", ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
@@ -3766,9 +3766,9 @@ namespace Infinium
 
         public void RemoveAttachments(int NewsID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM ProjectNewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM ProjectNewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -3782,11 +3782,11 @@ namespace Infinium
 
 
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM ProjectNewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM ProjectNewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
                     }
@@ -3799,19 +3799,19 @@ namespace Infinium
 
         public void LikeNews(int UserID, int NewsID, int ProjectID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM ProjectNewsLikes WHERE NewsID = " + NewsID + " AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM ProjectNewsLikes WHERE NewsID = " + NewsID + " AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
                         if (DT.Rows.Count > 0)//i like
                         {
-                            using (SqlDataAdapter dDA = new SqlDataAdapter("DELETE FROM ProjectNewsLikes WHERE NewsID = " + NewsID + " AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
+                            using (var dDA = new SqlDataAdapter("DELETE FROM ProjectNewsLikes WHERE NewsID = " + NewsID + " AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
                             {
-                                using (DataTable dDT = new DataTable())
+                                using (var dDT = new DataTable())
                                 {
                                     dDA.Fill(dDT);
                                 }
@@ -3820,7 +3820,7 @@ namespace Infinium
                             return;
                         }
 
-                        DataRow NewRow = DT.NewRow();
+                        var NewRow = DT.NewRow();
                         NewRow["NewsID"] = NewsID;
                         NewRow["UserID"] = UserID;
                         NewRow["ProjectID"] = ProjectID;
@@ -3834,19 +3834,19 @@ namespace Infinium
 
         public void LikeComments(int UserID, int NewsID, int NewsCommentID, int ProjectID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM ProjectNewsCommentsLikes WHERE NewsCommentID = " + NewsCommentID + " AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM ProjectNewsCommentsLikes WHERE NewsCommentID = " + NewsCommentID + " AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
                         if (DT.Rows.Count > 0)
                         {
-                            using (SqlDataAdapter dDA = new SqlDataAdapter("DELETE FROM ProjectNewsCommentsLikes WHERE NewsCommentID = " + NewsCommentID + " AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
+                            using (var dDA = new SqlDataAdapter("DELETE FROM ProjectNewsCommentsLikes WHERE NewsCommentID = " + NewsCommentID + " AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
                             {
-                                using (DataTable dDT = new DataTable())
+                                using (var dDT = new DataTable())
                                 {
                                     dDA.Fill(dDT);
                                 }
@@ -3855,7 +3855,7 @@ namespace Infinium
                             return;
                         }
 
-                        DataRow NewRow = DT.NewRow();
+                        var NewRow = DT.NewRow();
                         NewRow["NewsID"] = NewsID;
                         NewRow["NewsCommentID"] = NewsCommentID;
                         NewRow["UserID"] = UserID;
@@ -3872,10 +3872,10 @@ namespace Infinium
 
         public int GetNewsIDByDateTime(DateTime DateTime)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM ProjectNews WHERE DateTime = '" + DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'",
+            using (var DA = new SqlDataAdapter("SELECT * FROM ProjectNews WHERE DateTime = '" + DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'",
                                                                          ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -3887,12 +3887,12 @@ namespace Infinium
 
         public void ClearNewsPending(DateTime DateTime)
         {
-            using (SqlDataAdapter sDA = new SqlDataAdapter("SELECT TOP 1 * FROM ProjectNews WHERE DateTime = '" + DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'",
+            using (var sDA = new SqlDataAdapter("SELECT TOP 1 * FROM ProjectNews WHERE DateTime = '" + DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'",
                                                                       ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(sDA))
+                using (var CB = new SqlCommandBuilder(sDA))
                 {
-                    using (DataTable sDT = new DataTable())
+                    using (var sDT = new DataTable())
                     {
                         sDA.Fill(sDT);
 
@@ -3908,12 +3908,12 @@ namespace Infinium
 
         public void ClearProjectsPending(int ProjectID)
         {
-            using (SqlDataAdapter sDA = new SqlDataAdapter("SELECT TOP 1 * FROM Projects WHERE ProjectID = " + ProjectID,
+            using (var sDA = new SqlDataAdapter("SELECT TOP 1 * FROM Projects WHERE ProjectID = " + ProjectID,
                                                                       ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(sDA))
+                using (var CB = new SqlCommandBuilder(sDA))
                 {
-                    using (DataTable sDT = new DataTable())
+                    using (var sDT = new DataTable())
                     {
                         sDA.Fill(sDT);
 
@@ -3933,13 +3933,13 @@ namespace Infinium
             if (AttachmentsDataTable.Rows.Count == 0)
                 return true;
 
-            bool Ok = true;
+            var Ok = true;
 
             int NewsID;
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT NewsID FROM ProjectNews WHERE DateTime = '" + NewsDateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT NewsID FROM ProjectNews WHERE DateTime = '" + NewsDateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'", ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -3947,11 +3947,11 @@ namespace Infinium
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM ProjectNewsAttachs", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 0 * FROM ProjectNewsAttachs", ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -3969,7 +3969,7 @@ namespace Infinium
                                 continue;
                             }
 
-                            DataRow NewRow = DT.NewRow();
+                            var NewRow = DT.NewRow();
                             NewRow["NewsID"] = NewsID;
                             NewRow["FileName"] = Row["FileName"];
                             NewRow["FileSize"] = fi.Length;
@@ -3983,9 +3983,9 @@ namespace Infinium
             }
 
             //write to ftp
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM ProjectNewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM ProjectNewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -4020,10 +4020,10 @@ namespace Infinium
 
         public bool CanChangeStatusProject(int ProjectID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT ProjectMemberID FROM ProjectMembers WHERE ProjectID = " + ProjectID +
-                                                          " AND ProjectUserTypeID = 0 AND UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT ProjectMemberID FROM ProjectMembers WHERE ProjectID = " + ProjectID +
+                                               " AND ProjectUserTypeID = 0 AND UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     if (DA.Fill(DT) > 0)
                     {
@@ -4032,11 +4032,11 @@ namespace Infinium
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT ProjectMemberID FROM ProjectMembers WHERE ProjectID = " + ProjectID +
-                                                          " AND ProjectUserTypeID = 1 AND UserID = " +
-                                                          UsersDataTable.Select("UserID = " + Security.CurrentUserID)[0]["DepartmentID"], ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT ProjectMemberID FROM ProjectMembers WHERE ProjectID = " + ProjectID +
+                                               " AND ProjectUserTypeID = 1 AND UserID = " +
+                                               UsersDataTable.Select("UserID = " + Security.CurrentUserID)[0]["DepartmentID"], ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     if (DA.Fill(DT) > 0)
                     {
@@ -4045,10 +4045,10 @@ namespace Infinium
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT ProjectID FROM Projects WHERE ProjectID = " + ProjectID +
-                                                          " AND AuthorID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT ProjectID FROM Projects WHERE ProjectID = " + ProjectID +
+                                               " AND AuthorID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     if (DA.Fill(DT) > 0)
                     {
@@ -4062,9 +4062,9 @@ namespace Infinium
 
         public int GetProjectStatus(int ProjectID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT ProjectID, ProjectStatusID FROM Projects WHERE ProjectID = " + ProjectID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT ProjectID, ProjectStatusID FROM Projects WHERE ProjectID = " + ProjectID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -4075,11 +4075,11 @@ namespace Infinium
 
         public void StartProject(int ProjectID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT ProjectID, StartDate, ProjectStatusID FROM Projects WHERE ProjectID = " + ProjectID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT ProjectID, StartDate, ProjectStatusID FROM Projects WHERE ProjectID = " + ProjectID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -4095,11 +4095,11 @@ namespace Infinium
 
         public void StartProject(int ProjectID, bool bProposition)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT ProjectID, StartDate, IsProposition, ProjectStatusID FROM Projects WHERE ProjectID = " + ProjectID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT ProjectID, StartDate, IsProposition, ProjectStatusID FROM Projects WHERE ProjectID = " + ProjectID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -4118,11 +4118,11 @@ namespace Infinium
 
         public void PauseProject(int ProjectID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT ProjectID, SuspendedDate, ProjectStatusID FROM Projects WHERE ProjectID = " + ProjectID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT ProjectID, SuspendedDate, ProjectStatusID FROM Projects WHERE ProjectID = " + ProjectID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -4137,11 +4137,11 @@ namespace Infinium
 
         public void CancelProject(int ProjectID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT ProjectID, CanceledDate, ProjectStatusID FROM Projects WHERE ProjectID = " + ProjectID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT ProjectID, CanceledDate, ProjectStatusID FROM Projects WHERE ProjectID = " + ProjectID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -4156,11 +4156,11 @@ namespace Infinium
 
         public void EndProject(int ProjectID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT ProjectID, CompletedDate, ProjectStatusID FROM Projects WHERE ProjectID = " + ProjectID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT ProjectID, CompletedDate, ProjectStatusID FROM Projects WHERE ProjectID = " + ProjectID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -4175,18 +4175,18 @@ namespace Infinium
 
         public void AddNewsSubscribe(DateTime DateTime, int ProjectID, bool bAllUsers)
         {
-            using (SqlDataAdapter sDA = new SqlDataAdapter("SELECT * FROM ProjectNews WHERE DateTime = '" + DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'",
+            using (var sDA = new SqlDataAdapter("SELECT * FROM ProjectNews WHERE DateTime = '" + DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'",
                                                                        ConnectionStrings.LightConnectionString))
             {
-                using (DataTable sDT = new DataTable())
+                using (var sDT = new DataTable())
                 {
                     sDA.Fill(sDT);
 
-                    using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM SubscribesRecords", ConnectionStrings.LightConnectionString))
+                    using (var DA = new SqlDataAdapter("SELECT TOP 0 * FROM SubscribesRecords", ConnectionStrings.LightConnectionString))
                     {
-                        using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                        using (var CB = new SqlCommandBuilder(DA))
                         {
-                            using (DataTable DT = new DataTable())
+                            using (var DT = new DataTable())
                             {
                                 DA.Fill(DT);
 
@@ -4197,7 +4197,7 @@ namespace Infinium
                                         if (Convert.ToInt32(Row["UserID"]) == Security.CurrentUserID)
                                             continue;
 
-                                        DataRow NewRow = DT.NewRow();
+                                        var NewRow = DT.NewRow();
                                         NewRow["SubscribesItemID"] = 8;
                                         NewRow["TableItemID"] = sDT.Rows[0]["NewsID"];
                                         NewRow["UserID"] = Row["UserID"];
@@ -4207,10 +4207,10 @@ namespace Infinium
                                 }
                                 else//members only
                                 {
-                                    using (SqlDataAdapter mDA = new SqlDataAdapter("SELECT * FROM ProjectMembers WHERE ProjectID = " + ProjectID,
+                                    using (var mDA = new SqlDataAdapter("SELECT * FROM ProjectMembers WHERE ProjectID = " + ProjectID,
                                                                                  ConnectionStrings.LightConnectionString))
                                     {
-                                        using (DataTable mDT = new DataTable())
+                                        using (var mDT = new DataTable())
                                         {
                                             mDA.Fill(mDT);
 
@@ -4221,7 +4221,7 @@ namespace Infinium
                                                     if (Convert.ToInt32(Row["UserID"]) == Security.CurrentUserID)
                                                         continue;
 
-                                                    DataRow NewRow = DT.NewRow();
+                                                    var NewRow = DT.NewRow();
                                                     NewRow["SubscribesItemID"] = 8;
                                                     NewRow["TableItemID"] = sDT.Rows[0]["NewsID"];
                                                     NewRow["UserID"] = Row["UserID"];
@@ -4230,12 +4230,12 @@ namespace Infinium
                                                 }
                                                 else//department
                                                 {
-                                                    foreach (DataRow uRow in UsersDataTable.Select("DepartmentID = " + Row["UserID"]))
+                                                    foreach (var uRow in UsersDataTable.Select("DepartmentID = " + Row["UserID"]))
                                                     {
                                                         if (Convert.ToInt32(uRow["UserID"]) == Security.CurrentUserID)
                                                             continue;
 
-                                                        DataRow NewRow = DT.NewRow();
+                                                        var NewRow = DT.NewRow();
                                                         NewRow["SubscribesItemID"] = 8;
                                                         NewRow["TableItemID"] = sDT.Rows[0]["NewsID"];
                                                         NewRow["UserID"] = uRow["UserID"];
@@ -4258,11 +4258,11 @@ namespace Infinium
 
         public void AddProjectSubscribe(int ProjectID, TreeView MembersTree, bool bAll, bool bProposition)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM SubscribesRecords", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 0 * FROM SubscribesRecords", ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -4273,7 +4273,7 @@ namespace Infinium
                                 if (Convert.ToInt32(uRow["UserID"]) == Security.CurrentUserID)
                                     continue;
 
-                                DataRow NewRow = DT.NewRow();
+                                var NewRow = DT.NewRow();
                                 NewRow["UserID"] = uRow["UserID"];
                                 NewRow["UserTypeID"] = 0;
 
@@ -4288,19 +4288,19 @@ namespace Infinium
                         }
                         else
                         {
-                            for (int i = 0; i < MembersTree.Nodes.Count; i++)
+                            for (var i = 0; i < MembersTree.Nodes.Count; i++)
                             {
-                                for (int j = 0; j < MembersTree.Nodes[i].Nodes.Count; j++)
+                                for (var j = 0; j < MembersTree.Nodes[i].Nodes.Count; j++)
                                 {
                                     if (MembersTree.Nodes[i].Nodes[j].Checked)
                                     {
-                                        int UserID = Convert.ToInt32(UsersDataTable.Select(
+                                        var UserID = Convert.ToInt32(UsersDataTable.Select(
                                                                       "Name = '" + MembersTree.Nodes[i].Nodes[j].Text + "'")[0]["UserID"]);
 
                                         if (UserID == Security.CurrentUserID)
                                             continue;
 
-                                        DataRow NewRow = DT.NewRow();
+                                        var NewRow = DT.NewRow();
                                         NewRow["UserID"] = UserID;
                                         NewRow["UserTypeID"] = 0;
 
@@ -4324,11 +4324,11 @@ namespace Infinium
 
         public void AddProjectSubscribe(int ProjectID, DataTable NewMembersDT, bool bProposition)//new members
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM SubscribesRecords", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 0 * FROM SubscribesRecords", ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -4340,7 +4340,7 @@ namespace Infinium
                             if (Convert.ToInt32(Row["UserID"]) == Security.CurrentUserID)
                                 continue;
 
-                            DataRow NewRow = DT.NewRow();
+                            var NewRow = DT.NewRow();
 
                             if (bProposition)
                                 NewRow["SubscribesItemID"] = 12;
@@ -4362,10 +4362,10 @@ namespace Infinium
 
         public void ClearProjectSubscribe(int ProjectID, int UserID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM SubscribesRecords WHERE SubscribesItemID = 7 AND UserTypeID = 0 AND UserID = "
-                                                          + UserID + " AND TableItemID = " + ProjectID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM SubscribesRecords WHERE SubscribesItemID = 7 AND UserTypeID = 0 AND UserID = "
+                                               + UserID + " AND TableItemID = " + ProjectID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
@@ -4374,9 +4374,9 @@ namespace Infinium
 
         public bool IsMoreNews(int Count, int ProjectID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT Count(NewsID) FROM ProjectNews WHERE ProjectID = " + ProjectID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT Count(NewsID) FROM ProjectNews WHERE ProjectID = " + ProjectID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -4389,15 +4389,15 @@ namespace Infinium
         {
             DateTime DateTime;
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM ProjectNews", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 0 * FROM ProjectNews", ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
-                        DataRow NewRow = DT.NewRow();
+                        var NewRow = DT.NewRow();
                         NewRow["SenderID"] = SenderID;
                         NewRow["ProjectID"] = ProjectID;
                         NewRow["BodyText"] = BodyText;
@@ -4425,13 +4425,13 @@ namespace Infinium
 
         public string SaveFile(int NewsAttachID)//temp folder
         {
-            string tempFolder = Environment.GetEnvironmentVariable("TEMP");
+            var tempFolder = Environment.GetEnvironmentVariable("TEMP");
 
-            string FileName = "";
+            var FileName = "";
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT FileName, FileSize FROM ProjectNewsAttachs WHERE NewsAttachID = " + NewsAttachID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT FileName, FileSize FROM ProjectNewsAttachs WHERE NewsAttachID = " + NewsAttachID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -4455,13 +4455,13 @@ namespace Infinium
 
         public void SaveFile(int NewsAttachID, string sDestFileName)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT FileName, FileSize FROM ProjectNewsAttachs WHERE NewsAttachID = " + NewsAttachID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT FileName, FileSize FROM ProjectNewsAttachs WHERE NewsAttachID = " + NewsAttachID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
-                    string FileName = DT.Rows[0]["FileName"].ToString();
+                    var FileName = DT.Rows[0]["FileName"].ToString();
 
                     try
                     {
@@ -4481,15 +4481,15 @@ namespace Infinium
         {
             DateTime Date;
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM ProjectNewsComments", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 0 * FROM ProjectNewsComments", ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
-                        DataRow NewRow = DT.NewRow();
+                        var NewRow = DT.NewRow();
                         NewRow["NewsID"] = NewsID;
                         NewRow["NewsComment"] = Text;
                         NewRow["UserID"] = UserID;
@@ -4505,11 +4505,11 @@ namespace Infinium
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT NewsID, LastCommentDateTime FROM ProjectNews WHERE NewsID =" + NewsID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT NewsID, LastCommentDateTime FROM ProjectNews WHERE NewsID =" + NewsID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -4527,26 +4527,26 @@ namespace Infinium
 
         public void AddNewsCommentsSubs(int NewsID, int ProjectID, int UserID, DateTime DateTime)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT NewsCommentID FROM ProjectNewsComments WHERE DateTime = '" + DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT NewsCommentID FROM ProjectNewsComments WHERE DateTime = '" + DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'", ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
 
-                    using (SqlDataAdapter cDA = new SqlDataAdapter("SELECT TOP 0 * FROM SubscribesRecords", ConnectionStrings.LightConnectionString))
+                    using (var cDA = new SqlDataAdapter("SELECT TOP 0 * FROM SubscribesRecords", ConnectionStrings.LightConnectionString))
                     {
-                        using (SqlCommandBuilder CB = new SqlCommandBuilder(cDA))
+                        using (var CB = new SqlCommandBuilder(cDA))
                         {
-                            using (DataTable cDT = new DataTable())
+                            using (var cDT = new DataTable())
                             {
                                 cDA.Fill(cDT);
 
                                 {
-                                    using (SqlDataAdapter mDA = new SqlDataAdapter("SELECT * FROM ProjectMembers WHERE ProjectID = " + ProjectID,
+                                    using (var mDA = new SqlDataAdapter("SELECT * FROM ProjectMembers WHERE ProjectID = " + ProjectID,
                                                                                  ConnectionStrings.LightConnectionString))
                                     {
-                                        using (DataTable mDT = new DataTable())
+                                        using (var mDT = new DataTable())
                                         {
                                             mDA.Fill(mDT);
 
@@ -4557,7 +4557,7 @@ namespace Infinium
                                                     if (Convert.ToInt32(Row["UserID"]) == Security.CurrentUserID)
                                                         continue;
 
-                                                    DataRow NewRow = cDT.NewRow();
+                                                    var NewRow = cDT.NewRow();
                                                     NewRow["SubscribesItemID"] = 9;
                                                     NewRow["TableItemID"] = DT.Rows[0]["NewsCommentID"];
                                                     NewRow["UserID"] = Row["UserID"];
@@ -4566,12 +4566,12 @@ namespace Infinium
                                                 }
                                                 else//department
                                                 {
-                                                    foreach (DataRow uRow in UsersDataTable.Select("DepartmentID = " + Row["UserID"]))
+                                                    foreach (var uRow in UsersDataTable.Select("DepartmentID = " + Row["UserID"]))
                                                     {
                                                         if (Convert.ToInt32(uRow["UserID"]) == Security.CurrentUserID)
                                                             continue;
 
-                                                        DataRow NewRow = cDT.NewRow();
+                                                        var NewRow = cDT.NewRow();
                                                         NewRow["SubscribesItemID"] = 9;
                                                         NewRow["TableItemID"] = DT.Rows[0]["NewsCommentID"];
                                                         NewRow["UserID"] = uRow["UserID"];
@@ -4594,11 +4594,11 @@ namespace Infinium
 
         public void EditComments(int UserID, int NewsCommentID, string Text)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM ProjectNewsComments WHERE NewsCommentID = " + NewsCommentID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM ProjectNewsComments WHERE NewsCommentID = " + NewsCommentID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -4623,10 +4623,10 @@ namespace Infinium
 
         public int CheckSubscribeToUpdates(int ModuleID, int ItemID, int UserID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT UserID FROM ProjectMembers WHERE ProjectID = " + ItemID + " AND ((ProjectUserTypeID = 0 AND UserID = " + UserID +
-                    ") OR (ProjectUserTypeID = 1 AND UserID = " + UsersDataTable.Select("UserID = " + UserID)[0]["DepartmentID"] + "))", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT UserID FROM ProjectMembers WHERE ProjectID = " + ItemID + " AND ((ProjectUserTypeID = 0 AND UserID = " + UserID +
+                                               ") OR (ProjectUserTypeID = 1 AND UserID = " + UsersDataTable.Select("UserID = " + UserID)[0]["DepartmentID"] + "))", ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     if (DA.Fill(DT) > 0)
                         return -1;
@@ -4634,11 +4634,11 @@ namespace Infinium
             }
 
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM SubscribesToUpdates WHERE UserID = " + UserID + " AND TableItemID = " + ItemID + " AND ModuleID = " + ModuleID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM SubscribesToUpdates WHERE UserID = " + UserID + " AND TableItemID = " + ItemID + " AND ModuleID = " + ModuleID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         if (DA.Fill(DT) > 0)
                             return 1;
@@ -4652,9 +4652,9 @@ namespace Infinium
 
         public void RemoveComment(int NewsCommentID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM ProjectNewsComments WHERE NewsCommentID = " + NewsCommentID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM ProjectNewsComments WHERE NewsCommentID = " + NewsCommentID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
@@ -4688,14 +4688,14 @@ namespace Infinium
         {
             PositionsDataTable = new DataTable();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter(@"SELECT dbo.StaffList.UserID,  dbo.Positions.Position, dbo.StaffList.FactoryID,
+            using (var DA = new SqlDataAdapter(@"SELECT dbo.StaffList.UserID,  dbo.Positions.Position, dbo.StaffList.FactoryID,
                 dbo.StaffList.Rate FROM dbo.StaffList 
                 INNER JOIN dbo.Positions ON dbo.StaffList.PositionID = dbo.Positions.PositionID", ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(PositionsDataTable);
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter(@"SELECT StaffList.DepartmentID, Users.Name, Positions.Position, Factory.FactoryName FROM StaffList 
+            using (var DA = new SqlDataAdapter(@"SELECT StaffList.DepartmentID, Users.Name, Positions.Position, Factory.FactoryName FROM StaffList 
                 INNER JOIN Positions ON StaffList.PositionID = Positions.PositionID 
                 INNER JOIN infiniu2_users.dbo.Users AS Users ON StaffList.UserID = Users.UserID
                 INNER JOIN infiniu2_catalog.dbo.Factory AS Factory ON StaffList.FactoryID = Factory.FactoryID
@@ -4715,12 +4715,12 @@ namespace Infinium
 
             foreach (DataRow Row in UsersDataTable.Rows)
             {
-                DataRow[] rows = PositionsDataTable.Select("FactoryID=1 AND UserID = " + Row["UserID"]);
-                string ProfilPosition = string.Empty;
-                string TPSPosition = string.Empty;
-                for (int i = 0; i < rows.Count(); i++)
+                var rows = PositionsDataTable.Select("FactoryID=1 AND UserID = " + Row["UserID"]);
+                var ProfilPosition = string.Empty;
+                var TPSPosition = string.Empty;
+                for (var i = 0; i < rows.Count(); i++)
                 {
-                    string Rate = string.Empty;
+                    var Rate = string.Empty;
                     if (rows[i]["Rate"].ToString().Length > 0)
                         Rate = Convert.ToDecimal(rows[i]["Rate"]).ToString("G29");
                     ProfilPosition += rows[i]["Position"] +
@@ -4734,9 +4734,9 @@ namespace Infinium
                     Row["ProfilPosition"] = ProfilPosition;
                 }
                 rows = PositionsDataTable.Select("FactoryID=2 AND UserID = " + Row["UserID"]);
-                for (int i = 0; i < rows.Count(); i++)
+                for (var i = 0; i < rows.Count(); i++)
                 {
-                    string Rate = string.Empty;
+                    var Rate = string.Empty;
                     if (rows[i]["Rate"].ToString().Length > 0)
                         Rate = Convert.ToDecimal(rows[i]["Rate"]).ToString("G29");
                     TPSPosition += rows[i]["Position"] +
@@ -4760,7 +4760,7 @@ namespace Infinium
             if (DepartmentsDataTable.Columns["Count"] == null)
                 DepartmentsDataTable.Columns.Add(new DataColumn("Count", Type.GetType("System.String")));
 
-            DataRow NewRow = DepartmentsDataTable.NewRow();
+            var NewRow = DepartmentsDataTable.NewRow();
             NewRow["DepartmentName"] = "Все группы";
             NewRow["Count"] = DepartmentsDataTable.Rows.Count;
             DepartmentsDataTable.Rows.InsertAt(NewRow, 0);
@@ -4780,7 +4780,7 @@ namespace Infinium
                     continue;
                 }
 
-                DataRow[] GU = UsersDataTable.Select("DepartmentID = " + Row["DepartmentID"]);
+                var GU = UsersDataTable.Select("DepartmentID = " + Row["DepartmentID"]);
 
                 Row["Count"] = GU.Count();
             }
@@ -4791,7 +4791,7 @@ namespace Infinium
 
             foreach (DataRow Row in UsersDataTable.Rows)
             {
-                DataRow[] GR = DepartmentsDataTable.Select("DepartmentID = " + Row["DepartmentID"]);
+                var GR = DepartmentsDataTable.Select("DepartmentID = " + Row["DepartmentID"]);
 
                 if (GR.Count() > 0)
                     Row["Department"] = GR[0]["Name"];
@@ -4840,18 +4840,18 @@ namespace Infinium
 
         public static bool SendMessage(string Address, string Subject, string Body)
         {
-            string AccountPassword = "allthebestondick1029{}1q";
-            string SenderEmail = "zovprofilinfinium@gmail.com";
+            var AccountPassword = "allthebestondick1029{}1q";
+            var SenderEmail = "zovprofilinfinium@gmail.com";
 
-            string to = Address;
-            string from = SenderEmail;
+            var to = Address;
+            var from = SenderEmail;
 
-            using (MailMessage message = new MailMessage(from, to))
+            using (var message = new MailMessage(from, to))
             {
                 message.Subject = Subject;
                 message.Body = Body;
 
-                SmtpClient client = new SmtpClient("smtp.gmail.com", 587)
+                var client = new SmtpClient("smtp.gmail.com", 587)
                 {
                     UseDefaultCredentials = false,
                     Credentials = new NetworkCredential(SenderEmail, AccountPassword),
@@ -4901,7 +4901,7 @@ namespace Infinium
         {
             SubscribesItemsDataTable = new DataTable();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM SubscribesItems", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM SubscribesItems", ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(SubscribesItemsDataTable);
             }
@@ -4911,9 +4911,9 @@ namespace Infinium
 
         public static int GetModuleID(string FormName)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT ModuleID FROM Modules WHERE FormName = '" + FormName + "'", ConnectionStrings.UsersConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT ModuleID FROM Modules WHERE FormName = '" + FormName + "'", ConnectionStrings.UsersConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -4938,11 +4938,11 @@ namespace Infinium
 
         public static int IsNewUpdates(int UserID)
         {
-            int iUpdates = 0;
+            var iUpdates = 0;
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT Count(SubscribesRecordID) FROM SubscribesRecords WHERE UserTypeID = 0 AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT Count(SubscribesRecordID) FROM SubscribesRecords WHERE UserTypeID = 0 AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     try
                     {
@@ -4958,13 +4958,13 @@ namespace Infinium
 
         public Image GetModuleImage(int ModuleID)
         {
-            DataRow Row = ModulesDataTable.Select("ModuleID = " + ModuleID)[0];
+            var Row = ModulesDataTable.Select("ModuleID = " + ModuleID)[0];
 
             if (Row["Picture"] == DBNull.Value)
                 return null;
 
-            byte[] b = (byte[])Row["Picture"];
-            MemoryStream ms = new MemoryStream(b);
+            var b = (byte[])Row["Picture"];
+            var ms = new MemoryStream(b);
 
             return Image.FromStream(ms);
         }
@@ -4980,7 +4980,7 @@ namespace Infinium
 
             if (ModulesUpdatesDataTable.Rows.Count > 1)
             {
-                for (int i = 1; i < ModulesUpdatesDataTable.Rows.Count; i++)
+                for (var i = 1; i < ModulesUpdatesDataTable.Rows.Count; i++)
                 {
                     MoreCount += Convert.ToInt32(ModulesUpdatesDataTable.Rows[i]["Count"]);
                 }
@@ -4991,10 +4991,10 @@ namespace Infinium
 
         public bool CheckLastUpdate()
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 1 SubscribesRecordID, SubscribesItemID FROM SubscribesRecords WHERE UserTypeID = 0 AND UserID = " +
-                                                         Security.CurrentUserID + " ORDER BY SubscribesRecordID DESC", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 1 SubscribesRecordID, SubscribesItemID FROM SubscribesRecords WHERE UserTypeID = 0 AND UserID = " +
+                                               Security.CurrentUserID + " ORDER BY SubscribesRecordID DESC", ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -5019,17 +5019,17 @@ namespace Infinium
         {
             ModulesUpdatesDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT SubscribesRecordID, SubscribesRecords.SubscribesItemID, SubscribesItems.ModuleID FROM SubscribesRecords " +
-                                                          " INNER JOIN SubscribesItems ON SubscribesItems.SubscribesItemID = SubscribesRecords.SubscribesItemID WHERE UserTypeID = 0 AND UserID = " +
-                                                           Security.CurrentUserID + " ORDER BY SubscribesRecordID DESC", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT SubscribesRecordID, SubscribesRecords.SubscribesItemID, SubscribesItems.ModuleID FROM SubscribesRecords " +
+                                               " INNER JOIN SubscribesItems ON SubscribesItems.SubscribesItemID = SubscribesRecords.SubscribesItemID WHERE UserTypeID = 0 AND UserID = " +
+                                               Security.CurrentUserID + " ORDER BY SubscribesRecordID DESC", ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
                     foreach (DataRow Row in DT.Rows)
                     {
-                        DataRow[] Rows = ModulesUpdatesDataTable.Select("ModuleID = " + Row["ModuleID"]);
+                        var Rows = ModulesUpdatesDataTable.Select("ModuleID = " + Row["ModuleID"]);
 
                         if (Rows.Count() > 0)
                         {
@@ -5037,7 +5037,7 @@ namespace Infinium
                         }
                         else
                         {
-                            DataRow NewRow = ModulesUpdatesDataTable.NewRow();
+                            var NewRow = ModulesUpdatesDataTable.NewRow();
                             NewRow["ModuleID"] = Row["ModuleID"];
                             NewRow["ModuleName"] = ModulesDataTable.Select("ModuleID = " + Row["ModuleID"])[0]["ModuleName"];
                             NewRow["FormName"] = ModulesDataTable.Select("ModuleID = " + Row["ModuleID"])[0]["FormName"];
@@ -5051,9 +5051,9 @@ namespace Infinium
 
         public static void ClearSubscribesRecords(int UserID, string FormName)
         {
-            using (SqlDataAdapter sDA = new SqlDataAdapter("DELETE FROM SubscribesRecords WHERE SubscribesItemID IN (SELECT SubscribesItemID FROM SubscribesItems WHERE ModuleID IN (SELECT ModuleID FROM infiniu2_users.dbo.Modules WHERE FormName = '" + FormName + "')) AND UserTypeID IN (0,3) AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
+            using (var sDA = new SqlDataAdapter("DELETE FROM SubscribesRecords WHERE SubscribesItemID IN (SELECT SubscribesItemID FROM SubscribesItems WHERE ModuleID IN (SELECT ModuleID FROM infiniu2_users.dbo.Modules WHERE FormName = '" + FormName + "')) AND UserTypeID IN (0,3) AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable sDT = new DataTable())
+                using (var sDT = new DataTable())
                 {
                     sDA.Fill(sDT);
                 }
@@ -5062,9 +5062,9 @@ namespace Infinium
 
         public static void DeleteSubscribesRecord(int SubscribesItemID)
         {
-            using (SqlDataAdapter sDA = new SqlDataAdapter("DELETE FROM SubscribesRecords WHERE SubscribesItemID = " + SubscribesItemID, ConnectionStrings.LightConnectionString))
+            using (var sDA = new SqlDataAdapter("DELETE FROM SubscribesRecords WHERE SubscribesItemID = " + SubscribesItemID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable sDT = new DataTable())
+                using (var sDT = new DataTable())
                 {
                     sDA.Fill(sDT);
                 }
@@ -5073,29 +5073,29 @@ namespace Infinium
 
         public static void CreateSubscribeRecord(string ButtonName, int TableItemID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT ModuleID FROM Modules WHERE ModuleButtonName = '" + ButtonName + "'", ConnectionStrings.UsersConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT ModuleID FROM Modules WHERE ModuleButtonName = '" + ButtonName + "'", ConnectionStrings.UsersConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
-                    using (SqlDataAdapter sDA = new SqlDataAdapter("SELECT TOP 0 * FROM SubscribesRecords", ConnectionStrings.LightConnectionString))
+                    using (var sDA = new SqlDataAdapter("SELECT TOP 0 * FROM SubscribesRecords", ConnectionStrings.LightConnectionString))
                     {
-                        using (SqlCommandBuilder CB = new SqlCommandBuilder(sDA))
+                        using (var CB = new SqlCommandBuilder(sDA))
                         {
-                            using (DataTable sDT = new DataTable())
+                            using (var sDT = new DataTable())
                             {
                                 sDA.Fill(sDT);
 
-                                using (SqlDataAdapter uDA = new SqlDataAdapter("SELECT UserID FROM Subscribers WHERE ModuleID = " + DT.Rows[0]["ModuleID"], ConnectionStrings.LightConnectionString))
+                                using (var uDA = new SqlDataAdapter("SELECT UserID FROM Subscribers WHERE ModuleID = " + DT.Rows[0]["ModuleID"], ConnectionStrings.LightConnectionString))
                                 {
-                                    using (DataTable uDT = new DataTable())
+                                    using (var uDT = new DataTable())
                                     {
                                         uDA.Fill(uDT);
 
                                         foreach (DataRow Row in uDT.Rows)
                                         {
-                                            DataRow NewRow = sDT.NewRow();
+                                            var NewRow = sDT.NewRow();
                                             NewRow["ModuleID"] = DT.Rows[0]["ModuleID"];
                                             NewRow["TableItemID"] = TableItemID;
                                             NewRow["UserID"] = Row["UserID"];
@@ -5116,17 +5116,17 @@ namespace Infinium
 
         public static void CreateSubscribeRecord(int SubscribesItemID, int TableItemID, int CurrentUserID)
         {
-            using (SqlDataAdapter sDA = new SqlDataAdapter("SELECT TOP 0 * FROM SubscribesRecords", ConnectionStrings.LightConnectionString))
+            using (var sDA = new SqlDataAdapter("SELECT TOP 0 * FROM SubscribesRecords", ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(sDA))
+                using (var CB = new SqlCommandBuilder(sDA))
                 {
-                    using (DataTable sDT = new DataTable())
+                    using (var sDT = new DataTable())
                     {
                         sDA.Fill(sDT);
 
-                        using (SqlDataAdapter uDA = new SqlDataAdapter("SELECT UserID FROM Users WHERE Fired <> 1", ConnectionStrings.UsersConnectionString))
+                        using (var uDA = new SqlDataAdapter("SELECT UserID FROM Users WHERE Fired <> 1", ConnectionStrings.UsersConnectionString))
                         {
-                            using (DataTable uDT = new DataTable())
+                            using (var uDT = new DataTable())
                             {
                                 uDA.Fill(uDT);
 
@@ -5135,7 +5135,7 @@ namespace Infinium
                                     if (Convert.ToInt32(Row["UserID"]) == CurrentUserID)
                                         continue;
 
-                                    DataRow NewRow = sDT.NewRow();
+                                    var NewRow = sDT.NewRow();
                                     NewRow["SubscribesItemID"] = SubscribesItemID;
                                     NewRow["TableItemID"] = TableItemID;
                                     NewRow["UserID"] = Row["UserID"];
@@ -5154,23 +5154,23 @@ namespace Infinium
 
         public static void CreateSubscribeRecord(string ButtonName, int TableItemID, int CurrentUserID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT ModuleID FROM Modules WHERE ModuleButtonName = '" + ButtonName + "'", ConnectionStrings.UsersConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT ModuleID FROM Modules WHERE ModuleButtonName = '" + ButtonName + "'", ConnectionStrings.UsersConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
-                    using (SqlDataAdapter sDA = new SqlDataAdapter("SELECT TOP 0 * FROM SubscribesRecords", ConnectionStrings.LightConnectionString))
+                    using (var sDA = new SqlDataAdapter("SELECT TOP 0 * FROM SubscribesRecords", ConnectionStrings.LightConnectionString))
                     {
-                        using (SqlCommandBuilder CB = new SqlCommandBuilder(sDA))
+                        using (var CB = new SqlCommandBuilder(sDA))
                         {
-                            using (DataTable sDT = new DataTable())
+                            using (var sDT = new DataTable())
                             {
                                 sDA.Fill(sDT);
 
-                                using (SqlDataAdapter uDA = new SqlDataAdapter("SELECT UserID FROM Subscribers WHERE ModuleID = " + DT.Rows[0]["ModuleID"], ConnectionStrings.LightConnectionString))
+                                using (var uDA = new SqlDataAdapter("SELECT UserID FROM Subscribers WHERE ModuleID = " + DT.Rows[0]["ModuleID"], ConnectionStrings.LightConnectionString))
                                 {
-                                    using (DataTable uDT = new DataTable())
+                                    using (var uDT = new DataTable())
                                     {
                                         uDA.Fill(uDT);
 
@@ -5179,7 +5179,7 @@ namespace Infinium
                                             if (Convert.ToInt32(Row["UserID"]) == CurrentUserID)
                                                 continue;
 
-                                            DataRow NewRow = sDT.NewRow();
+                                            var NewRow = sDT.NewRow();
                                             NewRow["ModuleID"] = DT.Rows[0]["ModuleID"];
                                             NewRow["TableItemID"] = TableItemID;
                                             NewRow["UserID"] = Row["UserID"];
@@ -5199,21 +5199,21 @@ namespace Infinium
 
         public static void CreateSubscribeRecordForOneUser(string ButtonName, int TableItemID, int RecipientUserID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT ModuleID FROM Modules WHERE ModuleButtonName = '" + ButtonName + "'", ConnectionStrings.UsersConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT ModuleID FROM Modules WHERE ModuleButtonName = '" + ButtonName + "'", ConnectionStrings.UsersConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
-                    using (SqlDataAdapter sDA = new SqlDataAdapter("SELECT TOP 0 * FROM SubscribesRecords", ConnectionStrings.LightConnectionString))
+                    using (var sDA = new SqlDataAdapter("SELECT TOP 0 * FROM SubscribesRecords", ConnectionStrings.LightConnectionString))
                     {
-                        using (SqlCommandBuilder CB = new SqlCommandBuilder(sDA))
+                        using (var CB = new SqlCommandBuilder(sDA))
                         {
-                            using (DataTable sDT = new DataTable())
+                            using (var sDT = new DataTable())
                             {
                                 sDA.Fill(sDT);
 
-                                DataRow NewRow = sDT.NewRow();
+                                var NewRow = sDT.NewRow();
                                 NewRow["ModuleID"] = DT.Rows[0]["ModuleID"];
                                 NewRow["TableItemID"] = TableItemID;
                                 NewRow["UserID"] = RecipientUserID;
@@ -5229,15 +5229,15 @@ namespace Infinium
         }
         public static void CreateSubscribeRecordForOneUser(int SubscribesItemID, int TableItemID, int RecipientUserID)
         {
-            using (SqlDataAdapter sDA = new SqlDataAdapter("SELECT TOP 0 * FROM SubscribesRecords", ConnectionStrings.LightConnectionString))
+            using (var sDA = new SqlDataAdapter("SELECT TOP 0 * FROM SubscribesRecords", ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(sDA))
+                using (var CB = new SqlCommandBuilder(sDA))
                 {
-                    using (DataTable sDT = new DataTable())
+                    using (var sDT = new DataTable())
                     {
                         sDA.Fill(sDT);
 
-                        DataRow NewRow = sDT.NewRow();
+                        var NewRow = sDT.NewRow();
                         NewRow["SubscribesItemID"] = SubscribesItemID;
                         NewRow["TableItemID"] = TableItemID;
                         NewRow["UserID"] = RecipientUserID;
@@ -6242,7 +6242,7 @@ namespace Infinium
         private void FillDataTable()
         {
             WorkDayDetailsDT = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter(@"SELECT WorkDayDetails.*, UserFunctions.FunctionID as FunctionID1 FROM WorkDayDetails 
+            using (var DA = new SqlDataAdapter(@"SELECT WorkDayDetails.*, UserFunctions.FunctionID as FunctionID1 FROM WorkDayDetails 
                 INNER JOIN UserFunctions ON WorkDayDetails.FunctionID=UserFunctions.UserFunctionID WHERE WorkDayDetails.UserID = " + Security.CurrentUserID + " AND WorkDayDetails.WorkDayID = " + CurrentWorkDayID, ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(WorkDayDetailsDT);
@@ -6256,13 +6256,13 @@ namespace Infinium
 
             UserFunctionsDT = new DataTable();
 
-            string SelectCommand = @"SELECT TOP 0 UserFunctions.*, StaffList.FactoryID, StaffList.UserID, Users.Name, StaffList.DepartmentID, StaffList.PositionID, Positions.Position, StaffList.Rate, Factory.FactoryName, Functions.FunctionName, Functions.FunctionDescription FROM UserFunctions
+            var SelectCommand = @"SELECT TOP 0 UserFunctions.*, StaffList.FactoryID, StaffList.UserID, Users.Name, StaffList.DepartmentID, StaffList.PositionID, Positions.Position, StaffList.Rate, Factory.FactoryName, Functions.FunctionName, Functions.FunctionDescription FROM UserFunctions
                 INNER JOIN StaffList ON UserFunctions.StaffListID=StaffList.StaffListID AND (StaffList.UserID=" + Security.CurrentUserID + @")
                 INNER JOIN Functions ON UserFunctions.FunctionID=Functions.FunctionID
                 INNER JOIN Positions ON StaffList.PositionID=Positions.PositionID
                 INNER JOIN infiniu2_catalog.dbo.Factory AS Factory ON StaffList.FactoryID=Factory.FactoryID
                 INNER JOIN infiniu2_users.dbo.Users AS Users ON StaffList.UserID=Users.UserID ORDER BY FunctionName";
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.LightConnectionString))
             {
                 UserFunctionsDT.Clear();
                 DA.Fill(UserFunctionsDT);
@@ -6272,13 +6272,13 @@ namespace Infinium
             FunctionsDT = UserFunctionsDT.Clone();
 
             FunctionsExecTypesDT = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM FunctionsExecTypes", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM FunctionsExecTypes", ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(FunctionsExecTypesDT);
             }
 
             DepartmentsDT = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT DepartmentID, DepartmentName FROM Departments", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT DepartmentID, DepartmentName FROM Departments", ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(DepartmentsDT);
             }
@@ -6287,27 +6287,27 @@ namespace Infinium
         public void UpdateFunctions(int FactoryID, int PositionID)
         {
 
-            string SelectCommand = @"SELECT UserFunctions.*, StaffList.FactoryID, StaffList.UserID, Users.Name, StaffList.DepartmentID, StaffList.PositionID, Positions.Position, StaffList.Rate, Factory.FactoryName, Functions.FunctionName, Functions.FunctionDescription FROM UserFunctions
+            var SelectCommand = @"SELECT UserFunctions.*, StaffList.FactoryID, StaffList.UserID, Users.Name, StaffList.DepartmentID, StaffList.PositionID, Positions.Position, StaffList.Rate, Factory.FactoryName, Functions.FunctionName, Functions.FunctionDescription FROM UserFunctions
                 INNER JOIN StaffList ON UserFunctions.StaffListID=StaffList.StaffListID AND (StaffList.UserID=" + Security.CurrentUserID + @")
                 INNER JOIN Functions ON UserFunctions.FunctionID=Functions.FunctionID
                 INNER JOIN Positions ON StaffList.PositionID=Positions.PositionID
                 INNER JOIN infiniu2_catalog.dbo.Factory AS Factory ON StaffList.FactoryID=Factory.FactoryID
                 INNER JOIN infiniu2_users.dbo.Users AS Users ON StaffList.UserID=Users.UserID ORDER BY FunctionName";
 
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.LightConnectionString))
             {
                 UserFunctionsDT.Clear();
                 DA.Fill(UserFunctionsDT);
             }
             FunctionsDT.Clear();
-            DataRow[] Rows = UserFunctionsDT.Select("FactoryID=" + FactoryID + " AND PositionID=" + PositionID);
-            for (int j = 0; j < Rows.Count(); j++)
+            var Rows = UserFunctionsDT.Select("FactoryID=" + FactoryID + " AND PositionID=" + PositionID);
+            for (var j = 0; j < Rows.Count(); j++)
                 FunctionsDT.Rows.Add(Rows[j].ItemArray);
         }
 
         public void FillMyFunctionDataTable(int FactoryID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter(@"SELECT WorkDayDetails.*, UserFunctions.FunctionID as FunctionID1 FROM WorkDayDetails 
+            using (var DA = new SqlDataAdapter(@"SELECT WorkDayDetails.*, UserFunctions.FunctionID as FunctionID1 FROM WorkDayDetails 
                 INNER JOIN UserFunctions ON WorkDayDetails.FunctionID=UserFunctions.UserFunctionID WHERE WorkDayDetails.UserID = " + Security.CurrentUserID + " AND WorkDayDetails.WorkDayID = " + CurrentWorkDayID, ConnectionStrings.LightConnectionString))
             {
                 WorkDayDetailsDT.Clear();
@@ -6315,7 +6315,7 @@ namespace Infinium
 
                 if (FactoryID == 1)
                 {
-                    DataRow[] rows = WorkDayDetailsDT.Select("FunctionID1 = 0 AND FactoryID=1");
+                    var rows = WorkDayDetailsDT.Select("FunctionID1 = 0 AND FactoryID=1");
                     if (rows.Count() > 0)
                     {
                         ProfilComments = rows[0]["Comments"].ToString();
@@ -6323,7 +6323,7 @@ namespace Infinium
                 }
                 if (FactoryID == 2)
                 {
-                    DataRow[] rows = WorkDayDetailsDT.Select("FunctionID1 = 0 AND FactoryID=2");
+                    var rows = WorkDayDetailsDT.Select("FunctionID1 = 0 AND FactoryID=2");
                     if (rows.Count() > 0)
                     {
                         TPSComments = rows[0]["Comments"].ToString();
@@ -6335,7 +6335,7 @@ namespace Infinium
 
             foreach (DataRow Row in FunctionsDT.Rows)
             {
-                DataRow NewRow = MyFunctionDataTable.NewRow();
+                var NewRow = MyFunctionDataTable.NewRow();
                 NewRow["FunctionID"] = Row["UserFunctionID"];
                 NewRow["FunctionID1"] = Row["FunctionID"];
                 NewRow["FactoryID"] = FactoryID;
@@ -6344,7 +6344,7 @@ namespace Infinium
                 NewRow["FunctionExecTypeID"] = UserFunctionsDT.Select("FunctionID = " + Row["FunctionID"])[0]["FunctionExecTypeID"];
                 NewRow["ExecType"] = FunctionsExecTypesDT.Select("FunctionExecTypeID = " + NewRow["FunctionExecTypeID"])[0]["FunctionExecType"];
 
-                if (WorkDayDetailsDT.Select("FunctionID = " + Row["UserFunctionID"]).Count() == 0)
+                if (!WorkDayDetailsDT.Select("FunctionID = " + Row["UserFunctionID"]).Any())
                 {
                     NewRow["Hours"] = 0;
                     NewRow["Minutes"] = 0;
@@ -6393,11 +6393,11 @@ namespace Infinium
 
         public bool IsTimesheetHoursSaved(int UserID)
         {
-            bool b = false;
-            string SelectCommand = @"SELECT TOP 1 * FROM WorkDays WHERE UserID=" + UserID + " ORDER BY DayStartDateTime DESC";
-            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.LightConnectionString))
+            var b = false;
+            var SelectCommand = @"SELECT TOP 1 * FROM WorkDays WHERE UserID=" + UserID + " ORDER BY DayStartDateTime DESC";
+            using (var DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     if (DA.Fill(DT) > 0)
                     {
@@ -6413,16 +6413,16 @@ namespace Infinium
 
         public static bool StartWorkDay(int UserID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM WorkDays WHERE CAST(DayStartDateTime AS DATE) = CAST(GetDate() AS DATE) AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM WorkDays WHERE CAST(DayStartDateTime AS DATE) = CAST(GetDate() AS DATE) AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         if (DA.Fill(DT) > 0)
                             return false;
 
-                        DataRow NewRow = DT.NewRow();
+                        var NewRow = DT.NewRow();
                         NewRow["UserID"] = UserID;
                         NewRow["DayStartDateTime"] = Security.GetCurrentDate();
                         NewRow["DayStartFactDateTime"] = NewRow["DayStartDateTime"];
@@ -6439,16 +6439,16 @@ namespace Infinium
 
         public static bool StartWorkDay(int UserID, DateTime DateTime, string Notes)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM WorkDays WHERE CAST(DayStartDateTime AS DATE) = CAST(GetDate() AS DATE) AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM WorkDays WHERE CAST(DayStartDateTime AS DATE) = CAST(GetDate() AS DATE) AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         if (DA.Fill(DT) > 0)
                             return false;
 
-                        DataRow NewRow = DT.NewRow();
+                        var NewRow = DT.NewRow();
                         NewRow["UserID"] = UserID;
                         NewRow["DayStartDateTime"] = DateTime;
                         NewRow["DayStartFactDateTime"] = Security.GetCurrentDate();
@@ -6466,13 +6466,13 @@ namespace Infinium
 
         public static bool BreakStartWorkDay(int UserID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM WorkDays WHERE CAST(DayStartDateTime AS DATE) = CAST(GetDate() AS DATE) AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM WorkDays WHERE CAST(DayStartDateTime AS DATE) = CAST(GetDate() AS DATE) AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
-                        if (DA.Fill(DT) < 0)
+                        if (DA.Fill(DT) < 1)
                             return false;
 
                         DT.Rows[0]["DayBreakStartDateTime"] = Security.GetCurrentDate();
@@ -6488,13 +6488,13 @@ namespace Infinium
 
         public static bool BreakStartWorkDay(int UserID, DateTime DateTime, string Notes)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM WorkDays WHERE CAST(DayStartDateTime AS DATE) = CAST(GetDate() AS DATE) AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM WorkDays WHERE CAST(DayStartDateTime AS DATE) = CAST(GetDate() AS DATE) AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
-                        if (DA.Fill(DT) < 0)
+                        if (DA.Fill(DT) < 1)
                             return false;
 
                         DT.Rows[0]["DayBreakStartDateTime"] = DateTime;
@@ -6511,13 +6511,13 @@ namespace Infinium
 
         public static bool BreakStartWorkDay(int UserID, DateTime DateTime, string Notes, bool bOverdued)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM WorkDays WHERE CAST(DayStartDateTime AS DATE) = '" + DateTime.ToString("yyyy-MM-dd") + "' AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM WorkDays WHERE CAST(DayStartDateTime AS DATE) = '" + DateTime.ToString("yyyy-MM-dd") + "' AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
-                        if (DA.Fill(DT) < 0)
+                        if (DA.Fill(DT) < 1)
                             return false;
 
                         DT.Rows[0]["DayBreakStartDateTime"] = DateTime;
@@ -6535,11 +6535,11 @@ namespace Infinium
 
         public static bool IsDayOverdued(int UserID, ref DateTime ActDateTime)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 1 * FROM WorkDays WHERE CAST(DayStartDateTime AS DATE) < CAST(GetDATE() AS DATE) AND DayEndDateTime IS NULL AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 1 * FROM WorkDays WHERE CAST(DayStartDateTime AS DATE) < CAST(GetDATE() AS DATE) AND DayEndDateTime IS NULL AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -6561,11 +6561,11 @@ namespace Infinium
 
         public static void EndWorkDay(int UserID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 1 * FROM WorkDays WHERE CAST(DayStartDateTime AS DATE) < CAST(GetDATE() AS DATE) AND DayEndDateTime IS NULL AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 1 * FROM WorkDays WHERE CAST(DayStartDateTime AS DATE) < CAST(GetDATE() AS DATE) AND DayEndDateTime IS NULL AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -6583,13 +6583,13 @@ namespace Infinium
             }
 
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM WorkDays WHERE CAST(DayStartDateTime AS DATE) = CAST(GetDate() AS DATE) AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM WorkDays WHERE CAST(DayStartDateTime AS DATE) = CAST(GetDate() AS DATE) AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
-                        if (DA.Fill(DT) < 0)
+                        if (DA.Fill(DT) < 1)
                             return;
 
                         DT.Rows[0]["UserID"] = UserID;
@@ -6605,13 +6605,13 @@ namespace Infinium
 
         public static void EndWorkDay(int UserID, DateTime DateTime, string Notes)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM WorkDays WHERE CAST(DayStartDateTime AS DATE) = CAST(GetDate() AS DATE) AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM WorkDays WHERE CAST(DayStartDateTime AS DATE) = CAST(GetDate() AS DATE) AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
-                        if (DA.Fill(DT) < 0)
+                        if (DA.Fill(DT) < 1)
                             return;
 
                         DT.Rows[0]["DayEndDateTime"] = DateTime;
@@ -6626,13 +6626,13 @@ namespace Infinium
 
         public static void EndWorkDay(int UserID, DateTime DateTime, string Notes, bool bOverdued)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM WorkDays WHERE CAST(DayStartDateTime AS DATE) = '" + DateTime.ToString("yyyy-MM-dd") + "'AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM WorkDays WHERE CAST(DayStartDateTime AS DATE) = '" + DateTime.ToString("yyyy-MM-dd") + "'AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
-                        if (DA.Fill(DT) < 0)
+                        if (DA.Fill(DT) < 1)
                             return;
 
                         DT.Rows[0]["DayEndDateTime"] = DateTime;
@@ -6646,15 +6646,15 @@ namespace Infinium
         }
 
 
-        public static void CancelEndWorkDay(int UserID)
+        public static void CancelEndWorkDay(int UserID, DateTime DateTime)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM WorkDays WHERE CAST(DayStartDateTime AS DATE) = CAST(GetDate() AS DATE) AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM WorkDays WHERE CAST(DayStartDateTime AS DATE) = '" + DateTime.ToString("yyyy-MM-dd") + "' AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
-                        if (DA.Fill(DT) < 0)
+                        if (DA.Fill(DT) < 1)
                             return;
 
                         DT.Rows[0]["DayEndDateTime"] = DBNull.Value;
@@ -6669,13 +6669,13 @@ namespace Infinium
 
         public static void ContinueWorkDay(int UserID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM WorkDays WHERE CAST(DayStartDateTime AS DATE) = CAST(GetDate() AS DATE) AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM WorkDays WHERE CAST(DayStartDateTime AS DATE) = CAST(GetDate() AS DATE) AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
-                        if (DA.Fill(DT) < 0)
+                        if (DA.Fill(DT) < 1)
                             return;
 
                         DT.Rows[0]["DayBreakEndDateTime"] = Security.GetCurrentDate();
@@ -6689,13 +6689,13 @@ namespace Infinium
 
         public static void ContinueWorkDay(int UserID, DateTime DateTime, string Notes)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM WorkDays WHERE CAST(DayStartDateTime AS DATE) = CAST(GetDate() AS DATE) AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM WorkDays WHERE CAST(DayStartDateTime AS DATE) = CAST(GetDate() AS DATE) AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
-                        if (DA.Fill(DT) < 0)
+                        if (DA.Fill(DT) < 1)
                             return;
 
                         DT.Rows[0]["DayBreakEndDateTime"] = DateTime;
@@ -6710,13 +6710,13 @@ namespace Infinium
 
         public static void ContinueWorkDay(int UserID, DateTime DateTime, string Notes, bool bOverdued)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM WorkDays WHERE CAST(DayStartDateTime AS DATE) = '" + DateTime.ToString("yyyy-MM-dd") + "'AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM WorkDays WHERE CAST(DayStartDateTime AS DATE) = '" + DateTime.ToString("yyyy-MM-dd") + "'AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
-                        if (DA.Fill(DT) < 0)
+                        if (DA.Fill(DT) < 1)
                             return;
 
                         DT.Rows[0]["DayBreakEndDateTime"] = DateTime;
@@ -6731,11 +6731,11 @@ namespace Infinium
 
         public void SaveCurrentWorkDay()
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 1 * FROM WorkDays WHERE WorkDayID = " + CurrentWorkDayID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 1 * FROM WorkDays WHERE WorkDayID = " + CurrentWorkDayID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
                         if (DT.Rows[0]["DayEndDateTime"] != DBNull.Value)
@@ -6762,10 +6762,10 @@ namespace Infinium
                 if (Saved && !Convert.ToBoolean(Row["IsComplete"]))
                     continue;
 
-                DataRow[] Rows = newWorkDayDetailsDT.Select("WorkDayID = " + CurrentWorkDayID + " AND FunctionID = " + Row["FunctionID"]);
+                var Rows = newWorkDayDetailsDT.Select("WorkDayID = " + CurrentWorkDayID + " AND FunctionID = " + Row["FunctionID"]);
                 if (Rows.Count() > 0)
                     continue;
-                DataRow NewRow = newWorkDayDetailsDT.NewRow();
+                var NewRow = newWorkDayDetailsDT.NewRow();
                 NewRow["WorkDayID"] = CurrentWorkDayID;
                 NewRow["UserID"] = Security.CurrentUserID;
                 NewRow["FunctionID"] = Row["FunctionID"];
@@ -6786,14 +6786,14 @@ namespace Infinium
 
         public void SaveWorkDayDetails()
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM WorkDayDetails WHERE UserID = " + Security.CurrentUserID + " AND WorkDayID = " + CurrentWorkDayID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM WorkDayDetails WHERE UserID = " + Security.CurrentUserID + " AND WorkDayID = " + CurrentWorkDayID, ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(WorkDayDetailsDT);
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM WorkDayDetails", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM WorkDayDetails", ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (new SqlCommandBuilder(DA))
                 {
                     DA.Update(newWorkDayDetailsDT);
                 }
@@ -6804,11 +6804,11 @@ namespace Infinium
 
         public DayStatus GetDayStatus(int UserID)
         {
-            DayStatus DS = new DayStatus();
+            var DS = new DayStatus();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 1 * FROM WorkDays WHERE CAST(DayStartDateTime AS DATE) = CAST(GETDATE() AS DATE) AND DayEndDateTime IS NOT NULL AND  UserID = " + UserID + " ORDER BY WorkDayID DESC", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 1 * FROM WorkDays WHERE CAST(DayStartDateTime AS DATE) = CAST(GETDATE() AS DATE) AND DayEndDateTime IS NOT NULL AND  UserID = " + UserID + " ORDER BY WorkDayID DESC", ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     if (DA.Fill(DT) > 0)
                     {
@@ -6842,9 +6842,9 @@ namespace Infinium
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 1 * FROM WorkDays WHERE Saved = 0 AND UserID = " + UserID + " ORDER BY WorkDayID DESC", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 1 * FROM WorkDays WHERE Saved = 0 AND UserID = " + UserID + " ORDER BY WorkDayID DESC", ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -6889,11 +6889,11 @@ namespace Infinium
 
         public DayStatus GetDayStatus(int UserID, DateTime date)
         {
-            DayStatus DS = new DayStatus();
+            var DS = new DayStatus();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 1 * FROM WorkDays WHERE UserID = " + UserID + " AND CAST(DayStartDateTime AS DATE) = '" + date.ToString("yyyy-MM-dd") + "'", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 1 * FROM WorkDays WHERE UserID = " + UserID + " AND CAST(DayStartDateTime AS DATE) = '" + date.ToString("yyyy-MM-dd") + "'", ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     if (DA.Fill(DT) > 0)
                     {
@@ -6945,11 +6945,11 @@ namespace Infinium
 
         public void SaveDay(int UserID, DayStatus dayStatus)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM WorkDays WHERE WorkDayID = " + dayStatus.iWorkDayID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM WorkDays WHERE WorkDayID = " + dayStatus.iWorkDayID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         if (DA.Fill(DT) > 0)
                         {
@@ -6972,7 +6972,7 @@ namespace Infinium
                         }
                         else
                         {
-                            DataRow NewRow = DT.NewRow();
+                            var NewRow = DT.NewRow();
                             NewRow["Saved"] = true;
                             NewRow["UserID"] = UserID;
                             NewRow["TimesheetHours"] = dayStatus.dTimesheetHours;
@@ -6997,6 +6997,46 @@ namespace Infinium
             }
         }
 
+        public void SaveTimesheetHours(int WorkDayID, decimal TimesheetHours)
+        {
+            using (var DA = new SqlDataAdapter("SELECT * FROM WorkDays WHERE WorkDayID = " + WorkDayID, 
+                       ConnectionStrings.LightConnectionString))
+            {
+                using (new SqlCommandBuilder(DA))
+                {
+                    using (var DT = new DataTable())
+                    {
+                        if (DA.Fill(DT) > 0)
+                        {
+                            DT.Rows[0]["TimesheetHours"] = TimesheetHours;
+                        }
+
+                        DA.Update(DT);
+                    }
+                }
+            }
+        }
+
+        public void SaveLastTimesheetHours(decimal TimesheetHours)
+        {
+            using (var DA = new SqlDataAdapter("SELECT TOP 1 * FROM WorkDays Order by WorkDayID desc", 
+                       ConnectionStrings.LightConnectionString))
+            {
+                using (new SqlCommandBuilder(DA))
+                {
+                    using (var DT = new DataTable())
+                    {
+                        if (DA.Fill(DT) > 0)
+                        {
+                            DT.Rows[0]["TimesheetHours"] = TimesheetHours;
+                        }
+
+                        DA.Update(DT);
+                    }
+                }
+            }
+        }
+
         public DayFactStatus GetStatusFactTime(ref InfiniumTimeLabel ChangeDayStartLabel, ref InfiniumTimeLabel ChangeBreakStartLabel, ref InfiniumTimeLabel ChangeBreakEndLabel, ref InfiniumTimeLabel ChangeDayEndLabel)
         {
             ChangeDayStartLabel.ForeColor = Color.Gray;
@@ -7011,12 +7051,12 @@ namespace Infinium
             ChangeDayEndLabel.ForeColor = Color.Gray;
             ChangeDayEndLabel.Text = "без изменений";
 
-            DayFactStatus DFS = new DayFactStatus();
+            var DFS = new DayFactStatus();
 
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 1 * FROM WorkDays WHERE (CAST(DayStartDateTime AS DATE) = CAST(GetDate() AS DATE) OR Saved = 0) AND UserID = " + Security.CurrentUserID + " ORDER BY WorkDayID DESC", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 1 * FROM WorkDays WHERE (CAST(DayStartDateTime AS DATE) = CAST(GetDate() AS DATE) OR Saved = 0) AND UserID = " + Security.CurrentUserID + " ORDER BY WorkDayID DESC", ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     if (DA.Fill(DT) > 0)
                     {
@@ -7109,12 +7149,12 @@ namespace Infinium
             DayStartDateTime = DateTime.Now;
             DayStartDateTime = DayStartDateTime.Subtract(new TimeSpan(Convert.ToInt32(DateTime.Now.DayOfWeek - 1), 0, 0, 0));
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT DayStartDateTime, DayEndDateTime, DayBreakStartDateTime, DayBreakEndDateTime FROM WorkDays where DayStartDateTime > '" + DayStartDateTime.ToString("MM-dd-yyyy") + "' and UserId = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT DayStartDateTime, DayEndDateTime, DayBreakStartDateTime, DayBreakEndDateTime FROM WorkDays where DayStartDateTime > '" + DayStartDateTime.ToString("MM-dd-yyyy") + "' and UserId = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
-                    for (int i = 0; i < DT.Rows.Count; i++)
+                    for (var i = 0; i < DT.Rows.Count; i++)
                     {
                         if (DT.Rows[i]["DayStartDateTime"] != DBNull.Value && DT.Rows[i]["DayEndDateTime"] != DBNull.Value)
                         {
@@ -7172,11 +7212,11 @@ namespace Infinium
 
         public static void ChangeStartTime(int UserID, DateTime NewDateTime, string Notes)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM WorkDays WHERE CAST(DayStartDateTime AS DATE) = '" + NewDateTime.ToString("yyyy-MM-dd") + "' AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM WorkDays WHERE CAST(DayStartDateTime AS DATE) = '" + NewDateTime.ToString("yyyy-MM-dd") + "' AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         if (DA.Fill(DT) > 0)
                         {
@@ -7198,11 +7238,11 @@ namespace Infinium
 
         public static void ChangeEndTime(int UserID, DateTime NewDateTime, string Notes)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM WorkDays WHERE CAST(DayStartDateTime AS DATE) = '" + NewDateTime.ToString("yyyy-MM-dd") + "' AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM WorkDays WHERE CAST(DayStartDateTime AS DATE) = '" + NewDateTime.ToString("yyyy-MM-dd") + "' AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         if (DA.Fill(DT) > 0)
                         {
@@ -7224,11 +7264,11 @@ namespace Infinium
 
         public static void ChangeBreakStartTime(int UserID, DateTime NewDateTime, string Notes)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM WorkDays WHERE CAST(DayStartDateTime AS DATE) = '" + NewDateTime.ToString("yyyy-MM-dd") + "' AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM WorkDays WHERE CAST(DayStartDateTime AS DATE) = '" + NewDateTime.ToString("yyyy-MM-dd") + "' AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         if (DA.Fill(DT) > 0)
                         {
@@ -7250,11 +7290,11 @@ namespace Infinium
 
         public static void ChangeBreakEndTime(int UserID, DateTime NewDateTime, string Notes)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM WorkDays WHERE CAST(DayStartDateTime AS DATE) = '" + NewDateTime.ToString("yyyy-MM-dd") + "' AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM WorkDays WHERE CAST(DayStartDateTime AS DATE) = '" + NewDateTime.ToString("yyyy-MM-dd") + "' AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         if (DA.Fill(DT) > 0)
                         {
@@ -7307,10 +7347,10 @@ namespace Infinium
 
         private void GetDepartmentID()
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT DepartmentID FROM Users WHERE UserID = " + UserID,
+            using (var DA = new SqlDataAdapter("SELECT DepartmentID FROM Users WHERE UserID = " + UserID,
                 ConnectionStrings.UsersConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -7333,15 +7373,15 @@ namespace Infinium
 
         private void Fill()
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT UserFunctions.*, Functions.FunctionName FROM UserFunctions" +
-                " INNER JOIN Functions ON UserFunctions.FunctionID = Functions.FunctionID WHERE UserFunctions.UserID = " + UserID +
-                " ORDER BY FunctionName", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT UserFunctions.*, Functions.FunctionName FROM UserFunctions" +
+                                               " INNER JOIN Functions ON UserFunctions.FunctionID = Functions.FunctionID WHERE UserFunctions.UserID = " + UserID +
+                                               " ORDER BY FunctionName", ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(UserFunctionsDataTable);
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Functions WHERE DepartmentID = " + DepartmentID +
-                " ORDER BY FunctionName", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM Functions WHERE DepartmentID = " + DepartmentID +
+                                               " ORDER BY FunctionName", ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(DepartmentFunctionsDataTable);
             }
@@ -7377,7 +7417,7 @@ namespace Infinium
 
         public void SetGrid(ref PercentageDataGrid Grid, bool Image)
         {
-            DataGridViewComboBoxColumn FunctionsColumn = new DataGridViewComboBoxColumn
+            var FunctionsColumn = new DataGridViewComboBoxColumn
             {
                 Name = "FunctionsColumn",
                 HeaderText = "Обязанность",
@@ -7400,7 +7440,7 @@ namespace Infinium
 
             if (Image)
             {
-                DataGridViewImageColumn ImageColumn = new DataGridViewImageColumn
+                var ImageColumn = new DataGridViewImageColumn
                 {
                     AutoSizeMode = DataGridViewAutoSizeColumnMode.None,
                     Width = 40,
@@ -7416,13 +7456,13 @@ namespace Infinium
 
         public void FillCurrentFunctions()
         {
-            int WorkDayID = GetWorkDayID();
+            var WorkDayID = GetWorkDayID();
 
             SelectedFunctionsDataTable.Clear();
 
             if (WorkDayID == -1)
             {
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM WorkDayDetails WHERE UserID = " + UserID + " AND WorkDayDetails.WorkDayID = " + WorkDayID, ConnectionStrings.LightConnectionString))
+                using (var DA = new SqlDataAdapter("SELECT TOP 0 * FROM WorkDayDetails WHERE UserID = " + UserID + " AND WorkDayDetails.WorkDayID = " + WorkDayID, ConnectionStrings.LightConnectionString))
                 {
                     DA.Fill(SelectedFunctionsDataTable);
                 }
@@ -7454,11 +7494,11 @@ namespace Infinium
 
         public int GetWorkDayID()
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM WorkDays WHERE UserID = " + UserID + " ORDER BY WorkdayID DESC", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM WorkDays WHERE UserID = " + UserID + " ORDER BY WorkdayID DESC", ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         if (DA.Fill(DT) == 0)
                         {
@@ -7473,7 +7513,7 @@ namespace Infinium
 
         public void SaveFunctions()
         {
-            int WorkDayID = GetWorkDayID();
+            var WorkDayID = GetWorkDayID();
 
             SelectedFunctionsDA.Update(SelectedFunctionsDataTable);
             SelectedFunctionsDataTable.Clear();
@@ -7486,9 +7526,9 @@ namespace Infinium
             if (SelectedFunctionsDataTable.Select("FunctionID = " + FunctionID).Count() > 0)
                 return;
 
-            int WorkDayID = GetWorkDayID();
+            var WorkDayID = GetWorkDayID();
 
-            DataRow NewRow = SelectedFunctionsDataTable.NewRow();
+            var NewRow = SelectedFunctionsDataTable.NewRow();
             NewRow["FunctionID"] = FunctionID;
             NewRow["WorkDayID"] = WorkDayID;
             NewRow["UserID"] = UserID;
@@ -7530,8 +7570,8 @@ namespace Infinium
 
         private void Fill()
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Functions" +
-                " WHERE Functions.UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM Functions" +
+                                               " WHERE Functions.UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(FunctionsDataTable);
             }
@@ -7549,7 +7589,7 @@ namespace Infinium
             {
                 FunctionsGrid.AutoGenerateColumns = false;
 
-                DataGridViewImageColumn ImageColumn = new DataGridViewImageColumn
+                var ImageColumn = new DataGridViewImageColumn
                 {
                     AutoSizeMode = DataGridViewAutoSizeColumnMode.None,
                     Width = 40,
@@ -7570,10 +7610,10 @@ namespace Infinium
 
         public void SaveFunctions()
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Functions" +
-                " WHERE Functions.UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM Functions" +
+                                               " WHERE Functions.UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
                     DA.Update(FunctionsDataTable);
                     FunctionsDataTable.Clear();
@@ -7584,7 +7624,7 @@ namespace Infinium
 
         public void AddFunction(string Name)
         {
-            DataRow NewRow = FunctionsDataTable.NewRow();
+            var NewRow = FunctionsDataTable.NewRow();
             NewRow["UserID"] = Security.CurrentUserID;
             NewRow["FunctionName"] = Name;
             FunctionsDataTable.Rows.Add(NewRow);
@@ -7612,7 +7652,7 @@ namespace Infinium
         {
             UsersDataTable = new DataTable();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT UserID, Name, Online FROM USERS WHERE Fired <> 1 ORDER BY Name ASC", ConnectionStrings.UsersConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT UserID, Name, Online FROM USERS WHERE Fired <> 1 ORDER BY Name ASC", ConnectionStrings.UsersConnectionString))
             {
                 DA.Fill(UsersDataTable);
             }
@@ -7654,7 +7694,7 @@ namespace Infinium
         {
             MessagesDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 100 infiniu2_light.dbo.Messages.MessageID, infiniu2_light.dbo.Messages.Text, infiniu2_light.dbo.Messages.SenderUserID, infiniu2_light.dbo.Messages.RecipientUserID, infiniu2_light.dbo.Messages.SendDateTime, infiniu2_users.dbo.Users.Name AS SenderName FROM infiniu2_light.dbo.Messages INNER JOIN infiniu2_users.dbo.Users ON infiniu2_users.dbo.Users.UserID = infiniu2_light.dbo.Messages.SenderUserID WHERE (RecipientUserID = " + CurrentUserID + " AND SenderUserID = " + SenderID + ") OR (RecipientUserID = " + SenderID + " AND SenderUserID = " + CurrentUserID + ") ORDER BY SendDateTime DESC", ConnectionStrings.UsersConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 100 infiniu2_light.dbo.Messages.MessageID, infiniu2_light.dbo.Messages.Text, infiniu2_light.dbo.Messages.SenderUserID, infiniu2_light.dbo.Messages.RecipientUserID, infiniu2_light.dbo.Messages.SendDateTime, infiniu2_users.dbo.Users.Name AS SenderName FROM infiniu2_light.dbo.Messages INNER JOIN infiniu2_users.dbo.Users ON infiniu2_users.dbo.Users.UserID = infiniu2_light.dbo.Messages.SenderUserID WHERE (RecipientUserID = " + CurrentUserID + " AND SenderUserID = " + SenderID + ") OR (RecipientUserID = " + SenderID + " AND SenderUserID = " + CurrentUserID + ") ORDER BY SendDateTime DESC", ConnectionStrings.UsersConnectionString))
             {
                 DA.Fill(MessagesDataTable);
             }
@@ -7694,9 +7734,9 @@ namespace Infinium
 
         public DataTable GetOnlineStatus()
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT UserID, Online FROM Users WHERE Fired <> 1", ConnectionStrings.UsersConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT UserID, Online FROM Users WHERE Fired <> 1", ConnectionStrings.UsersConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     try
                     {
@@ -7721,7 +7761,7 @@ namespace Infinium
                 return;
             }
 
-            DataRow[] Row = UsersDataTable.Select("UserID = " + UserID);
+            var Row = UsersDataTable.Select("UserID = " + UserID);
 
             SelectedUsersDataTable.ImportRow(Row[0]);
 
@@ -7730,7 +7770,7 @@ namespace Infinium
 
         public void AddSenderToSelected(int UserID)
         {
-            DataRow[] sRow = SelectedUsersDataTable.Select("UserID = " + UserID);
+            var sRow = SelectedUsersDataTable.Select("UserID = " + UserID);
 
             if (sRow.Count() > 0)
             {
@@ -7739,9 +7779,9 @@ namespace Infinium
                 return;
             }
 
-            DataRow[] Row = UsersDataTable.Select("UserID = " + UserID);
+            var Row = UsersDataTable.Select("UserID = " + UserID);
 
-            DataRow NewRow = SelectedUsersDataTable.NewRow();
+            var NewRow = SelectedUsersDataTable.NewRow();
             NewRow["UserID"] = Row[0]["UserID"];
             NewRow["Name"] = Row[0]["Name"];
             NewRow["UpdatesCount"] = 1;
@@ -7753,20 +7793,20 @@ namespace Infinium
 
         public void AddMessage(int RecipientUserID, string sText)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM Messages", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 0 * FROM Messages", ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
-                        DataRow NewRow = DT.NewRow();
+                        var NewRow = DT.NewRow();
                         NewRow["SenderUserID"] = CurrentUserID;
                         NewRow["RecipientUserID"] = RecipientUserID;
                         NewRow["Text"] = LightCrypto.Encrypt(sText, true, CurrentUserName);
 
-                        DateTime DateTime = Security.GetCurrentDate();
+                        var DateTime = Security.GetCurrentDate();
 
                         NewRow["SendDateTime"] = DateTime;
                         DT.Rows.Add(NewRow);
@@ -7775,17 +7815,17 @@ namespace Infinium
 
                         FillMessages(RecipientUserID);
 
-                        DataRow[] Row = MessagesDataTable.Select("SendDateTime = '" + DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'");
+                        var Row = MessagesDataTable.Select("SendDateTime = '" + DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'");
 
-                        using (SqlDataAdapter sDA = new SqlDataAdapter("SELECT TOP 0 * FROM SubscribesRecords", ConnectionStrings.LightConnectionString))
+                        using (var sDA = new SqlDataAdapter("SELECT TOP 0 * FROM SubscribesRecords", ConnectionStrings.LightConnectionString))
                         {
-                            using (SqlCommandBuilder sCB = new SqlCommandBuilder(sDA))
+                            using (var sCB = new SqlCommandBuilder(sDA))
                             {
-                                using (DataTable sDT = new DataTable())
+                                using (var sDT = new DataTable())
                                 {
                                     sDA.Fill(sDT);
 
-                                    DataRow sNewRow = sDT.NewRow();
+                                    var sNewRow = sDT.NewRow();
                                     sNewRow["SubscribesItemID"] = 5;
                                     sNewRow["TableItemID"] = Convert.ToInt32(Row[0][0]);
                                     sNewRow["UserID"] = RecipientUserID;
@@ -7803,29 +7843,29 @@ namespace Infinium
 
         public static void SendMessage(int RecipientUserID, string sText)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM Messages", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 0 * FROM Messages", ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
-                        DataRow NewRow = DT.NewRow();
+                        var NewRow = DT.NewRow();
                         NewRow["SenderUserID"] = Security.CurrentUserID;
                         NewRow["RecipientUserID"] = RecipientUserID;
                         NewRow["Text"] = LightCrypto.Encrypt(sText, true, Security.CurrentUserName);
 
-                        DateTime DateTime = Security.GetCurrentDate();
+                        var DateTime = Security.GetCurrentDate();
 
                         NewRow["SendDateTime"] = DateTime;
                         DT.Rows.Add(NewRow);
 
                         DA.Update(DT);
 
-                        using (SqlDataAdapter sDA = new SqlDataAdapter("SELECT MessageID FROM Messages WHERE SendDateTime = '" + DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'", ConnectionStrings.LightConnectionString))
+                        using (var sDA = new SqlDataAdapter("SELECT MessageID FROM Messages WHERE SendDateTime = '" + DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'", ConnectionStrings.LightConnectionString))
                         {
-                            using (DataTable sDT = new DataTable())
+                            using (var sDT = new DataTable())
                             {
                                 sDA.Fill(sDT);
 
@@ -7839,9 +7879,9 @@ namespace Infinium
 
         public int GetNewMessages()
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Messages WHERE MessageID IN (SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 5 AND UserTypeID = 0 AND UserID = " + CurrentUserID + ") ORDER BY SendDateTime DESC", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM Messages WHERE MessageID IN (SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 5 AND UserTypeID = 0 AND UserID = " + CurrentUserID + ") ORDER BY SendDateTime DESC", ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     if (DA.Fill(DT) == 0)
                         return 0;
@@ -7868,7 +7908,7 @@ namespace Infinium
 
         public void RemoveCurrent()
         {
-            int Pos = SelectedUsersBindingSource.Position;
+            var Pos = SelectedUsersBindingSource.Position;
             SelectedUsersBindingSource.RemoveCurrent();
 
             //остается на позиции удаленного
@@ -7887,7 +7927,7 @@ namespace Infinium
 
         public bool CheckOnline(DataTable DT)
         {
-            bool bNeedRefresh = false;
+            var bNeedRefresh = false;
 
             if (DT == null)
                 return false;
@@ -7938,9 +7978,9 @@ namespace Infinium
             if (sText.Length == 0)
                 return true;
 
-            int n = 0;
+            var n = 0;
 
-            foreach (char c in sText)
+            foreach (var c in sText)
             {
                 if (c == '\n' || c == '\r' || c == ' ')
                     n++;
@@ -7973,12 +8013,12 @@ namespace Infinium
 
             foreach (DataRow Row in UsersDataTable.Rows)
             {
-                string Name = Row["Name"].ToString();
-                string NewName = "";
+                var Name = Row["Name"].ToString();
+                var NewName = "";
 
-                int g = 0;
+                var g = 0;
 
-                for (int i = 0; i < Name.Length; i++)
+                for (var i = 0; i < Name.Length; i++)
                 {
                     if (Name[i] != ' ')
                         NewName += Name[i];
@@ -8008,9 +8048,9 @@ namespace Infinium
 
         public bool IsNewMessages()
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 1 SubscribesRecordID FROM SubscribesRecords WHERE SubscribesItemID = 5 AND UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 1 SubscribesRecordID FROM SubscribesRecords WHERE SubscribesItemID = 5 AND UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     return DA.Fill(DT) > 0;
                 }
@@ -8019,41 +8059,41 @@ namespace Infinium
 
         public static void SendMessage(string Text, int UserID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM Messages", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 0 * FROM Messages", ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
-                        DataRow NewRow = DT.NewRow();
+                        var NewRow = DT.NewRow();
                         NewRow["Text"] = Text;
                         NewRow["SenderUserID"] = Security.CurrentUserID;
                         NewRow["RecipientUserID"] = UserID;
 
-                        DateTime Date = Security.GetCurrentDate();
+                        var Date = Security.GetCurrentDate();
 
                         NewRow["SendDateTime"] = Date;
                         DT.Rows.Add(NewRow);
 
                         DA.Update(DT);
 
-                        using (SqlDataAdapter mDA = new SqlDataAdapter("SELECT MessageID FROM Messages WHERE SendDateTime = '" + Date.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'", ConnectionStrings.LightConnectionString))
+                        using (var mDA = new SqlDataAdapter("SELECT MessageID FROM Messages WHERE SendDateTime = '" + Date.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'", ConnectionStrings.LightConnectionString))
                         {
-                            using (DataTable mDT = new DataTable())
+                            using (var mDT = new DataTable())
                             {
                                 mDA.Fill(mDT);
 
-                                using (SqlDataAdapter uDA = new SqlDataAdapter("SELECT TOP 0 * FROM SubscribesRecords", ConnectionStrings.LightConnectionString))
+                                using (var uDA = new SqlDataAdapter("SELECT TOP 0 * FROM SubscribesRecords", ConnectionStrings.LightConnectionString))
                                 {
-                                    using (SqlCommandBuilder uCB = new SqlCommandBuilder(uDA))
+                                    using (var uCB = new SqlCommandBuilder(uDA))
                                     {
-                                        using (DataTable uDT = new DataTable())
+                                        using (var uDT = new DataTable())
                                         {
                                             uDA.Fill(uDT);
 
-                                            DataRow cNewRow = uDT.NewRow();
+                                            var cNewRow = uDT.NewRow();
                                             cNewRow["TableItemID"] = mDT.Rows[0]["MessageID"];
                                             cNewRow["UserID"] = UserID;
                                             cNewRow["SubscribesItemID"] = 5;
@@ -8073,14 +8113,14 @@ namespace Infinium
 
         public int AddUserToSelected(int UserID)
         {
-            DataRow[] Row = SelectedUsersDataTable.Select("UserID = " + UserID);
+            var Row = SelectedUsersDataTable.Select("UserID = " + UserID);
 
             if (Row.Count() > 0)
                 return SelectedUsersDataTable.Rows.IndexOf(Row[0]);
 
-            DataRow[] uRow = UsersDataTable.Select("UserID = " + UserID);
+            var uRow = UsersDataTable.Select("UserID = " + UserID);
 
-            DataRow NewRow = SelectedUsersDataTable.NewRow();
+            var NewRow = SelectedUsersDataTable.NewRow();
             NewRow["UserID"] = uRow[0]["UserID"];
             NewRow["Name"] = uRow[0]["Name"];
             NewRow["Count"] = 0;
@@ -8100,7 +8140,7 @@ namespace Infinium
         {
             MessagesDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter(@"SELECT * FROM Messages WHERE MessageID IN (SELECT TOP 100 MessageID FROM Messages 
+            using (var DA = new SqlDataAdapter(@"SELECT * FROM Messages WHERE MessageID IN (SELECT TOP 100 MessageID FROM Messages 
                 WHERE (SenderUserID = " + UserID + "AND RecipientUserID = " + Security.CurrentUserID + ")" + " OR (SenderUserID = " + Security.CurrentUserID + " AND RecipientUserID = " + UserID + ") ORDER BY MessageID DESC) ORDER BY MessageID", ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(MessagesDataTable);
@@ -8111,26 +8151,26 @@ namespace Infinium
         {
             SelectedUsersDataTable.Clear();
 
-            bool bRes = false;
+            var bRes = false;
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT SenderUserID FROM Messages WHERE MessageID IN (SELECT TableItemID FROM SubscribesRecords WHERE UserTypeID = 0 AND SubscribesItemID = 5 AND UserID = " + Security.CurrentUserID + ")", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT SenderUserID FROM Messages WHERE MessageID IN (SELECT TableItemID FROM SubscribesRecords WHERE UserTypeID = 0 AND SubscribesItemID = 5 AND UserID = " + Security.CurrentUserID + ")", ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
                     foreach (DataRow Row in DT.Rows)
                     {
-                        DataRow[] sRow = SelectedUsersDataTable.Select("UserID = " + Row["SenderUserID"]);
+                        var sRow = SelectedUsersDataTable.Select("UserID = " + Row["SenderUserID"]);
 
                         if (Convert.ToInt32(Row["SenderUserID"]) == iUserID)
                             bRes = true;
 
                         if (sRow.Count() == 0)
                         {
-                            DataRow uRow = TablesManager.UsersDataTable.Select("UserID = " + Row["SenderUserID"])[0];
+                            var uRow = TablesManager.UsersDataTable.Select("UserID = " + Row["SenderUserID"])[0];
 
-                            DataRow NewRow = SelectedUsersDataTable.NewRow();
+                            var NewRow = SelectedUsersDataTable.NewRow();
                             NewRow["UserID"] = uRow["UserID"];
                             NewRow["Name"] = uRow["Name"];
                             NewRow["Photo"] = uRow["Photo"];
@@ -8156,20 +8196,20 @@ namespace Infinium
 
         public void ClearSubscribes(int UserID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM SubscribesRecords WHERE SubscribesItemID = 5 AND UserTypeID = 0 AND UserID = " + Security.CurrentUserID + " AND TableItemID IN (SELECT MessageID FROM Messages WHERE RecipientUserID = " + Security.CurrentUserID + " AND SenderUserID = " + UserID + "AND IsRead = 0)", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM SubscribesRecords WHERE SubscribesItemID = 5 AND UserTypeID = 0 AND UserID = " + Security.CurrentUserID + " AND TableItemID IN (SELECT MessageID FROM Messages WHERE RecipientUserID = " + Security.CurrentUserID + " AND SenderUserID = " + UserID + "AND IsRead = 0)", ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
             }
 
 
-            using (SqlDataAdapter mDA = new SqlDataAdapter("SELECT * FROM Messages WHERE IsRead = 0 AND RecipientUserID = " + Security.CurrentUserID + " AND SenderUserID = " + UserID, ConnectionStrings.LightConnectionString))
+            using (var mDA = new SqlDataAdapter("SELECT * FROM Messages WHERE IsRead = 0 AND RecipientUserID = " + Security.CurrentUserID + " AND SenderUserID = " + UserID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder mCB = new SqlCommandBuilder(mDA))
+                using (var mCB = new SqlCommandBuilder(mDA))
                 {
-                    using (DataTable mDT = new DataTable())
+                    using (var mDT = new DataTable())
                     {
                         mDA.Fill(mDT);
 
@@ -8207,7 +8247,7 @@ namespace Infinium
         {
             NotesDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Notes WHERE UserID = " + CurrentUserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM Notes WHERE UserID = " + CurrentUserID, ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(NotesDataTable);
             }
@@ -8220,15 +8260,15 @@ namespace Infinium
 
         public void AddNotes(string Name, int Priority)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Notes WHERE UserID = " + CurrentUserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM Notes WHERE UserID = " + CurrentUserID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
-                        DataRow NewRow = DT.NewRow();
+                        var NewRow = DT.NewRow();
                         NewRow["UserID"] = CurrentUserID;
                         NewRow["CreationDateTime"] = Security.GetCurrentDate();
                         NewRow["NotesName"] = Name;
@@ -8246,11 +8286,11 @@ namespace Infinium
 
         public void SaveNote(int NotesID, string Name, string NotesText)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Notes WHERE NotesID = " + NotesID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM Notes WHERE NotesID = " + NotesID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -8267,13 +8307,13 @@ namespace Infinium
 
         public int DeleteNotes(int NotesID)
         {
-            int i = NotesDataTable.Rows.IndexOf(NotesDataTable.Select("NotesID = " + NotesID)[0]);
+            var i = NotesDataTable.Rows.IndexOf(NotesDataTable.Select("NotesID = " + NotesID)[0]);
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Notes WHERE NotesID =" + NotesID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM Notes WHERE NotesID =" + NotesID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
                         DT.Rows[0].Delete();
@@ -8436,7 +8476,7 @@ namespace Infinium
         {
             get
             {
-                DataTable DT = new DataTable();
+                var DT = new DataTable();
                 if (ToolsSellerInfoDataTable != null)
                     DT = ToolsSellerInfoDataTable.Clone();
                 return DT;
@@ -8447,7 +8487,7 @@ namespace Infinium
         {
             get
             {
-                DataTable DT = new DataTable();
+                var DT = new DataTable();
                 if (ToolsSellerInfoDataTable != null)
                     DT = ToolsSellerInfoDataTable.Copy();
                 return DT;
@@ -8458,7 +8498,7 @@ namespace Infinium
         {
             get
             {
-                int Count = 0;
+                var Count = 0;
                 if (ToolsSellersBindingSource != null)
                 {
                     Count = ToolsSellersBindingSource.Count;
@@ -8471,7 +8511,7 @@ namespace Infinium
         {
             get
             {
-                int Count = 0;
+                var Count = 0;
                 if (ToolsSellersSubGroupsBindingSource != null)
                 {
                     Count = ToolsSellersSubGroupsBindingSource.Count;
@@ -8484,7 +8524,7 @@ namespace Infinium
         {
             get
             {
-                string ToolsSellerName = string.Empty;
+                var ToolsSellerName = string.Empty;
                 if (ToolsSellersBindingSource.Count > 0
                     && ToolsSellersBindingSource.Current != null
                     && ((DataRowView)ToolsSellersBindingSource.Current).Row["ToolsSellerName"] != DBNull.Value)
@@ -8499,7 +8539,7 @@ namespace Infinium
         {
             get
             {
-                string Country = string.Empty;
+                var Country = string.Empty;
                 if (ToolsSellersBindingSource.Count > 0
                     && ToolsSellersBindingSource.Current != null
                     && ((DataRowView)ToolsSellersBindingSource.Current).Row["Country"] != DBNull.Value)
@@ -8514,7 +8554,7 @@ namespace Infinium
         {
             get
             {
-                string Address = string.Empty;
+                var Address = string.Empty;
                 if (ToolsSellersBindingSource.Count > 0
                     && ToolsSellersBindingSource.Current != null
                     && ((DataRowView)ToolsSellersBindingSource.Current).Row["Address"] != DBNull.Value)
@@ -8529,7 +8569,7 @@ namespace Infinium
         {
             get
             {
-                string ContractDocNumber = string.Empty;
+                var ContractDocNumber = string.Empty;
                 if (ToolsSellersBindingSource.Count > 0
                     && ToolsSellersBindingSource.Current != null
                     && ((DataRowView)ToolsSellersBindingSource.Current).Row["ContractDocNumber"] != DBNull.Value)
@@ -8544,7 +8584,7 @@ namespace Infinium
         {
             get
             {
-                string Email = string.Empty;
+                var Email = string.Empty;
                 if (ToolsSellersBindingSource.Count > 0
                     && ToolsSellersBindingSource.Current != null
                     && ((DataRowView)ToolsSellersBindingSource.Current).Row["Email"] != DBNull.Value)
@@ -8559,7 +8599,7 @@ namespace Infinium
         {
             get
             {
-                string Site = string.Empty;
+                var Site = string.Empty;
                 if (ToolsSellersBindingSource.Count > 0
                     && ToolsSellersBindingSource.Current != null
                     && ((DataRowView)ToolsSellersBindingSource.Current).Row["Site"] != DBNull.Value)
@@ -8574,7 +8614,7 @@ namespace Infinium
         {
             get
             {
-                string Notes = string.Empty;
+                var Notes = string.Empty;
                 if (ToolsSellersBindingSource.Count > 0
                     && ToolsSellersBindingSource.Current != null
                     && ((DataRowView)ToolsSellersBindingSource.Current).Row["Notes"] != DBNull.Value)
@@ -8589,7 +8629,7 @@ namespace Infinium
         {
             get
             {
-                string ToolsSellerGroupName = string.Empty;
+                var ToolsSellerGroupName = string.Empty;
                 if (ToolsSellersGroupsBindingSource.Count > 0
                     && ToolsSellersGroupsBindingSource.Current != null
                     && ((DataRowView)ToolsSellersGroupsBindingSource.Current).Row["ToolsSellerGroupName"] != DBNull.Value)
@@ -8604,7 +8644,7 @@ namespace Infinium
         {
             get
             {
-                string ToolsSellerSubGroupName = string.Empty;
+                var ToolsSellerSubGroupName = string.Empty;
                 if (ToolsSellersSubGroupsBindingSource.Count > 0
                     && ToolsSellersSubGroupsBindingSource.Current != null
                     && ((DataRowView)ToolsSellersSubGroupsBindingSource.Current).Row["ToolsSellerSubGroupName"] != DBNull.Value)
@@ -8664,11 +8704,11 @@ namespace Infinium
             ToolsSellerInfoDataTable.Clear();
             if (ToolsSellersBindingSource.Count > 0)
             {
-                string ContactsXML = ((DataRowView)ToolsSellersBindingSource.Current).Row["ContactsXML"].ToString();
+                var ContactsXML = ((DataRowView)ToolsSellersBindingSource.Current).Row["ContactsXML"].ToString();
                 if (ContactsXML.Length == 0)
                     return;
 
-                using (StringReader SR = new StringReader(ContactsXML))
+                using (var SR = new StringReader(ContactsXML))
                 {
                     ToolsSellerInfoDataTable.ReadXml(SR);
                 }
@@ -8700,7 +8740,7 @@ namespace Infinium
         public void AddSeller(string ToolsSellerName, string Country, string Address,
             string ContractDocNumber, string Email, string Site, string ContactsXML, string Notes)
         {
-            DataRow NewRow = ToolsSellersDataTable.NewRow();
+            var NewRow = ToolsSellersDataTable.NewRow();
             NewRow["ToolsSellerSubGroupID"] = CurrentToolsSellerSubGroupID;
             NewRow["ToolsSellerName"] = ToolsSellerName;
             NewRow["Country"] = Country;
@@ -8717,7 +8757,7 @@ namespace Infinium
 
         public void AddSellerGroup(string ToolsSellerGroup)
         {
-            DataRow NewRow = ToolsSellersGroupsDataTable.NewRow();
+            var NewRow = ToolsSellersGroupsDataTable.NewRow();
             NewRow["ToolsSellerGroupName"] = ToolsSellerGroup;
             ToolsSellersGroupsDataTable.Rows.Add(NewRow);
 
@@ -8727,7 +8767,7 @@ namespace Infinium
 
         public void AddSellerSubGroup(string ToolsSellerSubGroup)
         {
-            DataRow NewRow = ToolsSellersSubGroupsDataTable.NewRow();
+            var NewRow = ToolsSellersSubGroupsDataTable.NewRow();
             NewRow["ToolsSellerSubGroupName"] = ToolsSellerSubGroup;
             NewRow["ToolsSellerGroupID"] = CurrentToolsSellerGroupID;
             ToolsSellersSubGroupsDataTable.Rows.Add(NewRow);
@@ -8742,7 +8782,7 @@ namespace Infinium
         public void EditSeller(string ToolsSellerName, string Country, string Address,
             string ContractDocNumber, string Email, string Site, string ContactsXML, string Notes)
         {
-            DataRow[] row = ToolsSellersDataTable.Select("ToolsSellerID = " + CurrentToolsSellerID);
+            var row = ToolsSellersDataTable.Select("ToolsSellerID = " + CurrentToolsSellerID);
             if (row.Count() > 0)
             {
                 row[0]["ToolsSellerName"] = ToolsSellerName;
@@ -8774,7 +8814,7 @@ namespace Infinium
             if (ToolsSellersSubGroupsBindingSource.Count == 0)
                 return;
 
-            DataRow[] row = ToolsSellersSubGroupsDataTable.Select("ToolsSellerSubGroupID = " + CurrentToolsSellerSubGroupID);
+            var row = ToolsSellersSubGroupsDataTable.Select("ToolsSellerSubGroupID = " + CurrentToolsSellerSubGroupID);
             if (row.Count() > 0)
                 row[0]["ToolsSellerSubGroupName"] = SellerSubGroup;
 
@@ -8800,11 +8840,11 @@ namespace Infinium
             //}
 
 
-            foreach (DataRow r1 in ToolsSellersGroupsDataTable.Select("ToolsSellerGroupID = " + CurrentToolsSellerGroupID))
+            foreach (var r1 in ToolsSellersGroupsDataTable.Select("ToolsSellerGroupID = " + CurrentToolsSellerGroupID))
             {
-                foreach (DataRow r2 in ToolsSellersSubGroupsDataTable.Select("ToolsSellerGroupID = " + CurrentToolsSellerGroupID))
+                foreach (var r2 in ToolsSellersSubGroupsDataTable.Select("ToolsSellerGroupID = " + CurrentToolsSellerGroupID))
                 {
-                    foreach (DataRow r3 in ToolsSellersDataTable.Select("ToolsSellerSubGroupID = " + r2["ToolsSellerSubGroupID"]))
+                    foreach (var r3 in ToolsSellersDataTable.Select("ToolsSellerSubGroupID = " + r2["ToolsSellerSubGroupID"]))
                     {
                         r3.Delete();
                     }
@@ -8824,9 +8864,9 @@ namespace Infinium
             //	ToolsSellersSubGroupsBindingSource.RemoveCurrent();
             //	SaveSellerSubGroups();
             //}
-            foreach (DataRow r2 in ToolsSellersSubGroupsDataTable.Select("ToolsSellerSubGroupID = " + CurrentToolsSellerSubGroupID))
+            foreach (var r2 in ToolsSellersSubGroupsDataTable.Select("ToolsSellerSubGroupID = " + CurrentToolsSellerSubGroupID))
             {
-                foreach (DataRow r3 in ToolsSellersDataTable.Select("ToolsSellerSubGroupID = " + r2["ToolsSellerSubGroupID"]))
+                foreach (var r3 in ToolsSellersDataTable.Select("ToolsSellerSubGroupID = " + r2["ToolsSellerSubGroupID"]))
                 {
                     r3.Delete();
                 }
@@ -8891,13 +8931,13 @@ namespace Infinium
         public void CreateAndFill()
         {
             DevelopmentDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DevelopmentPlan", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM DevelopmentPlan", ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(DevelopmentDataTable);
             }
 
             DepartmentTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT DepartmentID, DepartmentName FROM Departments", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT DepartmentID, DepartmentName FROM Departments", ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(DepartmentTable);
             }
@@ -8971,15 +9011,15 @@ namespace Infinium
 
         public void AddProject(string ProjectName, string Users, string ProjectDescription, string DepartmentID, DateTime ApproximateDateStart, DateTime ApproximateDateEnd)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DevelopmentPlan", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM DevelopmentPlan", ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
-                        DataRow NewRow = DT.NewRow();
+                        var NewRow = DT.NewRow();
                         NewRow["ProjectName"] = ProjectName;
                         NewRow["FactDateStart"] = Security.GetCurrentDate();
                         NewRow["Users"] = Users;
@@ -9001,11 +9041,11 @@ namespace Infinium
 
         public void DeleteProject(string DevelopmentPlanID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DevelopmentPlan WHERE DevelopmentPlanID =" + DevelopmentPlanID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM DevelopmentPlan WHERE DevelopmentPlanID =" + DevelopmentPlanID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
                         DT.Rows[0].Delete();
@@ -9033,7 +9073,7 @@ namespace Infinium
 
         public void UpdateDevelopmentPlanDataGrid(string DepartmentID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DevelopmentPlan WHERE DepartmentID =" + DepartmentID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM DevelopmentPlan WHERE DepartmentID =" + DepartmentID, ConnectionStrings.LightConnectionString))
             {
                 DevelopmentDataTable.Clear();
                 DA.Fill(DevelopmentDataTable);
@@ -9042,15 +9082,15 @@ namespace Infinium
 
         private void UpdateDevelopmentPlanDataGrid()
         {
-            DateTime FactDateEnd = default(DateTime);
+            var FactDateEnd = default(DateTime);
 
             if (DevelopmentDataTable.Select("IsClosed = 1 and FactDateEnd is null").Count() > 0)
                 FactDateEnd = Security.GetCurrentDate();
 
-            foreach (DataRow RowProject in DevelopmentDataTable.Select("IsClosed = 1 and FactDateEnd is null"))
+            foreach (var RowProject in DevelopmentDataTable.Select("IsClosed = 1 and FactDateEnd is null"))
                 RowProject["FactDateEnd"] = FactDateEnd;
 
-            foreach (DataRow RowProject in DevelopmentDataTable.Select("IsClosed = 0 and FactDateEnd is not null"))
+            foreach (var RowProject in DevelopmentDataTable.Select("IsClosed = 0 and FactDateEnd is not null"))
                 RowProject["FactDateEnd"] = DBNull.Value;
         }
 
@@ -9064,9 +9104,9 @@ namespace Infinium
         public void Save()
         {
             UpdateDevelopmentPlanDataGrid();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DevelopmentPlan", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM DevelopmentPlan", ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
                     DA.Update(DevelopmentDataTable);
                 }
@@ -9156,9 +9196,9 @@ namespace Infinium
 
         public DataTable TableUsers()
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT UserID, Name FROM Users  WHERE Fired <> 1 ORDER BY Name", ConnectionStrings.UsersConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT UserID, Name FROM Users  WHERE Fired <> 1 ORDER BY Name", ConnectionStrings.UsersConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -9172,7 +9212,7 @@ namespace Infinium
         {
             if (Filter)
             {
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Tasks WHERE TaskID IN (SELECT TaskID FROM TaskMembers WHERE PerformerID = " + Security.CurrentUserID + ")", ConnectionStrings.LightConnectionString))
+                using (var DA = new SqlDataAdapter("SELECT * FROM Tasks WHERE TaskID IN (SELECT TaskID FROM TaskMembers WHERE PerformerID = " + Security.CurrentUserID + ")", ConnectionStrings.LightConnectionString))
                 {
                     TasksDataTable.Clear();
                     DA.Fill(TasksDataTable);
@@ -9180,7 +9220,7 @@ namespace Infinium
             }
             else
             {
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Tasks WHERE DirectorID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
+                using (var DA = new SqlDataAdapter("SELECT * FROM Tasks WHERE DirectorID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
                 {
                     TasksDataTable.Clear();
                     DA.Fill(TasksDataTable);
@@ -9203,7 +9243,7 @@ namespace Infinium
         //Обновление грида с исполнителями
         public void UpdateUsersGrid(string TaskID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT PerformerID as UserID FROM TaskMembers WHERE TaskID = " + TaskID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT PerformerID as UserID FROM TaskMembers WHERE TaskID = " + TaskID, ConnectionStrings.LightConnectionString))
             {
                 SelectedUsersTable.Clear();
                 DA.Fill(SelectedUsersTable);
@@ -9213,16 +9253,16 @@ namespace Infinium
         //Добавление задачи
         public void SaveTasks(string TasksName, string TasksDescription, DateTime dataTime)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT [TaskID], [DirectorID], [CreationDate], [ExecutionDate], [TaskName]"
-                            + ",[TaskDescription], [ExecutionStatus], [FactExecutionDate], CompletPercentage FROM Tasks", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT [TaskID], [DirectorID], [CreationDate], [ExecutionDate], [TaskName]"
+                                               + ",[TaskDescription], [ExecutionStatus], [FactExecutionDate], CompletPercentage FROM Tasks", ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
-                        DataRow NewRow = DT.NewRow();
+                        var NewRow = DT.NewRow();
                         NewRow["DirectorID"] = Security.CurrentUserID;
                         NewRow["CreationDate"] = Security.GetCurrentDate();
                         NewRow["ExecutionDate"] = dataTime;
@@ -9234,9 +9274,9 @@ namespace Infinium
                         DA.Update(DT);
 
                         int TaskID;
-                        using (SqlDataAdapter DA2 = new SqlDataAdapter("SELECT TaskID FROM Tasks where CreationDate = '" + ((DateTime)NewRow["CreationDate"]).ToString("yyyy-MM-dd HH:mm:ss.fff") + "'", ConnectionStrings.LightConnectionString))
+                        using (var DA2 = new SqlDataAdapter("SELECT TaskID FROM Tasks where CreationDate = '" + ((DateTime)NewRow["CreationDate"]).ToString("yyyy-MM-dd HH:mm:ss.fff") + "'", ConnectionStrings.LightConnectionString))
                         {
-                            using (DataTable DT2 = new DataTable())
+                            using (var DT2 = new DataTable())
                             {
                                 DA2.Fill(DT2);
                                 TaskID = Convert.ToInt32(DT2.Rows[0][0]);
@@ -9251,17 +9291,17 @@ namespace Infinium
 
         public void SaveTasksMembers(int TaskID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT [TaskMembersID],[TaskID] ,[PerformerID] FROM TaskMembers", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT [TaskMembersID],[TaskID] ,[PerformerID] FROM TaskMembers", ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
-                        for (int i = 0; i < SelectedUsersTable.Rows.Count; i++)
+                        for (var i = 0; i < SelectedUsersTable.Rows.Count; i++)
                         {
-                            DataRow NewRow = DT.NewRow();
+                            var NewRow = DT.NewRow();
                             NewRow["PerformerID"] = SelectedUsersTable.Rows[i][0];
                             NewRow["TaskID"] = TaskID;
                             DT.Rows.Add(NewRow);
@@ -9278,11 +9318,11 @@ namespace Infinium
         //Удаление задачи
         public void DeleteTasks(string TaskID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Tasks WHERE TaskID =" + TaskID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM Tasks WHERE TaskID =" + TaskID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
                         DT.Rows[0].Delete();
@@ -9298,14 +9338,14 @@ namespace Infinium
 
         public void DeleteMembers(string TaskID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM TaskMembers WHERE TaskID =" + TaskID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM TaskMembers WHERE TaskID =" + TaskID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
-                        for (int i = 0; i < DT.Rows.Count; i++)
+                        for (var i = 0; i < DT.Rows.Count; i++)
                             DT.Rows[i].Delete();
                         DA.Update(DT);
                     }
@@ -9316,11 +9356,11 @@ namespace Infinium
         //Обновление задачи
         public void UpdateTasks(string TaskID, string TasksName, string TasksDescription, DateTime dataTime)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Tasks WHERE TaskID =" + TaskID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM Tasks WHERE TaskID =" + TaskID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -9340,11 +9380,11 @@ namespace Infinium
         //Изменение процента готовности
         public void UpdateTasks(string TaskID, int CompletPercentage)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Tasks WHERE TaskID =" + TaskID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM Tasks WHERE TaskID =" + TaskID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -9362,11 +9402,11 @@ namespace Infinium
         //Завершение задачи
         public void CloseTasks(string CloseNotes, string TaskID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Tasks WHERE TaskID =" + TaskID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM Tasks WHERE TaskID =" + TaskID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -9416,20 +9456,20 @@ namespace Infinium
 
         private void Fill()
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM WorkDays ORDER BY DayStartDateTime",
+            using (var DA = new SqlDataAdapter("SELECT TOP 0 * FROM WorkDays ORDER BY DayStartDateTime",
                 ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(_timesheetDataTable);
             }
-            using (SqlDataAdapter da = new SqlDataAdapter(@"SELECT TOP 0 * FROM AbsencesJournal", ConnectionStrings.LightConnectionString))
+            using (var da = new SqlDataAdapter(@"SELECT TOP 0 * FROM AbsencesJournal", ConnectionStrings.LightConnectionString))
             {
                 da.Fill(_absJournalDataTable);
             }
-            using (SqlDataAdapter da = new SqlDataAdapter(@"SELECT * FROM AbsenceTypes", ConnectionStrings.LightConnectionString))
+            using (var da = new SqlDataAdapter(@"SELECT * FROM AbsenceTypes", ConnectionStrings.LightConnectionString))
             {
                 da.Fill(_absTypesTable);
             }
-            using (SqlDataAdapter da = new SqlDataAdapter(@"SELECT TOP 0 * FROM ProductionShedule", ConnectionStrings.LightConnectionString))
+            using (var da = new SqlDataAdapter(@"SELECT TOP 0 * FROM ProductionShedule", ConnectionStrings.LightConnectionString))
             {
                 da.Fill(_prodSheduleDataTable);
             }
@@ -9437,10 +9477,10 @@ namespace Infinium
 
         public DataTable DayStartDate()
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT DayStartDateTime FROM WorkDays WHERE UserID = " + Security.CurrentUserID,
+            using (var DA = new SqlDataAdapter("SELECT DayStartDateTime FROM WorkDays WHERE UserID = " + Security.CurrentUserID,
                 ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                     return DT;
@@ -9451,7 +9491,7 @@ namespace Infinium
         public void GetTimesheet(int userId, int Yearint, int Monthint)
         {
             //using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM WorkDays WHERE DATEPART(year,DayStartD/*ateTime)=" + Yearint + " and DATEPART(month,DayStartDateTime)=" + Monthint + " and UserID = " + userId + " ORDER BY DayStartDateTime",
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM WorkDays WHERE DATEPART(year,DayStartDateTime)=" + Yearint + " and UserID = " + userId + " ORDER BY DayStartDateTime",
+            using (var DA = new SqlDataAdapter("SELECT * FROM WorkDays WHERE DATEPART(year,DayStartDateTime)=" + Yearint + " and UserID = " + userId + " ORDER BY DayStartDateTime",
                 ConnectionStrings.LightConnectionString))
             {
                 _timesheetDataTable.Clear();
@@ -9465,25 +9505,25 @@ namespace Infinium
             Ex = new Excel();
             Ex.NewDocument(1);
 
-            for (int i = 0; i < TimeSheetDataGrid.Columns.Count; i++)
+            for (var i = 0; i < TimeSheetDataGrid.Columns.Count; i++)
             {
                 Ex.WriteCell(1, TimeSheetDataGrid.Columns[i].HeaderText, 1, i + 1, 12, true);
                 Ex.SetHorisontalAlignment(1, 1, i + 1, Excel.AlignHorizontal.xlCenter);
                 Ex.SetBorderStyle(1, 1, i + 1, false, true, false, true, Excel.LineStyle.xlContinuous, Excel.BorderWeight.xlThin);
                 if (TimeSheetDataGrid.Columns[i].DefaultCellStyle.BackColor == Color.Yellow)
-                    for (int j = 0; j <= TimeSheetDataGrid.Rows.Count; j++)
+                    for (var j = 0; j <= TimeSheetDataGrid.Rows.Count; j++)
                         Ex.SetColor(1, j + 1, i + 1, Excel.Color.Yellow);
             }
 
-            for (int i = 1; i < TimeSheetDataGrid.Rows.Count + 1; i++)
+            for (var i = 1; i < TimeSheetDataGrid.Rows.Count + 1; i++)
             {
                 Ex.WriteCell(1, TimeSheetDataGrid.Rows[i - 1].Cells[0].Value, i + 1, 1, 12, true);
                 Ex.SetBorderStyle(1, i + 1, 1, false, true, false, true, Excel.LineStyle.xlContinuous, Excel.BorderWeight.xlThin);
             }
 
-            for (int i = 1; i < TimeSheetDataGrid.Rows.Count + 1; i++)
+            for (var i = 1; i < TimeSheetDataGrid.Rows.Count + 1; i++)
             {
-                for (int j = 1; j < TimeSheetDataGrid.Columns.Count - 1; j++)
+                for (var j = 1; j < TimeSheetDataGrid.Columns.Count - 1; j++)
                 {
                     if (TimeSheetDataGrid.Rows[i - 1].Cells[j].Value.ToString() != "")
                     {
@@ -9494,7 +9534,7 @@ namespace Infinium
                 }
             }
 
-            for (int i = 1; i < TimeSheetDataGrid.Rows.Count + 1; i++)
+            for (var i = 1; i < TimeSheetDataGrid.Rows.Count + 1; i++)
             {
                 if (TimeSheetDataGrid.Rows[i - 1].Cells[TimeSheetDataGrid.Columns.Count - 1].Value.ToString() != "")
                 {
@@ -9514,9 +9554,9 @@ namespace Infinium
             //using (SqlDataAdapter da = new SqlDataAdapter(@"SELECT * FROM AbsencesJournal WHERE" +
             //    " UserID=" + userId + " AND ((DATEPART(month, DateStart) = " + Monthint + " AND DATEPART(year, DateStart) = " + Yearint +
             //    ") OR (DATEPART(month, DateFinish) = " + Monthint + " AND DATEPART(year, DateFinish) = " + Yearint + "))",
-            using (SqlDataAdapter da = new SqlDataAdapter(@"SELECT * FROM AbsencesJournal WHERE" +
-                " UserID=" + userId + " AND ((DATEPART(year, DateStart) = " + Yearint +
-                ") OR (DATEPART(year, DateFinish) = " + Yearint + "))", ConnectionStrings.LightConnectionString))
+            using (var da = new SqlDataAdapter(@"SELECT * FROM AbsencesJournal WHERE" +
+                                               " UserID=" + userId + " AND ((DATEPART(year, DateStart) = " + Yearint +
+                                               ") OR (DATEPART(year, DateFinish) = " + Yearint + "))", ConnectionStrings.LightConnectionString))
             {
                 _absJournalDataTable.Clear();
                 da.Fill(_absJournalDataTable);
@@ -9525,22 +9565,22 @@ namespace Infinium
 
         private bool AbsenceInThatDay(DateTime date)
         {
-            int absenceTypeId = 0;
+            var absenceTypeId = 0;
             decimal absenceHour = 0;
-            bool b = false;
+            var b = false;
             _absDayDataTable.Clear();
 
-            for (int i = 0; i < _absJournalDataTable.Rows.Count; i++)
+            for (var i = 0; i < _absJournalDataTable.Rows.Count; i++)
             {
-                DateTime dateStart = Convert.ToDateTime(_absJournalDataTable.Rows[i]["DateStart"]);
-                DateTime dateFinish = Convert.ToDateTime(_absJournalDataTable.Rows[i]["DateFinish"]);
+                var dateStart = Convert.ToDateTime(_absJournalDataTable.Rows[i]["DateStart"]);
+                var dateFinish = Convert.ToDateTime(_absJournalDataTable.Rows[i]["DateFinish"]);
 
                 if (date.Date >= dateStart.Date && date.Date <= dateFinish.Date)
                 {
                     absenceTypeId = Convert.ToInt32(_absJournalDataTable.Rows[i]["AbsenceTypeID"]);
                     absenceHour = Convert.ToDecimal(_absJournalDataTable.Rows[i]["Hours"]);
                     b = true;
-                    DataRow dataRow = _absDayDataTable.NewRow();
+                    var dataRow = _absDayDataTable.NewRow();
                     dataRow["AbsenceTypeID"] = absenceTypeId;
                     dataRow["Hours"] = absenceHour;
                     _absDayDataTable.Rows.Add(dataRow);
@@ -9553,8 +9593,8 @@ namespace Infinium
         
         public bool IsAbsenceVacation(DateTime date)
         {
-            int absenceTypeId = 0;
-            bool b = false;
+            var absenceTypeId = 0;
+            var b = false;
 
             if (_timesheetDataTable.Rows.Count == 0)
                 return false;
@@ -9562,10 +9602,10 @@ namespace Infinium
             DateTime LastDateTime;
             LastDateTime = (DateTime)_timesheetDataTable.Rows[_timesheetDataTable.Rows.Count - 1]["DayStartDateTime"];
 
-            for (int i = 0; i < _absJournalDataTable.Rows.Count; i++)
+            for (var i = 0; i < _absJournalDataTable.Rows.Count; i++)
             {
-                DateTime dateStart = Convert.ToDateTime(_absJournalDataTable.Rows[i]["DateStart"]);
-                DateTime dateFinish = Convert.ToDateTime(_absJournalDataTable.Rows[i]["DateFinish"]);
+                var dateStart = Convert.ToDateTime(_absJournalDataTable.Rows[i]["DateStart"]);
+                var dateFinish = Convert.ToDateTime(_absJournalDataTable.Rows[i]["DateFinish"]);
 
                 if (LastDateTime.Date >= dateStart.Date && LastDateTime.Date <= dateFinish.Date)
                 {
@@ -9577,15 +9617,28 @@ namespace Infinium
             return b;
         }
 
+        public (bool, DateTime) GetLastDateTime()
+        {
+            bool b = false;
+            DateTime LastDateTime = default;
+            if (_timesheetDataTable.Rows.Count > 0)
+            {
+                b = true;
+                LastDateTime = (DateTime)_timesheetDataTable.Rows[_timesheetDataTable.Rows.Count - 1]["DayStartDateTime"];
+            }
+
+            return (b, LastDateTime);
+        }
+
         private Tuple<bool, decimal, decimal, decimal, bool> WorkdayInThatDay(DateTime date)
         {
             decimal TimeWorkHours = 0;
             decimal TimeBreakHours = 0;
             decimal TimesheetHours = 0;
-            bool saved = false;
-            bool b = false;
+            var saved = false;
+            var b = false;
 
-            for (int i = 0; i < _timesheetDataTable.Rows.Count; i++)
+            for (var i = 0; i < _timesheetDataTable.Rows.Count; i++)
             {
                 if (_timesheetDataTable.Rows[i]["DayEndDateTime"] == DBNull.Value) //если рабочий день не закончен
                     continue;
@@ -9620,7 +9673,7 @@ namespace Infinium
                 break;
             }
 
-            Tuple<bool, decimal, decimal, decimal, bool> tuple = new Tuple<bool, decimal, decimal, decimal, bool>(b, TimeWorkHours, TimeBreakHours, TimesheetHours, saved);
+            var tuple = new Tuple<bool, decimal, decimal, decimal, bool>(b, TimeWorkHours, TimeBreakHours, TimesheetHours, saved);
             return tuple;
         }
 
@@ -9638,7 +9691,7 @@ namespace Infinium
             decimal OverworkHours = 0; // переработка
             decimal AllOvertimeHours = 0; // все сверурочные часы
 
-            for (int i = 0; i < _prodSheduleDataTable.Rows.Count; i++)
+            for (var i = 0; i < _prodSheduleDataTable.Rows.Count; i++)
             {
                 if (Convert.ToInt32(_prodSheduleDataTable.Rows[i]["Day"]) > DateTime.DaysInMonth(Yearint, Convert.ToInt32(_prodSheduleDataTable.Rows[i]["Month"])))
                     continue;
@@ -9648,27 +9701,27 @@ namespace Infinium
 
                 AbsenteeismHours = 0;
                 OvertimeHours = 0;
-                DateTime date = new DateTime(Yearint, Convert.ToInt32(_prodSheduleDataTable.Rows[i]["Month"]), Convert.ToInt32(_prodSheduleDataTable.Rows[i]["Day"]));
+                var date = new DateTime(Yearint, Convert.ToInt32(_prodSheduleDataTable.Rows[i]["Month"]), Convert.ToInt32(_prodSheduleDataTable.Rows[i]["Day"]));
 
-                bool isAbsence = AbsenceInThatDay(date);
+                var isAbsence = AbsenceInThatDay(date);
                 decimal absenceHour = 0;
-                string AbsenceShortName = string.Empty;
-                string AbsenceFullName = string.Empty;
+                var AbsenceShortName = string.Empty;
+                var AbsenceFullName = string.Empty;
                 decimal AbsenceHours = 0;
 
-                Tuple<bool, decimal, decimal, decimal, bool> workdayTuple = WorkdayInThatDay(date);
-                bool isWorkday = workdayTuple.Item1;
-                decimal workHours = workdayTuple.Item2;
-                decimal breakHours = workdayTuple.Item3;
-                decimal timesheetHours = workdayTuple.Item4;
-                bool saved = workdayTuple.Item5;
-                decimal factHours = workHours - breakHours;
+                var workdayTuple = WorkdayInThatDay(date);
+                var isWorkday = workdayTuple.Item1;
+                var workHours = workdayTuple.Item2;
+                var breakHours = workdayTuple.Item3;
+                var timesheetHours = workdayTuple.Item4;
+                var saved = workdayTuple.Item5;
+                var factHours = workHours - breakHours;
 
-                decimal prodSheduleHours = GetHourInProdShedule(date) * Rate;
+                var prodSheduleHours = GetHourInProdShedule(date) * Rate;
 
-                for (int j = 0; j < _absDayDataTable.Rows.Count; j++)
+                for (var j = 0; j < _absDayDataTable.Rows.Count; j++)
                 {
-                    int absenceTypeId = Convert.ToInt32(_absDayDataTable.Rows[j]["AbsenceTypeID"]);
+                    var absenceTypeId = Convert.ToInt32(_absDayDataTable.Rows[j]["AbsenceTypeID"]);
                     absenceHour = Convert.ToDecimal(_absDayDataTable.Rows[j]["Hours"]);
                     AbsenceShortName += GetAbsenceShortName(absenceTypeId) + " ";
                     AbsenceFullName += string.Format("{0}/({1})", GetAbsenceShortName(absenceTypeId), Convert.ToDecimal(absenceHour.ToString("0.####"))) + " ";
@@ -9721,7 +9774,7 @@ namespace Infinium
                     OverworkHours = 0;
                 }
 
-                TimesheetInfo dayInfo = new TimesheetInfo
+                var dayInfo = new TimesheetInfo
                 {
                     AllAbsenteeismHours = AllAbsenteeismHours,
                     AllAbsenceHours = AllAbsenceHours,
@@ -9751,7 +9804,7 @@ namespace Infinium
 
         public TimesheetInfo GetDayInfo(DateTime date)
         {
-            TimesheetInfo dayInfo = new TimesheetInfo();
+            var dayInfo = new TimesheetInfo();
             dayInfo = Labels.Find(item => item.Date == date);
             return dayInfo;
         }
@@ -9760,8 +9813,8 @@ namespace Infinium
         {
             //using (SqlDataAdapter da = new SqlDataAdapter(@"SELECT * FROM ProductionShedule WHERE" +
             //    " Year = " + Yearint + " and Month = " + Monthint, ConnectionStrings.LightConnectionString))
-            using (SqlDataAdapter da = new SqlDataAdapter(@"SELECT * FROM ProductionShedule WHERE" +
-                " Year = " + Yearint, ConnectionStrings.LightConnectionString))
+            using (var da = new SqlDataAdapter(@"SELECT * FROM ProductionShedule WHERE" +
+                                               " Year = " + Yearint, ConnectionStrings.LightConnectionString))
             {
                 _prodSheduleDataTable.Clear();
                 da.Fill(_prodSheduleDataTable);
@@ -9770,8 +9823,8 @@ namespace Infinium
 
         private string GetAbsenceFullName(int id)
         {
-            string name = string.Empty;
-            DataRow[] rows = _absTypesTable.Select("AbsenceTypeID = " + id);
+            var name = string.Empty;
+            var rows = _absTypesTable.Select("AbsenceTypeID = " + id);
             if (rows.Count() > 0)
                 name = rows[0]["Description"].ToString();
             return name;
@@ -9779,8 +9832,8 @@ namespace Infinium
 
         private string GetAbsenceShortName(int id)
         {
-            string name = string.Empty;
-            DataRow[] rows = _absTypesTable.Select("AbsenceTypeID = " + id);
+            var name = string.Empty;
+            var rows = _absTypesTable.Select("AbsenceTypeID = " + id);
             if (rows.Count() > 0)
                 name = rows[0]["ShortName"].ToString();
             return name;
@@ -9788,8 +9841,8 @@ namespace Infinium
 
         private int GetHourInProdShedule(DateTime date)
         {
-            int hour = -1;
-            DataRow[] rows = _prodSheduleDataTable.Select("Year = " + date.Year + " AND Month=" + date.Month + " AND Day=" + date.Day);
+            var hour = -1;
+            var rows = _prodSheduleDataTable.Select("Year = " + date.Year + " AND Month=" + date.Month + " AND Day=" + date.Day);
             if (rows.Count() > 0)
                 hour = Convert.ToInt32(rows[0]["Hour"]);
             return hour;
@@ -9797,12 +9850,12 @@ namespace Infinium
 
         public void GetRate(int userId)
         {
-            string MyQueryText = @"SELECT StaffListID, FactoryID, PositionID, UserID, Rate FROM StaffList
+            var MyQueryText = @"SELECT StaffListID, FactoryID, PositionID, UserID, Rate FROM StaffList
                 WHERE UserID=" + userId;
 
-            using (SqlDataAdapter da = new SqlDataAdapter(MyQueryText, ConnectionStrings.LightConnectionString))
+            using (var da = new SqlDataAdapter(MyQueryText, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable dt = new DataTable())
+                using (var dt = new DataTable())
                 {
                     Rate = 0;
                     if (da.Fill(dt) == 1)
@@ -9870,12 +9923,12 @@ namespace Infinium
             _workDaysDataTable.Columns.Add(new DataColumn("FactHours", Type.GetType("System.Decimal")));
             _workDaysDataTable.Columns.Add(new DataColumn("OverworkHours", Type.GetType("System.Decimal")));
             _workDaysDataTable.Columns.Add(new DataColumn("FactOverworkHours", Type.GetType("System.Decimal")));
-            DataColumn column1 = new DataColumn("IsWorkDay")
+            var column1 = new DataColumn("IsWorkDay")
             {
                 DataType = Type.GetType("System.Boolean"),
                 DefaultValue = 0
             };
-            DataColumn column2 = new DataColumn("IsAbsence")
+            var column2 = new DataColumn("IsAbsence")
             {
                 DataType = Type.GetType("System.Boolean"),
                 DefaultValue = 0
@@ -9890,20 +9943,20 @@ namespace Infinium
 
         private void Fill()
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 WorkDays.*, U.Name, U.ShortName FROM WorkDays INNER JOIN infiniu2_users.dbo.Users as U ON WorkDays.UserID=U.UserID",
+            using (var DA = new SqlDataAdapter("SELECT TOP 0 WorkDays.*, U.Name, U.ShortName FROM WorkDays INNER JOIN infiniu2_users.dbo.Users as U ON WorkDays.UserID=U.UserID",
                 ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(_timesheetDataTable);
             }
-            using (SqlDataAdapter da = new SqlDataAdapter(@"SELECT TOP 0 * FROM AbsencesJournal", ConnectionStrings.LightConnectionString))
+            using (var da = new SqlDataAdapter(@"SELECT TOP 0 * FROM AbsencesJournal", ConnectionStrings.LightConnectionString))
             {
                 da.Fill(_absJournalDataTable);
             }
-            using (SqlDataAdapter da = new SqlDataAdapter(@"SELECT * FROM AbsenceTypes", ConnectionStrings.LightConnectionString))
+            using (var da = new SqlDataAdapter(@"SELECT * FROM AbsenceTypes", ConnectionStrings.LightConnectionString))
             {
                 da.Fill(_absTypesTable);
             }
-            using (SqlDataAdapter da = new SqlDataAdapter(@"SELECT TOP 0 * FROM ProductionShedule", ConnectionStrings.LightConnectionString))
+            using (var da = new SqlDataAdapter(@"SELECT TOP 0 * FROM ProductionShedule", ConnectionStrings.LightConnectionString))
             {
                 da.Fill(_prodSheduleDataTable);
             }
@@ -9911,7 +9964,7 @@ namespace Infinium
 
         private void GetTimesheet(int Yearint, int Monthint)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT WorkDays.*, U.Name, U.ShortName FROM WorkDays INNER JOIN infiniu2_users.dbo.Users as U ON WorkDays.UserID=U.UserID WHERE DATEPART(year,DayStartDateTime)=" + Yearint + " and DATEPART(month,DayStartDateTime)=" + Monthint + " ORDER BY DayStartDateTime",
+            using (var DA = new SqlDataAdapter("SELECT WorkDays.*, U.Name, U.ShortName FROM WorkDays INNER JOIN infiniu2_users.dbo.Users as U ON WorkDays.UserID=U.UserID WHERE DATEPART(year,DayStartDateTime)=" + Yearint + " and DATEPART(month,DayStartDateTime)=" + Monthint + " ORDER BY DayStartDateTime",
             //using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM WorkDays WHERE DATEPART(year,DayStartDateTime)=" + Yearint + " and UserID = " + userId + " ORDER BY DayStartDateTime",
                 ConnectionStrings.LightConnectionString))
             {
@@ -9923,7 +9976,7 @@ namespace Infinium
         private void GetUsers()
         {
             _usersDataTable.Clear();
-            using (DataView DV = new DataView(_timesheetDataTable, string.Empty, "ShortName", DataViewRowState.CurrentRows))
+            using (var DV = new DataView(_timesheetDataTable, string.Empty, "ShortName", DataViewRowState.CurrentRows))
             {
                 _usersDataTable = DV.ToTable(true, "UserID", "ShortName");
             }
@@ -9931,7 +9984,7 @@ namespace Infinium
 
         public void CreateUsersList(int Yearint, int Monthint, DateTime dateToday)
         {
-            int currentMonth = 1;
+            var currentMonth = 1;
             yearTimesheets = new List<OneMonthTimesheet>();
             while (currentMonth <= Monthint)
             {
@@ -9939,27 +9992,27 @@ namespace Infinium
                 GetUsers();
                 GetProdShedule(Yearint, currentMonth);
 
-                int AllProdHours = 0;
+                var AllProdHours = 0;
                 monthTimesheet = new List<UserTimesheetInfo>();
-                for (int i = 0; i < _usersDataTable.Rows.Count; i++)
+                for (var i = 0; i < _usersDataTable.Rows.Count; i++)
                 {
-                    int UserID = Convert.ToInt32(_usersDataTable.Rows[i]["UserID"]);
-                    string ShortName = _usersDataTable.Rows[i]["ShortName"].ToString();
+                    var UserID = Convert.ToInt32(_usersDataTable.Rows[i]["UserID"]);
+                    var ShortName = _usersDataTable.Rows[i]["ShortName"].ToString();
 
-                    Tuple<string, int, int, decimal> staffInfoTuple = StaffInfo(UserID);
+                    var staffInfoTuple = StaffInfo(UserID);
 
-                    string PositionName = staffInfoTuple.Item1;
-                    int PositionID = staffInfoTuple.Item2;
-                    int Rank = staffInfoTuple.Item3;
-                    decimal Rate = staffInfoTuple.Item4;
+                    var PositionName = staffInfoTuple.Item1;
+                    var PositionID = staffInfoTuple.Item2;
+                    var Rank = staffInfoTuple.Item3;
+                    var Rate = staffInfoTuple.Item4;
 
                     GetAbsJournal(UserID, Yearint, currentMonth);
-                    DataTable table = GetWorkDaysTable(UserID, Rate, Yearint, currentMonth, dateToday);
-                    int AllTimesheetDays = 0;
+                    var table = GetWorkDaysTable(UserID, Rate, Yearint, currentMonth, dateToday);
+                    var AllTimesheetDays = 0;
                     decimal AllTimesheetHours = 0;
                     decimal AllFactHours = 0;
                     AllProdHours = 0;
-                    for (int x = 0; x < table.Rows.Count; x++)
+                    for (var x = 0; x < table.Rows.Count; x++)
                     {
                         if (Convert.ToBoolean(table.Rows[x]["IsWorkday"]))
                             AllTimesheetDays++;
@@ -9967,14 +10020,14 @@ namespace Infinium
                         AllTimesheetHours += Convert.ToDecimal(table.Rows[x]["TimesheetHours"]);
                         AllFactHours += Convert.ToDecimal(table.Rows[x]["FactHours"]);
                     }
-                    decimal AllOverworkHours = Convert.ToDecimal(table.Rows[table.Rows.Count - 1]["OverworkHours"]);
-                    decimal AllFactOverworkHours = Convert.ToDecimal(table.Rows[table.Rows.Count - 1]["FactOverworkHours"]);
+                    var AllOverworkHours = Convert.ToDecimal(table.Rows[table.Rows.Count - 1]["OverworkHours"]);
+                    var AllFactOverworkHours = Convert.ToDecimal(table.Rows[table.Rows.Count - 1]["FactOverworkHours"]);
                     AllTimesheetHours = Convert.ToDecimal(AllTimesheetHours.ToString("0.####"));
                     AllFactHours = Convert.ToDecimal(AllFactHours.ToString("0.####"));
                     AllOverworkHours = Convert.ToDecimal(AllOverworkHours.ToString("0.####"));
                     AllFactOverworkHours = Convert.ToDecimal(AllFactOverworkHours.ToString("0.####"));
 
-                    UserTimesheetInfo timesheetInfo = new UserTimesheetInfo
+                    var timesheetInfo = new UserTimesheetInfo
                     {
                         UserID = UserID,
                         Name = ShortName,
@@ -9993,7 +10046,7 @@ namespace Infinium
                     monthTimesheet.Add(timesheetInfo);
                 }
 
-                OneMonthTimesheet oneMonthTimesheet = new OneMonthTimesheet
+                var oneMonthTimesheet = new OneMonthTimesheet
                 {
                     Month = currentMonth,
                     Year = Yearint,
@@ -10011,9 +10064,9 @@ namespace Infinium
         {
             //int Monthint = Convert.ToDateTime(month + " " + year).Month;
             //int Yearint = Convert.ToInt32(year);
-            using (SqlDataAdapter da = new SqlDataAdapter(@"SELECT * FROM AbsencesJournal WHERE" +
-                " UserID=" + userId + " AND ((DATEPART(month, DateStart) = " + Monthint + " AND DATEPART(year, DateStart) = " + Yearint +
-                ") OR (DATEPART(month, DateFinish) = " + Monthint + " AND DATEPART(year, DateFinish) = " + Yearint + "))", ConnectionStrings.LightConnectionString))
+            using (var da = new SqlDataAdapter(@"SELECT * FROM AbsencesJournal WHERE" +
+                                               " UserID=" + userId + " AND ((DATEPART(month, DateStart) = " + Monthint + " AND DATEPART(year, DateStart) = " + Yearint +
+                                               ") OR (DATEPART(month, DateFinish) = " + Monthint + " AND DATEPART(year, DateFinish) = " + Yearint + "))", ConnectionStrings.LightConnectionString))
             {
                 _absJournalDataTable.Clear();
                 da.Fill(_absJournalDataTable);
@@ -10022,15 +10075,15 @@ namespace Infinium
 
         private bool AbsenceInThatDay(DateTime date)
         {
-            int absenceTypeId = 0;
+            var absenceTypeId = 0;
             decimal absenceHour = 0;
-            bool b = false;
+            var b = false;
             _absDayDataTable.Clear();
 
-            for (int i = 0; i < _absJournalDataTable.Rows.Count; i++)
+            for (var i = 0; i < _absJournalDataTable.Rows.Count; i++)
             {
-                DateTime dateStart = Convert.ToDateTime(_absJournalDataTable.Rows[i]["DateStart"]);
-                DateTime dateFinish = Convert.ToDateTime(_absJournalDataTable.Rows[i]["DateFinish"]);
+                var dateStart = Convert.ToDateTime(_absJournalDataTable.Rows[i]["DateStart"]);
+                var dateFinish = Convert.ToDateTime(_absJournalDataTable.Rows[i]["DateFinish"]);
 
                 if (date.Date >= dateStart.Date && date.Date <= dateFinish.Date)
                 {
@@ -10038,7 +10091,7 @@ namespace Infinium
                     absenceHour = Convert.ToDecimal(_absJournalDataTable.Rows[i]["Hours"]);
                     if (absenceTypeId != 14)
                         b = true;
-                    DataRow dataRow = _absDayDataTable.NewRow();
+                    var dataRow = _absDayDataTable.NewRow();
                     dataRow["AbsenceTypeID"] = absenceTypeId;
                     dataRow["Hours"] = absenceHour;
                     _absDayDataTable.Rows.Add(dataRow);
@@ -10053,9 +10106,9 @@ namespace Infinium
         {
             decimal TimesheetHours = 0;
             decimal factHours = 0;
-            bool b = false;
+            var b = false;
 
-            for (int i = 0; i < _timesheetDataTable.Rows.Count; i++)
+            for (var i = 0; i < _timesheetDataTable.Rows.Count; i++)
             {
                 if (Convert.ToInt32(_timesheetDataTable.Rows[i]["UserID"]) != UserID)
                     continue;
@@ -10070,8 +10123,8 @@ namespace Infinium
                 if (DayStartDateTime.Date != date.Date) //если не тот рабочий день
                     continue;
 
-                TimeSpan TimeWork = DayEndDateTime.TimeOfDay - DayStartDateTime.TimeOfDay;
-                decimal TimeWorkHours = (decimal)Math.Round(TimeWork.TotalHours, 1);
+                var TimeWork = DayEndDateTime.TimeOfDay - DayStartDateTime.TimeOfDay;
+                var TimeWorkHours = (decimal)Math.Round(TimeWork.TotalHours, 1);
                 decimal TimeBreakHours = 0;
                 if (_timesheetDataTable.Rows[i]["DayBreakStartDateTime"] != DBNull.Value && _timesheetDataTable.Rows[i]["DayBreakEndDateTime"] != DBNull.Value) //если  был обед
                 {
@@ -10092,13 +10145,13 @@ namespace Infinium
                 break;
             }
 
-            Tuple<bool, decimal, decimal> tuple = new Tuple<bool, decimal, decimal>(b, factHours, TimesheetHours);
+            var tuple = new Tuple<bool, decimal, decimal>(b, factHours, TimesheetHours);
             return tuple;
         }
 
         public DataTable GetWorkDaysTable(int UserID, decimal Rate, int Yearint, int Monthint, DateTime dateToday)
         {
-            DataTable table = _workDaysDataTable.Clone();
+            var table = _workDaysDataTable.Clone();
 
             decimal AllTimesheetHours = 0; // по табелю до сегодняшнего дня
             decimal AllFactHours = 0; // отработано до сегодняшнего дня
@@ -10107,25 +10160,25 @@ namespace Infinium
             decimal OverworkHours = 0; // переработка
             decimal FactOverworkHours = 0; // переработка факт
 
-            for (int i = 0; i < _prodSheduleDataTable.Rows.Count; i++)
+            for (var i = 0; i < _prodSheduleDataTable.Rows.Count; i++)
             {
                 if (Convert.ToInt32(_prodSheduleDataTable.Rows[i]["Day"]) > DateTime.DaysInMonth(Yearint, Monthint))
                     continue;
 
-                DateTime date = new DateTime(Yearint, Monthint, Convert.ToInt32(_prodSheduleDataTable.Rows[i]["Day"]));
+                var date = new DateTime(Yearint, Monthint, Convert.ToInt32(_prodSheduleDataTable.Rows[i]["Day"]));
 
                 if (date == dateToday.Date) //если это выбранный день
                     break;
 
-                bool isAbsence = AbsenceInThatDay(date);
+                var isAbsence = AbsenceInThatDay(date);
                 decimal absenceHour = 0;
-                string AbsenceShortName = string.Empty;
-                string AbsenceFullName = string.Empty;
+                var AbsenceShortName = string.Empty;
+                var AbsenceFullName = string.Empty;
                 //decimal AbsenceHours = 0;
 
-                for (int j = 0; j < _absDayDataTable.Rows.Count; j++)
+                for (var j = 0; j < _absDayDataTable.Rows.Count; j++)
                 {
-                    int absenceTypeId = Convert.ToInt32(_absDayDataTable.Rows[j]["AbsenceTypeID"]);
+                    var absenceTypeId = Convert.ToInt32(_absDayDataTable.Rows[j]["AbsenceTypeID"]);
                     absenceHour = Convert.ToDecimal(_absDayDataTable.Rows[j]["Hours"]);
                     AbsenceShortName += GetAbsenceShortName(absenceTypeId) + " ";
                     AbsenceFullName += string.Format("{0}/({1})", GetAbsenceShortName(absenceTypeId), Convert.ToDecimal(absenceHour.ToString("0.####"))) + " ";
@@ -10136,12 +10189,12 @@ namespace Infinium
                     }
                 }
 
-                Tuple<bool, decimal, decimal> workdayTuple = WorkdayInThatDay(UserID, date);
-                bool isWorkday = workdayTuple.Item1;
-                decimal factHours = workdayTuple.Item2;
-                decimal timesheetHours = workdayTuple.Item3;
+                var workdayTuple = WorkdayInThatDay(UserID, date);
+                var isWorkday = workdayTuple.Item1;
+                var factHours = workdayTuple.Item2;
+                var timesheetHours = workdayTuple.Item3;
 
-                decimal prodSheduleHours = Convert.ToInt32(_prodSheduleDataTable.Rows[i]["Hour"]) * Rate;
+                var prodSheduleHours = Convert.ToInt32(_prodSheduleDataTable.Rows[i]["Hour"]) * Rate;
 
                 if (date == dateToday.Date) //если это выбранный день
                 {
@@ -10156,7 +10209,7 @@ namespace Infinium
                     FactOverworkHours = AllFactHours - AllPlanHours + AllAbsenceHours;
                 }
 
-                DataRow newRow = table.NewRow();
+                var newRow = table.NewRow();
                 newRow["Date"] = date.Date;
                 if (Convert.ToInt32(_prodSheduleDataTable.Rows[i]["Hour"]) == 0) // если это выходной
                 {
@@ -10186,15 +10239,15 @@ namespace Infinium
 
         public UserTimesheetInfo GetDayInfo(int UserID)
         {
-            UserTimesheetInfo userInfo = new UserTimesheetInfo();
+            var userInfo = new UserTimesheetInfo();
             userInfo = monthTimesheet.Find(item => item.UserID == UserID);
             return userInfo;
         }
 
         public void GetProdShedule(int Yearint, int Monthint)
         {
-            using (SqlDataAdapter da = new SqlDataAdapter(@"SELECT * FROM ProductionShedule WHERE" +
-                " Year = " + Yearint + " and Month = " + Monthint, ConnectionStrings.LightConnectionString))
+            using (var da = new SqlDataAdapter(@"SELECT * FROM ProductionShedule WHERE" +
+                                               " Year = " + Yearint + " and Month = " + Monthint, ConnectionStrings.LightConnectionString))
             //using (SqlDataAdapter da = new SqlDataAdapter(@"SELECT * FROM ProductionShedule WHERE" +
             //    " Year = " + Yearint, ConnectionStrings.LightConnectionString))
             {
@@ -10205,8 +10258,8 @@ namespace Infinium
 
         private string GetAbsenceFullName(int id)
         {
-            string name = string.Empty;
-            DataRow[] rows = _absTypesTable.Select("AbsenceTypeID = " + id);
+            var name = string.Empty;
+            var rows = _absTypesTable.Select("AbsenceTypeID = " + id);
             if (rows.Count() > 0)
                 name = rows[0]["Description"].ToString();
             return name;
@@ -10214,8 +10267,8 @@ namespace Infinium
 
         private string GetAbsenceShortName(int id)
         {
-            string name = string.Empty;
-            DataRow[] rows = _absTypesTable.Select("AbsenceTypeID = " + id);
+            var name = string.Empty;
+            var rows = _absTypesTable.Select("AbsenceTypeID = " + id);
             if (rows.Count() > 0)
                 name = rows[0]["ShortName"].ToString();
             return name;
@@ -10223,8 +10276,8 @@ namespace Infinium
 
         private int GetHourInProdShedule(DateTime date)
         {
-            int hour = -1;
-            DataRow[] rows = _prodSheduleDataTable.Select("Year = " + date.Year + " AND Month=" + date.Month + " AND Day=" + date.Day);
+            var hour = -1;
+            var rows = _prodSheduleDataTable.Select("Year = " + date.Year + " AND Month=" + date.Month + " AND Day=" + date.Day);
             if (rows.Count() > 0)
                 hour = Convert.ToInt32(rows[0]["Hour"]);
             return hour;
@@ -10232,17 +10285,17 @@ namespace Infinium
 
         public Tuple<string, int, int, decimal> StaffInfo(int userId)
         {
-            string MyQueryText = @"SELECT StaffListID, FactoryID, StaffList.PositionID, Positions.Position, UserID, Rate, Rank FROM StaffList INNER JOIN Positions ON StaffList.PositionID=Positions.PositionID
+            var MyQueryText = @"SELECT StaffListID, FactoryID, StaffList.PositionID, Positions.Position, UserID, Rate, Rank FROM StaffList INNER JOIN Positions ON StaffList.PositionID=Positions.PositionID
                 WHERE FactoryId=1 AND UserID=" + userId;
 
-            string PositionName = string.Empty;
-            int PositionID = 0;
-            int Rank = 0;
+            var PositionName = string.Empty;
+            var PositionID = 0;
+            var Rank = 0;
             decimal Rate = 0;
 
-            using (SqlDataAdapter da = new SqlDataAdapter(MyQueryText, ConnectionStrings.LightConnectionString))
+            using (var da = new SqlDataAdapter(MyQueryText, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable dt = new DataTable())
+                using (var dt = new DataTable())
                 {
                     if (da.Fill(dt) > 0)
                     {
@@ -10260,7 +10313,7 @@ namespace Infinium
                     //}
                 }
             }
-            Tuple<string, int, int, decimal> tuple = new Tuple<string, int, int, decimal>(PositionName, PositionID, Rank, Rate);
+            var tuple = new Tuple<string, int, int, decimal>(PositionName, PositionID, Rank, Rate);
             return tuple;
         }
 
@@ -10313,24 +10366,24 @@ namespace Infinium
 
         public void CreateReport(int Yearint, int Monthint, ResultTimesheet resultTimesheet)
         {
-            HSSFWorkbook hssfworkbook = new HSSFWorkbook();
+            var hssfworkbook = new HSSFWorkbook();
 
             #region Create fonts and styles
 
-            HSSFFont HeaderF = hssfworkbook.CreateFont();
+            var HeaderF = hssfworkbook.CreateFont();
             HeaderF.FontHeightInPoints = 11;
             HeaderF.FontName = "Times New Roman";
 
-            HSSFFont SimpleF = hssfworkbook.CreateFont();
+            var SimpleF = hssfworkbook.CreateFont();
             SimpleF.FontHeightInPoints = 11;
             SimpleF.FontName = "Times New Roman";
 
-            HSSFFont SimpleBoldF = hssfworkbook.CreateFont();
+            var SimpleBoldF = hssfworkbook.CreateFont();
             SimpleBoldF.FontHeightInPoints = 11;
             SimpleBoldF.Boldweight = 11 * 256;
             SimpleBoldF.FontName = "Times New Roman";
 
-            HSSFCellStyle SimpleTopBorderCS = hssfworkbook.CreateCellStyle();
+            var SimpleTopBorderCS = hssfworkbook.CreateCellStyle();
             SimpleTopBorderCS.VerticalAlignment = HSSFCellStyle.VERTICAL_CENTER;
             SimpleTopBorderCS.Alignment = HSSFCellStyle.ALIGN_CENTER;
             SimpleTopBorderCS.BorderBottom = HSSFCellStyle.BORDER_THIN;
@@ -10344,7 +10397,7 @@ namespace Infinium
             SimpleTopBorderCS.WrapText = true;
             SimpleTopBorderCS.SetFont(SimpleF);
 
-            HSSFCellStyle SimpleBottomBorderCS = hssfworkbook.CreateCellStyle();
+            var SimpleBottomBorderCS = hssfworkbook.CreateCellStyle();
             SimpleBottomBorderCS.DataFormat = HSSFDataFormat.GetBuiltinFormat("0.0");
             SimpleBottomBorderCS.VerticalAlignment = HSSFCellStyle.VERTICAL_CENTER;
             SimpleBottomBorderCS.Alignment = HSSFCellStyle.ALIGN_CENTER;
@@ -10359,7 +10412,7 @@ namespace Infinium
             SimpleBottomBorderCS.WrapText = true;
             SimpleBottomBorderCS.SetFont(SimpleBoldF);
 
-            HSSFCellStyle MainWithBorderCS = hssfworkbook.CreateCellStyle();
+            var MainWithBorderCS = hssfworkbook.CreateCellStyle();
             MainWithBorderCS.VerticalAlignment = HSSFCellStyle.VERTICAL_CENTER;
             MainWithBorderCS.Alignment = HSSFCellStyle.ALIGN_CENTER;
             MainWithBorderCS.BorderBottom = HSSFCellStyle.BORDER_MEDIUM;
@@ -10372,12 +10425,12 @@ namespace Infinium
             MainWithBorderCS.TopBorderColor = HSSFColor.BLACK.index;
             MainWithBorderCS.SetFont(SimpleF);
 
-            HSSFCellStyle MainWithoutBorderCS = hssfworkbook.CreateCellStyle();
+            var MainWithoutBorderCS = hssfworkbook.CreateCellStyle();
             MainWithoutBorderCS.VerticalAlignment = HSSFCellStyle.VERTICAL_CENTER;
             MainWithoutBorderCS.Alignment = HSSFCellStyle.ALIGN_CENTER;
             MainWithoutBorderCS.SetFont(SimpleF);
 
-            HSSFCellStyle NameCS = hssfworkbook.CreateCellStyle();
+            var NameCS = hssfworkbook.CreateCellStyle();
             NameCS.VerticalAlignment = HSSFCellStyle.VERTICAL_CENTER;
             NameCS.Alignment = HSSFCellStyle.ALIGN_LEFT;
             NameCS.BorderBottom = HSSFCellStyle.BORDER_THIN;
@@ -10390,7 +10443,7 @@ namespace Infinium
             NameCS.TopBorderColor = HSSFColor.BLACK.index;
             NameCS.SetFont(SimpleF);
 
-            HSSFCellStyle SerialNumberCS = hssfworkbook.CreateCellStyle();
+            var SerialNumberCS = hssfworkbook.CreateCellStyle();
             SerialNumberCS.VerticalAlignment = HSSFCellStyle.VERTICAL_CENTER;
             SerialNumberCS.Alignment = HSSFCellStyle.ALIGN_CENTER;
             SerialNumberCS.BorderBottom = HSSFCellStyle.BORDER_MEDIUM;
@@ -10403,7 +10456,7 @@ namespace Infinium
             SerialNumberCS.TopBorderColor = HSSFColor.BLACK.index;
             SerialNumberCS.SetFont(SimpleF);
 
-            HSSFCellStyle PositionCS = hssfworkbook.CreateCellStyle();
+            var PositionCS = hssfworkbook.CreateCellStyle();
             PositionCS.VerticalAlignment = HSSFCellStyle.VERTICAL_CENTER;
             PositionCS.Alignment = HSSFCellStyle.ALIGN_LEFT;
             PositionCS.BorderBottom = HSSFCellStyle.BORDER_MEDIUM;
@@ -10416,7 +10469,7 @@ namespace Infinium
             PositionCS.TopBorderColor = HSSFColor.BLACK.index;
             PositionCS.SetFont(SimpleF);
 
-            HSSFCellStyle SimpleCS = hssfworkbook.CreateCellStyle();
+            var SimpleCS = hssfworkbook.CreateCellStyle();
             SimpleCS.VerticalAlignment = HSSFCellStyle.VERTICAL_CENTER;
             SimpleCS.Alignment = HSSFCellStyle.ALIGN_CENTER;
             SimpleCS.DataFormat = HSSFDataFormat.GetBuiltinFormat("0.0");
@@ -10430,7 +10483,7 @@ namespace Infinium
             SimpleCS.TopBorderColor = HSSFColor.BLACK.index;
             SimpleCS.SetFont(SimpleF);
 
-            HSSFCellStyle SimpleDecCS = hssfworkbook.CreateCellStyle();
+            var SimpleDecCS = hssfworkbook.CreateCellStyle();
             SimpleDecCS.VerticalAlignment = HSSFCellStyle.VERTICAL_CENTER;
             SimpleDecCS.Alignment = HSSFCellStyle.ALIGN_CENTER;
             SimpleDecCS.DataFormat = HSSFDataFormat.GetBuiltinFormat("0.0");
@@ -10444,7 +10497,7 @@ namespace Infinium
             SimpleDecCS.TopBorderColor = HSSFColor.BLACK.index;
             SimpleDecCS.SetFont(SimpleF);
 
-            HSSFCellStyle RateCS = hssfworkbook.CreateCellStyle();
+            var RateCS = hssfworkbook.CreateCellStyle();
             RateCS.VerticalAlignment = HSSFCellStyle.VERTICAL_CENTER;
             RateCS.Alignment = HSSFCellStyle.ALIGN_CENTER;
             RateCS.DataFormat = HSSFDataFormat.GetBuiltinFormat("0.000");
@@ -10458,7 +10511,7 @@ namespace Infinium
             RateCS.TopBorderColor = HSSFColor.BLACK.index;
             RateCS.SetFont(SimpleF);
 
-            HSSFCellStyle TimesheetHoursCS = hssfworkbook.CreateCellStyle();
+            var TimesheetHoursCS = hssfworkbook.CreateCellStyle();
             TimesheetHoursCS.VerticalAlignment = HSSFCellStyle.VERTICAL_CENTER;
             TimesheetHoursCS.Alignment = HSSFCellStyle.ALIGN_CENTER;
             TimesheetHoursCS.DataFormat = HSSFDataFormat.GetBuiltinFormat("0.000");
@@ -10472,7 +10525,7 @@ namespace Infinium
             TimesheetHoursCS.TopBorderColor = HSSFColor.BLACK.index;
             TimesheetHoursCS.SetFont(SimpleF);
 
-            HSSFCellStyle OutputTopBorderCS = hssfworkbook.CreateCellStyle();
+            var OutputTopBorderCS = hssfworkbook.CreateCellStyle();
             OutputTopBorderCS.VerticalAlignment = HSSFCellStyle.VERTICAL_CENTER;
             OutputTopBorderCS.Alignment = HSSFCellStyle.ALIGN_CENTER;
             OutputTopBorderCS.BorderBottom = HSSFCellStyle.BORDER_THIN;
@@ -10488,7 +10541,7 @@ namespace Infinium
             OutputTopBorderCS.FillBackgroundColor = HSSFColor.YELLOW.index;
             OutputTopBorderCS.SetFont(SimpleF);
 
-            HSSFCellStyle OutputBottomBorderCS = hssfworkbook.CreateCellStyle();
+            var OutputBottomBorderCS = hssfworkbook.CreateCellStyle();
             OutputBottomBorderCS.DataFormat = HSSFDataFormat.GetBuiltinFormat("0.0");
             OutputBottomBorderCS.VerticalAlignment = HSSFCellStyle.VERTICAL_CENTER;
             OutputBottomBorderCS.Alignment = HSSFCellStyle.ALIGN_CENTER;
@@ -10506,7 +10559,7 @@ namespace Infinium
             OutputBottomBorderCS.WrapText = true;
             OutputBottomBorderCS.SetFont(SimpleBoldF);
 
-            HSSFCellStyle AbsenceTopBorderCS = hssfworkbook.CreateCellStyle();
+            var AbsenceTopBorderCS = hssfworkbook.CreateCellStyle();
             AbsenceTopBorderCS.VerticalAlignment = HSSFCellStyle.VERTICAL_CENTER;
             AbsenceTopBorderCS.Alignment = HSSFCellStyle.ALIGN_CENTER;
             AbsenceTopBorderCS.BorderBottom = HSSFCellStyle.BORDER_THIN;
@@ -10522,7 +10575,7 @@ namespace Infinium
             AbsenceTopBorderCS.FillBackgroundColor = HSSFColor.YELLOW.index;
             AbsenceTopBorderCS.SetFont(SimpleF);
 
-            HSSFCellStyle AbsenceBottomBorderCS = hssfworkbook.CreateCellStyle();
+            var AbsenceBottomBorderCS = hssfworkbook.CreateCellStyle();
             AbsenceBottomBorderCS.DataFormat = HSSFDataFormat.GetBuiltinFormat("0.0");
             AbsenceBottomBorderCS.VerticalAlignment = HSSFCellStyle.VERTICAL_CENTER;
             AbsenceBottomBorderCS.Alignment = HSSFCellStyle.ALIGN_CENTER;
@@ -10540,7 +10593,7 @@ namespace Infinium
             AbsenceBottomBorderCS.WrapText = true;
             AbsenceBottomBorderCS.SetFont(SimpleBoldF);
 
-            HSSFCellStyle OutputHeaderTopBorderCS = hssfworkbook.CreateCellStyle();
+            var OutputHeaderTopBorderCS = hssfworkbook.CreateCellStyle();
             OutputHeaderTopBorderCS.VerticalAlignment = HSSFCellStyle.VERTICAL_CENTER;
             OutputHeaderTopBorderCS.Alignment = HSSFCellStyle.ALIGN_CENTER;
             OutputHeaderTopBorderCS.BorderBottom = HSSFCellStyle.BORDER_THIN;
@@ -10556,7 +10609,7 @@ namespace Infinium
             OutputHeaderTopBorderCS.FillBackgroundColor = HSSFColor.YELLOW.index;
             OutputHeaderTopBorderCS.SetFont(SimpleF);
 
-            HSSFCellStyle OutputHeaderBottomBorderCS = hssfworkbook.CreateCellStyle();
+            var OutputHeaderBottomBorderCS = hssfworkbook.CreateCellStyle();
             OutputHeaderBottomBorderCS.VerticalAlignment = HSSFCellStyle.VERTICAL_CENTER;
             OutputHeaderBottomBorderCS.Alignment = HSSFCellStyle.ALIGN_CENTER;
             OutputHeaderBottomBorderCS.BorderBottom = HSSFCellStyle.BORDER_MEDIUM;
@@ -10573,7 +10626,7 @@ namespace Infinium
             OutputHeaderBottomBorderCS.WrapText = true;
             OutputHeaderBottomBorderCS.SetFont(SimpleBoldF);
 
-            HSSFCellStyle HeaderTopBorderCS = hssfworkbook.CreateCellStyle();
+            var HeaderTopBorderCS = hssfworkbook.CreateCellStyle();
             HeaderTopBorderCS.VerticalAlignment = HSSFCellStyle.VERTICAL_CENTER;
             HeaderTopBorderCS.Alignment = HSSFCellStyle.ALIGN_CENTER;
             HeaderTopBorderCS.BorderBottom = HSSFCellStyle.BORDER_THIN;
@@ -10586,7 +10639,7 @@ namespace Infinium
             HeaderTopBorderCS.TopBorderColor = HSSFColor.BLACK.index;
             HeaderTopBorderCS.SetFont(SimpleF);
 
-            HSSFCellStyle HeaderBottomBorderCS = hssfworkbook.CreateCellStyle();
+            var HeaderBottomBorderCS = hssfworkbook.CreateCellStyle();
             HeaderBottomBorderCS.VerticalAlignment = HSSFCellStyle.VERTICAL_CENTER;
             HeaderBottomBorderCS.Alignment = HSSFCellStyle.ALIGN_CENTER;
             HeaderBottomBorderCS.BorderBottom = HSSFCellStyle.BORDER_MEDIUM;
@@ -10600,15 +10653,15 @@ namespace Infinium
             HeaderBottomBorderCS.WrapText = true;
             HeaderBottomBorderCS.SetFont(SimpleBoldF);
 
-            HSSFCellStyle ReportCS = hssfworkbook.CreateCellStyle();
+            var ReportCS = hssfworkbook.CreateCellStyle();
             ReportCS.BorderBottom = HSSFCellStyle.BORDER_MEDIUM;
             ReportCS.BottomBorderColor = HSSFColor.BLACK.index;
             ReportCS.SetFont(HeaderF);
 
-            HSSFCellStyle HeaderWithoutBorderCS = hssfworkbook.CreateCellStyle();
+            var HeaderWithoutBorderCS = hssfworkbook.CreateCellStyle();
             HeaderWithoutBorderCS.SetFont(HeaderF);
 
-            HSSFCellStyle SimpleHeaderCS = hssfworkbook.CreateCellStyle();
+            var SimpleHeaderCS = hssfworkbook.CreateCellStyle();
             SimpleHeaderCS.VerticalAlignment = HSSFCellStyle.VERTICAL_CENTER;
             SimpleHeaderCS.Alignment = HSSFCellStyle.ALIGN_CENTER;
             SimpleHeaderCS.BorderBottom = HSSFCellStyle.BORDER_MEDIUM;
@@ -10624,7 +10677,7 @@ namespace Infinium
 
             #endregion
 
-            for (int j = 0; j < resultTimesheet.YearTimesheets.Count; j++)
+            for (var j = 0; j < resultTimesheet.YearTimesheets.Count; j++)
             {
 
                 monthTimesheet = resultTimesheet.YearTimesheets[j];
@@ -10635,13 +10688,13 @@ namespace Infinium
                 totalProdHours = monthTimesheet.AllProdHours.ToString();
                 monthHeader = "ГРАФИК/ТАБЕЛЬ РАБОТЫ ЗА " + new DateTime(monthTimesheet.Year, monthTimesheet.Month, 1).ToString("MMMM") + " " + monthTimesheet.Year + "г:";
 
-                string sYear = monthTimesheet.Year.ToString();
+                var sYear = monthTimesheet.Year.ToString();
 
-                string sMonth = monthTimesheet.Month.ToString().PadLeft(2, '0');
+                var sMonth = monthTimesheet.Month.ToString().PadLeft(2, '0');
 
 
-                string sheetName = sMonth + "-" + sYear;
-                HSSFSheet sheet1 = hssfworkbook.CreateSheet(sheetName);
+                var sheetName = sMonth + "-" + sYear;
+                var sheet1 = hssfworkbook.CreateSheet(sheetName);
                 sheet1.PrintSetup.PaperSize = (short)PaperSizeType.A4;
                 sheet1.SetZoom(85, 100);
                 sheet1.SetMargin(HSSFSheet.LeftMargin, .12);
@@ -10649,8 +10702,8 @@ namespace Infinium
                 sheet1.SetMargin(HSSFSheet.TopMargin, .20);
                 sheet1.SetMargin(HSSFSheet.BottomMargin, .20);
 
-                int DisplayIndex = 1;
-                int RowIndex = 0;
+                var DisplayIndex = 1;
+                var RowIndex = 0;
 
                 HSSFCell HeaderCell;
                 HSSFCell Cell1;
@@ -10691,7 +10744,7 @@ namespace Infinium
                 HeaderCell.SetCellValue(monthHeader);
                 HeaderCell.CellStyle = MainWithBorderCS;
 
-                for (int i = DisplayIndex + 11; i <= DisplayIndex + 20; i++)
+                for (var i = DisplayIndex + 11; i <= DisplayIndex + 20; i++)
                 {
                     HeaderCell = sheet1.CreateRow(RowIndex + 6).CreateCell(i);
                     HeaderCell.SetCellValue("");
@@ -10729,9 +10782,9 @@ namespace Infinium
                 sheet1.AddMergedRegion(new Region(RowIndex, DisplayIndex, RowIndex + 1, DisplayIndex));
                 DisplayIndex++;
 
-                for (int i = 0; i < monthTimesheet.userTimesheets[0].WorkDaysDT.Rows.Count; i++)
+                for (var i = 0; i < monthTimesheet.userTimesheets[0].WorkDaysDT.Rows.Count; i++)
                 {
-                    int prodHours = Convert.ToInt32(monthTimesheet.userTimesheets[0].WorkDaysDT.Rows[i]["ProdHours"]);
+                    var prodHours = Convert.ToInt32(monthTimesheet.userTimesheets[0].WorkDaysDT.Rows[i]["ProdHours"]);
                     if (prodHours == 0)
                     {
                         HeaderCell = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex);
@@ -10804,7 +10857,7 @@ namespace Infinium
 
                 RowIndex++;
                 RowIndex++;
-                for (int i = 0; i < monthTimesheet.userTimesheets.Count; i++)
+                for (var i = 0; i < monthTimesheet.userTimesheets.Count; i++)
                 {
                     DisplayIndex = 0;
 
@@ -10837,18 +10890,18 @@ namespace Infinium
                     Cell1.CellStyle = RateCS;
 
                     DisplayIndex++;
-                    bool b = false;
+                    var b = false;
 
-                    for (int x = 0; x < monthTimesheet.userTimesheets[i].WorkDaysDT.Rows.Count; x++)
+                    for (var x = 0; x < monthTimesheet.userTimesheets[i].WorkDaysDT.Rows.Count; x++)
                     {
-                        bool isAbsence = Convert.ToBoolean(monthTimesheet.userTimesheets[i].WorkDaysDT.Rows[x]["IsAbsence"]);
-                        int prodHours = Convert.ToInt32(monthTimesheet.userTimesheets[i].WorkDaysDT.Rows[x]["ProdHours"]);
+                        var isAbsence = Convert.ToBoolean(monthTimesheet.userTimesheets[i].WorkDaysDT.Rows[x]["IsAbsence"]);
+                        var prodHours = Convert.ToInt32(monthTimesheet.userTimesheets[i].WorkDaysDT.Rows[x]["ProdHours"]);
                         if (prodHours == 0)
                         {
                             if (isAbsence)
                             {
                                 Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex);
-                                b = int.TryParse(monthTimesheet.userTimesheets[i].WorkDaysDT.Rows[x]["ProdHoursString"].ToString(), out int ProdHours);
+                                b = int.TryParse(monthTimesheet.userTimesheets[i].WorkDaysDT.Rows[x]["ProdHoursString"].ToString(), out var ProdHours);
                                 if (b)
                                     Cell1.SetCellValue(Convert.ToInt32(ProdHours));
                                 else
@@ -10857,7 +10910,7 @@ namespace Infinium
 
 
                                 Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex);
-                                b = decimal.TryParse(monthTimesheet.userTimesheets[i].WorkDaysDT.Rows[x]["TimesheetHoursExp"].ToString(), out decimal TimesheetHoursExp);
+                                b = decimal.TryParse(monthTimesheet.userTimesheets[i].WorkDaysDT.Rows[x]["TimesheetHoursExp"].ToString(), out var TimesheetHoursExp);
                                 if (b)
                                     Cell1.SetCellValue(Convert.ToDouble(TimesheetHoursExp));
                                 else
@@ -10868,7 +10921,7 @@ namespace Infinium
                             else
                             {
                                 Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex);
-                                b = int.TryParse(monthTimesheet.userTimesheets[i].WorkDaysDT.Rows[x]["ProdHoursString"].ToString(), out int ProdHours);
+                                b = int.TryParse(monthTimesheet.userTimesheets[i].WorkDaysDT.Rows[x]["ProdHoursString"].ToString(), out var ProdHours);
                                 if (b)
                                     Cell1.SetCellValue(Convert.ToInt32(ProdHours));
                                 else
@@ -10877,7 +10930,7 @@ namespace Infinium
 
 
                                 Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex);
-                                b = decimal.TryParse(monthTimesheet.userTimesheets[i].WorkDaysDT.Rows[x]["TimesheetHoursExp"].ToString(), out decimal TimesheetHoursExp);
+                                b = decimal.TryParse(monthTimesheet.userTimesheets[i].WorkDaysDT.Rows[x]["TimesheetHoursExp"].ToString(), out var TimesheetHoursExp);
                                 if (b)
                                     Cell1.SetCellValue(Convert.ToDouble(TimesheetHoursExp));
                                 else
@@ -10891,7 +10944,7 @@ namespace Infinium
                             if (isAbsence)
                             {
                                 Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex);
-                                b = int.TryParse(monthTimesheet.userTimesheets[i].WorkDaysDT.Rows[x]["ProdHoursString"].ToString(), out int ProdHours);
+                                b = int.TryParse(monthTimesheet.userTimesheets[i].WorkDaysDT.Rows[x]["ProdHoursString"].ToString(), out var ProdHours);
                                 if (b)
                                     Cell1.SetCellValue(Convert.ToInt32(ProdHours));
                                 else
@@ -10900,7 +10953,7 @@ namespace Infinium
 
 
                                 Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex);
-                                b = decimal.TryParse(monthTimesheet.userTimesheets[i].WorkDaysDT.Rows[x]["TimesheetHoursExp"].ToString(), out decimal TimesheetHoursExp);
+                                b = decimal.TryParse(monthTimesheet.userTimesheets[i].WorkDaysDT.Rows[x]["TimesheetHoursExp"].ToString(), out var TimesheetHoursExp);
                                 if (b)
                                     Cell1.SetCellValue(Convert.ToDouble(TimesheetHoursExp));
                                 else
@@ -10911,7 +10964,7 @@ namespace Infinium
                             else
                             {
                                 Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex);
-                                b = int.TryParse(monthTimesheet.userTimesheets[i].WorkDaysDT.Rows[x]["ProdHoursString"].ToString(), out int ProdHours);
+                                b = int.TryParse(monthTimesheet.userTimesheets[i].WorkDaysDT.Rows[x]["ProdHoursString"].ToString(), out var ProdHours);
                                 if (b)
                                     Cell1.SetCellValue(Convert.ToInt32(ProdHours));
                                 else
@@ -10920,7 +10973,7 @@ namespace Infinium
 
 
                                 Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex);
-                                b = decimal.TryParse(monthTimesheet.userTimesheets[i].WorkDaysDT.Rows[x]["TimesheetHoursExp"].ToString(), out decimal TimesheetHoursExp);
+                                b = decimal.TryParse(monthTimesheet.userTimesheets[i].WorkDaysDT.Rows[x]["TimesheetHoursExp"].ToString(), out var TimesheetHoursExp);
                                 if (b)
                                     Cell1.SetCellValue(Convert.ToDouble(TimesheetHoursExp));
                                 else
@@ -10935,7 +10988,7 @@ namespace Infinium
 
                     Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex);
 
-                    b = int.TryParse(monthTimesheet.userTimesheets[i].AllTimesheetDays.ToString(), out int AllTimesheetDays);
+                    b = int.TryParse(monthTimesheet.userTimesheets[i].AllTimesheetDays.ToString(), out var AllTimesheetDays);
                     if (b)
                         Cell1.SetCellValue(Convert.ToInt32(AllTimesheetDays));
                     else
@@ -10951,7 +11004,7 @@ namespace Infinium
 
                     Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex);
 
-                    b = decimal.TryParse(monthTimesheet.userTimesheets[i].AllTimesheetHours.ToString(), out decimal AllTimesheetHours);
+                    b = decimal.TryParse(monthTimesheet.userTimesheets[i].AllTimesheetHours.ToString(), out var AllTimesheetHours);
                     if (b)
                         Cell1.SetCellValue(Convert.ToDouble(AllTimesheetHours));
                     else
@@ -10967,7 +11020,7 @@ namespace Infinium
 
                     Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex);
 
-                    b = decimal.TryParse(monthTimesheet.userTimesheets[i].AllOverworkHours.ToString(), out decimal AllOverworkHours);
+                    b = decimal.TryParse(monthTimesheet.userTimesheets[i].AllOverworkHours.ToString(), out var AllOverworkHours);
                     if (b)
                         Cell1.SetCellValue(Convert.ToDouble(AllOverworkHours));
                     else
@@ -10983,7 +11036,7 @@ namespace Infinium
 
                     Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex);
 
-                    b = decimal.TryParse(monthTimesheet.userTimesheets[i].AllFactHours.ToString(), out decimal AllFactHours);
+                    b = decimal.TryParse(monthTimesheet.userTimesheets[i].AllFactHours.ToString(), out var AllFactHours);
                     if (b)
                         Cell1.SetCellValue(Convert.ToDouble(AllFactHours));
                     else
@@ -10999,7 +11052,7 @@ namespace Infinium
 
                     Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex);
 
-                    b = decimal.TryParse(monthTimesheet.userTimesheets[i].AllFactOverworkHours.ToString(), out decimal AllFactOverworkHours);
+                    b = decimal.TryParse(monthTimesheet.userTimesheets[i].AllFactOverworkHours.ToString(), out var AllFactOverworkHours);
                     if (b)
                         Cell1.SetCellValue(Convert.ToDouble(AllFactOverworkHours));
                     else
@@ -11048,7 +11101,7 @@ namespace Infinium
                 sheet1.SetColumnWidth(DisplayIndex++, 7 * 256);
                 sheet1.SetColumnWidth(DisplayIndex++, 22 * 256);
                 sheet1.SetColumnWidth(DisplayIndex++, 10 * 256);
-                for (int i = 0; i < monthTimesheet.userTimesheets[0].WorkDaysDT.Rows.Count; i++)
+                for (var i = 0; i < monthTimesheet.userTimesheets[0].WorkDaysDT.Rows.Count; i++)
                 {
                     sheet1.SetColumnWidth(DisplayIndex++, 8 * 256);
 
@@ -11062,17 +11115,17 @@ namespace Infinium
                 sheet1.CreateFreezePane(3, 9, 3, 9);
             }
 
-            string FileName = "Профиль-" + monthTimesheet.Year;
-            string tempFolder = Environment.GetEnvironmentVariable("TEMP");
-            FileInfo file = new FileInfo(tempFolder + @"\" + FileName + ".xls");
+            var FileName = "Профиль-" + monthTimesheet.Year;
+            var tempFolder = Environment.GetEnvironmentVariable("TEMP");
+            var file = new FileInfo(tempFolder + @"\" + FileName + ".xls");
 
-            int y = 1;
+            var y = 1;
             while (file.Exists)
             {
                 file = new FileInfo(tempFolder + @"\" + FileName + "(" + y++ + ").xls");
             }
 
-            FileStream NewFile = new FileStream(file.FullName, FileMode.Create);
+            var NewFile = new FileStream(file.FullName, FileMode.Create);
             hssfworkbook.Write(NewFile);
             NewFile.Close();
             Process.Start(file.FullName);
@@ -11275,7 +11328,7 @@ namespace Infinium
         {
             UsersDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT UserID, Name, Photo FROM Users WHERE Fired <> 1 ", ConnectionStrings.UsersConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT UserID, Name, Photo FROM Users WHERE Fired <> 1 ", ConnectionStrings.UsersConnectionString))
             {
                 DA.Fill(UsersDataTable);
             }
@@ -11284,16 +11337,16 @@ namespace Infinium
         private Bitmap ResizeImage(Bitmap SourceImage, bool bBig)
         {
             //int iBigSampleWidth = 306;
-            int iBigSampleHeight = 204;
+            var iBigSampleHeight = 204;
 
             //int iSmallSampleWidth = 97;
-            int iSmallSampleHeight = 64;
+            var iSmallSampleHeight = 64;
 
-            int iSourceWidth = SourceImage.Width;
-            int iSourceHeight = SourceImage.Height;
+            var iSourceWidth = SourceImage.Width;
+            var iSourceHeight = SourceImage.Height;
 
-            int iNewHeight = 0;
-            int iNewWidth = 0;
+            var iNewHeight = 0;
+            var iNewWidth = 0;
 
             if (bBig)
             {
@@ -11306,10 +11359,10 @@ namespace Infinium
                 iNewWidth = iSourceWidth * iNewHeight / iSourceHeight;
             }
 
-            Bitmap resImage = new Bitmap(iNewWidth, iNewHeight);
+            var resImage = new Bitmap(iNewWidth, iNewHeight);
 
             //resize using proportions
-            using (Graphics gr = Graphics.FromImage(resImage))
+            using (var gr = Graphics.FromImage(resImage))
             {
                 gr.SmoothingMode = SmoothingMode.HighQuality;
                 gr.InterpolationMode = InterpolationMode.HighQualityBicubic;
@@ -11322,12 +11375,12 @@ namespace Infinium
 
         private Bitmap ResizePicSample(Bitmap SourceImage, int Width, int Height)
         {
-            int iNewWidth = SourceImage.Width * Height / SourceImage.Height;
+            var iNewWidth = SourceImage.Width * Height / SourceImage.Height;
 
-            Bitmap resImage = new Bitmap(iNewWidth, Height);
+            var resImage = new Bitmap(iNewWidth, Height);
 
             //resize using proportions
-            using (Graphics gr = Graphics.FromImage(resImage))
+            using (var gr = Graphics.FromImage(resImage))
             {
                 gr.SmoothingMode = SmoothingMode.HighQuality;
                 gr.InterpolationMode = InterpolationMode.HighQualityBicubic;
@@ -11342,14 +11395,14 @@ namespace Infinium
         {
             AlbumsDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Albums", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM Albums", ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(AlbumsDataTable);
             }
 
             foreach (DataRow Row in AlbumsDataTable.Rows)
             {
-                DataRow NewRow = AlbumsItemsDataTable.NewRow();
+                var NewRow = AlbumsItemsDataTable.NewRow();
 
                 NewRow["AlbumID"] = Row["AlbumID"];
                 NewRow["AlbumName"] = Row["AlbumName"];
@@ -11361,13 +11414,13 @@ namespace Infinium
 
 
                 //pictures samples
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 4 * FROM Pictures WHERE AlbumID = " + Row["AlbumID"], ConnectionStrings.LightConnectionString))
+                using (var DA = new SqlDataAdapter("SELECT TOP 4 * FROM Pictures WHERE AlbumID = " + Row["AlbumID"], ConnectionStrings.LightConnectionString))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
-                        for (int i = 0; i < DT.Rows.Count; i++)
+                        for (var i = 0; i < DT.Rows.Count; i++)
                         {
                             NewRow["PictureID"] = DT.Rows[i]["PictureID"];
 
@@ -11375,23 +11428,23 @@ namespace Infinium
                             {
                                 try
                                 {
-                                    using (MemoryStream ms = new MemoryStream(
+                                    using (var ms = new MemoryStream(
                                             FM.ReadFile(Configs.DocumentsPath + "Pictures/" + DT.Rows[i]["PictureID"] + ".jpg",
                                                                           Convert.ToInt64(DT.Rows[i]["FileSize"]), Configs.FTPType)))
                                     {
-                                        Bitmap bmp = (Bitmap)Image.FromStream(ms);
+                                        var bmp = (Bitmap)Image.FromStream(ms);
 
                                         bmp.RotateFlip(OrientationToFlipType(((int)ImageOrientation(bmp)).ToString()));
 
-                                        Bitmap resultBMP = ResizeImage(bmp, true);
+                                        var resultBMP = ResizeImage(bmp, true);
 
-                                        MemoryStream nms = new MemoryStream();
+                                        var nms = new MemoryStream();
 
-                                        ImageCodecInfo ImageCodecInfo = UserProfile.GetEncoderInfo("image/jpeg");
-                                        Encoder eEncoder1 = Encoder.Quality;
+                                        var ImageCodecInfo = UserProfile.GetEncoderInfo("image/jpeg");
+                                        var eEncoder1 = Encoder.Quality;
 
-                                        EncoderParameter myEncoderParameter1 = new EncoderParameter(eEncoder1, 100L);
-                                        EncoderParameters myEncoderParameters = new EncoderParameters(1);
+                                        var myEncoderParameter1 = new EncoderParameter(eEncoder1, 100L);
+                                        var myEncoderParameters = new EncoderParameters(1);
 
                                         myEncoderParameters.Param[0] = myEncoderParameter1;
 
@@ -11412,21 +11465,21 @@ namespace Infinium
                             {
                                 try
                                 {
-                                    using (MemoryStream ms = new MemoryStream(
+                                    using (var ms = new MemoryStream(
                                             FM.ReadFile(Configs.DocumentsPath + "Pictures/" + DT.Rows[i]["PictureID"] + ".jpg",
                                                                           Convert.ToInt64(DT.Rows[i]["FileSize"]), Configs.FTPType)))
                                     {
-                                        Bitmap bmp = (Bitmap)Image.FromStream(ms);
+                                        var bmp = (Bitmap)Image.FromStream(ms);
                                         bmp.RotateFlip(OrientationToFlipType(((int)ImageOrientation(bmp)).ToString()));
-                                        Bitmap resultBMP = ResizeImage(bmp, false);
+                                        var resultBMP = ResizeImage(bmp, false);
 
-                                        MemoryStream nms = new MemoryStream();
+                                        var nms = new MemoryStream();
 
-                                        ImageCodecInfo ImageCodecInfo = UserProfile.GetEncoderInfo("image/jpeg");
-                                        Encoder eEncoder1 = Encoder.Quality;
+                                        var ImageCodecInfo = UserProfile.GetEncoderInfo("image/jpeg");
+                                        var eEncoder1 = Encoder.Quality;
 
-                                        EncoderParameter myEncoderParameter1 = new EncoderParameter(eEncoder1, 100L);
-                                        EncoderParameters myEncoderParameters = new EncoderParameters(1);
+                                        var myEncoderParameter1 = new EncoderParameter(eEncoder1, 100L);
+                                        var myEncoderParameters = new EncoderParameters(1);
 
                                         myEncoderParameters.Param[0] = myEncoderParameter1;
 
@@ -11451,11 +11504,11 @@ namespace Infinium
 
                 //likes
                 {
-                    using (SqlDataAdapter DA = new SqlDataAdapter("SELECT Count(PictureLikeID) FROM PicturesLikes " +
-                                                                  "WHERE PictureID IN (SELECT PictureID FROM Pictures WHERE AlbumID = " +
-                                                                  Row["AlbumID"] + ")", ConnectionStrings.LightConnectionString))
+                    using (var DA = new SqlDataAdapter("SELECT Count(PictureLikeID) FROM PicturesLikes " +
+                                                       "WHERE PictureID IN (SELECT PictureID FROM Pictures WHERE AlbumID = " +
+                                                       Row["AlbumID"] + ")", ConnectionStrings.LightConnectionString))
                     {
-                        using (DataTable DT = new DataTable())
+                        using (var DT = new DataTable())
                         {
                             DA.Fill(DT);
 
@@ -11467,16 +11520,16 @@ namespace Infinium
                 }
 
 
-                DataTable ActiveUsers = GetMostActiveUsers(Convert.ToInt32(Row["AlbumID"]));
+                var ActiveUsers = GetMostActiveUsers(Convert.ToInt32(Row["AlbumID"]));
 
                 if (ActiveUsers.DefaultView.Count > 0)
                 {
-                    int c = 4;
+                    var c = 4;
 
                     if (ActiveUsers.DefaultView.Count < 4)
                         c = ActiveUsers.DefaultView.Count;
 
-                    for (int i = 0; i < c; i++)
+                    for (var i = 0; i < c; i++)
                     {
                         NewRow["ActiveUser" + (i + 1)] = (byte[])UsersDataTable.Select("UserID = " + ActiveUsers.DefaultView[i]["UserID"])[0]["Photo"];
                     }
@@ -11486,11 +11539,11 @@ namespace Infinium
 
         public int RefreshLikes(int AlbumID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT Count(PictureLikeID) FROM PicturesLikes " +
-                                                                  "WHERE PictureID IN (SELECT PictureID FROM Pictures WHERE AlbumID = " +
-                                                                  AlbumID + ")", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT Count(PictureLikeID) FROM PicturesLikes " +
+                                               "WHERE PictureID IN (SELECT PictureID FROM Pictures WHERE AlbumID = " +
+                                               AlbumID + ")", ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -11505,37 +11558,37 @@ namespace Infinium
         {
             PicturesItemsDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Pictures WHERE AlbumID = " + AlbumID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM Pictures WHERE AlbumID = " + AlbumID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
                     foreach (DataRow Row in DT.Rows)
                     {
-                        DataRow NewRow = PicturesItemsDataTable.NewRow();
+                        var NewRow = PicturesItemsDataTable.NewRow();
 
                         NewRow["AlbumID"] = AlbumID;
                         NewRow["PictureID"] = Row["PictureID"];
                         NewRow["FileSize"] = Row["FileSize"];
 
-                        using (MemoryStream ms = new MemoryStream(
+                        using (var ms = new MemoryStream(
                                             FM.ReadFile(Configs.DocumentsPath + "Pictures/" + Row["PictureID"] + ".jpg",
                                                                           Convert.ToInt64(Row["FileSize"]), Configs.FTPType)))
                         {
-                            Bitmap bmp = (Bitmap)Image.FromStream(ms);
+                            var bmp = (Bitmap)Image.FromStream(ms);
 
                             bmp.RotateFlip(OrientationToFlipType(((int)ImageOrientation(bmp)).ToString()));
 
-                            Bitmap resultBMP = ResizePicSample(bmp, 364, 242);
+                            var resultBMP = ResizePicSample(bmp, 364, 242);
 
-                            MemoryStream nms = new MemoryStream();
+                            var nms = new MemoryStream();
 
-                            ImageCodecInfo ImageCodecInfo = UserProfile.GetEncoderInfo("image/jpeg");
-                            Encoder eEncoder1 = Encoder.Quality;
+                            var ImageCodecInfo = UserProfile.GetEncoderInfo("image/jpeg");
+                            var eEncoder1 = Encoder.Quality;
 
-                            EncoderParameter myEncoderParameter1 = new EncoderParameter(eEncoder1, 100L);
-                            EncoderParameters myEncoderParameters = new EncoderParameters(1);
+                            var myEncoderParameter1 = new EncoderParameter(eEncoder1, 100L);
+                            var myEncoderParameters = new EncoderParameters(1);
 
                             myEncoderParameters.Param[0] = myEncoderParameter1;
 
@@ -11551,10 +11604,10 @@ namespace Infinium
 
 
                         //likes
-                        using (SqlDataAdapter lDA = new SqlDataAdapter("SELECT Count(PictureLikeID) FROM PicturesLikes " +
-                                                                  "WHERE PictureID = " + Row["PictureID"], ConnectionStrings.LightConnectionString))
+                        using (var lDA = new SqlDataAdapter("SELECT Count(PictureLikeID) FROM PicturesLikes " +
+                                                            "WHERE PictureID = " + Row["PictureID"], ConnectionStrings.LightConnectionString))
                         {
-                            using (DataTable lDT = new DataTable())
+                            using (var lDT = new DataTable())
                             {
                                 lDA.Fill(lDT);
 
@@ -11589,7 +11642,7 @@ namespace Infinium
         public static ExifOrientations ImageOrientation(Image img)
         {
             // Get the index of the orientation property.
-            int orientation_index = Array.IndexOf(img.PropertyIdList, OrientationId);
+            var orientation_index = Array.IndexOf(img.PropertyIdList, OrientationId);
 
             // If there is no such property, return Unknown.
             if (orientation_index < 0) return ExifOrientations.Unknown;
@@ -11625,28 +11678,28 @@ namespace Infinium
 
         public DataTable GetMostActiveUsers(int AlbumID)
         {
-            DataTable uDT = new DataTable();
+            var uDT = new DataTable();
             uDT.Columns.Add(new DataColumn("UserID", Type.GetType("System.Int32")));
             uDT.Columns.Add(new DataColumn("Count", Type.GetType("System.Int32")));
 
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT UserID FROM PicturesLikes " +
-                                                                  "WHERE PictureID IN (SELECT PictureID FROM Pictures WHERE AlbumID = " +
-                                                                  AlbumID + ")", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT UserID FROM PicturesLikes " +
+                                               "WHERE PictureID IN (SELECT PictureID FROM Pictures WHERE AlbumID = " +
+                                               AlbumID + ")", ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
                     foreach (DataRow Row in DT.Rows)
                     {
-                        DataRow[] fRow = uDT.Select("UserID = " + Row["UserID"]);
+                        var fRow = uDT.Select("UserID = " + Row["UserID"]);
 
                         if (fRow.Count() > 0)
                             fRow[0]["Count"] = Convert.ToInt32(fRow[0]["Count"]) + 1;
                         else
                         {
-                            DataRow NewRow = uDT.NewRow();
+                            var NewRow = uDT.NewRow();
                             NewRow["UserID"] = Row["UserID"];
                             NewRow["Count"] = 1;
                             uDT.Rows.Add(NewRow);
@@ -11660,7 +11713,7 @@ namespace Infinium
 
             if (uDT.DefaultView.Count > 4)
             {
-                for (int i = 4; i < uDT.DefaultView.Count; i++)
+                for (var i = 4; i < uDT.DefaultView.Count; i++)
                 {
                     uDT.DefaultView[i].Delete();
                 }
@@ -11673,11 +11726,11 @@ namespace Infinium
 
         public Image GetPicture(int PictureID)
         {
-            using (MemoryStream ms = new MemoryStream(
+            using (var ms = new MemoryStream(
                    FM.ReadFile(Configs.DocumentsPath + "Pictures/" + PictureID + ".jpg",
                                Convert.ToInt64(PicturesItemsDataTable.Select("PictureID = " + PictureID)[0]["FileSize"]), Configs.FTPType)))
             {
-                Image I = Image.FromStream(ms);
+                var I = Image.FromStream(ms);
 
                 I.RotateFlip(OrientationToFlipType(((int)ImageOrientation(I)).ToString()));
 
@@ -11687,7 +11740,7 @@ namespace Infinium
 
         public int GetNextPictureID(int PictureID)
         {
-            int index = PicturesItemsDataTable.Rows.IndexOf(PicturesItemsDataTable.Select("PictureID = " + PictureID)[0]);
+            var index = PicturesItemsDataTable.Rows.IndexOf(PicturesItemsDataTable.Select("PictureID = " + PictureID)[0]);
 
             if (index == PicturesItemsDataTable.Rows.Count - 1)
                 return -1;
@@ -11697,7 +11750,7 @@ namespace Infinium
 
         public int GetPreviousPictureID(int PictureID)
         {
-            int index = PicturesItemsDataTable.Rows.IndexOf(PicturesItemsDataTable.Select("PictureID = " + PictureID)[0]);
+            var index = PicturesItemsDataTable.Rows.IndexOf(PicturesItemsDataTable.Select("PictureID = " + PictureID)[0]);
 
             if (index == 0)
                 return -1;
@@ -11707,20 +11760,20 @@ namespace Infinium
 
         public int LikePicture(int PictureID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM PicturesLikes WHERE PictureID = " + PictureID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM PicturesLikes WHERE PictureID = " + PictureID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
                         if (DT.Select("UserID = " + Security.CurrentUserID).Count() > 0)//i like
                         {
-                            using (SqlDataAdapter dDA = new SqlDataAdapter("DELETE FROM PicturesLikes WHERE PictureID = " + PictureID +
-                                                                           " AND UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
+                            using (var dDA = new SqlDataAdapter("DELETE FROM PicturesLikes WHERE PictureID = " + PictureID +
+                                                                " AND UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
                             {
-                                using (DataTable dDT = new DataTable())
+                                using (var dDT = new DataTable())
                                 {
                                     dDA.Fill(dDT);
                                 }
@@ -11729,7 +11782,7 @@ namespace Infinium
                             return DT.Rows.Count - 1;
                         }
 
-                        DataRow NewRow = DT.NewRow();
+                        var NewRow = DT.NewRow();
                         NewRow["PictureID"] = PictureID;
                         NewRow["UserID"] = Security.CurrentUserID;
                         NewRow["DateTime"] = Security.GetCurrentDate();
@@ -11829,21 +11882,21 @@ namespace Infinium
         public void Fill()
         {
             {
-                DataRow NewRow = DocumentAttributesDataTable.NewRow();
+                var NewRow = DocumentAttributesDataTable.NewRow();
                 NewRow["AttributeName"] = "Подписи";
                 NewRow["Value"] = false;
                 DocumentAttributesDataTable.Rows.Add(NewRow);
             }
 
             {
-                DataRow NewRow = DocumentAttributesDataTable.NewRow();
+                var NewRow = DocumentAttributesDataTable.NewRow();
                 NewRow["AttributeName"] = "Ознакомлен";
                 NewRow["Value"] = false;
                 DocumentAttributesDataTable.Rows.Add(NewRow);
             }
 
             {
-                DataRow NewRow = DocumentAttributesDataTable.NewRow();
+                var NewRow = DocumentAttributesDataTable.NewRow();
                 NewRow["AttributeName"] = "Бумага";
                 NewRow["Value"] = false;
                 DocumentAttributesDataTable.Rows.Add(NewRow);
@@ -11852,35 +11905,35 @@ namespace Infinium
 
             //categories
             {
-                DataRow NewRow = CategoriesDataTable.NewRow();
+                var NewRow = CategoriesDataTable.NewRow();
                 NewRow["Category"] = "Общие файлы";
                 NewRow["FolderID"] = 2;
                 CategoriesDataTable.Rows.Add(NewRow);
             }
 
             {
-                DataRow NewRow = CategoriesDataTable.NewRow();
+                var NewRow = CategoriesDataTable.NewRow();
                 NewRow["Category"] = "Отделы";
                 NewRow["FolderID"] = 1;
                 CategoriesDataTable.Rows.Add(NewRow);
             }
 
             {
-                DataRow NewRow = CategoriesDataTable.NewRow();
+                var NewRow = CategoriesDataTable.NewRow();
                 NewRow["Category"] = "Личные файлы";
                 NewRow["FolderID"] = -3;
                 CategoriesDataTable.Rows.Add(NewRow);
             }
 
             {
-                DataRow NewRow = CategoriesDataTable.NewRow();
+                var NewRow = CategoriesDataTable.NewRow();
                 NewRow["Category"] = "Клиенты";
                 NewRow["FolderID"] = 4;
                 CategoriesDataTable.Rows.Add(NewRow);
             }
 
             {
-                DataRow NewRow = CategoriesDataTable.NewRow();
+                var NewRow = CategoriesDataTable.NewRow();
                 NewRow["Category"] = "ЗОВ";
                 NewRow["FolderID"] = 5;
                 CategoriesDataTable.Rows.Add(NewRow);
@@ -11894,14 +11947,14 @@ namespace Infinium
             //}
 
             {
-                DataRow NewRow = CategoriesDataTable.NewRow();
+                var NewRow = CategoriesDataTable.NewRow();
                 NewRow["Category"] = "На подпись";
                 NewRow["FolderID"] = -1;
                 CategoriesDataTable.Rows.Add(NewRow);
             }
 
             {
-                DataRow NewRow = CategoriesDataTable.NewRow();
+                var NewRow = CategoriesDataTable.NewRow();
                 NewRow["Category"] = "На ознакомление";
                 NewRow["FolderID"] = -2;
                 CategoriesDataTable.Rows.Add(NewRow);
@@ -11909,12 +11962,12 @@ namespace Infinium
 
 
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT UserID, DepartmentID, Name FROM Users ORDER BY Name ASC", ConnectionStrings.UsersConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT UserID, DepartmentID, Name FROM Users ORDER BY Name ASC", ConnectionStrings.UsersConnectionString))
             {
                 DA.Fill(UsersDataTable);
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT DepartmentID, DepartmentName FROM Departments", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT DepartmentID, DepartmentName FROM Departments", ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(DepartmentsDataTable);
             }
@@ -11923,11 +11976,11 @@ namespace Infinium
 
         public void AddUploadPending(int FileID, int UserID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM FilesUploadsPending WHERE FileID = " + FileID + " AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM FilesUploadsPending WHERE FileID = " + FileID + " AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -11946,7 +11999,7 @@ namespace Infinium
                             DA.Fill(DT);
                         }
 
-                        DataRow NewRow = DT.NewRow();
+                        var NewRow = DT.NewRow();
                         NewRow["UserID"] = UserID;
                         NewRow["FileID"] = FileID;
                         NewRow["DateTime"] = Security.GetCurrentDate();
@@ -11962,11 +12015,11 @@ namespace Infinium
         {
             CurrentItemsDataTable.Clear();
 
-            int iRootFolderID = -1;
+            var iRootFolderID = -1;
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Folders WHERE FolderID = " + FolderID + " ORDER BY FolderName ASC", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM Folders WHERE FolderID = " + FolderID + " ORDER BY FolderName ASC", ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -11977,7 +12030,7 @@ namespace Infinium
 
             if (iRootFolderID > 0)
             {
-                DataRow NewRow = CurrentItemsDataTable.NewRow();
+                var NewRow = CurrentItemsDataTable.NewRow();
                 NewRow["ItemName"] = "[...]";
                 NewRow["Extension"] = "root";
                 NewRow["FolderID"] = iRootFolderID;
@@ -11986,7 +12039,7 @@ namespace Infinium
 
 
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Folders WHERE RootFolderID = " + FolderID + " ORDER BY FolderName ASC", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM Folders WHERE RootFolderID = " + FolderID + " ORDER BY FolderName ASC", ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(CurrentItemsDataTable);
             }
@@ -12004,10 +12057,10 @@ namespace Infinium
                 else
                     continue;
 
-                string Author = Row["Author"].ToString();
-                string name = string.Empty;
-                string CreationDateTime = string.Empty;
-                DataRow[] rows = UsersDataTable.Select("UserID = " + Author);
+                var Author = Row["Author"].ToString();
+                var name = string.Empty;
+                var CreationDateTime = string.Empty;
+                var rows = UsersDataTable.Select("UserID = " + Author);
                 if (rows.Count() > 0)
                 {
                     Row["Author"] = UsersDataTable.Select("UserID = " + Row["Author"])[0]["Name"] + "\n" +
@@ -12019,15 +12072,15 @@ namespace Infinium
 
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Files WHERE FolderID = " + FolderID + " ORDER BY FileName ASC", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM Files WHERE FolderID = " + FolderID + " ORDER BY FileName ASC", ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
                     foreach (DataRow Row in DT.Rows)
                     {
-                        DataRow NewRow = CurrentItemsDataTable.NewRow();
+                        var NewRow = CurrentItemsDataTable.NewRow();
                         NewRow["ItemName"] = Row["FileName"];
                         NewRow["FolderID"] = FolderID;
                         NewRow["Extension"] = Row["FileExtension"];
@@ -12050,21 +12103,21 @@ namespace Infinium
 
         public int CreateFolder(int FolderID, string FolderName)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Folders WHERE FolderID = " + FolderID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM Folders WHERE FolderID = " + FolderID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
-                        DataRow NewRow = DT.NewRow();
+                        var NewRow = DT.NewRow();
                         NewRow["RootFolderID"] = FolderID;
                         NewRow["FolderName"] = FolderName;
                         NewRow["FolderPath"] = DT.Rows[0]["FolderPath"] + "/" + FolderName;
                         NewRow["Author"] = Security.CurrentUserID;
 
-                        DateTime Date = Security.GetCurrentDate();
+                        var Date = Security.GetCurrentDate();
 
                         NewRow["CreationDateTime"] = Date;
                         NewRow["LastModifiedUserID"] = NewRow["Author"];
@@ -12075,15 +12128,15 @@ namespace Infinium
                         NewRow["FTPHost"] = DT.Rows[0]["FTPHost"];
                         NewRow["ParentFolderID"] = DT.Rows[0]["ParentFolderID"];
 
-                        int iPermission = GetInheritedPermission(FolderID);
+                        var iPermission = GetInheritedPermission(FolderID);
 
                         NewRow["FolderPermission"] = iPermission;
                         NewRow["InheritedPermission"] = iPermission;
 
                         DT.Rows.Add(NewRow);
 
-                        string sPath = "";
-                        int FTPType = -1;
+                        var sPath = "";
+                        var FTPType = -1;
 
                         if (IsPathHost(FolderID))
                         {
@@ -12096,7 +12149,7 @@ namespace Infinium
                             FTPType = Configs.FTPType;
                         }
 
-                        int res = FM.CreateFolder(sPath + DT.Rows[0]["FolderPath"] + "/", FolderName, FTPType);
+                        var res = FM.CreateFolder(sPath + DT.Rows[0]["FolderPath"] + "/", FolderName, FTPType);
 
                         if (res == -1)
                             return -1;//directory exists
@@ -12118,9 +12171,9 @@ namespace Infinium
 
         public int GetRootFolderID(int FolderID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT RootFolderID FROM Folders WHERE FolderID = " + FolderID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT RootFolderID FROM Folders WHERE FolderID = " + FolderID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -12131,13 +12184,13 @@ namespace Infinium
 
         public bool CheckFileExist(string[] FileNames, int FolderID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Files WHERE FolderID =" + FolderID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM Files WHERE FolderID =" + FolderID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
-                    foreach (string FileName in FileNames)
+                    foreach (var FileName in FileNames)
                     {
                         if (DT.Select("FileName = '" + Path.GetFileName(FileName) + "'").Count() > 0)
                         {
@@ -12152,18 +12205,18 @@ namespace Infinium
 
         public bool CanEditFile(int UserID, int FileID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsAdmins WHERE UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsAdmins WHERE UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     if (DA.Fill(DT) > 0)
                         return true;
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT FileID, Author FROM Files WHERE FileID = " + FileID + " AND Author = " + UserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT FileID, Author FROM Files WHERE FileID = " + FileID + " AND Author = " + UserID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     if (DA.Fill(DT) > 0)
                         return true;
@@ -12175,18 +12228,18 @@ namespace Infinium
 
         public bool CheckFolderPermission(int UserID, int FolderID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsAdmins WHERE UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsAdmins WHERE UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     if (DA.Fill(DT) > 0)
                         return true;
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT FolderID, FolderPermission FROM Folders WHERE FolderID = " + FolderID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT FolderID, FolderPermission FROM Folders WHERE FolderID = " + FolderID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -12198,11 +12251,11 @@ namespace Infinium
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsPermissions WHERE FolderID = " + FolderID +
-                         " AND ((UserTypeID = 0 AND UserID = " + UserID + ") OR (UserTypeID = 1 AND UserID = " +
-                           UsersDataTable.Select("UserID = " + UserID)[0]["DepartmentID"] + "))", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsPermissions WHERE FolderID = " + FolderID +
+                                               " AND ((UserTypeID = 0 AND UserID = " + UserID + ") OR (UserTypeID = 1 AND UserID = " +
+                                               UsersDataTable.Select("UserID = " + UserID)[0]["DepartmentID"] + "))", ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     if (DA.Fill(DT) > 0)
                         return true;
@@ -12214,18 +12267,18 @@ namespace Infinium
 
         public bool CheckInheritedPermission(int UserID, int FolderID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsAdmins WHERE UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsAdmins WHERE UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     if (DA.Fill(DT) > 0)
                         return true;
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT FolderID, InheritedPermission FROM Folders WHERE FolderID = " + FolderID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT FolderID, InheritedPermission FROM Folders WHERE FolderID = " + FolderID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -12237,11 +12290,11 @@ namespace Infinium
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsPermissions WHERE FolderID = " + FolderID +
-                         " AND ((UserTypeID = 0 AND UserID = " + UserID + ") OR (UserTypeID = 1 AND UserID = " +
-                           UsersDataTable.Select("UserID = " + UserID)[0]["DepartmentID"] + "))", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsPermissions WHERE FolderID = " + FolderID +
+                                               " AND ((UserTypeID = 0 AND UserID = " + UserID + ") OR (UserTypeID = 1 AND UserID = " +
+                                               UsersDataTable.Select("UserID = " + UserID)[0]["DepartmentID"] + "))", ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     if (DA.Fill(DT) > 0)
                         return true;
@@ -12273,16 +12326,16 @@ namespace Infinium
 
         public bool CheckFileExists(string Path)
         {
-            FileInfo fi = new FileInfo(Path);
+            var fi = new FileInfo(Path);
 
             return fi.Exists;
         }
 
         public bool CheckFilesExists(DataTable ItemsDataTable, string Path)
         {
-            foreach (DataRow Row in ItemsDataTable.Select("Checked = 1 AND FileID > -1"))
+            foreach (var Row in ItemsDataTable.Select("Checked = 1 AND FileID > -1"))
             {
-                FileInfo fi = new FileInfo(Path + Row["ItemName"]);
+                var fi = new FileInfo(Path + Row["ItemName"]);
 
                 if (fi.Exists)
                     return true;
@@ -12293,9 +12346,9 @@ namespace Infinium
 
         public static int CheckPersonalFolder(int UserID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Folders WHERE FolderName = '" + UserID + "'", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM Folders WHERE FolderName = '" + UserID + "'", ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     if (DA.Fill(DT) == 0)
                         return -1;
@@ -12309,9 +12362,9 @@ namespace Infinium
         {
             CreateFolder(4, Name);
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT FolderID FROM Folders WHERE FolderPath = '" + @"Клиенты/" + Name + "'", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT FolderID FROM Folders WHERE FolderPath = '" + @"Клиенты/" + Name + "'", ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -12326,9 +12379,9 @@ namespace Infinium
 
         public void CreateFolderClient(string Name, string FolderName)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT FolderID FROM Folders WHERE FolderPath = '" + @"Клиенты/" + Name + "'", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT FolderID FROM Folders WHERE FolderPath = '" + @"Клиенты/" + Name + "'", ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -12344,22 +12397,22 @@ namespace Infinium
 
         public void CreatePersonalFolder(int UserID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM Folders", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 0 * FROM Folders", ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
-                        DataRow NewRow = DT.NewRow();
+                        var NewRow = DT.NewRow();
                         NewRow["FolderName"] = UserID.ToString();
                         NewRow["FolderPath"] = "Личные файлы/" + UserID;
                         NewRow["RootFolderID"] = 3;
                         NewRow["ParentFolderID"] = 3;
                         NewRow["Author"] = Security.CurrentUserID;
 
-                        DateTime Date = Security.GetCurrentDate();
+                        var Date = Security.GetCurrentDate();
 
                         NewRow["CreationDateTime"] = Date;
                         NewRow["LastModifiedDateTime"] = NewRow["CreationDateTime"];
@@ -12382,9 +12435,9 @@ namespace Infinium
 
         public bool CheckFileVersion(int FileID, int UserID)//true if ok to replace
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT CreationDateTime, LastModifiedDateTime, LastModifiedUserID  FROM Files WHERE FileID = " + FileID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT CreationDateTime, LastModifiedDateTime, LastModifiedUserID  FROM Files WHERE FileID = " + FileID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -12394,9 +12447,9 @@ namespace Infinium
                     if (Convert.ToInt32(DT.Rows[0]["LastModifiedUserID"]) == UserID) //this user last modified
                         return true;
 
-                    using (SqlDataAdapter fDA = new SqlDataAdapter("SELECT * FROM FilesDownloadsLog WHERE FileID = " + FileID + " AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
+                    using (var fDA = new SqlDataAdapter("SELECT * FROM FilesDownloadsLog WHERE FileID = " + FileID + " AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
                     {
-                        using (DataTable fDT = new DataTable())
+                        using (var fDT = new DataTable())
                         {
                             fDA.Fill(fDT);
 
@@ -12419,9 +12472,9 @@ namespace Infinium
 
         public void ClearFileLog(int FileID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM FilesDownloadsLog WHERE FileID = " + FileID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM FilesDownloadsLog WHERE FileID = " + FileID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
@@ -12430,15 +12483,15 @@ namespace Infinium
 
         public bool CheckUploadPending(int FileID)//false if no one uploads
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM FilesUploadsPending WHERE FileID = " + FileID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM FilesUploadsPending WHERE FileID = " + FileID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         if (DA.Fill(DT) > 0)//someone uploads
                         {
-                            DateTime DateTime = Convert.ToDateTime(DT.Rows[0]["DateTime"]);
+                            var DateTime = Convert.ToDateTime(DT.Rows[0]["DateTime"]);
 
                             if (DateTime.AddSeconds(20) < Security.GetCurrentDate())//someone's upload crashed
                             {
@@ -12463,9 +12516,9 @@ namespace Infinium
 
         public void ClearUploadPending(int FileID, int UserID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM FilesUploadsPending WHERE FileID = " + FileID + " AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM FilesUploadsPending WHERE FileID = " + FileID + " AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
@@ -12484,16 +12537,16 @@ namespace Infinium
         {
             CurrentItemsDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Files WHERE FileID IN " +
-                                                          "(SELECT FileID FROM DocumentsSigns WHERE IsSigned = 0 AND SignType = 0 AND UserID = " + UserID + ")", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM Files WHERE FileID IN " +
+                                               "(SELECT FileID FROM DocumentsSigns WHERE IsSigned = 0 AND SignType = 0 AND UserID = " + UserID + ")", ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
                     foreach (DataRow Row in DT.Rows)
                     {
-                        DataRow NewRow = CurrentItemsDataTable.NewRow();
+                        var NewRow = CurrentItemsDataTable.NewRow();
                         NewRow["ItemName"] = Row["FileName"];
                         NewRow["FolderID"] = -1;
                         NewRow["Extension"] = Row["FileExtension"];
@@ -12516,16 +12569,16 @@ namespace Infinium
         {
             CurrentItemsDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Files WHERE FileID IN " +
-                                                          "(SELECT FileID FROM DocumentsSigns WHERE IsSigned = 0 AND SignType = 1 AND UserID = " + UserID + ")", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM Files WHERE FileID IN " +
+                                               "(SELECT FileID FROM DocumentsSigns WHERE IsSigned = 0 AND SignType = 1 AND UserID = " + UserID + ")", ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
                     foreach (DataRow Row in DT.Rows)
                     {
-                        DataRow NewRow = CurrentItemsDataTable.NewRow();
+                        var NewRow = CurrentItemsDataTable.NewRow();
                         NewRow["ItemName"] = Row["FileName"];
                         NewRow["FolderID"] = -1;
                         NewRow["Extension"] = Row["FileExtension"];
@@ -12553,28 +12606,28 @@ namespace Infinium
             if (FileID == -1)
                 return;
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsSigns WHERE SignType = 0 AND FileID = " + FileID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsSigns WHERE SignType = 0 AND FileID = " + FileID, ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(CurrentSignsDataTable);
             }
 
             if (CurrentSignsDataTable.Rows.Count > 0)
             {
-                DataRow NewRow = CurrentAttributesDataTable.NewRow();
+                var NewRow = CurrentAttributesDataTable.NewRow();
                 NewRow["AttributeName"] = "Подписи";
                 NewRow["Value"] = true;
                 CurrentAttributesDataTable.Rows.Add(NewRow);
             }
 
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsSigns WHERE SignType = 1 AND FileID = " + FileID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsSigns WHERE SignType = 1 AND FileID = " + FileID, ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(CurrentReadDataTable);
             }
 
             if (CurrentReadDataTable.Rows.Count > 0)
             {
-                DataRow NewRow = CurrentAttributesDataTable.NewRow();
+                var NewRow = CurrentAttributesDataTable.NewRow();
                 NewRow["AttributeName"] = "Ознакомлен";
                 NewRow["Value"] = true;
                 CurrentAttributesDataTable.Rows.Add(NewRow);
@@ -12583,13 +12636,13 @@ namespace Infinium
 
             bFirstSign = false;
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT FileID, NeedPrint, FirstSign FROM Files WHERE FileID = " + FileID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT FileID, NeedPrint, FirstSign FROM Files WHERE FileID = " + FileID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
-                    DataRow NewRow = CurrentAttributesDataTable.NewRow();
+                    var NewRow = CurrentAttributesDataTable.NewRow();
                     NewRow["AttributeName"] = "Бумага";
                     NewRow["Value"] = DT.Rows[0]["NeedPrint"];
                     CurrentAttributesDataTable.Rows.Add(NewRow);
@@ -12604,39 +12657,39 @@ namespace Infinium
             CurrentPermissionsDepsDataTable.Clear();
             CurrentPermissionsUsersDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsPermissions WHERE FolderID = " + FolderID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsPermissions WHERE FolderID = " + FolderID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     if (DA.Fill(DT) > 0)
                     {
-                        DataRow[] ARows = DT.Select("UserTypeID = -1");//admin
+                        var ARows = DT.Select("UserTypeID = -1");//admin
 
                         if (ARows.Count() > 0)
                             return -1;
 
-                        DataRow[] AlRows = DT.Select("UserTypeID = -2");//all
+                        var AlRows = DT.Select("UserTypeID = -2");//all
 
                         if (AlRows.Count() > 0)
                             return -2;
 
 
-                        DataRow[] DRows = DT.Select("UserTypeID = 1");
+                        var DRows = DT.Select("UserTypeID = 1");
 
-                        foreach (DataRow DRow in DRows)
+                        foreach (var DRow in DRows)
                         {
-                            DataRow NewRow = CurrentPermissionsDepsDataTable.NewRow();
+                            var NewRow = CurrentPermissionsDepsDataTable.NewRow();
                             NewRow["DepartmentID"] = DRow["UserID"];
                             NewRow["DepartmentName"] = DepartmentsDataTable.Select("DepartmentID = " + DRow["UserID"])[0]["DepartmentName"];
                             CurrentPermissionsDepsDataTable.Rows.Add(NewRow);
                         }
 
 
-                        DataRow[] URows = DT.Select("UserTypeID = 0");
+                        var URows = DT.Select("UserTypeID = 0");
 
-                        foreach (DataRow URow in URows)
+                        foreach (var URow in URows)
                         {
-                            DataRow NewRow = CurrentPermissionsUsersDataTable.NewRow();
+                            var NewRow = CurrentPermissionsUsersDataTable.NewRow();
                             NewRow["UserID"] = URow["UserID"];
                             NewRow["UserName"] = UsersDataTable.Select("UserID = " + URow["UserID"])[0]["Name"];
                             CurrentPermissionsUsersDataTable.Rows.Add(NewRow);
@@ -12652,9 +12705,9 @@ namespace Infinium
 
         public int GetInheritedPermission(int RootFolderID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT FolderID, InheritedPermission FROM Folders WHERE FolderID = " + RootFolderID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT FolderID, InheritedPermission FROM Folders WHERE FolderID = " + RootFolderID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -12665,9 +12718,9 @@ namespace Infinium
 
         public string GetFolderPath(int FolderID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT FolderPath FROM Folders WHERE FolderID = " + FolderID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT FolderPath FROM Folders WHERE FolderID = " + FolderID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -12678,9 +12731,9 @@ namespace Infinium
 
         public int GetSignCount(int UserID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT COUNT(DocumentSignID) FROM DocumentsSigns WHERE SignType = 0 AND IsSigned = 0 AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT COUNT(DocumentSignID) FROM DocumentsSigns WHERE SignType = 0 AND IsSigned = 0 AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -12691,9 +12744,9 @@ namespace Infinium
 
         public int GetReadCount(int UserID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT COUNT(DocumentSignID) FROM DocumentsSigns WHERE SignType = 1 AND IsSigned = 0 AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT COUNT(DocumentSignID) FROM DocumentsSigns WHERE SignType = 1 AND IsSigned = 0 AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -12704,9 +12757,9 @@ namespace Infinium
 
         public bool IsAdmin(int UserID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT UserID FROM DocumentsAdmins WHERE UserID = " + UserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT UserID FROM DocumentsAdmins WHERE UserID = " + UserID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     return (DA.Fill(DT) > 0);
                 }
@@ -12715,9 +12768,9 @@ namespace Infinium
 
         public bool IsPathHost(int FolderID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT FTPHost FROM Folders WHERE FolderID = " + FolderID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT FTPHost FROM Folders WHERE FolderID = " + FolderID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -12730,23 +12783,23 @@ namespace Infinium
         public bool OpenFile(int FileID)
         {
 
-            bool bOK = false;
+            var bOK = false;
 
-            using (SqlDataAdapter fDA = new SqlDataAdapter("SELECT FileSize, FileName, FolderID FROM Files WHERE FileID = " + FileID, ConnectionStrings.LightConnectionString))
+            using (var fDA = new SqlDataAdapter("SELECT FileSize, FileName, FolderID FROM Files WHERE FileID = " + FileID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable fDT = new DataTable())
+                using (var fDT = new DataTable())
                 {
                     fDA.Fill(fDT);
 
 
-                    using (SqlDataAdapter DA = new SqlDataAdapter("SELECT FolderPath FROM Folders WHERE FolderID = " + fDT.Rows[0]["FolderID"], ConnectionStrings.LightConnectionString))
+                    using (var DA = new SqlDataAdapter("SELECT FolderPath FROM Folders WHERE FolderID = " + fDT.Rows[0]["FolderID"], ConnectionStrings.LightConnectionString))
                     {
-                        using (DataTable DT = new DataTable())
+                        using (var DT = new DataTable())
                         {
                             DA.Fill(DT);
 
-                            string sPath = "";
-                            int FTPType = -1;
+                            var sPath = "";
+                            var FTPType = -1;
 
                             if (IsPathHost(Convert.ToInt32(fDT.Rows[0]["FolderID"])))
                             {
@@ -12765,7 +12818,7 @@ namespace Infinium
 
                             if (bOK)
                             {
-                                Process myProcess = new Process();
+                                var myProcess = new Process();
                                 myProcess.StartInfo.UseShellExecute = true;
                                 myProcess.StartInfo.FileName = Environment.GetEnvironmentVariable("TEMP") + "/" +
                                         fDT.Rows[0]["FileName"];
@@ -12783,9 +12836,9 @@ namespace Infinium
 
         public void RemoveFile(int FolderID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT FileID, FileName FROM Files WHERE FolderID = " + FolderID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT FileID, FileName FROM Files WHERE FolderID = " + FolderID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -12799,17 +12852,17 @@ namespace Infinium
 
         public bool RemoveFolder(int FolderID)
         {
-            string Path = "";
+            var Path = "";
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Folders WHERE ParentFolderID IN (SELECT ParentFolderID FROM Folders WHERE FolderID = " + FolderID + ")", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM Folders WHERE ParentFolderID IN (SELECT ParentFolderID FROM Folders WHERE FolderID = " + FolderID + ")", ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
-                    string path = DT.Select("FolderID = " + FolderID)[0]["FolderPath"].ToString();
+                    var path = DT.Select("FolderID = " + FolderID)[0]["FolderPath"].ToString();
 
-                    for (int i = DT.Rows.Count - 1; i >= 0; i--)
+                    for (var i = DT.Rows.Count - 1; i >= 0; i--)
                     {
                         if (DT.Rows[i]["FolderPath"].ToString().Contains(path))
                         {
@@ -12819,8 +12872,8 @@ namespace Infinium
 
                             SetLastModified(Convert.ToInt32(DT.Rows[i]["RootFolderID"]), Security.GetCurrentDate(), Security.CurrentUserID);
 
-                            string sPath = "";
-                            int FTPType = -1;
+                            var sPath = "";
+                            var FTPType = -1;
 
                             if (IsPathHost(Convert.ToInt32(DT.Rows[i]["FolderID"])))
                             {
@@ -12836,17 +12889,17 @@ namespace Infinium
                             if (FM.DeleteFolder(sPath + Path, FTPType) == false)
                                 return false;
 
-                            using (SqlDataAdapter pDA = new SqlDataAdapter("DELETE FROM DocumentsPermissions WHERE FolderID = " + Convert.ToInt32(DT.Rows[i]["FolderID"]), ConnectionStrings.LightConnectionString))
+                            using (var pDA = new SqlDataAdapter("DELETE FROM DocumentsPermissions WHERE FolderID = " + Convert.ToInt32(DT.Rows[i]["FolderID"]), ConnectionStrings.LightConnectionString))
                             {
-                                using (DataTable pDT = new DataTable())
+                                using (var pDT = new DataTable())
                                 {
                                     pDA.Fill(pDT);
                                 }
                             }
 
-                            using (SqlDataAdapter dDA = new SqlDataAdapter("DELETE FROM Folders WHERE FolderID = " + DT.Rows[i]["FolderID"], ConnectionStrings.LightConnectionString))
+                            using (var dDA = new SqlDataAdapter("DELETE FROM Folders WHERE FolderID = " + DT.Rows[i]["FolderID"], ConnectionStrings.LightConnectionString))
                             {
-                                using (DataTable dDT = new DataTable())
+                                using (var dDT = new DataTable())
                                 {
                                     dDA.Fill(dDT);
                                 }
@@ -12861,7 +12914,7 @@ namespace Infinium
 
         public void RemoveFolder(DataTable CheckedDataTable)
         {
-            foreach (DataRow Row in CheckedDataTable.Select("Checked = 1 AND Extension = 'folder'"))
+            foreach (var Row in CheckedDataTable.Select("Checked = 1 AND Extension = 'folder'"))
             {
                 RemoveFolder(Convert.ToInt32(Row["FolderID"]));
             }
@@ -12869,7 +12922,7 @@ namespace Infinium
 
         public void RemoveFile(DataTable CheckedDataTable)
         {
-            foreach (DataRow Row in CheckedDataTable.Select("Checked = 1 AND FileID > -1"))
+            foreach (var Row in CheckedDataTable.Select("Checked = 1 AND FileID > -1"))
             {
                 RemoveFile(Convert.ToInt32(Row["FileID"]), Convert.ToInt32(Row["FolderID"]), Row["ItemName"].ToString());
             }
@@ -12877,23 +12930,23 @@ namespace Infinium
 
         public void RemoveFile(int FileID, int FolderID, string FileName)
         {
-            string Path = "";
+            var Path = "";
 
 
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM Files WHERE FileID = " + FileID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM Files WHERE FileID = " + FileID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT FolderID, FolderPath, LastModifiedDateTime, LastModifiedUserID FROM Folders WHERE FolderID = " + FolderID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT FolderID, FolderPath, LastModifiedDateTime, LastModifiedUserID FROM Folders WHERE FolderID = " + FolderID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -12909,24 +12962,24 @@ namespace Infinium
             ClearFileLog(FileID);
 
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM DocumentsSigns WHERE FileID = " + FileID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM DocumentsSigns WHERE FileID = " + FileID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM SubscribesRecords WHERE SubscribesItemID = 11 AND TableItemID = " + FileID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM SubscribesRecords WHERE SubscribesItemID = 11 AND TableItemID = " + FileID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
             }
 
-            string sPath = "";
-            int FTPType = -1;
+            var sPath = "";
+            var FTPType = -1;
 
             if (IsPathHost(FolderID))
             {
@@ -12944,11 +12997,11 @@ namespace Infinium
 
         public void RefreshUploadPending(int FileID, int UserID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM FilesUploadsPending WHERE FileID = " + FileID + " AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM FilesUploadsPending WHERE FileID = " + FileID + " AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -12976,21 +13029,21 @@ namespace Infinium
                 return false;
             }
 
-            long iFileSize = fi.Length;
-            int FolderID = -1;
+            var iFileSize = fi.Length;
+            var FolderID = -1;
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Files WHERE FileID = " + FileID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM Files WHERE FileID = " + FileID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
                         FolderID = Convert.ToInt32(DT.Rows[0]["FolderID"]);
 
-                        string sPath = "";
-                        int FTPType = -1;
+                        var sPath = "";
+                        var FTPType = -1;
 
                         if (IsPathHost(Convert.ToInt32(DT.Rows[0]["FolderID"])))
                         {
@@ -13046,9 +13099,9 @@ namespace Infinium
 
         private string GetClientEmail(int ClientID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT Email FROM Clients WHERE ClientID = " + ClientID, ConnectionStrings.MarketingReferenceConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT Email FROM Clients WHERE ClientID = " + ClientID, ConnectionStrings.MarketingReferenceConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     if (DA.Fill(DT) > 0)
                     {
@@ -13062,23 +13115,23 @@ namespace Infinium
 
         public int GetCurrentClientFolder(int FolderID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT RootFolderID, FolderName FROM Folders WHERE FolderID = " + FolderID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT RootFolderID, FolderName FROM Folders WHERE FolderID = " + FolderID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
                     if (Convert.ToInt32(DT.Rows[0]["RootFolderID"]) != 4)
                     {
-                        using (SqlDataAdapter dDA = new SqlDataAdapter("SELECT RootFolderID, FolderName FROM Folders WHERE FolderID = " + DT.Rows[0]["RootFolderID"], ConnectionStrings.LightConnectionString))
+                        using (var dDA = new SqlDataAdapter("SELECT RootFolderID, FolderName FROM Folders WHERE FolderID = " + DT.Rows[0]["RootFolderID"], ConnectionStrings.LightConnectionString))
                         {
-                            using (DataTable dDT = new DataTable())
+                            using (var dDT = new DataTable())
                             {
                                 dDA.Fill(dDT);
 
-                                using (SqlDataAdapter fDA = new SqlDataAdapter("SELECT ClientID, ClientName FROM Clients WHERE ClientFolderName = '" + dDT.Rows[0]["FolderName"] + "'", ConnectionStrings.MarketingReferenceConnectionString))
+                                using (var fDA = new SqlDataAdapter("SELECT ClientID, ClientName FROM Clients WHERE ClientFolderName = '" + dDT.Rows[0]["FolderName"] + "'", ConnectionStrings.MarketingReferenceConnectionString))
                                 {
-                                    using (DataTable fDT = new DataTable())
+                                    using (var fDT = new DataTable())
                                     {
                                         fDA.Fill(fDT);
 
@@ -13089,9 +13142,9 @@ namespace Infinium
                         }
                     }
 
-                    using (SqlDataAdapter fDA = new SqlDataAdapter("SELECT ClientID, ClientName FROM Clients WHERE ClientFolderName = '" + DT.Rows[0]["FolderName"] + "'", ConnectionStrings.MarketingReferenceConnectionString))
+                    using (var fDA = new SqlDataAdapter("SELECT ClientID, ClientName FROM Clients WHERE ClientFolderName = '" + DT.Rows[0]["FolderName"] + "'", ConnectionStrings.MarketingReferenceConnectionString))
                     {
-                        using (DataTable fDT = new DataTable())
+                        using (var fDT = new DataTable())
                         {
                             fDA.Fill(fDT);
 
@@ -13108,38 +13161,38 @@ namespace Infinium
             //string SenderEmail = "zovprofilreport@mail.ru";
 
             //string AccountPassword = "7026Gradus0462";
-            string AccountPassword = "foqwsulbjiuslnue";
-            string SenderEmail = "infiniumdevelopers@gmail.com";
+            var AccountPassword = "foqwsulbjiuslnue";
+            var SenderEmail = "infiniumdevelopers@gmail.com";
 
-            string to = GetClientEmail(ClientID);
+            var to = GetClientEmail(ClientID);
 
             if (to == null)
                 return "-1";
 
-            string from = SenderEmail;
+            var from = SenderEmail;
 
 
-            using (MailMessage message = new MailMessage(from, to + ", andrewromanchuk@mail.ru"))
+            using (var message = new MailMessage(from, to + ", andrewromanchuk@mail.ru"))
             {
                 message.Subject = "Infinium. Новые документы";
                 message.Body = "Здравствуйте. Вам отправлены новые документы в программе Infinium. Agent.\r\n" +
                                "Если эта программа у Вас не установлена, обратитесь в отдел маркетинга для получения ссылки на скачивание программы или напишите нам на этот адрес\r\n" +
                                "Отправленные файлы также прикреплены к этому письму\r\n\nПисьмо сгенерировано автоматически, не надо отвечать на этот адрес. По всем вопросам обращайтесь на marketing.zovprofil@gmail.com";
                 //SmtpClient client = new SmtpClient("smtp.mail.ru")
-                SmtpClient client = new SmtpClient("smtp.gmail.com", 587)
+                var client = new SmtpClient("smtp.gmail.com", 587)
                 {
                     UseDefaultCredentials = false,
                     Credentials = new NetworkCredential(SenderEmail, AccountPassword)
                 };
                 if (FileNames != null)
                     if (FileNames.Length > 0)
-                        foreach (string name in FileNames)
+                        foreach (var name in FileNames)
                         {
-                            string S = new UTF8Encoding().GetString(Encoding.Convert(Encoding.GetEncoding("UTF-16"), Encoding.UTF8, Encoding.GetEncoding("UTF-16").GetBytes(name)));
+                            var S = new UTF8Encoding().GetString(Encoding.Convert(Encoding.GetEncoding("UTF-16"), Encoding.UTF8, Encoding.GetEncoding("UTF-16").GetBytes(name)));
 
-                            Attachment attach = new Attachment(S,
+                            var attach = new Attachment(S,
                                                                MediaTypeNames.Application.Octet);
-                            ContentDisposition disposition = attach.ContentDisposition;
+                            var disposition = attach.ContentDisposition;
 
                             message.Attachments.Add(attach);
                         }
@@ -13165,7 +13218,7 @@ namespace Infinium
 
         public bool UploadFile(string[] FileNames, int FolderID, ref int CurrentUploadedFile)
         {
-            foreach (string FileName in FileNames)
+            foreach (var FileName in FileNames)
             {
                 FileInfo fi;
 
@@ -13181,10 +13234,10 @@ namespace Infinium
                     return false;
                 }
 
-                long iFileSize = fi.Length;
+                var iFileSize = fi.Length;
 
-                string sPath = "";
-                int FTPType = -1;
+                var sPath = "";
+                var FTPType = -1;
 
                 if (IsPathHost(FolderID))
                 {
@@ -13209,15 +13262,15 @@ namespace Infinium
 
 
                 //add file to database
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM Files", ConnectionStrings.LightConnectionString))
+                using (var DA = new SqlDataAdapter("SELECT TOP 0 * FROM Files", ConnectionStrings.LightConnectionString))
                 {
-                    using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                    using (var CB = new SqlCommandBuilder(DA))
                     {
-                        using (DataTable DT = new DataTable())
+                        using (var DT = new DataTable())
                         {
                             DA.Fill(DT);
 
-                            DataRow NewRow = DT.NewRow();
+                            var NewRow = DT.NewRow();
                             NewRow["FileName"] = Path.GetFileName(FileName);
                             NewRow["FolderID"] = FolderID;
                             if (Path.GetExtension(FileName).Length > 0)
@@ -13227,7 +13280,7 @@ namespace Infinium
                             NewRow["FileSize"] = iFileSize;
                             NewRow["Author"] = Security.CurrentUserID;
 
-                            DateTime Date = Security.GetCurrentDate();
+                            var Date = Security.GetCurrentDate();
 
                             NewRow["CreationDateTime"] = Date;
                             NewRow["LastModifiedDateTime"] = Date;
@@ -13247,22 +13300,22 @@ namespace Infinium
 
         public bool SaveFile(int FileID, string SaveToPath)
         {
-            bool bOk = false;
+            var bOk = false;
 
-            using (SqlDataAdapter fDA = new SqlDataAdapter("SELECT FileSize, FileName, FolderID FROM Files WHERE FileID = " + FileID, ConnectionStrings.LightConnectionString))
+            using (var fDA = new SqlDataAdapter("SELECT FileSize, FileName, FolderID FROM Files WHERE FileID = " + FileID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable fDT = new DataTable())
+                using (var fDT = new DataTable())
                 {
                     fDA.Fill(fDT);
 
-                    using (SqlDataAdapter DA = new SqlDataAdapter("SELECT FolderPath FROM Folders WHERE FolderID = " + fDT.Rows[0]["FolderID"], ConnectionStrings.LightConnectionString))
+                    using (var DA = new SqlDataAdapter("SELECT FolderPath FROM Folders WHERE FolderID = " + fDT.Rows[0]["FolderID"], ConnectionStrings.LightConnectionString))
                     {
-                        using (DataTable DT = new DataTable())
+                        using (var DT = new DataTable())
                         {
                             DA.Fill(DT);
 
-                            string sPath = "";
-                            int FTPType = -1;
+                            var sPath = "";
+                            var FTPType = -1;
 
                             if (IsPathHost(Convert.ToInt32(fDT.Rows[0]["FolderID"])))
                             {
@@ -13290,7 +13343,7 @@ namespace Infinium
 
         public void SaveFiles(DataTable ItemsDataTable, string Path, ref int CurrentFile)
         {
-            foreach (DataRow Row in ItemsDataTable.Select("Checked = 1 AND FileID > -1"))
+            foreach (var Row in ItemsDataTable.Select("Checked = 1 AND FileID > -1"))
             {
                 CurrentFile++;
 
@@ -13300,22 +13353,22 @@ namespace Infinium
 
         public void SetLastModified(int FolderID, DateTime Date, int UserID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Folders WHERE FolderID = " + FolderID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM Folders WHERE FolderID = " + FolderID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
 
-                        int iR = -1;
-                        int iF = Convert.ToInt32(DT.Rows[0]["RootFolderID"]);
+                        var iR = -1;
+                        var iF = Convert.ToInt32(DT.Rows[0]["RootFolderID"]);
 
                         if (iF != 0)
                         {
 
-                            for (int i = 0; i < 100; i++)
+                            for (var i = 0; i < 100; i++)
                             {
                                 iR = SetRootFolderID(iF, Date, UserID);
 
@@ -13341,21 +13394,21 @@ namespace Infinium
 
         public void SetPermissions(DateTime DateTime)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT FolderID, RootFolderID FROM Folders WHERE CreationDateTime = '" + DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT FolderID, RootFolderID FROM Folders WHERE CreationDateTime = '" + DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'", ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
-                    using (SqlDataAdapter pDA = new SqlDataAdapter("SELECT * FROM DocumentsPermissions WHERE FolderID = " + DT.Rows[0]["RootFolderID"], ConnectionStrings.LightConnectionString))
+                    using (var pDA = new SqlDataAdapter("SELECT * FROM DocumentsPermissions WHERE FolderID = " + DT.Rows[0]["RootFolderID"], ConnectionStrings.LightConnectionString))
                     {
-                        using (SqlCommandBuilder pCB = new SqlCommandBuilder(pDA))
+                        using (var pCB = new SqlCommandBuilder(pDA))
                         {
-                            using (DataTable pDT = new DataTable())
+                            using (var pDT = new DataTable())
                             {
                                 pDA.Fill(pDT);
 
-                                DataRow NewRow = pDT.NewRow();
+                                var NewRow = pDT.NewRow();
                                 NewRow["FolderID"] = DT.Rows[0]["FolderID"];
                                 NewRow["UserID"] = pDT.Rows[0]["UserID"];
                                 NewRow["UserTypeID"] = pDT.Rows[0]["UserTypeID"];
@@ -13371,21 +13424,21 @@ namespace Infinium
 
         public void SetPermissionsPersonalFolder(DateTime DateTime, int UserID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT FolderID FROM Folders WHERE CreationDateTime = '" + DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT FolderID FROM Folders WHERE CreationDateTime = '" + DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'", ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
-                    using (SqlDataAdapter pDA = new SqlDataAdapter("SELECT TOP 0 * FROM DocumentsPermissions", ConnectionStrings.LightConnectionString))
+                    using (var pDA = new SqlDataAdapter("SELECT TOP 0 * FROM DocumentsPermissions", ConnectionStrings.LightConnectionString))
                     {
-                        using (SqlCommandBuilder pCB = new SqlCommandBuilder(pDA))
+                        using (var pCB = new SqlCommandBuilder(pDA))
                         {
-                            using (DataTable pDT = new DataTable())
+                            using (var pDT = new DataTable())
                             {
                                 pDA.Fill(pDT);
 
-                                DataRow NewRow = pDT.NewRow();
+                                var NewRow = pDT.NewRow();
                                 NewRow["FolderID"] = DT.Rows[0]["FolderID"];
                                 NewRow["UserID"] = UserID;
                                 NewRow["UserTypeID"] = 0;
@@ -13401,11 +13454,11 @@ namespace Infinium
 
         public int SetRootFolderID(int FolderID, DateTime Date, int UserID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT FolderID, RootFolderID, LastModifiedDateTime, LastModifiedUserID FROM Folders WHERE FolderID = " + FolderID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT FolderID, RootFolderID, LastModifiedDateTime, LastModifiedUserID FROM Folders WHERE FolderID = " + FolderID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -13423,11 +13476,11 @@ namespace Infinium
 
         public void SetAttributes(string FileName, int FolderID, bool bFirstSign)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT FileID, NeedPrint, FirstSign FROM Files WHERE FileName = '" + FileName + "' AND FolderID = " + FolderID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT FileID, NeedPrint, FirstSign FROM Files WHERE FileName = '" + FileName + "' AND FolderID = " + FolderID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -13441,17 +13494,17 @@ namespace Infinium
                         //signs and readlist
                         if (CurrentSignsDataTable.Rows.Count > 0 || CurrentReadDataTable.Rows.Count > 0)
                         {
-                            using (SqlDataAdapter sDA = new SqlDataAdapter("SELECT TOP 0 * FROM DocumentsSigns", ConnectionStrings.LightConnectionString))
+                            using (var sDA = new SqlDataAdapter("SELECT TOP 0 * FROM DocumentsSigns", ConnectionStrings.LightConnectionString))
                             {
-                                using (SqlCommandBuilder sCB = new SqlCommandBuilder(sDA))
+                                using (var sCB = new SqlCommandBuilder(sDA))
                                 {
-                                    using (DataTable sDT = new DataTable())
+                                    using (var sDT = new DataTable())
                                     {
                                         sDA.Fill(sDT);
 
                                         foreach (DataRow Row in CurrentSignsDataTable.Rows)
                                         {
-                                            DataRow NewRow = sDT.NewRow();
+                                            var NewRow = sDT.NewRow();
                                             NewRow["FileID"] = DT.Rows[0]["FileID"];
                                             NewRow["UserID"] = Row["UserID"];
                                             NewRow["SignDescription"] = "";
@@ -13462,7 +13515,7 @@ namespace Infinium
 
                                         foreach (DataRow Row in CurrentReadDataTable.Rows)
                                         {
-                                            DataRow NewRow = sDT.NewRow();
+                                            var NewRow = sDT.NewRow();
                                             NewRow["FileID"] = DT.Rows[0]["FileID"];
                                             NewRow["UserID"] = Row["UserID"];
                                             NewRow["SignDescription"] = "";
@@ -13488,11 +13541,11 @@ namespace Infinium
 
         public void SignFile(int FileID, int UserID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsSigns WHERE SignType = 0 AND FileID = " + FileID + " AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsSigns WHERE SignType = 0 AND FileID = " + FileID + " AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -13501,26 +13554,26 @@ namespace Infinium
 
                         DA.Update(DT);
 
-                        using (SqlDataAdapter fDA = new SqlDataAdapter("SELECT FileID, FirstSign FROM Files WHERE FileID = " + FileID, ConnectionStrings.LightConnectionString))
+                        using (var fDA = new SqlDataAdapter("SELECT FileID, FirstSign FROM Files WHERE FileID = " + FileID, ConnectionStrings.LightConnectionString))
                         {
-                            using (DataTable fDT = new DataTable())
+                            using (var fDT = new DataTable())
                             {
                                 fDA.Fill(fDT);
 
                                 if (Convert.ToBoolean(fDT.Rows[0]["FirstSign"]))
                                 {
-                                    using (SqlDataAdapter sDA = new SqlDataAdapter("DELETE FROM DocumentsSigns WHERE SignType = 0 AND FileID = " + FileID + " AND UserID <> " + UserID, ConnectionStrings.LightConnectionString))
+                                    using (var sDA = new SqlDataAdapter("DELETE FROM DocumentsSigns WHERE SignType = 0 AND FileID = " + FileID + " AND UserID <> " + UserID, ConnectionStrings.LightConnectionString))
                                     {
-                                        using (DataTable sDT = new DataTable())
+                                        using (var sDT = new DataTable())
                                         {
                                             sDA.Fill(sDT);
                                         }
                                     }
 
 
-                                    using (SqlDataAdapter sDA = new SqlDataAdapter("DELETE FROM SubscribesRecords WHERE ModuleID = 147 AND TableItemID = " + FileID, ConnectionStrings.LightConnectionString))
+                                    using (var sDA = new SqlDataAdapter("DELETE FROM SubscribesRecords WHERE ModuleID = 147 AND TableItemID = " + FileID, ConnectionStrings.LightConnectionString))
                                     {
-                                        using (DataTable sDT = new DataTable())
+                                        using (var sDT = new DataTable())
                                         {
                                             sDA.Fill(sDT);
                                         }
@@ -13535,11 +13588,11 @@ namespace Infinium
 
         public void SignReadFile(int FileID, int UserID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsSigns WHERE SignType = 1 AND FileID = " + FileID + " AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsSigns WHERE SignType = 1 AND FileID = " + FileID + " AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -13554,17 +13607,17 @@ namespace Infinium
 
         public void SetSubscribesForSigns(DataTable CurrentDT)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM SubscribesRecords", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 0 * FROM SubscribesRecords", ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
                         foreach (DataRow Row in CurrentDT.Rows)
                         {
-                            DataRow NewRow = DT.NewRow();
+                            var NewRow = DT.NewRow();
                             NewRow["UserID"] = Row["UserID"];
                             NewRow["TableItemID"] = Row["FileID"];
                             NewRow["SubscribesItemID"] = 11;
@@ -13580,15 +13633,15 @@ namespace Infinium
 
         public void WriteDownloadLog(int FileID, int UserID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM FilesDownloadsLog", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 0 * FROM FilesDownloadsLog", ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
-                        DataRow NewRow = DT.NewRow();
+                        var NewRow = DT.NewRow();
                         NewRow["UserID"] = UserID;
                         NewRow["FileID"] = FileID;
                         NewRow["DateTime"] = Security.GetCurrentDate();
@@ -13647,36 +13700,36 @@ namespace Infinium
 
             AttachmentsDataTable = new DataTable();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT NewsAttachID, NewsID, FileName, FileSize FROM ZOVNewsAttachs", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT NewsAttachID, NewsID, FileName, FileSize FROM ZOVNewsAttachs", ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(AttachmentsDataTable);
             }
 
             ManagersDataTable = new DataTable();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Managers", ConnectionStrings.ZOVReferenceConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM Managers", ConnectionStrings.ZOVReferenceConnectionString))
             {
                 DA.Fill(ManagersDataTable);
             }
 
             CommentsDataTable = new DataTable();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM ZOVNewsComments", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM ZOVNewsComments", ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(CommentsDataTable);
             }
 
             CommentsSubsRecordsDataTable = new DataTable();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT SubscribesRecords.*, ZOVNewsComments.NewsID FROM SubscribesRecords INNER JOIN ZOVNewsComments ON ZOVNewsComments.NewsCommentID = SubscribesRecords.TableItemID WHERE SubscribesItemID = 14 AND SubscribesRecords.UserTypeID = 0 AND SubscribesRecords.UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT SubscribesRecords.*, ZOVNewsComments.NewsID FROM SubscribesRecords INNER JOIN ZOVNewsComments ON ZOVNewsComments.NewsCommentID = SubscribesRecords.TableItemID WHERE SubscribesItemID = 14 AND SubscribesRecords.UserTypeID = 0 AND SubscribesRecords.UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(CommentsSubsRecordsDataTable);
             }
 
             NewsSubsRecordsDataTable = new DataTable();
 
-            using (SqlDataAdapter sDA = new SqlDataAdapter("SELECT * FROM SubscribesRecords WHERE SubscribesItemID = 13 " +
-                                                            " AND UserTypeID = 0 AND UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
+            using (var sDA = new SqlDataAdapter("SELECT * FROM SubscribesRecords WHERE SubscribesItemID = 13 " +
+                                                " AND UserTypeID = 0 AND UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
             {
                 sDA.Fill(NewsSubsRecordsDataTable);
             }
@@ -13686,7 +13739,7 @@ namespace Infinium
         {
             NewsDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP " + Count + " * FROM ZOVNews WHERE Pending <> 1 ORDER BY LastCommentDateTime DESC", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP " + Count + " * FROM ZOVNews WHERE Pending <> 1 ORDER BY LastCommentDateTime DESC", ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(NewsDataTable);
             }
@@ -13721,7 +13774,7 @@ namespace Infinium
         {
             CommentsDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM ZOVNewsComments", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM ZOVNewsComments", ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(CommentsDataTable);
             }
@@ -13731,15 +13784,15 @@ namespace Infinium
         {
             CommentsSubsRecordsDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT SubscribesRecords.*, ZOVNewsComments.NewsID FROM SubscribesRecords INNER JOIN ZOVNewsComments ON ZOVNewsComments.NewsCommentID = SubscribesRecords.TableItemID WHERE SubscribesItemID = 14 AND SubscribesRecords.UserTypeID = 0 AND SubscribesRecords.UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT SubscribesRecords.*, ZOVNewsComments.NewsID FROM SubscribesRecords INNER JOIN ZOVNewsComments ON ZOVNewsComments.NewsCommentID = SubscribesRecords.TableItemID WHERE SubscribesItemID = 14 AND SubscribesRecords.UserTypeID = 0 AND SubscribesRecords.UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(CommentsSubsRecordsDataTable);
             }
 
             NewsSubsRecordsDataTable.Clear();
 
-            using (SqlDataAdapter sDA = new SqlDataAdapter("SELECT * FROM SubscribesRecords WHERE SubscribesItemID = 13 " +
-                                                            " AND UserTypeID = 0 AND UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
+            using (var sDA = new SqlDataAdapter("SELECT * FROM SubscribesRecords WHERE SubscribesItemID = 13 " +
+                                                " AND UserTypeID = 0 AND UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
             {
                 sDA.Fill(NewsSubsRecordsDataTable);
             }
@@ -13749,7 +13802,7 @@ namespace Infinium
         {
             NewsDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 20 * FROM ZOVNews WHERE Pending <> 1 ORDER BY LastCommentDateTime DESC", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 20 * FROM ZOVNews WHERE Pending <> 1 ORDER BY LastCommentDateTime DESC", ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(NewsDataTable);
             }
@@ -13782,7 +13835,7 @@ namespace Infinium
         {
             NewsLikesDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM ZOVNewsLikes", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM ZOVNewsLikes", ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(NewsLikesDataTable);
             }
@@ -13790,7 +13843,7 @@ namespace Infinium
 
             CommentsLikesDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM ZOVNewsCommentsLikes", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM ZOVNewsCommentsLikes", ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(CommentsLikesDataTable);
             }
@@ -13800,7 +13853,7 @@ namespace Infinium
         {
             NewsDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP " + Count + " * FROM ZOVNews WHERE Pending <> 1 ORDER BY LastCommentDateTime DESC", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP " + Count + " * FROM ZOVNews WHERE Pending <> 1 ORDER BY LastCommentDateTime DESC", ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(NewsDataTable);
             }
@@ -13808,9 +13861,9 @@ namespace Infinium
 
         public bool IsMoreNews(int Count)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT Count(NewsID) FROM ZOVNews", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT Count(NewsID) FROM ZOVNews", ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -13823,15 +13876,15 @@ namespace Infinium
         {
             DateTime DateTime;
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM ZOVNews", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 0 * FROM ZOVNews", ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
-                        DataRow NewRow = DT.NewRow();
+                        var NewRow = DT.NewRow();
                         NewRow["SenderID"] = SenderID;
                         NewRow["SenderTypeID"] = SenderTypeID;
                         NewRow["HeaderText"] = HeaderText;
@@ -13856,24 +13909,24 @@ namespace Infinium
 
         public void AddSubscribeForNews(DateTime DateTime)
         {
-            using (SqlDataAdapter sDA = new SqlDataAdapter("SELECT * FROM ZOVNews WHERE DateTime = '" + DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'",
+            using (var sDA = new SqlDataAdapter("SELECT * FROM ZOVNews WHERE DateTime = '" + DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'",
                                                                        ConnectionStrings.LightConnectionString))
             {
-                using (DataTable sDT = new DataTable())
+                using (var sDT = new DataTable())
                 {
                     sDA.Fill(sDT);
 
-                    using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM SubscribesRecords", ConnectionStrings.LightConnectionString))
+                    using (var DA = new SqlDataAdapter("SELECT TOP 0 * FROM SubscribesRecords", ConnectionStrings.LightConnectionString))
                     {
-                        using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                        using (var CB = new SqlCommandBuilder(DA))
                         {
-                            using (DataTable DT = new DataTable())
+                            using (var DT = new DataTable())
                             {
                                 DA.Fill(DT);
 
-                                using (SqlDataAdapter uDA = new SqlDataAdapter("SELECT * FROM ModulesAccess WHERE ModuleID = 156", ConnectionStrings.UsersConnectionString))
+                                using (var uDA = new SqlDataAdapter("SELECT * FROM ModulesAccess WHERE ModuleID = 156", ConnectionStrings.UsersConnectionString))
                                 {
-                                    using (DataTable uDT = new DataTable())
+                                    using (var uDT = new DataTable())
                                     {
                                         uDA.Fill(uDT);
 
@@ -13882,7 +13935,7 @@ namespace Infinium
                                             if (Convert.ToInt32(Row["UserID"]) == Security.CurrentUserID)
                                                 continue;
 
-                                            DataRow NewRow = DT.NewRow();
+                                            var NewRow = DT.NewRow();
                                             NewRow["SubscribesItemID"] = 13;
                                             NewRow["TableItemID"] = sDT.Rows[0]["NewsID"];
                                             NewRow["UserID"] = Row["UserID"];
@@ -13892,7 +13945,7 @@ namespace Infinium
 
                                         foreach (DataRow Row in ManagersDataTable.Rows)
                                         {
-                                            DataRow NewRow = DT.NewRow();
+                                            var NewRow = DT.NewRow();
                                             NewRow["SubscribesItemID"] = 13;
                                             NewRow["TableItemID"] = sDT.Rows[0]["NewsID"];
                                             NewRow["UserID"] = Row["ManagerID"];
@@ -13914,12 +13967,12 @@ namespace Infinium
 
         public void ClearPending(DateTime DateTime)
         {
-            using (SqlDataAdapter sDA = new SqlDataAdapter("SELECT TOP 1 * FROM ZOVNews WHERE DateTime = '" + DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'",
+            using (var sDA = new SqlDataAdapter("SELECT TOP 1 * FROM ZOVNews WHERE DateTime = '" + DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'",
                                                                       ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(sDA))
+                using (var CB = new SqlCommandBuilder(sDA))
                 {
-                    using (DataTable sDT = new DataTable())
+                    using (var sDT = new DataTable())
                     {
                         sDA.Fill(sDT);
 
@@ -13937,15 +13990,15 @@ namespace Infinium
         {
             DateTime Date;
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM ZOVNewsComments", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 0 * FROM ZOVNewsComments", ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
-                        DataRow NewRow = DT.NewRow();
+                        var NewRow = DT.NewRow();
                         NewRow["NewsID"] = NewsID;
                         NewRow["NewsComment"] = Text;
                         NewRow["UserID"] = UserID;
@@ -13961,11 +14014,11 @@ namespace Infinium
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT NewsID, LastCommentDateTime FROM ZOVNews WHERE NewsID =" + NewsID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT NewsID, LastCommentDateTime FROM ZOVNews WHERE NewsID =" + NewsID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -13982,19 +14035,19 @@ namespace Infinium
 
         public void LikeNews(int UserID, int NewsID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM ZOVNewsLikes WHERE NewsID = " + NewsID + " AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM ZOVNewsLikes WHERE NewsID = " + NewsID + " AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
                         if (DT.Rows.Count > 0)//i like
                         {
-                            using (SqlDataAdapter dDA = new SqlDataAdapter("DELETE FROM ZOVNewsLikes WHERE NewsID = " + NewsID + " AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
+                            using (var dDA = new SqlDataAdapter("DELETE FROM ZOVNewsLikes WHERE NewsID = " + NewsID + " AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
                             {
-                                using (DataTable dDT = new DataTable())
+                                using (var dDT = new DataTable())
                                 {
                                     dDA.Fill(dDT);
                                 }
@@ -14003,7 +14056,7 @@ namespace Infinium
                             return;
                         }
 
-                        DataRow NewRow = DT.NewRow();
+                        var NewRow = DT.NewRow();
                         NewRow["NewsID"] = NewsID;
                         NewRow["UserID"] = UserID;
                         DT.Rows.Add(NewRow);
@@ -14016,19 +14069,19 @@ namespace Infinium
 
         public void LikeComments(int UserID, int NewsID, int NewsCommentID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM ZOVNewsCommentsLikes WHERE NewsCommentID = " + NewsCommentID + " AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM ZOVNewsCommentsLikes WHERE NewsCommentID = " + NewsCommentID + " AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
                         if (DT.Rows.Count > 0)
                         {
-                            using (SqlDataAdapter dDA = new SqlDataAdapter("DELETE FROM ZOVNewsCommentsLikes WHERE NewsCommentID = " + NewsCommentID + " AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
+                            using (var dDA = new SqlDataAdapter("DELETE FROM ZOVNewsCommentsLikes WHERE NewsCommentID = " + NewsCommentID + " AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
                             {
-                                using (DataTable dDT = new DataTable())
+                                using (var dDT = new DataTable())
                                 {
                                     dDA.Fill(dDT);
                                 }
@@ -14037,7 +14090,7 @@ namespace Infinium
                             return;
                         }
 
-                        DataRow NewRow = DT.NewRow();
+                        var NewRow = DT.NewRow();
                         NewRow["NewsID"] = NewsID;
                         NewRow["NewsCommentID"] = NewsCommentID;
                         NewRow["UserID"] = UserID;
@@ -14052,11 +14105,11 @@ namespace Infinium
 
         public void EditComments(int UserID, int NewsCommentID, string Text)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM ZOVNewsComments WHERE NewsCommentID = " + NewsCommentID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM ZOVNewsComments WHERE NewsCommentID = " + NewsCommentID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -14074,13 +14127,13 @@ namespace Infinium
             if (AttachmentsDataTable.Rows.Count == 0)
                 return true;
 
-            bool Ok = true;
+            var Ok = true;
 
             int NewsID;
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT NewsID FROM ZOVNews WHERE DateTime = '" + NewsDateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT NewsID FROM ZOVNews WHERE DateTime = '" + NewsDateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'", ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -14088,11 +14141,11 @@ namespace Infinium
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM ZOVNewsAttachs", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 0 * FROM ZOVNewsAttachs", ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -14111,7 +14164,7 @@ namespace Infinium
                                 continue;
                             }
 
-                            DataRow NewRow = DT.NewRow();
+                            var NewRow = DT.NewRow();
                             NewRow["NewsID"] = NewsID;
                             NewRow["FileName"] = Row["FileName"];
                             NewRow["FileSize"] = fi.Length;
@@ -14124,9 +14177,9 @@ namespace Infinium
             }
 
             //write to ftp
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM ZOVNewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM ZOVNewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -14161,13 +14214,13 @@ namespace Infinium
 
         public bool EditAttachments(int NewsID, DataTable AttachmentsDataTable, ref int CurrentUploadedFile, ref int TotalFilesCount)
         {
-            bool Ok = false;
+            var Ok = false;
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT NewsAttachID, NewsID, FileName FROM ZOVNewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT NewsAttachID, NewsID, FileName FROM ZOVNewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -14186,11 +14239,11 @@ namespace Infinium
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM ZOVNewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 0 * FROM ZOVNewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
                         Ok = true;
@@ -14216,7 +14269,7 @@ namespace Infinium
                                 continue;
                             }
 
-                            DataRow NewRow = DT.NewRow();
+                            var NewRow = DT.NewRow();
                             NewRow["NewsID"] = NewsID;
                             NewRow["FileName"] = Row["FileName"];
                             NewRow["FileSize"] = fi.Length;
@@ -14230,9 +14283,9 @@ namespace Infinium
 
 
             //write to ftp
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM ZOVNewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM ZOVNewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -14271,7 +14324,7 @@ namespace Infinium
         {
             AttachmentsDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT NewsAttachID, NewsID, FileName, FileSize FROM ZOVNewsAttachs", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT NewsAttachID, NewsID, FileName, FileSize FROM ZOVNewsAttachs", ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(AttachmentsDataTable);
             }
@@ -14279,11 +14332,11 @@ namespace Infinium
 
         public void EditNews(int NewsID, int SenderID, int SenderTypeID, string HeaderText, string BodyText, int NewsCategoryID, DateTime DateTime)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM ZOVNews WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM ZOVNews WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         if (DA.Fill(DT) == 0)
                             return;
@@ -14307,9 +14360,9 @@ namespace Infinium
 
         public int GetNewsUpdatesCount()
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT Count (SubscribesRecordID) FROM SubscribesRecords WHERE SubscribesItemID = 13 OR SubscribesItemID = 14 AND UserTypeID = 0 AND UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT Count (SubscribesRecordID) FROM SubscribesRecords WHERE SubscribesItemID = 13 OR SubscribesItemID = 14 AND UserTypeID = 0 AND UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     if (DA.Fill(DT) > 0)
                         return Convert.ToInt32(DT.Rows[0][0]);
@@ -14321,10 +14374,10 @@ namespace Infinium
 
         public int GetNewsIDByDateTime(DateTime DateTime)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM ZOVNews WHERE DateTime = '" + DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'",
+            using (var DA = new SqlDataAdapter("SELECT * FROM ZOVNews WHERE DateTime = '" + DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'",
                                                                          ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -14337,19 +14390,19 @@ namespace Infinium
         {
             //ActiveNotifySystem.DeleteSubscribesRecord(1);
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM ZOVNewsLikes WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM ZOVNewsLikes WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM ZOVNews WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM ZOVNews WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
                     }
@@ -14369,19 +14422,19 @@ namespace Infinium
         {
             DeleteCommentsSubs(NewsID);
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM ZOVNewsCommentsLikes WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM ZOVNewsCommentsLikes WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM ZOVNewsComments WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM ZOVNewsComments WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
                     }
@@ -14393,17 +14446,17 @@ namespace Infinium
 
         public void RemoveComment(int NewsCommentID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM ZOVNewsCommentsLikes WHERE NewsCommentID = " + NewsCommentID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM ZOVNewsCommentsLikes WHERE NewsCommentID = " + NewsCommentID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM ZOVNewsComments WHERE NewsCommentID = " + NewsCommentID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM ZOVNewsComments WHERE NewsCommentID = " + NewsCommentID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
@@ -14414,9 +14467,9 @@ namespace Infinium
 
         public void RemoveAttachments(int NewsID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM ZOVNewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM ZOVNewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -14430,11 +14483,11 @@ namespace Infinium
                     }
                     catch
                     {
-                        using (SqlDataAdapter fDA = new SqlDataAdapter("DELETE FROM ZOVNewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
+                        using (var fDA = new SqlDataAdapter("DELETE FROM ZOVNewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
                         {
-                            using (SqlCommandBuilder CB = new SqlCommandBuilder(fDA))
+                            using (var CB = new SqlCommandBuilder(fDA))
                             {
-                                using (DataTable fDT = new DataTable())
+                                using (var fDT = new DataTable())
                                 {
                                     fDA.Fill(fDT);
                                 }
@@ -14450,11 +14503,11 @@ namespace Infinium
 
 
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM ZOVNewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM ZOVNewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
                     }
@@ -14466,11 +14519,11 @@ namespace Infinium
 
         public void RemoveCurrentAttachments(int NewsID, DataTable AttachmentsDT)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM ZOVNewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM ZOVNewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -14495,9 +14548,9 @@ namespace Infinium
 
         public DataTable GetAttachments(int NewsID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT NewsAttachID, FileName FROM ZOVNewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT NewsAttachID, FileName FROM ZOVNewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -14541,13 +14594,13 @@ namespace Infinium
 
         public string SaveFile(int NewsAttachID)//temp folder
         {
-            string tempFolder = Environment.GetEnvironmentVariable("TEMP");
+            var tempFolder = Environment.GetEnvironmentVariable("TEMP");
 
-            string FileName = "";
+            var FileName = "";
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT FileName, FileSize FROM ZOVNewsAttachs WHERE NewsAttachID = " + NewsAttachID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT FileName, FileSize FROM ZOVNewsAttachs WHERE NewsAttachID = " + NewsAttachID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -14591,13 +14644,13 @@ namespace Infinium
 
         public void SaveFile(int NewsAttachID, string sDestFileName)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT FileName, FileSize FROM ZOVNewsAttachs WHERE NewsAttachID = " + NewsAttachID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT FileName, FileSize FROM ZOVNewsAttachs WHERE NewsAttachID = " + NewsAttachID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
-                    string FileName = DT.Rows[0]["FileName"].ToString();
+                    var FileName = DT.Rows[0]["FileName"].ToString();
 
                     try
                     {
@@ -14613,10 +14666,10 @@ namespace Infinium
 
         private string SetNumber(string FileName, int Number)
         {
-            string Ext = "";
-            string Name = "";
+            var Ext = "";
+            var Name = "";
 
-            for (int i = FileName.Length - 1; i > 0; i--)
+            for (var i = FileName.Length - 1; i > 0; i--)
             {
                 if (FileName[i] == '.')
                 {
@@ -14631,13 +14684,13 @@ namespace Infinium
 
         private string GetNewFileName(string path, string FileName)
         {
-            FileInfo fileInfo = new FileInfo(path + "\\" + FileName);
+            var fileInfo = new FileInfo(path + "\\" + FileName);
 
             if (!fileInfo.Exists)
                 return FileName;
 
-            bool Ok = false;
-            int n = 1;
+            var Ok = false;
+            var n = 1;
 
             while (!Ok)
             {
@@ -14654,9 +14707,9 @@ namespace Infinium
 
         public void DeleteCommentsSub(int NewsCommentID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM SubscribesRecords WHERE SubscribesItemID = 14 AND TableItemID = " + NewsCommentID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM SubscribesRecords WHERE SubscribesItemID = 14 AND TableItemID = " + NewsCommentID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
@@ -14665,9 +14718,9 @@ namespace Infinium
 
         public void DeleteCommentsSubs(int NewsID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM SubscribesRecords WHERE SubscribesItemID = 14 AND TableItemID IN (SELECT NewsCommentID FROM ZOVNewsComments WHERE NewsID = " + NewsID + ")", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM SubscribesRecords WHERE SubscribesItemID = 14 AND TableItemID IN (SELECT NewsCommentID FROM ZOVNewsComments WHERE NewsID = " + NewsID + ")", ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
@@ -14676,23 +14729,23 @@ namespace Infinium
 
         public void AddNewsCommentsSubs(int NewsID, int UserID, DateTime DateTime)
         {
-            using (SqlDataAdapter sDA = new SqlDataAdapter("SELECT NewsCommentID FROM ZOVNewsComments WHERE DateTime = '" + DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'", ConnectionStrings.LightConnectionString))
+            using (var sDA = new SqlDataAdapter("SELECT NewsCommentID FROM ZOVNewsComments WHERE DateTime = '" + DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'", ConnectionStrings.LightConnectionString))
             {
-                using (DataTable sDT = new DataTable())
+                using (var sDT = new DataTable())
                 {
                     sDA.Fill(sDT);
 
-                    using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM SubscribesRecords", ConnectionStrings.LightConnectionString))
+                    using (var DA = new SqlDataAdapter("SELECT TOP 0 * FROM SubscribesRecords", ConnectionStrings.LightConnectionString))
                     {
-                        using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                        using (var CB = new SqlCommandBuilder(DA))
                         {
-                            using (DataTable DT = new DataTable())
+                            using (var DT = new DataTable())
                             {
                                 DA.Fill(DT);
 
-                                using (SqlDataAdapter uDA = new SqlDataAdapter("SELECT * FROM ModulesAccess WHERE ModuleID = 156", ConnectionStrings.UsersConnectionString))
+                                using (var uDA = new SqlDataAdapter("SELECT * FROM ModulesAccess WHERE ModuleID = 156", ConnectionStrings.UsersConnectionString))
                                 {
-                                    using (DataTable uDT = new DataTable())
+                                    using (var uDT = new DataTable())
                                     {
                                         uDA.Fill(uDT);
 
@@ -14701,7 +14754,7 @@ namespace Infinium
                                             if (Convert.ToInt32(Row["UserID"]) == Security.CurrentUserID)
                                                 continue;
 
-                                            DataRow NewRow = DT.NewRow();
+                                            var NewRow = DT.NewRow();
                                             NewRow["SubscribesItemID"] = 14;
                                             NewRow["TableItemID"] = sDT.Rows[0]["NewsCommentID"];
                                             NewRow["UserID"] = Row["UserID"];
@@ -14711,7 +14764,7 @@ namespace Infinium
 
                                         foreach (DataRow Row in ManagersDataTable.Rows)
                                         {
-                                            DataRow NewRow = DT.NewRow();
+                                            var NewRow = DT.NewRow();
                                             NewRow["SubscribesItemID"] = 14;
                                             NewRow["TableItemID"] = sDT.Rows[0]["NewsCommentID"];
                                             NewRow["UserID"] = Row["ManagerID"];
@@ -14757,7 +14810,7 @@ namespace Infinium
         {
             UsersDataTable = new DataTable();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT UserID, Name FROM Users WHERE UserID IN (SELECT UserID FROM ModulesAccess WHERE ModuleID = 157) ORDER BY Name ASC", ConnectionStrings.UsersConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT UserID, Name FROM Users WHERE UserID IN (SELECT UserID FROM ModulesAccess WHERE ModuleID = 157) ORDER BY Name ASC", ConnectionStrings.UsersConnectionString))
             {
                 DA.Fill(UsersDataTable);
             }
@@ -14840,7 +14893,7 @@ namespace Infinium
                 return;
             }
 
-            DataRow[] Row = ManagersDataTable.Select("ManagerID = " + ManagerID);
+            var Row = ManagersDataTable.Select("ManagerID = " + ManagerID);
 
             SelectedUsersDataTable.ImportRow(Row[0]);
 
@@ -14849,7 +14902,7 @@ namespace Infinium
 
         public void RemoveCurrent()
         {
-            int Pos = SelectedUsersBindingSource.Position;
+            var Pos = SelectedUsersBindingSource.Position;
             SelectedUsersBindingSource.RemoveCurrent();
 
             //остается на позиции удаленного
@@ -14874,16 +14927,16 @@ namespace Infinium
         {
             MessagesDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 100 MessageID, SenderID, RecipientID,SenderTypeID, RecipientTypeID,"
-                + " SendDateTime, MessageText, infiniu2_zovreference.dbo.Managers.Name AS SenderName, infiniu2_users.dbo.Users.Name AS SenderName2 "
-                + " FROM infiniu2_zovreference.dbo.ZOVMessages"
-                + " left JOIN infiniu2_zovreference.dbo.Managers ON infiniu2_zovreference.dbo.Managers.ManagerID = infiniu2_zovreference.dbo.ZOVMessages.SenderID"
-                + " left JOIN infiniu2_users.dbo.Users ON infiniu2_users.dbo.Users.UserID = infiniu2_zovreference.dbo.ZOVMessages.SenderID and SenderTypeID = 0"
-                + " WHERE (RecipientID = " + SenderID + " AND SenderID = " + CurrentUserID + ") OR (RecipientID = " + CurrentUserID + " AND SenderID = " + SenderID +
-                ") ORDER BY SendDateTime DESC", ConnectionStrings.MarketingReferenceConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 100 MessageID, SenderID, RecipientID,SenderTypeID, RecipientTypeID,"
+                                               + " SendDateTime, MessageText, infiniu2_zovreference.dbo.Managers.Name AS SenderName, infiniu2_users.dbo.Users.Name AS SenderName2 "
+                                               + " FROM infiniu2_zovreference.dbo.ZOVMessages"
+                                               + " left JOIN infiniu2_zovreference.dbo.Managers ON infiniu2_zovreference.dbo.Managers.ManagerID = infiniu2_zovreference.dbo.ZOVMessages.SenderID"
+                                               + " left JOIN infiniu2_users.dbo.Users ON infiniu2_users.dbo.Users.UserID = infiniu2_zovreference.dbo.ZOVMessages.SenderID and SenderTypeID = 0"
+                                               + " WHERE (RecipientID = " + SenderID + " AND SenderID = " + CurrentUserID + ") OR (RecipientID = " + CurrentUserID + " AND SenderID = " + SenderID +
+                                               ") ORDER BY SendDateTime DESC", ConnectionStrings.MarketingReferenceConnectionString))
             {
                 DA.Fill(MessagesDataTable);
-                for (int i = 0; i < MessagesDataTable.Rows.Count; i++)
+                for (var i = 0; i < MessagesDataTable.Rows.Count; i++)
                 {
                     if (MessagesDataTable.Rows[i]["SenderName"] == DBNull.Value)
                         MessagesDataTable.Rows[i]["SenderName"] = MessagesDataTable.Rows[i]["SenderName2"];
@@ -14902,9 +14955,9 @@ namespace Infinium
             if (sText.Length == 0)
                 return true;
 
-            int n = 0;
+            var n = 0;
 
-            foreach (char c in sText)
+            foreach (var c in sText)
             {
                 if (c == '\n' || c == '\r' || c == ' ')
                     n++;
@@ -14918,22 +14971,22 @@ namespace Infinium
 
         public void AddMessage(int RecipientID, string sText)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM ZOVMessages", ConnectionStrings.ZOVReferenceConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 0 * FROM ZOVMessages", ConnectionStrings.ZOVReferenceConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
-                        DataRow NewRow = DT.NewRow();
+                        var NewRow = DT.NewRow();
                         NewRow["SenderID"] = CurrentUserID;
                         NewRow["RecipientID"] = RecipientID;
                         NewRow["MessageText"] = sText;
                         NewRow["SenderTypeID"] = false;
                         NewRow["RecipientTypeID"] = true;
 
-                        DateTime DateTime = Security.GetCurrentDate();
+                        var DateTime = Security.GetCurrentDate();
 
                         NewRow["SendDateTime"] = DateTime;
                         DT.Rows.Add(NewRow);
@@ -14942,17 +14995,17 @@ namespace Infinium
 
                         FillMessages(RecipientID);
 
-                        DataRow[] Row = MessagesDataTable.Select("SendDateTime = '" + DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'");
+                        var Row = MessagesDataTable.Select("SendDateTime = '" + DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'");
 
-                        using (SqlDataAdapter sDA = new SqlDataAdapter("SELECT TOP 0 * FROM SubscribesRecords", ConnectionStrings.LightConnectionString))
+                        using (var sDA = new SqlDataAdapter("SELECT TOP 0 * FROM SubscribesRecords", ConnectionStrings.LightConnectionString))
                         {
-                            using (SqlCommandBuilder sCB = new SqlCommandBuilder(sDA))
+                            using (var sCB = new SqlCommandBuilder(sDA))
                             {
-                                using (DataTable sDT = new DataTable())
+                                using (var sDT = new DataTable())
                                 {
                                     sDA.Fill(sDT);
 
-                                    DataRow sNewRow = sDT.NewRow();
+                                    var sNewRow = sDT.NewRow();
                                     sNewRow["SubscribesItemID"] = 15;
                                     sNewRow["TableItemID"] = Convert.ToInt32(Row[0][0]);
                                     sNewRow["UserID"] = RecipientID;
@@ -14970,9 +15023,9 @@ namespace Infinium
 
         public void GetNewMessages()
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM infiniu2_zovreference.dbo.ZOVMessages WHERE infiniu2_zovreference.dbo.ZOVMessages.MessageID IN (SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 15 AND UserTypeID = 0 AND UserID = " + CurrentUserID + ") ORDER BY SendDateTime DESC", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM infiniu2_zovreference.dbo.ZOVMessages WHERE infiniu2_zovreference.dbo.ZOVMessages.MessageID IN (SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 15 AND UserTypeID = 0 AND UserID = " + CurrentUserID + ") ORDER BY SendDateTime DESC", ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     if (DA.Fill(DT) == 0)
                         return;
@@ -14987,7 +15040,7 @@ namespace Infinium
 
         public void AddSenderToSelected(int ManagerID)
         {
-            DataRow[] sRow = SelectedUsersDataTable.Select("ManagerID = " + ManagerID);
+            var sRow = SelectedUsersDataTable.Select("ManagerID = " + ManagerID);
 
             if (sRow.Count() > 0)
             {
@@ -14995,9 +15048,9 @@ namespace Infinium
                 return;
             }
 
-            DataRow[] Row = ManagersDataTable.Select("ManagerID = " + ManagerID);
+            var Row = ManagersDataTable.Select("ManagerID = " + ManagerID);
 
-            DataRow NewRow = SelectedUsersDataTable.NewRow();
+            var NewRow = SelectedUsersDataTable.NewRow();
             NewRow["ManagerID"] = Row[0]["ManagerID"];
             NewRow["Name"] = Row[0]["Name"];
             NewRow["UpdatesCount"] = 1;
@@ -15006,9 +15059,9 @@ namespace Infinium
 
         public void CheckOnline()
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT ManagerID FROM Managers WHERE Online = 1", ConnectionStrings.ZOVReferenceConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT ManagerID FROM Managers WHERE Online = 1", ConnectionStrings.ZOVReferenceConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     try
                     {
@@ -15087,18 +15140,18 @@ namespace Infinium
 
             AttachmentsDataTable = new DataTable();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT NewsAttachID, NewsID, FileName, FileSize FROM NewsAttachs", ConnectionStrings.MarketingReferenceConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT NewsAttachID, NewsID, FileName, FileSize FROM NewsAttachs", ConnectionStrings.MarketingReferenceConnectionString))
             {
                 DA.Fill(AttachmentsDataTable);
             }
 
             ClientsDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT ClientID, ClientName FROM Clients ORDER BY ClientName ASC", ConnectionStrings.MarketingReferenceConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT ClientID, ClientName FROM Clients ORDER BY ClientName ASC", ConnectionStrings.MarketingReferenceConnectionString))
             {
                 DA.Fill(ClientsDataTable);
             }
             ClientsManagersDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM ClientsManagers ORDER BY Name ASC", ConnectionStrings.MarketingReferenceConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM ClientsManagers ORDER BY Name ASC", ConnectionStrings.MarketingReferenceConnectionString))
             {
                 DA.Fill(ClientsManagersDataTable);
             }
@@ -15110,9 +15163,9 @@ namespace Infinium
             ClientsSelectDataTable.Columns.Add(new DataColumn("UserTypeID", Type.GetType("System.Int32")));
             ClientsSelectDataTable.Columns.Add(new DataColumn("ID", Type.GetType("System.Int32")));
             ClientsSelectDataTable.Columns.Add(new DataColumn("Name", Type.GetType("System.String")));
-            for (int i = 0; i < ClientsDataTable.Rows.Count; i++)
+            for (var i = 0; i < ClientsDataTable.Rows.Count; i++)
             {
-                DataRow NewRow = ClientsSelectDataTable.NewRow();
+                var NewRow = ClientsSelectDataTable.NewRow();
                 NewRow["Check"] = 0;
                 NewRow["UserTypeID"] = 0;
                 NewRow["ID"] = ClientsDataTable.Rows[i]["ClientID"];
@@ -15120,9 +15173,9 @@ namespace Infinium
                 ClientsSelectDataTable.Rows.Add(NewRow);
             }
 
-            for (int i = 0; i < ClientsManagersDataTable.Rows.Count; i++)
+            for (var i = 0; i < ClientsManagersDataTable.Rows.Count; i++)
             {
-                DataRow NewRow = ClientsSelectDataTable.NewRow();
+                var NewRow = ClientsSelectDataTable.NewRow();
                 NewRow["Check"] = 0;
                 NewRow["UserTypeID"] = 1;
                 NewRow["ID"] = ClientsManagersDataTable.Rows[i]["ManagerID"];
@@ -15132,22 +15185,22 @@ namespace Infinium
 
             CommentsDataTable = new DataTable();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM NewsComments", ConnectionStrings.MarketingReferenceConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM NewsComments", ConnectionStrings.MarketingReferenceConnectionString))
             {
                 DA.Fill(CommentsDataTable);
             }
 
             CommentsSubsRecordsDataTable = new DataTable();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT SubscribesRecords.*, NewsComments.NewsID FROM SubscribesRecords INNER JOIN infiniu2_marketingreference.dbo.NewsComments ON infiniu2_marketingreference.dbo.NewsComments.NewsCommentID = SubscribesRecords.TableItemID WHERE SubscribesItemID = 17 AND SubscribesRecords.UserTypeID = 0 AND SubscribesRecords.UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT SubscribesRecords.*, NewsComments.NewsID FROM SubscribesRecords INNER JOIN infiniu2_marketingreference.dbo.NewsComments ON infiniu2_marketingreference.dbo.NewsComments.NewsCommentID = SubscribesRecords.TableItemID WHERE SubscribesItemID = 17 AND SubscribesRecords.UserTypeID = 0 AND SubscribesRecords.UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(CommentsSubsRecordsDataTable);
             }
 
             NewsSubsRecordsDataTable = new DataTable();
 
-            using (SqlDataAdapter sDA = new SqlDataAdapter("SELECT * FROM SubscribesRecords WHERE SubscribesItemID = 16 " +
-                                                            " AND UserTypeID = 0 AND UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
+            using (var sDA = new SqlDataAdapter("SELECT * FROM SubscribesRecords WHERE SubscribesItemID = 16 " +
+                                                " AND UserTypeID = 0 AND UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
             {
                 sDA.Fill(NewsSubsRecordsDataTable);
             }
@@ -15157,9 +15210,9 @@ namespace Infinium
         {
             ClientsNewsDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT ClientID, ClientName FROM Clients WHERE ClientID IN (SELECT SenderID FROM News WHERE NewsID IN (SELECT TableItemID FROM infiniu2_light.dbo.SubscribesRecords WHERE UserTypeID = 0 AND SubscribesItemID = 16 AND UserID = " + Security.CurrentUserID + ")) OR ClientID IN (SELECT SenderID FROM News WHERE NewsID IN (SELECT NewsID FROM NewsComments WHERE NewsCommentID IN (SELECT TableItemID FROM infiniu2_light.dbo.SubscribesRecords WHERE UserTypeID = 0 AND SubscribesItemID = 17 AND UserID = " + Security.CurrentUserID + ")))", ConnectionStrings.MarketingReferenceConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT ClientID, ClientName FROM Clients WHERE ClientID IN (SELECT SenderID FROM News WHERE NewsID IN (SELECT TableItemID FROM infiniu2_light.dbo.SubscribesRecords WHERE UserTypeID = 0 AND SubscribesItemID = 16 AND UserID = " + Security.CurrentUserID + ")) OR ClientID IN (SELECT SenderID FROM News WHERE NewsID IN (SELECT NewsID FROM NewsComments WHERE NewsCommentID IN (SELECT TableItemID FROM infiniu2_light.dbo.SubscribesRecords WHERE UserTypeID = 0 AND SubscribesItemID = 17 AND UserID = " + Security.CurrentUserID + ")))", ConnectionStrings.MarketingReferenceConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(ClientsNewsDataTable);
                 }
@@ -15170,9 +15223,9 @@ namespace Infinium
         {
             ClientsManagersNewsDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT ManagerID, Name FROM ClientsManagers WHERE ManagerID IN (SELECT SenderID FROM News WHERE SenderTypeID=3 AND NewsID IN (SELECT TableItemID FROM infiniu2_light.dbo.SubscribesRecords WHERE UserTypeID = 0 AND SubscribesItemID = 16 AND UserID = " + Security.CurrentUserID + ")) OR ManagerID IN (SELECT SenderID FROM News WHERE SenderTypeID=3 AND NewsID IN (SELECT NewsID FROM NewsComments WHERE UserTypeID=3 AND NewsCommentID IN (SELECT TableItemID FROM infiniu2_light.dbo.SubscribesRecords WHERE UserTypeID = 0 AND SubscribesItemID = 17 AND UserID = " + Security.CurrentUserID + ")))", ConnectionStrings.MarketingReferenceConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT ManagerID, Name FROM ClientsManagers WHERE ManagerID IN (SELECT SenderID FROM News WHERE SenderTypeID=3 AND NewsID IN (SELECT TableItemID FROM infiniu2_light.dbo.SubscribesRecords WHERE UserTypeID = 0 AND SubscribesItemID = 16 AND UserID = " + Security.CurrentUserID + ")) OR ManagerID IN (SELECT SenderID FROM News WHERE SenderTypeID=3 AND NewsID IN (SELECT NewsID FROM NewsComments WHERE UserTypeID=3 AND NewsCommentID IN (SELECT TableItemID FROM infiniu2_light.dbo.SubscribesRecords WHERE UserTypeID = 0 AND SubscribesItemID = 17 AND UserID = " + Security.CurrentUserID + ")))", ConnectionStrings.MarketingReferenceConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(ClientsManagersNewsDataTable);
                 }
@@ -15183,7 +15236,7 @@ namespace Infinium
         {
             NewsDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP " + Count + " * FROM News WHERE ((RecipientTypeID=2 AND RecipientID=" + ClientID + ") OR (SenderTypeID=2 AND SenderID = " + ClientID + ")) AND Pending <> 1 ORDER BY LastCommentDateTime DESC", ConnectionStrings.MarketingReferenceConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP " + Count + " * FROM News WHERE ((RecipientTypeID=2 AND RecipientID=" + ClientID + ") OR (SenderTypeID=2 AND SenderID = " + ClientID + ")) AND Pending <> 1 ORDER BY LastCommentDateTime DESC", ConnectionStrings.MarketingReferenceConnectionString))
             {
                 DA.Fill(NewsDataTable);
             }
@@ -15218,7 +15271,7 @@ namespace Infinium
         {
             NewsDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP " + Count + " * FROM News WHERE ((RecipientTypeID=3 AND RecipientID=" + ManagerID + ") OR (SenderTypeID=3 AND SenderID = " + ManagerID + ")) AND Pending <> 1 ORDER BY LastCommentDateTime DESC", ConnectionStrings.MarketingReferenceConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP " + Count + " * FROM News WHERE ((RecipientTypeID=3 AND RecipientID=" + ManagerID + ") OR (SenderTypeID=3 AND SenderID = " + ManagerID + ")) AND Pending <> 1 ORDER BY LastCommentDateTime DESC", ConnectionStrings.MarketingReferenceConnectionString))
             {
                 DA.Fill(NewsDataTable);
             }
@@ -15253,7 +15306,7 @@ namespace Infinium
         {
             CommentsDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM NewsComments", ConnectionStrings.MarketingReferenceConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM NewsComments", ConnectionStrings.MarketingReferenceConnectionString))
             {
                 DA.Fill(CommentsDataTable);
             }
@@ -15263,15 +15316,15 @@ namespace Infinium
         {
             CommentsSubsRecordsDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT SubscribesRecords.*, infiniu2_marketingreference.dbo.NewsComments.NewsID FROM SubscribesRecords INNER JOIN infiniu2_marketingreference.dbo.NewsComments ON infiniu2_marketingreference.dbo.NewsComments.NewsCommentID = SubscribesRecords.TableItemID WHERE SubscribesItemID = 17 AND SubscribesRecords.UserTypeID = 0 AND SubscribesRecords.UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT SubscribesRecords.*, infiniu2_marketingreference.dbo.NewsComments.NewsID FROM SubscribesRecords INNER JOIN infiniu2_marketingreference.dbo.NewsComments ON infiniu2_marketingreference.dbo.NewsComments.NewsCommentID = SubscribesRecords.TableItemID WHERE SubscribesItemID = 17 AND SubscribesRecords.UserTypeID = 0 AND SubscribesRecords.UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(CommentsSubsRecordsDataTable);
             }
 
             NewsSubsRecordsDataTable.Clear();
 
-            using (SqlDataAdapter sDA = new SqlDataAdapter("SELECT * FROM SubscribesRecords WHERE SubscribesItemID = 16 " +
-                                                            " AND UserTypeID = 0 AND UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
+            using (var sDA = new SqlDataAdapter("SELECT * FROM SubscribesRecords WHERE SubscribesItemID = 16 " +
+                                                " AND UserTypeID = 0 AND UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
             {
                 sDA.Fill(NewsSubsRecordsDataTable);
             }
@@ -15281,7 +15334,7 @@ namespace Infinium
         {
             NewsDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 20 * FROM News WHERE ((RecipientTypeID=2 AND RecipientID=" + ClientID + ") OR (SenderTypeID=2 AND SenderID = " + ClientID + ")) AND Pending <> 1 ORDER BY LastCommentDateTime DESC", ConnectionStrings.MarketingReferenceConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 20 * FROM News WHERE ((RecipientTypeID=2 AND RecipientID=" + ClientID + ") OR (SenderTypeID=2 AND SenderID = " + ClientID + ")) AND Pending <> 1 ORDER BY LastCommentDateTime DESC", ConnectionStrings.MarketingReferenceConnectionString))
             {
                 DA.Fill(NewsDataTable);
             }
@@ -15314,7 +15367,7 @@ namespace Infinium
         {
             NewsDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 20 * FROM News WHERE ((RecipientTypeID=3 AND RecipientID=" + ManagerID + ") OR (SenderTypeID=3 AND SenderID = " + ManagerID + ")) AND Pending <> 1 ORDER BY LastCommentDateTime DESC", ConnectionStrings.MarketingReferenceConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 20 * FROM News WHERE ((RecipientTypeID=3 AND RecipientID=" + ManagerID + ") OR (SenderTypeID=3 AND SenderID = " + ManagerID + ")) AND Pending <> 1 ORDER BY LastCommentDateTime DESC", ConnectionStrings.MarketingReferenceConnectionString))
             {
                 DA.Fill(NewsDataTable);
             }
@@ -15347,7 +15400,7 @@ namespace Infinium
         {
             NewsLikesDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM NewsLikes", ConnectionStrings.MarketingReferenceConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM NewsLikes", ConnectionStrings.MarketingReferenceConnectionString))
             {
                 DA.Fill(NewsLikesDataTable);
             }
@@ -15355,7 +15408,7 @@ namespace Infinium
 
             CommentsLikesDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM NewsCommentsLikes", ConnectionStrings.MarketingReferenceConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM NewsCommentsLikes", ConnectionStrings.MarketingReferenceConnectionString))
             {
                 DA.Fill(CommentsLikesDataTable);
             }
@@ -15365,7 +15418,7 @@ namespace Infinium
         {
             NewsDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP " + Count + " * FROM News WHERE ClientID = " + ClientID + " AND Pending <> 1 ORDER BY LastCommentDateTime DESC", ConnectionStrings.MarketingReferenceConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP " + Count + " * FROM News WHERE ClientID = " + ClientID + " AND Pending <> 1 ORDER BY LastCommentDateTime DESC", ConnectionStrings.MarketingReferenceConnectionString))
             {
                 DA.Fill(NewsDataTable);
             }
@@ -15373,10 +15426,10 @@ namespace Infinium
 
         public bool IsMoreNews(int Count, int ClientID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT Count(NewsID) FROM News WHERE RecipientID = " + ClientID,
+            using (var DA = new SqlDataAdapter("SELECT Count(NewsID) FROM News WHERE RecipientID = " + ClientID,
                 ConnectionStrings.MarketingReferenceConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -15389,17 +15442,17 @@ namespace Infinium
         {
             DateTime DateTime;
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM News", ConnectionStrings.MarketingReferenceConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 0 * FROM News", ConnectionStrings.MarketingReferenceConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
                         DateTime = Security.GetCurrentDate();
 
-                        DataRow NewRow = DT.NewRow();
+                        var NewRow = DT.NewRow();
                         NewRow["SenderID"] = SenderID;
                         NewRow["SenderTypeID"] = SenderTypeID;
                         NewRow["HeaderText"] = HeaderText;
@@ -15424,24 +15477,24 @@ namespace Infinium
 
         public void AddSubscribeForNews(DateTime DateTime, int UserTypeID, int ClientID)
         {
-            using (SqlDataAdapter sDA = new SqlDataAdapter("SELECT * FROM News WHERE RecipientTypeID=" + UserTypeID + " AND RecipientID = " + ClientID + " AND DateTime = '" + DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'",
+            using (var sDA = new SqlDataAdapter("SELECT * FROM News WHERE RecipientTypeID=" + UserTypeID + " AND RecipientID = " + ClientID + " AND DateTime = '" + DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'",
                                                                        ConnectionStrings.MarketingReferenceConnectionString))
             {
-                using (DataTable sDT = new DataTable())
+                using (var sDT = new DataTable())
                 {
                     sDA.Fill(sDT);
 
-                    using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM SubscribesRecords", ConnectionStrings.LightConnectionString))
+                    using (var DA = new SqlDataAdapter("SELECT TOP 0 * FROM SubscribesRecords", ConnectionStrings.LightConnectionString))
                     {
-                        using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                        using (var CB = new SqlCommandBuilder(DA))
                         {
-                            using (DataTable DT = new DataTable())
+                            using (var DT = new DataTable())
                             {
                                 DA.Fill(DT);
 
-                                using (SqlDataAdapter uDA = new SqlDataAdapter("SELECT * FROM ModulesAccess WHERE ModuleID = 158", ConnectionStrings.UsersConnectionString))
+                                using (var uDA = new SqlDataAdapter("SELECT * FROM ModulesAccess WHERE ModuleID = 158", ConnectionStrings.UsersConnectionString))
                                 {
-                                    using (DataTable uDT = new DataTable())
+                                    using (var uDT = new DataTable())
                                     {
                                         uDA.Fill(uDT);
 
@@ -15450,7 +15503,7 @@ namespace Infinium
                                             if (Convert.ToInt32(Row["UserID"]) == Security.CurrentUserID)
                                                 continue;
 
-                                            DataRow NewRow = DT.NewRow();
+                                            var NewRow = DT.NewRow();
                                             NewRow["SubscribesItemID"] = 16;
                                             NewRow["TableItemID"] = sDT.Rows[0]["NewsID"];
                                             NewRow["UserID"] = Row["UserID"];
@@ -15465,7 +15518,7 @@ namespace Infinium
 
                                 //subscribe for clientID or managers
                                 {
-                                    DataRow NewRow = DT.NewRow();
+                                    var NewRow = DT.NewRow();
                                     NewRow["SubscribesItemID"] = 16;
                                     NewRow["TableItemID"] = sDT.Rows[0]["NewsID"];
                                     NewRow["UserID"] = ClientID;
@@ -15487,15 +15540,15 @@ namespace Infinium
 
         public void ClearPending(DateTime DateTime, int ClientID)
         {
-            using (SqlDataAdapter sDA = new SqlDataAdapter("SELECT * FROM News WHERE DateTime = '" + DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'",
+            using (var sDA = new SqlDataAdapter("SELECT * FROM News WHERE DateTime = '" + DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'",
                                                                       ConnectionStrings.MarketingReferenceConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(sDA))
+                using (var CB = new SqlCommandBuilder(sDA))
                 {
-                    using (DataTable sDT = new DataTable())
+                    using (var sDT = new DataTable())
                     {
                         sDA.Fill(sDT);
-                        for (int i = 0; i < sDT.Rows.Count; i++)
+                        for (var i = 0; i < sDT.Rows.Count; i++)
                         {
                             sDT.Rows[i]["Pending"] = false;
                         }
@@ -15511,15 +15564,15 @@ namespace Infinium
         {
             DateTime Date;
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM NewsComments", ConnectionStrings.MarketingReferenceConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 0 * FROM NewsComments", ConnectionStrings.MarketingReferenceConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
-                        DataRow NewRow = DT.NewRow();
+                        var NewRow = DT.NewRow();
                         NewRow["NewsID"] = NewsID;
                         NewRow["NewsComment"] = Text;
                         NewRow["UserID"] = UserID;
@@ -15535,11 +15588,11 @@ namespace Infinium
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT NewsID, LastCommentDateTime FROM News WHERE NewsID =" + NewsID, ConnectionStrings.MarketingReferenceConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT NewsID, LastCommentDateTime FROM News WHERE NewsID =" + NewsID, ConnectionStrings.MarketingReferenceConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -15556,19 +15609,19 @@ namespace Infinium
 
         public void LikeNews(int UserID, int NewsID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM NewsLikes WHERE NewsID = " + NewsID + " AND UserID = " + UserID, ConnectionStrings.MarketingReferenceConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM NewsLikes WHERE NewsID = " + NewsID + " AND UserID = " + UserID, ConnectionStrings.MarketingReferenceConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
                         if (DT.Rows.Count > 0)//i like
                         {
-                            using (SqlDataAdapter dDA = new SqlDataAdapter("DELETE FROM NewsLikes WHERE NewsID = " + NewsID + " AND UserID = " + UserID, ConnectionStrings.MarketingReferenceConnectionString))
+                            using (var dDA = new SqlDataAdapter("DELETE FROM NewsLikes WHERE NewsID = " + NewsID + " AND UserID = " + UserID, ConnectionStrings.MarketingReferenceConnectionString))
                             {
-                                using (DataTable dDT = new DataTable())
+                                using (var dDT = new DataTable())
                                 {
                                     dDA.Fill(dDT);
                                 }
@@ -15577,7 +15630,7 @@ namespace Infinium
                             return;
                         }
 
-                        DataRow NewRow = DT.NewRow();
+                        var NewRow = DT.NewRow();
                         NewRow["NewsID"] = NewsID;
                         NewRow["UserID"] = UserID;
                         DT.Rows.Add(NewRow);
@@ -15590,19 +15643,19 @@ namespace Infinium
 
         public void LikeComments(int UserID, int NewsID, int NewsCommentID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM NewsCommentsLikes WHERE NewsCommentID = " + NewsCommentID + " AND UserID = " + UserID, ConnectionStrings.MarketingReferenceConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM NewsCommentsLikes WHERE NewsCommentID = " + NewsCommentID + " AND UserID = " + UserID, ConnectionStrings.MarketingReferenceConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
                         if (DT.Rows.Count > 0)
                         {
-                            using (SqlDataAdapter dDA = new SqlDataAdapter("DELETE FROM NewsCommentsLikes WHERE NewsCommentID = " + NewsCommentID + " AND UserID = " + UserID, ConnectionStrings.MarketingReferenceConnectionString))
+                            using (var dDA = new SqlDataAdapter("DELETE FROM NewsCommentsLikes WHERE NewsCommentID = " + NewsCommentID + " AND UserID = " + UserID, ConnectionStrings.MarketingReferenceConnectionString))
                             {
-                                using (DataTable dDT = new DataTable())
+                                using (var dDT = new DataTable())
                                 {
                                     dDA.Fill(dDT);
                                 }
@@ -15611,7 +15664,7 @@ namespace Infinium
                             return;
                         }
 
-                        DataRow NewRow = DT.NewRow();
+                        var NewRow = DT.NewRow();
                         NewRow["NewsID"] = NewsID;
                         NewRow["NewsCommentID"] = NewsCommentID;
                         NewRow["UserID"] = UserID;
@@ -15626,11 +15679,11 @@ namespace Infinium
 
         public void EditComments(int UserID, int NewsCommentID, string Text)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM NewsComments WHERE NewsCommentID = " + NewsCommentID, ConnectionStrings.MarketingReferenceConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM NewsComments WHERE NewsCommentID = " + NewsCommentID, ConnectionStrings.MarketingReferenceConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -15648,13 +15701,13 @@ namespace Infinium
             if (AttachmentsDataTable.Rows.Count == 0)
                 return true;
 
-            bool Ok = true;
+            var Ok = true;
 
             int NewsID;
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT NewsID FROM News WHERE ClientID = " + ClientID + " AND  DateTime = '" + NewsDateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'", ConnectionStrings.MarketingReferenceConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT NewsID FROM News WHERE ClientID = " + ClientID + " AND  DateTime = '" + NewsDateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'", ConnectionStrings.MarketingReferenceConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -15662,11 +15715,11 @@ namespace Infinium
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM NewsAttachs", ConnectionStrings.MarketingReferenceConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 0 * FROM NewsAttachs", ConnectionStrings.MarketingReferenceConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -15685,7 +15738,7 @@ namespace Infinium
                                 continue;
                             }
 
-                            DataRow NewRow = DT.NewRow();
+                            var NewRow = DT.NewRow();
                             NewRow["NewsID"] = NewsID;
                             NewRow["FileName"] = Row["FileName"];
                             NewRow["FileSize"] = fi.Length;
@@ -15698,9 +15751,9 @@ namespace Infinium
             }
 
             //write to ftp
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM NewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.MarketingReferenceConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM NewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.MarketingReferenceConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -15735,13 +15788,13 @@ namespace Infinium
 
         public bool EditAttachments(int NewsID, DataTable AttachmentsDataTable, ref int CurrentUploadedFile, ref int TotalFilesCount)
         {
-            bool Ok = false;
+            var Ok = false;
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT NewsAttachID, NewsID, FileName FROM NewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.MarketingReferenceConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT NewsAttachID, NewsID, FileName FROM NewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.MarketingReferenceConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -15760,11 +15813,11 @@ namespace Infinium
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM NewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.MarketingReferenceConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 0 * FROM NewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.MarketingReferenceConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
                         Ok = true;
@@ -15790,7 +15843,7 @@ namespace Infinium
                                 continue;
                             }
 
-                            DataRow NewRow = DT.NewRow();
+                            var NewRow = DT.NewRow();
                             NewRow["NewsID"] = NewsID;
                             NewRow["FileName"] = Row["FileName"];
                             NewRow["FileSize"] = fi.Length;
@@ -15804,9 +15857,9 @@ namespace Infinium
 
 
             //write to ftp
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM NewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.MarketingReferenceConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM NewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.MarketingReferenceConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -15845,7 +15898,7 @@ namespace Infinium
         {
             AttachmentsDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT NewsAttachID, NewsID, FileName, FileSize FROM NewsAttachs", ConnectionStrings.MarketingReferenceConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT NewsAttachID, NewsID, FileName, FileSize FROM NewsAttachs", ConnectionStrings.MarketingReferenceConnectionString))
             {
                 DA.Fill(AttachmentsDataTable);
             }
@@ -15853,11 +15906,11 @@ namespace Infinium
 
         public void EditNews(int NewsID, int SenderID, int SenderTypeID, string HeaderText, string BodyText, int NewsCategoryID, DateTime DateTime)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM News WHERE NewsID = " + NewsID, ConnectionStrings.MarketingReferenceConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM News WHERE NewsID = " + NewsID, ConnectionStrings.MarketingReferenceConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         if (DA.Fill(DT) == 0)
                             return;
@@ -15879,9 +15932,9 @@ namespace Infinium
 
         public int GetNewsUpdatesCount()
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT Count (SubscribesRecordID) FROM SubscribesRecords WHERE (SubscribesItemID = 16 OR SubscribesItemID = 17) AND UserTypeID = 0 AND UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT Count (SubscribesRecordID) FROM SubscribesRecords WHERE (SubscribesItemID = 16 OR SubscribesItemID = 17) AND UserTypeID = 0 AND UserID = " + Security.CurrentUserID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     if (DA.Fill(DT) > 0)
                         return Convert.ToInt32(DT.Rows[0][0]);
@@ -15893,10 +15946,10 @@ namespace Infinium
 
         public int GetNewsIDByDateTime(DateTime DateTime)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM News WHERE DateTime = '" + DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'",
+            using (var DA = new SqlDataAdapter("SELECT * FROM News WHERE DateTime = '" + DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'",
                                                                          ConnectionStrings.MarketingReferenceConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -15909,19 +15962,19 @@ namespace Infinium
         {
             //ActiveNotifySystem.DeleteSubscribesRecord(1);
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM NewsLikes WHERE NewsID = " + NewsID, ConnectionStrings.MarketingReferenceConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM NewsLikes WHERE NewsID = " + NewsID, ConnectionStrings.MarketingReferenceConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM News WHERE NewsID = " + NewsID, ConnectionStrings.MarketingReferenceConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM News WHERE NewsID = " + NewsID, ConnectionStrings.MarketingReferenceConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
                     }
@@ -15941,19 +15994,19 @@ namespace Infinium
             DeleteCommentsSubs(NewsID);
 
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM NewsCommentsLikes WHERE NewsID = " + NewsID, ConnectionStrings.MarketingReferenceConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM NewsCommentsLikes WHERE NewsID = " + NewsID, ConnectionStrings.MarketingReferenceConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM NewsComments WHERE NewsID = " + NewsID, ConnectionStrings.MarketingReferenceConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM NewsComments WHERE NewsID = " + NewsID, ConnectionStrings.MarketingReferenceConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
                     }
@@ -15965,17 +16018,17 @@ namespace Infinium
 
         public void RemoveComment(int NewsCommentID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM NewsCommentsLikes WHERE NewsCommentID = " + NewsCommentID, ConnectionStrings.MarketingReferenceConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM NewsCommentsLikes WHERE NewsCommentID = " + NewsCommentID, ConnectionStrings.MarketingReferenceConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM NewsComments WHERE NewsCommentID = " + NewsCommentID, ConnectionStrings.MarketingReferenceConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM NewsComments WHERE NewsCommentID = " + NewsCommentID, ConnectionStrings.MarketingReferenceConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
@@ -15986,9 +16039,9 @@ namespace Infinium
 
         public void RemoveAttachments(int NewsID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM NewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.MarketingReferenceConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM NewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.MarketingReferenceConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -16002,11 +16055,11 @@ namespace Infinium
                     }
                     catch
                     {
-                        using (SqlDataAdapter fDA = new SqlDataAdapter("DELETE FROM NewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.MarketingReferenceConnectionString))
+                        using (var fDA = new SqlDataAdapter("DELETE FROM NewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.MarketingReferenceConnectionString))
                         {
-                            using (SqlCommandBuilder CB = new SqlCommandBuilder(fDA))
+                            using (var CB = new SqlCommandBuilder(fDA))
                             {
-                                using (DataTable fDT = new DataTable())
+                                using (var fDT = new DataTable())
                                 {
                                     fDA.Fill(fDT);
                                 }
@@ -16022,11 +16075,11 @@ namespace Infinium
 
 
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM NewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.MarketingReferenceConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM NewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.MarketingReferenceConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
                     }
@@ -16038,11 +16091,11 @@ namespace Infinium
 
         public void RemoveCurrentAttachments(int NewsID, DataTable AttachmentsDT)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM NewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.MarketingReferenceConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM NewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.MarketingReferenceConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -16067,9 +16120,9 @@ namespace Infinium
 
         public DataTable GetAttachments(int NewsID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT NewsAttachID, FileName FROM NewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.MarketingReferenceConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT NewsAttachID, FileName FROM NewsAttachs WHERE NewsID = " + NewsID, ConnectionStrings.MarketingReferenceConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -16113,13 +16166,13 @@ namespace Infinium
 
         public string SaveFile(int NewsAttachID)//temp folder
         {
-            string tempFolder = Environment.GetEnvironmentVariable("TEMP");
+            var tempFolder = Environment.GetEnvironmentVariable("TEMP");
 
-            string FileName = "";
+            var FileName = "";
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT FileName, FileSize FROM NewsAttachs WHERE NewsAttachID = " + NewsAttachID, ConnectionStrings.MarketingReferenceConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT FileName, FileSize FROM NewsAttachs WHERE NewsAttachID = " + NewsAttachID, ConnectionStrings.MarketingReferenceConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -16163,13 +16216,13 @@ namespace Infinium
 
         public void SaveFile(int NewsAttachID, string sDestFileName)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT FileName, FileSize FROM NewsAttachs WHERE NewsAttachID = " + NewsAttachID, ConnectionStrings.MarketingReferenceConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT FileName, FileSize FROM NewsAttachs WHERE NewsAttachID = " + NewsAttachID, ConnectionStrings.MarketingReferenceConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
-                    string FileName = DT.Rows[0]["FileName"].ToString();
+                    var FileName = DT.Rows[0]["FileName"].ToString();
 
                     try
                     {
@@ -16185,10 +16238,10 @@ namespace Infinium
 
         private string SetNumber(string FileName, int Number)
         {
-            string Ext = "";
-            string Name = "";
+            var Ext = "";
+            var Name = "";
 
-            for (int i = FileName.Length - 1; i > 0; i--)
+            for (var i = FileName.Length - 1; i > 0; i--)
             {
                 if (FileName[i] == '.')
                 {
@@ -16203,13 +16256,13 @@ namespace Infinium
 
         private string GetNewFileName(string path, string FileName)
         {
-            FileInfo fileInfo = new FileInfo(path + "\\" + FileName);
+            var fileInfo = new FileInfo(path + "\\" + FileName);
 
             if (!fileInfo.Exists)
                 return FileName;
 
-            bool Ok = false;
-            int n = 1;
+            var Ok = false;
+            var n = 1;
 
             while (!Ok)
             {
@@ -16226,9 +16279,9 @@ namespace Infinium
 
         public void DeleteCommentsSub(int NewsCommentID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM SubscribesRecords WHERE SubscribesItemID = 17 AND TableItemID = " + NewsCommentID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM SubscribesRecords WHERE SubscribesItemID = 17 AND TableItemID = " + NewsCommentID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
@@ -16237,9 +16290,9 @@ namespace Infinium
 
         public void DeleteCommentsSubs(int NewsID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM SubscribesRecords WHERE SubscribesItemID = 17 AND TableItemID IN (SELECT infiniu2_marketingreference.dbo.NewsComments.NewsCommentID FROM infiniu2_marketingreference.dbo.NewsComments WHERE NewsID = " + NewsID + ")", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM SubscribesRecords WHERE SubscribesItemID = 17 AND TableItemID IN (SELECT infiniu2_marketingreference.dbo.NewsComments.NewsCommentID FROM infiniu2_marketingreference.dbo.NewsComments WHERE NewsID = " + NewsID + ")", ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
@@ -16248,9 +16301,9 @@ namespace Infinium
 
         public void DeleteNewsSub(int NewsID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM SubscribesRecords WHERE SubscribesItemID = 16 AND TableItemID = " + NewsID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM SubscribesRecords WHERE SubscribesItemID = 16 AND TableItemID = " + NewsID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
@@ -16259,23 +16312,23 @@ namespace Infinium
 
         public void AddNewsCommentsSubs(int NewsID, int UserID, DateTime DateTime)
         {
-            using (SqlDataAdapter sDA = new SqlDataAdapter("SELECT NewsCommentID, NewsID FROM NewsComments WHERE DateTime = '" + DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'", ConnectionStrings.MarketingReferenceConnectionString))
+            using (var sDA = new SqlDataAdapter("SELECT NewsCommentID, NewsID FROM NewsComments WHERE DateTime = '" + DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'", ConnectionStrings.MarketingReferenceConnectionString))
             {
-                using (DataTable sDT = new DataTable())
+                using (var sDT = new DataTable())
                 {
                     sDA.Fill(sDT);
 
-                    using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM SubscribesRecords", ConnectionStrings.LightConnectionString))
+                    using (var DA = new SqlDataAdapter("SELECT TOP 0 * FROM SubscribesRecords", ConnectionStrings.LightConnectionString))
                     {
-                        using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                        using (var CB = new SqlCommandBuilder(DA))
                         {
-                            using (DataTable DT = new DataTable())
+                            using (var DT = new DataTable())
                             {
                                 DA.Fill(DT);
 
-                                using (SqlDataAdapter uDA = new SqlDataAdapter("SELECT * FROM ModulesAccess WHERE ModuleID = 158", ConnectionStrings.UsersConnectionString))
+                                using (var uDA = new SqlDataAdapter("SELECT * FROM ModulesAccess WHERE ModuleID = 158", ConnectionStrings.UsersConnectionString))
                                 {
-                                    using (DataTable uDT = new DataTable())
+                                    using (var uDT = new DataTable())
                                     {
                                         uDA.Fill(uDT);
 
@@ -16284,7 +16337,7 @@ namespace Infinium
                                             if (Convert.ToInt32(Row["UserID"]) == Security.CurrentUserID)
                                                 continue;
 
-                                            DataRow NewRow = DT.NewRow();
+                                            var NewRow = DT.NewRow();
                                             NewRow["SubscribesItemID"] = 17;
                                             NewRow["TableItemID"] = sDT.Rows[0]["NewsCommentID"];
                                             NewRow["UserID"] = Row["UserID"];
@@ -16297,15 +16350,15 @@ namespace Infinium
                                 }
 
 
-                                using (SqlDataAdapter uDA = new SqlDataAdapter("SELECT ClientID FROM Clients WHERE ClientID IN (SELECT ClientID FROM News WHERE NewsID = " + sDT.Rows[0]["NewsID"] + ")", ConnectionStrings.MarketingReferenceConnectionString))
+                                using (var uDA = new SqlDataAdapter("SELECT ClientID FROM Clients WHERE ClientID IN (SELECT ClientID FROM News WHERE NewsID = " + sDT.Rows[0]["NewsID"] + ")", ConnectionStrings.MarketingReferenceConnectionString))
                                 {
-                                    using (DataTable uDT = new DataTable())
+                                    using (var uDT = new DataTable())
                                     {
                                         uDA.Fill(uDT);
 
                                         foreach (DataRow Row in uDT.Rows)
                                         {
-                                            DataRow NewRow = DT.NewRow();
+                                            var NewRow = DT.NewRow();
                                             NewRow["SubscribesItemID"] = 17;
                                             NewRow["TableItemID"] = sDT.Rows[0]["NewsCommentID"];
                                             NewRow["UserID"] = Row["ClientID"];
@@ -16374,11 +16427,11 @@ namespace Infinium
             DocumentsMenuDataTable.Columns.Add(new DataColumn("Image", Type.GetType("System.Byte[]")));
 
             {
-                DataRow NewRow = DocumentsMenuDataTable.NewRow();
+                var NewRow = DocumentsMenuDataTable.NewRow();
                 NewRow["Name"] = "Лента";
                 NewRow["Count"] = 0;
 
-                MemoryStream ms = new MemoryStream();
+                var ms = new MemoryStream();
                 Resources.DocumentsMenuUpdates.Save(ms, ImageFormat.Png);
 
                 NewRow["Image"] = ms.ToArray();
@@ -16387,10 +16440,10 @@ namespace Infinium
             }
 
             {
-                DataRow NewRow = DocumentsMenuDataTable.NewRow();
+                var NewRow = DocumentsMenuDataTable.NewRow();
                 NewRow["Name"] = "Все документы";
                 NewRow["Count"] = 0;
-                MemoryStream ms = new MemoryStream();
+                var ms = new MemoryStream();
                 Resources.DocumentsMenuAllDocs.Save(ms, ImageFormat.Png);
 
                 NewRow["Image"] = ms.ToArray();
@@ -16399,10 +16452,10 @@ namespace Infinium
             }
 
             {
-                DataRow NewRow = DocumentsMenuDataTable.NewRow();
+                var NewRow = DocumentsMenuDataTable.NewRow();
                 NewRow["Name"] = "Мои документы";
                 NewRow["Count"] = 0;
-                MemoryStream ms = new MemoryStream();
+                var ms = new MemoryStream();
                 Resources.DocumentsMenuUser.Save(ms, ImageFormat.Png);
 
                 NewRow["Image"] = ms.ToArray();
@@ -16411,10 +16464,10 @@ namespace Infinium
             }
 
             {
-                DataRow NewRow = DocumentsMenuDataTable.NewRow();
+                var NewRow = DocumentsMenuDataTable.NewRow();
                 NewRow["Name"] = "Согласование";
                 NewRow["Count"] = 0;
-                MemoryStream ms = new MemoryStream();
+                var ms = new MemoryStream();
                 Resources.DocumentsMenuConfirms.Save(ms, ImageFormat.Png);
 
                 NewRow["Image"] = ms.ToArray();
@@ -16425,9 +16478,9 @@ namespace Infinium
 
             DocumentTypesDataTable = new DataTable();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsTypes ORDER BY DocumentType", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsTypes ORDER BY DocumentType", ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DocumentTypesDataTable);
                 }
@@ -16435,9 +16488,9 @@ namespace Infinium
 
             DocumentsCategoriesDataTable = new DataTable();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsCategories", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsCategories", ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DocumentsCategoriesDataTable);
                 }
@@ -16445,9 +16498,9 @@ namespace Infinium
 
             DocumentsStatesDataTable = new DataTable();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsStates", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsStates", ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DocumentsStatesDataTable);
                 }
@@ -16455,9 +16508,9 @@ namespace Infinium
 
             CorrespondentsDataTable = new DataTable();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Correspondents ORDER BY CorrespondentName", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM Correspondents ORDER BY CorrespondentName", ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(CorrespondentsDataTable);
                 }
@@ -16486,9 +16539,9 @@ namespace Infinium
 
             FactoryTypesDataTable = new DataTable();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT FactoryID, Factory FROM Factory WHERE FactoryID <> 0", ConnectionStrings.CatalogConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT FactoryID, Factory FROM Factory WHERE FactoryID <> 0", ConnectionStrings.CatalogConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(FactoryTypesDataTable);
                 }
@@ -16513,36 +16566,36 @@ namespace Infinium
         {
             InnerDocumentsDataTable.Clear();
 
-            string sNewFilter = "";
+            var sNewFilter = "";
 
             if (Filter.Length > 0)
                 sNewFilter = " WHERE " + Filter + " ORDER BY InnerDocumentID DESC";
             else
                 sNewFilter = " ORDER BY InnerDocumentID DESC";
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT InnerDocuments.InnerDocumentID AS DocumentID, InnerDocuments.* FROM InnerDocuments" + sNewFilter, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT InnerDocuments.InnerDocumentID AS DocumentID, InnerDocuments.* FROM InnerDocuments" + sNewFilter, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(InnerDocumentsDataTable);
                 }
             }
 
-            using (SqlDataAdapter cDA = new SqlDataAdapter("SELECT infiniu2_light.dbo.InnerDocuments.InnerDocumentID, " +
-                       " COUNT(infiniu2_light.dbo.DocumentsComments.DocumentCommentID) AS ComCount FROM infiniu2_light.dbo.DocumentsComments " +
-                       " LEFT OUTER JOIN infiniu2_light.dbo.InnerDocuments ON infiniu2_light.dbo.DocumentsComments.DocumentID = " +
-                       "infiniu2_light.dbo.InnerDocuments.InnerDocumentID WHERE infiniu2_light.dbo.DocumentsComments.DocumentCategoryID = 0 " +
-                       "AND infiniu2_light.dbo.DocumentsComments.DocumentID IN " +
-                       "(SELECT infiniu2_light.dbo.InnerDocuments.InnerDocumentID" + Filter + ") GROUP BY " +
-                       "infiniu2_light.dbo.InnerDocuments.InnerDocumentID", ConnectionStrings.LightConnectionString))
+            using (var cDA = new SqlDataAdapter("SELECT infiniu2_light.dbo.InnerDocuments.InnerDocumentID, " +
+                                                " COUNT(infiniu2_light.dbo.DocumentsComments.DocumentCommentID) AS ComCount FROM infiniu2_light.dbo.DocumentsComments " +
+                                                " LEFT OUTER JOIN infiniu2_light.dbo.InnerDocuments ON infiniu2_light.dbo.DocumentsComments.DocumentID = " +
+                                                "infiniu2_light.dbo.InnerDocuments.InnerDocumentID WHERE infiniu2_light.dbo.DocumentsComments.DocumentCategoryID = 0 " +
+                                                "AND infiniu2_light.dbo.DocumentsComments.DocumentID IN " +
+                                                "(SELECT infiniu2_light.dbo.InnerDocuments.InnerDocumentID" + Filter + ") GROUP BY " +
+                                                "infiniu2_light.dbo.InnerDocuments.InnerDocumentID", ConnectionStrings.LightConnectionString))
             {
-                using (DataTable cDT = new DataTable())
+                using (var cDT = new DataTable())
                 {
                     cDA.Fill(cDT);
 
                     foreach (DataRow Row in InnerDocumentsDataTable.Rows)
                     {
-                        DataRow[] Rows = cDT.Select("InnerDocumentID = " + Row["InnerDocumentID"]);
+                        var Rows = cDT.Select("InnerDocumentID = " + Row["InnerDocumentID"]);
 
                         if (Rows.Count() > 0)
                             Row["CommentsCount"] = Rows[0]["ComCount"];
@@ -16553,21 +16606,21 @@ namespace Infinium
             }
 
 
-            using (SqlDataAdapter cDA = new SqlDataAdapter("SELECT infiniu2_light.dbo.InnerDocuments.InnerDocumentID, " +
-                       " COUNT(infiniu2_light.dbo.DocumentsRecipients.DocumentRecipientID) AS RecCount FROM infiniu2_light.dbo.DocumentsRecipients " +
-                       " LEFT OUTER JOIN infiniu2_light.dbo.InnerDocuments ON infiniu2_light.dbo.DocumentsRecipients.DocumentID = " +
-                       "infiniu2_light.dbo.InnerDocuments.InnerDocumentID WHERE infiniu2_light.dbo.DocumentsRecipients.DocumentCategoryID = 0 " +
-                       "AND infiniu2_light.dbo.DocumentsRecipients.DocumentID IN " +
-                       "(SELECT infiniu2_light.dbo.InnerDocuments.InnerDocumentID" + Filter + ") GROUP BY " +
-                       "infiniu2_light.dbo.InnerDocuments.InnerDocumentID", ConnectionStrings.LightConnectionString))
+            using (var cDA = new SqlDataAdapter("SELECT infiniu2_light.dbo.InnerDocuments.InnerDocumentID, " +
+                                                " COUNT(infiniu2_light.dbo.DocumentsRecipients.DocumentRecipientID) AS RecCount FROM infiniu2_light.dbo.DocumentsRecipients " +
+                                                " LEFT OUTER JOIN infiniu2_light.dbo.InnerDocuments ON infiniu2_light.dbo.DocumentsRecipients.DocumentID = " +
+                                                "infiniu2_light.dbo.InnerDocuments.InnerDocumentID WHERE infiniu2_light.dbo.DocumentsRecipients.DocumentCategoryID = 0 " +
+                                                "AND infiniu2_light.dbo.DocumentsRecipients.DocumentID IN " +
+                                                "(SELECT infiniu2_light.dbo.InnerDocuments.InnerDocumentID" + Filter + ") GROUP BY " +
+                                                "infiniu2_light.dbo.InnerDocuments.InnerDocumentID", ConnectionStrings.LightConnectionString))
             {
-                using (DataTable cDT = new DataTable())
+                using (var cDT = new DataTable())
                 {
                     cDA.Fill(cDT);
 
                     foreach (DataRow Row in InnerDocumentsDataTable.Rows)
                     {
-                        DataRow[] Rows = cDT.Select("InnerDocumentID = " + Row["InnerDocumentID"]);
+                        var Rows = cDT.Select("InnerDocumentID = " + Row["InnerDocumentID"]);
 
                         if (Rows.Count() > 0)
                             Row["RecipientsCount"] = Rows[0]["RecCount"];
@@ -16578,21 +16631,21 @@ namespace Infinium
             }
 
 
-            using (SqlDataAdapter cDA = new SqlDataAdapter("SELECT infiniu2_light.dbo.InnerDocuments.InnerDocumentID, " +
-                      " COUNT(infiniu2_light.dbo.DocumentsFiles.DocumentFileID) AS FileCount FROM infiniu2_light.dbo.DocumentsFiles " +
-                      " LEFT OUTER JOIN infiniu2_light.dbo.InnerDocuments ON infiniu2_light.dbo.DocumentsFiles.DocumentID = " +
-                      "infiniu2_light.dbo.InnerDocuments.InnerDocumentID WHERE infiniu2_light.dbo.DocumentsFiles.DocumentCategoryID = 0 " +
-                      "AND infiniu2_light.dbo.DocumentsFiles.DocumentID IN " +
-                      "(SELECT infiniu2_light.dbo.InnerDocuments.InnerDocumentID" + Filter + ") GROUP BY " +
-                      "infiniu2_light.dbo.InnerDocuments.InnerDocumentID", ConnectionStrings.LightConnectionString))
+            using (var cDA = new SqlDataAdapter("SELECT infiniu2_light.dbo.InnerDocuments.InnerDocumentID, " +
+                                                " COUNT(infiniu2_light.dbo.DocumentsFiles.DocumentFileID) AS FileCount FROM infiniu2_light.dbo.DocumentsFiles " +
+                                                " LEFT OUTER JOIN infiniu2_light.dbo.InnerDocuments ON infiniu2_light.dbo.DocumentsFiles.DocumentID = " +
+                                                "infiniu2_light.dbo.InnerDocuments.InnerDocumentID WHERE infiniu2_light.dbo.DocumentsFiles.DocumentCategoryID = 0 " +
+                                                "AND infiniu2_light.dbo.DocumentsFiles.DocumentID IN " +
+                                                "(SELECT infiniu2_light.dbo.InnerDocuments.InnerDocumentID" + Filter + ") GROUP BY " +
+                                                "infiniu2_light.dbo.InnerDocuments.InnerDocumentID", ConnectionStrings.LightConnectionString))
             {
-                using (DataTable cDT = new DataTable())
+                using (var cDT = new DataTable())
                 {
                     cDA.Fill(cDT);
 
                     foreach (DataRow Row in InnerDocumentsDataTable.Rows)
                     {
-                        DataRow[] Rows = cDT.Select("InnerDocumentID = " + Row["InnerDocumentID"]);
+                        var Rows = cDT.Select("InnerDocumentID = " + Row["InnerDocumentID"]);
 
                         if (Rows.Count() > 0)
                             Row["FilesCount"] = Rows[0]["FileCount"];
@@ -16607,36 +16660,36 @@ namespace Infinium
         {
             IncomeDocumentsDataTable.Clear();
 
-            string sNewFilter = "";
+            var sNewFilter = "";
 
             if (Filter.Length > 0)
                 sNewFilter = " WHERE " + Filter + " ORDER BY IncomeDocumentID DESC";
             else
                 sNewFilter = " ORDER BY IncomeDocumentID DESC";
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT IncomeDocuments.IncomeDocumentID AS DocumentID, IncomeDocuments.* FROM IncomeDocuments" + sNewFilter, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT IncomeDocuments.IncomeDocumentID AS DocumentID, IncomeDocuments.* FROM IncomeDocuments" + sNewFilter, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(IncomeDocumentsDataTable);
                 }
             }
 
-            using (SqlDataAdapter cDA = new SqlDataAdapter("SELECT infiniu2_light.dbo.IncomeDocuments.IncomeDocumentID, " +
-                       " COUNT(infiniu2_light.dbo.DocumentsComments.DocumentCommentID) AS ComCount FROM infiniu2_light.dbo.DocumentsComments " +
-                       " LEFT OUTER JOIN infiniu2_light.dbo.IncomeDocuments ON infiniu2_light.dbo.DocumentsComments.DocumentID = " +
-                       "infiniu2_light.dbo.IncomeDocuments.IncomeDocumentID WHERE infiniu2_light.dbo.DocumentsComments.DocumentCategoryID = 1 " +
-                       "AND infiniu2_light.dbo.DocumentsComments.DocumentID IN " +
-                       "(SELECT infiniu2_light.dbo.IncomeDocuments.IncomeDocumentID" + Filter + ") GROUP BY " +
-                       "infiniu2_light.dbo.IncomeDocuments.IncomeDocumentID", ConnectionStrings.LightConnectionString))
+            using (var cDA = new SqlDataAdapter("SELECT infiniu2_light.dbo.IncomeDocuments.IncomeDocumentID, " +
+                                                " COUNT(infiniu2_light.dbo.DocumentsComments.DocumentCommentID) AS ComCount FROM infiniu2_light.dbo.DocumentsComments " +
+                                                " LEFT OUTER JOIN infiniu2_light.dbo.IncomeDocuments ON infiniu2_light.dbo.DocumentsComments.DocumentID = " +
+                                                "infiniu2_light.dbo.IncomeDocuments.IncomeDocumentID WHERE infiniu2_light.dbo.DocumentsComments.DocumentCategoryID = 1 " +
+                                                "AND infiniu2_light.dbo.DocumentsComments.DocumentID IN " +
+                                                "(SELECT infiniu2_light.dbo.IncomeDocuments.IncomeDocumentID" + Filter + ") GROUP BY " +
+                                                "infiniu2_light.dbo.IncomeDocuments.IncomeDocumentID", ConnectionStrings.LightConnectionString))
             {
-                using (DataTable cDT = new DataTable())
+                using (var cDT = new DataTable())
                 {
                     cDA.Fill(cDT);
 
                     foreach (DataRow Row in IncomeDocumentsDataTable.Rows)
                     {
-                        DataRow[] Rows = cDT.Select("IncomeDocumentID = " + Row["IncomeDocumentID"]);
+                        var Rows = cDT.Select("IncomeDocumentID = " + Row["IncomeDocumentID"]);
 
                         if (Rows.Count() > 0)
                             Row["CommentsCount"] = Rows[0]["ComCount"];
@@ -16647,21 +16700,21 @@ namespace Infinium
             }
 
 
-            using (SqlDataAdapter cDA = new SqlDataAdapter("SELECT infiniu2_light.dbo.IncomeDocuments.IncomeDocumentID, " +
-                       " COUNT(infiniu2_light.dbo.DocumentsRecipients.DocumentRecipientID) AS RecCount FROM infiniu2_light.dbo.DocumentsRecipients " +
-                       " LEFT OUTER JOIN infiniu2_light.dbo.IncomeDocuments ON infiniu2_light.dbo.DocumentsRecipients.DocumentID = " +
-                       "infiniu2_light.dbo.IncomeDocuments.IncomeDocumentID WHERE infiniu2_light.dbo.DocumentsRecipients.DocumentCategoryID = 1 " +
-                       "AND infiniu2_light.dbo.DocumentsRecipients.DocumentID IN " +
-                       "(SELECT infiniu2_light.dbo.IncomeDocuments.IncomeDocumentID" + Filter + ") GROUP BY " +
-                       "infiniu2_light.dbo.IncomeDocuments.IncomeDocumentID", ConnectionStrings.LightConnectionString))
+            using (var cDA = new SqlDataAdapter("SELECT infiniu2_light.dbo.IncomeDocuments.IncomeDocumentID, " +
+                                                " COUNT(infiniu2_light.dbo.DocumentsRecipients.DocumentRecipientID) AS RecCount FROM infiniu2_light.dbo.DocumentsRecipients " +
+                                                " LEFT OUTER JOIN infiniu2_light.dbo.IncomeDocuments ON infiniu2_light.dbo.DocumentsRecipients.DocumentID = " +
+                                                "infiniu2_light.dbo.IncomeDocuments.IncomeDocumentID WHERE infiniu2_light.dbo.DocumentsRecipients.DocumentCategoryID = 1 " +
+                                                "AND infiniu2_light.dbo.DocumentsRecipients.DocumentID IN " +
+                                                "(SELECT infiniu2_light.dbo.IncomeDocuments.IncomeDocumentID" + Filter + ") GROUP BY " +
+                                                "infiniu2_light.dbo.IncomeDocuments.IncomeDocumentID", ConnectionStrings.LightConnectionString))
             {
-                using (DataTable cDT = new DataTable())
+                using (var cDT = new DataTable())
                 {
                     cDA.Fill(cDT);
 
                     foreach (DataRow Row in IncomeDocumentsDataTable.Rows)
                     {
-                        DataRow[] Rows = cDT.Select("IncomeDocumentID = " + Row["IncomeDocumentID"]);
+                        var Rows = cDT.Select("IncomeDocumentID = " + Row["IncomeDocumentID"]);
 
                         if (Rows.Count() > 0)
                             Row["RecipientsCount"] = Rows[0]["RecCount"];
@@ -16672,21 +16725,21 @@ namespace Infinium
             }
 
 
-            using (SqlDataAdapter cDA = new SqlDataAdapter("SELECT infiniu2_light.dbo.IncomeDocuments.IncomeDocumentID, " +
-                      " COUNT(infiniu2_light.dbo.DocumentsFiles.DocumentFileID) AS FileCount FROM infiniu2_light.dbo.DocumentsFiles " +
-                      " LEFT OUTER JOIN infiniu2_light.dbo.IncomeDocuments ON infiniu2_light.dbo.DocumentsFiles.DocumentID = " +
-                      "infiniu2_light.dbo.IncomeDocuments.IncomeDocumentID WHERE infiniu2_light.dbo.DocumentsFiles.DocumentCategoryID = 1 " +
-                      "AND infiniu2_light.dbo.DocumentsFiles.DocumentID IN " +
-                      "(SELECT infiniu2_light.dbo.IncomeDocuments.IncomeDocumentID" + Filter + ") GROUP BY " +
-                      "infiniu2_light.dbo.IncomeDocuments.IncomeDocumentID", ConnectionStrings.LightConnectionString))
+            using (var cDA = new SqlDataAdapter("SELECT infiniu2_light.dbo.IncomeDocuments.IncomeDocumentID, " +
+                                                " COUNT(infiniu2_light.dbo.DocumentsFiles.DocumentFileID) AS FileCount FROM infiniu2_light.dbo.DocumentsFiles " +
+                                                " LEFT OUTER JOIN infiniu2_light.dbo.IncomeDocuments ON infiniu2_light.dbo.DocumentsFiles.DocumentID = " +
+                                                "infiniu2_light.dbo.IncomeDocuments.IncomeDocumentID WHERE infiniu2_light.dbo.DocumentsFiles.DocumentCategoryID = 1 " +
+                                                "AND infiniu2_light.dbo.DocumentsFiles.DocumentID IN " +
+                                                "(SELECT infiniu2_light.dbo.IncomeDocuments.IncomeDocumentID" + Filter + ") GROUP BY " +
+                                                "infiniu2_light.dbo.IncomeDocuments.IncomeDocumentID", ConnectionStrings.LightConnectionString))
             {
-                using (DataTable cDT = new DataTable())
+                using (var cDT = new DataTable())
                 {
                     cDA.Fill(cDT);
 
                     foreach (DataRow Row in IncomeDocumentsDataTable.Rows)
                     {
-                        DataRow[] Rows = cDT.Select("IncomeDocumentID = " + Row["IncomeDocumentID"]);
+                        var Rows = cDT.Select("IncomeDocumentID = " + Row["IncomeDocumentID"]);
 
                         if (Rows.Count() > 0)
                             Row["FilesCount"] = Rows[0]["FileCount"];
@@ -16701,36 +16754,36 @@ namespace Infinium
         {
             OuterDocumentsDataTable.Clear();
 
-            string sNewFilter = "";
+            var sNewFilter = "";
 
             if (Filter.Length > 0)
                 sNewFilter = " WHERE " + Filter + " ORDER BY OuterDocumentID DESC";
             else
                 sNewFilter = " ORDER BY OuterDocumentID DESC";
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT OuterDocuments.OuterDocumentID AS DocumentID, OuterDocuments.* FROM OuterDocuments" + sNewFilter, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT OuterDocuments.OuterDocumentID AS DocumentID, OuterDocuments.* FROM OuterDocuments" + sNewFilter, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(OuterDocumentsDataTable);
                 }
             }
 
-            using (SqlDataAdapter cDA = new SqlDataAdapter("SELECT infiniu2_light.dbo.OuterDocuments.OuterDocumentID, " +
-                       " COUNT(infiniu2_light.dbo.DocumentsComments.DocumentCommentID) AS ComCount FROM infiniu2_light.dbo.DocumentsComments " +
-                       " LEFT OUTER JOIN infiniu2_light.dbo.OuterDocuments ON infiniu2_light.dbo.DocumentsComments.DocumentID = " +
-                       "infiniu2_light.dbo.OuterDocuments.OuterDocumentID WHERE infiniu2_light.dbo.DocumentsComments.DocumentCategoryID = 2 " +
-                       "AND infiniu2_light.dbo.DocumentsComments.DocumentID IN " +
-                       "(SELECT infiniu2_light.dbo.OuterDocuments.OuterDocumentID" + Filter + ") GROUP BY " +
-                       "infiniu2_light.dbo.OuterDocuments.OuterDocumentID", ConnectionStrings.LightConnectionString))
+            using (var cDA = new SqlDataAdapter("SELECT infiniu2_light.dbo.OuterDocuments.OuterDocumentID, " +
+                                                " COUNT(infiniu2_light.dbo.DocumentsComments.DocumentCommentID) AS ComCount FROM infiniu2_light.dbo.DocumentsComments " +
+                                                " LEFT OUTER JOIN infiniu2_light.dbo.OuterDocuments ON infiniu2_light.dbo.DocumentsComments.DocumentID = " +
+                                                "infiniu2_light.dbo.OuterDocuments.OuterDocumentID WHERE infiniu2_light.dbo.DocumentsComments.DocumentCategoryID = 2 " +
+                                                "AND infiniu2_light.dbo.DocumentsComments.DocumentID IN " +
+                                                "(SELECT infiniu2_light.dbo.OuterDocuments.OuterDocumentID" + Filter + ") GROUP BY " +
+                                                "infiniu2_light.dbo.OuterDocuments.OuterDocumentID", ConnectionStrings.LightConnectionString))
             {
-                using (DataTable cDT = new DataTable())
+                using (var cDT = new DataTable())
                 {
                     cDA.Fill(cDT);
 
                     foreach (DataRow Row in OuterDocumentsDataTable.Rows)
                     {
-                        DataRow[] Rows = cDT.Select("OuterDocumentID = " + Row["OuterDocumentID"]);
+                        var Rows = cDT.Select("OuterDocumentID = " + Row["OuterDocumentID"]);
 
                         if (Rows.Count() > 0)
                             Row["CommentsCount"] = Rows[0]["ComCount"];
@@ -16741,21 +16794,21 @@ namespace Infinium
             }
 
 
-            using (SqlDataAdapter cDA = new SqlDataAdapter("SELECT infiniu2_light.dbo.OuterDocuments.OuterDocumentID, " +
-                       " COUNT(infiniu2_light.dbo.DocumentsRecipients.DocumentRecipientID) AS RecCount FROM infiniu2_light.dbo.DocumentsRecipients " +
-                       " LEFT OUTER JOIN infiniu2_light.dbo.OuterDocuments ON infiniu2_light.dbo.DocumentsRecipients.DocumentID = " +
-                       "infiniu2_light.dbo.OuterDocuments.OuterDocumentID WHERE infiniu2_light.dbo.DocumentsRecipients.DocumentCategoryID = 2 " +
-                       "AND infiniu2_light.dbo.DocumentsRecipients.DocumentID IN " +
-                       "(SELECT infiniu2_light.dbo.OuterDocuments.OuterDocumentID" + Filter + ") GROUP BY " +
-                       "infiniu2_light.dbo.OuterDocuments.OuterDocumentID", ConnectionStrings.LightConnectionString))
+            using (var cDA = new SqlDataAdapter("SELECT infiniu2_light.dbo.OuterDocuments.OuterDocumentID, " +
+                                                " COUNT(infiniu2_light.dbo.DocumentsRecipients.DocumentRecipientID) AS RecCount FROM infiniu2_light.dbo.DocumentsRecipients " +
+                                                " LEFT OUTER JOIN infiniu2_light.dbo.OuterDocuments ON infiniu2_light.dbo.DocumentsRecipients.DocumentID = " +
+                                                "infiniu2_light.dbo.OuterDocuments.OuterDocumentID WHERE infiniu2_light.dbo.DocumentsRecipients.DocumentCategoryID = 2 " +
+                                                "AND infiniu2_light.dbo.DocumentsRecipients.DocumentID IN " +
+                                                "(SELECT infiniu2_light.dbo.OuterDocuments.OuterDocumentID" + Filter + ") GROUP BY " +
+                                                "infiniu2_light.dbo.OuterDocuments.OuterDocumentID", ConnectionStrings.LightConnectionString))
             {
-                using (DataTable cDT = new DataTable())
+                using (var cDT = new DataTable())
                 {
                     cDA.Fill(cDT);
 
                     foreach (DataRow Row in OuterDocumentsDataTable.Rows)
                     {
-                        DataRow[] Rows = cDT.Select("OuterDocumentID = " + Row["OuterDocumentID"]);
+                        var Rows = cDT.Select("OuterDocumentID = " + Row["OuterDocumentID"]);
 
                         if (Rows.Count() > 0)
                             Row["RecipientsCount"] = Rows[0]["RecCount"];
@@ -16766,21 +16819,21 @@ namespace Infinium
             }
 
 
-            using (SqlDataAdapter cDA = new SqlDataAdapter("SELECT infiniu2_light.dbo.OuterDocuments.OuterDocumentID, " +
-                      " COUNT(infiniu2_light.dbo.DocumentsFiles.DocumentFileID) AS FileCount FROM infiniu2_light.dbo.DocumentsFiles " +
-                      " LEFT OUTER JOIN infiniu2_light.dbo.OuterDocuments ON infiniu2_light.dbo.DocumentsFiles.DocumentID = " +
-                      "infiniu2_light.dbo.OuterDocuments.OuterDocumentID WHERE infiniu2_light.dbo.DocumentsFiles.DocumentCategoryID = 2 " +
-                      "AND infiniu2_light.dbo.DocumentsFiles.DocumentID IN " +
-                      "(SELECT infiniu2_light.dbo.OuterDocuments.OuterDocumentID" + Filter + ") GROUP BY " +
-                      "infiniu2_light.dbo.OuterDocuments.OuterDocumentID", ConnectionStrings.LightConnectionString))
+            using (var cDA = new SqlDataAdapter("SELECT infiniu2_light.dbo.OuterDocuments.OuterDocumentID, " +
+                                                " COUNT(infiniu2_light.dbo.DocumentsFiles.DocumentFileID) AS FileCount FROM infiniu2_light.dbo.DocumentsFiles " +
+                                                " LEFT OUTER JOIN infiniu2_light.dbo.OuterDocuments ON infiniu2_light.dbo.DocumentsFiles.DocumentID = " +
+                                                "infiniu2_light.dbo.OuterDocuments.OuterDocumentID WHERE infiniu2_light.dbo.DocumentsFiles.DocumentCategoryID = 2 " +
+                                                "AND infiniu2_light.dbo.DocumentsFiles.DocumentID IN " +
+                                                "(SELECT infiniu2_light.dbo.OuterDocuments.OuterDocumentID" + Filter + ") GROUP BY " +
+                                                "infiniu2_light.dbo.OuterDocuments.OuterDocumentID", ConnectionStrings.LightConnectionString))
             {
-                using (DataTable cDT = new DataTable())
+                using (var cDT = new DataTable())
                 {
                     cDA.Fill(cDT);
 
                     foreach (DataRow Row in OuterDocumentsDataTable.Rows)
                     {
-                        DataRow[] Rows = cDT.Select("OuterDocumentID = " + Row["OuterDocumentID"]);
+                        var Rows = cDT.Select("OuterDocumentID = " + Row["OuterDocumentID"]);
 
                         if (Rows.Count() > 0)
                             Row["FilesCount"] = Rows[0]["FileCount"];
@@ -16793,9 +16846,9 @@ namespace Infinium
 
         public DataTable GetDocumentsRecipients(int DocumentCategoryID, int DocumentID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsRecipients WHERE DocumentCategoryID = " + DocumentCategoryID + " AND DocumentID = " + DocumentID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsRecipients WHERE DocumentCategoryID = " + DocumentCategoryID + " AND DocumentID = " + DocumentID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -16806,24 +16859,24 @@ namespace Infinium
 
         public void TestMoveFiles()
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM DocumentsFiles", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 0 * FROM DocumentsFiles", ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
 
-                        using (SqlDataAdapter sDA = new SqlDataAdapter("SELECT * FROM IncomeDocumentsFiles", ConnectionStrings.LightConnectionString))
+                        using (var sDA = new SqlDataAdapter("SELECT * FROM IncomeDocumentsFiles", ConnectionStrings.LightConnectionString))
                         {
-                            using (DataTable sDT = new DataTable())
+                            using (var sDT = new DataTable())
                             {
                                 sDA.Fill(sDT);
 
                                 foreach (DataRow Row in sDT.Rows)
                                 {
-                                    DataRow NewRow = DT.NewRow();
+                                    var NewRow = DT.NewRow();
                                     NewRow["FileName"] = Row["FileName"];
                                     NewRow["FileSize"] = Row["FileSize"];
                                     NewRow["DocumentCategoryID"] = 1;
@@ -16842,24 +16895,24 @@ namespace Infinium
 
         public void TestMoveRecipients()
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM DocumentsRecipients", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 0 * FROM DocumentsRecipients", ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
 
-                        using (SqlDataAdapter sDA = new SqlDataAdapter("SELECT * FROM OuterDocumentsRecipients", ConnectionStrings.LightConnectionString))
+                        using (var sDA = new SqlDataAdapter("SELECT * FROM OuterDocumentsRecipients", ConnectionStrings.LightConnectionString))
                         {
-                            using (DataTable sDT = new DataTable())
+                            using (var sDT = new DataTable())
                             {
                                 sDA.Fill(sDT);
 
                                 foreach (DataRow Row in sDT.Rows)
                                 {
-                                    DataRow NewRow = DT.NewRow();
+                                    var NewRow = DT.NewRow();
                                     NewRow["DocumentID"] = Row["OuterDocumentID"];
                                     NewRow["DocumentCategoryID"] = 2;
                                     NewRow["UserID"] = Row["UserID"];
@@ -16885,52 +16938,52 @@ namespace Infinium
             UpdatesConfirmsDataTable.Clear();
             UpdatesConfirmsRecipientsDataTable.Clear();
 
-            string DateTime = "";
+            var DateTime = "";
 
             if (DateType == 0)
             {
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT InnerDocuments.*, InnerDocumentID AS DocumentID FROM InnerDocuments WHERE InnerDocumentID IN " +
-                                                              "(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 18 AND UserID = " + Security.CurrentUserID + ")" +
-                                                              "OR InnerDocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE DocumentCategoryID = 0 AND DocumentCommentID IN " +
-                                                              "(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 21 AND UserID = " + Security.CurrentUserID + "))", ConnectionStrings.LightConnectionString))
+                using (var DA = new SqlDataAdapter("SELECT InnerDocuments.*, InnerDocumentID AS DocumentID FROM InnerDocuments WHERE InnerDocumentID IN " +
+                                                   "(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 18 AND UserID = " + Security.CurrentUserID + ")" +
+                                                   "OR InnerDocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE DocumentCategoryID = 0 AND DocumentCommentID IN " +
+                                                   "(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 21 AND UserID = " + Security.CurrentUserID + "))", ConnectionStrings.LightConnectionString))
                 {
                     DA.Fill(UpdatesDocumentsDataTable);
                 }
 
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT IncomeDocuments.*, IncomeDocumentID AS DocumentID FROM IncomeDocuments WHERE IncomeDocumentID IN " +
-                                                              "(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 19 AND UserID = " + Security.CurrentUserID + ")" +
-                                                              "OR IncomeDocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE DocumentCategoryID = 1 AND DocumentCommentID IN " +
-                                                              "(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 21 AND UserID = " + Security.CurrentUserID + "))", ConnectionStrings.LightConnectionString))
+                using (var DA = new SqlDataAdapter("SELECT IncomeDocuments.*, IncomeDocumentID AS DocumentID FROM IncomeDocuments WHERE IncomeDocumentID IN " +
+                                                   "(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 19 AND UserID = " + Security.CurrentUserID + ")" +
+                                                   "OR IncomeDocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE DocumentCategoryID = 1 AND DocumentCommentID IN " +
+                                                   "(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 21 AND UserID = " + Security.CurrentUserID + "))", ConnectionStrings.LightConnectionString))
                 {
                     DA.Fill(UpdatesDocumentsDataTable);
                 }
 
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT OuterDocuments.*, OuterDocumentID AS DocumentID FROM OuterDocuments WHERE OuterDocumentID IN " +
-                                                              "(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 20 AND UserID = " + Security.CurrentUserID + ")" +
-                                                              "OR OuterDocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE DocumentCategoryID = 2 AND DocumentCommentID IN " +
-                                                              "(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 21 AND UserID = " + Security.CurrentUserID + "))", ConnectionStrings.LightConnectionString))
+                using (var DA = new SqlDataAdapter("SELECT OuterDocuments.*, OuterDocumentID AS DocumentID FROM OuterDocuments WHERE OuterDocumentID IN " +
+                                                   "(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 20 AND UserID = " + Security.CurrentUserID + ")" +
+                                                   "OR OuterDocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE DocumentCategoryID = 2 AND DocumentCommentID IN " +
+                                                   "(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 21 AND UserID = " + Security.CurrentUserID + "))", ConnectionStrings.LightConnectionString))
                 {
                     DA.Fill(UpdatesDocumentsDataTable);
                 }
 
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsComments WHERE DocumentCommentID IN " +
-                                                                "(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 21 AND UserID = " + Security.CurrentUserID + ")" +
-                                                                "OR DocumentID IN (SELECT InnerDocumentID FROM InnerDocuments WHERE InnerDocumentID IN (SELECT TableItemID FROM SubscribesRecords WHERE UserID = " + Security.CurrentUserID + " AND SubscribesItemID = 18) OR InnerDocumentID IN (SELECT DocumentID FROM DocumentsComments WHERE DocumentCategoryID = 0 AND DocumentCommentID IN(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 21 AND UserID = " + Security.CurrentUserID + ")))" +
-                                                                "OR DocumentID IN (SELECT IncomeDocumentID FROM IncomeDocuments WHERE IncomeDocumentID IN (SELECT TableItemID FROM SubscribesRecords WHERE UserID = " + Security.CurrentUserID + " AND SubscribesItemID = 19) OR IncomeDocumentID IN (SELECT DocumentID FROM DocumentsComments WHERE DocumentCategoryID = 1 AND DocumentCommentID IN(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 21 AND UserID = " + Security.CurrentUserID + ")))" +
-                                                                "OR DocumentID IN (SELECT OuterDocumentID FROM OuterDocuments WHERE OuterDocumentID IN (SELECT TableItemID FROM SubscribesRecords WHERE UserID = " + Security.CurrentUserID + " AND SubscribesItemID = 20) OR OuterDocumentID IN (SELECT DocumentID FROM DocumentsComments WHERE DocumentCategoryID = 2 AND DocumentCommentID IN(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 21 AND UserID = " + Security.CurrentUserID + ")))" +
-                                                                " ORDER BY DocumentCommentID DESC", ConnectionStrings.LightConnectionString))
+                using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsComments WHERE DocumentCommentID IN " +
+                                                   "(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 21 AND UserID = " + Security.CurrentUserID + ")" +
+                                                   "OR DocumentID IN (SELECT InnerDocumentID FROM InnerDocuments WHERE InnerDocumentID IN (SELECT TableItemID FROM SubscribesRecords WHERE UserID = " + Security.CurrentUserID + " AND SubscribesItemID = 18) OR InnerDocumentID IN (SELECT DocumentID FROM DocumentsComments WHERE DocumentCategoryID = 0 AND DocumentCommentID IN(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 21 AND UserID = " + Security.CurrentUserID + ")))" +
+                                                   "OR DocumentID IN (SELECT IncomeDocumentID FROM IncomeDocuments WHERE IncomeDocumentID IN (SELECT TableItemID FROM SubscribesRecords WHERE UserID = " + Security.CurrentUserID + " AND SubscribesItemID = 19) OR IncomeDocumentID IN (SELECT DocumentID FROM DocumentsComments WHERE DocumentCategoryID = 1 AND DocumentCommentID IN(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 21 AND UserID = " + Security.CurrentUserID + ")))" +
+                                                   "OR DocumentID IN (SELECT OuterDocumentID FROM OuterDocuments WHERE OuterDocumentID IN (SELECT TableItemID FROM SubscribesRecords WHERE UserID = " + Security.CurrentUserID + " AND SubscribesItemID = 20) OR OuterDocumentID IN (SELECT DocumentID FROM DocumentsComments WHERE DocumentCategoryID = 2 AND DocumentCommentID IN(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 21 AND UserID = " + Security.CurrentUserID + ")))" +
+                                                   " ORDER BY DocumentCommentID DESC", ConnectionStrings.LightConnectionString))
                 {
                     DA.Fill(UpdatesCommentsDataTable);
 
                     foreach (DataRow Row in UpdatesDocumentsDataTable.Rows)
                     {
-                        DataRow[] uRow = UpdatesCommentsDataTable.Select("DocumentID = " + Row["DocumentID"] + " AND DateTime > '" + Convert.ToDateTime(Row["DateTime"]) + "'");
+                        var uRow = UpdatesCommentsDataTable.Select("DocumentID = " + Row["DocumentID"] + " AND DateTime > '" + Convert.ToDateTime(Row["DateTime"]) + "'");
 
                         if (uRow.Count() > 0)
                         {
-                            DateTime date = Convert.ToDateTime(Row["DateTime"]);
+                            var date = Convert.ToDateTime(Row["DateTime"]);
 
-                            foreach (DataRow uuRow in uRow)
+                            foreach (var uuRow in uRow)
                             {
                                 if (date < Convert.ToDateTime(uuRow["DateTime"]))
                                     date = Convert.ToDateTime(uuRow["DateTime"]);
@@ -16945,55 +16998,55 @@ namespace Infinium
 
                 UpdatesDocumentsDataTable.DefaultView.Sort = "UpdateDateTime DESC";
 
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsCommentsFiles WHERE DocumentCommentID IN (SELECT DocumentCommentID FROM DocumentsComments WHERE DocumentCommentID IN " +
-                                                                "(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 21 AND UserID = " + Security.CurrentUserID + ")" +
-                                                                "OR DocumentID IN (SELECT InnerDocumentID FROM InnerDocuments WHERE InnerDocumentID IN (SELECT TableItemID FROM SubscribesRecords WHERE UserID = " + Security.CurrentUserID + " AND SubscribesItemID = 18) OR InnerDocumentID IN (SELECT DocumentID FROM DocumentsComments WHERE DocumentCategoryID = 0 AND DocumentCommentID IN(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 21 AND UserID = " + Security.CurrentUserID + ")))" +
-                                                                "OR DocumentID IN (SELECT IncomeDocumentID FROM IncomeDocuments WHERE IncomeDocumentID IN (SELECT TableItemID FROM SubscribesRecords WHERE UserID = " + Security.CurrentUserID + " AND SubscribesItemID = 19) OR IncomeDocumentID IN (SELECT DocumentID FROM DocumentsComments WHERE DocumentCategoryID = 1 AND DocumentCommentID IN(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 21 AND UserID = " + Security.CurrentUserID + ")))" +
-                                                                "OR DocumentID IN (SELECT OuterDocumentID FROM OuterDocuments WHERE OuterDocumentID IN (SELECT TableItemID FROM SubscribesRecords WHERE UserID = " + Security.CurrentUserID + " AND SubscribesItemID = 20) OR OuterDocumentID IN (SELECT DocumentID FROM DocumentsComments WHERE DocumentCategoryID = 2 AND DocumentCommentID IN(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 21 AND UserID = " + Security.CurrentUserID + "))))", ConnectionStrings.LightConnectionString))
+                using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsCommentsFiles WHERE DocumentCommentID IN (SELECT DocumentCommentID FROM DocumentsComments WHERE DocumentCommentID IN " +
+                                                   "(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 21 AND UserID = " + Security.CurrentUserID + ")" +
+                                                   "OR DocumentID IN (SELECT InnerDocumentID FROM InnerDocuments WHERE InnerDocumentID IN (SELECT TableItemID FROM SubscribesRecords WHERE UserID = " + Security.CurrentUserID + " AND SubscribesItemID = 18) OR InnerDocumentID IN (SELECT DocumentID FROM DocumentsComments WHERE DocumentCategoryID = 0 AND DocumentCommentID IN(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 21 AND UserID = " + Security.CurrentUserID + ")))" +
+                                                   "OR DocumentID IN (SELECT IncomeDocumentID FROM IncomeDocuments WHERE IncomeDocumentID IN (SELECT TableItemID FROM SubscribesRecords WHERE UserID = " + Security.CurrentUserID + " AND SubscribesItemID = 19) OR IncomeDocumentID IN (SELECT DocumentID FROM DocumentsComments WHERE DocumentCategoryID = 1 AND DocumentCommentID IN(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 21 AND UserID = " + Security.CurrentUserID + ")))" +
+                                                   "OR DocumentID IN (SELECT OuterDocumentID FROM OuterDocuments WHERE OuterDocumentID IN (SELECT TableItemID FROM SubscribesRecords WHERE UserID = " + Security.CurrentUserID + " AND SubscribesItemID = 20) OR OuterDocumentID IN (SELECT DocumentID FROM DocumentsComments WHERE DocumentCategoryID = 2 AND DocumentCommentID IN(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 21 AND UserID = " + Security.CurrentUserID + "))))", ConnectionStrings.LightConnectionString))
                 {
                     DA.Fill(UpdatesCommentsFilesDataTable);
                 }
 
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsFiles WHERE " +
-                          "(DocumentCategoryID = 0 AND DocumentID IN (SELECT InnerDocumentID FROM InnerDocuments WHERE InnerDocumentID IN" +
-                          "(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 18 AND UserID = " + Security.CurrentUserID + ")" +
-                                                              "OR InnerDocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE DocumentCategoryID = 0 AND DocumentCommentID IN " +
-                                                              "(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 21 AND UserID = " + Security.CurrentUserID + "))))" +
+                using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsFiles WHERE " +
+                                                   "(DocumentCategoryID = 0 AND DocumentID IN (SELECT InnerDocumentID FROM InnerDocuments WHERE InnerDocumentID IN" +
+                                                   "(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 18 AND UserID = " + Security.CurrentUserID + ")" +
+                                                   "OR InnerDocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE DocumentCategoryID = 0 AND DocumentCommentID IN " +
+                                                   "(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 21 AND UserID = " + Security.CurrentUserID + "))))" +
 
-                          "OR (DocumentCategoryID = 1 AND DocumentID IN (SELECT IncomeDocumentID FROM IncomeDocuments WHERE IncomeDocumentID IN" +
-                          "(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 19 AND UserID = " + Security.CurrentUserID + ")" +
-                                                              "OR IncomeDocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE DocumentCategoryID = 1 AND DocumentCommentID IN " +
-                                                              "(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 21 AND UserID = " + Security.CurrentUserID + "))))" +
+                                                   "OR (DocumentCategoryID = 1 AND DocumentID IN (SELECT IncomeDocumentID FROM IncomeDocuments WHERE IncomeDocumentID IN" +
+                                                   "(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 19 AND UserID = " + Security.CurrentUserID + ")" +
+                                                   "OR IncomeDocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE DocumentCategoryID = 1 AND DocumentCommentID IN " +
+                                                   "(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 21 AND UserID = " + Security.CurrentUserID + "))))" +
 
-                          "OR (DocumentCategoryID = 2 AND DocumentID IN (SELECT OuterDocumentID FROM OuterDocuments WHERE OuterDocumentID IN" +
-                          "(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 20 AND UserID = " + Security.CurrentUserID + ")" +
-                                                              "OR OuterDocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE DocumentCategoryID = 2 AND DocumentCommentID IN " +
-                                                              "(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 21 AND UserID = " + Security.CurrentUserID + "))))", ConnectionStrings.LightConnectionString))
+                                                   "OR (DocumentCategoryID = 2 AND DocumentID IN (SELECT OuterDocumentID FROM OuterDocuments WHERE OuterDocumentID IN" +
+                                                   "(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 20 AND UserID = " + Security.CurrentUserID + ")" +
+                                                   "OR OuterDocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE DocumentCategoryID = 2 AND DocumentCommentID IN " +
+                                                   "(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 21 AND UserID = " + Security.CurrentUserID + "))))", ConnectionStrings.LightConnectionString))
                 {
                     DA.Fill(UpdatesFilesDataTable);
                 }
 
 
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsRecipients WHERE " +
-                          "(DocumentCategoryID = 0 AND DocumentID IN " +
-                                "(SELECT InnerDocumentID FROM InnerDocuments WHERE InnerDocumentID IN" +
-                                       "(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 18 AND UserID = " + Security.CurrentUserID +
-                                            ") OR InnerDocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE DocumentCategoryID = 0 AND DocumentCommentID IN " +
-                                                              "(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 21 AND UserID = " + Security.CurrentUserID + "))))" +
-                           " OR " +
+                using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsRecipients WHERE " +
+                                                   "(DocumentCategoryID = 0 AND DocumentID IN " +
+                                                   "(SELECT InnerDocumentID FROM InnerDocuments WHERE InnerDocumentID IN" +
+                                                   "(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 18 AND UserID = " + Security.CurrentUserID +
+                                                   ") OR InnerDocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE DocumentCategoryID = 0 AND DocumentCommentID IN " +
+                                                   "(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 21 AND UserID = " + Security.CurrentUserID + "))))" +
+                                                   " OR " +
 
-                           "(DocumentCategoryID = 1 AND DocumentID IN " +
-                                "(SELECT IncomeDocumentID FROM IncomeDocuments WHERE IncomeDocumentID IN" +
-                                       "(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 19 AND UserID = " + Security.CurrentUserID +
-                                            ") OR IncomeDocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE DocumentCategoryID = 1 AND DocumentCommentID IN " +
-                                                              "(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 21 AND UserID = " + Security.CurrentUserID + "))))" +
-                           " OR " +
+                                                   "(DocumentCategoryID = 1 AND DocumentID IN " +
+                                                   "(SELECT IncomeDocumentID FROM IncomeDocuments WHERE IncomeDocumentID IN" +
+                                                   "(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 19 AND UserID = " + Security.CurrentUserID +
+                                                   ") OR IncomeDocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE DocumentCategoryID = 1 AND DocumentCommentID IN " +
+                                                   "(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 21 AND UserID = " + Security.CurrentUserID + "))))" +
+                                                   " OR " +
 
-                           "(DocumentCategoryID = 2 AND DocumentID IN " +
-                                "(SELECT OuterDocumentID FROM OuterDocuments WHERE OuterDocumentID IN" +
-                                       "(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 20 AND UserID = " + Security.CurrentUserID +
-                                            ") OR OuterDocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE DocumentCategoryID = 2 AND DocumentCommentID IN " +
-                                                              "(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 21 AND UserID = " + Security.CurrentUserID + "))))"
+                                                   "(DocumentCategoryID = 2 AND DocumentID IN " +
+                                                   "(SELECT OuterDocumentID FROM OuterDocuments WHERE OuterDocumentID IN" +
+                                                   "(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 20 AND UserID = " + Security.CurrentUserID +
+                                                   ") OR OuterDocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE DocumentCategoryID = 2 AND DocumentCommentID IN " +
+                                                   "(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 21 AND UserID = " + Security.CurrentUserID + "))))"
 
 
                 , ConnectionStrings.LightConnectionString))
@@ -17002,26 +17055,26 @@ namespace Infinium
                 }
 
 
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsConfirmations WHERE " +
-                          "(DocumentCategoryID = 0 AND DocumentID IN " +
-                                "(SELECT InnerDocumentID FROM InnerDocuments WHERE InnerDocumentID IN" +
-                                       "(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 18 AND UserID = " + Security.CurrentUserID +
-                                            ") OR InnerDocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE DocumentCategoryID = 0 AND DocumentCommentID IN " +
-                                                              "(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 21 AND UserID = " + Security.CurrentUserID + "))))" +
-                           " OR " +
+                using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsConfirmations WHERE " +
+                                                   "(DocumentCategoryID = 0 AND DocumentID IN " +
+                                                   "(SELECT InnerDocumentID FROM InnerDocuments WHERE InnerDocumentID IN" +
+                                                   "(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 18 AND UserID = " + Security.CurrentUserID +
+                                                   ") OR InnerDocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE DocumentCategoryID = 0 AND DocumentCommentID IN " +
+                                                   "(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 21 AND UserID = " + Security.CurrentUserID + "))))" +
+                                                   " OR " +
 
-                           "(DocumentCategoryID = 1 AND DocumentID IN " +
-                                "(SELECT IncomeDocumentID FROM IncomeDocuments WHERE IncomeDocumentID IN" +
-                                       "(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 19 AND UserID = " + Security.CurrentUserID +
-                                            ") OR IncomeDocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE DocumentCategoryID = 1 AND DocumentCommentID IN " +
-                                                              "(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 21 AND UserID = " + Security.CurrentUserID + "))))" +
-                           " OR " +
+                                                   "(DocumentCategoryID = 1 AND DocumentID IN " +
+                                                   "(SELECT IncomeDocumentID FROM IncomeDocuments WHERE IncomeDocumentID IN" +
+                                                   "(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 19 AND UserID = " + Security.CurrentUserID +
+                                                   ") OR IncomeDocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE DocumentCategoryID = 1 AND DocumentCommentID IN " +
+                                                   "(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 21 AND UserID = " + Security.CurrentUserID + "))))" +
+                                                   " OR " +
 
-                           "(DocumentCategoryID = 2 AND DocumentID IN " +
-                                "(SELECT OuterDocumentID FROM OuterDocuments WHERE OuterDocumentID IN" +
-                                       "(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 20 AND UserID = " + Security.CurrentUserID +
-                                            ") OR OuterDocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE DocumentCategoryID = 2 AND DocumentCommentID IN " +
-                                                              "(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 21 AND UserID = " + Security.CurrentUserID + "))))"
+                                                   "(DocumentCategoryID = 2 AND DocumentID IN " +
+                                                   "(SELECT OuterDocumentID FROM OuterDocuments WHERE OuterDocumentID IN" +
+                                                   "(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 20 AND UserID = " + Security.CurrentUserID +
+                                                   ") OR OuterDocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE DocumentCategoryID = 2 AND DocumentCommentID IN " +
+                                                   "(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 21 AND UserID = " + Security.CurrentUserID + "))))"
 
 
                 , ConnectionStrings.LightConnectionString))
@@ -17030,26 +17083,26 @@ namespace Infinium
                 }
 
 
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsConfirmationsRecipients WHERE DocumentConfirmationID IN (SELECT DocumentConfirmationID FROM DocumentsConfirmations WHERE " +
-                          "(DocumentCategoryID = 0 AND DocumentID IN " +
-                                "(SELECT InnerDocumentID FROM InnerDocuments WHERE InnerDocumentID IN" +
-                                       "(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 18 AND UserID = " + Security.CurrentUserID +
-                                            ") OR InnerDocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE DocumentCategoryID = 0 AND DocumentCommentID IN " +
-                                                              "(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 21 AND UserID = " + Security.CurrentUserID + "))))" +
-                           " OR " +
+                using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsConfirmationsRecipients WHERE DocumentConfirmationID IN (SELECT DocumentConfirmationID FROM DocumentsConfirmations WHERE " +
+                                                   "(DocumentCategoryID = 0 AND DocumentID IN " +
+                                                   "(SELECT InnerDocumentID FROM InnerDocuments WHERE InnerDocumentID IN" +
+                                                   "(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 18 AND UserID = " + Security.CurrentUserID +
+                                                   ") OR InnerDocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE DocumentCategoryID = 0 AND DocumentCommentID IN " +
+                                                   "(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 21 AND UserID = " + Security.CurrentUserID + "))))" +
+                                                   " OR " +
 
-                           "(DocumentCategoryID = 1 AND DocumentID IN " +
-                                "(SELECT IncomeDocumentID FROM IncomeDocuments WHERE IncomeDocumentID IN" +
-                                       "(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 19 AND UserID = " + Security.CurrentUserID +
-                                            ") OR IncomeDocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE DocumentCategoryID = 1 AND DocumentCommentID IN " +
-                                                              "(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 21 AND UserID = " + Security.CurrentUserID + "))))" +
-                           " OR " +
+                                                   "(DocumentCategoryID = 1 AND DocumentID IN " +
+                                                   "(SELECT IncomeDocumentID FROM IncomeDocuments WHERE IncomeDocumentID IN" +
+                                                   "(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 19 AND UserID = " + Security.CurrentUserID +
+                                                   ") OR IncomeDocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE DocumentCategoryID = 1 AND DocumentCommentID IN " +
+                                                   "(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 21 AND UserID = " + Security.CurrentUserID + "))))" +
+                                                   " OR " +
 
-                           "(DocumentCategoryID = 2 AND DocumentID IN " +
-                                "(SELECT OuterDocumentID FROM OuterDocuments WHERE OuterDocumentID IN" +
-                                       "(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 20 AND UserID = " + Security.CurrentUserID +
-                                            ") OR OuterDocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE DocumentCategoryID = 2 AND DocumentCommentID IN " +
-                                                              "(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 21 AND UserID = " + Security.CurrentUserID + ")))))"
+                                                   "(DocumentCategoryID = 2 AND DocumentID IN " +
+                                                   "(SELECT OuterDocumentID FROM OuterDocuments WHERE OuterDocumentID IN" +
+                                                   "(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 20 AND UserID = " + Security.CurrentUserID +
+                                                   ") OR OuterDocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE DocumentCategoryID = 2 AND DocumentCommentID IN " +
+                                                   "(SELECT TableItemID FROM SubscribesRecords WHERE SubscribesItemID = 21 AND UserID = " + Security.CurrentUserID + ")))))"
 
 
                 , ConnectionStrings.LightConnectionString))
@@ -17076,40 +17129,40 @@ namespace Infinium
                 DateTime = "(CAST(DateTime AS DATE) >= '" + Security.GetCurrentDate().AddDays(-30).ToString("yyyy-MM-dd") + "') AND (CAST(DateTime AS DATE) <= '" + Security.GetCurrentDate().ToString("yyyy-MM-dd") + "')";
 
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT InnerDocuments.*, InnerDocumentID AS DocumentID FROM InnerDocuments WHERE " + DateTime + "" +
-                                                                "OR InnerDocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE " + DateTime + " AND DocumentCategoryID = 0)", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT InnerDocuments.*, InnerDocumentID AS DocumentID FROM InnerDocuments WHERE " + DateTime + "" +
+                                               "OR InnerDocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE " + DateTime + " AND DocumentCategoryID = 0)", ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(UpdatesDocumentsDataTable);
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT IncomeDocuments.*, IncomeDocumentID AS DocumentID FROM IncomeDocuments WHERE " + DateTime + "" +
-                                                                "OR IncomeDocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE " + DateTime + " AND DocumentCategoryID = 1)", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT IncomeDocuments.*, IncomeDocumentID AS DocumentID FROM IncomeDocuments WHERE " + DateTime + "" +
+                                               "OR IncomeDocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE " + DateTime + " AND DocumentCategoryID = 1)", ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(UpdatesDocumentsDataTable);
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT OuterDocuments.*, OuterDocumentID AS DocumentID FROM OuterDocuments WHERE " + DateTime + "" +
-                                                                "OR OuterDocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE " + DateTime + " AND DocumentCategoryID = 2)", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT OuterDocuments.*, OuterDocumentID AS DocumentID FROM OuterDocuments WHERE " + DateTime + "" +
+                                               "OR OuterDocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE " + DateTime + " AND DocumentCategoryID = 2)", ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(UpdatesDocumentsDataTable);
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsComments WHERE " + DateTime +
-                                                          " OR (DocumentCategoryID = 0 AND DocumentID IN (SELECT InnerDocumentID FROM InnerDocuments WHERE " + DateTime + " OR InnerDocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE " + DateTime + " AND DocumentCategoryID = 0)))" +
-                                                          " OR (DocumentCategoryID = 1 AND DocumentID IN (SELECT IncomeDocumentID FROM IncomeDocuments WHERE " + DateTime + " OR IncomeDocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE " + DateTime + " AND DocumentCategoryID = 1)))" +
-                                                          " OR (DocumentCategoryID = 2 AND DocumentID IN (SELECT OuterDocumentID FROM OuterDocuments WHERE " + DateTime + " OR OuterDocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE " + DateTime + " AND DocumentCategoryID = 2))) ORDER BY DocumentCommentID DESC", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsComments WHERE " + DateTime +
+                                               " OR (DocumentCategoryID = 0 AND DocumentID IN (SELECT InnerDocumentID FROM InnerDocuments WHERE " + DateTime + " OR InnerDocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE " + DateTime + " AND DocumentCategoryID = 0)))" +
+                                               " OR (DocumentCategoryID = 1 AND DocumentID IN (SELECT IncomeDocumentID FROM IncomeDocuments WHERE " + DateTime + " OR IncomeDocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE " + DateTime + " AND DocumentCategoryID = 1)))" +
+                                               " OR (DocumentCategoryID = 2 AND DocumentID IN (SELECT OuterDocumentID FROM OuterDocuments WHERE " + DateTime + " OR OuterDocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE " + DateTime + " AND DocumentCategoryID = 2))) ORDER BY DocumentCommentID DESC", ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(UpdatesCommentsDataTable);
 
                 foreach (DataRow Row in UpdatesDocumentsDataTable.Rows)
                 {
-                    DataRow[] uRow = UpdatesCommentsDataTable.Select("DocumentID = " + Row["DocumentID"] + " AND DateTime > '" + Convert.ToDateTime(Row["DateTime"]) + "'");
+                    var uRow = UpdatesCommentsDataTable.Select("DocumentID = " + Row["DocumentID"] + " AND DateTime > '" + Convert.ToDateTime(Row["DateTime"]) + "'");
 
                     if (uRow.Count() > 0)
                     {
-                        DateTime date = Convert.ToDateTime(Row["DateTime"]);
+                        var date = Convert.ToDateTime(Row["DateTime"]);
 
-                        foreach (DataRow uuRow in uRow)
+                        foreach (var uuRow in uRow)
                         {
                             if (date < Convert.ToDateTime(uuRow["DateTime"]))
                                 date = Convert.ToDateTime(uuRow["DateTime"]);
@@ -17124,75 +17177,75 @@ namespace Infinium
 
             UpdatesDocumentsDataTable.DefaultView.Sort = "UpdateDateTime DESC";
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsCommentsFiles WHERE DocumentCommentID IN (SELECT DocumentCommentID FROM DocumentsComments WHERE " + DateTime +
-                                                         " OR (DocumentCategoryID = 0 AND DocumentID IN (SELECT InnerDocumentID FROM InnerDocuments WHERE " + DateTime + " OR InnerDocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE " + DateTime + " AND DocumentCategoryID = 0)))" +
-                                                         " OR (DocumentCategoryID = 1 AND DocumentID IN (SELECT IncomeDocumentID FROM IncomeDocuments WHERE " + DateTime + " OR IncomeDocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE " + DateTime + " AND DocumentCategoryID = 1)))" +
-                                                         " OR (DocumentCategoryID = 2 AND DocumentID IN (SELECT OuterDocumentID FROM OuterDocuments WHERE " + DateTime + " OR OuterDocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE " + DateTime + " AND DocumentCategoryID = 2)))) ORDER BY DocumentCommentID DESC", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsCommentsFiles WHERE DocumentCommentID IN (SELECT DocumentCommentID FROM DocumentsComments WHERE " + DateTime +
+                                               " OR (DocumentCategoryID = 0 AND DocumentID IN (SELECT InnerDocumentID FROM InnerDocuments WHERE " + DateTime + " OR InnerDocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE " + DateTime + " AND DocumentCategoryID = 0)))" +
+                                               " OR (DocumentCategoryID = 1 AND DocumentID IN (SELECT IncomeDocumentID FROM IncomeDocuments WHERE " + DateTime + " OR IncomeDocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE " + DateTime + " AND DocumentCategoryID = 1)))" +
+                                               " OR (DocumentCategoryID = 2 AND DocumentID IN (SELECT OuterDocumentID FROM OuterDocuments WHERE " + DateTime + " OR OuterDocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE " + DateTime + " AND DocumentCategoryID = 2)))) ORDER BY DocumentCommentID DESC", ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(UpdatesCommentsFilesDataTable);
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsFiles WHERE " +
-                      "(DocumentCategoryID = 0 AND DocumentID IN " +
+            using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsFiles WHERE " +
+                                               "(DocumentCategoryID = 0 AND DocumentID IN " +
 
-                      "(SELECT InnerDocumentID FROM InnerDocuments WHERE InnerDocumentID IN " +
-                      "(SELECT InnerDocumentID FROM infiniu2_light.dbo.InnerDocuments WHERE " + DateTime +
-                      "OR InnerDocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE " + DateTime + ")))) OR " +
+                                               "(SELECT InnerDocumentID FROM InnerDocuments WHERE InnerDocumentID IN " +
+                                               "(SELECT InnerDocumentID FROM infiniu2_light.dbo.InnerDocuments WHERE " + DateTime +
+                                               "OR InnerDocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE " + DateTime + ")))) OR " +
 
-                      "(DocumentCategoryID = 1 AND DocumentID IN " +
+                                               "(DocumentCategoryID = 1 AND DocumentID IN " +
 
-                      "(SELECT IncomeDocumentID FROM IncomeDocuments WHERE IncomeDocumentID IN " +
-                      "(SELECT IncomeDocumentID FROM infiniu2_light.dbo.IncomeDocuments WHERE " + DateTime +
-                      "OR IncomeDocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE " + DateTime + ")))) OR " +
+                                               "(SELECT IncomeDocumentID FROM IncomeDocuments WHERE IncomeDocumentID IN " +
+                                               "(SELECT IncomeDocumentID FROM infiniu2_light.dbo.IncomeDocuments WHERE " + DateTime +
+                                               "OR IncomeDocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE " + DateTime + ")))) OR " +
 
-                      "(DocumentCategoryID = 2 AND DocumentID IN " +
+                                               "(DocumentCategoryID = 2 AND DocumentID IN " +
 
-                      "(SELECT OuterDocumentID FROM OuterDocuments WHERE OuterDocumentID IN " +
-                      "(SELECT OuterDocumentID FROM infiniu2_light.dbo.OuterDocuments WHERE " + DateTime +
-                      "OR OuterDocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE " + DateTime + "))))"
+                                               "(SELECT OuterDocumentID FROM OuterDocuments WHERE OuterDocumentID IN " +
+                                               "(SELECT OuterDocumentID FROM infiniu2_light.dbo.OuterDocuments WHERE " + DateTime +
+                                               "OR OuterDocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE " + DateTime + "))))"
                                                                 , ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(UpdatesFilesDataTable);
             }
 
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsRecipients WHERE " +
-                "((DocumentCategoryID = 2 AND DocumentID IN (SELECT OuterDocumentID FROM infiniu2_light.dbo.OuterDocuments WHERE " + DateTime + "))" +
-                " OR (DocumentCategoryID = 2 AND DocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE DocumentCategoryID = 2 AND " + DateTime + ")))" +
+            using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsRecipients WHERE " +
+                                               "((DocumentCategoryID = 2 AND DocumentID IN (SELECT OuterDocumentID FROM infiniu2_light.dbo.OuterDocuments WHERE " + DateTime + "))" +
+                                               " OR (DocumentCategoryID = 2 AND DocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE DocumentCategoryID = 2 AND " + DateTime + ")))" +
 
-                " OR ((DocumentCategoryID = 1 AND DocumentID IN (SELECT IncomeDocumentID FROM infiniu2_light.dbo.IncomeDocuments WHERE " + DateTime + "))" +
-                " OR (DocumentCategoryID = 1 AND DocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE DocumentCategoryID = 1 AND " + DateTime + ")))" +
+                                               " OR ((DocumentCategoryID = 1 AND DocumentID IN (SELECT IncomeDocumentID FROM infiniu2_light.dbo.IncomeDocuments WHERE " + DateTime + "))" +
+                                               " OR (DocumentCategoryID = 1 AND DocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE DocumentCategoryID = 1 AND " + DateTime + ")))" +
 
-                " OR ((DocumentCategoryID = 0 AND DocumentID IN (SELECT InnerDocumentID FROM infiniu2_light.dbo.InnerDocuments WHERE " + DateTime + "))" +
-                " OR (DocumentCategoryID = 0 AND DocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE DocumentCategoryID = 0 AND " + DateTime + ")))"
+                                               " OR ((DocumentCategoryID = 0 AND DocumentID IN (SELECT InnerDocumentID FROM infiniu2_light.dbo.InnerDocuments WHERE " + DateTime + "))" +
+                                               " OR (DocumentCategoryID = 0 AND DocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE DocumentCategoryID = 0 AND " + DateTime + ")))"
                                                                 , ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(UpdatesRecipientsDataTable);
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsConfirmations WHERE " +
-                "((DocumentCategoryID = 2 AND DocumentID IN (SELECT OuterDocumentID FROM infiniu2_light.dbo.OuterDocuments WHERE " + DateTime + "))" +
-                " OR (DocumentCategoryID = 2 AND DocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE DocumentCategoryID = 2 AND " + DateTime + ")))" +
+            using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsConfirmations WHERE " +
+                                               "((DocumentCategoryID = 2 AND DocumentID IN (SELECT OuterDocumentID FROM infiniu2_light.dbo.OuterDocuments WHERE " + DateTime + "))" +
+                                               " OR (DocumentCategoryID = 2 AND DocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE DocumentCategoryID = 2 AND " + DateTime + ")))" +
 
-                " OR ((DocumentCategoryID = 1 AND DocumentID IN (SELECT IncomeDocumentID FROM infiniu2_light.dbo.IncomeDocuments WHERE " + DateTime + "))" +
-                " OR (DocumentCategoryID = 1 AND DocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE DocumentCategoryID = 1 AND " + DateTime + ")))" +
+                                               " OR ((DocumentCategoryID = 1 AND DocumentID IN (SELECT IncomeDocumentID FROM infiniu2_light.dbo.IncomeDocuments WHERE " + DateTime + "))" +
+                                               " OR (DocumentCategoryID = 1 AND DocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE DocumentCategoryID = 1 AND " + DateTime + ")))" +
 
-                " OR ((DocumentCategoryID = 0 AND DocumentID IN (SELECT InnerDocumentID FROM infiniu2_light.dbo.InnerDocuments WHERE " + DateTime + "))" +
-                " OR (DocumentCategoryID = 0 AND DocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE DocumentCategoryID = 0 AND " + DateTime + ")))"
+                                               " OR ((DocumentCategoryID = 0 AND DocumentID IN (SELECT InnerDocumentID FROM infiniu2_light.dbo.InnerDocuments WHERE " + DateTime + "))" +
+                                               " OR (DocumentCategoryID = 0 AND DocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE DocumentCategoryID = 0 AND " + DateTime + ")))"
                                                                 , ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(UpdatesConfirmsDataTable);
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsConfirmationsRecipients WHERE DocumentConfirmationID IN (SELECT DocumentConfirmationID FROM DocumentsConfirmations WHERE" +
-                "((DocumentCategoryID = 2 AND DocumentID IN (SELECT OuterDocumentID FROM infiniu2_light.dbo.OuterDocuments WHERE " + DateTime + "))" +
-                " OR (DocumentCategoryID = 2 AND DocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE DocumentCategoryID = 2 AND " + DateTime + ")))" +
+            using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsConfirmationsRecipients WHERE DocumentConfirmationID IN (SELECT DocumentConfirmationID FROM DocumentsConfirmations WHERE" +
+                                               "((DocumentCategoryID = 2 AND DocumentID IN (SELECT OuterDocumentID FROM infiniu2_light.dbo.OuterDocuments WHERE " + DateTime + "))" +
+                                               " OR (DocumentCategoryID = 2 AND DocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE DocumentCategoryID = 2 AND " + DateTime + ")))" +
 
-                " OR ((DocumentCategoryID = 1 AND DocumentID IN (SELECT IncomeDocumentID FROM infiniu2_light.dbo.IncomeDocuments WHERE " + DateTime + "))" +
-                " OR (DocumentCategoryID = 1 AND DocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE DocumentCategoryID = 1 AND " + DateTime + ")))" +
+                                               " OR ((DocumentCategoryID = 1 AND DocumentID IN (SELECT IncomeDocumentID FROM infiniu2_light.dbo.IncomeDocuments WHERE " + DateTime + "))" +
+                                               " OR (DocumentCategoryID = 1 AND DocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE DocumentCategoryID = 1 AND " + DateTime + ")))" +
 
-                " OR ((DocumentCategoryID = 0 AND DocumentID IN (SELECT InnerDocumentID FROM infiniu2_light.dbo.InnerDocuments WHERE " + DateTime + "))" +
-                " OR (DocumentCategoryID = 0 AND DocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE DocumentCategoryID = 0 AND " + DateTime + "))))"
+                                               " OR ((DocumentCategoryID = 0 AND DocumentID IN (SELECT InnerDocumentID FROM infiniu2_light.dbo.InnerDocuments WHERE " + DateTime + "))" +
+                                               " OR (DocumentCategoryID = 0 AND DocumentID IN (SELECT DocumentID FROM infiniu2_light.dbo.DocumentsComments WHERE DocumentCategoryID = 0 AND " + DateTime + "))))"
                                                                 , ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(UpdatesConfirmsRecipientsDataTable);
@@ -17211,25 +17264,25 @@ namespace Infinium
 
             if (StatusType == 3)
             {
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT InnerDocuments.*, InnerDocuments.InnerDocumentID AS DocumentID FROM InnerDocuments WHERE InnerDocumentID IN (SELECT DocumentID FROM DocumentsConfirmations WHERE DocumentCategoryID = 0 AND DocumentConfirmationID IN (SELECT DocumentConfirmationID FROM DocumentsConfirmationsRecipients WHERE Status = 0 AND UserID = " + Security.CurrentUserID + "))", ConnectionStrings.LightConnectionString))
+                using (var DA = new SqlDataAdapter("SELECT InnerDocuments.*, InnerDocuments.InnerDocumentID AS DocumentID FROM InnerDocuments WHERE InnerDocumentID IN (SELECT DocumentID FROM DocumentsConfirmations WHERE DocumentCategoryID = 0 AND DocumentConfirmationID IN (SELECT DocumentConfirmationID FROM DocumentsConfirmationsRecipients WHERE Status = 0 AND UserID = " + Security.CurrentUserID + "))", ConnectionStrings.LightConnectionString))
                 {
                     DA.Fill(UpdatesDocumentsDataTable);
                 }
 
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT IncomeDocuments.*, IncomeDocuments.IncomeDocumentID AS DocumentID FROM IncomeDocuments WHERE IncomeDocumentID IN (SELECT DocumentID FROM DocumentsConfirmations WHERE DocumentCategoryID = 1 AND DocumentConfirmationID IN (SELECT DocumentConfirmationID FROM DocumentsConfirmationsRecipients WHERE Status = 0 AND UserID = " + Security.CurrentUserID + "))", ConnectionStrings.LightConnectionString))
+                using (var DA = new SqlDataAdapter("SELECT IncomeDocuments.*, IncomeDocuments.IncomeDocumentID AS DocumentID FROM IncomeDocuments WHERE IncomeDocumentID IN (SELECT DocumentID FROM DocumentsConfirmations WHERE DocumentCategoryID = 1 AND DocumentConfirmationID IN (SELECT DocumentConfirmationID FROM DocumentsConfirmationsRecipients WHERE Status = 0 AND UserID = " + Security.CurrentUserID + "))", ConnectionStrings.LightConnectionString))
                 {
                     DA.Fill(UpdatesDocumentsDataTable);
                 }
 
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT OuterDocuments.*, OuterDocuments.OuterDocumentID AS DocumentID FROM OuterDocuments WHERE OuterDocumentID IN (SELECT DocumentID FROM DocumentsConfirmations WHERE DocumentCategoryID = 2 AND DocumentConfirmationID IN (SELECT DocumentConfirmationID FROM DocumentsConfirmationsRecipients WHERE Status = 0 AND UserID = " + Security.CurrentUserID + "))", ConnectionStrings.LightConnectionString))
+                using (var DA = new SqlDataAdapter("SELECT OuterDocuments.*, OuterDocuments.OuterDocumentID AS DocumentID FROM OuterDocuments WHERE OuterDocumentID IN (SELECT DocumentID FROM DocumentsConfirmations WHERE DocumentCategoryID = 2 AND DocumentConfirmationID IN (SELECT DocumentConfirmationID FROM DocumentsConfirmationsRecipients WHERE Status = 0 AND UserID = " + Security.CurrentUserID + "))", ConnectionStrings.LightConnectionString))
                 {
                     DA.Fill(UpdatesDocumentsDataTable);
                 }
 
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsComments WHERE " +
-                        "(DocumentCategoryID = 0 AND DocumentID IN (SELECT InnerDocumentID FROM InnerDocuments WHERE InnerDocumentID IN (SELECT DocumentID FROM DocumentsConfirmations WHERE DocumentCategoryID = 0 AND DocumentConfirmationID IN (SELECT DocumentConfirmationID FROM DocumentsConfirmationsRecipients WHERE Status = 0 AND UserID = " + Security.CurrentUserID + ")))) OR" +
-                        "(DocumentCategoryID = 1 AND DocumentID IN (SELECT IncomeDocumentID FROM IncomeDocuments WHERE IncomeDocumentID IN (SELECT DocumentID FROM DocumentsConfirmations WHERE DocumentCategoryID = 1 AND DocumentConfirmationID IN (SELECT DocumentConfirmationID FROM DocumentsConfirmationsRecipients WHERE Status = 0 AND UserID = " + Security.CurrentUserID + ")))) OR" +
-                        "(DocumentCategoryID = 2 AND DocumentID IN (SELECT OuterDocumentID FROM OuterDocuments WHERE OuterDocumentID IN (SELECT DocumentID FROM DocumentsConfirmations WHERE DocumentCategoryID = 2 AND DocumentConfirmationID IN (SELECT DocumentConfirmationID FROM DocumentsConfirmationsRecipients WHERE Status = 0 AND UserID = " + Security.CurrentUserID + "))))"
+                using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsComments WHERE " +
+                                                   "(DocumentCategoryID = 0 AND DocumentID IN (SELECT InnerDocumentID FROM InnerDocuments WHERE InnerDocumentID IN (SELECT DocumentID FROM DocumentsConfirmations WHERE DocumentCategoryID = 0 AND DocumentConfirmationID IN (SELECT DocumentConfirmationID FROM DocumentsConfirmationsRecipients WHERE Status = 0 AND UserID = " + Security.CurrentUserID + ")))) OR" +
+                                                   "(DocumentCategoryID = 1 AND DocumentID IN (SELECT IncomeDocumentID FROM IncomeDocuments WHERE IncomeDocumentID IN (SELECT DocumentID FROM DocumentsConfirmations WHERE DocumentCategoryID = 1 AND DocumentConfirmationID IN (SELECT DocumentConfirmationID FROM DocumentsConfirmationsRecipients WHERE Status = 0 AND UserID = " + Security.CurrentUserID + ")))) OR" +
+                                                   "(DocumentCategoryID = 2 AND DocumentID IN (SELECT OuterDocumentID FROM OuterDocuments WHERE OuterDocumentID IN (SELECT DocumentID FROM DocumentsConfirmations WHERE DocumentCategoryID = 2 AND DocumentConfirmationID IN (SELECT DocumentConfirmationID FROM DocumentsConfirmationsRecipients WHERE Status = 0 AND UserID = " + Security.CurrentUserID + "))))"
                         , ConnectionStrings.LightConnectionString))
                 {
                     DA.Fill(UpdatesCommentsDataTable);
@@ -17238,13 +17291,13 @@ namespace Infinium
 
                 foreach (DataRow Row in UpdatesDocumentsDataTable.Rows)
                 {
-                    DataRow[] uRow = UpdatesCommentsDataTable.Select("DocumentID = " + Row["DocumentID"] + " AND DateTime > '" + Convert.ToDateTime(Row["DateTime"]) + "'");
+                    var uRow = UpdatesCommentsDataTable.Select("DocumentID = " + Row["DocumentID"] + " AND DateTime > '" + Convert.ToDateTime(Row["DateTime"]) + "'");
 
                     if (uRow.Count() > 0)
                     {
-                        DateTime date = Convert.ToDateTime(Row["DateTime"]);
+                        var date = Convert.ToDateTime(Row["DateTime"]);
 
-                        foreach (DataRow uuRow in uRow)
+                        foreach (var uuRow in uRow)
                         {
                             if (date < Convert.ToDateTime(uuRow["DateTime"]))
                                 date = Convert.ToDateTime(uuRow["DateTime"]);
@@ -17258,65 +17311,65 @@ namespace Infinium
 
                 UpdatesDocumentsDataTable.DefaultView.Sort = "UpdateDateTime DESC";
 
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsFiles WHERE " +
-                        "(DocumentCategoryID = 0 AND DocumentID IN (SELECT InnerDocumentID FROM InnerDocuments WHERE InnerDocumentID IN (SELECT DocumentID FROM DocumentsConfirmations WHERE DocumentCategoryID = 0 AND DocumentConfirmationID IN (SELECT DocumentConfirmationID FROM DocumentsConfirmationsRecipients WHERE Status = 0 AND UserID = " + Security.CurrentUserID + ")))) OR" +
-                        "(DocumentCategoryID = 1 AND DocumentID IN (SELECT IncomeDocumentID FROM IncomeDocuments WHERE IncomeDocumentID IN (SELECT DocumentID FROM DocumentsConfirmations WHERE DocumentCategoryID = 1 AND DocumentConfirmationID IN (SELECT DocumentConfirmationID FROM DocumentsConfirmationsRecipients WHERE Status = 0 AND UserID = " + Security.CurrentUserID + ")))) OR" +
-                        "(DocumentCategoryID = 2 AND DocumentID IN (SELECT OuterDocumentID FROM OuterDocuments WHERE OuterDocumentID IN (SELECT DocumentID FROM DocumentsConfirmations WHERE DocumentCategoryID = 2 AND DocumentConfirmationID IN (SELECT DocumentConfirmationID FROM DocumentsConfirmationsRecipients WHERE Status = 0 AND UserID = " + Security.CurrentUserID + "))))"
+                using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsFiles WHERE " +
+                                                   "(DocumentCategoryID = 0 AND DocumentID IN (SELECT InnerDocumentID FROM InnerDocuments WHERE InnerDocumentID IN (SELECT DocumentID FROM DocumentsConfirmations WHERE DocumentCategoryID = 0 AND DocumentConfirmationID IN (SELECT DocumentConfirmationID FROM DocumentsConfirmationsRecipients WHERE Status = 0 AND UserID = " + Security.CurrentUserID + ")))) OR" +
+                                                   "(DocumentCategoryID = 1 AND DocumentID IN (SELECT IncomeDocumentID FROM IncomeDocuments WHERE IncomeDocumentID IN (SELECT DocumentID FROM DocumentsConfirmations WHERE DocumentCategoryID = 1 AND DocumentConfirmationID IN (SELECT DocumentConfirmationID FROM DocumentsConfirmationsRecipients WHERE Status = 0 AND UserID = " + Security.CurrentUserID + ")))) OR" +
+                                                   "(DocumentCategoryID = 2 AND DocumentID IN (SELECT OuterDocumentID FROM OuterDocuments WHERE OuterDocumentID IN (SELECT DocumentID FROM DocumentsConfirmations WHERE DocumentCategoryID = 2 AND DocumentConfirmationID IN (SELECT DocumentConfirmationID FROM DocumentsConfirmationsRecipients WHERE Status = 0 AND UserID = " + Security.CurrentUserID + "))))"
                         , ConnectionStrings.LightConnectionString))
                 {
                     DA.Fill(UpdatesFilesDataTable);
                 }
 
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsRecipients WHERE " +
-                        "(DocumentCategoryID = 0 AND DocumentID IN (SELECT InnerDocumentID FROM InnerDocuments WHERE InnerDocumentID IN (SELECT DocumentID FROM DocumentsConfirmations WHERE DocumentCategoryID = 0 AND DocumentConfirmationID IN (SELECT DocumentConfirmationID FROM DocumentsConfirmationsRecipients WHERE Status = 0 AND UserID = " + Security.CurrentUserID + ")))) OR" +
-                        "(DocumentCategoryID = 1 AND DocumentID IN (SELECT IncomeDocumentID FROM IncomeDocuments WHERE IncomeDocumentID IN (SELECT DocumentID FROM DocumentsConfirmations WHERE DocumentCategoryID = 1 AND DocumentConfirmationID IN (SELECT DocumentConfirmationID FROM DocumentsConfirmationsRecipients WHERE Status = 0 AND UserID = " + Security.CurrentUserID + ")))) OR" +
-                        "(DocumentCategoryID = 2 AND DocumentID IN (SELECT OuterDocumentID FROM OuterDocuments WHERE OuterDocumentID IN (SELECT DocumentID FROM DocumentsConfirmations WHERE DocumentCategoryID = 2 AND DocumentConfirmationID IN (SELECT DocumentConfirmationID FROM DocumentsConfirmationsRecipients WHERE Status = 0 AND UserID = " + Security.CurrentUserID + "))))"
+                using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsRecipients WHERE " +
+                                                   "(DocumentCategoryID = 0 AND DocumentID IN (SELECT InnerDocumentID FROM InnerDocuments WHERE InnerDocumentID IN (SELECT DocumentID FROM DocumentsConfirmations WHERE DocumentCategoryID = 0 AND DocumentConfirmationID IN (SELECT DocumentConfirmationID FROM DocumentsConfirmationsRecipients WHERE Status = 0 AND UserID = " + Security.CurrentUserID + ")))) OR" +
+                                                   "(DocumentCategoryID = 1 AND DocumentID IN (SELECT IncomeDocumentID FROM IncomeDocuments WHERE IncomeDocumentID IN (SELECT DocumentID FROM DocumentsConfirmations WHERE DocumentCategoryID = 1 AND DocumentConfirmationID IN (SELECT DocumentConfirmationID FROM DocumentsConfirmationsRecipients WHERE Status = 0 AND UserID = " + Security.CurrentUserID + ")))) OR" +
+                                                   "(DocumentCategoryID = 2 AND DocumentID IN (SELECT OuterDocumentID FROM OuterDocuments WHERE OuterDocumentID IN (SELECT DocumentID FROM DocumentsConfirmations WHERE DocumentCategoryID = 2 AND DocumentConfirmationID IN (SELECT DocumentConfirmationID FROM DocumentsConfirmationsRecipients WHERE Status = 0 AND UserID = " + Security.CurrentUserID + "))))"
                         , ConnectionStrings.LightConnectionString))
                 {
                     DA.Fill(UpdatesRecipientsDataTable);
                 }
 
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsCommentsFiles WHERE DocumentCommentID IN (SELECT DocumentCommentID FROM DocumentsComments WHERE " +
-                        "(DocumentCategoryID = 0 AND DocumentID IN (SELECT InnerDocumentID FROM InnerDocuments WHERE InnerDocumentID IN (SELECT DocumentID FROM DocumentsConfirmations WHERE DocumentCategoryID = 0 AND DocumentConfirmationID IN (SELECT DocumentConfirmationID FROM DocumentsConfirmationsRecipients WHERE Status = 0 AND UserID = " + Security.CurrentUserID + ")))) OR" +
-                        "(DocumentCategoryID = 1 AND DocumentID IN (SELECT IncomeDocumentID FROM IncomeDocuments WHERE IncomeDocumentID IN (SELECT DocumentID FROM DocumentsConfirmations WHERE DocumentCategoryID = 1 AND DocumentConfirmationID IN (SELECT DocumentConfirmationID FROM DocumentsConfirmationsRecipients WHERE Status = 0 AND UserID = " + Security.CurrentUserID + ")))) OR" +
-                        "(DocumentCategoryID = 2 AND DocumentID IN (SELECT OuterDocumentID FROM OuterDocuments WHERE OuterDocumentID IN (SELECT DocumentID FROM DocumentsConfirmations WHERE DocumentCategoryID = 2 AND DocumentConfirmationID IN (SELECT DocumentConfirmationID FROM DocumentsConfirmationsRecipients WHERE Status = 0 AND UserID = " + Security.CurrentUserID + ")))))"
+                using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsCommentsFiles WHERE DocumentCommentID IN (SELECT DocumentCommentID FROM DocumentsComments WHERE " +
+                                                   "(DocumentCategoryID = 0 AND DocumentID IN (SELECT InnerDocumentID FROM InnerDocuments WHERE InnerDocumentID IN (SELECT DocumentID FROM DocumentsConfirmations WHERE DocumentCategoryID = 0 AND DocumentConfirmationID IN (SELECT DocumentConfirmationID FROM DocumentsConfirmationsRecipients WHERE Status = 0 AND UserID = " + Security.CurrentUserID + ")))) OR" +
+                                                   "(DocumentCategoryID = 1 AND DocumentID IN (SELECT IncomeDocumentID FROM IncomeDocuments WHERE IncomeDocumentID IN (SELECT DocumentID FROM DocumentsConfirmations WHERE DocumentCategoryID = 1 AND DocumentConfirmationID IN (SELECT DocumentConfirmationID FROM DocumentsConfirmationsRecipients WHERE Status = 0 AND UserID = " + Security.CurrentUserID + ")))) OR" +
+                                                   "(DocumentCategoryID = 2 AND DocumentID IN (SELECT OuterDocumentID FROM OuterDocuments WHERE OuterDocumentID IN (SELECT DocumentID FROM DocumentsConfirmations WHERE DocumentCategoryID = 2 AND DocumentConfirmationID IN (SELECT DocumentConfirmationID FROM DocumentsConfirmationsRecipients WHERE Status = 0 AND UserID = " + Security.CurrentUserID + ")))))"
                         , ConnectionStrings.LightConnectionString))
                 {
                     DA.Fill(UpdatesCommentsFilesDataTable);
                 }
 
 
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsConfirmations WHERE DocumentConfirmationID IN (SELECT DocumentConfirmationID FROM DocumentsConfirmationsRecipients WHERE Status = 0 AND UserID = " + Security.CurrentUserID + ")", ConnectionStrings.LightConnectionString))
+                using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsConfirmations WHERE DocumentConfirmationID IN (SELECT DocumentConfirmationID FROM DocumentsConfirmationsRecipients WHERE Status = 0 AND UserID = " + Security.CurrentUserID + ")", ConnectionStrings.LightConnectionString))
                 {
                     DA.Fill(UpdatesConfirmsDataTable);
                 }
 
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsConfirmationsRecipients WHERE DocumentConfirmationID IN (SELECT DocumentConfirmationID FROM DocumentsConfirmations WHERE DocumentConfirmationID IN (SELECT DocumentConfirmationID FROM DocumentsConfirmationsRecipients WHERE Status = 0 AND UserID = " + Security.CurrentUserID + "))", ConnectionStrings.LightConnectionString))
+                using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsConfirmationsRecipients WHERE DocumentConfirmationID IN (SELECT DocumentConfirmationID FROM DocumentsConfirmations WHERE DocumentConfirmationID IN (SELECT DocumentConfirmationID FROM DocumentsConfirmationsRecipients WHERE Status = 0 AND UserID = " + Security.CurrentUserID + "))", ConnectionStrings.LightConnectionString))
                 {
                     DA.Fill(UpdatesConfirmsRecipientsDataTable);
                 }
             }
             else
             {
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT InnerDocuments.*, InnerDocuments.InnerDocumentID AS DocumentID FROM InnerDocuments WHERE InnerDocumentID IN (SELECT DocumentID FROM DocumentsConfirmations WHERE DocumentCategoryID = 0 AND Status = " + StatusType + ")", ConnectionStrings.LightConnectionString))
+                using (var DA = new SqlDataAdapter("SELECT InnerDocuments.*, InnerDocuments.InnerDocumentID AS DocumentID FROM InnerDocuments WHERE InnerDocumentID IN (SELECT DocumentID FROM DocumentsConfirmations WHERE DocumentCategoryID = 0 AND Status = " + StatusType + ")", ConnectionStrings.LightConnectionString))
                 {
                     DA.Fill(UpdatesDocumentsDataTable);
                 }
 
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT IncomeDocuments.*, IncomeDocuments.IncomeDocumentID AS DocumentID FROM IncomeDocuments WHERE IncomeDocumentID IN (SELECT DocumentID FROM DocumentsConfirmations WHERE DocumentCategoryID = 1 AND Status = " + StatusType + ")", ConnectionStrings.LightConnectionString))
+                using (var DA = new SqlDataAdapter("SELECT IncomeDocuments.*, IncomeDocuments.IncomeDocumentID AS DocumentID FROM IncomeDocuments WHERE IncomeDocumentID IN (SELECT DocumentID FROM DocumentsConfirmations WHERE DocumentCategoryID = 1 AND Status = " + StatusType + ")", ConnectionStrings.LightConnectionString))
                 {
                     DA.Fill(UpdatesDocumentsDataTable);
                 }
 
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT OuterDocuments.*, OuterDocuments.OuterDocumentID AS DocumentID FROM OuterDocuments WHERE OuterDocumentID IN (SELECT DocumentID FROM DocumentsConfirmations WHERE DocumentCategoryID = 2 AND Status = " + StatusType + ")", ConnectionStrings.LightConnectionString))
+                using (var DA = new SqlDataAdapter("SELECT OuterDocuments.*, OuterDocuments.OuterDocumentID AS DocumentID FROM OuterDocuments WHERE OuterDocumentID IN (SELECT DocumentID FROM DocumentsConfirmations WHERE DocumentCategoryID = 2 AND Status = " + StatusType + ")", ConnectionStrings.LightConnectionString))
                 {
                     DA.Fill(UpdatesDocumentsDataTable);
                 }
 
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsComments WHERE " +
-                        "(DocumentCategoryID = 0 AND DocumentID IN (SELECT InnerDocumentID FROM InnerDocuments WHERE InnerDocumentID IN (SELECT DocumentID FROM DocumentsConfirmations WHERE DocumentCategoryID = 0 AND Status = " + StatusType + "))) OR" +
-                        "(DocumentCategoryID = 1 AND DocumentID IN (SELECT IncomeDocumentID FROM IncomeDocuments WHERE IncomeDocumentID IN (SELECT DocumentID FROM DocumentsConfirmations WHERE DocumentCategoryID = 1 AND Status = " + StatusType + "))) OR" +
-                        "(DocumentCategoryID = 2 AND DocumentID IN (SELECT OuterDocumentID FROM OuterDocuments WHERE OuterDocumentID IN (SELECT DocumentID FROM DocumentsConfirmations WHERE DocumentCategoryID = 2 AND Status = " + StatusType + ")))"
+                using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsComments WHERE " +
+                                                   "(DocumentCategoryID = 0 AND DocumentID IN (SELECT InnerDocumentID FROM InnerDocuments WHERE InnerDocumentID IN (SELECT DocumentID FROM DocumentsConfirmations WHERE DocumentCategoryID = 0 AND Status = " + StatusType + "))) OR" +
+                                                   "(DocumentCategoryID = 1 AND DocumentID IN (SELECT IncomeDocumentID FROM IncomeDocuments WHERE IncomeDocumentID IN (SELECT DocumentID FROM DocumentsConfirmations WHERE DocumentCategoryID = 1 AND Status = " + StatusType + "))) OR" +
+                                                   "(DocumentCategoryID = 2 AND DocumentID IN (SELECT OuterDocumentID FROM OuterDocuments WHERE OuterDocumentID IN (SELECT DocumentID FROM DocumentsConfirmations WHERE DocumentCategoryID = 2 AND Status = " + StatusType + ")))"
                         , ConnectionStrings.LightConnectionString))
                 {
                     DA.Fill(UpdatesCommentsDataTable);
@@ -17325,13 +17378,13 @@ namespace Infinium
 
                 foreach (DataRow Row in UpdatesDocumentsDataTable.Rows)
                 {
-                    DataRow[] uRow = UpdatesCommentsDataTable.Select("DocumentID = " + Row["DocumentID"] + " AND DateTime > '" + Convert.ToDateTime(Row["DateTime"]) + "'");
+                    var uRow = UpdatesCommentsDataTable.Select("DocumentID = " + Row["DocumentID"] + " AND DateTime > '" + Convert.ToDateTime(Row["DateTime"]) + "'");
 
                     if (uRow.Count() > 0)
                     {
-                        DateTime date = Convert.ToDateTime(Row["DateTime"]);
+                        var date = Convert.ToDateTime(Row["DateTime"]);
 
-                        foreach (DataRow uuRow in uRow)
+                        foreach (var uuRow in uRow)
                         {
                             if (date < Convert.ToDateTime(uuRow["DateTime"]))
                                 date = Convert.ToDateTime(uuRow["DateTime"]);
@@ -17344,40 +17397,40 @@ namespace Infinium
                 }
 
 
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsFiles WHERE " +
-                        "(DocumentCategoryID = 0 AND DocumentID IN (SELECT InnerDocumentID FROM InnerDocuments WHERE InnerDocumentID IN (SELECT DocumentID FROM DocumentsConfirmations WHERE DocumentCategoryID = 0 AND Status = " + StatusType + "))) OR" +
-                        "(DocumentCategoryID = 1 AND DocumentID IN (SELECT IncomeDocumentID FROM IncomeDocuments WHERE IncomeDocumentID IN (SELECT DocumentID FROM DocumentsConfirmations WHERE DocumentCategoryID = 1 AND Status = " + StatusType + "))) OR" +
-                        "(DocumentCategoryID = 2 AND DocumentID IN (SELECT OuterDocumentID FROM OuterDocuments WHERE OuterDocumentID IN (SELECT DocumentID FROM DocumentsConfirmations WHERE DocumentCategoryID = 2 AND Status = " + StatusType + ")))"
+                using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsFiles WHERE " +
+                                                   "(DocumentCategoryID = 0 AND DocumentID IN (SELECT InnerDocumentID FROM InnerDocuments WHERE InnerDocumentID IN (SELECT DocumentID FROM DocumentsConfirmations WHERE DocumentCategoryID = 0 AND Status = " + StatusType + "))) OR" +
+                                                   "(DocumentCategoryID = 1 AND DocumentID IN (SELECT IncomeDocumentID FROM IncomeDocuments WHERE IncomeDocumentID IN (SELECT DocumentID FROM DocumentsConfirmations WHERE DocumentCategoryID = 1 AND Status = " + StatusType + "))) OR" +
+                                                   "(DocumentCategoryID = 2 AND DocumentID IN (SELECT OuterDocumentID FROM OuterDocuments WHERE OuterDocumentID IN (SELECT DocumentID FROM DocumentsConfirmations WHERE DocumentCategoryID = 2 AND Status = " + StatusType + ")))"
                         , ConnectionStrings.LightConnectionString))
                 {
                     DA.Fill(UpdatesFilesDataTable);
                 }
 
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsRecipients WHERE " +
-                        "(DocumentCategoryID = 0 AND DocumentID IN (SELECT InnerDocumentID FROM InnerDocuments WHERE InnerDocumentID IN (SELECT DocumentID FROM DocumentsConfirmations WHERE DocumentCategoryID = 0 AND Status = " + StatusType + "))) OR" +
-                        "(DocumentCategoryID = 1 AND DocumentID IN (SELECT IncomeDocumentID FROM IncomeDocuments WHERE IncomeDocumentID IN (SELECT DocumentID FROM DocumentsConfirmations WHERE DocumentCategoryID = 1 AND Status = " + StatusType + "))) OR" +
-                        "(DocumentCategoryID = 2 AND DocumentID IN (SELECT OuterDocumentID FROM OuterDocuments WHERE OuterDocumentID IN (SELECT DocumentID FROM DocumentsConfirmations WHERE DocumentCategoryID = 2 AND Status = " + StatusType + ")))"
+                using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsRecipients WHERE " +
+                                                   "(DocumentCategoryID = 0 AND DocumentID IN (SELECT InnerDocumentID FROM InnerDocuments WHERE InnerDocumentID IN (SELECT DocumentID FROM DocumentsConfirmations WHERE DocumentCategoryID = 0 AND Status = " + StatusType + "))) OR" +
+                                                   "(DocumentCategoryID = 1 AND DocumentID IN (SELECT IncomeDocumentID FROM IncomeDocuments WHERE IncomeDocumentID IN (SELECT DocumentID FROM DocumentsConfirmations WHERE DocumentCategoryID = 1 AND Status = " + StatusType + "))) OR" +
+                                                   "(DocumentCategoryID = 2 AND DocumentID IN (SELECT OuterDocumentID FROM OuterDocuments WHERE OuterDocumentID IN (SELECT DocumentID FROM DocumentsConfirmations WHERE DocumentCategoryID = 2 AND Status = " + StatusType + ")))"
                         , ConnectionStrings.LightConnectionString))
                 {
                     DA.Fill(UpdatesRecipientsDataTable);
                 }
 
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsCommentsFiles WHERE DocumentCommentID IN (SELECT DocumentCommentID FROM DocumentsComments WHERE " +
-                        "(DocumentCategoryID = 0 AND DocumentID IN (SELECT InnerDocumentID FROM InnerDocuments WHERE InnerDocumentID IN (SELECT DocumentID FROM DocumentsConfirmations WHERE DocumentCategoryID = 0 AND Status = " + StatusType + "))) OR" +
-                        "(DocumentCategoryID = 1 AND DocumentID IN (SELECT IncomeDocumentID FROM IncomeDocuments WHERE IncomeDocumentID IN (SELECT DocumentID FROM DocumentsConfirmations WHERE DocumentCategoryID = 1 AND Status = " + StatusType + "))) OR" +
-                        "(DocumentCategoryID = 2 AND DocumentID IN (SELECT OuterDocumentID FROM OuterDocuments WHERE OuterDocumentID IN (SELECT DocumentID FROM DocumentsConfirmations WHERE DocumentCategoryID = 2 AND Status = " + StatusType + "))))"
+                using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsCommentsFiles WHERE DocumentCommentID IN (SELECT DocumentCommentID FROM DocumentsComments WHERE " +
+                                                   "(DocumentCategoryID = 0 AND DocumentID IN (SELECT InnerDocumentID FROM InnerDocuments WHERE InnerDocumentID IN (SELECT DocumentID FROM DocumentsConfirmations WHERE DocumentCategoryID = 0 AND Status = " + StatusType + "))) OR" +
+                                                   "(DocumentCategoryID = 1 AND DocumentID IN (SELECT IncomeDocumentID FROM IncomeDocuments WHERE IncomeDocumentID IN (SELECT DocumentID FROM DocumentsConfirmations WHERE DocumentCategoryID = 1 AND Status = " + StatusType + "))) OR" +
+                                                   "(DocumentCategoryID = 2 AND DocumentID IN (SELECT OuterDocumentID FROM OuterDocuments WHERE OuterDocumentID IN (SELECT DocumentID FROM DocumentsConfirmations WHERE DocumentCategoryID = 2 AND Status = " + StatusType + "))))"
                         , ConnectionStrings.LightConnectionString))
                 {
                     DA.Fill(UpdatesCommentsFilesDataTable);
                 }
 
 
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsConfirmations WHERE Status = " + StatusType, ConnectionStrings.LightConnectionString))
+                using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsConfirmations WHERE Status = " + StatusType, ConnectionStrings.LightConnectionString))
                 {
                     DA.Fill(UpdatesConfirmsDataTable);
                 }
 
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsConfirmationsRecipients WHERE DocumentConfirmationID IN (SELECT DocumentConfirmationID FROM DocumentsConfirmations WHERE Status = " + StatusType + ")", ConnectionStrings.LightConnectionString))
+                using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsConfirmationsRecipients WHERE DocumentConfirmationID IN (SELECT DocumentConfirmationID FROM DocumentsConfirmations WHERE Status = " + StatusType + ")", ConnectionStrings.LightConnectionString))
                 {
                     DA.Fill(UpdatesConfirmsRecipientsDataTable);
                 }
@@ -17397,24 +17450,24 @@ namespace Infinium
             UpdatesConfirmsRecipientsDataTable.Clear();
 
             if (DocumentCategoryID == 0)
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT InnerDocuments.*, InnerDocuments.InnerDocumentID AS DocumentID FROM InnerDocuments WHERE InnerDocumentID  = " + DocumentID, ConnectionStrings.LightConnectionString))
+                using (var DA = new SqlDataAdapter("SELECT InnerDocuments.*, InnerDocuments.InnerDocumentID AS DocumentID FROM InnerDocuments WHERE InnerDocumentID  = " + DocumentID, ConnectionStrings.LightConnectionString))
                 {
                     DA.Fill(UpdatesDocumentsDataTable);
                 }
 
             if (DocumentCategoryID == 1)
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT IncomeDocuments.*, IncomeDocuments.IncomeDocumentID AS DocumentID FROM IncomeDocuments WHERE IncomeDocumentID = " + DocumentID, ConnectionStrings.LightConnectionString))
+                using (var DA = new SqlDataAdapter("SELECT IncomeDocuments.*, IncomeDocuments.IncomeDocumentID AS DocumentID FROM IncomeDocuments WHERE IncomeDocumentID = " + DocumentID, ConnectionStrings.LightConnectionString))
                 {
                     DA.Fill(UpdatesDocumentsDataTable);
                 }
 
             if (DocumentCategoryID == 2)
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT OuterDocuments.*, OuterDocuments.OuterDocumentID AS DocumentID FROM OuterDocuments WHERE OuterDocumentID = " + DocumentID, ConnectionStrings.LightConnectionString))
+                using (var DA = new SqlDataAdapter("SELECT OuterDocuments.*, OuterDocuments.OuterDocumentID AS DocumentID FROM OuterDocuments WHERE OuterDocumentID = " + DocumentID, ConnectionStrings.LightConnectionString))
                 {
                     DA.Fill(UpdatesDocumentsDataTable);
                 }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsComments WHERE DocumentCategoryID = " + DocumentCategoryID + " AND DocumentID = " + DocumentID
+            using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsComments WHERE DocumentCategoryID = " + DocumentCategoryID + " AND DocumentID = " + DocumentID
                     , ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(UpdatesCommentsDataTable);
@@ -17423,13 +17476,13 @@ namespace Infinium
 
             foreach (DataRow Row in UpdatesDocumentsDataTable.Rows)
             {
-                DataRow[] uRow = UpdatesCommentsDataTable.Select("DocumentID = " + Row["DocumentID"] + " AND DateTime > '" + Convert.ToDateTime(Row["DateTime"]) + "'");
+                var uRow = UpdatesCommentsDataTable.Select("DocumentID = " + Row["DocumentID"] + " AND DateTime > '" + Convert.ToDateTime(Row["DateTime"]) + "'");
 
                 if (uRow.Count() > 0)
                 {
-                    DateTime date = Convert.ToDateTime(Row["DateTime"]);
+                    var date = Convert.ToDateTime(Row["DateTime"]);
 
-                    foreach (DataRow uuRow in uRow)
+                    foreach (var uuRow in uRow)
                     {
                         if (date < Convert.ToDateTime(uuRow["DateTime"]))
                             date = Convert.ToDateTime(uuRow["DateTime"]);
@@ -17442,31 +17495,31 @@ namespace Infinium
             }
 
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsFiles WHERE DocumentCategoryID = " + DocumentCategoryID + " AND DocumentID = " + DocumentID
+            using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsFiles WHERE DocumentCategoryID = " + DocumentCategoryID + " AND DocumentID = " + DocumentID
                     , ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(UpdatesFilesDataTable);
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsRecipients WHERE DocumentCategoryID = " + DocumentCategoryID + " AND DocumentID = " + DocumentID
+            using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsRecipients WHERE DocumentCategoryID = " + DocumentCategoryID + " AND DocumentID = " + DocumentID
                     , ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(UpdatesRecipientsDataTable);
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsCommentsFiles WHERE DocumentCommentID IN (SELECT DocumentCommentID FROM DocumentsComments WHERE DocumentCategoryID = " + DocumentCategoryID + " AND DocumentID = " + DocumentID + ")"
+            using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsCommentsFiles WHERE DocumentCommentID IN (SELECT DocumentCommentID FROM DocumentsComments WHERE DocumentCategoryID = " + DocumentCategoryID + " AND DocumentID = " + DocumentID + ")"
                     , ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(UpdatesCommentsFilesDataTable);
             }
 
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsConfirmations WHERE DocumentCategoryID = " + DocumentCategoryID + " AND DocumentID = " + DocumentID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsConfirmations WHERE DocumentCategoryID = " + DocumentCategoryID + " AND DocumentID = " + DocumentID, ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(UpdatesConfirmsDataTable);
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsConfirmationsRecipients WHERE DocumentConfirmationID IN (SELECT DocumentConfirmationID FROM DocumentsConfirmations WHERE DocumentCategoryID = " + DocumentCategoryID + " AND DocumentID = " + DocumentID + ")", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsConfirmationsRecipients WHERE DocumentConfirmationID IN (SELECT DocumentConfirmationID FROM DocumentsConfirmations WHERE DocumentCategoryID = " + DocumentCategoryID + " AND DocumentID = " + DocumentID + ")", ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(UpdatesConfirmsRecipientsDataTable);
             }
@@ -17484,26 +17537,26 @@ namespace Infinium
 
             if (Type == 0)
             {
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT InnerDocuments.*, InnerDocuments.InnerDocumentID AS DocumentID FROM InnerDocuments WHERE UserID = " + UserID, ConnectionStrings.LightConnectionString))
+                using (var DA = new SqlDataAdapter("SELECT InnerDocuments.*, InnerDocuments.InnerDocumentID AS DocumentID FROM InnerDocuments WHERE UserID = " + UserID, ConnectionStrings.LightConnectionString))
                 {
                     DA.Fill(UpdatesDocumentsDataTable);
                 }
 
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT IncomeDocuments.*, IncomeDocuments.IncomeDocumentID AS DocumentID FROM IncomeDocuments WHERE UserID = " + UserID, ConnectionStrings.LightConnectionString))
+                using (var DA = new SqlDataAdapter("SELECT IncomeDocuments.*, IncomeDocuments.IncomeDocumentID AS DocumentID FROM IncomeDocuments WHERE UserID = " + UserID, ConnectionStrings.LightConnectionString))
                 {
                     DA.Fill(UpdatesDocumentsDataTable);
                 }
 
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT OuterDocuments.*, OuterDocuments.OuterDocumentID AS DocumentID FROM OuterDocuments WHERE UserID = " + UserID, ConnectionStrings.LightConnectionString))
+                using (var DA = new SqlDataAdapter("SELECT OuterDocuments.*, OuterDocuments.OuterDocumentID AS DocumentID FROM OuterDocuments WHERE UserID = " + UserID, ConnectionStrings.LightConnectionString))
                 {
                     DA.Fill(UpdatesDocumentsDataTable);
                 }
 
 
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsComments WHERE " +
-                    "(DocumentCategoryID = 0 AND DocumentID IN (SELECT InnerDocumentID FROM InnerDocuments WHERE UserID = " + UserID + ")) OR " +
-                    "(DocumentCategoryID = 1 AND DocumentID IN (SELECT IncomeDocumentID FROM IncomeDocuments WHERE UserID = " + UserID + ")) OR " +
-                    "(DocumentCategoryID = 2 AND DocumentID IN (SELECT OuterDocumentID FROM OuterDocuments WHERE UserID = " + UserID + "))"
+                using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsComments WHERE " +
+                                                   "(DocumentCategoryID = 0 AND DocumentID IN (SELECT InnerDocumentID FROM InnerDocuments WHERE UserID = " + UserID + ")) OR " +
+                                                   "(DocumentCategoryID = 1 AND DocumentID IN (SELECT IncomeDocumentID FROM IncomeDocuments WHERE UserID = " + UserID + ")) OR " +
+                                                   "(DocumentCategoryID = 2 AND DocumentID IN (SELECT OuterDocumentID FROM OuterDocuments WHERE UserID = " + UserID + "))"
                     , ConnectionStrings.LightConnectionString))
                 {
                     DA.Fill(UpdatesCommentsDataTable);
@@ -17511,13 +17564,13 @@ namespace Infinium
 
                 foreach (DataRow Row in UpdatesDocumentsDataTable.Rows)
                 {
-                    DataRow[] uRow = UpdatesCommentsDataTable.Select("DocumentID = " + Row["DocumentID"] + " AND DateTime > '" + Convert.ToDateTime(Row["DateTime"]) + "'");
+                    var uRow = UpdatesCommentsDataTable.Select("DocumentID = " + Row["DocumentID"] + " AND DateTime > '" + Convert.ToDateTime(Row["DateTime"]) + "'");
 
                     if (uRow.Count() > 0)
                     {
-                        DateTime date = Convert.ToDateTime(Row["DateTime"]);
+                        var date = Convert.ToDateTime(Row["DateTime"]);
 
-                        foreach (DataRow uuRow in uRow)
+                        foreach (var uuRow in uRow)
                         {
                             if (date < Convert.ToDateTime(uuRow["DateTime"]))
                                 date = Convert.ToDateTime(uuRow["DateTime"]);
@@ -17531,48 +17584,48 @@ namespace Infinium
 
                 UpdatesDocumentsDataTable.DefaultView.Sort = "UpdateDateTime DESC";
 
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsFiles WHERE " +
-                        "(DocumentCategoryID = 0 AND DocumentID IN (SELECT InnerDocumentID FROM InnerDocuments WHERE UserID = " + UserID + ")) OR" +
-                        "(DocumentCategoryID = 1 AND DocumentID IN (SELECT IncomeDocumentID FROM IncomeDocuments WHERE UserID = " + UserID + ")) OR" +
-                        "(DocumentCategoryID = 2 AND DocumentID IN (SELECT OuterDocumentID FROM OuterDocuments WHERE UserID = " + UserID + "))"
+                using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsFiles WHERE " +
+                                                   "(DocumentCategoryID = 0 AND DocumentID IN (SELECT InnerDocumentID FROM InnerDocuments WHERE UserID = " + UserID + ")) OR" +
+                                                   "(DocumentCategoryID = 1 AND DocumentID IN (SELECT IncomeDocumentID FROM IncomeDocuments WHERE UserID = " + UserID + ")) OR" +
+                                                   "(DocumentCategoryID = 2 AND DocumentID IN (SELECT OuterDocumentID FROM OuterDocuments WHERE UserID = " + UserID + "))"
                         , ConnectionStrings.LightConnectionString))
                 {
                     DA.Fill(UpdatesFilesDataTable);
                 }
 
 
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsRecipients WHERE " +
-                        "(DocumentCategoryID = 0 AND DocumentID IN (SELECT InnerDocumentID FROM InnerDocuments WHERE UserID = " + UserID + ")) OR" +
-                        "(DocumentCategoryID = 1 AND DocumentID IN (SELECT IncomeDocumentID FROM IncomeDocuments WHERE UserID = " + UserID + ")) OR" +
-                        "(DocumentCategoryID = 2 AND DocumentID IN (SELECT OuterDocumentID FROM OuterDocuments WHERE UserID = " + UserID + "))"
+                using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsRecipients WHERE " +
+                                                   "(DocumentCategoryID = 0 AND DocumentID IN (SELECT InnerDocumentID FROM InnerDocuments WHERE UserID = " + UserID + ")) OR" +
+                                                   "(DocumentCategoryID = 1 AND DocumentID IN (SELECT IncomeDocumentID FROM IncomeDocuments WHERE UserID = " + UserID + ")) OR" +
+                                                   "(DocumentCategoryID = 2 AND DocumentID IN (SELECT OuterDocumentID FROM OuterDocuments WHERE UserID = " + UserID + "))"
                         , ConnectionStrings.LightConnectionString))
                 {
                     DA.Fill(UpdatesRecipientsDataTable);
                 }
 
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsCommentsFiles WHERE DocumentCommentID IN (SELECT DocumentCommentID FROM DocumentsComments WHERE " +
-                    "(DocumentCategoryID = 0 AND DocumentID IN (SELECT InnerDocumentID FROM InnerDocuments WHERE UserID = " + UserID + ")) OR " +
-                    "(DocumentCategoryID = 1 AND DocumentID IN (SELECT IncomeDocumentID FROM IncomeDocuments WHERE UserID = " + UserID + ")) OR " +
-                    "(DocumentCategoryID = 2 AND DocumentID IN (SELECT OuterDocumentID FROM OuterDocuments WHERE UserID = " + UserID + ")))"
+                using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsCommentsFiles WHERE DocumentCommentID IN (SELECT DocumentCommentID FROM DocumentsComments WHERE " +
+                                                   "(DocumentCategoryID = 0 AND DocumentID IN (SELECT InnerDocumentID FROM InnerDocuments WHERE UserID = " + UserID + ")) OR " +
+                                                   "(DocumentCategoryID = 1 AND DocumentID IN (SELECT IncomeDocumentID FROM IncomeDocuments WHERE UserID = " + UserID + ")) OR " +
+                                                   "(DocumentCategoryID = 2 AND DocumentID IN (SELECT OuterDocumentID FROM OuterDocuments WHERE UserID = " + UserID + ")))"
                     , ConnectionStrings.LightConnectionString))
                 {
                     DA.Fill(UpdatesCommentsFilesDataTable);
                 }
 
 
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsConfirmations WHERE" +
-                    "(DocumentCategoryID = 0 AND DocumentID IN (SELECT InnerDocumentID FROM InnerDocuments WHERE UserID = " + UserID + ")) OR " +
-                    "(DocumentCategoryID = 1 AND DocumentID IN (SELECT IncomeDocumentID FROM IncomeDocuments WHERE UserID = " + UserID + ")) OR " +
-                    "(DocumentCategoryID = 2 AND DocumentID IN (SELECT OuterDocumentID FROM OuterDocuments WHERE UserID = " + UserID + "))"
+                using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsConfirmations WHERE" +
+                                                   "(DocumentCategoryID = 0 AND DocumentID IN (SELECT InnerDocumentID FROM InnerDocuments WHERE UserID = " + UserID + ")) OR " +
+                                                   "(DocumentCategoryID = 1 AND DocumentID IN (SELECT IncomeDocumentID FROM IncomeDocuments WHERE UserID = " + UserID + ")) OR " +
+                                                   "(DocumentCategoryID = 2 AND DocumentID IN (SELECT OuterDocumentID FROM OuterDocuments WHERE UserID = " + UserID + "))"
                     , ConnectionStrings.LightConnectionString))
                 {
                     DA.Fill(UpdatesConfirmsDataTable);
                 }
 
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsConfirmationsRecipients WHERE DocumentConfirmationID IN (SELECT DocumentConfirmationID FROM DocumentsConfirmations WHERE" +
-                    "(DocumentCategoryID = 0 AND DocumentID IN (SELECT InnerDocumentID FROM InnerDocuments WHERE UserID = " + UserID + ")) OR " +
-                    "(DocumentCategoryID = 1 AND DocumentID IN (SELECT IncomeDocumentID FROM IncomeDocuments WHERE UserID = " + UserID + ")) OR " +
-                    "(DocumentCategoryID = 2 AND DocumentID IN (SELECT OuterDocumentID FROM OuterDocuments WHERE UserID = " + UserID + ")))"
+                using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsConfirmationsRecipients WHERE DocumentConfirmationID IN (SELECT DocumentConfirmationID FROM DocumentsConfirmations WHERE" +
+                                                   "(DocumentCategoryID = 0 AND DocumentID IN (SELECT InnerDocumentID FROM InnerDocuments WHERE UserID = " + UserID + ")) OR " +
+                                                   "(DocumentCategoryID = 1 AND DocumentID IN (SELECT IncomeDocumentID FROM IncomeDocuments WHERE UserID = " + UserID + ")) OR " +
+                                                   "(DocumentCategoryID = 2 AND DocumentID IN (SELECT OuterDocumentID FROM OuterDocuments WHERE UserID = " + UserID + ")))"
                     , ConnectionStrings.LightConnectionString))
                 {
                     DA.Fill(UpdatesConfirmsRecipientsDataTable);
@@ -17580,26 +17633,26 @@ namespace Infinium
             }
             else
             {
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT InnerDocuments.*, InnerDocuments.InnerDocumentID AS DocumentID FROM InnerDocuments WHERE UserID != " + UserID + " AND InnerDocumentID IN (SELECT DocumentID FROM DocumentsRecipients WHERE DocumentCategoryID = 0 AND UserID = " + UserID + ")", ConnectionStrings.LightConnectionString))
+                using (var DA = new SqlDataAdapter("SELECT InnerDocuments.*, InnerDocuments.InnerDocumentID AS DocumentID FROM InnerDocuments WHERE UserID != " + UserID + " AND InnerDocumentID IN (SELECT DocumentID FROM DocumentsRecipients WHERE DocumentCategoryID = 0 AND UserID = " + UserID + ")", ConnectionStrings.LightConnectionString))
                 {
                     DA.Fill(UpdatesDocumentsDataTable);
                 }
 
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT IncomeDocuments.*, IncomeDocuments.IncomeDocumentID AS DocumentID FROM IncomeDocuments WHERE UserID != " + UserID + " AND IncomeDocumentID IN (SELECT DocumentID FROM DocumentsRecipients WHERE DocumentCategoryID = 1 AND UserID = " + UserID + ")", ConnectionStrings.LightConnectionString))
+                using (var DA = new SqlDataAdapter("SELECT IncomeDocuments.*, IncomeDocuments.IncomeDocumentID AS DocumentID FROM IncomeDocuments WHERE UserID != " + UserID + " AND IncomeDocumentID IN (SELECT DocumentID FROM DocumentsRecipients WHERE DocumentCategoryID = 1 AND UserID = " + UserID + ")", ConnectionStrings.LightConnectionString))
                 {
                     DA.Fill(UpdatesDocumentsDataTable);
                 }
 
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT OuterDocuments.*, OuterDocuments.OuterDocumentID AS DocumentID FROM OuterDocuments WHERE UserID != " + UserID + " AND OuterDocumentID IN (SELECT DocumentID FROM DocumentsRecipients WHERE DocumentCategoryID = 2 AND UserID = " + UserID + ")", ConnectionStrings.LightConnectionString))
+                using (var DA = new SqlDataAdapter("SELECT OuterDocuments.*, OuterDocuments.OuterDocumentID AS DocumentID FROM OuterDocuments WHERE UserID != " + UserID + " AND OuterDocumentID IN (SELECT DocumentID FROM DocumentsRecipients WHERE DocumentCategoryID = 2 AND UserID = " + UserID + ")", ConnectionStrings.LightConnectionString))
                 {
                     DA.Fill(UpdatesDocumentsDataTable);
                 }
 
 
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsComments WHERE " +
-                    "(DocumentCategoryID = 0 AND DocumentID IN (SELECT InnerDocumentID FROM InnerDocuments WHERE UserID != " + UserID + " AND InnerDocumentID IN (SELECT DocumentID FROM DocumentsRecipients WHERE DocumentCategoryID = 0 AND UserID = " + UserID + "))) OR " +
-                    "(DocumentCategoryID = 1 AND DocumentID IN (SELECT IncomeDocumentID FROM IncomeDocuments WHERE UserID != " + UserID + " AND IncomeDocumentID IN (SELECT DocumentID FROM DocumentsRecipients WHERE DocumentCategoryID = 1 AND UserID = " + UserID + "))) OR " +
-                    "(DocumentCategoryID = 2 AND DocumentID IN (SELECT OuterDocumentID FROM OuterDocuments WHERE UserID != " + UserID + " AND OuterDocumentID IN (SELECT DocumentID FROM DocumentsRecipients WHERE DocumentCategoryID = 2 AND UserID = " + UserID + ")))"
+                using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsComments WHERE " +
+                                                   "(DocumentCategoryID = 0 AND DocumentID IN (SELECT InnerDocumentID FROM InnerDocuments WHERE UserID != " + UserID + " AND InnerDocumentID IN (SELECT DocumentID FROM DocumentsRecipients WHERE DocumentCategoryID = 0 AND UserID = " + UserID + "))) OR " +
+                                                   "(DocumentCategoryID = 1 AND DocumentID IN (SELECT IncomeDocumentID FROM IncomeDocuments WHERE UserID != " + UserID + " AND IncomeDocumentID IN (SELECT DocumentID FROM DocumentsRecipients WHERE DocumentCategoryID = 1 AND UserID = " + UserID + "))) OR " +
+                                                   "(DocumentCategoryID = 2 AND DocumentID IN (SELECT OuterDocumentID FROM OuterDocuments WHERE UserID != " + UserID + " AND OuterDocumentID IN (SELECT DocumentID FROM DocumentsRecipients WHERE DocumentCategoryID = 2 AND UserID = " + UserID + ")))"
                     , ConnectionStrings.LightConnectionString))
                 {
                     DA.Fill(UpdatesCommentsDataTable);
@@ -17607,13 +17660,13 @@ namespace Infinium
 
                 foreach (DataRow Row in UpdatesDocumentsDataTable.Rows)
                 {
-                    DataRow[] uRow = UpdatesCommentsDataTable.Select("DocumentID = " + Row["DocumentID"] + " AND DateTime > '" + Convert.ToDateTime(Row["DateTime"]) + "'");
+                    var uRow = UpdatesCommentsDataTable.Select("DocumentID = " + Row["DocumentID"] + " AND DateTime > '" + Convert.ToDateTime(Row["DateTime"]) + "'");
 
                     if (uRow.Count() > 0)
                     {
-                        DateTime date = Convert.ToDateTime(Row["DateTime"]);
+                        var date = Convert.ToDateTime(Row["DateTime"]);
 
-                        foreach (DataRow uuRow in uRow)
+                        foreach (var uuRow in uRow)
                         {
                             if (date < Convert.ToDateTime(uuRow["DateTime"]))
                                 date = Convert.ToDateTime(uuRow["DateTime"]);
@@ -17627,48 +17680,48 @@ namespace Infinium
 
                 UpdatesDocumentsDataTable.DefaultView.Sort = "UpdateDateTime DESC";
 
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsFiles WHERE " +
-                    "(DocumentCategoryID = 0 AND DocumentID IN (SELECT InnerDocumentID FROM InnerDocuments WHERE UserID != " + UserID + " AND InnerDocumentID IN (SELECT DocumentID FROM DocumentsRecipients WHERE DocumentCategoryID = 0 AND UserID = " + UserID + "))) OR " +
-                    "(DocumentCategoryID = 1 AND DocumentID IN (SELECT IncomeDocumentID FROM IncomeDocuments WHERE UserID != " + UserID + " AND IncomeDocumentID IN (SELECT DocumentID FROM DocumentsRecipients WHERE DocumentCategoryID = 1 AND UserID = " + UserID + "))) OR " +
-                    "(DocumentCategoryID = 2 AND DocumentID IN (SELECT OuterDocumentID FROM OuterDocuments WHERE UserID != " + UserID + " AND OuterDocumentID IN (SELECT DocumentID FROM DocumentsRecipients WHERE DocumentCategoryID = 2 AND UserID = " + UserID + ")))"
+                using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsFiles WHERE " +
+                                                   "(DocumentCategoryID = 0 AND DocumentID IN (SELECT InnerDocumentID FROM InnerDocuments WHERE UserID != " + UserID + " AND InnerDocumentID IN (SELECT DocumentID FROM DocumentsRecipients WHERE DocumentCategoryID = 0 AND UserID = " + UserID + "))) OR " +
+                                                   "(DocumentCategoryID = 1 AND DocumentID IN (SELECT IncomeDocumentID FROM IncomeDocuments WHERE UserID != " + UserID + " AND IncomeDocumentID IN (SELECT DocumentID FROM DocumentsRecipients WHERE DocumentCategoryID = 1 AND UserID = " + UserID + "))) OR " +
+                                                   "(DocumentCategoryID = 2 AND DocumentID IN (SELECT OuterDocumentID FROM OuterDocuments WHERE UserID != " + UserID + " AND OuterDocumentID IN (SELECT DocumentID FROM DocumentsRecipients WHERE DocumentCategoryID = 2 AND UserID = " + UserID + ")))"
                     , ConnectionStrings.LightConnectionString))
                 {
                     DA.Fill(UpdatesFilesDataTable);
                 }
 
 
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsRecipients WHERE " +
-                    "(DocumentCategoryID = 0 AND DocumentID IN (SELECT InnerDocumentID FROM InnerDocuments WHERE UserID != " + UserID + " AND InnerDocumentID IN (SELECT DocumentID FROM DocumentsRecipients WHERE DocumentCategoryID = 0 AND UserID = " + UserID + "))) OR " +
-                    "(DocumentCategoryID = 1 AND DocumentID IN (SELECT IncomeDocumentID FROM IncomeDocuments WHERE UserID != " + UserID + " AND IncomeDocumentID IN (SELECT DocumentID FROM DocumentsRecipients WHERE DocumentCategoryID = 1 AND UserID = " + UserID + "))) OR " +
-                    "(DocumentCategoryID = 2 AND DocumentID IN (SELECT OuterDocumentID FROM OuterDocuments WHERE UserID != " + UserID + " AND OuterDocumentID IN (SELECT DocumentID FROM DocumentsRecipients WHERE DocumentCategoryID = 2 AND UserID = " + UserID + ")))"
+                using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsRecipients WHERE " +
+                                                   "(DocumentCategoryID = 0 AND DocumentID IN (SELECT InnerDocumentID FROM InnerDocuments WHERE UserID != " + UserID + " AND InnerDocumentID IN (SELECT DocumentID FROM DocumentsRecipients WHERE DocumentCategoryID = 0 AND UserID = " + UserID + "))) OR " +
+                                                   "(DocumentCategoryID = 1 AND DocumentID IN (SELECT IncomeDocumentID FROM IncomeDocuments WHERE UserID != " + UserID + " AND IncomeDocumentID IN (SELECT DocumentID FROM DocumentsRecipients WHERE DocumentCategoryID = 1 AND UserID = " + UserID + "))) OR " +
+                                                   "(DocumentCategoryID = 2 AND DocumentID IN (SELECT OuterDocumentID FROM OuterDocuments WHERE UserID != " + UserID + " AND OuterDocumentID IN (SELECT DocumentID FROM DocumentsRecipients WHERE DocumentCategoryID = 2 AND UserID = " + UserID + ")))"
                     , ConnectionStrings.LightConnectionString))
                 {
                     DA.Fill(UpdatesRecipientsDataTable);
                 }
 
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsCommentsFiles WHERE DocumentCommentID IN (SELECT DocumentCommentID FROM DocumentsComments WHERE " +
-                    "(DocumentCategoryID = 0 AND DocumentID IN (SELECT InnerDocumentID FROM InnerDocuments WHERE UserID != " + UserID + " AND InnerDocumentID IN (SELECT DocumentID FROM DocumentsRecipients WHERE DocumentCategoryID = 0 AND UserID = " + UserID + "))) OR " +
-                    "(DocumentCategoryID = 1 AND DocumentID IN (SELECT IncomeDocumentID FROM IncomeDocuments WHERE UserID != " + UserID + " AND IncomeDocumentID IN (SELECT DocumentID FROM DocumentsRecipients WHERE DocumentCategoryID = 1 AND UserID = " + UserID + "))) OR " +
-                    "(DocumentCategoryID = 2 AND DocumentID IN (SELECT OuterDocumentID FROM OuterDocuments WHERE UserID != " + UserID + " AND OuterDocumentID IN (SELECT DocumentID FROM DocumentsRecipients WHERE DocumentCategoryID = 2 AND UserID = " + UserID + "))))"
+                using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsCommentsFiles WHERE DocumentCommentID IN (SELECT DocumentCommentID FROM DocumentsComments WHERE " +
+                                                   "(DocumentCategoryID = 0 AND DocumentID IN (SELECT InnerDocumentID FROM InnerDocuments WHERE UserID != " + UserID + " AND InnerDocumentID IN (SELECT DocumentID FROM DocumentsRecipients WHERE DocumentCategoryID = 0 AND UserID = " + UserID + "))) OR " +
+                                                   "(DocumentCategoryID = 1 AND DocumentID IN (SELECT IncomeDocumentID FROM IncomeDocuments WHERE UserID != " + UserID + " AND IncomeDocumentID IN (SELECT DocumentID FROM DocumentsRecipients WHERE DocumentCategoryID = 1 AND UserID = " + UserID + "))) OR " +
+                                                   "(DocumentCategoryID = 2 AND DocumentID IN (SELECT OuterDocumentID FROM OuterDocuments WHERE UserID != " + UserID + " AND OuterDocumentID IN (SELECT DocumentID FROM DocumentsRecipients WHERE DocumentCategoryID = 2 AND UserID = " + UserID + "))))"
                     , ConnectionStrings.LightConnectionString))
                 {
                     DA.Fill(UpdatesCommentsFilesDataTable);
                 }
 
 
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsConfirmations WHERE " +
-                    "(DocumentCategoryID = 0 AND DocumentID IN (SELECT InnerDocumentID FROM InnerDocuments WHERE UserID != " + UserID + " AND InnerDocumentID IN (SELECT DocumentID FROM DocumentsRecipients WHERE DocumentCategoryID = 0 AND UserID = " + UserID + "))) OR " +
-                    "(DocumentCategoryID = 1 AND DocumentID IN (SELECT IncomeDocumentID FROM IncomeDocuments WHERE UserID != " + UserID + " AND IncomeDocumentID IN (SELECT DocumentID FROM DocumentsRecipients WHERE DocumentCategoryID = 1 AND UserID = " + UserID + "))) OR " +
-                    "(DocumentCategoryID = 2 AND DocumentID IN (SELECT OuterDocumentID FROM OuterDocuments WHERE UserID != " + UserID + " AND OuterDocumentID IN (SELECT DocumentID FROM DocumentsRecipients WHERE DocumentCategoryID = 2 AND UserID = " + UserID + ")))"
+                using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsConfirmations WHERE " +
+                                                   "(DocumentCategoryID = 0 AND DocumentID IN (SELECT InnerDocumentID FROM InnerDocuments WHERE UserID != " + UserID + " AND InnerDocumentID IN (SELECT DocumentID FROM DocumentsRecipients WHERE DocumentCategoryID = 0 AND UserID = " + UserID + "))) OR " +
+                                                   "(DocumentCategoryID = 1 AND DocumentID IN (SELECT IncomeDocumentID FROM IncomeDocuments WHERE UserID != " + UserID + " AND IncomeDocumentID IN (SELECT DocumentID FROM DocumentsRecipients WHERE DocumentCategoryID = 1 AND UserID = " + UserID + "))) OR " +
+                                                   "(DocumentCategoryID = 2 AND DocumentID IN (SELECT OuterDocumentID FROM OuterDocuments WHERE UserID != " + UserID + " AND OuterDocumentID IN (SELECT DocumentID FROM DocumentsRecipients WHERE DocumentCategoryID = 2 AND UserID = " + UserID + ")))"
                     , ConnectionStrings.LightConnectionString))
                 {
                     DA.Fill(UpdatesConfirmsDataTable);
                 }
 
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsConfirmationsRecipients WHERE DocumentConfirmationID IN (SELECT DocumentConfirmationID FROM DocumentsConfirmations WHERE " +
-                    "(DocumentCategoryID = 0 AND DocumentID IN (SELECT InnerDocumentID FROM InnerDocuments WHERE UserID != " + UserID + " AND InnerDocumentID IN (SELECT DocumentID FROM DocumentsRecipients WHERE DocumentCategoryID = 0 AND UserID = " + UserID + "))) OR " +
-                    "(DocumentCategoryID = 1 AND DocumentID IN (SELECT IncomeDocumentID FROM IncomeDocuments WHERE UserID != " + UserID + " AND IncomeDocumentID IN (SELECT DocumentID FROM DocumentsRecipients WHERE DocumentCategoryID = 1 AND UserID = " + UserID + "))) OR " +
-                    "(DocumentCategoryID = 2 AND DocumentID IN (SELECT OuterDocumentID FROM OuterDocuments WHERE UserID != " + UserID + " AND OuterDocumentID IN (SELECT DocumentID FROM DocumentsRecipients WHERE DocumentCategoryID = 2 AND UserID = " + UserID + "))))"
+                using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsConfirmationsRecipients WHERE DocumentConfirmationID IN (SELECT DocumentConfirmationID FROM DocumentsConfirmations WHERE " +
+                                                   "(DocumentCategoryID = 0 AND DocumentID IN (SELECT InnerDocumentID FROM InnerDocuments WHERE UserID != " + UserID + " AND InnerDocumentID IN (SELECT DocumentID FROM DocumentsRecipients WHERE DocumentCategoryID = 0 AND UserID = " + UserID + "))) OR " +
+                                                   "(DocumentCategoryID = 1 AND DocumentID IN (SELECT IncomeDocumentID FROM IncomeDocuments WHERE UserID != " + UserID + " AND IncomeDocumentID IN (SELECT DocumentID FROM DocumentsRecipients WHERE DocumentCategoryID = 1 AND UserID = " + UserID + "))) OR " +
+                                                   "(DocumentCategoryID = 2 AND DocumentID IN (SELECT OuterDocumentID FROM OuterDocuments WHERE UserID != " + UserID + " AND OuterDocumentID IN (SELECT DocumentID FROM DocumentsRecipients WHERE DocumentCategoryID = 2 AND UserID = " + UserID + "))))"
                     , ConnectionStrings.LightConnectionString))
                 {
                     DA.Fill(UpdatesConfirmsRecipientsDataTable);
@@ -17678,9 +17731,9 @@ namespace Infinium
 
         public bool IsAccessGrantedInner(int UserID, int InnerDocumentID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT UserID FROM InnerDocuments WHERE InnerDocumentID = " + InnerDocumentID + " AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT UserID FROM InnerDocuments WHERE InnerDocumentID = " + InnerDocumentID + " AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     return Convert.ToBoolean(DA.Fill(DT) > 0);
                 }
@@ -17689,9 +17742,9 @@ namespace Infinium
 
         public bool IsAccessGrantedIncome(int UserID, int IncomeDocumentID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT UserID FROM IncomeDocuments WHERE IncomeDocumentID = " + IncomeDocumentID + " AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT UserID FROM IncomeDocuments WHERE IncomeDocumentID = " + IncomeDocumentID + " AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     return Convert.ToBoolean(DA.Fill(DT) > 0);
                 }
@@ -17700,9 +17753,9 @@ namespace Infinium
 
         public bool IsAccessGrantedOuter(int UserID, int OuterDocumentID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT UserID FROM OuterDocuments WHERE OuterDocumentID = " + OuterDocumentID + " AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT UserID FROM OuterDocuments WHERE OuterDocumentID = " + OuterDocumentID + " AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     return Convert.ToBoolean(DA.Fill(DT) > 0);
                 }
@@ -17712,9 +17765,9 @@ namespace Infinium
 
         public int GetNotSigned(int UserID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT Count(DocumentConfirmationID) FROM DocumentsConfirmations WHERE DocumentConfirmationID IN (SELECT DocumentConfirmationID FROM DocumentsConfirmationsRecipients WHERE Status = 0 AND UserID = " + UserID + ")", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT Count(DocumentConfirmationID) FROM DocumentsConfirmations WHERE DocumentConfirmationID IN (SELECT DocumentConfirmationID FROM DocumentsConfirmationsRecipients WHERE Status = 0 AND UserID = " + UserID + ")", ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     if (DA.Fill(DT) == 0)
                         return 0;
@@ -17791,11 +17844,11 @@ namespace Infinium
 
         public DataTable GetCommentFiles(int DocumentCommentID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT FileSize, FileName FROM DocumentsCommentsFiles WHERE DocumentCommentID = " + DocumentCommentID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT FileSize, FileName FROM DocumentsCommentsFiles WHERE DocumentCommentID = " + DocumentCommentID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
-                    using (DataTable CurrentFilesDataTable = new DataTable())
+                    using (var CurrentFilesDataTable = new DataTable())
                     {
                         CurrentFilesDataTable.Columns.Add(new DataColumn("FileName", Type.GetType("System.String")));
                         CurrentFilesDataTable.Columns.Add(new DataColumn("FilePath", Type.GetType("System.String")));
@@ -17805,11 +17858,11 @@ namespace Infinium
 
                         DA.Fill(DT);
 
-                        int Size = 0;
+                        var Size = 0;
 
                         foreach (DataRow Row in DT.Rows)
                         {
-                            DataRow NewRow = CurrentFilesDataTable.NewRow();
+                            var NewRow = CurrentFilesDataTable.NewRow();
                             NewRow["FileName"] = Row["FileName"];
                             NewRow["FilePath"] = "загружен";
 
@@ -17853,25 +17906,25 @@ namespace Infinium
                                     "/" + Row["FileName"], Configs.FTPType);
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM DocumentsCommentsFiles WHERE DocumentCommentID = " + DocumentCommentID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM DocumentsCommentsFiles WHERE DocumentCommentID = " + DocumentCommentID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM SubscribesRecords WHERE SubscribesItemID = 21 AND TableItemID = " + DocumentCommentID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM SubscribesRecords WHERE SubscribesItemID = 21 AND TableItemID = " + DocumentCommentID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM DocumentsComments WHERE DocumentCommentID = " + DocumentCommentID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM DocumentsComments WHERE DocumentCommentID = " + DocumentCommentID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
@@ -17882,11 +17935,11 @@ namespace Infinium
         {
             CurrentUploadedFiles.Clear();
 
-            foreach (DataRow Row in FilesDataTable.Select("IsNew = 1"))
+            foreach (var Row in FilesDataTable.Select("IsNew = 1"))
             {
-                string FileName = "";
+                var FileName = "";
 
-                int i = 1;
+                var i = 1;
 
                 FileName = Row["FileName"].ToString();
 
@@ -17898,7 +17951,7 @@ namespace Infinium
                     }
                 }
 
-                DataRow NewRow = CurrentUploadedFiles.NewRow();
+                var NewRow = CurrentUploadedFiles.NewRow();
                 NewRow["FileName"] = Configs.DocumentsPath + "/Документооборот/Комментарии" +
                                     "/" + FileName;
                 CurrentUploadedFiles.Rows.Add(NewRow);
@@ -17921,15 +17974,15 @@ namespace Infinium
 
             DateTime DateTime;
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM DocumentsComments", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 0 * FROM DocumentsComments", ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
-                        DataRow NewRow = DT.NewRow();
+                        var NewRow = DT.NewRow();
                         NewRow["UserID"] = UserID;
                         NewRow["Text"] = Text;
 
@@ -17947,15 +18000,15 @@ namespace Infinium
                 }
             }
 
-            int DocumentCommentID = -1;
+            var DocumentCommentID = -1;
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT DocumentCommentID FROM DocumentsComments WHERE DateTime = '" + DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT DocumentCommentID FROM DocumentsComments WHERE DateTime = '" + DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'", ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
-                    string s = DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
+                    var s = DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
 
                     DocumentCommentID = Convert.ToInt32(DT.Rows[0]["DocumentCommentID"]);
                 }
@@ -17966,21 +18019,21 @@ namespace Infinium
             if (FilesDataTable.Select("IsNew = 1").Count() == 0)
                 return;
 
-            using (SqlDataAdapter sDA = new SqlDataAdapter("SELECT TOP 0 * FROM DocumentsCommentsFiles", ConnectionStrings.LightConnectionString))
+            using (var sDA = new SqlDataAdapter("SELECT TOP 0 * FROM DocumentsCommentsFiles", ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder sCB = new SqlCommandBuilder(sDA))
+                using (var sCB = new SqlCommandBuilder(sDA))
                 {
-                    using (DataTable sDT = new DataTable())
+                    using (var sDT = new DataTable())
                     {
                         sDA.Fill(sDT);
 
-                        foreach (DataRow Row in FilesDataTable.Select("IsNew = 1"))
+                        foreach (var Row in FilesDataTable.Select("IsNew = 1"))
                         {
                             FileInfo fi;
 
-                            string FileName = "";
+                            var FileName = "";
 
-                            int i = 1;
+                            var i = 1;
 
                             FileName = Row["FileName"].ToString();
 
@@ -18002,9 +18055,9 @@ namespace Infinium
                                 return;
                             }
 
-                            long iFileSize = fi.Length;
+                            var iFileSize = fi.Length;
 
-                            DataRow NewRow = sDT.NewRow();
+                            var NewRow = sDT.NewRow();
                             NewRow["FileName"] = FileName;
                             NewRow["DocumentCommentID"] = DocumentCommentID;
                             NewRow["FileSize"] = fi.Length;
@@ -18023,7 +18076,7 @@ namespace Infinium
         {
             //delete from ftp and database deleted files
 
-            DataTable ExistsFilesDT = GetCommentFiles(DocumentCommentID);
+            var ExistsFilesDT = GetCommentFiles(DocumentCommentID);
 
             foreach (DataRow Row in ExistsFilesDT.Rows)
             {
@@ -18033,9 +18086,9 @@ namespace Infinium
                                     "/" + Row["FileName"], Configs.FTPType);
 
 
-                    using (SqlDataAdapter dDA = new SqlDataAdapter("DELETE FROM DocumentsCommentsFiles WHERE DocumentCommentID = " + DocumentCommentID + " AND FileName = '" + Row["FileName"] + "'", ConnectionStrings.LightConnectionString))
+                    using (var dDA = new SqlDataAdapter("DELETE FROM DocumentsCommentsFiles WHERE DocumentCommentID = " + DocumentCommentID + " AND FileName = '" + Row["FileName"] + "'", ConnectionStrings.LightConnectionString))
                     {
-                        using (DataTable dDT = new DataTable())
+                        using (var dDT = new DataTable())
                         {
                             dDA.Fill(dDT);
                         }
@@ -18046,11 +18099,11 @@ namespace Infinium
             CurrentUploadedFiles.Clear();
 
             //add new files to ftp
-            foreach (DataRow Row in FilesDataTable.Select("IsNew = 1"))
+            foreach (var Row in FilesDataTable.Select("IsNew = 1"))
             {
-                string FileName = "";
+                var FileName = "";
 
-                int i = 1;
+                var i = 1;
 
                 FileName = Row["FileName"].ToString();
 
@@ -18062,7 +18115,7 @@ namespace Infinium
                     }
                 }
 
-                DataRow NewRow = CurrentUploadedFiles.NewRow();
+                var NewRow = CurrentUploadedFiles.NewRow();
                 NewRow["FileName"] = Configs.DocumentsPath + "/Документооборот/Комментарии" +
                                     "/" + FileName;
                 CurrentUploadedFiles.Rows.Add(NewRow);
@@ -18083,21 +18136,21 @@ namespace Infinium
 
             //add new files to database
 
-            using (SqlDataAdapter sDA = new SqlDataAdapter("SELECT TOP 0 * FROM DocumentsCommentsFiles", ConnectionStrings.LightConnectionString))
+            using (var sDA = new SqlDataAdapter("SELECT TOP 0 * FROM DocumentsCommentsFiles", ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder sCB = new SqlCommandBuilder(sDA))
+                using (var sCB = new SqlCommandBuilder(sDA))
                 {
-                    using (DataTable sDT = new DataTable())
+                    using (var sDT = new DataTable())
                     {
                         sDA.Fill(sDT);
 
-                        foreach (DataRow Row in FilesDataTable.Select("IsNew = 1"))
+                        foreach (var Row in FilesDataTable.Select("IsNew = 1"))
                         {
                             FileInfo fi;
 
-                            string FileName = "";
+                            var FileName = "";
 
-                            int i = 1;
+                            var i = 1;
 
                             FileName = Row["FileName"].ToString();
 
@@ -18119,9 +18172,9 @@ namespace Infinium
                                 return;
                             }
 
-                            long iFileSize = fi.Length;
+                            var iFileSize = fi.Length;
 
-                            DataRow NewRow = sDT.NewRow();
+                            var NewRow = sDT.NewRow();
                             NewRow["FileName"] = FileName;
                             NewRow["DocumentCommentID"] = DocumentCommentID;
                             NewRow["FileSize"] = fi.Length;
@@ -18135,11 +18188,11 @@ namespace Infinium
 
 
             //edit comments
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsComments WHERE DocumentCommentID = " + DocumentCommentID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsComments WHERE DocumentCommentID = " + DocumentCommentID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -18154,31 +18207,31 @@ namespace Infinium
 
         public void AddRecipients(int DocumentCategoryID, int DocumentID, DataTable RecipientsDT)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM DocumentsRecipients", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 0 * FROM DocumentsRecipients", ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
-                        using (SqlDataAdapter sDA = new SqlDataAdapter("SELECT TOP 0 * FROM SubscribesRecords", ConnectionStrings.LightConnectionString))
+                        using (var sDA = new SqlDataAdapter("SELECT TOP 0 * FROM SubscribesRecords", ConnectionStrings.LightConnectionString))
                         {
-                            using (SqlCommandBuilder sCB = new SqlCommandBuilder(sDA))
+                            using (var sCB = new SqlCommandBuilder(sDA))
                             {
-                                using (DataTable sDT = new DataTable())
+                                using (var sDT = new DataTable())
                                 {
                                     sDA.Fill(sDT);
 
                                     foreach (DataRow Row in RecipientsDT.Rows)
                                     {
-                                        DataRow NewRow = DT.NewRow();
+                                        var NewRow = DT.NewRow();
                                         NewRow["UserID"] = Row["UserID"];
                                         NewRow["DocumentID"] = DocumentID;
                                         NewRow["DocumentCategoryID"] = DocumentCategoryID;
                                         DT.Rows.Add(NewRow);
 
-                                        DataRow sNewRow = sDT.NewRow();
+                                        var sNewRow = sDT.NewRow();
                                         if (DocumentCategoryID == 0)
                                             sNewRow["SubscribesItemID"] = 18;
                                         if (DocumentCategoryID == 1)
@@ -18207,15 +18260,15 @@ namespace Infinium
         public bool AddInnerDocument(int DocumentTypeID, DateTime DateTime, int UserID, DataTable RecipientsDT,
                                       string Description, string RegNumber, int DocumentStateID, DataTable FilesDT, ref int CurrentUploadedFile, int FactoryID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM InnerDocuments", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 0 * FROM InnerDocuments", ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
-                        DataRow NewRow = DT.NewRow();
+                        var NewRow = DT.NewRow();
                         NewRow["DocumentTypeID"] = DocumentTypeID;
                         NewRow["DateTime"] = DateTime;
                         NewRow["UserID"] = UserID;
@@ -18230,21 +18283,21 @@ namespace Infinium
                 }
             }
 
-            int InnerDocumentID = -1;
+            var InnerDocumentID = -1;
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT InnerDocumentID FROM InnerDocuments WHERE DateTime = '" + DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT InnerDocumentID FROM InnerDocuments WHERE DateTime = '" + DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'", ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
                     InnerDocumentID = Convert.ToInt32(DT.Rows[0]["InnerDocumentID"]);
 
-                    using (SqlDataAdapter sDA = new SqlDataAdapter("SELECT TOP 0 * FROM DocumentsFiles", ConnectionStrings.LightConnectionString))
+                    using (var sDA = new SqlDataAdapter("SELECT TOP 0 * FROM DocumentsFiles", ConnectionStrings.LightConnectionString))
                     {
-                        using (SqlCommandBuilder sCB = new SqlCommandBuilder(sDA))
+                        using (var sCB = new SqlCommandBuilder(sDA))
                         {
-                            using (DataTable sDT = new DataTable())
+                            using (var sDT = new DataTable())
                             {
                                 sDA.Fill(sDT);
 
@@ -18254,9 +18307,9 @@ namespace Infinium
 
                                     CurrentUploadedFile++;
 
-                                    string FileName = "";
+                                    var FileName = "";
 
-                                    int i = 1;
+                                    var i = 1;
 
                                     FileName = Row["FileName"].ToString();
 
@@ -18278,7 +18331,7 @@ namespace Infinium
                                         return false;
                                     }
 
-                                    long iFileSize = fi.Length;
+                                    var iFileSize = fi.Length;
 
                                     //load file to ftp
                                     if (FM.UploadFile(Row["Path"].ToString(), Configs.DocumentsPath + "/Документооборот/Документы" +
@@ -18290,7 +18343,7 @@ namespace Infinium
                                         return false;
                                     }
 
-                                    DataRow NewRow = sDT.NewRow();
+                                    var NewRow = sDT.NewRow();
                                     NewRow["FileName"] = FileName;
                                     NewRow["DocumentID"] = DT.Rows[0]["InnerDocumentID"];
                                     NewRow["FileSize"] = fi.Length;
@@ -18305,31 +18358,31 @@ namespace Infinium
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM DocumentsRecipients", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 0 * FROM DocumentsRecipients", ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
-                        using (SqlDataAdapter sDA = new SqlDataAdapter("SELECT TOP 0 * FROM SubscribesRecords", ConnectionStrings.LightConnectionString))
+                        using (var sDA = new SqlDataAdapter("SELECT TOP 0 * FROM SubscribesRecords", ConnectionStrings.LightConnectionString))
                         {
-                            using (SqlCommandBuilder sCB = new SqlCommandBuilder(sDA))
+                            using (var sCB = new SqlCommandBuilder(sDA))
                             {
-                                using (DataTable sDT = new DataTable())
+                                using (var sDT = new DataTable())
                                 {
                                     sDA.Fill(sDT);
 
                                     foreach (DataRow Row in RecipientsDT.Rows)
                                     {
-                                        DataRow NewRow = DT.NewRow();
+                                        var NewRow = DT.NewRow();
                                         NewRow["UserID"] = Row["UserID"];
                                         NewRow["DocumentID"] = InnerDocumentID;
                                         NewRow["DocumentCategoryID"] = 0;
                                         DT.Rows.Add(NewRow);
 
-                                        DataRow sNewRow = sDT.NewRow();
+                                        var sNewRow = sDT.NewRow();
                                         sNewRow["SubscribesItemID"] = 18;
                                         sNewRow["TableItemID"] = InnerDocumentID;
                                         sNewRow["UserID"] = Row["UserID"];
@@ -18339,13 +18392,13 @@ namespace Infinium
 
                                     if (RecipientsDT.Select("UserID = " + Security.CurrentUserID).Count() == 0)
                                     {
-                                        DataRow NewRow = DT.NewRow();
+                                        var NewRow = DT.NewRow();
                                         NewRow["UserID"] = Security.CurrentUserID;
                                         NewRow["DocumentID"] = InnerDocumentID;
                                         NewRow["DocumentCategoryID"] = 0;
                                         DT.Rows.Add(NewRow);
 
-                                        DataRow sNewRow = sDT.NewRow();
+                                        var sNewRow = sDT.NewRow();
                                         sNewRow["SubscribesItemID"] = 18;
                                         sNewRow["TableItemID"] = InnerDocumentID;
                                         sNewRow["UserID"] = Security.CurrentUserID;
@@ -18371,11 +18424,11 @@ namespace Infinium
         public bool EditInnerDocument(int InnerDocumentID, int DocumentTypeID, int UserID, DataTable RecipientsDT,
                                        string Description, string RegNumber, int DocumentStateID, DataTable FilesDT, ref int CurrentUploadedFile, int FactoryID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM InnerDocuments WHERE InnerDocumentID = " + InnerDocumentID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM InnerDocuments WHERE InnerDocumentID = " + InnerDocumentID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -18392,11 +18445,11 @@ namespace Infinium
             }
 
 
-            using (SqlDataAdapter sDA = new SqlDataAdapter("SELECT * FROM DocumentsFiles WHERE DocumentCategoryID = 0 AND DocumentID = " + InnerDocumentID, ConnectionStrings.LightConnectionString))
+            using (var sDA = new SqlDataAdapter("SELECT * FROM DocumentsFiles WHERE DocumentCategoryID = 0 AND DocumentID = " + InnerDocumentID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder sCB = new SqlCommandBuilder(sDA))
+                using (var sCB = new SqlCommandBuilder(sDA))
                 {
-                    using (DataTable sDT = new DataTable())
+                    using (var sDT = new DataTable())
                     {
                         sDA.Fill(sDT);
 
@@ -18412,15 +18465,15 @@ namespace Infinium
                             }
                         }
 
-                        foreach (DataRow Row in FilesDT.Select("IsNew = true"))
+                        foreach (var Row in FilesDT.Select("IsNew = true"))
                         {
                             FileInfo fi;
 
                             CurrentUploadedFile++;
 
-                            string FileName = "";
+                            var FileName = "";
 
-                            int i = 1;
+                            var i = 1;
 
                             FileName = Row["FileName"].ToString();
 
@@ -18442,7 +18495,7 @@ namespace Infinium
                                 return false;
                             }
 
-                            long iFileSize = fi.Length;
+                            var iFileSize = fi.Length;
 
                             //load file to ftp
                             if (FM.UploadFile(Row["Path"].ToString(), Configs.DocumentsPath + "/Документооборот/Документы" +
@@ -18454,7 +18507,7 @@ namespace Infinium
                                 return false;
                             }
 
-                            DataRow NewRow = sDT.NewRow();
+                            var NewRow = sDT.NewRow();
                             NewRow["FileName"] = FileName;
                             NewRow["DocumentID"] = InnerDocumentID;
                             NewRow["FileSize"] = fi.Length;
@@ -18466,30 +18519,30 @@ namespace Infinium
                     }
                 }
 
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsRecipients WHERE DocumentCategoryID = 0 AND DocumentID = " + InnerDocumentID, ConnectionStrings.LightConnectionString))
+                using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsRecipients WHERE DocumentCategoryID = 0 AND DocumentID = " + InnerDocumentID, ConnectionStrings.LightConnectionString))
                 {
-                    using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                    using (var CB = new SqlCommandBuilder(DA))
                     {
-                        using (DataTable DT = new DataTable())
+                        using (var DT = new DataTable())
                         {
                             DA.Fill(DT);
 
-                            using (SqlDataAdapter rDA = new SqlDataAdapter("SELECT * FROM SubscribesRecords WHERE SubscribesItemID = 18 AND TableItemID = " + InnerDocumentID, ConnectionStrings.LightConnectionString))
+                            using (var rDA = new SqlDataAdapter("SELECT * FROM SubscribesRecords WHERE SubscribesItemID = 18 AND TableItemID = " + InnerDocumentID, ConnectionStrings.LightConnectionString))
                             {
-                                using (SqlCommandBuilder rCB = new SqlCommandBuilder(rDA))
+                                using (var rCB = new SqlCommandBuilder(rDA))
                                 {
-                                    using (DataTable rDT = new DataTable())
+                                    using (var rDT = new DataTable())
                                     {
                                         rDA.Fill(rDT);
 
-                                        for (int i = 0; i < DT.Rows.Count; i++)
+                                        for (var i = 0; i < DT.Rows.Count; i++)
                                         {
                                             if (Convert.ToInt32(DT.Rows[i]["UserID"]) == Security.CurrentUserID)
                                                 continue;
 
                                             if (RecipientsDT.Select("UserID = " + DT.Rows[i]["UserID"]).Count() == 0)
                                             {
-                                                DataRow[] rRow = rDT.Select("UserID = " + DT.Rows[i]["UserID"]);
+                                                var rRow = rDT.Select("UserID = " + DT.Rows[i]["UserID"]);
 
                                                 if (rRow.Count() > 0)
                                                     rRow[0].Delete();
@@ -18507,13 +18560,13 @@ namespace Infinium
                                         {
                                             if (DT.Select("UserID = " + Row["UserID"]).Count() == 0)
                                             {
-                                                DataRow NewRow = DT.NewRow();
+                                                var NewRow = DT.NewRow();
                                                 NewRow["UserID"] = Row["UserID"];
                                                 NewRow["DocumentID"] = InnerDocumentID;
                                                 NewRow["DocumentCategoryID"] = 0;
                                                 DT.Rows.Add(NewRow);
 
-                                                DataRow rNewRow = rDT.NewRow();
+                                                var rNewRow = rDT.NewRow();
                                                 rNewRow["SubscribesItemID"] = 18;
                                                 rNewRow["TableItemID"] = InnerDocumentID;
                                                 rNewRow["UserID"] = Row["UserID"];
@@ -18538,9 +18591,9 @@ namespace Infinium
         public void GetEditInnerDocument(int InnerDocumentID, ref int DocumentTypeID, ref DateTime DateTime, ref int UserID,
                                           DataTable RecipientsDT, ref string Description, ref string RegNumber, ref int DocumentStateID, DataTable FilesDT, ref int FactoryID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM InnerDocuments WHERE InnerDocumentID = " + InnerDocumentID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM InnerDocuments WHERE InnerDocumentID = " + InnerDocumentID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -18554,12 +18607,12 @@ namespace Infinium
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT FileName FROM DocumentsFiles WHERE DocumentCategoryID = 0 AND DocumentID = " + InnerDocumentID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT FileName FROM DocumentsFiles WHERE DocumentCategoryID = 0 AND DocumentID = " + InnerDocumentID, ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(FilesDT);
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT UserID FROM DocumentsRecipients WHERE DocumentCategoryID = 0 AND DocumentID = " + InnerDocumentID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT UserID FROM DocumentsRecipients WHERE DocumentCategoryID = 0 AND DocumentID = " + InnerDocumentID, ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(RecipientsDT);
             }
@@ -18570,15 +18623,15 @@ namespace Infinium
         public bool AddOuterDocument(int DocumentTypeID, DateTime DateTime, int UserID, int CorrespondentID, DataTable RecipientsDT,
                                      string Description, string RegNumber, int DocumentStateID, DataTable FilesDT, ref int CurrentUploadedFile, int FactoryID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM OuterDocuments", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 0 * FROM OuterDocuments", ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
-                        DataRow NewRow = DT.NewRow();
+                        var NewRow = DT.NewRow();
                         NewRow["DocumentTypeID"] = DocumentTypeID;
                         NewRow["DateTime"] = DateTime;
                         NewRow["UserID"] = UserID;
@@ -18594,21 +18647,21 @@ namespace Infinium
                 }
             }
 
-            int OuterDocumentID = -1;
+            var OuterDocumentID = -1;
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT OuterDocumentID FROM OuterDocuments WHERE DateTime = '" + DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT OuterDocumentID FROM OuterDocuments WHERE DateTime = '" + DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'", ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
                     OuterDocumentID = Convert.ToInt32(DT.Rows[0]["OuterDocumentID"]);
 
-                    using (SqlDataAdapter sDA = new SqlDataAdapter("SELECT TOP 0 * FROM DocumentsFiles", ConnectionStrings.LightConnectionString))
+                    using (var sDA = new SqlDataAdapter("SELECT TOP 0 * FROM DocumentsFiles", ConnectionStrings.LightConnectionString))
                     {
-                        using (SqlCommandBuilder sCB = new SqlCommandBuilder(sDA))
+                        using (var sCB = new SqlCommandBuilder(sDA))
                         {
-                            using (DataTable sDT = new DataTable())
+                            using (var sDT = new DataTable())
                             {
                                 sDA.Fill(sDT);
 
@@ -18618,9 +18671,9 @@ namespace Infinium
 
                                     CurrentUploadedFile++;
 
-                                    string FileName = "";
+                                    var FileName = "";
 
-                                    int i = 1;
+                                    var i = 1;
 
                                     FileName = Row["FileName"].ToString();
 
@@ -18642,7 +18695,7 @@ namespace Infinium
                                         return false;
                                     }
 
-                                    long iFileSize = fi.Length;
+                                    var iFileSize = fi.Length;
 
                                     //load file to ftp
                                     if (FM.UploadFile(Row["Path"].ToString(), Configs.DocumentsPath + "/Документооборот/Документы" +
@@ -18654,7 +18707,7 @@ namespace Infinium
                                         return false;
                                     }
 
-                                    DataRow NewRow = sDT.NewRow();
+                                    var NewRow = sDT.NewRow();
                                     NewRow["FileName"] = FileName;
                                     NewRow["DocumentID"] = DT.Rows[0]["OuterDocumentID"];
                                     NewRow["FileSize"] = fi.Length;
@@ -18671,31 +18724,31 @@ namespace Infinium
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM DocumentsRecipients", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 0 * FROM DocumentsRecipients", ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
-                        using (SqlDataAdapter sDA = new SqlDataAdapter("SELECT TOP 0 * FROM SubscribesRecords", ConnectionStrings.LightConnectionString))
+                        using (var sDA = new SqlDataAdapter("SELECT TOP 0 * FROM SubscribesRecords", ConnectionStrings.LightConnectionString))
                         {
-                            using (SqlCommandBuilder sCB = new SqlCommandBuilder(sDA))
+                            using (var sCB = new SqlCommandBuilder(sDA))
                             {
-                                using (DataTable sDT = new DataTable())
+                                using (var sDT = new DataTable())
                                 {
                                     sDA.Fill(sDT);
 
                                     foreach (DataRow Row in RecipientsDT.Rows)
                                     {
-                                        DataRow NewRow = DT.NewRow();
+                                        var NewRow = DT.NewRow();
                                         NewRow["UserID"] = Row["UserID"];
                                         NewRow["DocumentID"] = OuterDocumentID;
                                         NewRow["DocumentCategoryID"] = 2;
                                         DT.Rows.Add(NewRow);
 
-                                        DataRow sNewRow = sDT.NewRow();
+                                        var sNewRow = sDT.NewRow();
                                         sNewRow["SubscribesItemID"] = 20;
                                         sNewRow["TableItemID"] = OuterDocumentID;
                                         sNewRow["UserID"] = Row["UserID"];
@@ -18705,13 +18758,13 @@ namespace Infinium
 
                                     if (RecipientsDT.Select("UserID = " + Security.CurrentUserID).Count() == 0)
                                     {
-                                        DataRow NewRow = DT.NewRow();
+                                        var NewRow = DT.NewRow();
                                         NewRow["UserID"] = Security.CurrentUserID;
                                         NewRow["DocumentID"] = OuterDocumentID;
                                         NewRow["DocumentCategoryID"] = 2;
                                         DT.Rows.Add(NewRow);
 
-                                        DataRow sNewRow = sDT.NewRow();
+                                        var sNewRow = sDT.NewRow();
                                         sNewRow["SubscribesItemID"] = 20;
                                         sNewRow["TableItemID"] = OuterDocumentID;
                                         sNewRow["UserID"] = Security.CurrentUserID;
@@ -18737,11 +18790,11 @@ namespace Infinium
         public bool EditOuterDocument(int OuterDocumentID, int DocumentTypeID, int UserID, int CorrespondentID, DataTable RecipientsDT,
                                      string Description, string RegNumber, int DocumentStateID, DataTable FilesDT, ref int CurrentUploadedFile, int FactoryID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM OuterDocuments WHERE OuterDocumentID = " + OuterDocumentID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM OuterDocuments WHERE OuterDocumentID = " + OuterDocumentID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -18758,11 +18811,11 @@ namespace Infinium
                 }
             }
 
-            using (SqlDataAdapter sDA = new SqlDataAdapter("SELECT * FROM DocumentsFiles WHERE DocumentCategoryID = 2 AND DocumentID = " + OuterDocumentID, ConnectionStrings.LightConnectionString))
+            using (var sDA = new SqlDataAdapter("SELECT * FROM DocumentsFiles WHERE DocumentCategoryID = 2 AND DocumentID = " + OuterDocumentID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder sCB = new SqlCommandBuilder(sDA))
+                using (var sCB = new SqlCommandBuilder(sDA))
                 {
-                    using (DataTable sDT = new DataTable())
+                    using (var sDT = new DataTable())
                     {
                         sDA.Fill(sDT);
 
@@ -18778,15 +18831,15 @@ namespace Infinium
                             }
                         }
 
-                        foreach (DataRow Row in FilesDT.Select("IsNew = true"))
+                        foreach (var Row in FilesDT.Select("IsNew = true"))
                         {
                             FileInfo fi;
 
                             CurrentUploadedFile++;
 
-                            string FileName = "";
+                            var FileName = "";
 
-                            int i = 1;
+                            var i = 1;
 
                             FileName = Row["FileName"].ToString();
 
@@ -18808,7 +18861,7 @@ namespace Infinium
                                 return false;
                             }
 
-                            long iFileSize = fi.Length;
+                            var iFileSize = fi.Length;
 
                             //load file to ftp
                             if (FM.UploadFile(Row["Path"].ToString(), Configs.DocumentsPath + "/Документооборот/Документы" +
@@ -18820,7 +18873,7 @@ namespace Infinium
                                 return false;
                             }
 
-                            DataRow NewRow = sDT.NewRow();
+                            var NewRow = sDT.NewRow();
                             NewRow["FileName"] = FileName;
                             NewRow["DocumentID"] = OuterDocumentID;
                             NewRow["FileSize"] = fi.Length;
@@ -18832,30 +18885,30 @@ namespace Infinium
                     }
                 }
 
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsRecipients WHERE DocumentCategoryID = 2 AND DocumentID = " + OuterDocumentID, ConnectionStrings.LightConnectionString))
+                using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsRecipients WHERE DocumentCategoryID = 2 AND DocumentID = " + OuterDocumentID, ConnectionStrings.LightConnectionString))
                 {
-                    using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                    using (var CB = new SqlCommandBuilder(DA))
                     {
-                        using (DataTable DT = new DataTable())
+                        using (var DT = new DataTable())
                         {
                             DA.Fill(DT);
 
-                            using (SqlDataAdapter rDA = new SqlDataAdapter("SELECT * FROM SubscribesRecords WHERE SubscribesItemID = 20 AND TableItemID = " + OuterDocumentID, ConnectionStrings.LightConnectionString))
+                            using (var rDA = new SqlDataAdapter("SELECT * FROM SubscribesRecords WHERE SubscribesItemID = 20 AND TableItemID = " + OuterDocumentID, ConnectionStrings.LightConnectionString))
                             {
-                                using (SqlCommandBuilder rCB = new SqlCommandBuilder(rDA))
+                                using (var rCB = new SqlCommandBuilder(rDA))
                                 {
-                                    using (DataTable rDT = new DataTable())
+                                    using (var rDT = new DataTable())
                                     {
                                         rDA.Fill(rDT);
 
-                                        for (int i = 0; i < DT.Rows.Count; i++)
+                                        for (var i = 0; i < DT.Rows.Count; i++)
                                         {
                                             if (Convert.ToInt32(DT.Rows[i]["UserID"]) == Security.CurrentUserID)
                                                 continue;
 
                                             if (RecipientsDT.Select("UserID = " + DT.Rows[i]["UserID"]).Count() == 0)
                                             {
-                                                DataRow[] rRow = rDT.Select("UserID = " + DT.Rows[i]["UserID"]);
+                                                var rRow = rDT.Select("UserID = " + DT.Rows[i]["UserID"]);
 
                                                 if (rRow.Count() > 0)
                                                     rRow[0].Delete();
@@ -18873,13 +18926,13 @@ namespace Infinium
                                         {
                                             if (DT.Select("UserID = " + Row["UserID"]).Count() == 0)
                                             {
-                                                DataRow NewRow = DT.NewRow();
+                                                var NewRow = DT.NewRow();
                                                 NewRow["UserID"] = Row["UserID"];
                                                 NewRow["DocumentID"] = OuterDocumentID;
                                                 NewRow["DocumentCategoryID"] = 2;
                                                 DT.Rows.Add(NewRow);
 
-                                                DataRow rNewRow = rDT.NewRow();
+                                                var rNewRow = rDT.NewRow();
                                                 rNewRow["SubscribesItemID"] = 20;
                                                 rNewRow["TableItemID"] = OuterDocumentID;
                                                 rNewRow["UserID"] = Row["UserID"];
@@ -18904,9 +18957,9 @@ namespace Infinium
         public void GetEditOuterDocument(int OuterDocumentID, ref int DocumentTypeID, ref DateTime DateTime, ref int UserID, ref int CorrespondentID,
                                          DataTable RecipientsDT, ref string Description, ref string RegNumber, ref int DocumentStateID, DataTable FilesDT, ref int FactoryID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM OuterDocuments WHERE OuterDocumentID = " + OuterDocumentID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM OuterDocuments WHERE OuterDocumentID = " + OuterDocumentID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -18921,12 +18974,12 @@ namespace Infinium
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT FileName FROM DocumentsFiles WHERE DocumentCategoryID = 2 AND DocumentID = " + OuterDocumentID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT FileName FROM DocumentsFiles WHERE DocumentCategoryID = 2 AND DocumentID = " + OuterDocumentID, ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(FilesDT);
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT UserID FROM DocumentsRecipients WHERE DocumentCategoryID = 2 AND DocumentID = " + OuterDocumentID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT UserID FROM DocumentsRecipients WHERE DocumentCategoryID = 2 AND DocumentID = " + OuterDocumentID, ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(RecipientsDT);
             }
@@ -18937,15 +18990,15 @@ namespace Infinium
         public bool AddIncomeDocument(int DocumentTypeID, DateTime DateTime, int UserID, int CorrespondentID, DataTable RecipientsDT,
                                        string Description, string RegNumber, string IncomeNumber, int DocumentStateID, DataTable FilesDT, ref int CurrentUploadedFile, int FactoryID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM IncomeDocuments", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 0 * FROM IncomeDocuments", ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
-                        DataRow NewRow = DT.NewRow();
+                        var NewRow = DT.NewRow();
                         NewRow["DocumentTypeID"] = DocumentTypeID;
                         NewRow["DateTime"] = DateTime;
                         NewRow["UserID"] = UserID;
@@ -18962,21 +19015,21 @@ namespace Infinium
                 }
             }
 
-            int IncomeDocumentID = -1;
+            var IncomeDocumentID = -1;
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT IncomeDocumentID FROM IncomeDocuments WHERE DateTime = '" + DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT IncomeDocumentID FROM IncomeDocuments WHERE DateTime = '" + DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'", ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
                     IncomeDocumentID = Convert.ToInt32(DT.Rows[0]["IncomeDocumentID"]);
 
-                    using (SqlDataAdapter sDA = new SqlDataAdapter("SELECT TOP 0 * FROM DocumentsFiles", ConnectionStrings.LightConnectionString))
+                    using (var sDA = new SqlDataAdapter("SELECT TOP 0 * FROM DocumentsFiles", ConnectionStrings.LightConnectionString))
                     {
-                        using (SqlCommandBuilder sCB = new SqlCommandBuilder(sDA))
+                        using (var sCB = new SqlCommandBuilder(sDA))
                         {
-                            using (DataTable sDT = new DataTable())
+                            using (var sDT = new DataTable())
                             {
                                 sDA.Fill(sDT);
 
@@ -18986,9 +19039,9 @@ namespace Infinium
 
                                     CurrentUploadedFile++;
 
-                                    string FileName = "";
+                                    var FileName = "";
 
-                                    int i = 1;
+                                    var i = 1;
 
                                     FileName = Row["FileName"].ToString();
 
@@ -19010,7 +19063,7 @@ namespace Infinium
                                         return false;
                                     }
 
-                                    long iFileSize = fi.Length;
+                                    var iFileSize = fi.Length;
 
                                     //load file to ftp
                                     if (FM.UploadFile(Row["Path"].ToString(), Configs.DocumentsPath + "/Документооборот/Документы" +
@@ -19022,7 +19075,7 @@ namespace Infinium
                                         return false;
                                     }
 
-                                    DataRow NewRow = sDT.NewRow();
+                                    var NewRow = sDT.NewRow();
                                     NewRow["FileName"] = FileName;
                                     NewRow["DocumentID"] = DT.Rows[0]["IncomeDocumentID"];
                                     NewRow["FileSize"] = fi.Length;
@@ -19039,31 +19092,31 @@ namespace Infinium
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM DocumentsRecipients", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 0 * FROM DocumentsRecipients", ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
-                        using (SqlDataAdapter sDA = new SqlDataAdapter("SELECT TOP 0 * FROM SubscribesRecords", ConnectionStrings.LightConnectionString))
+                        using (var sDA = new SqlDataAdapter("SELECT TOP 0 * FROM SubscribesRecords", ConnectionStrings.LightConnectionString))
                         {
-                            using (SqlCommandBuilder sCB = new SqlCommandBuilder(sDA))
+                            using (var sCB = new SqlCommandBuilder(sDA))
                             {
-                                using (DataTable sDT = new DataTable())
+                                using (var sDT = new DataTable())
                                 {
                                     sDA.Fill(sDT);
 
                                     foreach (DataRow Row in RecipientsDT.Rows)
                                     {
-                                        DataRow NewRow = DT.NewRow();
+                                        var NewRow = DT.NewRow();
                                         NewRow["UserID"] = Row["UserID"];
                                         NewRow["DocumentID"] = IncomeDocumentID;
                                         NewRow["DocumentCategoryID"] = 1;
                                         DT.Rows.Add(NewRow);
 
-                                        DataRow sNewRow = sDT.NewRow();
+                                        var sNewRow = sDT.NewRow();
                                         sNewRow["SubscribesItemID"] = 19;
                                         sNewRow["TableItemID"] = IncomeDocumentID;
                                         sNewRow["UserID"] = Row["UserID"];
@@ -19073,13 +19126,13 @@ namespace Infinium
 
                                     if (RecipientsDT.Select("UserID = " + Security.CurrentUserID).Count() == 0)
                                     {
-                                        DataRow NewRow = DT.NewRow();
+                                        var NewRow = DT.NewRow();
                                         NewRow["UserID"] = Security.CurrentUserID;
                                         NewRow["DocumentID"] = IncomeDocumentID;
                                         NewRow["DocumentCategoryID"] = 1;
                                         DT.Rows.Add(NewRow);
 
-                                        DataRow sNewRow = sDT.NewRow();
+                                        var sNewRow = sDT.NewRow();
                                         sNewRow["SubscribesItemID"] = 19;
                                         sNewRow["TableItemID"] = IncomeDocumentID;
                                         sNewRow["UserID"] = Security.CurrentUserID;
@@ -19105,11 +19158,11 @@ namespace Infinium
         public bool EditIncomeDocument(int IncomeDocumentID, int DocumentTypeID, int UserID, int CorrespondentID, DataTable RecipientsDT,
                                         string Description, string RegNumber, string IncomeNumber, int DocumentStateID, DataTable FilesDT, ref int CurrentUploadedFile, int FactoryID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM IncomeDocuments WHERE IncomeDocumentID = " + IncomeDocumentID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM IncomeDocuments WHERE IncomeDocumentID = " + IncomeDocumentID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -19127,11 +19180,11 @@ namespace Infinium
                 }
             }
 
-            using (SqlDataAdapter sDA = new SqlDataAdapter("SELECT * FROM DocumentsFiles WHERE DocumentCategoryID = 1 AND DocumentID = " + IncomeDocumentID, ConnectionStrings.LightConnectionString))
+            using (var sDA = new SqlDataAdapter("SELECT * FROM DocumentsFiles WHERE DocumentCategoryID = 1 AND DocumentID = " + IncomeDocumentID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder sCB = new SqlCommandBuilder(sDA))
+                using (var sCB = new SqlCommandBuilder(sDA))
                 {
-                    using (DataTable sDT = new DataTable())
+                    using (var sDT = new DataTable())
                     {
                         sDA.Fill(sDT);
 
@@ -19147,15 +19200,15 @@ namespace Infinium
                             }
                         }
 
-                        foreach (DataRow Row in FilesDT.Select("IsNew = true"))
+                        foreach (var Row in FilesDT.Select("IsNew = true"))
                         {
                             FileInfo fi;
 
                             CurrentUploadedFile++;
 
-                            string FileName = "";
+                            var FileName = "";
 
-                            int i = 1;
+                            var i = 1;
 
                             FileName = Row["FileName"].ToString();
 
@@ -19177,7 +19230,7 @@ namespace Infinium
                                 return false;
                             }
 
-                            long iFileSize = fi.Length;
+                            var iFileSize = fi.Length;
 
                             //load file to ftp
                             if (FM.UploadFile(Row["Path"].ToString(), Configs.DocumentsPath + "/Документооборот/Документы" +
@@ -19189,7 +19242,7 @@ namespace Infinium
                                 return false;
                             }
 
-                            DataRow NewRow = sDT.NewRow();
+                            var NewRow = sDT.NewRow();
                             NewRow["FileName"] = FileName;
                             NewRow["DocumentID"] = IncomeDocumentID;
                             NewRow["FileSize"] = fi.Length;
@@ -19201,30 +19254,30 @@ namespace Infinium
                     }
                 }
 
-                using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsRecipients WHERE DocumentCategoryID = 1 AND DocumentID = " + IncomeDocumentID, ConnectionStrings.LightConnectionString))
+                using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsRecipients WHERE DocumentCategoryID = 1 AND DocumentID = " + IncomeDocumentID, ConnectionStrings.LightConnectionString))
                 {
-                    using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                    using (var CB = new SqlCommandBuilder(DA))
                     {
-                        using (DataTable DT = new DataTable())
+                        using (var DT = new DataTable())
                         {
                             DA.Fill(DT);
 
-                            using (SqlDataAdapter rDA = new SqlDataAdapter("SELECT * FROM SubscribesRecords WHERE SubscribesItemID = 19 AND TableItemID = " + IncomeDocumentID, ConnectionStrings.LightConnectionString))
+                            using (var rDA = new SqlDataAdapter("SELECT * FROM SubscribesRecords WHERE SubscribesItemID = 19 AND TableItemID = " + IncomeDocumentID, ConnectionStrings.LightConnectionString))
                             {
-                                using (SqlCommandBuilder rCB = new SqlCommandBuilder(rDA))
+                                using (var rCB = new SqlCommandBuilder(rDA))
                                 {
-                                    using (DataTable rDT = new DataTable())
+                                    using (var rDT = new DataTable())
                                     {
                                         rDA.Fill(rDT);
 
-                                        for (int i = 0; i < DT.Rows.Count; i++)
+                                        for (var i = 0; i < DT.Rows.Count; i++)
                                         {
                                             if (Convert.ToInt32(DT.Rows[i]["UserID"]) == Security.CurrentUserID)
                                                 continue;
 
                                             if (RecipientsDT.Select("UserID = " + DT.Rows[i]["UserID"]).Count() == 0)
                                             {
-                                                DataRow[] rRow = rDT.Select("UserID = " + DT.Rows[i]["UserID"]);
+                                                var rRow = rDT.Select("UserID = " + DT.Rows[i]["UserID"]);
 
                                                 if (rRow.Count() > 0)
                                                     rRow[0].Delete();
@@ -19242,13 +19295,13 @@ namespace Infinium
                                         {
                                             if (DT.Select("UserID = " + Row["UserID"]).Count() == 0)
                                             {
-                                                DataRow NewRow = DT.NewRow();
+                                                var NewRow = DT.NewRow();
                                                 NewRow["UserID"] = Row["UserID"];
                                                 NewRow["DocumentID"] = IncomeDocumentID;
                                                 NewRow["DocumentCategoryID"] = 1;
                                                 DT.Rows.Add(NewRow);
 
-                                                DataRow rNewRow = rDT.NewRow();
+                                                var rNewRow = rDT.NewRow();
                                                 rNewRow["SubscribesItemID"] = 19;
                                                 rNewRow["TableItemID"] = IncomeDocumentID;
                                                 rNewRow["UserID"] = Row["UserID"];
@@ -19274,9 +19327,9 @@ namespace Infinium
         public void GetEditIncomeDocument(int IncomeDocumentID, ref int DocumentTypeID, ref DateTime DateTime, ref int UserID, ref int CorrespondentID,
                                            DataTable RecipientsDT, ref string Description, ref string RegNumber, ref string IncomeNumber, ref int DocumentStateID, DataTable FilesDT, ref int FactoryID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM IncomeDocuments WHERE IncomeDocumentID = " + IncomeDocumentID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM IncomeDocuments WHERE IncomeDocumentID = " + IncomeDocumentID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -19292,12 +19345,12 @@ namespace Infinium
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT FileName FROM DocumentsFiles WHERE DocumentCategoryID = 1 AND DocumentID = " + IncomeDocumentID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT FileName FROM DocumentsFiles WHERE DocumentCategoryID = 1 AND DocumentID = " + IncomeDocumentID, ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(FilesDT);
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT UserID FROM DocumentsRecipients WHERE DocumentCategoryID = 1 AND DocumentID = " + IncomeDocumentID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT UserID FROM DocumentsRecipients WHERE DocumentCategoryID = 1 AND DocumentID = " + IncomeDocumentID, ConnectionStrings.LightConnectionString))
             {
                 DA.Fill(RecipientsDT);
             }
@@ -19306,9 +19359,9 @@ namespace Infinium
 
         private void RemoveCommentsSubscribes(int UserID, int DocumentID, int DocumentCategoryID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM SubscribesRecords WHERE UserID = " + UserID + " AND SubscribesItemID = 21 AND TableItemID IN (SELECT DocumentCommentID FROM DocumentsComments WHERE DocumentCategoryID = " + DocumentCategoryID + " AND DocumentID = " + DocumentID + ")", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM SubscribesRecords WHERE UserID = " + UserID + " AND SubscribesItemID = 21 AND TableItemID IN (SELECT DocumentCommentID FROM DocumentsComments WHERE DocumentCategoryID = " + DocumentCategoryID + " AND DocumentID = " + DocumentID + ")", ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
@@ -19317,23 +19370,23 @@ namespace Infinium
 
         private void AddCommentsSubscribes(int DocumentCommentID, int DocumentID, int DocumentCategoryID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM SubscribesRecords", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 0 * FROM SubscribesRecords", ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
-                        using (SqlDataAdapter rDA = new SqlDataAdapter("SELECT * FROM DocumentsRecipients WHERE DocumentCategoryID = " + DocumentCategoryID + " AND DocumentID = " + DocumentID, ConnectionStrings.LightConnectionString))
+                        using (var rDA = new SqlDataAdapter("SELECT * FROM DocumentsRecipients WHERE DocumentCategoryID = " + DocumentCategoryID + " AND DocumentID = " + DocumentID, ConnectionStrings.LightConnectionString))
                         {
-                            using (DataTable rDT = new DataTable())
+                            using (var rDT = new DataTable())
                             {
                                 rDA.Fill(rDT);
 
                                 foreach (DataRow Row in rDT.Rows)
                                 {
-                                    DataRow NewRow = DT.NewRow();
+                                    var NewRow = DT.NewRow();
                                     NewRow["SubscribesItemID"] = 21;
                                     NewRow["UserID"] = Row["UserID"];
                                     NewRow["TableItemID"] = DocumentCommentID;
@@ -19350,9 +19403,9 @@ namespace Infinium
 
         public bool IsFileExist(string Name)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 1 FileName FROM DocumentsFiles WHERE FileName = '" + Name + "'", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 1 FileName FROM DocumentsFiles WHERE FileName = '" + Name + "'", ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     return DA.Fill(DT) > 0;
                 }
@@ -19361,18 +19414,18 @@ namespace Infinium
 
         public bool AddCorrespondent(string Name)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 1 * FROM Correspondents WHERE CorrespondentName = '" + Name + "'", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 1 * FROM Correspondents WHERE CorrespondentName = '" + Name + "'", ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
                         if (DT.Rows.Count > 0)
                             return false;
 
-                        DataRow NewRow = DT.NewRow();
+                        var NewRow = DT.NewRow();
                         NewRow["CorrespondentName"] = Name;
                         DT.Rows.Add(NewRow);
 
@@ -19387,13 +19440,13 @@ namespace Infinium
 
         public bool OpenFile(int DocumentFileID)
         {
-            string tempFolder = Environment.GetEnvironmentVariable("TEMP");
+            var tempFolder = Environment.GetEnvironmentVariable("TEMP");
 
-            bool bOK = false;
+            var bOK = false;
 
-            using (SqlDataAdapter fDA = new SqlDataAdapter("SELECT * FROM DocumentsFiles WHERE DocumentFileID = " + DocumentFileID, ConnectionStrings.LightConnectionString))
+            using (var fDA = new SqlDataAdapter("SELECT * FROM DocumentsFiles WHERE DocumentFileID = " + DocumentFileID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable fDT = new DataTable())
+                using (var fDT = new DataTable())
                 {
                     fDA.Fill(fDT);
 
@@ -19404,7 +19457,7 @@ namespace Infinium
                     if (bOK)
                         try
                         {
-                            Process myProcess = new Process();
+                            var myProcess = new Process();
                             myProcess.StartInfo.UseShellExecute = true;
                             myProcess.StartInfo.FileName = tempFolder + "//" +
                                                                 fDT.Rows[0]["FileName"];
@@ -19430,14 +19483,14 @@ namespace Infinium
 
         public bool OpenCommentFile(int DocumentCommentFileID)
         {
-            string tempFolder = Environment.GetEnvironmentVariable("TEMP");
+            var tempFolder = Environment.GetEnvironmentVariable("TEMP");
 
 
-            bool bOK = false;
+            var bOK = false;
 
-            using (SqlDataAdapter fDA = new SqlDataAdapter("SELECT * FROM DocumentsCommentsFiles WHERE DocumentCommentFileID = " + DocumentCommentFileID, ConnectionStrings.LightConnectionString))
+            using (var fDA = new SqlDataAdapter("SELECT * FROM DocumentsCommentsFiles WHERE DocumentCommentFileID = " + DocumentCommentFileID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable fDT = new DataTable())
+                using (var fDT = new DataTable())
                 {
                     fDA.Fill(fDT);
 
@@ -19467,9 +19520,9 @@ namespace Infinium
         {
             CorrespondentsDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Correspondents ORDER BY CorrespondentName", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM Correspondents ORDER BY CorrespondentName", ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(CorrespondentsDataTable);
                 }
@@ -19488,11 +19541,11 @@ namespace Infinium
 
         public void RemoveInnerDocument(int InnerDocumentID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsFiles WHERE DocumentCategoryID = 0 AND DocumentID = " + InnerDocumentID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsFiles WHERE DocumentCategoryID = 0 AND DocumentID = " + InnerDocumentID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -19507,35 +19560,35 @@ namespace Infinium
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM DocumentsRecipients WHERE DocumentCategoryID = 0 AND DocumentID = " + InnerDocumentID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM DocumentsRecipients WHERE DocumentCategoryID = 0 AND DocumentID = " + InnerDocumentID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM SubscribesRecords WHERE SubscribesItemID = 18 AND TableItemID = " + InnerDocumentID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM SubscribesRecords WHERE SubscribesItemID = 18 AND TableItemID = " + InnerDocumentID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM SubscribesRecords WHERE SubscribesItemID = 21 AND TableItemID IN (SELECT DocumentCommentID FROM DocumentsComments WHERE DocumentCategoryID = 0 AND DocumentID = " + InnerDocumentID + ")", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM SubscribesRecords WHERE SubscribesItemID = 21 AND TableItemID IN (SELECT DocumentCommentID FROM DocumentsComments WHERE DocumentCategoryID = 0 AND DocumentID = " + InnerDocumentID + ")", ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsCommentsFiles WHERE DocumentCommentID IN (SELECT DocumentCommentID FROM DocumentsComments WHERE DocumentCategoryID = 0 AND DocumentID = " + InnerDocumentID + ")", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsCommentsFiles WHERE DocumentCommentID IN (SELECT DocumentCommentID FROM DocumentsComments WHERE DocumentCategoryID = 0 AND DocumentID = " + InnerDocumentID + ")", ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -19550,17 +19603,17 @@ namespace Infinium
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM DocumentsComments WHERE DocumentCategoryID = 0 AND DocumentID = " + InnerDocumentID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM DocumentsComments WHERE DocumentCategoryID = 0 AND DocumentID = " + InnerDocumentID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM InnerDocuments WHERE InnerDocumentID = " + InnerDocumentID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM InnerDocuments WHERE InnerDocumentID = " + InnerDocumentID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
@@ -19569,11 +19622,11 @@ namespace Infinium
 
         public void RemoveIncomeDocument(int IncomeDocumentID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsFiles WHERE DocumentCategoryID = 1 AND DocumentID = " + IncomeDocumentID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsFiles WHERE DocumentCategoryID = 1 AND DocumentID = " + IncomeDocumentID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -19588,9 +19641,9 @@ namespace Infinium
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM DocumentsRecipients WHERE DocumentCategoryID = 1 AND DocumentID = " + IncomeDocumentID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM DocumentsRecipients WHERE DocumentCategoryID = 1 AND DocumentID = " + IncomeDocumentID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
@@ -19598,27 +19651,27 @@ namespace Infinium
 
 
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM SubscribesRecords WHERE SubscribesItemID = 19 AND TableItemID = " + IncomeDocumentID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM SubscribesRecords WHERE SubscribesItemID = 19 AND TableItemID = " + IncomeDocumentID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM SubscribesRecords WHERE SubscribesItemID = 21 AND TableItemID IN (SELECT DocumentCommentID FROM DocumentsComments WHERE DocumentCategoryID = 1 AND DocumentID = " + IncomeDocumentID + ")", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM SubscribesRecords WHERE SubscribesItemID = 21 AND TableItemID IN (SELECT DocumentCommentID FROM DocumentsComments WHERE DocumentCategoryID = 1 AND DocumentID = " + IncomeDocumentID + ")", ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsCommentsFiles WHERE DocumentCommentID IN (SELECT DocumentCommentID FROM DocumentsComments WHERE DocumentCategoryID = 1 AND DocumentID = " + IncomeDocumentID + ")", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsCommentsFiles WHERE DocumentCommentID IN (SELECT DocumentCommentID FROM DocumentsComments WHERE DocumentCategoryID = 1 AND DocumentID = " + IncomeDocumentID + ")", ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -19633,17 +19686,17 @@ namespace Infinium
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM DocumentsComments WHERE DocumentCategoryID = 1 AND DocumentID = " + IncomeDocumentID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM DocumentsComments WHERE DocumentCategoryID = 1 AND DocumentID = " + IncomeDocumentID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM IncomeDocuments WHERE IncomeDocumentID = " + IncomeDocumentID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM IncomeDocuments WHERE IncomeDocumentID = " + IncomeDocumentID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
@@ -19652,11 +19705,11 @@ namespace Infinium
 
         public void RemoveOuterDocument(int OuterDocumentID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsFiles WHERE DocumentCategoryID = 2 AND DocumentID = " + OuterDocumentID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsFiles WHERE DocumentCategoryID = 2 AND DocumentID = " + OuterDocumentID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -19671,35 +19724,35 @@ namespace Infinium
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM DocumentsRecipients WHERE DocumentCategoryID = 2 AND DocumentID = " + OuterDocumentID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM DocumentsRecipients WHERE DocumentCategoryID = 2 AND DocumentID = " + OuterDocumentID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM SubscribesRecords WHERE SubscribesItemID = 20 AND TableItemID = " + OuterDocumentID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM SubscribesRecords WHERE SubscribesItemID = 20 AND TableItemID = " + OuterDocumentID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM SubscribesRecords WHERE SubscribesItemID = 21 AND TableItemID IN (SELECT DocumentCommentID FROM DocumentsComments WHERE DocumentCategoryID = 2 AND DocumentID = " + OuterDocumentID + ")", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM SubscribesRecords WHERE SubscribesItemID = 21 AND TableItemID IN (SELECT DocumentCommentID FROM DocumentsComments WHERE DocumentCategoryID = 2 AND DocumentID = " + OuterDocumentID + ")", ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsCommentsFiles WHERE DocumentCommentID IN (SELECT DocumentCommentID FROM DocumentsComments WHERE DocumentCategoryID = 2 AND DocumentID = " + OuterDocumentID + ")", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsCommentsFiles WHERE DocumentCommentID IN (SELECT DocumentCommentID FROM DocumentsComments WHERE DocumentCategoryID = 2 AND DocumentID = " + OuterDocumentID + ")", ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -19714,17 +19767,17 @@ namespace Infinium
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM DocumentsComments WHERE DocumentCategoryID = 2 AND DocumentID = " + OuterDocumentID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM DocumentsComments WHERE DocumentCategoryID = 2 AND DocumentID = " + OuterDocumentID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM OuterDocuments WHERE OuterDocumentID = " + OuterDocumentID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM OuterDocuments WHERE OuterDocumentID = " + OuterDocumentID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
@@ -19733,9 +19786,9 @@ namespace Infinium
 
         public int GetUpdatesCount(int UserID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT Count(SubscribesRecordID) FROM SubscribesRecords WHERE (SubscribesItemID = 18 OR SubscribesItemID = 19 OR SubscribesItemID = 20 OR SubscribesItemID = 21)  AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT Count(SubscribesRecordID) FROM SubscribesRecords WHERE (SubscribesItemID = 18 OR SubscribesItemID = 19 OR SubscribesItemID = 20 OR SubscribesItemID = 21)  AND UserID = " + UserID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     if (DA.Fill(DT) > 0)
                     {
@@ -19749,17 +19802,17 @@ namespace Infinium
 
         public void AddConfirm(DataTable RecipientsDT, int UserID, int DocumentID, int DocumentCategoryID)
         {
-            DateTime DateTime = Security.GetCurrentDate();
+            var DateTime = Security.GetCurrentDate();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM DocumentsConfirmations", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 0 * FROM DocumentsConfirmations", ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
-                        DataRow NewRow = DT.NewRow();
+                        var NewRow = DT.NewRow();
                         NewRow["DocumentCategoryID"] = DocumentCategoryID;
                         NewRow["DocumentID"] = DocumentID;
                         NewRow["UserID"] = UserID;
@@ -19771,11 +19824,11 @@ namespace Infinium
                 }
             }
 
-            int DocumentConfirmationID = -1;
+            var DocumentConfirmationID = -1;
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT DocumentConfirmationID FROM DocumentsConfirmations WHERE DateTime = '" + DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT DocumentConfirmationID FROM DocumentsConfirmations WHERE DateTime = '" + DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'", ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -19783,19 +19836,19 @@ namespace Infinium
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsRecipients WHERE DocumentID = " + DocumentID + " AND DocumentCategoryID = " + DocumentCategoryID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsRecipients WHERE DocumentID = " + DocumentID + " AND DocumentCategoryID = " + DocumentCategoryID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
-                        using (SqlDataAdapter sDA = new SqlDataAdapter("SELECT TOP 0 * FROM SubscribesRecords", ConnectionStrings.LightConnectionString))
+                        using (var sDA = new SqlDataAdapter("SELECT TOP 0 * FROM SubscribesRecords", ConnectionStrings.LightConnectionString))
                         {
-                            using (SqlCommandBuilder sCB = new SqlCommandBuilder(sDA))
+                            using (var sCB = new SqlCommandBuilder(sDA))
                             {
-                                using (DataTable sDT = new DataTable())
+                                using (var sDT = new DataTable())
                                 {
                                     sDA.Fill(sDT);
 
@@ -19803,13 +19856,13 @@ namespace Infinium
                                     {
                                         if (DT.Select("UserID = " + Row["UserID"]).Count() == 0)
                                         {
-                                            DataRow NewRow = DT.NewRow();
+                                            var NewRow = DT.NewRow();
                                             NewRow["DocumentID"] = DocumentID;
                                             NewRow["DocumentCategoryID"] = DocumentCategoryID;
                                             NewRow["UserID"] = Row["UserID"];
                                             DT.Rows.Add(NewRow);
 
-                                            DataRow sNewRow = sDT.NewRow();
+                                            var sNewRow = sDT.NewRow();
                                             sNewRow["TableItemID"] = DocumentID;
 
                                             if (DocumentCategoryID == 0)
@@ -19835,17 +19888,17 @@ namespace Infinium
             }
 
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM DocumentsConfirmationsRecipients", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 0 * FROM DocumentsConfirmationsRecipients", ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
                         foreach (DataRow Row in RecipientsDT.Rows)
                         {
-                            DataRow NewRow = DT.NewRow();
+                            var NewRow = DT.NewRow();
                             NewRow["DocumentConfirmationID"] = DocumentConfirmationID;
                             NewRow["UserID"] = Row["UserID"];
                             DT.Rows.Add(NewRow);
@@ -19859,11 +19912,11 @@ namespace Infinium
 
         public void SetConfirmStatus(int Status, int DocumentConfirmationRecipientID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT DocumentConfirmationRecipientID, DateTime, Status FROM DocumentsConfirmationsRecipients WHERE DocumentConfirmationRecipientID = " + DocumentConfirmationRecipientID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT DocumentConfirmationRecipientID, DateTime, Status FROM DocumentsConfirmationsRecipients WHERE DocumentConfirmationRecipientID = " + DocumentConfirmationRecipientID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
@@ -19879,21 +19932,21 @@ namespace Infinium
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT DocumentConfirmationID, Status FROM DocumentsConfirmations WHERE DocumentConfirmationID IN (SELECT TOP 1 DocumentConfirmationID FROM DocumentsConfirmationsRecipients WHERE DocumentConfirmationRecipientID = " + DocumentConfirmationRecipientID + ")", ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT DocumentConfirmationID, Status FROM DocumentsConfirmations WHERE DocumentConfirmationID IN (SELECT TOP 1 DocumentConfirmationID FROM DocumentsConfirmationsRecipients WHERE DocumentConfirmationRecipientID = " + DocumentConfirmationRecipientID + ")", ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
-                        using (SqlDataAdapter rDA = new SqlDataAdapter("SELECT DocumentConfirmationRecipientID, Status FROM DocumentsConfirmationsRecipients WHERE DocumentConfirmationID = " + DT.Rows[0]["DocumentConfirmationID"], ConnectionStrings.LightConnectionString))
+                        using (var rDA = new SqlDataAdapter("SELECT DocumentConfirmationRecipientID, Status FROM DocumentsConfirmationsRecipients WHERE DocumentConfirmationID = " + DT.Rows[0]["DocumentConfirmationID"], ConnectionStrings.LightConnectionString))
                         {
-                            using (DataTable rDT = new DataTable())
+                            using (var rDT = new DataTable())
                             {
                                 rDA.Fill(rDT);
 
-                                int rStatus = 0;
+                                var rStatus = 0;
 
                                 if (rDT.Select("Status = 1").Count() == rDT.Rows.Count)
                                     rStatus = 1;
@@ -19913,9 +19966,9 @@ namespace Infinium
 
         public DataTable GetConfirmationRecipients(int DocumentConfirmationID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsConfirmationsRecipients WHERE DocumentConfirmationID = " + DocumentConfirmationID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsConfirmationsRecipients WHERE DocumentConfirmationID = " + DocumentConfirmationID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -19926,12 +19979,12 @@ namespace Infinium
 
         public void EditConfirm(int DocumentConfirmationID, DataTable RecipientsDT)
         {
-            int DocumentID = -1;
-            int DocumentCategoryID = -1;
+            var DocumentID = -1;
+            var DocumentCategoryID = -1;
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsConfirmations WHERE DocumentConfirmationID = " + DocumentConfirmationID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsConfirmations WHERE DocumentConfirmationID = " + DocumentConfirmationID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -19940,27 +19993,27 @@ namespace Infinium
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM DocumentsConfirmationsRecipients WHERE DocumentConfirmationID = " + DocumentConfirmationID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM DocumentsConfirmationsRecipients WHERE DocumentConfirmationID = " + DocumentConfirmationID, ConnectionStrings.LightConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
-                        using (SqlDataAdapter rDA = new SqlDataAdapter("SELECT * FROM DocumentsRecipients WHERE DocumentID = " + DocumentID + " AND DocumentCategoryID = " + DocumentCategoryID, ConnectionStrings.LightConnectionString))
+                        using (var rDA = new SqlDataAdapter("SELECT * FROM DocumentsRecipients WHERE DocumentID = " + DocumentID + " AND DocumentCategoryID = " + DocumentCategoryID, ConnectionStrings.LightConnectionString))
                         {
-                            using (SqlCommandBuilder rCB = new SqlCommandBuilder(rDA))
+                            using (var rCB = new SqlCommandBuilder(rDA))
                             {
-                                using (DataTable rDT = new DataTable())
+                                using (var rDT = new DataTable())
                                 {
                                     rDA.Fill(rDT);
 
-                                    using (SqlDataAdapter sDA = new SqlDataAdapter("SELECT TOP 0 * FROM SubscribesRecords", ConnectionStrings.LightConnectionString))
+                                    using (var sDA = new SqlDataAdapter("SELECT TOP 0 * FROM SubscribesRecords", ConnectionStrings.LightConnectionString))
                                     {
-                                        using (SqlCommandBuilder sCB = new SqlCommandBuilder(sDA))
+                                        using (var sCB = new SqlCommandBuilder(sDA))
                                         {
-                                            using (DataTable sDT = new DataTable())
+                                            using (var sDT = new DataTable())
                                             {
                                                 sDA.Fill(sDT);
 
@@ -19968,7 +20021,7 @@ namespace Infinium
                                                 {
                                                     if (DT.Select("UserID = " + Row["UserID"]).Count() == 0)
                                                     {
-                                                        DataRow NewRow = DT.NewRow();
+                                                        var NewRow = DT.NewRow();
                                                         NewRow["UserID"] = Row["UserID"];
                                                         NewRow["DocumentConfirmationID"] = DocumentConfirmationID;
                                                         DT.Rows.Add(NewRow);
@@ -19976,13 +20029,13 @@ namespace Infinium
 
                                                         if (rDT.Select("UserID = " + Row["UserID"]).Count() == 0)
                                                         {
-                                                            DataRow rNewRow = rDT.NewRow();
+                                                            var rNewRow = rDT.NewRow();
                                                             rNewRow["DocumentID"] = DocumentID;
                                                             rNewRow["DocumentCategoryID"] = DocumentCategoryID;
                                                             rNewRow["UserID"] = Row["UserID"];
                                                             rDT.Rows.Add(rNewRow);
 
-                                                            DataRow sNewRow = sDT.NewRow();
+                                                            var sNewRow = sDT.NewRow();
                                                             sNewRow["TableItemID"] = DocumentID;
 
                                                             if (DocumentCategoryID == 0)
@@ -20024,17 +20077,17 @@ namespace Infinium
 
         public void DeleteConfirm(int DocumentConfirmationID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM DocumentsConfirmationsRecipients WHERE DocumentConfirmationID = " + DocumentConfirmationID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM DocumentsConfirmationsRecipients WHERE DocumentConfirmationID = " + DocumentConfirmationID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE FROM DocumentsConfirmations WHERE DocumentConfirmationID = " + DocumentConfirmationID, ConnectionStrings.LightConnectionString))
+            using (var DA = new SqlDataAdapter("DELETE FROM DocumentsConfirmations WHERE DocumentConfirmationID = " + DocumentConfirmationID, ConnectionStrings.LightConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
                 }
@@ -20073,27 +20126,27 @@ namespace Infinium
 
         public void Fill()
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM ContractorsCategories ORDER BY Name ASC", ConnectionStrings.CatalogConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM ContractorsCategories ORDER BY Name ASC", ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(CategoriesDataTable);
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM ContractorsSubCategories ORDER BY Name ASC", ConnectionStrings.CatalogConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM ContractorsSubCategories ORDER BY Name ASC", ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(SubCategoriesDataTable);
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Countries ORDER BY Name ASC", ConnectionStrings.CatalogConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM Countries ORDER BY Name ASC", ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(CountriesDataTable);
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Cities ORDER BY Name ASC", ConnectionStrings.CatalogConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM Cities ORDER BY Name ASC", ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(CitiesDataTable);
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM ContractorsContacts", ConnectionStrings.CatalogConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 0 * FROM ContractorsContacts", ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(ContactsDataTable);
             }
@@ -20103,7 +20156,7 @@ namespace Infinium
         {
             CategoriesDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM ContractorsCategories ORDER BY Name ASC", ConnectionStrings.CatalogConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM ContractorsCategories ORDER BY Name ASC", ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(CategoriesDataTable);
             }
@@ -20113,7 +20166,7 @@ namespace Infinium
         {
             SubCategoriesDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM ContractorsSubCategories ORDER BY Name ASC", ConnectionStrings.CatalogConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM ContractorsSubCategories ORDER BY Name ASC", ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(SubCategoriesDataTable);
             }
@@ -20123,7 +20176,7 @@ namespace Infinium
         {
             CountriesDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Countries ORDER BY Name ASC", ConnectionStrings.CatalogConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM Countries ORDER BY Name ASC", ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(CountriesDataTable);
             }
@@ -20133,7 +20186,7 @@ namespace Infinium
         {
             CitiesDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Cities ORDER BY Name ASC", ConnectionStrings.CatalogConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM Cities ORDER BY Name ASC", ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(CitiesDataTable);
             }
@@ -20144,12 +20197,12 @@ namespace Infinium
             ContractorsDataTable.Clear();
             ContactsDataTable.Clear();
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Contractors WHERE ContractorSubCategoryID = " + ContractorSubCategoryID + " ORDER BY Name ASC", ConnectionStrings.CatalogConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM Contractors WHERE ContractorSubCategoryID = " + ContractorSubCategoryID + " ORDER BY Name ASC", ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(ContractorsDataTable);
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM ContractorsContacts WHERE ContractorID IN (SELECT ContractorID FROM Contractors WHERE ContractorSubCategoryID = " + ContractorSubCategoryID + ")", ConnectionStrings.CatalogConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM ContractorsContacts WHERE ContractorID IN (SELECT ContractorID FROM Contractors WHERE ContractorSubCategoryID = " + ContractorSubCategoryID + ")", ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(ContactsDataTable);
             }
@@ -20157,15 +20210,15 @@ namespace Infinium
 
         public void AddCategory(string sName)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM ContractorsCategories", ConnectionStrings.CatalogConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 0 * FROM ContractorsCategories", ConnectionStrings.CatalogConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
-                        DataRow NewRow = DT.NewRow();
+                        var NewRow = DT.NewRow();
                         NewRow["Name"] = sName;
                         DT.Rows.Add(NewRow);
 
@@ -20177,15 +20230,15 @@ namespace Infinium
 
         public void AddSubCategory(string sName, int ContractorCategoryID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM ContractorsSubCategories", ConnectionStrings.CatalogConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 0 * FROM ContractorsSubCategories", ConnectionStrings.CatalogConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
-                        DataRow NewRow = DT.NewRow();
+                        var NewRow = DT.NewRow();
                         NewRow["Name"] = sName;
                         NewRow["ContractorCategoryID"] = ContractorCategoryID;
                         DT.Rows.Add(NewRow);
@@ -20198,15 +20251,15 @@ namespace Infinium
 
         public void AddCountry(string sName)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM Countries", ConnectionStrings.CatalogConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 0 * FROM Countries", ConnectionStrings.CatalogConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
-                        DataRow NewRow = DT.NewRow();
+                        var NewRow = DT.NewRow();
                         NewRow["Name"] = sName;
                         DT.Rows.Add(NewRow);
 
@@ -20218,15 +20271,15 @@ namespace Infinium
 
         public void AddCity(string sName, int iCountryID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM Cities", ConnectionStrings.CatalogConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 0 * FROM Cities", ConnectionStrings.CatalogConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
-                        DataRow NewRow = DT.NewRow();
+                        var NewRow = DT.NewRow();
                         NewRow["Name"] = sName;
                         NewRow["CountryID"] = iCountryID;
                         DT.Rows.Add(NewRow);
@@ -20240,24 +20293,24 @@ namespace Infinium
         public bool AddContractor(string sName, string Email, string Website, string Address, string Facebook, string Skype,
                                   int CountryID, int CityID, string UNN, string Description, int CategoryID, int SubCategoryID, DataTable ContactsDataTable)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 1 Name FROM Contractors WHERE Name = '" + sName + "'", ConnectionStrings.CatalogConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 1 Name FROM Contractors WHERE Name = '" + sName + "'", ConnectionStrings.CatalogConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     if (DA.Fill(DT) > 0)
                         return false;
                 }
             }
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM Contractors", ConnectionStrings.CatalogConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 0 * FROM Contractors", ConnectionStrings.CatalogConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
-                        DataRow NewRow = DT.NewRow();
+                        var NewRow = DT.NewRow();
                         NewRow["Name"] = sName;
                         NewRow["Email"] = Email;
                         NewRow["Website"] = Website;
@@ -20280,11 +20333,11 @@ namespace Infinium
             if (ContactsDataTable.Rows.Count == 0)
                 return true;
 
-            int ContractorID = -1;
+            var ContractorID = -1;
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 1 ContractorID FROM Contractors WHERE Name = '" + sName + "'", ConnectionStrings.CatalogConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 1 ContractorID FROM Contractors WHERE Name = '" + sName + "'", ConnectionStrings.CatalogConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -20294,17 +20347,17 @@ namespace Infinium
 
 
 
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM ContractorsContacts", ConnectionStrings.CatalogConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT TOP 0 * FROM ContractorsContacts", ConnectionStrings.CatalogConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
                         foreach (DataRow Row in ContactsDataTable.Rows)
                         {
-                            DataRow NewRow = DT.NewRow();
+                            var NewRow = DT.NewRow();
                             NewRow["ContractorID"] = ContractorID;
                             NewRow["Name"] = Row["Name"];
                             NewRow["Position"] = Row["Position"];
@@ -20329,9 +20382,9 @@ namespace Infinium
         public void GetEditContractor(int ContractorID, ref string sName, ref string Email, ref string Website, ref string Address, ref string Facebook, ref string Skype,
                                       ref int CountryID, ref int CityID, ref string UNN, ref string Description, ref int CategoryID, ref int SubCategoryID)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Contractors WHERE ContractorID = " + ContractorID, ConnectionStrings.CatalogConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM Contractors WHERE ContractorID = " + ContractorID, ConnectionStrings.CatalogConnectionString))
             {
-                using (DataTable DT = new DataTable())
+                using (var DT = new DataTable())
                 {
                     DA.Fill(DT);
 
@@ -20366,11 +20419,11 @@ namespace Infinium
         public void EditContractor(int ContractorID, string sName, string Email, string Website, string Address, string Facebook, string Skype,
                                   int CountryID, int CityID, string UNN, string Description, int CategoryID, int SubCategoryID, DataTable ContactsDataTable)
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Contractors WHERE ContractorID = " + ContractorID, ConnectionStrings.CatalogConnectionString))
+            using (var DA = new SqlDataAdapter("SELECT * FROM Contractors WHERE ContractorID = " + ContractorID, ConnectionStrings.CatalogConnectionString))
             {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                using (var CB = new SqlCommandBuilder(DA))
                 {
-                    using (DataTable DT = new DataTable())
+                    using (var DT = new DataTable())
                     {
                         DA.Fill(DT);
 
