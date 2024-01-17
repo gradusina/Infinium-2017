@@ -36,20 +36,15 @@
             this.label1 = new System.Windows.Forms.Label();
             this.NavigatePanel = new System.Windows.Forms.Panel();
             this.MinimizeButton = new ComponentFactory.Krypton.Toolkit.KryptonButton();
-            this.ZOVProfilCheckButton = new Infinium.MenuLabel();
-            this.ZOVTPSCheckButton = new Infinium.MenuLabel();
             this.MenuButton = new ComponentFactory.Krypton.Toolkit.KryptonCheckButton();
             this.kryptonBorderEdge3 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.MainOrdersSplitContainer = new ComponentFactory.Krypton.Toolkit.KryptonSplitContainer();
             this.MegaMainSplitter = new ComponentFactory.Krypton.Toolkit.KryptonSplitContainer();
             this.panel4 = new System.Windows.Forms.Panel();
-            this.MegaOrdersDataGrid = new Infinium.PercentageDataGrid();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.MainOrdersDataGrid = new Infinium.PercentageDataGrid();
             this.panel2 = new System.Windows.Forms.Panel();
             this.MainOrdersTabControl = new DevExpress.XtraTab.XtraTabControl();
             this.xtraTabPage1 = new DevExpress.XtraTab.XtraTabPage();
-            this.MainOrdersFrontsOrdersDataGrid = new Infinium.PercentageDataGrid();
             this.xtraTabPage2 = new DevExpress.XtraTab.XtraTabPage();
             this.MainOrdersDecorTabControl = new DevExpress.XtraTab.XtraTabControl();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -66,7 +61,6 @@
             this.CancelMoveBatchButton = new ComponentFactory.Krypton.Toolkit.KryptonButton();
             this.xtraTabControl4 = new DevExpress.XtraTab.XtraTabControl();
             this.xtraTabPage12 = new DevExpress.XtraTab.XtraTabPage();
-            this.MegaBatchDataGrid = new Infinium.PercentageDataGrid();
             this.kryptonBorderEdge54 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.BatchPanel = new System.Windows.Forms.Panel();
             this.CreateBatchPanel = new System.Windows.Forms.Panel();
@@ -79,7 +73,6 @@
             this.RemoveBatchButton = new ComponentFactory.Krypton.Toolkit.KryptonButton();
             this.xtraTabControl1 = new DevExpress.XtraTab.XtraTabControl();
             this.xtraTabPage4 = new DevExpress.XtraTab.XtraTabPage();
-            this.BatchDataGrid = new Infinium.PercentageDataGrid();
             this.kryptonBorderEdge1 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.xtraTabControl2 = new DevExpress.XtraTab.XtraTabControl();
             this.xtraTabPage9 = new DevExpress.XtraTab.XtraTabPage();
@@ -92,17 +85,14 @@
             this.MoveMegaOrdersButton = new ComponentFactory.Krypton.Toolkit.KryptonButton();
             this.PrintMegaOrderButton = new ComponentFactory.Krypton.Toolkit.KryptonButton();
             this.RemoveMegaOrderButton = new ComponentFactory.Krypton.Toolkit.KryptonButton();
-            this.BatchMegaOrdersDataGrid = new Infinium.PercentageDataGrid();
             this.MainOrdersPanel = new System.Windows.Forms.Panel();
             this.MainOrderInProductionPanel = new System.Windows.Forms.Panel();
             this.MoveMainOrdersButton = new ComponentFactory.Krypton.Toolkit.KryptonButton();
             this.PickUpFrontsButton = new ComponentFactory.Krypton.Toolkit.KryptonButton();
             this.PrintMainOrderButton = new ComponentFactory.Krypton.Toolkit.KryptonButton();
-            this.BatchMainOrdersDataGrid = new Infinium.PercentageDataGrid();
             this.panel8 = new System.Windows.Forms.Panel();
             this.BatchMainOrdersTabControl = new DevExpress.XtraTab.XtraTabControl();
             this.xtraTabPage6 = new DevExpress.XtraTab.XtraTabPage();
-            this.BatchFrontsOrdersDataGrid = new Infinium.PercentageDataGrid();
             this.xtraTabPage7 = new DevExpress.XtraTab.XtraTabPage();
             this.BatchDecorTabControl = new DevExpress.XtraTab.XtraTabControl();
             this.kryptonBorderEdge5 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
@@ -117,13 +107,11 @@
             this.StartPanel = new System.Windows.Forms.Panel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.panel35 = new System.Windows.Forms.Panel();
-            this.TechnoColorsDataGrid = new Infinium.PercentageDataGrid();
             this.kryptonBorderEdge111 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge112 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge113 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge114 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.panel34 = new System.Windows.Forms.Panel();
-            this.TechnoInsetColorsDataGrid = new Infinium.PercentageDataGrid();
             this.kryptonBorderEdge107 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge108 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge109 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
@@ -132,7 +120,6 @@
             this.kryptonBorderEdge15 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge16 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge22 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.TechnoInsetTypesDataGrid = new Infinium.PercentageDataGrid();
             this.kryptonBorderEdge23 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.panel6 = new System.Windows.Forms.Panel();
             this.FrontsCountLabel = new System.Windows.Forms.Label();
@@ -140,19 +127,16 @@
             this.label2 = new System.Windows.Forms.Label();
             this.FrontsSquareLabel = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.FrontsDataGrid = new Infinium.PercentageDataGrid();
             this.kryptonBorderEdge12 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge13 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge14 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge17 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.panel9 = new System.Windows.Forms.Panel();
-            this.FrameColorsDataGrid = new Infinium.PercentageDataGrid();
             this.kryptonBorderEdge24 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge25 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge26 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge27 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.panel10 = new System.Windows.Forms.Panel();
-            this.SizesDataGrid = new Infinium.PercentageDataGrid();
             this.kryptonBorderEdge28 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge29 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge30 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
@@ -161,10 +145,8 @@
             this.kryptonBorderEdge34 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge35 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge36 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.InsetTypesDataGrid = new Infinium.PercentageDataGrid();
             this.kryptonBorderEdge37 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.panel12 = new System.Windows.Forms.Panel();
-            this.InsetColorsDataGrid = new Infinium.PercentageDataGrid();
             this.kryptonBorderEdge63 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge64 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge65 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
@@ -177,7 +159,6 @@
             this.kryptonBorderEdge67 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge68 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge69 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.DecorSizesDataGrid = new Infinium.PercentageDataGrid();
             this.kryptonBorderEdge70 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.panel21 = new System.Windows.Forms.Panel();
             this.kryptonBorderEdge71 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
@@ -187,20 +168,17 @@
             this.label6 = new System.Windows.Forms.Label();
             this.kryptonBorderEdge73 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.label9 = new System.Windows.Forms.Label();
-            this.DecorProductsDataGrid = new Infinium.PercentageDataGrid();
             this.DecorCountLabel = new System.Windows.Forms.Label();
             this.kryptonBorderEdge74 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.panel22 = new System.Windows.Forms.Panel();
             this.kryptonBorderEdge75 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge76 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge77 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.DecorItemsDataGrid = new Infinium.PercentageDataGrid();
             this.kryptonBorderEdge78 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.panel23 = new System.Windows.Forms.Panel();
             this.kryptonBorderEdge79 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge80 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge81 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.DecorColorsDataGrid = new Infinium.PercentageDataGrid();
             this.kryptonBorderEdge82 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge7 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonSplitContainer1 = new ComponentFactory.Krypton.Toolkit.KryptonSplitContainer();
@@ -231,16 +209,13 @@
             this.kryptonBorderEdge119 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge120 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge121 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.PreTechnoInsetTypesDataGrid = new Infinium.PercentageDataGrid();
             this.kryptonBorderEdge122 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.panel36 = new System.Windows.Forms.Panel();
-            this.PreTechnoInsetColorsDataGrid = new Infinium.PercentageDataGrid();
             this.kryptonBorderEdge115 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge116 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge117 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge118 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.panel33 = new System.Windows.Forms.Panel();
-            this.PreTechnoColorsDataGrid = new Infinium.PercentageDataGrid();
             this.kryptonBorderEdge103 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge104 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge105 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
@@ -251,19 +226,16 @@
             this.label12 = new System.Windows.Forms.Label();
             this.PreFrontsCountLabel = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
-            this.PreFrontsDataGrid = new Infinium.PercentageDataGrid();
             this.kryptonBorderEdge33 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge38 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge39 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge40 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.panel17 = new System.Windows.Forms.Panel();
-            this.PreFrameColorsDataGrid = new Infinium.PercentageDataGrid();
             this.kryptonBorderEdge41 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge42 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge43 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge44 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.panel18 = new System.Windows.Forms.Panel();
-            this.PreSizesDataGrid = new Infinium.PercentageDataGrid();
             this.kryptonBorderEdge45 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge46 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge47 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
@@ -272,10 +244,8 @@
             this.kryptonBorderEdge49 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge50 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge51 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.PreInsetTypesDataGrid = new Infinium.PercentageDataGrid();
             this.kryptonBorderEdge52 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.panel25 = new System.Windows.Forms.Panel();
-            this.PreInsetColorsDataGrid = new Infinium.PercentageDataGrid();
             this.kryptonBorderEdge83 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge84 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge85 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
@@ -288,7 +258,6 @@
             this.kryptonBorderEdge87 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge88 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge89 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.PreDecorSizesDataGrid = new Infinium.PercentageDataGrid();
             this.kryptonBorderEdge90 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.panel29 = new System.Windows.Forms.Panel();
             this.kryptonBorderEdge91 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
@@ -298,20 +267,17 @@
             this.label20 = new System.Windows.Forms.Label();
             this.kryptonBorderEdge93 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.label21 = new System.Windows.Forms.Label();
-            this.PreDecorProductsDataGrid = new Infinium.PercentageDataGrid();
             this.PreDecorCountLabel = new System.Windows.Forms.Label();
             this.kryptonBorderEdge94 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.panel30 = new System.Windows.Forms.Panel();
             this.kryptonBorderEdge95 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge96 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge97 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.PreDecorItemsDataGrid = new Infinium.PercentageDataGrid();
             this.kryptonBorderEdge98 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.panel31 = new System.Windows.Forms.Panel();
             this.kryptonBorderEdge99 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge100 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge101 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.PreDecorColorsDataGrid = new Infinium.PercentageDataGrid();
             this.kryptonBorderEdge102 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge53 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge2 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
@@ -343,9 +309,7 @@
             this.InProductionCheckBox = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
             this.kryptonBorderEdge57 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge58 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.TraysDataGrid = new Infinium.PercentageDataGrid();
             this.kryptonBorderEdge8 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonCheckSet1 = new ComponentFactory.Krypton.Toolkit.KryptonCheckSet(this.components);
             this.kryptonContextMenu1 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenu();
             this.kryptonContextMenuItems1 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItems();
             this.cmiSaveMegaBatch = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
@@ -366,8 +330,45 @@
             this.kryptonContextMenu4 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenu();
             this.kryptonContextMenuItems5 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItems();
             this.cmiCreateLabel = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
-            this.kryptonContextMenuItems4 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItems();
             this.kryptonContextMenuItem1 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
+            this.kryptonContextMenuItems4 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItems();
+            this.btnBatchToExcel = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
+            this.MegaBatchDataGrid = new Infinium.PercentageDataGrid();
+            this.BatchDataGrid = new Infinium.PercentageDataGrid();
+            this.BatchMegaOrdersDataGrid = new Infinium.PercentageDataGrid();
+            this.BatchMainOrdersDataGrid = new Infinium.PercentageDataGrid();
+            this.BatchFrontsOrdersDataGrid = new Infinium.PercentageDataGrid();
+            this.TechnoColorsDataGrid = new Infinium.PercentageDataGrid();
+            this.TechnoInsetColorsDataGrid = new Infinium.PercentageDataGrid();
+            this.TechnoInsetTypesDataGrid = new Infinium.PercentageDataGrid();
+            this.FrontsDataGrid = new Infinium.PercentageDataGrid();
+            this.FrameColorsDataGrid = new Infinium.PercentageDataGrid();
+            this.SizesDataGrid = new Infinium.PercentageDataGrid();
+            this.InsetTypesDataGrid = new Infinium.PercentageDataGrid();
+            this.InsetColorsDataGrid = new Infinium.PercentageDataGrid();
+            this.DecorSizesDataGrid = new Infinium.PercentageDataGrid();
+            this.DecorProductsDataGrid = new Infinium.PercentageDataGrid();
+            this.DecorItemsDataGrid = new Infinium.PercentageDataGrid();
+            this.DecorColorsDataGrid = new Infinium.PercentageDataGrid();
+            this.MegaOrdersDataGrid = new Infinium.PercentageDataGrid();
+            this.MainOrdersDataGrid = new Infinium.PercentageDataGrid();
+            this.MainOrdersFrontsOrdersDataGrid = new Infinium.PercentageDataGrid();
+            this.PreTechnoInsetTypesDataGrid = new Infinium.PercentageDataGrid();
+            this.PreTechnoInsetColorsDataGrid = new Infinium.PercentageDataGrid();
+            this.PreTechnoColorsDataGrid = new Infinium.PercentageDataGrid();
+            this.PreFrontsDataGrid = new Infinium.PercentageDataGrid();
+            this.PreFrameColorsDataGrid = new Infinium.PercentageDataGrid();
+            this.PreSizesDataGrid = new Infinium.PercentageDataGrid();
+            this.PreInsetTypesDataGrid = new Infinium.PercentageDataGrid();
+            this.PreInsetColorsDataGrid = new Infinium.PercentageDataGrid();
+            this.PreDecorSizesDataGrid = new Infinium.PercentageDataGrid();
+            this.PreDecorProductsDataGrid = new Infinium.PercentageDataGrid();
+            this.PreDecorItemsDataGrid = new Infinium.PercentageDataGrid();
+            this.PreDecorColorsDataGrid = new Infinium.PercentageDataGrid();
+            this.ZOVProfilCheckButton = new Infinium.MenuLabel();
+            this.ZOVTPSCheckButton = new Infinium.MenuLabel();
+            this.TraysDataGrid = new Infinium.PercentageDataGrid();
+            this.kryptonCheckSet1 = new ComponentFactory.Krypton.Toolkit.KryptonCheckSet(this.components);
             this.NavigatePanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MainOrdersSplitContainer)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.MainOrdersSplitContainer.Panel1)).BeginInit();
@@ -382,20 +383,14 @@
             this.MegaMainSplitter.Panel2.SuspendLayout();
             this.MegaMainSplitter.SuspendLayout();
             this.panel4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.MegaOrdersDataGrid)).BeginInit();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.MainOrdersDataGrid)).BeginInit();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MainOrdersTabControl)).BeginInit();
             this.MainOrdersTabControl.SuspendLayout();
-            this.xtraTabPage1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.MainOrdersFrontsOrdersDataGrid)).BeginInit();
-            this.xtraTabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MainOrdersDecorTabControl)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.RolesAndPermissionsTabControl)).BeginInit();
             this.RolesAndPermissionsTabControl.SuspendLayout();
-            this.xtraTabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.kryptonSplitContainer4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.kryptonSplitContainer4.Panel1)).BeginInit();
             this.kryptonSplitContainer4.Panel1.SuspendLayout();
@@ -412,17 +407,12 @@
             this.CreateMegaBatchPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabControl4)).BeginInit();
             this.xtraTabControl4.SuspendLayout();
-            this.xtraTabPage12.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.MegaBatchDataGrid)).BeginInit();
             this.BatchPanel.SuspendLayout();
             this.CreateBatchPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabControl1)).BeginInit();
             this.xtraTabControl1.SuspendLayout();
-            this.xtraTabPage4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.BatchDataGrid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabControl2)).BeginInit();
             this.xtraTabControl2.SuspendLayout();
-            this.xtraTabPage9.SuspendLayout();
             this.panel5.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.kryptonSplitContainer2)).BeginInit();
@@ -439,99 +429,94 @@
             this.kryptonSplitContainer3.SuspendLayout();
             this.MegaOrdersPanel.SuspendLayout();
             this.MegaOrderInProductionPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.BatchMegaOrdersDataGrid)).BeginInit();
             this.MainOrdersPanel.SuspendLayout();
             this.MainOrderInProductionPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.BatchMainOrdersDataGrid)).BeginInit();
             this.panel8.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.BatchMainOrdersTabControl)).BeginInit();
             this.BatchMainOrdersTabControl.SuspendLayout();
-            this.xtraTabPage6.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.BatchFrontsOrdersDataGrid)).BeginInit();
-            this.xtraTabPage7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.BatchDecorTabControl)).BeginInit();
-            this.xtraTabPage8.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabControl5)).BeginInit();
             this.xtraTabControl5.SuspendLayout();
-            this.xtraTabPage11.SuspendLayout();
             this.panel7.SuspendLayout();
             this.StartPanel.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.panel35.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.TechnoColorsDataGrid)).BeginInit();
             this.panel34.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.TechnoInsetColorsDataGrid)).BeginInit();
             this.panel32.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.TechnoInsetTypesDataGrid)).BeginInit();
             this.panel6.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.FrontsDataGrid)).BeginInit();
             this.panel9.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.FrameColorsDataGrid)).BeginInit();
             this.panel10.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.SizesDataGrid)).BeginInit();
             this.panel11.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.InsetTypesDataGrid)).BeginInit();
             this.panel12.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.InsetColorsDataGrid)).BeginInit();
-            this.xtraTabPage16.SuspendLayout();
             this.panel14.SuspendLayout();
             this.panel19.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
             this.panel20.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.DecorSizesDataGrid)).BeginInit();
             this.panel21.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.DecorProductsDataGrid)).BeginInit();
             this.panel22.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.DecorItemsDataGrid)).BeginInit();
             this.panel23.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.DecorColorsDataGrid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.kryptonSplitContainer1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.kryptonSplitContainer1.Panel1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.kryptonSplitContainer1.Panel2)).BeginInit();
             this.kryptonSplitContainer1.SuspendLayout();
-            this.xtraTabPage5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabControl3)).BeginInit();
             this.xtraTabControl3.SuspendLayout();
-            this.xtraTabPage10.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.panel3.SuspendLayout();
-            this.xtraTabPage13.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabControl6)).BeginInit();
             this.xtraTabControl6.SuspendLayout();
-            this.xtraTabPage14.SuspendLayout();
             this.panel13.SuspendLayout();
             this.panel15.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
             this.panel37.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.PreTechnoInsetTypesDataGrid)).BeginInit();
             this.panel36.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.PreTechnoInsetColorsDataGrid)).BeginInit();
             this.panel33.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.PreTechnoColorsDataGrid)).BeginInit();
             this.panel16.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.PreFrontsDataGrid)).BeginInit();
             this.panel17.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.PreFrameColorsDataGrid)).BeginInit();
             this.panel18.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.PreSizesDataGrid)).BeginInit();
             this.panel24.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.PreInsetTypesDataGrid)).BeginInit();
             this.panel25.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.PreInsetColorsDataGrid)).BeginInit();
-            this.xtraTabPage15.SuspendLayout();
             this.panel26.SuspendLayout();
             this.panel27.SuspendLayout();
             this.tableLayoutPanel6.SuspendLayout();
             this.panel28.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.PreDecorSizesDataGrid)).BeginInit();
             this.panel29.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.PreDecorProductsDataGrid)).BeginInit();
             this.panel30.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.PreDecorItemsDataGrid)).BeginInit();
             this.panel31.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.PreDecorColorsDataGrid)).BeginInit();
             this.BatchFilterPanel.SuspendLayout();
             this.OrdersFilterPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.MegaBatchDataGrid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.BatchDataGrid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.BatchMegaOrdersDataGrid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.BatchMainOrdersDataGrid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.BatchFrontsOrdersDataGrid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.TechnoColorsDataGrid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.TechnoInsetColorsDataGrid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.TechnoInsetTypesDataGrid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.FrontsDataGrid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.FrameColorsDataGrid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.SizesDataGrid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.InsetTypesDataGrid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.InsetColorsDataGrid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DecorSizesDataGrid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DecorProductsDataGrid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DecorItemsDataGrid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DecorColorsDataGrid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.MegaOrdersDataGrid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.MainOrdersDataGrid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.MainOrdersFrontsOrdersDataGrid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PreTechnoInsetTypesDataGrid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PreTechnoInsetColorsDataGrid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PreTechnoColorsDataGrid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PreFrontsDataGrid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PreFrameColorsDataGrid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PreSizesDataGrid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PreInsetTypesDataGrid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PreInsetColorsDataGrid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PreDecorSizesDataGrid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PreDecorProductsDataGrid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PreDecorItemsDataGrid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PreDecorColorsDataGrid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.TraysDataGrid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.kryptonCheckSet1)).BeginInit();
             this.SuspendLayout();
@@ -617,6 +602,7 @@
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.NavigateMenuButtonsPalette.ButtonStyles.ButtonCommon.StateTracking.Border.Rounding = 0;
             this.NavigateMenuButtonsPalette.ButtonStyles.ButtonCommon.StateTracking.Border.Width = 1;
+            this.NavigateMenuButtonsPalette.CustomisedKryptonPaletteFilePath = null;
             // 
             // label1
             // 
@@ -659,93 +645,6 @@
             this.MinimizeButton.Values.ImageTransparentColor = System.Drawing.Color.Transparent;
             this.MinimizeButton.Values.Text = "";
             this.MinimizeButton.Click += new System.EventHandler(this.MinimizeButton_Click);
-            // 
-            // ZOVProfilCheckButton
-            // 
-            this.ZOVProfilCheckButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.ZOVProfilCheckButton.Checked = true;
-            this.ZOVProfilCheckButton.CommonLineColor = System.Drawing.Color.White;
-            this.ZOVProfilCheckButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.ZOVProfilCheckButton.LineWidth = 4;
-            this.ZOVProfilCheckButton.Location = new System.Drawing.Point(733, 6);
-            this.ZOVProfilCheckButton.Name = "ZOVProfilCheckButton";
-            this.ZOVProfilCheckButton.OverrideDefault.Back.Color1 = System.Drawing.Color.Transparent;
-            this.ZOVProfilCheckButton.OverrideDefault.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.ZOVProfilCheckButton.OverrideDefault.Border.Color1 = System.Drawing.Color.White;
-            this.ZOVProfilCheckButton.OverrideDefault.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.ZOVProfilCheckButton.Size = new System.Drawing.Size(181, 42);
-            this.ZOVProfilCheckButton.StateCheckedNormal.Back.Color1 = System.Drawing.Color.Transparent;
-            this.ZOVProfilCheckButton.StateCheckedNormal.Border.Color1 = System.Drawing.Color.White;
-            this.ZOVProfilCheckButton.StateCheckedNormal.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.ZOVProfilCheckButton.StateCheckedNormal.Content.ShortText.Color1 = System.Drawing.Color.White;
-            this.ZOVProfilCheckButton.StateCheckedNormal.Content.ShortText.Font = new System.Drawing.Font("Segoe UI Light", 19.69F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.ZOVProfilCheckButton.StateCheckedPressed.Border.Color1 = System.Drawing.Color.White;
-            this.ZOVProfilCheckButton.StateCheckedPressed.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.ZOVProfilCheckButton.StateCheckedTracking.Back.Color1 = System.Drawing.Color.Transparent;
-            this.ZOVProfilCheckButton.StateCheckedTracking.Border.Color1 = System.Drawing.Color.White;
-            this.ZOVProfilCheckButton.StateCheckedTracking.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.ZOVProfilCheckButton.StateCommon.Back.Color1 = System.Drawing.Color.Transparent;
-            this.ZOVProfilCheckButton.StateCommon.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.ZOVProfilCheckButton.StateCommon.Border.Color1 = System.Drawing.Color.White;
-            this.ZOVProfilCheckButton.StateCommon.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.ZOVProfilCheckButton.StateCommon.Border.Draw = ComponentFactory.Krypton.Toolkit.InheritBool.True;
-            this.ZOVProfilCheckButton.StateCommon.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.ZOVProfilCheckButton.StateCommon.Content.ShortText.Color1 = System.Drawing.Color.White;
-            this.ZOVProfilCheckButton.StateCommon.Content.ShortText.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.ZOVProfilCheckButton.StateCommon.Content.ShortText.Font = new System.Drawing.Font("Segoe UI Light", 19.69F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.ZOVProfilCheckButton.StateCommon.Content.ShortText.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
-            this.ZOVProfilCheckButton.StateCommon.Content.ShortText.TextV = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
-            this.ZOVProfilCheckButton.StateTracking.Back.Color1 = System.Drawing.Color.Transparent;
-            this.ZOVProfilCheckButton.StateTracking.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.ZOVProfilCheckButton.StateTracking.Border.Color1 = System.Drawing.Color.White;
-            this.ZOVProfilCheckButton.StateTracking.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.ZOVProfilCheckButton.TabIndex = 338;
-            this.ZOVProfilCheckButton.ToWidth = true;
-            this.ZOVProfilCheckButton.TrackingLineColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.ZOVProfilCheckButton.Values.Text = "ОМЦ-ПРОФИЛЬ";
-            // 
-            // ZOVTPSCheckButton
-            // 
-            this.ZOVTPSCheckButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.ZOVTPSCheckButton.CommonLineColor = System.Drawing.Color.White;
-            this.ZOVTPSCheckButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.ZOVTPSCheckButton.LineWidth = 4;
-            this.ZOVTPSCheckButton.Location = new System.Drawing.Point(913, 6);
-            this.ZOVTPSCheckButton.Name = "ZOVTPSCheckButton";
-            this.ZOVTPSCheckButton.OverrideDefault.Back.Color1 = System.Drawing.Color.Transparent;
-            this.ZOVTPSCheckButton.OverrideDefault.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.ZOVTPSCheckButton.OverrideDefault.Border.Color1 = System.Drawing.Color.White;
-            this.ZOVTPSCheckButton.OverrideDefault.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.ZOVTPSCheckButton.Size = new System.Drawing.Size(181, 42);
-            this.ZOVTPSCheckButton.StateCheckedNormal.Back.Color1 = System.Drawing.Color.Transparent;
-            this.ZOVTPSCheckButton.StateCheckedNormal.Border.Color1 = System.Drawing.Color.White;
-            this.ZOVTPSCheckButton.StateCheckedNormal.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.ZOVTPSCheckButton.StateCheckedNormal.Content.ShortText.Color1 = System.Drawing.Color.White;
-            this.ZOVTPSCheckButton.StateCheckedNormal.Content.ShortText.Font = new System.Drawing.Font("Segoe UI Light", 19.69F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.ZOVTPSCheckButton.StateCheckedPressed.Border.Color1 = System.Drawing.Color.White;
-            this.ZOVTPSCheckButton.StateCheckedPressed.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.ZOVTPSCheckButton.StateCheckedTracking.Back.Color1 = System.Drawing.Color.Transparent;
-            this.ZOVTPSCheckButton.StateCheckedTracking.Border.Color1 = System.Drawing.Color.White;
-            this.ZOVTPSCheckButton.StateCheckedTracking.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.ZOVTPSCheckButton.StateCommon.Back.Color1 = System.Drawing.Color.Transparent;
-            this.ZOVTPSCheckButton.StateCommon.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.ZOVTPSCheckButton.StateCommon.Border.Color1 = System.Drawing.Color.White;
-            this.ZOVTPSCheckButton.StateCommon.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.ZOVTPSCheckButton.StateCommon.Border.Draw = ComponentFactory.Krypton.Toolkit.InheritBool.True;
-            this.ZOVTPSCheckButton.StateCommon.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.ZOVTPSCheckButton.StateCommon.Content.ShortText.Color1 = System.Drawing.Color.White;
-            this.ZOVTPSCheckButton.StateCommon.Content.ShortText.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.ZOVTPSCheckButton.StateCommon.Content.ShortText.Font = new System.Drawing.Font("Segoe UI Light", 19.69F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.ZOVTPSCheckButton.StateCommon.Content.ShortText.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
-            this.ZOVTPSCheckButton.StateCommon.Content.ShortText.TextV = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
-            this.ZOVTPSCheckButton.StateTracking.Back.Color1 = System.Drawing.Color.Transparent;
-            this.ZOVTPSCheckButton.StateTracking.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.ZOVTPSCheckButton.StateTracking.Border.Color1 = System.Drawing.Color.White;
-            this.ZOVTPSCheckButton.StateTracking.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.ZOVTPSCheckButton.TabIndex = 337;
-            this.ZOVTPSCheckButton.ToWidth = true;
-            this.ZOVTPSCheckButton.TrackingLineColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.ZOVTPSCheckButton.Values.Text = "ЗОВ-ТПС";
             // 
             // MenuButton
             // 
@@ -802,8 +701,8 @@
             this.MainOrdersSplitContainer.Panel2.Controls.Add(this.panel2);
             this.MainOrdersSplitContainer.Panel2.StateCommon.Color1 = System.Drawing.Color.Transparent;
             this.MainOrdersSplitContainer.SeparatorStyle = ComponentFactory.Krypton.Toolkit.SeparatorStyle.HighProfile;
-            this.MainOrdersSplitContainer.Size = new System.Drawing.Size(1221, 502);
-            this.MainOrdersSplitContainer.SplitterDistance = 239;
+            this.MainOrdersSplitContainer.Size = new System.Drawing.Size(1221, 490);
+            this.MainOrdersSplitContainer.SplitterDistance = 233;
             this.MainOrdersSplitContainer.StateCommon.Back.Color1 = System.Drawing.Color.Transparent;
             this.MainOrdersSplitContainer.StateCommon.Back.Color2 = System.Drawing.Color.Transparent;
             this.MainOrdersSplitContainer.StateCommon.Separator.Back.Color1 = System.Drawing.Color.Gray;
@@ -835,7 +734,7 @@
             this.MegaMainSplitter.Panel2.Controls.Add(this.panel1);
             this.MegaMainSplitter.Panel2.StateCommon.Color1 = System.Drawing.Color.Transparent;
             this.MegaMainSplitter.SeparatorStyle = ComponentFactory.Krypton.Toolkit.SeparatorStyle.HighProfile;
-            this.MegaMainSplitter.Size = new System.Drawing.Size(1221, 239);
+            this.MegaMainSplitter.Size = new System.Drawing.Size(1221, 233);
             this.MegaMainSplitter.SplitterDistance = 392;
             this.MegaMainSplitter.SplitterWidth = 6;
             this.MegaMainSplitter.StateCommon.Back.Color1 = System.Drawing.Color.Transparent;
@@ -856,74 +755,8 @@
             this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel4.Location = new System.Drawing.Point(0, 0);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(392, 239);
+            this.panel4.Size = new System.Drawing.Size(392, 233);
             this.panel4.TabIndex = 317;
-            // 
-            // MegaOrdersDataGrid
-            // 
-            this.MegaOrdersDataGrid.AllowUserToAddRows = false;
-            this.MegaOrdersDataGrid.AllowUserToDeleteRows = false;
-            this.MegaOrdersDataGrid.AllowUserToResizeRows = false;
-            this.MegaOrdersDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.MegaOrdersDataGrid.BackText = "Нет данных";
-            this.MegaOrdersDataGrid.ColumnHeadersHeight = 40;
-            this.MegaOrdersDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.MegaOrdersDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.MegaOrdersDataGrid.HideOuterBorders = true;
-            this.MegaOrdersDataGrid.Location = new System.Drawing.Point(0, 0);
-            this.MegaOrdersDataGrid.Name = "MegaOrdersDataGrid";
-            this.MegaOrdersDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.MegaOrdersDataGrid.PercentLineWidth = 0;
-            this.MegaOrdersDataGrid.ReadOnly = true;
-            this.MegaOrdersDataGrid.RowHeadersVisible = false;
-            this.MegaOrdersDataGrid.RowTemplate.Height = 30;
-            this.MegaOrdersDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.MegaOrdersDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
-            this.MegaOrdersDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.MegaOrdersDataGrid.Size = new System.Drawing.Size(392, 239);
-            this.MegaOrdersDataGrid.StandardStyle = false;
-            this.MegaOrdersDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
-            this.MegaOrdersDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
-            this.MegaOrdersDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.MegaOrdersDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
-            this.MegaOrdersDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
-            this.MegaOrdersDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.MegaOrdersDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
-            this.MegaOrdersDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.MegaOrdersDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.MegaOrdersDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
-            this.MegaOrdersDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.MegaOrdersDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
-            this.MegaOrdersDataGrid.StateCommon.HeaderColumn.Back.Color2 = System.Drawing.Color.Transparent;
-            this.MegaOrdersDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.MegaOrdersDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
-            this.MegaOrdersDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.MegaOrdersDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.MegaOrdersDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
-            this.MegaOrdersDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
-            this.MegaOrdersDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.MegaOrdersDataGrid.StateCommon.HeaderColumn.Content.MultiLine = ComponentFactory.Krypton.Toolkit.InheritBool.True;
-            this.MegaOrdersDataGrid.StateCommon.HeaderColumn.Content.MultiLineH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
-            this.MegaOrdersDataGrid.StateCommon.HeaderColumn.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
-            this.MegaOrdersDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(121)))), ((int)(((byte)(177)))), ((int)(((byte)(229)))));
-            this.MegaOrdersDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.MegaOrdersDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.MegaOrdersDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
-            this.MegaOrdersDataGrid.StateSelected.HeaderRow.Border.Color1 = System.Drawing.Color.White;
-            this.MegaOrdersDataGrid.StateSelected.HeaderRow.Border.Color2 = System.Drawing.Color.White;
-            this.MegaOrdersDataGrid.StateSelected.HeaderRow.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.MegaOrdersDataGrid.TabIndex = 53;
-            this.MegaOrdersDataGrid.UseCustomBackColor = true;
-            this.MegaOrdersDataGrid.Scroll += new System.Windows.Forms.ScrollEventHandler(this.MegaOrdersDataGrid_Scroll);
-            this.MegaOrdersDataGrid.SelectionChanged += new System.EventHandler(this.MegaOrdersDataGrid_SelectionChanged);
-            this.MegaOrdersDataGrid.Sorted += new System.EventHandler(this.MegaOrdersDataGrid_Sorted);
-            this.MegaOrdersDataGrid.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MegaOrdersDataGrid_MouseMove);
             // 
             // panel1
             // 
@@ -932,68 +765,8 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(823, 239);
+            this.panel1.Size = new System.Drawing.Size(823, 233);
             this.panel1.TabIndex = 317;
-            // 
-            // MainOrdersDataGrid
-            // 
-            this.MainOrdersDataGrid.AllowUserToAddRows = false;
-            this.MainOrdersDataGrid.AllowUserToDeleteRows = false;
-            this.MainOrdersDataGrid.AllowUserToResizeRows = false;
-            this.MainOrdersDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.MainOrdersDataGrid.BackText = "Нет данных";
-            this.MainOrdersDataGrid.ColumnHeadersHeight = 40;
-            this.MainOrdersDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.MainOrdersDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.MainOrdersDataGrid.Location = new System.Drawing.Point(0, 0);
-            this.MainOrdersDataGrid.Name = "MainOrdersDataGrid";
-            this.MainOrdersDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.MainOrdersDataGrid.PercentLineWidth = 0;
-            this.MainOrdersDataGrid.ReadOnly = true;
-            this.MainOrdersDataGrid.RowHeadersVisible = false;
-            this.MainOrdersDataGrid.RowTemplate.Height = 30;
-            this.MainOrdersDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.MainOrdersDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
-            this.MainOrdersDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.MainOrdersDataGrid.Size = new System.Drawing.Size(823, 239);
-            this.MainOrdersDataGrid.StandardStyle = false;
-            this.MainOrdersDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
-            this.MainOrdersDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
-            this.MainOrdersDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.MainOrdersDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
-            this.MainOrdersDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
-            this.MainOrdersDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.MainOrdersDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
-            this.MainOrdersDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.MainOrdersDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.MainOrdersDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
-            this.MainOrdersDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.MainOrdersDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
-            this.MainOrdersDataGrid.StateCommon.HeaderColumn.Back.Color2 = System.Drawing.Color.Transparent;
-            this.MainOrdersDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.MainOrdersDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
-            this.MainOrdersDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.MainOrdersDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.MainOrdersDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
-            this.MainOrdersDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
-            this.MainOrdersDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.MainOrdersDataGrid.StateCommon.HeaderColumn.Content.MultiLine = ComponentFactory.Krypton.Toolkit.InheritBool.True;
-            this.MainOrdersDataGrid.StateCommon.HeaderColumn.Content.MultiLineH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
-            this.MainOrdersDataGrid.StateCommon.HeaderColumn.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
-            this.MainOrdersDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(121)))), ((int)(((byte)(177)))), ((int)(((byte)(229)))));
-            this.MainOrdersDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.MainOrdersDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.MainOrdersDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
-            this.MainOrdersDataGrid.TabIndex = 54;
-            this.MainOrdersDataGrid.UseCustomBackColor = true;
-            this.MainOrdersDataGrid.Scroll += new System.Windows.Forms.ScrollEventHandler(this.MainOrdersDataGrid_Scroll);
-            this.MainOrdersDataGrid.SelectionChanged += new System.EventHandler(this.MainOrdersDataGrid_SelectionChanged);
-            this.MainOrdersDataGrid.Sorted += new System.EventHandler(this.MainOrdersDataGrid_Sorted);
-            this.MainOrdersDataGrid.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MainOrdersDataGrid_MouseMove);
             // 
             // panel2
             // 
@@ -1002,7 +775,7 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1221, 258);
+            this.panel2.Size = new System.Drawing.Size(1221, 252);
             this.panel2.TabIndex = 317;
             // 
             // MainOrdersTabControl
@@ -1022,7 +795,7 @@
             this.MainOrdersTabControl.LookAndFeel.UseDefaultLookAndFeel = false;
             this.MainOrdersTabControl.Name = "MainOrdersTabControl";
             this.MainOrdersTabControl.SelectedTabPage = this.xtraTabPage1;
-            this.MainOrdersTabControl.Size = new System.Drawing.Size(1221, 255);
+            this.MainOrdersTabControl.Size = new System.Drawing.Size(1221, 249);
             this.MainOrdersTabControl.TabIndex = 58;
             this.MainOrdersTabControl.TabPages.AddRange(new DevExpress.XtraTab.XtraTabPage[] {
             this.xtraTabPage1,
@@ -1031,74 +804,15 @@
             // xtraTabPage1
             // 
             this.xtraTabPage1.Controls.Add(this.MainOrdersFrontsOrdersDataGrid);
+            this.xtraTabPage1.Enabled = true;
             this.xtraTabPage1.Name = "xtraTabPage1";
-            this.xtraTabPage1.Size = new System.Drawing.Size(1215, 219);
+            this.xtraTabPage1.Size = new System.Drawing.Size(1215, 213);
             this.xtraTabPage1.Text = "      Фасады      ";
-            // 
-            // MainOrdersFrontsOrdersDataGrid
-            // 
-            this.MainOrdersFrontsOrdersDataGrid.AllowUserToAddRows = false;
-            this.MainOrdersFrontsOrdersDataGrid.AllowUserToDeleteRows = false;
-            this.MainOrdersFrontsOrdersDataGrid.AllowUserToResizeColumns = false;
-            this.MainOrdersFrontsOrdersDataGrid.AllowUserToResizeRows = false;
-            this.MainOrdersFrontsOrdersDataGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.MainOrdersFrontsOrdersDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.MainOrdersFrontsOrdersDataGrid.BackText = "Нет данных";
-            this.MainOrdersFrontsOrdersDataGrid.ColumnHeadersHeight = 40;
-            this.MainOrdersFrontsOrdersDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.MainOrdersFrontsOrdersDataGrid.Location = new System.Drawing.Point(1, 1);
-            this.MainOrdersFrontsOrdersDataGrid.MultiSelect = false;
-            this.MainOrdersFrontsOrdersDataGrid.Name = "MainOrdersFrontsOrdersDataGrid";
-            this.MainOrdersFrontsOrdersDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.MainOrdersFrontsOrdersDataGrid.PercentLineWidth = 0;
-            this.MainOrdersFrontsOrdersDataGrid.ReadOnly = true;
-            this.MainOrdersFrontsOrdersDataGrid.RowHeadersVisible = false;
-            this.MainOrdersFrontsOrdersDataGrid.RowTemplate.Height = 30;
-            this.MainOrdersFrontsOrdersDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.MainOrdersFrontsOrdersDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Green;
-            this.MainOrdersFrontsOrdersDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.MainOrdersFrontsOrdersDataGrid.Size = new System.Drawing.Size(1214, 218);
-            this.MainOrdersFrontsOrdersDataGrid.StandardStyle = false;
-            this.MainOrdersFrontsOrdersDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
-            this.MainOrdersFrontsOrdersDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
-            this.MainOrdersFrontsOrdersDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.MainOrdersFrontsOrdersDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
-            this.MainOrdersFrontsOrdersDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
-            this.MainOrdersFrontsOrdersDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.MainOrdersFrontsOrdersDataGrid.StateCommon.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.MainOrdersFrontsOrdersDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
-            this.MainOrdersFrontsOrdersDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.MainOrdersFrontsOrdersDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.MainOrdersFrontsOrdersDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
-            this.MainOrdersFrontsOrdersDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.MainOrdersFrontsOrdersDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
-            this.MainOrdersFrontsOrdersDataGrid.StateCommon.HeaderColumn.Back.Color2 = System.Drawing.Color.Transparent;
-            this.MainOrdersFrontsOrdersDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.MainOrdersFrontsOrdersDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
-            this.MainOrdersFrontsOrdersDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.MainOrdersFrontsOrdersDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.MainOrdersFrontsOrdersDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
-            this.MainOrdersFrontsOrdersDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
-            this.MainOrdersFrontsOrdersDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.MainOrdersFrontsOrdersDataGrid.StateCommon.HeaderColumn.Content.MultiLine = ComponentFactory.Krypton.Toolkit.InheritBool.True;
-            this.MainOrdersFrontsOrdersDataGrid.StateCommon.HeaderColumn.Content.MultiLineH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
-            this.MainOrdersFrontsOrdersDataGrid.StateCommon.HeaderColumn.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
-            this.MainOrdersFrontsOrdersDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(158)))), ((int)(((byte)(0)))));
-            this.MainOrdersFrontsOrdersDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.MainOrdersFrontsOrdersDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.MainOrdersFrontsOrdersDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
-            this.MainOrdersFrontsOrdersDataGrid.TabIndex = 55;
-            this.MainOrdersFrontsOrdersDataGrid.UseCustomBackColor = true;
             // 
             // xtraTabPage2
             // 
             this.xtraTabPage2.Controls.Add(this.MainOrdersDecorTabControl);
+            this.xtraTabPage2.Enabled = true;
             this.xtraTabPage2.Name = "xtraTabPage2";
             this.xtraTabPage2.Size = new System.Drawing.Size(1215, 219);
             this.xtraTabPage2.Text = "      Декор      ";
@@ -1136,7 +850,7 @@
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 610F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1227, 508);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1227, 496);
             this.tableLayoutPanel1.TabIndex = 36;
             // 
             // PanelSelectPalette
@@ -1204,6 +918,7 @@
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.PanelSelectPalette.ButtonStyles.ButtonCommon.StateTracking.Border.Rounding = 0;
+            this.PanelSelectPalette.CustomisedKryptonPaletteFilePath = null;
             // 
             // RolesAndPermissionsTabControl
             // 
@@ -1242,6 +957,7 @@
             this.xtraTabPage3.Controls.Add(this.kryptonSplitContainer4);
             this.xtraTabPage3.Controls.Add(this.kryptonSplitContainer1);
             this.xtraTabPage3.Controls.Add(this.kryptonBorderEdge4);
+            this.xtraTabPage3.Enabled = true;
             this.xtraTabPage3.Name = "xtraTabPage3";
             this.xtraTabPage3.Size = new System.Drawing.Size(1259, 632);
             this.xtraTabPage3.Text = " Все партии ";
@@ -1267,7 +983,7 @@
             this.kryptonSplitContainer4.Panel2.Controls.Add(this.xtraTabControl2);
             this.kryptonSplitContainer4.Panel2.StateCommon.Color1 = System.Drawing.Color.Transparent;
             this.kryptonSplitContainer4.SeparatorStyle = ComponentFactory.Krypton.Toolkit.SeparatorStyle.HighProfile;
-            this.kryptonSplitContainer4.Size = new System.Drawing.Size(1254, 620);
+            this.kryptonSplitContainer4.Size = new System.Drawing.Size(1254, 608);
             this.kryptonSplitContainer4.SplitterDistance = 406;
             this.kryptonSplitContainer4.SplitterWidth = 6;
             this.kryptonSplitContainer4.StateCommon.Back.Color1 = System.Drawing.Color.Transparent;
@@ -1300,8 +1016,8 @@
             this.kryptonSplitContainer5.Panel2.Controls.Add(this.BatchPanel);
             this.kryptonSplitContainer5.Panel2.StateCommon.Color1 = System.Drawing.Color.Transparent;
             this.kryptonSplitContainer5.SeparatorStyle = ComponentFactory.Krypton.Toolkit.SeparatorStyle.HighProfile;
-            this.kryptonSplitContainer5.Size = new System.Drawing.Size(406, 620);
-            this.kryptonSplitContainer5.SplitterDistance = 267;
+            this.kryptonSplitContainer5.Size = new System.Drawing.Size(406, 608);
+            this.kryptonSplitContainer5.SplitterDistance = 261;
             this.kryptonSplitContainer5.StateCommon.Back.Color1 = System.Drawing.Color.Transparent;
             this.kryptonSplitContainer5.StateCommon.Back.Color2 = System.Drawing.Color.Transparent;
             this.kryptonSplitContainer5.StateCommon.Separator.Back.Color1 = System.Drawing.Color.Gray;
@@ -1321,7 +1037,7 @@
             this.MegaBatchPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.MegaBatchPanel.Location = new System.Drawing.Point(0, 0);
             this.MegaBatchPanel.Name = "MegaBatchPanel";
-            this.MegaBatchPanel.Size = new System.Drawing.Size(406, 267);
+            this.MegaBatchPanel.Size = new System.Drawing.Size(406, 261);
             this.MegaBatchPanel.TabIndex = 321;
             // 
             // CreateMegaBatchPanel
@@ -1330,7 +1046,7 @@
             this.CreateMegaBatchPanel.Controls.Add(this.OKMoveBatchButton);
             this.CreateMegaBatchPanel.Controls.Add(this.CancelMoveBatchButton);
             this.CreateMegaBatchPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.CreateMegaBatchPanel.Location = new System.Drawing.Point(0, 218);
+            this.CreateMegaBatchPanel.Location = new System.Drawing.Point(0, 212);
             this.CreateMegaBatchPanel.Name = "CreateMegaBatchPanel";
             this.CreateMegaBatchPanel.Size = new System.Drawing.Size(406, 49);
             this.CreateMegaBatchPanel.TabIndex = 333;
@@ -1402,6 +1118,7 @@
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.StandardButtonsPalette.ButtonStyles.ButtonCommon.StateTracking.Border.Rounding = 0;
+            this.StandardButtonsPalette.CustomisedKryptonPaletteFilePath = null;
             // 
             // OKMoveBatchButton
             // 
@@ -1481,7 +1198,7 @@
             this.xtraTabControl4.Name = "xtraTabControl4";
             this.xtraTabControl4.SelectedTabPage = this.xtraTabPage12;
             this.xtraTabControl4.ShowTabHeader = DevExpress.Utils.DefaultBoolean.True;
-            this.xtraTabControl4.Size = new System.Drawing.Size(398, 216);
+            this.xtraTabControl4.Size = new System.Drawing.Size(398, 210);
             this.xtraTabControl4.TabIndex = 317;
             this.xtraTabControl4.TabPages.AddRange(new DevExpress.XtraTab.XtraTabPage[] {
             this.xtraTabPage12});
@@ -1490,71 +1207,10 @@
             // 
             this.xtraTabPage12.Controls.Add(this.MegaBatchDataGrid);
             this.xtraTabPage12.Controls.Add(this.kryptonBorderEdge54);
+            this.xtraTabPage12.Enabled = true;
             this.xtraTabPage12.Name = "xtraTabPage12";
-            this.xtraTabPage12.Size = new System.Drawing.Size(392, 176);
+            this.xtraTabPage12.Size = new System.Drawing.Size(392, 170);
             this.xtraTabPage12.Text = " Группы партий ";
-            // 
-            // MegaBatchDataGrid
-            // 
-            this.MegaBatchDataGrid.AllowUserToAddRows = false;
-            this.MegaBatchDataGrid.AllowUserToDeleteRows = false;
-            this.MegaBatchDataGrid.AllowUserToResizeColumns = false;
-            this.MegaBatchDataGrid.AllowUserToResizeRows = false;
-            this.MegaBatchDataGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.MegaBatchDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.MegaBatchDataGrid.BackText = "Нет данных";
-            this.MegaBatchDataGrid.ColumnHeadersHeight = 40;
-            this.MegaBatchDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.MegaBatchDataGrid.Location = new System.Drawing.Point(1, 12);
-            this.MegaBatchDataGrid.MultiSelect = false;
-            this.MegaBatchDataGrid.Name = "MegaBatchDataGrid";
-            this.MegaBatchDataGrid.PercentLineWidth = 0;
-            this.MegaBatchDataGrid.RowHeadersVisible = false;
-            this.MegaBatchDataGrid.RowTemplate.Height = 30;
-            this.MegaBatchDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
-            this.MegaBatchDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.MegaBatchDataGrid.Size = new System.Drawing.Size(391, 164);
-            this.MegaBatchDataGrid.StandardStyle = false;
-            this.MegaBatchDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
-            this.MegaBatchDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.MegaBatchDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
-            this.MegaBatchDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
-            this.MegaBatchDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
-            this.MegaBatchDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.MegaBatchDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.MegaBatchDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
-            this.MegaBatchDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.MegaBatchDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
-            this.MegaBatchDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.MegaBatchDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
-            this.MegaBatchDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.MegaBatchDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)(((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.MegaBatchDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
-            this.MegaBatchDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.MegaBatchDataGrid.StateCommon.HeaderColumn.Content.MultiLine = ComponentFactory.Krypton.Toolkit.InheritBool.True;
-            this.MegaBatchDataGrid.StateCommon.HeaderColumn.Content.MultiLineH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
-            this.MegaBatchDataGrid.StateCommon.HeaderColumn.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
-            this.MegaBatchDataGrid.StateDisabled.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
-            this.MegaBatchDataGrid.StateDisabled.DataCell.Border.Color1 = System.Drawing.Color.DimGray;
-            this.MegaBatchDataGrid.StateDisabled.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.MegaBatchDataGrid.StateDisabled.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.MegaBatchDataGrid.StateDisabled.DataCell.Content.Color1 = System.Drawing.Color.Gray;
-            this.MegaBatchDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(121)))), ((int)(((byte)(177)))), ((int)(((byte)(229)))));
-            this.MegaBatchDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.MegaBatchDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
-            this.MegaBatchDataGrid.TabIndex = 46;
-            this.MegaBatchDataGrid.UseCustomBackColor = true;
-            this.MegaBatchDataGrid.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.MegaBatchDataGrid_CellFormatting);
-            this.MegaBatchDataGrid.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.MegaBatchDataGrid_CellMouseDown);
-            this.MegaBatchDataGrid.CellPainting += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(this.MegaBatchDataGrid_CellPainting);
-            this.MegaBatchDataGrid.SelectionChanged += new System.EventHandler(this.MegaBatchDataGrid_SelectionChanged);
             // 
             // kryptonBorderEdge54
             // 
@@ -1575,7 +1231,7 @@
             this.BatchPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.BatchPanel.Location = new System.Drawing.Point(0, 0);
             this.BatchPanel.Name = "BatchPanel";
-            this.BatchPanel.Size = new System.Drawing.Size(406, 348);
+            this.BatchPanel.Size = new System.Drawing.Size(406, 342);
             this.BatchPanel.TabIndex = 0;
             // 
             // CreateBatchPanel
@@ -1588,7 +1244,7 @@
             this.CreateBatchPanel.Controls.Add(this.PrintBatchButton);
             this.CreateBatchPanel.Controls.Add(this.RemoveBatchButton);
             this.CreateBatchPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.CreateBatchPanel.Location = new System.Drawing.Point(0, 302);
+            this.CreateBatchPanel.Location = new System.Drawing.Point(0, 296);
             this.CreateBatchPanel.Name = "CreateBatchPanel";
             this.CreateBatchPanel.Size = new System.Drawing.Size(406, 46);
             this.CreateBatchPanel.TabIndex = 48;
@@ -1795,7 +1451,7 @@
             this.xtraTabControl1.Name = "xtraTabControl1";
             this.xtraTabControl1.SelectedTabPage = this.xtraTabPage4;
             this.xtraTabControl1.ShowTabHeader = DevExpress.Utils.DefaultBoolean.True;
-            this.xtraTabControl1.Size = new System.Drawing.Size(398, 297);
+            this.xtraTabControl1.Size = new System.Drawing.Size(398, 291);
             this.xtraTabControl1.TabIndex = 317;
             this.xtraTabControl1.TabPages.AddRange(new DevExpress.XtraTab.XtraTabPage[] {
             this.xtraTabPage4});
@@ -1804,71 +1460,10 @@
             // 
             this.xtraTabPage4.Controls.Add(this.BatchDataGrid);
             this.xtraTabPage4.Controls.Add(this.kryptonBorderEdge1);
+            this.xtraTabPage4.Enabled = true;
             this.xtraTabPage4.Name = "xtraTabPage4";
-            this.xtraTabPage4.Size = new System.Drawing.Size(392, 257);
+            this.xtraTabPage4.Size = new System.Drawing.Size(392, 251);
             this.xtraTabPage4.Text = " Партии ";
-            // 
-            // BatchDataGrid
-            // 
-            this.BatchDataGrid.AllowUserToAddRows = false;
-            this.BatchDataGrid.AllowUserToDeleteRows = false;
-            this.BatchDataGrid.AllowUserToResizeColumns = false;
-            this.BatchDataGrid.AllowUserToResizeRows = false;
-            this.BatchDataGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.BatchDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.BatchDataGrid.BackText = "Нет данных";
-            this.BatchDataGrid.ColumnHeadersHeight = 40;
-            this.BatchDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.BatchDataGrid.Location = new System.Drawing.Point(1, 12);
-            this.BatchDataGrid.Name = "BatchDataGrid";
-            this.BatchDataGrid.PercentLineWidth = 0;
-            this.BatchDataGrid.RowHeadersVisible = false;
-            this.BatchDataGrid.RowTemplate.Height = 30;
-            this.BatchDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
-            this.BatchDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.BatchDataGrid.Size = new System.Drawing.Size(390, 244);
-            this.BatchDataGrid.StandardStyle = false;
-            this.BatchDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
-            this.BatchDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.BatchDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
-            this.BatchDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
-            this.BatchDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
-            this.BatchDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.BatchDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.BatchDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
-            this.BatchDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.BatchDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
-            this.BatchDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.BatchDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
-            this.BatchDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.BatchDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)(((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.BatchDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
-            this.BatchDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.BatchDataGrid.StateCommon.HeaderColumn.Content.MultiLine = ComponentFactory.Krypton.Toolkit.InheritBool.True;
-            this.BatchDataGrid.StateCommon.HeaderColumn.Content.MultiLineH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
-            this.BatchDataGrid.StateCommon.HeaderColumn.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
-            this.BatchDataGrid.StateDisabled.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
-            this.BatchDataGrid.StateDisabled.DataCell.Border.Color1 = System.Drawing.Color.DimGray;
-            this.BatchDataGrid.StateDisabled.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.BatchDataGrid.StateDisabled.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.BatchDataGrid.StateDisabled.DataCell.Content.Color1 = System.Drawing.Color.Gray;
-            this.BatchDataGrid.StateDisabled.DataCell.Content.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.BatchDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(121)))), ((int)(((byte)(177)))), ((int)(((byte)(229)))));
-            this.BatchDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.BatchDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
-            this.BatchDataGrid.TabIndex = 46;
-            this.BatchDataGrid.UseCustomBackColor = true;
-            this.BatchDataGrid.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.BatchDataGrid_CellFormatting);
-            this.BatchDataGrid.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.BatchDataGrid_CellMouseDown);
-            this.BatchDataGrid.CellPainting += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(this.BatchDataGrid_CellPainting);
-            this.BatchDataGrid.SelectionChanged += new System.EventHandler(this.BatchDataGrid_SelectionChanged);
             // 
             // kryptonBorderEdge1
             // 
@@ -1903,7 +1498,7 @@
             this.xtraTabControl2.Name = "xtraTabControl2";
             this.xtraTabControl2.SelectedTabPage = this.xtraTabPage9;
             this.xtraTabControl2.ShowTabHeader = DevExpress.Utils.DefaultBoolean.True;
-            this.xtraTabControl2.Size = new System.Drawing.Size(839, 617);
+            this.xtraTabControl2.Size = new System.Drawing.Size(839, 605);
             this.xtraTabControl2.TabIndex = 255;
             this.xtraTabControl2.TabPages.AddRange(new DevExpress.XtraTab.XtraTabPage[] {
             this.xtraTabPage9,
@@ -1915,8 +1510,9 @@
             this.xtraTabPage9.Appearance.Header.Options.UseBackColor = true;
             this.xtraTabPage9.Controls.Add(this.panel5);
             this.xtraTabPage9.Controls.Add(this.kryptonBorderEdge9);
+            this.xtraTabPage9.Enabled = true;
             this.xtraTabPage9.Name = "xtraTabPage9";
-            this.xtraTabPage9.Size = new System.Drawing.Size(833, 577);
+            this.xtraTabPage9.Size = new System.Drawing.Size(833, 565);
             this.xtraTabPage9.Text = " Содержимое партии ";
             // 
             // panel5
@@ -1932,7 +1528,7 @@
             this.panel5.Controls.Add(this.kryptonBorderEdge11);
             this.panel5.Location = new System.Drawing.Point(6, 12);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(822, 571);
+            this.panel5.Size = new System.Drawing.Size(822, 547);
             this.panel5.TabIndex = 318;
             // 
             // tableLayoutPanel2
@@ -1950,7 +1546,7 @@
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 610F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(818, 567);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(818, 543);
             this.tableLayoutPanel2.TabIndex = 36;
             // 
             // kryptonSplitContainer2
@@ -1975,8 +1571,8 @@
             this.kryptonSplitContainer2.Panel2.Controls.Add(this.panel8);
             this.kryptonSplitContainer2.Panel2.StateCommon.Color1 = System.Drawing.Color.White;
             this.kryptonSplitContainer2.SeparatorStyle = ComponentFactory.Krypton.Toolkit.SeparatorStyle.HighProfile;
-            this.kryptonSplitContainer2.Size = new System.Drawing.Size(812, 561);
-            this.kryptonSplitContainer2.SplitterDistance = 266;
+            this.kryptonSplitContainer2.Size = new System.Drawing.Size(812, 537);
+            this.kryptonSplitContainer2.SplitterDistance = 254;
             this.kryptonSplitContainer2.StateCommon.Back.Color1 = System.Drawing.Color.Transparent;
             this.kryptonSplitContainer2.StateCommon.Back.Color2 = System.Drawing.Color.Transparent;
             this.kryptonSplitContainer2.StateCommon.Separator.Back.Color1 = System.Drawing.Color.Gray;
@@ -2008,7 +1604,7 @@
             this.kryptonSplitContainer3.Panel2.Controls.Add(this.MainOrdersPanel);
             this.kryptonSplitContainer3.Panel2.StateCommon.Color1 = System.Drawing.Color.White;
             this.kryptonSplitContainer3.SeparatorStyle = ComponentFactory.Krypton.Toolkit.SeparatorStyle.HighProfile;
-            this.kryptonSplitContainer3.Size = new System.Drawing.Size(814, 274);
+            this.kryptonSplitContainer3.Size = new System.Drawing.Size(814, 262);
             this.kryptonSplitContainer3.SplitterDistance = 424;
             this.kryptonSplitContainer3.SplitterWidth = 6;
             this.kryptonSplitContainer3.StateCommon.Back.Color1 = System.Drawing.Color.Transparent;
@@ -2030,7 +1626,7 @@
             this.MegaOrdersPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.MegaOrdersPanel.Location = new System.Drawing.Point(0, 0);
             this.MegaOrdersPanel.Name = "MegaOrdersPanel";
-            this.MegaOrdersPanel.Size = new System.Drawing.Size(424, 274);
+            this.MegaOrdersPanel.Size = new System.Drawing.Size(424, 262);
             this.MegaOrdersPanel.TabIndex = 0;
             // 
             // MegaOrderInProductionPanel
@@ -2039,7 +1635,7 @@
             this.MegaOrderInProductionPanel.Controls.Add(this.PrintMegaOrderButton);
             this.MegaOrderInProductionPanel.Controls.Add(this.RemoveMegaOrderButton);
             this.MegaOrderInProductionPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.MegaOrderInProductionPanel.Location = new System.Drawing.Point(0, 217);
+            this.MegaOrderInProductionPanel.Location = new System.Drawing.Point(0, 205);
             this.MegaOrderInProductionPanel.Name = "MegaOrderInProductionPanel";
             this.MegaOrderInProductionPanel.Size = new System.Drawing.Size(424, 57);
             this.MegaOrderInProductionPanel.TabIndex = 331;
@@ -2119,76 +1715,6 @@
             this.RemoveMegaOrderButton.Values.Text = "";
             this.RemoveMegaOrderButton.Click += new System.EventHandler(this.RemoveMegaOrderButton_Click);
             // 
-            // BatchMegaOrdersDataGrid
-            // 
-            this.BatchMegaOrdersDataGrid.AllowUserToAddRows = false;
-            this.BatchMegaOrdersDataGrid.AllowUserToDeleteRows = false;
-            this.BatchMegaOrdersDataGrid.AllowUserToResizeColumns = false;
-            this.BatchMegaOrdersDataGrid.AllowUserToResizeRows = false;
-            this.BatchMegaOrdersDataGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.BatchMegaOrdersDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.BatchMegaOrdersDataGrid.BackText = "Нет данных";
-            this.BatchMegaOrdersDataGrid.ColumnHeadersHeight = 40;
-            this.BatchMegaOrdersDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.BatchMegaOrdersDataGrid.HideOuterBorders = true;
-            this.BatchMegaOrdersDataGrid.Location = new System.Drawing.Point(0, 0);
-            this.BatchMegaOrdersDataGrid.Name = "BatchMegaOrdersDataGrid";
-            this.BatchMegaOrdersDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.BatchMegaOrdersDataGrid.PercentLineWidth = 0;
-            this.BatchMegaOrdersDataGrid.ReadOnly = true;
-            this.BatchMegaOrdersDataGrid.RowHeadersVisible = false;
-            this.BatchMegaOrdersDataGrid.RowTemplate.Height = 30;
-            this.BatchMegaOrdersDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.BatchMegaOrdersDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
-            this.BatchMegaOrdersDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.BatchMegaOrdersDataGrid.Size = new System.Drawing.Size(422, 216);
-            this.BatchMegaOrdersDataGrid.StandardStyle = false;
-            this.BatchMegaOrdersDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
-            this.BatchMegaOrdersDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
-            this.BatchMegaOrdersDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.BatchMegaOrdersDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
-            this.BatchMegaOrdersDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
-            this.BatchMegaOrdersDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.BatchMegaOrdersDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
-            this.BatchMegaOrdersDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.BatchMegaOrdersDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.BatchMegaOrdersDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
-            this.BatchMegaOrdersDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.BatchMegaOrdersDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
-            this.BatchMegaOrdersDataGrid.StateCommon.HeaderColumn.Back.Color2 = System.Drawing.Color.Transparent;
-            this.BatchMegaOrdersDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.BatchMegaOrdersDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
-            this.BatchMegaOrdersDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.BatchMegaOrdersDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.BatchMegaOrdersDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
-            this.BatchMegaOrdersDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
-            this.BatchMegaOrdersDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.BatchMegaOrdersDataGrid.StateCommon.HeaderColumn.Content.MultiLine = ComponentFactory.Krypton.Toolkit.InheritBool.True;
-            this.BatchMegaOrdersDataGrid.StateCommon.HeaderColumn.Content.MultiLineH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
-            this.BatchMegaOrdersDataGrid.StateCommon.HeaderColumn.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
-            this.BatchMegaOrdersDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(121)))), ((int)(((byte)(177)))), ((int)(((byte)(229)))));
-            this.BatchMegaOrdersDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.BatchMegaOrdersDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.BatchMegaOrdersDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
-            this.BatchMegaOrdersDataGrid.StateSelected.HeaderRow.Border.Color1 = System.Drawing.Color.White;
-            this.BatchMegaOrdersDataGrid.StateSelected.HeaderRow.Border.Color2 = System.Drawing.Color.White;
-            this.BatchMegaOrdersDataGrid.StateSelected.HeaderRow.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.BatchMegaOrdersDataGrid.TabIndex = 53;
-            this.BatchMegaOrdersDataGrid.UseCustomBackColor = false;
-            this.BatchMegaOrdersDataGrid.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.BatchMegaOrdersDataGrid_CellMouseDown);
-            this.BatchMegaOrdersDataGrid.Scroll += new System.Windows.Forms.ScrollEventHandler(this.BatchMegaOrdersDataGrid_Scroll);
-            this.BatchMegaOrdersDataGrid.SelectionChanged += new System.EventHandler(this.BatchMegaOrdersDataGrid_SelectionChanged);
-            this.BatchMegaOrdersDataGrid.Sorted += new System.EventHandler(this.BatchMegaOrdersDataGrid_Sorted);
-            this.BatchMegaOrdersDataGrid.MouseMove += new System.Windows.Forms.MouseEventHandler(this.BatchMegaOrdersDataGrid_MouseMove);
-            // 
             // MainOrdersPanel
             // 
             this.MainOrdersPanel.BackColor = System.Drawing.Color.Transparent;
@@ -2197,7 +1723,7 @@
             this.MainOrdersPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.MainOrdersPanel.Location = new System.Drawing.Point(0, 0);
             this.MainOrdersPanel.Name = "MainOrdersPanel";
-            this.MainOrdersPanel.Size = new System.Drawing.Size(384, 274);
+            this.MainOrdersPanel.Size = new System.Drawing.Size(384, 262);
             this.MainOrdersPanel.TabIndex = 1;
             // 
             // MainOrderInProductionPanel
@@ -2206,7 +1732,7 @@
             this.MainOrderInProductionPanel.Controls.Add(this.PickUpFrontsButton);
             this.MainOrderInProductionPanel.Controls.Add(this.PrintMainOrderButton);
             this.MainOrderInProductionPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.MainOrderInProductionPanel.Location = new System.Drawing.Point(0, 217);
+            this.MainOrderInProductionPanel.Location = new System.Drawing.Point(0, 205);
             this.MainOrderInProductionPanel.Name = "MainOrderInProductionPanel";
             this.MainOrderInProductionPanel.Size = new System.Drawing.Size(384, 57);
             this.MainOrderInProductionPanel.TabIndex = 332;
@@ -2288,69 +1814,6 @@
             this.PrintMainOrderButton.Values.Text = "";
             this.PrintMainOrderButton.Click += new System.EventHandler(this.PrintMainOrderButton_Click);
             // 
-            // BatchMainOrdersDataGrid
-            // 
-            this.BatchMainOrdersDataGrid.AllowUserToAddRows = false;
-            this.BatchMainOrdersDataGrid.AllowUserToDeleteRows = false;
-            this.BatchMainOrdersDataGrid.AllowUserToResizeRows = false;
-            this.BatchMainOrdersDataGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.BatchMainOrdersDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.BatchMainOrdersDataGrid.BackText = "Нет данных";
-            this.BatchMainOrdersDataGrid.ColumnHeadersHeight = 40;
-            this.BatchMainOrdersDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.BatchMainOrdersDataGrid.Location = new System.Drawing.Point(0, 0);
-            this.BatchMainOrdersDataGrid.Name = "BatchMainOrdersDataGrid";
-            this.BatchMainOrdersDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.BatchMainOrdersDataGrid.PercentLineWidth = 0;
-            this.BatchMainOrdersDataGrid.ReadOnly = true;
-            this.BatchMainOrdersDataGrid.RowHeadersVisible = false;
-            this.BatchMainOrdersDataGrid.RowTemplate.Height = 30;
-            this.BatchMainOrdersDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.BatchMainOrdersDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
-            this.BatchMainOrdersDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.BatchMainOrdersDataGrid.Size = new System.Drawing.Size(380, 216);
-            this.BatchMainOrdersDataGrid.StandardStyle = false;
-            this.BatchMainOrdersDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
-            this.BatchMainOrdersDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
-            this.BatchMainOrdersDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.BatchMainOrdersDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
-            this.BatchMainOrdersDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
-            this.BatchMainOrdersDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.BatchMainOrdersDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
-            this.BatchMainOrdersDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.BatchMainOrdersDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.BatchMainOrdersDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
-            this.BatchMainOrdersDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.BatchMainOrdersDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
-            this.BatchMainOrdersDataGrid.StateCommon.HeaderColumn.Back.Color2 = System.Drawing.Color.Transparent;
-            this.BatchMainOrdersDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.BatchMainOrdersDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
-            this.BatchMainOrdersDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.BatchMainOrdersDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.BatchMainOrdersDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
-            this.BatchMainOrdersDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
-            this.BatchMainOrdersDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.BatchMainOrdersDataGrid.StateCommon.HeaderColumn.Content.MultiLine = ComponentFactory.Krypton.Toolkit.InheritBool.True;
-            this.BatchMainOrdersDataGrid.StateCommon.HeaderColumn.Content.MultiLineH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
-            this.BatchMainOrdersDataGrid.StateCommon.HeaderColumn.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
-            this.BatchMainOrdersDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(121)))), ((int)(((byte)(177)))), ((int)(((byte)(229)))));
-            this.BatchMainOrdersDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.BatchMainOrdersDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.BatchMainOrdersDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
-            this.BatchMainOrdersDataGrid.TabIndex = 54;
-            this.BatchMainOrdersDataGrid.UseCustomBackColor = true;
-            this.BatchMainOrdersDataGrid.RowPrePaint += new System.Windows.Forms.DataGridViewRowPrePaintEventHandler(this.BatchMainOrdersDataGrid_RowPrePaint);
-            this.BatchMainOrdersDataGrid.Scroll += new System.Windows.Forms.ScrollEventHandler(this.BatchMainOrdersDataGrid_Scroll);
-            this.BatchMainOrdersDataGrid.SelectionChanged += new System.EventHandler(this.BatchMainOrdersDataGrid_SelectionChanged);
-            this.BatchMainOrdersDataGrid.Sorted += new System.EventHandler(this.BatchMainOrdersDataGrid_Sorted);
-            this.BatchMainOrdersDataGrid.MouseMove += new System.Windows.Forms.MouseEventHandler(this.BatchMainOrdersDataGrid_MouseMove);
-            // 
             // panel8
             // 
             this.panel8.BackColor = System.Drawing.Color.Transparent;
@@ -2358,7 +1821,7 @@
             this.panel8.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel8.Location = new System.Drawing.Point(0, 0);
             this.panel8.Name = "panel8";
-            this.panel8.Size = new System.Drawing.Size(812, 290);
+            this.panel8.Size = new System.Drawing.Size(812, 278);
             this.panel8.TabIndex = 317;
             // 
             // BatchMainOrdersTabControl
@@ -2378,7 +1841,7 @@
             this.BatchMainOrdersTabControl.LookAndFeel.UseDefaultLookAndFeel = false;
             this.BatchMainOrdersTabControl.Name = "BatchMainOrdersTabControl";
             this.BatchMainOrdersTabControl.SelectedTabPage = this.xtraTabPage6;
-            this.BatchMainOrdersTabControl.Size = new System.Drawing.Size(812, 287);
+            this.BatchMainOrdersTabControl.Size = new System.Drawing.Size(812, 275);
             this.BatchMainOrdersTabControl.TabIndex = 58;
             this.BatchMainOrdersTabControl.TabPages.AddRange(new DevExpress.XtraTab.XtraTabPage[] {
             this.xtraTabPage6,
@@ -2387,74 +1850,15 @@
             // xtraTabPage6
             // 
             this.xtraTabPage6.Controls.Add(this.BatchFrontsOrdersDataGrid);
+            this.xtraTabPage6.Enabled = true;
             this.xtraTabPage6.Name = "xtraTabPage6";
-            this.xtraTabPage6.Size = new System.Drawing.Size(806, 251);
+            this.xtraTabPage6.Size = new System.Drawing.Size(806, 239);
             this.xtraTabPage6.Text = "      Фасады      ";
-            // 
-            // BatchFrontsOrdersDataGrid
-            // 
-            this.BatchFrontsOrdersDataGrid.AllowUserToAddRows = false;
-            this.BatchFrontsOrdersDataGrid.AllowUserToDeleteRows = false;
-            this.BatchFrontsOrdersDataGrid.AllowUserToResizeColumns = false;
-            this.BatchFrontsOrdersDataGrid.AllowUserToResizeRows = false;
-            this.BatchFrontsOrdersDataGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.BatchFrontsOrdersDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.BatchFrontsOrdersDataGrid.BackText = "Нет данных";
-            this.BatchFrontsOrdersDataGrid.ColumnHeadersHeight = 40;
-            this.BatchFrontsOrdersDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.BatchFrontsOrdersDataGrid.Location = new System.Drawing.Point(1, 1);
-            this.BatchFrontsOrdersDataGrid.MultiSelect = false;
-            this.BatchFrontsOrdersDataGrid.Name = "BatchFrontsOrdersDataGrid";
-            this.BatchFrontsOrdersDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.BatchFrontsOrdersDataGrid.PercentLineWidth = 0;
-            this.BatchFrontsOrdersDataGrid.ReadOnly = true;
-            this.BatchFrontsOrdersDataGrid.RowHeadersVisible = false;
-            this.BatchFrontsOrdersDataGrid.RowTemplate.Height = 30;
-            this.BatchFrontsOrdersDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.BatchFrontsOrdersDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Green;
-            this.BatchFrontsOrdersDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.BatchFrontsOrdersDataGrid.Size = new System.Drawing.Size(805, 250);
-            this.BatchFrontsOrdersDataGrid.StandardStyle = false;
-            this.BatchFrontsOrdersDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
-            this.BatchFrontsOrdersDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
-            this.BatchFrontsOrdersDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.BatchFrontsOrdersDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
-            this.BatchFrontsOrdersDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
-            this.BatchFrontsOrdersDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.BatchFrontsOrdersDataGrid.StateCommon.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.BatchFrontsOrdersDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
-            this.BatchFrontsOrdersDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.BatchFrontsOrdersDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.BatchFrontsOrdersDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
-            this.BatchFrontsOrdersDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.BatchFrontsOrdersDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
-            this.BatchFrontsOrdersDataGrid.StateCommon.HeaderColumn.Back.Color2 = System.Drawing.Color.Transparent;
-            this.BatchFrontsOrdersDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.BatchFrontsOrdersDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
-            this.BatchFrontsOrdersDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.BatchFrontsOrdersDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.BatchFrontsOrdersDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
-            this.BatchFrontsOrdersDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
-            this.BatchFrontsOrdersDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.BatchFrontsOrdersDataGrid.StateCommon.HeaderColumn.Content.MultiLine = ComponentFactory.Krypton.Toolkit.InheritBool.True;
-            this.BatchFrontsOrdersDataGrid.StateCommon.HeaderColumn.Content.MultiLineH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
-            this.BatchFrontsOrdersDataGrid.StateCommon.HeaderColumn.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
-            this.BatchFrontsOrdersDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(158)))), ((int)(((byte)(0)))));
-            this.BatchFrontsOrdersDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.BatchFrontsOrdersDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.BatchFrontsOrdersDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
-            this.BatchFrontsOrdersDataGrid.TabIndex = 55;
-            this.BatchFrontsOrdersDataGrid.UseCustomBackColor = true;
             // 
             // xtraTabPage7
             // 
             this.xtraTabPage7.Controls.Add(this.BatchDecorTabControl);
+            this.xtraTabPage7.Enabled = true;
             this.xtraTabPage7.Name = "xtraTabPage7";
             this.xtraTabPage7.Size = new System.Drawing.Size(806, 251);
             this.xtraTabPage7.Text = "      Декор      ";
@@ -2483,7 +1887,7 @@
             this.kryptonBorderEdge5.Location = new System.Drawing.Point(821, 1);
             this.kryptonBorderEdge5.Name = "kryptonBorderEdge5";
             this.kryptonBorderEdge5.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge5.Size = new System.Drawing.Size(1, 569);
+            this.kryptonBorderEdge5.Size = new System.Drawing.Size(1, 545);
             this.kryptonBorderEdge5.StateCommon.Color1 = System.Drawing.Color.Black;
             this.kryptonBorderEdge5.Text = "kryptonBorderEdge5";
             // 
@@ -2493,14 +1897,14 @@
             this.kryptonBorderEdge6.Location = new System.Drawing.Point(0, 1);
             this.kryptonBorderEdge6.Name = "kryptonBorderEdge6";
             this.kryptonBorderEdge6.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge6.Size = new System.Drawing.Size(1, 569);
+            this.kryptonBorderEdge6.Size = new System.Drawing.Size(1, 545);
             this.kryptonBorderEdge6.StateCommon.Color1 = System.Drawing.Color.Black;
             this.kryptonBorderEdge6.Text = "kryptonBorderEdge6";
             // 
             // kryptonBorderEdge10
             // 
             this.kryptonBorderEdge10.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.kryptonBorderEdge10.Location = new System.Drawing.Point(0, 570);
+            this.kryptonBorderEdge10.Location = new System.Drawing.Point(0, 546);
             this.kryptonBorderEdge10.Name = "kryptonBorderEdge10";
             this.kryptonBorderEdge10.Size = new System.Drawing.Size(822, 1);
             this.kryptonBorderEdge10.StateCommon.Color1 = System.Drawing.Color.Black;
@@ -2532,6 +1936,7 @@
             this.xtraTabPage8.Appearance.Header.Options.UseBackColor = true;
             this.xtraTabPage8.Controls.Add(this.xtraTabControl5);
             this.xtraTabPage8.Controls.Add(this.kryptonBorderEdge7);
+            this.xtraTabPage8.Enabled = true;
             this.xtraTabPage8.Name = "xtraTabPage8";
             this.xtraTabPage8.Size = new System.Drawing.Size(833, 577);
             this.xtraTabPage8.Text = " Сводка ";
@@ -2569,6 +1974,7 @@
             this.xtraTabPage11.Appearance.Header.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(253)))), ((int)(((byte)(164)))), ((int)(((byte)(61)))));
             this.xtraTabPage11.Appearance.Header.Options.UseBackColor = true;
             this.xtraTabPage11.Controls.Add(this.panel7);
+            this.xtraTabPage11.Enabled = true;
             this.xtraTabPage11.Name = "xtraTabPage11";
             this.xtraTabPage11.Size = new System.Drawing.Size(819, 529);
             this.xtraTabPage11.Text = " Фасады ";
@@ -2583,7 +1989,7 @@
             this.panel7.Location = new System.Drawing.Point(0, 0);
             this.panel7.MinimumSize = new System.Drawing.Size(490, 454);
             this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(810, 526);
+            this.panel7.Size = new System.Drawing.Size(810, 514);
             this.panel7.TabIndex = 301;
             // 
             // StartPanel
@@ -2644,58 +2050,6 @@
             this.panel35.Size = new System.Drawing.Size(325, 156);
             this.panel35.TabIndex = 73;
             // 
-            // TechnoColorsDataGrid
-            // 
-            this.TechnoColorsDataGrid.AllowUserToAddRows = false;
-            this.TechnoColorsDataGrid.AllowUserToDeleteRows = false;
-            this.TechnoColorsDataGrid.AllowUserToResizeColumns = false;
-            this.TechnoColorsDataGrid.AllowUserToResizeRows = false;
-            this.TechnoColorsDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.TechnoColorsDataGrid.BackText = "Нет данных";
-            this.TechnoColorsDataGrid.ColumnHeadersHeight = 40;
-            this.TechnoColorsDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.TechnoColorsDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.TechnoColorsDataGrid.Location = new System.Drawing.Point(1, 1);
-            this.TechnoColorsDataGrid.Name = "TechnoColorsDataGrid";
-            this.TechnoColorsDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.TechnoColorsDataGrid.PercentLineWidth = 0;
-            this.TechnoColorsDataGrid.ReadOnly = true;
-            this.TechnoColorsDataGrid.RowHeadersVisible = false;
-            this.TechnoColorsDataGrid.RowTemplate.Height = 30;
-            this.TechnoColorsDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.TechnoColorsDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
-            this.TechnoColorsDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.TechnoColorsDataGrid.Size = new System.Drawing.Size(323, 154);
-            this.TechnoColorsDataGrid.StandardStyle = false;
-            this.TechnoColorsDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
-            this.TechnoColorsDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
-            this.TechnoColorsDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.TechnoColorsDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
-            this.TechnoColorsDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
-            this.TechnoColorsDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.TechnoColorsDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
-            this.TechnoColorsDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.TechnoColorsDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.TechnoColorsDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
-            this.TechnoColorsDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.TechnoColorsDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
-            this.TechnoColorsDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.TechnoColorsDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
-            this.TechnoColorsDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.TechnoColorsDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom;
-            this.TechnoColorsDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
-            this.TechnoColorsDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
-            this.TechnoColorsDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.TechnoColorsDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(121)))), ((int)(((byte)(177)))), ((int)(((byte)(229)))));
-            this.TechnoColorsDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.TechnoColorsDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.TechnoColorsDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
-            this.TechnoColorsDataGrid.TabIndex = 57;
-            this.TechnoColorsDataGrid.UseCustomBackColor = true;
-            this.TechnoColorsDataGrid.SelectionChanged += new System.EventHandler(this.TechnoColorsDataGrid_SelectionChanged);
-            // 
             // kryptonBorderEdge111
             // 
             this.kryptonBorderEdge111.Dock = System.Windows.Forms.DockStyle.Top;
@@ -2747,58 +2101,6 @@
             this.panel34.Name = "panel34";
             this.panel34.Size = new System.Drawing.Size(325, 156);
             this.panel34.TabIndex = 72;
-            // 
-            // TechnoInsetColorsDataGrid
-            // 
-            this.TechnoInsetColorsDataGrid.AllowUserToAddRows = false;
-            this.TechnoInsetColorsDataGrid.AllowUserToDeleteRows = false;
-            this.TechnoInsetColorsDataGrid.AllowUserToResizeColumns = false;
-            this.TechnoInsetColorsDataGrid.AllowUserToResizeRows = false;
-            this.TechnoInsetColorsDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.TechnoInsetColorsDataGrid.BackText = "Нет данных";
-            this.TechnoInsetColorsDataGrid.ColumnHeadersHeight = 40;
-            this.TechnoInsetColorsDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.TechnoInsetColorsDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.TechnoInsetColorsDataGrid.Location = new System.Drawing.Point(1, 1);
-            this.TechnoInsetColorsDataGrid.Name = "TechnoInsetColorsDataGrid";
-            this.TechnoInsetColorsDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.TechnoInsetColorsDataGrid.PercentLineWidth = 0;
-            this.TechnoInsetColorsDataGrid.ReadOnly = true;
-            this.TechnoInsetColorsDataGrid.RowHeadersVisible = false;
-            this.TechnoInsetColorsDataGrid.RowTemplate.Height = 30;
-            this.TechnoInsetColorsDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.TechnoInsetColorsDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Green;
-            this.TechnoInsetColorsDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.TechnoInsetColorsDataGrid.Size = new System.Drawing.Size(323, 154);
-            this.TechnoInsetColorsDataGrid.StandardStyle = false;
-            this.TechnoInsetColorsDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
-            this.TechnoInsetColorsDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
-            this.TechnoInsetColorsDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.TechnoInsetColorsDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
-            this.TechnoInsetColorsDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
-            this.TechnoInsetColorsDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.TechnoInsetColorsDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
-            this.TechnoInsetColorsDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.TechnoInsetColorsDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.TechnoInsetColorsDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
-            this.TechnoInsetColorsDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.TechnoInsetColorsDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
-            this.TechnoInsetColorsDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.TechnoInsetColorsDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
-            this.TechnoInsetColorsDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.TechnoInsetColorsDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom;
-            this.TechnoInsetColorsDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
-            this.TechnoInsetColorsDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
-            this.TechnoInsetColorsDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.TechnoInsetColorsDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(158)))), ((int)(((byte)(0)))));
-            this.TechnoInsetColorsDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.TechnoInsetColorsDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.TechnoInsetColorsDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
-            this.TechnoInsetColorsDataGrid.TabIndex = 60;
-            this.TechnoInsetColorsDataGrid.UseCustomBackColor = true;
-            this.TechnoInsetColorsDataGrid.SelectionChanged += new System.EventHandler(this.TechnoInsetColorsDataGrid_SelectionChanged);
             // 
             // kryptonBorderEdge107
             // 
@@ -2879,58 +2181,6 @@
             this.kryptonBorderEdge22.Size = new System.Drawing.Size(1, 156);
             this.kryptonBorderEdge22.StateCommon.Color1 = System.Drawing.Color.Black;
             this.kryptonBorderEdge22.Text = "kryptonBorderEdge22";
-            // 
-            // TechnoInsetTypesDataGrid
-            // 
-            this.TechnoInsetTypesDataGrid.AllowUserToAddRows = false;
-            this.TechnoInsetTypesDataGrid.AllowUserToDeleteRows = false;
-            this.TechnoInsetTypesDataGrid.AllowUserToResizeColumns = false;
-            this.TechnoInsetTypesDataGrid.AllowUserToResizeRows = false;
-            this.TechnoInsetTypesDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.TechnoInsetTypesDataGrid.BackText = "Нет данных";
-            this.TechnoInsetTypesDataGrid.ColumnHeadersHeight = 40;
-            this.TechnoInsetTypesDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.TechnoInsetTypesDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.TechnoInsetTypesDataGrid.Location = new System.Drawing.Point(1, 0);
-            this.TechnoInsetTypesDataGrid.Name = "TechnoInsetTypesDataGrid";
-            this.TechnoInsetTypesDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.TechnoInsetTypesDataGrid.PercentLineWidth = 0;
-            this.TechnoInsetTypesDataGrid.ReadOnly = true;
-            this.TechnoInsetTypesDataGrid.RowHeadersVisible = false;
-            this.TechnoInsetTypesDataGrid.RowTemplate.Height = 30;
-            this.TechnoInsetTypesDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.TechnoInsetTypesDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
-            this.TechnoInsetTypesDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.TechnoInsetTypesDataGrid.Size = new System.Drawing.Size(324, 156);
-            this.TechnoInsetTypesDataGrid.StandardStyle = false;
-            this.TechnoInsetTypesDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
-            this.TechnoInsetTypesDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
-            this.TechnoInsetTypesDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.TechnoInsetTypesDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
-            this.TechnoInsetTypesDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
-            this.TechnoInsetTypesDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.TechnoInsetTypesDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
-            this.TechnoInsetTypesDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.TechnoInsetTypesDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.TechnoInsetTypesDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
-            this.TechnoInsetTypesDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.TechnoInsetTypesDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
-            this.TechnoInsetTypesDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.TechnoInsetTypesDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
-            this.TechnoInsetTypesDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.TechnoInsetTypesDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom;
-            this.TechnoInsetTypesDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
-            this.TechnoInsetTypesDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
-            this.TechnoInsetTypesDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.TechnoInsetTypesDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(121)))), ((int)(((byte)(177)))), ((int)(((byte)(229)))));
-            this.TechnoInsetTypesDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.TechnoInsetTypesDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.TechnoInsetTypesDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
-            this.TechnoInsetTypesDataGrid.TabIndex = 59;
-            this.TechnoInsetTypesDataGrid.UseCustomBackColor = true;
-            this.TechnoInsetTypesDataGrid.SelectionChanged += new System.EventHandler(this.TechnoInsetTypesDataGrid_SelectionChanged);
             // 
             // kryptonBorderEdge23
             // 
@@ -3027,61 +2277,6 @@
             this.label5.Text = "м.кв.";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // FrontsDataGrid
-            // 
-            this.FrontsDataGrid.AllowUserToAddRows = false;
-            this.FrontsDataGrid.AllowUserToDeleteRows = false;
-            this.FrontsDataGrid.AllowUserToResizeColumns = false;
-            this.FrontsDataGrid.AllowUserToResizeRows = false;
-            this.FrontsDataGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.FrontsDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.FrontsDataGrid.BackText = "Нет данных";
-            this.FrontsDataGrid.ColumnHeadersHeight = 40;
-            this.FrontsDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.FrontsDataGrid.Location = new System.Drawing.Point(1, 1);
-            this.FrontsDataGrid.Name = "FrontsDataGrid";
-            this.FrontsDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.FrontsDataGrid.PercentLineWidth = 0;
-            this.FrontsDataGrid.ReadOnly = true;
-            this.FrontsDataGrid.RowHeadersVisible = false;
-            this.FrontsDataGrid.RowTemplate.Height = 30;
-            this.FrontsDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.FrontsDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Orange;
-            this.FrontsDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.FrontsDataGrid.Size = new System.Drawing.Size(323, 433);
-            this.FrontsDataGrid.StandardStyle = false;
-            this.FrontsDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
-            this.FrontsDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
-            this.FrontsDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.FrontsDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
-            this.FrontsDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
-            this.FrontsDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.FrontsDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
-            this.FrontsDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.FrontsDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.FrontsDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
-            this.FrontsDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.FrontsDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
-            this.FrontsDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.FrontsDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
-            this.FrontsDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.FrontsDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom;
-            this.FrontsDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
-            this.FrontsDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
-            this.FrontsDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.FrontsDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(253)))), ((int)(((byte)(164)))), ((int)(((byte)(61)))));
-            this.FrontsDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.FrontsDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.FrontsDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
-            this.FrontsDataGrid.TabIndex = 38;
-            this.FrontsDataGrid.UseCustomBackColor = true;
-            this.FrontsDataGrid.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.FrontsDataGrid_CellMouseDown);
-            this.FrontsDataGrid.SelectionChanged += new System.EventHandler(this.FrontsDataGrid_SelectionChanged);
-            // 
             // kryptonBorderEdge12
             // 
             this.kryptonBorderEdge12.Dock = System.Windows.Forms.DockStyle.Top;
@@ -3135,58 +2330,6 @@
             this.panel9.Size = new System.Drawing.Size(325, 328);
             this.panel9.TabIndex = 67;
             // 
-            // FrameColorsDataGrid
-            // 
-            this.FrameColorsDataGrid.AllowUserToAddRows = false;
-            this.FrameColorsDataGrid.AllowUserToDeleteRows = false;
-            this.FrameColorsDataGrid.AllowUserToResizeColumns = false;
-            this.FrameColorsDataGrid.AllowUserToResizeRows = false;
-            this.FrameColorsDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.FrameColorsDataGrid.BackText = "Нет данных";
-            this.FrameColorsDataGrid.ColumnHeadersHeight = 40;
-            this.FrameColorsDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.FrameColorsDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.FrameColorsDataGrid.Location = new System.Drawing.Point(1, 1);
-            this.FrameColorsDataGrid.Name = "FrameColorsDataGrid";
-            this.FrameColorsDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.FrameColorsDataGrid.PercentLineWidth = 0;
-            this.FrameColorsDataGrid.ReadOnly = true;
-            this.FrameColorsDataGrid.RowHeadersVisible = false;
-            this.FrameColorsDataGrid.RowTemplate.Height = 30;
-            this.FrameColorsDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.FrameColorsDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
-            this.FrameColorsDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.FrameColorsDataGrid.Size = new System.Drawing.Size(323, 326);
-            this.FrameColorsDataGrid.StandardStyle = false;
-            this.FrameColorsDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
-            this.FrameColorsDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
-            this.FrameColorsDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.FrameColorsDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
-            this.FrameColorsDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
-            this.FrameColorsDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.FrameColorsDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
-            this.FrameColorsDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.FrameColorsDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.FrameColorsDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
-            this.FrameColorsDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.FrameColorsDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
-            this.FrameColorsDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.FrameColorsDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
-            this.FrameColorsDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.FrameColorsDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom;
-            this.FrameColorsDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
-            this.FrameColorsDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
-            this.FrameColorsDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.FrameColorsDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(121)))), ((int)(((byte)(177)))), ((int)(((byte)(229)))));
-            this.FrameColorsDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.FrameColorsDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.FrameColorsDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
-            this.FrameColorsDataGrid.TabIndex = 57;
-            this.FrameColorsDataGrid.UseCustomBackColor = true;
-            this.FrameColorsDataGrid.SelectionChanged += new System.EventHandler(this.FrameColorsDataGrid_SelectionChanged);
-            // 
             // kryptonBorderEdge24
             // 
             this.kryptonBorderEdge24.Dock = System.Windows.Forms.DockStyle.Top;
@@ -3238,57 +2381,6 @@
             this.panel10.Name = "panel10";
             this.panel10.Size = new System.Drawing.Size(325, 156);
             this.panel10.TabIndex = 68;
-            // 
-            // SizesDataGrid
-            // 
-            this.SizesDataGrid.AllowUserToAddRows = false;
-            this.SizesDataGrid.AllowUserToDeleteRows = false;
-            this.SizesDataGrid.AllowUserToResizeColumns = false;
-            this.SizesDataGrid.AllowUserToResizeRows = false;
-            this.SizesDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.SizesDataGrid.BackText = "Нет данных";
-            this.SizesDataGrid.ColumnHeadersHeight = 40;
-            this.SizesDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.SizesDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.SizesDataGrid.Location = new System.Drawing.Point(1, 1);
-            this.SizesDataGrid.Name = "SizesDataGrid";
-            this.SizesDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.SizesDataGrid.PercentLineWidth = 0;
-            this.SizesDataGrid.ReadOnly = true;
-            this.SizesDataGrid.RowHeadersVisible = false;
-            this.SizesDataGrid.RowTemplate.Height = 30;
-            this.SizesDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.SizesDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Green;
-            this.SizesDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.SizesDataGrid.Size = new System.Drawing.Size(323, 154);
-            this.SizesDataGrid.StandardStyle = false;
-            this.SizesDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
-            this.SizesDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
-            this.SizesDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.SizesDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
-            this.SizesDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
-            this.SizesDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.SizesDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
-            this.SizesDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.SizesDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.SizesDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
-            this.SizesDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.SizesDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
-            this.SizesDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.SizesDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
-            this.SizesDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.SizesDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom;
-            this.SizesDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
-            this.SizesDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
-            this.SizesDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.SizesDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(158)))), ((int)(((byte)(0)))));
-            this.SizesDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.SizesDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.SizesDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
-            this.SizesDataGrid.TabIndex = 58;
-            this.SizesDataGrid.UseCustomBackColor = true;
             // 
             // kryptonBorderEdge28
             // 
@@ -3371,58 +2463,6 @@
             this.kryptonBorderEdge36.StateCommon.Color1 = System.Drawing.Color.Black;
             this.kryptonBorderEdge36.Text = "kryptonBorderEdge36";
             // 
-            // InsetTypesDataGrid
-            // 
-            this.InsetTypesDataGrid.AllowUserToAddRows = false;
-            this.InsetTypesDataGrid.AllowUserToDeleteRows = false;
-            this.InsetTypesDataGrid.AllowUserToResizeColumns = false;
-            this.InsetTypesDataGrid.AllowUserToResizeRows = false;
-            this.InsetTypesDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.InsetTypesDataGrid.BackText = "Нет данных";
-            this.InsetTypesDataGrid.ColumnHeadersHeight = 40;
-            this.InsetTypesDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.InsetTypesDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.InsetTypesDataGrid.Location = new System.Drawing.Point(1, 0);
-            this.InsetTypesDataGrid.Name = "InsetTypesDataGrid";
-            this.InsetTypesDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.InsetTypesDataGrid.PercentLineWidth = 0;
-            this.InsetTypesDataGrid.ReadOnly = true;
-            this.InsetTypesDataGrid.RowHeadersVisible = false;
-            this.InsetTypesDataGrid.RowTemplate.Height = 30;
-            this.InsetTypesDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.InsetTypesDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
-            this.InsetTypesDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.InsetTypesDataGrid.Size = new System.Drawing.Size(324, 328);
-            this.InsetTypesDataGrid.StandardStyle = false;
-            this.InsetTypesDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
-            this.InsetTypesDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
-            this.InsetTypesDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.InsetTypesDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
-            this.InsetTypesDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
-            this.InsetTypesDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.InsetTypesDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
-            this.InsetTypesDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.InsetTypesDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.InsetTypesDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
-            this.InsetTypesDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.InsetTypesDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
-            this.InsetTypesDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.InsetTypesDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
-            this.InsetTypesDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.InsetTypesDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom;
-            this.InsetTypesDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
-            this.InsetTypesDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
-            this.InsetTypesDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.InsetTypesDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(121)))), ((int)(((byte)(177)))), ((int)(((byte)(229)))));
-            this.InsetTypesDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.InsetTypesDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.InsetTypesDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
-            this.InsetTypesDataGrid.TabIndex = 59;
-            this.InsetTypesDataGrid.UseCustomBackColor = true;
-            this.InsetTypesDataGrid.SelectionChanged += new System.EventHandler(this.InsetTypesDataGrid_SelectionChanged);
-            // 
             // kryptonBorderEdge37
             // 
             this.kryptonBorderEdge37.Dock = System.Windows.Forms.DockStyle.Left;
@@ -3446,58 +2486,6 @@
             this.panel12.Name = "panel12";
             this.panel12.Size = new System.Drawing.Size(325, 156);
             this.panel12.TabIndex = 70;
-            // 
-            // InsetColorsDataGrid
-            // 
-            this.InsetColorsDataGrid.AllowUserToAddRows = false;
-            this.InsetColorsDataGrid.AllowUserToDeleteRows = false;
-            this.InsetColorsDataGrid.AllowUserToResizeColumns = false;
-            this.InsetColorsDataGrid.AllowUserToResizeRows = false;
-            this.InsetColorsDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.InsetColorsDataGrid.BackText = "Нет данных";
-            this.InsetColorsDataGrid.ColumnHeadersHeight = 40;
-            this.InsetColorsDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.InsetColorsDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.InsetColorsDataGrid.Location = new System.Drawing.Point(1, 1);
-            this.InsetColorsDataGrid.Name = "InsetColorsDataGrid";
-            this.InsetColorsDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.InsetColorsDataGrid.PercentLineWidth = 0;
-            this.InsetColorsDataGrid.ReadOnly = true;
-            this.InsetColorsDataGrid.RowHeadersVisible = false;
-            this.InsetColorsDataGrid.RowTemplate.Height = 30;
-            this.InsetColorsDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.InsetColorsDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Green;
-            this.InsetColorsDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.InsetColorsDataGrid.Size = new System.Drawing.Size(323, 154);
-            this.InsetColorsDataGrid.StandardStyle = false;
-            this.InsetColorsDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
-            this.InsetColorsDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
-            this.InsetColorsDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.InsetColorsDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
-            this.InsetColorsDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
-            this.InsetColorsDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.InsetColorsDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
-            this.InsetColorsDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.InsetColorsDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.InsetColorsDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
-            this.InsetColorsDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.InsetColorsDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
-            this.InsetColorsDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.InsetColorsDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
-            this.InsetColorsDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.InsetColorsDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom;
-            this.InsetColorsDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
-            this.InsetColorsDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
-            this.InsetColorsDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.InsetColorsDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(158)))), ((int)(((byte)(0)))));
-            this.InsetColorsDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.InsetColorsDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.InsetColorsDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
-            this.InsetColorsDataGrid.TabIndex = 60;
-            this.InsetColorsDataGrid.UseCustomBackColor = true;
-            this.InsetColorsDataGrid.SelectionChanged += new System.EventHandler(this.InsetColorsDataGrid_SelectionChanged);
             // 
             // kryptonBorderEdge63
             // 
@@ -3543,6 +2531,7 @@
             this.xtraTabPage16.Appearance.Header.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(158)))), ((int)(((byte)(0)))));
             this.xtraTabPage16.Appearance.Header.Options.UseBackColor = true;
             this.xtraTabPage16.Controls.Add(this.panel14);
+            this.xtraTabPage16.Enabled = true;
             this.xtraTabPage16.Name = "xtraTabPage16";
             this.xtraTabPage16.Size = new System.Drawing.Size(819, 529);
             this.xtraTabPage16.Text = " Декор ";
@@ -3636,57 +2625,6 @@
             this.kryptonBorderEdge69.Size = new System.Drawing.Size(1, 486);
             this.kryptonBorderEdge69.StateCommon.Color1 = System.Drawing.Color.Black;
             this.kryptonBorderEdge69.Text = "kryptonBorderEdge69";
-            // 
-            // DecorSizesDataGrid
-            // 
-            this.DecorSizesDataGrid.AllowUserToAddRows = false;
-            this.DecorSizesDataGrid.AllowUserToDeleteRows = false;
-            this.DecorSizesDataGrid.AllowUserToResizeColumns = false;
-            this.DecorSizesDataGrid.AllowUserToResizeRows = false;
-            this.DecorSizesDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.DecorSizesDataGrid.BackText = "Нет данных";
-            this.DecorSizesDataGrid.ColumnHeadersHeight = 40;
-            this.DecorSizesDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.DecorSizesDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.DecorSizesDataGrid.Location = new System.Drawing.Point(1, 0);
-            this.DecorSizesDataGrid.Name = "DecorSizesDataGrid";
-            this.DecorSizesDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.DecorSizesDataGrid.PercentLineWidth = 0;
-            this.DecorSizesDataGrid.ReadOnly = true;
-            this.DecorSizesDataGrid.RowHeadersVisible = false;
-            this.DecorSizesDataGrid.RowTemplate.Height = 30;
-            this.DecorSizesDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.DecorSizesDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Green;
-            this.DecorSizesDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.DecorSizesDataGrid.Size = new System.Drawing.Size(287, 486);
-            this.DecorSizesDataGrid.StandardStyle = false;
-            this.DecorSizesDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
-            this.DecorSizesDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
-            this.DecorSizesDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.DecorSizesDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
-            this.DecorSizesDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
-            this.DecorSizesDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.DecorSizesDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
-            this.DecorSizesDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.DecorSizesDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.DecorSizesDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
-            this.DecorSizesDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.DecorSizesDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
-            this.DecorSizesDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.DecorSizesDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
-            this.DecorSizesDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.DecorSizesDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom;
-            this.DecorSizesDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
-            this.DecorSizesDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
-            this.DecorSizesDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.DecorSizesDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(158)))), ((int)(((byte)(0)))));
-            this.DecorSizesDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.DecorSizesDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.DecorSizesDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
-            this.DecorSizesDataGrid.TabIndex = 39;
-            this.DecorSizesDataGrid.UseCustomBackColor = true;
             // 
             // kryptonBorderEdge70
             // 
@@ -3797,61 +2735,6 @@
             this.label9.Text = "м.п.";
             this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // DecorProductsDataGrid
-            // 
-            this.DecorProductsDataGrid.AllowUserToAddRows = false;
-            this.DecorProductsDataGrid.AllowUserToDeleteRows = false;
-            this.DecorProductsDataGrid.AllowUserToResizeColumns = false;
-            this.DecorProductsDataGrid.AllowUserToResizeRows = false;
-            this.DecorProductsDataGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.DecorProductsDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.DecorProductsDataGrid.BackText = "Нет данных";
-            this.DecorProductsDataGrid.ColumnHeadersHeight = 40;
-            this.DecorProductsDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.DecorProductsDataGrid.Location = new System.Drawing.Point(1, 0);
-            this.DecorProductsDataGrid.Name = "DecorProductsDataGrid";
-            this.DecorProductsDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.DecorProductsDataGrid.PercentLineWidth = 0;
-            this.DecorProductsDataGrid.ReadOnly = true;
-            this.DecorProductsDataGrid.RowHeadersVisible = false;
-            this.DecorProductsDataGrid.RowTemplate.Height = 30;
-            this.DecorProductsDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.DecorProductsDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
-            this.DecorProductsDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.DecorProductsDataGrid.Size = new System.Drawing.Size(344, 449);
-            this.DecorProductsDataGrid.StandardStyle = false;
-            this.DecorProductsDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
-            this.DecorProductsDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
-            this.DecorProductsDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.DecorProductsDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
-            this.DecorProductsDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
-            this.DecorProductsDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.DecorProductsDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
-            this.DecorProductsDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.DecorProductsDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.DecorProductsDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
-            this.DecorProductsDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.DecorProductsDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
-            this.DecorProductsDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.DecorProductsDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
-            this.DecorProductsDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.DecorProductsDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom;
-            this.DecorProductsDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
-            this.DecorProductsDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
-            this.DecorProductsDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.DecorProductsDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(121)))), ((int)(((byte)(177)))), ((int)(((byte)(229)))));
-            this.DecorProductsDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.DecorProductsDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.DecorProductsDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
-            this.DecorProductsDataGrid.TabIndex = 40;
-            this.DecorProductsDataGrid.UseCustomBackColor = true;
-            this.DecorProductsDataGrid.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.DecorProductsDataGrid_CellMouseDown);
-            this.DecorProductsDataGrid.SelectionChanged += new System.EventHandler(this.DecorProductsDataGrid_SelectionChanged);
-            // 
             // DecorCountLabel
             // 
             this.DecorCountLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -3917,58 +2800,6 @@
             this.kryptonBorderEdge77.StateCommon.Color1 = System.Drawing.Color.Black;
             this.kryptonBorderEdge77.Text = "kryptonBorderEdge77";
             // 
-            // DecorItemsDataGrid
-            // 
-            this.DecorItemsDataGrid.AllowUserToAddRows = false;
-            this.DecorItemsDataGrid.AllowUserToDeleteRows = false;
-            this.DecorItemsDataGrid.AllowUserToResizeColumns = false;
-            this.DecorItemsDataGrid.AllowUserToResizeRows = false;
-            this.DecorItemsDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.DecorItemsDataGrid.BackText = "Нет данных";
-            this.DecorItemsDataGrid.ColumnHeadersHeight = 40;
-            this.DecorItemsDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.DecorItemsDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.DecorItemsDataGrid.Location = new System.Drawing.Point(1, 0);
-            this.DecorItemsDataGrid.Name = "DecorItemsDataGrid";
-            this.DecorItemsDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.DecorItemsDataGrid.PercentLineWidth = 0;
-            this.DecorItemsDataGrid.ReadOnly = true;
-            this.DecorItemsDataGrid.RowHeadersVisible = false;
-            this.DecorItemsDataGrid.RowTemplate.Height = 30;
-            this.DecorItemsDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.DecorItemsDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
-            this.DecorItemsDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.DecorItemsDataGrid.Size = new System.Drawing.Size(328, 486);
-            this.DecorItemsDataGrid.StandardStyle = false;
-            this.DecorItemsDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
-            this.DecorItemsDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
-            this.DecorItemsDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.DecorItemsDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
-            this.DecorItemsDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
-            this.DecorItemsDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.DecorItemsDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
-            this.DecorItemsDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.DecorItemsDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.DecorItemsDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
-            this.DecorItemsDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.DecorItemsDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
-            this.DecorItemsDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.DecorItemsDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
-            this.DecorItemsDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.DecorItemsDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom;
-            this.DecorItemsDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
-            this.DecorItemsDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
-            this.DecorItemsDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.DecorItemsDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(121)))), ((int)(((byte)(177)))), ((int)(((byte)(229)))));
-            this.DecorItemsDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.DecorItemsDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.DecorItemsDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
-            this.DecorItemsDataGrid.TabIndex = 40;
-            this.DecorItemsDataGrid.UseCustomBackColor = true;
-            this.DecorItemsDataGrid.SelectionChanged += new System.EventHandler(this.DecorItemsDataGrid_SelectionChanged);
-            // 
             // kryptonBorderEdge78
             // 
             this.kryptonBorderEdge78.Dock = System.Windows.Forms.DockStyle.Left;
@@ -4021,58 +2852,6 @@
             this.kryptonBorderEdge81.StateCommon.Color1 = System.Drawing.Color.Black;
             this.kryptonBorderEdge81.Text = "kryptonBorderEdge81";
             // 
-            // DecorColorsDataGrid
-            // 
-            this.DecorColorsDataGrid.AllowUserToAddRows = false;
-            this.DecorColorsDataGrid.AllowUserToDeleteRows = false;
-            this.DecorColorsDataGrid.AllowUserToResizeColumns = false;
-            this.DecorColorsDataGrid.AllowUserToResizeRows = false;
-            this.DecorColorsDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.DecorColorsDataGrid.BackText = "Нет данных";
-            this.DecorColorsDataGrid.ColumnHeadersHeight = 40;
-            this.DecorColorsDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.DecorColorsDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.DecorColorsDataGrid.Location = new System.Drawing.Point(1, 0);
-            this.DecorColorsDataGrid.Name = "DecorColorsDataGrid";
-            this.DecorColorsDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.DecorColorsDataGrid.PercentLineWidth = 0;
-            this.DecorColorsDataGrid.ReadOnly = true;
-            this.DecorColorsDataGrid.RowHeadersVisible = false;
-            this.DecorColorsDataGrid.RowTemplate.Height = 30;
-            this.DecorColorsDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.DecorColorsDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Green;
-            this.DecorColorsDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.DecorColorsDataGrid.Size = new System.Drawing.Size(385, 486);
-            this.DecorColorsDataGrid.StandardStyle = false;
-            this.DecorColorsDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
-            this.DecorColorsDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
-            this.DecorColorsDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.DecorColorsDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
-            this.DecorColorsDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
-            this.DecorColorsDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.DecorColorsDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
-            this.DecorColorsDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.DecorColorsDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.DecorColorsDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
-            this.DecorColorsDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.DecorColorsDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
-            this.DecorColorsDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.DecorColorsDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
-            this.DecorColorsDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.DecorColorsDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom;
-            this.DecorColorsDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
-            this.DecorColorsDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
-            this.DecorColorsDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.DecorColorsDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(158)))), ((int)(((byte)(0)))));
-            this.DecorColorsDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.DecorColorsDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.DecorColorsDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
-            this.DecorColorsDataGrid.TabIndex = 39;
-            this.DecorColorsDataGrid.UseCustomBackColor = true;
-            this.DecorColorsDataGrid.SelectionChanged += new System.EventHandler(this.DecorColorsDataGrid_SelectionChanged);
-            // 
             // kryptonBorderEdge82
             // 
             this.kryptonBorderEdge82.Dock = System.Windows.Forms.DockStyle.Left;
@@ -4114,7 +2893,7 @@
             this.kryptonSplitContainer1.Panel2.StateCommon.Color1 = System.Drawing.Color.Transparent;
             this.kryptonSplitContainer1.Panel2MinSize = 200;
             this.kryptonSplitContainer1.SeparatorStyle = ComponentFactory.Krypton.Toolkit.SeparatorStyle.HighProfile;
-            this.kryptonSplitContainer1.Size = new System.Drawing.Size(1254, 620);
+            this.kryptonSplitContainer1.Size = new System.Drawing.Size(1254, 608);
             this.kryptonSplitContainer1.SplitterDistance = 200;
             this.kryptonSplitContainer1.SplitterWidth = 6;
             this.kryptonSplitContainer1.StateCommon.Back.Color1 = System.Drawing.Color.Transparent;
@@ -4145,6 +2924,7 @@
             this.xtraTabPage5.Appearance.Header.Options.UseBackColor = true;
             this.xtraTabPage5.Controls.Add(this.xtraTabControl3);
             this.xtraTabPage5.Controls.Add(this.kryptonBorderEdge2);
+            this.xtraTabPage5.Enabled = true;
             this.xtraTabPage5.Name = "xtraTabPage5";
             this.xtraTabPage5.Size = new System.Drawing.Size(1259, 632);
             this.xtraTabPage5.Text = " Новая партия ";
@@ -4185,6 +2965,7 @@
             this.xtraTabPage10.Controls.Add(this.kryptonBorderEdge32);
             this.xtraTabPage10.Controls.Add(this.AddToBatchButton);
             this.xtraTabPage10.Controls.Add(this.panel3);
+            this.xtraTabPage10.Enabled = true;
             this.xtraTabPage10.Name = "xtraTabPage10";
             this.xtraTabPage10.Size = new System.Drawing.Size(1235, 584);
             this.xtraTabPage10.Text = " Заказы ";
@@ -4301,7 +3082,7 @@
             this.panel3.Controls.Add(this.kryptonBorderEdge18);
             this.panel3.Location = new System.Drawing.Point(4, 72);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(1231, 512);
+            this.panel3.Size = new System.Drawing.Size(1231, 500);
             this.panel3.TabIndex = 317;
             // 
             // kryptonBorderEdge21
@@ -4310,7 +3091,7 @@
             this.kryptonBorderEdge21.Location = new System.Drawing.Point(1230, 1);
             this.kryptonBorderEdge21.Name = "kryptonBorderEdge21";
             this.kryptonBorderEdge21.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge21.Size = new System.Drawing.Size(1, 510);
+            this.kryptonBorderEdge21.Size = new System.Drawing.Size(1, 498);
             this.kryptonBorderEdge21.StateCommon.Color1 = System.Drawing.Color.Black;
             this.kryptonBorderEdge21.Text = "kryptonBorderEdge21";
             // 
@@ -4320,14 +3101,14 @@
             this.kryptonBorderEdge20.Location = new System.Drawing.Point(0, 1);
             this.kryptonBorderEdge20.Name = "kryptonBorderEdge20";
             this.kryptonBorderEdge20.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge20.Size = new System.Drawing.Size(1, 510);
+            this.kryptonBorderEdge20.Size = new System.Drawing.Size(1, 498);
             this.kryptonBorderEdge20.StateCommon.Color1 = System.Drawing.Color.Black;
             this.kryptonBorderEdge20.Text = "kryptonBorderEdge20";
             // 
             // kryptonBorderEdge19
             // 
             this.kryptonBorderEdge19.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.kryptonBorderEdge19.Location = new System.Drawing.Point(0, 511);
+            this.kryptonBorderEdge19.Location = new System.Drawing.Point(0, 499);
             this.kryptonBorderEdge19.Name = "kryptonBorderEdge19";
             this.kryptonBorderEdge19.Size = new System.Drawing.Size(1231, 1);
             this.kryptonBorderEdge19.StateCommon.Color1 = System.Drawing.Color.Black;
@@ -4348,6 +3129,7 @@
             this.xtraTabPage13.Appearance.Header.Options.UseBackColor = true;
             this.xtraTabPage13.Controls.Add(this.xtraTabControl6);
             this.xtraTabPage13.Controls.Add(this.kryptonBorderEdge53);
+            this.xtraTabPage13.Enabled = true;
             this.xtraTabPage13.Name = "xtraTabPage13";
             this.xtraTabPage13.Size = new System.Drawing.Size(1235, 584);
             this.xtraTabPage13.Text = " Сводка ";
@@ -4385,6 +3167,7 @@
             this.xtraTabPage14.Appearance.Header.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(253)))), ((int)(((byte)(164)))), ((int)(((byte)(61)))));
             this.xtraTabPage14.Appearance.Header.Options.UseBackColor = true;
             this.xtraTabPage14.Controls.Add(this.panel13);
+            this.xtraTabPage14.Enabled = true;
             this.xtraTabPage14.Name = "xtraTabPage14";
             this.xtraTabPage14.Size = new System.Drawing.Size(1209, 529);
             this.xtraTabPage14.Text = " Фасады ";
@@ -4399,7 +3182,7 @@
             this.panel13.Location = new System.Drawing.Point(0, 0);
             this.panel13.MinimumSize = new System.Drawing.Size(490, 454);
             this.panel13.Name = "panel13";
-            this.panel13.Size = new System.Drawing.Size(1200, 526);
+            this.panel13.Size = new System.Drawing.Size(1200, 514);
             this.panel13.TabIndex = 301;
             // 
             // panel15
@@ -4489,58 +3272,6 @@
             this.kryptonBorderEdge121.StateCommon.Color1 = System.Drawing.Color.Black;
             this.kryptonBorderEdge121.Text = "kryptonBorderEdge121";
             // 
-            // PreTechnoInsetTypesDataGrid
-            // 
-            this.PreTechnoInsetTypesDataGrid.AllowUserToAddRows = false;
-            this.PreTechnoInsetTypesDataGrid.AllowUserToDeleteRows = false;
-            this.PreTechnoInsetTypesDataGrid.AllowUserToResizeColumns = false;
-            this.PreTechnoInsetTypesDataGrid.AllowUserToResizeRows = false;
-            this.PreTechnoInsetTypesDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.PreTechnoInsetTypesDataGrid.BackText = "Нет данных";
-            this.PreTechnoInsetTypesDataGrid.ColumnHeadersHeight = 40;
-            this.PreTechnoInsetTypesDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.PreTechnoInsetTypesDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PreTechnoInsetTypesDataGrid.Location = new System.Drawing.Point(1, 0);
-            this.PreTechnoInsetTypesDataGrid.Name = "PreTechnoInsetTypesDataGrid";
-            this.PreTechnoInsetTypesDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.PreTechnoInsetTypesDataGrid.PercentLineWidth = 0;
-            this.PreTechnoInsetTypesDataGrid.ReadOnly = true;
-            this.PreTechnoInsetTypesDataGrid.RowHeadersVisible = false;
-            this.PreTechnoInsetTypesDataGrid.RowTemplate.Height = 30;
-            this.PreTechnoInsetTypesDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.PreTechnoInsetTypesDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
-            this.PreTechnoInsetTypesDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.PreTechnoInsetTypesDataGrid.Size = new System.Drawing.Size(324, 156);
-            this.PreTechnoInsetTypesDataGrid.StandardStyle = false;
-            this.PreTechnoInsetTypesDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
-            this.PreTechnoInsetTypesDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
-            this.PreTechnoInsetTypesDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.PreTechnoInsetTypesDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
-            this.PreTechnoInsetTypesDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
-            this.PreTechnoInsetTypesDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.PreTechnoInsetTypesDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
-            this.PreTechnoInsetTypesDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.PreTechnoInsetTypesDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.PreTechnoInsetTypesDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
-            this.PreTechnoInsetTypesDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.PreTechnoInsetTypesDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
-            this.PreTechnoInsetTypesDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.PreTechnoInsetTypesDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
-            this.PreTechnoInsetTypesDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.PreTechnoInsetTypesDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom;
-            this.PreTechnoInsetTypesDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
-            this.PreTechnoInsetTypesDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
-            this.PreTechnoInsetTypesDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.PreTechnoInsetTypesDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(121)))), ((int)(((byte)(177)))), ((int)(((byte)(229)))));
-            this.PreTechnoInsetTypesDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.PreTechnoInsetTypesDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.PreTechnoInsetTypesDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
-            this.PreTechnoInsetTypesDataGrid.TabIndex = 59;
-            this.PreTechnoInsetTypesDataGrid.UseCustomBackColor = true;
-            this.PreTechnoInsetTypesDataGrid.SelectionChanged += new System.EventHandler(this.PreTechnoInsetTypesDataGrid_SelectionChanged);
-            // 
             // kryptonBorderEdge122
             // 
             this.kryptonBorderEdge122.Dock = System.Windows.Forms.DockStyle.Left;
@@ -4564,58 +3295,6 @@
             this.panel36.Name = "panel36";
             this.panel36.Size = new System.Drawing.Size(325, 156);
             this.panel36.TabIndex = 72;
-            // 
-            // PreTechnoInsetColorsDataGrid
-            // 
-            this.PreTechnoInsetColorsDataGrid.AllowUserToAddRows = false;
-            this.PreTechnoInsetColorsDataGrid.AllowUserToDeleteRows = false;
-            this.PreTechnoInsetColorsDataGrid.AllowUserToResizeColumns = false;
-            this.PreTechnoInsetColorsDataGrid.AllowUserToResizeRows = false;
-            this.PreTechnoInsetColorsDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.PreTechnoInsetColorsDataGrid.BackText = "Нет данных";
-            this.PreTechnoInsetColorsDataGrid.ColumnHeadersHeight = 40;
-            this.PreTechnoInsetColorsDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.PreTechnoInsetColorsDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PreTechnoInsetColorsDataGrid.Location = new System.Drawing.Point(1, 1);
-            this.PreTechnoInsetColorsDataGrid.Name = "PreTechnoInsetColorsDataGrid";
-            this.PreTechnoInsetColorsDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.PreTechnoInsetColorsDataGrid.PercentLineWidth = 0;
-            this.PreTechnoInsetColorsDataGrid.ReadOnly = true;
-            this.PreTechnoInsetColorsDataGrid.RowHeadersVisible = false;
-            this.PreTechnoInsetColorsDataGrid.RowTemplate.Height = 30;
-            this.PreTechnoInsetColorsDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.PreTechnoInsetColorsDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Green;
-            this.PreTechnoInsetColorsDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.PreTechnoInsetColorsDataGrid.Size = new System.Drawing.Size(323, 154);
-            this.PreTechnoInsetColorsDataGrid.StandardStyle = false;
-            this.PreTechnoInsetColorsDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
-            this.PreTechnoInsetColorsDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
-            this.PreTechnoInsetColorsDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.PreTechnoInsetColorsDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
-            this.PreTechnoInsetColorsDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
-            this.PreTechnoInsetColorsDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.PreTechnoInsetColorsDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
-            this.PreTechnoInsetColorsDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.PreTechnoInsetColorsDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.PreTechnoInsetColorsDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
-            this.PreTechnoInsetColorsDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.PreTechnoInsetColorsDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
-            this.PreTechnoInsetColorsDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.PreTechnoInsetColorsDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
-            this.PreTechnoInsetColorsDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.PreTechnoInsetColorsDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom;
-            this.PreTechnoInsetColorsDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
-            this.PreTechnoInsetColorsDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
-            this.PreTechnoInsetColorsDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.PreTechnoInsetColorsDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(158)))), ((int)(((byte)(0)))));
-            this.PreTechnoInsetColorsDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.PreTechnoInsetColorsDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.PreTechnoInsetColorsDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
-            this.PreTechnoInsetColorsDataGrid.TabIndex = 60;
-            this.PreTechnoInsetColorsDataGrid.UseCustomBackColor = true;
-            this.PreTechnoInsetColorsDataGrid.SelectionChanged += new System.EventHandler(this.PreTechnoInsetColorsDataGrid_SelectionChanged);
             // 
             // kryptonBorderEdge115
             // 
@@ -4668,58 +3347,6 @@
             this.panel33.Name = "panel33";
             this.panel33.Size = new System.Drawing.Size(325, 156);
             this.panel33.TabIndex = 71;
-            // 
-            // PreTechnoColorsDataGrid
-            // 
-            this.PreTechnoColorsDataGrid.AllowUserToAddRows = false;
-            this.PreTechnoColorsDataGrid.AllowUserToDeleteRows = false;
-            this.PreTechnoColorsDataGrid.AllowUserToResizeColumns = false;
-            this.PreTechnoColorsDataGrid.AllowUserToResizeRows = false;
-            this.PreTechnoColorsDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.PreTechnoColorsDataGrid.BackText = "Нет данных";
-            this.PreTechnoColorsDataGrid.ColumnHeadersHeight = 40;
-            this.PreTechnoColorsDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.PreTechnoColorsDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PreTechnoColorsDataGrid.Location = new System.Drawing.Point(1, 1);
-            this.PreTechnoColorsDataGrid.Name = "PreTechnoColorsDataGrid";
-            this.PreTechnoColorsDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.PreTechnoColorsDataGrid.PercentLineWidth = 0;
-            this.PreTechnoColorsDataGrid.ReadOnly = true;
-            this.PreTechnoColorsDataGrid.RowHeadersVisible = false;
-            this.PreTechnoColorsDataGrid.RowTemplate.Height = 30;
-            this.PreTechnoColorsDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.PreTechnoColorsDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
-            this.PreTechnoColorsDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.PreTechnoColorsDataGrid.Size = new System.Drawing.Size(323, 154);
-            this.PreTechnoColorsDataGrid.StandardStyle = false;
-            this.PreTechnoColorsDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
-            this.PreTechnoColorsDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
-            this.PreTechnoColorsDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.PreTechnoColorsDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
-            this.PreTechnoColorsDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
-            this.PreTechnoColorsDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.PreTechnoColorsDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
-            this.PreTechnoColorsDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.PreTechnoColorsDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.PreTechnoColorsDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
-            this.PreTechnoColorsDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.PreTechnoColorsDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
-            this.PreTechnoColorsDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.PreTechnoColorsDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
-            this.PreTechnoColorsDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.PreTechnoColorsDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom;
-            this.PreTechnoColorsDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
-            this.PreTechnoColorsDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
-            this.PreTechnoColorsDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.PreTechnoColorsDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(121)))), ((int)(((byte)(177)))), ((int)(((byte)(229)))));
-            this.PreTechnoColorsDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.PreTechnoColorsDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.PreTechnoColorsDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
-            this.PreTechnoColorsDataGrid.TabIndex = 57;
-            this.PreTechnoColorsDataGrid.UseCustomBackColor = true;
-            this.PreTechnoColorsDataGrid.SelectionChanged += new System.EventHandler(this.PreTechnoColorsDataGrid_SelectionChanged);
             // 
             // kryptonBorderEdge103
             // 
@@ -4844,60 +3471,6 @@
             this.label14.Text = "шт.";
             this.label14.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // PreFrontsDataGrid
-            // 
-            this.PreFrontsDataGrid.AllowUserToAddRows = false;
-            this.PreFrontsDataGrid.AllowUserToDeleteRows = false;
-            this.PreFrontsDataGrid.AllowUserToResizeColumns = false;
-            this.PreFrontsDataGrid.AllowUserToResizeRows = false;
-            this.PreFrontsDataGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.PreFrontsDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.PreFrontsDataGrid.BackText = "Нет данных";
-            this.PreFrontsDataGrid.ColumnHeadersHeight = 40;
-            this.PreFrontsDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.PreFrontsDataGrid.Location = new System.Drawing.Point(1, 1);
-            this.PreFrontsDataGrid.Name = "PreFrontsDataGrid";
-            this.PreFrontsDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.PreFrontsDataGrid.PercentLineWidth = 0;
-            this.PreFrontsDataGrid.ReadOnly = true;
-            this.PreFrontsDataGrid.RowHeadersVisible = false;
-            this.PreFrontsDataGrid.RowTemplate.Height = 30;
-            this.PreFrontsDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.PreFrontsDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Orange;
-            this.PreFrontsDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.PreFrontsDataGrid.Size = new System.Drawing.Size(323, 433);
-            this.PreFrontsDataGrid.StandardStyle = false;
-            this.PreFrontsDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
-            this.PreFrontsDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
-            this.PreFrontsDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.PreFrontsDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
-            this.PreFrontsDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
-            this.PreFrontsDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.PreFrontsDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
-            this.PreFrontsDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.PreFrontsDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.PreFrontsDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
-            this.PreFrontsDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.PreFrontsDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
-            this.PreFrontsDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.PreFrontsDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
-            this.PreFrontsDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.PreFrontsDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom;
-            this.PreFrontsDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
-            this.PreFrontsDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
-            this.PreFrontsDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.PreFrontsDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(253)))), ((int)(((byte)(164)))), ((int)(((byte)(61)))));
-            this.PreFrontsDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.PreFrontsDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.PreFrontsDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
-            this.PreFrontsDataGrid.TabIndex = 38;
-            this.PreFrontsDataGrid.UseCustomBackColor = true;
-            this.PreFrontsDataGrid.SelectionChanged += new System.EventHandler(this.PreFrontsDataGrid_SelectionChanged);
-            // 
             // kryptonBorderEdge33
             // 
             this.kryptonBorderEdge33.Dock = System.Windows.Forms.DockStyle.Top;
@@ -4951,58 +3524,6 @@
             this.panel17.Size = new System.Drawing.Size(325, 328);
             this.panel17.TabIndex = 67;
             // 
-            // PreFrameColorsDataGrid
-            // 
-            this.PreFrameColorsDataGrid.AllowUserToAddRows = false;
-            this.PreFrameColorsDataGrid.AllowUserToDeleteRows = false;
-            this.PreFrameColorsDataGrid.AllowUserToResizeColumns = false;
-            this.PreFrameColorsDataGrid.AllowUserToResizeRows = false;
-            this.PreFrameColorsDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.PreFrameColorsDataGrid.BackText = "Нет данных";
-            this.PreFrameColorsDataGrid.ColumnHeadersHeight = 40;
-            this.PreFrameColorsDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.PreFrameColorsDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PreFrameColorsDataGrid.Location = new System.Drawing.Point(1, 1);
-            this.PreFrameColorsDataGrid.Name = "PreFrameColorsDataGrid";
-            this.PreFrameColorsDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.PreFrameColorsDataGrid.PercentLineWidth = 0;
-            this.PreFrameColorsDataGrid.ReadOnly = true;
-            this.PreFrameColorsDataGrid.RowHeadersVisible = false;
-            this.PreFrameColorsDataGrid.RowTemplate.Height = 30;
-            this.PreFrameColorsDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.PreFrameColorsDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
-            this.PreFrameColorsDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.PreFrameColorsDataGrid.Size = new System.Drawing.Size(323, 326);
-            this.PreFrameColorsDataGrid.StandardStyle = false;
-            this.PreFrameColorsDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
-            this.PreFrameColorsDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
-            this.PreFrameColorsDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.PreFrameColorsDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
-            this.PreFrameColorsDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
-            this.PreFrameColorsDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.PreFrameColorsDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
-            this.PreFrameColorsDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.PreFrameColorsDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.PreFrameColorsDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
-            this.PreFrameColorsDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.PreFrameColorsDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
-            this.PreFrameColorsDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.PreFrameColorsDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
-            this.PreFrameColorsDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.PreFrameColorsDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom;
-            this.PreFrameColorsDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
-            this.PreFrameColorsDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
-            this.PreFrameColorsDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.PreFrameColorsDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(121)))), ((int)(((byte)(177)))), ((int)(((byte)(229)))));
-            this.PreFrameColorsDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.PreFrameColorsDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.PreFrameColorsDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
-            this.PreFrameColorsDataGrid.TabIndex = 57;
-            this.PreFrameColorsDataGrid.UseCustomBackColor = true;
-            this.PreFrameColorsDataGrid.SelectionChanged += new System.EventHandler(this.PreFrameColorsDataGrid_SelectionChanged);
-            // 
             // kryptonBorderEdge41
             // 
             this.kryptonBorderEdge41.Dock = System.Windows.Forms.DockStyle.Top;
@@ -5054,57 +3575,6 @@
             this.panel18.Name = "panel18";
             this.panel18.Size = new System.Drawing.Size(325, 156);
             this.panel18.TabIndex = 68;
-            // 
-            // PreSizesDataGrid
-            // 
-            this.PreSizesDataGrid.AllowUserToAddRows = false;
-            this.PreSizesDataGrid.AllowUserToDeleteRows = false;
-            this.PreSizesDataGrid.AllowUserToResizeColumns = false;
-            this.PreSizesDataGrid.AllowUserToResizeRows = false;
-            this.PreSizesDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.PreSizesDataGrid.BackText = "Нет данных";
-            this.PreSizesDataGrid.ColumnHeadersHeight = 40;
-            this.PreSizesDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.PreSizesDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PreSizesDataGrid.Location = new System.Drawing.Point(1, 1);
-            this.PreSizesDataGrid.Name = "PreSizesDataGrid";
-            this.PreSizesDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.PreSizesDataGrid.PercentLineWidth = 0;
-            this.PreSizesDataGrid.ReadOnly = true;
-            this.PreSizesDataGrid.RowHeadersVisible = false;
-            this.PreSizesDataGrid.RowTemplate.Height = 30;
-            this.PreSizesDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.PreSizesDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Green;
-            this.PreSizesDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.PreSizesDataGrid.Size = new System.Drawing.Size(323, 154);
-            this.PreSizesDataGrid.StandardStyle = false;
-            this.PreSizesDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
-            this.PreSizesDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
-            this.PreSizesDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.PreSizesDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
-            this.PreSizesDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
-            this.PreSizesDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.PreSizesDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
-            this.PreSizesDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.PreSizesDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.PreSizesDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
-            this.PreSizesDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.PreSizesDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
-            this.PreSizesDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.PreSizesDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
-            this.PreSizesDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.PreSizesDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom;
-            this.PreSizesDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
-            this.PreSizesDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
-            this.PreSizesDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.PreSizesDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(158)))), ((int)(((byte)(0)))));
-            this.PreSizesDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.PreSizesDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.PreSizesDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
-            this.PreSizesDataGrid.TabIndex = 58;
-            this.PreSizesDataGrid.UseCustomBackColor = true;
             // 
             // kryptonBorderEdge45
             // 
@@ -5187,58 +3657,6 @@
             this.kryptonBorderEdge51.StateCommon.Color1 = System.Drawing.Color.Black;
             this.kryptonBorderEdge51.Text = "kryptonBorderEdge51";
             // 
-            // PreInsetTypesDataGrid
-            // 
-            this.PreInsetTypesDataGrid.AllowUserToAddRows = false;
-            this.PreInsetTypesDataGrid.AllowUserToDeleteRows = false;
-            this.PreInsetTypesDataGrid.AllowUserToResizeColumns = false;
-            this.PreInsetTypesDataGrid.AllowUserToResizeRows = false;
-            this.PreInsetTypesDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.PreInsetTypesDataGrid.BackText = "Нет данных";
-            this.PreInsetTypesDataGrid.ColumnHeadersHeight = 40;
-            this.PreInsetTypesDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.PreInsetTypesDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PreInsetTypesDataGrid.Location = new System.Drawing.Point(1, 0);
-            this.PreInsetTypesDataGrid.Name = "PreInsetTypesDataGrid";
-            this.PreInsetTypesDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.PreInsetTypesDataGrid.PercentLineWidth = 0;
-            this.PreInsetTypesDataGrid.ReadOnly = true;
-            this.PreInsetTypesDataGrid.RowHeadersVisible = false;
-            this.PreInsetTypesDataGrid.RowTemplate.Height = 30;
-            this.PreInsetTypesDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.PreInsetTypesDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
-            this.PreInsetTypesDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.PreInsetTypesDataGrid.Size = new System.Drawing.Size(324, 328);
-            this.PreInsetTypesDataGrid.StandardStyle = false;
-            this.PreInsetTypesDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
-            this.PreInsetTypesDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
-            this.PreInsetTypesDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.PreInsetTypesDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
-            this.PreInsetTypesDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
-            this.PreInsetTypesDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.PreInsetTypesDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
-            this.PreInsetTypesDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.PreInsetTypesDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.PreInsetTypesDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
-            this.PreInsetTypesDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.PreInsetTypesDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
-            this.PreInsetTypesDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.PreInsetTypesDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
-            this.PreInsetTypesDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.PreInsetTypesDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom;
-            this.PreInsetTypesDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
-            this.PreInsetTypesDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
-            this.PreInsetTypesDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.PreInsetTypesDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(121)))), ((int)(((byte)(177)))), ((int)(((byte)(229)))));
-            this.PreInsetTypesDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.PreInsetTypesDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.PreInsetTypesDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
-            this.PreInsetTypesDataGrid.TabIndex = 59;
-            this.PreInsetTypesDataGrid.UseCustomBackColor = true;
-            this.PreInsetTypesDataGrid.SelectionChanged += new System.EventHandler(this.PreInsetTypesDataGrid_SelectionChanged);
-            // 
             // kryptonBorderEdge52
             // 
             this.kryptonBorderEdge52.Dock = System.Windows.Forms.DockStyle.Left;
@@ -5262,58 +3680,6 @@
             this.panel25.Name = "panel25";
             this.panel25.Size = new System.Drawing.Size(325, 156);
             this.panel25.TabIndex = 70;
-            // 
-            // PreInsetColorsDataGrid
-            // 
-            this.PreInsetColorsDataGrid.AllowUserToAddRows = false;
-            this.PreInsetColorsDataGrid.AllowUserToDeleteRows = false;
-            this.PreInsetColorsDataGrid.AllowUserToResizeColumns = false;
-            this.PreInsetColorsDataGrid.AllowUserToResizeRows = false;
-            this.PreInsetColorsDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.PreInsetColorsDataGrid.BackText = "Нет данных";
-            this.PreInsetColorsDataGrid.ColumnHeadersHeight = 40;
-            this.PreInsetColorsDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.PreInsetColorsDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PreInsetColorsDataGrid.Location = new System.Drawing.Point(1, 1);
-            this.PreInsetColorsDataGrid.Name = "PreInsetColorsDataGrid";
-            this.PreInsetColorsDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.PreInsetColorsDataGrid.PercentLineWidth = 0;
-            this.PreInsetColorsDataGrid.ReadOnly = true;
-            this.PreInsetColorsDataGrid.RowHeadersVisible = false;
-            this.PreInsetColorsDataGrid.RowTemplate.Height = 30;
-            this.PreInsetColorsDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.PreInsetColorsDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Green;
-            this.PreInsetColorsDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.PreInsetColorsDataGrid.Size = new System.Drawing.Size(323, 154);
-            this.PreInsetColorsDataGrid.StandardStyle = false;
-            this.PreInsetColorsDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
-            this.PreInsetColorsDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
-            this.PreInsetColorsDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.PreInsetColorsDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
-            this.PreInsetColorsDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
-            this.PreInsetColorsDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.PreInsetColorsDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
-            this.PreInsetColorsDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.PreInsetColorsDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.PreInsetColorsDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
-            this.PreInsetColorsDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.PreInsetColorsDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
-            this.PreInsetColorsDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.PreInsetColorsDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
-            this.PreInsetColorsDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.PreInsetColorsDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom;
-            this.PreInsetColorsDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
-            this.PreInsetColorsDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
-            this.PreInsetColorsDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.PreInsetColorsDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(158)))), ((int)(((byte)(0)))));
-            this.PreInsetColorsDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.PreInsetColorsDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.PreInsetColorsDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
-            this.PreInsetColorsDataGrid.TabIndex = 60;
-            this.PreInsetColorsDataGrid.UseCustomBackColor = true;
-            this.PreInsetColorsDataGrid.SelectionChanged += new System.EventHandler(this.PreInsetColorsDataGrid_SelectionChanged);
             // 
             // kryptonBorderEdge83
             // 
@@ -5359,6 +3725,7 @@
             this.xtraTabPage15.Appearance.Header.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(158)))), ((int)(((byte)(0)))));
             this.xtraTabPage15.Appearance.Header.Options.UseBackColor = true;
             this.xtraTabPage15.Controls.Add(this.panel26);
+            this.xtraTabPage15.Enabled = true;
             this.xtraTabPage15.Name = "xtraTabPage15";
             this.xtraTabPage15.Size = new System.Drawing.Size(1209, 529);
             this.xtraTabPage15.Text = " Декор ";
@@ -5452,57 +3819,6 @@
             this.kryptonBorderEdge89.Size = new System.Drawing.Size(1, 486);
             this.kryptonBorderEdge89.StateCommon.Color1 = System.Drawing.Color.Black;
             this.kryptonBorderEdge89.Text = "kryptonBorderEdge89";
-            // 
-            // PreDecorSizesDataGrid
-            // 
-            this.PreDecorSizesDataGrid.AllowUserToAddRows = false;
-            this.PreDecorSizesDataGrid.AllowUserToDeleteRows = false;
-            this.PreDecorSizesDataGrid.AllowUserToResizeColumns = false;
-            this.PreDecorSizesDataGrid.AllowUserToResizeRows = false;
-            this.PreDecorSizesDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.PreDecorSizesDataGrid.BackText = "Нет данных";
-            this.PreDecorSizesDataGrid.ColumnHeadersHeight = 40;
-            this.PreDecorSizesDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.PreDecorSizesDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PreDecorSizesDataGrid.Location = new System.Drawing.Point(1, 0);
-            this.PreDecorSizesDataGrid.Name = "PreDecorSizesDataGrid";
-            this.PreDecorSizesDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.PreDecorSizesDataGrid.PercentLineWidth = 0;
-            this.PreDecorSizesDataGrid.ReadOnly = true;
-            this.PreDecorSizesDataGrid.RowHeadersVisible = false;
-            this.PreDecorSizesDataGrid.RowTemplate.Height = 30;
-            this.PreDecorSizesDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.PreDecorSizesDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Green;
-            this.PreDecorSizesDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.PreDecorSizesDataGrid.Size = new System.Drawing.Size(287, 486);
-            this.PreDecorSizesDataGrid.StandardStyle = false;
-            this.PreDecorSizesDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
-            this.PreDecorSizesDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
-            this.PreDecorSizesDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.PreDecorSizesDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
-            this.PreDecorSizesDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
-            this.PreDecorSizesDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.PreDecorSizesDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
-            this.PreDecorSizesDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.PreDecorSizesDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.PreDecorSizesDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
-            this.PreDecorSizesDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.PreDecorSizesDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
-            this.PreDecorSizesDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.PreDecorSizesDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
-            this.PreDecorSizesDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.PreDecorSizesDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom;
-            this.PreDecorSizesDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
-            this.PreDecorSizesDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
-            this.PreDecorSizesDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.PreDecorSizesDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(158)))), ((int)(((byte)(0)))));
-            this.PreDecorSizesDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.PreDecorSizesDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.PreDecorSizesDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
-            this.PreDecorSizesDataGrid.TabIndex = 39;
-            this.PreDecorSizesDataGrid.UseCustomBackColor = true;
             // 
             // kryptonBorderEdge90
             // 
@@ -5613,60 +3929,6 @@
             this.label21.Text = "м.п.";
             this.label21.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // PreDecorProductsDataGrid
-            // 
-            this.PreDecorProductsDataGrid.AllowUserToAddRows = false;
-            this.PreDecorProductsDataGrid.AllowUserToDeleteRows = false;
-            this.PreDecorProductsDataGrid.AllowUserToResizeColumns = false;
-            this.PreDecorProductsDataGrid.AllowUserToResizeRows = false;
-            this.PreDecorProductsDataGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.PreDecorProductsDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.PreDecorProductsDataGrid.BackText = "Нет данных";
-            this.PreDecorProductsDataGrid.ColumnHeadersHeight = 40;
-            this.PreDecorProductsDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.PreDecorProductsDataGrid.Location = new System.Drawing.Point(1, 0);
-            this.PreDecorProductsDataGrid.Name = "PreDecorProductsDataGrid";
-            this.PreDecorProductsDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.PreDecorProductsDataGrid.PercentLineWidth = 0;
-            this.PreDecorProductsDataGrid.ReadOnly = true;
-            this.PreDecorProductsDataGrid.RowHeadersVisible = false;
-            this.PreDecorProductsDataGrid.RowTemplate.Height = 30;
-            this.PreDecorProductsDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.PreDecorProductsDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
-            this.PreDecorProductsDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.PreDecorProductsDataGrid.Size = new System.Drawing.Size(344, 449);
-            this.PreDecorProductsDataGrid.StandardStyle = false;
-            this.PreDecorProductsDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
-            this.PreDecorProductsDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
-            this.PreDecorProductsDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.PreDecorProductsDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
-            this.PreDecorProductsDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
-            this.PreDecorProductsDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.PreDecorProductsDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
-            this.PreDecorProductsDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.PreDecorProductsDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.PreDecorProductsDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
-            this.PreDecorProductsDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.PreDecorProductsDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
-            this.PreDecorProductsDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.PreDecorProductsDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
-            this.PreDecorProductsDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.PreDecorProductsDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom;
-            this.PreDecorProductsDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
-            this.PreDecorProductsDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
-            this.PreDecorProductsDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.PreDecorProductsDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(121)))), ((int)(((byte)(177)))), ((int)(((byte)(229)))));
-            this.PreDecorProductsDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.PreDecorProductsDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.PreDecorProductsDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
-            this.PreDecorProductsDataGrid.TabIndex = 40;
-            this.PreDecorProductsDataGrid.UseCustomBackColor = true;
-            this.PreDecorProductsDataGrid.SelectionChanged += new System.EventHandler(this.PreDecorProductsDataGrid_SelectionChanged);
-            // 
             // PreDecorCountLabel
             // 
             this.PreDecorCountLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -5732,58 +3994,6 @@
             this.kryptonBorderEdge97.StateCommon.Color1 = System.Drawing.Color.Black;
             this.kryptonBorderEdge97.Text = "kryptonBorderEdge97";
             // 
-            // PreDecorItemsDataGrid
-            // 
-            this.PreDecorItemsDataGrid.AllowUserToAddRows = false;
-            this.PreDecorItemsDataGrid.AllowUserToDeleteRows = false;
-            this.PreDecorItemsDataGrid.AllowUserToResizeColumns = false;
-            this.PreDecorItemsDataGrid.AllowUserToResizeRows = false;
-            this.PreDecorItemsDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.PreDecorItemsDataGrid.BackText = "Нет данных";
-            this.PreDecorItemsDataGrid.ColumnHeadersHeight = 40;
-            this.PreDecorItemsDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.PreDecorItemsDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PreDecorItemsDataGrid.Location = new System.Drawing.Point(1, 0);
-            this.PreDecorItemsDataGrid.Name = "PreDecorItemsDataGrid";
-            this.PreDecorItemsDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.PreDecorItemsDataGrid.PercentLineWidth = 0;
-            this.PreDecorItemsDataGrid.ReadOnly = true;
-            this.PreDecorItemsDataGrid.RowHeadersVisible = false;
-            this.PreDecorItemsDataGrid.RowTemplate.Height = 30;
-            this.PreDecorItemsDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.PreDecorItemsDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
-            this.PreDecorItemsDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.PreDecorItemsDataGrid.Size = new System.Drawing.Size(328, 486);
-            this.PreDecorItemsDataGrid.StandardStyle = false;
-            this.PreDecorItemsDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
-            this.PreDecorItemsDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
-            this.PreDecorItemsDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.PreDecorItemsDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
-            this.PreDecorItemsDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
-            this.PreDecorItemsDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.PreDecorItemsDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
-            this.PreDecorItemsDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.PreDecorItemsDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.PreDecorItemsDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
-            this.PreDecorItemsDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.PreDecorItemsDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
-            this.PreDecorItemsDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.PreDecorItemsDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
-            this.PreDecorItemsDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.PreDecorItemsDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom;
-            this.PreDecorItemsDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
-            this.PreDecorItemsDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
-            this.PreDecorItemsDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.PreDecorItemsDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(121)))), ((int)(((byte)(177)))), ((int)(((byte)(229)))));
-            this.PreDecorItemsDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.PreDecorItemsDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.PreDecorItemsDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
-            this.PreDecorItemsDataGrid.TabIndex = 40;
-            this.PreDecorItemsDataGrid.UseCustomBackColor = true;
-            this.PreDecorItemsDataGrid.SelectionChanged += new System.EventHandler(this.PreDecorItemsDataGrid_SelectionChanged);
-            // 
             // kryptonBorderEdge98
             // 
             this.kryptonBorderEdge98.Dock = System.Windows.Forms.DockStyle.Left;
@@ -5835,58 +4045,6 @@
             this.kryptonBorderEdge101.Size = new System.Drawing.Size(1, 486);
             this.kryptonBorderEdge101.StateCommon.Color1 = System.Drawing.Color.Black;
             this.kryptonBorderEdge101.Text = "kryptonBorderEdge101";
-            // 
-            // PreDecorColorsDataGrid
-            // 
-            this.PreDecorColorsDataGrid.AllowUserToAddRows = false;
-            this.PreDecorColorsDataGrid.AllowUserToDeleteRows = false;
-            this.PreDecorColorsDataGrid.AllowUserToResizeColumns = false;
-            this.PreDecorColorsDataGrid.AllowUserToResizeRows = false;
-            this.PreDecorColorsDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.PreDecorColorsDataGrid.BackText = "Нет данных";
-            this.PreDecorColorsDataGrid.ColumnHeadersHeight = 40;
-            this.PreDecorColorsDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.PreDecorColorsDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PreDecorColorsDataGrid.Location = new System.Drawing.Point(1, 0);
-            this.PreDecorColorsDataGrid.Name = "PreDecorColorsDataGrid";
-            this.PreDecorColorsDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.PreDecorColorsDataGrid.PercentLineWidth = 0;
-            this.PreDecorColorsDataGrid.ReadOnly = true;
-            this.PreDecorColorsDataGrid.RowHeadersVisible = false;
-            this.PreDecorColorsDataGrid.RowTemplate.Height = 30;
-            this.PreDecorColorsDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.PreDecorColorsDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Green;
-            this.PreDecorColorsDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.PreDecorColorsDataGrid.Size = new System.Drawing.Size(385, 486);
-            this.PreDecorColorsDataGrid.StandardStyle = false;
-            this.PreDecorColorsDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
-            this.PreDecorColorsDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
-            this.PreDecorColorsDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.PreDecorColorsDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
-            this.PreDecorColorsDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
-            this.PreDecorColorsDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.PreDecorColorsDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
-            this.PreDecorColorsDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.PreDecorColorsDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.PreDecorColorsDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
-            this.PreDecorColorsDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.PreDecorColorsDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
-            this.PreDecorColorsDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.PreDecorColorsDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
-            this.PreDecorColorsDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.PreDecorColorsDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom;
-            this.PreDecorColorsDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
-            this.PreDecorColorsDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
-            this.PreDecorColorsDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.PreDecorColorsDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(158)))), ((int)(((byte)(0)))));
-            this.PreDecorColorsDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
-            this.PreDecorColorsDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.PreDecorColorsDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
-            this.PreDecorColorsDataGrid.TabIndex = 39;
-            this.PreDecorColorsDataGrid.UseCustomBackColor = true;
-            this.PreDecorColorsDataGrid.SelectionChanged += new System.EventHandler(this.PreDecorColorsDataGrid_SelectionChanged);
             // 
             // kryptonBorderEdge102
             // 
@@ -5952,7 +4110,6 @@
             this.kryptonCheckBox1.Checked = true;
             this.kryptonCheckBox1.CheckState = System.Windows.Forms.CheckState.Checked;
             this.kryptonCheckBox1.Enabled = false;
-            this.kryptonCheckBox1.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalControl;
             this.kryptonCheckBox1.Location = new System.Drawing.Point(208, 182);
             this.kryptonCheckBox1.Name = "kryptonCheckBox1";
             this.kryptonCheckBox1.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -5960,7 +4117,6 @@
             this.kryptonCheckBox1.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
             this.kryptonCheckBox1.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 15.81F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.kryptonCheckBox1.TabIndex = 398;
-            this.kryptonCheckBox1.Text = "ЗОВ-ЛенЕвроМебель";
             this.kryptonCheckBox1.Values.Text = "ЗОВ-ЛенЕвроМебель";
             this.kryptonCheckBox1.CheckedChanged += new System.EventHandler(this.kryptonCheckBox1_CheckedChanged);
             // 
@@ -5968,7 +4124,6 @@
             // 
             this.BatchOnExpCheckBox.Checked = true;
             this.BatchOnExpCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.BatchOnExpCheckBox.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalControl;
             this.BatchOnExpCheckBox.Location = new System.Drawing.Point(13, 149);
             this.BatchOnExpCheckBox.Name = "BatchOnExpCheckBox";
             this.BatchOnExpCheckBox.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -5976,7 +4131,6 @@
             this.BatchOnExpCheckBox.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
             this.BatchOnExpCheckBox.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 17.81F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
             this.BatchOnExpCheckBox.TabIndex = 393;
-            this.BatchOnExpCheckBox.Text = "На экспедиции";
             this.BatchOnExpCheckBox.Values.Text = "На экспедиции";
             this.BatchOnExpCheckBox.CheckedChanged += new System.EventHandler(this.BatchOnExpCheckBox_CheckedChanged);
             // 
@@ -5985,7 +4139,6 @@
             this.ZOVTPSCheckBox.Checked = true;
             this.ZOVTPSCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
             this.ZOVTPSCheckBox.Enabled = false;
-            this.ZOVTPSCheckBox.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalControl;
             this.ZOVTPSCheckBox.Location = new System.Drawing.Point(208, 152);
             this.ZOVTPSCheckBox.Name = "ZOVTPSCheckBox";
             this.ZOVTPSCheckBox.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -5993,7 +4146,6 @@
             this.ZOVTPSCheckBox.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
             this.ZOVTPSCheckBox.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 15.81F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.ZOVTPSCheckBox.TabIndex = 388;
-            this.ZOVTPSCheckBox.Text = "ЗОВ-ТПС";
             this.ZOVTPSCheckBox.Values.Text = "ЗОВ-ТПС";
             // 
             // ZOVProfilCheckBox
@@ -6001,15 +4153,13 @@
             this.ZOVProfilCheckBox.Checked = true;
             this.ZOVProfilCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
             this.ZOVProfilCheckBox.Enabled = false;
-            this.ZOVProfilCheckBox.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalControl;
             this.ZOVProfilCheckBox.Location = new System.Drawing.Point(208, 126);
             this.ZOVProfilCheckBox.Name = "ZOVProfilCheckBox";
             this.ZOVProfilCheckBox.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.ZOVProfilCheckBox.Size = new System.Drawing.Size(130, 26);
+            this.ZOVProfilCheckBox.Size = new System.Drawing.Size(148, 26);
             this.ZOVProfilCheckBox.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
             this.ZOVProfilCheckBox.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 15.81F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.ZOVProfilCheckBox.TabIndex = 387;
-            this.ZOVProfilCheckBox.Text = "ОМЦ-ПРОФИЛЬ";
             this.ZOVProfilCheckBox.Values.Text = "ОМЦ-ПРОФИЛЬ";
             // 
             // MoscowFilterCheckBox
@@ -6017,7 +4167,6 @@
             this.MoscowFilterCheckBox.Checked = true;
             this.MoscowFilterCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
             this.MoscowFilterCheckBox.Enabled = false;
-            this.MoscowFilterCheckBox.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalControl;
             this.MoscowFilterCheckBox.Location = new System.Drawing.Point(208, 100);
             this.MoscowFilterCheckBox.Name = "MoscowFilterCheckBox";
             this.MoscowFilterCheckBox.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -6025,7 +4174,6 @@
             this.MoscowFilterCheckBox.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
             this.MoscowFilterCheckBox.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 15.81F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.MoscowFilterCheckBox.TabIndex = 382;
-            this.MoscowFilterCheckBox.Text = "М-1";
             this.MoscowFilterCheckBox.Values.Text = "М-1";
             this.MoscowFilterCheckBox.CheckedChanged += new System.EventHandler(this.MoscowFilterCheckBox_CheckedChanged);
             // 
@@ -6034,7 +4182,6 @@
             this.ZOVFilterCheckBox.Checked = true;
             this.ZOVFilterCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
             this.ZOVFilterCheckBox.Enabled = false;
-            this.ZOVFilterCheckBox.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalControl;
             this.ZOVFilterCheckBox.Location = new System.Drawing.Point(208, 74);
             this.ZOVFilterCheckBox.Name = "ZOVFilterCheckBox";
             this.ZOVFilterCheckBox.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -6042,7 +4189,6 @@
             this.ZOVFilterCheckBox.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
             this.ZOVFilterCheckBox.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 15.81F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.ZOVFilterCheckBox.TabIndex = 381;
-            this.ZOVFilterCheckBox.Text = "Маркетинг-ЗОВ";
             this.ZOVFilterCheckBox.Values.Text = "Маркетинг-ЗОВ";
             this.ZOVFilterCheckBox.CheckedChanged += new System.EventHandler(this.ZOVFilterCheckBox_CheckedChanged);
             // 
@@ -6051,7 +4197,6 @@
             this.MarketFilterCheckBox.Checked = true;
             this.MarketFilterCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
             this.MarketFilterCheckBox.Enabled = false;
-            this.MarketFilterCheckBox.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalControl;
             this.MarketFilterCheckBox.Location = new System.Drawing.Point(208, 48);
             this.MarketFilterCheckBox.Name = "MarketFilterCheckBox";
             this.MarketFilterCheckBox.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -6059,13 +4204,11 @@
             this.MarketFilterCheckBox.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
             this.MarketFilterCheckBox.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 15.81F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.MarketFilterCheckBox.TabIndex = 380;
-            this.MarketFilterCheckBox.Text = "Маркетинг";
             this.MarketFilterCheckBox.Values.Text = "Маркетинг";
             this.MarketFilterCheckBox.CheckedChanged += new System.EventHandler(this.MarketFilterCheckBox_CheckedChanged);
             // 
             // GroupsCheckBox
             // 
-            this.GroupsCheckBox.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalControl;
             this.GroupsCheckBox.Location = new System.Drawing.Point(208, 16);
             this.GroupsCheckBox.Name = "GroupsCheckBox";
             this.GroupsCheckBox.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -6073,7 +4216,6 @@
             this.GroupsCheckBox.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
             this.GroupsCheckBox.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 17.81F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
             this.GroupsCheckBox.TabIndex = 374;
-            this.GroupsCheckBox.Text = "Сводка по группе";
             this.GroupsCheckBox.Values.Text = "Сводка по группе";
             this.GroupsCheckBox.CheckedChanged += new System.EventHandler(this.GroupsCheckBox_CheckedChanged);
             // 
@@ -6104,7 +4246,6 @@
             // 
             this.BatchDispatchCheckBox.Checked = true;
             this.BatchDispatchCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.BatchDispatchCheckBox.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalControl;
             this.BatchDispatchCheckBox.Location = new System.Drawing.Point(13, 183);
             this.BatchDispatchCheckBox.Name = "BatchDispatchCheckBox";
             this.BatchDispatchCheckBox.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -6112,7 +4253,6 @@
             this.BatchDispatchCheckBox.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
             this.BatchDispatchCheckBox.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 17.81F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
             this.BatchDispatchCheckBox.TabIndex = 371;
-            this.BatchDispatchCheckBox.Text = "Отгружено";
             this.BatchDispatchCheckBox.Values.Text = "Отгружено";
             this.BatchDispatchCheckBox.CheckedChanged += new System.EventHandler(this.BatchDispatchCheckBox_CheckedChanged);
             // 
@@ -6120,7 +4260,6 @@
             // 
             this.BatchOnProductionCheckBox.Checked = true;
             this.BatchOnProductionCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.BatchOnProductionCheckBox.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalControl;
             this.BatchOnProductionCheckBox.Location = new System.Drawing.Point(13, 49);
             this.BatchOnProductionCheckBox.Name = "BatchOnProductionCheckBox";
             this.BatchOnProductionCheckBox.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -6128,7 +4267,6 @@
             this.BatchOnProductionCheckBox.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
             this.BatchOnProductionCheckBox.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 17.81F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
             this.BatchOnProductionCheckBox.TabIndex = 363;
-            this.BatchOnProductionCheckBox.Text = "На производстве";
             this.BatchOnProductionCheckBox.Values.Text = "На производстве";
             this.BatchOnProductionCheckBox.CheckedChanged += new System.EventHandler(this.BatchOnProductionCheckBox_CheckedChanged);
             // 
@@ -6136,7 +4274,6 @@
             // 
             this.BatchOnStorageCheckBox.Checked = true;
             this.BatchOnStorageCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.BatchOnStorageCheckBox.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalControl;
             this.BatchOnStorageCheckBox.Location = new System.Drawing.Point(13, 115);
             this.BatchOnStorageCheckBox.Name = "BatchOnStorageCheckBox";
             this.BatchOnStorageCheckBox.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -6144,7 +4281,6 @@
             this.BatchOnStorageCheckBox.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
             this.BatchOnStorageCheckBox.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 17.81F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
             this.BatchOnStorageCheckBox.TabIndex = 370;
-            this.BatchOnStorageCheckBox.Text = "На складе";
             this.BatchOnStorageCheckBox.Values.Text = "На складе";
             this.BatchOnStorageCheckBox.CheckedChanged += new System.EventHandler(this.BatchOnStorageCheckBox_CheckedChanged);
             // 
@@ -6163,7 +4299,6 @@
             // 
             this.BatchInProductionCheckBox.Checked = true;
             this.BatchInProductionCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.BatchInProductionCheckBox.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalControl;
             this.BatchInProductionCheckBox.Location = new System.Drawing.Point(13, 82);
             this.BatchInProductionCheckBox.Name = "BatchInProductionCheckBox";
             this.BatchInProductionCheckBox.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -6171,7 +4306,6 @@
             this.BatchInProductionCheckBox.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
             this.BatchInProductionCheckBox.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 17.81F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
             this.BatchInProductionCheckBox.TabIndex = 358;
-            this.BatchInProductionCheckBox.Text = "В производстве";
             this.BatchInProductionCheckBox.Values.Text = "В производстве";
             this.BatchInProductionCheckBox.CheckedChanged += new System.EventHandler(this.BatchInProductionCheckBox_CheckedChanged);
             // 
@@ -6179,7 +4313,6 @@
             // 
             this.BatchNotProductionCheckBox.Checked = true;
             this.BatchNotProductionCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.BatchNotProductionCheckBox.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalControl;
             this.BatchNotProductionCheckBox.Location = new System.Drawing.Point(13, 16);
             this.BatchNotProductionCheckBox.Name = "BatchNotProductionCheckBox";
             this.BatchNotProductionCheckBox.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -6187,7 +4320,6 @@
             this.BatchNotProductionCheckBox.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
             this.BatchNotProductionCheckBox.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 17.81F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
             this.BatchNotProductionCheckBox.TabIndex = 357;
-            this.BatchNotProductionCheckBox.Text = "Не в производстве";
             this.BatchNotProductionCheckBox.Values.Text = "Не в производстве";
             this.BatchNotProductionCheckBox.CheckedChanged += new System.EventHandler(this.BatchNotProductionCheckBox_CheckedChanged);
             // 
@@ -6224,7 +4356,6 @@
             // 
             // OnProductionCheckBox
             // 
-            this.OnProductionCheckBox.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalControl;
             this.OnProductionCheckBox.Location = new System.Drawing.Point(13, 115);
             this.OnProductionCheckBox.Name = "OnProductionCheckBox";
             this.OnProductionCheckBox.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -6232,7 +4363,6 @@
             this.OnProductionCheckBox.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
             this.OnProductionCheckBox.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 17.81F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
             this.OnProductionCheckBox.TabIndex = 377;
-            this.OnProductionCheckBox.Text = "На производстве";
             this.OnProductionCheckBox.Values.Text = "На производстве";
             this.OnProductionCheckBox.CheckedChanged += new System.EventHandler(this.OnProductionCheckBox_CheckedChanged);
             // 
@@ -6240,7 +4370,6 @@
             // 
             this.NotProductionCheckBox.Checked = true;
             this.NotProductionCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.NotProductionCheckBox.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalControl;
             this.NotProductionCheckBox.Location = new System.Drawing.Point(13, 82);
             this.NotProductionCheckBox.Name = "NotProductionCheckBox";
             this.NotProductionCheckBox.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -6248,13 +4377,11 @@
             this.NotProductionCheckBox.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
             this.NotProductionCheckBox.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 17.81F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
             this.NotProductionCheckBox.TabIndex = 376;
-            this.NotProductionCheckBox.Text = "Не в производстве";
             this.NotProductionCheckBox.Values.Text = "Не в производстве";
             this.NotProductionCheckBox.CheckedChanged += new System.EventHandler(this.NotProductionCheckBox_CheckedChanged);
             // 
             // NotConfirmCheckBox
             // 
-            this.NotConfirmCheckBox.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalControl;
             this.NotConfirmCheckBox.Location = new System.Drawing.Point(13, 16);
             this.NotConfirmCheckBox.Name = "NotConfirmCheckBox";
             this.NotConfirmCheckBox.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -6262,7 +4389,6 @@
             this.NotConfirmCheckBox.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
             this.NotConfirmCheckBox.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 17.81F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
             this.NotConfirmCheckBox.TabIndex = 347;
-            this.NotConfirmCheckBox.Text = "Не подтвержено";
             this.NotConfirmCheckBox.Values.Text = "Не подтвержено";
             this.NotConfirmCheckBox.CheckedChanged += new System.EventHandler(this.NotConfirmCheckBox_CheckedChanged);
             // 
@@ -6270,7 +4396,6 @@
             // 
             this.ConfirmCheckBox.Checked = true;
             this.ConfirmCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ConfirmCheckBox.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalControl;
             this.ConfirmCheckBox.Location = new System.Drawing.Point(13, 49);
             this.ConfirmCheckBox.Name = "ConfirmCheckBox";
             this.ConfirmCheckBox.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -6278,7 +4403,6 @@
             this.ConfirmCheckBox.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
             this.ConfirmCheckBox.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 17.81F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
             this.ConfirmCheckBox.TabIndex = 352;
-            this.ConfirmCheckBox.Text = "Согласовано";
             this.ConfirmCheckBox.Values.Text = "Согласовано";
             this.ConfirmCheckBox.CheckedChanged += new System.EventHandler(this.ConfirmCheckBox_CheckedChanged);
             // 
@@ -6307,7 +4431,6 @@
             // 
             // InProductionCheckBox
             // 
-            this.InProductionCheckBox.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalControl;
             this.InProductionCheckBox.Location = new System.Drawing.Point(13, 148);
             this.InProductionCheckBox.Name = "InProductionCheckBox";
             this.InProductionCheckBox.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -6315,7 +4438,6 @@
             this.InProductionCheckBox.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
             this.InProductionCheckBox.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 17.81F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
             this.InProductionCheckBox.TabIndex = 358;
-            this.InProductionCheckBox.Text = "В производстве";
             this.InProductionCheckBox.Values.Text = "В производстве";
             this.InProductionCheckBox.CheckedChanged += new System.EventHandler(this.InProductionCheckBox_CheckedChanged);
             // 
@@ -6342,55 +4464,6 @@
             this.kryptonBorderEdge58.StateCommon.Color1 = System.Drawing.Color.White;
             this.kryptonBorderEdge58.Text = "kryptonBorderEdge58";
             // 
-            // TraysDataGrid
-            // 
-            this.TraysDataGrid.AllowUserToAddRows = false;
-            this.TraysDataGrid.AllowUserToDeleteRows = false;
-            this.TraysDataGrid.AllowUserToResizeColumns = false;
-            this.TraysDataGrid.AllowUserToResizeRows = false;
-            this.TraysDataGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.TraysDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.TraysDataGrid.BackText = "Нет данных";
-            this.TraysDataGrid.ColumnHeadersHeight = 40;
-            this.TraysDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.TraysDataGrid.Location = new System.Drawing.Point(1, 12);
-            this.TraysDataGrid.MultiSelect = false;
-            this.TraysDataGrid.Name = "TraysDataGrid";
-            this.TraysDataGrid.PercentLineWidth = 0;
-            this.TraysDataGrid.ReadOnly = true;
-            this.TraysDataGrid.RowHeadersVisible = false;
-            this.TraysDataGrid.RowTemplate.Height = 30;
-            this.TraysDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
-            this.TraysDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.TraysDataGrid.Size = new System.Drawing.Size(415, 507);
-            this.TraysDataGrid.StandardStyle = true;
-            this.TraysDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
-            this.TraysDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.TraysDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
-            this.TraysDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
-            this.TraysDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
-            this.TraysDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.TraysDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.TraysDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
-            this.TraysDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.TraysDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
-            this.TraysDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.TraysDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
-            this.TraysDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.TraysDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)(((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.TraysDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
-            this.TraysDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.TraysDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(121)))), ((int)(((byte)(177)))), ((int)(((byte)(229)))));
-            this.TraysDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.TraysDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
-            this.TraysDataGrid.TabIndex = 46;
-            this.TraysDataGrid.UseCustomBackColor = false;
-            // 
             // kryptonBorderEdge8
             // 
             this.kryptonBorderEdge8.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -6401,13 +4474,6 @@
             this.kryptonBorderEdge8.Size = new System.Drawing.Size(408, 3);
             this.kryptonBorderEdge8.StateCommon.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(158)))), ((int)(((byte)(0)))));
             this.kryptonBorderEdge8.Text = "kryptonBorderEdge8";
-            // 
-            // kryptonCheckSet1
-            // 
-            this.kryptonCheckSet1.CheckButtons.Add(this.ZOVProfilCheckButton);
-            this.kryptonCheckSet1.CheckButtons.Add(this.ZOVTPSCheckButton);
-            this.kryptonCheckSet1.CheckedButton = this.ZOVProfilCheckButton;
-            this.kryptonCheckSet1.CheckedButtonChanged += new System.EventHandler(this.kryptonCheckSet1_CheckedButtonChanged);
             // 
             // kryptonContextMenu1
             // 
@@ -6423,7 +4489,8 @@
             this.cmiCloseProfilMegaBatch,
             this.cmiCloseTPSMegaBatch,
             this.btnAgreedProfil,
-            this.btnAgreedTPS});
+            this.btnAgreedTPS,
+            this.btnBatchToExcel});
             // 
             // cmiSaveMegaBatch
             // 
@@ -6538,6 +4605,1913 @@
             this.kryptonContextMenuItem1.Text = "Печатать декор";
             this.kryptonContextMenuItem1.Click += new System.EventHandler(this.kryptonContextMenuItem1_Click);
             // 
+            // btnBatchToExcel
+            // 
+            this.btnBatchToExcel.Text = "Экспорт в Excel";
+            this.btnBatchToExcel.Click += new System.EventHandler(this.btnBatchToExcel_Click);
+            // 
+            // MegaBatchDataGrid
+            // 
+            this.MegaBatchDataGrid.AllowUserToAddRows = false;
+            this.MegaBatchDataGrid.AllowUserToDeleteRows = false;
+            this.MegaBatchDataGrid.AllowUserToResizeColumns = false;
+            this.MegaBatchDataGrid.AllowUserToResizeRows = false;
+            this.MegaBatchDataGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.MegaBatchDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.MegaBatchDataGrid.BackText = "Нет данных";
+            this.MegaBatchDataGrid.ColumnHeadersHeight = 40;
+            this.MegaBatchDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.MegaBatchDataGrid.Location = new System.Drawing.Point(1, 12);
+            this.MegaBatchDataGrid.MultiSelect = false;
+            this.MegaBatchDataGrid.Name = "MegaBatchDataGrid";
+            this.MegaBatchDataGrid.PercentLineWidth = 0;
+            this.MegaBatchDataGrid.RowHeadersVisible = false;
+            this.MegaBatchDataGrid.RowTemplate.Height = 30;
+            this.MegaBatchDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
+            this.MegaBatchDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.MegaBatchDataGrid.Size = new System.Drawing.Size(391, 146);
+            this.MegaBatchDataGrid.StandardStyle = false;
+            this.MegaBatchDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
+            this.MegaBatchDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.MegaBatchDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
+            this.MegaBatchDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
+            this.MegaBatchDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
+            this.MegaBatchDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.MegaBatchDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.MegaBatchDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
+            this.MegaBatchDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.MegaBatchDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.MegaBatchDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.MegaBatchDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
+            this.MegaBatchDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.MegaBatchDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)(((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.MegaBatchDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
+            this.MegaBatchDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.MegaBatchDataGrid.StateCommon.HeaderColumn.Content.MultiLine = ComponentFactory.Krypton.Toolkit.InheritBool.True;
+            this.MegaBatchDataGrid.StateCommon.HeaderColumn.Content.MultiLineH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.MegaBatchDataGrid.StateCommon.HeaderColumn.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.MegaBatchDataGrid.StateDisabled.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
+            this.MegaBatchDataGrid.StateDisabled.DataCell.Border.Color1 = System.Drawing.Color.DimGray;
+            this.MegaBatchDataGrid.StateDisabled.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.MegaBatchDataGrid.StateDisabled.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.MegaBatchDataGrid.StateDisabled.DataCell.Content.Color1 = System.Drawing.Color.Gray;
+            this.MegaBatchDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(121)))), ((int)(((byte)(177)))), ((int)(((byte)(229)))));
+            this.MegaBatchDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.MegaBatchDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
+            this.MegaBatchDataGrid.TabIndex = 46;
+            this.MegaBatchDataGrid.UseCustomBackColor = true;
+            this.MegaBatchDataGrid.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.MegaBatchDataGrid_CellFormatting);
+            this.MegaBatchDataGrid.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.MegaBatchDataGrid_CellMouseDown);
+            this.MegaBatchDataGrid.CellPainting += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(this.MegaBatchDataGrid_CellPainting);
+            this.MegaBatchDataGrid.SelectionChanged += new System.EventHandler(this.MegaBatchDataGrid_SelectionChanged);
+            // 
+            // BatchDataGrid
+            // 
+            this.BatchDataGrid.AllowUserToAddRows = false;
+            this.BatchDataGrid.AllowUserToDeleteRows = false;
+            this.BatchDataGrid.AllowUserToResizeColumns = false;
+            this.BatchDataGrid.AllowUserToResizeRows = false;
+            this.BatchDataGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.BatchDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.BatchDataGrid.BackText = "Нет данных";
+            this.BatchDataGrid.ColumnHeadersHeight = 40;
+            this.BatchDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.BatchDataGrid.Location = new System.Drawing.Point(1, 12);
+            this.BatchDataGrid.Name = "BatchDataGrid";
+            this.BatchDataGrid.PercentLineWidth = 0;
+            this.BatchDataGrid.RowHeadersVisible = false;
+            this.BatchDataGrid.RowTemplate.Height = 30;
+            this.BatchDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
+            this.BatchDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.BatchDataGrid.Size = new System.Drawing.Size(390, 226);
+            this.BatchDataGrid.StandardStyle = false;
+            this.BatchDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
+            this.BatchDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.BatchDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
+            this.BatchDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
+            this.BatchDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
+            this.BatchDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.BatchDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.BatchDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
+            this.BatchDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.BatchDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.BatchDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.BatchDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
+            this.BatchDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.BatchDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)(((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.BatchDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
+            this.BatchDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.BatchDataGrid.StateCommon.HeaderColumn.Content.MultiLine = ComponentFactory.Krypton.Toolkit.InheritBool.True;
+            this.BatchDataGrid.StateCommon.HeaderColumn.Content.MultiLineH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.BatchDataGrid.StateCommon.HeaderColumn.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.BatchDataGrid.StateDisabled.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
+            this.BatchDataGrid.StateDisabled.DataCell.Border.Color1 = System.Drawing.Color.DimGray;
+            this.BatchDataGrid.StateDisabled.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.BatchDataGrid.StateDisabled.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.BatchDataGrid.StateDisabled.DataCell.Content.Color1 = System.Drawing.Color.Gray;
+            this.BatchDataGrid.StateDisabled.DataCell.Content.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.BatchDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(121)))), ((int)(((byte)(177)))), ((int)(((byte)(229)))));
+            this.BatchDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.BatchDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
+            this.BatchDataGrid.TabIndex = 46;
+            this.BatchDataGrid.UseCustomBackColor = true;
+            this.BatchDataGrid.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.BatchDataGrid_CellFormatting);
+            this.BatchDataGrid.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.BatchDataGrid_CellMouseDown);
+            this.BatchDataGrid.CellPainting += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(this.BatchDataGrid_CellPainting);
+            this.BatchDataGrid.SelectionChanged += new System.EventHandler(this.BatchDataGrid_SelectionChanged);
+            // 
+            // BatchMegaOrdersDataGrid
+            // 
+            this.BatchMegaOrdersDataGrid.AllowUserToAddRows = false;
+            this.BatchMegaOrdersDataGrid.AllowUserToDeleteRows = false;
+            this.BatchMegaOrdersDataGrid.AllowUserToResizeColumns = false;
+            this.BatchMegaOrdersDataGrid.AllowUserToResizeRows = false;
+            this.BatchMegaOrdersDataGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.BatchMegaOrdersDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.BatchMegaOrdersDataGrid.BackText = "Нет данных";
+            this.BatchMegaOrdersDataGrid.ColumnHeadersHeight = 40;
+            this.BatchMegaOrdersDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.BatchMegaOrdersDataGrid.HideOuterBorders = true;
+            this.BatchMegaOrdersDataGrid.Location = new System.Drawing.Point(0, 0);
+            this.BatchMegaOrdersDataGrid.Name = "BatchMegaOrdersDataGrid";
+            this.BatchMegaOrdersDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.BatchMegaOrdersDataGrid.PercentLineWidth = 0;
+            this.BatchMegaOrdersDataGrid.ReadOnly = true;
+            this.BatchMegaOrdersDataGrid.RowHeadersVisible = false;
+            this.BatchMegaOrdersDataGrid.RowTemplate.Height = 30;
+            this.BatchMegaOrdersDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.BatchMegaOrdersDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
+            this.BatchMegaOrdersDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.BatchMegaOrdersDataGrid.Size = new System.Drawing.Size(422, 204);
+            this.BatchMegaOrdersDataGrid.StandardStyle = false;
+            this.BatchMegaOrdersDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
+            this.BatchMegaOrdersDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
+            this.BatchMegaOrdersDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.BatchMegaOrdersDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
+            this.BatchMegaOrdersDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
+            this.BatchMegaOrdersDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.BatchMegaOrdersDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
+            this.BatchMegaOrdersDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.BatchMegaOrdersDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.BatchMegaOrdersDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
+            this.BatchMegaOrdersDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.BatchMegaOrdersDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.BatchMegaOrdersDataGrid.StateCommon.HeaderColumn.Back.Color2 = System.Drawing.Color.Transparent;
+            this.BatchMegaOrdersDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.BatchMegaOrdersDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
+            this.BatchMegaOrdersDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.BatchMegaOrdersDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.BatchMegaOrdersDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
+            this.BatchMegaOrdersDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
+            this.BatchMegaOrdersDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.BatchMegaOrdersDataGrid.StateCommon.HeaderColumn.Content.MultiLine = ComponentFactory.Krypton.Toolkit.InheritBool.True;
+            this.BatchMegaOrdersDataGrid.StateCommon.HeaderColumn.Content.MultiLineH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.BatchMegaOrdersDataGrid.StateCommon.HeaderColumn.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.BatchMegaOrdersDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(121)))), ((int)(((byte)(177)))), ((int)(((byte)(229)))));
+            this.BatchMegaOrdersDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.BatchMegaOrdersDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.BatchMegaOrdersDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
+            this.BatchMegaOrdersDataGrid.StateSelected.HeaderRow.Border.Color1 = System.Drawing.Color.White;
+            this.BatchMegaOrdersDataGrid.StateSelected.HeaderRow.Border.Color2 = System.Drawing.Color.White;
+            this.BatchMegaOrdersDataGrid.StateSelected.HeaderRow.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.BatchMegaOrdersDataGrid.TabIndex = 53;
+            this.BatchMegaOrdersDataGrid.UseCustomBackColor = false;
+            this.BatchMegaOrdersDataGrid.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.BatchMegaOrdersDataGrid_CellMouseDown);
+            this.BatchMegaOrdersDataGrid.Scroll += new System.Windows.Forms.ScrollEventHandler(this.BatchMegaOrdersDataGrid_Scroll);
+            this.BatchMegaOrdersDataGrid.SelectionChanged += new System.EventHandler(this.BatchMegaOrdersDataGrid_SelectionChanged);
+            this.BatchMegaOrdersDataGrid.Sorted += new System.EventHandler(this.BatchMegaOrdersDataGrid_Sorted);
+            this.BatchMegaOrdersDataGrid.MouseMove += new System.Windows.Forms.MouseEventHandler(this.BatchMegaOrdersDataGrid_MouseMove);
+            // 
+            // BatchMainOrdersDataGrid
+            // 
+            this.BatchMainOrdersDataGrid.AllowUserToAddRows = false;
+            this.BatchMainOrdersDataGrid.AllowUserToDeleteRows = false;
+            this.BatchMainOrdersDataGrid.AllowUserToResizeRows = false;
+            this.BatchMainOrdersDataGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.BatchMainOrdersDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.BatchMainOrdersDataGrid.BackText = "Нет данных";
+            this.BatchMainOrdersDataGrid.ColumnHeadersHeight = 40;
+            this.BatchMainOrdersDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.BatchMainOrdersDataGrid.Location = new System.Drawing.Point(0, 0);
+            this.BatchMainOrdersDataGrid.Name = "BatchMainOrdersDataGrid";
+            this.BatchMainOrdersDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.BatchMainOrdersDataGrid.PercentLineWidth = 0;
+            this.BatchMainOrdersDataGrid.ReadOnly = true;
+            this.BatchMainOrdersDataGrid.RowHeadersVisible = false;
+            this.BatchMainOrdersDataGrid.RowTemplate.Height = 30;
+            this.BatchMainOrdersDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.BatchMainOrdersDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
+            this.BatchMainOrdersDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.BatchMainOrdersDataGrid.Size = new System.Drawing.Size(380, 204);
+            this.BatchMainOrdersDataGrid.StandardStyle = false;
+            this.BatchMainOrdersDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
+            this.BatchMainOrdersDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
+            this.BatchMainOrdersDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.BatchMainOrdersDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
+            this.BatchMainOrdersDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
+            this.BatchMainOrdersDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.BatchMainOrdersDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
+            this.BatchMainOrdersDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.BatchMainOrdersDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.BatchMainOrdersDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
+            this.BatchMainOrdersDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.BatchMainOrdersDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.BatchMainOrdersDataGrid.StateCommon.HeaderColumn.Back.Color2 = System.Drawing.Color.Transparent;
+            this.BatchMainOrdersDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.BatchMainOrdersDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
+            this.BatchMainOrdersDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.BatchMainOrdersDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.BatchMainOrdersDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
+            this.BatchMainOrdersDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
+            this.BatchMainOrdersDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.BatchMainOrdersDataGrid.StateCommon.HeaderColumn.Content.MultiLine = ComponentFactory.Krypton.Toolkit.InheritBool.True;
+            this.BatchMainOrdersDataGrid.StateCommon.HeaderColumn.Content.MultiLineH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.BatchMainOrdersDataGrid.StateCommon.HeaderColumn.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.BatchMainOrdersDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(121)))), ((int)(((byte)(177)))), ((int)(((byte)(229)))));
+            this.BatchMainOrdersDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.BatchMainOrdersDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.BatchMainOrdersDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
+            this.BatchMainOrdersDataGrid.TabIndex = 54;
+            this.BatchMainOrdersDataGrid.UseCustomBackColor = true;
+            this.BatchMainOrdersDataGrid.RowPrePaint += new System.Windows.Forms.DataGridViewRowPrePaintEventHandler(this.BatchMainOrdersDataGrid_RowPrePaint);
+            this.BatchMainOrdersDataGrid.Scroll += new System.Windows.Forms.ScrollEventHandler(this.BatchMainOrdersDataGrid_Scroll);
+            this.BatchMainOrdersDataGrid.SelectionChanged += new System.EventHandler(this.BatchMainOrdersDataGrid_SelectionChanged);
+            this.BatchMainOrdersDataGrid.Sorted += new System.EventHandler(this.BatchMainOrdersDataGrid_Sorted);
+            this.BatchMainOrdersDataGrid.MouseMove += new System.Windows.Forms.MouseEventHandler(this.BatchMainOrdersDataGrid_MouseMove);
+            // 
+            // BatchFrontsOrdersDataGrid
+            // 
+            this.BatchFrontsOrdersDataGrid.AllowUserToAddRows = false;
+            this.BatchFrontsOrdersDataGrid.AllowUserToDeleteRows = false;
+            this.BatchFrontsOrdersDataGrid.AllowUserToResizeColumns = false;
+            this.BatchFrontsOrdersDataGrid.AllowUserToResizeRows = false;
+            this.BatchFrontsOrdersDataGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.BatchFrontsOrdersDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.BatchFrontsOrdersDataGrid.BackText = "Нет данных";
+            this.BatchFrontsOrdersDataGrid.ColumnHeadersHeight = 40;
+            this.BatchFrontsOrdersDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.BatchFrontsOrdersDataGrid.Location = new System.Drawing.Point(1, 1);
+            this.BatchFrontsOrdersDataGrid.MultiSelect = false;
+            this.BatchFrontsOrdersDataGrid.Name = "BatchFrontsOrdersDataGrid";
+            this.BatchFrontsOrdersDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.BatchFrontsOrdersDataGrid.PercentLineWidth = 0;
+            this.BatchFrontsOrdersDataGrid.ReadOnly = true;
+            this.BatchFrontsOrdersDataGrid.RowHeadersVisible = false;
+            this.BatchFrontsOrdersDataGrid.RowTemplate.Height = 30;
+            this.BatchFrontsOrdersDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.BatchFrontsOrdersDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Green;
+            this.BatchFrontsOrdersDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.BatchFrontsOrdersDataGrid.Size = new System.Drawing.Size(805, 230);
+            this.BatchFrontsOrdersDataGrid.StandardStyle = false;
+            this.BatchFrontsOrdersDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
+            this.BatchFrontsOrdersDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
+            this.BatchFrontsOrdersDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.BatchFrontsOrdersDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
+            this.BatchFrontsOrdersDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
+            this.BatchFrontsOrdersDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.BatchFrontsOrdersDataGrid.StateCommon.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.BatchFrontsOrdersDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
+            this.BatchFrontsOrdersDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.BatchFrontsOrdersDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.BatchFrontsOrdersDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
+            this.BatchFrontsOrdersDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.BatchFrontsOrdersDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.BatchFrontsOrdersDataGrid.StateCommon.HeaderColumn.Back.Color2 = System.Drawing.Color.Transparent;
+            this.BatchFrontsOrdersDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.BatchFrontsOrdersDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
+            this.BatchFrontsOrdersDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.BatchFrontsOrdersDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.BatchFrontsOrdersDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
+            this.BatchFrontsOrdersDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
+            this.BatchFrontsOrdersDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.BatchFrontsOrdersDataGrid.StateCommon.HeaderColumn.Content.MultiLine = ComponentFactory.Krypton.Toolkit.InheritBool.True;
+            this.BatchFrontsOrdersDataGrid.StateCommon.HeaderColumn.Content.MultiLineH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.BatchFrontsOrdersDataGrid.StateCommon.HeaderColumn.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.BatchFrontsOrdersDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(158)))), ((int)(((byte)(0)))));
+            this.BatchFrontsOrdersDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.BatchFrontsOrdersDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.BatchFrontsOrdersDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
+            this.BatchFrontsOrdersDataGrid.TabIndex = 55;
+            this.BatchFrontsOrdersDataGrid.UseCustomBackColor = true;
+            // 
+            // TechnoColorsDataGrid
+            // 
+            this.TechnoColorsDataGrid.AllowUserToAddRows = false;
+            this.TechnoColorsDataGrid.AllowUserToDeleteRows = false;
+            this.TechnoColorsDataGrid.AllowUserToResizeColumns = false;
+            this.TechnoColorsDataGrid.AllowUserToResizeRows = false;
+            this.TechnoColorsDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.TechnoColorsDataGrid.BackText = "Нет данных";
+            this.TechnoColorsDataGrid.ColumnHeadersHeight = 40;
+            this.TechnoColorsDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.TechnoColorsDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.TechnoColorsDataGrid.Location = new System.Drawing.Point(1, 1);
+            this.TechnoColorsDataGrid.Name = "TechnoColorsDataGrid";
+            this.TechnoColorsDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.TechnoColorsDataGrid.PercentLineWidth = 0;
+            this.TechnoColorsDataGrid.ReadOnly = true;
+            this.TechnoColorsDataGrid.RowHeadersVisible = false;
+            this.TechnoColorsDataGrid.RowTemplate.Height = 30;
+            this.TechnoColorsDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.TechnoColorsDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
+            this.TechnoColorsDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.TechnoColorsDataGrid.Size = new System.Drawing.Size(323, 154);
+            this.TechnoColorsDataGrid.StandardStyle = false;
+            this.TechnoColorsDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
+            this.TechnoColorsDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
+            this.TechnoColorsDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.TechnoColorsDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
+            this.TechnoColorsDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
+            this.TechnoColorsDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.TechnoColorsDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
+            this.TechnoColorsDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.TechnoColorsDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.TechnoColorsDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
+            this.TechnoColorsDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.TechnoColorsDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.TechnoColorsDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.TechnoColorsDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
+            this.TechnoColorsDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.TechnoColorsDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom;
+            this.TechnoColorsDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
+            this.TechnoColorsDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
+            this.TechnoColorsDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.TechnoColorsDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(121)))), ((int)(((byte)(177)))), ((int)(((byte)(229)))));
+            this.TechnoColorsDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.TechnoColorsDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.TechnoColorsDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
+            this.TechnoColorsDataGrid.TabIndex = 57;
+            this.TechnoColorsDataGrid.UseCustomBackColor = true;
+            this.TechnoColorsDataGrid.SelectionChanged += new System.EventHandler(this.TechnoColorsDataGrid_SelectionChanged);
+            // 
+            // TechnoInsetColorsDataGrid
+            // 
+            this.TechnoInsetColorsDataGrid.AllowUserToAddRows = false;
+            this.TechnoInsetColorsDataGrid.AllowUserToDeleteRows = false;
+            this.TechnoInsetColorsDataGrid.AllowUserToResizeColumns = false;
+            this.TechnoInsetColorsDataGrid.AllowUserToResizeRows = false;
+            this.TechnoInsetColorsDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.TechnoInsetColorsDataGrid.BackText = "Нет данных";
+            this.TechnoInsetColorsDataGrid.ColumnHeadersHeight = 40;
+            this.TechnoInsetColorsDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.TechnoInsetColorsDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.TechnoInsetColorsDataGrid.Location = new System.Drawing.Point(1, 1);
+            this.TechnoInsetColorsDataGrid.Name = "TechnoInsetColorsDataGrid";
+            this.TechnoInsetColorsDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.TechnoInsetColorsDataGrid.PercentLineWidth = 0;
+            this.TechnoInsetColorsDataGrid.ReadOnly = true;
+            this.TechnoInsetColorsDataGrid.RowHeadersVisible = false;
+            this.TechnoInsetColorsDataGrid.RowTemplate.Height = 30;
+            this.TechnoInsetColorsDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.TechnoInsetColorsDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Green;
+            this.TechnoInsetColorsDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.TechnoInsetColorsDataGrid.Size = new System.Drawing.Size(323, 154);
+            this.TechnoInsetColorsDataGrid.StandardStyle = false;
+            this.TechnoInsetColorsDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
+            this.TechnoInsetColorsDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
+            this.TechnoInsetColorsDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.TechnoInsetColorsDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
+            this.TechnoInsetColorsDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
+            this.TechnoInsetColorsDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.TechnoInsetColorsDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
+            this.TechnoInsetColorsDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.TechnoInsetColorsDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.TechnoInsetColorsDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
+            this.TechnoInsetColorsDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.TechnoInsetColorsDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.TechnoInsetColorsDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.TechnoInsetColorsDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
+            this.TechnoInsetColorsDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.TechnoInsetColorsDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom;
+            this.TechnoInsetColorsDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
+            this.TechnoInsetColorsDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
+            this.TechnoInsetColorsDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.TechnoInsetColorsDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(158)))), ((int)(((byte)(0)))));
+            this.TechnoInsetColorsDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.TechnoInsetColorsDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.TechnoInsetColorsDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
+            this.TechnoInsetColorsDataGrid.TabIndex = 60;
+            this.TechnoInsetColorsDataGrid.UseCustomBackColor = true;
+            this.TechnoInsetColorsDataGrid.SelectionChanged += new System.EventHandler(this.TechnoInsetColorsDataGrid_SelectionChanged);
+            // 
+            // TechnoInsetTypesDataGrid
+            // 
+            this.TechnoInsetTypesDataGrid.AllowUserToAddRows = false;
+            this.TechnoInsetTypesDataGrid.AllowUserToDeleteRows = false;
+            this.TechnoInsetTypesDataGrid.AllowUserToResizeColumns = false;
+            this.TechnoInsetTypesDataGrid.AllowUserToResizeRows = false;
+            this.TechnoInsetTypesDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.TechnoInsetTypesDataGrid.BackText = "Нет данных";
+            this.TechnoInsetTypesDataGrid.ColumnHeadersHeight = 40;
+            this.TechnoInsetTypesDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.TechnoInsetTypesDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.TechnoInsetTypesDataGrid.Location = new System.Drawing.Point(1, 0);
+            this.TechnoInsetTypesDataGrid.Name = "TechnoInsetTypesDataGrid";
+            this.TechnoInsetTypesDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.TechnoInsetTypesDataGrid.PercentLineWidth = 0;
+            this.TechnoInsetTypesDataGrid.ReadOnly = true;
+            this.TechnoInsetTypesDataGrid.RowHeadersVisible = false;
+            this.TechnoInsetTypesDataGrid.RowTemplate.Height = 30;
+            this.TechnoInsetTypesDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.TechnoInsetTypesDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
+            this.TechnoInsetTypesDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.TechnoInsetTypesDataGrid.Size = new System.Drawing.Size(324, 156);
+            this.TechnoInsetTypesDataGrid.StandardStyle = false;
+            this.TechnoInsetTypesDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
+            this.TechnoInsetTypesDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
+            this.TechnoInsetTypesDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.TechnoInsetTypesDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
+            this.TechnoInsetTypesDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
+            this.TechnoInsetTypesDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.TechnoInsetTypesDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
+            this.TechnoInsetTypesDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.TechnoInsetTypesDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.TechnoInsetTypesDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
+            this.TechnoInsetTypesDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.TechnoInsetTypesDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.TechnoInsetTypesDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.TechnoInsetTypesDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
+            this.TechnoInsetTypesDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.TechnoInsetTypesDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom;
+            this.TechnoInsetTypesDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
+            this.TechnoInsetTypesDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
+            this.TechnoInsetTypesDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.TechnoInsetTypesDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(121)))), ((int)(((byte)(177)))), ((int)(((byte)(229)))));
+            this.TechnoInsetTypesDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.TechnoInsetTypesDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.TechnoInsetTypesDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
+            this.TechnoInsetTypesDataGrid.TabIndex = 59;
+            this.TechnoInsetTypesDataGrid.UseCustomBackColor = true;
+            this.TechnoInsetTypesDataGrid.SelectionChanged += new System.EventHandler(this.TechnoInsetTypesDataGrid_SelectionChanged);
+            // 
+            // FrontsDataGrid
+            // 
+            this.FrontsDataGrid.AllowUserToAddRows = false;
+            this.FrontsDataGrid.AllowUserToDeleteRows = false;
+            this.FrontsDataGrid.AllowUserToResizeColumns = false;
+            this.FrontsDataGrid.AllowUserToResizeRows = false;
+            this.FrontsDataGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.FrontsDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.FrontsDataGrid.BackText = "Нет данных";
+            this.FrontsDataGrid.ColumnHeadersHeight = 40;
+            this.FrontsDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.FrontsDataGrid.Location = new System.Drawing.Point(1, 1);
+            this.FrontsDataGrid.Name = "FrontsDataGrid";
+            this.FrontsDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.FrontsDataGrid.PercentLineWidth = 0;
+            this.FrontsDataGrid.ReadOnly = true;
+            this.FrontsDataGrid.RowHeadersVisible = false;
+            this.FrontsDataGrid.RowTemplate.Height = 30;
+            this.FrontsDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.FrontsDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Orange;
+            this.FrontsDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.FrontsDataGrid.Size = new System.Drawing.Size(323, 433);
+            this.FrontsDataGrid.StandardStyle = false;
+            this.FrontsDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
+            this.FrontsDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
+            this.FrontsDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.FrontsDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
+            this.FrontsDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
+            this.FrontsDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.FrontsDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
+            this.FrontsDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.FrontsDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.FrontsDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
+            this.FrontsDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.FrontsDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.FrontsDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.FrontsDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
+            this.FrontsDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.FrontsDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom;
+            this.FrontsDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
+            this.FrontsDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
+            this.FrontsDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.FrontsDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(253)))), ((int)(((byte)(164)))), ((int)(((byte)(61)))));
+            this.FrontsDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.FrontsDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.FrontsDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
+            this.FrontsDataGrid.TabIndex = 38;
+            this.FrontsDataGrid.UseCustomBackColor = true;
+            this.FrontsDataGrid.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.FrontsDataGrid_CellMouseDown);
+            this.FrontsDataGrid.SelectionChanged += new System.EventHandler(this.FrontsDataGrid_SelectionChanged);
+            // 
+            // FrameColorsDataGrid
+            // 
+            this.FrameColorsDataGrid.AllowUserToAddRows = false;
+            this.FrameColorsDataGrid.AllowUserToDeleteRows = false;
+            this.FrameColorsDataGrid.AllowUserToResizeColumns = false;
+            this.FrameColorsDataGrid.AllowUserToResizeRows = false;
+            this.FrameColorsDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.FrameColorsDataGrid.BackText = "Нет данных";
+            this.FrameColorsDataGrid.ColumnHeadersHeight = 40;
+            this.FrameColorsDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.FrameColorsDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.FrameColorsDataGrid.Location = new System.Drawing.Point(1, 1);
+            this.FrameColorsDataGrid.Name = "FrameColorsDataGrid";
+            this.FrameColorsDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.FrameColorsDataGrid.PercentLineWidth = 0;
+            this.FrameColorsDataGrid.ReadOnly = true;
+            this.FrameColorsDataGrid.RowHeadersVisible = false;
+            this.FrameColorsDataGrid.RowTemplate.Height = 30;
+            this.FrameColorsDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.FrameColorsDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
+            this.FrameColorsDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.FrameColorsDataGrid.Size = new System.Drawing.Size(323, 326);
+            this.FrameColorsDataGrid.StandardStyle = false;
+            this.FrameColorsDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
+            this.FrameColorsDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
+            this.FrameColorsDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.FrameColorsDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
+            this.FrameColorsDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
+            this.FrameColorsDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.FrameColorsDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
+            this.FrameColorsDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.FrameColorsDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.FrameColorsDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
+            this.FrameColorsDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.FrameColorsDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.FrameColorsDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.FrameColorsDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
+            this.FrameColorsDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.FrameColorsDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom;
+            this.FrameColorsDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
+            this.FrameColorsDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
+            this.FrameColorsDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.FrameColorsDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(121)))), ((int)(((byte)(177)))), ((int)(((byte)(229)))));
+            this.FrameColorsDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.FrameColorsDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.FrameColorsDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
+            this.FrameColorsDataGrid.TabIndex = 57;
+            this.FrameColorsDataGrid.UseCustomBackColor = true;
+            this.FrameColorsDataGrid.SelectionChanged += new System.EventHandler(this.FrameColorsDataGrid_SelectionChanged);
+            // 
+            // SizesDataGrid
+            // 
+            this.SizesDataGrid.AllowUserToAddRows = false;
+            this.SizesDataGrid.AllowUserToDeleteRows = false;
+            this.SizesDataGrid.AllowUserToResizeColumns = false;
+            this.SizesDataGrid.AllowUserToResizeRows = false;
+            this.SizesDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.SizesDataGrid.BackText = "Нет данных";
+            this.SizesDataGrid.ColumnHeadersHeight = 40;
+            this.SizesDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.SizesDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.SizesDataGrid.Location = new System.Drawing.Point(1, 1);
+            this.SizesDataGrid.Name = "SizesDataGrid";
+            this.SizesDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.SizesDataGrid.PercentLineWidth = 0;
+            this.SizesDataGrid.ReadOnly = true;
+            this.SizesDataGrid.RowHeadersVisible = false;
+            this.SizesDataGrid.RowTemplate.Height = 30;
+            this.SizesDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.SizesDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Green;
+            this.SizesDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.SizesDataGrid.Size = new System.Drawing.Size(323, 154);
+            this.SizesDataGrid.StandardStyle = false;
+            this.SizesDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
+            this.SizesDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
+            this.SizesDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.SizesDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
+            this.SizesDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
+            this.SizesDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.SizesDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
+            this.SizesDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.SizesDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.SizesDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
+            this.SizesDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.SizesDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.SizesDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.SizesDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
+            this.SizesDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.SizesDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom;
+            this.SizesDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
+            this.SizesDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
+            this.SizesDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.SizesDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(158)))), ((int)(((byte)(0)))));
+            this.SizesDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.SizesDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.SizesDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
+            this.SizesDataGrid.TabIndex = 58;
+            this.SizesDataGrid.UseCustomBackColor = true;
+            // 
+            // InsetTypesDataGrid
+            // 
+            this.InsetTypesDataGrid.AllowUserToAddRows = false;
+            this.InsetTypesDataGrid.AllowUserToDeleteRows = false;
+            this.InsetTypesDataGrid.AllowUserToResizeColumns = false;
+            this.InsetTypesDataGrid.AllowUserToResizeRows = false;
+            this.InsetTypesDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.InsetTypesDataGrid.BackText = "Нет данных";
+            this.InsetTypesDataGrid.ColumnHeadersHeight = 40;
+            this.InsetTypesDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.InsetTypesDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.InsetTypesDataGrid.Location = new System.Drawing.Point(1, 0);
+            this.InsetTypesDataGrid.Name = "InsetTypesDataGrid";
+            this.InsetTypesDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.InsetTypesDataGrid.PercentLineWidth = 0;
+            this.InsetTypesDataGrid.ReadOnly = true;
+            this.InsetTypesDataGrid.RowHeadersVisible = false;
+            this.InsetTypesDataGrid.RowTemplate.Height = 30;
+            this.InsetTypesDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.InsetTypesDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
+            this.InsetTypesDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.InsetTypesDataGrid.Size = new System.Drawing.Size(324, 328);
+            this.InsetTypesDataGrid.StandardStyle = false;
+            this.InsetTypesDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
+            this.InsetTypesDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
+            this.InsetTypesDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.InsetTypesDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
+            this.InsetTypesDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
+            this.InsetTypesDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.InsetTypesDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
+            this.InsetTypesDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.InsetTypesDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.InsetTypesDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
+            this.InsetTypesDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.InsetTypesDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.InsetTypesDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.InsetTypesDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
+            this.InsetTypesDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.InsetTypesDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom;
+            this.InsetTypesDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
+            this.InsetTypesDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
+            this.InsetTypesDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.InsetTypesDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(121)))), ((int)(((byte)(177)))), ((int)(((byte)(229)))));
+            this.InsetTypesDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.InsetTypesDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.InsetTypesDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
+            this.InsetTypesDataGrid.TabIndex = 59;
+            this.InsetTypesDataGrid.UseCustomBackColor = true;
+            this.InsetTypesDataGrid.SelectionChanged += new System.EventHandler(this.InsetTypesDataGrid_SelectionChanged);
+            // 
+            // InsetColorsDataGrid
+            // 
+            this.InsetColorsDataGrid.AllowUserToAddRows = false;
+            this.InsetColorsDataGrid.AllowUserToDeleteRows = false;
+            this.InsetColorsDataGrid.AllowUserToResizeColumns = false;
+            this.InsetColorsDataGrid.AllowUserToResizeRows = false;
+            this.InsetColorsDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.InsetColorsDataGrid.BackText = "Нет данных";
+            this.InsetColorsDataGrid.ColumnHeadersHeight = 40;
+            this.InsetColorsDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.InsetColorsDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.InsetColorsDataGrid.Location = new System.Drawing.Point(1, 1);
+            this.InsetColorsDataGrid.Name = "InsetColorsDataGrid";
+            this.InsetColorsDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.InsetColorsDataGrid.PercentLineWidth = 0;
+            this.InsetColorsDataGrid.ReadOnly = true;
+            this.InsetColorsDataGrid.RowHeadersVisible = false;
+            this.InsetColorsDataGrid.RowTemplate.Height = 30;
+            this.InsetColorsDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.InsetColorsDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Green;
+            this.InsetColorsDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.InsetColorsDataGrid.Size = new System.Drawing.Size(323, 154);
+            this.InsetColorsDataGrid.StandardStyle = false;
+            this.InsetColorsDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
+            this.InsetColorsDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
+            this.InsetColorsDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.InsetColorsDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
+            this.InsetColorsDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
+            this.InsetColorsDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.InsetColorsDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
+            this.InsetColorsDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.InsetColorsDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.InsetColorsDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
+            this.InsetColorsDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.InsetColorsDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.InsetColorsDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.InsetColorsDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
+            this.InsetColorsDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.InsetColorsDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom;
+            this.InsetColorsDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
+            this.InsetColorsDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
+            this.InsetColorsDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.InsetColorsDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(158)))), ((int)(((byte)(0)))));
+            this.InsetColorsDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.InsetColorsDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.InsetColorsDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
+            this.InsetColorsDataGrid.TabIndex = 60;
+            this.InsetColorsDataGrid.UseCustomBackColor = true;
+            this.InsetColorsDataGrid.SelectionChanged += new System.EventHandler(this.InsetColorsDataGrid_SelectionChanged);
+            // 
+            // DecorSizesDataGrid
+            // 
+            this.DecorSizesDataGrid.AllowUserToAddRows = false;
+            this.DecorSizesDataGrid.AllowUserToDeleteRows = false;
+            this.DecorSizesDataGrid.AllowUserToResizeColumns = false;
+            this.DecorSizesDataGrid.AllowUserToResizeRows = false;
+            this.DecorSizesDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.DecorSizesDataGrid.BackText = "Нет данных";
+            this.DecorSizesDataGrid.ColumnHeadersHeight = 40;
+            this.DecorSizesDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.DecorSizesDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.DecorSizesDataGrid.Location = new System.Drawing.Point(1, 0);
+            this.DecorSizesDataGrid.Name = "DecorSizesDataGrid";
+            this.DecorSizesDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.DecorSizesDataGrid.PercentLineWidth = 0;
+            this.DecorSizesDataGrid.ReadOnly = true;
+            this.DecorSizesDataGrid.RowHeadersVisible = false;
+            this.DecorSizesDataGrid.RowTemplate.Height = 30;
+            this.DecorSizesDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.DecorSizesDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Green;
+            this.DecorSizesDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.DecorSizesDataGrid.Size = new System.Drawing.Size(287, 486);
+            this.DecorSizesDataGrid.StandardStyle = false;
+            this.DecorSizesDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
+            this.DecorSizesDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
+            this.DecorSizesDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.DecorSizesDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
+            this.DecorSizesDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
+            this.DecorSizesDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.DecorSizesDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
+            this.DecorSizesDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.DecorSizesDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.DecorSizesDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
+            this.DecorSizesDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.DecorSizesDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.DecorSizesDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.DecorSizesDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
+            this.DecorSizesDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.DecorSizesDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom;
+            this.DecorSizesDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
+            this.DecorSizesDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
+            this.DecorSizesDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.DecorSizesDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(158)))), ((int)(((byte)(0)))));
+            this.DecorSizesDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.DecorSizesDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.DecorSizesDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
+            this.DecorSizesDataGrid.TabIndex = 39;
+            this.DecorSizesDataGrid.UseCustomBackColor = true;
+            // 
+            // DecorProductsDataGrid
+            // 
+            this.DecorProductsDataGrid.AllowUserToAddRows = false;
+            this.DecorProductsDataGrid.AllowUserToDeleteRows = false;
+            this.DecorProductsDataGrid.AllowUserToResizeColumns = false;
+            this.DecorProductsDataGrid.AllowUserToResizeRows = false;
+            this.DecorProductsDataGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.DecorProductsDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.DecorProductsDataGrid.BackText = "Нет данных";
+            this.DecorProductsDataGrid.ColumnHeadersHeight = 40;
+            this.DecorProductsDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.DecorProductsDataGrid.Location = new System.Drawing.Point(1, 0);
+            this.DecorProductsDataGrid.Name = "DecorProductsDataGrid";
+            this.DecorProductsDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.DecorProductsDataGrid.PercentLineWidth = 0;
+            this.DecorProductsDataGrid.ReadOnly = true;
+            this.DecorProductsDataGrid.RowHeadersVisible = false;
+            this.DecorProductsDataGrid.RowTemplate.Height = 30;
+            this.DecorProductsDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.DecorProductsDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
+            this.DecorProductsDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.DecorProductsDataGrid.Size = new System.Drawing.Size(344, 449);
+            this.DecorProductsDataGrid.StandardStyle = false;
+            this.DecorProductsDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
+            this.DecorProductsDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
+            this.DecorProductsDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.DecorProductsDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
+            this.DecorProductsDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
+            this.DecorProductsDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.DecorProductsDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
+            this.DecorProductsDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.DecorProductsDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.DecorProductsDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
+            this.DecorProductsDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.DecorProductsDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.DecorProductsDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.DecorProductsDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
+            this.DecorProductsDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.DecorProductsDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom;
+            this.DecorProductsDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
+            this.DecorProductsDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
+            this.DecorProductsDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.DecorProductsDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(121)))), ((int)(((byte)(177)))), ((int)(((byte)(229)))));
+            this.DecorProductsDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.DecorProductsDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.DecorProductsDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
+            this.DecorProductsDataGrid.TabIndex = 40;
+            this.DecorProductsDataGrid.UseCustomBackColor = true;
+            this.DecorProductsDataGrid.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.DecorProductsDataGrid_CellMouseDown);
+            this.DecorProductsDataGrid.SelectionChanged += new System.EventHandler(this.DecorProductsDataGrid_SelectionChanged);
+            // 
+            // DecorItemsDataGrid
+            // 
+            this.DecorItemsDataGrid.AllowUserToAddRows = false;
+            this.DecorItemsDataGrid.AllowUserToDeleteRows = false;
+            this.DecorItemsDataGrid.AllowUserToResizeColumns = false;
+            this.DecorItemsDataGrid.AllowUserToResizeRows = false;
+            this.DecorItemsDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.DecorItemsDataGrid.BackText = "Нет данных";
+            this.DecorItemsDataGrid.ColumnHeadersHeight = 40;
+            this.DecorItemsDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.DecorItemsDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.DecorItemsDataGrid.Location = new System.Drawing.Point(1, 0);
+            this.DecorItemsDataGrid.Name = "DecorItemsDataGrid";
+            this.DecorItemsDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.DecorItemsDataGrid.PercentLineWidth = 0;
+            this.DecorItemsDataGrid.ReadOnly = true;
+            this.DecorItemsDataGrid.RowHeadersVisible = false;
+            this.DecorItemsDataGrid.RowTemplate.Height = 30;
+            this.DecorItemsDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.DecorItemsDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
+            this.DecorItemsDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.DecorItemsDataGrid.Size = new System.Drawing.Size(328, 486);
+            this.DecorItemsDataGrid.StandardStyle = false;
+            this.DecorItemsDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
+            this.DecorItemsDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
+            this.DecorItemsDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.DecorItemsDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
+            this.DecorItemsDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
+            this.DecorItemsDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.DecorItemsDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
+            this.DecorItemsDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.DecorItemsDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.DecorItemsDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
+            this.DecorItemsDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.DecorItemsDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.DecorItemsDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.DecorItemsDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
+            this.DecorItemsDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.DecorItemsDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom;
+            this.DecorItemsDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
+            this.DecorItemsDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
+            this.DecorItemsDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.DecorItemsDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(121)))), ((int)(((byte)(177)))), ((int)(((byte)(229)))));
+            this.DecorItemsDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.DecorItemsDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.DecorItemsDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
+            this.DecorItemsDataGrid.TabIndex = 40;
+            this.DecorItemsDataGrid.UseCustomBackColor = true;
+            this.DecorItemsDataGrid.SelectionChanged += new System.EventHandler(this.DecorItemsDataGrid_SelectionChanged);
+            // 
+            // DecorColorsDataGrid
+            // 
+            this.DecorColorsDataGrid.AllowUserToAddRows = false;
+            this.DecorColorsDataGrid.AllowUserToDeleteRows = false;
+            this.DecorColorsDataGrid.AllowUserToResizeColumns = false;
+            this.DecorColorsDataGrid.AllowUserToResizeRows = false;
+            this.DecorColorsDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.DecorColorsDataGrid.BackText = "Нет данных";
+            this.DecorColorsDataGrid.ColumnHeadersHeight = 40;
+            this.DecorColorsDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.DecorColorsDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.DecorColorsDataGrid.Location = new System.Drawing.Point(1, 0);
+            this.DecorColorsDataGrid.Name = "DecorColorsDataGrid";
+            this.DecorColorsDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.DecorColorsDataGrid.PercentLineWidth = 0;
+            this.DecorColorsDataGrid.ReadOnly = true;
+            this.DecorColorsDataGrid.RowHeadersVisible = false;
+            this.DecorColorsDataGrid.RowTemplate.Height = 30;
+            this.DecorColorsDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.DecorColorsDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Green;
+            this.DecorColorsDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.DecorColorsDataGrid.Size = new System.Drawing.Size(385, 486);
+            this.DecorColorsDataGrid.StandardStyle = false;
+            this.DecorColorsDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
+            this.DecorColorsDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
+            this.DecorColorsDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.DecorColorsDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
+            this.DecorColorsDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
+            this.DecorColorsDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.DecorColorsDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
+            this.DecorColorsDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.DecorColorsDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.DecorColorsDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
+            this.DecorColorsDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.DecorColorsDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.DecorColorsDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.DecorColorsDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
+            this.DecorColorsDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.DecorColorsDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom;
+            this.DecorColorsDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
+            this.DecorColorsDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
+            this.DecorColorsDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.DecorColorsDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(158)))), ((int)(((byte)(0)))));
+            this.DecorColorsDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.DecorColorsDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.DecorColorsDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
+            this.DecorColorsDataGrid.TabIndex = 39;
+            this.DecorColorsDataGrid.UseCustomBackColor = true;
+            this.DecorColorsDataGrid.SelectionChanged += new System.EventHandler(this.DecorColorsDataGrid_SelectionChanged);
+            // 
+            // MegaOrdersDataGrid
+            // 
+            this.MegaOrdersDataGrid.AllowUserToAddRows = false;
+            this.MegaOrdersDataGrid.AllowUserToDeleteRows = false;
+            this.MegaOrdersDataGrid.AllowUserToResizeRows = false;
+            this.MegaOrdersDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.MegaOrdersDataGrid.BackText = "Нет данных";
+            this.MegaOrdersDataGrid.ColumnHeadersHeight = 40;
+            this.MegaOrdersDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.MegaOrdersDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.MegaOrdersDataGrid.HideOuterBorders = true;
+            this.MegaOrdersDataGrid.Location = new System.Drawing.Point(0, 0);
+            this.MegaOrdersDataGrid.Name = "MegaOrdersDataGrid";
+            this.MegaOrdersDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.MegaOrdersDataGrid.PercentLineWidth = 0;
+            this.MegaOrdersDataGrid.ReadOnly = true;
+            this.MegaOrdersDataGrid.RowHeadersVisible = false;
+            this.MegaOrdersDataGrid.RowTemplate.Height = 30;
+            this.MegaOrdersDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.MegaOrdersDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
+            this.MegaOrdersDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.MegaOrdersDataGrid.Size = new System.Drawing.Size(392, 233);
+            this.MegaOrdersDataGrid.StandardStyle = false;
+            this.MegaOrdersDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
+            this.MegaOrdersDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
+            this.MegaOrdersDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.MegaOrdersDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
+            this.MegaOrdersDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
+            this.MegaOrdersDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.MegaOrdersDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
+            this.MegaOrdersDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.MegaOrdersDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.MegaOrdersDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
+            this.MegaOrdersDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.MegaOrdersDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.MegaOrdersDataGrid.StateCommon.HeaderColumn.Back.Color2 = System.Drawing.Color.Transparent;
+            this.MegaOrdersDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.MegaOrdersDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
+            this.MegaOrdersDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.MegaOrdersDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.MegaOrdersDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
+            this.MegaOrdersDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
+            this.MegaOrdersDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.MegaOrdersDataGrid.StateCommon.HeaderColumn.Content.MultiLine = ComponentFactory.Krypton.Toolkit.InheritBool.True;
+            this.MegaOrdersDataGrid.StateCommon.HeaderColumn.Content.MultiLineH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.MegaOrdersDataGrid.StateCommon.HeaderColumn.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.MegaOrdersDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(121)))), ((int)(((byte)(177)))), ((int)(((byte)(229)))));
+            this.MegaOrdersDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.MegaOrdersDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.MegaOrdersDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
+            this.MegaOrdersDataGrid.StateSelected.HeaderRow.Border.Color1 = System.Drawing.Color.White;
+            this.MegaOrdersDataGrid.StateSelected.HeaderRow.Border.Color2 = System.Drawing.Color.White;
+            this.MegaOrdersDataGrid.StateSelected.HeaderRow.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.MegaOrdersDataGrid.TabIndex = 53;
+            this.MegaOrdersDataGrid.UseCustomBackColor = true;
+            this.MegaOrdersDataGrid.Scroll += new System.Windows.Forms.ScrollEventHandler(this.MegaOrdersDataGrid_Scroll);
+            this.MegaOrdersDataGrid.SelectionChanged += new System.EventHandler(this.MegaOrdersDataGrid_SelectionChanged);
+            this.MegaOrdersDataGrid.Sorted += new System.EventHandler(this.MegaOrdersDataGrid_Sorted);
+            this.MegaOrdersDataGrid.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MegaOrdersDataGrid_MouseMove);
+            // 
+            // MainOrdersDataGrid
+            // 
+            this.MainOrdersDataGrid.AllowUserToAddRows = false;
+            this.MainOrdersDataGrid.AllowUserToDeleteRows = false;
+            this.MainOrdersDataGrid.AllowUserToResizeRows = false;
+            this.MainOrdersDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.MainOrdersDataGrid.BackText = "Нет данных";
+            this.MainOrdersDataGrid.ColumnHeadersHeight = 40;
+            this.MainOrdersDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.MainOrdersDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.MainOrdersDataGrid.Location = new System.Drawing.Point(0, 0);
+            this.MainOrdersDataGrid.Name = "MainOrdersDataGrid";
+            this.MainOrdersDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.MainOrdersDataGrid.PercentLineWidth = 0;
+            this.MainOrdersDataGrid.ReadOnly = true;
+            this.MainOrdersDataGrid.RowHeadersVisible = false;
+            this.MainOrdersDataGrid.RowTemplate.Height = 30;
+            this.MainOrdersDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.MainOrdersDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
+            this.MainOrdersDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.MainOrdersDataGrid.Size = new System.Drawing.Size(823, 233);
+            this.MainOrdersDataGrid.StandardStyle = false;
+            this.MainOrdersDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
+            this.MainOrdersDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
+            this.MainOrdersDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.MainOrdersDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
+            this.MainOrdersDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
+            this.MainOrdersDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.MainOrdersDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
+            this.MainOrdersDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.MainOrdersDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.MainOrdersDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
+            this.MainOrdersDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.MainOrdersDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.MainOrdersDataGrid.StateCommon.HeaderColumn.Back.Color2 = System.Drawing.Color.Transparent;
+            this.MainOrdersDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.MainOrdersDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
+            this.MainOrdersDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.MainOrdersDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.MainOrdersDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
+            this.MainOrdersDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
+            this.MainOrdersDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.MainOrdersDataGrid.StateCommon.HeaderColumn.Content.MultiLine = ComponentFactory.Krypton.Toolkit.InheritBool.True;
+            this.MainOrdersDataGrid.StateCommon.HeaderColumn.Content.MultiLineH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.MainOrdersDataGrid.StateCommon.HeaderColumn.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.MainOrdersDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(121)))), ((int)(((byte)(177)))), ((int)(((byte)(229)))));
+            this.MainOrdersDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.MainOrdersDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.MainOrdersDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
+            this.MainOrdersDataGrid.TabIndex = 54;
+            this.MainOrdersDataGrid.UseCustomBackColor = true;
+            this.MainOrdersDataGrid.Scroll += new System.Windows.Forms.ScrollEventHandler(this.MainOrdersDataGrid_Scroll);
+            this.MainOrdersDataGrid.SelectionChanged += new System.EventHandler(this.MainOrdersDataGrid_SelectionChanged);
+            this.MainOrdersDataGrid.Sorted += new System.EventHandler(this.MainOrdersDataGrid_Sorted);
+            this.MainOrdersDataGrid.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MainOrdersDataGrid_MouseMove);
+            // 
+            // MainOrdersFrontsOrdersDataGrid
+            // 
+            this.MainOrdersFrontsOrdersDataGrid.AllowUserToAddRows = false;
+            this.MainOrdersFrontsOrdersDataGrid.AllowUserToDeleteRows = false;
+            this.MainOrdersFrontsOrdersDataGrid.AllowUserToResizeColumns = false;
+            this.MainOrdersFrontsOrdersDataGrid.AllowUserToResizeRows = false;
+            this.MainOrdersFrontsOrdersDataGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.MainOrdersFrontsOrdersDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.MainOrdersFrontsOrdersDataGrid.BackText = "Нет данных";
+            this.MainOrdersFrontsOrdersDataGrid.ColumnHeadersHeight = 40;
+            this.MainOrdersFrontsOrdersDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.MainOrdersFrontsOrdersDataGrid.Location = new System.Drawing.Point(1, 1);
+            this.MainOrdersFrontsOrdersDataGrid.MultiSelect = false;
+            this.MainOrdersFrontsOrdersDataGrid.Name = "MainOrdersFrontsOrdersDataGrid";
+            this.MainOrdersFrontsOrdersDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.MainOrdersFrontsOrdersDataGrid.PercentLineWidth = 0;
+            this.MainOrdersFrontsOrdersDataGrid.ReadOnly = true;
+            this.MainOrdersFrontsOrdersDataGrid.RowHeadersVisible = false;
+            this.MainOrdersFrontsOrdersDataGrid.RowTemplate.Height = 30;
+            this.MainOrdersFrontsOrdersDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.MainOrdersFrontsOrdersDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Green;
+            this.MainOrdersFrontsOrdersDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.MainOrdersFrontsOrdersDataGrid.Size = new System.Drawing.Size(1214, 204);
+            this.MainOrdersFrontsOrdersDataGrid.StandardStyle = false;
+            this.MainOrdersFrontsOrdersDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
+            this.MainOrdersFrontsOrdersDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
+            this.MainOrdersFrontsOrdersDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.MainOrdersFrontsOrdersDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
+            this.MainOrdersFrontsOrdersDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
+            this.MainOrdersFrontsOrdersDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.MainOrdersFrontsOrdersDataGrid.StateCommon.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.MainOrdersFrontsOrdersDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
+            this.MainOrdersFrontsOrdersDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.MainOrdersFrontsOrdersDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.MainOrdersFrontsOrdersDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
+            this.MainOrdersFrontsOrdersDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.MainOrdersFrontsOrdersDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.MainOrdersFrontsOrdersDataGrid.StateCommon.HeaderColumn.Back.Color2 = System.Drawing.Color.Transparent;
+            this.MainOrdersFrontsOrdersDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.MainOrdersFrontsOrdersDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
+            this.MainOrdersFrontsOrdersDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.MainOrdersFrontsOrdersDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.MainOrdersFrontsOrdersDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
+            this.MainOrdersFrontsOrdersDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
+            this.MainOrdersFrontsOrdersDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.MainOrdersFrontsOrdersDataGrid.StateCommon.HeaderColumn.Content.MultiLine = ComponentFactory.Krypton.Toolkit.InheritBool.True;
+            this.MainOrdersFrontsOrdersDataGrid.StateCommon.HeaderColumn.Content.MultiLineH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.MainOrdersFrontsOrdersDataGrid.StateCommon.HeaderColumn.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.MainOrdersFrontsOrdersDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(158)))), ((int)(((byte)(0)))));
+            this.MainOrdersFrontsOrdersDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.MainOrdersFrontsOrdersDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.MainOrdersFrontsOrdersDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
+            this.MainOrdersFrontsOrdersDataGrid.TabIndex = 55;
+            this.MainOrdersFrontsOrdersDataGrid.UseCustomBackColor = true;
+            // 
+            // PreTechnoInsetTypesDataGrid
+            // 
+            this.PreTechnoInsetTypesDataGrid.AllowUserToAddRows = false;
+            this.PreTechnoInsetTypesDataGrid.AllowUserToDeleteRows = false;
+            this.PreTechnoInsetTypesDataGrid.AllowUserToResizeColumns = false;
+            this.PreTechnoInsetTypesDataGrid.AllowUserToResizeRows = false;
+            this.PreTechnoInsetTypesDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.PreTechnoInsetTypesDataGrid.BackText = "Нет данных";
+            this.PreTechnoInsetTypesDataGrid.ColumnHeadersHeight = 40;
+            this.PreTechnoInsetTypesDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.PreTechnoInsetTypesDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.PreTechnoInsetTypesDataGrid.Location = new System.Drawing.Point(1, 0);
+            this.PreTechnoInsetTypesDataGrid.Name = "PreTechnoInsetTypesDataGrid";
+            this.PreTechnoInsetTypesDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.PreTechnoInsetTypesDataGrid.PercentLineWidth = 0;
+            this.PreTechnoInsetTypesDataGrid.ReadOnly = true;
+            this.PreTechnoInsetTypesDataGrid.RowHeadersVisible = false;
+            this.PreTechnoInsetTypesDataGrid.RowTemplate.Height = 30;
+            this.PreTechnoInsetTypesDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.PreTechnoInsetTypesDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
+            this.PreTechnoInsetTypesDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.PreTechnoInsetTypesDataGrid.Size = new System.Drawing.Size(324, 156);
+            this.PreTechnoInsetTypesDataGrid.StandardStyle = false;
+            this.PreTechnoInsetTypesDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
+            this.PreTechnoInsetTypesDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
+            this.PreTechnoInsetTypesDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.PreTechnoInsetTypesDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
+            this.PreTechnoInsetTypesDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
+            this.PreTechnoInsetTypesDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.PreTechnoInsetTypesDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
+            this.PreTechnoInsetTypesDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.PreTechnoInsetTypesDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.PreTechnoInsetTypesDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
+            this.PreTechnoInsetTypesDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.PreTechnoInsetTypesDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.PreTechnoInsetTypesDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.PreTechnoInsetTypesDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
+            this.PreTechnoInsetTypesDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.PreTechnoInsetTypesDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom;
+            this.PreTechnoInsetTypesDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
+            this.PreTechnoInsetTypesDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
+            this.PreTechnoInsetTypesDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.PreTechnoInsetTypesDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(121)))), ((int)(((byte)(177)))), ((int)(((byte)(229)))));
+            this.PreTechnoInsetTypesDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.PreTechnoInsetTypesDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.PreTechnoInsetTypesDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
+            this.PreTechnoInsetTypesDataGrid.TabIndex = 59;
+            this.PreTechnoInsetTypesDataGrid.UseCustomBackColor = true;
+            this.PreTechnoInsetTypesDataGrid.SelectionChanged += new System.EventHandler(this.PreTechnoInsetTypesDataGrid_SelectionChanged);
+            // 
+            // PreTechnoInsetColorsDataGrid
+            // 
+            this.PreTechnoInsetColorsDataGrid.AllowUserToAddRows = false;
+            this.PreTechnoInsetColorsDataGrid.AllowUserToDeleteRows = false;
+            this.PreTechnoInsetColorsDataGrid.AllowUserToResizeColumns = false;
+            this.PreTechnoInsetColorsDataGrid.AllowUserToResizeRows = false;
+            this.PreTechnoInsetColorsDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.PreTechnoInsetColorsDataGrid.BackText = "Нет данных";
+            this.PreTechnoInsetColorsDataGrid.ColumnHeadersHeight = 40;
+            this.PreTechnoInsetColorsDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.PreTechnoInsetColorsDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.PreTechnoInsetColorsDataGrid.Location = new System.Drawing.Point(1, 1);
+            this.PreTechnoInsetColorsDataGrid.Name = "PreTechnoInsetColorsDataGrid";
+            this.PreTechnoInsetColorsDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.PreTechnoInsetColorsDataGrid.PercentLineWidth = 0;
+            this.PreTechnoInsetColorsDataGrid.ReadOnly = true;
+            this.PreTechnoInsetColorsDataGrid.RowHeadersVisible = false;
+            this.PreTechnoInsetColorsDataGrid.RowTemplate.Height = 30;
+            this.PreTechnoInsetColorsDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.PreTechnoInsetColorsDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Green;
+            this.PreTechnoInsetColorsDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.PreTechnoInsetColorsDataGrid.Size = new System.Drawing.Size(323, 154);
+            this.PreTechnoInsetColorsDataGrid.StandardStyle = false;
+            this.PreTechnoInsetColorsDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
+            this.PreTechnoInsetColorsDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
+            this.PreTechnoInsetColorsDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.PreTechnoInsetColorsDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
+            this.PreTechnoInsetColorsDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
+            this.PreTechnoInsetColorsDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.PreTechnoInsetColorsDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
+            this.PreTechnoInsetColorsDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.PreTechnoInsetColorsDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.PreTechnoInsetColorsDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
+            this.PreTechnoInsetColorsDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.PreTechnoInsetColorsDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.PreTechnoInsetColorsDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.PreTechnoInsetColorsDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
+            this.PreTechnoInsetColorsDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.PreTechnoInsetColorsDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom;
+            this.PreTechnoInsetColorsDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
+            this.PreTechnoInsetColorsDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
+            this.PreTechnoInsetColorsDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.PreTechnoInsetColorsDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(158)))), ((int)(((byte)(0)))));
+            this.PreTechnoInsetColorsDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.PreTechnoInsetColorsDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.PreTechnoInsetColorsDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
+            this.PreTechnoInsetColorsDataGrid.TabIndex = 60;
+            this.PreTechnoInsetColorsDataGrid.UseCustomBackColor = true;
+            this.PreTechnoInsetColorsDataGrid.SelectionChanged += new System.EventHandler(this.PreTechnoInsetColorsDataGrid_SelectionChanged);
+            // 
+            // PreTechnoColorsDataGrid
+            // 
+            this.PreTechnoColorsDataGrid.AllowUserToAddRows = false;
+            this.PreTechnoColorsDataGrid.AllowUserToDeleteRows = false;
+            this.PreTechnoColorsDataGrid.AllowUserToResizeColumns = false;
+            this.PreTechnoColorsDataGrid.AllowUserToResizeRows = false;
+            this.PreTechnoColorsDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.PreTechnoColorsDataGrid.BackText = "Нет данных";
+            this.PreTechnoColorsDataGrid.ColumnHeadersHeight = 40;
+            this.PreTechnoColorsDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.PreTechnoColorsDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.PreTechnoColorsDataGrid.Location = new System.Drawing.Point(1, 1);
+            this.PreTechnoColorsDataGrid.Name = "PreTechnoColorsDataGrid";
+            this.PreTechnoColorsDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.PreTechnoColorsDataGrid.PercentLineWidth = 0;
+            this.PreTechnoColorsDataGrid.ReadOnly = true;
+            this.PreTechnoColorsDataGrid.RowHeadersVisible = false;
+            this.PreTechnoColorsDataGrid.RowTemplate.Height = 30;
+            this.PreTechnoColorsDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.PreTechnoColorsDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
+            this.PreTechnoColorsDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.PreTechnoColorsDataGrid.Size = new System.Drawing.Size(323, 154);
+            this.PreTechnoColorsDataGrid.StandardStyle = false;
+            this.PreTechnoColorsDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
+            this.PreTechnoColorsDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
+            this.PreTechnoColorsDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.PreTechnoColorsDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
+            this.PreTechnoColorsDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
+            this.PreTechnoColorsDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.PreTechnoColorsDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
+            this.PreTechnoColorsDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.PreTechnoColorsDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.PreTechnoColorsDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
+            this.PreTechnoColorsDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.PreTechnoColorsDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.PreTechnoColorsDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.PreTechnoColorsDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
+            this.PreTechnoColorsDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.PreTechnoColorsDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom;
+            this.PreTechnoColorsDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
+            this.PreTechnoColorsDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
+            this.PreTechnoColorsDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.PreTechnoColorsDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(121)))), ((int)(((byte)(177)))), ((int)(((byte)(229)))));
+            this.PreTechnoColorsDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.PreTechnoColorsDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.PreTechnoColorsDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
+            this.PreTechnoColorsDataGrid.TabIndex = 57;
+            this.PreTechnoColorsDataGrid.UseCustomBackColor = true;
+            this.PreTechnoColorsDataGrid.SelectionChanged += new System.EventHandler(this.PreTechnoColorsDataGrid_SelectionChanged);
+            // 
+            // PreFrontsDataGrid
+            // 
+            this.PreFrontsDataGrid.AllowUserToAddRows = false;
+            this.PreFrontsDataGrid.AllowUserToDeleteRows = false;
+            this.PreFrontsDataGrid.AllowUserToResizeColumns = false;
+            this.PreFrontsDataGrid.AllowUserToResizeRows = false;
+            this.PreFrontsDataGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.PreFrontsDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.PreFrontsDataGrid.BackText = "Нет данных";
+            this.PreFrontsDataGrid.ColumnHeadersHeight = 40;
+            this.PreFrontsDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.PreFrontsDataGrid.Location = new System.Drawing.Point(1, 1);
+            this.PreFrontsDataGrid.Name = "PreFrontsDataGrid";
+            this.PreFrontsDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.PreFrontsDataGrid.PercentLineWidth = 0;
+            this.PreFrontsDataGrid.ReadOnly = true;
+            this.PreFrontsDataGrid.RowHeadersVisible = false;
+            this.PreFrontsDataGrid.RowTemplate.Height = 30;
+            this.PreFrontsDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.PreFrontsDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Orange;
+            this.PreFrontsDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.PreFrontsDataGrid.Size = new System.Drawing.Size(323, 433);
+            this.PreFrontsDataGrid.StandardStyle = false;
+            this.PreFrontsDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
+            this.PreFrontsDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
+            this.PreFrontsDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.PreFrontsDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
+            this.PreFrontsDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
+            this.PreFrontsDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.PreFrontsDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
+            this.PreFrontsDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.PreFrontsDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.PreFrontsDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
+            this.PreFrontsDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.PreFrontsDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.PreFrontsDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.PreFrontsDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
+            this.PreFrontsDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.PreFrontsDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom;
+            this.PreFrontsDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
+            this.PreFrontsDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
+            this.PreFrontsDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.PreFrontsDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(253)))), ((int)(((byte)(164)))), ((int)(((byte)(61)))));
+            this.PreFrontsDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.PreFrontsDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.PreFrontsDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
+            this.PreFrontsDataGrid.TabIndex = 38;
+            this.PreFrontsDataGrid.UseCustomBackColor = true;
+            this.PreFrontsDataGrid.SelectionChanged += new System.EventHandler(this.PreFrontsDataGrid_SelectionChanged);
+            // 
+            // PreFrameColorsDataGrid
+            // 
+            this.PreFrameColorsDataGrid.AllowUserToAddRows = false;
+            this.PreFrameColorsDataGrid.AllowUserToDeleteRows = false;
+            this.PreFrameColorsDataGrid.AllowUserToResizeColumns = false;
+            this.PreFrameColorsDataGrid.AllowUserToResizeRows = false;
+            this.PreFrameColorsDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.PreFrameColorsDataGrid.BackText = "Нет данных";
+            this.PreFrameColorsDataGrid.ColumnHeadersHeight = 40;
+            this.PreFrameColorsDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.PreFrameColorsDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.PreFrameColorsDataGrid.Location = new System.Drawing.Point(1, 1);
+            this.PreFrameColorsDataGrid.Name = "PreFrameColorsDataGrid";
+            this.PreFrameColorsDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.PreFrameColorsDataGrid.PercentLineWidth = 0;
+            this.PreFrameColorsDataGrid.ReadOnly = true;
+            this.PreFrameColorsDataGrid.RowHeadersVisible = false;
+            this.PreFrameColorsDataGrid.RowTemplate.Height = 30;
+            this.PreFrameColorsDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.PreFrameColorsDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
+            this.PreFrameColorsDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.PreFrameColorsDataGrid.Size = new System.Drawing.Size(323, 326);
+            this.PreFrameColorsDataGrid.StandardStyle = false;
+            this.PreFrameColorsDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
+            this.PreFrameColorsDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
+            this.PreFrameColorsDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.PreFrameColorsDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
+            this.PreFrameColorsDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
+            this.PreFrameColorsDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.PreFrameColorsDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
+            this.PreFrameColorsDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.PreFrameColorsDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.PreFrameColorsDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
+            this.PreFrameColorsDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.PreFrameColorsDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.PreFrameColorsDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.PreFrameColorsDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
+            this.PreFrameColorsDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.PreFrameColorsDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom;
+            this.PreFrameColorsDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
+            this.PreFrameColorsDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
+            this.PreFrameColorsDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.PreFrameColorsDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(121)))), ((int)(((byte)(177)))), ((int)(((byte)(229)))));
+            this.PreFrameColorsDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.PreFrameColorsDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.PreFrameColorsDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
+            this.PreFrameColorsDataGrid.TabIndex = 57;
+            this.PreFrameColorsDataGrid.UseCustomBackColor = true;
+            this.PreFrameColorsDataGrid.SelectionChanged += new System.EventHandler(this.PreFrameColorsDataGrid_SelectionChanged);
+            // 
+            // PreSizesDataGrid
+            // 
+            this.PreSizesDataGrid.AllowUserToAddRows = false;
+            this.PreSizesDataGrid.AllowUserToDeleteRows = false;
+            this.PreSizesDataGrid.AllowUserToResizeColumns = false;
+            this.PreSizesDataGrid.AllowUserToResizeRows = false;
+            this.PreSizesDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.PreSizesDataGrid.BackText = "Нет данных";
+            this.PreSizesDataGrid.ColumnHeadersHeight = 40;
+            this.PreSizesDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.PreSizesDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.PreSizesDataGrid.Location = new System.Drawing.Point(1, 1);
+            this.PreSizesDataGrid.Name = "PreSizesDataGrid";
+            this.PreSizesDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.PreSizesDataGrid.PercentLineWidth = 0;
+            this.PreSizesDataGrid.ReadOnly = true;
+            this.PreSizesDataGrid.RowHeadersVisible = false;
+            this.PreSizesDataGrid.RowTemplate.Height = 30;
+            this.PreSizesDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.PreSizesDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Green;
+            this.PreSizesDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.PreSizesDataGrid.Size = new System.Drawing.Size(323, 154);
+            this.PreSizesDataGrid.StandardStyle = false;
+            this.PreSizesDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
+            this.PreSizesDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
+            this.PreSizesDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.PreSizesDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
+            this.PreSizesDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
+            this.PreSizesDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.PreSizesDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
+            this.PreSizesDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.PreSizesDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.PreSizesDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
+            this.PreSizesDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.PreSizesDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.PreSizesDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.PreSizesDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
+            this.PreSizesDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.PreSizesDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom;
+            this.PreSizesDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
+            this.PreSizesDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
+            this.PreSizesDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.PreSizesDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(158)))), ((int)(((byte)(0)))));
+            this.PreSizesDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.PreSizesDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.PreSizesDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
+            this.PreSizesDataGrid.TabIndex = 58;
+            this.PreSizesDataGrid.UseCustomBackColor = true;
+            // 
+            // PreInsetTypesDataGrid
+            // 
+            this.PreInsetTypesDataGrid.AllowUserToAddRows = false;
+            this.PreInsetTypesDataGrid.AllowUserToDeleteRows = false;
+            this.PreInsetTypesDataGrid.AllowUserToResizeColumns = false;
+            this.PreInsetTypesDataGrid.AllowUserToResizeRows = false;
+            this.PreInsetTypesDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.PreInsetTypesDataGrid.BackText = "Нет данных";
+            this.PreInsetTypesDataGrid.ColumnHeadersHeight = 40;
+            this.PreInsetTypesDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.PreInsetTypesDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.PreInsetTypesDataGrid.Location = new System.Drawing.Point(1, 0);
+            this.PreInsetTypesDataGrid.Name = "PreInsetTypesDataGrid";
+            this.PreInsetTypesDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.PreInsetTypesDataGrid.PercentLineWidth = 0;
+            this.PreInsetTypesDataGrid.ReadOnly = true;
+            this.PreInsetTypesDataGrid.RowHeadersVisible = false;
+            this.PreInsetTypesDataGrid.RowTemplate.Height = 30;
+            this.PreInsetTypesDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.PreInsetTypesDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
+            this.PreInsetTypesDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.PreInsetTypesDataGrid.Size = new System.Drawing.Size(324, 328);
+            this.PreInsetTypesDataGrid.StandardStyle = false;
+            this.PreInsetTypesDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
+            this.PreInsetTypesDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
+            this.PreInsetTypesDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.PreInsetTypesDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
+            this.PreInsetTypesDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
+            this.PreInsetTypesDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.PreInsetTypesDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
+            this.PreInsetTypesDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.PreInsetTypesDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.PreInsetTypesDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
+            this.PreInsetTypesDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.PreInsetTypesDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.PreInsetTypesDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.PreInsetTypesDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
+            this.PreInsetTypesDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.PreInsetTypesDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom;
+            this.PreInsetTypesDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
+            this.PreInsetTypesDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
+            this.PreInsetTypesDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.PreInsetTypesDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(121)))), ((int)(((byte)(177)))), ((int)(((byte)(229)))));
+            this.PreInsetTypesDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.PreInsetTypesDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.PreInsetTypesDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
+            this.PreInsetTypesDataGrid.TabIndex = 59;
+            this.PreInsetTypesDataGrid.UseCustomBackColor = true;
+            this.PreInsetTypesDataGrid.SelectionChanged += new System.EventHandler(this.PreInsetTypesDataGrid_SelectionChanged);
+            // 
+            // PreInsetColorsDataGrid
+            // 
+            this.PreInsetColorsDataGrid.AllowUserToAddRows = false;
+            this.PreInsetColorsDataGrid.AllowUserToDeleteRows = false;
+            this.PreInsetColorsDataGrid.AllowUserToResizeColumns = false;
+            this.PreInsetColorsDataGrid.AllowUserToResizeRows = false;
+            this.PreInsetColorsDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.PreInsetColorsDataGrid.BackText = "Нет данных";
+            this.PreInsetColorsDataGrid.ColumnHeadersHeight = 40;
+            this.PreInsetColorsDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.PreInsetColorsDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.PreInsetColorsDataGrid.Location = new System.Drawing.Point(1, 1);
+            this.PreInsetColorsDataGrid.Name = "PreInsetColorsDataGrid";
+            this.PreInsetColorsDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.PreInsetColorsDataGrid.PercentLineWidth = 0;
+            this.PreInsetColorsDataGrid.ReadOnly = true;
+            this.PreInsetColorsDataGrid.RowHeadersVisible = false;
+            this.PreInsetColorsDataGrid.RowTemplate.Height = 30;
+            this.PreInsetColorsDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.PreInsetColorsDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Green;
+            this.PreInsetColorsDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.PreInsetColorsDataGrid.Size = new System.Drawing.Size(323, 154);
+            this.PreInsetColorsDataGrid.StandardStyle = false;
+            this.PreInsetColorsDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
+            this.PreInsetColorsDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
+            this.PreInsetColorsDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.PreInsetColorsDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
+            this.PreInsetColorsDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
+            this.PreInsetColorsDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.PreInsetColorsDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
+            this.PreInsetColorsDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.PreInsetColorsDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.PreInsetColorsDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
+            this.PreInsetColorsDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.PreInsetColorsDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.PreInsetColorsDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.PreInsetColorsDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
+            this.PreInsetColorsDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.PreInsetColorsDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom;
+            this.PreInsetColorsDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
+            this.PreInsetColorsDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
+            this.PreInsetColorsDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.PreInsetColorsDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(158)))), ((int)(((byte)(0)))));
+            this.PreInsetColorsDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.PreInsetColorsDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.PreInsetColorsDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
+            this.PreInsetColorsDataGrid.TabIndex = 60;
+            this.PreInsetColorsDataGrid.UseCustomBackColor = true;
+            this.PreInsetColorsDataGrid.SelectionChanged += new System.EventHandler(this.PreInsetColorsDataGrid_SelectionChanged);
+            // 
+            // PreDecorSizesDataGrid
+            // 
+            this.PreDecorSizesDataGrid.AllowUserToAddRows = false;
+            this.PreDecorSizesDataGrid.AllowUserToDeleteRows = false;
+            this.PreDecorSizesDataGrid.AllowUserToResizeColumns = false;
+            this.PreDecorSizesDataGrid.AllowUserToResizeRows = false;
+            this.PreDecorSizesDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.PreDecorSizesDataGrid.BackText = "Нет данных";
+            this.PreDecorSizesDataGrid.ColumnHeadersHeight = 40;
+            this.PreDecorSizesDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.PreDecorSizesDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.PreDecorSizesDataGrid.Location = new System.Drawing.Point(1, 0);
+            this.PreDecorSizesDataGrid.Name = "PreDecorSizesDataGrid";
+            this.PreDecorSizesDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.PreDecorSizesDataGrid.PercentLineWidth = 0;
+            this.PreDecorSizesDataGrid.ReadOnly = true;
+            this.PreDecorSizesDataGrid.RowHeadersVisible = false;
+            this.PreDecorSizesDataGrid.RowTemplate.Height = 30;
+            this.PreDecorSizesDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.PreDecorSizesDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Green;
+            this.PreDecorSizesDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.PreDecorSizesDataGrid.Size = new System.Drawing.Size(287, 486);
+            this.PreDecorSizesDataGrid.StandardStyle = false;
+            this.PreDecorSizesDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
+            this.PreDecorSizesDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
+            this.PreDecorSizesDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.PreDecorSizesDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
+            this.PreDecorSizesDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
+            this.PreDecorSizesDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.PreDecorSizesDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
+            this.PreDecorSizesDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.PreDecorSizesDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.PreDecorSizesDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
+            this.PreDecorSizesDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.PreDecorSizesDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.PreDecorSizesDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.PreDecorSizesDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
+            this.PreDecorSizesDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.PreDecorSizesDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom;
+            this.PreDecorSizesDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
+            this.PreDecorSizesDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
+            this.PreDecorSizesDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.PreDecorSizesDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(158)))), ((int)(((byte)(0)))));
+            this.PreDecorSizesDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.PreDecorSizesDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.PreDecorSizesDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
+            this.PreDecorSizesDataGrid.TabIndex = 39;
+            this.PreDecorSizesDataGrid.UseCustomBackColor = true;
+            // 
+            // PreDecorProductsDataGrid
+            // 
+            this.PreDecorProductsDataGrid.AllowUserToAddRows = false;
+            this.PreDecorProductsDataGrid.AllowUserToDeleteRows = false;
+            this.PreDecorProductsDataGrid.AllowUserToResizeColumns = false;
+            this.PreDecorProductsDataGrid.AllowUserToResizeRows = false;
+            this.PreDecorProductsDataGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.PreDecorProductsDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.PreDecorProductsDataGrid.BackText = "Нет данных";
+            this.PreDecorProductsDataGrid.ColumnHeadersHeight = 40;
+            this.PreDecorProductsDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.PreDecorProductsDataGrid.Location = new System.Drawing.Point(1, 0);
+            this.PreDecorProductsDataGrid.Name = "PreDecorProductsDataGrid";
+            this.PreDecorProductsDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.PreDecorProductsDataGrid.PercentLineWidth = 0;
+            this.PreDecorProductsDataGrid.ReadOnly = true;
+            this.PreDecorProductsDataGrid.RowHeadersVisible = false;
+            this.PreDecorProductsDataGrid.RowTemplate.Height = 30;
+            this.PreDecorProductsDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.PreDecorProductsDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
+            this.PreDecorProductsDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.PreDecorProductsDataGrid.Size = new System.Drawing.Size(344, 449);
+            this.PreDecorProductsDataGrid.StandardStyle = false;
+            this.PreDecorProductsDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
+            this.PreDecorProductsDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
+            this.PreDecorProductsDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.PreDecorProductsDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
+            this.PreDecorProductsDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
+            this.PreDecorProductsDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.PreDecorProductsDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
+            this.PreDecorProductsDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.PreDecorProductsDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.PreDecorProductsDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
+            this.PreDecorProductsDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.PreDecorProductsDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.PreDecorProductsDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.PreDecorProductsDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
+            this.PreDecorProductsDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.PreDecorProductsDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom;
+            this.PreDecorProductsDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
+            this.PreDecorProductsDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
+            this.PreDecorProductsDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.PreDecorProductsDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(121)))), ((int)(((byte)(177)))), ((int)(((byte)(229)))));
+            this.PreDecorProductsDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.PreDecorProductsDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.PreDecorProductsDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
+            this.PreDecorProductsDataGrid.TabIndex = 40;
+            this.PreDecorProductsDataGrid.UseCustomBackColor = true;
+            this.PreDecorProductsDataGrid.SelectionChanged += new System.EventHandler(this.PreDecorProductsDataGrid_SelectionChanged);
+            // 
+            // PreDecorItemsDataGrid
+            // 
+            this.PreDecorItemsDataGrid.AllowUserToAddRows = false;
+            this.PreDecorItemsDataGrid.AllowUserToDeleteRows = false;
+            this.PreDecorItemsDataGrid.AllowUserToResizeColumns = false;
+            this.PreDecorItemsDataGrid.AllowUserToResizeRows = false;
+            this.PreDecorItemsDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.PreDecorItemsDataGrid.BackText = "Нет данных";
+            this.PreDecorItemsDataGrid.ColumnHeadersHeight = 40;
+            this.PreDecorItemsDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.PreDecorItemsDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.PreDecorItemsDataGrid.Location = new System.Drawing.Point(1, 0);
+            this.PreDecorItemsDataGrid.Name = "PreDecorItemsDataGrid";
+            this.PreDecorItemsDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.PreDecorItemsDataGrid.PercentLineWidth = 0;
+            this.PreDecorItemsDataGrid.ReadOnly = true;
+            this.PreDecorItemsDataGrid.RowHeadersVisible = false;
+            this.PreDecorItemsDataGrid.RowTemplate.Height = 30;
+            this.PreDecorItemsDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.PreDecorItemsDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
+            this.PreDecorItemsDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.PreDecorItemsDataGrid.Size = new System.Drawing.Size(328, 486);
+            this.PreDecorItemsDataGrid.StandardStyle = false;
+            this.PreDecorItemsDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
+            this.PreDecorItemsDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
+            this.PreDecorItemsDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.PreDecorItemsDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
+            this.PreDecorItemsDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
+            this.PreDecorItemsDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.PreDecorItemsDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
+            this.PreDecorItemsDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.PreDecorItemsDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.PreDecorItemsDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
+            this.PreDecorItemsDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.PreDecorItemsDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.PreDecorItemsDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.PreDecorItemsDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
+            this.PreDecorItemsDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.PreDecorItemsDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom;
+            this.PreDecorItemsDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
+            this.PreDecorItemsDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
+            this.PreDecorItemsDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.PreDecorItemsDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(121)))), ((int)(((byte)(177)))), ((int)(((byte)(229)))));
+            this.PreDecorItemsDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.PreDecorItemsDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.PreDecorItemsDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
+            this.PreDecorItemsDataGrid.TabIndex = 40;
+            this.PreDecorItemsDataGrid.UseCustomBackColor = true;
+            this.PreDecorItemsDataGrid.SelectionChanged += new System.EventHandler(this.PreDecorItemsDataGrid_SelectionChanged);
+            // 
+            // PreDecorColorsDataGrid
+            // 
+            this.PreDecorColorsDataGrid.AllowUserToAddRows = false;
+            this.PreDecorColorsDataGrid.AllowUserToDeleteRows = false;
+            this.PreDecorColorsDataGrid.AllowUserToResizeColumns = false;
+            this.PreDecorColorsDataGrid.AllowUserToResizeRows = false;
+            this.PreDecorColorsDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.PreDecorColorsDataGrid.BackText = "Нет данных";
+            this.PreDecorColorsDataGrid.ColumnHeadersHeight = 40;
+            this.PreDecorColorsDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.PreDecorColorsDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.PreDecorColorsDataGrid.Location = new System.Drawing.Point(1, 0);
+            this.PreDecorColorsDataGrid.Name = "PreDecorColorsDataGrid";
+            this.PreDecorColorsDataGrid.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.PreDecorColorsDataGrid.PercentLineWidth = 0;
+            this.PreDecorColorsDataGrid.ReadOnly = true;
+            this.PreDecorColorsDataGrid.RowHeadersVisible = false;
+            this.PreDecorColorsDataGrid.RowTemplate.Height = 30;
+            this.PreDecorColorsDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.PreDecorColorsDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Green;
+            this.PreDecorColorsDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.PreDecorColorsDataGrid.Size = new System.Drawing.Size(385, 486);
+            this.PreDecorColorsDataGrid.StandardStyle = false;
+            this.PreDecorColorsDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
+            this.PreDecorColorsDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
+            this.PreDecorColorsDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.PreDecorColorsDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
+            this.PreDecorColorsDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
+            this.PreDecorColorsDataGrid.StateCommon.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.PreDecorColorsDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
+            this.PreDecorColorsDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.PreDecorColorsDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.PreDecorColorsDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
+            this.PreDecorColorsDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.PreDecorColorsDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.PreDecorColorsDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.PreDecorColorsDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
+            this.PreDecorColorsDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.PreDecorColorsDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom;
+            this.PreDecorColorsDataGrid.StateCommon.HeaderColumn.Border.Width = 1;
+            this.PreDecorColorsDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
+            this.PreDecorColorsDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.PreDecorColorsDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(158)))), ((int)(((byte)(0)))));
+            this.PreDecorColorsDataGrid.StateSelected.DataCell.Back.Color2 = System.Drawing.Color.Transparent;
+            this.PreDecorColorsDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.PreDecorColorsDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
+            this.PreDecorColorsDataGrid.TabIndex = 39;
+            this.PreDecorColorsDataGrid.UseCustomBackColor = true;
+            this.PreDecorColorsDataGrid.SelectionChanged += new System.EventHandler(this.PreDecorColorsDataGrid_SelectionChanged);
+            // 
+            // ZOVProfilCheckButton
+            // 
+            this.ZOVProfilCheckButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.ZOVProfilCheckButton.Checked = true;
+            this.ZOVProfilCheckButton.CommonLineColor = System.Drawing.Color.White;
+            this.ZOVProfilCheckButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.ZOVProfilCheckButton.LineWidth = 4;
+            this.ZOVProfilCheckButton.Location = new System.Drawing.Point(733, 6);
+            this.ZOVProfilCheckButton.Name = "ZOVProfilCheckButton";
+            this.ZOVProfilCheckButton.OverrideDefault.Back.Color1 = System.Drawing.Color.Transparent;
+            this.ZOVProfilCheckButton.OverrideDefault.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.ZOVProfilCheckButton.OverrideDefault.Border.Color1 = System.Drawing.Color.White;
+            this.ZOVProfilCheckButton.OverrideDefault.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.ZOVProfilCheckButton.Size = new System.Drawing.Size(181, 42);
+            this.ZOVProfilCheckButton.StateCheckedNormal.Back.Color1 = System.Drawing.Color.Transparent;
+            this.ZOVProfilCheckButton.StateCheckedNormal.Border.Color1 = System.Drawing.Color.White;
+            this.ZOVProfilCheckButton.StateCheckedNormal.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.ZOVProfilCheckButton.StateCheckedNormal.Content.ShortText.Color1 = System.Drawing.Color.White;
+            this.ZOVProfilCheckButton.StateCheckedNormal.Content.ShortText.Font = new System.Drawing.Font("Segoe UI Light", 19.69F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.ZOVProfilCheckButton.StateCheckedPressed.Border.Color1 = System.Drawing.Color.White;
+            this.ZOVProfilCheckButton.StateCheckedPressed.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.ZOVProfilCheckButton.StateCheckedTracking.Back.Color1 = System.Drawing.Color.Transparent;
+            this.ZOVProfilCheckButton.StateCheckedTracking.Border.Color1 = System.Drawing.Color.White;
+            this.ZOVProfilCheckButton.StateCheckedTracking.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.ZOVProfilCheckButton.StateCommon.Back.Color1 = System.Drawing.Color.Transparent;
+            this.ZOVProfilCheckButton.StateCommon.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.ZOVProfilCheckButton.StateCommon.Border.Color1 = System.Drawing.Color.White;
+            this.ZOVProfilCheckButton.StateCommon.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.ZOVProfilCheckButton.StateCommon.Border.Draw = ComponentFactory.Krypton.Toolkit.InheritBool.True;
+            this.ZOVProfilCheckButton.StateCommon.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.ZOVProfilCheckButton.StateCommon.Content.ShortText.Color1 = System.Drawing.Color.White;
+            this.ZOVProfilCheckButton.StateCommon.Content.ShortText.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.ZOVProfilCheckButton.StateCommon.Content.ShortText.Font = new System.Drawing.Font("Segoe UI Light", 19.69F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.ZOVProfilCheckButton.StateCommon.Content.ShortText.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.ZOVProfilCheckButton.StateCommon.Content.ShortText.TextV = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.ZOVProfilCheckButton.StateTracking.Back.Color1 = System.Drawing.Color.Transparent;
+            this.ZOVProfilCheckButton.StateTracking.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.ZOVProfilCheckButton.StateTracking.Border.Color1 = System.Drawing.Color.White;
+            this.ZOVProfilCheckButton.StateTracking.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.ZOVProfilCheckButton.TabIndex = 338;
+            this.ZOVProfilCheckButton.ToWidth = true;
+            this.ZOVProfilCheckButton.TrackingLineColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.ZOVProfilCheckButton.Values.Text = "ОМЦ-ПРОФИЛЬ";
+            // 
+            // ZOVTPSCheckButton
+            // 
+            this.ZOVTPSCheckButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.ZOVTPSCheckButton.CommonLineColor = System.Drawing.Color.White;
+            this.ZOVTPSCheckButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.ZOVTPSCheckButton.LineWidth = 4;
+            this.ZOVTPSCheckButton.Location = new System.Drawing.Point(913, 6);
+            this.ZOVTPSCheckButton.Name = "ZOVTPSCheckButton";
+            this.ZOVTPSCheckButton.OverrideDefault.Back.Color1 = System.Drawing.Color.Transparent;
+            this.ZOVTPSCheckButton.OverrideDefault.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.ZOVTPSCheckButton.OverrideDefault.Border.Color1 = System.Drawing.Color.White;
+            this.ZOVTPSCheckButton.OverrideDefault.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.ZOVTPSCheckButton.Size = new System.Drawing.Size(181, 42);
+            this.ZOVTPSCheckButton.StateCheckedNormal.Back.Color1 = System.Drawing.Color.Transparent;
+            this.ZOVTPSCheckButton.StateCheckedNormal.Border.Color1 = System.Drawing.Color.White;
+            this.ZOVTPSCheckButton.StateCheckedNormal.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.ZOVTPSCheckButton.StateCheckedNormal.Content.ShortText.Color1 = System.Drawing.Color.White;
+            this.ZOVTPSCheckButton.StateCheckedNormal.Content.ShortText.Font = new System.Drawing.Font("Segoe UI Light", 19.69F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.ZOVTPSCheckButton.StateCheckedPressed.Border.Color1 = System.Drawing.Color.White;
+            this.ZOVTPSCheckButton.StateCheckedPressed.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.ZOVTPSCheckButton.StateCheckedTracking.Back.Color1 = System.Drawing.Color.Transparent;
+            this.ZOVTPSCheckButton.StateCheckedTracking.Border.Color1 = System.Drawing.Color.White;
+            this.ZOVTPSCheckButton.StateCheckedTracking.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.ZOVTPSCheckButton.StateCommon.Back.Color1 = System.Drawing.Color.Transparent;
+            this.ZOVTPSCheckButton.StateCommon.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.ZOVTPSCheckButton.StateCommon.Border.Color1 = System.Drawing.Color.White;
+            this.ZOVTPSCheckButton.StateCommon.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.ZOVTPSCheckButton.StateCommon.Border.Draw = ComponentFactory.Krypton.Toolkit.InheritBool.True;
+            this.ZOVTPSCheckButton.StateCommon.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.ZOVTPSCheckButton.StateCommon.Content.ShortText.Color1 = System.Drawing.Color.White;
+            this.ZOVTPSCheckButton.StateCommon.Content.ShortText.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.ZOVTPSCheckButton.StateCommon.Content.ShortText.Font = new System.Drawing.Font("Segoe UI Light", 19.69F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.ZOVTPSCheckButton.StateCommon.Content.ShortText.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.ZOVTPSCheckButton.StateCommon.Content.ShortText.TextV = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.ZOVTPSCheckButton.StateTracking.Back.Color1 = System.Drawing.Color.Transparent;
+            this.ZOVTPSCheckButton.StateTracking.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.ZOVTPSCheckButton.StateTracking.Border.Color1 = System.Drawing.Color.White;
+            this.ZOVTPSCheckButton.StateTracking.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.ZOVTPSCheckButton.TabIndex = 337;
+            this.ZOVTPSCheckButton.ToWidth = true;
+            this.ZOVTPSCheckButton.TrackingLineColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.ZOVTPSCheckButton.Values.Text = "ЗОВ-ТПС";
+            // 
+            // TraysDataGrid
+            // 
+            this.TraysDataGrid.AllowUserToAddRows = false;
+            this.TraysDataGrid.AllowUserToDeleteRows = false;
+            this.TraysDataGrid.AllowUserToResizeColumns = false;
+            this.TraysDataGrid.AllowUserToResizeRows = false;
+            this.TraysDataGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.TraysDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.TraysDataGrid.BackText = "Нет данных";
+            this.TraysDataGrid.ColumnHeadersHeight = 40;
+            this.TraysDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.TraysDataGrid.Location = new System.Drawing.Point(1, 12);
+            this.TraysDataGrid.MultiSelect = false;
+            this.TraysDataGrid.Name = "TraysDataGrid";
+            this.TraysDataGrid.PercentLineWidth = 0;
+            this.TraysDataGrid.ReadOnly = true;
+            this.TraysDataGrid.RowHeadersVisible = false;
+            this.TraysDataGrid.RowTemplate.Height = 30;
+            this.TraysDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
+            this.TraysDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.TraysDataGrid.Size = new System.Drawing.Size(415, 507);
+            this.TraysDataGrid.StandardStyle = true;
+            this.TraysDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
+            this.TraysDataGrid.StateCommon.Background.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.TraysDataGrid.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
+            this.TraysDataGrid.StateCommon.DataCell.Back.Color1 = System.Drawing.Color.White;
+            this.TraysDataGrid.StateCommon.DataCell.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
+            this.TraysDataGrid.StateCommon.DataCell.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.TraysDataGrid.StateCommon.DataCell.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.TraysDataGrid.StateCommon.DataCell.Content.Color1 = System.Drawing.Color.Black;
+            this.TraysDataGrid.StateCommon.DataCell.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.TraysDataGrid.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.TraysDataGrid.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.TraysDataGrid.StateCommon.HeaderColumn.Border.Color1 = System.Drawing.Color.Black;
+            this.TraysDataGrid.StateCommon.HeaderColumn.Border.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.TraysDataGrid.StateCommon.HeaderColumn.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)(((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.TraysDataGrid.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White;
+            this.TraysDataGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.TraysDataGrid.StateSelected.DataCell.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(121)))), ((int)(((byte)(177)))), ((int)(((byte)(229)))));
+            this.TraysDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
+            this.TraysDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
+            this.TraysDataGrid.TabIndex = 46;
+            this.TraysDataGrid.UseCustomBackColor = false;
+            // 
+            // kryptonCheckSet1
+            // 
+            this.kryptonCheckSet1.CheckButtons.Add(this.ZOVProfilCheckButton);
+            this.kryptonCheckSet1.CheckButtons.Add(this.ZOVTPSCheckButton);
+            this.kryptonCheckSet1.CheckedButton = this.ZOVProfilCheckButton;
+            this.kryptonCheckSet1.CheckedButtonChanged += new System.EventHandler(this.kryptonCheckSet1_CheckedButtonChanged);
+            // 
             // MarketingBatchForm
             // 
             this.AccessibleName = "false";
@@ -6576,20 +6550,14 @@
             ((System.ComponentModel.ISupportInitialize)(this.MegaMainSplitter)).EndInit();
             this.MegaMainSplitter.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.MegaOrdersDataGrid)).EndInit();
             this.panel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.MainOrdersDataGrid)).EndInit();
             this.panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.MainOrdersTabControl)).EndInit();
             this.MainOrdersTabControl.ResumeLayout(false);
-            this.xtraTabPage1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.MainOrdersFrontsOrdersDataGrid)).EndInit();
-            this.xtraTabPage2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.MainOrdersDecorTabControl)).EndInit();
             this.tableLayoutPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.RolesAndPermissionsTabControl)).EndInit();
             this.RolesAndPermissionsTabControl.ResumeLayout(false);
-            this.xtraTabPage3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.kryptonSplitContainer4.Panel1)).EndInit();
             this.kryptonSplitContainer4.Panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.kryptonSplitContainer4.Panel2)).EndInit();
@@ -6606,17 +6574,12 @@
             this.CreateMegaBatchPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabControl4)).EndInit();
             this.xtraTabControl4.ResumeLayout(false);
-            this.xtraTabPage12.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.MegaBatchDataGrid)).EndInit();
             this.BatchPanel.ResumeLayout(false);
             this.CreateBatchPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabControl1)).EndInit();
             this.xtraTabControl1.ResumeLayout(false);
-            this.xtraTabPage4.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.BatchDataGrid)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabControl2)).EndInit();
             this.xtraTabControl2.ResumeLayout(false);
-            this.xtraTabPage9.ResumeLayout(false);
             this.panel5.ResumeLayout(false);
             this.panel5.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
@@ -6634,127 +6597,122 @@
             this.kryptonSplitContainer3.ResumeLayout(false);
             this.MegaOrdersPanel.ResumeLayout(false);
             this.MegaOrderInProductionPanel.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.BatchMegaOrdersDataGrid)).EndInit();
             this.MainOrdersPanel.ResumeLayout(false);
             this.MainOrderInProductionPanel.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.BatchMainOrdersDataGrid)).EndInit();
             this.panel8.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.BatchMainOrdersTabControl)).EndInit();
             this.BatchMainOrdersTabControl.ResumeLayout(false);
-            this.xtraTabPage6.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.BatchFrontsOrdersDataGrid)).EndInit();
-            this.xtraTabPage7.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.BatchDecorTabControl)).EndInit();
-            this.xtraTabPage8.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabControl5)).EndInit();
             this.xtraTabControl5.ResumeLayout(false);
-            this.xtraTabPage11.ResumeLayout(false);
             this.panel7.ResumeLayout(false);
             this.StartPanel.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);
             this.panel35.ResumeLayout(false);
             this.panel35.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.TechnoColorsDataGrid)).EndInit();
             this.panel34.ResumeLayout(false);
             this.panel34.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.TechnoInsetColorsDataGrid)).EndInit();
             this.panel32.ResumeLayout(false);
             this.panel32.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.TechnoInsetTypesDataGrid)).EndInit();
             this.panel6.ResumeLayout(false);
             this.panel6.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.FrontsDataGrid)).EndInit();
             this.panel9.ResumeLayout(false);
             this.panel9.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.FrameColorsDataGrid)).EndInit();
             this.panel10.ResumeLayout(false);
             this.panel10.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.SizesDataGrid)).EndInit();
             this.panel11.ResumeLayout(false);
             this.panel11.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.InsetTypesDataGrid)).EndInit();
             this.panel12.ResumeLayout(false);
             this.panel12.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.InsetColorsDataGrid)).EndInit();
-            this.xtraTabPage16.ResumeLayout(false);
             this.panel14.ResumeLayout(false);
             this.panel19.ResumeLayout(false);
             this.tableLayoutPanel4.ResumeLayout(false);
             this.panel20.ResumeLayout(false);
             this.panel20.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.DecorSizesDataGrid)).EndInit();
             this.panel21.ResumeLayout(false);
             this.panel21.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.DecorProductsDataGrid)).EndInit();
             this.panel22.ResumeLayout(false);
             this.panel22.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.DecorItemsDataGrid)).EndInit();
             this.panel23.ResumeLayout(false);
             this.panel23.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.DecorColorsDataGrid)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.kryptonSplitContainer1.Panel1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.kryptonSplitContainer1.Panel2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.kryptonSplitContainer1)).EndInit();
             this.kryptonSplitContainer1.ResumeLayout(false);
-            this.xtraTabPage5.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabControl3)).EndInit();
             this.xtraTabControl3.ResumeLayout(false);
-            this.xtraTabPage10.ResumeLayout(false);
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
-            this.xtraTabPage13.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabControl6)).EndInit();
             this.xtraTabControl6.ResumeLayout(false);
-            this.xtraTabPage14.ResumeLayout(false);
             this.panel13.ResumeLayout(false);
             this.panel15.ResumeLayout(false);
             this.tableLayoutPanel5.ResumeLayout(false);
             this.panel37.ResumeLayout(false);
             this.panel37.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.PreTechnoInsetTypesDataGrid)).EndInit();
             this.panel36.ResumeLayout(false);
             this.panel36.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.PreTechnoInsetColorsDataGrid)).EndInit();
             this.panel33.ResumeLayout(false);
             this.panel33.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.PreTechnoColorsDataGrid)).EndInit();
             this.panel16.ResumeLayout(false);
             this.panel16.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.PreFrontsDataGrid)).EndInit();
             this.panel17.ResumeLayout(false);
             this.panel17.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.PreFrameColorsDataGrid)).EndInit();
             this.panel18.ResumeLayout(false);
             this.panel18.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.PreSizesDataGrid)).EndInit();
             this.panel24.ResumeLayout(false);
             this.panel24.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.PreInsetTypesDataGrid)).EndInit();
             this.panel25.ResumeLayout(false);
             this.panel25.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.PreInsetColorsDataGrid)).EndInit();
-            this.xtraTabPage15.ResumeLayout(false);
             this.panel26.ResumeLayout(false);
             this.panel27.ResumeLayout(false);
             this.tableLayoutPanel6.ResumeLayout(false);
             this.panel28.ResumeLayout(false);
             this.panel28.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.PreDecorSizesDataGrid)).EndInit();
             this.panel29.ResumeLayout(false);
             this.panel29.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.PreDecorProductsDataGrid)).EndInit();
             this.panel30.ResumeLayout(false);
             this.panel30.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.PreDecorItemsDataGrid)).EndInit();
             this.panel31.ResumeLayout(false);
             this.panel31.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.PreDecorColorsDataGrid)).EndInit();
             this.BatchFilterPanel.ResumeLayout(false);
             this.BatchFilterPanel.PerformLayout();
             this.OrdersFilterPanel.ResumeLayout(false);
             this.OrdersFilterPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.MegaBatchDataGrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.BatchDataGrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.BatchMegaOrdersDataGrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.BatchMainOrdersDataGrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.BatchFrontsOrdersDataGrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.TechnoColorsDataGrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.TechnoInsetColorsDataGrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.TechnoInsetTypesDataGrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.FrontsDataGrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.FrameColorsDataGrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.SizesDataGrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.InsetTypesDataGrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.InsetColorsDataGrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DecorSizesDataGrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DecorProductsDataGrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DecorItemsDataGrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DecorColorsDataGrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.MegaOrdersDataGrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.MainOrdersDataGrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.MainOrdersFrontsOrdersDataGrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PreTechnoInsetTypesDataGrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PreTechnoInsetColorsDataGrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PreTechnoColorsDataGrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PreFrontsDataGrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PreFrameColorsDataGrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PreSizesDataGrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PreInsetTypesDataGrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PreInsetColorsDataGrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PreDecorSizesDataGrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PreDecorProductsDataGrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PreDecorItemsDataGrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PreDecorColorsDataGrid)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.TraysDataGrid)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.kryptonCheckSet1)).EndInit();
             this.ResumeLayout(false);
@@ -7101,5 +7059,6 @@
         private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem btnAgreedProfil;
         private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem btnAgreedTPS;
         private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem kryptonContextMenuItem1;
+        private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem btnBatchToExcel;
     }
 }

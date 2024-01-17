@@ -1264,7 +1264,21 @@ namespace Infinium
                     {
                         case 1:
                             if (dateRates.Item1)
-                                _ordersCalculate.Rate = clientRates.Item4 / dateRates.Item4;
+                                try
+                                {
+                                    _ordersCalculate.Rate = clientRates.Item4 / dateRates.Item4;
+                                }
+                                catch (DivideByZeroException exception)
+                                {
+                                    MessageBox.Show($"Параметр BYN равен 0. Исправьте в Редакторе курсов валют. Расчет не выполнен");
+                                    Console.WriteLine(exception);
+                                }
+                                catch (Exception exception)
+                                {
+                                    MessageBox.Show($"Ошибка. Расчет не выполнен");
+                                    Console.WriteLine(exception);
+                                }
+
                             break;
                         case 2:
                             _ordersCalculate.Rate = clientRates.Item2;

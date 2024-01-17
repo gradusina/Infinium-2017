@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ComponentFactory.Krypton.Toolkit;
+
+using System;
 using System.Data;
 using System.Drawing;
 using System.Threading;
@@ -550,6 +552,28 @@ namespace Infinium
 
             AdminUsersManagement.Add(NameTextBox.Text);
             NameTextBox.Clear();
+        }
+
+        private void UsersDataGrid_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                kryptonContextMenu4.Show(new Point(Cursor.Position.X - 212, Cursor.Position.Y - 10));
+            }
+        }
+
+        private void kryptonContextMenuItem7_Click(object sender, EventArgs e)
+        {
+            bool OKCancel = Infinium.LightMessageBox.Show(ref TopForm, true,
+                "Вы сбрасываете пароль пользователю. В качестве нового будет установлен текущий год. Продолжить?",
+                "Сброс пароля");
+
+            if (!OKCancel) return;
+
+            var userId = Convert.ToInt32(UsersDataGrid.SelectedRows[0].Cells["userId"].Value);
+            var newPass = DateTime.Now.Year.ToString();
+
+            AdminUsersManagement.ChangePassword(userId, newPass);
         }
     }
 }

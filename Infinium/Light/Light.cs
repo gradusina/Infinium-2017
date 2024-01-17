@@ -13161,7 +13161,8 @@ namespace Infinium
             //string SenderEmail = "zovprofilreport@mail.ru";
 
             //string AccountPassword = "7026Gradus0462";
-            var AccountPassword = "foqwsulbjiuslnue";
+            //var AccountPassword = "foqwsulbjiuslnue";
+            var AccountPassword = "lfbeecgxvmwvzlna";
             var SenderEmail = "infiniumdevelopers@gmail.com";
 
             var to = GetClientEmail(ClientID);

@@ -1,4 +1,6 @@
-﻿using NPOI.HPSF;
+﻿using Infinium.Modules.Marketing.NewOrders;
+
+using NPOI.HPSF;
 using NPOI.HSSF.UserModel;
 using NPOI.HSSF.Util;
 
@@ -10,6 +12,8 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Security.Cryptography;
+using System.Text;
 using System.Windows.Forms;
 using System.Xml;
 
@@ -2176,6 +2180,42 @@ namespace Infinium
             UsersBindingSource.Position = UsersBindingSource.Find("Name", Name);
         }
 
+        public void ChangePassword(int UserID, string NewPass)
+        {
+            using (var DA = new SqlDataAdapter("SELECT UserID, Password FROM Users WHERE UserID = " + UserID, ConnectionStrings.UsersConnectionString))
+            {
+                using (var CB = new SqlCommandBuilder(DA))
+                {
+                    using (var DT = new DataTable())
+                    {
+                        DA.Fill(DT);
+
+                        DT.Rows[0]["Password"] = GetMD5(NewPass);
+
+                        DA.Update(DT);
+                    }
+                }
+            }
+        }
+
+        private static string GetMD5(string text)
+        {
+            using (var Hasher = MD5.Create())
+            {
+                var data = Hasher.ComputeHash(Encoding.Default.GetBytes(text));
+
+                var sBuilder = new StringBuilder();
+
+                //преобразование в HEX
+                for (var i = 0; i < data.Length; i++)
+                {
+                    sBuilder.Append(data[i].ToString("x2"));
+                }
+
+                return sBuilder.ToString();
+            }
+        }
+
         public void Delete()
         {
             if (UsersBindingSource.Count == 0)
@@ -3152,8 +3192,11 @@ namespace Infinium
             decimal EURUSDCurrency = 1000000;
             decimal EURBYRCurrency = 1000000;
 
-            CBR = CBRDailyRates(ConfirmDate, ref EURRUBCurrency, ref USDRUBCurrency);
-            NBRB = NBRBDailyRates(ConfirmDate, ref EURBYRCurrency);
+            CBR = OrdersManager.CBRDailyRates(ConfirmDate, ref EURRUBCurrency, ref USDRUBCurrency);
+            EURBYRCurrency = CurrencyConverter.NbrbDailyRates(ConfirmDate);
+
+            //CBR = CBRDailyRates(ConfirmDate, ref EURRUBCurrency, ref USDRUBCurrency);
+            //NBRB = NBRBDailyRates(ConfirmDate, ref EURBYRCurrency);
 
             if (USDRUBCurrency != 0)
                 EURUSDCurrency = Decimal.Round(EURRUBCurrency / USDRUBCurrency, 4, MidpointRounding.AwayFromZero);

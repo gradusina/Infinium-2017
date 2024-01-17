@@ -4283,9 +4283,9 @@ namespace Infinium
 
             decimal EURBYRCurrency = 1000000;
             DateTime date = new DateTime(CalendarFrom.SelectionStart.Year, CalendarFrom.SelectionStart.Month, 1);
-            string FileName = "Вышло с пр-ва " + CalendarFrom.SelectionStart.ToString("dd.MM.yyyy");
+            string FileName = "Вышло из пр-ва " + CalendarFrom.SelectionStart.ToString("dd.MM.yyyy");
             if (CalendarFrom.SelectionStart != CalendarTo.SelectionStart)
-                FileName = "Вышло с пр-ва за период с " + CalendarFrom.SelectionStart.ToString("dd.MM.yyyy") + " по " + CalendarTo.SelectionStart.ToString("dd.MM.yyyy");
+                FileName = "Вышло из пр-ва за период с " + CalendarFrom.SelectionStart.ToString("dd.MM.yyyy") + " по " + CalendarTo.SelectionStart.ToString("dd.MM.yyyy");
 
             ArrayList MClients = AllProductsStatistics.SelectedMarketingClients;
             ArrayList MClientGroups = AllProductsStatistics.SelectedMarketingClientGroups;

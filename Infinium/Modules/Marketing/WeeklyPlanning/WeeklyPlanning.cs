@@ -1,4 +1,6 @@
-﻿using NPOI.HPSF;
+﻿using Infinium.Modules.StatisticsMarketing.Reports;
+
+using NPOI.HPSF;
 using NPOI.HSSF.UserModel;
 using NPOI.HSSF.UserModel.Contrib;
 using NPOI.HSSF.Util;
@@ -11,6 +13,7 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace Infinium.Modules.Marketing.WeeklyPlanning

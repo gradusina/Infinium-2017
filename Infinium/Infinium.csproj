@@ -124,6 +124,9 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Design" />
     <Reference Include="System.Management" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -1182,6 +1185,7 @@
     <Compile Include="Modules\Marketing\WeeklyPlanning\MarketingPickFrontsSelectForm.designer.cs">
       <DependentUpon>MarketingPickFrontsSelectForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Modules\Marketing\WeeklyPlanning\BatchAccountingReport.cs" />
     <Compile Include="Modules\Marketing\WeeklyPlanning\WeeklyPlanning.cs" />
     <Compile Include="Modules\Packages\CheckLabel.cs" />
     <Compile Include="Modules\Packages\LabelCheck\ExpeditionLabelCheckForm.cs">
@@ -1510,6 +1514,7 @@
       <DependentUpon>MarketingStorageStatisticsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Modules\StatisticsMarketing\Reports\AdditionalCostReport.cs" />
+    <Compile Include="Modules\StatisticsMarketing\Reports\BatchProducedReport.cs" />
     <Compile Include="Modules\StatisticsMarketing\Reports\ClientNotPackedReport.cs" />
     <Compile Include="Modules\StatisticsMarketing\Reports\ClientNotStoredReport.cs" />
     <Compile Include="Modules\StatisticsMarketing\Reports\ClientStoreReport.cs" />

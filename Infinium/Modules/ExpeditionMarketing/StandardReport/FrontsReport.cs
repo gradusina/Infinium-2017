@@ -356,7 +356,7 @@ namespace Infinium.Modules.ExpeditionMarketing.StandardReport
                 decimal MegaWeight = 0;
 
                 decimal TotalDiscount = 0;
-
+                
                 object NonStandardMargin = 0;
                 IsNonStandardFilter = " AND IsNonStandard=0";
                 if (IsNonStandard)

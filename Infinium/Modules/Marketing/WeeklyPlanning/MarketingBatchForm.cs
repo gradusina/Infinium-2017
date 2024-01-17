@@ -1,11 +1,13 @@
 ﻿using Infinium.Modules.Marketing.NewOrders;
 using Infinium.Modules.Marketing.WeeklyPlanning;
+using Infinium.Modules.StatisticsMarketing.Reports;
 
 using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
@@ -14,41 +16,41 @@ namespace Infinium
 {
     public partial class MarketingBatchForm : Form
     {
-        private const int eHide = 2;
-        private const int eShow = 1;
-        private const int eClose = 3;
-        private const int eMainMenu = 4;
+        private const int EHide = 2;
+        private const int EShow = 1;
+        private const int EClose = 3;
+        private const int EMainMenu = 4;
 
         //const int iConfirmBatch = 64;
-        private const int iCreateBatch = 34;
-        private const int iCreateLabel = 40;
-        private const int iAddToBatch = 35;
-        private const int iInProduction = 22;
-        private const int iCloseBatch = 38;
+        private const int ICreateBatch = 34;
+        private const int ICreateLabel = 40;
+        private const int IAddToBatch = 35;
+        private const int IInProduction = 22;
+        private const int ICloseBatch = 38;
 
-        private const int iAgreedProfil = 104;
-        private const int iAgreedTPS = 106;
+        private const int IAgreedProfil = 104;
+        private const int IAgreedTps = 106;
 
-        private bool NeedRefresh = false;
-        private bool NeedSplash = false;
-        private bool bFrontType = false;
-        private bool bFrameColor = false;
-        private bool PickUpFronts = false;
+        private bool _needRefresh = false;
+        private bool _needSplash = false;
+        private bool _bFrontType = false;
+        private bool _bFrameColor = false;
+        private bool _pickUpFronts = false;
 
         //bool ConfirmBatch = false;
-        private bool CreateBatch = false;
-        private bool CreateLabel = false;
-        private bool AddToBatch = false;
-        private bool InProduction = false;
-        private bool CloseBatch = false;
+        private bool _createBatch = false;
+        private bool _createLabel = false;
+        private bool _addToBatch = false;
+        private bool _inProduction = false;
+        private bool _closeBatch = false;
 
-        private bool bMegaBatchClose = false;
+        private bool _bMegaBatchClose = false;
 
-        private int FactoryID = 1;
-        private int FormEvent = 0;
+        private int _factoryId = 1;
+        private int _formEvent = 0;
 
-        private ImageList ImageList1;
-        private RoleTypes RoleType = RoleTypes.Ordinary;
+        private ImageList _imageList1;
+        private RoleTypes _roleType = RoleTypes.Ordinary;
 
         public enum RoleTypes
         {
@@ -61,18 +63,18 @@ namespace Infinium
             Control = 6
         }
 
-        private ArrayList BatchArray = null;
-        private ArrayList FrontIDs;
-        private ArrayList MainOrdersArray = null;
+        private ArrayList _batchArray = null;
+        private ArrayList _frontIDs;
+        private ArrayList _mainOrdersArray = null;
 
-        private Bitmap Lock_BW = new Bitmap(Properties.Resources.LockSmallBlack);
-        private Bitmap Unlock_BW = new Bitmap(Properties.Resources.UnlockSmallBlack);
+        private Bitmap _lockBw = new Bitmap(Properties.Resources.LockSmallBlack);
+        private Bitmap _unlockBw = new Bitmap(Properties.Resources.UnlockSmallBlack);
 
-        private LightStartForm LightStartForm;
+        private LightStartForm _lightStartForm;
 
-        private Form TopForm = null;
-        private MarketingPickFrontsSelectForm PickFrontsSelectForm;
-        private DataTable RolePermissionsDataTable;
+        private Form _topForm = null;
+        private MarketingPickFrontsSelectForm _pickFrontsSelectForm;
+        private DataTable _rolePermissionsDataTable;
 
         public BatchManager BatchManager;
         public DecorCatalogOrder DecorCatalogOrder;
@@ -81,15 +83,15 @@ namespace Infinium
         public MarketingBatchForm(LightStartForm tLightStartForm)
         {
             InitializeComponent();
-            LightStartForm = tLightStartForm;
+            _lightStartForm = tLightStartForm;
 
 
             this.MaximumSize = Screen.PrimaryScreen.WorkingArea.Size;
 
-            RolePermissionsDataTable = RolesAndPermissionsManager.GetPermissions(Security.CurrentUserID, this.Name);
+            _rolePermissionsDataTable = RolesAndPermissionsManager.GetPermissions(Security.CurrentUserID, this.Name);
 
             // Construct the ImageList.
-            ImageList1 = new ImageList()
+            _imageList1 = new ImageList()
             {
 
                 // Set the ImageSize property to a larger size 
@@ -98,21 +100,21 @@ namespace Infinium
             };
 
             // Add two images to the list.
-            ImageList1.Images.Add(Lock_BW);
-            ImageList1.Images.Add(Unlock_BW);
+            _imageList1.Images.Add(_lockBw);
+            _imageList1.Images.Add(_unlockBw);
             //ImageList1.Images.Add("c:\\windows\\FeatherTexture.png");
             Initialize();
 
             while (!SplashForm.bCreated) ;
         }
 
-        private bool PermissionGranted(int PermissionID)
+        private bool PermissionGranted(int permissionId)
         {
-            DataRow[] Rows = RolePermissionsDataTable.Select("PermissionID = " + PermissionID);
+            var rows = _rolePermissionsDataTable.Select("PermissionID = " + permissionId);
 
-            if (Rows.Count() > 0)
+            if (rows.Count() > 0)
             {
-                return Convert.ToBoolean(Rows[0]["Granted"]);
+                return Convert.ToBoolean(rows[0]["Granted"]);
             }
 
             return false;
@@ -122,7 +124,7 @@ namespace Infinium
         {
             if (ZOVProfilCheckButton.Checked && !ZOVTPSCheckButton.Checked)
             {
-                FactoryID = 1;
+                _factoryId = 1;
                 BatchDataGrid.Columns["ProfilConfirm"].Visible = true;
                 BatchDataGrid.Columns["ProfilEnabledColumn"].Visible = true;
                 BatchDataGrid.Columns["ProfilName"].Visible = true;
@@ -143,7 +145,7 @@ namespace Infinium
             }
             if (!ZOVProfilCheckButton.Checked && ZOVTPSCheckButton.Checked)
             {
-                FactoryID = 2;
+                _factoryId = 2;
                 BatchDataGrid.Columns["ProfilConfirm"].Visible = false;
                 BatchDataGrid.Columns["ProfilEnabledColumn"].Visible = false;
                 BatchDataGrid.Columns["ProfilName"].Visible = false;
@@ -166,10 +168,10 @@ namespace Infinium
 
             while (!SplashForm.bCreated) ;
 
-            FormEvent = eShow;
+            _formEvent = EShow;
             AnimateTimer.Enabled = true;
 
-            NeedSplash = true;
+            _needSplash = true;
         }
 
         private void AnimateTimer_Tick(object sender, EventArgs e)
@@ -178,38 +180,38 @@ namespace Infinium
             {
                 this.Opacity = 1;
 
-                if (FormEvent == eClose || FormEvent == eHide)
+                if (_formEvent == EClose || _formEvent == EHide)
                 {
                     AnimateTimer.Enabled = false;
 
-                    if (FormEvent == eClose)
+                    if (_formEvent == EClose)
                     {
 
-                        LightStartForm.CloseForm(this);
+                        _lightStartForm.CloseForm(this);
                         this.Close();
                     }
 
-                    if (FormEvent == eHide)
+                    if (_formEvent == EHide)
                     {
 
-                        LightStartForm.HideForm(this);
+                        _lightStartForm.HideForm(this);
                     }
 
 
                     return;
                 }
 
-                if (FormEvent == eShow)
+                if (_formEvent == EShow)
                 {
                     AnimateTimer.Enabled = false;
                     SplashForm.CloseS = true;
-                    NeedSplash = true;
+                    _needSplash = true;
                     return;
                 }
 
             }
 
-            if (FormEvent == eClose || FormEvent == eHide)
+            if (_formEvent == EClose || _formEvent == EHide)
             {
                 if (Convert.ToDecimal(this.Opacity) != Convert.ToDecimal(0.00))
                     this.Opacity = Convert.ToDouble(Convert.ToDecimal(this.Opacity) - Convert.ToDecimal(0.05));
@@ -217,17 +219,17 @@ namespace Infinium
                 {
                     AnimateTimer.Enabled = false;
 
-                    if (FormEvent == eClose)
+                    if (_formEvent == EClose)
                     {
 
-                        LightStartForm.CloseForm(this);
+                        _lightStartForm.CloseForm(this);
                         this.Close();
                     }
 
-                    if (FormEvent == eHide)
+                    if (_formEvent == EHide)
                     {
 
-                        LightStartForm.HideForm(this);
+                        _lightStartForm.HideForm(this);
                     }
 
                 }
@@ -236,7 +238,7 @@ namespace Infinium
             }
 
 
-            if (FormEvent == eShow || FormEvent == eShow)
+            if (_formEvent == EShow || _formEvent == EShow)
             {
                 if (this.Opacity != 1)
                     this.Opacity += 0.05;
@@ -244,7 +246,7 @@ namespace Infinium
                 {
                     AnimateTimer.Enabled = false;
                     SplashForm.CloseS = true;
-                    NeedSplash = true;
+                    _needSplash = true;
                 }
 
                 return;
@@ -253,7 +255,7 @@ namespace Infinium
 
         private void NavigateMenuCloseButton_Click(object sender, EventArgs e)
         {
-            FormEvent = eClose;
+            _formEvent = EClose;
             AnimateTimer.Enabled = true;
         }
 
@@ -285,15 +287,15 @@ namespace Infinium
 
             if (m.Msg == 6 && m.WParam.ToInt32() == 1)
             {
-                if (TopForm != null)
-                    TopForm.Activate();
+                if (_topForm != null)
+                    _topForm.Activate();
             }
         }
 
         private void Initialize()
         {
-            FrontIDs = new ArrayList();
-            MainOrdersArray = new ArrayList();
+            _frontIDs = new ArrayList();
+            _mainOrdersArray = new ArrayList();
 
             DecorCatalogOrder = new DecorCatalogOrder();
             DecorCatalogOrder.Initialize(false);
@@ -320,47 +322,47 @@ namespace Infinium
 
         private void Filter()
         {
-            bool NotConfirm = NotConfirmCheckBox.Checked;
-            bool Confirm = ConfirmCheckBox.Checked;
-            bool OnProduction = OnProductionCheckBox.Checked;
-            bool NotProduction = NotProductionCheckBox.Checked;
-            bool InProduction = InProductionCheckBox.Checked;
+            var notConfirm = NotConfirmCheckBox.Checked;
+            var confirm = ConfirmCheckBox.Checked;
+            var onProduction = OnProductionCheckBox.Checked;
+            var notProduction = NotProductionCheckBox.Checked;
+            var inProduction = InProductionCheckBox.Checked;
 
-            bool BatchOnProduction = BatchOnProductionCheckBox.Checked;
-            bool BatchNotProduction = BatchNotProductionCheckBox.Checked;
-            bool BatchInProduction = BatchInProductionCheckBox.Checked;
-            bool BatchOnStorage = BatchOnStorageCheckBox.Checked;
-            bool BatchDispatched = BatchDispatchCheckBox.Checked;
+            var batchOnProduction = BatchOnProductionCheckBox.Checked;
+            var batchNotProduction = BatchNotProductionCheckBox.Checked;
+            var batchInProduction = BatchInProductionCheckBox.Checked;
+            var batchOnStorage = BatchOnStorageCheckBox.Checked;
+            var batchDispatched = BatchDispatchCheckBox.Checked;
 
-            if (NeedSplash)
+            if (_needSplash)
             {
-                Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Загрузка данных с сервера.\r\nПодождите..."); });
+                var T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref _topForm, "Загрузка данных с сервера.\r\nПодождите..."); });
                 T.Start();
 
                 while (!SplashWindow.bSmallCreated) ;
-                NeedSplash = false;
+                _needSplash = false;
 
-                BatchManager.Filter(FactoryID,
-                    NotConfirm, Confirm, OnProduction, NotProduction, InProduction, PickUpFronts);
-                BatchManager.Filter_MegaBatches_ByFactory(FactoryID);
-                BatchManager.GetMainOrdersNotInBatch(FactoryID);
+                BatchManager.Filter(_factoryId,
+                    notConfirm, confirm, onProduction, notProduction, inProduction, _pickUpFronts);
+                BatchManager.Filter_MegaBatches_ByFactory(_factoryId);
+                BatchManager.GetMainOrdersNotInBatch(_factoryId);
 
-                NeedSplash = true;
+                _needSplash = true;
                 while (SplashWindow.bSmallCreated)
                     SmallWaitForm.CloseS = true;
             }
             else
             {
-                BatchManager.Filter(FactoryID,
-                    NotConfirm, Confirm, OnProduction, NotProduction, InProduction, PickUpFronts);
-                BatchManager.Filter_MegaBatches_ByFactory(FactoryID);
-                BatchManager.GetMainOrdersNotInBatch(FactoryID);
+                BatchManager.Filter(_factoryId,
+                    notConfirm, confirm, onProduction, notProduction, inProduction, _pickUpFronts);
+                BatchManager.Filter_MegaBatches_ByFactory(_factoryId);
+                BatchManager.GetMainOrdersNotInBatch(_factoryId);
             }
         }
 
         private void BatchDataGrid_SelectionChanged(object sender, EventArgs e)
         {
-            if (PickUpFronts)
+            if (_pickUpFronts)
                 return;
 
             if (BatchManager != null)
@@ -368,83 +370,83 @@ namespace Infinium
                 {
                     if (((DataRowView)BatchManager.BatchBindingSource.Current)["BatchID"] != DBNull.Value)
                     {
-                        bool BatchOnProduction = BatchOnProductionCheckBox.Checked;
-                        bool BatchNotProduction = BatchNotProductionCheckBox.Checked;
-                        bool BatchInProduction = BatchInProductionCheckBox.Checked;
-                        bool BatchOnStorage = BatchOnStorageCheckBox.Checked;
-                        bool BatchOnExp = BatchOnExpCheckBox.Checked;
-                        bool BatchDispatched = BatchDispatchCheckBox.Checked;
+                        var batchOnProduction = BatchOnProductionCheckBox.Checked;
+                        var batchNotProduction = BatchNotProductionCheckBox.Checked;
+                        var batchInProduction = BatchInProductionCheckBox.Checked;
+                        var batchOnStorage = BatchOnStorageCheckBox.Checked;
+                        var batchOnExp = BatchOnExpCheckBox.Checked;
+                        var batchDispatched = BatchDispatchCheckBox.Checked;
 
-                        ArrayList array = new ArrayList();
+                        var array = new ArrayList();
 
-                        if (NeedSplash)
+                        if (_needSplash)
                         {
-                            Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Загрузка данных с сервера.\r\nПодождите..."); });
+                            var T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref _topForm, "Загрузка данных с сервера.\r\nПодождите..."); });
                             T.Start();
 
                             while (!SplashWindow.bSmallCreated) ;
 
-                            NeedSplash = false;
-                            array = BatchManager.FilterBatchMegaOrders(Convert.ToInt32(((DataRowView)BatchManager.BatchBindingSource.Current)["BatchID"]), FactoryID,
-                                BatchOnProduction, BatchNotProduction, BatchInProduction, BatchOnStorage, BatchOnExp, BatchDispatched, PickUpFronts);
+                            _needSplash = false;
+                            array = BatchManager.FilterBatchMegaOrders(Convert.ToInt32(((DataRowView)BatchManager.BatchBindingSource.Current)["BatchID"]), _factoryId,
+                                batchOnProduction, batchNotProduction, batchInProduction, batchOnStorage, batchOnExp, batchDispatched, _pickUpFronts);
 
                             if (GroupsCheckBox.Checked)
                             {
-                                int[] Batches = BatchManager.GetSelectedBatch().OfType<int>().ToArray();
+                                var batches = BatchManager.GetSelectedBatch().OfType<int>().ToArray();
 
-                                if (Batches.Count() > 0)
+                                if (batches.Count() > 0)
                                 {
-                                    ArrayList ClientGroups = new ArrayList();
+                                    var clientGroups = new ArrayList();
                                     if (MarketFilterCheckBox.Checked)
-                                        ClientGroups.Add(0);
+                                        clientGroups.Add(0);
                                     if (ZOVFilterCheckBox.Checked)
-                                        ClientGroups.Add(3);
+                                        clientGroups.Add(3);
                                     if (kryptonCheckBox1.Checked)
-                                        ClientGroups.Add(1);
+                                        clientGroups.Add(1);
                                     if (MoscowFilterCheckBox.Checked)
-                                        ClientGroups.Add(2);
+                                        clientGroups.Add(2);
                                     if (ZOVProfilCheckBox.Checked)
-                                        ClientGroups.Add(4);
+                                        clientGroups.Add(4);
                                     if (ZOVTPSCheckBox.Checked)
-                                        ClientGroups.Add(5);
+                                        clientGroups.Add(5);
 
-                                    BatchManager.GetProductInfo(FactoryID,
-                                        BatchOnProduction, BatchNotProduction, BatchInProduction, BatchOnStorage, BatchOnExp, BatchDispatched, Batches, ClientGroups.OfType<int>().ToArray());
+                                    BatchManager.GetProductInfo(_factoryId,
+                                        batchOnProduction, batchNotProduction, batchInProduction, batchOnStorage, batchOnExp, batchDispatched, batches, clientGroups.OfType<int>().ToArray());
                                 }
                             }
 
-                            NeedSplash = true;
+                            _needSplash = true;
 
                             while (SplashWindow.bSmallCreated)
                                 SmallWaitForm.CloseS = true;
                         }
                         else
                         {
-                            array = BatchManager.FilterBatchMegaOrders(Convert.ToInt32(((DataRowView)BatchManager.BatchBindingSource.Current)["BatchID"]), FactoryID,
-                                BatchOnProduction, BatchNotProduction, BatchInProduction, BatchOnStorage, BatchOnExp, BatchDispatched, PickUpFronts);
+                            array = BatchManager.FilterBatchMegaOrders(Convert.ToInt32(((DataRowView)BatchManager.BatchBindingSource.Current)["BatchID"]), _factoryId,
+                                batchOnProduction, batchNotProduction, batchInProduction, batchOnStorage, batchOnExp, batchDispatched, _pickUpFronts);
 
                             if (GroupsCheckBox.Checked)
                             {
-                                int[] Batches = BatchManager.GetSelectedBatch().OfType<int>().ToArray();
+                                var batches = BatchManager.GetSelectedBatch().OfType<int>().ToArray();
 
-                                if (Batches.Count() > 0)
+                                if (batches.Count() > 0)
                                 {
-                                    ArrayList ClientGroups = new ArrayList();
+                                    var clientGroups = new ArrayList();
                                     if (MarketFilterCheckBox.Checked)
-                                        ClientGroups.Add(0);
+                                        clientGroups.Add(0);
                                     if (ZOVFilterCheckBox.Checked)
-                                        ClientGroups.Add(3);
+                                        clientGroups.Add(3);
                                     if (kryptonCheckBox1.Checked)
-                                        ClientGroups.Add(1);
+                                        clientGroups.Add(1);
                                     if (MoscowFilterCheckBox.Checked)
-                                        ClientGroups.Add(2);
+                                        clientGroups.Add(2);
                                     if (ZOVProfilCheckBox.Checked)
-                                        ClientGroups.Add(4);
+                                        clientGroups.Add(4);
                                     if (ZOVTPSCheckBox.Checked)
-                                        ClientGroups.Add(5);
+                                        clientGroups.Add(5);
 
-                                    BatchManager.GetProductInfo(FactoryID,
-                                        BatchOnProduction, BatchNotProduction, BatchInProduction, BatchOnStorage, BatchOnExp, BatchDispatched, Batches, ClientGroups.OfType<int>().ToArray());
+                                    BatchManager.GetProductInfo(_factoryId,
+                                        batchOnProduction, batchNotProduction, batchInProduction, batchOnStorage, batchOnExp, batchDispatched, batches, clientGroups.OfType<int>().ToArray());
                                 }
                             }
 
@@ -452,10 +454,10 @@ namespace Infinium
 
                         BatchManager.CurrentBatchID = Convert.ToInt32(Convert.ToInt32(((DataRowView)BatchManager.BatchBindingSource.Current)["BatchID"]));
 
-                        int BatchID = Convert.ToInt32(((DataRowView)BatchManager.BatchBindingSource.Current)["BatchID"]);
-                        int[] MegaOrders = array.OfType<int>().ToArray();
+                        var batchId = Convert.ToInt32(((DataRowView)BatchManager.BatchBindingSource.Current)["BatchID"]);
+                        var megaOrders = array.OfType<int>().ToArray();
 
-                        BatchManager.GetMegaOrdersNotInProduction(BatchID, MegaOrders, FactoryID, PickUpFronts);
+                        BatchManager.GetMegaOrdersNotInProduction(batchId, megaOrders, _factoryId, _pickUpFronts);
                     }
                 }
                 else
@@ -475,23 +477,23 @@ namespace Infinium
                 {
                     if (((DataRowView)BatchManager.MegaOrdersBindingSource.Current)["MegaOrderID"] != DBNull.Value)
                     {
-                        bool OnProduction = OnProductionCheckBox.Checked;
-                        bool NotProduction = NotProductionCheckBox.Checked;
-                        bool InProduction = InProductionCheckBox.Checked;
+                        var onProduction = OnProductionCheckBox.Checked;
+                        var notProduction = NotProductionCheckBox.Checked;
+                        var inProduction = InProductionCheckBox.Checked;
 
-                        if (NeedSplash)
+                        if (_needSplash)
                         {
-                            Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Загрузка данных с сервера.\r\nПодождите..."); });
+                            var T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref _topForm, "Загрузка данных с сервера.\r\nПодождите..."); });
                             T.Start();
 
                             while (!SplashWindow.bSmallCreated) ;
 
-                            NeedSplash = false;
+                            _needSplash = false;
 
                             BatchManager.FilterMainOrdersByMegaOrder(
                                     Convert.ToInt32(((DataRowView)BatchManager.MegaOrdersBindingSource.Current)["MegaOrderID"]),
-                                    FactoryID, OnProduction, NotProduction, InProduction);
-                            NeedSplash = true;
+                                    _factoryId, onProduction, notProduction, inProduction);
+                            _needSplash = true;
 
                             while (SplashWindow.bSmallCreated)
                                 SmallWaitForm.CloseS = true;
@@ -500,52 +502,52 @@ namespace Infinium
                         {
                             BatchManager.FilterMainOrdersByMegaOrder(
                                     Convert.ToInt32(((DataRowView)BatchManager.MegaOrdersBindingSource.Current)["MegaOrderID"]),
-                                    FactoryID, OnProduction, NotProduction, InProduction);
+                                    _factoryId, onProduction, notProduction, inProduction);
                         }
 
-                        BatchManager.GetMainOrdersNotInBatch(FactoryID);
+                        BatchManager.GetMainOrdersNotInBatch(_factoryId);
 
-                        int[] MegaOrders = BatchManager.GetSelectedMegaOrders().OfType<int>().ToArray();
-                        Array.Sort(MegaOrders);
+                        var megaOrders = BatchManager.GetSelectedMegaOrders().OfType<int>().ToArray();
+                        Array.Sort(megaOrders);
 
-                        if (MegaOrders.Count() > 0)
+                        if (megaOrders.Count() > 0)
                         {
                             xtraTabControl3.TabPages[1].PageVisible = true;
-                            BatchManager.GetPreProductInfo(MegaOrders, FactoryID,
-                                OnProduction, NotProduction, InProduction);
+                            BatchManager.GetPreProductInfo(megaOrders, _factoryId,
+                                onProduction, notProduction, inProduction);
                         }
                         else
                         {
                             xtraTabControl3.TabPages[1].PageVisible = false;
                         }
 
-                        string ClientName = string.Empty;
-                        string OrderNumber = string.Empty;
-                        bool IsComplaint = false;
-                        string ConfirmDate = string.Empty;
+                        var clientName = string.Empty;
+                        var orderNumber = string.Empty;
+                        var isComplaint = false;
+                        var confirmDate = string.Empty;
 
                         if (((DataRowView)BatchManager.MegaOrdersBindingSource.Current)["ClientName"] != DBNull.Value)
-                            ClientName = ((DataRowView)BatchManager.MegaOrdersBindingSource.Current)["ClientName"].ToString();
+                            clientName = ((DataRowView)BatchManager.MegaOrdersBindingSource.Current)["ClientName"].ToString();
                         if (((DataRowView)BatchManager.MegaOrdersBindingSource.Current)["OrderNumber"] != DBNull.Value)
-                            OrderNumber = ((DataRowView)BatchManager.MegaOrdersBindingSource.Current)["OrderNumber"].ToString();
+                            orderNumber = ((DataRowView)BatchManager.MegaOrdersBindingSource.Current)["OrderNumber"].ToString();
                         if (((DataRowView)BatchManager.MegaOrdersBindingSource.Current)["IsComplaint"] != DBNull.Value)
-                            IsComplaint = Convert.ToBoolean(((DataRowView)BatchManager.MegaOrdersBindingSource.Current)["IsComplaint"]);
+                            isComplaint = Convert.ToBoolean(((DataRowView)BatchManager.MegaOrdersBindingSource.Current)["IsComplaint"]);
                         if (((DataRowView)BatchManager.MegaOrdersBindingSource.Current)["ConfirmDateTime"] != DBNull.Value)
-                            ConfirmDate = Convert.ToDateTime(((DataRowView)BatchManager.MegaOrdersBindingSource.Current)["ConfirmDateTime"]).ToString("dd.MM.yyyy");
+                            confirmDate = Convert.ToDateTime(((DataRowView)BatchManager.MegaOrdersBindingSource.Current)["ConfirmDateTime"]).ToString("dd.MM.yyyy");
 
-                        string ClientInfo = ClientName;
-                        string OrderInfo = "Заказ: №" + OrderNumber;
-                        string ConfirmDateInfo = "Согласован: " + ConfirmDate;
+                        var clientInfo = clientName;
+                        var orderInfo = "Заказ: №" + orderNumber;
+                        var confirmDateInfo = "Согласован: " + confirmDate;
 
-                        if (IsComplaint)
-                            OrderInfo += ", РЕКЛАМАЦИЯ";
+                        if (isComplaint)
+                            orderInfo += ", РЕКЛАМАЦИЯ";
 
-                        ClientInfoLabel.Text = ClientInfo;
-                        OrderLabel.Text = OrderInfo;
-                        ConfirmDateLabel.Text = ConfirmDateInfo;
+                        ClientInfoLabel.Text = clientInfo;
+                        OrderLabel.Text = orderInfo;
+                        ConfirmDateLabel.Text = confirmDateInfo;
 
-                        int[] MainOrders = BatchManager.GetMainOrders().OfType<int>().ToArray();
-                        Array.Sort(MainOrders);
+                        var mainOrders = BatchManager.GetMainOrders().OfType<int>().ToArray();
+                        Array.Sort(mainOrders);
 
                         //decimal Square = BatchManager.GetSelectedSquare(MainOrders);
                         //if (Square > 0)
@@ -559,17 +561,17 @@ namespace Infinium
 
         private void MegaOrdersDataGrid_MouseMove(object sender, MouseEventArgs e)
         {
-            if (NeedRefresh == true)
+            if (_needRefresh == true)
             {
                 MegaOrdersDataGrid.Refresh();
-                NeedRefresh = false;
+                _needRefresh = false;
             }
         }
 
         private void MegaOrdersDataGrid_Scroll(object sender, ScrollEventArgs e)
         {
             if (e.ScrollOrientation == ScrollOrientation.HorizontalScroll)
-                NeedRefresh = true;
+                _needRefresh = true;
         }
 
         #endregion
@@ -583,7 +585,7 @@ namespace Infinium
                 {
                     if (((DataRowView)BatchManager.MainOrdersBindingSource.Current)["MainOrderID"] != DBNull.Value)
                     {
-                        BatchManager.FilterProductsByMainOrder(Convert.ToInt32(((DataRowView)BatchManager.MainOrdersBindingSource.Current)["MainOrderID"]), FactoryID);
+                        BatchManager.FilterProductsByMainOrder(Convert.ToInt32(((DataRowView)BatchManager.MainOrdersBindingSource.Current)["MainOrderID"]), _factoryId);
                         if (MainOrdersTabControl.TabPages[0].PageVisible && MainOrdersTabControl.TabPages[1].PageVisible)
                             MainOrdersTabControl.SelectedTabPage = MainOrdersTabControl.TabPages[0];
 
@@ -591,7 +593,7 @@ namespace Infinium
                 }
                 else
                 {
-                    BatchManager.FilterProductsByMainOrder(-1, FactoryID);
+                    BatchManager.FilterProductsByMainOrder(-1, _factoryId);
                     BatchManager.ClearPreProductsGrids();
                     //MainOrdersTabControl.SelectedTab = MainOrdersTabControl.Tabs[0];
                 }
@@ -599,22 +601,22 @@ namespace Infinium
 
         private void MainOrdersDataGrid_MouseMove(object sender, MouseEventArgs e)
         {
-            if (NeedRefresh == true)
+            if (_needRefresh == true)
             {
                 MainOrdersDataGrid.Refresh();
-                NeedRefresh = false;
+                _needRefresh = false;
             }
         }
 
         private void MainOrdersDataGrid_Scroll(object sender, ScrollEventArgs e)
         {
             if (e.ScrollOrientation == ScrollOrientation.HorizontalScroll)
-                NeedRefresh = true;
+                _needRefresh = true;
         }
 
         private void MainOrdersDataGrid_Sorted(object sender, EventArgs e)
         {
-            BatchManager.GetMainOrdersNotInBatch(FactoryID);
+            BatchManager.GetMainOrdersNotInBatch(_factoryId);
         }
 
         #endregion
@@ -628,83 +630,83 @@ namespace Infinium
                 {
                     if (((DataRowView)BatchManager.BatchBindingSource.Current)["BatchID"] != DBNull.Value)
                     {
-                        int BatchID = Convert.ToInt32(((DataRowView)BatchManager.BatchBindingSource.Current)["BatchID"]);
-                        bool BatchOnProduction = BatchOnProductionCheckBox.Checked;
-                        bool BatchNotProduction = BatchNotProductionCheckBox.Checked;
-                        bool BatchInProduction = BatchInProductionCheckBox.Checked;
-                        bool BatchOnStorage = BatchOnStorageCheckBox.Checked;
-                        bool BatchOnExp = BatchOnExpCheckBox.Checked;
-                        bool BatchDispatched = BatchDispatchCheckBox.Checked;
+                        var batchId = Convert.ToInt32(((DataRowView)BatchManager.BatchBindingSource.Current)["BatchID"]);
+                        var batchOnProduction = BatchOnProductionCheckBox.Checked;
+                        var batchNotProduction = BatchNotProductionCheckBox.Checked;
+                        var batchInProduction = BatchInProductionCheckBox.Checked;
+                        var batchOnStorage = BatchOnStorageCheckBox.Checked;
+                        var batchOnExp = BatchOnExpCheckBox.Checked;
+                        var batchDispatched = BatchDispatchCheckBox.Checked;
 
-                        ArrayList MainOrdersArray = new ArrayList();
+                        var mainOrdersArray = new ArrayList();
 
-                        if (NeedSplash)
+                        if (_needSplash)
                         {
-                            Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Загрузка данных с сервера.\r\nПодождите..."); });
+                            var T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref _topForm, "Загрузка данных с сервера.\r\nПодождите..."); });
                             T.Start();
 
                             while (!SplashWindow.bSmallCreated) ;
 
-                            NeedSplash = false;
-                            if (PickUpFronts)
+                            _needSplash = false;
+                            if (_pickUpFronts)
                             {
-                                if (bFrontType)
+                                if (_bFrontType)
                                 {
-                                    if (FrontIDs.Count > 0)
+                                    if (_frontIDs.Count > 0)
                                     {
-                                        MainOrdersArray = BatchManager.FilterBatchMainOrdersByFront(BatchID,
-                                            Convert.ToInt32(((DataRowView)BatchManager.BatchMegaOrdersBindingSource.Current)["MegaOrderID"]), FactoryID,
-                                            BatchOnProduction, BatchNotProduction, BatchInProduction, BatchOnStorage, BatchOnExp, BatchDispatched, FrontIDs);
+                                        mainOrdersArray = BatchManager.FilterBatchMainOrdersByFront(batchId,
+                                            Convert.ToInt32(((DataRowView)BatchManager.BatchMegaOrdersBindingSource.Current)["MegaOrderID"]), _factoryId,
+                                            batchOnProduction, batchNotProduction, batchInProduction, batchOnStorage, batchOnExp, batchDispatched, _frontIDs);
                                     }
                                 }
-                                if (bFrameColor)
-                                    MainOrdersArray = BatchManager.FilterBatchMainOrdersByFront(BatchID,
-                                        Convert.ToInt32(((DataRowView)BatchManager.BatchMegaOrdersBindingSource.Current)["MegaOrderID"]), FactoryID,
-                                        BatchOnProduction, BatchNotProduction, BatchInProduction, BatchOnStorage, BatchOnExp, BatchDispatched);
+                                if (_bFrameColor)
+                                    mainOrdersArray = BatchManager.FilterBatchMainOrdersByFront(batchId,
+                                        Convert.ToInt32(((DataRowView)BatchManager.BatchMegaOrdersBindingSource.Current)["MegaOrderID"]), _factoryId,
+                                        batchOnProduction, batchNotProduction, batchInProduction, batchOnStorage, batchOnExp, batchDispatched);
                             }
                             else
-                                MainOrdersArray = BatchManager.FilterBatchMainOrdersByMegaOrder(
+                                mainOrdersArray = BatchManager.FilterBatchMainOrdersByMegaOrder(
                                     Convert.ToInt32(((DataRowView)BatchManager.BatchBindingSource.Current)["BatchID"]),
-                                    Convert.ToInt32(((DataRowView)BatchManager.BatchMegaOrdersBindingSource.Current)["MegaOrderID"]), FactoryID,
-                                    BatchOnProduction, BatchNotProduction, BatchInProduction, BatchOnStorage, BatchOnExp, BatchDispatched);
+                                    Convert.ToInt32(((DataRowView)BatchManager.BatchMegaOrdersBindingSource.Current)["MegaOrderID"]), _factoryId,
+                                    batchOnProduction, batchNotProduction, batchInProduction, batchOnStorage, batchOnExp, batchDispatched);
 
-                            NeedSplash = true;
+                            _needSplash = true;
 
                             while (SplashWindow.bSmallCreated)
                                 SmallWaitForm.CloseS = true;
                         }
                         else
                         {
-                            if (PickUpFronts)
+                            if (_pickUpFronts)
                             {
-                                if (bFrontType)
-                                    MainOrdersArray = BatchManager.FilterBatchMainOrdersByFront(BatchID,
-                                        Convert.ToInt32(((DataRowView)BatchManager.BatchMegaOrdersBindingSource.Current)["MegaOrderID"]), FactoryID,
-                                        BatchOnProduction, BatchNotProduction, BatchInProduction, BatchOnStorage, BatchOnExp, BatchDispatched, FrontIDs);
-                                if (bFrameColor)
-                                    MainOrdersArray = BatchManager.FilterBatchMainOrdersByFront(BatchID,
-                                        Convert.ToInt32(((DataRowView)BatchManager.BatchMegaOrdersBindingSource.Current)["MegaOrderID"]), FactoryID,
-                                        BatchOnProduction, BatchNotProduction, BatchInProduction, BatchOnStorage, BatchOnExp, BatchDispatched);
+                                if (_bFrontType)
+                                    mainOrdersArray = BatchManager.FilterBatchMainOrdersByFront(batchId,
+                                        Convert.ToInt32(((DataRowView)BatchManager.BatchMegaOrdersBindingSource.Current)["MegaOrderID"]), _factoryId,
+                                        batchOnProduction, batchNotProduction, batchInProduction, batchOnStorage, batchOnExp, batchDispatched, _frontIDs);
+                                if (_bFrameColor)
+                                    mainOrdersArray = BatchManager.FilterBatchMainOrdersByFront(batchId,
+                                        Convert.ToInt32(((DataRowView)BatchManager.BatchMegaOrdersBindingSource.Current)["MegaOrderID"]), _factoryId,
+                                        batchOnProduction, batchNotProduction, batchInProduction, batchOnStorage, batchOnExp, batchDispatched);
                             }
                             else
-                                MainOrdersArray = BatchManager.FilterBatchMainOrdersByMegaOrder(
+                                mainOrdersArray = BatchManager.FilterBatchMainOrdersByMegaOrder(
                                     Convert.ToInt32(((DataRowView)BatchManager.BatchBindingSource.Current)["BatchID"]),
-                                    Convert.ToInt32(((DataRowView)BatchManager.BatchMegaOrdersBindingSource.Current)["MegaOrderID"]), FactoryID,
-                                    BatchOnProduction, BatchNotProduction, BatchInProduction, BatchOnStorage, BatchOnExp, BatchDispatched);
+                                    Convert.ToInt32(((DataRowView)BatchManager.BatchMegaOrdersBindingSource.Current)["MegaOrderID"]), _factoryId,
+                                    batchOnProduction, batchNotProduction, batchInProduction, batchOnStorage, batchOnExp, batchDispatched);
                         }
 
                         if (!GroupsCheckBox.Checked)
                         {
-                            int[] MegaOrders = BatchManager.GetSelectedBatchMegaOrders().OfType<int>().ToArray();
+                            var megaOrders = BatchManager.GetSelectedBatchMegaOrders().OfType<int>().ToArray();
 
-                            if (MegaOrders.Count() > 0)
+                            if (megaOrders.Count() > 0)
                             {
-                                int[] MainOrders = BatchManager.GetBatchMainOrders(BatchID, MegaOrders, FactoryID, PickUpFronts).OfType<int>().ToArray();
+                                var mainOrders = BatchManager.GetBatchMainOrders(batchId, megaOrders, _factoryId, _pickUpFronts).OfType<int>().ToArray();
 
-                                if (MainOrders.Count() > 0)
+                                if (mainOrders.Count() > 0)
                                 {
-                                    BatchManager.GetProductInfo(MainOrders, FactoryID,
-                                        BatchOnProduction, BatchNotProduction, BatchInProduction, BatchOnStorage, BatchOnExp, BatchDispatched);
+                                    BatchManager.GetProductInfo(mainOrders, _factoryId,
+                                        batchOnProduction, batchNotProduction, batchInProduction, batchOnStorage, batchOnExp, batchDispatched);
                                 }
                             }
                         }
@@ -719,17 +721,17 @@ namespace Infinium
 
         private void BatchMegaOrdersDataGrid_MouseMove(object sender, MouseEventArgs e)
         {
-            if (NeedRefresh == true)
+            if (_needRefresh == true)
             {
                 BatchMegaOrdersDataGrid.Refresh();
-                NeedRefresh = false;
+                _needRefresh = false;
             }
         }
 
         private void BatchMegaOrdersDataGrid_Scroll(object sender, ScrollEventArgs e)
         {
             if (e.ScrollOrientation == ScrollOrientation.HorizontalScroll)
-                NeedRefresh = true;
+                _needRefresh = true;
         }
 
         #endregion
@@ -743,30 +745,30 @@ namespace Infinium
                 {
                     if (((DataRowView)BatchManager.BatchMainOrdersBindingSource.Current)["MainOrderID"] != DBNull.Value)
                     {
-                        BatchManager.FilterBatchProductsByMainOrder(Convert.ToInt32(((DataRowView)BatchManager.BatchMainOrdersBindingSource.Current)["MainOrderID"]), FactoryID);
+                        BatchManager.FilterBatchProductsByMainOrder(Convert.ToInt32(((DataRowView)BatchManager.BatchMainOrdersBindingSource.Current)["MainOrderID"]), _factoryId);
                         if (BatchMainOrdersTabControl.TabPages[0].PageVisible && BatchMainOrdersTabControl.TabPages[1].PageVisible)
                             BatchMainOrdersTabControl.SelectedTabPage = BatchMainOrdersTabControl.TabPages[0];
                     }
                 }
                 else
                 {
-                    BatchManager.FilterBatchProductsByMainOrder(-1, FactoryID);
+                    BatchManager.FilterBatchProductsByMainOrder(-1, _factoryId);
                 }
         }
 
         private void BatchMainOrdersDataGrid_MouseMove(object sender, MouseEventArgs e)
         {
-            if (NeedRefresh == true)
+            if (_needRefresh == true)
             {
                 BatchMainOrdersDataGrid.Refresh();
-                NeedRefresh = false;
+                _needRefresh = false;
             }
         }
 
         private void BatchMainOrdersDataGrid_Scroll(object sender, ScrollEventArgs e)
         {
             if (e.ScrollOrientation == ScrollOrientation.HorizontalScroll)
-                NeedRefresh = true;
+                _needRefresh = true;
         }
 
         #endregion
@@ -778,23 +780,23 @@ namespace Infinium
             if (BatchManager == null)
                 return;
 
-            bool OKCancel = Infinium.LightMessageBox.Show(ref TopForm, true,
+            var okCancel = Infinium.LightMessageBox.Show(ref _topForm, true,
                     "Вы собираетесь создать новую партию. Продолжить?",
                     "Новая партия");
-            if (!OKCancel)
+            if (!okCancel)
                 return;
 
             if (BatchManager.IsBatchEmpty())
             {
-                Infinium.LightMessageBox.Show(ref TopForm, false,
+                Infinium.LightMessageBox.Show(ref _topForm, false,
                     "Пустая партия уже создана, добавляйте заказы в неё",
                     "Создание партии");
                 return;
             }
             if ((DataRowView)BatchManager.MegaBatchBindingSource.Current != null)
             {
-                int MegaBatchID = Convert.ToInt32(((DataRowView)BatchManager.MegaBatchBindingSource.Current).Row["MegaBatchID"]);
-                BatchManager.AddBatch(MegaBatchID, FactoryID);
+                var megaBatchId = Convert.ToInt32(((DataRowView)BatchManager.MegaBatchBindingSource.Current).Row["MegaBatchID"]);
+                BatchManager.AddBatch(megaBatchId, _factoryId);
             }
         }
 
@@ -803,23 +805,23 @@ namespace Infinium
             if (BatchManager == null || BatchManager.BatchBindingSource.Count < 1)
                 return;
 
-            bool OKCancel = Infinium.LightMessageBox.Show(ref TopForm, true,
+            var okCancel = Infinium.LightMessageBox.Show(ref _topForm, true,
                     "Партия будет расформирована и удалена. Продолжить?",
                     "Удаление партии");
 
-            if (OKCancel)
+            if (okCancel)
             {
-                int BatchID = Convert.ToInt32(((DataRowView)BatchManager.BatchBindingSource.Current).Row["BatchID"]);
+                var batchId = Convert.ToInt32(((DataRowView)BatchManager.BatchBindingSource.Current).Row["BatchID"]);
 
-                if (!BatchManager.IsBatchEnabled(BatchID, FactoryID))
+                if (!BatchManager.IsBatchEnabled(batchId, _factoryId))
                 {
-                    Infinium.LightMessageBox.Show(ref TopForm, false,
+                    Infinium.LightMessageBox.Show(ref _topForm, false,
                            "Партия сформирована, удаление запрещено.",
                            "Ошибка удаления");
                     return;
                 }
 
-                BatchManager.RemoveBatch(BatchID, FactoryID);
+                BatchManager.RemoveBatch(batchId, _factoryId);
             }
         }
 
@@ -832,16 +834,16 @@ namespace Infinium
             if (BatchManager == null || BatchManager.BatchBindingSource.Count < 1)
                 return;
 
-            int BatchID = Convert.ToInt32(((DataRowView)BatchManager.BatchBindingSource.Current).Row["BatchID"]);
-            int MegaOrderID = Convert.ToInt32(((DataRowView)BatchManager.MegaOrdersBindingSource.Current)["MegaOrderID"]);
-            int[] MainOrders = BatchManager.GetMainOrders().OfType<int>().ToArray();
-            if (MainOrders.Count() < 1)
+            var batchId = Convert.ToInt32(((DataRowView)BatchManager.BatchBindingSource.Current).Row["BatchID"]);
+            var megaOrderId = Convert.ToInt32(((DataRowView)BatchManager.MegaOrdersBindingSource.Current)["MegaOrderID"]);
+            var mainOrders = BatchManager.GetMainOrders().OfType<int>().ToArray();
+            if (mainOrders.Count() < 1)
                 return;
-            Array.Sort(MainOrders);
+            Array.Sort(mainOrders);
 
-            if (!BatchManager.IsBatchEnabled(BatchID, FactoryID))
+            if (!BatchManager.IsBatchEnabled(batchId, _factoryId))
             {
-                Infinium.LightMessageBox.Show(ref TopForm, false,
+                Infinium.LightMessageBox.Show(ref _topForm, false,
                        "Партия сформирована, добавление заказов в неё запрещено. Создайте новую партию",
                        "Ошибка добавления");
                 return;
@@ -857,42 +859,42 @@ namespace Infinium
             //    return;
             //}
 
-            BatchManager.AddToBatch(BatchID, MainOrders, FactoryID);
-            BatchManager.SetMainOrderOnProduction(MainOrders, FactoryID, true);
-            BatchManager.SetMegaOrderOnProduction(MegaOrderID, FactoryID);
+            BatchManager.AddToBatch(batchId, mainOrders, _factoryId);
+            BatchManager.SetMainOrderOnProduction(mainOrders, _factoryId, true);
+            BatchManager.SetMegaOrderOnProduction(megaOrderId, _factoryId);
 
-            if (NeedSplash)
+            if (_needSplash)
             {
-                Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Загрузка данных с сервера.\r\nПодождите..."); });
+                var T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref _topForm, "Загрузка данных с сервера.\r\nПодождите..."); });
                 T.Start();
 
                 while (!SplashWindow.bSmallCreated) ;
-                NeedSplash = false;
+                _needSplash = false;
 
-                bool NotConfirm = NotConfirmCheckBox.Checked;
-                bool Confirm = ConfirmCheckBox.Checked;
-                bool OnProduction = OnProductionCheckBox.Checked;
-                bool NotProduction = NotProductionCheckBox.Checked;
-                bool InProduction = InProductionCheckBox.Checked;
+                var notConfirm = NotConfirmCheckBox.Checked;
+                var confirm = ConfirmCheckBox.Checked;
+                var onProduction = OnProductionCheckBox.Checked;
+                var notProduction = NotProductionCheckBox.Checked;
+                var inProduction = InProductionCheckBox.Checked;
 
-                bool BatchOnProduction = BatchOnProductionCheckBox.Checked;
-                bool BatchNotProduction = BatchNotProductionCheckBox.Checked;
-                bool BatchInProduction = BatchInProductionCheckBox.Checked;
-                bool BatchOnStorage = BatchOnStorageCheckBox.Checked;
-                bool BatchOnExp = BatchOnExpCheckBox.Checked;
-                bool BatchDispatched = BatchDispatchCheckBox.Checked;
+                var batchOnProduction = BatchOnProductionCheckBox.Checked;
+                var batchNotProduction = BatchNotProductionCheckBox.Checked;
+                var batchInProduction = BatchInProductionCheckBox.Checked;
+                var batchOnStorage = BatchOnStorageCheckBox.Checked;
+                var batchOnExp = BatchOnExpCheckBox.Checked;
+                var batchDispatched = BatchDispatchCheckBox.Checked;
 
-                int[] BatchMegaOrders = BatchManager.GetBatchMegaOrders().OfType<int>().ToArray();
-                BatchManager.Filter(FactoryID,
-                    NotConfirm, Confirm, OnProduction, NotProduction, InProduction, PickUpFronts);
+                var batchMegaOrders = BatchManager.GetBatchMegaOrders().OfType<int>().ToArray();
+                BatchManager.Filter(_factoryId,
+                    notConfirm, confirm, onProduction, notProduction, inProduction, _pickUpFronts);
 
-                BatchManager.FilterBatchMegaOrders(BatchID, FactoryID,
-                    BatchOnProduction, BatchNotProduction, BatchInProduction, BatchOnStorage, BatchOnExp, BatchDispatched,
-                    PickUpFronts);
+                BatchManager.FilterBatchMegaOrders(batchId, _factoryId,
+                    batchOnProduction, batchNotProduction, batchInProduction, batchOnStorage, batchOnExp, batchDispatched,
+                    _pickUpFronts);
 
-                BatchManager.GetMainOrdersNotInBatch(FactoryID);
-                BatchManager.GetMegaOrdersNotInProduction(BatchID, BatchMegaOrders, FactoryID, PickUpFronts);
-                NeedSplash = true;
+                BatchManager.GetMainOrdersNotInBatch(_factoryId);
+                BatchManager.GetMegaOrdersNotInProduction(batchId, batchMegaOrders, _factoryId, _pickUpFronts);
+                _needSplash = true;
                 while (SplashWindow.bSmallCreated)
                     SmallWaitForm.CloseS = true;
             }
@@ -903,32 +905,32 @@ namespace Infinium
             if (BatchManager == null || BatchManager.BatchMegaOrdersBindingSource.Count < 1)
                 return;
 
-            int BatchID = Convert.ToInt32(((DataRowView)BatchManager.BatchBindingSource.Current).Row["BatchID"]);
-            if (!BatchManager.IsBatchEnabled(BatchID, FactoryID))
+            var batchId = Convert.ToInt32(((DataRowView)BatchManager.BatchBindingSource.Current).Row["BatchID"]);
+            if (!BatchManager.IsBatchEnabled(batchId, _factoryId))
             {
-                Infinium.LightMessageBox.Show(ref TopForm, false,
+                Infinium.LightMessageBox.Show(ref _topForm, false,
                        "Партия сформирована, удаление заказов из неё запрещено",
                        "Ошибка удаления");
                 return;
             }
 
-            bool OKCancel = Infinium.LightMessageBox.Show(ref TopForm, true,
+            var okCancel = Infinium.LightMessageBox.Show(ref _topForm, true,
                     "Выбранный заказ будет убран из партии. Продолжить?",
                     "Редактирование партии");
 
-            if (OKCancel)
+            if (okCancel)
             {
-                int MegaOrderID = Convert.ToInt32(((DataRowView)BatchManager.BatchMegaOrdersBindingSource.Current).Row["MegaOrderID"]);
-                int[] MegaOrders = new int[1] { MegaOrderID };
-                int[] MainOrders = BatchManager.GetBatchMainOrders(BatchID, MegaOrders, FactoryID, false).OfType<int>().ToArray();
-                Array.Sort(MainOrders);
+                var megaOrderId = Convert.ToInt32(((DataRowView)BatchManager.BatchMegaOrdersBindingSource.Current).Row["MegaOrderID"]);
+                var megaOrders = new int[1] { megaOrderId };
+                var mainOrders = BatchManager.GetBatchMainOrders(batchId, megaOrders, _factoryId, false).OfType<int>().ToArray();
+                Array.Sort(mainOrders);
 
-                if (BatchManager.RemoveMegaOrderFromBatch(BatchID, FactoryID))
+                if (BatchManager.RemoveMegaOrderFromBatch(batchId, _factoryId))
                 {
-                    BatchManager.SetMainOrderOnProduction(MainOrders, FactoryID, false);
-                    BatchManager.SetMegaOrderOnProduction(MegaOrderID, FactoryID);
+                    BatchManager.SetMainOrderOnProduction(mainOrders, _factoryId, false);
+                    BatchManager.SetMegaOrderOnProduction(megaOrderId, _factoryId);
                     Filter();
-                    BatchManager.GetMainOrdersNotInBatch(FactoryID);
+                    BatchManager.GetMainOrdersNotInBatch(_factoryId);
                 }
             }
         }
@@ -942,56 +944,56 @@ namespace Infinium
             if (BatchManager == null || BatchManager.BatchMegaOrdersBindingSource.Count < 1)
                 return;
 
-            bool OKCancel = Infinium.LightMessageBox.Show(ref TopForm, true,
+            var okCancel = Infinium.LightMessageBox.Show(ref _topForm, true,
                     "Выбранные заказы будут распечатаны и отправлены в производство. Продолжить?",
                     "В производство");
-            if (!OKCancel)
+            if (!okCancel)
                 return;
 
-            int[] MegaOrders = BatchManager.GetSelectedBatchMegaOrders().OfType<int>().ToArray();
+            var megaOrders = BatchManager.GetSelectedBatchMegaOrders().OfType<int>().ToArray();
 
-            if (MegaOrders.Count() < 1)
+            if (megaOrders.Count() < 1)
                 return;
 
-            int BatchID = Convert.ToInt32(((DataRowView)BatchManager.BatchBindingSource.Current)["BatchID"]);
-            int MegaBatchID = Convert.ToInt32(((DataRowView)BatchManager.MegaBatchBindingSource.Current)["MegaBatchID"]);
+            var batchId = Convert.ToInt32(((DataRowView)BatchManager.BatchBindingSource.Current)["BatchID"]);
+            var megaBatchId = Convert.ToInt32(((DataRowView)BatchManager.MegaBatchBindingSource.Current)["MegaBatchID"]);
 
-            if (!BatchManager.HasOrders(MegaOrders, FactoryID))
+            if (!BatchManager.HasOrders(megaOrders, _factoryId))
                 return;
 
-            Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Создание документа Excel.\r\nПодождите..."); });
+            var T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref _topForm, "Создание документа Excel.\r\nПодождите..."); });
             T.Start();
 
             while (!SplashWindow.bSmallCreated) ;
 
-            int[] MainOrders = BatchManager.GetBatchMainOrders(BatchID, MegaOrders, FactoryID, false).OfType<int>().ToArray();
+            var mainOrders = BatchManager.GetBatchMainOrders(batchId, megaOrders, _factoryId, false).OfType<int>().ToArray();
             //Array.Sort(MainOrders);
 
-            ReportMarketing.CreateReport(MegaBatchID, BatchID, MainOrders, FactoryID);
-            BatchManager.SetMainOrderInProduction(MainOrders, FactoryID);
+            ReportMarketing.CreateReport(megaBatchId, batchId, mainOrders, _factoryId);
+            BatchManager.SetMainOrderInProduction(mainOrders, _factoryId);
 
-            for (int i = 0; i < MegaOrders.Count(); i++)
+            for (var i = 0; i < megaOrders.Count(); i++)
             {
-                CheckOrdersStatus.SetMegaOrderStatus(MegaOrders[i]);
+                CheckOrdersStatus.SetMegaOrderStatus(megaOrders[i]);
             }
 
             while (SplashWindow.bSmallCreated)
                 SmallWaitForm.CloseS = true;
 
-            bool BatchOnProduction = BatchOnProductionCheckBox.Checked;
-            bool BatchNotProduction = BatchNotProductionCheckBox.Checked;
-            bool BatchInProduction = BatchInProductionCheckBox.Checked;
-            bool BatchOnStorage = BatchOnStorageCheckBox.Checked;
-            bool BatchOnExp = BatchOnExpCheckBox.Checked;
-            bool BatchDispatched = BatchDispatchCheckBox.Checked;
+            var batchOnProduction = BatchOnProductionCheckBox.Checked;
+            var batchNotProduction = BatchNotProductionCheckBox.Checked;
+            var batchInProduction = BatchInProductionCheckBox.Checked;
+            var batchOnStorage = BatchOnStorageCheckBox.Checked;
+            var batchOnExp = BatchOnExpCheckBox.Checked;
+            var batchDispatched = BatchDispatchCheckBox.Checked;
 
-            BatchManager.FilterBatchMegaOrders(BatchID, FactoryID,
-                BatchOnProduction, BatchNotProduction, BatchInProduction, BatchOnStorage, BatchOnExp, BatchDispatched,
-                PickUpFronts);
+            BatchManager.FilterBatchMegaOrders(batchId, _factoryId,
+                batchOnProduction, batchNotProduction, batchInProduction, batchOnStorage, batchOnExp, batchDispatched,
+                _pickUpFronts);
 
 
-            MegaOrders = BatchManager.GetBatchMegaOrders().OfType<int>().ToArray();
-            BatchManager.GetMegaOrdersNotInProduction(BatchID, MegaOrders, FactoryID, PickUpFronts);
+            megaOrders = BatchManager.GetBatchMegaOrders().OfType<int>().ToArray();
+            BatchManager.GetMegaOrdersNotInProduction(batchId, megaOrders, _factoryId, _pickUpFronts);
         }
 
         private void PrintMainOrderButton_Click(object sender, EventArgs e)
@@ -999,54 +1001,54 @@ namespace Infinium
             if (BatchManager == null || BatchManager.BatchMainOrdersBindingSource.Count < 1)
                 return;
 
-            bool OKCancel = Infinium.LightMessageBox.Show(ref TopForm, true,
+            var okCancel = Infinium.LightMessageBox.Show(ref _topForm, true,
                     "Выбранные подзаказы будут распечатаны и отправлены в производство. Продолжить?",
                     "В производство");
-            if (!OKCancel)
+            if (!okCancel)
                 return;
 
-            int[] MegaOrders = BatchManager.GetSelectedBatchMegaOrders().OfType<int>().ToArray();
+            var megaOrders = BatchManager.GetSelectedBatchMegaOrders().OfType<int>().ToArray();
 
-            if (MegaOrders.Count() < 1)
+            if (megaOrders.Count() < 1)
                 return;
 
-            int BatchID = Convert.ToInt32(((DataRowView)BatchManager.BatchBindingSource.Current)["BatchID"]);
-            int MegaBatchID = Convert.ToInt32(((DataRowView)BatchManager.MegaBatchBindingSource.Current)["MegaBatchID"]);
+            var batchId = Convert.ToInt32(((DataRowView)BatchManager.BatchBindingSource.Current)["BatchID"]);
+            var megaBatchId = Convert.ToInt32(((DataRowView)BatchManager.MegaBatchBindingSource.Current)["MegaBatchID"]);
 
-            int MegaOrderID = Convert.ToInt32(((DataRowView)BatchManager.BatchMegaOrdersBindingSource.Current).Row["MegaOrderID"]);
+            var megaOrderId = Convert.ToInt32(((DataRowView)BatchManager.BatchMegaOrdersBindingSource.Current).Row["MegaOrderID"]);
 
-            if (!BatchManager.HasOrders(MegaOrders, FactoryID))
+            if (!BatchManager.HasOrders(megaOrders, _factoryId))
                 return;
 
-            Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Создание документа Excel.\r\nПодождите..."); });
+            var T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref _topForm, "Создание документа Excel.\r\nПодождите..."); });
             T.Start();
 
             while (!SplashWindow.bSmallCreated) ;
 
-            int[] MainOrders = BatchManager.GetSelectedBatchMainOrders().OfType<int>().ToArray();
-            Array.Sort(MainOrders);
+            var mainOrders = BatchManager.GetSelectedBatchMainOrders().OfType<int>().ToArray();
+            Array.Sort(mainOrders);
 
-            if (MainOrders.Count() < 1)
+            if (mainOrders.Count() < 1)
                 return;
 
-            ReportMarketing.CreateReport(MegaBatchID, BatchID, MainOrders, FactoryID);
-            BatchManager.SetMainOrderInProduction(MainOrders, FactoryID);
-            CheckOrdersStatus.SetMegaOrderStatus(MegaOrderID);
+            ReportMarketing.CreateReport(megaBatchId, batchId, mainOrders, _factoryId);
+            BatchManager.SetMainOrderInProduction(mainOrders, _factoryId);
+            CheckOrdersStatus.SetMegaOrderStatus(megaOrderId);
 
-            bool BatchOnProduction = BatchOnProductionCheckBox.Checked;
-            bool BatchNotProduction = BatchNotProductionCheckBox.Checked;
-            bool BatchInProduction = BatchInProductionCheckBox.Checked;
-            bool BatchOnStorage = BatchOnStorageCheckBox.Checked;
-            bool BatchOnExp = BatchOnExpCheckBox.Checked;
-            bool BatchDispatched = BatchDispatchCheckBox.Checked;
+            var batchOnProduction = BatchOnProductionCheckBox.Checked;
+            var batchNotProduction = BatchNotProductionCheckBox.Checked;
+            var batchInProduction = BatchInProductionCheckBox.Checked;
+            var batchOnStorage = BatchOnStorageCheckBox.Checked;
+            var batchOnExp = BatchOnExpCheckBox.Checked;
+            var batchDispatched = BatchDispatchCheckBox.Checked;
 
-            BatchManager.FilterBatchMegaOrders(BatchID, FactoryID,
-                BatchOnProduction, BatchNotProduction, BatchInProduction, BatchOnStorage, BatchOnExp, BatchDispatched,
-                PickUpFronts);
+            BatchManager.FilterBatchMegaOrders(batchId, _factoryId,
+                batchOnProduction, batchNotProduction, batchInProduction, batchOnStorage, batchOnExp, batchDispatched,
+                _pickUpFronts);
 
-            int[] BatchMegaOrders = BatchManager.GetBatchMegaOrders().OfType<int>().ToArray();
+            var batchMegaOrders = BatchManager.GetBatchMegaOrders().OfType<int>().ToArray();
 
-            BatchManager.GetMegaOrdersNotInProduction(BatchID, BatchMegaOrders, FactoryID, PickUpFronts);
+            BatchManager.GetMegaOrdersNotInProduction(batchId, batchMegaOrders, _factoryId, _pickUpFronts);
 
             while (SplashWindow.bSmallCreated)
                 SmallWaitForm.CloseS = true;
@@ -1156,8 +1158,8 @@ namespace Infinium
 
         private void RolesAndPermissionsTabControl_SelectedPageChanged(object sender, DevExpress.XtraTab.TabPageChangedEventArgs e)
         {
-            BatchManager.GetMainOrdersNotInBatch(FactoryID);
-            NeedSplash = true;
+            BatchManager.GetMainOrdersNotInBatch(_factoryId);
+            _needSplash = true;
 
             if (MenuButton.Checked)
             {
@@ -1194,13 +1196,13 @@ namespace Infinium
             if (BatchManager != null)
                 if (BatchManager.DecorProductsSummaryBindingSource.Count > 0)
                 {
-                    decimal Pogon = 0;
-                    int Count = 0;
+                    decimal pogon = 0;
+                    var count = 0;
 
-                    BatchManager.GetDecorInfo(ref Pogon, ref Count);
+                    BatchManager.GetDecorInfo(ref pogon, ref count);
 
-                    DecorPogonLabel.Text = Pogon.ToString();
-                    DecorCountLabel.Text = Count.ToString();
+                    DecorPogonLabel.Text = pogon.ToString();
+                    DecorCountLabel.Text = count.ToString();
                 }
         }
 
@@ -1211,16 +1213,16 @@ namespace Infinium
 
             if (ZOVProfilCheckButton.Checked && !ZOVTPSCheckButton.Checked)
             {
-                if (PermissionGranted(iAgreedProfil))
+                if (PermissionGranted(IAgreedProfil))
                 {
                     btnAgreedProfil.Visible = true;
                 }
-                if (PermissionGranted(iAgreedTPS))
+                if (PermissionGranted(IAgreedTps))
                 {
                     btnAgreedTPS.Visible = false;
                 }
 
-                FactoryID = 1;
+                _factoryId = 1;
                 BatchDataGrid.Columns["ProfilConfirm"].Visible = true;
                 BatchDataGrid.Columns["ProfilEnabledColumn"].Visible = true;
                 BatchDataGrid.Columns["ProfilName"].Visible = true;
@@ -1241,16 +1243,16 @@ namespace Infinium
             }
             if (!ZOVProfilCheckButton.Checked && ZOVTPSCheckButton.Checked)
             {
-                if (PermissionGranted(iAgreedProfil))
+                if (PermissionGranted(IAgreedProfil))
                 {
                     btnAgreedProfil.Visible = false;
                 }
-                if (PermissionGranted(iAgreedTPS))
+                if (PermissionGranted(IAgreedTps))
                 {
                     btnAgreedTPS.Visible = true;
                 }
 
-                FactoryID = 2;
+                _factoryId = 2;
                 BatchDataGrid.Columns["ProfilConfirm"].Visible = false;
                 BatchDataGrid.Columns["ProfilEnabledColumn"].Visible = false;
                 BatchDataGrid.Columns["ProfilName"].Visible = false;
@@ -1276,27 +1278,27 @@ namespace Infinium
 
         private void MegaOrdersDataGrid_Sorted(object sender, EventArgs e)
         {
-            BatchManager.GetMainOrdersNotInBatch(FactoryID);
+            BatchManager.GetMainOrdersNotInBatch(_factoryId);
         }
 
         private void BatchMegaOrdersDataGrid_Sorted(object sender, EventArgs e)
         {
-            int BatchID = Convert.ToInt32(((DataRowView)BatchManager.BatchBindingSource.Current)["BatchID"]);
-            int[] MegaOrders = BatchManager.GetBatchMegaOrders().OfType<int>().ToArray();
+            var batchId = Convert.ToInt32(((DataRowView)BatchManager.BatchBindingSource.Current)["BatchID"]);
+            var megaOrders = BatchManager.GetBatchMegaOrders().OfType<int>().ToArray();
 
-            BatchManager.GetMegaOrdersNotInProduction(BatchID, MegaOrders, FactoryID, PickUpFronts);
+            BatchManager.GetMegaOrdersNotInProduction(batchId, megaOrders, _factoryId, _pickUpFronts);
 
             //BatchManager.GetMainOrdersNotInProduction(FactoryID, PickUpFronts);
         }
 
         private void BatchMainOrdersDataGrid_Sorted(object sender, EventArgs e)
         {
-            BatchManager.GetMainOrdersNotInProduction(FactoryID, PickUpFronts);
+            BatchManager.GetMainOrdersNotInProduction(_factoryId, _pickUpFronts);
         }
 
         private void RolesAndPermissionsTabControl_SelectedPageChanging(object sender, DevExpress.XtraTab.TabPageChangingEventArgs e)
         {
-            NeedSplash = false;
+            _needSplash = false;
         }
 
         private void OnStorageCheckBox_CheckedChanged(object sender, EventArgs e)
@@ -1317,12 +1319,12 @@ namespace Infinium
 
         private void PickUpFrontsButton_Click(object sender, EventArgs e)
         {
-            bool BatchOnProduction = BatchOnProductionCheckBox.Checked;
-            bool BatchNotProduction = BatchNotProductionCheckBox.Checked;
-            bool BatchInProduction = BatchInProductionCheckBox.Checked;
-            bool BatchOnStorage = BatchOnStorageCheckBox.Checked;
-            bool BatchOnExp = BatchOnExpCheckBox.Checked;
-            bool BatchDispatched = BatchDispatchCheckBox.Checked;
+            var batchOnProduction = BatchOnProductionCheckBox.Checked;
+            var batchNotProduction = BatchNotProductionCheckBox.Checked;
+            var batchInProduction = BatchInProductionCheckBox.Checked;
+            var batchOnStorage = BatchOnStorageCheckBox.Checked;
+            var batchOnExp = BatchOnExpCheckBox.Checked;
+            var batchDispatched = BatchDispatchCheckBox.Checked;
 
             if (PickUpFrontsButton.Tag.ToString() == "true")
             {
@@ -1334,32 +1336,32 @@ namespace Infinium
                 BatchDataGrid.Enabled = false;
                 PickUpFrontsButton.Tag = "false";
                 PickUpFrontsButton.Text = "Обновить";
-                PickUpFronts = true;
+                _pickUpFronts = true;
 
-                PhantomForm PhantomForm = new Infinium.PhantomForm();
-                PhantomForm.Show();
+                var phantomForm = new Infinium.PhantomForm();
+                phantomForm.Show();
 
-                PickFrontsSelectForm = new MarketingPickFrontsSelectForm(FactoryID, ref FrontIDs);
+                _pickFrontsSelectForm = new MarketingPickFrontsSelectForm(_factoryId, ref _frontIDs);
 
-                TopForm = PickFrontsSelectForm;
-                PickFrontsSelectForm.ShowDialog();
-                TopForm = null;
+                _topForm = _pickFrontsSelectForm;
+                _pickFrontsSelectForm.ShowDialog();
+                _topForm = null;
 
-                PhantomForm.Close();
+                phantomForm.Close();
 
-                PhantomForm.Dispose();
+                phantomForm.Dispose();
 
-                if (PickFrontsSelectForm.IsOKPress)
+                if (_pickFrontsSelectForm.IsOKPress)
                 {
-                    bFrontType = PickFrontsSelectForm.bFrontType;
-                    bFrameColor = PickFrontsSelectForm.bFrameColor;
+                    _bFrontType = _pickFrontsSelectForm.bFrontType;
+                    _bFrameColor = _pickFrontsSelectForm.bFrameColor;
 
-                    PickFrontsSelectForm.Dispose();
-                    PickFrontsSelectForm = null;
+                    _pickFrontsSelectForm.Dispose();
+                    _pickFrontsSelectForm = null;
                     GC.Collect();
 
-                    NeedSplash = false;
-                    Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Загрузка данных с сервера.\r\nПодождите..."); });
+                    _needSplash = false;
+                    var T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref _topForm, "Загрузка данных с сервера.\r\nПодождите..."); });
                     T.Start();
 
                     while (!SplashWindow.bSmallCreated) ;
@@ -1367,35 +1369,35 @@ namespace Infinium
                     BatchManager.GetCurrentFrontID();
                     BatchManager.GetCurrentFrameColorID();
 
-                    ArrayList array = new ArrayList();
+                    var array = new ArrayList();
 
-                    int BatchID = Convert.ToInt32(((DataRowView)BatchManager.BatchBindingSource.Current)["BatchID"]);
-                    if (bFrameColor)
-                        array = BatchManager.PickUpFrontsTPS(FactoryID, BatchID,
-                            BatchOnProduction, BatchNotProduction, BatchInProduction, BatchOnStorage, BatchOnExp, BatchDispatched);
+                    var batchId = Convert.ToInt32(((DataRowView)BatchManager.BatchBindingSource.Current)["BatchID"]);
+                    if (_bFrameColor)
+                        array = BatchManager.PickUpFrontsTPS(_factoryId, batchId,
+                            batchOnProduction, batchNotProduction, batchInProduction, batchOnStorage, batchOnExp, batchDispatched);
 
-                    if (bFrontType)
+                    if (_bFrontType)
                     {
-                        if (FrontIDs.Count > 0)
+                        if (_frontIDs.Count > 0)
                         {
-                            array = BatchManager.PickUpFrontsProfil(FactoryID, BatchID,
-                                BatchOnProduction, BatchNotProduction, BatchInProduction, BatchOnStorage, BatchOnExp, BatchDispatched, FrontIDs);
+                            array = BatchManager.PickUpFrontsProfil(_factoryId, batchId,
+                                batchOnProduction, batchNotProduction, batchInProduction, batchOnStorage, batchOnExp, batchDispatched, _frontIDs);
                         }
                     }
 
-                    int[] MegaOrders = array.OfType<int>().ToArray();
+                    var megaOrders = array.OfType<int>().ToArray();
 
-                    BatchManager.GetMegaOrdersNotInProduction(BatchID, MegaOrders, FactoryID, PickUpFronts);
+                    BatchManager.GetMegaOrdersNotInProduction(batchId, megaOrders, _factoryId, _pickUpFronts);
 
                     while (SplashWindow.bSmallCreated)
                         SmallWaitForm.CloseS = true;
 
-                    NeedSplash = true;
+                    _needSplash = true;
                 }
                 else
                 {
-                    PickFrontsSelectForm.Dispose();
-                    PickFrontsSelectForm = null;
+                    _pickFrontsSelectForm.Dispose();
+                    _pickFrontsSelectForm = null;
                     GC.Collect();
                 }
                 //Thread T = new Thread(delegate() { SplashWindow.CreateSmallSplash(ref TopForm, "Загрузка данных с сервера.\r\nПодождите..."); });
@@ -1434,7 +1436,7 @@ namespace Infinium
                 BatchDataGrid.Enabled = true;
                 PickUpFrontsButton.Tag = "true";
                 PickUpFrontsButton.Text = "Подобрать";
-                PickUpFronts = false;
+                _pickUpFronts = false;
                 Filter();
                 return;
             }
@@ -1442,28 +1444,28 @@ namespace Infinium
 
         private void MegaBatchDataGrid_SelectionChanged(object sender, EventArgs e)
         {
-            bMegaBatchClose = true;
-            if (PickUpFronts)
+            _bMegaBatchClose = true;
+            if (_pickUpFronts)
                 return;
 
             if (BatchManager != null)
                 if (BatchManager.MegaBatchBindingSource.Count > 0)
                 {
-                    if (FactoryID == 1)
+                    if (_factoryId == 1)
                         if (((DataRowView)BatchManager.MegaBatchBindingSource.Current)["ProfilBatchClose"] != DBNull.Value)
-                            bMegaBatchClose = Convert.ToBoolean(((DataRowView)BatchManager.MegaBatchBindingSource.Current)["ProfilBatchClose"]);
-                    if (FactoryID == 2)
+                            _bMegaBatchClose = Convert.ToBoolean(((DataRowView)BatchManager.MegaBatchBindingSource.Current)["ProfilBatchClose"]);
+                    if (_factoryId == 2)
                         if (((DataRowView)BatchManager.MegaBatchBindingSource.Current)["TPSBatchClose"] != DBNull.Value)
-                            bMegaBatchClose = Convert.ToBoolean(((DataRowView)BatchManager.MegaBatchBindingSource.Current)["TPSBatchClose"]);
+                            _bMegaBatchClose = Convert.ToBoolean(((DataRowView)BatchManager.MegaBatchBindingSource.Current)["TPSBatchClose"]);
                     if (((DataRowView)BatchManager.MegaBatchBindingSource.Current)["MegaBatchID"] != DBNull.Value)
                     {
-                        BatchManager.FilterBatch(Convert.ToInt32(((DataRowView)BatchManager.MegaBatchBindingSource.Current)["MegaBatchID"]), FactoryID);
+                        BatchManager.FilterBatch(Convert.ToInt32(((DataRowView)BatchManager.MegaBatchBindingSource.Current)["MegaBatchID"]), _factoryId);
                         BatchManager.CurrentMegaBatchID = Convert.ToInt32(Convert.ToInt32(((DataRowView)BatchManager.MegaBatchBindingSource.Current)["MegaBatchID"]));
                     }
                 }
                 else
                     BatchManager.ClearBatch();
-            if (bMegaBatchClose)
+            if (_bMegaBatchClose)
             {
                 AddBatchButton.Enabled = false;
                 EditBatchNameButton.Enabled = false;
@@ -1510,52 +1512,52 @@ namespace Infinium
             if (BatchManager == null)
                 return;
 
-            bool OKCancel = Infinium.LightMessageBox.Show(ref TopForm, true,
+            var okCancel = Infinium.LightMessageBox.Show(ref _topForm, true,
                     "Вы собираетесь создать новую группу партий. Продолжить?",
                     "Группа партий");
-            if (!OKCancel)
+            if (!okCancel)
                 return;
 
-            BatchManager.AddMegaBatch(FactoryID);
+            BatchManager.AddMegaBatch(_factoryId);
         }
 
         private void RefreshOrdersButton_Click(object sender, EventArgs e)
         {
             if (BatchManager == null)
                 return;
-            PickUpFronts = false;
+            _pickUpFronts = false;
             Filter();
         }
 
         private void PrintBatchButton_Click(object sender, EventArgs e)
         {
-            bool OKCancel = Infinium.LightMessageBox.Show(ref TopForm, true,
+            var okCancel = Infinium.LightMessageBox.Show(ref _topForm, true,
                     "Партия будет распечатана и отправлена в производство. Продолжить?",
                     "В производство");
 
-            if (!OKCancel)
+            if (!okCancel)
                 return;
 
-            Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Создание документа Excel.\r\nПодождите..."); });
+            var T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref _topForm, "Создание документа Excel.\r\nПодождите..."); });
             T.Start();
 
             while (!SplashWindow.bSmallCreated) ;
 
-            int MegaBatchID = Convert.ToInt32(((DataRowView)BatchManager.MegaBatchBindingSource.Current)["MegaBatchID"]);
-            int BatchID = Convert.ToInt32(((DataRowView)BatchManager.BatchBindingSource.Current)["BatchID"]);
-            ReportMarketing.CreateReport(MegaBatchID, BatchID, FactoryID);
-            BatchManager.SetMainOrderInProduction(BatchID, FactoryID);
+            var megaBatchId = Convert.ToInt32(((DataRowView)BatchManager.MegaBatchBindingSource.Current)["MegaBatchID"]);
+            var batchId = Convert.ToInt32(((DataRowView)BatchManager.BatchBindingSource.Current)["BatchID"]);
+            ReportMarketing.CreateReport(megaBatchId, batchId, _factoryId);
+            BatchManager.SetMainOrderInProduction(batchId, _factoryId);
 
-            bool BatchOnProduction = BatchOnProductionCheckBox.Checked;
-            bool BatchNotProduction = BatchNotProductionCheckBox.Checked;
-            bool BatchInProduction = BatchInProductionCheckBox.Checked;
-            bool BatchOnStorage = BatchOnStorageCheckBox.Checked;
-            bool BatchOnExp = BatchOnExpCheckBox.Checked;
-            bool BatchDispatched = BatchDispatchCheckBox.Checked;
+            var batchOnProduction = BatchOnProductionCheckBox.Checked;
+            var batchNotProduction = BatchNotProductionCheckBox.Checked;
+            var batchInProduction = BatchInProductionCheckBox.Checked;
+            var batchOnStorage = BatchOnStorageCheckBox.Checked;
+            var batchOnExp = BatchOnExpCheckBox.Checked;
+            var batchDispatched = BatchDispatchCheckBox.Checked;
 
-            BatchManager.FilterBatchMegaOrders(BatchID, FactoryID,
-                BatchOnProduction, BatchNotProduction, BatchInProduction, BatchOnStorage, BatchOnExp, BatchDispatched,
-                PickUpFronts);
+            BatchManager.FilterBatchMegaOrders(batchId, _factoryId,
+                batchOnProduction, batchNotProduction, batchInProduction, batchOnStorage, batchOnExp, batchDispatched,
+                _pickUpFronts);
 
             while (SplashWindow.bSmallCreated)
                 SmallWaitForm.CloseS = true;
@@ -1564,7 +1566,7 @@ namespace Infinium
         //переносит заказы между партиями
         private void MoveOrdersButton_Click(object sender, EventArgs e)
         {
-            int BatchID = Convert.ToInt32(((DataRowView)BatchManager.BatchBindingSource.Current)["BatchID"]);
+            var batchId = Convert.ToInt32(((DataRowView)BatchManager.BatchBindingSource.Current)["BatchID"]);
             //if (!BatchManager.IsBatchEnabled(BatchID, FactoryID))
             //{
             //    Infinium.LightMessageBox.Show(ref TopForm, false,
@@ -1573,74 +1575,74 @@ namespace Infinium
             //    return;
             //}
 
-            PhantomForm PhantomForm = new Infinium.PhantomForm();
-            PhantomForm.Show();
+            var phantomForm = new Infinium.PhantomForm();
+            phantomForm.Show();
 
-            bool BatchOnProduction = BatchOnProductionCheckBox.Checked;
-            bool BatchNotProduction = BatchNotProductionCheckBox.Checked;
-            bool BatchInProduction = BatchInProductionCheckBox.Checked;
-            bool BatchOnStorage = BatchOnStorageCheckBox.Checked;
-            bool BatchOnExp = BatchOnExpCheckBox.Checked;
-            bool BatchDispatched = BatchDispatchCheckBox.Checked;
+            var batchOnProduction = BatchOnProductionCheckBox.Checked;
+            var batchNotProduction = BatchNotProductionCheckBox.Checked;
+            var batchInProduction = BatchInProductionCheckBox.Checked;
+            var batchOnStorage = BatchOnStorageCheckBox.Checked;
+            var batchOnExp = BatchOnExpCheckBox.Checked;
+            var batchDispatched = BatchDispatchCheckBox.Checked;
             BatchManager.GetCurrentFrontID();
             BatchManager.GetCurrentFrameColorID();
-            int[] MegaOrders = new int[BatchMegaOrdersDataGrid.SelectedRows.Count];
-            for (int i = 0; i < BatchMegaOrdersDataGrid.SelectedRows.Count; i++)
-                MegaOrders[i] = Convert.ToInt32(BatchMegaOrdersDataGrid.SelectedRows[i].Cells["MegaOrderID"].Value);
+            var megaOrders = new int[BatchMegaOrdersDataGrid.SelectedRows.Count];
+            for (var i = 0; i < BatchMegaOrdersDataGrid.SelectedRows.Count; i++)
+                megaOrders[i] = Convert.ToInt32(BatchMegaOrdersDataGrid.SelectedRows[i].Cells["MegaOrderID"].Value);
 
-            MainOrdersArray.Clear();
+            _mainOrdersArray.Clear();
 
-            if (FactoryID == 1)
+            if (_factoryId == 1)
             {
                 BatchManager.GetCurrentFrontID();
                 BatchManager.GetCurrentFrameColorID();
 
-                if (PickUpFronts)
+                if (_pickUpFronts)
                 {
-                    if (bFrameColor)
-                        MainOrdersArray = BatchManager.GetBatchMainOrders(MegaOrders, BatchID, FactoryID,
-                            BatchOnProduction, BatchNotProduction, BatchInProduction, BatchOnStorage, BatchOnExp, BatchDispatched, PickUpFronts);
+                    if (_bFrameColor)
+                        _mainOrdersArray = BatchManager.GetBatchMainOrders(megaOrders, batchId, _factoryId,
+                            batchOnProduction, batchNotProduction, batchInProduction, batchOnStorage, batchOnExp, batchDispatched, _pickUpFronts);
 
-                    if (bFrontType)
-                        MainOrdersArray = BatchManager.GetBatchMainOrders(MegaOrders, BatchID, FactoryID,
-                            BatchOnProduction, BatchNotProduction, BatchInProduction, BatchOnStorage, BatchOnExp, BatchDispatched, PickUpFronts, FrontIDs);
+                    if (_bFrontType)
+                        _mainOrdersArray = BatchManager.GetBatchMainOrders(megaOrders, batchId, _factoryId,
+                            batchOnProduction, batchNotProduction, batchInProduction, batchOnStorage, batchOnExp, batchDispatched, _pickUpFronts, _frontIDs);
                 }
                 else
                 {
-                    MainOrdersArray = BatchManager.GetBatchMainOrders(MegaOrders, BatchID, FactoryID,
-                    BatchOnProduction, BatchNotProduction, BatchInProduction, BatchOnStorage, BatchOnExp, BatchDispatched, PickUpFronts);
+                    _mainOrdersArray = BatchManager.GetBatchMainOrders(megaOrders, batchId, _factoryId,
+                    batchOnProduction, batchNotProduction, batchInProduction, batchOnStorage, batchOnExp, batchDispatched, _pickUpFronts);
                 }
             }
-            if (FactoryID == 2)
+            if (_factoryId == 2)
             {
-                MainOrdersArray = BatchManager.GetBatchMainOrders(MegaOrders, BatchID, FactoryID,
-                BatchOnProduction, BatchNotProduction, BatchInProduction, BatchOnStorage, BatchOnExp, BatchDispatched, PickUpFronts);
+                _mainOrdersArray = BatchManager.GetBatchMainOrders(megaOrders, batchId, _factoryId,
+                batchOnProduction, batchNotProduction, batchInProduction, batchOnStorage, batchOnExp, batchDispatched, _pickUpFronts);
             }
 
-            MainOrdersArray.Sort();
-            if (MainOrdersArray.Count < 1)
+            _mainOrdersArray.Sort();
+            if (_mainOrdersArray.Count < 1)
             {
-                Infinium.LightMessageBox.Show(ref TopForm, false,
+                Infinium.LightMessageBox.Show(ref _topForm, false,
                           "Не выбран ни один подзаказ",
                           "Ошибка переноса");
 
-                PhantomForm.Close();
+                phantomForm.Close();
 
-                PhantomForm.Dispose();
+                phantomForm.Dispose();
 
                 return;
             }
 
-            MarketingBatchSelectMenu SelectMenuForm = new MarketingBatchSelectMenu(this, BatchManager, FactoryID);
+            var selectMenuForm = new MarketingBatchSelectMenu(this, BatchManager, _factoryId);
 
-            TopForm = SelectMenuForm;
-            SelectMenuForm.ShowDialog();
+            _topForm = selectMenuForm;
+            selectMenuForm.ShowDialog();
 
-            PhantomForm.Close();
+            phantomForm.Close();
 
-            PhantomForm.Dispose();
-            SelectMenuForm.Dispose();
-            TopForm = null;
+            phantomForm.Dispose();
+            selectMenuForm.Dispose();
+            _topForm = null;
 
             if (BatchManager.NewBatch)
             {
@@ -1648,7 +1650,7 @@ namespace Infinium
 
                 //ArrayList array = new ArrayList();
 
-                BatchManager.MoveOrdersToNewPart(MainOrdersArray.OfType<int>().ToArray(), FactoryID);
+                BatchManager.MoveOrdersToNewPart(_mainOrdersArray.OfType<int>().ToArray(), _factoryId);
 
                 this.PickUpFrontsButton.OverrideDefault.Back.Color1 = System.Drawing.Color.MediumPurple;
                 this.PickUpFrontsButton.StateCommon.Back.Color1 = System.Drawing.Color.MediumPurple;
@@ -1658,9 +1660,9 @@ namespace Infinium
                 BatchDataGrid.Enabled = true;
                 PickUpFrontsButton.Tag = "true";
                 PickUpFrontsButton.Text = "Подобрать";
-                PickUpFronts = false;
+                _pickUpFronts = false;
 
-                BatchManager.FilterBatch(Convert.ToInt32(((DataRowView)BatchManager.MegaBatchBindingSource.Current)["MegaBatchID"]), FactoryID);
+                BatchManager.FilterBatch(Convert.ToInt32(((DataRowView)BatchManager.MegaBatchBindingSource.Current)["MegaBatchID"]), _factoryId);
                 Filter();
             }
 
@@ -1682,14 +1684,14 @@ namespace Infinium
         //подтверждает перенос заказов
         private void OKMoveOrdersButton_Click(object sender, EventArgs e)
         {
-            bool BatchOnProduction = BatchOnProductionCheckBox.Checked;
-            bool BatchNotProduction = BatchNotProductionCheckBox.Checked;
-            bool BatchInProduction = BatchInProductionCheckBox.Checked;
-            bool BatchOnStorage = BatchOnStorageCheckBox.Checked;
-            bool BatchOnExp = BatchOnExpCheckBox.Checked;
-            bool BatchDispatched = BatchDispatchCheckBox.Checked;
+            var batchOnProduction = BatchOnProductionCheckBox.Checked;
+            var batchNotProduction = BatchNotProductionCheckBox.Checked;
+            var batchInProduction = BatchInProductionCheckBox.Checked;
+            var batchOnStorage = BatchOnStorageCheckBox.Checked;
+            var batchOnExp = BatchOnExpCheckBox.Checked;
+            var batchDispatched = BatchDispatchCheckBox.Checked;
 
-            int[] MainOrders = MainOrdersArray.OfType<int>().ToArray();
+            var mainOrders = _mainOrdersArray.OfType<int>().ToArray();
 
             //int[] MainOrders = BatchManager.GetBatchMainOrders(MegaOrders, FactoryID,
             //    BatchOnProduction, BatchNotProduction, BatchInProduction, BatchOnStorage,BatchOnExp, BatchDispatched, PickUpFronts).OfType<int>().ToArray();
@@ -1700,9 +1702,9 @@ namespace Infinium
 
             if (BatchManager.OldBatch)
             {
-                int SelectedBatchID = Convert.ToInt32(((DataRowView)BatchManager.BatchBindingSource.Current)["BatchID"]);
-                BatchManager.MoveOrdersToSelectedBatch(SelectedBatchID, MainOrders, FactoryID);
-                BatchManager.FilterBatch(Convert.ToInt32(((DataRowView)BatchManager.MegaBatchBindingSource.Current)["MegaBatchID"]), FactoryID);
+                var selectedBatchId = Convert.ToInt32(((DataRowView)BatchManager.BatchBindingSource.Current)["BatchID"]);
+                BatchManager.MoveOrdersToSelectedBatch(selectedBatchId, mainOrders, _factoryId);
+                BatchManager.FilterBatch(Convert.ToInt32(((DataRowView)BatchManager.MegaBatchBindingSource.Current)["MegaBatchID"]), _factoryId);
             }
 
             AddBatchButton.Visible = true;
@@ -1731,11 +1733,11 @@ namespace Infinium
             if (BatchManager == null || BatchManager.BatchBindingSource.Count < 1)
                 return;
 
-            Infinium.LightMessageBox.Show(ref TopForm, false,
+            Infinium.LightMessageBox.Show(ref _topForm, false,
                     "Выберите Группу партий",
                     "Перенос партий");
 
-            BatchArray = BatchManager.GetSelectedBatch();
+            _batchArray = BatchManager.GetSelectedBatch();
             OKMoveBatchButton.Visible = true;
             CancelMoveBatchButton.Visible = true;
             AddMegaBatchButton.Visible = false;
@@ -1747,10 +1749,10 @@ namespace Infinium
             if (BatchManager == null || BatchManager.MegaBatchBindingSource.Count < 1)
                 return;
 
-            int[] Batch = BatchArray.OfType<int>().ToArray();
-            int DestMegaBatchID = Convert.ToInt32(((DataRowView)BatchManager.MegaBatchBindingSource.Current)["MegaBatchID"]);
+            var batch = _batchArray.OfType<int>().ToArray();
+            var destMegaBatchId = Convert.ToInt32(((DataRowView)BatchManager.MegaBatchBindingSource.Current)["MegaBatchID"]);
 
-            BatchManager.MoveBatch(Batch, DestMegaBatchID, FactoryID);
+            BatchManager.MoveBatch(batch, destMegaBatchId, _factoryId);
 
             OKMoveBatchButton.Visible = false;
             CancelMoveBatchButton.Visible = false;
@@ -1782,13 +1784,13 @@ namespace Infinium
             if (BatchManager != null)
                 if (BatchManager.FrontsSummaryBindingSource.Count > 0)
                 {
-                    decimal FrontSquare = 0;
-                    int Count = 0;
+                    decimal frontSquare = 0;
+                    var count = 0;
 
-                    BatchManager.GetFrontsInfo(ref FrontSquare, ref Count);
+                    BatchManager.GetFrontsInfo(ref frontSquare, ref count);
 
-                    FrontsSquareLabel.Text = FrontSquare.ToString();
-                    FrontsCountLabel.Text = Count.ToString();
+                    FrontsSquareLabel.Text = frontSquare.ToString();
+                    FrontsCountLabel.Text = count.ToString();
                 }
         }
 
@@ -1946,13 +1948,13 @@ namespace Infinium
             if (BatchManager != null)
                 if (BatchManager.PreFrontsSummaryBindingSource.Count > 0)
                 {
-                    decimal FrontSquare = 0;
-                    int Count = 0;
+                    decimal frontSquare = 0;
+                    var count = 0;
 
-                    BatchManager.GetPreFrontsInfo(ref FrontSquare, ref Count);
+                    BatchManager.GetPreFrontsInfo(ref frontSquare, ref count);
 
-                    PreFrontsSquareLabel.Text = FrontSquare.ToString();
-                    PreFrontsCountLabel.Text = Count.ToString();
+                    PreFrontsSquareLabel.Text = frontSquare.ToString();
+                    PreFrontsCountLabel.Text = count.ToString();
                 }
         }
 
@@ -2080,13 +2082,13 @@ namespace Infinium
             if (BatchManager != null)
                 if (BatchManager.PreDecorProductsSummaryBindingSource.Count > 0)
                 {
-                    decimal Pogon = 0;
-                    int Count = 0;
+                    decimal pogon = 0;
+                    var count = 0;
 
-                    BatchManager.GetPreDecorInfo(ref Pogon, ref Count);
+                    BatchManager.GetPreDecorInfo(ref pogon, ref count);
 
-                    PreDecorPogonLabel.Text = Pogon.ToString();
-                    PreDecorCountLabel.Text = Count.ToString();
+                    PreDecorPogonLabel.Text = pogon.ToString();
+                    PreDecorCountLabel.Text = count.ToString();
                 }
         }
 
@@ -2125,7 +2127,7 @@ namespace Infinium
         {
             if (BatchDataGrid.SelectedRows.Count == 1)
             {
-                BatchManager.SaveBatch(FactoryID);
+                BatchManager.SaveBatch(_factoryId);
             }
         }
 
@@ -2134,14 +2136,14 @@ namespace Infinium
             if (BatchMainOrdersDataGrid.Rows.Count > 1)
                 return;
 
-            string ProductionStatus = "ProfilProductionStatusID";
+            var productionStatus = "ProfilProductionStatusID";
 
-            if (FactoryID == 2)
-                ProductionStatus = "TPSProductionStatusID";
+            if (_factoryId == 2)
+                productionStatus = "TPSProductionStatusID";
 
             if (BatchMainOrdersDataGrid.SelectedCells.Count > 0
                 && BatchMainOrdersDataGrid.SelectedCells[0].RowIndex == e.RowIndex
-                && Convert.ToInt32(BatchMainOrdersDataGrid.Rows[e.RowIndex].Cells[ProductionStatus].Value) != 3)
+                && Convert.ToInt32(BatchMainOrdersDataGrid.Rows[e.RowIndex].Cells[productionStatus].Value) != 3)
             {
                 BatchMainOrdersDataGrid.Rows[e.RowIndex].DefaultCellStyle.SelectionBackColor = Color.DimGray;
                 BatchMainOrdersDataGrid.Rows[e.RowIndex].DefaultCellStyle.SelectionForeColor = Color.White;
@@ -2152,19 +2154,19 @@ namespace Infinium
         {
             if (MegaBatchDataGrid.SelectedRows.Count == 1)
             {
-                BatchManager.SaveMegaBatch(FactoryID);
+                BatchManager.SaveMegaBatch(_factoryId);
             }
         }
 
         private void MegaBatchDataGrid_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
         {
-            if ((RoleType == RoleTypes.Admin || RoleType == RoleTypes.Control || RoleType == RoleTypes.Direction)
+            if ((_roleType == RoleTypes.Admin || _roleType == RoleTypes.Control || _roleType == RoleTypes.Direction)
                 && e.Button == System.Windows.Forms.MouseButtons.Right)
             {
                 kryptonContextMenu1.Show(new Point(Cursor.Position.X - 212, Cursor.Position.Y - 10));
             }
 
-            if ((PermissionGranted(iAgreedProfil) || PermissionGranted(iAgreedTPS))
+            if ((PermissionGranted(IAgreedProfil) || PermissionGranted(IAgreedTps))
                 && e.Button == System.Windows.Forms.MouseButtons.Right)
             {
                 kryptonContextMenu1.Show(new Point(Cursor.Position.X - 212, Cursor.Position.Y - 10));
@@ -2208,18 +2210,18 @@ namespace Infinium
 
         private void cmiExportToExcel_Click(object sender, EventArgs e)
         {
-            Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Создание отчета.\r\nПодождите..."); });
+            var T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref _topForm, "Создание отчета.\r\nПодождите..."); });
             T.Start();
 
             while (!SplashWindow.bSmallCreated) ;
-            NeedSplash = false;
+            _needSplash = false;
 
-            BatchExcelReport MarketingBatchReport = new BatchExcelReport();
+            var marketingBatchReport = new BatchExcelReport();
 
-            MarketingBatchReport.CreateReport(((DataTable)((BindingSource)FrontsDataGrid.DataSource).DataSource).DefaultView.Table,
+            marketingBatchReport.CreateReport(((DataTable)((BindingSource)FrontsDataGrid.DataSource).DataSource).DefaultView.Table,
                 ((DataTable)((BindingSource)DecorProductsDataGrid.DataSource).DataSource).DefaultView.Table, "Недельное планирование. Маркетинг");
 
-            NeedSplash = true;
+            _needSplash = true;
             while (SplashWindow.bSmallCreated)
                 SmallWaitForm.CloseS = true;
         }
@@ -2234,7 +2236,7 @@ namespace Infinium
 
         private void BatchDataGrid_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
         {
-            if ((RoleType == RoleTypes.Admin || RoleType == RoleTypes.Direction || RoleType == RoleTypes.Control || RoleType == RoleTypes.Production || PermissionGranted(iAgreedProfil) || PermissionGranted(iAgreedTPS))
+            if ((_roleType == RoleTypes.Admin || _roleType == RoleTypes.Direction || _roleType == RoleTypes.Control || _roleType == RoleTypes.Production || PermissionGranted(IAgreedProfil) || PermissionGranted(IAgreedTps))
                 && e.Button == System.Windows.Forms.MouseButtons.Right)
             {
                 kryptonContextMenu3.Show(new Point(Cursor.Position.X - 212, Cursor.Position.Y - 10));
@@ -2261,7 +2263,7 @@ namespace Infinium
                 BatchManager.BatchTPSCloseDateTime = DBNull.Value;
             }
 
-            BatchManager.SaveBatch(FactoryID);
+            BatchManager.SaveBatch(_factoryId);
             BatchManager.SetMegaBatchEnable();
             BatchDataGrid.Refresh();
         }
@@ -2286,7 +2288,7 @@ namespace Infinium
                 BatchManager.BatchProfilCloseDateTime = DBNull.Value;
             }
 
-            BatchManager.SaveBatch(FactoryID);
+            BatchManager.SaveBatch(_factoryId);
             BatchManager.SetMegaBatchEnable();
             BatchDataGrid.Refresh();
         }
@@ -2315,8 +2317,8 @@ namespace Infinium
         {
             BatchManager.MegaBatchProfilAccess = !BatchManager.MegaBatchProfilAccess;
             BatchManager.SetBatchEnabled(Convert.ToInt32(((DataRowView)BatchManager.MegaBatchBindingSource.Current)["MegaBatchID"]),
-                FactoryID, BatchManager.MegaBatchProfilAccess);
-            BatchManager.CloseMegaBatch(Convert.ToInt32(((DataRowView)BatchManager.MegaBatchBindingSource.Current)["MegaBatchID"]), FactoryID, BatchManager.MegaBatchProfilAccess);
+                _factoryId, BatchManager.MegaBatchProfilAccess);
+            BatchManager.CloseMegaBatch(Convert.ToInt32(((DataRowView)BatchManager.MegaBatchBindingSource.Current)["MegaBatchID"]), _factoryId, BatchManager.MegaBatchProfilAccess);
             MegaBatchDataGrid.Refresh();
             BatchDataGrid.Refresh();
             MegaBatchDataGrid_SelectionChanged(null, null);
@@ -2346,8 +2348,8 @@ namespace Infinium
         {
             BatchManager.MegaBatchTPSAccess = !BatchManager.MegaBatchTPSAccess;
             BatchManager.SetBatchEnabled(Convert.ToInt32(((DataRowView)BatchManager.MegaBatchBindingSource.Current)["MegaBatchID"]),
-                FactoryID, BatchManager.MegaBatchTPSAccess);
-            BatchManager.CloseMegaBatch(Convert.ToInt32(((DataRowView)BatchManager.MegaBatchBindingSource.Current)["MegaBatchID"]), FactoryID, BatchManager.MegaBatchTPSAccess);
+                _factoryId, BatchManager.MegaBatchTPSAccess);
+            BatchManager.CloseMegaBatch(Convert.ToInt32(((DataRowView)BatchManager.MegaBatchBindingSource.Current)["MegaBatchID"]), _factoryId, BatchManager.MegaBatchTPSAccess);
             MegaBatchDataGrid.Refresh();
             BatchDataGrid.Refresh();
             MegaBatchDataGrid_SelectionChanged(null, null);
@@ -2360,42 +2362,42 @@ namespace Infinium
 
             Filter();
 
-            AddToBatch = false;
-            InProduction = false;
-            CreateBatch = false;
-            CloseBatch = false;
+            _addToBatch = false;
+            _inProduction = false;
+            _createBatch = false;
+            _closeBatch = false;
 
-            if (PermissionGranted(iAddToBatch))
+            if (PermissionGranted(IAddToBatch))
             {
-                AddToBatch = true;
+                _addToBatch = true;
             }
-            if (PermissionGranted(iInProduction))
+            if (PermissionGranted(IInProduction))
             {
-                InProduction = true;
+                _inProduction = true;
             }
-            if (PermissionGranted(iCloseBatch))
+            if (PermissionGranted(ICloseBatch))
             {
-                CloseBatch = true;
+                _closeBatch = true;
             }
-            if (PermissionGranted(iCreateBatch))
+            if (PermissionGranted(ICreateBatch))
             {
-                CreateBatch = true;
+                _createBatch = true;
             }
-            if (PermissionGranted(iCreateLabel))
+            if (PermissionGranted(ICreateLabel))
             {
-                CreateLabel = true;
+                _createLabel = true;
             }
             //if (PermissionGranted(iConfirmBatch))
             //{
             //    ConfirmBatch = true;
             //}
 
-            if (PermissionGranted(iAgreedProfil))
+            if (PermissionGranted(IAgreedProfil))
             {
                 btnAgreedProfil.Visible = true;
                 cmiConfirmProfilBatch.Visible = true;
             }
-            if (PermissionGranted(iAgreedTPS))
+            if (PermissionGranted(IAgreedTps))
             {
                 cmiConfirmTPSBatch.Visible = true;
             }
@@ -2405,9 +2407,9 @@ namespace Infinium
             //}
 
             //Админ
-            if (AddToBatch && InProduction && CloseBatch && CreateBatch && CreateLabel)
+            if (_addToBatch && _inProduction && _closeBatch && _createBatch && _createLabel)
             {
-                RoleType = RoleTypes.Admin;
+                _roleType = RoleTypes.Admin;
 
                 cmiCloseProfilBatch.Visible = true;
                 cmiCloseTPSBatch.Visible = true;
@@ -2418,9 +2420,9 @@ namespace Infinium
                 cmiCreateLabel.Visible = true;
             }
             //Управление: нельзя открывать/закрывать партию, остальное - можно
-            if (AddToBatch && InProduction && !CloseBatch && CreateBatch)
+            if (_addToBatch && _inProduction && !_closeBatch && _createBatch)
             {
-                RoleType = RoleTypes.Control;
+                _roleType = RoleTypes.Control;
 
                 cmiCloseProfilBatch.Visible = false;
                 cmiCloseTPSBatch.Visible = false;
@@ -2431,9 +2433,9 @@ namespace Infinium
                 cmiCreateLabel.Visible = true;
             }
             //Вход для фа: можно открывать и закрывать партию
-            if (!AddToBatch && !InProduction && CloseBatch && !CreateBatch && !CreateLabel)
+            if (!_addToBatch && !_inProduction && _closeBatch && !_createBatch && !_createLabel)
             {
-                RoleType = RoleTypes.Direction;
+                _roleType = RoleTypes.Direction;
 
                 cmiCloseProfilBatch.Visible = true;
                 cmiCloseTPSBatch.Visible = true;
@@ -2455,9 +2457,9 @@ namespace Infinium
                 BatchMainOrdersDataGrid.Height = MainOrdersPanel.Height - 5;
             }
             //вход для пр-ва: можно формировать партию, выдавать в пр-во, нельзя создавать партию и открывать/закрывать её
-            if (AddToBatch && InProduction && !CloseBatch && !CreateBatch && !CreateLabel)
+            if (_addToBatch && _inProduction && !_closeBatch && !_createBatch && !_createLabel)
             {
-                RoleType = RoleTypes.Production;
+                _roleType = RoleTypes.Production;
 
                 cmiCloseProfilBatch.Visible = false;
                 cmiCloseTPSBatch.Visible = false;
@@ -2476,9 +2478,9 @@ namespace Infinium
                 xtraTabControl4.Height = MegaBatchPanel.Height - 5;
             }
             //Маркетинг
-            if (AddToBatch && !InProduction && !CloseBatch && !CreateBatch && !CreateLabel)
+            if (_addToBatch && !_inProduction && !_closeBatch && !_createBatch && !_createLabel)
             {
-                RoleType = RoleTypes.Marketing;
+                _roleType = RoleTypes.Marketing;
 
                 cmiCloseProfilBatch.Visible = false;
                 cmiCloseTPSBatch.Visible = false;
@@ -2499,9 +2501,9 @@ namespace Infinium
                 BatchMainOrdersDataGrid.Height = MainOrdersPanel.Height - 5;
             }
             //вход для обычного пользователя: нельзя ничего сделать, только посмотреть партии и их содержимое
-            if (!AddToBatch && !InProduction && !CloseBatch && !CreateBatch && !CreateLabel)
+            if (!_addToBatch && !_inProduction && !_closeBatch && !_createBatch && !_createLabel)
             {
-                RoleType = RoleTypes.Ordinary;
+                _roleType = RoleTypes.Ordinary;
 
                 cmiCloseProfilBatch.Visible = false;
                 cmiCloseTPSBatch.Visible = false;
@@ -2523,9 +2525,9 @@ namespace Infinium
                 BatchMainOrdersDataGrid.Height = MainOrdersPanel.Height - 5;
             }
             //Склад
-            if (!AddToBatch && !InProduction && !CloseBatch && !CreateBatch && CreateLabel)
+            if (!_addToBatch && !_inProduction && !_closeBatch && !_createBatch && _createLabel)
             {
-                RoleType = RoleTypes.Store;
+                _roleType = RoleTypes.Store;
 
                 cmiCloseProfilBatch.Visible = false;
                 cmiCloseTPSBatch.Visible = false;
@@ -2561,78 +2563,78 @@ namespace Infinium
 
         private void btnAgreed1TPS_Click(object sender, EventArgs e)
         {
-            int MegaBatchID = 0;
-            int TPSAgreedUserID = -1;
-            int TPSCloseUserID = -1;
+            var megaBatchId = 0;
+            var tpsAgreedUserId = -1;
+            var tpsCloseUserId = -1;
             if (MegaBatchDataGrid.SelectedRows.Count != 0 && MegaBatchDataGrid.SelectedRows[0].Cells["TPSCloseUserID"].Value != DBNull.Value)
-                TPSCloseUserID = Convert.ToInt32(MegaBatchDataGrid.SelectedRows[0].Cells["TPSCloseUserID"].Value);
+                tpsCloseUserId = Convert.ToInt32(MegaBatchDataGrid.SelectedRows[0].Cells["TPSCloseUserID"].Value);
             if (MegaBatchDataGrid.SelectedRows.Count != 0 && MegaBatchDataGrid.SelectedRows[0].Cells["MegaBatchID"].Value != DBNull.Value)
-                MegaBatchID = Convert.ToInt32(MegaBatchDataGrid.SelectedRows[0].Cells["MegaBatchID"].Value);
+                megaBatchId = Convert.ToInt32(MegaBatchDataGrid.SelectedRows[0].Cells["MegaBatchID"].Value);
             if (MegaBatchDataGrid.SelectedRows.Count != 0 && MegaBatchDataGrid.SelectedRows[0].Cells["TPSAgreedUserID"].Value != DBNull.Value)
-                TPSAgreedUserID = Convert.ToInt32(MegaBatchDataGrid.SelectedRows[0].Cells["TPSAgreedUserID"].Value);
-            if (TPSCloseUserID != -1)
+                tpsAgreedUserId = Convert.ToInt32(MegaBatchDataGrid.SelectedRows[0].Cells["TPSAgreedUserID"].Value);
+            if (tpsCloseUserId != -1)
             {
-                LightMessageBox.Show(ref TopForm, false,
+                LightMessageBox.Show(ref _topForm, false,
                         "Партия утверждена и закрыта",
                         "Утверждение партии");
                 return;
             }
-            if (TPSAgreedUserID != -1)
+            if (tpsAgreedUserId != -1)
             {
-                bool OKCancel = LightMessageBox.Show(ref TopForm, true,
+                var okCancel = LightMessageBox.Show(ref _topForm, true,
                         "Ваше утверждение уже выставлено. Переутвердить?",
                         "Утверждение партии");
-                if (!OKCancel)
+                if (!okCancel)
                     return;
             }
-            NeedSplash = false;
-            Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Загрузка данных.\r\nПодождите..."); });
+            _needSplash = false;
+            var T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref _topForm, "Загрузка данных.\r\nПодождите..."); });
             T.Start();
 
             while (!SplashWindow.bSmallCreated) ;
-            BatchManager.SetMegaBatchAgreement(MegaBatchID, FactoryID);
-            BatchManager.SaveMegaBatch(FactoryID);
+            BatchManager.SetMegaBatchAgreement(megaBatchId, _factoryId);
+            BatchManager.SaveMegaBatch(_factoryId);
             while (SplashWindow.bSmallCreated)
                 SmallWaitForm.CloseS = true;
-            NeedSplash = true;
+            _needSplash = true;
         }
 
         private void btnAgreed1Profil_Click(object sender, EventArgs e)
         {
-            int MegaBatchID = 0;
-            int ProfilAgreedUserID = -1;
-            int ProfilCloseUserID = -1;
+            var megaBatchId = 0;
+            var profilAgreedUserId = -1;
+            var profilCloseUserId = -1;
             if (MegaBatchDataGrid.SelectedRows.Count != 0 && MegaBatchDataGrid.SelectedRows[0].Cells["ProfilCloseUserID"].Value != DBNull.Value)
-                ProfilCloseUserID = Convert.ToInt32(MegaBatchDataGrid.SelectedRows[0].Cells["ProfilCloseUserID"].Value);
+                profilCloseUserId = Convert.ToInt32(MegaBatchDataGrid.SelectedRows[0].Cells["ProfilCloseUserID"].Value);
             if (MegaBatchDataGrid.SelectedRows.Count != 0 && MegaBatchDataGrid.SelectedRows[0].Cells["MegaBatchID"].Value != DBNull.Value)
-                MegaBatchID = Convert.ToInt32(MegaBatchDataGrid.SelectedRows[0].Cells["MegaBatchID"].Value);
+                megaBatchId = Convert.ToInt32(MegaBatchDataGrid.SelectedRows[0].Cells["MegaBatchID"].Value);
             if (MegaBatchDataGrid.SelectedRows.Count != 0 && MegaBatchDataGrid.SelectedRows[0].Cells["ProfilAgreedUserID"].Value != DBNull.Value)
-                ProfilAgreedUserID = Convert.ToInt32(MegaBatchDataGrid.SelectedRows[0].Cells["ProfilAgreedUserID"].Value);
-            if (ProfilCloseUserID != -1)
+                profilAgreedUserId = Convert.ToInt32(MegaBatchDataGrid.SelectedRows[0].Cells["ProfilAgreedUserID"].Value);
+            if (profilCloseUserId != -1)
             {
-                LightMessageBox.Show(ref TopForm, false,
+                LightMessageBox.Show(ref _topForm, false,
                         "Партия утверждена и закрыта",
                         "Утверждение партии");
                 return;
             }
-            if (ProfilAgreedUserID != -1)
+            if (profilAgreedUserId != -1)
             {
-                bool OKCancel = LightMessageBox.Show(ref TopForm, true,
+                var okCancel = LightMessageBox.Show(ref _topForm, true,
                         "Ваше утверждение уже выставлено. Переутвердить?",
                         "Утверждение партии");
-                if (!OKCancel)
+                if (!okCancel)
                     return;
             }
-            NeedSplash = false;
-            Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Загрузка данных.\r\nПодождите..."); });
+            _needSplash = false;
+            var T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref _topForm, "Загрузка данных.\r\nПодождите..."); });
             T.Start();
 
             while (!SplashWindow.bSmallCreated) ;
-            BatchManager.SetMegaBatchAgreement(MegaBatchID, FactoryID);
-            BatchManager.SaveMegaBatch(FactoryID);
+            BatchManager.SetMegaBatchAgreement(megaBatchId, _factoryId);
+            BatchManager.SaveMegaBatch(_factoryId);
             while (SplashWindow.bSmallCreated)
                 SmallWaitForm.CloseS = true;
-            NeedSplash = true;
+            _needSplash = true;
         }
 
         private void cmiCreateLabel_Click(object sender, EventArgs e)
@@ -2656,7 +2658,7 @@ namespace Infinium
 
         private void BatchMegaOrdersDataGrid_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
         {
-            if ((RoleType == RoleTypes.Admin || RoleType == RoleTypes.Store || RoleType == RoleTypes.Control) && e.Button == System.Windows.Forms.MouseButtons.Right)
+            if ((_roleType == RoleTypes.Admin || _roleType == RoleTypes.Store || _roleType == RoleTypes.Control) && e.Button == System.Windows.Forms.MouseButtons.Right)
             {
                 kryptonContextMenu4.Show(new Point(Cursor.Position.X - 212, Cursor.Position.Y - 10));
             }
@@ -2664,8 +2666,8 @@ namespace Infinium
 
         private void MinimizeButton_Click(object sender, EventArgs e)
         {
-            NeedSplash = false;
-            FormEvent = eHide;
+            _needSplash = false;
+            _formEvent = EHide;
             AnimateTimer.Enabled = true;
         }
 
@@ -2676,20 +2678,20 @@ namespace Infinium
                 BatchManager.BatchProfilConfirmUser = Security.CurrentUserID;
                 BatchManager.BatchProfilConfirmDateTime = Security.GetCurrentDate();
                 BatchManager.BatchProfilConfirm = true;
-                BatchManager.SaveBatch(FactoryID);
+                BatchManager.SaveBatch(_factoryId);
             }
         }
 
         private void kryptonContextMenu3_Opening(object sender, CancelEventArgs e)
         {
-            if (FactoryID == 1)
+            if (_factoryId == 1)
             {
-                if (RoleType == RoleTypes.Admin || RoleType == RoleTypes.Direction)
+                if (_roleType == RoleTypes.Admin || _roleType == RoleTypes.Direction)
                 {
                     cmiCloseProfilBatch.Visible = true;
                     cmiCloseTPSBatch.Visible = false;
                 }
-                if (RoleType == RoleTypes.Admin || PermissionGranted(iAgreedProfil))
+                if (_roleType == RoleTypes.Admin || PermissionGranted(IAgreedProfil))
                 {
                     cmiConfirmProfilBatch.Visible = true;
                     cmiConfirmTPSBatch.Visible = false;
@@ -2701,14 +2703,14 @@ namespace Infinium
                 else
                     cmiCloseProfilBatch.Text = "Открыть партию";
             }
-            if (FactoryID == 2)
+            if (_factoryId == 2)
             {
-                if (RoleType == RoleTypes.Admin || RoleType == RoleTypes.Direction)
+                if (_roleType == RoleTypes.Admin || _roleType == RoleTypes.Direction)
                 {
                     cmiCloseProfilBatch.Visible = false;
                     cmiCloseTPSBatch.Visible = true;
                 }
-                if (RoleType == RoleTypes.Admin || PermissionGranted(iAgreedTPS))
+                if (_roleType == RoleTypes.Admin || PermissionGranted(IAgreedTps))
                 {
                     cmiConfirmTPSBatch.Visible = true;
                     cmiConfirmProfilBatch.Visible = false;
@@ -2729,15 +2731,15 @@ namespace Infinium
                 BatchManager.BatchTPSConfirmUser = Security.CurrentUserID;
                 BatchManager.BatchTPSConfirmDateTime = Security.GetCurrentDate();
                 BatchManager.BatchTPSConfirm = true;
-                BatchManager.SaveBatch(FactoryID);
+                BatchManager.SaveBatch(_factoryId);
             }
         }
 
         private void kryptonContextMenu1_Opening(object sender, CancelEventArgs e)
         {
-            if (FactoryID == 1)
+            if (_factoryId == 1)
             {
-                if (RoleType == RoleTypes.Admin || RoleType == RoleTypes.Direction)
+                if (_roleType == RoleTypes.Admin || _roleType == RoleTypes.Direction)
                 {
                     cmiCloseProfilMegaBatch.Visible = true;
                     cmiCloseTPSMegaBatch.Visible = false;
@@ -2756,9 +2758,9 @@ namespace Infinium
                     }
                 }
             }
-            if (FactoryID == 2)
+            if (_factoryId == 2)
             {
-                if (RoleType == RoleTypes.Admin || RoleType == RoleTypes.Direction)
+                if (_roleType == RoleTypes.Admin || _roleType == RoleTypes.Direction)
                 {
                     cmiCloseProfilMegaBatch.Visible = false;
                     cmiCloseTPSMegaBatch.Visible = true;
@@ -2789,52 +2791,52 @@ namespace Infinium
             //    return;
             //}
 
-            PhantomForm PhantomForm = new Infinium.PhantomForm();
-            PhantomForm.Show();
+            var phantomForm = new Infinium.PhantomForm();
+            phantomForm.Show();
 
-            bool BatchOnProduction = BatchOnProductionCheckBox.Checked;
-            bool BatchNotProduction = BatchNotProductionCheckBox.Checked;
-            bool BatchInProduction = BatchInProductionCheckBox.Checked;
-            bool BatchOnStorage = BatchOnStorageCheckBox.Checked;
-            bool BatchOnExp = BatchOnExpCheckBox.Checked;
-            bool BatchDispatched = BatchDispatchCheckBox.Checked;
+            var batchOnProduction = BatchOnProductionCheckBox.Checked;
+            var batchNotProduction = BatchNotProductionCheckBox.Checked;
+            var batchInProduction = BatchInProductionCheckBox.Checked;
+            var batchOnStorage = BatchOnStorageCheckBox.Checked;
+            var batchOnExp = BatchOnExpCheckBox.Checked;
+            var batchDispatched = BatchDispatchCheckBox.Checked;
 
-            MainOrdersArray.Clear();
-            for (int i = 0; i < BatchMainOrdersDataGrid.SelectedRows.Count; i++)
-                MainOrdersArray.Add(Convert.ToInt32(BatchMainOrdersDataGrid.SelectedRows[i].Cells["MainOrderID"].Value));
+            _mainOrdersArray.Clear();
+            for (var i = 0; i < BatchMainOrdersDataGrid.SelectedRows.Count; i++)
+                _mainOrdersArray.Add(Convert.ToInt32(BatchMainOrdersDataGrid.SelectedRows[i].Cells["MainOrderID"].Value));
 
             if (BatchMainOrdersDataGrid.SelectedRows.Count == 0)
             {
-                Infinium.LightMessageBox.Show(ref TopForm, false,
+                Infinium.LightMessageBox.Show(ref _topForm, false,
                           "Не выбран ни один подзаказ",
                           "Ошибка переноса");
 
-                PhantomForm.Close();
+                phantomForm.Close();
 
-                PhantomForm.Dispose();
+                phantomForm.Dispose();
 
                 return;
             }
 
-            MarketingBatchSelectMenu SelectMenuForm = new MarketingBatchSelectMenu(this, BatchManager, FactoryID);
+            var selectMenuForm = new MarketingBatchSelectMenu(this, BatchManager, _factoryId);
 
-            TopForm = SelectMenuForm;
-            SelectMenuForm.ShowDialog();
+            _topForm = selectMenuForm;
+            selectMenuForm.ShowDialog();
 
-            PhantomForm.Close();
+            phantomForm.Close();
 
-            PhantomForm.Dispose();
-            SelectMenuForm.Dispose();
-            TopForm = null;
+            phantomForm.Dispose();
+            selectMenuForm.Dispose();
+            _topForm = null;
 
             if (BatchManager.NewBatch)
             {
                 //int[] MainOrders = new int[BatchMainOrdersDataGrid.SelectedRows.Count];
                 //for (int i = 0; i < BatchMainOrdersDataGrid.SelectedRows.Count; i++)
                 //    MainOrders[i] = Convert.ToInt32(BatchMainOrdersDataGrid.SelectedRows[i].Cells["MainOrderID"].Value);
-                BatchManager.MoveOrdersToNewPart(MainOrdersArray.OfType<int>().ToArray(), FactoryID);
+                BatchManager.MoveOrdersToNewPart(_mainOrdersArray.OfType<int>().ToArray(), _factoryId);
 
-                BatchManager.FilterBatch(Convert.ToInt32(((DataRowView)BatchManager.MegaBatchBindingSource.Current)["MegaBatchID"]), FactoryID);
+                BatchManager.FilterBatch(Convert.ToInt32(((DataRowView)BatchManager.MegaBatchBindingSource.Current)["MegaBatchID"]), _factoryId);
                 Filter();
             }
 
@@ -2858,18 +2860,18 @@ namespace Infinium
             if (e.RowIndex == -1)
                 return;
 
-            PercentageDataGrid grid = (PercentageDataGrid)sender;
+            var grid = (PercentageDataGrid)sender;
             if (grid.Columns[e.ColumnIndex].Name == "ProfilEnabledColumn")
             {
                 if (grid.Rows[e.RowIndex].Cells["ProfilBatchClose"].Value != null)
                 {
                     if (Convert.ToBoolean(grid.Rows[e.RowIndex].Cells["ProfilBatchClose"].Value))
                     {
-                        e.Value = ImageList1.Images[0];
+                        e.Value = _imageList1.Images[0];
                     }
                     else
                     {
-                        e.Value = ImageList1.Images[1];
+                        e.Value = _imageList1.Images[1];
                     }
                 }
             }
@@ -2879,27 +2881,27 @@ namespace Infinium
                 {
                     if (Convert.ToBoolean(grid.Rows[e.RowIndex].Cells["TPSBatchClose"].Value))
                     {
-                        e.Value = ImageList1.Images[0];
+                        e.Value = _imageList1.Images[0];
                     }
                     else
                     {
-                        e.Value = ImageList1.Images[1];
+                        e.Value = _imageList1.Images[1];
                     }
                 }
             }
 
             if (e.Value != null)
             {
-                DataGridViewCell cell =
+                var cell =
                     grid.Rows[e.RowIndex].Cells[e.ColumnIndex];
-                int MegaBatchID;
-                string DisplayName = string.Empty;
+                int megaBatchId;
+                var displayName = string.Empty;
                 if (grid.Rows[e.RowIndex].Cells["MegaBatchID"].Value != DBNull.Value)
                 {
-                    MegaBatchID = Convert.ToInt32(grid.Rows[e.RowIndex].Cells["MegaBatchID"].Value);
-                    DisplayName = BatchManager.GetMegaBatchAgreement(MegaBatchID);
+                    megaBatchId = Convert.ToInt32(grid.Rows[e.RowIndex].Cells["MegaBatchID"].Value);
+                    displayName = BatchManager.GetMegaBatchAgreement(megaBatchId);
                 }
-                cell.ToolTipText = DisplayName;
+                cell.ToolTipText = displayName;
             }
         }
 
@@ -2908,18 +2910,18 @@ namespace Infinium
             if (e.RowIndex == -1)
                 return;
 
-            PercentageDataGrid grid = (PercentageDataGrid)sender;
+            var grid = (PercentageDataGrid)sender;
             if (grid.Columns[e.ColumnIndex].Name == "ProfilEnabledColumn")
             {
                 if (grid.Rows[e.RowIndex].Cells["ProfilBatchClose"].Value != null)
                 {
                     if (Convert.ToBoolean(grid.Rows[e.RowIndex].Cells["ProfilBatchClose"].Value))
                     {
-                        e.Value = ImageList1.Images[0];
+                        e.Value = _imageList1.Images[0];
                     }
                     else
                     {
-                        e.Value = ImageList1.Images[1];
+                        e.Value = _imageList1.Images[1];
                     }
                 }
             }
@@ -2929,11 +2931,11 @@ namespace Infinium
                 {
                     if (Convert.ToBoolean(grid.Rows[e.RowIndex].Cells["TPSBatchClose"].Value))
                     {
-                        e.Value = ImageList1.Images[0];
+                        e.Value = _imageList1.Images[0];
                     }
                     else
                     {
-                        e.Value = ImageList1.Images[1];
+                        e.Value = _imageList1.Images[1];
                     }
                 }
             }
@@ -2946,17 +2948,75 @@ namespace Infinium
 
         private void kryptonContextMenuItem1_Click(object sender, EventArgs e)
         {
-            Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Создание отчета.\r\nПодождите..."); });
+            var T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref _topForm, "Создание отчета.\r\nПодождите..."); });
             T.Start();
 
             while (!SplashWindow.bSmallCreated) ;
-            NeedSplash = false;
+            _needSplash = false;
 
-            BatchReport MarketingBatchReport = new BatchReport(ref DecorCatalogOrder);
-            int[] MainOrders = BatchManager.GetBatchMainOrders().OfType<int>().ToArray();
-            MarketingBatchReport.CreateReportForMaketing(MainOrders);
+            var marketingBatchReport = new BatchReport(ref DecorCatalogOrder);
+            var mainOrders = BatchManager.GetBatchMainOrders().OfType<int>().ToArray();
+            marketingBatchReport.CreateReportForMaketing(mainOrders);
 
-            NeedSplash = true;
+            _needSplash = true;
+            while (SplashWindow.bSmallCreated)
+                SmallWaitForm.CloseS = true;
+        }
+
+        private void btnMegaBatchToExcel_Click(object sender, EventArgs e)
+        {
+            var T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref _topForm, "Создание отчета.\r\nПодождите..."); });
+            T.Start();
+
+            while (!SplashWindow.bSmallCreated) ;
+            _needSplash = false;
+
+            var megaBatchId = Convert.ToInt32(MegaBatchDataGrid.SelectedRows[0].Cells["MegaBatchID"].Value);
+
+            decimal eurbyrCurrency = 1000000;
+
+            var fileName = $"Отчет по группе партий №{megaBatchId} от {DateTime.Today.ToString("dd.MM.yyyy")}";
+
+            var batches = new ArrayList();
+
+            for (var i = 0; i < BatchDataGrid.Rows.Count; i++)
+                batches.Add(Convert.ToInt32(BatchDataGrid.Rows[i].Cells["BatchID"].Value));
+
+            var producedProducts = new BatchAccountingReport(ref DecorCatalogOrder);
+            producedProducts.GetDateRates(DateTime.Today, ref eurbyrCurrency);
+
+            producedProducts.CreateMarketingOnProdReport(fileName, eurbyrCurrency, batches, megaBatchId);
+
+            _needSplash = true;
+            while (SplashWindow.bSmallCreated)
+                SmallWaitForm.CloseS = true;
+        }
+        
+        private void btnBatchToExcel_Click(object sender, EventArgs e)
+        {
+            var T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref _topForm, "Создание отчета.\r\nПодождите..."); });
+            T.Start();
+
+            while (!SplashWindow.bSmallCreated) ;
+            _needSplash = false;
+
+            var megaBatchId = Convert.ToInt32(MegaBatchDataGrid.SelectedRows[0].Cells["MegaBatchID"].Value);
+
+            decimal eurbyrCurrency = 1000000;
+
+            var fileName = $"Отчет по группе партий №{megaBatchId} от {DateTime.Today.ToString("dd.MM.yyyy")}";
+
+            var batches = new ArrayList();
+
+            for (var i = 0; i < BatchDataGrid.Rows.Count; i++)
+                batches.Add(Convert.ToInt32(BatchDataGrid.Rows[i].Cells["BatchID"].Value));
+
+            var producedProducts = new BatchAccountingReport(ref DecorCatalogOrder);
+            producedProducts.GetDateRates(DateTime.Today, ref eurbyrCurrency);
+
+            producedProducts.CreateMarketingOnProdReport(fileName, eurbyrCurrency, batches, megaBatchId);
+
+            _needSplash = true;
             while (SplashWindow.bSmallCreated)
                 SmallWaitForm.CloseS = true;
         }

@@ -1512,10 +1512,14 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
                 if (FrontID == 3729)
                     continue;
 
+                string NotesFilter = string.Empty;
+                if (Fronts.Rows[i]["Notes"].ToString().Length > 0)
+                    NotesFilter = " AND Notes = '" + Fronts.Rows[i]["Notes"].ToString() + "'";
+
                 DataRow[] Rows = OrdersDataTable.Select("ColorID = " + Fronts.Rows[i]["ColorID"].ToString() +
                     " AND PatinaID = " + Fronts.Rows[i]["PatinaID"].ToString() +
-                    " AND Notes = '" + Fronts.Rows[i]["Notes"].ToString() +
-                    "' AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString());
+                    NotesFilter +
+                    " AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString());
 
                 decimal CountPP = 0;
                 decimal CostPP = 0;
@@ -1532,8 +1536,8 @@ NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_ca
                 {
                     DataTable ddt = OrdersDataTable.Select("ColorID = " + Fronts.Rows[i]["ColorID"].ToString() +
                                                            " AND PatinaID = " + Fronts.Rows[i]["PatinaID"].ToString() +
-                                                           " AND Notes = '" + Fronts.Rows[i]["Notes"].ToString() +
-                                                           "' AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString()+
+                                                           NotesFilter +
+                                                           " AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString()+
                                                            " and InsetTypeID IN (685,686,687,688,29470,29471)").CopyToDataTable();
                     for (int x = 0; x < ddt.Rows.Count; x++)
                     {
@@ -2016,6 +2020,10 @@ ON InsetColors.InsetColorID = TechStore.TechStoreID ORDER BY TechStoreName",
                 decimal WithTransportLuxMegaCost = 0;
                 decimal LuxMegaWeight = 0;
 
+                string NotesFilter = string.Empty;
+                if (Fronts.Rows[i]["Notes"].ToString().Length > 0)
+                    NotesFilter = " AND Notes = '" + Fronts.Rows[i]["Notes"].ToString() + "'";
+
                 object NonStandardMargin = 0;
                 IsNonStandardFilter = " AND IsNonStandard=0";
                 if (IsNonStandard)
@@ -2029,8 +2037,8 @@ ON InsetColors.InsetColorID = TechStore.TechStoreID ORDER BY TechStoreName",
                     filter = " AND NOT (FrontID IN (3728,3731,3732,3739,3740,3741,3744,3745,3746) OR InsetTypeID IN (28961,3653,3654,3655)) AND (FrontID = 3729 OR InsetTypeID IN (" + filter.Substring(0, filter.Length - 1) + "))";
                 DataRow[] Rows = OrdersDataTable.Select("ColorID = " + Fronts.Rows[i]["ColorID"].ToString() +
                     " AND PatinaID = " + Fronts.Rows[i]["PatinaID"].ToString() +
-                    " AND Notes = '" + Fronts.Rows[i]["Notes"].ToString() +
-                    "' AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString() + " AND (Width <> -1)" + filter + IsNonStandardFilter);
+                    NotesFilter +
+                    " AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString() + " AND (Width <> -1)" + filter + IsNonStandardFilter);
                 for (int r = 0; r < Rows.Count(); r++)
                 {
                     decimal DeductibleCost = 0;
@@ -2082,8 +2090,8 @@ ON InsetColors.InsetColorID = TechStore.TechStoreID ORDER BY TechStoreName",
                 filter = " AND (FrontID IN (3728,3731,3732,3739,3740,3741,3744,3745,3746) OR InsetTypeID IN (28961,3653,3654,3655))";
                 Rows = OrdersDataTable.Select("ColorID = " + Fronts.Rows[i]["ColorID"].ToString() +
                     " AND PatinaID = " + Fronts.Rows[i]["PatinaID"].ToString() +
-                    " AND Notes = '" + Fronts.Rows[i]["Notes"].ToString() +
-                    "' AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString() + " AND (Width <> -1)" + filter + IsNonStandardFilter);
+                    NotesFilter +
+                    " AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString() + " AND (Width <> -1)" + filter + IsNonStandardFilter);
                 for (int r = 0; r < Rows.Count(); r++)
                 {
                     if (Convert.ToInt32(Rows[r]["FrontID"]) == 3728 || Convert.ToInt32(Rows[r]["FrontID"]) == 3731 || Convert.ToInt32(Rows[r]["FrontID"]) == 3732 ||
@@ -2121,8 +2129,8 @@ ON InsetColors.InsetColorID = TechStore.TechStoreID ORDER BY TechStoreName",
                 filter = " AND InsetTypeID IN (2069,2070,2071,2073,2075,42066,2077,2233,3644,29043,29531,41213)";
                 Rows = OrdersDataTable.Select("ColorID = " + Fronts.Rows[i]["ColorID"].ToString() +
                     " AND PatinaID = " + Fronts.Rows[i]["PatinaID"].ToString() +
-                    " AND Notes = '" + Fronts.Rows[i]["Notes"].ToString() +
-                    "' AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString() + " AND (Width <> -1)" + filter + IsNonStandardFilter);
+                    NotesFilter +
+                    " AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString() + " AND (Width <> -1)" + filter + IsNonStandardFilter);
                 for (int r = 0; r < Rows.Count(); r++)
                 {
                     FilenkaCount += Convert.ToDecimal(Rows[r]["Square"]);
@@ -2142,8 +2150,8 @@ ON InsetColors.InsetColorID = TechStore.TechStoreID ORDER BY TechStoreName",
                 filter = " AND InsetTypeID IN (1,2,685,686,687,688,29470,29471) AND FrontID <> 3729";
                 Rows = OrdersDataTable.Select("ColorID = " + Fronts.Rows[i]["ColorID"].ToString() +
                     " AND PatinaID = " + Fronts.Rows[i]["PatinaID"].ToString() +
-                    " AND Notes = '" + Fronts.Rows[i]["Notes"].ToString() +
-                    "' AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString() + " AND (Width <> -1)" + filter + IsNonStandardFilter);
+                    NotesFilter +
+                    " AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString() + " AND (Width <> -1)" + filter + IsNonStandardFilter);
                 for (int r = 0; r < Rows.Count(); r++)
                 {
                     decimal DeductibleCount = 0;
@@ -2223,8 +2231,8 @@ ON InsetColors.InsetColorID = TechStore.TechStoreID ORDER BY TechStoreName",
                 filter = " AND InsetTypeID IN (860,862,4310)";
                 Rows = OrdersDataTable.Select("ColorID = " + Fronts.Rows[i]["ColorID"].ToString() +
                     " AND PatinaID = " + Fronts.Rows[i]["PatinaID"].ToString() +
-                    " AND Notes = '" + Fronts.Rows[i]["Notes"].ToString() +
-                    "' AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString() + " AND (Width <> -1)" + filter + IsNonStandardFilter);
+                    NotesFilter +
+                    " AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString() + " AND (Width <> -1)" + filter + IsNonStandardFilter);
                 for (int r = 0; r < Rows.Count(); r++)
                 {
                     LuxMegaCount += Convert.ToDecimal(Rows[r]["Square"]);

@@ -657,11 +657,27 @@ namespace Infinium
 
         private void CurrencyTypeComboBox_SelectionChangeCommitted(object sender, EventArgs e)
         {
-            if (CurrencyTypeComboBox.SelectedItem.ToString() == "Евро - Евро")
+            try
             {
-                _rate = _eurbyrCurrency / BYN;
-                CurrencyTextBox.Text = _rate.ToString();
+                if (CurrencyTypeComboBox.SelectedItem.ToString() == "Евро - Евро")
+                {
+                    _rate = _eurbyrCurrency / BYN;
+                    CurrencyTextBox.Text = _rate.ToString();
+                    return;
+                }
+            }
+            catch (DivideByZeroException exception)
+            {
+                Console.WriteLine(exception);
+                MessageBox.Show($"Параметр BYN равен {BYN}. Расчет не выполнен");
                 return;
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                MessageBox.Show("Ошибка. Расчет не выполнен");
+                return;
+
             }
 
             if (CurrencyTypeComboBox.SelectedItem.ToString() == "Евро - Доллар США")
@@ -751,11 +767,28 @@ namespace Infinium
         {
             panel8.Visible = true;
             tbDelayOfPayment.Visible = false;
-            if (CurrencyTypeComboBox.SelectedItem.ToString() == "Евро - Евро")
+
+            try
             {
-                _rate = _eurbyrCurrency / BYN;
-                CurrencyTextBox.Text = _rate.ToString();
+                if (CurrencyTypeComboBox.SelectedItem.ToString() == "Евро - Евро")
+                {
+                    _rate = _eurbyrCurrency / BYN;
+                    CurrencyTextBox.Text = _rate.ToString();
+                    return;
+                }
+            }
+            catch (DivideByZeroException exception)
+            {
+                Console.WriteLine(exception);
+                MessageBox.Show($"Параметр BYN равен {BYN}. Расчет не выполнен");
                 return;
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                MessageBox.Show("Ошибка. Расчет не выполнен");
+                return;
+
             }
 
             if (CurrencyTypeComboBox.SelectedItem.ToString() == "Евро - Доллар США")
@@ -785,11 +818,26 @@ namespace Infinium
         {
             panel8.Visible = false;
             tbDelayOfPayment.Visible = true;
-            if (CurrencyTypeComboBox.SelectedItem.ToString() == "Евро - Евро")
+            try
             {
-                _rate = _eurbyrCurrency / BYN;
-                CurrencyTextBox.Text = _rate.ToString();
+                if (CurrencyTypeComboBox.SelectedItem.ToString() == "Евро - Евро")
+                {
+                    _rate = _eurbyrCurrency / BYN;
+                    CurrencyTextBox.Text = _rate.ToString();
+                    return;
+                }
+            }
+            catch (DivideByZeroException exception)
+            {
+                Console.WriteLine(exception);
+                MessageBox.Show($"Параметр BYN равен {BYN}. Расчет не выполнен");
                 return;
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                MessageBox.Show("Ошибка. Расчет не выполнен");
+
             }
 
             if (CurrencyTypeComboBox.SelectedItem.ToString() == "Евро - Доллар США")
@@ -819,11 +867,27 @@ namespace Infinium
         {
             panel8.Visible = false;
             tbDelayOfPayment.Visible = false;
-            if (CurrencyTypeComboBox.SelectedItem.ToString() == "Евро - Евро")
+            try
             {
-                _rate = _eurbyrCurrency / BYN;
-                CurrencyTextBox.Text = _rate.ToString();
+                if (CurrencyTypeComboBox.SelectedItem.ToString() == "Евро - Евро")
+                {
+                    _rate = _eurbyrCurrency / BYN;
+                    CurrencyTextBox.Text = _rate.ToString();
+                    return;
+                }
+            }
+            catch (DivideByZeroException exception)
+            {
+                Console.WriteLine(exception);
+                MessageBox.Show($"Параметр BYN равен {BYN}. Расчет не выполнен");
                 return;
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                MessageBox.Show("Ошибка. Расчет не выполнен");
+                return;
+
             }
 
             if (CurrencyTypeComboBox.SelectedItem.ToString() == "Евро - Доллар США")
@@ -853,11 +917,27 @@ namespace Infinium
         {
             panel8.Visible = false;
             tbDelayOfPayment.Visible = false;
-            if (CurrencyTypeComboBox.SelectedItem.ToString() == "Евро - Евро")
+            try
             {
-                _rate = _eurbyrCurrency / BYN;
-                CurrencyTextBox.Text = _rate.ToString();
+                if (CurrencyTypeComboBox.SelectedItem.ToString() == "Евро - Евро")
+                {
+                    _rate = _eurbyrCurrency / BYN;
+                    CurrencyTextBox.Text = _rate.ToString();
+                    return;
+                }
+            }
+            catch (DivideByZeroException exception)
+            {
+                Console.WriteLine(exception);
+                MessageBox.Show($"Параметр BYN равен {BYN}. Расчет не выполнен");
                 return;
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                MessageBox.Show("Ошибка. Расчет не выполнен");
+                return;
+
             }
 
             if (CurrencyTypeComboBox.SelectedItem.ToString() == "Евро - Доллар США")
@@ -924,11 +1004,28 @@ namespace Infinium
         {
             panel8.Visible = false;
             tbDelayOfPayment.Visible = false;
-            if (CurrencyTypeComboBox.SelectedItem.ToString() == "Евро - Евро")
+
+            try
             {
-                _rate = _eurbyrCurrency / BYN;
-                CurrencyTextBox.Text = _rate.ToString();
+                if (CurrencyTypeComboBox.SelectedItem.ToString() == "Евро - Евро")
+                {
+                    _rate = _eurbyrCurrency / BYN;
+                    CurrencyTextBox.Text = _rate.ToString();
+                    return;
+                }
+            }
+            catch (DivideByZeroException exception)
+            {
+                Console.WriteLine(exception);
+                MessageBox.Show($"Параметр BYN равен {BYN}. Расчет не выполнен");
                 return;
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                MessageBox.Show("Ошибка. Расчет не выполнен");
+                return;
+
             }
 
             if (CurrencyTypeComboBox.SelectedItem.ToString() == "Евро - Доллар США")
@@ -958,11 +1055,28 @@ namespace Infinium
         {
             panel8.Visible = false;
             tbDelayOfPayment.Visible = false;
-            if (CurrencyTypeComboBox.SelectedItem.ToString() == "Евро - Евро")
+
+            try
             {
-                _rate = _eurbyrCurrency / BYN;
-                CurrencyTextBox.Text = _rate.ToString();
+                if (CurrencyTypeComboBox.SelectedItem.ToString() == "Евро - Евро")
+                {
+                    _rate = _eurbyrCurrency / BYN;
+                    CurrencyTextBox.Text = _rate.ToString();
+                    return;
+                }
+            }
+            catch (DivideByZeroException exception)
+            {
+                Console.WriteLine(exception);
+                MessageBox.Show($"Параметр BYN равен {BYN}. Расчет не выполнен");
                 return;
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                MessageBox.Show("Ошибка. Расчет не выполнен");
+                return;
+
             }
 
             if (CurrencyTypeComboBox.SelectedItem.ToString() == "Евро - Доллар США")

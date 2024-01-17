@@ -525,9 +525,15 @@ DecorOrders.*, infiniu2_catalog.dbo.DecorConfig.AccountingName, infiniu2_catalog
                 {
                     string Cvet = GetColorCode(Convert.ToInt32(Rows[r]["ColorID"]));
                     string Patina = GetPatinaCode(Convert.ToInt32(Rows[r]["PatinaID"]));
+                    var InvNumber = Rows[r]["InvNumber"].ToString();
+                    var Notes = Rows[r]["Notes"].ToString();
+                    var filter = $@"InvNumber = '{InvNumber}' AND Notes = '{Notes}' AND Cvet='{Cvet}' AND Patina='{Patina}'";
+                    if (Notes.Length == 0)
+                        filter = $@"InvNumber = '{InvNumber}' AND Cvet='{Cvet}' AND Patina='{Patina}'";
+
                     if (IsProfil(Convert.ToInt32(Rows[r]["DecorConfigID"])))
                     {
-                        DataRow[] InvRows = PDT.Select($"InvNumber = '{ Rows[r]["InvNumber"].ToString() }' AND Notes = '{ Rows[r]["Notes"].ToString() }' AND Cvet = '{ Cvet }' AND Patina = '{ Patina }'");
+                        DataRow[] InvRows = PDT.Select(filter);
                         if (InvRows.Count() == 0)
                         {
                             DataRow NewRow = PDT.NewRow();
@@ -560,7 +566,7 @@ DecorOrders.*, infiniu2_catalog.dbo.DecorConfig.AccountingName, infiniu2_catalog
                     }
                     else
                     {
-                        DataRow[] InvRows = TDT.Select($"InvNumber = '{ Rows[r]["InvNumber"].ToString() }' AND Notes = '{ Rows[r]["Notes"].ToString() }' AND Cvet = '{ Cvet }' AND Patina = '{ Patina }'");
+                        DataRow[] InvRows = TDT.Select(filter);
                         if (InvRows.Count() == 0)
                         {
                             DataRow NewRow = TDT.NewRow();
@@ -601,11 +607,15 @@ DecorOrders.*, infiniu2_catalog.dbo.DecorConfig.AccountingName, infiniu2_catalog
                 {
                     string Cvet = GetColorCode(Convert.ToInt32(Rows[r]["ColorID"]));
                     string Patina = GetPatinaCode(Convert.ToInt32(Rows[r]["PatinaID"]));
+                    var InvNumber = Rows[r]["InvNumber"].ToString();
+                    var Notes = Rows[r]["Notes"].ToString();
+                    var filter = $@"InvNumber = '{InvNumber}' AND Notes = '{Notes}' AND Cvet='{Cvet}' AND Patina='{Patina}'";
+                    if (Notes.Length == 0)
+                        filter = $@"InvNumber = '{InvNumber}' AND Cvet='{Cvet}' AND Patina='{Patina}'";
+
                     if (IsProfil(Convert.ToInt32(Rows[r]["DecorConfigID"])))
                     {
-                        DataRow[] InvRows = PDT.Select($"InvNumber = '{ Rows[r]["InvNumber"].ToString() }' AND" +
-                                                       $" Notes = '{ Rows[r]["Notes"].ToString() }' AND" +
-                                                       $" Cvet = '{ Cvet }' AND Patina = '{ Patina }'");
+                        DataRow[] InvRows = PDT.Select(filter);
                         if (InvRows.Count() == 0)
                         {
                             DataRow NewRow = PDT.NewRow();
@@ -640,8 +650,7 @@ DecorOrders.*, infiniu2_catalog.dbo.DecorConfig.AccountingName, infiniu2_catalog
                     }
                     else
                     {
-                        DataRow[] InvRows = TDT.Select($"InvNumber = '{ Rows[r]["InvNumber"].ToString() }' AND " +
-                                                       $" Notes = '{ Rows[r]["Notes"].ToString() }' AND Cvet = '{ Cvet }' AND Patina = '{ Patina }'");
+                        DataRow[] InvRows = TDT.Select(filter);
                         if (InvRows.Count() == 0)
                         {
                             DataRow NewRow = TDT.NewRow();
@@ -684,10 +693,15 @@ DecorOrders.*, infiniu2_catalog.dbo.DecorConfig.AccountingName, infiniu2_catalog
                 {
                     string Cvet = GetColorCode(Convert.ToInt32(Rows[r]["ColorID"]));
                     string Patina = GetPatinaCode(Convert.ToInt32(Rows[r]["PatinaID"]));
+                    var InvNumber = Rows[r]["InvNumber"].ToString();
+                    var Notes = Rows[r]["Notes"].ToString();
+                    var filter = $@"InvNumber = '{InvNumber}' AND Notes = '{Notes}' AND Cvet='{Cvet}' AND Patina='{Patina}'";
+                    if (Notes.Length == 0)
+                        filter = $@"InvNumber = '{InvNumber}' AND Cvet='{Cvet}' AND Patina='{Patina}'";
+
                     if (IsProfil(Convert.ToInt32(Rows[r]["DecorConfigID"])))
                     {
-                        DataRow[] InvRows = PDT.Select($"InvNumber = '{ Rows[r]["InvNumber"].ToString() }' AND " +
-                                                       $" Notes = '{ Rows[r]["Notes"].ToString() }' AND Cvet = '{ Cvet }' AND Patina = '{ Patina }'");
+                        DataRow[] InvRows = PDT.Select(filter);
                         if (InvRows.Count() == 0)
                         {
                             DataRow NewRow = PDT.NewRow();
@@ -721,8 +735,7 @@ DecorOrders.*, infiniu2_catalog.dbo.DecorConfig.AccountingName, infiniu2_catalog
                     }
                     else
                     {
-                        DataRow[] InvRows = TDT.Select($"InvNumber = '{ Rows[r]["InvNumber"].ToString() }' AND " +
-                                                       $" Notes = '{ Rows[r]["Notes"].ToString() }' AND Cvet = '{ Cvet }' AND Patina = '{ Patina }'");
+                        DataRow[] InvRows = TDT.Select(filter);
                         if (InvRows.Count() == 0)
                         {
                             DataRow NewRow = TDT.NewRow();
@@ -944,10 +957,12 @@ DecorOrders.*, infiniu2_catalog.dbo.DecorConfig.AccountingName, infiniu2_catalog
         private int GetReportMeasureTypeID(int DecorConfigID)
         {
             DataRow[] Row = DecorConfigDataTable.Select("DecorConfigID = " + DecorConfigID);
-            if (Row.Any())
+            if (Row.Length > 0)
                 return Convert.ToInt32(Row[0]["ReportMeasureID"]);//1 м.кв.  2 м.п. 3 шт.
             else
             {
+                System.Windows.Forms.MessageBox.Show(@$"Ошибка конфигурации: не найдена DecorConfigID={DecorConfigID}. 
+                        DecorConfigDataTable.Count={DecorConfigDataTable.Rows.Count}");
                 return -1;
             }
         }
@@ -982,6 +997,11 @@ DecorOrders.*, infiniu2_catalog.dbo.DecorConfig.AccountingName, infiniu2_catalog
                 int PatinaID = Convert.ToInt32(Rows[r]["PatinaID"]);
                 int D = Convert.ToInt32(Rows[r]["DecorConfigID"]);
                 string InvNumber = Rows[r]["InvNumber"].ToString();
+                var Notes = Rows[r]["Notes"].ToString();
+                var filter = $@"InvNumber = '{InvNumber}' AND Notes = '{Notes}' AND ColorID={ColorID} AND PatinaID={PatinaID}";
+                if (Notes.Length == 0)
+                    filter = $@"InvNumber = '{InvNumber}' AND ColorID={ColorID} AND PatinaID={PatinaID}";
+
                 //м.п.
                 if (MeasureTypeID == 2)
                 {
@@ -994,10 +1014,7 @@ DecorOrders.*, infiniu2_catalog.dbo.DecorConfig.AccountingName, infiniu2_catalog
 
                     if (IsProfil(Convert.ToInt32(Rows[r]["DecorConfigID"])))
                     {
-                        DataRow[] InvRows = PDT.Select("InvNumber = '" + Rows[r]["InvNumber"].ToString() +
-                                                       "' AND Notes = '" + Rows[r]["Notes"].ToString() +
-                            "' AND ColorID = " + Rows[r]["ColorID"].ToString() +
-                            " AND PatinaID = " + Rows[r]["PatinaID"].ToString());
+                        DataRow[] InvRows = PDT.Select(filter);
                         if (InvRows.Count() == 0)
                         {
                             DataRow NewRow = PDT.NewRow();
@@ -1031,10 +1048,7 @@ DecorOrders.*, infiniu2_catalog.dbo.DecorConfig.AccountingName, infiniu2_catalog
                     }
                     else
                     {
-                        DataRow[] InvRows = TDT.Select("InvNumber = '" + Rows[r]["InvNumber"].ToString() +
-                                                       " AND Notes = '" + Rows[r]["Notes"].ToString() +
-                            "' AND ColorID = " + Rows[r]["ColorID"].ToString() +
-                            " AND PatinaID = " + Rows[r]["PatinaID"].ToString());
+                        DataRow[] InvRows = TDT.Select(filter);
                         if (InvRows.Count() == 0)
                         {
                             DataRow NewRow = TDT.NewRow();
@@ -1079,10 +1093,7 @@ DecorOrders.*, infiniu2_catalog.dbo.DecorConfig.AccountingName, infiniu2_catalog
                 {
                     if (IsProfil(Convert.ToInt32(Rows[r]["DecorConfigID"])))
                     {
-                        DataRow[] InvRows = PDT.Select("InvNumber = '" + Rows[r]["InvNumber"].ToString() +
-                                                       "' AND Notes = '" + Rows[r]["Notes"].ToString() +
-                            "' AND ColorID = " + Rows[r]["ColorID"].ToString() +
-                            " AND PatinaID = " + Rows[r]["PatinaID"].ToString());
+                        DataRow[] InvRows = PDT.Select(filter);
                         if (InvRows.Count() == 0)
                         {
                             DataRow NewRow = PDT.NewRow();
@@ -1195,10 +1206,7 @@ DecorOrders.*, infiniu2_catalog.dbo.DecorConfig.AccountingName, infiniu2_catalog
                     }
                     else
                     {
-                        DataRow[] InvRows = TDT.Select("InvNumber = '" + Rows[r]["InvNumber"].ToString() +
-                                                       "' AND Notes = '" + Rows[r]["Notes"].ToString() +
-                            "' AND ColorID = " + Rows[r]["ColorID"].ToString() +
-                            " AND PatinaID = " + Rows[r]["PatinaID"].ToString());
+                        DataRow[] InvRows = TDT.Select(filter);
                         if (InvRows.Count() == 0)
                         {
                             DataRow NewRow = TDT.NewRow();

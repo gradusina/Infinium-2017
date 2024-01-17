@@ -293,8 +293,14 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.NotesInvoiceReportT
         private int GetReportMeasureTypeID(int DecorConfigID)
         {
             DataRow[] Row = DecorConfigDataTable.Select("DecorConfigID = " + DecorConfigID);
-
-            return Convert.ToInt32(Row[0]["ReportMeasureID"]);//1 м.кв.  2 м.п. 3 шт.
+            if (Row.Length > 0)
+                return Convert.ToInt32(Row[0]["ReportMeasureID"]);//1 м.кв.  2 м.п. 3 шт.
+            else
+            {
+                System.Windows.Forms.MessageBox.Show(@$"Ошибка конфигурации: не найдена DecorConfigID={DecorConfigID}. 
+                        DecorConfigDataTable.Count={DecorConfigDataTable.Rows.Count}");
+                return -1;
+            }
         }
 
         private int GetMeasureTypeID(int DecorConfigID)
@@ -449,7 +455,12 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.NotesInvoiceReportT
                 int ColorID = Convert.ToInt32(Rows[r]["ColorID"]);
                 int PatinaID = Convert.ToInt32(Rows[r]["PatinaID"]);
                 int D = Convert.ToInt32(Rows[r]["DecorConfigID"]);
-                string InvNumber = Rows[r]["InvNumber"].ToString();
+                string InvNumber = Rows[r]["InvNumber"].ToString(); 
+                var Notes = Rows[r]["Notes"].ToString();
+                var filter = $@"InvNumber = '{InvNumber}' AND Notes = '{Notes}' AND ColorID={ColorID} AND PatinaID={PatinaID}";
+                if (Notes.Length == 0)
+                    filter = $@"InvNumber = '{InvNumber}' AND ColorID={ColorID} AND PatinaID={PatinaID}";
+
                 //м.п.
                 if (MeasureTypeID == 2)
                 {
@@ -462,10 +473,7 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.NotesInvoiceReportT
 
                     if (IsProfil(Convert.ToInt32(Rows[r]["DecorConfigID"])))
                     {
-                        DataRow[] InvRows = PDT.Select("InvNumber = '" + Rows[r]["InvNumber"].ToString() +
-                                                       "' AND Notes = '" + Rows[r]["Notes"].ToString() +
-                            "' AND ColorID = " + Rows[r]["ColorID"].ToString() +
-                            " AND PatinaID = " + Rows[r]["PatinaID"].ToString());
+                        DataRow[] InvRows = PDT.Select(filter);
                         if (InvRows.Count() == 0)
                         {
                             DataRow NewRow = PDT.NewRow();
@@ -499,10 +507,7 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.NotesInvoiceReportT
                     }
                     else
                     {
-                        DataRow[] InvRows = TDT.Select("InvNumber = '" + Rows[r]["InvNumber"].ToString() +
-                                                       " AND Notes = '" + Rows[r]["Notes"].ToString() +
-                            "' AND ColorID = " + Rows[r]["ColorID"].ToString() +
-                            " AND PatinaID = " + Rows[r]["PatinaID"].ToString());
+                        DataRow[] InvRows = TDT.Select(filter);
                         if (InvRows.Count() == 0)
                         {
                             DataRow NewRow = TDT.NewRow();
@@ -547,10 +552,7 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.NotesInvoiceReportT
                 {
                     if (IsProfil(Convert.ToInt32(Rows[r]["DecorConfigID"])))
                     {
-                        DataRow[] InvRows = PDT.Select("InvNumber = '" + Rows[r]["InvNumber"].ToString() +
-                                                       "' AND Notes = '" + Rows[r]["Notes"].ToString() +
-                            "' AND ColorID = " + Rows[r]["ColorID"].ToString() +
-                            " AND PatinaID = " + Rows[r]["PatinaID"].ToString());
+                        DataRow[] InvRows = PDT.Select(filter);
                         if (InvRows.Count() == 0)
                         {
                             DataRow NewRow = PDT.NewRow();
@@ -663,10 +665,7 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.NotesInvoiceReportT
                     }
                     else
                     {
-                        DataRow[] InvRows = TDT.Select("InvNumber = '" + Rows[r]["InvNumber"].ToString() +
-                                                       "' AND Notes = '" + Rows[r]["Notes"].ToString() +
-                            "' AND ColorID = " + Rows[r]["ColorID"].ToString() +
-                            " AND PatinaID = " + Rows[r]["PatinaID"].ToString());
+                        DataRow[] InvRows = TDT.Select(filter);
                         if (InvRows.Count() == 0)
                         {
                             DataRow NewRow = TDT.NewRow();
@@ -929,9 +928,15 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.NotesInvoiceReportT
                 {
                     string Cvet = GetColorCode(Convert.ToInt32(Rows[r]["ColorID"]));
                     string Patina = GetPatinaCode(Convert.ToInt32(Rows[r]["PatinaID"]));
+                    var InvNumber = Rows[r]["InvNumber"].ToString();
+                    var Notes = Rows[r]["Notes"].ToString();
+                    var filter = $@"InvNumber = '{InvNumber}' AND Notes = '{Notes}' AND Cvet='{Cvet}' AND Patina='{Patina}'";
+                    if (Notes.Length == 0)
+                        filter = $@"InvNumber = '{InvNumber}' AND Cvet='{Cvet}' AND Patina='{Patina}'";
+
                     if (IsProfil(Convert.ToInt32(Rows[r]["DecorConfigID"])))
                     {
-                        DataRow[] InvRows = PDT.Select($"InvNumber = '{ Rows[r]["InvNumber"].ToString() }' AND Notes = '{ Rows[r]["Notes"].ToString() }' AND Cvet = '{ Cvet }' AND Patina = '{ Patina }'");
+                        DataRow[] InvRows = PDT.Select(filter);
                         if (InvRows.Count() == 0)
                         {
                             DataRow NewRow = PDT.NewRow();
@@ -964,7 +969,7 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.NotesInvoiceReportT
                     }
                     else
                     {
-                        DataRow[] InvRows = TDT.Select($"InvNumber = '{ Rows[r]["InvNumber"].ToString() }' AND Notes = '{ Rows[r]["Notes"].ToString() }' AND Cvet = '{ Cvet }' AND Patina = '{ Patina }'");
+                        DataRow[] InvRows = TDT.Select(filter);
                         if (InvRows.Count() == 0)
                         {
                             DataRow NewRow = TDT.NewRow();
@@ -1008,11 +1013,15 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.NotesInvoiceReportT
                 {
                     string Cvet = GetColorCode(Convert.ToInt32(Rows[r]["ColorID"]));
                     string Patina = GetPatinaCode(Convert.ToInt32(Rows[r]["PatinaID"]));
+                    var InvNumber = Rows[r]["InvNumber"].ToString();
+                    var Notes = Rows[r]["Notes"].ToString();
+                    var filter = $@"InvNumber = '{InvNumber}' AND Notes = '{Notes}' AND Cvet='{Cvet}' AND Patina='{Patina}'";
+                    if (Notes.Length == 0)
+                        filter = $@"InvNumber = '{InvNumber}' AND Cvet='{Cvet}' AND Patina='{Patina}'";
+
                     if (IsProfil(Convert.ToInt32(Rows[r]["DecorConfigID"])))
                     {
-                        DataRow[] InvRows = PDT.Select($"InvNumber = '{ Rows[r]["InvNumber"].ToString() }' AND" +
-                                                       $" Notes = '{ Rows[r]["Notes"].ToString() }' AND" +
-                                                       $" Cvet = '{ Cvet }' AND Patina = '{ Patina }'");
+                        DataRow[] InvRows = PDT.Select(filter);
                         if (InvRows.Count() == 0)
                         {
                             DataRow NewRow = PDT.NewRow();
@@ -1047,8 +1056,7 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.NotesInvoiceReportT
                     }
                     else
                     {
-                        DataRow[] InvRows = TDT.Select($"InvNumber = '{ Rows[r]["InvNumber"].ToString() }' AND " +
-                                                       $" Notes = '{ Rows[r]["Notes"].ToString() }' AND Cvet = '{ Cvet }' AND Patina = '{ Patina }'");
+                        DataRow[] InvRows = TDT.Select(filter);
                         if (InvRows.Count() == 0)
                         {
                             DataRow NewRow = TDT.NewRow();
@@ -1091,10 +1099,15 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.NotesInvoiceReportT
                 {
                     string Cvet = GetColorCode(Convert.ToInt32(Rows[r]["ColorID"]));
                     string Patina = GetPatinaCode(Convert.ToInt32(Rows[r]["PatinaID"]));
+                    var InvNumber = Rows[r]["InvNumber"].ToString();
+                    var Notes = Rows[r]["Notes"].ToString();
+                    var filter = $@"InvNumber = '{InvNumber}' AND Notes = '{Notes}' AND Cvet='{Cvet}' AND Patina='{Patina}'";
+                    if (Notes.Length == 0)
+                        filter = $@"InvNumber = '{InvNumber}' AND Cvet='{Cvet}' AND Patina='{Patina}'";
+
                     if (IsProfil(Convert.ToInt32(Rows[r]["DecorConfigID"])))
                     {
-                        DataRow[] InvRows = PDT.Select($"InvNumber = '{ Rows[r]["InvNumber"].ToString() }' AND " +
-                                                       $" Notes = '{ Rows[r]["Notes"].ToString() }' AND Cvet = '{ Cvet }' AND Patina = '{ Patina }'");
+                        DataRow[] InvRows = PDT.Select(filter);
                         if (InvRows.Count() == 0)
                         {
                             DataRow NewRow = PDT.NewRow();
@@ -1128,8 +1141,7 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.NotesInvoiceReportT
                     }
                     else
                     {
-                        DataRow[] InvRows = TDT.Select($"InvNumber = '{ Rows[r]["InvNumber"].ToString() }' AND " +
-                                                       $" Notes = '{ Rows[r]["Notes"].ToString() }' AND Cvet = '{ Cvet }' AND Patina = '{ Patina }'");
+                        DataRow[] InvRows = TDT.Select(filter);
                         if (InvRows.Count() == 0)
                         {
                             DataRow NewRow = TDT.NewRow();
@@ -1340,10 +1352,12 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.NotesInvoiceReportT
                     int PatinaID = Convert.ToInt32(Items.Rows[i]["PatinaID"]);
                     string InvNumber = Items.Rows[i]["InvNumber"].ToString();
                     string Notes = Items.Rows[i]["Notes"].ToString();
-                    DataRow[] ItemsRows = DecorOrdersDataTable.Select("PaymentRate = '" + PaymentRate.ToString() + "' AND InvNumber = '" + InvNumber +
-                                                                      "' AND Notes = '" + Notes +
-                        "' AND ColorID=" + ColorID + " AND PatinaID=" + PatinaID,
-                        "Price ASC");
+
+                    var filter = $@"PaymentRate = '{PaymentRate.ToString()}' AND InvNumber = '{InvNumber}' AND Notes = '{Notes}' AND ColorID={ColorID} AND PatinaID={PatinaID}";
+                    if (Notes.Length == 0)
+                        filter = $@"PaymentRate = '{PaymentRate.ToString()}' AND InvNumber = '{InvNumber}' AND ColorID={ColorID} AND PatinaID={PatinaID}";
+
+                    DataRow[] ItemsRows = DecorOrdersDataTable.Select(filter,"Price ASC");
 
                     if (ItemsRows.Count() == 0)
                         continue;

@@ -75,8 +75,14 @@ namespace Infinium.Modules.ExpeditionMarketing.DispatchReportToDbf
         private int GetReportMeasureTypeID(int DecorConfigID)
         {
             DataRow[] Row = decorCatalogOrder.DecorConfigDataTable.Select("DecorConfigID = " + DecorConfigID);
-
-            return Convert.ToInt32(Row[0]["ReportMeasureID"]);//1 м.кв.  2 м.п. 3 шт.
+            if (Row.Length > 0)
+                return Convert.ToInt32(Row[0]["ReportMeasureID"]);//1 м.кв.  2 м.п. 3 шт.
+            else
+            {
+                System.Windows.Forms.MessageBox.Show(@$"Ошибка конфигурации: не найдена DecorConfigID={DecorConfigID}. 
+                        decorCatalogOrder.DecorConfigDataTable.Count={decorCatalogOrder.DecorConfigDataTable.Rows.Count}");
+                return -1;
+            }
         }
 
         private int GetMeasureTypeID(int DecorConfigID)

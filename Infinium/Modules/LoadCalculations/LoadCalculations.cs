@@ -246,29 +246,29 @@ namespace Infinium.Modules.LoadCalculations
             return name;
         }
 
-        public List<LoadCalculationsModel> GetReportData()
-        {
-            List<LoadCalculationsModel> list = new();
+        //public List<Sector> GetReportData()
+        //{
+        //    List<Sector> list = new();
 
-            for (var i = 0; i < _clientsDt.Rows.Count; i++)
-                list.Add(new LoadCalculationsModel
-                {
-                    Index = i + 1,
-                    ClientId = Convert.ToInt32(_clientsDt.Rows[i]["ClientId"]),
-                    ClientName = _clientsDt.Rows[i]["ClientName"].ToString(),
-                    Manager = _clientsDt.Rows[i]["Manager"].ToString(),
-                    Country = _clientsDt.Rows[i]["Country"].ToString(),
-                    City = _clientsDt.Rows[i]["City"].ToString(),
-                    Email = _clientsDt.Rows[i]["Email"].ToString(),
-                    DelayOfPayment = Convert.ToInt32(_clientsDt.Rows[i]["DelayOfPayment"]),
-                    Unn = _clientsDt.Rows[i]["UNN"].ToString(),
-                    ClientGroupName = _clientsDt.Rows[i]["ClientGroupName"].ToString(),
-                    PriceGroup = Convert.ToInt32(_clientsDt.Rows[i]["PriceGroup"]),
-                    Enabled = Convert.ToBoolean(_clientsDt.Rows[i]["Enabled"])
-                });
+        //    for (var i = 0; i < _clientsDt.Rows.Count; i++)
+        //        list.Add(new Sector
+        //        {
+        //            Index = i + 1,
+        //            ClientId = Convert.ToInt32(_clientsDt.Rows[i]["ClientId"]),
+        //            ClientName = _clientsDt.Rows[i]["ClientName"].ToString(),
+        //            Manager = _clientsDt.Rows[i]["Manager"].ToString(),
+        //            Country = _clientsDt.Rows[i]["Country"].ToString(),
+        //            City = _clientsDt.Rows[i]["City"].ToString(),
+        //            Email = _clientsDt.Rows[i]["Email"].ToString(),
+        //            DelayOfPayment = Convert.ToInt32(_clientsDt.Rows[i]["DelayOfPayment"]),
+        //            Unn = _clientsDt.Rows[i]["UNN"].ToString(),
+        //            ClientGroupName = _clientsDt.Rows[i]["ClientGroupName"].ToString(),
+        //            PriceGroup = Convert.ToInt32(_clientsDt.Rows[i]["PriceGroup"]),
+        //            Enabled = Convert.ToBoolean(_clientsDt.Rows[i]["Enabled"])
+        //        });
 
-            return list;
-        }
+        //    return list;
+        //}
 
         public List<Machine> GroupByMachines(int sectorId)
         {
@@ -1337,7 +1337,12 @@ order by d.mainorderid";
 
         private void GetClients()
         {
-            const string selectCommand = @"select clientId, clientName from clients";
+            const string selectCommand = @"SELECT Clients.ClientID, Clients.ClientName, ClientsManagers.Name as Manager, 
+Countries.Name AS Country, Clients.City, Clients.Email, Clients.DelayOfPayment, Clients.UNN, 
+ClientGroups.ClientGroupName, Clients.PriceGroup, Clients.Enabled FROM Clients AS Clients 
+INNER JOIN ClientsManagers ON Clients.ManagerID = ClientsManagers.ManagerID 
+INNER JOIN ClientGroups ON Clients.ClientGroupID = ClientGroups.ClientGroupID
+INNER JOIN infiniu2_catalog.dbo.Countries AS Countries ON Clients.CountryID = Countries.CountryID order by Clients.ClientName";
 
             _clientsDt.Clear();
             using (var da = new SqlDataAdapter(selectCommand, ConnectionStrings.MarketingReferenceConnectionString))

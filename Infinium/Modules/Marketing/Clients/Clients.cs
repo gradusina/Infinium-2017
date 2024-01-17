@@ -1,4 +1,5 @@
-﻿using NPOI.HSSF.UserModel;
+﻿using NPOI.HSSF.Record.Formula.Functions;
+using NPOI.HSSF.UserModel;
 using NPOI.HSSF.UserModel.Contrib;
 using NPOI.HSSF.Util;
 
@@ -8,6 +9,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
+using System.Management.Instrumentation;
 using System.Net;
 using System.Net.Mail;
 using System.Text;
@@ -805,7 +807,8 @@ namespace Infinium.Modules.Marketing.Clients
             string result = "Уведомление на почту клиента отправлено";
 
             //string AccountPassword = "7026Gradus0462";
-            string AccountPassword = "foqwsulbjiuslnue";
+            //var AccountPassword = "foqwsulbjiuslnue";
+            var AccountPassword = "lfbeecgxvmwvzlna";
             string SenderEmail = "infiniumdevelopers@gmail.com";
 
 
@@ -1095,7 +1098,8 @@ namespace Infinium.Modules.Marketing.Clients
         public void Send(int ClientID, string ClientEmail, string Login)
         {
             //string AccountPassword = "7026Gradus0462";
-            string AccountPassword = "foqwsulbjiuslnue";
+            //var AccountPassword = "foqwsulbjiuslnue";
+            var AccountPassword = "lfbeecgxvmwvzlna";
             string SenderEmail = "infiniumdevelopers@gmail.com";
 
 
@@ -1195,6 +1199,44 @@ infiniumdevelopers@gmail.com";
                         rows[0]["BYN"] = Convert.ToDecimal(dt.Rows[i]["BYN"]);
                     }
                 }
+            }
+        }
+
+        public void FillClientRatesNewYear()
+        {
+            var USD = 1.1m;
+            var RUB = 100;
+            var BYN = 3.35m;
+            var date = new DateTime(2024, 01, 01);
+            const string filter1 = @$"select TOP 0 * from ClientRates";
+
+            const string filter2 = @$"SELECT  ClientID FROM  Clients
+WHERE (CountryID = 1) AND (ClientID NOT IN (10774, 10771, 727, 725, 701, 759, 744, 737, 717, 708, 10777, 10776, 692, 724, 693, 684, 738, 695, 680, 766, 565, 447, 608, 698, 460, 552, 551, 327, 542))";
+
+            var clientDt = new DataTable();
+            using (var da = new SqlDataAdapter(filter2, ConnectionStrings.MarketingReferenceConnectionString))
+            {
+                da.Fill(clientDt);
+            }
+            using (var da = new SqlDataAdapter(filter1, ConnectionStrings.MarketingReferenceConnectionString))
+            {
+                using var cb = new SqlCommandBuilder(da);
+                using var dt = new DataTable();
+                da.Fill(dt);
+
+                for (var i = 0; i < clientDt.Rows.Count; i++)
+                {
+                    var clientId = Convert.ToInt32(clientDt.Rows[i]["clientId"]);
+
+                    var newRow = dt.NewRow();
+                    newRow["USD"] = USD;
+                    newRow["RUB"] = RUB;
+                    newRow["BYN"] = BYN;
+                    newRow["date"] = date;
+                    newRow["clientId"] = clientId;
+                    dt.Rows.Add(newRow);
+                }
+                da.Update(dt);
             }
         }
 

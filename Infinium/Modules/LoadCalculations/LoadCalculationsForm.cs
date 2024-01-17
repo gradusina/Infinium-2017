@@ -3,6 +3,7 @@ using ComponentFactory.Krypton.Toolkit;
 
 using Infinium.Catalog.UserControls;
 using Infinium.Modules.LoadCalculations;
+using Infinium.Modules.Marketing.Clients;
 
 using System;
 using System.Collections.Generic;
@@ -164,7 +165,6 @@ namespace Infinium
             nfi.NumberDecimalSeparator = ",";
             nfi.NumberGroupSeparator = " ";
 
-            _loadCalculationsReport = new LoadCalculationsReport();
             _loadCalculations = new LoadCalculations();
 
             _sectorControls = new List<SectorControl>();
@@ -821,8 +821,12 @@ namespace Infinium
 
         private void btnExcelReport_Click(object sender, EventArgs e)
         {
-            _loadCalculationsReport.DataList = _loadCalculations.GetReportData();
-            _loadCalculationsReport.NeedStartFile = true;
+            _loadCalculationsReport = new LoadCalculationsReport
+            {
+                _calculations = _loadCalculations,
+                SectorsList = _loadCalculations.SectorsList,
+                NeedStartFile = true
+            };
             _loadCalculationsReport.CreateReport();
         }
     }

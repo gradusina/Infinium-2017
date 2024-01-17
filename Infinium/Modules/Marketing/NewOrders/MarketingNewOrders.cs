@@ -10998,8 +10998,14 @@ namespace Infinium.Modules.Marketing.NewOrders
         private int GetReportMeasureTypeID(int DecorConfigID)
         {
             DataRow[] Row = DecorConfigDataTable.Select("DecorConfigID = " + DecorConfigID);
-
-            return Convert.ToInt32(Row[0]["ReportMeasureID"]); //1 м.кв.  2 м.п. 3 шт.
+            if (Row.Length > 0)
+                return Convert.ToInt32(Row[0]["ReportMeasureID"]);//1 м.кв.  2 м.п. 3 шт.
+            else
+            {
+                System.Windows.Forms.MessageBox.Show(@$"Ошибка конфигурации: не найдена DecorConfigID={DecorConfigID}. 
+                        DecorConfigDataTable.Count={DecorConfigDataTable.Rows.Count}");
+                return -1;
+            }
         }
 
         private int GetMeasureTypeID(int DecorConfigID)
@@ -13729,9 +13735,9 @@ namespace Infinium.Modules.Marketing.NewOrders
                 //Cell1.SetCellValue("Стоимость, " + Currency);
                 //Cell1.CellStyle = SimpleHeaderCS;
 
-                //Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
-                //Cell1.SetCellValue("Курс, " + Currency);
-                //Cell1.CellStyle = SimpleHeaderCS;
+                Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
+                Cell1.SetCellValue("Курс, " + Currency);
+                Cell1.CellStyle = SimpleHeaderCS;
 
                 Cell1 = sheet1.CreateRow(pos++).CreateCell(DisplayIndex++);
                 Cell1.SetCellValue("Вес, кг.");
@@ -13777,9 +13783,9 @@ namespace Infinium.Modules.Marketing.NewOrders
                         //Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
                         //Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["Cost"]));
                         //Cell1.CellStyle = PriceBelCS;
-                        //Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
-                        //Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["PaymentRate"]));
-                        //Cell1.CellStyle = CurrencyCS;
+                        Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
+                        Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["PaymentRate"]));
+                        Cell1.CellStyle = CurrencyCS;
                     }
                     else
                     {
@@ -13809,9 +13815,9 @@ namespace Infinium.Modules.Marketing.NewOrders
                         //Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
                         //Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["Cost"]));
                         //Cell1.CellStyle = PriceForeignCS;
-                        //Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
-                        //Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["PaymentRate"]));
-                        //Cell1.CellStyle = CurrencyCS;
+                        Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
+                        Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["PaymentRate"]));
+                        Cell1.CellStyle = CurrencyCS;
                     }
 
                     Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
@@ -13907,9 +13913,9 @@ namespace Infinium.Modules.Marketing.NewOrders
                 //Cell1.SetCellValue("Стоимость, " + Currency);
                 //Cell1.CellStyle = SimpleHeaderCS;
 
-                //Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
-                //Cell1.SetCellValue("Курс, " + Currency);
-                //Cell1.CellStyle = SimpleHeaderCS;
+                Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
+                Cell1.SetCellValue("Курс, " + Currency);
+                Cell1.CellStyle = SimpleHeaderCS;
 
                 Cell1 = sheet1.CreateRow(pos++).CreateCell(DisplayIndex++);
                 Cell1.SetCellValue("Вес, кг.");
@@ -14432,9 +14438,9 @@ namespace Infinium.Modules.Marketing.NewOrders
                 //Cell1.SetCellValue("Стоимость, " + Currency);
                 //Cell1.CellStyle = SimpleHeaderCS;
 
-                //Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
-                //Cell1.SetCellValue("Курс, " + Currency);
-                //Cell1.CellStyle = SimpleHeaderCS;
+                Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
+                Cell1.SetCellValue("Курс, " + Currency);
+                Cell1.CellStyle = SimpleHeaderCS;
 
                 Cell1 = sheet1.CreateRow(pos++).CreateCell(DisplayIndex++);
                 Cell1.SetCellValue("Вес, кг.");
@@ -14480,9 +14486,9 @@ namespace Infinium.Modules.Marketing.NewOrders
                         //Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
                         //Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["Cost"]));
                         //Cell1.CellStyle = PriceBelCS;
-                        //Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
-                        //Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["PaymentRate"]));
-                        //Cell1.CellStyle = CurrencyCS;
+                        Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
+                        Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["PaymentRate"]));
+                        Cell1.CellStyle = CurrencyCS;
                     }
                     else
                     {
@@ -14512,9 +14518,9 @@ namespace Infinium.Modules.Marketing.NewOrders
                         //Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
                         //Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["Cost"]));
                         //Cell1.CellStyle = PriceForeignCS;
-                        //Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
-                        //Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["PaymentRate"]));
-                        //Cell1.CellStyle = CurrencyCS;
+                        Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
+                        Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["PaymentRate"]));
+                        Cell1.CellStyle = CurrencyCS;
                     }
 
                     Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
@@ -14610,9 +14616,9 @@ namespace Infinium.Modules.Marketing.NewOrders
                 //Cell1.SetCellValue("Стоимость, " + Currency);
                 //Cell1.CellStyle = SimpleHeaderCS;
 
-                //Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
-                //Cell1.SetCellValue("Курс, " + Currency);
-                //Cell1.CellStyle = SimpleHeaderCS;
+                Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
+                Cell1.SetCellValue("Курс, " + Currency);
+                Cell1.CellStyle = SimpleHeaderCS;
 
                 Cell1 = sheet1.CreateRow(pos++).CreateCell(DisplayIndex++);
                 Cell1.SetCellValue("Вес, кг.");
@@ -16149,9 +16155,9 @@ namespace Infinium.Modules.Marketing.NewOrders
                         Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
                         Cell1.SetCellValue("Стоимость");
                         Cell1.CellStyle = SimpleHeaderCS;
-                        //Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
-                        //Cell1.SetCellValue("Курс, " + Currency);
-                        //Cell1.CellStyle = SimpleHeaderCS;
+                        Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
+                        Cell1.SetCellValue("Курс, " + Currency);
+                        Cell1.CellStyle = SimpleHeaderCS;
                         Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
                         Cell1.SetCellValue("Примечание");
                         Cell1.CellStyle = SimpleHeaderCS;
@@ -16213,9 +16219,9 @@ namespace Infinium.Modules.Marketing.NewOrders
                         Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
                         Cell1.SetCellValue(Convert.ToDouble(FrontsResultDataTable.Rows[x]["Cost"]));
                         Cell1.CellStyle = SimpleDecCS;
-                        //Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
-                        //Cell1.SetCellValue(Convert.ToDouble(FrontsResultDataTable.Rows[x]["Rate"]));
-                        //Cell1.CellStyle = SimpleDecCS;
+                        Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                        Cell1.SetCellValue(Convert.ToDouble(FrontsResultDataTable.Rows[x]["Rate"]));
+                        Cell1.CellStyle = SimpleDecCS;
                         Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
                         Cell1.SetCellValue(FrontsResultDataTable.Rows[x]["Notes"].ToString());
                         Cell1.CellStyle = SimpleCS;
@@ -16292,9 +16298,9 @@ namespace Infinium.Modules.Marketing.NewOrders
                         Cell1.SetCellValue("Стоимость");
                         Cell1.CellStyle = SimpleHeaderCS;
 
-                        //Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
-                        //Cell1.SetCellValue("Курс, " + Currency);
-                        //Cell1.CellStyle = SimpleHeaderCS;
+                        Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
+                        Cell1.SetCellValue("Курс, " + Currency);
+                        Cell1.CellStyle = SimpleHeaderCS;
 
                         Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
                         Cell1.SetCellValue("Примечание");
@@ -16361,9 +16367,9 @@ namespace Infinium.Modules.Marketing.NewOrders
                             Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
                             Cell1.SetCellValue(Convert.ToDouble(DecorResultDataTable[c].Rows[x]["Cost"]));
                             Cell1.CellStyle = SimpleDecCS;
-                            //Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
-                            //Cell1.SetCellValue(Convert.ToDouble(DecorResultDataTable[c].Rows[x]["Rate"]));
-                            //Cell1.CellStyle = SimpleDecCS;
+                            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                            Cell1.SetCellValue(Convert.ToDouble(DecorResultDataTable[c].Rows[x]["Rate"]));
+                            Cell1.CellStyle = SimpleDecCS;
                             Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
                             Cell1.SetCellValue(DecorResultDataTable[c].Rows[x]["Notes"].ToString());
                             Cell1.CellStyle = SimpleCS;
@@ -16646,9 +16652,9 @@ namespace Infinium.Modules.Marketing.NewOrders
                         Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
                         Cell1.SetCellValue("Стоимость");
                         Cell1.CellStyle = SimpleHeaderCS;
-                        //Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
-                        //Cell1.SetCellValue("Курс, " + Currency);
-                        //Cell1.CellStyle = SimpleHeaderCS;
+                        Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
+                        Cell1.SetCellValue("Курс, " + Currency);
+                        Cell1.CellStyle = SimpleHeaderCS;
                         Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
                         Cell1.SetCellValue("Примечание");
                         Cell1.CellStyle = SimpleHeaderCS;
@@ -16709,9 +16715,9 @@ namespace Infinium.Modules.Marketing.NewOrders
                         Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
                         Cell1.SetCellValue(Convert.ToDouble(FrontsResultDataTable.Rows[x]["Cost"]));
                         Cell1.CellStyle = SimpleDecCS;
-                        //Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
-                        //Cell1.SetCellValue(Convert.ToDouble(FrontsResultDataTable.Rows[x]["Rate"]));
-                        //Cell1.CellStyle = SimpleDecCS;
+                        Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                        Cell1.SetCellValue(Convert.ToDouble(FrontsResultDataTable.Rows[x]["Rate"]));
+                        Cell1.CellStyle = SimpleDecCS;
                         Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
                         Cell1.SetCellValue(FrontsResultDataTable.Rows[x]["Notes"].ToString());
                         Cell1.CellStyle = SimpleCS;
@@ -16788,9 +16794,9 @@ namespace Infinium.Modules.Marketing.NewOrders
                         Cell1.SetCellValue("Стоимость");
                         Cell1.CellStyle = SimpleHeaderCS;
 
-                        //Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
-                        //Cell1.SetCellValue("Курс, " + Currency);
-                        //Cell1.CellStyle = SimpleHeaderCS;
+                        Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
+                        Cell1.SetCellValue("Курс, " + Currency);
+                        Cell1.CellStyle = SimpleHeaderCS;
 
                         Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
                         Cell1.SetCellValue("Примечание");
@@ -16859,9 +16865,9 @@ namespace Infinium.Modules.Marketing.NewOrders
                             Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
                             Cell1.SetCellValue(Convert.ToDouble(DecorResultDataTable[c].Rows[x]["Cost"]));
                             Cell1.CellStyle = SimpleDecCS;
-                            //Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
-                            //Cell1.SetCellValue(Convert.ToDouble(DecorResultDataTable[c].Rows[x]["Rate"]));
-                            //Cell1.CellStyle = SimpleDecCS;
+                            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                            Cell1.SetCellValue(Convert.ToDouble(DecorResultDataTable[c].Rows[x]["Rate"]));
+                            Cell1.CellStyle = SimpleDecCS;
                             Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
                             Cell1.SetCellValue(DecorResultDataTable[c].Rows[x]["Notes"].ToString());
                             Cell1.CellStyle = SimpleCS;
@@ -17129,9 +17135,9 @@ namespace Infinium.Modules.Marketing.NewOrders
                         Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
                         Cell1.SetCellValue("Стоимость");
                         Cell1.CellStyle = SimpleHeaderCS;
-                        //Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
-                        //Cell1.SetCellValue("Курс, " + Currency);
-                        //Cell1.CellStyle = SimpleHeaderCS;
+                        Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
+                        Cell1.SetCellValue("Курс, " + Currency);
+                        Cell1.CellStyle = SimpleHeaderCS;
                         Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
                         Cell1.SetCellValue("Примечание");
                         Cell1.CellStyle = SimpleHeaderCS;
@@ -17204,9 +17210,9 @@ namespace Infinium.Modules.Marketing.NewOrders
                         Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
                         Cell1.SetCellValue(Convert.ToDouble(FrontsResultDataTable.Rows[x]["Cost"]));
                         Cell1.CellStyle = SimpleDecCS;
-                        //Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
-                        //Cell1.SetCellValue(Convert.ToDouble(FrontsResultDataTable.Rows[x]["Rate"]));
-                        //Cell1.CellStyle = SimpleDecCS;
+                        Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                        Cell1.SetCellValue(Convert.ToDouble(FrontsResultDataTable.Rows[x]["Rate"]));
+                        Cell1.CellStyle = SimpleDecCS;
                         Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
                         Cell1.SetCellValue(FrontsResultDataTable.Rows[x]["Notes"].ToString());
                         Cell1.CellStyle = SimpleCS;
@@ -17283,9 +17289,9 @@ namespace Infinium.Modules.Marketing.NewOrders
                         Cell1.SetCellValue("Стоимость");
                         Cell1.CellStyle = SimpleHeaderCS;
 
-                        //Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
-                        //Cell1.SetCellValue("Курс, " + Currency);
-                        //Cell1.CellStyle = SimpleHeaderCS;
+                        Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
+                        Cell1.SetCellValue("Курс, " + Currency);
+                        Cell1.CellStyle = SimpleHeaderCS;
 
                         Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
                         Cell1.SetCellValue("Примечание");
@@ -17353,9 +17359,9 @@ namespace Infinium.Modules.Marketing.NewOrders
                             Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
                             Cell1.SetCellValue(Convert.ToDouble(DecorResultDataTable[c].Rows[x]["Cost"]));
                             Cell1.CellStyle = SimpleDecCS;
-                            //Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
-                            //Cell1.SetCellValue(Convert.ToDouble(DecorResultDataTable[c].Rows[x]["Rate"]));
-                            //Cell1.CellStyle = SimpleDecCS;
+                            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                            Cell1.SetCellValue(Convert.ToDouble(DecorResultDataTable[c].Rows[x]["Rate"]));
+                            Cell1.CellStyle = SimpleDecCS;
                             Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
                             Cell1.SetCellValue(DecorResultDataTable[c].Rows[x]["Notes"].ToString());
                             Cell1.CellStyle = SimpleCS;
@@ -17607,9 +17613,9 @@ namespace Infinium.Modules.Marketing.NewOrders
                         Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
                         Cell1.SetCellValue("Стоимость");
                         Cell1.CellStyle = SimpleHeaderCS;
-                        //Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
-                        //Cell1.SetCellValue("Курс, " + Currency);
-                        //Cell1.CellStyle = SimpleHeaderCS;
+                        Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
+                        Cell1.SetCellValue("Курс, " + Currency);
+                        Cell1.CellStyle = SimpleHeaderCS;
                         Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
                         Cell1.SetCellValue("Примечание");
                         Cell1.CellStyle = SimpleHeaderCS;
@@ -17682,9 +17688,9 @@ namespace Infinium.Modules.Marketing.NewOrders
                         Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
                         Cell1.SetCellValue(Convert.ToDouble(FrontsResultDataTable.Rows[x]["Cost"]));
                         Cell1.CellStyle = SimpleDecCS;
-                        //Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
-                        //Cell1.SetCellValue(Convert.ToDouble(FrontsResultDataTable.Rows[x]["Rate"]));
-                        //Cell1.CellStyle = SimpleDecCS;
+                        Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                        Cell1.SetCellValue(Convert.ToDouble(FrontsResultDataTable.Rows[x]["Rate"]));
+                        Cell1.CellStyle = SimpleDecCS;
                         Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
                         Cell1.SetCellValue(FrontsResultDataTable.Rows[x]["Notes"].ToString());
                         Cell1.CellStyle = SimpleCS;
@@ -17764,9 +17770,9 @@ namespace Infinium.Modules.Marketing.NewOrders
                         Cell1.SetCellValue("Стоимость");
                         Cell1.CellStyle = SimpleHeaderCS;
 
-                        //Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
-                        //Cell1.SetCellValue("Курс, " + Currency);
-                        //Cell1.CellStyle = SimpleHeaderCS;
+                        Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
+                        Cell1.SetCellValue("Курс, " + Currency);
+                        Cell1.CellStyle = SimpleHeaderCS;
 
                         Cell1 = sheet1.CreateRow(RowIndex + 1).CreateCell(DisplayIndex++);
                         Cell1.SetCellValue("Примечание");
@@ -17832,9 +17838,9 @@ namespace Infinium.Modules.Marketing.NewOrders
                             Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
                             Cell1.SetCellValue(Convert.ToDouble(DecorResultDataTable[c].Rows[x]["Cost"]));
                             Cell1.CellStyle = SimpleDecCS;
-                            //Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
-                            //Cell1.SetCellValue(Convert.ToDouble(DecorResultDataTable[c].Rows[x]["Rate"]));
-                            //Cell1.CellStyle = SimpleDecCS;
+                            Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
+                            Cell1.SetCellValue(Convert.ToDouble(DecorResultDataTable[c].Rows[x]["Rate"]));
+                            Cell1.CellStyle = SimpleDecCS;
                             Cell1 = sheet1.CreateRow(RowIndex).CreateCell(DisplayIndex++);
                             Cell1.SetCellValue(DecorResultDataTable[c].Rows[x]["Notes"].ToString());
                             Cell1.CellStyle = SimpleCS;
@@ -18262,7 +18268,7 @@ namespace Infinium.Modules.Marketing.NewOrders
             //string SenderEmail = "zovprofilreport@mail.ru";
 
             //string AccountPassword = "7026Gradus0462";
-            string AccountPassword = "foqwsulbjiuslnue";
+            string AccountPassword = "lfbeecgxvmwvzlna";
             string SenderEmail = "infiniumdevelopers@gmail.com";
 
             string to = GetClientEmail(ClientID);
@@ -19477,7 +19483,19 @@ namespace Infinium.Modules.Marketing.NewOrders
                         DataRow NewRow = toMegaOrdersDT.NewRow();
                         NewRow.ItemArray = fromMegaOrdersDT.Rows[i].ItemArray;
                         NewRow["OrderNumber"] = OrderNumber;
+                        NewRow["OrderDate"] = DateTime.Now;
+                        NewRow["LastCalcDate"] = DBNull.Value;
+                        NewRow["ProfilDispatchDate"] = DBNull.Value;
+                        NewRow["OnAgreementDateTime"] = DBNull.Value;
+                        NewRow["ConfirmDateTime"] = DBNull.Value;
+                        NewRow["AgreementStatusID"] = 0;
+                        NewRow["OrderStatusID"] = 0;
+                        NewRow["ProfilOrderStatusID"] = 0;
+                        NewRow["TPSOrderStatusID"] = 0;
+                        NewRow["ProfilPackAllocStatusID"] = 0;
+                        NewRow["ProfilPackCount"] = 0;
                         NewRow["ClientID"] = ClientID;
+                        NewRow["DelayOfPayment"] = 1;
                         toMegaOrdersDT.Rows.Add(NewRow);
                     }
                     DA.Update(toMegaOrdersDT);
@@ -19532,6 +19550,16 @@ namespace Infinium.Modules.Marketing.NewOrders
                     DataRow NewRow = toMainOrdersDT.NewRow();
                     NewRow.ItemArray = row.ItemArray;
                     NewRow["MegaOrderID"] = MegaOrderID;
+                    NewRow["DocDateTime"] = DateTime.Now;
+                    NewRow["ProfilOnProductionDate"] = DBNull.Value;
+                    NewRow["ProfilProductionDate"] = DBNull.Value;
+                    NewRow["AllocPackDateTime"] = DBNull.Value;
+                    NewRow["ProfilPackAllocStatusID"] = 0;
+                    NewRow["ProfilPackCount"] = 0;
+                    NewRow["ProfilProductionStatusID"] = 1;
+                    NewRow["ProfilStorageStatusID"] = 1;
+                    NewRow["ProfilExpeditionStatusID"] = 1;
+                    NewRow["ProfilDispatchStatusID"] = 1;
                     toMainOrdersDT.Rows.Add(NewRow);
                     DA.Update(toMainOrdersDT);
                 }
@@ -19568,6 +19596,16 @@ namespace Infinium.Modules.Marketing.NewOrders
                         DataRow NewRow = toMainOrdersDT.NewRow();
                         NewRow.ItemArray = fromMainOrdersDT.Rows[i].ItemArray;
                         NewRow["MegaOrderID"] = MegaOrderID;
+                        NewRow["DocDateTime"] = DateTime.Now;
+                        NewRow["ProfilOnProductionDate"] = DBNull.Value;
+                        NewRow["ProfilProductionDate"] = DBNull.Value;
+                        NewRow["AllocPackDateTime"] = DBNull.Value;
+                        NewRow["ProfilPackAllocStatusID"] = 0;
+                        NewRow["ProfilPackCount"] = 0;
+                        NewRow["ProfilProductionStatusID"] = 1;
+                        NewRow["ProfilStorageStatusID"] = 1;
+                        NewRow["ProfilExpeditionStatusID"] = 1;
+                        NewRow["ProfilDispatchStatusID"] = 1;
                         toMainOrdersDT.Rows.Add(NewRow);
                     }
                     DA.Update(toMainOrdersDT);
@@ -19590,6 +19628,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                         DataRow NewRow = toFrontsOrdersDT.NewRow();
                         NewRow.ItemArray = fromFrontsOrdersDT.Rows[i].ItemArray;
                         NewRow["MainOrderID"] = MainOrderID;
+                        NewRow["CreateDateTime"] = DateTime.Now;
                         toFrontsOrdersDT.Rows.Add(NewRow);
                     }
                     DA.Update(toFrontsOrdersDT);
@@ -19611,6 +19650,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                         DataRow NewRow = toDecorOrdersDT.NewRow();
                         NewRow.ItemArray = fromDecorOrdersDT.Rows[i].ItemArray;
                         NewRow["MainOrderID"] = MainOrderID;
+                        NewRow["CreateDateTime"] = DateTime.Now;
                         toDecorOrdersDT.Rows.Add(NewRow);
                     }
                     DA.Update(toDecorOrdersDT);

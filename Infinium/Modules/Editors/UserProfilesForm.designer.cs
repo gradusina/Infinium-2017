@@ -183,6 +183,9 @@
             this.kryptonBorderEdge2 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge4 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge5 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
+            this.kryptonContextMenu4 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenu();
+            this.kryptonContextMenuItems5 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItems();
+            this.kryptonContextMenuItem7 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
             this.NavigatePanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.UserComboBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.MainSelectPanelCheckSet)).BeginInit();
@@ -2614,6 +2617,7 @@
             this.UsersDataGrid.StateSelected.DataCell.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
             this.UsersDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
             this.UsersDataGrid.TabIndex = 52;
+            this.UsersDataGrid.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.UsersDataGrid_CellMouseDown);
             this.UsersDataGrid.UseCustomBackColor = false;
             // 
             // btnAddUser
@@ -2675,6 +2679,22 @@
             this.kryptonBorderEdge5.Size = new System.Drawing.Size(956, 1);
             this.kryptonBorderEdge5.StateCommon.Color1 = System.Drawing.Color.Black;
             this.kryptonBorderEdge5.Text = "kryptonBorderEdge5";
+
+            // 
+            // kryptonContextMenu4
+            // 
+            this.kryptonContextMenu4.Items.AddRange(new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItemBase[] {
+                this.kryptonContextMenuItems5});
+            // 
+            // kryptonContextMenuItems5
+            // 
+            this.kryptonContextMenuItems5.Items.AddRange(new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItemBase[] {
+                this.kryptonContextMenuItem7});
+            // 
+            // kryptonContextMenuItem7
+            // 
+            this.kryptonContextMenuItem7.Text = "Сбросить пароль";
+            this.kryptonContextMenuItem7.Click += new System.EventHandler(this.kryptonContextMenuItem7_Click);
             // 
             // UserProfilesForm
             // 
@@ -2754,6 +2774,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.UsersDataGrid)).EndInit();
             this.ResumeLayout(false);
 
+        }
+
+        private void UsersDataGrid_SelectionChanged(object sender, System.EventArgs e)
+        {
+            throw new System.NotImplementedException();
         }
 
         #endregion
@@ -2911,5 +2936,8 @@
         private PercentageDataGrid UsersDataGrid;
         private ComponentFactory.Krypton.Toolkit.KryptonButton btnSaveUsers;
         private System.Windows.Forms.CheckBox cbClientManager;
+        private ComponentFactory.Krypton.Toolkit.KryptonContextMenu kryptonContextMenu4;
+        private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItems kryptonContextMenuItems5;
+        private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem kryptonContextMenuItem7;
     }
 }

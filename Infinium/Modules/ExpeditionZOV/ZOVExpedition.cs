@@ -8194,8 +8194,8 @@ namespace Infinium.Modules.ZOV.Expedition
             }
             RowIndex++;
 
-            ConfirmCell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 0, "Начальник логистики: Скоморошко Е.В.");
-            ConfirmCell.CellStyle = TempStyle;
+            //ConfirmCell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 0, "Начальник логистики: Скоморошко Е.В.");
+            //ConfirmCell.CellStyle = TempStyle;
             ConfirmCell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 0, "Организатор отгрузки: ");
             ConfirmCell.CellStyle = TempStyle;
             if (RealDispDateTime != DBNull.Value)
@@ -8225,7 +8225,8 @@ namespace Infinium.Modules.ZOV.Expedition
             //string SenderEmail = "zovprofilreport@mail.ru";
 
             //string AccountPassword = "7026Gradus0462";
-            string AccountPassword = "foqwsulbjiuslnue";
+            //var AccountPassword = "foqwsulbjiuslnue";
+            var AccountPassword = "lfbeecgxvmwvzlna";
             string SenderEmail = "infiniumdevelopers@gmail.com";
 
             string from = SenderEmail;

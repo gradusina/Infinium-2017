@@ -4255,15 +4255,15 @@ namespace Infinium.Modules.Marketing.Expedition
             PackagesBindingSource.Position = PackagesBindingSource.Find("PackageID", PackageID);
         }
 
-        public void SetDispatchDate(int FactoryID, int MegaOrderID, DateTime DispatchDate)
+        public void SetDispatchDate(int FactoryID, int[] MegaOrderIDs, DateTime DispatchDate)
         {
             string SqlCommandText = "SELECT MegaOrderID, ProfilDispatchDate FROM MegaOrders" +
-                " WHERE MegaOrderID = " + MegaOrderID;
+                " WHERE MegaOrderID IN (" + string.Join(",", MegaOrderIDs) + ")";
 
-            if (FactoryID == 2)
-                SqlCommandText = "SELECT MegaOrderID, TPSDispatchDate FROM MegaOrders" +
-                " WHERE MegaOrderID = " + MegaOrderID;
-
+            //if (FactoryID == 2)
+            //    SqlCommandText = "SELECT MegaOrderID, TPSDispatchDate FROM MegaOrders" +
+            //    " WHERE MegaOrderID = " + MegaOrderID;
+            
             using (SqlDataAdapter DA = new SqlDataAdapter(SqlCommandText, ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
@@ -4507,7 +4507,7 @@ namespace Infinium.Modules.Marketing.Expedition
                 LEFT JOIN infiniu2_users.dbo.Users AS ConfirmexpUser ON Dispatch.ConfirmExpUserID = ConfirmExpUser.UserID
                 LEFT JOIN infiniu2_users.dbo.Users AS ConfirmDispUser ON Dispatch.ConfirmDispUserID = ConfirmDispUser.UserID
                 LEFT JOIN infiniu2_marketingreference.dbo.Clients AS Clients ON Dispatch.ClientID = Clients.ClientID
-                LEFT JOIN infiniu2_marketingreference.dbo.Clients AS NewClients ON Dispatch.NewClientID = NewClients.ClientID";
+                LEFT JOIN infiniu2_marketingreference.dbo.Clients AS NewClients ON Dispatch.NewClientID = NewClients.ClientID order by ClientName";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
             {
                 DA.Fill(DispatchDT);
@@ -5529,7 +5529,7 @@ namespace Infinium.Modules.Marketing.Expedition
                 LEFT JOIN infiniu2_users.dbo.Users AS ConfirmDispUser ON Dispatch.ConfirmDispUserID = ConfirmDispUser.UserID
                 LEFT JOIN infiniu2_marketingreference.dbo.Clients AS Clients ON Dispatch.ClientID = Clients.ClientID
                 LEFT JOIN infiniu2_marketingreference.dbo.Clients AS NewClients ON Dispatch.NewClientID = NewClients.ClientID
-                WHERE CAST(PrepareDispatchDateTime AS DATE) = '" + Date.ToString("yyyy-MM-dd") + "'";
+                WHERE CAST(PrepareDispatchDateTime AS DATE) = '" + Date.ToString("yyyy-MM-dd") + "' order by ClientName";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
             {
                 DA.Fill(DispatchDT);
@@ -14245,7 +14245,8 @@ namespace Infinium.Modules.Marketing.Expedition
             //string SenderEmail = "zovprofilreport@mail.ru";
 
             //string AccountPassword = "7026Gradus0462";
-            string AccountPassword = "foqwsulbjiuslnue";
+            //var AccountPassword = "foqwsulbjiuslnue";
+            var AccountPassword = "lfbeecgxvmwvzlna";
             string SenderEmail = "infiniumdevelopers@gmail.com";
 
             string from = SenderEmail;
@@ -14698,8 +14699,8 @@ namespace Infinium.Modules.Marketing.Expedition
 
             RowIndex++;
 
-            ConfirmCell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 0, "Начальник логистики: Скоморошко Е.В.");
-            ConfirmCell.CellStyle = TempStyle;
+            //ConfirmCell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 0, "Начальник логистики: Скоморошко Е.В.");
+            //ConfirmCell.CellStyle = TempStyle;
             ConfirmCell = HSSFCellUtil.CreateCell(sheet1.CreateRow(RowIndex++), 0, "Организатор отгрузки: ");
             ConfirmCell.CellStyle = TempStyle;
             if (RealDispDateTime != DBNull.Value)
