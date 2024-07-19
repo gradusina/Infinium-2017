@@ -1818,5 +1818,18 @@ namespace Infinium
             DecorInsetColorsComboBox.Focus();
             SetAutoComplete(DecorInsetColorsComboBox, true);
         }
+
+        private void btnDecorCopy_Click(object sender, EventArgs e)
+        {
+            if (MainOrdersDecorTabControl.SelectedTabPageIndex == -1)
+                return;
+
+            DecorOrders.CopyCurrentDecorItem(MainOrdersDecorTabControl.SelectedTabPageIndex);
+        }
+
+        private void btnFrontCopy_Click(object sender, EventArgs e)
+        {
+            FrontsOrders.CopyCurrentFrontItem();
+        }
     }
 }

@@ -81,7 +81,7 @@ namespace Infinium.Modules.ExpeditionMarketing.ColorDispatchReportToDbf
             SelectCommand = $@"SELECT DISTINCT 
 CASE WHEN MainOrders.Notes = '' THEN CAST(MegaOrders.OrderNumber AS varchar(12)) + '_' + CAST(FrontsOrders.MainOrderID AS varchar(12)) ELSE CAST(MegaOrders.OrderNumber AS varchar(12)) 
                          + '_' + CAST(FrontsOrders.MainOrderID AS varchar(12)) + '_' + MainOrders.Notes END AS Notes,
-PackageDetailID, PackageDetails.Count AS Count, (FrontsOrders.Square * PackageDetails.Count / FrontsOrders.Count) AS Square, (FrontsOrders.Cost * PackageDetails.Count / FrontsOrders.Count) AS Cost, (FrontsOrders.CostWithTransport * PackageDetails.Count / FrontsOrders.Count) AS CostWithTransport, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, MegaOrders.Rate, MegaOrders.PaymentRate, FrontsOrders.* FROM PackageDetails
+PackageDetailID, PackageDetails.Count AS Count, (FrontsOrders.Square * PackageDetails.Count / FrontsOrders.Count) AS Square, (FrontsOrders.Cost * PackageDetails.Count / FrontsOrders.Count) AS Cost, (FrontsOrders.CostWithTransport * PackageDetails.Count / FrontsOrders.Count) AS CostWithTransport, infiniu2_catalog.dbo.FrontsConfig.measureId, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, MegaOrders.Rate, MegaOrders.PaymentRate, FrontsOrders.* FROM PackageDetails
                 INNER JOIN FrontsOrders ON PackageDetails.OrderID = FrontsOrders.FrontsOrdersID
                 INNER JOIN MainOrders ON FrontsOrders.MainOrderID = MainOrders.MainOrderID
                 INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID
@@ -205,7 +205,7 @@ PackageDetailID, PackageDetails.Count AS Count, (FrontsOrders.Square * PackageDe
             SelectCommand = $@"SELECT DISTINCT 
 CASE WHEN MainOrders.Notes = '' THEN CAST(MegaOrders.OrderNumber AS varchar(12)) + '_' + CAST(FrontsOrders.MainOrderID AS varchar(12)) ELSE CAST(MegaOrders.OrderNumber AS varchar(12))
                          + '_' + CAST(FrontsOrders.MainOrderID AS varchar(12)) + '_' + MainOrders.Notes END AS Notes,
-PackageDetailID, PackageDetails.Count AS Count, (FrontsOrders.Square * PackageDetails.Count / FrontsOrders.Count) AS Square, (FrontsOrders.Cost * PackageDetails.Count / FrontsOrders.Count) AS Cost, (FrontsOrders.CostWithTransport * PackageDetails.Count / FrontsOrders.Count) AS CostWithTransport, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, MegaOrders.Rate, MegaOrders.PaymentRate, FrontsOrders.* FROM PackageDetails
+PackageDetailID, PackageDetails.Count AS Count, (FrontsOrders.Square * PackageDetails.Count / FrontsOrders.Count) AS Square, (FrontsOrders.Cost * PackageDetails.Count / FrontsOrders.Count) AS Cost, (FrontsOrders.CostWithTransport * PackageDetails.Count / FrontsOrders.Count) AS CostWithTransport, infiniu2_catalog.dbo.FrontsConfig.measureId, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, MegaOrders.Rate, MegaOrders.PaymentRate, FrontsOrders.* FROM PackageDetails
                 INNER JOIN FrontsOrders ON PackageDetails.OrderID = FrontsOrders.FrontsOrdersID
                 INNER JOIN MainOrders ON FrontsOrders.MainOrderID = MainOrders.MainOrderID
                 INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID
@@ -217,7 +217,7 @@ PackageDetailID, PackageDetails.Count AS Count, (FrontsOrders.Square * PackageDe
                 SelectCommand = $@"SELECT DISTINCT 
 CASE WHEN MainOrders.Notes = '' THEN CAST(MegaOrders.OrderNumber AS varchar(12)) + '_' + CAST(FrontsOrders.MainOrderID AS varchar(12)) ELSE CAST(MegaOrders.OrderNumber AS varchar(12))
                          + '_' + CAST(FrontsOrders.MainOrderID AS varchar(12)) + '_' + MainOrders.Notes END AS Notes,
-PackageDetailID, PackageDetails.Count AS Count, (FrontsOrders.Square * PackageDetails.Count / FrontsOrders.Count) AS Square, (FrontsOrders.Cost * PackageDetails.Count / FrontsOrders.Count) AS Cost, (FrontsOrders.CostWithTransport * PackageDetails.Count / FrontsOrders.Count) AS CostWithTransport, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, MegaOrders.Rate, MegaOrders.PaymentRate, FrontsOrders.* FROM PackageDetails
+PackageDetailID, PackageDetails.Count AS Count, (FrontsOrders.Square * PackageDetails.Count / FrontsOrders.Count) AS Square, (FrontsOrders.Cost * PackageDetails.Count / FrontsOrders.Count) AS Cost, (FrontsOrders.CostWithTransport * PackageDetails.Count / FrontsOrders.Count) AS CostWithTransport, infiniu2_catalog.dbo.FrontsConfig.measureId, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, MegaOrders.Rate, MegaOrders.PaymentRate, FrontsOrders.* FROM PackageDetails
                 INNER JOIN FrontsOrders ON PackageDetails.OrderID = FrontsOrders.FrontsOrdersID
                 INNER JOIN MainOrders ON FrontsOrders.MainOrderID = MainOrders.MainOrderID
                 INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID
@@ -451,7 +451,7 @@ PackageDetailID, PackageDetails.Count AS Count, (FrontsOrders.Square * PackageDe
             int fID = Convert.ToInt32(OrdersDataTable.Rows[0]["FactoryID"]);
             DataTable Fronts = new DataTable();
 
-            using (DataView DV = new DataView(OrdersDataTable))
+            using (DataView DV = new DataView(OrdersDataTable, "measureId=3", "", DataViewRowState.CurrentRows))
             {
                 Fronts = DV.ToTable(true, new string[] { "FrontID", "ColorID", "PatinaID" });
             }
@@ -460,7 +460,7 @@ PackageDetailID, PackageDetails.Count AS Count, (FrontsOrders.Square * PackageDe
             {
                 DataRow[] Rows = OrdersDataTable.Select("ColorID = " + Fronts.Rows[i]["ColorID"].ToString() +
                                                         " AND PatinaID = " + Fronts.Rows[i]["PatinaID"].ToString() +
-                                                        " AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString() + " AND Width = -1");
+                                                        " AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString());
 
                 if (Rows.Count() == 0)
                     continue;
@@ -505,8 +505,78 @@ PackageDetailID, PackageDetails.Count AS Count, (FrontsOrders.Square * PackageDe
                 decimal Vitrina910WithTransportCost = 0;
                 decimal Vitrina910Weight = 0;
 
+                decimal ScagenCount = 0;
+                decimal ScagenPrice = 0;
+                decimal ScagenWithTransportCost = 0;
+                decimal ScagenWeight = 0;
+
                 for (int r = 0; r < Rows.Count(); r++)
                 {
+                    if (Rows[r]["measureId"].ToString() == "3" && Rows[r]["Width"].ToString() != "-1")
+                    {
+                        DataRow[] rows = frontsCatalogOrder.InsetTypesDataTable.Select("GroupID = 3 OR GroupID = 4");
+                        foreach (DataRow item in rows)
+                        {
+                            if (Rows[r]["InsetTypeID"].ToString() == item["InsetTypeID"].ToString())
+                            {
+                                ScagenCount += Convert.ToDecimal(Rows[r]["Count"]);
+                                ScagenPrice = Convert.ToDecimal(Rows[r]["FrontPrice"]);
+                                ScagenWithTransportCost += Convert.ToDecimal(Rows[r]["PriceWithTransport"]) * Convert.ToDecimal(Rows[r]["Count"]);
+
+                                decimal FrontWeight = 0;
+                                decimal InsetWeight = 0;
+
+                                GetFrontWeight(Rows[r], ref FrontWeight, ref InsetWeight);
+
+                                ScagenWeight += Convert.ToDecimal(FrontWeight + InsetWeight);
+                            }
+                        }
+                        rows = frontsCatalogOrder.InsetTypesDataTable.Select("InsetTypeID IN (2079,2080,2081,2082,2085,2086,2087,2088,2212,2213,29210,29211,27831,27832,29210,29211)");
+                        foreach (DataRow item in rows)
+                        {
+                            if (Rows[r]["InsetTypeID"].ToString() == item["InsetTypeID"].ToString())
+                            {
+                                ScagenCount += Convert.ToDecimal(Rows[r]["Count"]);
+                                ScagenPrice = Convert.ToDecimal(Rows[r]["FrontPrice"]);
+                                ScagenWithTransportCost += Convert.ToDecimal(Rows[r]["PriceWithTransport"]) * Convert.ToDecimal(Rows[r]["Count"]);
+
+                                decimal FrontWeight = 0;
+                                decimal InsetWeight = 0;
+
+                                GetFrontWeight(Rows[r], ref FrontWeight, ref InsetWeight);
+
+                                ScagenWeight += Convert.ToDecimal(FrontWeight + InsetWeight);
+                            }
+                        }
+                        if (Rows[r]["InsetTypeID"].ToString() == "-1")
+                        {
+                            ScagenCount += Convert.ToDecimal(Rows[r]["Count"]);
+                            ScagenPrice = Convert.ToDecimal(Rows[r]["FrontPrice"]);
+                            ScagenWithTransportCost += Convert.ToDecimal(Rows[r]["PriceWithTransport"]) * Convert.ToDecimal(Rows[r]["Count"]);
+
+                            decimal FrontWeight = 0;
+                            decimal InsetWeight = 0;
+
+                            GetFrontWeight(Rows[r], ref FrontWeight, ref InsetWeight);
+
+                            ScagenWeight += Convert.ToDecimal(FrontWeight + InsetWeight);
+                        }
+
+                        if (Rows[r]["InsetTypeID"].ToString() == "1")
+                        {
+                            ScagenCount += Convert.ToDecimal(Rows[r]["Count"]);
+                            ScagenPrice = Convert.ToDecimal(Rows[r]["FrontPrice"]);
+                            ScagenWithTransportCost += Convert.ToDecimal(Rows[r]["PriceWithTransport"]) * Convert.ToDecimal(Rows[r]["Count"]);
+
+                            decimal FrontWeight = 0;
+                            decimal InsetWeight = 0;
+
+                            GetFrontWeight(Rows[r], ref FrontWeight, ref InsetWeight);
+
+                            ScagenWeight += Convert.ToDecimal(FrontWeight + InsetWeight);
+                        }
+                    }
+
                     if (Rows[r]["Height"].ToString() == "713")
                     {
                         DataRow[] rows = frontsCatalogOrder.InsetTypesDataTable.Select("GroupID = 3 OR GroupID = 4");
@@ -638,8 +708,27 @@ PackageDetailID, PackageDetails.Count AS Count, (FrontsOrders.Square * PackageDe
                     }
                 }
 
-                //decimal Cost = Math.Ceiling(Solid713Count * Solid713Price / 0.01m) * 0.01m;
-                //Solid713WithTransportCost = Math.Ceiling(Solid713WithTransportCost / 0.01m) * 0.01m;
+                if (ScagenCount > 0)
+                {
+                    DataRow Row = ReportDataTable.NewRow();
+                    Row["OriginalPrice"] = ScagenPrice;
+                    Row["UNN"] = UNN;
+                    Row["Cvet"] = GetColorCode(Convert.ToInt32(Fronts.Rows[i]["ColorID"]));
+                    Row["Patina"] = GetPatinaCode(Convert.ToInt32(Fronts.Rows[i]["PatinaID"]));
+                    Row["PaymentRate"] = PaymentRate;
+                    Row["AccountingName"] = AccountingName;
+                    Row["InvNumber"] = InvNumber;
+                    Row["CurrencyCode"] = ProfilCurrencyCode;
+                    if (fID == 2)
+                        Row["TPSCurCode"] = TPSCurrencyCode;
+                    Row["Count"] = ScagenCount;
+                    Row["PriceWithTransport"] = Decimal.Round(ScagenWithTransportCost / ScagenCount, 2, MidpointRounding.AwayFromZero);
+                    Row["CostWithTransport"] = Decimal.Round(Math.Ceiling(ScagenWithTransportCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                    Row["Cost"] = Decimal.Round(Math.Ceiling(ScagenCount * ScagenPrice / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                    Row["Weight"] = Decimal.Round(ScagenWeight, 3, MidpointRounding.AwayFromZero);
+                    ReportDataTable.Rows.Add(Row);
+                }
+
                 if (Solid713Count > 0)
                 {
                     DataRow Row = ReportDataTable.NewRow();
@@ -1721,9 +1810,8 @@ PackageDetailID, PackageDetails.Count AS Count, (FrontsOrders.Square * PackageDe
             DataTable Fronts = new DataTable();
             if (IsNonStandard)
                 IsNonStandardFilter = "IsNonStandard=1";
-            using (DataView DV = new DataView(OrdersDataTable))
+            using (DataView DV = new DataView(OrdersDataTable, IsNonStandardFilter + " and measureId=1", "", DataViewRowState.CurrentRows))
             {
-                DV.RowFilter = IsNonStandardFilter;
                 Fronts = DV.ToTable(true, new string[] { "FrontID", "ColorID", "PatinaID" });
             }
 

@@ -543,7 +543,7 @@ namespace Infinium.Modules.ProfileAssignments.Planning
             _colorsDt.Columns.Add(new DataColumn("ColorName", Type.GetType("System.String")));
             _colorsDt.Columns.Add(new DataColumn("Cvet", Type.GetType("System.String")));
             const string selectCommand = @"SELECT TechStoreID, TechStoreName, Cvet FROM TechStore
-                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)
+                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))
                 ORDER BY TechStoreName";
             using (var da = new SqlDataAdapter(selectCommand, ConnectionStrings.CatalogConnectionString))
             {

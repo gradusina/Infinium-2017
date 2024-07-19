@@ -1583,7 +1583,9 @@ namespace Infinium
                 PackageStatusID = 4;
 
             DateTime From = CalendarFrom.SelectionEnd;
+            DateTime TimeFrom = CalendarTimeFrom.Value;
             DateTime To = CalendarTo.SelectionEnd;
+            DateTime TimeTo = CalendarTimeTo.Value;
 
             int FactoryID = 0;
 
@@ -1622,7 +1624,7 @@ namespace Infinium
                         AllProductsStatistics.FilterByOnProduction(From, To, FactoryID, cbSamples.Checked, cbNotSamples.Checked, cbTransport.Checked);
 
                     if (PackDate || StoreDate || ExpDate || FactDispDate)
-                        AllProductsStatistics.FilterByPackages(From, To, PackageStatusID, FactoryID, cbSamples.Checked, cbNotSamples.Checked, cbTransport.Checked);
+                        AllProductsStatistics.FilterByPackages(From, TimeFrom, To, TimeTo, PackageStatusID, FactoryID, cbSamples.Checked, cbNotSamples.Checked, cbTransport.Checked);
                 }
                 if (rbZOV.Checked)
                 {
@@ -1672,7 +1674,7 @@ namespace Infinium
                         AllProductsStatistics.FilterByOnProduction(From, To, FactoryID, cbSamples.Checked, cbNotSamples.Checked, cbTransport.Checked);
 
                     if (PackDate || StoreDate || ExpDate || FactDispDate)
-                        AllProductsStatistics.FilterByPackages(From, To, PackageStatusID, FactoryID, cbSamples.Checked, cbNotSamples.Checked, cbTransport.Checked);
+                        AllProductsStatistics.FilterByPackages(From, TimeFrom, To, TimeTo, PackageStatusID, FactoryID, cbSamples.Checked, cbNotSamples.Checked, cbTransport.Checked);
                 }
                 if (rbZOV.Checked)
                 {
@@ -4281,19 +4283,21 @@ namespace Infinium
             while (!SplashWindow.bSmallCreated) ;
             NeedSplash = false;
 
-            decimal EURBYRCurrency = 1000000;
+            decimal eurbyrCurrency = 1000000;
             DateTime date = new DateTime(CalendarFrom.SelectionStart.Year, CalendarFrom.SelectionStart.Month, 1);
-            string FileName = "Вышло из пр-ва " + CalendarFrom.SelectionStart.ToString("dd.MM.yyyy");
+            string fileName = "Вышло из пр-ва " + CalendarFrom.SelectionStart.ToString("dd.MM.yyyy");
             if (CalendarFrom.SelectionStart != CalendarTo.SelectionStart)
-                FileName = "Вышло из пр-ва за период с " + CalendarFrom.SelectionStart.ToString("dd.MM.yyyy") + " по " + CalendarTo.SelectionStart.ToString("dd.MM.yyyy");
+                fileName = "Вышло из пр-ва за период с " + CalendarFrom.SelectionStart.ToString("dd.MM.yyyy") + " по " + CalendarTo.SelectionStart.ToString("dd.MM.yyyy");
 
-            ArrayList MClients = AllProductsStatistics.SelectedMarketingClients;
-            ArrayList MClientGroups = AllProductsStatistics.SelectedMarketingClientGroups;
+            ArrayList mClients = AllProductsStatistics.SelectedMarketingClients;
+            ArrayList mClientGroups = AllProductsStatistics.SelectedMarketingClientGroups;
             DecorCatalogOrder = new Modules.ZOV.DecorCatalogOrder();
-            ProducedReport ProducedProducts = new ProducedReport(ref DecorCatalogOrder);
-            ProducedProducts.GetDateRates(date, ref EURBYRCurrency);
-            //ProducedProducts.CreateZOVReport(CalendarFrom.SelectionStart, CalendarTo.SelectionStart, FileName, EURBYRCurrency);
-            ProducedProducts.CreateMarketingPackReport(CalendarFrom.SelectionStart, CalendarTo.SelectionStart, cbSamples.Checked, cbNotSamples.Checked, FileName, EURBYRCurrency, MClients, MClientGroups);
+            //ProducedReport ProducedProducts = new ProducedReport(ref DecorCatalogOrder);
+            BatchProducedReport producedProducts = new BatchProducedReport(ref DecorCatalogOrder);
+            producedProducts.GetDateRates(date, ref eurbyrCurrency);
+            producedProducts.CreateMarketingPackReport(CalendarFrom.SelectionStart, CalendarTo.SelectionStart, 
+                cbSamples.Checked, cbNotSamples.Checked, fileName, eurbyrCurrency, mClients, mClientGroups);
+            
             NeedSplash = true;
             while (SplashWindow.bSmallCreated)
                 SmallWaitForm.CloseS = true;
@@ -4962,6 +4966,7 @@ namespace Infinium
             PlanDispDateMenuItem.Enabled = false;
             OnProdDateMenuItem.Enabled = false;
             PackDateMenuItem.Enabled = false;
+            dbfPackDateMenuItem.Enabled = false;
             StoreDateMenuItem.Enabled = false;
             ExpDateMenuItem.Enabled = false;
             FactDispDateMenuItem.Enabled = false;
@@ -4970,6 +4975,7 @@ namespace Infinium
                 PlanDispDateMenuItem.Enabled = true;
                 OnProdDateMenuItem.Enabled = false;
                 PackDateMenuItem.Enabled = false;
+                dbfPackDateMenuItem.Enabled = false;
                 StoreDateMenuItem.Enabled = false;
                 ExpDateMenuItem.Enabled = false;
                 FactDispDateMenuItem.Enabled = false;
@@ -4979,6 +4985,7 @@ namespace Infinium
                 PlanDispDateMenuItem.Enabled = false;
                 OnProdDateMenuItem.Enabled = true;
                 PackDateMenuItem.Enabled = false;
+                dbfPackDateMenuItem.Enabled = false;
                 StoreDateMenuItem.Enabled = false;
                 ExpDateMenuItem.Enabled = false;
                 FactDispDateMenuItem.Enabled = false;
@@ -4988,6 +4995,7 @@ namespace Infinium
                 PlanDispDateMenuItem.Enabled = false;
                 OnProdDateMenuItem.Enabled = false;
                 PackDateMenuItem.Enabled = true;
+                dbfPackDateMenuItem.Enabled = true;
                 StoreDateMenuItem.Enabled = false;
                 ExpDateMenuItem.Enabled = false;
                 FactDispDateMenuItem.Enabled = false;
@@ -4997,6 +5005,7 @@ namespace Infinium
                 PlanDispDateMenuItem.Enabled = false;
                 OnProdDateMenuItem.Enabled = false;
                 PackDateMenuItem.Enabled = false;
+                dbfPackDateMenuItem.Enabled = false;
                 StoreDateMenuItem.Enabled = true;
                 ExpDateMenuItem.Enabled = false;
                 FactDispDateMenuItem.Enabled = false;
@@ -5006,6 +5015,7 @@ namespace Infinium
                 PlanDispDateMenuItem.Enabled = false;
                 OnProdDateMenuItem.Enabled = false;
                 PackDateMenuItem.Enabled = false;
+                dbfPackDateMenuItem.Enabled = false;
                 StoreDateMenuItem.Enabled = false;
                 ExpDateMenuItem.Enabled = true;
                 FactDispDateMenuItem.Enabled = false;
@@ -5015,6 +5025,7 @@ namespace Infinium
                 PlanDispDateMenuItem.Enabled = false;
                 OnProdDateMenuItem.Enabled = false;
                 PackDateMenuItem.Enabled = false;
+                dbfPackDateMenuItem.Enabled = false;
                 StoreDateMenuItem.Enabled = false;
                 ExpDateMenuItem.Enabled = false;
                 FactDispDateMenuItem.Enabled = true;
@@ -5065,9 +5076,9 @@ namespace Infinium
             ArrayList MClients = AllProductsStatistics.SelectedMarketingClients;
             ArrayList MClientGroups = AllProductsStatistics.SelectedMarketingClientGroups;
             DecorCatalogOrder = new Modules.ZOV.DecorCatalogOrder();
-            ProducedReport ProducedProducts = new ProducedReport(ref DecorCatalogOrder);
+            //ProducedReport ProducedProducts = new ProducedReport(ref DecorCatalogOrder);
+            BatchProducedReport ProducedProducts = new BatchProducedReport(ref DecorCatalogOrder);
             ProducedProducts.GetDateRates(date, ref EURBYRCurrency);
-            //ProducedProducts.CreateZOVDispReport(CalendarFrom.SelectionStart, CalendarTo.SelectionStart, FileName, EURBYRCurrency);
             ProducedProducts.CreateMarketingStoreReport(CalendarFrom.SelectionStart, CalendarTo.SelectionStart, cbSamples.Checked, cbNotSamples.Checked,
                 FileName, EURBYRCurrency, MClients, MClientGroups);
             NeedSplash = true;
@@ -5127,6 +5138,50 @@ namespace Infinium
             NeedSplash = true;
             while (SplashWindow.bSmallCreated)
                 SmallWaitForm.CloseS = true;
+        }
+
+        private void dbfPackDateMenuItem_Click(object sender, EventArgs e)
+        {
+            Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Создание отчета.\r\nПодождите..."); });
+            T.Start();
+
+            while (!SplashWindow.bSmallCreated) ;
+            NeedSplash = false;
+
+            decimal eurbyrCurrency = 1000000;
+            DateTime date = new DateTime(CalendarFrom.SelectionStart.Year, CalendarFrom.SelectionStart.Month, 1);
+            string fileName = "Вышло из пр-ва " + CalendarFrom.SelectionStart.ToString("dd.MM.yyyy");
+            if (CalendarFrom.SelectionStart != CalendarTo.SelectionStart)
+                fileName = "Вышло из пр-ва за период с " + CalendarFrom.SelectionStart.ToString("dd.MM.yyyy") + " по " + CalendarTo.SelectionStart.ToString("dd.MM.yyyy");
+
+            ArrayList mClients = AllProductsStatistics.SelectedMarketingClients;
+            ArrayList mClientGroups = AllProductsStatistics.SelectedMarketingClientGroups;
+            DecorCatalogOrder = new Modules.ZOV.DecorCatalogOrder();
+            //ProducedReport ProducedProducts = new ProducedReport(ref DecorCatalogOrder);
+            BatchProducedReport producedProducts = new BatchProducedReport(ref DecorCatalogOrder);
+            producedProducts.GetDateRates(date, ref eurbyrCurrency);
+            
+            producedProducts.CreateDbfPackReport(CalendarFrom.SelectionStart, CalendarTimeFrom.Value, 
+                CalendarTo.SelectionStart, CalendarTimeTo.Value,
+                cbSamples.Checked, cbNotSamples.Checked, fileName, eurbyrCurrency, mClients, mClientGroups);
+
+            var currentMonthName = DateTime.Now.ToString("yyyy-MM-dd");
+            var filePath = Security.DBFSaveFilePath;
+            if (Security.DBFSaveFilePath.Length == 0)
+                filePath = Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/Infinium/1C data/" + currentMonthName;
+
+            var dbfName = string.Empty;
+            var reportName = "OutProd " + CalendarFrom.SelectionStart.ToString("yyyy.MM.dd");
+
+            producedProducts.SaveDBF(filePath, reportName, cbSamples.Checked, ref dbfName); 
+            NeedSplash = true;
+            while (SplashWindow.bSmallCreated)
+                SmallWaitForm.CloseS = true;
+        }
+
+        private void FrameColorsDataGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }

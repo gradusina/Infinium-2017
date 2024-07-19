@@ -16,7 +16,17 @@
 
         ep111Width = 142,
 
+        KorsikaWidth = 110,
+        MaltaWidth = 110,
+        FenixWidth = 110,
+        MargoWidth = 110,
+        LagunaWidth = 110,
+
         BostonWidth = 100,
+        VestWidth = 110,
+        VegasWidth = 110,
+        epsh071Width = 110,
+        Boston2Width = 100,
 
         AntaliaWidth = 120,
 
@@ -73,7 +83,17 @@
 
         BergamoNarrowMargin = 98,
 
+        KorsikaMargin = 45,
+        MargoMargin = 97,
+        FenixMargin = 127,
+        MaltaMargin = 45,
+        LagunaMargin = 107,
+
         BostonMargin = 28,
+        VestMargin = 51,
+        VegasMargin = 31,
+        epsh071Margin = 98,
+        Boston2Margin = 21,
 
         AntaliaMargin = 108,
 
@@ -594,7 +614,17 @@
 
         ep111 = 30215,
 
+        Korsika = 72741,
+        Malta = 72743,
+        Laguna = 72744,
+        Margo = 72745,
+        Fenix = 72742,
+
         Boston = 28968,
+        Vest = 62602,
+        Vegas = 62599,
+        epsh071 = 72785,
+        Boston2 = 62601,
 
         Marsel5 = 28965,
 

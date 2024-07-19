@@ -540,7 +540,7 @@ namespace Infinium.Modules.TechnologyCatalog
         private void CreateCoversDT()
         {
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TechStoreID, TechStoreName FROM TechStore" +
-                " WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)" +
+                " WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))" +
                 " ORDER BY TechStoreName",
                 ConnectionStrings.CatalogConnectionString))
             {
@@ -645,7 +645,7 @@ namespace Infinium.Modules.TechnologyCatalog
             ColorsDT.Columns.Add(new DataColumn("GroupID", Type.GetType("System.Int64")));
             ColorsDT.Columns.Add(new DataColumn("ColorName", Type.GetType("System.String")));
             string SelectCommand = @"SELECT TechStoreID, TechStoreName FROM TechStore
-                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)
+                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))
                 ORDER BY TechStoreName";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
@@ -1092,7 +1092,7 @@ namespace Infinium.Modules.TechnologyCatalog
         private void CreateCoversDT()
         {
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TechStoreID, TechStoreName FROM TechStore" +
-                " WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)" +
+                " WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))" +
                 " ORDER BY TechStoreName",
                 ConnectionStrings.CatalogConnectionString))
             {
@@ -1197,7 +1197,7 @@ namespace Infinium.Modules.TechnologyCatalog
             ColorsDT.Columns.Add(new DataColumn("GroupID", Type.GetType("System.Int64")));
             ColorsDT.Columns.Add(new DataColumn("ColorName", Type.GetType("System.String")));
             string SelectCommand = @"SELECT TechStoreID, TechStoreName FROM TechStore
-                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)
+                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))
                 ORDER BY TechStoreName";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
@@ -1846,9 +1846,11 @@ namespace Infinium.Modules.TechnologyCatalog
             NewItemsDG.Columns["Width"].HeaderText = "Ширина, мм";
             NewItemsDG.Columns["WidthMin"].HeaderText = "Ширина min, мм";
             NewItemsDG.Columns["WidthMax"].HeaderText = "Ширина max, мм";
+            NewItemsDG.Columns["WidthMaxMax"].HeaderText = "Ширина MaxMax, мм";
             NewItemsDG.Columns["Height"].HeaderText = "Высота, мм";
             NewItemsDG.Columns["HeightMin"].HeaderText = "Высота min, мм";
             NewItemsDG.Columns["HeightMax"].HeaderText = "Высота max, мм";
+            NewItemsDG.Columns["HeightMaxMax"].HeaderText = "Высота MaxMax, мм";
             NewItemsDG.Columns["Thickness"].HeaderText = "Толщина, мм";
             NewItemsDG.Columns["Diameter"].HeaderText = "Диаметр, мм";
             NewItemsDG.Columns["Admission"].HeaderText = "Допуск, мм";
@@ -1881,9 +1883,11 @@ namespace Infinium.Modules.TechnologyCatalog
             NewItemsDG.Columns["Height"].DisplayIndex = DisplayIndex++;
             NewItemsDG.Columns["HeightMin"].DisplayIndex = DisplayIndex++;
             NewItemsDG.Columns["HeightMax"].DisplayIndex = DisplayIndex++;
+            NewItemsDG.Columns["HeightMaxMax"].DisplayIndex = DisplayIndex++;
             NewItemsDG.Columns["Width"].DisplayIndex = DisplayIndex++;
             NewItemsDG.Columns["WidthMin"].DisplayIndex = DisplayIndex++;
             NewItemsDG.Columns["WidthMax"].DisplayIndex = DisplayIndex++;
+            NewItemsDG.Columns["WidthMaxMax"].DisplayIndex = DisplayIndex++;
             NewItemsDG.Columns["Admission"].DisplayIndex = DisplayIndex++;
             NewItemsDG.Columns["InsetHeightAdmission"].DisplayIndex = DisplayIndex++;
             NewItemsDG.Columns["InsetWidthAdmission"].DisplayIndex = DisplayIndex++;
@@ -2020,7 +2024,7 @@ namespace Infinium.Modules.TechnologyCatalog
             CoversDT.Columns.Add(new DataColumn("CoverName", Type.GetType("System.String")));
 
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TechStoreID, TechStoreName FROM TechStore" +
-                " WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)" +
+                " WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))" +
                 " ORDER BY TechStoreName",
                 ConnectionStrings.CatalogConnectionString))
             {
@@ -2056,7 +2060,7 @@ namespace Infinium.Modules.TechnologyCatalog
             ColorsDT.Columns.Add(new DataColumn("GroupID", Type.GetType("System.Int64")));
             ColorsDT.Columns.Add(new DataColumn("ColorName", Type.GetType("System.String")));
             string SelectCommand = @"SELECT TechStoreID, TechStoreName FROM TechStore
-                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)
+                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))
                 ORDER BY TechStoreName";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
@@ -2265,9 +2269,11 @@ namespace Infinium.Modules.TechnologyCatalog
             ItemsDG.Columns["Width"].HeaderText = "Ширина, мм";
             ItemsDG.Columns["WidthMin"].HeaderText = "Ширина min, мм";
             ItemsDG.Columns["WidthMax"].HeaderText = "Ширина max, мм";
+            ItemsDG.Columns["WidthMaxMax"].HeaderText = "Ширина MaxMax, мм";
             ItemsDG.Columns["Height"].HeaderText = "Высота, мм";
             ItemsDG.Columns["HeightMin"].HeaderText = "Высота min, мм";
             ItemsDG.Columns["HeightMax"].HeaderText = "Высота max, мм";
+            ItemsDG.Columns["HeightMaxMax"].HeaderText = "Высота MaxMax, мм";
             ItemsDG.Columns["Thickness"].HeaderText = "Толщина, мм";
             ItemsDG.Columns["Diameter"].HeaderText = "Диаметр, мм";
             ItemsDG.Columns["Admission"].HeaderText = "Допуск, мм";
@@ -2301,9 +2307,11 @@ namespace Infinium.Modules.TechnologyCatalog
             ItemsDG.Columns["Height"].DisplayIndex = DisplayIndex++;
             ItemsDG.Columns["HeightMin"].DisplayIndex = DisplayIndex++;
             ItemsDG.Columns["HeightMax"].DisplayIndex = DisplayIndex++;
+            ItemsDG.Columns["HeightMaxMax"].DisplayIndex = DisplayIndex++;
             ItemsDG.Columns["Width"].DisplayIndex = DisplayIndex++;
             ItemsDG.Columns["WidthMin"].DisplayIndex = DisplayIndex++;
             ItemsDG.Columns["WidthMax"].DisplayIndex = DisplayIndex++;
+            ItemsDG.Columns["WidthMaxMax"].DisplayIndex = DisplayIndex++;
             ItemsDG.Columns["Admission"].DisplayIndex = DisplayIndex++;
             ItemsDG.Columns["InsetHeightAdmission"].DisplayIndex = DisplayIndex++;
             ItemsDG.Columns["InsetWidthAdmission"].DisplayIndex = DisplayIndex++;
@@ -4468,66 +4476,6 @@ namespace Infinium.Modules.TechnologyCatalog
             }
         }
 
-        public void SaveClientsCatalogImagesFromExcel()
-        {
-            ManufactureDT = new DataTable();
-            DataTable table = new DataTable();
-            table.Columns.Add(new DataColumn(("ImageID"), System.Type.GetType("System.Int32")));
-            table.Columns.Add(new DataColumn(("TempName"), System.Type.GetType("System.String")));
-            table.TableName = "ImportedTable";
-
-            string s = Clipboard.GetText();
-            string[] lines = s.Split('\n');
-            System.Collections.Generic.List<string> data = new System.Collections.Generic.List<string>(lines);
-
-            if (data.Count > 0 && string.IsNullOrWhiteSpace(data[data.Count - 1]))
-            {
-                data.RemoveAt(data.Count - 1);
-            }
-
-            foreach (string iterationRow in data)
-            {
-                string row = iterationRow;
-                if (row.EndsWith("\r"))
-                {
-                    row = row.Substring(0, row.Length - "\r".Length);
-                }
-
-                string[] rowData = row.Split(new char[] { '\r', '\x09' });
-                DataRow newRow = table.NewRow();
-
-                for (int i = 0; i < rowData.Length; i++)
-                {
-                    if (i >= table.Columns.Count) break;
-                    if (rowData[i].Length > 0)
-                        newRow[i] = rowData[i];
-                }
-                table.Rows.Add(newRow);
-            }
-
-            using (SqlDataAdapter DA = new SqlDataAdapter(@"SELECT * FROM ClientsCatalogImages",
-                ConnectionStrings.CatalogConnectionString))
-            {
-                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
-                {
-                    using (DataTable DT = new DataTable())
-                    {
-                        DA.Fill(DT);
-                        for (int i = 0; i < table.Rows.Count; i++)
-                        {
-                            int ImageID = 0;
-                            string TempName = string.Empty;
-                            ImageID = Convert.ToInt32(table.Rows[i]["ImageID"]);
-                            TempName = table.Rows[i]["TempName"].ToString();
-                            DataRow[] rows = DT.Select("ImageID=" + ImageID);
-                            if (rows.Count() > 0)
-                                rows[0]["TempName"] = TempName;
-                        }
-                        DA.Update(DT);
-                    }
-                }
-            }
-        }
 
         public void SaveCoatingMaterialFromExcel()
         {

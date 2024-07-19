@@ -3300,7 +3300,7 @@ INNER JOIN infiniu2_catalog.dbo.Measures AS M ON G.MeasureID=M.MeasureID " + fil
             FrameColorsDataTable.Columns.Add(new DataColumn("ColorID", Type.GetType("System.Int64")));
             FrameColorsDataTable.Columns.Add(new DataColumn("ColorName", Type.GetType("System.String")));
             string SelectCommand = @"SELECT TechStoreID, TechStoreName FROM TechStore
-				WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)
+				WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))
 				ORDER BY TechStoreName";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
@@ -4241,7 +4241,7 @@ INNER JOIN infiniu2_marketingreference.dbo.Clients AS C ON MegaOrders.ClientID=C
             FrameColorsDataTable.Columns.Add(new DataColumn("ColorID", Type.GetType("System.Int64")));
             FrameColorsDataTable.Columns.Add(new DataColumn("ColorName", Type.GetType("System.String")));
             string SelectCommand = @"SELECT TechStoreID, TechStoreName FROM TechStore
-				WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)
+				WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))
 				ORDER BY TechStoreName";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {

@@ -115,7 +115,7 @@ namespace Infinium.Modules.Marketing.NewOrders
             FrameColorsDataTable.Columns.Add(new DataColumn("ColorID", Type.GetType("System.Int64")));
             FrameColorsDataTable.Columns.Add(new DataColumn("ColorName", Type.GetType("System.String")));
             string SelectCommand = @"SELECT TechStoreID, TechStoreName FROM TechStore
-                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)
+                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))
                 ORDER BY TechStoreName";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
@@ -709,9 +709,39 @@ namespace Infinium.Modules.Marketing.NewOrders
             }
         }
 
-        public void AddFrontsOrder(int MainOrderID, int FrontID, int ColorID, int PatinaID, int InsetTypeID,
+        public bool IsOversize(int frontID, int height)
+        {
+            var oversize = false;
+            TechStoreDimensions dimensions = GetTechStoreDimensions(frontID);
+
+            if (height > dimensions.HeightMax && height <= dimensions.HeightMaxMax)
+                oversize = true;
+
+            return oversize;
+        }
+
+        public bool GetClientNonStandard(int clientId)
+        {
+            bool nonStandard = false;
+            string SelectCommand = @"SELECT NonStandard FROM Clients WHERE clientId=" + clientId;
+            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingReferenceConnectionString))
+            {
+                using (DataTable DT = new DataTable())
+                {
+                    if (DA.Fill(DT) > 0)
+                    {
+                        if (DT.Rows[0]["NonStandard"] != DBNull.Value)
+                            nonStandard = Convert.ToBoolean(DT.Rows[0]["NonStandard"]);
+                    }
+                }
+            }
+            return nonStandard;
+        }
+
+
+        public void AddFrontsOrder(bool clientConfirm, int MainOrderID, int FrontID, int ColorID, int PatinaID, int InsetTypeID,
             int InsetColorID, int TechnoProfileID, int TechnoColorID, int TechnoInsetTypeID, int TechnoInsetColorID,
-            int Height, int Width, int Count, string Notes, int ImpostMargin = 0)
+            int Height, int Width, int Count, string Notes, bool IsNonStandard, int ImpostMargin = 0)
         {
             //if (TablesManager.IsInsetTypePressed(InsetTypeID))
             //{
@@ -726,20 +756,30 @@ namespace Infinium.Modules.Marketing.NewOrders
             TechStoreDimensions dimensions = TablesManager.GetTechStoreDimensions(FrontID);
 
             bool bNotCurved = Width != -1;
+
+            if (!clientConfirm)
+            {
+                if (Height > 0 && Height > dimensions.HeightMax && bNotCurved)
+                {
+                    MessageBox.Show($@"Высота фасада не может быть больше макс. размера {dimensions.HeightMaxMax} мм",
+                        "Добавление фасада");
+                    return;
+                }
+
+                if (Width > 0 && Width > dimensions.WidthMax)
+                {
+                    MessageBox.Show($@"Ширина фасада не может быть больше макс. размера {dimensions.WidthMax} мм",
+                        "Добавление фасада");
+                    return;
+                }
+            }
+
             if (Height > 0 && Height < dimensions.HeightMin && bNotCurved)
             {
                 MessageBox.Show($@"Высота фасада не может быть меньше мин. размера {dimensions.HeightMin} мм",
                     "Добавление фасада");
                 return;
             }
-
-            if (Height > 0 && Height > dimensions.HeightMax && bNotCurved)
-            {
-                MessageBox.Show($@"Высота фасада не может быть больше макс. размера {dimensions.HeightMax} мм",
-                    "Добавление фасада");
-                return;
-            }
-
             if (Width > 0 && Width < dimensions.WidthMin)
             {
                 MessageBox.Show($@"Ширина фасада не может быть меньше мин. размера {dimensions.WidthMin} мм",
@@ -747,12 +787,6 @@ namespace Infinium.Modules.Marketing.NewOrders
                 return;
             }
 
-            if (Width > 0 && Width > dimensions.WidthMax)
-            {
-                MessageBox.Show($@"Ширина фасада не может быть больше макс. размера {dimensions.WidthMax} мм",
-                    "Добавление фасада");
-                return;
-            }
 
             //(3727,3728,3729,3730,3731,3732,3733,3734,3735,3736,3737,3739,3740,3741,3742,3743,3744,3745,3746,3747,3748, 15760, 28945,16269)
             if (Width != -1 && FrontID == 3630 && Width > 1478)
@@ -813,6 +847,7 @@ namespace Infinium.Modules.Marketing.NewOrders
             //}
             DateTime CreateDateTime = Security.GetCurrentDate();
             DataRow row = FrontsOrdersDataTable.NewRow();
+            row["IsNonStandard"] = IsNonStandard;
             row["CreateDateTime"] = CreateDateTime;
             row["CreateUserTypeID"] = 0;
             row["CreateUserID"] = Security.CurrentUserID;
@@ -831,7 +866,6 @@ namespace Infinium.Modules.Marketing.NewOrders
             row["Width"] = Width;
             row["Count"] = Count;
             row["Notes"] = Notes;
-            row["IsNonStandard"] = false;
             row["IsSample"] = false;
             if (ImpostMargin != 0)
                 row["ImpostMargin"] = ImpostMargin;
@@ -2871,7 +2905,7 @@ namespace Infinium.Modules.Marketing.NewOrders
             FrameColorsDataTable.Columns.Add(new DataColumn("ColorID", Type.GetType("System.Int64")));
             FrameColorsDataTable.Columns.Add(new DataColumn("ColorName", Type.GetType("System.String")));
             string SelectCommand = @"SELECT TechStoreID, TechStoreName FROM TechStore
-                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)
+                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))
                 ORDER BY TechStoreName";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
@@ -3377,6 +3411,24 @@ namespace Infinium.Modules.Marketing.NewOrders
         {
             string selectCommand =
                 $"SELECT FrontsOrdersID, OnStorage from NewFrontsOrders where FrontsOrdersID={FrontsOrdersID}";
+
+            using (SqlDataAdapter da = new SqlDataAdapter(selectCommand,
+                       ConnectionStrings.MarketingOrdersConnectionString))
+            {
+                using (new SqlCommandBuilder(da))
+                {
+                    using (DataTable dt = new DataTable())
+                    {
+                        if (da.Fill(dt) > 0)
+                        {
+                            dt.Rows[0]["OnStorage"] = !Convert.ToBoolean(dt.Rows[0]["OnStorage"]);
+                            da.Update(dt);
+                        }
+                    }
+                }
+            }
+            selectCommand =
+                $"SELECT FrontsOrdersID, OnStorage from FrontsOrders where FrontsOrdersID={FrontsOrdersID}";
 
             using (SqlDataAdapter da = new SqlDataAdapter(selectCommand,
                        ConnectionStrings.MarketingOrdersConnectionString))
@@ -3901,27 +3953,27 @@ namespace Infinium.Modules.Marketing.NewOrders
 
                 int DecorID = Convert.ToInt32(grid.SelectedRows[0].Cells["DecorID"].Value);
 
-                if (TestTechCatalogManager == null)
-                {
-                    TestTechCatalogManager = new Modules.TechnologyCatalog.TestTechCatalog();
-                    TestTechCatalogManager.Initialize();
-                }
+                //if (TestTechCatalogManager == null)
+                //{
+                //    TestTechCatalogManager = new Modules.TechnologyCatalog.TestTechCatalog();
+                //    TestTechCatalogManager.Initialize();
+                //}
 
-                DataTable DT = TestTechCatalogManager.GetOperationsGroups(DecorID);
-                if (DT.Rows.Count > 0)
-                {
-                    for (int i = 0; i < DT.Rows.Count; i++)
-                    {
-                        ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem kryptonContextMenuItem =
-                            new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem()
-                            {
-                                Text = DT.Rows[i]["GroupName"].ToString(),
-                                Tag = Convert.ToInt32(DT.Rows[i]["TechCatalogOperationsGroupID"])
-                            };
-                        kryptonContextMenuItem.Click += KryptonContextMenuItem_Click;
-                        kryptonContextMenuItems.Items.Add(kryptonContextMenuItem);
-                    }
-                }
+                //DataTable DT = TestTechCatalogManager.GetOperationsGroups(DecorID);
+                //if (DT.Rows.Count > 0)
+                //{
+                //    for (int i = 0; i < DT.Rows.Count; i++)
+                //    {
+                //        ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem kryptonContextMenuItem =
+                //            new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem()
+                //            {
+                //                Text = DT.Rows[i]["GroupName"].ToString(),
+                //                Tag = Convert.ToInt32(DT.Rows[i]["TechCatalogOperationsGroupID"])
+                //            };
+                //        kryptonContextMenuItem.Click += KryptonContextMenuItem_Click;
+                //        kryptonContextMenuItems.Items.Add(kryptonContextMenuItem);
+                //    }
+                //}
 
                 kryptonContextMenuItems.Items.Add(setOnStorage);
                 kryptonContextMenu.Items.Add(kryptonContextMenuItems);
@@ -4364,6 +4416,25 @@ namespace Infinium.Modules.Marketing.NewOrders
         {
             string selectCommand =
                 $"SELECT DecorOrderID, OnStorage from NewDecorOrders where DecorOrderID={DecorOrderID}";
+
+            using (SqlDataAdapter da = new SqlDataAdapter(selectCommand,
+                       ConnectionStrings.MarketingOrdersConnectionString))
+            {
+                using (new SqlCommandBuilder(da))
+                {
+                    using (DataTable dt = new DataTable())
+                    {
+                        if (da.Fill(dt) > 0)
+                        {
+                            dt.Rows[0]["OnStorage"] = !Convert.ToBoolean(dt.Rows[0]["OnStorage"]);
+                            da.Update(dt);
+                        }
+                    }
+                }
+            }
+            
+            selectCommand =
+                $"SELECT DecorOrderID, OnStorage from DecorOrders where DecorOrderID={DecorOrderID}";
 
             using (SqlDataAdapter da = new SqlDataAdapter(selectCommand,
                        ConnectionStrings.MarketingOrdersConnectionString))
@@ -8570,7 +8641,7 @@ namespace Infinium.Modules.Marketing.NewOrders
             bool hasFronts = false;
             bool hasDecor = false;
             string SelectCommand =
-                "SELECT NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, NewMegaOrders.PaymentRate FROM NewFrontsOrders" +
+                "SELECT NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.measureId, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, NewMegaOrders.PaymentRate FROM NewFrontsOrders" +
                 " INNER JOIN infiniu2_catalog.dbo.FrontsConfig ON NewFrontsOrders.FrontConfigID = infiniu2_catalog.dbo.FrontsConfig.FrontConfigID" +
                 " INNER JOIN NewMainOrders ON NewFrontsOrders.MainOrderID = NewMainOrders.MainOrderID" +
                 " INNER JOIN NewMegaOrders ON NewMainOrders.MegaOrderID = NewMegaOrders.MegaOrderID AND NewMegaOrders.MegaOrderID = " +
@@ -8578,7 +8649,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                 WHERE NeedCalcPrice=0 AND NewFrontsOrders.IsSample=1 AND InvNumber IS NOT NULL ORDER BY InvNumber";
             if (!IsSample)
                 SelectCommand =
-                    "SELECT NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, NewMegaOrders.PaymentRate FROM NewFrontsOrders" +
+                    "SELECT NewFrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.measureId, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, NewMegaOrders.PaymentRate FROM NewFrontsOrders" +
                     " INNER JOIN infiniu2_catalog.dbo.FrontsConfig ON NewFrontsOrders.FrontConfigID = infiniu2_catalog.dbo.FrontsConfig.FrontConfigID" +
                     " INNER JOIN NewMainOrders ON NewFrontsOrders.MainOrderID = NewMainOrders.MainOrderID" +
                     " INNER JOIN NewMegaOrders ON NewMainOrders.MegaOrderID = NewMegaOrders.MegaOrderID AND NewMegaOrders.MegaOrderID = " +
@@ -8628,7 +8699,7 @@ namespace Infinium.Modules.Marketing.NewOrders
             bool hasFronts = false;
             bool hasDecor = false;
             string SelectCommand =
-                "SELECT FrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, MegaOrders.PaymentRate FROM FrontsOrders" +
+                "SELECT FrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.measureId, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, MegaOrders.PaymentRate FROM FrontsOrders" +
                 " INNER JOIN infiniu2_catalog.dbo.FrontsConfig ON FrontsOrders.FrontConfigID = infiniu2_catalog.dbo.FrontsConfig.FrontConfigID" +
                 " INNER JOIN MainOrders ON FrontsOrders.MainOrderID = MainOrders.MainOrderID" +
                 " INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID" +
@@ -8636,7 +8707,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                 string.Join(",", MainOrderIDs) + ") ORDER BY InvNumber";
             if (!IsSample)
                 SelectCommand =
-                    "SELECT FrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, MegaOrders.PaymentRate FROM FrontsOrders" +
+                    "SELECT FrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.measureId, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, MegaOrders.PaymentRate FROM FrontsOrders" +
                     " INNER JOIN infiniu2_catalog.dbo.FrontsConfig ON FrontsOrders.FrontConfigID = infiniu2_catalog.dbo.FrontsConfig.FrontConfigID" +
                     " INNER JOIN MainOrders ON FrontsOrders.MainOrderID = MainOrders.MainOrderID" +
                     " INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID" +
@@ -8822,7 +8893,7 @@ namespace Infinium.Modules.Marketing.NewOrders
             FrameColorsDataTable.Columns.Add(new DataColumn("ColorID", Type.GetType("System.Int64")));
             FrameColorsDataTable.Columns.Add(new DataColumn("ColorName", Type.GetType("System.String")));
             string SelectCommand = @"SELECT TechStoreID, TechStoreName FROM TechStore
-                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)
+                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))
                 ORDER BY TechStoreName";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
@@ -9144,9 +9215,8 @@ namespace Infinium.Modules.Marketing.NewOrders
             if (IsNonStandard)
                 IsNonStandardFilter = "IsNonStandard=1";
 
-            using (DataView DV = new DataView(OrdersDataTable))
+            using (DataView DV = new DataView(OrdersDataTable, IsNonStandardFilter + " and measureId=1", "", DataViewRowState.CurrentRows))
             {
-                DV.RowFilter = IsNonStandardFilter;
                 Fronts = DV.ToTable(true, new string[] { "FrontID" });
             }
 
@@ -9605,15 +9675,14 @@ namespace Infinium.Modules.Marketing.NewOrders
             int fID = Convert.ToInt32(OrdersDataTable.Rows[0]["FactoryID"]);
             DataTable Fronts = new DataTable();
 
-            using (DataView DV = new DataView(OrdersDataTable))
+            using (DataView DV = new DataView(OrdersDataTable, "measureId=3", "", DataViewRowState.CurrentRows))
             {
                 Fronts = DV.ToTable(true, new string[] { "FrontID" });
             }
 
             for (int i = 0; i < Fronts.Rows.Count; i++)
             {
-                DataRow[] Rows = OrdersDataTable.Select("FrontID = " + Fronts.Rows[i]["FrontID"].ToString() +
-                                                        " AND Width = -1");
+                DataRow[] Rows = OrdersDataTable.Select("FrontID = " + Fronts.Rows[i]["FrontID"].ToString());
 
                 if (Rows.Count() == 0)
                     continue;
@@ -9666,11 +9735,87 @@ namespace Infinium.Modules.Marketing.NewOrders
                 decimal Vitrina910WithTransportCost = 0;
                 decimal Vitrina910Weight = 0;
 
+                decimal ScagenCount = 0;
+                decimal ScagenPrice = 0;
+                decimal ScagenOriginalPrice = 0;
+                decimal ScagenWithTransportCost = 0;
+                decimal ScagenWeight = 0;
+
                 decimal TotalDiscount = 0;
 
                 for (int r = 0; r < Rows.Count(); r++)
                 {
                     TotalDiscount = Convert.ToDecimal(Rows[r]["TotalDiscount"]);
+
+                    if (Rows[r]["measureId"].ToString() == "3" && Rows[r]["Width"].ToString() != "-1")
+                    {
+                        DataRow[] rows = InsetTypesDataTable.Select("GroupID = 3 OR GroupID = 4");
+                        foreach (DataRow item in rows)
+                        {
+                            if (Rows[r]["InsetTypeID"].ToString() == item["InsetTypeID"].ToString())
+                            {
+                                ScagenCount += Convert.ToDecimal(Rows[r]["Count"]);
+                                ScagenPrice = Convert.ToDecimal(Rows[r]["FrontPrice"]);
+                                ScagenOriginalPrice = Convert.ToDecimal(Rows[r]["OriginalPrice"]);
+                                ScagenWithTransportCost += Convert.ToDecimal(Rows[r]["PriceWithTransport"]) * Convert.ToDecimal(Rows[r]["Count"]);
+
+                                decimal FrontWeight = 0;
+                                decimal InsetWeight = 0;
+
+                                GetFrontWeight(Rows[r], ref FrontWeight, ref InsetWeight);
+
+                                ScagenWeight += Convert.ToDecimal(FrontWeight + InsetWeight);
+                            }
+                        }
+                        rows = InsetTypesDataTable.Select("InsetTypeID IN (2079,2080,2081,2082,2085,2086,2087,2088,2212,2213,29210,29211,27831,27832,29210,29211)");
+                        foreach (DataRow item in rows)
+                        {
+                            if (Rows[r]["InsetTypeID"].ToString() == item["InsetTypeID"].ToString())
+                            {
+                                ScagenCount += Convert.ToDecimal(Rows[r]["Count"]);
+                                ScagenPrice = Convert.ToDecimal(Rows[r]["FrontPrice"]);
+                                ScagenOriginalPrice = Convert.ToDecimal(Rows[r]["OriginalPrice"]);
+                                ScagenWithTransportCost += Convert.ToDecimal(Rows[r]["PriceWithTransport"]) * Convert.ToDecimal(Rows[r]["Count"]);
+
+                                decimal FrontWeight = 0;
+                                decimal InsetWeight = 0;
+
+                                GetFrontWeight(Rows[r], ref FrontWeight, ref InsetWeight);
+
+                                ScagenWeight += Convert.ToDecimal(FrontWeight + InsetWeight);
+                            }
+                        }
+                        if (Rows[r]["InsetTypeID"].ToString() == "-1")
+                        {
+                            ScagenCount += Convert.ToDecimal(Rows[r]["Count"]);
+                            ScagenPrice = Convert.ToDecimal(Rows[r]["FrontPrice"]);
+                            ScagenOriginalPrice = Convert.ToDecimal(Rows[r]["OriginalPrice"]);
+                            ScagenWithTransportCost += Convert.ToDecimal(Rows[r]["PriceWithTransport"]) * Convert.ToDecimal(Rows[r]["Count"]);
+
+                            decimal FrontWeight = 0;
+                            decimal InsetWeight = 0;
+
+                            GetFrontWeight(Rows[r], ref FrontWeight, ref InsetWeight);
+
+                            ScagenWeight += Convert.ToDecimal(FrontWeight + InsetWeight);
+                        }
+
+                        if (Rows[r]["InsetTypeID"].ToString() == "1")
+                        {
+                            ScagenCount += Convert.ToDecimal(Rows[r]["Count"]);
+                            ScagenPrice = Convert.ToDecimal(Rows[r]["FrontPrice"]);
+                            ScagenOriginalPrice = Convert.ToDecimal(Rows[r]["OriginalPrice"]);
+                            ScagenWithTransportCost += Convert.ToDecimal(Rows[r]["PriceWithTransport"]) * Convert.ToDecimal(Rows[r]["Count"]);
+
+                            decimal FrontWeight = 0;
+                            decimal InsetWeight = 0;
+
+                            GetFrontWeight(Rows[r], ref FrontWeight, ref InsetWeight);
+
+                            ScagenWeight += Convert.ToDecimal(FrontWeight + InsetWeight);
+                        }
+                    }
+
                     if (Rows[r]["Height"].ToString() == "713")
                     {
                         DataRow[] rows = InsetTypesDataTable.Select("GroupID = 3 OR GroupID = 4");
@@ -9825,8 +9970,32 @@ namespace Infinium.Modules.Marketing.NewOrders
 
                 }
 
-                //decimal Cost = Math.Ceiling(Solid713Count * Solid713Price / 0.01m) * 0.01m;
-                //Solid713WithTransportCost = Math.Ceiling(Solid713WithTransportCost / 0.01m) * 0.01m;
+                if (ScagenCount > 0)
+                {
+                    DataRow Row = ReportDataTable.NewRow();
+                    Row["UNN"] = UNN;
+                    Row["PaymentRate"] = PaymentRate;
+                    Row["AccountingName"] = AccountingName;
+                    Row["InvNumber"] = InvNumber;
+                    Row["CurrencyCode"] = ProfilCurrencyCode;
+                    if (fID == 2)
+                        Row["TPSCurCode"] = TPSCurrencyCode;
+                    Row["TotalDiscount"] = TotalDiscount;
+                    Row["Name"] = GetFrontName(Convert.ToInt32(Fronts.Rows[i]["FrontID"]));
+                    Row["Count"] = ScagenCount;
+                    Row["Measure"] = "шт.";
+                    Row["Price"] = decimal.Round(ScagenPrice, 2, MidpointRounding.AwayFromZero);
+                    Row["OriginalPrice"] = decimal.Round(ScagenOriginalPrice, 2, MidpointRounding.AwayFromZero);
+                    Row["PriceWithTransport"] = decimal.Round(ScagenWithTransportCost / ScagenCount, 2,
+                        MidpointRounding.AwayFromZero);
+                    Row["CostWithTransport"] = decimal.Round(Math.Ceiling(ScagenWithTransportCost / 0.01m) * 0.01m, 2,
+                        MidpointRounding.AwayFromZero);
+                    Row["Cost"] = decimal.Round(Math.Ceiling(ScagenCount * ScagenPrice / 0.01m) * 0.01m, 2,
+                        MidpointRounding.AwayFromZero);
+                    Row["Weight"] = decimal.Round(ScagenWeight, 3, MidpointRounding.AwayFromZero);
+                    ReportDataTable.Rows.Add(Row);
+                }
+
                 if (Solid713Count > 0)
                 {
                     DataRow Row = ReportDataTable.NewRow();
@@ -10638,7 +10807,7 @@ namespace Infinium.Modules.Marketing.NewOrders
             TPSFrontsOrdersDataTable.Clear();
 
             string SelectCommand =
-                @"SELECT FrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, 
+                @"SELECT FrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.measureId, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, 
                 (-MegaOrders.ComplaintProfilCost-MegaOrders.ComplaintTPSCost+MegaOrders.TransportCost+MegaOrders.AdditionalCost) AS TotalAdditionalCost,
                 MegaOrders.ComplaintProfilCost, MegaOrders.ComplaintTPSCost, MegaOrders.TransportCost, MegaOrders.AdditionalCost, MegaOrders.MegaOrderID, MegaOrders.PaymentRate FROM FrontsOrders
                 INNER JOIN MainOrders ON FrontsOrders.MainOrderID = MainOrders.MainOrderID
@@ -10647,7 +10816,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                 string.Join(",", MainOrderIDs) + ") AND FrontsOrders.IsSample = 1 ORDER BY FrontID";
             if (!IsSample)
                 SelectCommand =
-                    @"SELECT FrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, 
+                    @"SELECT FrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.measureId, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, 
                 (-MegaOrders.ComplaintProfilCost-MegaOrders.ComplaintTPSCost+MegaOrders.TransportCost+MegaOrders.AdditionalCost) AS TotalAdditionalCost,
                 MegaOrders.ComplaintProfilCost, MegaOrders.ComplaintTPSCost, MegaOrders.TransportCost, MegaOrders.AdditionalCost, MegaOrders.MegaOrderID, MegaOrders.PaymentRate FROM FrontsOrders
                 INNER JOIN MainOrders ON FrontsOrders.MainOrderID = MainOrders.MainOrderID
@@ -10740,7 +10909,7 @@ namespace Infinium.Modules.Marketing.NewOrders
             TPSFrontsOrdersDataTable.Clear();
 
             string SelectCommand =
-                @"SELECT FrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, 
+                @"SELECT FrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.measureId, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, 
                 (-MegaOrders.ComplaintProfilCost-MegaOrders.ComplaintTPSCost+MegaOrders.TransportCost+MegaOrders.AdditionalCost) AS TotalAdditionalCost,
                 MegaOrders.ComplaintProfilCost, MegaOrders.ComplaintTPSCost, MegaOrders.TransportCost, MegaOrders.AdditionalCost, MegaOrders.MegaOrderID, MegaOrders.PaymentRate FROM FrontsOrders
                 INNER JOIN MainOrders ON FrontsOrders.MainOrderID = MainOrders.MainOrderID
@@ -15018,7 +15187,7 @@ namespace Infinium.Modules.Marketing.NewOrders
             FrameColorsDataTable.Columns.Add(new DataColumn("ColorID", Type.GetType("System.Int64")));
             FrameColorsDataTable.Columns.Add(new DataColumn("ColorName", Type.GetType("System.String")));
             string SelectCommand = @"SELECT TechStoreID, TechStoreName FROM TechStore
-                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)
+                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))
                 ORDER BY TechStoreName";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
@@ -15671,7 +15840,7 @@ namespace Infinium.Modules.Marketing.NewOrders
             int number = 1;
 
             var selectCommand =
-                "SELECT FrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, MegaOrders.PaymentRate FROM FrontsOrders" +
+                "SELECT FrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.measureId, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, MegaOrders.PaymentRate FROM FrontsOrders" +
                 " INNER JOIN infiniu2_catalog.dbo.FrontsConfig ON FrontsOrders.FrontConfigID = infiniu2_catalog.dbo.FrontsConfig.FrontConfigID" +
                 " INNER JOIN MainOrders ON FrontsOrders.MainOrderID = MainOrders.MainOrderID" +
                 " INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID" +
@@ -18392,7 +18561,7 @@ namespace Infinium.Modules.Marketing.NewOrders
             ColorsDataTable.Columns.Add(new DataColumn("ColorID", Type.GetType("System.Int64")));
             ColorsDataTable.Columns.Add(new DataColumn("ColorName", Type.GetType("System.String")));
             string SelectCommand = @"SELECT TechStoreID, TechStoreName FROM TechStore
-                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)
+                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))
                 ORDER BY TechStoreName";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {

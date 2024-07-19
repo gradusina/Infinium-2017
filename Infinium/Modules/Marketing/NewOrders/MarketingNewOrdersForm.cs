@@ -75,7 +75,12 @@ namespace Infinium
             this.MaximumSize = Screen.PrimaryScreen.WorkingArea.Size;
 
             Initialize();
+            
+            while (!SplashForm.bCreated) ;
+        }
 
+        private void RolePermissions()
+        {
             RolePermissionsDataTable = OrdersManager.GetPermissions(Security.CurrentUserID, this.Name);
             btnDeleteAgreedOrder.Visible = false;
             btnSetAgreementStatus.Visible = false;
@@ -115,8 +120,6 @@ namespace Infinium
                 kryptonContextMenuItem27.Visible = true;
                 RoleType = RoleTypes.Director;
             }
-
-            while (!SplashForm.bCreated) ;
         }
 
         //private bool PermissionGranted(int PermissionID)
@@ -246,6 +249,7 @@ namespace Infinium
 
             OrdersManager = new OrdersManager(ref MainOrdersDataGrid, ref MainOrdersFrontsOrdersDataGrid, ref MegaOrdersDataGrid,
                 ref MainOrdersDecorTabControl, ref MainOrdersTabControl, ref DecorCatalogOrder);
+            RolePermissions();
             OrdersCalculate = new OrdersCalculate();
             Report = new Report(ref DecorCatalogOrder, ref OrdersCalculate.FrontsCalculate);
             DetailsReport = new DetailsReport(ref DecorCatalogOrder, ref OrdersCalculate.FrontsCalculate);
@@ -269,6 +273,8 @@ namespace Infinium
             {
                 if (Convert.ToInt32(FilterManagersDataGrid.Rows[i].Cells["userId"].Value) == Security.CurrentUserID)
                 {
+                    if (RoleType == RoleTypes.Admin || RoleType == RoleTypes.Director)
+                        continue;
                     ManagerCheckBox.Checked = true;
                     FilterManagersDataGrid.Rows[i].Cells["checkCol"].Value = true;
                     managers.Add(Convert.ToInt32(FilterManagersDataGrid.Rows[i].Cells["managerId"].Value));
@@ -3424,25 +3430,25 @@ namespace Infinium
                 var MainOrderID = Convert.ToInt32(MainOrdersDataGrid.SelectedRows[0].Cells["MainOrderID"].Value);
                 var FrontID = Convert.ToInt32(MainOrdersFrontsOrdersDataGrid.SelectedRows[0].Cells["FrontID"].Value);
 
-                if (TestTechCatalogManager == null)
-                {
-                    TestTechCatalogManager = new Modules.TechnologyCatalog.TestTechCatalog();
-                    TestTechCatalogManager.Initialize();
-                }
-                var DT = TestTechCatalogManager.GetOperationsGroups(FrontID);
-                if (DT.Rows.Count > 0)
-                {
-                    for (var i = 0; i < DT.Rows.Count; i++)
-                    {
-                        var kryptonContextMenuItem = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem()
-                        {
-                            Text = DT.Rows[i]["GroupName"].ToString(),
-                            Tag = Convert.ToInt32(DT.Rows[i]["TechCatalogOperationsGroupID"])
-                        };
-                        kryptonContextMenuItem.Click += kryptonContextMenuItem_Click;
-                        kryptonContextMenuItems.Items.Add(kryptonContextMenuItem);
-                    }
-                }
+                //if (TestTechCatalogManager == null)
+                //{
+                //    TestTechCatalogManager = new Modules.TechnologyCatalog.TestTechCatalog();
+                //    TestTechCatalogManager.Initialize();
+                //}
+                //var DT = TestTechCatalogManager.GetOperationsGroups(FrontID);
+                //if (DT.Rows.Count > 0)
+                //{
+                //    for (var i = 0; i < DT.Rows.Count; i++)
+                //    {
+                //        var kryptonContextMenuItem = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem()
+                //        {
+                //            Text = DT.Rows[i]["GroupName"].ToString(),
+                //            Tag = Convert.ToInt32(DT.Rows[i]["TechCatalogOperationsGroupID"])
+                //        };
+                //        kryptonContextMenuItem.Click += kryptonContextMenuItem_Click;
+                //        kryptonContextMenuItems.Items.Add(kryptonContextMenuItem);
+                //    }
+                //}
                 kryptonContextMenuItems.Items.Add(setOnStorage);
                 kryptonContextMenu.Items.Add(kryptonContextMenuItems);
                 kryptonContextMenu.Show(new Point(Cursor.Position.X - 212, Cursor.Position.Y - 10));

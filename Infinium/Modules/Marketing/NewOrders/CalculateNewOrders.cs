@@ -1118,13 +1118,15 @@ namespace Infinium.Modules.Marketing.NewOrders
             DataRow[] Row = ClientsDataTable.Select("ClientID = " + ClientID);
             if (Row.Count() > 0)
             {
-                if (Convert.ToBoolean(Row[0]["NonStandard"]) == true)
+                if (Convert.ToBoolean(FrontsOrdersRow["IsNonStandard"]) || 
+                    Convert.ToBoolean(Row[0]["NonStandard"]) == true)
                     ExtraPrice = GetNonStandardMargin(Convert.ToInt32(FrontsOrdersRow["FrontConfigID"]), ClientID);
                 else
                     ExtraPrice = 0;
 
                 //если фасад нестандартный и имеет наценку и прямой
-                if (ExtraPrice > 0 && IsStandardSize(FrontsOrdersRow) == false && Convert.ToBoolean(Row[0]["NonStandard"]) == true)
+                if (Convert.ToBoolean(FrontsOrdersRow["IsNonStandard"]) || 
+                    (ExtraPrice > 0 && IsStandardSize(FrontsOrdersRow) == false && Convert.ToBoolean(Row[0]["NonStandard"]) == true))
                 {
                     Price = p / 100 * ExtraPrice + p;
                     IsNonStandard = true;
@@ -1173,7 +1175,8 @@ namespace Infinium.Modules.Marketing.NewOrders
                     ExtraPrice = 0;
 
                 //если фасад нестандартный и имеет наценку и прямой
-                if (ExtraPrice > 0 && IsStandardSize(FrontsOrdersRow) == false && Convert.ToBoolean(Row[0]["NonStandard"]) == true)
+                if (Convert.ToBoolean(FrontsOrdersRow["IsNonStandard"]) ||
+                    (ExtraPrice > 0 && IsStandardSize(FrontsOrdersRow) == false && Convert.ToBoolean(Row[0]["NonStandard"]) == true))
                 {
                     Price = p / 100 * ExtraPrice + p;
                     IsNonStandard = true;

@@ -187,7 +187,7 @@ namespace Infinium.Store
             ColorsDT.Columns.Add(new DataColumn("ColorName", Type.GetType("System.String")));
             ColorsDT.Columns.Add(new DataColumn("SellerCode", Type.GetType("System.String")));
             string SelectCommand = @"SELECT TechStoreID, TechStoreName, SellerCode FROM TechStore
-                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)
+                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))
                 ORDER BY TechStoreName";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
@@ -294,7 +294,7 @@ namespace Infinium.Store
 
             DataTable DT = new DataTable();
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TechStoreID, TechStoreName FROM TechStore" +
-                " WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)" +
+                " WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))" +
                 " ORDER BY TechStoreName",
                 ConnectionStrings.CatalogConnectionString))
             {
@@ -414,7 +414,7 @@ namespace Infinium.Store
             CoversDataTable.Columns.Add(new DataColumn("CoverName", Type.GetType("System.String")));
 
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TechStoreID, TechStoreName FROM TechStore" +
-                " WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)" +
+                " WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))" +
                 " ORDER BY TechStoreName",
                 ConnectionStrings.CatalogConnectionString))
             {
@@ -2248,7 +2248,7 @@ namespace Infinium.Store
             ColorsDT.Columns.Add(new DataColumn("ColorID", Type.GetType("System.Int64")));
             ColorsDT.Columns.Add(new DataColumn("ColorName", Type.GetType("System.String")));
             string SelectCommand = @"SELECT TechStoreID, TechStoreName FROM TechStore
-                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)
+                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))
                 ORDER BY TechStoreName";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
@@ -2546,7 +2546,7 @@ dbo.TechStoreGroups AS G ON SG.TechStoreGroupID = G.TechStoreGroupID ORDER BY Te
             CoversDT.Columns.Add(new DataColumn("CoverName", Type.GetType("System.String")));
 
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TechStoreID, TechStoreName FROM TechStore" +
-                " WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)" +
+                " WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))" +
                 " ORDER BY TechStoreName",
                 ConnectionStrings.CatalogConnectionString))
             {
@@ -3704,7 +3704,7 @@ dbo.TechStoreGroups AS G ON SG.TechStoreGroupID = G.TechStoreGroupID ORDER BY Te
             ColorsDT.Columns.Add(new DataColumn("ColorID", Type.GetType("System.Int64")));
             ColorsDT.Columns.Add(new DataColumn("ColorName", Type.GetType("System.String")));
             string SelectCommand = @"SELECT TechStoreID, TechStoreName FROM TechStore
-                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)
+                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))
                 ORDER BY TechStoreName";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
@@ -4040,7 +4040,7 @@ dbo.TechStoreGroups AS G ON SG.TechStoreGroupID = G.TechStoreGroupID ORDER BY Te
             CoversDT.Columns.Add(new DataColumn("CoverName", Type.GetType("System.String")));
 
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TechStoreID, TechStoreName FROM TechStore" +
-                " WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)" +
+                " WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))" +
                 " ORDER BY TechStoreName",
                 ConnectionStrings.CatalogConnectionString))
             {
@@ -4817,7 +4817,7 @@ dbo.TechStoreGroups AS G ON SG.TechStoreGroupID = G.TechStoreGroupID ORDER BY Te
             ColorsDT.Columns.Add(new DataColumn("ColorID", Type.GetType("System.Int64")));
             ColorsDT.Columns.Add(new DataColumn("ColorName", Type.GetType("System.String")));
             string SelectCommand = @"SELECT TechStoreID, TechStoreName FROM TechStore
-                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)
+                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))
                 ORDER BY TechStoreName";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
@@ -5090,7 +5090,7 @@ dbo.TechStoreGroups AS G ON SG.TechStoreGroupID = G.TechStoreGroupID ORDER BY Te
             CoversDT.Columns.Add(new DataColumn("CoverName", Type.GetType("System.String")));
 
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TechStoreID, TechStoreName FROM TechStore" +
-                " WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)" +
+                " WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))" +
                 " ORDER BY TechStoreName",
                 ConnectionStrings.CatalogConnectionString))
             {
@@ -5800,7 +5800,7 @@ dbo.TechStoreGroups AS G ON SG.TechStoreGroupID = G.TechStoreGroupID ORDER BY Te
             ColorsDT.Columns.Add(new DataColumn("ColorID", Type.GetType("System.Int64")));
             ColorsDT.Columns.Add(new DataColumn("ColorName", Type.GetType("System.String")));
             string SelectCommand = @"SELECT TechStoreID, TechStoreName FROM TechStore
-                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)
+                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))
                 ORDER BY TechStoreName";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
@@ -6073,7 +6073,7 @@ dbo.TechStoreGroups AS G ON SG.TechStoreGroupID = G.TechStoreGroupID ORDER BY Te
             CoversDT.Columns.Add(new DataColumn("CoverName", Type.GetType("System.String")));
 
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TechStoreID, TechStoreName FROM TechStore" +
-                " WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)" +
+                " WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))" +
                 " ORDER BY TechStoreName",
                 ConnectionStrings.CatalogConnectionString))
             {
@@ -6934,7 +6934,7 @@ dbo.TechStoreGroups AS G ON SG.TechStoreGroupID = G.TechStoreGroupID ORDER BY Te
             CoversDataTable.Columns.Add(new DataColumn("CoverName", Type.GetType("System.String")));
 
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TechStoreID, TechStoreName FROM TechStore" +
-                " WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)" +
+                " WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))" +
                 " ORDER BY TechStoreName",
                 ConnectionStrings.CatalogConnectionString))
             {
@@ -8063,7 +8063,7 @@ dbo.TechStoreGroups AS G ON SG.TechStoreGroupID = G.TechStoreGroupID ORDER BY Te
             ColorsDT.Columns.Add(new DataColumn("ColorID", Type.GetType("System.Int64")));
             ColorsDT.Columns.Add(new DataColumn("ColorName", Type.GetType("System.String")));
             string SelectCommand = @"SELECT TechStoreID, TechStoreName FROM TechStore
-                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)
+                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))
                 ORDER BY TechStoreName";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
@@ -8268,7 +8268,7 @@ dbo.TechStoreGroups AS G ON SG.TechStoreGroupID = G.TechStoreGroupID ORDER BY Te
             CoversDT.Columns.Add(new DataColumn("CoverName", Type.GetType("System.String")));
 
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TechStoreID, TechStoreName FROM TechStore" +
-                " WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)" +
+                " WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))" +
                 " ORDER BY TechStoreName",
                 ConnectionStrings.CatalogConnectionString))
             {
@@ -13089,7 +13089,7 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
             ColorsDT.Columns.Add(new DataColumn("ColorID", Type.GetType("System.Int64")));
             ColorsDT.Columns.Add(new DataColumn("ColorName", Type.GetType("System.String")));
             string SelectCommand = @"SELECT TechStoreID, TechStoreName FROM TechStore
-                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)
+                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))
                 ORDER BY TechStoreName";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
@@ -13259,7 +13259,7 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
             CoversDT.Columns.Add(new DataColumn("CoverName", Type.GetType("System.String")));
 
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TechStoreID, TechStoreName FROM TechStore" +
-                " WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)" +
+                " WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))" +
                 " ORDER BY TechStoreName",
                 ConnectionStrings.CatalogConnectionString))
             {
@@ -14850,7 +14850,7 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
             ColorsDT.Columns.Add(new DataColumn("ColorID", Type.GetType("System.Int64")));
             ColorsDT.Columns.Add(new DataColumn("ColorName", Type.GetType("System.String")));
             string SelectCommand = @"SELECT TechStoreID, TechStoreName FROM TechStore
-                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)
+                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))
                 ORDER BY TechStoreName";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
@@ -15016,7 +15016,7 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
             CoversDT.Columns.Add(new DataColumn("CoverName", Type.GetType("System.String")));
 
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TechStoreID, TechStoreName FROM TechStore" +
-                " WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)" +
+                " WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))" +
                 " ORDER BY TechStoreName",
                 ConnectionStrings.CatalogConnectionString))
             {
@@ -16067,7 +16067,7 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
             ColorsDT.Columns.Add(new DataColumn("ColorID", Type.GetType("System.Int64")));
             ColorsDT.Columns.Add(new DataColumn("ColorName", Type.GetType("System.String")));
             string SelectCommand = @"SELECT TechStoreID, TechStoreName FROM TechStore
-                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)
+                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))
                 ORDER BY TechStoreName";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
@@ -16231,7 +16231,7 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
             CoversDT.Columns.Add(new DataColumn("CoverName", Type.GetType("System.String")));
 
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TechStoreID, TechStoreName FROM TechStore" +
-                " WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)" +
+                " WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))" +
                 " ORDER BY TechStoreName",
                 ConnectionStrings.CatalogConnectionString))
             {
@@ -17145,7 +17145,7 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
             ColorsDT.Columns.Add(new DataColumn("ColorID", Type.GetType("System.Int64")));
             ColorsDT.Columns.Add(new DataColumn("ColorName", Type.GetType("System.String")));
             string SelectCommand = @"SELECT TechStoreID, TechStoreName FROM TechStore
-                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)
+                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))
                 ORDER BY TechStoreName";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
@@ -17309,7 +17309,7 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
             CoversDT.Columns.Add(new DataColumn("CoverName", Type.GetType("System.String")));
 
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TechStoreID, TechStoreName FROM TechStore" +
-                " WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)" +
+                " WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))" +
                 " ORDER BY TechStoreName",
                 ConnectionStrings.CatalogConnectionString))
             {
@@ -18106,7 +18106,7 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
             ColorsDT.Columns.Add(new DataColumn("ColorID", Type.GetType("System.Int64")));
             ColorsDT.Columns.Add(new DataColumn("ColorName", Type.GetType("System.String")));
             string SelectCommand = @"SELECT TechStoreID, TechStoreName FROM TechStore
-                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)
+                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))
                 ORDER BY TechStoreName";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
@@ -18256,7 +18256,7 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
             CoversDT.Columns.Add(new DataColumn("CoverName", Type.GetType("System.String")));
 
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TechStoreID, TechStoreName FROM TechStore" +
-                " WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)" +
+                " WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))" +
                 " ORDER BY TechStoreName",
                 ConnectionStrings.CatalogConnectionString))
             {
@@ -19342,7 +19342,7 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
             ColorsDT.Columns.Add(new DataColumn("ColorID", Type.GetType("System.Int64")));
             ColorsDT.Columns.Add(new DataColumn("ColorName", Type.GetType("System.String")));
             string SelectCommand = @"SELECT TechStoreID, TechStoreName FROM TechStore
-                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)
+                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))
                 ORDER BY TechStoreName";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
@@ -19492,7 +19492,7 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
             CoversDT.Columns.Add(new DataColumn("CoverName", Type.GetType("System.String")));
 
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TechStoreID, TechStoreName FROM TechStore" +
-                " WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)" +
+                " WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))" +
                 " ORDER BY TechStoreName",
                 ConnectionStrings.CatalogConnectionString))
             {
@@ -20546,7 +20546,7 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
             ColorsDT.Columns.Add(new DataColumn("ColorID", Type.GetType("System.Int64")));
             ColorsDT.Columns.Add(new DataColumn("ColorName", Type.GetType("System.String")));
             string SelectCommand = @"SELECT TechStoreID, TechStoreName FROM TechStore
-                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)
+                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))
                 ORDER BY TechStoreName";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
@@ -20696,7 +20696,7 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
             CoversDT.Columns.Add(new DataColumn("CoverName", Type.GetType("System.String")));
 
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TechStoreID, TechStoreName FROM TechStore" +
-                " WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)" +
+                " WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))" +
                 " ORDER BY TechStoreName",
                 ConnectionStrings.CatalogConnectionString))
             {
@@ -21716,7 +21716,7 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
             ColorsDT.Columns.Add(new DataColumn("ColorID", Type.GetType("System.Int64")));
             ColorsDT.Columns.Add(new DataColumn("ColorName", Type.GetType("System.String")));
             string SelectCommand = @"SELECT TechStoreID, TechStoreName FROM TechStore
-                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)
+                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))
                 ORDER BY TechStoreName";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
@@ -21866,7 +21866,7 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
             CoversDT.Columns.Add(new DataColumn("CoverName", Type.GetType("System.String")));
 
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TechStoreID, TechStoreName FROM TechStore" +
-                " WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)" +
+                " WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))" +
                 " ORDER BY TechStoreName",
                 ConnectionStrings.CatalogConnectionString))
             {
@@ -22937,7 +22937,7 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
             ColorsDT.Columns.Add(new DataColumn("ColorID", Type.GetType("System.Int64")));
             ColorsDT.Columns.Add(new DataColumn("ColorName", Type.GetType("System.String")));
             string SelectCommand = @"SELECT TechStoreID, TechStoreName FROM TechStore
-                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)
+                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))
                 ORDER BY TechStoreName";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
@@ -23082,7 +23082,7 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
             CoversDT.Columns.Add(new DataColumn("CoverName", Type.GetType("System.String")));
 
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TechStoreID, TechStoreName FROM TechStore" +
-                " WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)" +
+                " WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))" +
                 " ORDER BY TechStoreName",
                 ConnectionStrings.CatalogConnectionString))
             {
@@ -23813,7 +23813,7 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
             ColorsDT.Columns.Add(new DataColumn("ColorID", Type.GetType("System.Int64")));
             ColorsDT.Columns.Add(new DataColumn("ColorName", Type.GetType("System.String")));
             string SelectCommand = @"SELECT TechStoreID, TechStoreName FROM TechStore
-                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)
+                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))
                 ORDER BY TechStoreName";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
@@ -23959,7 +23959,7 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
             CoversDT.Columns.Add(new DataColumn("CoverName", Type.GetType("System.String")));
 
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TechStoreID, TechStoreName FROM TechStore" +
-                " WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)" +
+                " WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))" +
                 " ORDER BY TechStoreName",
                 ConnectionStrings.CatalogConnectionString))
             {
@@ -27706,7 +27706,7 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
             ColorsDT.Columns.Add(new DataColumn("ColorID", Type.GetType("System.Int64")));
             ColorsDT.Columns.Add(new DataColumn("ColorName", Type.GetType("System.String")));
             string SelectCommand = @"SELECT TechStoreID, TechStoreName FROM TechStore
-                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)
+                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))
                 ORDER BY TechStoreName";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
@@ -27861,7 +27861,7 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
             CoversDT.Columns.Add(new DataColumn("CoverName", Type.GetType("System.String")));
 
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TechStoreID, TechStoreName FROM TechStore" +
-                " WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)" +
+                " WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))" +
                 " ORDER BY TechStoreName",
                 ConnectionStrings.CatalogConnectionString))
             {
@@ -31968,7 +31968,7 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
             CoversDT.Columns.Add(new DataColumn("CoverName", Type.GetType("System.String")));
 
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TechStoreID, TechStoreName FROM TechStore" +
-                " WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)" +
+                " WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))" +
                 " ORDER BY TechStoreName",
                 ConnectionStrings.CatalogConnectionString))
             {
@@ -32003,7 +32003,7 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
             ColorsDT.Columns.Add(new DataColumn("ColorID", Type.GetType("System.Int64")));
             ColorsDT.Columns.Add(new DataColumn("ColorName", Type.GetType("System.String")));
             string SelectCommand = @"SELECT TechStoreID, TechStoreName FROM TechStore
-                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)
+                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))
                 ORDER BY TechStoreName";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
@@ -32959,7 +32959,7 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
 
         public void UpdateSubGroups()
         {
-            string SelectCommand = @"SELECT * FROM TechStoreSubGroups WHERE TechStoreGroupID = 11 ORDER BY TechStoreSubGroupName";
+            string SelectCommand = @"SELECT * FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1) ORDER BY TechStoreSubGroupName";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(dtSubGroups);
@@ -32969,7 +32969,7 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
         public void UpdateStoreItems()
         {
             string SelectCommand = @"SELECT TechStoreID, TechStoreSubGroupID, TechStoreName FROM TechStore
-                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM infiniu2_catalog.dbo.TechStoreSubGroups WHERE TechStoreGroupID = 11) ORDER BY TechStoreName";
+                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM infiniu2_catalog.dbo.TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1)) ORDER BY TechStoreName";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(dtStoreItems);
@@ -32980,7 +32980,7 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
         {
             string SelectCommand = @"SELECT ManufactureStore.ManufactureStoreID, ManufactureStore.StoreItemID, ManufactureStore.Thickness, ManufactureStore.Diameter, ManufactureStore.Width, ManufactureStore.CurrentCount, ManufactureStore.CreateDateTime FROM ManufactureStore 
                 INNER JOIN infiniu2_catalog.dbo.TechStore ON ManufactureStore.StoreItemID=infiniu2_catalog.dbo.TechStore.TechStoreID AND TechStoreSubGroupID IN (SELECT TechStoreSubGroupID
-                FROM infiniu2_catalog.dbo.TechStoreSubGroups WHERE TechStoreGroupID = 11) WHERE CurrentCount > 0";
+                FROM infiniu2_catalog.dbo.TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1)) WHERE CurrentCount > 0";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.StorageConnectionString))
             {
                 DA.Fill(dtManufactureStore);
@@ -32994,14 +32994,14 @@ WHERE FactoryID = " + iFactoryID + " AND CurrentCount > 0 ORDER BY TechStoreGrou
             string SelectCommand = @"SELECT * FROM ManufactureInventoryDetails WHERE InventoryID=(SELECT TOP 1 InventoryID FROM Inventory ORDER BY InventoryID DESC) AND StoreID IN
                 (SELECT ManufactureStoreID FROM ManufactureStore
                 WHERE StoreItemID IN (SELECT TechStoreID FROM infiniu2_catalog.dbo.TechStore WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID
-                FROM infiniu2_catalog.dbo.TechStoreSubGroups WHERE TechStoreGroupID = 11)))";
+                FROM infiniu2_catalog.dbo.TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))))";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.StorageConnectionString))
             {
                 DA.Fill(DT);
             }
             SelectCommand = @"SELECT ManufactureStoreID, CurrentCount FROM ManufactureStore 
                 WHERE ManufactureStore.StoreItemID IN (SELECT TechStoreID FROM infiniu2_catalog.dbo.TechStore WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID
-                FROM infiniu2_catalog.dbo.TechStoreSubGroups WHERE TechStoreGroupID = 11))";
+                FROM infiniu2_catalog.dbo.TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1)))";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.StorageConnectionString))
             {
                 using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))

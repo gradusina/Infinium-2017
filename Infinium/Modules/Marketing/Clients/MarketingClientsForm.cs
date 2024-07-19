@@ -176,6 +176,8 @@ namespace Infinium
         private void Initialize()
         {
             Clients = new Modules.Marketing.Clients.Clients(ref ClientsDataGrid, ref ClientsContactsDataGrid, ref ShopAddressesDataGrid);
+
+            //Clients.SaveClientsRatesFromExcel();
         }
 
         private void ClientsDataGrid_SelectionChanged(object sender, EventArgs e)

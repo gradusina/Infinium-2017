@@ -129,7 +129,7 @@ namespace Infinium.Modules.Marketing.NewOrders
             ConstColorsDataTable.Columns.Add(new DataColumn("ColorName", Type.GetType("System.String")));
             ConstColorsDataTable.Columns.Add(new DataColumn("Cvet", Type.GetType("System.String")));
             string SelectCommand = @"SELECT TechStoreID, TechStoreName, Cvet FROM TechStore
-                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)
+                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))
                 ORDER BY TechStoreName";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
@@ -1193,6 +1193,15 @@ namespace Infinium.Modules.Marketing.NewOrders
             }
         }
 
+        public decimal GetNonStandardMargin(int FrontConfigID)
+        {
+            DataRow[] Rows = ConstFrontsConfigDataTable.Select("FrontConfigID = " + FrontConfigID);
+            if (Rows.Count() == 0)
+                return 0;
+            else
+                return Convert.ToDecimal(Rows[0]["ZOVNonStandMargin"]);
+        }
+
         public int GetFrontConfigID(int FrontID, int ColorID, int PatinaID,
             int InsetTypeID, int InsetColorID, int TechnoProfileID, int TechnoColorID, int TechnoInsetTypeID, int TechnoInsetColorID,
             int Height, int Width, ref int FactoryID, ref int AreaID)
@@ -1254,6 +1263,72 @@ namespace Infinium.Modules.Marketing.NewOrders
             FactoryID = Convert.ToInt32(Rows[0]["FactoryID"]);
             AreaID = Convert.ToInt32(Rows[0]["AreaID"]);
 
+            if (Rows[0]["Excluzive"] != DBNull.Value && Convert.ToInt32(Rows[0]["Excluzive"]) == 0)
+            {
+                MessageBox.Show("Конфигурация является эксклюзивом и недоступна другим клиентам");
+                return -1;
+            }
+            return Convert.ToInt32(Rows[0]["FrontConfigID"]);
+        }
+
+        public int GetFrontConfigID(int FrontID, int ColorID, int PatinaID,
+            int InsetTypeID, int InsetColorID, int TechnoProfileID, int TechnoColorID, int TechnoInsetTypeID, int TechnoInsetColorID,
+            int Height, int Width)
+        {
+            string HeightFilter = null;
+            string WidthFilter = null;
+
+            if (PatinaID > 1000)
+            {
+                DataRow[] fRows = PatinaRALDataTable.Select("PatinaRALID=" + PatinaID);
+                if (fRows.Count() > 0)
+                    PatinaID = Convert.ToInt32(fRows[0]["PatinaID"]);
+            }
+            DataRow[] Rows = ConstFrontsConfigDataTable.Select(
+                            "FrontID = " + Convert.ToInt32(FrontID) + " AND " +
+                            "InsetTypeID = " + Convert.ToInt32(InsetTypeID) + " AND " +
+                            "InsetColorID = " + Convert.ToInt32(InsetColorID) + " AND " +
+                            "ColorID = " + Convert.ToInt32(ColorID) + " AND " +
+                            "PatinaID = " + Convert.ToInt32(PatinaID) + " AND " +
+                            "TechnoProfileID = " + Convert.ToInt32(TechnoProfileID) + " AND " +
+                            "TechnoColorID = " + Convert.ToInt32(TechnoColorID) + " AND " +
+                            "TechnoInsetTypeID = " + Convert.ToInt32(TechnoInsetTypeID) + " AND " +
+                            "TechnoInsetColorID = " + Convert.ToInt32(TechnoInsetColorID));
+
+            if (HasHeightParameter(Rows, Height))
+                HeightFilter = " AND Height = " + Height;
+            else
+                HeightFilter = " AND Height = 0";
+
+            if (Height == -1)
+                HeightFilter = " AND Height = -1";
+
+            if (HasWidthParameter(Rows, Width))
+                WidthFilter = " AND Width = " + Width;
+            else
+                WidthFilter = " AND Width = 0";
+
+            if (Width == -1)
+                WidthFilter = " AND Width = -1";
+
+            Rows = ConstFrontsConfigDataTable.Select(
+                "FrontID = " + Convert.ToInt32(FrontID) + " AND " +
+                "InsetTypeID = " + Convert.ToInt32(InsetTypeID) + " AND " +
+                "ColorID = " + Convert.ToInt32(ColorID) + " AND " +
+                "PatinaID = " + Convert.ToInt32(PatinaID) + " AND " +
+                "InsetColorID = " + Convert.ToInt32(InsetColorID) + " AND " +
+                "TechnoProfileID = " + Convert.ToInt32(TechnoProfileID) + " AND " +
+                "TechnoColorID = " + Convert.ToInt32(TechnoColorID) + " AND " +
+                "TechnoInsetTypeID = " + Convert.ToInt32(TechnoInsetTypeID) + " AND " +
+                "TechnoInsetColorID = " + Convert.ToInt32(TechnoInsetColorID) +
+                HeightFilter + WidthFilter);
+
+            if (Rows.Count() < 1)
+            {
+                MessageBox.Show("Ошибка конфигурации фасада. Проверьте каталог " + Rows.Count().ToString());
+                return -1;
+            }
+            
             if (Rows[0]["Excluzive"] != DBNull.Value && Convert.ToInt32(Rows[0]["Excluzive"]) == 0)
             {
                 MessageBox.Show("Конфигурация является эксклюзивом и недоступна другим клиентам");

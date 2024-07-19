@@ -168,7 +168,7 @@ namespace Infinium.Modules.ZOV.Samples
             ColorsDataTable.Columns.Add(new DataColumn("ColorName", Type.GetType("System.String")));
             ColorsDataTable.Columns.Add(new DataColumn("Excluzive", Type.GetType("System.Int32")));
             var selectCommand = @"SELECT TechStoreID, TechStoreName FROM TechStore
-                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)
+                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))
                 ORDER BY TechStoreName";
             using (var da = new SqlDataAdapter(selectCommand, ConnectionStrings.CatalogConnectionString))
             {
@@ -1291,7 +1291,7 @@ namespace Infinium.Modules.ZOV.Samples
             FrameColorsDataTable.Columns.Add(new DataColumn("ColorID", Type.GetType("System.Int64")));
             FrameColorsDataTable.Columns.Add(new DataColumn("ColorName", Type.GetType("System.String")));
             var selectCommand = @"SELECT TechStoreID, TechStoreName FROM TechStore
-                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)
+                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))
                 ORDER BY TechStoreName";
             using (var da = new SqlDataAdapter(selectCommand, ConnectionStrings.CatalogConnectionString))
             {
@@ -2395,7 +2395,7 @@ namespace Infinium.Modules.ZOV.Samples
             _frameColorsDataTable.Columns.Add(new DataColumn("ColorID", Type.GetType("System.Int64")));
             _frameColorsDataTable.Columns.Add(new DataColumn("ColorName", Type.GetType("System.String")));
             var selectCommand = @"SELECT TechStoreID, TechStoreName FROM TechStore
-                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)
+                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))
                 ORDER BY TechStoreName";
             using (var da = new SqlDataAdapter(selectCommand, ConnectionStrings.CatalogConnectionString))
             {
@@ -5502,7 +5502,7 @@ INNER JOIN JoinMainOrders ON SampleMainOrders.MainOrderID = JoinMainOrders.Marke
             _frameColorsDataTable.Columns.Add(new DataColumn("ColorID", Type.GetType("System.Int64")));
             _frameColorsDataTable.Columns.Add(new DataColumn("ColorName", Type.GetType("System.String")));
             var selectCommand = @"SELECT TechStoreID, TechStoreName FROM TechStore
-                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)
+                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))
                 ORDER BY TechStoreName";
             using (var da = new SqlDataAdapter(selectCommand, ConnectionStrings.CatalogConnectionString))
             {

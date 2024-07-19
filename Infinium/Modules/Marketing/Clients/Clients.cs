@@ -1565,7 +1565,72 @@ WHERE (CountryID = 1) AND (ClientID NOT IN (10774, 10771, 727, 725, 701, 759, 74
             DataRow[] Rows = dtRolePermissions.Select("RoleID = " + RoleID);
             return Rows.Count() > 0;
         }
-        
+
+        public void SaveClientsRatesFromExcel()
+        {
+            var table = new DataTable();
+            table.Columns.Add(new DataColumn("ClientID", System.Type.GetType("System.Int32")));
+            table.Columns.Add(new DataColumn("USD", System.Type.GetType("System.Decimal")));
+            table.Columns.Add(new DataColumn("RUB", System.Type.GetType("System.Decimal")));
+            table.Columns.Add(new DataColumn("BYN", System.Type.GetType("System.Decimal")));
+            table.TableName = "ImportedTable";
+
+            var s = Clipboard.GetText();
+            var lines = s.Split('\n');
+            var data = new List<string>(lines);
+
+            if (data.Count > 0 && string.IsNullOrWhiteSpace(data[data.Count - 1]))
+            {
+                data.RemoveAt(data.Count - 1);
+            }
+
+            foreach (var iterationRow in data)
+            {
+                var row = iterationRow;
+                if (row.EndsWith("\r"))
+                {
+                    row = row.Substring(0, row.Length - "\r".Length);
+                }
+
+                var rowData = row.Split(new char[] { '\r', '\x09' });
+                var newRow = table.NewRow();
+
+                for (var i = 0; i < rowData.Length; i++)
+                {
+                    if (i >= table.Columns.Count) break;
+                    if (rowData[i].Length > 0)
+                        newRow[i] = rowData[i];
+                }
+                table.Rows.Add(newRow);
+            }
+
+            using var da = new SqlDataAdapter(@"SELECT TOP 0 * FROM ClientRates",
+                ConnectionStrings.MarketingReferenceConnectionString);
+            using (new SqlCommandBuilder(da))
+            {
+                using (var dt = new DataTable())
+                {
+                    da.Fill(dt);
+                    for (var i = 0; i < table.Rows.Count; i++)
+                    {
+                        var clientId = Convert.ToInt32(table.Rows[i]["ClientID"]);
+                        var USD = Convert.ToDecimal(table.Rows[i]["USD"]);
+                        var RUB = Convert.ToDecimal(table.Rows[i]["RUB"]);
+                        var BYN = Convert.ToDecimal(table.Rows[i]["BYN"]);
+                        
+                        var NewRow = dt.NewRow();
+                        NewRow["clientId"] = clientId;
+                        NewRow["Date"] = "2024-05-01 00:00:00.000";
+                        NewRow["USD"] = USD;
+                        NewRow["RUB"] = RUB;
+                        NewRow["BYN"] = BYN;
+                        dt.Rows.Add(NewRow);
+                    }
+
+                    da.Update(dt);
+                }
+            }
+        }
     }
 
     public class ClientsToExcel

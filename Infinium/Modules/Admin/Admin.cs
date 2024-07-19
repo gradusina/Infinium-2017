@@ -1998,7 +1998,7 @@ namespace Infinium
 
         private void Fill()
         {
-            UsersDataAdapter = new SqlDataAdapter("SELECT UserID, Name, ShortName, FirstName, LastName, MiddleName, Password, PriceAccess, Coding, OnlineRefreshDateTime, AccessToken, Email, Fired FROM Users ORDER BY Name ASC", ConnectionStrings.UsersConnectionString);
+            UsersDataAdapter = new SqlDataAdapter("SELECT UserID, Name, ShortName, FirstName, LastName, MiddleName, Password, PriceAccess, Coding, OnlineRefreshDateTime, AccessToken, Email, id1C, Fired FROM Users ORDER BY Name ASC", ConnectionStrings.UsersConnectionString);
             UsersCommandBuilder = new SqlCommandBuilder(UsersDataAdapter);
             UsersDataAdapter.Fill(UsersDataTable);
 
@@ -2026,6 +2026,7 @@ namespace Infinium
             UsersDataGrid.Columns["Name"].HeaderText = "ФИО";
             UsersDataGrid.Columns["PriceAccess"].HeaderText = "Доступ к ценам";
             UsersDataGrid.Columns["Coding"].HeaderText = "Разработчик";
+            UsersDataGrid.Columns["id1C"].HeaderText = "id МОЛ из 1С";
             UsersDataGrid.Columns["Rating"].HeaderText = "Рейтинг";
             UsersDataGrid.Columns["Fired"].HeaderText = "Отключен";
 
@@ -2044,6 +2045,8 @@ namespace Infinium
             UsersDataGrid.Columns["Coding"].Width = 170;
             UsersDataGrid.Columns["Rating"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
             UsersDataGrid.Columns["Rating"].Width = 100;
+            UsersDataGrid.Columns["id1C"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            UsersDataGrid.Columns["id1C"].Width = 100;
 
             UsersDataGrid.Columns["PriceAccess"].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
             UsersDataGrid.Columns["Coding"].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -2070,7 +2073,7 @@ namespace Infinium
         public void Save()
         {
             DataTable prDT = UsersDataTable.Copy();
-            using (SqlDataAdapter prDA = new SqlDataAdapter("SELECT UserID, Name, ShortName, FirstName, LastName, MiddleName, Password, PriceAccess, Coding, AccessToken, Email, Fired FROM Users", ConnectionStrings.UsersConnectionString))
+            using (SqlDataAdapter prDA = new SqlDataAdapter("SELECT UserID, Name, ShortName, FirstName, LastName, MiddleName, Password, PriceAccess, Coding, AccessToken, Email, id1C, Fired FROM Users", ConnectionStrings.UsersConnectionString))
             {
                 using (SqlCommandBuilder prCB = new SqlCommandBuilder(prDA))
                 {
@@ -2285,7 +2288,7 @@ namespace Infinium
 
         private void Fill()
         {
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT ModuleID, ModuleName, SecurityAccess, PriceView FROM Modules", ConnectionStrings.UsersConnectionString))
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT ModuleID, ModuleName, SecurityAccess, PriceView FROM Modules order by ModuleName", ConnectionStrings.UsersConnectionString))
             {
                 DA.Fill(ModulesDataTable);
             }
@@ -6292,7 +6295,7 @@ namespace Infinium
             {
                 DataRow NewRow = ComputerParamsStuctDataTable.NewRow();
                 NewRow["Param"] = Column.ColumnName;
-                NewRow["Value"] = ComputerParamsDataTable.Rows[0][Column.ColumnName];
+                //NewRow["Value"] = ComputerParamsDataTable.Rows[0][Column.ColumnName];
                 ComputerParamsStuctDataTable.Rows.Add(NewRow);
             }
         }

@@ -1691,7 +1691,7 @@ WHERE        CAST(CreateDateTime AS date) >= '2019-12-26 00:00' AND CAST(CreateD
             ColorsDT.Columns.Add(new DataColumn("GroupID", Type.GetType("System.Int64")));
             ColorsDT.Columns.Add(new DataColumn("ColorName", Type.GetType("System.String")));
             string SelectCommand = @"SELECT TechStoreID, TechStoreName FROM TechStore
-                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)
+                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))
                 ORDER BY TechStoreName";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
@@ -1763,7 +1763,7 @@ WHERE        CAST(CreateDateTime AS date) >= '2019-12-26 00:00' AND CAST(CreateD
             CoversDT.Rows.Add(EmptyRow);
 
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TechStoreID, TechStoreName FROM TechStore" +
-                " WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)" +
+                " WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))" +
                 " ORDER BY TechStoreName",
                 ConnectionStrings.CatalogConnectionString))
             {

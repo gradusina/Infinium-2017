@@ -785,7 +785,7 @@ namespace Infinium.Modules.Marketing.Orders.InvoiceReportToDbf
                 return Convert.ToInt32(Row[0]["ReportMeasureID"]);//1 м.кв.  2 м.п. 3 шт.
             else
             {
-                System.Windows.Forms.MessageBox.Show(@$"Ошибка конфигурации: не найдена DecorConfigID={DecorConfigID}. 
+                System.Windows.Forms.MessageBox.Show(@$"Orders InvoiceDecorReportToDbf Ошибка конфигурации: не найдена DecorConfigID={DecorConfigID}. 
                         decorCatalogOrder.DecorConfigDataTable.Count={decorCatalogOrder.DecorConfigDataTable.Rows.Count}");
                 return -1;
             }

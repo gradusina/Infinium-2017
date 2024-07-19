@@ -2275,11 +2275,16 @@ namespace Infinium
         {
             var FilterDate = new DateTime(Convert.ToInt32(cbxYears.SelectedValue), Convert.ToInt32(cbxMonths.SelectedValue), 1);
 
-            dgvDispatchDates.SelectionChanged -= dgvDispatchDates_SelectionChanged;
+            //dgvDispatchDates.SelectionChanged -= dgvDispatchDates_SelectionChanged;
             MarketingDispatchManager.ClearDispatchDates();
             MarketingDispatchManager.UpdateDispatchDates(FilterDate);
-            dgvDispatchDates.SelectionChanged += dgvDispatchDates_SelectionChanged;
-            MarketingDispatchManager.MoveToDispatchDate(DateTime.Now.Date);
+            //dgvDispatchDates.SelectionChanged += dgvDispatchDates_SelectionChanged;
+            if (Convert.ToInt32(cbxYears.SelectedValue) == DateTime.Now.Date.Year &&
+                Convert.ToInt32(cbxMonths.SelectedValue) == DateTime.Now.Date.Month)
+            {
+                if (MarketingDispatchManager.GetDispatchDatePosition(DateTime.Now.Date) != 0)
+                    MarketingDispatchManager.MoveToDispatchDate(DateTime.Now.Date);
+            }
         }
 
         private void UpdateCabFurDispatchDate()
@@ -3288,6 +3293,11 @@ namespace Infinium
 
             var ClientID = Convert.ToInt32(dgvDispatch.SelectedRows[0].Cells["ClientID"].Value);
             var DispatchID = Convert.ToInt32(dgvDispatch.SelectedRows[0].Cells["DispatchID"].Value);
+
+            var Dispatches = new int[dgvDispatch.SelectedRows.Count];
+            for (var i = 0; i < dgvDispatch.SelectedRows.Count; i++)
+                Dispatches[i] = Convert.ToInt32(dgvDispatch.SelectedRows[i].Cells["DispatchID"].Value);
+
             object DispatchDate = null;
 
             var PressOK = false;
@@ -3315,8 +3325,8 @@ namespace Infinium
                 while (!SplashWindow.bSmallCreated) ;
 
                 NeedSplash = false;
-                MarketingDispatchManager.ChangeDispatchDate(DispatchID, DispatchDate);
-                MarketingDispatchManager.SetDispatchDate(DispatchID, Convert.ToDateTime(DispatchDate));
+                MarketingDispatchManager.ChangeDispatchDate(Dispatches, DispatchDate);
+                MarketingDispatchManager.SetDispatchDate(Dispatches, Convert.ToDateTime(DispatchDate));
                 UpdateDispatchDate();
                 MarketingDispatchManager.MoveToDispatchDate(Convert.ToDateTime(DispatchDate));
                 MarketingDispatchManager.MoveToDispatch(DispatchID);
@@ -6196,6 +6206,64 @@ namespace Infinium
 
             while (SplashWindow.bSmallCreated)
                 SmallWaitForm.CloseS = true;
+        }
+
+        private void MainOrdersFrontsOrdersDataGrid_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if ((RoleType == RoleTypes.AdminRole || RoleType == RoleTypes.Production)
+                && e.Button == MouseButtons.Right)
+            {
+                var grid = (PercentageDataGrid)sender;
+                grid.CurrentCell = grid.Rows[e.RowIndex].Cells[e.ColumnIndex];
+                kryptonContextMenu9.Show(new Point(Cursor.Position.X - 212, Cursor.Position.Y - 10));
+            }
+        }
+
+        private void kryptonContextMenuItem25_Click_1(object sender, EventArgs e)
+        {
+            if (MainOrdersFrontsOrdersDataGrid.SelectedRows.Count == 0 || MainOrdersFrontsOrdersDataGrid.SelectedRows[0].Cells["frontsOrdersId"].Value == DBNull.Value)
+                return;
+
+            var frontsOrdersId = Convert.ToInt32(MainOrdersFrontsOrdersDataGrid.SelectedRows[0].Cells["frontsOrdersId"].Value);
+            var PackageID = 0;
+            var OldCount = Convert.ToInt32(MainOrdersFrontsOrdersDataGrid.SelectedRows[0].Cells["Count"].Value);
+            var NewCount = 0;
+            if (PackagesDataGrid.SelectedRows.Count > 0 && PackagesDataGrid.SelectedRows[0].Cells["PackageID"].Value != DBNull.Value)
+                PackageID = Convert.ToInt32(PackagesDataGrid.SelectedRows[0].Cells["PackageID"].Value);
+            var PhantomForm = new Infinium.PhantomForm();
+            PhantomForm.Show();
+
+            InputNewDecorCountForm = new InputNewDecorCountForm(this, OldCount);
+
+            TopForm = InputNewDecorCountForm;
+            InputNewDecorCountForm.ShowDialog();
+            TopForm = null;
+
+            PhantomForm.Close();
+
+            PhantomForm.Dispose();
+            if (InputNewDecorCountForm.Result == 1)
+            {
+                NewCount = InputNewDecorCountForm.NewCount;
+                MarketingExpeditionManager.EditFrontCount(PackageID, frontsOrdersId, NewCount);
+                OrdersManager.FixOrderEvent(Convert.ToInt32(MegaOrdersDataGrid.SelectedRows[0].Cells["MegaOrderID"].Value),
+                    "Изменено кол-во. PackageID=" + PackageID.ToString() + ". frontsOrdersId=" + frontsOrdersId.ToString() + ". Было=" + OldCount.ToString() + ". Стало=" + NewCount.ToString());
+                var FactoryID = -1;
+
+                if (ProfilCheckBox.Checked && TPSCheckBox.Checked)
+                    FactoryID = 0;
+                if (ProfilCheckBox.Checked && !TPSCheckBox.Checked)
+                    FactoryID = 1;
+                if (!ProfilCheckBox.Checked && TPSCheckBox.Checked)
+                    FactoryID = 2;
+                MarketingExpeditionManager.FilterProductsByPackage();
+                MarketingExpeditionManager.FilterProductsByPackage(Convert.ToInt32(MainOrdersDataGrid.SelectedRows[0].Cells["MainOrderID"].Value), FactoryID);
+                MarketingExpeditionManager.FilterPackagesByMainOrder(Convert.ToInt32(MainOrdersDataGrid.SelectedRows[0].Cells["MainOrderID"].Value), FactoryID);
+                MarketingExpeditionManager.MoveToPackage(PackageID);
+            }
+            InputNewDecorCountForm.Dispose();
+            InputNewDecorCountForm = null;
+            GC.Collect();
         }
     }
 }

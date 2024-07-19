@@ -921,14 +921,15 @@ namespace Infinium
             {
                 if (!DayPlannerWorkTimeSheet.IsAbsenceVacation(CalendarFrom.SelectionStart))
                 {
-                    MessageBox.Show("Необходимо сохранить Табель в предыдущий рабочий день");
+                    var (b, lastDate) = DayPlannerWorkTimeSheet.GetLastDateTime();
+
+                    MessageBox.Show($"Необходимо сохранить Табель в предыдущий рабочий день {lastDate.ToShortDateString()}");
 
                     var result = MessageBox.Show("Перейти к незакрытому дню?", "Сохранение Табеля", MessageBoxButtons.YesNoCancel);
                     if (result != DialogResult.Yes) return;
-                    var (b, dateTime) = DayPlannerWorkTimeSheet.GetLastDateTime();
                     if (b)
                     {
-                        CalendarFrom.SelectionStart = dateTime.Date;
+                        CalendarFrom.SelectionStart = lastDate.Date;
 
                         CalendarFrom_DateChanged(null,
                             new DateRangeEventArgs(CalendarFrom.SelectionStart, CalendarFrom.SelectionStart));

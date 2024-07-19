@@ -162,7 +162,7 @@ namespace Infinium
             FrontsCatalogOrder = new FrontsCatalogOrder(ref FrontsHeightComboBox, ref FrontsWidthComboBox);
             FrontsCatalogOrder.Initialize(true);
 
-            DecorCatalogOrder = new DecorCatalogOrder(ref DecorLengthComboBox, ref DecorHeightComboBox, ref DecorWidthComboBox);
+            DecorCatalogOrder = new DecorCatalogOrder();
             DecorCatalogOrder.Initialize(true);
 
             //ExportOrdersFromExcel T = new ExportOrdersFromExcel(ref DecorCatalogOrder, ref FrontsCatalogOrder);
@@ -711,6 +711,7 @@ namespace Infinium
                 Convert.ToInt32(DecorInsetTypesComboBox.SelectedValue),
                 Convert.ToInt32(DecorInsetColorsComboBox.SelectedValue));
 
+            DecorLengthComboBox.DropDownStyle = ComboBoxStyle.DropDown;
             if (L == -1)
             {
                 panel4.Visible = false;
@@ -718,10 +719,12 @@ namespace Infinium
             else if (L == 0)
             {
                 panel4.Visible = true;
+                DecorLengthComboBox.DropDownStyle = ComboBoxStyle.DropDown;
             }
             else if (L > 0)
             {
                 panel4.Visible = true;
+                DecorLengthComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
             }
         }
 
@@ -730,8 +733,10 @@ namespace Infinium
             if (DecorItemsComboBox.SelectedItem == null)
                 return;
             int Length = -1;
-            if (DecorCatalogOrder.ItemLengthBindingSource.Count > 0)
-                Length = Convert.ToInt32(((DataRowView)DecorCatalogOrder.ItemLengthBindingSource.Current).Row["Length"]);
+            //if (DecorCatalogOrder.ItemLengthBindingSource.Count > 0)
+            //    Length = Convert.ToInt32(((DataRowView)DecorCatalogOrder.ItemLengthBindingSource.Current).Row["Length"]);
+            if (DecorLengthComboBox.SelectedValue != null)
+                Length = Convert.ToInt32(DecorLengthComboBox.SelectedValue);
 
             int H = DecorCatalogOrder.FilterHeight(((DataRowView)DecorItemsComboBox.SelectedItem).Row["Name"].ToString(),
                 Convert.ToInt32(DecorColorsComboBox.SelectedValue),
@@ -739,6 +744,7 @@ namespace Infinium
                 Convert.ToInt32(DecorInsetTypesComboBox.SelectedValue),
                 Convert.ToInt32(DecorInsetColorsComboBox.SelectedValue), Length);
 
+            DecorHeightComboBox.DropDownStyle = ComboBoxStyle.DropDown;
             if (H == -1)
             {
                 panel1.Visible = false;
@@ -746,10 +752,12 @@ namespace Infinium
             else if (H == 0)
             {
                 panel1.Visible = true;
+                DecorHeightComboBox.DropDownStyle = ComboBoxStyle.DropDown;
             }
             else if (H > 0)
             {
                 panel1.Visible = true;
+                DecorHeightComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
             }
         }
 
@@ -759,15 +767,21 @@ namespace Infinium
                 return;
             int Length = -1;
             int Height = -1;
-            if (DecorCatalogOrder.ItemLengthBindingSource.Count > 0)
-                Length = Convert.ToInt32(((DataRowView)DecorCatalogOrder.ItemLengthBindingSource.Current).Row["Length"]);
-            if (DecorCatalogOrder.ItemHeightBindingSource.Count > 0)
-                Height = Convert.ToInt32(((DataRowView)DecorCatalogOrder.ItemHeightBindingSource.Current).Row["Height"]);
+            //if (DecorCatalogOrder.ItemLengthBindingSource.Count > 0)
+            //    Length = Convert.ToInt32(((DataRowView)DecorCatalogOrder.ItemLengthBindingSource.Current).Row["Length"]);
+            //if (DecorCatalogOrder.ItemHeightBindingSource.Count > 0)
+            //    Height = Convert.ToInt32(((DataRowView)DecorCatalogOrder.ItemHeightBindingSource.Current).Row["Height"]);
+            if (DecorLengthComboBox.SelectedValue != null)
+                Length = Convert.ToInt32(DecorLengthComboBox.SelectedValue);
+            if (DecorHeightComboBox.SelectedValue != null)
+                Height = Convert.ToInt32(DecorHeightComboBox.SelectedValue);
             int W = DecorCatalogOrder.FilterWidth(((DataRowView)DecorItemsComboBox.SelectedItem).Row["Name"].ToString(),
                 Convert.ToInt32(DecorColorsComboBox.SelectedValue),
                 Convert.ToInt32(DecorPatinaComboBox.SelectedValue),
                 Convert.ToInt32(DecorInsetTypesComboBox.SelectedValue),
                 Convert.ToInt32(DecorInsetColorsComboBox.SelectedValue), Length, Height);
+
+            DecorWidthComboBox.DropDownStyle = ComboBoxStyle.DropDown;
             if (W == -1)
             {
                 panel2.Visible = false;
@@ -775,10 +789,12 @@ namespace Infinium
             else if (W == 0)
             {
                 panel2.Visible = true;
+                DecorWidthComboBox.DropDownStyle = ComboBoxStyle.DropDown;
             }
             else if (W > 0)
             {
                 panel2.Visible = true;
+                DecorWidthComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
             }
         }
 
@@ -807,6 +823,18 @@ namespace Infinium
             DecorInsetColorsComboBox.DataSource = DecorCatalogOrder.ItemInsetColorsBindingSource;
             DecorInsetColorsComboBox.DisplayMember = "InsetColorName";
             DecorInsetColorsComboBox.ValueMember = "InsetColorID";
+
+            DecorLengthComboBox.DataSource = DecorCatalogOrder.ItemLengthBindingSource;
+            DecorLengthComboBox.DisplayMember = "Length";
+            DecorLengthComboBox.ValueMember = "Length";
+
+            DecorHeightComboBox.DataSource = DecorCatalogOrder.ItemHeightBindingSource;
+            DecorHeightComboBox.DisplayMember = "Height";
+            DecorHeightComboBox.ValueMember = "Height";
+
+            DecorWidthComboBox.DataSource = DecorCatalogOrder.ItemWidthBindingSource;
+            DecorWidthComboBox.DisplayMember = "Width";
+            DecorWidthComboBox.ValueMember = "Width";
 
             bool bExcluzive = cbOnlyExcluzive.Checked;
             if (!DecorOrders.HasExcluzive)
@@ -988,7 +1016,8 @@ namespace Infinium
             //фасад
             if (FrontsComboBox.SelectedIndex == -1)
             {
-                MessageBox.Show(this, "Не выбран фасад или нет в базе", "Ошибка добавления фасада", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(this, "Не выбран фасад или нет в базе", "Ошибка добавления фасада",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
             //FrontID = Convert.ToInt32(FrontsComboBox.SelectedValue);
@@ -996,103 +1025,175 @@ namespace Infinium
             //цвет профиля
             if (FrameColorComboBox.SelectedIndex == -1)
             {
-                MessageBox.Show(this, "Не выбран цвет профиля или нет в базе", "Ошибка добавления фасада", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(this, "Не выбран цвет профиля или нет в базе", "Ошибка добавления фасада",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+
             ColorID = Convert.ToInt32(FrameColorComboBox.SelectedValue);
 
             //тип патины
             if (PatinaComboBox.SelectedIndex == -1)
             {
-                MessageBox.Show(this, "Не выбран тип патины или нет в базе", "Ошибка добавления фасада", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(this, "Не выбран тип патины или нет в базе", "Ошибка добавления фасада",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+
             PatinaID = Convert.ToInt32(PatinaComboBox.SelectedValue);
 
             //тип наполнителя
             if (InsetTypesComboBox.SelectedIndex == -1)
             {
-                MessageBox.Show(this, "Не выбран тип наполнителя или нет в базе", "Ошибка добавления фасада", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(this, "Не выбран тип наполнителя или нет в базе", "Ошибка добавления фасада",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+
             InsetTypeID = Convert.ToInt32(InsetTypesComboBox.SelectedValue);
 
             //цвет наполнителя
             if (InsetColorComboBox.SelectedIndex == -1)
             {
-                MessageBox.Show(this, "Не выбран цвет наполнителя или нет в базе", "Ошибка добавления фасада", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(this, "Не выбран цвет наполнителя или нет в базе", "Ошибка добавления фасада",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+
             InsetColorID = Convert.ToInt32(InsetColorComboBox.SelectedValue);
 
             //тип профиля-2
             if (TechnoProfilesComboBox.SelectedIndex == -1)
             {
-                MessageBox.Show(this, "Не выбран Тип профиля-2 или нет в базе", "Ошибка добавления фасада", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(this, "Не выбран Тип профиля-2 или нет в базе", "Ошибка добавления фасада",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+
             TechnoProfileID = Convert.ToInt32(TechnoProfilesComboBox.SelectedValue);
 
             //Цвет профиля-2
             if (TechnoFrameColorComboBox.SelectedIndex == -1)
             {
-                MessageBox.Show(this, "Не выбран Цвет профиля-2 или нет в базе", "Ошибка добавления фасада", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(this, "Не выбран Цвет профиля-2 или нет в базе", "Ошибка добавления фасада",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+
             TechnoColorID = Convert.ToInt32(TechnoFrameColorComboBox.SelectedValue);
 
             //Тип наполнителя-2
             if (TechnoInsetTypesComboBox.SelectedIndex == -1)
             {
-                MessageBox.Show(this, "Не выбран Тип наполнителя-2 или нет в базе", "Ошибка добавления фасада", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(this, "Не выбран Тип наполнителя-2 или нет в базе", "Ошибка добавления фасада",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+
             TechnoInsetTypeID = Convert.ToInt32(TechnoInsetTypesComboBox.SelectedValue);
 
             //Цвет наполнителя-2
             if (TechnoInsetColorsComboBox.SelectedIndex == -1)
             {
-                MessageBox.Show(this, "Не выбран Цвет наполнителя-2 или нет в базе", "Ошибка добавления фасада", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(this, "Не выбран Цвет наполнителя-2 или нет в базе", "Ошибка добавления фасада",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+
             TechnoInsetColorID = Convert.ToInt32(TechnoInsetColorsComboBox.SelectedValue);
 
             //высота
             if (FrontsHeightComboBox.Text.Length < 1)
             {
-                MessageBox.Show(this, "Не указана высота фасада", "Ошибка добавления фасада", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(this, "Не указана высота фасада", "Ошибка добавления фасада", MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
                 return;
             }
+
             Height = Convert.ToInt32(FrontsHeightComboBox.Text);
 
             //ширина
             if (FrontsWidthComboBox.Text.Length < 1)
             {
-                MessageBox.Show(this, "Не указана ширина фасада", "Ошибка добавления фасада", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(this, "Не указана ширина фасада", "Ошибка добавления фасада", MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
                 return;
             }
+
             Width = Convert.ToInt32(FrontsWidthComboBox.Text);
 
             //количество
             if (string.IsNullOrWhiteSpace(FrontsCountComboBox.Text) || Convert.ToInt32(FrontsCountComboBox.Text) < 1)
             {
-                MessageBox.Show(this, "Неверное количество фасадов", "Ошибка добавления фасада", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(this, "Неверное количество фасадов", "Ошибка добавления фасада", MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
                 return;
             }
+
             Count = Convert.ToInt32(FrontsCountComboBox.Text);
             //смещение для импоста
             if (!string.IsNullOrWhiteSpace(cbImpostMargin.Text) && Convert.ToInt32(cbImpostMargin.Text) > 0)
             {
                 ImpostMargin = Convert.ToInt32(cbImpostMargin.Text);
             }
+
             int FactoryID = 0;
             int AreaID = 0;
-            FrontsOrders.FrontsCatalogOrder.GetFrontConfigID(((DataRowView)FrontsComboBox.SelectedItem).Row["FrontName"].ToString(), ColorID, PatinaID, InsetTypeID,
-                   InsetColorID, TechnoProfileID, TechnoColorID, TechnoInsetTypeID, TechnoInsetColorID, Height, Width, ref FrontID, ref FactoryID, ref AreaID);
+            FrontsOrders.FrontsCatalogOrder.GetFrontConfigID(
+                ((DataRowView)FrontsComboBox.SelectedItem).Row["FrontName"].ToString(), ColorID, PatinaID, InsetTypeID,
+                InsetColorID, TechnoProfileID, TechnoColorID, TechnoInsetTypeID, TechnoInsetColorID, Height, Width,
+                ref FrontID, ref FactoryID, ref AreaID);
             if (FrontID == -1)
                 return;
-            FrontsOrders.AddFrontsOrder(MainOrderID, FrontID, ColorID, PatinaID, InsetTypeID, InsetColorID,
-                TechnoProfileID, TechnoColorID, TechnoInsetTypeID, TechnoInsetColorID, Height, Width, Count, FrontsOrdersNotesTextBox.Text, ImpostMargin);
+            
+            var clientNonStandard = false;
+            var oversize = FrontsOrders.IsOversize(FrontID, Height);
+            var clientConfirm = false;
+            
+            if (oversize)
+            {
+                clientNonStandard = FrontsOrders.GetClientNonStandard(_ordersManager.CurrentClientID);
+                
+                string heightText = "Подтвердите добавление размера";
+
+                if (clientNonStandard)
+                {
+                    var FrontConfigID = FrontsCatalogOrder.GetFrontConfigID(FrontID, ColorID, PatinaID,
+                        InsetTypeID, InsetColorID, TechnoProfileID, TechnoColorID, TechnoInsetTypeID, TechnoInsetColorID, Height, Width);
+                    decimal extraPrice = FrontsCatalogOrder.GetNonStandardMargin(FrontConfigID);
+
+                    string heightCaption2 = @$"За качество и эксплуатацию указанного размера предприятие ответственности не несет! Всё равно добавить?
+За изготовление нестандартного размера взимается наценка {extraPrice}%";
+
+                    DialogResult result = MessageBox.Show(this, heightCaption2,
+                        heightText, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+                    if (result == DialogResult.No)
+                    {
+                        return;
+                    }
+
+                    clientConfirm = true;
+                }
+                else
+                {
+                    string heightCaption1 = "За качество и эксплуатацию указанного размера предприятие ответственности не несет! Всё равно добавить?";
+
+                    DialogResult result = MessageBox.Show(this, heightCaption1,
+                        heightText, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+                    if (result == DialogResult.No)
+                    {
+                        return;
+                    }
+
+                    clientConfirm = true;
+                }
+            }
+
+            FrontsOrders.AddFrontsOrder(clientConfirm, MainOrderID, FrontID, ColorID, PatinaID, InsetTypeID, InsetColorID,
+                TechnoProfileID, TechnoColorID, TechnoInsetTypeID, TechnoInsetColorID, Height, Width, Count,
+                FrontsOrdersNotesTextBox.Text, clientNonStandard, ImpostMargin);
             cbImpostMargin.ResetText();
         }
 

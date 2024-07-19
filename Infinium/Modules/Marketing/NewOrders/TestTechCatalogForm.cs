@@ -294,5 +294,14 @@ namespace Infinium
 
         }
 
+        private void tabControl1_Selected(object sender, TabControlEventArgs e)
+        {
+
+        }
+
+        private void tabControl1_Selecting(object sender, TabControlCancelEventArgs e)
+        {
+
+        }
     }
 }

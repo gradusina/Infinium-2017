@@ -69,15 +69,6 @@ namespace Infinium.Modules.Marketing.NewOrders
 
         }
 
-        public DecorCatalogOrder(ref ComponentFactory.Krypton.Toolkit.KryptonComboBox tLengthEdit,
-            ref ComponentFactory.Krypton.Toolkit.KryptonComboBox tHeightEdit,
-            ref ComponentFactory.Krypton.Toolkit.KryptonComboBox tWidthEdit)
-        {
-            LengthEdit = tLengthEdit;
-            HeightEdit = tHeightEdit;
-            WidthEdit = tWidthEdit;
-        }
-
         private void Create()
         {
             DecorProductsDataTable = new DataTable();
@@ -111,7 +102,7 @@ namespace Infinium.Modules.Marketing.NewOrders
             ColorsDataTable.Columns.Add(new DataColumn("Cvet", Type.GetType("System.String")));
             ColorsDataTable.Columns.Add(new DataColumn("Excluzive", Type.GetType("System.Int32")));
             string SelectCommand = @"SELECT TechStoreID, TechStoreName, Cvet FROM TechStore
-                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)
+                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))
                 ORDER BY TechStoreName";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
@@ -896,7 +887,6 @@ namespace Infinium.Modules.Marketing.NewOrders
                 return false;
 
             return true;
-
         }
 
         public bool FilterInsetType(string Name, int ColorID, int PatinaID, bool bExcluzive)
@@ -972,7 +962,6 @@ namespace Infinium.Modules.Marketing.NewOrders
                 return false;
 
             return true;
-
         }
 
         public bool FilterInsetColor(string Name, int ColorID, int PatinaID, int InsetTypeID, bool bExcluzive)
@@ -1048,7 +1037,6 @@ namespace Infinium.Modules.Marketing.NewOrders
                 return false;
 
             return true;
-
         }
 
         public int FilterLength(string Name, int ColorID, int PatinaID, int InsetTypeID, int InsetColorID)
@@ -1116,14 +1104,12 @@ namespace Infinium.Modules.Marketing.NewOrders
             }
 
             ItemLengthDataTable.DefaultView.Sort = "Length ASC";
+            ItemLengthBindingSource.MoveFirst();
 
-            LengthEdit.Text = "";
-            LengthEdit.Items.Clear();
             if (ItemLengthDataTable.Rows.Count > 0)
             {
                 if (Convert.ToInt32(ItemLengthDataTable.Rows[0]["Length"]) == 0)
                 {
-                    LengthEdit.DropDownStyle = ComboBoxStyle.DropDown;
                     return 0;
                 }
 
@@ -1133,14 +1119,30 @@ namespace Infinium.Modules.Marketing.NewOrders
                 }
             }
 
-            foreach (DataRow Row in ItemLengthDataTable.Rows)
-                LengthEdit.Items.Add(Row["Length"].ToString());
+            //LengthEdit.Text = "";
+            //LengthEdit.Items.Clear();
+            //if (ItemLengthDataTable.Rows.Count > 0)
+            //{
+            //    if (Convert.ToInt32(ItemLengthDataTable.Rows[0]["Length"]) == 0)
+            //    {
+            //        LengthEdit.DropDownStyle = ComboBoxStyle.DropDown;
+            //        return 0;
+            //    }
 
-            LengthEdit.DropDownStyle = ComboBoxStyle.DropDownList;
-            if (ItemLengthDataTable.Rows.Count > 0)
-                LengthEdit.SelectedIndex = 0;
+            //    if (Convert.ToInt32(ItemLengthDataTable.Rows[0]["Length"]) == -1)
+            //    {
+            //        return -1;
+            //    }
+            //}
 
-            return LengthEdit.Items.Count;
+            //foreach (DataRow Row in ItemLengthDataTable.Rows)
+            //    LengthEdit.Items.Add(Row["Length"].ToString());
+
+            //LengthEdit.DropDownStyle = ComboBoxStyle.DropDownList;
+            //if (ItemLengthDataTable.Rows.Count > 0)
+            //    LengthEdit.SelectedIndex = 0;
+
+            return ItemLengthDataTable.Rows.Count;
         }
 
         public int FilterHeight(string Name, int ColorID, int PatinaID, int InsetTypeID, int InsetColorID, int Length)
@@ -1207,15 +1209,38 @@ namespace Infinium.Modules.Marketing.NewOrders
                 }
             }
 
-            ItemHeightDataTable.DefaultView.Sort = "Height ASC";
+            //ItemHeightDataTable.DefaultView.Sort = "Height ASC";
 
-            HeightEdit.Text = "";
-            HeightEdit.Items.Clear();
+            //HeightEdit.Text = "";
+            //HeightEdit.Items.Clear();
+            //if (ItemHeightDataTable.Rows.Count > 0)
+            //{
+            //    if (Convert.ToInt32(ItemHeightDataTable.Rows[0]["Height"]) == 0)
+            //    {
+            //        HeightEdit.DropDownStyle = ComboBoxStyle.DropDown;
+            //        return 0;
+            //    }
+
+            //    if (Convert.ToInt32(ItemHeightDataTable.Rows[0]["Height"]) == -1)
+            //    {
+            //        return -1;
+            //    }
+            //}
+
+            //foreach (DataRow Row in ItemHeightDataTable.Rows)
+            //    HeightEdit.Items.Add(Row["Height"].ToString());
+
+            //HeightEdit.DropDownStyle = ComboBoxStyle.DropDownList;
+            //if (ItemHeightDataTable.Rows.Count > 0)
+            //    HeightEdit.SelectedIndex = 0;
+
+            ItemHeightDataTable.DefaultView.Sort = "Height ASC";
+            ItemHeightBindingSource.MoveFirst();
+
             if (ItemHeightDataTable.Rows.Count > 0)
             {
                 if (Convert.ToInt32(ItemHeightDataTable.Rows[0]["Height"]) == 0)
                 {
-                    HeightEdit.DropDownStyle = ComboBoxStyle.DropDown;
                     return 0;
                 }
 
@@ -1225,14 +1250,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                 }
             }
 
-            foreach (DataRow Row in ItemHeightDataTable.Rows)
-                HeightEdit.Items.Add(Row["Height"].ToString());
-
-            HeightEdit.DropDownStyle = ComboBoxStyle.DropDownList;
-            if (ItemHeightDataTable.Rows.Count > 0)
-                HeightEdit.SelectedIndex = 0;
-
-            return HeightEdit.Items.Count;
+            return ItemHeightDataTable.Rows.Count;
         }
 
         public int FilterWidth(string Name, int ColorID, int PatinaID, int InsetTypeID, int InsetColorID, int Length, int Height)
@@ -1301,32 +1319,48 @@ namespace Infinium.Modules.Marketing.NewOrders
                 }
             }
 
-            ItemWidthDataTable.DefaultView.Sort = "Width ASC";
+            //ItemWidthDataTable.DefaultView.Sort = "Width ASC";
 
-            WidthEdit.Text = "";
-            WidthEdit.Items.Clear();
+            //WidthEdit.Text = "";
+            //WidthEdit.Items.Clear();
+            //if (ItemWidthDataTable.Rows.Count > 0)
+            //{
+            //    if (Convert.ToInt32(ItemWidthDataTable.Rows[0]["Width"]) == 0)
+            //    {
+            //        WidthEdit.DropDownStyle = ComboBoxStyle.DropDown;
+            //        return 0;
+            //    }
+
+            //    if (Convert.ToInt32(ItemWidthDataTable.Rows[0]["Width"]) == -1)
+            //    {
+
+            //        return -1;
+            //    }
+            //}
+            //foreach (DataRow Row in ItemWidthDataTable.Rows)
+            //    WidthEdit.Items.Add(Row["Width"].ToString());
+
+            //WidthEdit.DropDownStyle = ComboBoxStyle.DropDownList;
+            //if (ItemWidthDataTable.Rows.Count > 0)
+            //    WidthEdit.SelectedIndex = 0;
+
+            ItemWidthDataTable.DefaultView.Sort = "Width ASC";
+            ItemWidthBindingSource.MoveFirst();
+
             if (ItemWidthDataTable.Rows.Count > 0)
             {
                 if (Convert.ToInt32(ItemWidthDataTable.Rows[0]["Width"]) == 0)
                 {
-                    WidthEdit.DropDownStyle = ComboBoxStyle.DropDown;
                     return 0;
                 }
 
                 if (Convert.ToInt32(ItemWidthDataTable.Rows[0]["Width"]) == -1)
                 {
-
                     return -1;
                 }
             }
-            foreach (DataRow Row in ItemWidthDataTable.Rows)
-                WidthEdit.Items.Add(Row["Width"].ToString());
 
-            WidthEdit.DropDownStyle = ComboBoxStyle.DropDownList;
-            if (ItemWidthDataTable.Rows.Count > 0)
-                WidthEdit.SelectedIndex = 0;
-
-            return WidthEdit.Items.Count;
+            return ItemWidthDataTable.Rows.Count;
         }
     }
 }

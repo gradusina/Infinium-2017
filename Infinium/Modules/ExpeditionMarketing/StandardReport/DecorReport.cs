@@ -135,7 +135,7 @@ namespace Infinium.Modules.ExpeditionMarketing.StandardReport
                 return Convert.ToInt32(Row[0]["ReportMeasureID"]);//1 м.кв.  2 м.п. 3 шт.
             else
             {
-                System.Windows.Forms.MessageBox.Show(@$"Ошибка конфигурации: не найдена DecorConfigID={DecorConfigID}. 
+                System.Windows.Forms.MessageBox.Show(@$"StandardReport DecorReport Ошибка конфигурации: не найдена DecorConfigID={DecorConfigID}. 
                         DecorConfigDataTable.Count={DecorConfigDataTable.Rows.Count}");
                 return -1;
             }
@@ -1389,6 +1389,7 @@ namespace Infinium.Modules.ExpeditionMarketing.StandardReport
                     PaymentRate = Convert.ToDecimal(DistRatesDT.Rows[j]["PaymentRate"]);
                     DataRow[] ItemsRows = DecorOrdersDataTable.Select("PaymentRate='" + PaymentRate.ToString() + "' AND DecorID = " + Items.Rows[i]["DecorID"].ToString(),
                                                                           "Price ASC");
+
                     if (ItemsRows.Count() == 0)
                         continue;
                     int DecorConfigID = Convert.ToInt32(ItemsRows[0]["DecorConfigID"]);

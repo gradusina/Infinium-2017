@@ -1173,6 +1173,12 @@
     <Compile Include="Modules\Marketing\WeeklyPlanning\MarketingBatchForm.designer.cs">
       <DependentUpon>MarketingBatchForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Modules\Marketing\WeeklyPlanning\MarketingBatchForm2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modules\Marketing\WeeklyPlanning\MarketingBatchForm2.designer.cs">
+      <DependentUpon>MarketingBatchForm2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Modules\Marketing\WeeklyPlanning\MarketingBatchSelectMenu.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -2479,6 +2485,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Modules\Marketing\MutualSettlements\MutualSettlementsForm.resx">
       <DependentUpon>MutualSettlementsForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Modules\Marketing\NewOrders\AddMarketingNewOrdersForm.resx">
       <DependentUpon>AddMarketingNewOrdersForm.cs</DependentUpon>
@@ -2545,6 +2552,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Modules\Marketing\WeeklyPlanning\MarketingBatchForm.resx">
       <DependentUpon>MarketingBatchForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modules\Marketing\WeeklyPlanning\MarketingBatchForm2.resx">
+      <DependentUpon>MarketingBatchForm2.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Modules\Marketing\WeeklyPlanning\MarketingBatchSelectMenu.resx">
       <DependentUpon>MarketingBatchSelectMenu.cs</DependentUpon>

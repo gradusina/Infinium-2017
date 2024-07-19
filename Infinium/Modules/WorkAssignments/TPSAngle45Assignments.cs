@@ -384,7 +384,7 @@ namespace Infinium.Modules.WorkAssignments
             FrameColorsDataTable.Columns.Add(new DataColumn("ColorID", Type.GetType("System.Int64")));
             FrameColorsDataTable.Columns.Add(new DataColumn("ColorName", Type.GetType("System.String")));
             string SelectCommand = @"SELECT TechStoreID, TechStoreName FROM TechStore
-                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)
+                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))
                 ORDER BY TechStoreName";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
@@ -4316,7 +4316,7 @@ namespace Infinium.Modules.WorkAssignments
             GetRemovingBoxesFronts(Turin1_1OrdersDT, ref Turin1RemovingBoxesDT, 138);
             GetRemovingBoxesFronts(Turin3OrdersDT, ref Turin3RemovingBoxesDT, 138);
 
-            GetSimpleFronts(LorenzoOrdersDT, ref LorenzoSimpleDT, 230);
+            GetSimpleFronts(LorenzoOrdersDT, ref LorenzoSimpleDT, 229);
             GetSimpleFronts(ElegantOrdersDT, ref ElegantSimpleDT, 222);
             GetSimpleFronts(Patricia1OrdersDT, ref Patricia1SimpleDT, 222);
             GetSimpleFronts(ScandiaOrdersDT, ref ScandiaSimpleDT, 222);
@@ -4329,7 +4329,20 @@ namespace Infinium.Modules.WorkAssignments
             GetSimpleFronts(LeonOrdersDT, ref LeonSimpleDT, 175);
             GetSimpleFronts(BonaOrdersDT, ref BonaSimpleDT, 169);
             GetSimpleFronts(InfinitiOrdersDT, ref InfinitiSimpleDT, 240);
-
+            /*
+             * лоренцо 229
+             * элегант 222
+             * патриция 222
+             * скандия 222
+             * канзас 222
+             * дакота 222
+             * софия 222
+             * турин1 175
+             * турин3 175
+             * леон 175
+             * бона 169
+             * инфинити 240
+            */
             LorenzoGridsDT.Clear();
             ElegantGridsDT.Clear();
             Patricia1GridsDT.Clear();
@@ -4377,7 +4390,7 @@ namespace Infinium.Modules.WorkAssignments
             BonaBoxesDT.Clear();
             InfinitiBoxesDT.Clear();
 
-            GetBoxFronts(LorenzoOrdersDT, ref LorenzoBoxesDT, 230);
+            GetBoxFronts(LorenzoOrdersDT, ref LorenzoBoxesDT, 229);
             GetBoxFronts(ElegantOrdersDT, ref ElegantBoxesDT, 222);
             GetBoxFronts(Patricia1OrdersDT, ref Patricia1BoxesDT, 222);
             GetBoxFronts(ScandiaOrdersDT, ref ScandiaBoxesDT, 222);

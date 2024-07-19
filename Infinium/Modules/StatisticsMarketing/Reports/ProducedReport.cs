@@ -9,6 +9,9 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using Infinium.Modules.Marketing.NewOrders;
+using System.Data.OleDb;
+using System.Text;
+using NPOI.HSSF.Record.Formula.Functions;
 
 namespace Infinium.Modules.StatisticsMarketing.Reports
 {
@@ -36,7 +39,7 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
         private DataTable MeasuresDataTable = null;
         private DataTable FactoryDataTable = null;
         private DataTable GridSizesDataTable = null;
-        private DataTable FrontsConfigDataTable = null;
+        public DataTable FrontsConfigDataTable = null;
         private DataTable DecorConfigDataTable = null;
         private DataTable TechStoreDataTable = null;
         private DataTable InsetPriceDataTable = null;
@@ -77,7 +80,7 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
             FrameColorsDataTable.Columns.Add(new DataColumn("ColorName", Type.GetType("System.String")));
             FrameColorsDataTable.Columns.Add(new DataColumn("Cvet", Type.GetType("System.String")));
             string SelectCommand = @"SELECT TechStoreID, TechStoreName, Cvet FROM TechStore
-                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)
+                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))
                 ORDER BY TechStoreName";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
@@ -664,7 +667,7 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
             int fID = Convert.ToInt32(OrdersDataTable.Rows[0]["FactoryID"]);
             DataTable Fronts = new DataTable();
 
-            using (DataView DV = new DataView(OrdersDataTable))
+            using (DataView DV = new DataView(OrdersDataTable, "measureId=1", "", DataViewRowState.CurrentRows))
             {
                 Fronts = DV.ToTable(true, new string[] { "FrontID", "ColorID", "PatinaID" });
             }
@@ -1036,7 +1039,7 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
             int fID = Convert.ToInt32(OrdersDataTable.Rows[0]["FactoryID"]);
             DataTable Fronts = new DataTable();
 
-            using (DataView DV = new DataView(OrdersDataTable))
+            using (DataView DV = new DataView(OrdersDataTable, "measureId=3", "", DataViewRowState.CurrentRows))
             {
                 Fronts = DV.ToTable(true, new string[] { "FrontID", "ColorID", "PatinaID" });
             }
@@ -1045,8 +1048,7 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
             {
                 DataRow[] Rows = OrdersDataTable.Select("ColorID = " + Fronts.Rows[i]["ColorID"].ToString() +
                                                         " AND PatinaID = " + Fronts.Rows[i]["PatinaID"].ToString() +
-                                                        " AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString() +
-                                                        " AND Width = -1");
+                                                        " AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString());
 
                 if (Rows.Count() == 0)
                     continue;
@@ -1083,10 +1085,75 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
                 decimal Vitrina910Price = 0;
                 decimal Vitrina910Weight = 0;
 
+                decimal ScagenCount = 0;
+                decimal ScagenPrice = 0;
+                decimal ScagenWeight = 0;
+
                 if (Rows.Count() > 0)
                     MarketingCost = GetMarketingCost(Convert.ToInt32(Rows[0]["FrontConfigID"]));
                 for (int r = 0; r < Rows.Count(); r++)
                 {
+                    if (Rows[r]["measureId"].ToString() == "3" && Rows[r]["Width"].ToString() != "-1")
+                    {
+                        DataRow[] rows = InsetTypesDataTable.Select("GroupID = 3 OR GroupID = 4");
+                        foreach (DataRow item in rows)
+                        {
+                            if (Rows[r]["InsetTypeID"].ToString() == item["InsetTypeID"].ToString())
+                            {
+                                ScagenCount += Convert.ToDecimal(Rows[r]["Count"]);
+                                ScagenPrice = Convert.ToDecimal(Rows[r]["FrontPrice"]);
+
+                                decimal FrontWeight = 0;
+                                decimal InsetWeight = 0;
+
+                                GetFrontWeight(Rows[r], ref FrontWeight, ref InsetWeight);
+
+                                ScagenWeight += Convert.ToDecimal(FrontWeight + InsetWeight);
+                            }
+                        }
+                        rows = InsetTypesDataTable.Select("InsetTypeID IN (2079,2080,2081,2082,2085,2086,2087,2088,2212,2213,29210,29211,27831,27832,29210,29211)");
+                        foreach (DataRow item in rows)
+                        {
+                            if (Rows[r]["InsetTypeID"].ToString() == item["InsetTypeID"].ToString())
+                            {
+                                ScagenCount += Convert.ToDecimal(Rows[r]["Count"]);
+                                ScagenPrice = Convert.ToDecimal(Rows[r]["FrontPrice"]);
+
+                                decimal FrontWeight = 0;
+                                decimal InsetWeight = 0;
+
+                                GetFrontWeight(Rows[r], ref FrontWeight, ref InsetWeight);
+
+                                ScagenWeight += Convert.ToDecimal(FrontWeight + InsetWeight);
+                            }
+                        }
+                        if (Rows[r]["InsetTypeID"].ToString() == "-1")
+                        {
+                            ScagenCount += Convert.ToDecimal(Rows[r]["Count"]);
+                            ScagenPrice = Convert.ToDecimal(Rows[r]["FrontPrice"]);
+
+                            decimal FrontWeight = 0;
+                            decimal InsetWeight = 0;
+
+                            GetFrontWeight(Rows[r], ref FrontWeight, ref InsetWeight);
+
+                            ScagenWeight += Convert.ToDecimal(FrontWeight + InsetWeight);
+                        }
+
+                        if (Rows[r]["InsetTypeID"].ToString() == "1")
+                        {
+                            ScagenCount += Convert.ToDecimal(Rows[r]["Count"]);
+                            ScagenPrice = Convert.ToDecimal(Rows[r]["FrontPrice"]);
+
+                            decimal FrontWeight = 0;
+                            decimal InsetWeight = 0;
+
+                            GetFrontWeight(Rows[r], ref FrontWeight, ref InsetWeight);
+
+                            ScagenWeight += Convert.ToDecimal(FrontWeight + InsetWeight);
+                        }
+                    }
+
                     if (Rows[r]["Height"].ToString() == "713")
                     {
                         DataRow[] rows = InsetTypesDataTable.Select("GroupID = 3 OR GroupID = 4");
@@ -1208,8 +1275,31 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
                             Vitrina910Weight += Convert.ToDecimal(FrontWeight + InsetWeight);
                         }
                     }
+
                     if (MarketingCost > GetMarketingCost(Convert.ToInt32(Rows[r]["FrontConfigID"])))
                         MarketingCost = GetMarketingCost(Convert.ToInt32(Rows[r]["FrontConfigID"]));
+                }
+
+                if (ScagenCount > 0)
+                {
+                    DataRow Row = ReportDataTable.NewRow();
+                    Row["OriginalPrice"] = ScagenPrice;
+                    Row["UNN"] = UNN;
+                    Row["batchId"] = Convert.ToInt32(Fronts.Rows[i]["batchId"]);
+                    Row["IsComplaint"] = Convert.ToInt32(Fronts.Rows[i]["IsComplaint"]);
+                    Row["Cvet"] = GetColorCode(Convert.ToInt32(Fronts.Rows[i]["ColorID"]));
+                    Row["Patina"] = GetPatinaCode(Convert.ToInt32(Fronts.Rows[i]["PatinaID"]));
+                    Row["AccountingName"] = AccountingName;
+                    Row["InvNumber"] = InvNumber;
+                    Row["MarketingCost"] = MarketingCost;
+                    Row["Measure"] = Measure;
+                    Row["CurrencyCode"] = ProfilCurrencyCode;
+                    if (fID == 2)
+                        Row["TPSCurCode"] = TPSCurrencyCode;
+                    Row["Count"] = ScagenCount;
+                    Row["Cost"] = Decimal.Round(ScagenCount * ScagenPrice, 3, MidpointRounding.AwayFromZero);
+                    Row["Weight"] = Decimal.Round(ScagenWeight, 3, MidpointRounding.AwayFromZero);
+                    ReportDataTable.Rows.Add(Row);
                 }
 
                 if (Solid713Count > 0)
@@ -2406,8 +2496,7 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
 
             for (int i = 0; i < Fronts.Rows.Count; i++)
             {
-                DataRow[] Rows = OrdersDataTable.Select("FrontID = " + Fronts.Rows[i]["FrontID"].ToString() +
-                                                              " AND Width = -1");
+                DataRow[] Rows = OrdersDataTable.Select("FrontID = " + Fronts.Rows[i]["FrontID"].ToString());
 
                 if (Rows.Count() == 0)
                     continue;
@@ -2444,10 +2533,75 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
                 decimal Vitrina910Price = 0;
                 decimal Vitrina910Weight = 0;
 
+                decimal ScagenCount = 0;
+                decimal ScagenPrice = 0;
+                decimal ScagenWeight = 0;
+
                 if (Rows.Count() > 0)
                     MarketingCost = GetMarketingCost(Convert.ToInt32(Rows[0]["FrontConfigID"]));
                 for (int r = 0; r < Rows.Count(); r++)
                 {
+                    if (Rows[r]["measureId"].ToString() == "3" && Rows[r]["Width"].ToString() != "-1")
+                    {
+                        DataRow[] rows = InsetTypesDataTable.Select("GroupID = 3 OR GroupID = 4");
+                        foreach (DataRow item in rows)
+                        {
+                            if (Rows[r]["InsetTypeID"].ToString() == item["InsetTypeID"].ToString())
+                            {
+                                ScagenCount += Convert.ToDecimal(Rows[r]["Count"]);
+                                ScagenPrice = Convert.ToDecimal(Rows[r]["FrontPrice"]);
+
+                                decimal FrontWeight = 0;
+                                decimal InsetWeight = 0;
+
+                                GetFrontWeight(Rows[r], ref FrontWeight, ref InsetWeight);
+
+                                ScagenWeight += Convert.ToDecimal(FrontWeight + InsetWeight);
+                            }
+                        }
+                        rows = InsetTypesDataTable.Select("InsetTypeID IN (2079,2080,2081,2082,2085,2086,2087,2088,2212,2213,29210,29211,27831,27832,29210,29211)");
+                        foreach (DataRow item in rows)
+                        {
+                            if (Rows[r]["InsetTypeID"].ToString() == item["InsetTypeID"].ToString())
+                            {
+                                ScagenCount += Convert.ToDecimal(Rows[r]["Count"]);
+                                ScagenPrice = Convert.ToDecimal(Rows[r]["FrontPrice"]);
+
+                                decimal FrontWeight = 0;
+                                decimal InsetWeight = 0;
+
+                                GetFrontWeight(Rows[r], ref FrontWeight, ref InsetWeight);
+
+                                ScagenWeight += Convert.ToDecimal(FrontWeight + InsetWeight);
+                            }
+                        }
+                        if (Rows[r]["InsetTypeID"].ToString() == "-1")
+                        {
+                            ScagenCount += Convert.ToDecimal(Rows[r]["Count"]);
+                            ScagenPrice = Convert.ToDecimal(Rows[r]["FrontPrice"]);
+
+                            decimal FrontWeight = 0;
+                            decimal InsetWeight = 0;
+
+                            GetFrontWeight(Rows[r], ref FrontWeight, ref InsetWeight);
+
+                            ScagenWeight += Convert.ToDecimal(FrontWeight + InsetWeight);
+                        }
+
+                        if (Rows[r]["InsetTypeID"].ToString() == "1")
+                        {
+                            ScagenCount += Convert.ToDecimal(Rows[r]["Count"]);
+                            ScagenPrice = Convert.ToDecimal(Rows[r]["FrontPrice"]);
+
+                            decimal FrontWeight = 0;
+                            decimal InsetWeight = 0;
+
+                            GetFrontWeight(Rows[r], ref FrontWeight, ref InsetWeight);
+
+                            ScagenWeight += Convert.ToDecimal(FrontWeight + InsetWeight);
+                        }
+                    }
+
                     if (Rows[r]["Height"].ToString() == "713")
                     {
                         DataRow[] rows = InsetTypesDataTable.Select("GroupID = 3 OR GroupID = 4");
@@ -2571,6 +2725,28 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
                     }
                     if (MarketingCost > GetMarketingCost(Convert.ToInt32(Rows[r]["FrontConfigID"])))
                         MarketingCost = GetMarketingCost(Convert.ToInt32(Rows[r]["FrontConfigID"]));
+                }
+
+                if (ScagenCount > 0)
+                {
+                    DataRow Row = ReportDataTable.NewRow();
+                    Row["OriginalPrice"] = ScagenPrice;
+                    Row["UNN"] = UNN;
+                    Row["batchId"] = Convert.ToInt32(Fronts.Rows[i]["batchId"]);
+                    Row["IsComplaint"] = Convert.ToInt32(Fronts.Rows[i]["IsComplaint"]);
+                    Row["Cvet"] = GetColorCode(Convert.ToInt32(Fronts.Rows[i]["ColorID"]));
+                    Row["Patina"] = GetPatinaCode(Convert.ToInt32(Fronts.Rows[i]["PatinaID"]));
+                    Row["AccountingName"] = AccountingName;
+                    Row["InvNumber"] = InvNumber;
+                    Row["MarketingCost"] = MarketingCost;
+                    Row["Measure"] = Measure;
+                    Row["CurrencyCode"] = ProfilCurrencyCode;
+                    if (fID == 2)
+                        Row["TPSCurCode"] = TPSCurrencyCode;
+                    Row["Count"] = ScagenCount;
+                    Row["Cost"] = Decimal.Round(ScagenCount * ScagenPrice, 3, MidpointRounding.AwayFromZero);
+                    Row["Weight"] = Decimal.Round(ScagenWeight, 3, MidpointRounding.AwayFromZero);
+                    ReportDataTable.Rows.Add(Row);
                 }
 
                 if (Solid713Count > 0)
@@ -3327,7 +3503,7 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
             if (FrontsOrderSquare > 0)
                 PackWeight = FrontsOrderSquare * Convert.ToDecimal(0.7);
             //если гнутый то вес за штуки
-            if (FrontsConfigRow[0]["Width"].ToString() == "-1")
+            if (FrontsConfigRow[0]["measureId"].ToString() == "3")
             {
                 outFrontWeight = PackWeight +
                     Convert.ToDecimal(FrontsOrdersRow["Count"]) * Convert.ToDecimal(FrontsConfigRow[0]["Weight"]);
@@ -3470,7 +3646,7 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
 
             string SelectCommand = @"SELECT dbo.FrontsOrders.FrontsOrdersID, dbo.FrontsOrders.FrontID, dbo.FrontsOrders.ColorID, dbo.FrontsOrders.PatinaID, dbo.FrontsOrders.InsetTypeID, dbo.FrontsOrders.InsetColorID,
                 dbo.FrontsOrders.TechnoColorID, dbo.FrontsOrders.TechnoInsetTypeID, dbo.FrontsOrders.TechnoInsetColorID, dbo.FrontsOrders.Height, dbo.FrontsOrders.Width, PackageDetails.Count,
-                dbo.FrontsOrders.FrontConfigID, dbo.FrontsOrders.FactoryID, dbo.FrontsOrders.FrontPrice, dbo.FrontsOrders.InsetPrice,
+                dbo.FrontsOrders.FrontConfigID, infiniu2_catalog.dbo.FrontsConfig.measureId, dbo.FrontsOrders.FactoryID, dbo.FrontsOrders.FrontPrice, dbo.FrontsOrders.InsetPrice,
                 (FrontsOrders.Square * PackageDetails.Count / FrontsOrders.Count) AS Square, dbo.FrontsOrders.Cost, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog.dbo.Patina.Patina, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, infiniu2_catalog.dbo.Measures.Measure, dbo.FrontsOrders.CreateDateTime FROM PackageDetails
                 INNER JOIN FrontsOrders ON PackageDetails.OrderID = FrontsOrders.FrontsOrdersID" + MFSampleFilter + @" AND FrontsOrders.MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID IN (SELECT MegaOrderID FROM MegaOrders " + MClientFilter + @"))
                 INNER JOIN infiniu2_catalog.dbo.FrontsConfig ON FrontsOrders.FrontConfigID = infiniu2_catalog.dbo.FrontsConfig.FrontConfigID  LEFT JOIN
@@ -3579,7 +3755,7 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
 
             string SelectCommand = @"SELECT dbo.FrontsOrders.FrontsOrdersID, dbo.FrontsOrders.FrontID, dbo.FrontsOrders.ColorID, dbo.FrontsOrders.PatinaID, dbo.FrontsOrders.InsetTypeID, dbo.FrontsOrders.InsetColorID,
                 dbo.FrontsOrders.TechnoColorID, dbo.FrontsOrders.TechnoInsetTypeID, dbo.FrontsOrders.TechnoInsetColorID, dbo.FrontsOrders.Height, dbo.FrontsOrders.Width, PackageDetails.Count,
-                dbo.FrontsOrders.FrontConfigID, dbo.FrontsOrders.FactoryID, dbo.FrontsOrders.FrontPrice, dbo.FrontsOrders.InsetPrice,
+                dbo.FrontsOrders.FrontConfigID, infiniu2_catalog.dbo.FrontsConfig.measureId, dbo.FrontsOrders.FactoryID, dbo.FrontsOrders.FrontPrice, dbo.FrontsOrders.InsetPrice,
                 (FrontsOrders.Square * PackageDetails.Count / FrontsOrders.Count) AS Square, dbo.FrontsOrders.Cost, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog.dbo.Patina.Patina, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, infiniu2_catalog.dbo.Measures.Measure, dbo.FrontsOrders.CreateDateTime FROM PackageDetails
                 INNER JOIN FrontsOrders ON PackageDetails.OrderID = FrontsOrders.FrontsOrdersID" + MFSampleFilter + @" AND FrontsOrders.MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID IN (SELECT MegaOrderID FROM MegaOrders " + MClientFilter + @"))
                 INNER JOIN infiniu2_catalog.dbo.FrontsConfig ON FrontsOrders.FrontConfigID = infiniu2_catalog.dbo.FrontsConfig.FrontConfigID LEFT JOIN
@@ -3688,7 +3864,7 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
 
             string SelectCommand = @"SELECT dbo.FrontsOrders.FrontsOrdersID, dbo.FrontsOrders.FrontID, dbo.FrontsOrders.ColorID, dbo.FrontsOrders.PatinaID, dbo.FrontsOrders.InsetTypeID, dbo.FrontsOrders.InsetColorID,
                 dbo.FrontsOrders.TechnoColorID, dbo.FrontsOrders.TechnoInsetTypeID, dbo.FrontsOrders.TechnoInsetColorID, dbo.FrontsOrders.Height, dbo.FrontsOrders.Width, PackageDetails.Count,
-                dbo.FrontsOrders.FrontConfigID, dbo.FrontsOrders.FactoryID, dbo.FrontsOrders.FrontPrice, dbo.FrontsOrders.InsetPrice,
+                dbo.FrontsOrders.FrontConfigID, infiniu2_catalog.dbo.FrontsConfig.measureId, dbo.FrontsOrders.FactoryID, dbo.FrontsOrders.FrontPrice, dbo.FrontsOrders.InsetPrice,
                 (FrontsOrders.Square * PackageDetails.Count / FrontsOrders.Count) AS Square, dbo.FrontsOrders.Cost, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog.dbo.Patina.Patina, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, infiniu2_catalog.dbo.Measures.Measure, dbo.FrontsOrders.CreateDateTime FROM PackageDetails
                 INNER JOIN FrontsOrders ON PackageDetails.OrderID = FrontsOrders.FrontsOrdersID" + MFSampleFilter + @" AND FrontsOrders.MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID IN (SELECT MegaOrderID FROM MegaOrders " + MClientFilter + @"))
                 INNER JOIN infiniu2_catalog.dbo.FrontsConfig ON FrontsOrders.FrontConfigID = infiniu2_catalog.dbo.FrontsConfig.FrontConfigID LEFT JOIN
@@ -3797,7 +3973,7 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
 
             string SelectCommand = @"SELECT dbo.FrontsOrders.FrontsOrdersID, dbo.FrontsOrders.FrontID, dbo.FrontsOrders.ColorID, dbo.FrontsOrders.PatinaID, dbo.FrontsOrders.InsetTypeID, dbo.FrontsOrders.InsetColorID,
                 dbo.FrontsOrders.TechnoColorID, dbo.FrontsOrders.TechnoInsetTypeID, dbo.FrontsOrders.TechnoInsetColorID, dbo.FrontsOrders.Height, dbo.FrontsOrders.Width, PackageDetails.Count,
-                dbo.FrontsOrders.FrontConfigID, dbo.FrontsOrders.FactoryID, dbo.FrontsOrders.FrontPrice, dbo.FrontsOrders.InsetPrice,
+                dbo.FrontsOrders.FrontConfigID, infiniu2_catalog.dbo.FrontsConfig.measureId, dbo.FrontsOrders.FactoryID, dbo.FrontsOrders.FrontPrice, dbo.FrontsOrders.InsetPrice,
                 (FrontsOrders.Square * PackageDetails.Count / FrontsOrders.Count) AS Square, dbo.FrontsOrders.Cost, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog.dbo.Patina.Patina, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, infiniu2_catalog.dbo.Measures.Measure, dbo.FrontsOrders.CreateDateTime FROM PackageDetails
                 INNER JOIN FrontsOrders ON PackageDetails.OrderID = FrontsOrders.FrontsOrdersID" + MFSampleFilter + @" AND FrontsOrders.MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID IN (SELECT MegaOrderID FROM MegaOrders " + MClientFilter + @"))
                 INNER JOIN infiniu2_catalog.dbo.FrontsConfig ON FrontsOrders.FrontConfigID = infiniu2_catalog.dbo.FrontsConfig.FrontConfigID LEFT JOIN
@@ -3904,7 +4080,7 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
 
             string SelectCommand = @"SELECT dbo.FrontsOrders.FrontsOrdersID, dbo.FrontsOrders.FrontID, dbo.FrontsOrders.ColorID, dbo.FrontsOrders.PatinaID, dbo.FrontsOrders.InsetTypeID, dbo.FrontsOrders.InsetColorID,
                 dbo.FrontsOrders.TechnoColorID, dbo.FrontsOrders.TechnoInsetTypeID, dbo.FrontsOrders.TechnoInsetColorID, dbo.FrontsOrders.Height, dbo.FrontsOrders.Width, dbo.FrontsOrders.Count,
-                dbo.FrontsOrders.FrontConfigID, dbo.FrontsOrders.FactoryID, dbo.FrontsOrders.FrontPrice, dbo.FrontsOrders.InsetPrice,
+                dbo.FrontsOrders.FrontConfigID, infiniu2_catalog.dbo.FrontsConfig.measureId, dbo.FrontsOrders.FactoryID, dbo.FrontsOrders.FrontPrice, dbo.FrontsOrders.InsetPrice,
                 FrontsOrders.Square, dbo.FrontsOrders.Cost, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog.dbo.Patina.Patina, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, infiniu2_catalog.dbo.Measures.Measure, dbo.FrontsOrders.CreateDateTime FROM FrontsOrders
                 INNER JOIN infiniu2_catalog.dbo.FrontsConfig ON FrontsOrders.FrontConfigID = infiniu2_catalog.dbo.FrontsConfig.FrontConfigID LEFT JOIN
                 infiniu2_catalog.dbo.TechStore ON infiniu2_catalog.dbo.FrontsConfig.ColorID = infiniu2_catalog.dbo.TechStore.TechStoreID LEFT JOIN
@@ -4009,7 +4185,7 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
 
             string SelectCommand = @"SELECT dbo.FrontsOrders.FrontsOrdersID, dbo.FrontsOrders.FrontID, dbo.FrontsOrders.ColorID, dbo.FrontsOrders.PatinaID, dbo.FrontsOrders.InsetTypeID, dbo.FrontsOrders.InsetColorID,
                 dbo.FrontsOrders.TechnoColorID, dbo.FrontsOrders.TechnoInsetTypeID, dbo.FrontsOrders.TechnoInsetColorID, dbo.FrontsOrders.Height, dbo.FrontsOrders.Width, dbo.FrontsOrders.Count,
-                dbo.FrontsOrders.FrontConfigID, dbo.FrontsOrders.FactoryID, dbo.FrontsOrders.FrontPrice, dbo.FrontsOrders.InsetPrice,
+                dbo.FrontsOrders.FrontConfigID, infiniu2_catalog.dbo.FrontsConfig.measureId, dbo.FrontsOrders.FactoryID, dbo.FrontsOrders.FrontPrice, dbo.FrontsOrders.InsetPrice,
                 FrontsOrders.Square, dbo.FrontsOrders.Cost, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog.dbo.Patina.Patina, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, infiniu2_catalog.dbo.Measures.Measure, dbo.FrontsOrders.CreateDateTime FROM FrontsOrders
                 INNER JOIN infiniu2_catalog.dbo.FrontsConfig ON FrontsOrders.FrontConfigID = infiniu2_catalog.dbo.FrontsConfig.FrontConfigID LEFT JOIN
                 infiniu2_catalog.dbo.TechStore ON infiniu2_catalog.dbo.FrontsConfig.ColorID = infiniu2_catalog.dbo.TechStore.TechStoreID LEFT JOIN
@@ -4109,7 +4285,7 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
 
             string SelectCommand1 = @"SELECT dbo.FrontsOrders.FrontsOrdersID, dbo.FrontsOrders.FrontID, dbo.FrontsOrders.ColorID, dbo.FrontsOrders.PatinaID, dbo.FrontsOrders.InsetTypeID, dbo.FrontsOrders.InsetColorID,
                 dbo.FrontsOrders.TechnoColorID, dbo.FrontsOrders.TechnoInsetTypeID, dbo.FrontsOrders.TechnoInsetColorID, dbo.FrontsOrders.Height, dbo.FrontsOrders.Width, PackageDetails.Count,
-                dbo.FrontsOrders.FrontConfigID, dbo.FrontsOrders.FactoryID, dbo.FrontsOrders.FrontPrice, dbo.FrontsOrders.InsetPrice,
+                dbo.FrontsOrders.FrontConfigID, infiniu2_catalog.dbo.FrontsConfig.measureId, dbo.FrontsOrders.FactoryID, dbo.FrontsOrders.FrontPrice, dbo.FrontsOrders.InsetPrice,
                 (FrontsOrders.Square * PackageDetails.Count / FrontsOrders.Count) AS Square, dbo.FrontsOrders.Cost, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, infiniu2_catalog.dbo.Measures.Measure FROM PackageDetails
                 INNER JOIN FrontsOrders ON PackageDetails.OrderID = FrontsOrders.FrontsOrdersID" + MFSampleFilter + @" AND FrontsOrders.MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID IN (SELECT MegaOrderID FROM MegaOrders " + MClientFilter + @"))
                 INNER JOIN infiniu2_catalog.dbo.FrontsConfig ON FrontsOrders.FrontConfigID = infiniu2_catalog.dbo.FrontsConfig.FrontConfigID
@@ -4200,7 +4376,7 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
 
             string SelectCommand = @"SELECT dbo.FrontsOrders.FrontsOrdersID, dbo.FrontsOrders.FrontID, dbo.FrontsOrders.ColorID, dbo.FrontsOrders.PatinaID, dbo.FrontsOrders.InsetTypeID, dbo.FrontsOrders.InsetColorID,
                 dbo.FrontsOrders.TechnoColorID, dbo.FrontsOrders.TechnoInsetTypeID, dbo.FrontsOrders.TechnoInsetColorID, dbo.FrontsOrders.Height, dbo.FrontsOrders.Width, PackageDetails.Count,
-                dbo.FrontsOrders.FrontConfigID, dbo.FrontsOrders.FactoryID, dbo.FrontsOrders.FrontPrice, dbo.FrontsOrders.InsetPrice,
+                dbo.FrontsOrders.FrontConfigID, infiniu2_catalog.dbo.FrontsConfig.measureId, dbo.FrontsOrders.FactoryID, dbo.FrontsOrders.FrontPrice, dbo.FrontsOrders.InsetPrice,
                 (FrontsOrders.Square * PackageDetails.Count / FrontsOrders.Count) AS Square, dbo.FrontsOrders.Cost, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, infiniu2_catalog.dbo.Measures.Measure, dbo.FrontsOrders.CreateDateTime FROM PackageDetails
                 INNER JOIN FrontsOrders ON PackageDetails.OrderID = FrontsOrders.FrontsOrdersID" + MFSampleFilter + @" AND FrontsOrders.MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID IN (SELECT MegaOrderID FROM MegaOrders))
                 INNER JOIN infiniu2_catalog.dbo.FrontsConfig ON FrontsOrders.FrontConfigID = infiniu2_catalog.dbo.FrontsConfig.FrontConfigID
@@ -4302,7 +4478,7 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
 
             string SelectCommand = @"SELECT dbo.FrontsOrders.FrontsOrdersID, dbo.FrontsOrders.FrontID, dbo.FrontsOrders.ColorID, dbo.FrontsOrders.PatinaID, dbo.FrontsOrders.InsetTypeID, dbo.FrontsOrders.InsetColorID,
                 dbo.FrontsOrders.TechnoColorID, dbo.FrontsOrders.TechnoInsetTypeID, dbo.FrontsOrders.TechnoInsetColorID, dbo.FrontsOrders.Height, dbo.FrontsOrders.Width, PackageDetails.Count,
-                dbo.FrontsOrders.FrontConfigID, dbo.FrontsOrders.FactoryID, dbo.FrontsOrders.FrontPrice, dbo.FrontsOrders.InsetPrice,
+                dbo.FrontsOrders.FrontConfigID, infiniu2_catalog.dbo.FrontsConfig.measureId, dbo.FrontsOrders.FactoryID, dbo.FrontsOrders.FrontPrice, dbo.FrontsOrders.InsetPrice,
                 (FrontsOrders.Square * PackageDetails.Count / FrontsOrders.Count) AS Square, dbo.FrontsOrders.Cost, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, infiniu2_catalog.dbo.Measures.Measure, dbo.FrontsOrders.CreateDateTime FROM PackageDetails
                 INNER JOIN FrontsOrders ON PackageDetails.OrderID = FrontsOrders.FrontsOrdersID" + MFSampleFilter + @" AND FrontsOrders.MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID IN (SELECT MegaOrderID FROM MegaOrders " + MClientFilter + @"))
                 INNER JOIN infiniu2_catalog.dbo.FrontsConfig ON FrontsOrders.FrontConfigID = infiniu2_catalog.dbo.FrontsConfig.FrontConfigID
@@ -4390,7 +4566,7 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
 
             string SelectCommand = @"SELECT dbo.FrontsOrders.FrontsOrdersID, dbo.FrontsOrders.FrontID, dbo.FrontsOrders.ColorID, dbo.FrontsOrders.PatinaID, dbo.FrontsOrders.InsetTypeID, dbo.FrontsOrders.InsetColorID,
                 dbo.FrontsOrders.TechnoColorID, dbo.FrontsOrders.TechnoInsetTypeID, dbo.FrontsOrders.TechnoInsetColorID, dbo.FrontsOrders.Height, dbo.FrontsOrders.Width, PackageDetails.Count,
-                dbo.FrontsOrders.FrontConfigID, dbo.FrontsOrders.FactoryID, dbo.FrontsOrders.FrontPrice, dbo.FrontsOrders.InsetPrice,
+                dbo.FrontsOrders.FrontConfigID, infiniu2_catalog.dbo.FrontsConfig.measureId, dbo.FrontsOrders.FactoryID, dbo.FrontsOrders.FrontPrice, dbo.FrontsOrders.InsetPrice,
                 (FrontsOrders.Square * PackageDetails.Count / FrontsOrders.Count) AS Square, dbo.FrontsOrders.Cost, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, infiniu2_catalog.dbo.Measures.Measure, dbo.FrontsOrders.CreateDateTime FROM PackageDetails
                 INNER JOIN FrontsOrders ON PackageDetails.OrderID = FrontsOrders.FrontsOrdersID" + MFSampleFilter + @" AND FrontsOrders.MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID IN (SELECT MegaOrderID FROM MegaOrders))
                 INNER JOIN infiniu2_catalog.dbo.FrontsConfig ON FrontsOrders.FrontConfigID = infiniu2_catalog.dbo.FrontsConfig.FrontConfigID
@@ -4489,7 +4665,7 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
 
             string SelectCommand = @"SELECT dbo.FrontsOrders.FrontsOrdersID, dbo.FrontsOrders.FrontID, dbo.FrontsOrders.ColorID, dbo.FrontsOrders.PatinaID, dbo.FrontsOrders.InsetTypeID, dbo.FrontsOrders.InsetColorID,
                 dbo.FrontsOrders.TechnoColorID, dbo.FrontsOrders.TechnoInsetTypeID, dbo.FrontsOrders.TechnoInsetColorID, dbo.FrontsOrders.Height, dbo.FrontsOrders.Width, PackageDetails.Count,
-                dbo.FrontsOrders.FrontConfigID, dbo.FrontsOrders.FactoryID, dbo.FrontsOrders.FrontPrice, dbo.FrontsOrders.InsetPrice,
+                dbo.FrontsOrders.FrontConfigID, infiniu2_catalog.dbo.FrontsConfig.measureId, dbo.FrontsOrders.FactoryID, dbo.FrontsOrders.FrontPrice, dbo.FrontsOrders.InsetPrice,
                 (FrontsOrders.Square * PackageDetails.Count / FrontsOrders.Count) AS Square, dbo.FrontsOrders.Cost, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, infiniu2_catalog.dbo.Measures.Measure, dbo.FrontsOrders.CreateDateTime, Fronts.TechStoreName, Colors.TechStoreName AS Expr35, InsetTypes.TechStoreName AS Expr36, InsetColors.TechStoreName AS Expr37,
                          TechnoInsetTypes.TechStoreName AS Expr38, TechnoInsetColors.TechStoreName AS Expr39, dbo.PackageDetails.PackageDetailID, infiniu2_marketingreference.dbo.Clients.ClientName, dbo.MegaOrders.OrderNumber
 FROM            dbo.PackageDetails INNER JOIN
@@ -4598,7 +4774,7 @@ WHERE dbo.PackageDetails.PackageID IN (SELECT TOP (100) PERCENT PackageID FROM d
 
             string SelectCommand = @"SELECT dbo.FrontsOrders.FrontsOrdersID, dbo.FrontsOrders.FrontID, dbo.FrontsOrders.ColorID, dbo.FrontsOrders.PatinaID, dbo.FrontsOrders.InsetTypeID, dbo.FrontsOrders.InsetColorID,
                 dbo.FrontsOrders.TechnoColorID, dbo.FrontsOrders.TechnoInsetTypeID, dbo.FrontsOrders.TechnoInsetColorID, dbo.FrontsOrders.Height, dbo.FrontsOrders.Width, PackageDetails.Count,
-                dbo.FrontsOrders.FrontConfigID, dbo.FrontsOrders.FactoryID, dbo.FrontsOrders.FrontPrice, dbo.FrontsOrders.InsetPrice,
+                dbo.FrontsOrders.FrontConfigID, infiniu2_catalog.dbo.FrontsConfig.measureId, dbo.FrontsOrders.FactoryID, dbo.FrontsOrders.FrontPrice, dbo.FrontsOrders.InsetPrice,
                 (FrontsOrders.Square * PackageDetails.Count / FrontsOrders.Count) AS Square, dbo.FrontsOrders.Cost, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, infiniu2_catalog.dbo.Measures.Measure, dbo.FrontsOrders.CreateDateTime, Fronts.TechStoreName, Colors.TechStoreName AS Expr35, InsetTypes.TechStoreName AS Expr36, InsetColors.TechStoreName AS Expr37,
                          TechnoInsetTypes.TechStoreName AS Expr38, TechnoInsetColors.TechStoreName AS Expr39, dbo.PackageDetails.PackageDetailID, infiniu2_marketingreference.dbo.Clients.ClientName, dbo.MegaOrders.OrderNumber
 FROM            dbo.PackageDetails INNER JOIN
@@ -4693,7 +4869,7 @@ WHERE dbo.PackageDetails.PackageID IN (SELECT TOP (100) PERCENT PackageID FROM d
 
             string SelectCommand = @"SELECT dbo.FrontsOrders.FrontsOrdersID, dbo.FrontsOrders.FrontID, dbo.FrontsOrders.ColorID, dbo.FrontsOrders.PatinaID, dbo.FrontsOrders.InsetTypeID, dbo.FrontsOrders.InsetColorID,
                 dbo.FrontsOrders.TechnoColorID, dbo.FrontsOrders.TechnoInsetTypeID, dbo.FrontsOrders.TechnoInsetColorID, dbo.FrontsOrders.Height, dbo.FrontsOrders.Width, PackageDetails.Count,
-                dbo.FrontsOrders.FrontConfigID, dbo.FrontsOrders.FactoryID, dbo.FrontsOrders.FrontPrice, dbo.FrontsOrders.InsetPrice,
+                dbo.FrontsOrders.FrontConfigID, infiniu2_catalog.dbo.FrontsConfig.measureId, dbo.FrontsOrders.FactoryID, dbo.FrontsOrders.FrontPrice, dbo.FrontsOrders.InsetPrice,
                 (FrontsOrders.Square * PackageDetails.Count / FrontsOrders.Count) AS Square, dbo.FrontsOrders.Cost, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, infiniu2_catalog.dbo.Measures.Measure, dbo.FrontsOrders.CreateDateTime, Fronts.TechStoreName, Colors.TechStoreName AS Expr35, InsetTypes.TechStoreName AS Expr36, InsetColors.TechStoreName AS Expr37,
                          TechnoInsetTypes.TechStoreName AS Expr38, TechnoInsetColors.TechStoreName AS Expr39,
                          PackageDetails.PackageDetailID, infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber
@@ -4792,7 +4968,7 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
 
             string SelectCommand = @"SELECT dbo.FrontsOrders.FrontsOrdersID, dbo.FrontsOrders.FrontID, dbo.FrontsOrders.ColorID, dbo.FrontsOrders.PatinaID, dbo.FrontsOrders.InsetTypeID, dbo.FrontsOrders.InsetColorID,
                 dbo.FrontsOrders.TechnoColorID, dbo.FrontsOrders.TechnoInsetTypeID, dbo.FrontsOrders.TechnoInsetColorID, dbo.FrontsOrders.Height, dbo.FrontsOrders.Width, PackageDetails.Count,
-                dbo.FrontsOrders.FrontConfigID, dbo.FrontsOrders.FactoryID, dbo.FrontsOrders.FrontPrice, dbo.FrontsOrders.InsetPrice,
+                dbo.FrontsOrders.FrontConfigID, infiniu2_catalog.dbo.FrontsConfig.measureId, dbo.FrontsOrders.FactoryID, dbo.FrontsOrders.FrontPrice, dbo.FrontsOrders.InsetPrice,
                 (FrontsOrders.Square * PackageDetails.Count / FrontsOrders.Count) AS Square, dbo.FrontsOrders.Cost, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, infiniu2_catalog.dbo.Measures.Measure, dbo.FrontsOrders.CreateDateTime, Fronts.TechStoreName, Colors.TechStoreName AS Expr35, InsetTypes.TechStoreName AS Expr36, InsetColors.TechStoreName AS Expr37,
                          TechnoInsetTypes.TechStoreName AS Expr38, TechnoInsetColors.TechStoreName AS Expr39,
                          PackageDetails.PackageDetailID, infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber
@@ -5434,7 +5610,7 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
             FrameColorsDataTable.Columns.Add(new DataColumn("ColorName", Type.GetType("System.String")));
             FrameColorsDataTable.Columns.Add(new DataColumn("Cvet", Type.GetType("System.String")));
             string SelectCommand = @"SELECT TechStoreID, TechStoreName, Cvet FROM TechStore
-                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)
+                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))
                 ORDER BY TechStoreName";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {

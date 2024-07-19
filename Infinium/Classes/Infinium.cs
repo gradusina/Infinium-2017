@@ -506,6 +506,9 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
                     dimensions.WidthMin = Convert.ToDecimal(rows[0]["WidthMin"]);
                 if (rows[0]["WidthMax"] != DBNull.Value)
                     dimensions.WidthMax = Convert.ToDecimal(rows[0]["WidthMax"]);
+
+                if (rows[0]["HeightMaxMax"] != DBNull.Value)
+                    dimensions.HeightMaxMax = Convert.ToDecimal(rows[0]["HeightMaxMax"]);
             }
 
             return dimensions;
@@ -516,6 +519,7 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
             public int TechStoreId;
             public decimal HeightMin;
             public decimal HeightMax;
+            public decimal HeightMaxMax;
             public decimal WidthMin;
             public decimal WidthMax;
         }

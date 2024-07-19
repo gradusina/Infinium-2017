@@ -348,7 +348,16 @@ namespace Infinium.Modules.WorkAssignments
                     " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.ep206) +
                     " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.ep216) +
                     " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.ep111) +
-                    " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.Boston) + ")";
+                    " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.Boston) +
+                    " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.Korsika) +
+                    " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.Margo) +
+                    " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.Malta) +
+                    " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.Fenix) +
+                    " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.Laguna) +
+                    " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.Vest) +
+                    " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.Vegas) +
+                    " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.epsh071) +
+                    " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.Boston2) + ")";
             if (FilterType == 6)
                 FilterString = " AND (FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.Tafel1_19) +
                     " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.Tafel1Gl_19) +
@@ -458,8 +467,16 @@ namespace Infinium.Modules.WorkAssignments
                     " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.ep206) +
                     " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.ep216) +
                     " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.ep111) +
-                    " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.Boston) + ")";
-
+                    " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.Boston) + 
+                    " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.Korsika) +
+                    " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.Margo) +
+                    " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.Malta) +
+                    " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.Fenix) +
+                    " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.Laguna) +
+                    " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.Vest) + 
+                    " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.Vegas) + 
+                    " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.epsh071) + 
+                    " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.Boston2) + ")";
             if (FilterType == 6)
                 FilterString = " AND (FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.Tafel1_19) +
                     " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.Tafel1Gl_19) +
@@ -1238,7 +1255,7 @@ InsetTypeID, InsetColorID, TechnoProfileID, TechnoColorID, TechnoInsetTypeID, Te
             FrameColorsDataTable.Columns.Add(new DataColumn("ColorID", Type.GetType("System.Int64")));
             FrameColorsDataTable.Columns.Add(new DataColumn("ColorName", Type.GetType("System.String")));
             string SelectCommand = @"SELECT TechStoreID, TechStoreName FROM TechStore
-                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)
+                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))
                 ORDER BY TechStoreName";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {

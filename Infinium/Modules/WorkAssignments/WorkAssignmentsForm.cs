@@ -2947,6 +2947,15 @@ namespace Infinium
                     FrontID == Convert.ToInt32(Fronts.Venecia) || FrontID == Convert.ToInt32(Fronts.Bergamo) ||
                     FrontID == Convert.ToInt32(Fronts.ep206) || FrontID == Convert.ToInt32(Fronts.ep216) || FrontID == Convert.ToInt32(Fronts.ep111) || FrontID == Convert.ToInt32(Fronts.ep041) || FrontID == Convert.ToInt32(Fronts.ep071) ||
                     FrontID == Convert.ToInt32(Fronts.Boston) ||
+                    FrontID == Convert.ToInt32(Fronts.Korsika) ||
+                    FrontID == Convert.ToInt32(Fronts.Malta) ||
+                    FrontID == Convert.ToInt32(Fronts.Fenix) ||
+                    FrontID == Convert.ToInt32(Fronts.Margo) ||
+                    FrontID == Convert.ToInt32(Fronts.Laguna) ||
+                    FrontID == Convert.ToInt32(Fronts.Vest) ||
+                    FrontID == Convert.ToInt32(Fronts.Vegas) ||
+                    FrontID == Convert.ToInt32(Fronts.epsh071) ||
+                    FrontID == Convert.ToInt32(Fronts.Boston2) ||
                     FrontID == Convert.ToInt32(Fronts.Leon) || FrontID == Convert.ToInt32(Fronts.Limog) ||
                     FrontID == Convert.ToInt32(Fronts.ep018Marsel1) || FrontID == Convert.ToInt32(Fronts.ep043Shervud) ||
                     FrontID == Convert.ToInt32(Fronts.ep112) ||
@@ -3048,6 +3057,15 @@ namespace Infinium
                     FrontID == Convert.ToInt32(Fronts.Venecia) || FrontID == Convert.ToInt32(Fronts.Bergamo) ||
                     FrontID == Convert.ToInt32(Fronts.ep206) || FrontID == Convert.ToInt32(Fronts.ep216) || FrontID == Convert.ToInt32(Fronts.ep111) || FrontID == Convert.ToInt32(Fronts.ep041) || FrontID == Convert.ToInt32(Fronts.ep071) ||
                     FrontID == Convert.ToInt32(Fronts.Boston) ||
+                    FrontID == Convert.ToInt32(Fronts.Korsika) ||
+                    FrontID == Convert.ToInt32(Fronts.Malta) ||
+                    FrontID == Convert.ToInt32(Fronts.Fenix) ||
+                    FrontID == Convert.ToInt32(Fronts.Margo) ||
+                    FrontID == Convert.ToInt32(Fronts.Laguna) ||
+                    FrontID == Convert.ToInt32(Fronts.Vest) ||
+                    FrontID == Convert.ToInt32(Fronts.Vegas) ||
+                    FrontID == Convert.ToInt32(Fronts.epsh071) ||
+                    FrontID == Convert.ToInt32(Fronts.Boston2) ||
                     FrontID == Convert.ToInt32(Fronts.Leon) || FrontID == Convert.ToInt32(Fronts.Limog) ||
                     FrontID == Convert.ToInt32(Fronts.ep018Marsel1) || FrontID == Convert.ToInt32(Fronts.ep043Shervud) ||
                     FrontID == Convert.ToInt32(Fronts.ep112) ||

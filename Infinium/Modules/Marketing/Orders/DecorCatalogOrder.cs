@@ -113,7 +113,7 @@ namespace Infinium.Modules.Marketing.Orders
             ColorsDataTable.Columns.Add(new DataColumn("Cvet", Type.GetType("System.String")));
             ColorsDataTable.Columns.Add(new DataColumn("Excluzive", Type.GetType("System.Int32")));
             var selectCommand = @"SELECT TechStoreID, TechStoreName, Cvet FROM TechStore
-                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)
+                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))
                 ORDER BY TechStoreName";
             using (var da = new SqlDataAdapter(selectCommand, ConnectionStrings.CatalogConnectionString))
             {

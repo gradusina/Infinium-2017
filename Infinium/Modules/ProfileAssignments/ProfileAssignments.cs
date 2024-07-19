@@ -95,7 +95,7 @@ namespace Infinium
             CoversDT.Columns.Add(new DataColumn("CoverName", Type.GetType("System.String")));
 
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TechStoreID, TechStoreName FROM TechStore" +
-                " WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)" +
+                " WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))" +
                 " ORDER BY TechStoreName",
                 ConnectionStrings.CatalogConnectionString))
             {
@@ -1952,7 +1952,7 @@ WHERE LabelType=2 AND DecorAssignmentsLabels.DecorAssignmentID=" + iDecorAssignm
             CoversDT.Columns.Add(new DataColumn("CoverName", Type.GetType("System.String")));
 
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TechStoreID, TechStoreName FROM TechStore" +
-                " WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)" +
+                " WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))" +
                 " ORDER BY TechStoreName",
                 ConnectionStrings.CatalogConnectionString))
             {
@@ -8052,7 +8052,7 @@ DecorAssignmentStatusID, BarberanNumber, FrezerNumber, FacingMachine FROM DecorA
         private void Fill()
         {
             string SelectCommand = @"SELECT TechStoreID, TechStoreName FROM TechStore 
-                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11) 
+                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1)) 
                 ORDER BY TechStoreName";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {

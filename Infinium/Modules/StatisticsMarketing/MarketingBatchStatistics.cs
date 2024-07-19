@@ -602,14 +602,27 @@ namespace Infinium.Modules.StatisticsMarketing
                 for (int i = 0; i < MarkProfilReadyFrontsDT.Rows.Count; i++)
                     MarkProfilReadyFrontsDT.Rows[i]["GroupType"] = 1;
             }
-            if (ZOV)
             {
-                using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.ZOVOrdersConnectionString))
+                SelectCommand = "SELECT Batch.MegaBatchID, FrontsOrders.FrontID, FrontsOrders.Width, " +
+                                " SUM(FrontsOrders.Square) AS AllSquare, SUM(FrontsOrders.Count) AS AllCount" +
+                                " FROM FrontsOrders" +
+                                " INNER JOIN BatchDetails ON FrontsOrders.MainOrderID = BatchDetails.MainOrderID" +
+                                " INNER JOIN Batch ON BatchDetails.BatchID = Batch.BatchID INNER JOIN" +
+                                " MegaBatch ON Batch.MegaBatchID = MegaBatch.MegaBatchID AND CAST(MegaBatch.CreateDateTime AS Date) >= '" + FirstDate.ToString("yyyy-MM-dd") +
+                                "' AND CAST(MegaBatch.CreateDateTime AS Date) <= '" + SecondDate.ToString("yyyy-MM-dd") + @"'
+                INNER JOIN MainOrders ON FrontsOrders.MainOrderID = MainOrders.MainOrderID" +
+                                " WHERE FrontsOrders.MainOrderID not in (select mainorderId from packages) and (FrontsOrders.FactoryID = 1)" +
+                                " AND (MainOrders.ProfilProductionStatusID = 1 " +
+                                " and MainOrders.ProfilStorageStatusID = 1 and MainOrders.ProfilExpeditionStatusID = 1" +
+                                " and MainOrders.ProfilDispatchStatusID = 2)" +
+                                " GROUP BY Batch.MegaBatchID, FrontsOrders.FrontID, FrontsOrders.Width" +
+                                " ORDER BY Batch.MegaBatchID, FrontsOrders.FrontID, FrontsOrders.Width";
+                using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
                 {
                     DA.Fill(DT);
                 }
                 for (int i = 0; i < DT.Rows.Count; i++)
-                    DT.Rows[i]["GroupType"] = 0;
+                    DT.Rows[i]["GroupType"] = 1;
                 foreach (DataRow item in DT.Rows)
                     MarkProfilReadyFrontsDT.ImportRow(item);
             }
@@ -770,14 +783,24 @@ namespace Infinium.Modules.StatisticsMarketing
                 for (int i = 0; i < MarkProfilReadyDecorDT.Rows.Count; i++)
                     MarkProfilReadyDecorDT.Rows[i]["GroupType"] = 1;
             }
-            if (ZOV)
             {
-                using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.ZOVOrdersConnectionString))
+                SelectCommand = "SELECT Batch.MegaBatchID, DecorOrders.ProductID," +
+                                " SUM(DecorOrders.Count) AS AllCount" +
+                                " FROM DecorOrders" +
+                                " INNER JOIN BatchDetails ON DecorOrders.MainOrderID = BatchDetails.MainOrderID" +
+                                " INNER JOIN Batch ON BatchDetails.BatchID = Batch.BatchID INNER JOIN" +
+                                " MegaBatch ON Batch.MegaBatchID = MegaBatch.MegaBatchID AND CAST(MegaBatch.CreateDateTime AS Date) >= '" + FirstDate.ToString("yyyy-MM-dd") +
+                                "' AND CAST(MegaBatch.CreateDateTime AS Date) <= '" + SecondDate.ToString("yyyy-MM-dd") + @"'
+                  INNER JOIN MainOrders ON DecorOrders.MainOrderID = MainOrders.MainOrderID" +
+                                " WHERE DecorOrders.MainOrderID not in (select mainorderId from packages) and (DecorOrders.FactoryID = 1) AND MainOrders.ProfilDispatchStatusID = 2" +
+                                " GROUP BY Batch.MegaBatchID, DecorOrders.ProductID" +
+                                " ORDER BY Batch.MegaBatchID, DecorOrders.ProductID";
+                using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
                 {
                     DA.Fill(DT);
                 }
                 for (int i = 0; i < DT.Rows.Count; i++)
-                    DT.Rows[i]["GroupType"] = 0;
+                    DT.Rows[i]["GroupType"] = 1;
                 foreach (DataRow item in DT.Rows)
                     MarkProfilReadyDecorDT.ImportRow(item);
             }

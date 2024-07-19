@@ -107,7 +107,7 @@ namespace Infinium.Modules.Marketing.NewOrders.PrepareReport.NotesInvoiceReportT
             string SelectCommand = $@"SELECT
 CASE WHEN MainOrders.Notes = '' THEN CAST(MegaOrders.OrderNumber AS varchar(12)) + '_' + CAST(FrontsOrders.MainOrderID AS varchar(12)) ELSE CAST(MegaOrders.OrderNumber AS varchar(12))
                          + '_' + CAST(FrontsOrders.MainOrderID AS varchar(12)) + '_' + MainOrders.Notes END AS Notes,
-FrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, MegaOrders.PaymentRate FROM FrontsOrders" +
+FrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.measureId, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, MegaOrders.PaymentRate FROM FrontsOrders" +
                 " INNER JOIN infiniu2_catalog.dbo.FrontsConfig ON FrontsOrders.FrontConfigID = infiniu2_catalog.dbo.FrontsConfig.FrontConfigID" +
                 " INNER JOIN MainOrders ON FrontsOrders.MainOrderID = MainOrders.MainOrderID" +
                 " INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID" +
@@ -116,7 +116,7 @@ FrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catal
                 SelectCommand = $@"SELECT
 CASE WHEN MainOrders.Notes = '' THEN CAST(MegaOrders.OrderNumber AS varchar(12)) + '_' + CAST(FrontsOrders.MainOrderID AS varchar(12)) ELSE CAST(MegaOrders.OrderNumber AS varchar(12))
                          + '_' + CAST(FrontsOrders.MainOrderID AS varchar(12)) + '_' + MainOrders.Notes END AS Notes,
-FrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, MegaOrders.PaymentRate FROM FrontsOrders" +
+FrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.measureId, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, MegaOrders.PaymentRate FROM FrontsOrders" +
                 " INNER JOIN infiniu2_catalog.dbo.FrontsConfig ON FrontsOrders.FrontConfigID = infiniu2_catalog.dbo.FrontsConfig.FrontConfigID" +
                 " INNER JOIN MainOrders ON FrontsOrders.MainOrderID = MainOrders.MainOrderID" +
                 " INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID" +
@@ -216,7 +216,7 @@ FrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catal
             string SelectCommand = $@"SELECT
 CASE WHEN MainOrders.Notes = '' THEN CAST(MegaOrders.OrderNumber AS varchar(12)) + '_' + CAST(FrontsOrders.MainOrderID AS varchar(12)) ELSE CAST(MegaOrders.OrderNumber AS varchar(12))
                          + '_' + CAST(FrontsOrders.MainOrderID AS varchar(12)) + '_' + MainOrders.Notes END AS Notes,
-FrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, MegaOrders.PaymentRate FROM FrontsOrders" +
+FrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.measureId, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, MegaOrders.PaymentRate FROM FrontsOrders" +
                 " INNER JOIN infiniu2_catalog.dbo.FrontsConfig ON FrontsOrders.FrontConfigID = infiniu2_catalog.dbo.FrontsConfig.FrontConfigID" +
                 " INNER JOIN MainOrders ON FrontsOrders.MainOrderID = MainOrders.MainOrderID" +
                 " INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID" +
@@ -510,7 +510,7 @@ FrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catal
             FrameColorsDataTable.Columns.Add(new DataColumn("ColorName", Type.GetType("System.String")));
             FrameColorsDataTable.Columns.Add(new DataColumn("Cvet", Type.GetType("System.String")));
             string SelectCommand = $"SELECT TechStoreID, TechStoreName, Cvet FROM TechStore " +
-                $" WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)" +
+                $" WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))" +
                 $" ORDER BY TechStoreName";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
@@ -543,6 +543,389 @@ FrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catal
             }
         }
 
+        private void GetSimpleFronts(DataTable OrdersDataTable, DataTable ReportDataTable, bool IsNonStandard)
+        {
+            string IsNonStandardFilter = "IsNonStandard=0";
+            string DecorAccountingName = string.Empty;
+            string DecorInvNumber = string.Empty;
+            
+            string AccountingName = OrdersDataTable.Rows[0]["AccountingName"].ToString();
+            string InvNumber = OrdersDataTable.Rows[0]["InvNumber"].ToString();
+            int fID = Convert.ToInt32(OrdersDataTable.Rows[0]["FactoryID"]);
+            DataTable Fronts = new DataTable();
+            if (IsNonStandard)
+                IsNonStandardFilter = "IsNonStandard=1";
+            using (DataView DV = new DataView(OrdersDataTable, IsNonStandardFilter + " and measureId=1", "", DataViewRowState.CurrentRows))
+            {
+                Fronts = DV.ToTable(true, new string[] { "FrontID", "Notes", "ColorID", "PatinaID" });
+            }
+
+            for (int i = 0; i < Fronts.Rows.Count; i++)
+            {
+                decimal SolidCount = 0;
+                decimal SolidCost = 0;
+                decimal WithTransportSolidCost = 0;
+                decimal SolidWeight = 0;
+
+                decimal FilenkaCount = 0;
+                decimal FilenkaCost = 0;
+                decimal WithTransportFilenkaCost = 0;
+                decimal FilenkaWeight = 0;
+
+                decimal VitrinaCount = 0;
+                decimal VitrinaCost = 0;
+                decimal WithTransportVitrinaCost = 0;
+                decimal VitrinaWeight = 0;
+
+                decimal LuxMegaCount = 0;
+                decimal LuxMegaCost = 0;
+                decimal WithTransportLuxMegaCost = 0;
+                decimal LuxMegaWeight = 0;
+
+                string NotesFilter = string.Empty;
+                if (Fronts.Rows[i]["Notes"].ToString().Length > 0)
+                    NotesFilter = " AND Notes = '" + Fronts.Rows[i]["Notes"].ToString() + "'";
+                
+                object NonStandardMargin = 0;
+                IsNonStandardFilter = " AND IsNonStandard=0";
+                if (IsNonStandard)
+                    IsNonStandardFilter = " AND IsNonStandard=1";
+                //ГЛУХИЕ, БЕЗ ВСТАВКИ, РЕШЕТКА ОВАЛ
+                DataRow[] rows = InsetTypesDataTable.Select("InsetTypeID=-1 OR GroupID = 3 OR GroupID = 4");
+                string filter = string.Empty;
+                foreach (DataRow item in rows)
+                    filter += item["InsetTypeID"].ToString() + ",";
+                if (filter.Length > 0)
+                    filter = " AND NOT (FrontID IN (3728,3731,3732,3739,3740,3741,3744,3745,3746) OR InsetTypeID IN (28961,3653,3654,3655)) AND (FrontID = 3729 OR InsetTypeID IN (" + filter.Substring(0, filter.Length - 1) + "))";
+                DataRow[] Rows = OrdersDataTable.Select("ColorID = " + Fronts.Rows[i]["ColorID"].ToString() +
+                    " AND PatinaID = " + Fronts.Rows[i]["PatinaID"].ToString() +
+                    NotesFilter +
+                    " AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString() + " AND (Width <> -1)" + filter + IsNonStandardFilter);
+                for (int r = 0; r < Rows.Count(); r++)
+                {
+                    decimal DeductibleCost = 0;
+                    decimal DeductibleCount = 0;
+                    decimal DeductibleWeight = 0;
+                    if (Convert.ToInt32(Fronts.Rows[i]["FrontID"]) == 3729)//РЕШЕТКА ОВАЛ
+                    {
+                        int FactoryID = 0;
+                        DecorInvNumber = GetGridInvNumber(Convert.ToInt32(Rows[r]["FrontConfigID"]), ref FactoryID, ref DecorAccountingName);
+                        if (DecorInvNumber.Length > 0)
+                        {
+                            DataRow NewRow = DecorInvNumbersDT.NewRow();
+                            NewRow["NewFrontsOrdersID"] = Convert.ToInt32(Rows[r]["FrontsOrdersID"]);
+                            NewRow["FactoryID"] = FactoryID;
+                            NewRow["DecorAccountingName"] = DecorAccountingName;
+                            NewRow["DecorInvNumber"] = DecorInvNumber;
+                            NewRow["Cvet"] = GetColorCode(Convert.ToInt32(Fronts.Rows[i]["ColorID"]));
+                            NewRow["Patina"] = GetPatinaCode(Convert.ToInt32(Fronts.Rows[i]["PatinaID"]));
+                            NewRow["Notes"] = Fronts.Rows[i]["Notes"].ToString();
+                            DecorInvNumbersDT.Rows.Add(NewRow);
+                            DeductibleWeight = GetInsetWeight(Rows[r]);
+
+                            int MarginHeight = 0;
+                            int MarginWidth = 0;
+                            GetGlassMarginAluminium(Rows[r], ref MarginHeight, ref MarginWidth);
+                            decimal InsetSquare = MarginHeight * (Convert.ToDecimal(Rows[r]["Width"]) - MarginWidth) / 1000000;
+                            InsetSquare = Decimal.Round(InsetSquare, 3, MidpointRounding.AwayFromZero);
+                            DeductibleCount = InsetSquare * Convert.ToDecimal(Rows[r]["Count"]);
+                            DeductibleCost = Convert.ToDecimal(Rows[r]["InsetPrice"]) * InsetSquare * Convert.ToDecimal(Rows[r]["Count"]);
+                            DeductibleWeight = Decimal.Round(DeductibleCount * DeductibleWeight, 3, MidpointRounding.AwayFromZero);
+                        }
+                    }
+                    SolidCount += Convert.ToDecimal(Rows[r]["Square"]);
+                    SolidCost += Convert.ToDecimal(Rows[r]["FrontPrice"]) * Convert.ToDecimal(Rows[r]["Square"]);
+
+                    DeductibleCost = Math.Ceiling(DeductibleCost / 0.01m) * 0.01m;
+                    SolidCost = SolidCost - DeductibleCost;
+                    WithTransportSolidCost += Convert.ToDecimal(Rows[r]["CostWithTransport"]) - DeductibleCost;
+
+                    decimal FrontWeight = 0;
+                    decimal InsetWeight = 0;
+
+                    GetFrontWeight(Rows[r], ref FrontWeight, ref InsetWeight);
+
+                    SolidWeight += Convert.ToDecimal(FrontWeight + InsetWeight - DeductibleWeight);
+                    NonStandardMargin = GetNonStandardMargin(Convert.ToInt32(Rows[r]["FrontConfigID"]));
+                }
+                //АППЛИКАЦИИ
+                filter = " AND (FrontID IN (3728,3731,3732,3739,3740,3741,3744,3745,3746) OR InsetTypeID IN (28961,3653,3654,3655))";
+                Rows = OrdersDataTable.Select("ColorID = " + Fronts.Rows[i]["ColorID"].ToString() +
+                    " AND PatinaID = " + Fronts.Rows[i]["PatinaID"].ToString() +
+                    NotesFilter +
+                    " AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString() + " AND (Width <> -1)" + filter + IsNonStandardFilter);
+                for (int r = 0; r < Rows.Count(); r++)
+                {
+                    if (Convert.ToInt32(Rows[r]["FrontID"]) == 3728 || Convert.ToInt32(Rows[r]["FrontID"]) == 3731 || Convert.ToInt32(Rows[r]["FrontID"]) == 3732 ||
+                        Convert.ToInt32(Rows[r]["FrontID"]) == 3739 || Convert.ToInt32(Rows[r]["FrontID"]) == 3740 || Convert.ToInt32(Rows[r]["FrontID"]) == 3741 ||
+                        Convert.ToInt32(Rows[r]["FrontID"]) == 3744 || Convert.ToInt32(Rows[r]["FrontID"]) == 3745 || Convert.ToInt32(Rows[r]["FrontID"]) == 3746)
+                    {
+                        SolidCount += Convert.ToDecimal(Rows[r]["Square"]);
+                        SolidCost += Convert.ToDecimal(Rows[r]["FrontPrice"]) * Convert.ToDecimal(Rows[r]["Square"]) + 5 * Convert.ToDecimal(Rows[r]["Count"]);
+
+                        WithTransportSolidCost += Convert.ToDecimal(Rows[r]["CostWithTransport"]);
+                        decimal FrontWeight = 0;
+                        decimal InsetWeight = 0;
+
+                        GetFrontWeight(Rows[r], ref FrontWeight, ref InsetWeight);
+
+                        SolidWeight += Convert.ToDecimal(FrontWeight + InsetWeight);
+                    }
+                    else if (Convert.ToInt32(Rows[r]["FrontID"]) == 3415 || Convert.ToInt32(Rows[r]["FrontID"]) == 28922)
+                    {
+                        FilenkaCount += Convert.ToDecimal(Rows[r]["Square"]);
+
+                        FilenkaCost += Convert.ToDecimal(Rows[r]["FrontPrice"]) * Convert.ToDecimal(Rows[r]["Square"]) + 5 * Convert.ToDecimal(Rows[r]["Count"]);
+
+                        WithTransportFilenkaCost += Convert.ToDecimal(Rows[r]["CostWithTransport"]);
+                        decimal FrontWeight = 0;
+                        decimal InsetWeight = 0;
+
+                        GetFrontWeight(Rows[r], ref FrontWeight, ref InsetWeight);
+
+                        FilenkaWeight += Convert.ToDecimal(FrontWeight + InsetWeight);
+                    }
+                    NonStandardMargin = GetNonStandardMargin(Convert.ToInt32(Rows[r]["FrontConfigID"]));
+                }
+                //ФИЛЕНКА
+                filter = " AND InsetTypeID IN (2069,2070,2071,2073,2075,42066,2077,2233,3644,29043,29531,41213)";
+                Rows = OrdersDataTable.Select("ColorID = " + Fronts.Rows[i]["ColorID"].ToString() +
+                    " AND PatinaID = " + Fronts.Rows[i]["PatinaID"].ToString() +
+                    NotesFilter +
+                    " AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString() + " AND (Width <> -1)" + filter + IsNonStandardFilter);
+                for (int r = 0; r < Rows.Count(); r++)
+                {
+                    FilenkaCount += Convert.ToDecimal(Rows[r]["Square"]);
+
+                    FilenkaCost += Convert.ToDecimal(Rows[r]["FrontPrice"]) * Convert.ToDecimal(Rows[r]["Square"]);
+
+                    WithTransportFilenkaCost += Convert.ToDecimal(Rows[r]["CostWithTransport"]);
+                    decimal FrontWeight = 0;
+                    decimal InsetWeight = 0;
+
+                    GetFrontWeight(Rows[r], ref FrontWeight, ref InsetWeight);
+
+                    FilenkaWeight += Convert.ToDecimal(FrontWeight + InsetWeight);
+                    NonStandardMargin = GetNonStandardMargin(Convert.ToInt32(Rows[r]["FrontConfigID"]));
+                }
+                //ВИТРИНЫ, РЕШЕТКИ, СТЕКЛО
+                filter = " AND InsetTypeID IN (1,2,685,686,687,688,29470,29471) AND FrontID <> 3729";
+                Rows = OrdersDataTable.Select("ColorID = " + Fronts.Rows[i]["ColorID"].ToString() +
+                    " AND PatinaID = " + Fronts.Rows[i]["PatinaID"].ToString() +
+                    NotesFilter +
+                    " AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString() + " AND (Width <> -1)" + filter + IsNonStandardFilter);
+                for (int r = 0; r < Rows.Count(); r++)
+                {
+                    decimal DeductibleCount = 0;
+                    decimal DeductibleCost = 0;
+                    decimal DeductibleWeight = 0;
+                    //РЕШЕТКА 45,90,ПЛАСТИК
+                    if (Convert.ToInt32(Rows[r]["InsetTypeID"]) == 685 || Convert.ToInt32(Rows[r]["InsetTypeID"]) == 686 ||
+                        Convert.ToInt32(Rows[r]["InsetTypeID"]) == 687 || Convert.ToInt32(Rows[r]["InsetTypeID"]) == 688 ||
+                        Convert.ToInt32(Rows[r]["InsetTypeID"]) == 29470 || Convert.ToInt32(Rows[r]["InsetTypeID"]) == 29471)
+                    {
+                        int FactoryID = 0;
+                        DecorInvNumber = GetGridInvNumber(Convert.ToInt32(Rows[r]["FrontConfigID"]), ref FactoryID, ref DecorAccountingName);
+                        if (DecorInvNumber.Length > 0)
+                        {
+                            DataRow NewRow = DecorInvNumbersDT.NewRow();
+                            NewRow["NewFrontsOrdersID"] = Convert.ToInt32(Rows[r]["FrontsOrdersID"]);
+                            NewRow["FactoryID"] = FactoryID;
+                            NewRow["DecorAccountingName"] = DecorAccountingName;
+                            NewRow["DecorInvNumber"] = DecorInvNumber;
+                            NewRow["Cvet"] = GetColorCode(Convert.ToInt32(Fronts.Rows[i]["ColorID"]));
+                            NewRow["Patina"] = GetPatinaCode(Convert.ToInt32(Fronts.Rows[i]["PatinaID"]));
+                            NewRow["Notes"] = Fronts.Rows[i]["Notes"].ToString();
+                            DecorInvNumbersDT.Rows.Add(NewRow);
+
+                            decimal InsetSquare = GetInsetSquare(Convert.ToInt32(Rows[r]["FrontID"]), Convert.ToInt32(Rows[r]["Height"]), Convert.ToInt32(Rows[r]["Width"]));
+                            InsetSquare = Decimal.Round(InsetSquare, 3, MidpointRounding.AwayFromZero);
+                            DeductibleCount = InsetSquare * Convert.ToDecimal(Rows[r]["Count"]);
+                            DeductibleCost = Convert.ToDecimal(Rows[r]["InsetPrice"]) * InsetSquare * Convert.ToDecimal(Rows[r]["Count"]);
+                            DeductibleWeight = Decimal.Round(DeductibleCount * Convert.ToDecimal(3.5), 3, MidpointRounding.AwayFromZero);
+                        }
+                    }
+                    //СТЕКЛО
+                    if (Convert.ToInt32(Rows[r]["InsetTypeID"]) == 2)
+                    {
+                        int FactoryID = 0;
+                        DecorInvNumber = GetGlassInvNumber(Convert.ToInt32(Rows[r]["FrontConfigID"]), ref FactoryID, ref DecorAccountingName);
+                        if (DecorInvNumber.Length > 0)
+                        {
+                            DataRow NewRow = DecorInvNumbersDT.NewRow();
+                            NewRow["NewFrontsOrdersID"] = Convert.ToInt32(Rows[r]["FrontsOrdersID"]);
+                            NewRow["FactoryID"] = FactoryID;
+                            NewRow["DecorAccountingName"] = DecorAccountingName;
+                            NewRow["DecorInvNumber"] = DecorInvNumber;
+                            NewRow["Cvet"] = GetColorCode(Convert.ToInt32(Fronts.Rows[i]["ColorID"]));
+                            NewRow["Patina"] = GetPatinaCode(Convert.ToInt32(Fronts.Rows[i]["PatinaID"]));
+                            NewRow["Notes"] = Fronts.Rows[i]["Notes"].ToString();
+                            DecorInvNumbersDT.Rows.Add(NewRow);
+                            DeductibleCount = Convert.ToDecimal(Rows[r]["Count"]) * GetInsetSquare(Convert.ToInt32(Rows[r]["FrontID"]), Convert.ToInt32(Rows[r]["Height"]), Convert.ToInt32(Rows[r]["Width"]));
+                            DeductibleCost = Convert.ToDecimal(Rows[r]["InsetPrice"]) * DeductibleCount;
+                            DeductibleWeight = Decimal.Round(DeductibleCount * 10, 3, MidpointRounding.AwayFromZero);
+                        }
+                    }
+
+                    VitrinaCount += Convert.ToDecimal(Rows[r]["Square"]);
+
+                    if (IsAluminium(Rows[r]) > -1)
+                    {
+                        VitrinaCost += GetFrontCostAluminium(Rows[r]);
+                        VitrinaWeight += GetAluminiumWeight(Rows[r], true);
+                    }
+                    else
+                    {
+                        VitrinaCost += Convert.ToDecimal(Rows[r]["FrontPrice"]) * Convert.ToDecimal(Rows[r]["Square"]);
+
+                        decimal FrontWeight = 0;
+                        decimal InsetWeight = 0;
+
+                        GetFrontWeight(Rows[r], ref FrontWeight, ref InsetWeight);
+
+                        VitrinaWeight += Convert.ToDecimal(FrontWeight + InsetWeight - DeductibleWeight);
+                    }
+                    DeductibleCost = Math.Ceiling(DeductibleCost / 0.01m) * 0.01m;
+                    WithTransportVitrinaCost += Convert.ToDecimal(Rows[r]["CostWithTransport"]) - DeductibleCost;
+                    NonStandardMargin = GetNonStandardMargin(Convert.ToInt32(Rows[r]["FrontConfigID"]));
+                }
+                //ЛЮКС, МЕГА
+                filter = " AND InsetTypeID IN (860,862,4310)";
+                Rows = OrdersDataTable.Select("ColorID = " + Fronts.Rows[i]["ColorID"].ToString() +
+                    " AND PatinaID = " + Fronts.Rows[i]["PatinaID"].ToString() +
+                    NotesFilter +
+                    " AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString() + " AND (Width <> -1)" + filter + IsNonStandardFilter);
+                for (int r = 0; r < Rows.Count(); r++)
+                {
+                    LuxMegaCount += Convert.ToDecimal(Rows[r]["Square"]);
+
+                    LuxMegaCost += Convert.ToDecimal(Rows[r]["FrontPrice"]) * Convert.ToDecimal(Rows[r]["Square"]);
+
+                    WithTransportLuxMegaCost += Convert.ToDecimal(Rows[r]["CostWithTransport"]);
+                    decimal FrontWeight = 0;
+                    decimal InsetWeight = 0;
+
+                    GetFrontWeight(Rows[r], ref FrontWeight, ref InsetWeight);
+
+                    LuxMegaWeight += Convert.ToDecimal(FrontWeight + InsetWeight);
+                    NonStandardMargin = GetNonStandardMargin(Convert.ToInt32(Rows[r]["FrontConfigID"]));
+                }
+
+                if (!IsNonStandard)
+                    NonStandardMargin = DBNull.Value;
+
+                //SolidCost = Math.Ceiling(SolidCost / 0.01m) * 0.01m;
+                //WithTransportSolidCost = Math.Ceiling(WithTransportSolidCost / 0.01m) * 0.01m;
+                if (SolidCount > 0)
+                {
+                    DataRow Row = ReportDataTable.NewRow();
+                    Row["NonStandardMargin"] = NonStandardMargin;
+                    Row["IsNonStandard"] = IsNonStandard;
+                    Row["PaymentRate"] = PaymentRate;
+                    Row["OriginalPrice"] = SolidCost / SolidCount;
+                    Row["UNN"] = UNN;
+                    Row["Cvet"] = GetColorCode(Convert.ToInt32(Fronts.Rows[i]["ColorID"]));
+                    Row["Patina"] = GetPatinaCode(Convert.ToInt32(Fronts.Rows[i]["PatinaID"]));
+                    Row["AccountingName"] = AccountingName;
+                    Row["Notes"] = Fronts.Rows[i]["Notes"].ToString();
+                    Row["InvNumber"] = InvNumber;
+                    Row["CurrencyCode"] = ProfilCurrencyCode;
+                    if (fID == 2)
+                        Row["TPSCurCode"] = TPSCurrencyCode;
+                    Row["Count"] = Decimal.Round(SolidCount, 3, MidpointRounding.AwayFromZero);
+                    Row["Price"] = Decimal.Round(SolidCost / SolidCount, 2, MidpointRounding.AwayFromZero);
+                    Row["Cost"] = Decimal.Round(Math.Ceiling(SolidCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                    Row["PriceWithTransport"] = Decimal.Round(WithTransportSolidCost / SolidCount, 2, MidpointRounding.AwayFromZero);
+                    Row["CostWithTransport"] = Decimal.Round(Math.Ceiling(WithTransportSolidCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                    Row["Weight"] = Decimal.Round(SolidWeight, 3, MidpointRounding.AwayFromZero);
+                    ReportDataTable.Rows.Add(Row);
+                }
+
+                //FilenkaCost = Math.Ceiling(FilenkaCost / 0.01m) * 0.01m;
+                //WithTransportFilenkaCost = Math.Ceiling(WithTransportFilenkaCost / 0.01m) * 0.01m;
+                if (FilenkaCount > 0)
+                {
+                    DataRow Row = ReportDataTable.NewRow();
+                    Row["NonStandardMargin"] = NonStandardMargin;
+                    Row["IsNonStandard"] = IsNonStandard;
+                    Row["OriginalPrice"] = FilenkaCost / FilenkaCount;
+                    Row["UNN"] = UNN;
+                    Row["Cvet"] = GetColorCode(Convert.ToInt32(Fronts.Rows[i]["ColorID"]));
+                    Row["Patina"] = GetPatinaCode(Convert.ToInt32(Fronts.Rows[i]["PatinaID"]));
+                    Row["PaymentRate"] = PaymentRate;
+                    Row["AccountingName"] = AccountingName;
+                    Row["InvNumber"] = InvNumber;
+                    Row["Notes"] = Fronts.Rows[i]["Notes"].ToString();
+                    Row["CurrencyCode"] = ProfilCurrencyCode;
+                    if (fID == 2)
+                        Row["TPSCurCode"] = TPSCurrencyCode;
+                    Row["Count"] = Decimal.Round(FilenkaCount, 3, MidpointRounding.AwayFromZero);
+                    Row["Price"] = Decimal.Round(FilenkaCost / FilenkaCount, 2, MidpointRounding.AwayFromZero);
+                    Row["Cost"] = Decimal.Round(Math.Ceiling(FilenkaCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                    Row["PriceWithTransport"] = Decimal.Round(WithTransportFilenkaCost / FilenkaCount, 2, MidpointRounding.AwayFromZero);
+                    Row["CostWithTransport"] = Decimal.Round(Math.Ceiling(WithTransportFilenkaCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                    Row["Weight"] = Decimal.Round(FilenkaWeight, 3, MidpointRounding.AwayFromZero);
+                    ReportDataTable.Rows.Add(Row);
+                }
+
+                //VitrinaCost = Math.Ceiling(VitrinaCost / 0.01m) * 0.01m;
+                //WithTransportVitrinaCost = Math.Ceiling(WithTransportVitrinaCost / 0.01m) * 0.01m;
+                if (VitrinaCount > 0)
+                {
+                    DataRow Row = ReportDataTable.NewRow();
+                    Row["NonStandardMargin"] = NonStandardMargin;
+                    Row["IsNonStandard"] = IsNonStandard;
+                    Row["OriginalPrice"] = VitrinaCost / VitrinaCount;
+                    Row["UNN"] = UNN;
+                    Row["Cvet"] = GetColorCode(Convert.ToInt32(Fronts.Rows[i]["ColorID"]));
+                    Row["Patina"] = GetPatinaCode(Convert.ToInt32(Fronts.Rows[i]["PatinaID"]));
+                    Row["PaymentRate"] = PaymentRate;
+                    Row["AccountingName"] = AccountingName;
+                    Row["InvNumber"] = InvNumber;
+                    Row["Notes"] = Fronts.Rows[i]["Notes"].ToString();
+                    Row["CurrencyCode"] = ProfilCurrencyCode;
+                    if (fID == 2)
+                        Row["TPSCurCode"] = TPSCurrencyCode;
+                    Row["Count"] = Decimal.Round(VitrinaCount, 3, MidpointRounding.AwayFromZero);
+                    Row["Price"] = Decimal.Round(VitrinaCost / VitrinaCount, 2, MidpointRounding.AwayFromZero);
+                    Row["Cost"] = Decimal.Round(Math.Ceiling(VitrinaCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                    Row["PriceWithTransport"] = Decimal.Round(WithTransportVitrinaCost / VitrinaCount, 2, MidpointRounding.AwayFromZero);
+                    Row["CostWithTransport"] = Decimal.Round(Math.Ceiling(WithTransportVitrinaCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                    Row["Weight"] = Decimal.Round(VitrinaWeight, 3, MidpointRounding.AwayFromZero);
+                    ReportDataTable.Rows.Add(Row);
+                }
+
+                //LuxMegaCost = Math.Ceiling(LuxMegaCost / 0.01m) * 0.01m;
+                //WithTransportLuxMegaCost = Math.Ceiling(WithTransportLuxMegaCost / 0.01m) * 0.01m;
+                if (LuxMegaCount > 0)
+                {
+                    DataRow Row = ReportDataTable.NewRow();
+                    Row["NonStandardMargin"] = NonStandardMargin;
+                    Row["IsNonStandard"] = IsNonStandard;
+                    Row["OriginalPrice"] = LuxMegaCost / LuxMegaCount;
+                    Row["UNN"] = UNN;
+                    Row["Cvet"] = GetColorCode(Convert.ToInt32(Fronts.Rows[i]["ColorID"]));
+                    Row["Patina"] = GetPatinaCode(Convert.ToInt32(Fronts.Rows[i]["PatinaID"]));
+                    Row["PaymentRate"] = PaymentRate;
+                    Row["AccountingName"] = AccountingName;
+                    Row["InvNumber"] = InvNumber;
+                    Row["Notes"] = Fronts.Rows[i]["Notes"].ToString();
+                    Row["CurrencyCode"] = ProfilCurrencyCode;
+                    if (fID == 2)
+                        Row["TPSCurCode"] = TPSCurrencyCode;
+                    Row["Price"] = Decimal.Round(LuxMegaCost / LuxMegaCount, 2, MidpointRounding.AwayFromZero);
+                    Row["Count"] = Decimal.Round(LuxMegaCount, 3, MidpointRounding.AwayFromZero);
+                    Row["Cost"] = Decimal.Round(Math.Ceiling(LuxMegaCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                    Row["PriceWithTransport"] = Decimal.Round(WithTransportLuxMegaCost / LuxMegaCount, 2, MidpointRounding.AwayFromZero);
+                    Row["CostWithTransport"] = Decimal.Round(Math.Ceiling(WithTransportLuxMegaCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                    Row["Weight"] = Decimal.Round(LuxMegaWeight, 3, MidpointRounding.AwayFromZero);
+                    ReportDataTable.Rows.Add(Row);
+                }
+            }
+
+            Fronts.Dispose();
+        }
+
         private void GetCurvedFronts(DataTable OrdersDataTable, DataTable ReportDataTable)
         {
             string AccountingName = OrdersDataTable.Rows[0]["AccountingName"].ToString();
@@ -550,7 +933,7 @@ FrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catal
             int fID = Convert.ToInt32(OrdersDataTable.Rows[0]["FactoryID"]);
             DataTable Fronts = new DataTable();
 
-            using (DataView DV = new DataView(OrdersDataTable))
+            using (DataView DV = new DataView(OrdersDataTable, "measureId=3", "", DataViewRowState.CurrentRows))
             {
                 Fronts = DV.ToTable(true, new string[] { "FrontID", "Notes", "ColorID", "PatinaID" });
             }
@@ -560,7 +943,7 @@ FrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catal
                 DataRow[] Rows = OrdersDataTable.Select("ColorID = " + Fronts.Rows[i]["ColorID"].ToString() +
                     " AND PatinaID = " + Fronts.Rows[i]["PatinaID"].ToString() +
                     " AND Notes = '" + Fronts.Rows[i]["Notes"].ToString() +
-                    "' AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString() + " AND Width = -1");
+                    "' AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString());
 
                 if (Rows.Count() == 0)
                     continue;
@@ -605,8 +988,78 @@ FrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catal
                 decimal Vitrina910WithTransportCost = 0;
                 decimal Vitrina910Weight = 0;
 
+                decimal ScagenCount = 0;
+                decimal ScagenPrice = 0;
+                decimal ScagenWithTransportCost = 0;
+                decimal ScagenWeight = 0;
+
                 for (int r = 0; r < Rows.Count(); r++)
                 {
+                    if (Rows[r]["measureId"].ToString() == "3" && Rows[r]["Width"].ToString() != "-1")
+                    {
+                        DataRow[] rows = InsetTypesDataTable.Select("GroupID = 3 OR GroupID = 4");
+                        foreach (DataRow item in rows)
+                        {
+                            if (Rows[r]["InsetTypeID"].ToString() == item["InsetTypeID"].ToString())
+                            {
+                                ScagenCount += Convert.ToDecimal(Rows[r]["Count"]);
+                                ScagenPrice = Convert.ToDecimal(Rows[r]["FrontPrice"]);
+                                ScagenWithTransportCost += Convert.ToDecimal(Rows[r]["PriceWithTransport"]) * Convert.ToDecimal(Rows[r]["Count"]);
+
+                                decimal FrontWeight = 0;
+                                decimal InsetWeight = 0;
+
+                                GetFrontWeight(Rows[r], ref FrontWeight, ref InsetWeight);
+
+                                ScagenWeight += Convert.ToDecimal(FrontWeight + InsetWeight);
+                            }
+                        }
+                        rows = InsetTypesDataTable.Select("InsetTypeID IN (2079,2080,2081,2082,2085,2086,2087,2088,2212,2213,29210,29211,27831,27832,29210,29211)");
+                        foreach (DataRow item in rows)
+                        {
+                            if (Rows[r]["InsetTypeID"].ToString() == item["InsetTypeID"].ToString())
+                            {
+                                ScagenCount += Convert.ToDecimal(Rows[r]["Count"]);
+                                ScagenPrice = Convert.ToDecimal(Rows[r]["FrontPrice"]);
+                                ScagenWithTransportCost += Convert.ToDecimal(Rows[r]["PriceWithTransport"]) * Convert.ToDecimal(Rows[r]["Count"]);
+
+                                decimal FrontWeight = 0;
+                                decimal InsetWeight = 0;
+
+                                GetFrontWeight(Rows[r], ref FrontWeight, ref InsetWeight);
+
+                                ScagenWeight += Convert.ToDecimal(FrontWeight + InsetWeight);
+                            }
+                        }
+                        if (Rows[r]["InsetTypeID"].ToString() == "-1")
+                        {
+                            ScagenCount += Convert.ToDecimal(Rows[r]["Count"]);
+                            ScagenPrice = Convert.ToDecimal(Rows[r]["FrontPrice"]);
+                            ScagenWithTransportCost += Convert.ToDecimal(Rows[r]["PriceWithTransport"]) * Convert.ToDecimal(Rows[r]["Count"]);
+
+                            decimal FrontWeight = 0;
+                            decimal InsetWeight = 0;
+
+                            GetFrontWeight(Rows[r], ref FrontWeight, ref InsetWeight);
+
+                            ScagenWeight += Convert.ToDecimal(FrontWeight + InsetWeight);
+                        }
+
+                        if (Rows[r]["InsetTypeID"].ToString() == "1")
+                        {
+                            ScagenCount += Convert.ToDecimal(Rows[r]["Count"]);
+                            ScagenPrice = Convert.ToDecimal(Rows[r]["FrontPrice"]);
+                            ScagenWithTransportCost += Convert.ToDecimal(Rows[r]["PriceWithTransport"]) * Convert.ToDecimal(Rows[r]["Count"]);
+
+                            decimal FrontWeight = 0;
+                            decimal InsetWeight = 0;
+
+                            GetFrontWeight(Rows[r], ref FrontWeight, ref InsetWeight);
+
+                            ScagenWeight += Convert.ToDecimal(FrontWeight + InsetWeight);
+                        }
+                    }
+
                     if (Rows[r]["Height"].ToString() == "713")
                     {
                         DataRow[] rows = InsetTypesDataTable.Select("GroupID = 3 OR GroupID = 4");
@@ -738,8 +1191,28 @@ FrontsOrders.*, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catal
                     }
                 }
 
-                //decimal Cost = Math.Ceiling(Solid713Count * Solid713Price / 0.01m) * 0.01m;
-                //Solid713WithTransportCost = Math.Ceiling(Solid713WithTransportCost / 0.01m) * 0.01m;
+                if (ScagenCount > 0)
+                {
+                    DataRow Row = ReportDataTable.NewRow();
+                    Row["OriginalPrice"] = ScagenPrice;
+                    Row["UNN"] = UNN;
+                    Row["Cvet"] = GetColorCode(Convert.ToInt32(Fronts.Rows[i]["ColorID"]));
+                    Row["Patina"] = GetPatinaCode(Convert.ToInt32(Fronts.Rows[i]["PatinaID"]));
+                    Row["PaymentRate"] = PaymentRate;
+                    Row["AccountingName"] = AccountingName;
+                    Row["InvNumber"] = InvNumber;
+                    Row["Notes"] = Fronts.Rows[i]["Notes"].ToString();
+                    Row["CurrencyCode"] = ProfilCurrencyCode;
+                    if (fID == 2)
+                        Row["TPSCurCode"] = TPSCurrencyCode;
+                    Row["Count"] = ScagenCount;
+                    Row["PriceWithTransport"] = Decimal.Round(ScagenWithTransportCost / ScagenCount, 2, MidpointRounding.AwayFromZero);
+                    Row["CostWithTransport"] = Decimal.Round(Math.Ceiling(ScagenWithTransportCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                    Row["Cost"] = Decimal.Round(Math.Ceiling(ScagenCount * ScagenPrice / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
+                    Row["Weight"] = Decimal.Round(ScagenWeight, 3, MidpointRounding.AwayFromZero);
+                    ReportDataTable.Rows.Add(Row);
+                }
+
                 if (Solid713Count > 0)
                 {
                     DataRow Row = ReportDataTable.NewRow();
@@ -1982,390 +2455,6 @@ ON InsetColors.InsetColorID = TechStore.TechStoreID ORDER BY TechStoreName",
                 }
             }
             return 0;
-        }
-
-        private void GetSimpleFronts(DataTable OrdersDataTable, DataTable ReportDataTable, bool IsNonStandard)
-        {
-            string IsNonStandardFilter = "IsNonStandard=0";
-            string DecorAccountingName = string.Empty;
-            string DecorInvNumber = string.Empty;
-            
-            string AccountingName = OrdersDataTable.Rows[0]["AccountingName"].ToString();
-            string InvNumber = OrdersDataTable.Rows[0]["InvNumber"].ToString();
-            int fID = Convert.ToInt32(OrdersDataTable.Rows[0]["FactoryID"]);
-            DataTable Fronts = new DataTable();
-            if (IsNonStandard)
-                IsNonStandardFilter = "IsNonStandard=1";
-            using (DataView DV = new DataView(OrdersDataTable))
-            {
-                DV.RowFilter = IsNonStandardFilter;
-                Fronts = DV.ToTable(true, new string[] { "FrontID", "Notes", "ColorID", "PatinaID" });
-            }
-
-            for (int i = 0; i < Fronts.Rows.Count; i++)
-            {
-                decimal SolidCount = 0;
-                decimal SolidCost = 0;
-                decimal WithTransportSolidCost = 0;
-                decimal SolidWeight = 0;
-
-                decimal FilenkaCount = 0;
-                decimal FilenkaCost = 0;
-                decimal WithTransportFilenkaCost = 0;
-                decimal FilenkaWeight = 0;
-
-                decimal VitrinaCount = 0;
-                decimal VitrinaCost = 0;
-                decimal WithTransportVitrinaCost = 0;
-                decimal VitrinaWeight = 0;
-
-                decimal LuxMegaCount = 0;
-                decimal LuxMegaCost = 0;
-                decimal WithTransportLuxMegaCost = 0;
-                decimal LuxMegaWeight = 0;
-
-                string NotesFilter = string.Empty;
-                if (Fronts.Rows[i]["Notes"].ToString().Length > 0)
-                    NotesFilter = " AND Notes = '" + Fronts.Rows[i]["Notes"].ToString() + "'";
-                
-                object NonStandardMargin = 0;
-                IsNonStandardFilter = " AND IsNonStandard=0";
-                if (IsNonStandard)
-                    IsNonStandardFilter = " AND IsNonStandard=1";
-                //ГЛУХИЕ, БЕЗ ВСТАВКИ, РЕШЕТКА ОВАЛ
-                DataRow[] rows = InsetTypesDataTable.Select("InsetTypeID=-1 OR GroupID = 3 OR GroupID = 4");
-                string filter = string.Empty;
-                foreach (DataRow item in rows)
-                    filter += item["InsetTypeID"].ToString() + ",";
-                if (filter.Length > 0)
-                    filter = " AND NOT (FrontID IN (3728,3731,3732,3739,3740,3741,3744,3745,3746) OR InsetTypeID IN (28961,3653,3654,3655)) AND (FrontID = 3729 OR InsetTypeID IN (" + filter.Substring(0, filter.Length - 1) + "))";
-                DataRow[] Rows = OrdersDataTable.Select("ColorID = " + Fronts.Rows[i]["ColorID"].ToString() +
-                    " AND PatinaID = " + Fronts.Rows[i]["PatinaID"].ToString() +
-                    NotesFilter +
-                    " AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString() + " AND (Width <> -1)" + filter + IsNonStandardFilter);
-                for (int r = 0; r < Rows.Count(); r++)
-                {
-                    decimal DeductibleCost = 0;
-                    decimal DeductibleCount = 0;
-                    decimal DeductibleWeight = 0;
-                    if (Convert.ToInt32(Fronts.Rows[i]["FrontID"]) == 3729)//РЕШЕТКА ОВАЛ
-                    {
-                        int FactoryID = 0;
-                        DecorInvNumber = GetGridInvNumber(Convert.ToInt32(Rows[r]["FrontConfigID"]), ref FactoryID, ref DecorAccountingName);
-                        if (DecorInvNumber.Length > 0)
-                        {
-                            DataRow NewRow = DecorInvNumbersDT.NewRow();
-                            NewRow["NewFrontsOrdersID"] = Convert.ToInt32(Rows[r]["FrontsOrdersID"]);
-                            NewRow["FactoryID"] = FactoryID;
-                            NewRow["DecorAccountingName"] = DecorAccountingName;
-                            NewRow["DecorInvNumber"] = DecorInvNumber;
-                            NewRow["Cvet"] = GetColorCode(Convert.ToInt32(Fronts.Rows[i]["ColorID"]));
-                            NewRow["Patina"] = GetPatinaCode(Convert.ToInt32(Fronts.Rows[i]["PatinaID"]));
-                            NewRow["Notes"] = Fronts.Rows[i]["Notes"].ToString();
-                            DecorInvNumbersDT.Rows.Add(NewRow);
-                            DeductibleWeight = GetInsetWeight(Rows[r]);
-
-                            int MarginHeight = 0;
-                            int MarginWidth = 0;
-                            GetGlassMarginAluminium(Rows[r], ref MarginHeight, ref MarginWidth);
-                            decimal InsetSquare = MarginHeight * (Convert.ToDecimal(Rows[r]["Width"]) - MarginWidth) / 1000000;
-                            InsetSquare = Decimal.Round(InsetSquare, 3, MidpointRounding.AwayFromZero);
-                            DeductibleCount = InsetSquare * Convert.ToDecimal(Rows[r]["Count"]);
-                            DeductibleCost = Convert.ToDecimal(Rows[r]["InsetPrice"]) * InsetSquare * Convert.ToDecimal(Rows[r]["Count"]);
-                            DeductibleWeight = Decimal.Round(DeductibleCount * DeductibleWeight, 3, MidpointRounding.AwayFromZero);
-                        }
-                    }
-                    SolidCount += Convert.ToDecimal(Rows[r]["Square"]);
-                    SolidCost += Convert.ToDecimal(Rows[r]["FrontPrice"]) * Convert.ToDecimal(Rows[r]["Square"]);
-
-                    DeductibleCost = Math.Ceiling(DeductibleCost / 0.01m) * 0.01m;
-                    SolidCost = SolidCost - DeductibleCost;
-                    WithTransportSolidCost += Convert.ToDecimal(Rows[r]["CostWithTransport"]) - DeductibleCost;
-
-                    decimal FrontWeight = 0;
-                    decimal InsetWeight = 0;
-
-                    GetFrontWeight(Rows[r], ref FrontWeight, ref InsetWeight);
-
-                    SolidWeight += Convert.ToDecimal(FrontWeight + InsetWeight - DeductibleWeight);
-                    NonStandardMargin = GetNonStandardMargin(Convert.ToInt32(Rows[r]["FrontConfigID"]));
-                }
-                //АППЛИКАЦИИ
-                filter = " AND (FrontID IN (3728,3731,3732,3739,3740,3741,3744,3745,3746) OR InsetTypeID IN (28961,3653,3654,3655))";
-                Rows = OrdersDataTable.Select("ColorID = " + Fronts.Rows[i]["ColorID"].ToString() +
-                    " AND PatinaID = " + Fronts.Rows[i]["PatinaID"].ToString() +
-                    NotesFilter +
-                    " AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString() + " AND (Width <> -1)" + filter + IsNonStandardFilter);
-                for (int r = 0; r < Rows.Count(); r++)
-                {
-                    if (Convert.ToInt32(Rows[r]["FrontID"]) == 3728 || Convert.ToInt32(Rows[r]["FrontID"]) == 3731 || Convert.ToInt32(Rows[r]["FrontID"]) == 3732 ||
-                        Convert.ToInt32(Rows[r]["FrontID"]) == 3739 || Convert.ToInt32(Rows[r]["FrontID"]) == 3740 || Convert.ToInt32(Rows[r]["FrontID"]) == 3741 ||
-                        Convert.ToInt32(Rows[r]["FrontID"]) == 3744 || Convert.ToInt32(Rows[r]["FrontID"]) == 3745 || Convert.ToInt32(Rows[r]["FrontID"]) == 3746)
-                    {
-                        SolidCount += Convert.ToDecimal(Rows[r]["Square"]);
-                        SolidCost += Convert.ToDecimal(Rows[r]["FrontPrice"]) * Convert.ToDecimal(Rows[r]["Square"]) + 5 * Convert.ToDecimal(Rows[r]["Count"]);
-
-                        WithTransportSolidCost += Convert.ToDecimal(Rows[r]["CostWithTransport"]);
-                        decimal FrontWeight = 0;
-                        decimal InsetWeight = 0;
-
-                        GetFrontWeight(Rows[r], ref FrontWeight, ref InsetWeight);
-
-                        SolidWeight += Convert.ToDecimal(FrontWeight + InsetWeight);
-                    }
-                    else if (Convert.ToInt32(Rows[r]["FrontID"]) == 3415 || Convert.ToInt32(Rows[r]["FrontID"]) == 28922)
-                    {
-                        FilenkaCount += Convert.ToDecimal(Rows[r]["Square"]);
-
-                        FilenkaCost += Convert.ToDecimal(Rows[r]["FrontPrice"]) * Convert.ToDecimal(Rows[r]["Square"]) + 5 * Convert.ToDecimal(Rows[r]["Count"]);
-
-                        WithTransportFilenkaCost += Convert.ToDecimal(Rows[r]["CostWithTransport"]);
-                        decimal FrontWeight = 0;
-                        decimal InsetWeight = 0;
-
-                        GetFrontWeight(Rows[r], ref FrontWeight, ref InsetWeight);
-
-                        FilenkaWeight += Convert.ToDecimal(FrontWeight + InsetWeight);
-                    }
-                    NonStandardMargin = GetNonStandardMargin(Convert.ToInt32(Rows[r]["FrontConfigID"]));
-                }
-                //ФИЛЕНКА
-                filter = " AND InsetTypeID IN (2069,2070,2071,2073,2075,42066,2077,2233,3644,29043,29531,41213)";
-                Rows = OrdersDataTable.Select("ColorID = " + Fronts.Rows[i]["ColorID"].ToString() +
-                    " AND PatinaID = " + Fronts.Rows[i]["PatinaID"].ToString() +
-                    NotesFilter +
-                    " AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString() + " AND (Width <> -1)" + filter + IsNonStandardFilter);
-                for (int r = 0; r < Rows.Count(); r++)
-                {
-                    FilenkaCount += Convert.ToDecimal(Rows[r]["Square"]);
-
-                    FilenkaCost += Convert.ToDecimal(Rows[r]["FrontPrice"]) * Convert.ToDecimal(Rows[r]["Square"]);
-
-                    WithTransportFilenkaCost += Convert.ToDecimal(Rows[r]["CostWithTransport"]);
-                    decimal FrontWeight = 0;
-                    decimal InsetWeight = 0;
-
-                    GetFrontWeight(Rows[r], ref FrontWeight, ref InsetWeight);
-
-                    FilenkaWeight += Convert.ToDecimal(FrontWeight + InsetWeight);
-                    NonStandardMargin = GetNonStandardMargin(Convert.ToInt32(Rows[r]["FrontConfigID"]));
-                }
-                //ВИТРИНЫ, РЕШЕТКИ, СТЕКЛО
-                filter = " AND InsetTypeID IN (1,2,685,686,687,688,29470,29471) AND FrontID <> 3729";
-                Rows = OrdersDataTable.Select("ColorID = " + Fronts.Rows[i]["ColorID"].ToString() +
-                    " AND PatinaID = " + Fronts.Rows[i]["PatinaID"].ToString() +
-                    NotesFilter +
-                    " AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString() + " AND (Width <> -1)" + filter + IsNonStandardFilter);
-                for (int r = 0; r < Rows.Count(); r++)
-                {
-                    decimal DeductibleCount = 0;
-                    decimal DeductibleCost = 0;
-                    decimal DeductibleWeight = 0;
-                    //РЕШЕТКА 45,90,ПЛАСТИК
-                    if (Convert.ToInt32(Rows[r]["InsetTypeID"]) == 685 || Convert.ToInt32(Rows[r]["InsetTypeID"]) == 686 ||
-                        Convert.ToInt32(Rows[r]["InsetTypeID"]) == 687 || Convert.ToInt32(Rows[r]["InsetTypeID"]) == 688 ||
-                        Convert.ToInt32(Rows[r]["InsetTypeID"]) == 29470 || Convert.ToInt32(Rows[r]["InsetTypeID"]) == 29471)
-                    {
-                        int FactoryID = 0;
-                        DecorInvNumber = GetGridInvNumber(Convert.ToInt32(Rows[r]["FrontConfigID"]), ref FactoryID, ref DecorAccountingName);
-                        if (DecorInvNumber.Length > 0)
-                        {
-                            DataRow NewRow = DecorInvNumbersDT.NewRow();
-                            NewRow["NewFrontsOrdersID"] = Convert.ToInt32(Rows[r]["FrontsOrdersID"]);
-                            NewRow["FactoryID"] = FactoryID;
-                            NewRow["DecorAccountingName"] = DecorAccountingName;
-                            NewRow["DecorInvNumber"] = DecorInvNumber;
-                            NewRow["Cvet"] = GetColorCode(Convert.ToInt32(Fronts.Rows[i]["ColorID"]));
-                            NewRow["Patina"] = GetPatinaCode(Convert.ToInt32(Fronts.Rows[i]["PatinaID"]));
-                            NewRow["Notes"] = Fronts.Rows[i]["Notes"].ToString();
-                            DecorInvNumbersDT.Rows.Add(NewRow);
-
-                            decimal InsetSquare = GetInsetSquare(Convert.ToInt32(Rows[r]["FrontID"]), Convert.ToInt32(Rows[r]["Height"]), Convert.ToInt32(Rows[r]["Width"]));
-                            InsetSquare = Decimal.Round(InsetSquare, 3, MidpointRounding.AwayFromZero);
-                            DeductibleCount = InsetSquare * Convert.ToDecimal(Rows[r]["Count"]);
-                            DeductibleCost = Convert.ToDecimal(Rows[r]["InsetPrice"]) * InsetSquare * Convert.ToDecimal(Rows[r]["Count"]);
-                            DeductibleWeight = Decimal.Round(DeductibleCount * Convert.ToDecimal(3.5), 3, MidpointRounding.AwayFromZero);
-                        }
-                    }
-                    //СТЕКЛО
-                    if (Convert.ToInt32(Rows[r]["InsetTypeID"]) == 2)
-                    {
-                        int FactoryID = 0;
-                        DecorInvNumber = GetGlassInvNumber(Convert.ToInt32(Rows[r]["FrontConfigID"]), ref FactoryID, ref DecorAccountingName);
-                        if (DecorInvNumber.Length > 0)
-                        {
-                            DataRow NewRow = DecorInvNumbersDT.NewRow();
-                            NewRow["NewFrontsOrdersID"] = Convert.ToInt32(Rows[r]["FrontsOrdersID"]);
-                            NewRow["FactoryID"] = FactoryID;
-                            NewRow["DecorAccountingName"] = DecorAccountingName;
-                            NewRow["DecorInvNumber"] = DecorInvNumber;
-                            NewRow["Cvet"] = GetColorCode(Convert.ToInt32(Fronts.Rows[i]["ColorID"]));
-                            NewRow["Patina"] = GetPatinaCode(Convert.ToInt32(Fronts.Rows[i]["PatinaID"]));
-                            NewRow["Notes"] = Fronts.Rows[i]["Notes"].ToString();
-                            DecorInvNumbersDT.Rows.Add(NewRow);
-                            DeductibleCount = Convert.ToDecimal(Rows[r]["Count"]) * GetInsetSquare(Convert.ToInt32(Rows[r]["FrontID"]), Convert.ToInt32(Rows[r]["Height"]), Convert.ToInt32(Rows[r]["Width"]));
-                            DeductibleCost = Convert.ToDecimal(Rows[r]["InsetPrice"]) * DeductibleCount;
-                            DeductibleWeight = Decimal.Round(DeductibleCount * 10, 3, MidpointRounding.AwayFromZero);
-                        }
-                    }
-
-                    VitrinaCount += Convert.ToDecimal(Rows[r]["Square"]);
-
-                    if (IsAluminium(Rows[r]) > -1)
-                    {
-                        VitrinaCost += GetFrontCostAluminium(Rows[r]);
-                        VitrinaWeight += GetAluminiumWeight(Rows[r], true);
-                    }
-                    else
-                    {
-                        VitrinaCost += Convert.ToDecimal(Rows[r]["FrontPrice"]) * Convert.ToDecimal(Rows[r]["Square"]);
-
-                        decimal FrontWeight = 0;
-                        decimal InsetWeight = 0;
-
-                        GetFrontWeight(Rows[r], ref FrontWeight, ref InsetWeight);
-
-                        VitrinaWeight += Convert.ToDecimal(FrontWeight + InsetWeight - DeductibleWeight);
-                    }
-                    DeductibleCost = Math.Ceiling(DeductibleCost / 0.01m) * 0.01m;
-                    WithTransportVitrinaCost += Convert.ToDecimal(Rows[r]["CostWithTransport"]) - DeductibleCost;
-                    NonStandardMargin = GetNonStandardMargin(Convert.ToInt32(Rows[r]["FrontConfigID"]));
-                }
-                //ЛЮКС, МЕГА
-                filter = " AND InsetTypeID IN (860,862,4310)";
-                Rows = OrdersDataTable.Select("ColorID = " + Fronts.Rows[i]["ColorID"].ToString() +
-                    " AND PatinaID = " + Fronts.Rows[i]["PatinaID"].ToString() +
-                    NotesFilter +
-                    " AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString() + " AND (Width <> -1)" + filter + IsNonStandardFilter);
-                for (int r = 0; r < Rows.Count(); r++)
-                {
-                    LuxMegaCount += Convert.ToDecimal(Rows[r]["Square"]);
-
-                    LuxMegaCost += Convert.ToDecimal(Rows[r]["FrontPrice"]) * Convert.ToDecimal(Rows[r]["Square"]);
-
-                    WithTransportLuxMegaCost += Convert.ToDecimal(Rows[r]["CostWithTransport"]);
-                    decimal FrontWeight = 0;
-                    decimal InsetWeight = 0;
-
-                    GetFrontWeight(Rows[r], ref FrontWeight, ref InsetWeight);
-
-                    LuxMegaWeight += Convert.ToDecimal(FrontWeight + InsetWeight);
-                    NonStandardMargin = GetNonStandardMargin(Convert.ToInt32(Rows[r]["FrontConfigID"]));
-                }
-
-                if (!IsNonStandard)
-                    NonStandardMargin = DBNull.Value;
-
-                //SolidCost = Math.Ceiling(SolidCost / 0.01m) * 0.01m;
-                //WithTransportSolidCost = Math.Ceiling(WithTransportSolidCost / 0.01m) * 0.01m;
-                if (SolidCount > 0)
-                {
-                    DataRow Row = ReportDataTable.NewRow();
-                    Row["NonStandardMargin"] = NonStandardMargin;
-                    Row["IsNonStandard"] = IsNonStandard;
-                    Row["PaymentRate"] = PaymentRate;
-                    Row["OriginalPrice"] = SolidCost / SolidCount;
-                    Row["UNN"] = UNN;
-                    Row["Cvet"] = GetColorCode(Convert.ToInt32(Fronts.Rows[i]["ColorID"]));
-                    Row["Patina"] = GetPatinaCode(Convert.ToInt32(Fronts.Rows[i]["PatinaID"]));
-                    Row["AccountingName"] = AccountingName;
-                    Row["Notes"] = Fronts.Rows[i]["Notes"].ToString();
-                    Row["InvNumber"] = InvNumber;
-                    Row["CurrencyCode"] = ProfilCurrencyCode;
-                    if (fID == 2)
-                        Row["TPSCurCode"] = TPSCurrencyCode;
-                    Row["Count"] = Decimal.Round(SolidCount, 3, MidpointRounding.AwayFromZero);
-                    Row["Price"] = Decimal.Round(SolidCost / SolidCount, 2, MidpointRounding.AwayFromZero);
-                    Row["Cost"] = Decimal.Round(Math.Ceiling(SolidCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
-                    Row["PriceWithTransport"] = Decimal.Round(WithTransportSolidCost / SolidCount, 2, MidpointRounding.AwayFromZero);
-                    Row["CostWithTransport"] = Decimal.Round(Math.Ceiling(WithTransportSolidCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
-                    Row["Weight"] = Decimal.Round(SolidWeight, 3, MidpointRounding.AwayFromZero);
-                    ReportDataTable.Rows.Add(Row);
-                }
-
-                //FilenkaCost = Math.Ceiling(FilenkaCost / 0.01m) * 0.01m;
-                //WithTransportFilenkaCost = Math.Ceiling(WithTransportFilenkaCost / 0.01m) * 0.01m;
-                if (FilenkaCount > 0)
-                {
-                    DataRow Row = ReportDataTable.NewRow();
-                    Row["NonStandardMargin"] = NonStandardMargin;
-                    Row["IsNonStandard"] = IsNonStandard;
-                    Row["OriginalPrice"] = FilenkaCost / FilenkaCount;
-                    Row["UNN"] = UNN;
-                    Row["Cvet"] = GetColorCode(Convert.ToInt32(Fronts.Rows[i]["ColorID"]));
-                    Row["Patina"] = GetPatinaCode(Convert.ToInt32(Fronts.Rows[i]["PatinaID"]));
-                    Row["PaymentRate"] = PaymentRate;
-                    Row["AccountingName"] = AccountingName;
-                    Row["InvNumber"] = InvNumber;
-                    Row["Notes"] = Fronts.Rows[i]["Notes"].ToString();
-                    Row["CurrencyCode"] = ProfilCurrencyCode;
-                    if (fID == 2)
-                        Row["TPSCurCode"] = TPSCurrencyCode;
-                    Row["Count"] = Decimal.Round(FilenkaCount, 3, MidpointRounding.AwayFromZero);
-                    Row["Price"] = Decimal.Round(FilenkaCost / FilenkaCount, 2, MidpointRounding.AwayFromZero);
-                    Row["Cost"] = Decimal.Round(Math.Ceiling(FilenkaCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
-                    Row["PriceWithTransport"] = Decimal.Round(WithTransportFilenkaCost / FilenkaCount, 2, MidpointRounding.AwayFromZero);
-                    Row["CostWithTransport"] = Decimal.Round(Math.Ceiling(WithTransportFilenkaCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
-                    Row["Weight"] = Decimal.Round(FilenkaWeight, 3, MidpointRounding.AwayFromZero);
-                    ReportDataTable.Rows.Add(Row);
-                }
-
-                //VitrinaCost = Math.Ceiling(VitrinaCost / 0.01m) * 0.01m;
-                //WithTransportVitrinaCost = Math.Ceiling(WithTransportVitrinaCost / 0.01m) * 0.01m;
-                if (VitrinaCount > 0)
-                {
-                    DataRow Row = ReportDataTable.NewRow();
-                    Row["NonStandardMargin"] = NonStandardMargin;
-                    Row["IsNonStandard"] = IsNonStandard;
-                    Row["OriginalPrice"] = VitrinaCost / VitrinaCount;
-                    Row["UNN"] = UNN;
-                    Row["Cvet"] = GetColorCode(Convert.ToInt32(Fronts.Rows[i]["ColorID"]));
-                    Row["Patina"] = GetPatinaCode(Convert.ToInt32(Fronts.Rows[i]["PatinaID"]));
-                    Row["PaymentRate"] = PaymentRate;
-                    Row["AccountingName"] = AccountingName;
-                    Row["InvNumber"] = InvNumber;
-                    Row["Notes"] = Fronts.Rows[i]["Notes"].ToString();
-                    Row["CurrencyCode"] = ProfilCurrencyCode;
-                    if (fID == 2)
-                        Row["TPSCurCode"] = TPSCurrencyCode;
-                    Row["Count"] = Decimal.Round(VitrinaCount, 3, MidpointRounding.AwayFromZero);
-                    Row["Price"] = Decimal.Round(VitrinaCost / VitrinaCount, 2, MidpointRounding.AwayFromZero);
-                    Row["Cost"] = Decimal.Round(Math.Ceiling(VitrinaCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
-                    Row["PriceWithTransport"] = Decimal.Round(WithTransportVitrinaCost / VitrinaCount, 2, MidpointRounding.AwayFromZero);
-                    Row["CostWithTransport"] = Decimal.Round(Math.Ceiling(WithTransportVitrinaCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
-                    Row["Weight"] = Decimal.Round(VitrinaWeight, 3, MidpointRounding.AwayFromZero);
-                    ReportDataTable.Rows.Add(Row);
-                }
-
-                //LuxMegaCost = Math.Ceiling(LuxMegaCost / 0.01m) * 0.01m;
-                //WithTransportLuxMegaCost = Math.Ceiling(WithTransportLuxMegaCost / 0.01m) * 0.01m;
-                if (LuxMegaCount > 0)
-                {
-                    DataRow Row = ReportDataTable.NewRow();
-                    Row["NonStandardMargin"] = NonStandardMargin;
-                    Row["IsNonStandard"] = IsNonStandard;
-                    Row["OriginalPrice"] = LuxMegaCost / LuxMegaCount;
-                    Row["UNN"] = UNN;
-                    Row["Cvet"] = GetColorCode(Convert.ToInt32(Fronts.Rows[i]["ColorID"]));
-                    Row["Patina"] = GetPatinaCode(Convert.ToInt32(Fronts.Rows[i]["PatinaID"]));
-                    Row["PaymentRate"] = PaymentRate;
-                    Row["AccountingName"] = AccountingName;
-                    Row["InvNumber"] = InvNumber;
-                    Row["Notes"] = Fronts.Rows[i]["Notes"].ToString();
-                    Row["CurrencyCode"] = ProfilCurrencyCode;
-                    if (fID == 2)
-                        Row["TPSCurCode"] = TPSCurrencyCode;
-                    Row["Price"] = Decimal.Round(LuxMegaCost / LuxMegaCount, 2, MidpointRounding.AwayFromZero);
-                    Row["Count"] = Decimal.Round(LuxMegaCount, 3, MidpointRounding.AwayFromZero);
-                    Row["Cost"] = Decimal.Round(Math.Ceiling(LuxMegaCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
-                    Row["PriceWithTransport"] = Decimal.Round(WithTransportLuxMegaCost / LuxMegaCount, 2, MidpointRounding.AwayFromZero);
-                    Row["CostWithTransport"] = Decimal.Round(Math.Ceiling(WithTransportLuxMegaCost / 0.01m) * 0.01m, 2, MidpointRounding.AwayFromZero);
-                    Row["Weight"] = Decimal.Round(LuxMegaWeight, 3, MidpointRounding.AwayFromZero);
-                    ReportDataTable.Rows.Add(Row);
-                }
-            }
-
-            Fronts.Dispose();
         }
 
         private DataTable[] GroupInvNumber(DataTable OrdersDataTable)

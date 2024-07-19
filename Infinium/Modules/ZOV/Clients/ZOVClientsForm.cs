@@ -348,13 +348,13 @@ namespace Infinium
 
         private void ExportToExcelButton_Click(object sender, EventArgs e)
         {
-            _clientsToExcel.Export(Clients.AllClientsDataTable);
+            _clientsToExcel.Export(Clients.AllClientsDataTable, Clients.AllShopAddressesDataTable);
             _clientsToExcel.SaveFile("Клиенты ЗОВ", true);
         }
 
         private void ExportToExcelMenuItem_Click(object sender, EventArgs e)
         {
-            _clientsToExcel.Export(Clients.AllClientsDataTable);
+            _clientsToExcel.Export(Clients.AllClientsDataTable, Clients.AllShopAddressesDataTable);
             _clientsToExcel.SaveFile("Клиенты ЗОВ", true);
         }
 

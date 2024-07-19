@@ -106,6 +106,7 @@ namespace Infinium.Modules.LoadCalculations
             _loadCalculationsDt.Columns.Add("count", typeof(int));
             _loadCalculationsDt.Columns.Add("machineName", typeof(string));
             _loadCalculationsDt.Columns.Add("decorName", typeof(string));
+            _loadCalculationsDt.Columns.Add("accountName", typeof(string));
             _loadCalculationsDt.Columns.Add("rate1", typeof(decimal));
             _loadCalculationsDt.Columns.Add("rate2", typeof(decimal));
             _loadCalculationsDt.Columns.Add("rate3", typeof(decimal));
@@ -243,6 +244,16 @@ namespace Infinium.Modules.LoadCalculations
             var rows = _machinesDt.Select($"sectorId={id}");
             if (rows.Any())
                 name = rows[0]["sectorName"].ToString();
+            return name;
+        }
+
+        private string SectorShortName(int id)
+        {
+            var name = "";
+
+            var rows = _machinesDt.Select($"sectorId={id}");
+            if (rows.Any())
+                name = rows[0]["shortName"].ToString();
             return name;
         }
 
@@ -594,6 +605,7 @@ namespace Infinium.Modules.LoadCalculations
                 var sector = new Sector
                 {
                     Name = SectorName(sectorId),
+                    ShortName = SectorShortName(sectorId),
                     Id = sectorId,
                     Rank1 = rank1 = SumRatesByRank1(sectorId, 0) * RankCoef,
                     Rank2 = rank2 = SumRatesByRank1(sectorId, 2) * RankCoef,
@@ -719,6 +731,7 @@ namespace Infinium.Modules.LoadCalculations
                 var count = Convert.ToInt32(_decorOrdersDt.Rows[i]["count"]);
                 var countRate1 = 0;
                 var decorName = TechStoreName(decorId);
+                var accountingName = _decorOrdersDt.Rows[i]["accountingname"].ToString();
 
                 if (_decorOrdersDt.Rows[i]["OrderDate"] != DBNull.Value)
                     orderDate = Convert.ToDateTime(_decorOrdersDt.Rows[i]["OrderDate"]).ToShortDateString();
@@ -793,7 +806,7 @@ and mainOrderId={mainOrderId}");
 
                     AddClientOrder(clientId, ClientName(clientId), orderNumber, (int)orderStatus, orderDate);
 
-                    AddCalculationDecorRow(userId, machineId, sectorId, clientId, orderNumber, orderStatus,
+                    AddCalculationDecorRow(userId, machineId, sectorId, clientId, orderNumber, orderStatus, accountingName,
                         decorId, measureId, length, height, width, count, countRate1,
                         rate1, rate2, rate3, rate4);
                 }
@@ -813,6 +826,7 @@ and mainOrderId={mainOrderId}");
                 var count = Convert.ToInt32(_frontsOrdersDt.Rows[i]["count"]);
                 var countRate1 = 0;
                 var techStorename = TechStoreName(itemId);
+                var accountingName = _frontsOrdersDt.Rows[i]["accountingname"].ToString();
 
                 if (_frontsOrdersDt.Rows[i]["OrderDate"] != DBNull.Value)
                     orderDate = Convert.ToDateTime(_frontsOrdersDt.Rows[i]["OrderDate"]).ToShortDateString();
@@ -887,7 +901,7 @@ and mainOrderId={mainOrderId}");
 
                     AddClientOrder(clientId, ClientName(clientId), orderNumber, (int)orderStatus, orderDate);
 
-                    AddCalculationFrontRow(userId, machineId, sectorId, clientId, orderNumber, orderStatus,
+                    AddCalculationFrontRow(userId, machineId, sectorId, clientId, orderNumber, orderStatus, accountingName,
                         itemId, measureId, 0, height, width, count, countRate1,
                         rate1, rate2, rate3, rate4);
                 }
@@ -896,6 +910,7 @@ and mainOrderId={mainOrderId}");
 
         private void AddCalculationFrontRow(int userId, int machineId, int sectorId, int clientId, int orderNumber,
             OrderStatus orderStatus,
+            string accountingName,
             int decorId, int measureId, decimal length, decimal height, decimal width, decimal count,
             decimal countRate1,
             decimal rate1, decimal rate2, decimal rate3, decimal rate4)
@@ -955,6 +970,7 @@ and mainOrderId={mainOrderId}");
             newRow["orderStatus"] = (int)orderStatus;
             newRow["machineName"] = MachineName(machineId);
             newRow["decorName"] = TechStoreName(decorId);
+            newRow["accountingName"] = accountingName;
             newRow["total1"] = total1;
             newRow["total2"] = total2;
             newRow["total3"] = total3;
@@ -970,6 +986,7 @@ and mainOrderId={mainOrderId}");
 
         private void AddCalculationDecorRow(int userId, int machineId, int sectorId, int clientId, int orderNumber,
             OrderStatus orderStatus,
+            string accountingName,
             int decorId, int measureId, decimal length, decimal height, decimal width, decimal count,
             decimal countRate1,
             decimal rate1, decimal rate2, decimal rate3, decimal rate4)
@@ -1034,6 +1051,7 @@ and mainOrderId={mainOrderId}");
             newRow["orderStatus"] = (int)orderStatus;
             newRow["machineName"] = MachineName(machineId);
             newRow["decorName"] = TechStoreName(decorId);
+            newRow["accountingName"] = accountingName;
             newRow["total1"] = total1;
             newRow["total2"] = total2;
             newRow["total3"] = total3;
@@ -1094,6 +1112,231 @@ and mainOrderId={mainOrderId}");
             _groupbyMachinesDt.Rows.Add(newRow);
         }
 
+        public void BatchDecorOrdersNotConfirmed(int megabatchid, bool fronts, bool decor)
+        {
+            var mainOrderFilter = @" and newmainorders.factoryid = 1 and newmainorders.profilproductionstatusid=1
+                and newmainorders.profilproductionstatusid<>2 
+                and newmainorders.profilstoragestatusid<>2 
+                and newmainorders.profilexpeditionstatusid<>2
+                and newmainorders.profildispatchstatusid<>2";
+
+            var megaOrderFilter = " and AgreementStatusID=1";
+            var batchFilter = 
+                $@" and d.mainorderid in (select mainorderid from batchDetails where batchid in (select batchid from batch where megabatchid={megabatchid}))";
+
+            var selectCommand =
+                $@"select m.megaorderid, m.ordernumber, m.OrderDate, m.clientid, d.decororderid, d.mainorderid,
+d.decorid, d.productId, d.decorconfigid, d.accountingname, dc.measureid, d.length, d.height, d.width, d.count from newdecororders  as d
+inner join infiniu2_catalog.dbo.decorconfig as dc on d.decorconfigid = dc.decorconfigid
+inner join newmainorders on d.mainorderid = newmainorders.mainorderid {mainOrderFilter}
+inner join newMegaorders as m on newMainorders.megaorderid = m.megaorderid {megaOrderFilter}
+where onStorage = 0 {batchFilter} order by d.mainorderid";
+
+            _decorOrdersDt.Clear();
+            if (decor)
+                using (var da = new SqlDataAdapter(selectCommand, ConnectionStrings.MarketingOrdersConnectionString))
+                {
+                    da.Fill(_decorOrdersDt);
+                }
+
+            selectCommand =
+                $@"select m.megaorderid, m.ordernumber, m.OrderDate, m.clientid, d.FrontsOrdersID, d.mainorderid,
+d.frontid, d.frontconfigid, d.accountingname, dc.measureid, d.height, d.width, d.count from newfrontsorders  as d
+inner join infiniu2_catalog.dbo.frontsconfig as dc on d.frontconfigid = dc.frontconfigid
+inner join newmainorders on d.mainorderid = newmainorders.mainorderid {mainOrderFilter}
+inner join newMegaorders as m on newMainorders.megaorderid = m.megaorderid {megaOrderFilter}
+where onStorage = 0 {batchFilter} order by d.mainorderid";
+
+            _frontsOrdersDt.Clear();
+            if (fronts)
+                using (var da = new SqlDataAdapter(selectCommand, ConnectionStrings.MarketingOrdersConnectionString))
+                {
+                    da.Fill(_frontsOrdersDt);
+                }
+        }
+
+        public void BatchDecorOrdersForAgreed(int megabatchid, bool fronts, bool decor)
+        {
+            var mainOrderFilter = @" and newmainorders.factoryid = 1 and newmainorders.profilproductionstatusid=1
+                and newmainorders.profilproductionstatusid<>2 
+                and newmainorders.profilstoragestatusid<>2 
+                and newmainorders.profilexpeditionstatusid<>2
+                and newmainorders.profildispatchstatusid<>2";
+
+            var megaOrderFilter = " and AgreementStatusID=3";
+
+            var batchFilter =
+                $@" and d.mainorderid in (select mainorderid from batchDetails where batchid in (select batchid from batch where megabatchid={megabatchid}))";
+
+            var selectCommand =
+                $@"select m.megaorderid, m.ordernumber, m.OrderDate, m.clientid, d.decororderid, d.mainorderid,
+d.decorid, d.productId, d.decorconfigid, d.accountingname, dc.measureid, d.length, d.height, d.width, d.count from newdecororders  as d
+inner join infiniu2_catalog.dbo.decorconfig as dc on d.decorconfigid = dc.decorconfigid
+inner join newmainorders on d.mainorderid = newmainorders.mainorderid {mainOrderFilter}
+inner join newMegaorders as m on newMainorders.megaorderid = m.megaorderid {megaOrderFilter}
+where onStorage = 0 {batchFilter} order by d.mainorderid";
+
+            _decorOrdersDt.Clear();
+            if (decor)
+                using (var da = new SqlDataAdapter(selectCommand, ConnectionStrings.MarketingOrdersConnectionString))
+                {
+                    da.Fill(_decorOrdersDt);
+                }
+            selectCommand =
+                $@"select m.megaorderid, m.ordernumber, m.OrderDate, m.clientid, d.FrontsOrdersID, d.mainorderid,
+d.frontid, d.frontconfigid, d.accountingname, dc.measureid, d.height, d.width, d.count from newfrontsorders  as d
+inner join infiniu2_catalog.dbo.frontsconfig as dc on d.frontconfigid = dc.frontconfigid
+inner join newmainorders on d.mainorderid = newmainorders.mainorderid {mainOrderFilter}
+inner join newMegaorders as m on newMainorders.megaorderid = m.megaorderid {megaOrderFilter}
+where onStorage = 0 {batchFilter} order by d.mainorderid";
+
+            _frontsOrdersDt.Clear();
+            if (fronts)
+                using (var da = new SqlDataAdapter(selectCommand, ConnectionStrings.MarketingOrdersConnectionString))
+                {
+                    da.Fill(_frontsOrdersDt);
+                }
+        }
+
+        public void BatchDecorOrdersAgreed(int megabatchid, bool fronts, bool decor)
+        {
+            var mainOrderFilter = @" and newmainorders.factoryid = 1 and newmainorders.profilproductionstatusid=1
+                and newmainorders.profilproductionstatusid<>2 
+                and newmainorders.profilstoragestatusid<>2 
+                and newmainorders.profilexpeditionstatusid<>2
+                and newmainorders.profildispatchstatusid<>2";
+
+            var megaOrderFilter = " and AgreementStatusID=2";
+            var batchFilter =
+                $@" and d.mainorderid in (select mainorderid from batchDetails where batchid in (select batchid from batch where megabatchid={megabatchid}))";
+
+            var selectCommand =
+                $@"select m.megaorderid, m.ordernumber, m.OrderDate, m.clientid, d.decororderid, d.mainorderid,
+d.decorid, d.productId, d.decorconfigid, d.accountingname, dc.measureid, d.length, d.height, d.width, d.count from newdecororders  as d
+inner join infiniu2_catalog.dbo.decorconfig as dc on d.decorconfigid = dc.decorconfigid
+inner join newmainorders on d.mainorderid = newmainorders.mainorderid {mainOrderFilter}
+inner join newMegaorders as m on newMainorders.megaorderid = m.megaorderid {megaOrderFilter}
+where onStorage = 0 {batchFilter} and (d.mainorderid not in (select mainorderid from packages) or
+d.decororderid not in (select orderid from packagedetails where packageid in (select packageid from packages where ProductType=1 and packagestatusid > 0)))
+order by d.mainorderid";
+
+            _decorOrdersDt.Clear();
+            if (decor)
+                using (var da = new SqlDataAdapter(selectCommand, ConnectionStrings.MarketingOrdersConnectionString))
+                {
+                    da.Fill(_decorOrdersDt);
+                }
+
+            selectCommand =
+                $@"select m.megaorderid, m.ordernumber, m.OrderDate, m.clientid, d.FrontsOrdersID, d.mainorderid,
+d.frontid, d.frontconfigid, d.accountingname, dc.measureid, d.height, d.width, d.count from newfrontsorders  as d
+inner join infiniu2_catalog.dbo.frontsconfig as dc on d.frontconfigid = dc.frontconfigid
+inner join newmainorders on d.mainorderid = newmainorders.mainorderid {mainOrderFilter}
+inner join newMegaorders as m on newMainorders.megaorderid = m.megaorderid {megaOrderFilter}
+where onStorage = 0 {batchFilter} and (d.mainorderid not in (select mainorderid from packages) or
+d.FrontsOrdersID not in (select orderid from packagedetails where packageid in (select packageid from packages where ProductType=0 and packagestatusid > 0)))
+order by d.mainorderid";
+
+            _frontsOrdersDt.Clear();
+            if (fronts)
+                using (var da = new SqlDataAdapter(selectCommand, ConnectionStrings.MarketingOrdersConnectionString))
+                {
+                    da.Fill(_frontsOrdersDt);
+                }
+        }
+
+        public void BatchDecorOrdersOnProduction(int megabatchid, bool fronts, bool decor)
+        {
+            var mainOrderFilter = @" and newmainorders.factoryid = 1 and newmainorders.profilproductionstatusid=3
+                and newmainorders.profilproductionstatusid<>2 
+                and newmainorders.profilstoragestatusid<>2 
+                and newmainorders.profilexpeditionstatusid<>2
+                and newmainorders.profildispatchstatusid<>2";
+
+            var megaOrderFilter = " and AgreementStatusID=2";
+
+            var batchFilter =
+                $@" and d.mainorderid in (select mainorderid from batchDetails where batchid in (select batchid from batch where megabatchid={megabatchid}))";
+
+            var selectCommand =
+                $@"select m.megaorderid, m.ordernumber, m.OrderDate, m.clientid, d.decororderid, d.mainorderid,
+d.decorid, d.productId, d.decorconfigid, d.accountingname, dc.measureid, d.length, d.height, d.width, d.count from newdecororders  as d
+inner join infiniu2_catalog.dbo.decorconfig as dc on d.decorconfigid = dc.decorconfigid
+inner join newmainorders on d.mainorderid = newmainorders.mainorderid {mainOrderFilter}
+inner join newMegaorders as m on newMainorders.megaorderid = m.megaorderid {megaOrderFilter}
+where onStorage = 0 {batchFilter} and (d.mainorderid not in (select mainorderid from packages) or
+d.decororderid not in (select orderid from packagedetails where packageid in (select packageid from packages where ProductType=1 and packagestatusid > 0)))
+order by d.mainorderid";
+
+            _decorOrdersDt.Clear();
+            if (decor)
+                using (var da = new SqlDataAdapter(selectCommand, ConnectionStrings.MarketingOrdersConnectionString))
+                {
+                    da.Fill(_decorOrdersDt);
+                }
+
+            selectCommand =
+                $@"select m.megaorderid, m.ordernumber, m.OrderDate, m.clientid, d.FrontsOrdersID, d.mainorderid,
+d.frontid, d.frontconfigid, d.accountingname, dc.measureid, d.height, d.width, d.count from newfrontsorders  as d
+inner join infiniu2_catalog.dbo.frontsconfig as dc on d.frontconfigid = dc.frontconfigid
+inner join newmainorders on d.mainorderid = newmainorders.mainorderid {mainOrderFilter}
+inner join newMegaorders as m on newMainorders.megaorderid = m.megaorderid {megaOrderFilter}
+where onStorage = 0 {batchFilter} and (d.mainorderid not in (select mainorderid from packages) or
+d.FrontsOrdersID not in (select orderid from packagedetails where packageid in (select packageid from packages where ProductType=0 and packagestatusid > 0)))
+order by d.mainorderid";
+
+            _frontsOrdersDt.Clear();
+            if (fronts)
+                using (var da = new SqlDataAdapter(selectCommand, ConnectionStrings.MarketingOrdersConnectionString))
+                {
+                    da.Fill(_frontsOrdersDt);
+                }
+        }
+
+        public void BatchDecorOrdersInProduction(int megabatchid, bool fronts, bool decor)
+        {
+            var mainOrderFilter = @" and newmainorders.factoryid = 1 and newmainorders.profilproductionstatusid=2";
+
+            var megaOrderFilter = " and AgreementStatusID=2";
+
+            var batchFilter =
+                $@" and d.mainorderid in (select mainorderid from batchDetails where batchid in (select batchid from batch where megabatchid={megabatchid}))";
+
+            var selectCommand =
+                $@"select m.megaorderid, m.ordernumber, m.OrderDate, m.clientid, d.decororderid, d.mainorderid,
+d.decorid, d.productId, d.decorconfigid, d.accountingname, dc.measureid, d.length, d.height, d.width, d.count from newdecororders  as d
+inner join infiniu2_catalog.dbo.decorconfig as dc on d.decorconfigid = dc.decorconfigid
+inner join newmainorders on d.mainorderid = newmainorders.mainorderid {mainOrderFilter}
+inner join newMegaorders as m on newMainorders.megaorderid = m.megaorderid {megaOrderFilter}
+where onStorage = 0 {batchFilter} and (d.mainorderid not in (select mainorderid from packages) or
+d.decororderid not in (select orderid from packagedetails where packageid in (select packageid from packages where ProductType=1 and packagestatusid > 0)))
+order by d.mainorderid";
+
+            _decorOrdersDt.Clear();
+            if (decor)
+                using (var da = new SqlDataAdapter(selectCommand, ConnectionStrings.MarketingOrdersConnectionString))
+                {
+                    da.Fill(_decorOrdersDt);
+                }
+
+            selectCommand =
+                $@"select m.megaorderid, m.ordernumber, m.OrderDate, m.clientid, d.FrontsOrdersID, d.mainorderid,
+d.frontid, d.frontconfigid, d.accountingname, dc.measureid, d.height, d.width, d.count from newfrontsorders  as d
+inner join infiniu2_catalog.dbo.frontsconfig as dc on d.frontconfigid = dc.frontconfigid
+inner join newmainorders on d.mainorderid = newmainorders.mainorderid {mainOrderFilter}
+inner join newMegaorders as m on newMainorders.megaorderid = m.megaorderid {megaOrderFilter}
+where onStorage = 0 {batchFilter} and (d.mainorderid not in (select mainorderid from packages) or
+d.FrontsOrdersID not in (select orderid from packagedetails where packageid in (select packageid from packages where ProductType=0 and packagestatusid > 0)))
+order by d.mainorderid";
+
+            _frontsOrdersDt.Clear();
+            if (fronts)
+                using (var da = new SqlDataAdapter(selectCommand, ConnectionStrings.MarketingOrdersConnectionString))
+                {
+                    da.Fill(_frontsOrdersDt);
+                }
+        }
+
         public void GetDecorOrdersNotConfirmed(bool fronts, bool decor)
         {
             var mainOrderFilter = @" and newmainorders.factoryid = 1 and newmainorders.profilproductionstatusid=1
@@ -1106,7 +1349,7 @@ and mainOrderId={mainOrderId}");
 
             var selectCommand =
                 $@"select m.megaorderid, m.ordernumber, m.OrderDate, m.clientid, d.decororderid, d.mainorderid,
-d.decorid, d.productId, d.decorconfigid, dc.measureid, d.length, d.height, d.width, d.count from newdecororders  as d
+d.decorid, d.productId, d.decorconfigid, d.accountingname, dc.measureid, d.length, d.height, d.width, d.count from newdecororders  as d
 inner join infiniu2_catalog.dbo.decorconfig as dc on d.decorconfigid = dc.decorconfigid
 inner join newmainorders on d.mainorderid = newmainorders.mainorderid {mainOrderFilter}
 inner join newMegaorders as m on newMainorders.megaorderid = m.megaorderid {megaOrderFilter}
@@ -1121,7 +1364,7 @@ where onStorage = 0 order by d.mainorderid";
 
             selectCommand =
                 $@"select m.megaorderid, m.ordernumber, m.OrderDate, m.clientid, d.FrontsOrdersID, d.mainorderid,
-d.frontid, d.frontconfigid, dc.measureid, d.height, d.width, d.count from newfrontsorders  as d
+d.frontid, d.frontconfigid, d.accountingname, dc.measureid, d.height, d.width, d.count from newfrontsorders  as d
 inner join infiniu2_catalog.dbo.frontsconfig as dc on d.frontconfigid = dc.frontconfigid
 inner join newmainorders on d.mainorderid = newmainorders.mainorderid {mainOrderFilter}
 inner join newMegaorders as m on newMainorders.megaorderid = m.megaorderid {megaOrderFilter}
@@ -1147,7 +1390,7 @@ where onStorage = 0 order by d.mainorderid";
 
             var selectCommand =
                 $@"select m.megaorderid, m.ordernumber, m.OrderDate, m.clientid, d.decororderid, d.mainorderid,
-d.decorid, d.productId, d.decorconfigid, dc.measureid, d.length, d.height, d.width, d.count from newdecororders  as d
+d.decorid, d.productId, d.decorconfigid, d.accountingname, dc.measureid, d.length, d.height, d.width, d.count from newdecororders  as d
 inner join infiniu2_catalog.dbo.decorconfig as dc on d.decorconfigid = dc.decorconfigid
 inner join newmainorders on d.mainorderid = newmainorders.mainorderid {mainOrderFilter}
 inner join newMegaorders as m on newMainorders.megaorderid = m.megaorderid {megaOrderFilter}
@@ -1162,7 +1405,7 @@ where onStorage = 0 order by d.mainorderid";
 
             selectCommand =
                 $@"select m.megaorderid, m.ordernumber, m.OrderDate, m.clientid, d.FrontsOrdersID, d.mainorderid,
-d.frontid, d.frontconfigid, dc.measureid, d.height, d.width, d.count from newfrontsorders  as d
+d.frontid, d.frontconfigid, d.accountingname, dc.measureid, d.height, d.width, d.count from newfrontsorders  as d
 inner join infiniu2_catalog.dbo.frontsconfig as dc on d.frontconfigid = dc.frontconfigid
 inner join newmainorders on d.mainorderid = newmainorders.mainorderid {mainOrderFilter}
 inner join newMegaorders as m on newMainorders.megaorderid = m.megaorderid {megaOrderFilter}
@@ -1188,7 +1431,7 @@ where onStorage = 0 order by d.mainorderid";
 
             var selectCommand =
                 $@"select m.megaorderid, m.ordernumber, m.OrderDate, m.clientid, d.decororderid, d.mainorderid,
-d.decorid, d.productId, d.decorconfigid, dc.measureid, d.length, d.height, d.width, d.count from newdecororders  as d
+d.decorid, d.productId, d.decorconfigid, d.accountingname, dc.measureid, d.length, d.height, d.width, d.count from newdecororders  as d
 inner join infiniu2_catalog.dbo.decorconfig as dc on d.decorconfigid = dc.decorconfigid
 inner join newmainorders on d.mainorderid = newmainorders.mainorderid {mainOrderFilter}
 inner join newMegaorders as m on newMainorders.megaorderid = m.megaorderid {megaOrderFilter}
@@ -1205,7 +1448,7 @@ order by d.mainorderid";
 
             selectCommand =
                 $@"select m.megaorderid, m.ordernumber, m.OrderDate, m.clientid, d.FrontsOrdersID, d.mainorderid,
-d.frontid, d.frontconfigid, dc.measureid, d.height, d.width, d.count from newfrontsorders  as d
+d.frontid, d.frontconfigid, d.accountingname, dc.measureid, d.height, d.width, d.count from newfrontsorders  as d
 inner join infiniu2_catalog.dbo.frontsconfig as dc on d.frontconfigid = dc.frontconfigid
 inner join newmainorders on d.mainorderid = newmainorders.mainorderid {mainOrderFilter}
 inner join newMegaorders as m on newMainorders.megaorderid = m.megaorderid {megaOrderFilter}
@@ -1233,7 +1476,7 @@ order by d.mainorderid";
 
             var selectCommand =
                 $@"select m.megaorderid, m.ordernumber, m.OrderDate, m.clientid, d.decororderid, d.mainorderid,
-d.decorid, d.productId, d.decorconfigid, dc.measureid, d.length, d.height, d.width, d.count from newdecororders  as d
+d.decorid, d.productId, d.decorconfigid, d.accountingname, dc.measureid, d.length, d.height, d.width, d.count from newdecororders  as d
 inner join infiniu2_catalog.dbo.decorconfig as dc on d.decorconfigid = dc.decorconfigid
 inner join newmainorders on d.mainorderid = newmainorders.mainorderid {mainOrderFilter}
 inner join newMegaorders as m on newMainorders.megaorderid = m.megaorderid {megaOrderFilter}
@@ -1250,7 +1493,7 @@ order by d.mainorderid";
 
             selectCommand =
                 $@"select m.megaorderid, m.ordernumber, m.OrderDate, m.clientid, d.FrontsOrdersID, d.mainorderid,
-d.frontid, d.frontconfigid, dc.measureid, d.height, d.width, d.count from newfrontsorders  as d
+d.frontid, d.frontconfigid, d.accountingname, dc.measureid, d.height, d.width, d.count from newfrontsorders  as d
 inner join infiniu2_catalog.dbo.frontsconfig as dc on d.frontconfigid = dc.frontconfigid
 inner join newmainorders on d.mainorderid = newmainorders.mainorderid {mainOrderFilter}
 inner join newMegaorders as m on newMainorders.megaorderid = m.megaorderid {megaOrderFilter}
@@ -1274,7 +1517,7 @@ order by d.mainorderid";
 
             var selectCommand =
                 $@"select m.megaorderid, m.ordernumber, m.OrderDate, m.clientid, d.decororderid, d.mainorderid,
-d.decorid, d.productId, d.decorconfigid, dc.measureid, d.length, d.height, d.width, d.count from newdecororders  as d
+d.decorid, d.productId, d.decorconfigid, d.accountingname, dc.measureid, d.length, d.height, d.width, d.count from newdecororders  as d
 inner join infiniu2_catalog.dbo.decorconfig as dc on d.decorconfigid = dc.decorconfigid
 inner join newmainorders on d.mainorderid = newmainorders.mainorderid {mainOrderFilter}
 inner join newMegaorders as m on newMainorders.megaorderid = m.megaorderid {megaOrderFilter}
@@ -1291,7 +1534,7 @@ order by d.mainorderid";
 
             selectCommand =
                 $@"select m.megaorderid, m.ordernumber, m.OrderDate, m.clientid, d.FrontsOrdersID, d.mainorderid,
-d.frontid, d.frontconfigid, dc.measureid, d.height, d.width, d.count from newfrontsorders  as d
+d.frontid, d.frontconfigid, d.accountingname, dc.measureid, d.height, d.width, d.count from newfrontsorders  as d
 inner join infiniu2_catalog.dbo.frontsconfig as dc on d.frontconfigid = dc.frontconfigid
 inner join newmainorders on d.mainorderid = newmainorders.mainorderid {mainOrderFilter}
 inner join newMegaorders as m on newMainorders.megaorderid = m.megaorderid {megaOrderFilter}
@@ -1311,7 +1554,7 @@ order by d.mainorderid";
         {
             var sectorsList = new List<Sector>();
 
-            const string selectCommand = @"select sectorid, sectorname from sectors order by sectorname";
+            const string selectCommand = @"select sectorid, sectorname, shortName from sectors order by sectorname";
 
             using (var dt = new DataTable())
             {
@@ -1325,6 +1568,7 @@ order by d.mainorderid";
                     var sector = new Sector
                     {
                         Name = item["sectorname"].ToString(),
+                        ShortName = item["shortName"].ToString(),
                         Id = Convert.ToInt32(item["sectorid"])
                     };
 
@@ -1365,7 +1609,7 @@ INNER JOIN infiniu2_catalog.dbo.Countries AS Countries ON Clients.CountryID = Co
         private void GetMachines()
         {
             const string selectCommand = @"select machines.machineid, sectors.sectorid, 
-sectors.sectorname, subsectors.subsectorname, machines.machinename from machines 
+sectors.sectorname, sectors.shortname, subsectors.subsectorname, machines.machinename from machines 
 inner join subsectors on machines.subsectorid = subsectors.subsectorid 
 inner join sectors on subsectors.sectorid = sectors.sectorid";
 
@@ -1479,10 +1723,11 @@ inner join infiniu2_users.dbo.users as u on s.userid = u.userid";
             {
             }
 
-            public Sector(int id, string name)
+            public Sector(int id, string name, string shortName)
             {
                 Id = id;
                 Name = name;
+                ShortName = shortName;
             }
 
             public void AddMachine(Machine machine)
@@ -1517,6 +1762,8 @@ inner join infiniu2_users.dbo.users as u on s.userid = u.userid";
             public decimal Rank4 { get; set; }
 
             public string Name { get; set; }
+
+            public string ShortName { get; set; }
         }
     }
 }

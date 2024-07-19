@@ -4,12 +4,17 @@ using NPOI.HSSF.Util;
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Windows.Forms;
+using Infinium.Catalog.UserControls;
 using Infinium.Modules.Marketing.NewOrders;
-using NPOI.HSSF.Record;
+using Infinium.Modules.LoadCalculations;
+using static Infinium.Modules.LoadCalculations.LoadCalculations;
 
 namespace Infinium.Modules.StatisticsMarketing.Reports
 {
@@ -78,7 +83,7 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
             FrameColorsDataTable.Columns.Add(new DataColumn("ColorName", Type.GetType("System.String")));
             FrameColorsDataTable.Columns.Add(new DataColumn("Cvet", Type.GetType("System.String")));
             string SelectCommand = @"SELECT TechStoreID, TechStoreName, Cvet FROM TechStore
-                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)
+                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))
                 ORDER BY TechStoreName";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
@@ -700,7 +705,7 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
             int fID = Convert.ToInt32(OrdersDataTable.Rows[0]["FactoryID"]);
             DataTable Fronts = new DataTable();
 
-            using (DataView DV = new DataView(OrdersDataTable))
+            using (DataView DV = new DataView(OrdersDataTable, "measureId=1", "", DataViewRowState.CurrentRows))
             {
                 Fronts = DV.ToTable(true, new string[] { "FrontID", "ColorID", "PatinaID" });
             }
@@ -1084,7 +1089,7 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
             int fID = Convert.ToInt32(OrdersDataTable.Rows[0]["FactoryID"]);
             DataTable Fronts = new DataTable();
 
-            using (DataView DV = new DataView(OrdersDataTable))
+            using (DataView DV = new DataView(OrdersDataTable, "measureId=3", "", DataViewRowState.CurrentRows))
             {
                 Fronts = DV.ToTable(true, new string[] { "FrontID", "ColorID", "PatinaID" });
             }
@@ -1093,8 +1098,7 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
             {
                 DataRow[] Rows = OrdersDataTable.Select("ColorID = " + Fronts.Rows[i]["ColorID"].ToString() +
                                                         " AND PatinaID = " + Fronts.Rows[i]["PatinaID"].ToString() +
-                                                        " AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString() +
-                                                        " AND Width = -1");
+                                                        " AND FrontID = " + Fronts.Rows[i]["FrontID"].ToString());
 
                 if (Rows.Count() == 0)
                     continue;
@@ -1131,10 +1135,75 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
                 decimal Vitrina910Price = 0;
                 decimal Vitrina910Weight = 0;
 
+                decimal ScagenCount = 0;
+                decimal ScagenPrice = 0;
+                decimal ScagenWeight = 0;
+
                 if (Rows.Count() > 0)
                     MarketingCost = GetMarketingCost(Convert.ToInt32(Rows[0]["FrontConfigID"]));
                 for (int r = 0; r < Rows.Count(); r++)
                 {
+                    if (Rows[r]["measureId"].ToString() == "3" && Rows[r]["Width"].ToString() != "-1")
+                    {
+                        DataRow[] rows = InsetTypesDataTable.Select("GroupID = 3 OR GroupID = 4");
+                        foreach (DataRow item in rows)
+                        {
+                            if (Rows[r]["InsetTypeID"].ToString() == item["InsetTypeID"].ToString())
+                            {
+                                ScagenCount += Convert.ToDecimal(Rows[r]["Count"]);
+                                ScagenPrice = Convert.ToDecimal(Rows[r]["FrontPrice"]);
+
+                                decimal FrontWeight = 0;
+                                decimal InsetWeight = 0;
+
+                                GetFrontWeight(Rows[r], ref FrontWeight, ref InsetWeight);
+
+                                ScagenWeight += Convert.ToDecimal(FrontWeight + InsetWeight);
+                            }
+                        }
+                        rows = InsetTypesDataTable.Select("InsetTypeID IN (2079,2080,2081,2082,2085,2086,2087,2088,2212,2213,29210,29211,27831,27832,29210,29211)");
+                        foreach (DataRow item in rows)
+                        {
+                            if (Rows[r]["InsetTypeID"].ToString() == item["InsetTypeID"].ToString())
+                            {
+                                ScagenCount += Convert.ToDecimal(Rows[r]["Count"]);
+                                ScagenPrice = Convert.ToDecimal(Rows[r]["FrontPrice"]);
+
+                                decimal FrontWeight = 0;
+                                decimal InsetWeight = 0;
+
+                                GetFrontWeight(Rows[r], ref FrontWeight, ref InsetWeight);
+
+                                ScagenWeight += Convert.ToDecimal(FrontWeight + InsetWeight);
+                            }
+                        }
+                        if (Rows[r]["InsetTypeID"].ToString() == "-1")
+                        {
+                            ScagenCount += Convert.ToDecimal(Rows[r]["Count"]);
+                            ScagenPrice = Convert.ToDecimal(Rows[r]["FrontPrice"]);
+
+                            decimal FrontWeight = 0;
+                            decimal InsetWeight = 0;
+
+                            GetFrontWeight(Rows[r], ref FrontWeight, ref InsetWeight);
+
+                            ScagenWeight += Convert.ToDecimal(FrontWeight + InsetWeight);
+                        }
+
+                        if (Rows[r]["InsetTypeID"].ToString() == "1")
+                        {
+                            ScagenCount += Convert.ToDecimal(Rows[r]["Count"]);
+                            ScagenPrice = Convert.ToDecimal(Rows[r]["FrontPrice"]);
+
+                            decimal FrontWeight = 0;
+                            decimal InsetWeight = 0;
+
+                            GetFrontWeight(Rows[r], ref FrontWeight, ref InsetWeight);
+
+                            ScagenWeight += Convert.ToDecimal(FrontWeight + InsetWeight);
+                        }
+                    }
+
                     if (Rows[r]["Height"].ToString() == "713")
                     {
                         DataRow[] rows = InsetTypesDataTable.Select("GroupID = 3 OR GroupID = 4");
@@ -1256,15 +1325,33 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
                             Vitrina910Weight += Convert.ToDecimal(FrontWeight + InsetWeight);
                         }
                     }
+
                     if (MarketingCost > GetMarketingCost(Convert.ToInt32(Rows[r]["FrontConfigID"])))
                         MarketingCost = GetMarketingCost(Convert.ToInt32(Rows[r]["FrontConfigID"]));
                 }
 
                 var front = GetFrontName(Convert.ToInt32(Fronts.Rows[i]["frontId"]));
-                //if (Convert.ToInt32(Fronts.Rows[i]["ColorID"]) != -1)
-                //    front += " " + GetColorName(Convert.ToInt32(Fronts.Rows[i]["ColorID"]));
-                //if (Convert.ToInt32(Fronts.Rows[i]["PatinaID"]) != -1)
-                //    front += " " + GetPatinaName(Convert.ToInt32(Fronts.Rows[i]["PatinaID"]));
+
+                if (ScagenCount > 0)
+                {
+                    DataRow Row = ReportDataTable.NewRow();
+                    Row["OriginalPrice"] = ScagenPrice;
+                    Row["UNN"] = UNN;
+                    Row["front"] = front;
+                    Row["Cvet"] = GetColorCode(Convert.ToInt32(Fronts.Rows[i]["ColorID"]));
+                    Row["Patina"] = GetPatinaCode(Convert.ToInt32(Fronts.Rows[i]["PatinaID"]));
+                    Row["AccountingName"] = AccountingName;
+                    Row["InvNumber"] = InvNumber;
+                    Row["MarketingCost"] = MarketingCost;
+                    Row["Measure"] = Measure;
+                    Row["CurrencyCode"] = ProfilCurrencyCode;
+                    if (fID == 2)
+                        Row["TPSCurCode"] = TPSCurrencyCode;
+                    Row["Count"] = ScagenCount;
+                    Row["Cost"] = Decimal.Round(ScagenCount * ScagenPrice, 3, MidpointRounding.AwayFromZero);
+                    Row["Weight"] = Decimal.Round(ScagenWeight, 3, MidpointRounding.AwayFromZero);
+                    ReportDataTable.Rows.Add(Row);
+                }
 
                 if (Solid713Count > 0)
                 {
@@ -2285,7 +2372,7 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
             string SelectCommand = $@"SELECT dbo.FrontsOrders.FrontsOrdersID, dbo.FrontsOrders.FrontID, dbo.FrontsOrders.ColorID, dbo.FrontsOrders.PatinaID, dbo.FrontsOrders.InsetTypeID, dbo.FrontsOrders.InsetColorID,
                 dbo.FrontsOrders.TechnoColorID, dbo.FrontsOrders.TechnoInsetTypeID, dbo.FrontsOrders.TechnoInsetColorID, dbo.FrontsOrders.Height, dbo.FrontsOrders.Width, dbo.FrontsOrders.Count,
                 dbo.FrontsOrders.FrontConfigID, dbo.FrontsOrders.FactoryID, dbo.FrontsOrders.FrontPrice, dbo.FrontsOrders.InsetPrice,
-                FrontsOrders.Square, dbo.FrontsOrders.Cost, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog.dbo.Patina.Patina, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, infiniu2_catalog.dbo.Measures.Measure, dbo.FrontsOrders.CreateDateTime FROM FrontsOrders
+                FrontsOrders.Square, dbo.FrontsOrders.Cost, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog.dbo.Patina.Patina, infiniu2_catalog.dbo.FrontsConfig.measureId, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, infiniu2_catalog.dbo.Measures.Measure, dbo.FrontsOrders.CreateDateTime FROM FrontsOrders
                 INNER JOIN infiniu2_catalog.dbo.FrontsConfig ON FrontsOrders.FrontConfigID = infiniu2_catalog.dbo.FrontsConfig.FrontConfigID LEFT JOIN
                 infiniu2_catalog.dbo.TechStore ON infiniu2_catalog.dbo.FrontsConfig.ColorID = infiniu2_catalog.dbo.TechStore.TechStoreID LEFT JOIN
                 infiniu2_catalog.dbo.Patina ON infiniu2_catalog.dbo.FrontsConfig.PatinaID = infiniu2_catalog.dbo.Patina.PatinaID
@@ -2475,7 +2562,7 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
             FrameColorsDataTable.Columns.Add(new DataColumn("ColorName", Type.GetType("System.String")));
             FrameColorsDataTable.Columns.Add(new DataColumn("Cvet", Type.GetType("System.String")));
             string SelectCommand = @"SELECT TechStoreID, TechStoreName, Cvet FROM TechStore
-                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)
+                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))
                 ORDER BY TechStoreName";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
@@ -4195,7 +4282,7 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
             sheet1.SetColumnWidth(displayIndex++, 61 * 256);
             sheet1.SetColumnWidth(displayIndex++, 35 * 256);
             sheet1.SetColumnWidth(displayIndex++, 15 * 256);
-            sheet1.SetColumnWidth(displayIndex++, 15 * 256);
+            //sheet1.SetColumnWidth(displayIndex++, 15 * 256);
             sheet1.SetColumnWidth(displayIndex++, 8 * 256);
             sheet1.SetColumnWidth(displayIndex, 14 * 256);
 
@@ -4228,12 +4315,12 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
                 Cell1.CellStyle = SimpleHeaderCS;
 
                 Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
-                Cell1.SetCellValue("Цвет");
+                Cell1.SetCellValue("Цвет+Патина");
                 Cell1.CellStyle = SimpleHeaderCS;
 
-                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
-                Cell1.SetCellValue("Патина");
-                Cell1.CellStyle = SimpleHeaderCS;
+                //Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                //Cell1.SetCellValue("Патина");
+                //Cell1.CellStyle = SimpleHeaderCS;
 
                 Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                 Cell1.SetCellValue("Ед.изм.");
@@ -4264,12 +4351,13 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
                     Cell1.SetCellValue(ProfilReportTable.Rows[i]["front"].ToString());
                     Cell1.CellStyle = SimpleCS;
                     Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
-                    Cell1.SetCellValue(FrontsReport.GetColorNameByCode(ProfilReportTable.Rows[i]["Cvet"].ToString()));
+                    Cell1.SetCellValue(FrontsReport.GetColorNameByCode(ProfilReportTable.Rows[i]["Cvet"].ToString()) + 
+                                       ", " + FrontsReport.GetPatinaNameByCode(ProfilReportTable.Rows[i]["Patina"].ToString()));
                     Cell1.CellStyle = SimpleCS;
                     Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
-                    Cell1.SetCellValue(FrontsReport.GetPatinaNameByCode(ProfilReportTable.Rows[i]["Patina"].ToString()));
-                    Cell1.CellStyle = SimpleCS;
-                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    //Cell1.SetCellValue(FrontsReport.GetPatinaNameByCode(ProfilReportTable.Rows[i]["Patina"].ToString()));
+                    //Cell1.CellStyle = SimpleCS;
+                    //Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                     Cell1.SetCellValue(ProfilReportTable.Rows[i]["Measure"].ToString());
                     Cell1.CellStyle = SimpleCS;
                     Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
@@ -4307,6 +4395,62 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
             TPSReportTable.Clear();
             FrontsReport.ClearReport();
             DecorReport.ClearReport();
+        }
+    }
+
+    public class LoadCalculationsBatchReport
+    {
+        private LoadCalculations.LoadCalculations _loadCalculations;
+
+        public LoadCalculationsBatchReport()
+        {
+            _loadCalculations = new LoadCalculations.LoadCalculations();
+        }
+
+        public void LoadCalculate(int megaBatchId)
+        {
+            var sectorsList = _loadCalculations.GetAllSectors();
+            var sectorsId = sectorsList.Select(sec => sec.Id).ToList();
+
+            _loadCalculations.RankCoef = 37;
+            _loadCalculations.RankCoef = 51;
+
+            _loadCalculations.ClearCalculations();
+            _loadCalculations.CreateSectors(sectorsId);
+
+            _loadCalculations.BatchDecorOrdersNotConfirmed(megaBatchId, true, true);
+            _loadCalculations.CalculateLoad(OrderStatus.NotConfirmed);
+
+            _loadCalculations.BatchDecorOrdersForAgreed(megaBatchId, true, true);
+            _loadCalculations.CalculateLoad(OrderStatus.ForAgreed);
+
+            _loadCalculations.BatchDecorOrdersAgreed(megaBatchId, true, true);
+            _loadCalculations.CalculateLoad(OrderStatus.Agreed);
+
+            _loadCalculations.BatchDecorOrdersOnProduction(megaBatchId, true, true);
+            _loadCalculations.CalculateLoad(OrderStatus.OnProduction);
+
+            _loadCalculations.BatchDecorOrdersInProduction(megaBatchId, true, true);
+            _loadCalculations.CalculateLoad(OrderStatus.InProduction);
+
+            _loadCalculations.GroupBySectors(sectorsId);
+            _loadCalculations.DeleteEmptySectors();
+
+            sectorsList = _loadCalculations.SectorsList;
+            foreach (var t in sectorsList)
+            {
+                var machinesList = _loadCalculations.GroupByMachines(t.Id);
+                t.Machines = machinesList;
+            }
+
+            var loadCalculationsReport = new LoadCalculationsReport
+            {
+                _calculations = _loadCalculations,
+                SectorsList = _loadCalculations.SectorsList,
+                NeedStartFile = true
+            };
+
+            loadCalculationsReport.BatchReport(megaBatchId);
         }
     }
 }

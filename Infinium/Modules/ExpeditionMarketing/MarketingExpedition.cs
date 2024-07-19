@@ -1,4 +1,6 @@
 ﻿
+using Infinium.Modules.ZOV;
+
 using NPOI.HPSF;
 using NPOI.HSSF.UserModel;
 using NPOI.HSSF.UserModel.Contrib;
@@ -95,7 +97,7 @@ namespace Infinium.Modules.Marketing.Expedition
             FrameColorsDataTable.Columns.Add(new DataColumn("ColorID", Type.GetType("System.Int64")));
             FrameColorsDataTable.Columns.Add(new DataColumn("ColorName", Type.GetType("System.String")));
             string SelectCommand = @"SELECT TechStoreID, TechStoreName FROM TechStore
-                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)
+                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))
                 ORDER BY TechStoreName";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
@@ -788,7 +790,7 @@ namespace Infinium.Modules.Marketing.Expedition
             ColorsDataTable.Columns.Add(new DataColumn("ColorID", Type.GetType("System.Int64")));
             ColorsDataTable.Columns.Add(new DataColumn("ColorName", Type.GetType("System.String")));
             string SelectCommand = @"SELECT TechStoreID, TechStoreName FROM TechStore
-                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)
+                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))
                 ORDER BY TechStoreName";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
@@ -4305,6 +4307,49 @@ namespace Infinium.Modules.Marketing.Expedition
             return Rows.Count() > 0;
         }
 
+        public void EditFrontCount(int PackageID, int frontsOrdersId, int Count)
+        {
+            int AddCount = 0;
+            string SqlCommandText = "SELECT * FROM PackageDetails WHERE PackageID = " + PackageID + " AND OrderID=" + frontsOrdersId;
+            using (SqlDataAdapter DA = new SqlDataAdapter(SqlCommandText, ConnectionStrings.MarketingOrdersConnectionString))
+            {
+                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                {
+                    using (DataTable DT = new DataTable())
+                    {
+                        DA.Fill(DT);
+
+                        if (DT.Rows.Count > 0)
+                        {
+                            AddCount = Convert.ToInt32(DT.Rows[0]["Count"]) - Count;
+                            DT.Rows[0]["Count"] = Count;
+                            DA.Update(DT);
+                        }
+                    }
+                }
+            }
+            SqlCommandText = "SELECT frontsOrdersId, Count FROM frontsOrders WHERE frontsOrdersId=" + frontsOrdersId;
+            using (SqlDataAdapter DA = new SqlDataAdapter(SqlCommandText, ConnectionStrings.MarketingOrdersConnectionString))
+            {
+                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                {
+                    using (DataTable DT = new DataTable())
+                    {
+                        DA.Fill(DT);
+
+                        if (DT.Rows.Count > 0)
+                        {
+                            //int OldCount = Convert.ToInt32(DT.Rows[0]["Count"]);
+                            //if (OldCount > Count)
+                            DT.Rows[0]["Count"] = Convert.ToInt32(DT.Rows[0]["Count"]) - AddCount;
+                            //DT.Rows[0]["Count"] = Count;
+                            DA.Update(DT);
+                        }
+                    }
+                }
+            }
+        }
+        
         public void EditDecorCount(int PackageID, int DecorOrderID, int Count)
         {
             int AddCount = 0;
@@ -4347,7 +4392,7 @@ namespace Infinium.Modules.Marketing.Expedition
                 }
             }
         }
-
+        
         public void EditDecorLength(int DecorOrderID, int Length)
         {
             string SqlCommandText = "SELECT DecorOrderID, Length FROM DecorOrders WHERE DecorOrderID=" + DecorOrderID;
@@ -5305,10 +5350,11 @@ namespace Infinium.Modules.Marketing.Expedition
             DispatchContentDT.Clear();
         }
 
-        public void ChangeDispatchDate(int DispatchID, object PrepareDispatchDateTime)
+        public void ChangeDispatchDate(int[] Dispatches, object PrepareDispatchDateTime)
         {
             string SelectCommand = @"SELECT DispatchID, PrepareDispatchDateTime, 
-                ConfirmExpDateTime, ConfirmExpUserID, ConfirmDispDateTime, ConfirmDispUserID FROM Dispatch WHERE DispatchID=" + DispatchID;
+                ConfirmExpDateTime, ConfirmExpUserID, ConfirmDispDateTime, ConfirmDispUserID FROM Dispatch 
+                WHERE DispatchID IN (" + string.Join(",", Dispatches) + ")";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
             {
                 using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
@@ -5319,22 +5365,25 @@ namespace Infinium.Modules.Marketing.Expedition
                         {
                             if (PrepareDispatchDateTime != null)
                             {
-                                DT.Rows[0]["PrepareDispatchDateTime"] = Convert.ToDateTime(PrepareDispatchDateTime);
-                                DT.Rows[0]["ConfirmDispDateTime"] = DBNull.Value;
-                                DT.Rows[0]["ConfirmDispUserID"] = DBNull.Value;
+                                for (int i = 0; i < Dispatches.Length; i++)
+                                {
+                                    DT.Rows[i]["PrepareDispatchDateTime"] = Convert.ToDateTime(PrepareDispatchDateTime);
+                                    DT.Rows[i]["ConfirmDispDateTime"] = DBNull.Value;
+                                    DT.Rows[i]["ConfirmDispUserID"] = DBNull.Value;
+                                }
+                                DA.Update(DT);
                             }
-                            DA.Update(DT);
                         }
                     }
                 }
             }
         }
 
-        public void SetDispatchDate(int DispatchID, DateTime DispatchDate)
+        public void SetDispatchDate(int[] Dispatches, DateTime DispatchDate)
         {
             string SqlCommandText = @"SELECT MegaOrderID, ProfilDispatchDate, TPSDispatchDate, FactoryID FROM MegaOrders
                 WHERE MegaOrderID IN (SELECT MegaOrderID FROM MainOrders
-                WHERE MainOrderID IN (SELECT MainOrderID FROM Packages WHERE (DispatchID = " + DispatchID + ")))";
+                WHERE MainOrderID IN (SELECT MainOrderID FROM Packages WHERE DispatchID in (" + string.Join(",", Dispatches) + ")))";
 
             using (SqlDataAdapter DA = new SqlDataAdapter(SqlCommandText, ConnectionStrings.MarketingOrdersConnectionString))
             {
@@ -5344,7 +5393,6 @@ namespace Infinium.Modules.Marketing.Expedition
                     {
                         if (DA.Fill(DT) > 0)
                         {
-
                             for (int i = 0; i < DT.Rows.Count; i++)
                             {
                                 int FactoryID = Convert.ToInt32(DT.Rows[i]["FactoryID"]);
@@ -5370,7 +5418,7 @@ namespace Infinium.Modules.Marketing.Expedition
             }
             SqlCommandText = @"SELECT MegaOrderID, ProfilDispatchDate, TPSDispatchDate, FactoryID FROM NewMegaOrders
                 WHERE MegaOrderID IN (SELECT MegaOrderID FROM MainOrders
-                WHERE MainOrderID IN (SELECT MainOrderID FROM Packages WHERE (DispatchID = " + DispatchID + ")))";
+                WHERE MainOrderID IN (SELECT MainOrderID FROM Packages WHERE DispatchID in (" + string.Join(",", Dispatches) + ")))";
 
             using (SqlDataAdapter DA = new SqlDataAdapter(SqlCommandText, ConnectionStrings.MarketingOrdersConnectionString))
             {
@@ -5796,6 +5844,11 @@ namespace Infinium.Modules.Marketing.Expedition
             DispatchDatesBS.Position = DispatchDatesBS.Find("PrepareDispatchDateTime", DispatchDate);
         }
 
+        public int GetDispatchDatePosition(DateTime DispatchDate)
+        {
+            return DispatchDatesBS.Find("PrepareDispatchDateTime", DispatchDate);
+        }
+
         public void MoveToDispatch(int DispatchID)
         {
             DispatchBS.Position = DispatchBS.Find("DispatchID", DispatchID);
@@ -6060,7 +6113,7 @@ namespace Infinium.Modules.Marketing.Expedition
             FrameColorsDataTable.Columns.Add(new DataColumn("ColorID", Type.GetType("System.Int64")));
             FrameColorsDataTable.Columns.Add(new DataColumn("ColorName", Type.GetType("System.String")));
             var SelectCommand = @"SELECT TechStoreID, TechStoreName FROM TechStore
-                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)
+                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))
                 ORDER BY TechStoreName";
             using (var DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
@@ -8108,7 +8161,7 @@ namespace Infinium.Modules.Marketing.Expedition
             CoversDT.Rows.Add(EmptyRow);
 
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TechStoreID, TechStoreName FROM TechStore" +
-                " WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)" +
+                " WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))" +
                 " ORDER BY TechStoreName",
                 ConnectionStrings.CatalogConnectionString))
             {
@@ -8150,7 +8203,7 @@ namespace Infinium.Modules.Marketing.Expedition
             FrameColorsDataTable.Columns.Add(new DataColumn("ColorID", Type.GetType("System.Int64")));
             FrameColorsDataTable.Columns.Add(new DataColumn("ColorName", Type.GetType("System.String")));
             string SelectCommand = @"SELECT TechStoreID, TechStoreName FROM TechStore
-                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)
+                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))
                 ORDER BY TechStoreName";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
@@ -10134,7 +10187,7 @@ namespace Infinium.Modules.Marketing.Expedition
             CoversDT.Rows.Add(EmptyRow);
 
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TechStoreID, TechStoreName FROM TechStore" +
-                " WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)" +
+                " WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))" +
                 " ORDER BY TechStoreName",
                 ConnectionStrings.CatalogConnectionString))
             {
@@ -10176,7 +10229,7 @@ namespace Infinium.Modules.Marketing.Expedition
             FrameColorsDataTable.Columns.Add(new DataColumn("ColorID", Type.GetType("System.Int64")));
             FrameColorsDataTable.Columns.Add(new DataColumn("ColorName", Type.GetType("System.String")));
             string SelectCommand = @"SELECT TechStoreID, TechStoreName FROM TechStore
-                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)
+                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))
                 ORDER BY TechStoreName";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
@@ -14903,7 +14956,7 @@ namespace Infinium.Modules.Marketing.Expedition
             FrameColorsDataTable.Columns.Add(new DataColumn("ColorID", Type.GetType("System.Int64")));
             FrameColorsDataTable.Columns.Add(new DataColumn("ColorName", Type.GetType("System.String")));
             string SelectCommand = @"SELECT TechStoreID, TechStoreName FROM TechStore
-                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)
+                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))
                 ORDER BY TechStoreName";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {

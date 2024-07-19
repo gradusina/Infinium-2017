@@ -178,6 +178,7 @@
             this.kryptonContextMenuItem24 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
             this.kryptonContextMenuItem6 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
             this.kryptonContextMenuItem14 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
+            this.btnDeleteDispatch = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
             this.kryptonContextMenu3 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenu();
             this.kryptonContextMenuItems4 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItems();
             this.kryptonContextMenuItem1 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
@@ -220,7 +221,9 @@
             this.kryptonContextMenuItem23 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
             this.kryptonContextMenuItem20 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
             this.kryptonContextMenuItem21 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
-            this.btnDeleteDispatch = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
+            this.kryptonContextMenu9 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenu();
+            this.kryptonContextMenuItems11 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItems();
+            this.kryptonContextMenuItem25 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
             this.NavigatePanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MainOrdersSplitContainer)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.MainOrdersSplitContainer.Panel1)).BeginInit();
@@ -897,6 +900,7 @@
             this.MainOrdersFrontsOrdersDataGrid.StateSelected.DataCell.Content.Color1 = System.Drawing.Color.White;
             this.MainOrdersFrontsOrdersDataGrid.TabIndex = 54;
             this.MainOrdersFrontsOrdersDataGrid.UseCustomBackColor = true;
+            this.MainOrdersFrontsOrdersDataGrid.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.MainOrdersFrontsOrdersDataGrid_CellMouseDown);
             // 
             // xtraTabPage2
             // 
@@ -2620,13 +2624,11 @@
             // 
             this.kryptonContextMenuItem5.Text = "Выписать накладную";
             this.kryptonContextMenuItem5.Visible = false;
-            //this.kryptonContextMenuItem5.Click += new System.EventHandler(this.kryptonContextMenuItem5_Click);
             // 
             // kryptonContextMenuItem22
             // 
             this.kryptonContextMenuItem22.Text = "Выписать накладную (цвет-патина)";
             this.kryptonContextMenuItem22.Visible = false;
-            //this.kryptonContextMenuItem22.Click += new System.EventHandler(this.kryptonContextMenuItem22_Click);
             // 
             // kryptonContextMenuItem24
             // 
@@ -2643,6 +2645,11 @@
             // 
             this.kryptonContextMenuItem14.Text = "Переадресовать на другого клиента";
             this.kryptonContextMenuItem14.Click += new System.EventHandler(this.kryptonContextMenuItem14_Click);
+            // 
+            // btnDeleteDispatch
+            // 
+            this.btnDeleteDispatch.Text = "Удалить неутвержденную отгрузку";
+            this.btnDeleteDispatch.Click += new System.EventHandler(this.kryptonContextMenuItem25_Click);
             // 
             // kryptonContextMenu3
             // 
@@ -3173,10 +3180,20 @@
             this.kryptonContextMenuItem21.Text = "Скомплектовать";
             this.kryptonContextMenuItem21.Click += new System.EventHandler(this.kryptonContextMenuItem21_Click);
             // 
+            // kryptonContextMenu9
+            // 
+            this.kryptonContextMenu9.Items.AddRange(new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItemBase[] {
+            this.kryptonContextMenuItems11});
+            // 
+            // kryptonContextMenuItems11
+            // 
+            this.kryptonContextMenuItems11.Items.AddRange(new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItemBase[] {
+            this.kryptonContextMenuItem25});
+            // 
             // kryptonContextMenuItem25
             // 
-            this.btnDeleteDispatch.Text = "Удалить неутвержденную отгрузку";
-            this.btnDeleteDispatch.Click += new System.EventHandler(this.kryptonContextMenuItem25_Click);
+            this.kryptonContextMenuItem25.Text = "Изменить кол-во";
+            this.kryptonContextMenuItem25.Click += new System.EventHandler(this.kryptonContextMenuItem25_Click_1);
             // 
             // MarketingExpeditionForm
             // 
@@ -3505,5 +3522,8 @@
         private System.Windows.Forms.MonthCalendar monthCalendar2;
         private System.Windows.Forms.MonthCalendar monthCalendar3;
         private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem btnDeleteDispatch;
+        private ComponentFactory.Krypton.Toolkit.KryptonContextMenu kryptonContextMenu9;
+        private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItems kryptonContextMenuItems11;
+        private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem kryptonContextMenuItem25;
     }
 }

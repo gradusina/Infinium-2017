@@ -90,7 +90,7 @@ namespace Infinium.Modules.Marketing.WeeklyPlanning
             FrameColorsDataTable.Columns.Add(new DataColumn("ColorID", Type.GetType("System.Int64")));
             FrameColorsDataTable.Columns.Add(new DataColumn("ColorName", Type.GetType("System.String")));
             string SelectCommand = @"SELECT TechStoreID, TechStoreName FROM TechStore
-                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)
+                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))
                 ORDER BY TechStoreName";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
@@ -1928,7 +1928,7 @@ namespace Infinium.Modules.Marketing.WeeklyPlanning
             ColorsDataTable.Columns.Add(new DataColumn("ColorID", Type.GetType("System.Int64")));
             ColorsDataTable.Columns.Add(new DataColumn("ColorName", Type.GetType("System.String")));
             string SelectCommand = @"SELECT TechStoreID, TechStoreName FROM TechStore
-                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)
+                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))
                 ORDER BY TechStoreName";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
@@ -3868,19 +3868,21 @@ namespace Infinium.Modules.Marketing.WeeklyPlanning
             }
         }
 
-        public bool Filter_MegaBatches_ByFactory(int FactoryID)
+        public bool Filter_MegaBatches_ByFactory(int FactoryID, DateTime firstDate, DateTime secondDate)
         {
             int MegaBatchID = CurrentMegaBatchID;
 
             string BatchFactoryFilter = string.Empty;
             string FactoryFilter = string.Empty;
+            string CreateDateFilter = @$" where CAST(MegaBatch.CreateDateTime AS Date) >= '{firstDate.ToString("yyyy-MM-dd")}' AND
+                CAST(MegaBatch.CreateDateTime AS Date) <= '{secondDate.ToString("yyyy-MM-dd")}'";
             string SelectCommand = string.Empty;
 
             if (FactoryID != 0)
-                BatchFactoryFilter = " WHERE MegaBatchID IN (SELECT MegaBatchID FROM Batch WHERE BatchID IN (SELECT BatchID FROM BatchDetails WHERE BatchDetails.FactoryID = " + FactoryID +
+                BatchFactoryFilter = " and MegaBatchID IN (SELECT MegaBatchID FROM Batch WHERE BatchID IN (SELECT BatchID FROM BatchDetails WHERE BatchDetails.FactoryID = " + FactoryID +
                     ") OR BatchID NOT IN (SELECT BatchID FROM BatchDetails)) OR MegaBatchID NOT IN (SELECT MegaBatchID FROM Batch)";
 
-            SelectCommand = "SELECT * FROM MegaBatch ORDER BY MegaBatchID DESC";
+            SelectCommand = "SELECT * FROM MegaBatch " + CreateDateFilter + "ORDER BY MegaBatchID DESC";
 
             try
             {
@@ -4103,10 +4105,15 @@ namespace Infinium.Modules.Marketing.WeeklyPlanning
             FillBatchNumber();
         }
 
+        public bool FrontsVisible { get; set; } = false;
+        public bool DecorVisible { get; set; } = false;
+
         public void FilterProductsByMainOrder(int MainOrderID, int FactoryID)
         {
-            OrdersTabControl.TabPages[0].PageVisible = MainOrdersFrontsOrders.Filter(MainOrderID, FactoryID);
-            OrdersTabControl.TabPages[1].PageVisible = MainOrdersDecorOrders.Filter(MainOrderID, FactoryID);
+            //OrdersTabControl.TabPages[0].PageVisible = MainOrdersFrontsOrders.Filter(MainOrderID, FactoryID);
+            //OrdersTabControl.TabPages[1].PageVisible = MainOrdersDecorOrders.Filter(MainOrderID, FactoryID);
+            FrontsVisible = MainOrdersFrontsOrders.Filter(MainOrderID, FactoryID);
+            DecorVisible = MainOrdersDecorOrders.Filter(MainOrderID, FactoryID);
         }
 
         public ArrayList FilterBatchMegaOrders(
@@ -4702,10 +4709,16 @@ namespace Infinium.Modules.Marketing.WeeklyPlanning
             return array;
         }
 
+        public bool BatchFrontsVisible { get; set; } = false;
+        public bool BatchDecorVisible { get; set; } = false;
         public void FilterBatchProductsByMainOrder(int MainOrderID, int FactoryID)
         {
-            BatchOrdersTabControl.TabPages[0].PageVisible = BatchMainOrdersFrontsOrders.Filter(MainOrderID, FactoryID);
-            BatchOrdersTabControl.TabPages[1].PageVisible = BatchMainOrdersDecorOrders.Filter(MainOrderID, FactoryID);
+            //BatchOrdersTabControl.TabPages[0].PageVisible = true;
+            //BatchOrdersTabControl.TabPages[1].PageVisible = true;
+            //BatchOrdersTabControl.TabPages[0].PageVisible = BatchMainOrdersFrontsOrders.Filter(MainOrderID, FactoryID);
+            //BatchOrdersTabControl.TabPages[1].PageVisible = BatchMainOrdersDecorOrders.Filter(MainOrderID, FactoryID);
+            BatchFrontsVisible = BatchMainOrdersFrontsOrders.Filter(MainOrderID, FactoryID);
+            BatchDecorVisible = BatchMainOrdersDecorOrders.Filter(MainOrderID, FactoryID);
         }
 
         public void FilterFrameColors(int FrontID)
@@ -4913,14 +4926,14 @@ namespace Infinium.Modules.Marketing.WeeklyPlanning
         /// <summary>
         /// Создает новую группу партий
         /// </summary>
-        public void AddMegaBatch(int FactoryID)
+        public void AddMegaBatch(int FactoryID, DateTime firstDate, DateTime secondDate)
         {
             DataRow NewRow = MegaBatchDataTable.NewRow();
             NewRow["CreateUserID"] = Security.CurrentUserID;
             NewRow["CreateDateTime"] = Security.GetCurrentDate();
             MegaBatchDataTable.Rows.Add(NewRow);
 
-            SaveMegaBatch(FactoryID);
+            SaveMegaBatch(FactoryID, firstDate, secondDate);
         }
 
         /// <summary>
@@ -5085,7 +5098,7 @@ namespace Infinium.Modules.Marketing.WeeklyPlanning
             }
         }
 
-        public void MoveBatch(int[] Batch, int DestMegaBatchID, int FactoryID)
+        public void MoveBatch(int[] Batch, int DestMegaBatchID, int FactoryID, DateTime firstDate, DateTime secondDate)
         {
             if (Batch.Count() < 1)
                 return;
@@ -5108,7 +5121,7 @@ namespace Infinium.Modules.Marketing.WeeklyPlanning
                     }
                 }
             }
-            SaveMegaBatch(FactoryID);
+            SaveMegaBatch(FactoryID, firstDate, secondDate);
         }
 
         /// <summary>
@@ -5116,7 +5129,7 @@ namespace Infinium.Modules.Marketing.WeeklyPlanning
         /// </summary>
         /// <param name="MainOrders"></param>
         /// <param name="FactoryID"></param>
-        public void MoveOrdersToNewPart(int[] MainOrders, int FactoryID)
+        public void MoveOrdersToNewPart(int[] MainOrders, int FactoryID, DateTime firstDate, DateTime secondDate)
         {
             int MegaBatchID = Convert.ToInt32(((DataRowView)MegaBatchBindingSource.Current).Row["MegaBatchID"]);
             AddBatch(MegaBatchID, FactoryID);
@@ -5177,7 +5190,7 @@ namespace Infinium.Modules.Marketing.WeeklyPlanning
             //        }
             //    }
             //}
-            SaveMegaBatch(FactoryID);
+            SaveMegaBatch(FactoryID, firstDate, secondDate);
         }
 
         /// <summary>
@@ -5186,7 +5199,7 @@ namespace Infinium.Modules.Marketing.WeeklyPlanning
         /// <param name="BatchID"></param>
         /// <param name="MainOrders"></param>
         /// <param name="FactoryID"></param>
-        public void MoveOrdersToSelectedBatch(int BatchID, int[] MainOrders, int FactoryID)
+        public void MoveOrdersToSelectedBatch(int BatchID, int[] MainOrders, int FactoryID, DateTime firstDate, DateTime secondDate)
         {
             //меняем BatchID для заказов, которые переносим
             using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM BatchDetails" +
@@ -5224,7 +5237,7 @@ namespace Infinium.Modules.Marketing.WeeklyPlanning
             //        }
             //    }
             //}
-            SaveMegaBatch(FactoryID);
+            SaveMegaBatch(FactoryID, firstDate, secondDate);
         }
 
         /// <summary>
@@ -5276,27 +5289,7 @@ namespace Infinium.Modules.Marketing.WeeklyPlanning
                 BatchID = Convert.ToInt32(((DataRowView)BatchBindingSource.Current).Row["BatchID"]);
             }
         }
-
-        public void RemoveMegaBatch(int MegaBatchID, int FactoryID)
-        {
-            if (MegaBatchBindingSource == null || MegaBatchBindingSource.Count < 1)
-                return;
-
-            //удаляем выбранную партию
-            DataRow[] Rows = MegaBatchDataTable.Select("MegaBatchID = " + MegaBatchID);
-
-            if (Rows.Count() > 0)
-            {
-                foreach (DataRow Row in Rows)
-                {
-                    Row.Delete();
-                }
-            }
-
-            //ClearBatchDetails(MegaBatchID);
-            SaveMegaBatch(FactoryID);
-        }
-
+        
         /// <summary>
         /// Удаление выбранного заказа из партии
         /// </summary>
@@ -5428,17 +5421,19 @@ namespace Infinium.Modules.Marketing.WeeklyPlanning
             }
         }
 
-        public void SaveMegaBatch(int FactoryID)
+        public void SaveMegaBatch(int FactoryID, DateTime firstDate, DateTime secondDate)
         {
             int MegaBatchID = CurrentMegaBatchID;
             string BatchFactoryFilter = string.Empty;
+            string CreateDateFilter = @$" where CAST(MegaBatch.CreateDateTime AS Date) >= '{firstDate.ToString("yyyy-MM-dd")}' AND
+                CAST(MegaBatch.CreateDateTime AS Date) <= '{secondDate.ToString("yyyy-MM-dd")}'";
             string SelectCommand = string.Empty;
 
             if (FactoryID != 0)
-                BatchFactoryFilter = " WHERE MegaBatchID IN (SELECT MegaBatchID FROM Batch WHERE BatchID IN (SELECT BatchID FROM BatchDetails WHERE BatchDetails.FactoryID = " + FactoryID +
+                BatchFactoryFilter = " and MegaBatchID IN (SELECT MegaBatchID FROM Batch WHERE BatchID IN (SELECT BatchID FROM BatchDetails WHERE BatchDetails.FactoryID = " + FactoryID +
                     ") OR BatchID NOT IN (SELECT BatchID FROM BatchDetails)) OR MegaBatchID NOT IN (SELECT MegaBatchID FROM Batch)";
 
-            SelectCommand = "SELECT * FROM MegaBatch" + BatchFactoryFilter + " ORDER BY MegaBatchID DESC";
+            SelectCommand = "SELECT * FROM MegaBatch" + CreateDateFilter + BatchFactoryFilter  + " ORDER BY MegaBatchID DESC";
 
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand,
                 ConnectionStrings.MarketingOrdersConnectionString))
@@ -14099,7 +14094,7 @@ namespace Infinium.Modules.Marketing.WeeklyPlanning
             FrameColorsDataTable.Columns.Add(new DataColumn("ColorID", Type.GetType("System.Int64")));
             FrameColorsDataTable.Columns.Add(new DataColumn("ColorName", Type.GetType("System.String")));
             string SelectCommand = @"SELECT TechStoreID, TechStoreName FROM TechStore
-                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)
+                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))
                 ORDER BY TechStoreName";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {

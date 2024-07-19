@@ -190,7 +190,7 @@ INNER JOIN infiniu2_catalog.dbo.Countries AS Countries ON Clients.CountryID = Co
             using var da = new SqlDataAdapter(selectCommand, ConnectionStrings.MarketingReferenceConnectionString);
             da.Fill(_clientsDt);
         }
-
+        
         public void CreateReport()
         {
             if (!HasData) return;
@@ -444,6 +444,284 @@ INNER JOIN infiniu2_catalog.dbo.Countries AS Countries ON Clients.CountryID = Co
             sheet1.SetMargin(HSSFSheet.BottomMargin, .20);
 
             var fileName = $"Расчёты по нагрузке {DateTime.Now.ToShortDateString()}";
+            var tempFolder = Environment.GetEnvironmentVariable("TEMP");
+
+            var fileInfo = GetFileInfo(tempFolder, fileName);
+
+            SaveReport(fileInfo);
+
+            if (NeedStartFile)
+                StartFile(fileInfo);
+        }
+
+        private void BatchSheet(LoadCalculations.Sector sector)
+        {
+            var sheetName = sector.ShortName;
+            var sheet1 = _workbook.CreateSheet(sheetName);
+
+            var colIndex = 4;
+            var rowIndex = 2;
+            var rIndex = 0;
+            var row = sheet1.CreateRow(rowIndex);
+
+            var notConfirmedRowIndex = 0;
+            var forAgreedRowIndex = 0;
+            var agreedRowIndex = 0;
+            var onProductionRowIndex = 0;
+            var inProductionRowIndex = 0;
+
+            var rowIndex1 = rowIndex + 1;
+            var rowIndex2 = rowIndex1 + 1;
+            var rowIndex3 = rowIndex2 + 1;
+            var rowIndex4 = rowIndex3 + 1;
+            var rowIndex5 = rowIndex4 + 1;
+            var rowIndex6 = rowIndex5 + 1;
+            var rowIndex7 = rowIndex6 + 1;
+            var rowIndex8 = rowIndex7 + 1;
+            var row1 = sheet1.CreateRow(rowIndex1);
+            var row2 = sheet1.CreateRow(rowIndex2);
+            var row3 = sheet1.CreateRow(rowIndex3);
+            var row4 = sheet1.CreateRow(rowIndex4);
+            var row5 = sheet1.CreateRow(rowIndex5);
+            var row6 = sheet1.CreateRow(rowIndex6);
+            var row7 = sheet1.CreateRow(rowIndex7);
+            var row8 = sheet1.CreateRow(rowIndex8);
+
+            var colFrom = colIndex;
+
+            WriteCell(row, colIndex, sector.Name, _simpleHeader3Cs);
+            WriteCell(row1, colIndex, sector.Percent + " %", _simpleHeader1Cs);
+            WriteCell(row2, colIndex, "Σ " + sector.SumTotal, _simpleHeader1Cs);
+            WriteCell(row4, colIndex, "Σ " + sector.SumRank, _simpleHeader1Cs);
+            var secId = sector.Id;
+            if (sector.Machines == null)
+                return;
+
+            var machines = new List<LoadCalculations.Machine>(sector.Machines);
+            machines.Reverse();
+
+            foreach (var machine in machines)
+            {
+                WriteCell(row6, colIndex, machine.Name, _simpleHeader2Cs);
+                WriteCell(row6, colIndex + 1, "");
+                WriteCell(row6, colIndex + 2, "");
+                WriteCell(row6, colIndex + 3, "");
+                sheet1.AddMergedRegion(new Region(rowIndex6, colIndex, rowIndex6, colIndex + 3));
+
+                WriteCell(row7, colIndex, "Σ " + machine.SumTotal, _simpleHeader3Cs);
+                WriteCell(row7, colIndex + 1, "");
+                WriteCell(row7, colIndex + 2, "");
+                WriteCell(row7, colIndex + 3, "");
+                sheet1.AddMergedRegion(new Region(rowIndex7, colIndex, rowIndex7, colIndex + 3));
+
+                foreach (DataRow r in machine.DataSource1.Rows)
+                {
+                    WriteCell(row8, colIndex, (decimal)r["total1"]);
+                    WriteCell(row8, colIndex + 1, (decimal)r["total2"]);
+                    WriteCell(row8, colIndex + 2, (decimal)r["total3"]);
+                    WriteCell(row8, colIndex + 3, (decimal)r["total4"]);
+                }
+
+                rIndex = rowIndex8 + 4;
+                var firstRowIndex = rIndex;
+                notConfirmedRowIndex = firstRowIndex - 2;
+                if (machine.DataSourceNotConfirmed != null)
+                {
+                    foreach (DataRow r in ((DataTable)machine.DataSourceNotConfirmed.DataSource).Rows)
+                    {
+                        var rRow = sheet1.CreateRow(rIndex++);
+                        WriteCell(rRow, colIndex, (decimal)r["total1"]);
+                        WriteCell(rRow, colIndex + 1, (decimal)r["total2"]);
+                        WriteCell(rRow, colIndex + 2, (decimal)r["total3"]);
+                        WriteCell(rRow, colIndex + 3, (decimal)r["total4"]);
+                    }
+                }
+
+                var lastRowIndex = rIndex - 1;
+                sheet1.GroupRow(firstRowIndex, lastRowIndex);
+
+                rIndex += 3;
+                firstRowIndex = rIndex;
+                forAgreedRowIndex = firstRowIndex - 2;
+                if (machine.DataSourceForAgreed != null)
+                {
+                    foreach (DataRow r in ((DataTable)machine.DataSourceForAgreed.DataSource).Rows)
+                    {
+                        var rRow = sheet1.CreateRow(rIndex++);
+                        WriteCell(rRow, colIndex, (decimal)r["total1"]);
+                        WriteCell(rRow, colIndex + 1, (decimal)r["total2"]);
+                        WriteCell(rRow, colIndex + 2, (decimal)r["total3"]);
+                        WriteCell(rRow, colIndex + 3, (decimal)r["total4"]);
+                    }
+                }
+
+                lastRowIndex = rIndex - 1;
+                sheet1.GroupRow(firstRowIndex, lastRowIndex);
+
+                rIndex += 3;
+                firstRowIndex = rIndex;
+                agreedRowIndex = firstRowIndex - 2;
+                if (machine.DataSourceAgreed != null)
+                {
+                    foreach (DataRow r in ((DataTable)machine.DataSourceAgreed.DataSource).Rows)
+                    {
+                        var rRow = sheet1.CreateRow(rIndex++);
+                        WriteCell(rRow, colIndex, (decimal)r["total1"]);
+                        WriteCell(rRow, colIndex + 1, (decimal)r["total2"]);
+                        WriteCell(rRow, colIndex + 2, (decimal)r["total3"]);
+                        WriteCell(rRow, colIndex + 3, (decimal)r["total4"]);
+                    }
+                }
+
+                lastRowIndex = rIndex - 1;
+                sheet1.GroupRow(firstRowIndex, lastRowIndex);
+
+                rIndex += 3;
+                firstRowIndex = rIndex;
+                onProductionRowIndex = firstRowIndex - 2;
+                if (machine.DataSourceOnProduction != null)
+                {
+                    foreach (DataRow r in ((DataTable)machine.DataSourceOnProduction.DataSource).Rows)
+                    {
+                        var rRow = sheet1.CreateRow(rIndex++);
+                        WriteCell(rRow, colIndex, (decimal)r["total1"]);
+                        WriteCell(rRow, colIndex + 1, (decimal)r["total2"]);
+                        WriteCell(rRow, colIndex + 2, (decimal)r["total3"]);
+                        WriteCell(rRow, colIndex + 3, (decimal)r["total4"]);
+                    }
+                }
+
+                lastRowIndex = rIndex - 1;
+                sheet1.GroupRow(firstRowIndex, lastRowIndex);
+
+                rIndex += 3;
+                firstRowIndex = rIndex;
+                inProductionRowIndex = firstRowIndex - 2;
+                if (machine.DataSourceInProduction != null)
+                {
+                    foreach (DataRow r in ((DataTable)machine.DataSourceInProduction.DataSource).Rows)
+                    {
+                        var rRow = sheet1.CreateRow(rIndex++);
+                        WriteCell(rRow, colIndex, (decimal)r["total1"]);
+                        WriteCell(rRow, colIndex + 1, (decimal)r["total2"]);
+                        WriteCell(rRow, colIndex + 2, (decimal)r["total3"]);
+                        WriteCell(rRow, colIndex + 3, (decimal)r["total4"]);
+                    }
+                }
+
+                lastRowIndex = rIndex - 1;
+                sheet1.GroupRow(firstRowIndex, lastRowIndex);
+
+                colIndex += 4;
+            }
+
+            var colTo = colIndex - 1;
+            for (var i = colFrom + 1; i <= colTo; i++)
+                WriteCell(row, i, "");
+            for (var i = colFrom + 1; i <= colTo; i++)
+                WriteCell(row1, i, "");
+            for (var i = colFrom + 1; i <= colTo; i++)
+                WriteCell(row2, i, "");
+
+            var ratio = (colTo + 1 - colFrom) / 4;
+
+            WriteCell(row3, colFrom + 0 * ratio, "#0: " + sector.Total1);
+            WriteCell(row3, colFrom + 1 * ratio, "#2: " + sector.Total2);
+            WriteCell(row3, colFrom + 2 * ratio, "#3: " + sector.Total3);
+            WriteCell(row3, colFrom + 3 * ratio, "#4: " + sector.Total4);
+            for (var i = colFrom + 0 * ratio + 1; i < colFrom + 1 * ratio; i++)
+                WriteCell(row3, i, "");
+            for (var i = colFrom + 1 * ratio + 1; i < colFrom + 2 * ratio; i++)
+                WriteCell(row3, i, "");
+            for (var i = colFrom + 2 * ratio + 1; i < colFrom + 3 * ratio; i++)
+                WriteCell(row3, i, "");
+            for (var i = colFrom + 3 * ratio + 1; i < colFrom + 4 * ratio; i++)
+                WriteCell(row3, i, "");
+            sheet1.AddMergedRegion(new Region(rowIndex3, colFrom + 0 * ratio, rowIndex3, colFrom + 1 * ratio - 1));
+            sheet1.AddMergedRegion(new Region(rowIndex3, colFrom + 1 * ratio, rowIndex3, colFrom + 2 * ratio - 1));
+            sheet1.AddMergedRegion(new Region(rowIndex3, colFrom + 2 * ratio, rowIndex3, colFrom + 3 * ratio - 1));
+            sheet1.AddMergedRegion(new Region(rowIndex3, colFrom + 3 * ratio, rowIndex3, colFrom + 4 * ratio - 1));
+
+            for (var i = colFrom + 1; i <= colTo; i++)
+                WriteCell(row4, i, "");
+
+            WriteCell(row5, colFrom + 0 * ratio, "#0: " + sector.Rank1);
+            WriteCell(row5, colFrom + 1 * ratio, "#2: " + sector.Rank2);
+            WriteCell(row5, colFrom + 2 * ratio, "#3: " + sector.Rank3);
+            WriteCell(row5, colFrom + 3 * ratio, "#4: " + sector.Rank4);
+            for (var i = colFrom + 0 * ratio + 1; i < colFrom + 1 * ratio; i++)
+                WriteCell(row5, i, "");
+            for (var i = colFrom + 1 * ratio + 1; i < colFrom + 2 * ratio; i++)
+                WriteCell(row5, i, "");
+            for (var i = colFrom + 2 * ratio + 1; i < colFrom + 3 * ratio; i++)
+                WriteCell(row5, i, "");
+            for (var i = colFrom + 3 * ratio + 1; i < colFrom + 4 * ratio; i++)
+                WriteCell(row5, i, "");
+            sheet1.AddMergedRegion(new Region(rowIndex5, colFrom + 0 * ratio, rowIndex5, colFrom + 1 * ratio - 1));
+            sheet1.AddMergedRegion(new Region(rowIndex5, colFrom + 1 * ratio, rowIndex5, colFrom + 2 * ratio - 1));
+            sheet1.AddMergedRegion(new Region(rowIndex5, colFrom + 2 * ratio, rowIndex5, colFrom + 3 * ratio - 1));
+            sheet1.AddMergedRegion(new Region(rowIndex5, colFrom + 3 * ratio, rowIndex5, colFrom + 4 * ratio - 1));
+
+            sheet1.AddMergedRegion(new Region(rowIndex, colFrom, rowIndex, colTo));
+            sheet1.AddMergedRegion(new Region(rowIndex1, colFrom, rowIndex1, colTo));
+            sheet1.AddMergedRegion(new Region(rowIndex2, colFrom, rowIndex2, colTo));
+            sheet1.AddMergedRegion(new Region(rowIndex4, colFrom, rowIndex4, colTo));
+
+            PrintOrdersByStatus(sheet1, notConfirmedRowIndex, _calculations.ClientsNotConfirmedList, "Не подтверждено",
+                $@"{_calculations.NotConfirmedSumRank.ToString(DigitalFormat, nfi)}");
+            PrintOrdersByStatus(sheet1, forAgreedRowIndex, _calculations.ClientsForAgreedList, "На согласовании",
+                $@"{_calculations.ForAgreedSumRank.ToString(DigitalFormat, nfi)}");
+            PrintOrdersByStatus(sheet1, agreedRowIndex, _calculations.ClientsAgreedList, "Согласовано",
+                $@"{_calculations.AgreedSumRank.ToString(DigitalFormat, nfi)}");
+            PrintOrdersByStatus(sheet1, onProductionRowIndex, _calculations.ClientsOnProductionList, "На производстве",
+                $@"{_calculations.OnProductionSumRank.ToString(DigitalFormat, nfi)}");
+            PrintOrdersByStatus(sheet1, inProductionRowIndex, _calculations.ClientsInProductionList, "В производстве",
+                $@"{_calculations.InProductionSumRank.ToString(DigitalFormat, nfi)}");
+
+            rIndex = notConfirmedRowIndex + 2;
+
+            if (_calculations.ClientsNotConfirmedList.Count > 1)
+                sheet1.SetRowGroupCollapsed(notConfirmedRowIndex + 3, true);
+            if (_calculations.ClientsForAgreedList.Count > 1)
+                sheet1.SetRowGroupCollapsed(forAgreedRowIndex + 3, true);
+            if (_calculations.ClientsAgreedList.Count > 1)
+                sheet1.SetRowGroupCollapsed(agreedRowIndex + 3, true);
+            if (_calculations.ClientsOnProductionList.Count > 1)
+                sheet1.SetRowGroupCollapsed(onProductionRowIndex + 3, true);
+            if (_calculations.ClientsInProductionList.Count > 1)
+                sheet1.SetRowGroupCollapsed(inProductionRowIndex + 3, true);
+
+            var displayIndex = 0;
+            sheet1.SetColumnWidth(displayIndex++, 35 * 256);
+            sheet1.SetColumnWidth(displayIndex++, 8 * 256);
+            sheet1.SetColumnWidth(displayIndex++, 13 * 256);
+            sheet1.SetColumnWidth(displayIndex++, 13 * 256);
+
+            sheet1.GetRow(rowIndex).Height = (short)4 * 256;
+            sheet1.GetRow(rowIndex6).Height = (short)3 * 256;
+            sheet1.GetRow(rowIndex7).Height = (short)3 * 256;
+
+            sheet1.CreateFreezePane(0, rowIndex8);
+            sheet1.CreateFreezePane(4, 0);
+
+            sheet1.PrintSetup.PaperSize = (short)PaperSizeType.A4;
+            sheet1.SetMargin(HSSFSheet.LeftMargin, .12);
+            sheet1.SetMargin(HSSFSheet.RightMargin, .07);
+            sheet1.SetMargin(HSSFSheet.TopMargin, .20);
+            sheet1.SetMargin(HSSFSheet.BottomMargin, .20);
+        }
+
+        public void BatchReport(int megaBatchId)
+        {
+            var list = new List<LoadCalculations.Sector>(SectorsList);
+            list.Reverse();
+
+            foreach (var sector in list)
+            {
+                BatchSheet(sector);
+            }
+
+            var fileName = $"Группа партий №{megaBatchId}. Расчёты по нагрузке";
             var tempFolder = Environment.GetEnvironmentVariable("TEMP");
 
             var fileInfo = GetFileInfo(tempFolder, fileName);

@@ -14,7 +14,7 @@ using System.Windows.Forms;
 
 namespace Infinium
 {
-    public partial class MarketingBatchForm : Form
+    public partial class MarketingBatchForm2 : Form
     {
         private const int EHide = 2;
         private const int EShow = 1;
@@ -80,7 +80,7 @@ namespace Infinium
         public DecorCatalogOrder DecorCatalogOrder;
         public BatchReport ReportMarketing;
 
-        public MarketingBatchForm(LightStartForm tLightStartForm)
+        public MarketingBatchForm2(LightStartForm tLightStartForm)
         {
             InitializeComponent();
             _lightStartForm = tLightStartForm;
@@ -472,10 +472,12 @@ namespace Infinium
 
         private void MegaOrdersDataGrid_SelectionChanged(object sender, EventArgs e)
         {
-            if (BatchManager == null)
-                return;
-            
-            if (BatchManager.MegaOrdersBindingSource.Count > 0)
+            ClientInfoLabel.Text = string.Empty;
+            OrderLabel.Text = string.Empty;
+            ConfirmDateLabel.Text = string.Empty;
+
+            if (BatchManager != null)
+                if (BatchManager.MegaOrdersBindingSource.Count > 0)
                 {
                     if (((DataRowView)BatchManager.MegaOrdersBindingSource.Current)["MegaOrderID"] != DBNull.Value)
                     {
@@ -485,11 +487,7 @@ namespace Infinium
 
                         if (_needSplash)
                         {
-                            var T = new Thread(delegate()
-                            {
-                                SplashWindow.CreateSmallSplash(ref _topForm,
-                                    "Загрузка данных с сервера.\r\nПодождите...");
-                            });
+                            var T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref _topForm, "Загрузка данных с сервера.\r\nПодождите..."); });
                             T.Start();
 
                             while (!SplashWindow.bSmallCreated) ;
@@ -497,9 +495,19 @@ namespace Infinium
                             _needSplash = false;
 
                             BatchManager.FilterMainOrdersByMegaOrder(
-                                Convert.ToInt32(
-                                    ((DataRowView)BatchManager.MegaOrdersBindingSource.Current)["MegaOrderID"]),
-                                _factoryId, onProduction, notProduction, inProduction);
+                                    Convert.ToInt32(((DataRowView)BatchManager.MegaOrdersBindingSource.Current)["MegaOrderID"]),
+                                    _factoryId, onProduction, notProduction, inProduction);
+                            _needSplash = true;
+
+                            while (SplashWindow.bSmallCreated)
+                                SmallWaitForm.CloseS = true;
+                        }
+                        else
+                        {
+                            BatchManager.FilterMainOrdersByMegaOrder(
+                                    Convert.ToInt32(((DataRowView)BatchManager.MegaOrdersBindingSource.Current)["MegaOrderID"]),
+                                    _factoryId, onProduction, notProduction, inProduction);
+                        }
 
                         BatchManager.GetMainOrdersNotInBatch(_factoryId);
 
@@ -523,21 +531,13 @@ namespace Infinium
                         var confirmDate = string.Empty;
 
                         if (((DataRowView)BatchManager.MegaOrdersBindingSource.Current)["ClientName"] != DBNull.Value)
-                            clientName = ((DataRowView)BatchManager.MegaOrdersBindingSource.Current)["ClientName"]
-                                .ToString();
+                            clientName = ((DataRowView)BatchManager.MegaOrdersBindingSource.Current)["ClientName"].ToString();
                         if (((DataRowView)BatchManager.MegaOrdersBindingSource.Current)["OrderNumber"] != DBNull.Value)
-                            orderNumber = ((DataRowView)BatchManager.MegaOrdersBindingSource.Current)["OrderNumber"]
-                                .ToString();
+                            orderNumber = ((DataRowView)BatchManager.MegaOrdersBindingSource.Current)["OrderNumber"].ToString();
                         if (((DataRowView)BatchManager.MegaOrdersBindingSource.Current)["IsComplaint"] != DBNull.Value)
-                            isComplaint =
-                                Convert.ToBoolean(
-                                    ((DataRowView)BatchManager.MegaOrdersBindingSource.Current)["IsComplaint"]);
-                        if (((DataRowView)BatchManager.MegaOrdersBindingSource.Current)["ConfirmDateTime"] !=
-                            DBNull.Value)
-                            confirmDate = Convert
-                                .ToDateTime(
-                                    ((DataRowView)BatchManager.MegaOrdersBindingSource.Current)["ConfirmDateTime"])
-                                .ToString("dd.MM.yyyy");
+                            isComplaint = Convert.ToBoolean(((DataRowView)BatchManager.MegaOrdersBindingSource.Current)["IsComplaint"]);
+                        if (((DataRowView)BatchManager.MegaOrdersBindingSource.Current)["ConfirmDateTime"] != DBNull.Value)
+                            confirmDate = Convert.ToDateTime(((DataRowView)BatchManager.MegaOrdersBindingSource.Current)["ConfirmDateTime"]).ToString("dd.MM.yyyy");
 
                         var clientInfo = clientName;
                         var orderInfo = "Заказ: №" + orderNumber;
@@ -553,19 +553,6 @@ namespace Infinium
                         var mainOrders = BatchManager.GetMainOrders().OfType<int>().ToArray();
                         Array.Sort(mainOrders);
 
-                        _needSplash = true;
-
-                            while (SplashWindow.bSmallCreated)
-                                SmallWaitForm.CloseS = true;
-                        }
-                        else
-                        {
-                            BatchManager.FilterMainOrdersByMegaOrder(
-                                Convert.ToInt32(
-                                    ((DataRowView)BatchManager.MegaOrdersBindingSource.Current)["MegaOrderID"]),
-                                _factoryId, onProduction, notProduction, inProduction);
-                        }
-
                         //decimal Square = BatchManager.GetSelectedSquare(MainOrders);
                         //if (Square > 0)
                         //    SquareLabel.Text = "Площадь выбранных подзаказов: " + Square + " м.кв";
@@ -573,12 +560,7 @@ namespace Infinium
                     }
                 }
                 else
-                {
-                    ClientInfoLabel.Text = string.Empty;
-                    OrderLabel.Text = string.Empty;
-                    ConfirmDateLabel.Text = string.Empty;
                     BatchManager.MainOrdersDataTable.Clear();
-                }
         }
 
         private void MegaOrdersDataGrid_MouseMove(object sender, MouseEventArgs e)
@@ -602,31 +584,22 @@ namespace Infinium
 
         private void MainOrdersDataGrid_SelectionChanged(object sender, EventArgs e)
         {
-            if (BatchManager == null)
-                return;
-            if (BatchManager.MainOrdersBindingSource.Count > 0)
+            if (BatchManager != null)
+                if (BatchManager.MainOrdersBindingSource.Count > 0)
                 {
                     if (((DataRowView)BatchManager.MainOrdersBindingSource.Current)["MainOrderID"] != DBNull.Value)
                     {
                         BatchManager.FilterProductsByMainOrder(Convert.ToInt32(((DataRowView)BatchManager.MainOrdersBindingSource.Current)["MainOrderID"]), _factoryId);
-                        //if (MainOrdersTabControl.TabPages[0].PageVisible && MainOrdersTabControl.TabPages[1].PageVisible)
-                        //    MainOrdersTabControl.SelectedTabPage = MainOrdersTabControl.TabPages[0];
-
-                        if (BatchManager.FrontsVisible && BatchManager.DecorVisible)
+                        if (MainOrdersTabControl.TabPages[0].PageVisible && MainOrdersTabControl.TabPages[1].PageVisible)
                             MainOrdersTabControl.SelectedTabPage = MainOrdersTabControl.TabPages[0];
-                        else
-                        {
-                            if (BatchManager.FrontsVisible)
-                                MainOrdersTabControl.SelectedTabPage = MainOrdersTabControl.TabPages[0];
-                            if (BatchManager.DecorVisible)
-                                MainOrdersTabControl.SelectedTabPage = MainOrdersTabControl.TabPages[1];
-                        }
+
                     }
                 }
                 else
                 {
                     BatchManager.FilterProductsByMainOrder(-1, _factoryId);
                     BatchManager.ClearPreProductsGrids();
+                    //MainOrdersTabControl.SelectedTab = MainOrdersTabControl.Tabs[0];
                 }
         }
 
@@ -777,15 +750,8 @@ namespace Infinium
                     if (((DataRowView)BatchManager.BatchMainOrdersBindingSource.Current)["MainOrderID"] != DBNull.Value)
                     {
                         BatchManager.FilterBatchProductsByMainOrder(Convert.ToInt32(((DataRowView)BatchManager.BatchMainOrdersBindingSource.Current)["MainOrderID"]), _factoryId);
-                        if (BatchManager.BatchFrontsVisible && BatchManager.BatchDecorVisible)
+                        if (BatchMainOrdersTabControl.TabPages[0].PageVisible && BatchMainOrdersTabControl.TabPages[1].PageVisible)
                             BatchMainOrdersTabControl.SelectedTabPage = BatchMainOrdersTabControl.TabPages[0];
-                        else
-                        {
-                            if (BatchManager.BatchFrontsVisible)
-                                BatchMainOrdersTabControl.SelectedTabPage = BatchMainOrdersTabControl.TabPages[0];
-                            if (BatchManager.BatchDecorVisible)
-                                BatchMainOrdersTabControl.SelectedTabPage = BatchMainOrdersTabControl.TabPages[1];
-                        }
                     }
                 }
                 else
@@ -3041,7 +3007,7 @@ namespace Infinium
             while (SplashWindow.bSmallCreated)
                 SmallWaitForm.CloseS = true;
         }
-        
+
         private void btnBatchToExcel_Click(object sender, EventArgs e)
         {
             var T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref _topForm, "Создание отчета.\r\nПодождите..."); });
@@ -3065,32 +3031,6 @@ namespace Infinium
             producedProducts.GetDateRates(DateTime.Today, ref eurbyrCurrency);
 
             producedProducts.CreateMarketingOnProdReport(fileName, eurbyrCurrency, batches, megaBatchId);
-
-            _needSplash = true;
-            while (SplashWindow.bSmallCreated)
-                SmallWaitForm.CloseS = true;
-        }
-        
-        private void kryptonButton1_Click(object sender, EventArgs e)
-        {
-            if (BatchManager == null)
-                return;
-
-            Filter();
-        }
-
-        private void kryptonContextMenuItem3_Click(object sender, EventArgs e)
-        {
-            var T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref _topForm, "Создание отчета.\r\nПодождите..."); });
-            T.Start();
-
-            while (!SplashWindow.bSmallCreated) ;
-            _needSplash = false;
-
-            var loadReport = new LoadCalculationsBatchReport();
-            var megaBatchId = Convert.ToInt32(MegaBatchDataGrid.SelectedRows[0].Cells["MegaBatchID"].Value);
-
-            loadReport.LoadCalculate(megaBatchId);
 
             _needSplash = true;
             while (SplashWindow.bSmallCreated)

@@ -3,7 +3,6 @@ using ComponentFactory.Krypton.Toolkit;
 
 using Infinium.Catalog.UserControls;
 using Infinium.Modules.LoadCalculations;
-using Infinium.Modules.Marketing.Clients;
 
 using System;
 using System.Collections.Generic;

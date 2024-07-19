@@ -250,7 +250,7 @@ namespace Infinium.Modules.StatisticsMarketing
             FrameColorsDataTable.Columns.Add(new DataColumn("ColorID", Type.GetType("System.Int64")));
             FrameColorsDataTable.Columns.Add(new DataColumn("ColorName", Type.GetType("System.String")));
             string SelectCommand = @"SELECT TechStoreID, TechStoreName FROM TechStore
-                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE TechStoreGroupID = 11)
+                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))
                 ORDER BY TechStoreName";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
@@ -1040,7 +1040,7 @@ namespace Infinium.Modules.StatisticsMarketing
         }
 
         public void FilterByPackages(
-            DateTime DateFrom, DateTime DateTo,
+            DateTime date1, DateTime time1, DateTime date2, DateTime time2, 
             int PackageStatusID,
             int FactoryID, bool IsSample, bool IsNotSample, bool IsTransport)
         {
@@ -1067,8 +1067,12 @@ namespace Infinium.Modules.StatisticsMarketing
                 Date = "DispatchDateTime";
             if (PackageStatusID == 4)
                 Date = "ExpeditionDateTime";
-            DateFilter = " (CAST(" + Date + " AS DATE) >= '" + DateFrom.ToString("yyyy-MM-dd") +
-                "' AND CAST(" + Date + " AS DATE) <= '" + DateTo.ToString("yyyy-MM-dd") + "')"; ;
+            //DateFilter = " (CAST(" + Date + " AS DATE) >= '" + DateFrom.ToString("yyyy-MM-dd") +
+            //    "' AND CAST(" + Date + " AS DATE) <= '" + DateTo.ToString("yyyy-MM-dd") + "')"; ;
+            DateFilter = $" ({Date} > '{date1:yyyy-MM-dd} 00:00' AND {Date} <= '{date2:yyyy-MM-dd} 23:59:59')";
+
+            if (date1.ToShortDateString() == date2.ToShortDateString())
+                DateFilter = @$" ({Date} > '{date1:yyyy-MM-dd} {time1:HH:mm:ss}' AND {Date} <= '{date2:yyyy-MM-dd} {time2:HH:mm:ss}')";
 
             if (FactoryID != 0)
                 PackageFactoryFilter = " AND FactoryID = " + FactoryID;

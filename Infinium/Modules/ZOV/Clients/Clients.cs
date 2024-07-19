@@ -23,6 +23,7 @@ namespace Infinium.Modules.ZOV.Clients
 
         private DataTable _clientsGroupsDataTable = null;
         public DataTable AllClientsDataTable = null;
+        public DataTable AllShopAddressesDataTable = null;
         private DataTable _clientsDataTable = null;
         private DataTable _managersDataTable = null;
 
@@ -75,6 +76,7 @@ namespace Infinium.Modules.ZOV.Clients
             _clientsGroupsDataTable = new DataTable();
             _clientsDataTable = new DataTable();
             _managersDataTable = new DataTable();
+            AllShopAddressesDataTable = new DataTable();
             ShopAddressesDataTable = new DataTable();
 
             ContactsBindingSource = new BindingSource();
@@ -110,6 +112,15 @@ INNER JOIN ClientsGroups ON Clients.ClientGroupID = ClientsGroups.ClientGroupID
 ORDER BY Clients.ClientName", ConnectionStrings.ZOVReferenceConnectionString))
             {
                 da.Fill(AllClientsDataTable);
+            }
+
+            using (var da = new SqlDataAdapter(@"SELECT    Clients.ClientName, ClientsGroups.ClientGroupName,     
+ ShopAddresses.Country, ShopAddresses.City, ShopAddresses.Address            FROM            ShopAddresses RIGHT OUTER JOIN
+                Clients ON ShopAddresses.ClientID = Clients.ClientID RIGHT OUTER JOIN
+                ClientsGroups ON Clients.ClientGroupID = ClientsGroups.ClientGroupID
+            ORDER BY Clients.ClientName, ClientsGroups.ClientGroupName", ConnectionStrings.ZOVReferenceConnectionString))
+            {
+                da.Fill(AllShopAddressesDataTable);
             }
 
             ShopAddressesDataAdapter = new SqlDataAdapter("SELECT TOP 0 * FROM ShopAddresses ORDER BY Address",
@@ -623,9 +634,11 @@ ORDER BY Clients.ClientName", ConnectionStrings.ZOVReferenceConnectionString))
             CreateCellStyles();
         }
 
-        public void Export(DataTable table1)
+        public void Export(DataTable table1, DataTable table2)
         {
             var sheet01 = _hssfworkbook.CreateSheet("Клиенты");
+            var sheet02 = _hssfworkbook.CreateSheet("Салоны");
+
             sheet01.PrintSetup.PaperSize = (short)PaperSizeType.A4;
             sheet01.SetMargin(HSSFSheet.LeftMargin, (double).12);
             sheet01.SetMargin(HSSFSheet.RightMargin, (double).07);
@@ -681,6 +694,76 @@ ORDER BY Clients.ClientName", ConnectionStrings.ZOVReferenceConnectionString))
                             case "DBNull":
                                 cell1 = sheet01.CreateRow(_pos01).CreateCell(y);
                                 cell1.SetCellValue(table1.Rows[x][y].ToString());
+                                cell1.CellStyle = _csMainContent;
+                                continue;
+                        }
+                    }
+
+                    _pos01++;
+                }
+            }
+
+            displayIndex = 0;
+            _pos01 = 0;
+            {
+                HSSFCell cell1 = null;
+                for (var i = 0; i < table2.Columns.Count; i++)
+                {
+                    sheet02.SetColumnWidth(i, 15 * 256);
+                    var colName = table2.Columns[i].ToString();
+
+                    cell1 = sheet02.CreateRow(_pos01).CreateCell(displayIndex++);
+                    cell1.SetCellValue(colName);
+                    cell1.CellStyle = _csColumnName;
+                    switch (colName)
+                    {
+                        case "ClientName":
+                            sheet02.SetColumnWidth(i, 40 * 256);
+                            cell1.SetCellValue("Организация");
+                            break;
+                        case "ClientGroupName":
+                            sheet02.SetColumnWidth(i, 40 * 256);
+                            cell1.SetCellValue("Группа");
+                            break;
+                        case "Address":
+                            sheet02.SetColumnWidth(i, 40 * 256);
+                            cell1.SetCellValue("Адрес салона");
+                            break;
+                        case "City":
+                            sheet02.SetColumnWidth(i, 40 * 256);
+                            cell1.SetCellValue("Город");
+                            break;
+                        case "Country":
+                            sheet02.SetColumnWidth(i, 40 * 256);
+                            cell1.SetCellValue("Страна");
+                            break;
+                    }
+                }
+
+                _pos01++;
+
+                //Содержимое таблицы
+                for (var x = 0; x < table2.Rows.Count; x++)
+                {
+                    for (var y = 0; y < table2.Columns.Count; y++)
+                    {
+                        var t = table2.Rows[x][y].GetType();
+
+                        switch (t.Name)
+                        {
+                            case "Int32":
+                                cell1 = sheet02.CreateRow(_pos01).CreateCell(y);
+                                cell1.SetCellValue(Convert.ToInt32(table2.Rows[x][y]));
+                                cell1.CellStyle = _csMainContent;
+                                continue;
+                            case "String":
+                                cell1 = sheet02.CreateRow(_pos01).CreateCell(y);
+                                cell1.SetCellValue(table2.Rows[x][y].ToString());
+                                cell1.CellStyle = _csMainContent;
+                                continue;
+                            case "DBNull":
+                                cell1 = sheet02.CreateRow(_pos01).CreateCell(y);
+                                cell1.SetCellValue("-");
                                 cell1.CellStyle = _csMainContent;
                                 continue;
                         }
