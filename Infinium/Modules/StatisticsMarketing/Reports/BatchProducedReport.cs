@@ -1513,6 +1513,7 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
 
             for (int i = 0; i < Fronts.Rows.Count; i++)
             {
+                int BatchId = Convert.ToInt32(Fronts.Rows[i]["BatchId"]);
                 int FrontID = Convert.ToInt32(Fronts.Rows[i]["FrontID"]);
                 if (FrontID == 3729)
                     continue;
@@ -1542,7 +1543,7 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
 
                 if (CountPP > 0)
                 {
-                    DataTable ddt = OrdersDataTable.Select("InsetTypeID IN (685,686,687,688,29470,29471)").CopyToDataTable();
+                    DataTable ddt = OrdersDataTable.Select("InsetTypeID IN (685,686,687,688,29470,29471) and BatchId=" + BatchId).CopyToDataTable();
                     for (int x = 0; x < ddt.Rows.Count; x++)
                     {
                         decimal d = GetInsetSquare(Convert.ToInt32(ddt.Rows[x]["FrontID"]), Convert.ToInt32(ddt.Rows[x]["Height"]),
@@ -1581,7 +1582,8 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
                                 NewRow["AccountingName"] = rows[0]["DecorAccountingName"].ToString();
                                 NewRow["InvNumber"] = rows[0]["DecorInvNumber"].ToString();
                                 NewRow["Cvet"] = rows[0]["Cvet"].ToString();
-                                NewRow["Patina"] = rows[0]["Patina"].ToString();
+                                //NewRow["Patina"] = rows[0]["Patina"].ToString();
+                                NewRow["Patina"] = "ххх-0";
                             }
                             ReportDataTable1.Rows.Add(NewRow);
                         }
@@ -1607,7 +1609,8 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
                                 NewRow["AccountingName"] = rows[0]["DecorAccountingName"].ToString();
                                 NewRow["InvNumber"] = rows[0]["DecorInvNumber"].ToString();
                                 NewRow["Cvet"] = rows[0]["Cvet"].ToString();
-                                NewRow["Patina"] = rows[0]["Patina"].ToString();
+                                //NewRow["Patina"] = rows[0]["Patina"].ToString();
+                                NewRow["Patina"] = "ххх-0";
                             }
                             ReportDataTable.Rows.Add(NewRow);
                         }

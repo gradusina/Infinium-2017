@@ -667,18 +667,18 @@ INNER JOIN infiniu2_catalog.dbo.Countries AS Countries ON Clients.CountryID = Co
             sheet1.AddMergedRegion(new Region(rowIndex2, colFrom, rowIndex2, colTo));
             sheet1.AddMergedRegion(new Region(rowIndex4, colFrom, rowIndex4, colTo));
 
-            PrintOrdersByStatus(sheet1, notConfirmedRowIndex, _calculations.ClientsNotConfirmedList, "Не подтверждено",
-                $@"{_calculations.NotConfirmedSumRank.ToString(DigitalFormat, nfi)}");
-            PrintOrdersByStatus(sheet1, forAgreedRowIndex, _calculations.ClientsForAgreedList, "На согласовании",
-                $@"{_calculations.ForAgreedSumRank.ToString(DigitalFormat, nfi)}");
-            PrintOrdersByStatus(sheet1, agreedRowIndex, _calculations.ClientsAgreedList, "Согласовано",
-                $@"{_calculations.AgreedSumRank.ToString(DigitalFormat, nfi)}");
-            PrintOrdersByStatus(sheet1, onProductionRowIndex, _calculations.ClientsOnProductionList, "На производстве",
-                $@"{_calculations.OnProductionSumRank.ToString(DigitalFormat, nfi)}");
-            PrintOrdersByStatus(sheet1, inProductionRowIndex, _calculations.ClientsInProductionList, "В производстве",
-                $@"{_calculations.InProductionSumRank.ToString(DigitalFormat, nfi)}");
+            //PrintOrdersByStatus(sheet1, notConfirmedRowIndex, _calculations.ClientsNotConfirmedList, "Не подтверждено",
+            //    $@"{_calculations.NotConfirmedSumRank.ToString(DigitalFormat, nfi)}");
+            //PrintOrdersByStatus(sheet1, forAgreedRowIndex, _calculations.ClientsForAgreedList, "На согласовании",
+            //    $@"{_calculations.ForAgreedSumRank.ToString(DigitalFormat, nfi)}");
+            //PrintOrdersByStatus(sheet1, agreedRowIndex, _calculations.ClientsAgreedList, "Согласовано",
+            //    $@"{_calculations.AgreedSumRank.ToString(DigitalFormat, nfi)}");
+            //PrintOrdersByStatus(sheet1, onProductionRowIndex, _calculations.ClientsOnProductionList, "На производстве",
+            //    $@"{_calculations.OnProductionSumRank.ToString(DigitalFormat, nfi)}");
+            //PrintOrdersByStatus(sheet1, inProductionRowIndex, _calculations.ClientsInProductionList, "В производстве",
+            //    $@"{_calculations.InProductionSumRank.ToString(DigitalFormat, nfi)}");
 
-            rIndex = notConfirmedRowIndex + 2;
+            //rIndex = notConfirmedRowIndex + 2;
 
             if (_calculations.ClientsNotConfirmedList.Count > 1)
                 sheet1.SetRowGroupCollapsed(notConfirmedRowIndex + 3, true);

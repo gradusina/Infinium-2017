@@ -4024,8 +4024,8 @@
             this.kryptonSplitContainer1.Panel2.StateCommon.Color1 = System.Drawing.Color.Transparent;
             this.kryptonSplitContainer1.Panel2MinSize = 200;
             this.kryptonSplitContainer1.SeparatorStyle = ComponentFactory.Krypton.Toolkit.SeparatorStyle.HighProfile;
-            this.kryptonSplitContainer1.Size = new System.Drawing.Size(36657, 18536);
-            this.kryptonSplitContainer1.SplitterDistance = 5801;
+            this.kryptonSplitContainer1.Size = new System.Drawing.Size(37921, 19174);
+            this.kryptonSplitContainer1.SplitterDistance = 6001;
             this.kryptonSplitContainer1.SplitterWidth = 6;
             this.kryptonSplitContainer1.StateCommon.Back.Color1 = System.Drawing.Color.Transparent;
             this.kryptonSplitContainer1.StateCommon.Back.Color2 = System.Drawing.Color.Transparent;

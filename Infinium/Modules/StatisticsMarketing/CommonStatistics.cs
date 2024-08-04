@@ -1421,7 +1421,7 @@ namespace Infinium.Modules.StatisticsMarketing
                     NewRow["FrontID"] = Convert.ToInt32(Table.Rows[i]["FrontID"]);
                     NewRow["ColorID"] = Convert.ToInt32(Table.Rows[i]["ColorID"]);
                     NewRow["PatinaID"] = Convert.ToInt32(Table.Rows[i]["PatinaID"]);
-                    NewRow["Square"] = Decimal.Round(FrameColorSquare, 2, MidpointRounding.AwayFromZero);
+                    NewRow["Square"] = Decimal.Round(FrameColorSquare, 3, MidpointRounding.AwayFromZero);
                     NewRow["Cost"] = Decimal.Round(FrameColorCost, 2, MidpointRounding.AwayFromZero);
                     NewRow["Width"] = 0;
                     NewRow["Count"] = FrameColorCount;
@@ -1498,7 +1498,7 @@ namespace Infinium.Modules.StatisticsMarketing
                     NewRow["PatinaID"] = Convert.ToInt32(Table.Rows[i]["PatinaID"]);
                     NewRow["TechnoColorID"] = Convert.ToInt32(Table.Rows[i]["TechnoColorID"]);
                     NewRow["Width"] = 0;
-                    NewRow["Square"] = Decimal.Round(Square, 2, MidpointRounding.AwayFromZero);
+                    NewRow["Square"] = Decimal.Round(Square, 3, MidpointRounding.AwayFromZero);
                     NewRow["Count"] = Count;
                     TechnoColorsSummaryDataTable.Rows.Add(NewRow);
 
@@ -1591,7 +1591,7 @@ namespace Infinium.Modules.StatisticsMarketing
                     //if (Convert.ToInt32(Table.Rows[i]["InsetTypeID"]) == 1)
                     //    InsetTypeSquare = 0;
                     NewRow["Width"] = 0;
-                    NewRow["Square"] = Decimal.Round(InsetTypeSquare, 2, MidpointRounding.AwayFromZero);
+                    NewRow["Square"] = Decimal.Round(InsetTypeSquare, 3, MidpointRounding.AwayFromZero);
                     NewRow["Count"] = InsetTypeCount;
                     InsetTypesSummaryDataTable.Rows.Add(NewRow);
 
@@ -1614,7 +1614,7 @@ namespace Infinium.Modules.StatisticsMarketing
                             GridHeight = 0;
                             GridWidth = 0;
                         }
-                        InsetTypeSquare += Decimal.Round(GridHeight * GridWidth * Convert.ToInt32(row["Count"]) / 1000000, 2, MidpointRounding.AwayFromZero);
+                        InsetTypeSquare += Decimal.Round(GridHeight * GridWidth * Convert.ToInt32(row["Count"]) / 1000000, 3, MidpointRounding.AwayFromZero);
                         InsetTypeCount += Convert.ToInt32(row["Count"]);
                     }
 
@@ -1675,7 +1675,7 @@ namespace Infinium.Modules.StatisticsMarketing
                             GridHeight = 0;
                             GridWidth = 0;
                         }
-                        InsetColorSquare += Decimal.Round(GridHeight * GridWidth * Convert.ToInt32(row["Count"]) / 1000000, 2, MidpointRounding.AwayFromZero);
+                        InsetColorSquare += Decimal.Round(GridHeight * GridWidth * Convert.ToInt32(row["Count"]) / 1000000, 3, MidpointRounding.AwayFromZero);
                         InsetColorCount += Convert.ToInt32(row["Count"]);
                     }
 
@@ -1690,7 +1690,7 @@ namespace Infinium.Modules.StatisticsMarketing
                     if (Convert.ToInt32(Table.Rows[i]["InsetTypeID"]) == 1)
                         InsetColorSquare = 0;
                     NewRow["Width"] = 0;
-                    NewRow["Square"] = Decimal.Round(InsetColorSquare, 2, MidpointRounding.AwayFromZero);
+                    NewRow["Square"] = Decimal.Round(InsetColorSquare, 3, MidpointRounding.AwayFromZero);
                     NewRow["Count"] = InsetColorCount;
                     InsetColorsSummaryDataTable.Rows.Add(NewRow);
 
@@ -1714,7 +1714,7 @@ namespace Infinium.Modules.StatisticsMarketing
                             GridHeight = 0;
                             GridWidth = 0;
                         }
-                        InsetColorSquare += Decimal.Round(GridHeight * GridWidth * Convert.ToInt32(row["Count"]) / 1000000, 2, MidpointRounding.AwayFromZero);
+                        InsetColorSquare += Decimal.Round(GridHeight * GridWidth * Convert.ToInt32(row["Count"]) / 1000000, 3, MidpointRounding.AwayFromZero);
                         InsetColorCount += Convert.ToInt32(row["Count"]);
                     }
 
@@ -1781,7 +1781,7 @@ namespace Infinium.Modules.StatisticsMarketing
                     if (Convert.ToInt32(Table.Rows[i]["InsetTypeID"]) == 1)
                         InsetTypeSquare = 0;
                     NewRow["Width"] = 0;
-                    NewRow["Square"] = Decimal.Round(InsetTypeSquare, 2, MidpointRounding.AwayFromZero);
+                    NewRow["Square"] = Decimal.Round(InsetTypeSquare, 3, MidpointRounding.AwayFromZero);
                     NewRow["Count"] = InsetTypeCount;
                     TechnoInsetTypesSummaryDataTable.Rows.Add(NewRow);
 
@@ -1870,7 +1870,7 @@ namespace Infinium.Modules.StatisticsMarketing
                     if (Convert.ToInt32(Table.Rows[i]["InsetTypeID"]) == 1)
                         InsetColorSquare = 0;
                     NewRow["Width"] = 0;
-                    NewRow["Square"] = Decimal.Round(InsetColorSquare, 2, MidpointRounding.AwayFromZero);
+                    NewRow["Square"] = Decimal.Round(InsetColorSquare, 3, MidpointRounding.AwayFromZero);
                     NewRow["Count"] = InsetColorCount;
                     TechnoInsetColorsSummaryDataTable.Rows.Add(NewRow);
 
@@ -1959,7 +1959,7 @@ namespace Infinium.Modules.StatisticsMarketing
                     NewRow["TechnoInsetTypeID"] = Convert.ToInt32(Table.Rows[i]["TechnoInsetTypeID"]);
                     NewRow["Height"] = Convert.ToInt32(Table.Rows[i]["Height"]);
                     NewRow["Width"] = Convert.ToInt32(Table.Rows[i]["Width"]);
-                    NewRow["Square"] = Decimal.Round(SizeSquare, 2, MidpointRounding.AwayFromZero);
+                    NewRow["Square"] = Decimal.Round(SizeSquare, 3, MidpointRounding.AwayFromZero);
                     NewRow["Count"] = SizeCount;
                     SizesSummaryDataTable.Rows.Add(NewRow);
 
@@ -2012,7 +2012,7 @@ namespace Infinium.Modules.StatisticsMarketing
         {
             decimal DecorCost = 0;
             decimal DecorCount = 0;
-            int decimals = 2;
+            int decimals = 3;
             string Measure = string.Empty;
             DecorProductsSummaryDataTable.Clear();
 

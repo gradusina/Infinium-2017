@@ -970,7 +970,7 @@ and mainOrderId={mainOrderId}");
             newRow["orderStatus"] = (int)orderStatus;
             newRow["machineName"] = MachineName(machineId);
             newRow["decorName"] = TechStoreName(decorId);
-            newRow["accountingName"] = accountingName;
+            newRow["accountName"] = accountingName;
             newRow["total1"] = total1;
             newRow["total2"] = total2;
             newRow["total3"] = total3;
@@ -1051,7 +1051,7 @@ and mainOrderId={mainOrderId}");
             newRow["orderStatus"] = (int)orderStatus;
             newRow["machineName"] = MachineName(machineId);
             newRow["decorName"] = TechStoreName(decorId);
-            newRow["accountingName"] = accountingName;
+            newRow["accountName"] = accountingName;
             newRow["total1"] = total1;
             newRow["total2"] = total2;
             newRow["total3"] = total3;
@@ -1126,7 +1126,7 @@ and mainOrderId={mainOrderId}");
 
             var selectCommand =
                 $@"select m.megaorderid, m.ordernumber, m.OrderDate, m.clientid, d.decororderid, d.mainorderid,
-d.decorid, d.productId, d.decorconfigid, d.accountingname, dc.measureid, d.length, d.height, d.width, d.count from newdecororders  as d
+d.decorid, d.productId, d.decorconfigid, dc.accountingname, dc.measureid, d.length, d.height, d.width, d.count from newdecororders  as d
 inner join infiniu2_catalog.dbo.decorconfig as dc on d.decorconfigid = dc.decorconfigid
 inner join newmainorders on d.mainorderid = newmainorders.mainorderid {mainOrderFilter}
 inner join newMegaorders as m on newMainorders.megaorderid = m.megaorderid {megaOrderFilter}
@@ -1141,7 +1141,7 @@ where onStorage = 0 {batchFilter} order by d.mainorderid";
 
             selectCommand =
                 $@"select m.megaorderid, m.ordernumber, m.OrderDate, m.clientid, d.FrontsOrdersID, d.mainorderid,
-d.frontid, d.frontconfigid, d.accountingname, dc.measureid, d.height, d.width, d.count from newfrontsorders  as d
+d.frontid, d.frontconfigid, dc.accountingname, dc.measureid, d.height, d.width, d.count from newfrontsorders  as d
 inner join infiniu2_catalog.dbo.frontsconfig as dc on d.frontconfigid = dc.frontconfigid
 inner join newmainorders on d.mainorderid = newmainorders.mainorderid {mainOrderFilter}
 inner join newMegaorders as m on newMainorders.megaorderid = m.megaorderid {megaOrderFilter}
@@ -1170,7 +1170,7 @@ where onStorage = 0 {batchFilter} order by d.mainorderid";
 
             var selectCommand =
                 $@"select m.megaorderid, m.ordernumber, m.OrderDate, m.clientid, d.decororderid, d.mainorderid,
-d.decorid, d.productId, d.decorconfigid, d.accountingname, dc.measureid, d.length, d.height, d.width, d.count from newdecororders  as d
+d.decorid, d.productId, d.decorconfigid, dc.accountingname, dc.measureid, d.length, d.height, d.width, d.count from newdecororders  as d
 inner join infiniu2_catalog.dbo.decorconfig as dc on d.decorconfigid = dc.decorconfigid
 inner join newmainorders on d.mainorderid = newmainorders.mainorderid {mainOrderFilter}
 inner join newMegaorders as m on newMainorders.megaorderid = m.megaorderid {megaOrderFilter}
@@ -1184,7 +1184,7 @@ where onStorage = 0 {batchFilter} order by d.mainorderid";
                 }
             selectCommand =
                 $@"select m.megaorderid, m.ordernumber, m.OrderDate, m.clientid, d.FrontsOrdersID, d.mainorderid,
-d.frontid, d.frontconfigid, d.accountingname, dc.measureid, d.height, d.width, d.count from newfrontsorders  as d
+d.frontid, d.frontconfigid, dc.accountingname, dc.measureid, d.height, d.width, d.count from newfrontsorders  as d
 inner join infiniu2_catalog.dbo.frontsconfig as dc on d.frontconfigid = dc.frontconfigid
 inner join newmainorders on d.mainorderid = newmainorders.mainorderid {mainOrderFilter}
 inner join newMegaorders as m on newMainorders.megaorderid = m.megaorderid {megaOrderFilter}
@@ -1212,7 +1212,7 @@ where onStorage = 0 {batchFilter} order by d.mainorderid";
 
             var selectCommand =
                 $@"select m.megaorderid, m.ordernumber, m.OrderDate, m.clientid, d.decororderid, d.mainorderid,
-d.decorid, d.productId, d.decorconfigid, d.accountingname, dc.measureid, d.length, d.height, d.width, d.count from newdecororders  as d
+d.decorid, d.productId, d.decorconfigid, dc.accountingname, dc.measureid, d.length, d.height, d.width, d.count from newdecororders  as d
 inner join infiniu2_catalog.dbo.decorconfig as dc on d.decorconfigid = dc.decorconfigid
 inner join newmainorders on d.mainorderid = newmainorders.mainorderid {mainOrderFilter}
 inner join newMegaorders as m on newMainorders.megaorderid = m.megaorderid {megaOrderFilter}
@@ -1229,7 +1229,7 @@ order by d.mainorderid";
 
             selectCommand =
                 $@"select m.megaorderid, m.ordernumber, m.OrderDate, m.clientid, d.FrontsOrdersID, d.mainorderid,
-d.frontid, d.frontconfigid, d.accountingname, dc.measureid, d.height, d.width, d.count from newfrontsorders  as d
+d.frontid, d.frontconfigid, dc.accountingname, dc.measureid, d.height, d.width, d.count from newfrontsorders  as d
 inner join infiniu2_catalog.dbo.frontsconfig as dc on d.frontconfigid = dc.frontconfigid
 inner join newmainorders on d.mainorderid = newmainorders.mainorderid {mainOrderFilter}
 inner join newMegaorders as m on newMainorders.megaorderid = m.megaorderid {megaOrderFilter}
@@ -1260,7 +1260,7 @@ order by d.mainorderid";
 
             var selectCommand =
                 $@"select m.megaorderid, m.ordernumber, m.OrderDate, m.clientid, d.decororderid, d.mainorderid,
-d.decorid, d.productId, d.decorconfigid, d.accountingname, dc.measureid, d.length, d.height, d.width, d.count from newdecororders  as d
+d.decorid, d.productId, d.decorconfigid, dc.accountingname, dc.measureid, d.length, d.height, d.width, d.count from newdecororders  as d
 inner join infiniu2_catalog.dbo.decorconfig as dc on d.decorconfigid = dc.decorconfigid
 inner join newmainorders on d.mainorderid = newmainorders.mainorderid {mainOrderFilter}
 inner join newMegaorders as m on newMainorders.megaorderid = m.megaorderid {megaOrderFilter}
@@ -1277,7 +1277,7 @@ order by d.mainorderid";
 
             selectCommand =
                 $@"select m.megaorderid, m.ordernumber, m.OrderDate, m.clientid, d.FrontsOrdersID, d.mainorderid,
-d.frontid, d.frontconfigid, d.accountingname, dc.measureid, d.height, d.width, d.count from newfrontsorders  as d
+d.frontid, d.frontconfigid, dc.accountingname, dc.measureid, d.height, d.width, d.count from newfrontsorders  as d
 inner join infiniu2_catalog.dbo.frontsconfig as dc on d.frontconfigid = dc.frontconfigid
 inner join newmainorders on d.mainorderid = newmainorders.mainorderid {mainOrderFilter}
 inner join newMegaorders as m on newMainorders.megaorderid = m.megaorderid {megaOrderFilter}
@@ -1304,7 +1304,7 @@ order by d.mainorderid";
 
             var selectCommand =
                 $@"select m.megaorderid, m.ordernumber, m.OrderDate, m.clientid, d.decororderid, d.mainorderid,
-d.decorid, d.productId, d.decorconfigid, d.accountingname, dc.measureid, d.length, d.height, d.width, d.count from newdecororders  as d
+d.decorid, d.productId, d.decorconfigid, dc.accountingname, dc.measureid, d.length, d.height, d.width, d.count from newdecororders  as d
 inner join infiniu2_catalog.dbo.decorconfig as dc on d.decorconfigid = dc.decorconfigid
 inner join newmainorders on d.mainorderid = newmainorders.mainorderid {mainOrderFilter}
 inner join newMegaorders as m on newMainorders.megaorderid = m.megaorderid {megaOrderFilter}
@@ -1321,7 +1321,7 @@ order by d.mainorderid";
 
             selectCommand =
                 $@"select m.megaorderid, m.ordernumber, m.OrderDate, m.clientid, d.FrontsOrdersID, d.mainorderid,
-d.frontid, d.frontconfigid, d.accountingname, dc.measureid, d.height, d.width, d.count from newfrontsorders  as d
+d.frontid, d.frontconfigid, dc.accountingname, dc.measureid, d.height, d.width, d.count from newfrontsorders  as d
 inner join infiniu2_catalog.dbo.frontsconfig as dc on d.frontconfigid = dc.frontconfigid
 inner join newmainorders on d.mainorderid = newmainorders.mainorderid {mainOrderFilter}
 inner join newMegaorders as m on newMainorders.megaorderid = m.megaorderid {megaOrderFilter}
@@ -1349,7 +1349,7 @@ order by d.mainorderid";
 
             var selectCommand =
                 $@"select m.megaorderid, m.ordernumber, m.OrderDate, m.clientid, d.decororderid, d.mainorderid,
-d.decorid, d.productId, d.decorconfigid, d.accountingname, dc.measureid, d.length, d.height, d.width, d.count from newdecororders  as d
+d.decorid, d.productId, d.decorconfigid, dc.accountingname, dc.measureid, d.length, d.height, d.width, d.count from newdecororders  as d
 inner join infiniu2_catalog.dbo.decorconfig as dc on d.decorconfigid = dc.decorconfigid
 inner join newmainorders on d.mainorderid = newmainorders.mainorderid {mainOrderFilter}
 inner join newMegaorders as m on newMainorders.megaorderid = m.megaorderid {megaOrderFilter}
@@ -1364,7 +1364,7 @@ where onStorage = 0 order by d.mainorderid";
 
             selectCommand =
                 $@"select m.megaorderid, m.ordernumber, m.OrderDate, m.clientid, d.FrontsOrdersID, d.mainorderid,
-d.frontid, d.frontconfigid, d.accountingname, dc.measureid, d.height, d.width, d.count from newfrontsorders  as d
+d.frontid, d.frontconfigid, dc.accountingname, dc.measureid, d.height, d.width, d.count from newfrontsorders  as d
 inner join infiniu2_catalog.dbo.frontsconfig as dc on d.frontconfigid = dc.frontconfigid
 inner join newmainorders on d.mainorderid = newmainorders.mainorderid {mainOrderFilter}
 inner join newMegaorders as m on newMainorders.megaorderid = m.megaorderid {megaOrderFilter}
@@ -1390,7 +1390,7 @@ where onStorage = 0 order by d.mainorderid";
 
             var selectCommand =
                 $@"select m.megaorderid, m.ordernumber, m.OrderDate, m.clientid, d.decororderid, d.mainorderid,
-d.decorid, d.productId, d.decorconfigid, d.accountingname, dc.measureid, d.length, d.height, d.width, d.count from newdecororders  as d
+d.decorid, d.productId, d.decorconfigid, dc.accountingname, dc.measureid, d.length, d.height, d.width, d.count from newdecororders  as d
 inner join infiniu2_catalog.dbo.decorconfig as dc on d.decorconfigid = dc.decorconfigid
 inner join newmainorders on d.mainorderid = newmainorders.mainorderid {mainOrderFilter}
 inner join newMegaorders as m on newMainorders.megaorderid = m.megaorderid {megaOrderFilter}
@@ -1405,7 +1405,7 @@ where onStorage = 0 order by d.mainorderid";
 
             selectCommand =
                 $@"select m.megaorderid, m.ordernumber, m.OrderDate, m.clientid, d.FrontsOrdersID, d.mainorderid,
-d.frontid, d.frontconfigid, d.accountingname, dc.measureid, d.height, d.width, d.count from newfrontsorders  as d
+d.frontid, d.frontconfigid, dc.accountingname, dc.measureid, d.height, d.width, d.count from newfrontsorders  as d
 inner join infiniu2_catalog.dbo.frontsconfig as dc on d.frontconfigid = dc.frontconfigid
 inner join newmainorders on d.mainorderid = newmainorders.mainorderid {mainOrderFilter}
 inner join newMegaorders as m on newMainorders.megaorderid = m.megaorderid {megaOrderFilter}
@@ -1431,7 +1431,7 @@ where onStorage = 0 order by d.mainorderid";
 
             var selectCommand =
                 $@"select m.megaorderid, m.ordernumber, m.OrderDate, m.clientid, d.decororderid, d.mainorderid,
-d.decorid, d.productId, d.decorconfigid, d.accountingname, dc.measureid, d.length, d.height, d.width, d.count from newdecororders  as d
+d.decorid, d.productId, d.decorconfigid, dc.accountingname, dc.measureid, d.length, d.height, d.width, d.count from newdecororders  as d
 inner join infiniu2_catalog.dbo.decorconfig as dc on d.decorconfigid = dc.decorconfigid
 inner join newmainorders on d.mainorderid = newmainorders.mainorderid {mainOrderFilter}
 inner join newMegaorders as m on newMainorders.megaorderid = m.megaorderid {megaOrderFilter}
@@ -1448,7 +1448,7 @@ order by d.mainorderid";
 
             selectCommand =
                 $@"select m.megaorderid, m.ordernumber, m.OrderDate, m.clientid, d.FrontsOrdersID, d.mainorderid,
-d.frontid, d.frontconfigid, d.accountingname, dc.measureid, d.height, d.width, d.count from newfrontsorders  as d
+d.frontid, d.frontconfigid, dc.accountingname, dc.measureid, d.height, d.width, d.count from newfrontsorders  as d
 inner join infiniu2_catalog.dbo.frontsconfig as dc on d.frontconfigid = dc.frontconfigid
 inner join newmainorders on d.mainorderid = newmainorders.mainorderid {mainOrderFilter}
 inner join newMegaorders as m on newMainorders.megaorderid = m.megaorderid {megaOrderFilter}
@@ -1476,7 +1476,7 @@ order by d.mainorderid";
 
             var selectCommand =
                 $@"select m.megaorderid, m.ordernumber, m.OrderDate, m.clientid, d.decororderid, d.mainorderid,
-d.decorid, d.productId, d.decorconfigid, d.accountingname, dc.measureid, d.length, d.height, d.width, d.count from newdecororders  as d
+d.decorid, d.productId, d.decorconfigid, dc.accountingname, dc.measureid, d.length, d.height, d.width, d.count from newdecororders  as d
 inner join infiniu2_catalog.dbo.decorconfig as dc on d.decorconfigid = dc.decorconfigid
 inner join newmainorders on d.mainorderid = newmainorders.mainorderid {mainOrderFilter}
 inner join newMegaorders as m on newMainorders.megaorderid = m.megaorderid {megaOrderFilter}
@@ -1493,7 +1493,7 @@ order by d.mainorderid";
 
             selectCommand =
                 $@"select m.megaorderid, m.ordernumber, m.OrderDate, m.clientid, d.FrontsOrdersID, d.mainorderid,
-d.frontid, d.frontconfigid, d.accountingname, dc.measureid, d.height, d.width, d.count from newfrontsorders  as d
+d.frontid, d.frontconfigid, dc.accountingname, dc.measureid, d.height, d.width, d.count from newfrontsorders  as d
 inner join infiniu2_catalog.dbo.frontsconfig as dc on d.frontconfigid = dc.frontconfigid
 inner join newmainorders on d.mainorderid = newmainorders.mainorderid {mainOrderFilter}
 inner join newMegaorders as m on newMainorders.megaorderid = m.megaorderid {megaOrderFilter}
@@ -1517,7 +1517,7 @@ order by d.mainorderid";
 
             var selectCommand =
                 $@"select m.megaorderid, m.ordernumber, m.OrderDate, m.clientid, d.decororderid, d.mainorderid,
-d.decorid, d.productId, d.decorconfigid, d.accountingname, dc.measureid, d.length, d.height, d.width, d.count from newdecororders  as d
+d.decorid, d.productId, d.decorconfigid, dc.accountingname, dc.measureid, d.length, d.height, d.width, d.count from newdecororders  as d
 inner join infiniu2_catalog.dbo.decorconfig as dc on d.decorconfigid = dc.decorconfigid
 inner join newmainorders on d.mainorderid = newmainorders.mainorderid {mainOrderFilter}
 inner join newMegaorders as m on newMainorders.megaorderid = m.megaorderid {megaOrderFilter}
@@ -1534,7 +1534,7 @@ order by d.mainorderid";
 
             selectCommand =
                 $@"select m.megaorderid, m.ordernumber, m.OrderDate, m.clientid, d.FrontsOrdersID, d.mainorderid,
-d.frontid, d.frontconfigid, d.accountingname, dc.measureid, d.height, d.width, d.count from newfrontsorders  as d
+d.frontid, d.frontconfigid, dc.accountingname, dc.measureid, d.height, d.width, d.count from newfrontsorders  as d
 inner join infiniu2_catalog.dbo.frontsconfig as dc on d.frontconfigid = dc.frontconfigid
 inner join newmainorders on d.mainorderid = newmainorders.mainorderid {mainOrderFilter}
 inner join newMegaorders as m on newMainorders.megaorderid = m.megaorderid {megaOrderFilter}
