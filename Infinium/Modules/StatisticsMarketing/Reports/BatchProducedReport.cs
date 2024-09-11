@@ -5265,8 +5265,6 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
 
             if (ProfilReportTable.Rows.Count > 0)
             {
-                //Профиль
-                pos += 2;
                 displayIndex = 0;
 
                 Cell1 = sheet1.CreateRow(pos++).CreateCell(0);
@@ -5363,8 +5361,6 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
 
             if (ProfilReportTable.Rows.Count > 0)
             {
-                //Профиль
-                pos += 2;
                 displayIndex = 0;
 
                 Cell1 = sheet2.CreateRow(pos++).CreateCell(0);
@@ -5460,8 +5456,6 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
 
             if (ProfilReportTable.Rows.Count > 0)
             {
-                //Профиль
-                pos += 2;
                 displayIndex = 0;
 
                 Cell1 = sheet1.CreateRow(pos++).CreateCell(0);
@@ -5563,8 +5557,6 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
 
             if (ProfilReportTable.Rows.Count > 0)
             {
-                //Профиль
-                pos += 2;
                 displayIndex = 0;
 
                 Cell1 = sheet1.CreateRow(pos++).CreateCell(0);

@@ -2381,6 +2381,22 @@ WHERE        CAST(CreateDateTime AS date) >= '2019-12-26 00:00' AND CAST(CreateD
             }
         }
 
+        public void EditPackCount(int CabFurAssignmentID, int PackagesCount)
+        {
+            DataRow[] rows = AllAssignmentsDT.Select("CabFurAssignmentID=" + CabFurAssignmentID);
+            if (rows.Count() == 0)
+                return;
+            rows[0]["PackagesCount"] = PackagesCount;
+
+
+            //string SelectCommand = @"SELECT * FROM CabFurnitureAssignmentDetails WHERE CabFurAssignmentID=" + CabFurAssignmentID;
+            //using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand,
+            //           ConnectionStrings.StorageConnectionString))
+            //{
+            //    DA.Fill(NewAssignmentDetailsDT);
+            //}
+        }
+
         public void UpdateNewAssignment(int CabFurAssignmentID)
         {
             NewAssignmentDetailsDT.Clear();
@@ -3455,6 +3471,15 @@ WHERE        CAST(CreateDateTime AS date) >= '2019-12-26 00:00' AND CAST(CreateD
             }
             using (SqlDataAdapter DA = new SqlDataAdapter("DELETE CabFurniturePackages WHERE CabFurAssignmentID=" + CabFurAssignmentID,
                 ConnectionStrings.StorageConnectionString))
+            {
+                using (DataTable DT = new DataTable())
+                {
+                    DA.Fill(DT);
+                }
+            }
+
+            using (SqlDataAdapter DA = new SqlDataAdapter("DELETE CabFurnitureAssignmentDetails WHERE CabFurAssignmentID=" + CabFurAssignmentID,
+                       ConnectionStrings.StorageConnectionString))
             {
                 using (DataTable DT = new DataTable())
                 {

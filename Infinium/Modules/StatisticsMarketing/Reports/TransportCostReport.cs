@@ -332,8 +332,6 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
             DisplayIndex = 0;
             if (TransportCostDT.Rows.Count > 0)
             {
-                pos += 2;
-
                 Cell1 = sheet1.CreateRow(pos).CreateCell(DisplayIndex++);
                 Cell1.SetCellValue("Клиент");
                 Cell1.CellStyle = SimpleHeaderCS;

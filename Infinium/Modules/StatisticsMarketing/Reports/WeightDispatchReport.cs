@@ -435,9 +435,6 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
 
             if (AllMarketingWeightDT.Rows.Count > 0)
             {
-                //Профиль
-                pos += 2;
-
                 Cell1 = sheet1.CreateRow(pos).CreateCell(0);
                 Cell1.SetCellValue("Клиент");
                 Cell1.CellStyle = SimpleHeaderCS;
@@ -477,9 +474,6 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
 
             if (AllZOVWeightDT.Rows.Count > 0)
             {
-                //Профиль
-                pos += 2;
-
                 Cell1 = sheet2.CreateRow(pos).CreateCell(0);
                 Cell1.SetCellValue("Дата");
                 Cell1.CellStyle = SimpleHeaderCS;

@@ -1384,6 +1384,22 @@ namespace Infinium
 
         private void cmiSaveAssignments_Click(object sender, EventArgs e)
         {
+            if (userRole == RoleTypes.AdminRole)
+            {
+                int CabFurAssignmentID = 0;
+                if (dgvAllAssignments.SelectedRows.Count != 0 &&
+                    dgvAllAssignments.SelectedRows[0].Cells["CabFurAssignmentID"].Value != DBNull.Value)
+                    CabFurAssignmentID =
+                        Convert.ToInt32(dgvAllAssignments.SelectedRows[0].Cells["CabFurAssignmentID"].Value);
+
+                int AllPackagesCount = 0;
+                if (percentageDataGrid1.SelectedRows.Count != 0 &&
+                    percentageDataGrid1.SelectedRows[0].Cells["Count"].Value != DBNull.Value)
+                    AllPackagesCount = Convert.ToInt32(percentageDataGrid1.SelectedRows[0].Cells["Count"].Value);
+                assignmentsManager.EditPackCount(CabFurAssignmentID, AllPackagesCount);
+                assignmentsManager.SaveNewAssignment();
+            }
+
             SaveAllAssignments();
         }
 
@@ -2868,13 +2884,13 @@ namespace Infinium
             int CabFurAssignmentID = 0;
             if (dgvAllAssignments.SelectedRows.Count != 0 && dgvAllAssignments.SelectedRows[0].Cells["CabFurAssignmentID"].Value != DBNull.Value)
                 CabFurAssignmentID = Convert.ToInt32(dgvAllAssignments.SelectedRows[0].Cells["CabFurAssignmentID"].Value);
-            if (!assignmentsManager.IsAssignmentDetailsEmpty(CabFurAssignmentID))
-            {
-                Infinium.LightMessageBox.Show(ref TopForm, false,
-                    "Задание не пустое. Сначала удалите содержимое, затем повторите",
-                    "Удаление задания");
-                return;
-            }
+            //if (!assignmentsManager.IsAssignmentDetailsEmpty(CabFurAssignmentID))
+            //{
+            //    Infinium.LightMessageBox.Show(ref TopForm, false,
+            //        "Задание не пустое. Сначала удалите содержимое, затем повторите",
+            //        "Удаление задания");
+            //    return;
+            //}
             assignmentsManager.ClearCabFurniturePackages(CabFurAssignmentID);
             assignmentsManager.RemoveAssignment();
             SaveAllAssignments();

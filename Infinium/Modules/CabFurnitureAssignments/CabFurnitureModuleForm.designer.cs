@@ -1623,7 +1623,7 @@ namespace Infinium
             // 
             // deleteEmptyAssignmentContextMenuItem
             // 
-            this.deleteEmptyAssignmentContextMenuItem.Text = "Удалить (если пустое)";
+            this.deleteEmptyAssignmentContextMenuItem.Text = "Удалить";
             this.deleteEmptyAssignmentContextMenuItem.Click += new System.EventHandler(this.kryptonContextMenuItem9_Click_1);
             // 
             // kryptonContextMenuItem10

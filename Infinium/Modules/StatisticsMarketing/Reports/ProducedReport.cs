@@ -9242,8 +9242,6 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
 
             if (ProfilReportTable.Rows.Count > 0)
             {
-                //Профиль
-                pos += 2;
                 displayIndex = 0;
 
                 Cell1 = sheet1.CreateRow(pos++).CreateCell(0);
@@ -9612,8 +9610,6 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
 
             if (ProfilReportTable.Rows.Count > 0)
             {
-                //Профиль
-                pos += 2;
                 displayIndex = 0;
 
                 Cell1 = sheet1.CreateRow(pos++).CreateCell(0);
@@ -9982,8 +9978,6 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
 
             if (ProfilReportTable.Rows.Count > 0)
             {
-                //Профиль
-                pos += 2;
                 displayIndex = 0;
 
                 Cell1 = sheet1.CreateRow(pos++).CreateCell(0);
@@ -10352,8 +10346,6 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
 
             if (ProfilReportTable.Rows.Count > 0)
             {
-                //Профиль
-                pos += 2;
                 displayIndex = 0;
 
                 Cell1 = sheet1.CreateRow(pos++).CreateCell(0);
@@ -10722,8 +10714,6 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
 
             if (ProfilReportTable.Rows.Count > 0)
             {
-                //Профиль
-                pos += 2;
                 displayIndex = 0;
 
                 Cell1 = sheet1.CreateRow(pos++).CreateCell(0);
@@ -11095,8 +11085,6 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
 
             if (ProfilReportTable.Rows.Count > 0)
             {
-                //Профиль
-                pos += 2;
                 displayIndex = 0;
 
                 Cell1 = sheet1.CreateRow(pos++).CreateCell(0);
@@ -11251,8 +11239,6 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
             
             if (ProfilReportTable.Rows.Count > 0)
             {
-                //Профиль
-                pos += 2;
                 displayIndex = 0;
 
                 Cell1 = sheet2.CreateRow(pos++).CreateCell(0);
@@ -11631,9 +11617,6 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
 
             if (ProfilReportTable1.Rows.Count > 0)
             {
-                //Профиль
-                pos += 2;
-
                 Cell1 = sheet1.CreateRow(pos++).CreateCell(0);
                 Cell1.SetCellValue("ОМЦ-ПРОФИЛЬ:");
                 Cell1.CellStyle = SummaryWithoutBorderBelCS;

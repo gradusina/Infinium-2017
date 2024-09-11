@@ -3956,6 +3956,27 @@ WHERE dbo.TechCatalogOperationsDetail.TechCatalogOperationsGroupID IN
             ClearMainOrderPackCount();
         }
 
+        public bool CheckPackStatus()
+        {
+            using (SqlDataAdapter DA = new SqlDataAdapter(
+                       "SELECT * FROM Packages WHERE MainOrderID = " + CurrentMainOrderID,
+                       ConnectionStrings.MarketingOrdersConnectionString))
+            {
+                using (DataTable DT = new DataTable())
+                {
+                    DA.Fill(DT);
+
+                    if (DT.Rows.Count > 0)
+                    {
+                        if (DT.Rows[0]["PackingDateTime"] != DBNull.Value)
+                            return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
         public void SavePackageDetails()
         {
             PackagesMainOrdersFrontsOrders.SaveOneMainOrder();

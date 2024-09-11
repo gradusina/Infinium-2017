@@ -282,8 +282,7 @@ ORDER BY infiniu2_marketingreference.dbo.Clients.ClientName, dbo.MegaOrders.Orde
                 sheet1.SetMargin(HSSFSheet.RightMargin, (double).07);
                 sheet1.SetMargin(HSSFSheet.TopMargin, (double).20);
                 sheet1.SetMargin(HSSFSheet.BottomMargin, (double).20);
-
-                pos += 2;
+                
                 int ColIndex = 0;
                 Cell1 = sheet1.CreateRow(pos).CreateCell(ColIndex++);
                 Cell1.SetCellValue("Клиент");
@@ -407,8 +406,7 @@ ORDER BY infiniu2_marketingreference.dbo.Clients.ClientName, dbo.MegaOrders.Orde
                 sheet1.SetMargin(HSSFSheet.RightMargin, (double).07);
                 sheet1.SetMargin(HSSFSheet.TopMargin, (double).20);
                 sheet1.SetMargin(HSSFSheet.BottomMargin, (double).20);
-
-                pos += 2;
+                
                 int ColIndex = 0;
                 Cell1 = sheet1.CreateRow(pos).CreateCell(ColIndex++);
                 Cell1.SetCellValue("Клиент");
@@ -533,8 +531,7 @@ ORDER BY infiniu2_marketingreference.dbo.Clients.ClientName, dbo.MegaOrders.Orde
                 sheet1.SetMargin(HSSFSheet.RightMargin, (double).07);
                 sheet1.SetMargin(HSSFSheet.TopMargin, (double).20);
                 sheet1.SetMargin(HSSFSheet.BottomMargin, (double).20);
-
-                pos += 2;
+                
                 int ColIndex = 0;
                 Cell1 = sheet1.CreateRow(pos).CreateCell(ColIndex++);
                 Cell1.SetCellValue("Клиент");
@@ -646,8 +643,7 @@ ORDER BY infiniu2_marketingreference.dbo.Clients.ClientName, dbo.MegaOrders.Orde
                 sheet1.SetMargin(HSSFSheet.RightMargin, (double).07);
                 sheet1.SetMargin(HSSFSheet.TopMargin, (double).20);
                 sheet1.SetMargin(HSSFSheet.BottomMargin, (double).20);
-
-                pos += 2;
+                
                 int ColIndex = 0;
                 Cell1 = sheet1.CreateRow(pos).CreateCell(ColIndex++);
                 Cell1.SetCellValue("Клиент");

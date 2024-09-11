@@ -673,6 +673,14 @@ namespace Infinium
                 {
                     if (((DataRowView)PackagesOrdersManager.MainOrdersBindingSource.Current)["MainOrderID"] != DBNull.Value)
                     {
+                        if (PackagesOrdersManager.CheckPackStatus())
+                        {
+                            Infinium.LightMessageBox.Show(ref TopForm, false,
+                                "Заказ уже запакован. Очистить упаковки нельзя",
+                                "Ошибка");
+
+                            return;
+                        }
 
                         bool OKCancel = Infinium.LightMessageBox.Show(ref TopForm, true,
                             "В данном подзаказе очистятся ВСЕ упаковки. Распечатанные этикетки будут недействительны. Продолжить?",
