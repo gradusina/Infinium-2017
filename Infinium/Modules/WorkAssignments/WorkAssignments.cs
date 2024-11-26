@@ -723,7 +723,7 @@
 
         ElegantPat = 30005,
 
-        Patricia1 = 30379,
+        Patricia1 = 30380,
 
         Scandia = 41118,
 

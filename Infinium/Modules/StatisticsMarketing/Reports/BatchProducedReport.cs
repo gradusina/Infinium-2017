@@ -234,7 +234,7 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
             //{
             //    DA.Fill(DecorConfigDataTable);
             //}
-            DecorConfigDataTable = TablesManager.DecorConfigDataTableAll;
+            DecorConfigDataTable = TablesManager.DecorConfigDataTable;
 
             TechStoreDataTable = new DataTable();
             //using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM TechStore",
@@ -3153,11 +3153,30 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
                             if (GetMeasureTypeID(Convert.ToInt32(Rows[r]["DecorConfigID"])) == 1)
                             {
                                 if (Convert.ToDecimal(Rows[r]["Height"]) != -1)
-                                    NewRow["Count"] = Decimal.Round(Convert.ToDecimal(Rows[r]["Height"]) * Convert.ToDecimal(Rows[r]["Width"]) / 1000000, 3, MidpointRounding.AwayFromZero)
-                                    * Convert.ToDecimal(Rows[r]["Count"]);
+                                {
+                                    NewRow["Count"] =
+                                        Decimal.Round(
+                                            Convert.ToDecimal(Rows[r]["Height"]) * Convert.ToDecimal(Rows[r]["Width"]) /
+                                            1000000, 3, MidpointRounding.AwayFromZero)
+                                        * Convert.ToDecimal(Rows[r]["Count"]);
+                                    //NewRow["Cost"] =
+                                    //    Decimal.Round(Convert.ToDecimal(Rows[r]["Price"]) * Convert.ToDecimal(Rows[r]["Height"]) * Convert.ToDecimal(Rows[r]["Width"]) / 1000000, 3, MidpointRounding.AwayFromZero)
+                                    //    * Convert.ToDecimal(Rows[r]["Count"]);
+                                }
+
                                 if (Convert.ToDecimal(Rows[r]["Length"]) != -1)
-                                    NewRow["Count"] = Decimal.Round(Convert.ToDecimal(Rows[r]["Length"]) * Convert.ToDecimal(Rows[r]["Width"]) / 1000000, 3, MidpointRounding.AwayFromZero)
-                                    * Convert.ToDecimal(Rows[r]["Count"]);
+                                {
+                                    NewRow["Count"] =
+                                        Decimal.Round(
+                                            Convert.ToDecimal(Rows[r]["Length"]) * Convert.ToDecimal(Rows[r]["Width"]) /
+                                            1000000, 3, MidpointRounding.AwayFromZero)
+                                        * Convert.ToDecimal(Rows[r]["Count"]);
+                                    //NewRow["Cost"] =
+                                    //    Decimal.Round(
+                                    //        Convert.ToDecimal(Rows[r]["Price"]) * Convert.ToDecimal(Rows[r]["Length"]) * Convert.ToDecimal(Rows[r]["Width"]) /
+                                    //        1000000, 3, MidpointRounding.AwayFromZero)
+                                    //    * Convert.ToDecimal(Rows[r]["Count"]);
+                                }
                             }
 
                             if (GetMeasureTypeID(Convert.ToInt32(Rows[r]["DecorConfigID"])) == 2)
@@ -3168,17 +3187,23 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
                                     L = Convert.ToDecimal(Rows[r]["Height"]);
                                 NewRow["Count"] = Convert.ToDecimal(Rows[r]["Count"]) *
                                     Decimal.Round(L * Convert.ToDecimal(Rows[r]["Width"]) / 1000000, 3, MidpointRounding.AwayFromZero);
+                                //NewRow["Cost"] = Convert.ToDecimal(Rows[r]["Price"]) * Convert.ToDecimal(Rows[r]["Count"]) *
+                                //    Decimal.Round(L * Convert.ToDecimal(Rows[r]["Width"]) / 1000000, 3, MidpointRounding.AwayFromZero);
                             }
 
                             if (GetMeasureTypeID(Convert.ToInt32(Rows[r]["DecorConfigID"])) == 3)
                             {
                                 decimal H = 0;
                                 if (DecorCatalogOrder.HasParameter(Convert.ToInt32(Rows[r]["ProductID"]), "Height") && Convert.ToDecimal(Rows[r]["Height"]) != -1)
+                                {
                                     H = Convert.ToDecimal(Rows[r]["Height"]);
+                                }
                                 if (DecorCatalogOrder.HasParameter(Convert.ToInt32(Rows[r]["ProductID"]), "Length") && Convert.ToDecimal(Rows[r]["Length"]) != -1)
                                     H = Convert.ToDecimal(Rows[r]["Length"]);
                                 NewRow["Count"] = Convert.ToDecimal(Rows[r]["Count"]) *
                                     Decimal.Round(H * Convert.ToDecimal(Rows[r]["Width"]) / 1000000, 3, MidpointRounding.AwayFromZero);
+                                //NewRow["Cost"] = Convert.ToDecimal(Rows[r]["Price"]) * Convert.ToDecimal(Rows[r]["Count"]) *
+                                //    Decimal.Round(H * Convert.ToDecimal(Rows[r]["Width"]) / 1000000, 3, MidpointRounding.AwayFromZero);
                             }
                             //NewRow["Price"] = Convert.ToDecimal(Rows[r]["Price"]);
                             NewRow["Cost"] = Convert.ToDecimal(Rows[r]["Cost"]);
@@ -3191,13 +3216,38 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
                             if (GetMeasureTypeID(Convert.ToInt32(Rows[r]["DecorConfigID"])) == 1)
                             {
                                 if (Convert.ToDecimal(Rows[r]["Height"]) != -1)
+                                {
+                                    //InvRows[0]["Cost"] = Convert.ToDecimal(InvRows[0]["Cost"]) +
+                                    //                      Decimal.Round(
+                                    //                          Convert.ToDecimal(Rows[r]["Price"]) *
+                                    //                          Convert.ToDecimal(Rows[r]["Height"]) *
+                                    //                          Convert.ToDecimal(Rows[r]["Width"]) / 1000000, 3,
+                                    //                          MidpointRounding.AwayFromZero)
+                                    //                      * Convert.ToDecimal(Rows[r]["Count"]);
                                     InvRows[0]["Count"] = Convert.ToDecimal(InvRows[0]["Count"]) +
-                                        Decimal.Round(Convert.ToDecimal(Rows[r]["Height"]) * Convert.ToDecimal(Rows[r]["Width"]) / 1000000, 3, MidpointRounding.AwayFromZero)
-                                    * Convert.ToDecimal(Rows[r]["Count"]);
+                                                          Decimal.Round(
+                                                              Convert.ToDecimal(Rows[r]["Height"]) *
+                                                              Convert.ToDecimal(Rows[r]["Width"]) / 1000000, 3,
+                                                              MidpointRounding.AwayFromZero)
+                                                          * Convert.ToDecimal(Rows[r]["Count"]);
+                                }
+
                                 if (Convert.ToDecimal(Rows[r]["Length"]) != -1)
+                                {
+                                    //InvRows[0]["Cost"] = Convert.ToDecimal(InvRows[0]["Cost"]) +
+                                    //                      Decimal.Round(
+                                    //                          Convert.ToDecimal(Rows[r]["Price"]) *
+                                    //                          Convert.ToDecimal(Rows[r]["Length"]) *
+                                    //                          Convert.ToDecimal(Rows[r]["Width"]) / 1000000, 3,
+                                    //                          MidpointRounding.AwayFromZero)
+                                    //                      * Convert.ToDecimal(Rows[r]["Count"]);
                                     InvRows[0]["Count"] = Convert.ToDecimal(InvRows[0]["Count"]) +
-                                        Decimal.Round(Convert.ToDecimal(Rows[r]["Length"]) * Convert.ToDecimal(Rows[r]["Width"]) / 1000000, 3, MidpointRounding.AwayFromZero)
-                                    * Convert.ToDecimal(Rows[r]["Count"]);
+                                                          Decimal.Round(
+                                                              Convert.ToDecimal(Rows[r]["Length"]) *
+                                                              Convert.ToDecimal(Rows[r]["Width"]) / 1000000, 3,
+                                                              MidpointRounding.AwayFromZero)
+                                                          * Convert.ToDecimal(Rows[r]["Count"]);
+                                }
                             }
                             if (GetMeasureTypeID(Convert.ToInt32(Rows[0]["DecorConfigID"])) == 2)
                             {
@@ -3205,6 +3255,10 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
                                 L = Convert.ToDecimal(Rows[r]["Length"]);
                                 if (L == -1)
                                     L = Convert.ToDecimal(Rows[r]["Height"]);
+                                //InvRows[0]["Cost"] = Convert.ToDecimal(InvRows[0]["Cost"]) +
+                                //    Convert.ToDecimal(Rows[r]["Price"]) *
+                                //    Convert.ToDecimal(Rows[r]["Count"]) *
+                                //    Decimal.Round(L * Convert.ToDecimal(Rows[r]["Width"]) / 1000000, 3, MidpointRounding.AwayFromZero);
                                 InvRows[0]["Count"] = Convert.ToDecimal(InvRows[0]["Count"]) +
                                     Convert.ToDecimal(Rows[r]["Count"]) *
                                     Decimal.Round(L * Convert.ToDecimal(Rows[r]["Width"]) / 1000000, 3, MidpointRounding.AwayFromZero);
@@ -3216,13 +3270,16 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
                                     H = Convert.ToDecimal(Rows[r]["Height"]);
                                 if (DecorCatalogOrder.HasParameter(Convert.ToInt32(Rows[r]["ProductID"]), "Length") && Convert.ToDecimal(Rows[r]["Length"]) != -1)
                                     H = Convert.ToDecimal(Rows[r]["Length"]);
+                                //InvRows[0]["Cost"] = Convert.ToDecimal(InvRows[0]["Cost"]) +
+                                //    Convert.ToDecimal(Rows[r]["Price"]) *
+                                //    Convert.ToDecimal(Rows[r]["Count"]) *
+                                //    Decimal.Round(H * Convert.ToDecimal(Rows[r]["Width"]) / 1000000, 3, MidpointRounding.AwayFromZero);
                                 InvRows[0]["Count"] = Convert.ToDecimal(InvRows[0]["Count"]) +
                                     Convert.ToDecimal(Rows[r]["Count"]) *
                                     Decimal.Round(H * Convert.ToDecimal(Rows[r]["Width"]) / 1000000, 3, MidpointRounding.AwayFromZero);
                             }
                             //InvRows[0]["Price"] = Convert.ToDecimal(Rows[r]["Price"]);
-                            InvRows[0]["Cost"] = Convert.ToDecimal(InvRows[0]["Cost"]) +
-                                Convert.ToDecimal(Rows[r]["Cost"]);
+                            InvRows[0]["Cost"] = Convert.ToDecimal(InvRows[0]["Cost"]) + Convert.ToDecimal(Rows[r]["Cost"]);
                             InvRows[0]["Weight"] = Convert.ToDecimal(InvRows[0]["Weight"]) +
                                 GetDecorWeight(Rows[r]);
                         }

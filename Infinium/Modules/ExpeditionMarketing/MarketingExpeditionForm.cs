@@ -4239,9 +4239,13 @@ namespace Infinium
             if (MutualSettlementID2 != 0)
                 bTPSVerify = MutualSettlementsManager.VerifyTransaction(MutualSettlementID2, DispatchSum, ref DiscountPaymentCondition);
 
-            _dispatchReportToDbf.CreateReport(ref hssfworkbook, Dispatches, MainOrders, NewClientID, ClientName,
-                ref TotalProfil, ref TotalTPS, bProfilVerify, bTPSVerify, DiscountPaymentConditionID, IsSample);
-            _dispatchReportToDbf.SaveDBF(FilePath, ReportName, ref ProfilDBFName, ref TPSDBFName);
+            _notesInvoiceReportToDbf.CreateReport(ref hssfworkbook, Dispatches, MainOrders, NewClientID, ClientName,
+                ref TotalProfil, ref TotalTPS, bProfilVerify, bTPSVerify, DiscountPaymentConditionID);
+            _notesInvoiceReportToDbf.SaveDBF(FilePath, ReportName, IsSample, ref ProfilDBFName, ref TPSDBFName);
+
+            //_dispatchReportToDbf.CreateReport(ref hssfworkbook, Dispatches, MainOrders, NewClientID, ClientName,
+            //    ref TotalProfil, ref TotalTPS, bProfilVerify, bTPSVerify, DiscountPaymentConditionID, IsSample);
+            //_dispatchReportToDbf.SaveDBF(FilePath, ReportName, ref ProfilDBFName, ref TPSDBFName);
 
             DetailsReport.CreateReport(ref hssfworkbook, Dispatches, OrderNumbers.OfType<Int32>().ToArray(), MainOrders, NewClientID, ClientName,
                 bProfilVerify, bTPSVerify, DiscountPaymentConditionID, false);

@@ -158,6 +158,7 @@ namespace Infinium
 
         private void ClientsSaveButton_Click(object sender, EventArgs e)
         {
+            //Clients.SaveClientsRatesFromExcel();
             Clients.SaveClientRates();
             FormEvent = eClose;
             AnimateTimer.Enabled = true;

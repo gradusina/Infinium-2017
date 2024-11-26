@@ -101,17 +101,25 @@
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="NPOI">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\InfiniumAgent\NPOI.dll</HintPath>
+    <Reference Include="NPOI, Version=1.2.1.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Infinium\bin\Debug\NPOI.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.Core">
+      <HintPath>..\..\..\..\..\Downloads\Виталич\NPOI.Core.dll</HintPath>
     </Reference>
     <Reference Include="NPOI.DDF">
       <HintPath>..\..\..\..\..\..\Program Files (x86)\InfiniumAgent\NPOI.DDF.dll</HintPath>
     </Reference>
-    <Reference Include="NPOI.HPSF">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\InfiniumAgent\NPOI.HPSF.dll</HintPath>
+    <Reference Include="NPOI.HPSF, Version=1.2.1.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Infinium\bin\Debug\NPOI.HPSF.dll</HintPath>
     </Reference>
-    <Reference Include="NPOI.HSSF">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\InfiniumAgent\NPOI.HSSF.dll</HintPath>
+    <Reference Include="NPOI.OOXML">
+      <HintPath>..\..\..\..\..\Downloads\Виталич\NPOI.OOXML.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OpenXml4Net">
+      <HintPath>..\..\..\..\..\Downloads\Виталич\NPOI.OpenXml4Net.dll</HintPath>
     </Reference>
     <Reference Include="NPOI.POIFS">
       <HintPath>..\..\..\..\..\..\Program Files (x86)\InfiniumAgent\NPOI.POIFS.dll</HintPath>
@@ -916,7 +924,14 @@
     <Compile Include="Modules\ExpeditionZOV\ZOVExpeditionForm.designer.cs">
       <DependentUpon>ZOVExpeditionForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Modules\LoadCalculations\ExcelLoadCalculations.cs" />
     <Compile Include="Modules\LoadCalculations\LoadCalculations.cs" />
+    <Compile Include="Modules\LoadCalculations\ExcelLoadCalculationsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modules\LoadCalculations\ExcelLoadCalculationsForm.designer.cs">
+      <DependentUpon>ExcelLoadCalculationsForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Modules\LoadCalculations\LoadCalculationsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -2443,6 +2458,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Modules\ExpeditionZOV\ZOVExpeditionForm.resx">
       <DependentUpon>ZOVExpeditionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modules\LoadCalculations\ExcelLoadCalculationsForm.resx">
+      <DependentUpon>ExcelLoadCalculationsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Modules\LoadCalculations\LoadCalculationsForm.resx">
       <DependentUpon>LoadCalculationsForm.cs</DependentUpon>

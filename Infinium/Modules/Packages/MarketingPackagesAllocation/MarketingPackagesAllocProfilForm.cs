@@ -475,6 +475,19 @@ namespace Infinium
             //    return;
             //}
 
+            if (PackagesOrdersManager.IsEmptyPack)
+            {
+                while (SplashWindow.bSmallCreated)
+                    SmallWaitForm.CloseS = true;
+                NeedSplash = true;
+
+                Infinium.LightMessageBox.Show(ref TopForm, false,
+                   "Не все позиции распределены",
+                   "Ошибка сохранения упаковок");
+
+                return;
+            }
+
             if (PackagesOrdersManager.IsOverflow == false)
             {
                 while (SplashWindow.bSmallCreated)
@@ -673,14 +686,14 @@ namespace Infinium
                 {
                     if (((DataRowView)PackagesOrdersManager.MainOrdersBindingSource.Current)["MainOrderID"] != DBNull.Value)
                     {
-                        if (PackagesOrdersManager.CheckPackStatus())
-                        {
-                            Infinium.LightMessageBox.Show(ref TopForm, false,
-                                "Заказ уже запакован. Очистить упаковки нельзя",
-                                "Ошибка");
+                        //if (PackagesOrdersManager.CheckPackStatus())
+                        //{
+                        //    Infinium.LightMessageBox.Show(ref TopForm, false,
+                        //        "Заказ уже запакован. Очистить упаковки нельзя",
+                        //        "Ошибка");
 
-                            return;
-                        }
+                        //    return;
+                        //}
 
                         bool OKCancel = Infinium.LightMessageBox.Show(ref TopForm, true,
                             "В данном подзаказе очистятся ВСЕ упаковки. Распечатанные этикетки будут недействительны. Продолжить?",

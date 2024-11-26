@@ -369,6 +369,15 @@ namespace Infinium.Modules.Packages.Marketing
                 FrontsOrdersDataGrid.Columns["CreateDateTime"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
                 FrontsOrdersDataGrid.Columns["CreateDateTime"].Width = 100;
             }
+            if (FrontsOrdersDataGrid.Columns.Contains("ClientOriginalPrice"))
+                FrontsOrdersDataGrid.Columns["ClientOriginalPrice"].Visible = false;
+            if (FrontsOrdersDataGrid.Columns.Contains("areaId"))
+                FrontsOrdersDataGrid.Columns["areaId"].Visible = false;
+            if (FrontsOrdersDataGrid.Columns.Contains("Leftangle"))
+                FrontsOrdersDataGrid.Columns["Leftangle"].Visible = false;
+            if (FrontsOrdersDataGrid.Columns.Contains("rightangle"))
+                FrontsOrdersDataGrid.Columns["rightangle"].Visible = false;
+
             if (FrontsOrdersDataGrid.Columns.Contains("CreateUserID"))
                 FrontsOrdersDataGrid.Columns["CreateUserID"].Visible = false;
             if (FrontsOrdersDataGrid.Columns.Contains("CreateUserTypeID"))
@@ -677,6 +686,21 @@ namespace Infinium.Modules.Packages.Marketing
                 }
 
                 return DT;
+            }
+        }
+        
+        public bool IsEmptyPack
+        {
+            get
+            {
+                foreach (DataRow Row in FrontsOrdersDataTable.Rows)
+                {
+
+                    if (Row["PackNumber"] == DBNull.Value)
+                        return true;
+                }
+
+                return false;
             }
         }
 
@@ -1665,6 +1689,14 @@ namespace Infinium.Modules.Packages.Marketing
                 MainOrdersDecorOrdersDataGrid.Columns["CreateDateTime"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
                 MainOrdersDecorOrdersDataGrid.Columns["CreateDateTime"].Width = 100;
             }
+            if (MainOrdersDecorOrdersDataGrid.Columns.Contains("ClientOriginalPrice"))
+                MainOrdersDecorOrdersDataGrid.Columns["ClientOriginalPrice"].Visible = false;
+            if (MainOrdersDecorOrdersDataGrid.Columns.Contains("areaId"))
+                MainOrdersDecorOrdersDataGrid.Columns["areaId"].Visible = false;
+            if (MainOrdersDecorOrdersDataGrid.Columns.Contains("Leftangle"))
+                MainOrdersDecorOrdersDataGrid.Columns["Leftangle"].Visible = false;
+            if (MainOrdersDecorOrdersDataGrid.Columns.Contains("rightangle"))
+                MainOrdersDecorOrdersDataGrid.Columns["rightangle"].Visible = false;
             if (MainOrdersDecorOrdersDataGrid.Columns.Contains("CreateUserID"))
                 MainOrdersDecorOrdersDataGrid.Columns["CreateUserID"].Visible = false;
             if (MainOrdersDecorOrdersDataGrid.Columns.Contains("CreateUserTypeID"))
@@ -1883,6 +1915,21 @@ namespace Infinium.Modules.Packages.Marketing
                 }
 
                 return DT;
+            }
+        }
+
+        public bool IsEmptyPack
+        {
+            get
+            {
+                foreach (DataRow Row in DecorOrdersDataTable.Rows)
+                {
+
+                    if (Row["PackNumber"] == DBNull.Value)
+                        return true;
+                }
+
+                return false;
             }
         }
 
@@ -3429,6 +3476,15 @@ WHERE dbo.TechCatalogOperationsDetail.TechCatalogOperationsGroupID IN
                 if (!PackagesMainOrdersFrontsOrders.IsOverflow || !PackagesMainOrdersDecorOrders.IsOverflow)
                     return false;
                 return true;
+            }
+        }
+        public bool IsEmptyPack
+        {
+            get
+            {
+                if (PackagesMainOrdersFrontsOrders.IsEmptyPack || PackagesMainOrdersDecorOrders.IsEmptyPack)
+                    return true;
+                return false;
             }
         }
 

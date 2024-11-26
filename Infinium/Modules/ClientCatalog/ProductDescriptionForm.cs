@@ -48,7 +48,6 @@ namespace Infinium
                 { "РП-", 4 },
                 { "Панель", 5 }
             };
-
             cmbProductType.DataSource = new BindingSource(productTypes, null);
             cmbProductType.DisplayMember = "Key";
             cmbProductType.ValueMember = "Value";

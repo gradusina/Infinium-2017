@@ -1,4 +1,7 @@
-﻿using DevExpress.XtraLayout.Utils;
+﻿using DevExpress.XtraBars;
+using DevExpress.XtraLayout.Utils;
+
+using Microsoft.VisualBasic.CompilerServices;
 
 using NPOI.HPSF;
 using NPOI.HSSF.UserModel;
@@ -21,7 +24,9 @@ using System.Text;
 using System.Windows.Forms;
 using System.Xml;
 
+using static Infinium.Modules.LoadCalculations.LoadCalculations;
 using static Infinium.TablesManager;
+using static Infinium.WorkTimeRegister;
 using static System.Net.WebRequestMethods;
 
 using Region = NPOI.HSSF.Util.Region;
@@ -5547,7 +5552,147 @@ namespace Infinium.Modules.Marketing.NewOrders
             OrdersTabControl.ResumeLayout();
         }
 
-        public void FilterMegaOrders(
+        //public void FilterMegaOrdersByDate(
+        //    bool bsClient,
+        //    int ClientID,
+        //    bool bManager,
+        //    List<int> managers,
+        //    bool bsOnProduction,
+        //    bool bsNotInProduction,
+        //    bool bsInProduction,
+        //    bool bsInStorage,
+        //    bool bsOnExpedition,
+        //    bool bsIsDispatched,
+        //    bool bOrderDate,
+        //    bool bOnAgreement,
+        //    bool bConfirm,
+        //    DateTime dateFrom,
+        //    DateTime dateTo)
+        //{
+        //    string status = string.Empty;
+        //    string ClientFilter = string.Empty;
+        //    string managersFilter = string.Empty;
+        //    string MainProductionStatus = string.Empty;
+
+        //    if (bsClient)
+        //        ClientFilter = " and NewMegaOrders.ClientID = " + ClientID;
+        //    if (bManager)
+        //    {
+        //        foreach (int item in managers)
+        //            managersFilter += item.ToString() + ",";
+        //        if (managersFilter.Length > 0)
+        //            managersFilter = " AND Clients.ManagerId IN (" + managersFilter.Substring(0, managersFilter.Length - 1) + ")";
+        //    }
+
+        //    if (bsNotInProduction)
+        //    {
+        //        if (MainProductionStatus.Length > 0)
+        //        {
+        //            MainProductionStatus +=
+        //                " OR (ProfilProductionStatusID=1 AND ProfilStorageStatusID=1 AND ProfilExpeditionStatusID=1 AND ProfilDispatchStatusID=1)";
+        //        }
+        //        else
+        //        {
+        //            MainProductionStatus =
+        //                "((ProfilProductionStatusID=1 AND ProfilStorageStatusID=1 AND ProfilExpeditionStatusID=1 AND ProfilDispatchStatusID=1))";
+        //        }
+        //    }
+
+        //    if (bsInProduction)
+        //    {
+        //        if (MainProductionStatus.Length > 0)
+        //        {
+        //            MainProductionStatus += " OR (ProfilProductionStatusID=2 OR TPSProductionStatusID=2)";
+        //        }
+        //        else
+        //        {
+        //            MainProductionStatus = "(ProfilProductionStatusID=2 OR TPSProductionStatusID=2)";
+        //        }
+        //    }
+
+        //    if (bsOnProduction)
+        //    {
+        //        if (MainProductionStatus.Length > 0)
+        //        {
+        //            MainProductionStatus += " OR (ProfilProductionStatusID=3 OR TPSProductionStatusID=3)";
+        //        }
+        //        else
+        //        {
+        //            MainProductionStatus = "(ProfilProductionStatusID=3 OR TPSProductionStatusID=3)";
+        //        }
+        //    }
+
+        //    if (bsInStorage)
+        //    {
+        //        if (MainProductionStatus.Length > 0)
+        //        {
+        //            MainProductionStatus += " OR (ProfilStorageStatusID=2 OR TPSStorageStatusID=2)";
+        //        }
+        //        else
+        //        {
+        //            MainProductionStatus = "(ProfilStorageStatusID=2 OR TPSStorageStatusID=2)";
+        //        }
+        //    }
+
+        //    if (bsOnExpedition)
+        //    {
+        //        if (MainProductionStatus.Length > 0)
+        //        {
+        //            MainProductionStatus += " OR (ProfilExpeditionStatusID=2 OR TPSExpeditionStatusID=2)";
+        //        }
+        //        else
+        //        {
+        //            MainProductionStatus = "(ProfilExpeditionStatusID=2 OR TPSExpeditionStatusID=2)";
+        //        }
+        //    }
+
+        //    if (bsIsDispatched)
+        //    {
+        //        if (MainProductionStatus.Length > 0)
+        //        {
+        //            MainProductionStatus += " OR (ProfilDispatchStatusID=2 OR TPSDispatchStatusID=2)";
+        //        }
+        //        else
+        //        {
+        //            MainProductionStatus = "(ProfilDispatchStatusID=2 OR TPSDispatchStatusID=2)";
+        //        }
+        //    }
+
+        //    if (MainProductionStatus.Length > 0)
+        //        MainProductionStatus = " where (" + MainProductionStatus + ")";
+
+        //    if (bOrderDate)
+        //        status = @$" CAST(OrderDate AS Date) >= '{dateFrom:yyyy-MM-dd}' and CAST(OrderDate AS Date) <= '{dateTo:yyyy-MM-dd}' ";
+
+        //    if (bOnAgreement)
+        //        status = @$" CAST(OnAgreementDateTime AS Date) >= '{dateFrom:yyyy-MM-dd}' and CAST(OnAgreementDateTime AS Date) <= '{dateTo:yyyy-MM-dd}' ";
+
+        //    if (bConfirm)
+        //        status = @$" CAST(ConfirmDateTime AS Date) >= '{dateFrom:yyyy-MM-dd}' and CAST(ConfirmDateTime AS Date) <= '{dateTo:yyyy-MM-dd}' ";
+            
+        //    int MegaOrderID = 0;
+        //    if (MegaOrdersBindingSource.Count > 0)
+        //        MegaOrderID = Convert.ToInt32(((DataRowView)MegaOrdersBindingSource.Current).Row["MegaOrderID"]);
+
+        //    CurrentMegaOrderID = -1;
+            
+        //    using (SqlDataAdapter DA = new SqlDataAdapter(@$"SELECT NewMegaOrders.*, ClientName FROM NewMegaOrders
+        //            INNER JOIN infiniu2_marketingreference.dbo.Clients as Clients 
+        //            ON NewMegaOrders.ClientID = Clients.ClientID {managersFilter}
+        //            WHERE (MegaOrderID NOT IN (SELECT MegaOrderID FROM NewMainOrders) OR MegaOrderID IN (SELECT MegaOrderID FROM NewMainOrders
+        //            {MainProductionStatus})) and {status} {ClientFilter} ORDER BY ClientName, OrderNumber",
+        //               ConnectionStrings.MarketingOrdersConnectionString))
+        //    {
+        //        MegaOrdersDataTable.Clear();
+        //        DA.Fill(MegaOrdersDataTable);
+        //    }
+
+        //    MoveToMegaOrder(MegaOrderID);
+        //}
+
+
+
+        public void FilterMegaOrdersByDate(
             bool bsClient,
             int ClientID,
             bool bManager,
@@ -5562,18 +5707,28 @@ namespace Infinium.Modules.Marketing.NewOrders
             bool bsInStorage,
             bool bsOnExpedition,
             bool bsIsDispatched,
-            bool bsDelayOfPayment,
-            bool bsHalfOfPayment,
-            bool bsFullPayment,
-            bool bsFactoring,
-            bool bsHalfOfPayment2,
-            bool bsDelayOfPayment2)
+            Tuple<bool, bool, bool, DateTime, DateTime> dateFilter)
         {
+            bool bOrderDate = dateFilter.Item1;
+            bool bOnAgreement = dateFilter.Item2;
+            bool bConfirm = dateFilter.Item3;
+            DateTime dateFrom = dateFilter.Item4;
+            DateTime dateTo = dateFilter.Item5;
+
+            string dateStatus = string.Empty;
             string AgreementStatus = string.Empty;
-            string DiscountPaymentCondition = string.Empty;
             string ClientFilter = string.Empty;
             string managersFilter = string.Empty;
             string MainProductionStatus = string.Empty;
+
+            if (bOrderDate)
+                dateStatus = @$" and CAST(OrderDate AS Date) >= '{dateFrom:yyyy-MM-dd}' and CAST(OrderDate AS Date) <= '{dateTo:yyyy-MM-dd}' ";
+
+            if (bOnAgreement)
+                dateStatus = @$" and CAST(OnAgreementDateTime AS Date) >= '{dateFrom:yyyy-MM-dd}' and CAST(OnAgreementDateTime AS Date) <= '{dateTo:yyyy-MM-dd}' ";
+
+            if (bConfirm)
+                dateStatus = @$" and CAST(ConfirmDateTime AS Date) >= '{dateFrom:yyyy-MM-dd}' and CAST(ConfirmDateTime AS Date) <= '{dateTo:yyyy-MM-dd}' ";
 
             if (bsClient)
                 ClientFilter = " AND NewMegaOrders.ClientID = " + ClientID;
@@ -5612,53 +5767,241 @@ namespace Infinium.Modules.Marketing.NewOrders
                     AgreementStatus = "AgreementStatusID=2";
             }
 
-            if (bsDelayOfPayment)
+            if (bsNotInProduction)
             {
-                if (DiscountPaymentCondition.Length > 0)
-                    DiscountPaymentCondition += " OR DiscountPaymentConditionID=1";
+                if (MainProductionStatus.Length > 0)
+                {
+                    MainProductionStatus +=
+                        " OR ((ProfilProductionStatusID=1 AND ProfilStorageStatusID=1 AND ProfilExpeditionStatusID=1 AND ProfilDispatchStatusID=1)" +
+                        " OR (TPSProductionStatusID=1 AND TPSStorageStatusID=1 AND TPSExpeditionStatusID=1 AND TPSDispatchStatusID=1))";
+                }
                 else
-                    DiscountPaymentCondition = "DiscountPaymentConditionID=1";
+                {
+                    MainProductionStatus =
+                        "((ProfilProductionStatusID=1 AND ProfilStorageStatusID=1 AND ProfilExpeditionStatusID=1 AND ProfilDispatchStatusID=1)" +
+                        " OR (TPSProductionStatusID=1 AND TPSStorageStatusID=1 AND TPSExpeditionStatusID=1 AND TPSDispatchStatusID=1))";
+                }
             }
 
-            if (bsHalfOfPayment)
+            if (bsInProduction)
             {
-                if (DiscountPaymentCondition.Length > 0)
-                    DiscountPaymentCondition += " OR DiscountPaymentConditionID=2";
+                if (MainProductionStatus.Length > 0)
+                {
+                    MainProductionStatus += " OR (ProfilProductionStatusID=2 OR TPSProductionStatusID=2)";
+                }
                 else
-                    DiscountPaymentCondition = "DiscountPaymentConditionID=2";
+                {
+                    MainProductionStatus = "(ProfilProductionStatusID=2 OR TPSProductionStatusID=2)";
+                }
             }
 
-            if (bsFullPayment)
+            if (bsOnProduction)
             {
-                if (DiscountPaymentCondition.Length > 0)
-                    DiscountPaymentCondition += " OR DiscountPaymentConditionID=3";
+                if (MainProductionStatus.Length > 0)
+                {
+                    MainProductionStatus += " OR (ProfilProductionStatusID=3 OR TPSProductionStatusID=3)";
+                }
                 else
-                    DiscountPaymentCondition = "DiscountPaymentConditionID=3";
+                {
+                    MainProductionStatus = "(ProfilProductionStatusID=3 OR TPSProductionStatusID=3)";
+                }
             }
 
-            if (bsFactoring)
+            if (bsInStorage)
             {
-                if (DiscountPaymentCondition.Length > 0)
-                    DiscountPaymentCondition += " OR DiscountPaymentConditionID=4";
+                if (MainProductionStatus.Length > 0)
+                {
+                    MainProductionStatus += " OR (ProfilStorageStatusID=2 OR TPSStorageStatusID=2)";
+                }
                 else
-                    DiscountPaymentCondition = "DiscountPaymentConditionID=4";
+                {
+                    MainProductionStatus = "(ProfilStorageStatusID=2 OR TPSStorageStatusID=2)";
+                }
             }
 
-            if (bsDelayOfPayment2)
+            if (bsOnExpedition)
             {
-                if (DiscountPaymentCondition.Length > 0)
-                    DiscountPaymentCondition += " OR DiscountPaymentConditionID=6";
+                if (MainProductionStatus.Length > 0)
+                {
+                    MainProductionStatus += " OR (ProfilExpeditionStatusID=2 OR TPSExpeditionStatusID=2)";
+                }
                 else
-                    DiscountPaymentCondition = "DiscountPaymentConditionID=6";
+                {
+                    MainProductionStatus = "(ProfilExpeditionStatusID=2 OR TPSExpeditionStatusID=2)";
+                }
             }
 
-            if (bsHalfOfPayment2)
+            if (bsIsDispatched)
             {
-                if (DiscountPaymentCondition.Length > 0)
-                    DiscountPaymentCondition += " OR DiscountPaymentConditionID=5";
+                if (MainProductionStatus.Length > 0)
+                {
+                    MainProductionStatus += " OR (ProfilDispatchStatusID=2 OR TPSDispatchStatusID=2)";
+                }
                 else
-                    DiscountPaymentCondition = "DiscountPaymentConditionID=5";
+                {
+                    MainProductionStatus = "(ProfilDispatchStatusID=2 OR TPSDispatchStatusID=2)";
+                }
             }
+
+            if (AgreementStatus.Length > 0)
+                AgreementStatus = " AND (" + AgreementStatus + ")";
+
+            if (MainProductionStatus.Length > 0)
+                MainProductionStatus = " WHERE (" + MainProductionStatus + ")";
+
+            if ((!bsNotInProduction && !bsInProduction && !bsOnProduction && !bsInStorage && !bsOnExpedition &&
+                 !bsIsDispatched) || AgreementStatus.Length == 0)
+                MainProductionStatus = " WHERE MainOrderID = -1";
+
+            int MegaOrderID = 0;
+            if (MegaOrdersBindingSource.Count > 0)
+                MegaOrderID = Convert.ToInt32(((DataRowView)MegaOrdersBindingSource.Current).Row["MegaOrderID"]);
+
+            CurrentMegaOrderID = -1;
+
+            //MainOrdersBindingSource.SuspendBinding();
+            //MainOrdersBindingSource.RaiseListChangedEvents = false;
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT NewMegaOrders.*, ClientName FROM NewMegaOrders" +
+                                                          " INNER JOIN infiniu2_marketingreference.dbo.Clients as Clients" +
+                                                          " ON NewMegaOrders.ClientID = Clients.ClientID" + managersFilter +
+                                                          " WHERE (MegaOrderID NOT IN (SELECT MegaOrderID FROM NewMainOrders) OR MegaOrderID IN (SELECT MegaOrderID FROM NewMainOrders" +
+                                                          MainProductionStatus + ")" + AgreementStatus + ")" + dateStatus + ClientFilter +
+                                                          " ORDER BY ClientName, OrderNumber",
+                       ConnectionStrings.MarketingOrdersConnectionString))
+            {
+                MegaOrdersDataTable.Clear();
+                DA.Fill(MegaOrdersDataTable);
+            }
+            //MainOrdersBindingSource.RaiseListChangedEvents = true;
+            //MainOrdersBindingSource.ResumeBinding();
+
+            MoveToMegaOrder(MegaOrderID);
+        }
+
+        public void FilterMegaOrders(
+            bool bsClient,
+            int ClientID,
+            bool bManager,
+            List<int> managers,
+            bool bsNotAgreed,
+            bool bsOnAgreement,
+            bool bsNotConfirmed,
+            bool bsConfirmed,
+            bool bsOnProduction,
+            bool bsNotInProduction,
+            bool bsInProduction,
+            bool bsInStorage,
+            bool bsOnExpedition,
+            bool bsIsDispatched,
+            bool bDateFilter,
+            DateTime dateFrom,
+            DateTime dateTo)
+        {
+            string AgreementStatus = string.Empty;
+            string DiscountPaymentCondition = string.Empty;
+            string ClientFilter = string.Empty;
+            string managersFilter = string.Empty;
+            string MainProductionStatus = string.Empty;
+            string dateStatus = string.Empty;
+
+            if (bsNotAgreed)
+                AgreementStatus = "(AgreementStatusID=0 AND CreatedByClient=0)";
+
+            if (bsOnAgreement)
+            {
+                if (AgreementStatus.Length > 0)
+                    AgreementStatus += " OR AgreementStatusID=3";
+                else
+                    AgreementStatus = "AgreementStatusID=3";
+            }
+
+            if (bsNotConfirmed)
+            {
+                if (AgreementStatus.Length > 0)
+                    AgreementStatus += " OR AgreementStatusID=1";
+                else
+                    AgreementStatus = "AgreementStatusID=1";
+            }
+
+            if (bsConfirmed)
+            {
+                if (AgreementStatus.Length > 0)
+                    AgreementStatus += " OR AgreementStatusID=2";
+                else
+                    AgreementStatus = "AgreementStatusID=2";
+            }
+
+            if (bDateFilter)
+            {
+                if (bsNotAgreed)
+                    dateStatus =
+                        @$" and CAST(OrderDate AS Date) >= '{dateFrom:yyyy-MM-dd}' and CAST(OrderDate AS Date) <= '{dateTo:yyyy-MM-dd}' ";
+                if (bsOnAgreement)
+                    dateStatus =
+                        @$" and CAST(OnAgreementDateTime AS Date) >= '{dateFrom:yyyy-MM-dd}' and CAST(OnAgreementDateTime AS Date) <= '{dateTo:yyyy-MM-dd}' ";
+                if (bsConfirmed)
+                    dateStatus =
+                        @$" and CAST(ConfirmDateTime AS Date) >= '{dateFrom:yyyy-MM-dd}' and CAST(ConfirmDateTime AS Date) <= '{dateTo:yyyy-MM-dd}' ";
+                AgreementStatus = "AgreementStatusID<>-1";
+            }
+
+            if (bsClient)
+                ClientFilter = " AND NewMegaOrders.ClientID = " + ClientID;
+            if (bManager)
+            {
+                foreach (int item in managers)
+                    managersFilter += item.ToString() + ",";
+                if (managersFilter.Length > 0)
+                    managersFilter = " AND Clients.ManagerId IN (" + managersFilter.Substring(0, managersFilter.Length - 1) + ")";
+            }
+
+            //if (bsDelayOfPayment)
+            //{
+            //    if (DiscountPaymentCondition.Length > 0)
+            //        DiscountPaymentCondition += " OR DiscountPaymentConditionID=1";
+            //    else
+            //        DiscountPaymentCondition = "DiscountPaymentConditionID=1";
+            //}
+
+            //if (bsHalfOfPayment)
+            //{
+            //    if (DiscountPaymentCondition.Length > 0)
+            //        DiscountPaymentCondition += " OR DiscountPaymentConditionID=2";
+            //    else
+            //        DiscountPaymentCondition = "DiscountPaymentConditionID=2";
+            //}
+
+            //if (bsFullPayment)
+            //{
+            //    if (DiscountPaymentCondition.Length > 0)
+            //        DiscountPaymentCondition += " OR DiscountPaymentConditionID=3";
+            //    else
+            //        DiscountPaymentCondition = "DiscountPaymentConditionID=3";
+            //}
+
+            //if (bsFactoring)
+            //{
+            //    if (DiscountPaymentCondition.Length > 0)
+            //        DiscountPaymentCondition += " OR DiscountPaymentConditionID=4";
+            //    else
+            //        DiscountPaymentCondition = "DiscountPaymentConditionID=4";
+            //}
+
+            //if (bsDelayOfPayment2)
+            //{
+            //    if (DiscountPaymentCondition.Length > 0)
+            //        DiscountPaymentCondition += " OR DiscountPaymentConditionID=6";
+            //    else
+            //        DiscountPaymentCondition = "DiscountPaymentConditionID=6";
+            //}
+
+            //if (bsHalfOfPayment2)
+            //{
+            //    if (DiscountPaymentCondition.Length > 0)
+            //        DiscountPaymentCondition += " OR DiscountPaymentConditionID=5";
+            //    else
+            //        DiscountPaymentCondition = "DiscountPaymentConditionID=5";
+            //}
 
             if (bsNotInProduction)
             {
@@ -5745,7 +6088,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                 MainProductionStatus = " WHERE (" + MainProductionStatus + ")";
 
             if ((!bsNotInProduction && !bsInProduction && !bsOnProduction && !bsInStorage && !bsOnExpedition &&
-                 !bsIsDispatched) || AgreementStatus.Length == 0 || DiscountPaymentCondition.Length == 0)
+                 !bsIsDispatched) || AgreementStatus.Length == 0)
                 MainProductionStatus = " WHERE MainOrderID = -1";
 
             int MegaOrderID = 0;
@@ -5761,7 +6104,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                                                           " ON NewMegaOrders.ClientID = Clients.ClientID" + managersFilter +
                                                           " WHERE (MegaOrderID NOT IN (SELECT MegaOrderID FROM NewMainOrders) OR MegaOrderID IN (SELECT MegaOrderID FROM NewMainOrders" +
                                                           MainProductionStatus + ")" + AgreementStatus +
-                                                          DiscountPaymentCondition + ")" + ClientFilter +
+                                                          DiscountPaymentCondition + ")" + dateStatus + ClientFilter +
                                                           " ORDER BY ClientName, OrderNumber",
                        ConnectionStrings.MarketingOrdersConnectionString))
             {
@@ -5778,13 +6121,7 @@ namespace Infinium.Modules.Marketing.NewOrders
             bool bsNotAgreed,
             bool bsOnAgreement,
             bool bsNotConfirmed,
-            bool bsConfirmed,
-            bool bsDelayOfPayment,
-            bool bsHalfOfPayment,
-            bool bsFullPayment,
-            bool bsFactoring,
-            bool bsHalfOfPayment2,
-            bool bsDelayOfPayment2)
+            bool bsConfirmed)
         {
             string AgreementStatus = string.Empty;
             string DiscountPaymentCondition = string.Empty;
@@ -5816,53 +6153,53 @@ namespace Infinium.Modules.Marketing.NewOrders
                     AgreementStatus = "AgreementStatusID=2";
             }
 
-            if (bsDelayOfPayment)
-            {
-                if (DiscountPaymentCondition.Length > 0)
-                    DiscountPaymentCondition += " OR DiscountPaymentConditionID=1";
-                else
-                    DiscountPaymentCondition = "DiscountPaymentConditionID=1";
-            }
+            //if (bsDelayOfPayment)
+            //{
+            //    if (DiscountPaymentCondition.Length > 0)
+            //        DiscountPaymentCondition += " OR DiscountPaymentConditionID=1";
+            //    else
+            //        DiscountPaymentCondition = "DiscountPaymentConditionID=1";
+            //}
 
-            if (bsHalfOfPayment)
-            {
-                if (DiscountPaymentCondition.Length > 0)
-                    DiscountPaymentCondition += " OR DiscountPaymentConditionID=2";
-                else
-                    DiscountPaymentCondition = "DiscountPaymentConditionID=2";
-            }
+            //if (bsHalfOfPayment)
+            //{
+            //    if (DiscountPaymentCondition.Length > 0)
+            //        DiscountPaymentCondition += " OR DiscountPaymentConditionID=2";
+            //    else
+            //        DiscountPaymentCondition = "DiscountPaymentConditionID=2";
+            //}
 
-            if (bsFullPayment)
-            {
-                if (DiscountPaymentCondition.Length > 0)
-                    DiscountPaymentCondition += " OR DiscountPaymentConditionID=3";
-                else
-                    DiscountPaymentCondition = "DiscountPaymentConditionID=3";
-            }
+            //if (bsFullPayment)
+            //{
+            //    if (DiscountPaymentCondition.Length > 0)
+            //        DiscountPaymentCondition += " OR DiscountPaymentConditionID=3";
+            //    else
+            //        DiscountPaymentCondition = "DiscountPaymentConditionID=3";
+            //}
 
-            if (bsFactoring)
-            {
-                if (DiscountPaymentCondition.Length > 0)
-                    DiscountPaymentCondition += " OR DiscountPaymentConditionID=4";
-                else
-                    DiscountPaymentCondition = "DiscountPaymentConditionID=4";
-            }
+            //if (bsFactoring)
+            //{
+            //    if (DiscountPaymentCondition.Length > 0)
+            //        DiscountPaymentCondition += " OR DiscountPaymentConditionID=4";
+            //    else
+            //        DiscountPaymentCondition = "DiscountPaymentConditionID=4";
+            //}
 
-            if (bsDelayOfPayment2)
-            {
-                if (DiscountPaymentCondition.Length > 0)
-                    DiscountPaymentCondition += " OR DiscountPaymentConditionID=6";
-                else
-                    DiscountPaymentCondition = "DiscountPaymentConditionID=6";
-            }
+            //if (bsDelayOfPayment2)
+            //{
+            //    if (DiscountPaymentCondition.Length > 0)
+            //        DiscountPaymentCondition += " OR DiscountPaymentConditionID=6";
+            //    else
+            //        DiscountPaymentCondition = "DiscountPaymentConditionID=6";
+            //}
 
-            if (bsHalfOfPayment2)
-            {
-                if (DiscountPaymentCondition.Length > 0)
-                    DiscountPaymentCondition += " OR DiscountPaymentConditionID=5";
-                else
-                    DiscountPaymentCondition = "DiscountPaymentConditionID=5";
-            }
+            //if (bsHalfOfPayment2)
+            //{
+            //    if (DiscountPaymentCondition.Length > 0)
+            //        DiscountPaymentCondition += " OR DiscountPaymentConditionID=5";
+            //    else
+            //        DiscountPaymentCondition = "DiscountPaymentConditionID=5";
+            //}
 
             if (AgreementStatus.Length > 0)
                 AgreementStatus = " WHERE (" + AgreementStatus + ")";

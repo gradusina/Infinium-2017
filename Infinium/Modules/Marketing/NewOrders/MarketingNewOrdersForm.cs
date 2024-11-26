@@ -1,5 +1,12 @@
-﻿using Infinium.Modules.Marketing.NewOrders;
+﻿using DevExpress.XtraSpellChecker.Parser;
+
+using Infinium.Modules.Marketing.NewOrders;
+using Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDbf;
+using Infinium.Modules.Marketing.NewOrders.InvoiceReportToDbf;
+using Infinium.Modules.Marketing.NewOrders.NotesInvoiceReportToDbf;
 using Infinium.Modules.Marketing.WeeklyPlanning;
+
+using Microsoft.VisualBasic.ApplicationServices;
 
 using NPOI.HSSF.UserModel;
 
@@ -11,11 +18,6 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
-using Infinium.Modules.Marketing.NewOrders.ColorInvoiceReportToDbf;
-using Infinium.Modules.Marketing.NewOrders.InvoiceReportToDbf;
-using Infinium.Modules.Marketing.NewOrders.NotesInvoiceReportToDbf;
-using ComponentFactory.Krypton.Toolkit;
-using FrontsOrders = Infinium.Modules.Marketing.Orders.FrontsOrders;
 
 namespace Infinium
 {
@@ -75,7 +77,7 @@ namespace Infinium
             this.MaximumSize = Screen.PrimaryScreen.WorkingArea.Size;
 
             Initialize();
-            
+
             while (!SplashForm.bCreated) ;
         }
 
@@ -267,6 +269,9 @@ namespace Infinium
 
             GetCurrency(CurrencyDateTimePicker.Value.Date);
 
+            dtDateFilterFrom.SelectionStart = DateTime.Now;
+            dtDateFilterTo.SelectionStart = DateTime.Now;
+
             var bManager = false;
             var managers = new List<int>();
             for (var i = 0; i < FilterManagersDataGrid.Rows.Count; i++)
@@ -286,11 +291,13 @@ namespace Infinium
                 true,
                 true,
                 true,
-                true,
-                true, true, true, true, true, true);
+                true);
             OrdersManager.FilterMegaOrders(
                 false, 0, bManager, managers, true, true, true, true,
-                true, true, true, true, true, false, true, true, true, true, true, true);
+                true, true, true, true, true, false,
+                false,
+                dtDateFilterFrom.SelectionStart,
+                dtDateFilterTo.SelectionStart);
         }
 
         private void MegaOrdersDataGrid_SelectionChanged(object sender, EventArgs e)
@@ -425,12 +432,6 @@ namespace Infinium
             var onStorage = OnStorageCheckBox.Checked;
             var onExpedition = cbOnExpedition.Checked;
             var dispatch = DispatchCheckBox.Checked;
-            var bsDelayOfPayment = cbDelayOfPayment.Checked;
-            var bsHalfOfPayment = cbHalfOfPayment.Checked;
-            var bsFullPayment = cbFullPayment.Checked;
-            var bsFactoring = cbFactoring.Checked;
-            var bsHalfOfPayment2 = kryptonCheckBox1.Checked;
-            var bsDelayOfPayment2 = kryptonCheckBox2.Checked;
 
             var clientId = -1;
 
@@ -457,8 +458,7 @@ namespace Infinium
                     notAgreed,
                     onAgreement,
                     notConfirm,
-                    confirm,
-                    bsDelayOfPayment, bsHalfOfPayment, bsFullPayment, bsFactoring, bsHalfOfPayment2, bsDelayOfPayment2);
+                    confirm);
                 OrdersManager.FilterMegaOrders(
                     bClient, clientId,
                     bManager, managers,
@@ -471,7 +471,10 @@ namespace Infinium
                     inProduction,
                     onStorage,
                     onExpedition,
-                    dispatch, bsDelayOfPayment, bsHalfOfPayment, bsFullPayment, bsFactoring, bsHalfOfPayment2, bsDelayOfPayment2);
+                    dispatch,
+                    cbDateFilter.Checked,
+                    dtDateFilterFrom.SelectionStart,
+                    dtDateFilterTo.SelectionStart);
 
                 while (SplashWindow.bSmallCreated)
                     SmallWaitForm.CloseS = true;
@@ -487,8 +490,7 @@ namespace Infinium
                     notAgreed,
                     onAgreement,
                     notConfirm,
-                    confirm,
-                    bsDelayOfPayment, bsHalfOfPayment, bsFullPayment, bsFactoring, bsHalfOfPayment2, bsDelayOfPayment2);
+                    confirm);
                 OrdersManager.FilterMegaOrders(
                     bClient, clientId,
                     bManager, managers,
@@ -501,7 +503,10 @@ namespace Infinium
                     inProduction,
                     onStorage,
                     onExpedition,
-                    dispatch, bsDelayOfPayment, bsHalfOfPayment, bsFullPayment, bsFactoring, bsHalfOfPayment2, bsDelayOfPayment2);
+                    dispatch,
+                    cbDateFilter.Checked,
+                    dtDateFilterFrom.SelectionStart,
+                    dtDateFilterTo.SelectionStart);
             }
         }
 
@@ -627,7 +632,7 @@ namespace Infinium
                 OrdersManager.CurrentClientID = Convert.ToInt32(((DataRowView)OrdersManager.MegaOrdersBindingSource.Current).Row["ClientID"]);
             OrdersManager.CurrentDiscountPaymentConditionID = 1;
             OrdersManager.CurrencyTypeID = 1;
-        
+
             var ClientOMC = OrdersManager.CurrentClientID == 232;
 
             AddMainOrdersForm = new AddMarketingNewOrdersForm(ref OrdersManager, ClientOMC, false, false, ref TopForm, ref OrdersCalculate);
@@ -896,7 +901,7 @@ namespace Infinium
                         bCanDirectorDiscount = true;
 
                     DBFReport = new InvoiceReportToDbf(FrontsCatalogOrder, DecorCatalogOrder);
-                    CurrencyForm = new CurrencyForm(this, ref OrdersManager, ref OrdersCalculate, ref DBFReport, 
+                    CurrencyForm = new CurrencyForm(this, ref OrdersManager, ref OrdersCalculate, ref DBFReport,
                         ClientID, ClientName, bCanDirectorDiscount, RoleType == RoleTypes.Admin);
 
                     OrdersManager.CurrentClientID = ClientID;
@@ -1022,7 +1027,7 @@ namespace Infinium
             OrdersManager.CurrencyTypeID = CurrencyTypeID;
 
             var DBFReport = new InvoiceReportToDbf(FrontsCatalogOrder, DecorCatalogOrder);
-            CurrencyForm = new CurrencyForm(this, ref OrdersManager, ref OrdersCalculate, ref DBFReport, 
+            CurrencyForm = new CurrencyForm(this, ref OrdersManager, ref OrdersCalculate, ref DBFReport,
                 ClientID, ClientName, bCanDirectorDiscount, RoleType == RoleTypes.Admin);
 
             CurrencyForm.SetParameters(
@@ -1108,7 +1113,7 @@ namespace Infinium
                         var FileName = DetailsReport.Report(CheckedMegaOrders, CheckedOrderNumbers, MainOrders, ClientID, ClientName,
                             ComplaintProfilCost, ComplaintTPSCost, TransportCost, AdditionalCost,
                             OrdersManager.GetMainOrdersCost(MainOrders), CurrencyTypeID, TotalWeight, false);
-                        
+
                         while (SplashWindow.bSmallCreated)
                             SmallWaitForm.CloseS = true;
                         NeedSplash = true;
@@ -1143,7 +1148,7 @@ namespace Infinium
                         var FileName = DetailsReport.Report(CheckedMegaOrders, CheckedOrderNumbers, MainOrders, ClientID, ClientName,
                             ComplaintProfilCost, ComplaintTPSCost, TransportCost, AdditionalCost,
                             OrdersManager.GetMainOrdersCost(MainOrders), CurrencyTypeID, TotalWeight, true);
-                        
+
                         while (SplashWindow.bSmallCreated)
                             SmallWaitForm.CloseS = true;
                         NeedSplash = true;
@@ -2502,7 +2507,7 @@ namespace Infinium
                 }
             }
         }
-        
+
         private void InvoiceReportToDBF(Infinium.Modules.Marketing.NewOrders.NotesInvoiceReportToDbf.NotesInvoiceReportToDbf DBFReport)
         {
             decimal ComplaintProfilCost = 0;
@@ -3413,7 +3418,7 @@ namespace Infinium
             if (e.Button == System.Windows.Forms.MouseButtons.Right)
             {
                 var FrontsOrdersID = Convert.ToInt32(MainOrdersFrontsOrdersDataGrid.SelectedRows[0].Cells["FrontsOrdersID"].Value);
-                var kryptonContextMenu = new ComponentFactory.Krypton.Toolkit.KryptonContextMenu(); 
+                var kryptonContextMenu = new ComponentFactory.Krypton.Toolkit.KryptonContextMenu();
                 var kryptonContextMenuItems = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItems();
                 var setOnStorage = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem()
                 {
@@ -4076,7 +4081,7 @@ namespace Infinium
                 }
             }
         }
-        
+
         private void PrepareInvoiceReportToDBF(Modules.Marketing.NewOrders.PrepareReport.ColorInvoiceReportToDbf.ColorInvoiceReportToDbf DBFReport)
         {
             var CurrencyTypeID = Convert.ToInt32(MegaOrdersDataGrid.SelectedRows[0].Cells["CurrencyTypeID"].Value);
@@ -4735,17 +4740,19 @@ namespace Infinium
 
         private void OnAgreementCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-
+            if (OrdersManager == null)
+                return;
+            Filter();
         }
 
         private void btnExportToCabModule_Click(object sender, EventArgs e)
         {
-            if (OrdersManager.MegaOrdersBindingSource.Count == 0 
+            if (OrdersManager.MegaOrdersBindingSource.Count == 0
                 || OrdersManager.MegaOrdersBindingSource.Current == null)
                 return;
 
             var megaOrderId = Convert.ToInt32(((DataRowView)OrdersManager.MegaOrdersBindingSource.Current).Row["MegaOrderID"]);
-            
+
             var OKCancel = Infinium.LightMessageBox.Show(ref TopForm, true,
                     $"Вы собираетесь создать задания в модуле Корпусная мебель. Продолжить?",
                     "Задания корпусной мебели");
@@ -4815,18 +4822,34 @@ namespace Infinium
             FilterManagersDataGrid.Enabled = ManagerCheckBox.Checked;
 
             if (OrdersManager == null)
-                return; 
+                return;
             Filter();
         }
 
         private void FilterManagersDataGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             var senderGrid = (DataGridView)sender;
-            
+
             if (senderGrid.Columns[e.ColumnIndex].Name == "checkCol" && e.RowIndex >= 0)
             {
                 Filter();
             }
+        }
+
+        private void dtDateFilterFrom_DateChanged(object sender, DateRangeEventArgs e)
+        {
+            if (OrdersManager == null)
+                return;
+            if (cbDateFilter.Checked)
+                Filter();
+        }
+
+        private void dtDateFilterTo_DateChanged(object sender, DateRangeEventArgs e)
+        {
+            if (OrdersManager == null)
+                return;
+            if (cbDateFilter.Checked)
+                Filter();
         }
     }
 }

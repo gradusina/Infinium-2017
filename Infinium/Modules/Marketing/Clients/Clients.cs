@@ -1,4 +1,6 @@
-﻿using NPOI.HSSF.Record.Formula.Functions;
+﻿using Infinium.Modules.ZOV.Clients;
+
+using NPOI.HSSF.Record.Formula.Functions;
 using NPOI.HSSF.UserModel;
 using NPOI.HSSF.UserModel.Contrib;
 using NPOI.HSSF.Util;
@@ -1604,7 +1606,33 @@ WHERE (CountryID = 1) AND (ClientID NOT IN (10774, 10771, 727, 725, 701, 759, 74
                 table.Rows.Add(newRow);
             }
 
-            using var da = new SqlDataAdapter(@"SELECT TOP 0 * FROM ClientRates",
+            //using var da = new SqlDataAdapter(@"SELECT TOP 0 * FROM ClientRates",
+            //    ConnectionStrings.MarketingReferenceConnectionString);
+            //using (new SqlCommandBuilder(da))
+            //{
+            //    using (var dt = new DataTable())
+            //    {
+            //        da.Fill(dt);
+            //        for (var i = 0; i < table.Rows.Count; i++)
+            //        {
+            //            var clientId = Convert.ToInt32(table.Rows[i]["ClientID"]);
+            //            var USD = Convert.ToDecimal(table.Rows[i]["USD"]);
+            //            var RUB = Convert.ToDecimal(table.Rows[i]["RUB"]);
+            //            var BYN = Convert.ToDecimal(table.Rows[i]["BYN"]);
+                        
+            //            var NewRow = dt.NewRow();
+            //            NewRow["clientId"] = clientId;
+            //            NewRow["Date"] = "2024-05-01 00:00:00.000";
+            //            NewRow["USD"] = USD;
+            //            NewRow["RUB"] = RUB;
+            //            NewRow["BYN"] = BYN;
+            //            dt.Rows.Add(NewRow);
+            //        }
+
+            //        da.Update(dt);
+            //    }
+            //}
+            using var da = new SqlDataAdapter(@"SELECT * FROM ClientRates",
                 ConnectionStrings.MarketingReferenceConnectionString);
             using (new SqlCommandBuilder(da))
             {
@@ -1620,7 +1648,7 @@ WHERE (CountryID = 1) AND (ClientID NOT IN (10774, 10771, 727, 725, 701, 759, 74
                         
                         var NewRow = dt.NewRow();
                         NewRow["clientId"] = clientId;
-                        NewRow["Date"] = "2024-05-01 00:00:00.000";
+                        NewRow["Date"] = "2024-11-01 00:00:00.000";
                         NewRow["USD"] = USD;
                         NewRow["RUB"] = RUB;
                         NewRow["BYN"] = BYN;
@@ -1646,6 +1674,7 @@ WHERE (CountryID = 1) AND (ClientID NOT IN (10774, 10771, 727, 725, 701, 759, 74
         }
 
         private DataTable _clientsDt;
+        private DataTable _clientRatesDataTable;
 
         private void PrepareColumns()
         {
@@ -1660,23 +1689,54 @@ WHERE (CountryID = 1) AND (ClientID NOT IN (10774, 10771, 727, 725, 701, 759, 74
             _engToRusDictionary.Add("ClientGroupName", "Группа");
             _engToRusDictionary.Add("PriceGroup", "Ценовая группа");
             _engToRusDictionary.Add("Enabled", "Активен");
+            _engToRusDictionary.Add("USD", "USD");
+            _engToRusDictionary.Add("RUB", "RUB");
+            _engToRusDictionary.Add("BYN", "BYN");
         }
 
         private void GetClients()
         {
             _clientsDt = new DataTable();
+            _clientRatesDataTable = new DataTable();
 
-            const string selectCommand = @"SELECT Clients.ClientID, Clients.ClientName, ClientsManagers.Name as Manager, 
+            string selectCommand = @"SELECT Clients.ClientID, Clients.ClientName, ClientsManagers.Name as Manager, 
 Countries.Name AS Country, Clients.City, Clients.Email, Clients.DelayOfPayment, Clients.UNN, 
-ClientGroups.ClientGroupName, Clients.PriceGroup, Clients.Enabled FROM Clients AS Clients 
+ClientGroups.ClientGroupName, Clients.PriceGroup, Clients.Enabled, 0.000 as USD, 0.000 as RUB, 0.000 as BYN FROM Clients AS Clients 
 INNER JOIN ClientsManagers ON Clients.ManagerID = ClientsManagers.ManagerID 
 INNER JOIN ClientGroups ON Clients.ClientGroupID = ClientGroups.ClientGroupID
 INNER JOIN infiniu2_catalog.dbo.Countries AS Countries ON Clients.CountryID = Countries.CountryID order by Clients.ClientName";
 
             using var da = new SqlDataAdapter(selectCommand, ConnectionStrings.MarketingReferenceConnectionString);
             da.Fill(_clientsDt);
-        }
 
+            selectCommand = @"SELECT * from ClientRates order by date desc";
+
+            using var da1 = new SqlDataAdapter(selectCommand, ConnectionStrings.MarketingReferenceConnectionString);
+            da1.Fill(_clientRatesDataTable);
+
+            for (var i = 0; i < _clientsDt.Rows.Count; i++)
+            {
+                var clientId = Convert.ToInt32(_clientsDt.Rows[i]["clientId"]);
+
+                var rows = _clientRatesDataTable.Select($"clientId={clientId}");
+                if (rows.Any())
+                {
+                    if (rows[0]["USD"] == DBNull.Value || 
+                        rows[0]["RUB"] == DBNull.Value ||
+                        rows[0]["BYN"] == DBNull.Value)
+                    {
+
+                    }
+                    else
+                    {
+                        _clientsDt.Rows[i]["USD"] = rows[0]["USD"];
+                        _clientsDt.Rows[i]["RUB"] = rows[0]["RUB"];
+                        _clientsDt.Rows[i]["BYN"] = rows[0]["BYN"];
+                    }
+                }
+            }
+        }
+        
         public void CreateReport(string fileName)
         {
             _workbook = new HSSFWorkbook();

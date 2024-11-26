@@ -53,18 +53,7 @@ namespace Infinium.Modules.LoadCalculations
             _techstoreDt = new DataTable();
             _distDecorDt = new DataTable();
             _staffingDt = new DataTable();
-
-            //_groupbyClientDt = new DataTable();
-            //_groupbyClientDt.Columns.Add(new DataColumn("id", typeof(int)) { AutoIncrement = true });
-            //_groupbyClientDt.Columns.Add("machineId", typeof(int));
-            //_groupbyClientDt.Columns.Add("sectorId", typeof(int));
-            //_groupbyClientDt.Columns.Add("clientId", typeof(int));
-            //_groupbyClientDt.Columns.Add("orderNumber", typeof(int));
-            //_groupbyClientDt.Columns.Add("total1", typeof(decimal));
-            //_groupbyClientDt.Columns.Add("total2", typeof(decimal));
-            //_groupbyClientDt.Columns.Add("total3", typeof(decimal));
-            //_groupbyClientDt.Columns.Add("total4", typeof(decimal));
-
+            
             _groupbyMachinesDt = new DataTable();
             _groupbyMachinesDt.Columns.Add(new DataColumn("id", typeof(int)) { AutoIncrement = true });
             _groupbyMachinesDt.Columns.Add("machineId", typeof(int));
@@ -1134,10 +1123,10 @@ where onStorage = 0 {batchFilter} order by d.mainorderid";
 
             _decorOrdersDt.Clear();
             if (decor)
-                using (var da = new SqlDataAdapter(selectCommand, ConnectionStrings.MarketingOrdersConnectionString))
-                {
-                    da.Fill(_decorOrdersDt);
-                }
+            {
+                using var da = new SqlDataAdapter(selectCommand, ConnectionStrings.MarketingOrdersConnectionString);
+                da.Fill(_decorOrdersDt);
+            }
 
             selectCommand =
                 $@"select m.megaorderid, m.ordernumber, m.OrderDate, m.clientid, d.FrontsOrdersID, d.mainorderid,
@@ -1149,10 +1138,10 @@ where onStorage = 0 {batchFilter} order by d.mainorderid";
 
             _frontsOrdersDt.Clear();
             if (fronts)
-                using (var da = new SqlDataAdapter(selectCommand, ConnectionStrings.MarketingOrdersConnectionString))
-                {
-                    da.Fill(_frontsOrdersDt);
-                }
+            {
+                using var da = new SqlDataAdapter(selectCommand, ConnectionStrings.MarketingOrdersConnectionString);
+                da.Fill(_frontsOrdersDt);
+            }
         }
 
         public void BatchDecorOrdersForAgreed(int megabatchid, bool fronts, bool decor)
@@ -1178,10 +1167,11 @@ where onStorage = 0 {batchFilter} order by d.mainorderid";
 
             _decorOrdersDt.Clear();
             if (decor)
-                using (var da = new SqlDataAdapter(selectCommand, ConnectionStrings.MarketingOrdersConnectionString))
-                {
-                    da.Fill(_decorOrdersDt);
-                }
+            {
+                using var da = new SqlDataAdapter(selectCommand, ConnectionStrings.MarketingOrdersConnectionString);
+                da.Fill(_decorOrdersDt);
+            }
+
             selectCommand =
                 $@"select m.megaorderid, m.ordernumber, m.OrderDate, m.clientid, d.FrontsOrdersID, d.mainorderid,
 d.frontid, d.frontconfigid, dc.accountingname, dc.measureid, d.height, d.width, d.count from newfrontsorders  as d
@@ -1192,10 +1182,10 @@ where onStorage = 0 {batchFilter} order by d.mainorderid";
 
             _frontsOrdersDt.Clear();
             if (fronts)
-                using (var da = new SqlDataAdapter(selectCommand, ConnectionStrings.MarketingOrdersConnectionString))
-                {
-                    da.Fill(_frontsOrdersDt);
-                }
+            {
+                using var da = new SqlDataAdapter(selectCommand, ConnectionStrings.MarketingOrdersConnectionString);
+                da.Fill(_frontsOrdersDt);
+            }
         }
 
         public void BatchDecorOrdersAgreed(int megabatchid, bool fronts, bool decor)
@@ -1222,10 +1212,10 @@ order by d.mainorderid";
 
             _decorOrdersDt.Clear();
             if (decor)
-                using (var da = new SqlDataAdapter(selectCommand, ConnectionStrings.MarketingOrdersConnectionString))
-                {
-                    da.Fill(_decorOrdersDt);
-                }
+            {
+                using var da = new SqlDataAdapter(selectCommand, ConnectionStrings.MarketingOrdersConnectionString);
+                da.Fill(_decorOrdersDt);
+            }
 
             selectCommand =
                 $@"select m.megaorderid, m.ordernumber, m.OrderDate, m.clientid, d.FrontsOrdersID, d.mainorderid,
@@ -1239,10 +1229,10 @@ order by d.mainorderid";
 
             _frontsOrdersDt.Clear();
             if (fronts)
-                using (var da = new SqlDataAdapter(selectCommand, ConnectionStrings.MarketingOrdersConnectionString))
-                {
-                    da.Fill(_frontsOrdersDt);
-                }
+            {
+                using var da = new SqlDataAdapter(selectCommand, ConnectionStrings.MarketingOrdersConnectionString);
+                da.Fill(_frontsOrdersDt);
+            }
         }
 
         public void BatchDecorOrdersOnProduction(int megabatchid, bool fronts, bool decor)
@@ -1270,10 +1260,10 @@ order by d.mainorderid";
 
             _decorOrdersDt.Clear();
             if (decor)
-                using (var da = new SqlDataAdapter(selectCommand, ConnectionStrings.MarketingOrdersConnectionString))
-                {
-                    da.Fill(_decorOrdersDt);
-                }
+            {
+                using var da = new SqlDataAdapter(selectCommand, ConnectionStrings.MarketingOrdersConnectionString);
+                da.Fill(_decorOrdersDt);
+            }
 
             selectCommand =
                 $@"select m.megaorderid, m.ordernumber, m.OrderDate, m.clientid, d.FrontsOrdersID, d.mainorderid,
@@ -1287,10 +1277,10 @@ order by d.mainorderid";
 
             _frontsOrdersDt.Clear();
             if (fronts)
-                using (var da = new SqlDataAdapter(selectCommand, ConnectionStrings.MarketingOrdersConnectionString))
-                {
-                    da.Fill(_frontsOrdersDt);
-                }
+            {
+                using var da = new SqlDataAdapter(selectCommand, ConnectionStrings.MarketingOrdersConnectionString);
+                da.Fill(_frontsOrdersDt);
+            }
         }
 
         public void BatchDecorOrdersInProduction(int megabatchid, bool fronts, bool decor)
@@ -1314,10 +1304,10 @@ order by d.mainorderid";
 
             _decorOrdersDt.Clear();
             if (decor)
-                using (var da = new SqlDataAdapter(selectCommand, ConnectionStrings.MarketingOrdersConnectionString))
-                {
-                    da.Fill(_decorOrdersDt);
-                }
+            {
+                using var da = new SqlDataAdapter(selectCommand, ConnectionStrings.MarketingOrdersConnectionString);
+                da.Fill(_decorOrdersDt);
+            }
 
             selectCommand =
                 $@"select m.megaorderid, m.ordernumber, m.OrderDate, m.clientid, d.FrontsOrdersID, d.mainorderid,
@@ -1331,10 +1321,10 @@ order by d.mainorderid";
 
             _frontsOrdersDt.Clear();
             if (fronts)
-                using (var da = new SqlDataAdapter(selectCommand, ConnectionStrings.MarketingOrdersConnectionString))
-                {
-                    da.Fill(_frontsOrdersDt);
-                }
+            {
+                using var da = new SqlDataAdapter(selectCommand, ConnectionStrings.MarketingOrdersConnectionString);
+                da.Fill(_frontsOrdersDt);
+            }
         }
 
         public void GetDecorOrdersNotConfirmed(bool fronts, bool decor)
@@ -1357,10 +1347,10 @@ where onStorage = 0 order by d.mainorderid";
 
             _decorOrdersDt.Clear();
             if (decor)
-                using (var da = new SqlDataAdapter(selectCommand, ConnectionStrings.MarketingOrdersConnectionString))
-                {
-                    da.Fill(_decorOrdersDt);
-                }
+            {
+                using var da = new SqlDataAdapter(selectCommand, ConnectionStrings.MarketingOrdersConnectionString);
+                da.Fill(_decorOrdersDt);
+            }
 
             selectCommand =
                 $@"select m.megaorderid, m.ordernumber, m.OrderDate, m.clientid, d.FrontsOrdersID, d.mainorderid,
@@ -1372,10 +1362,10 @@ where onStorage = 0 order by d.mainorderid";
 
             _frontsOrdersDt.Clear();
             if (fronts)
-                using (var da = new SqlDataAdapter(selectCommand, ConnectionStrings.MarketingOrdersConnectionString))
-                {
-                    da.Fill(_frontsOrdersDt);
-                }
+            {
+                using var da = new SqlDataAdapter(selectCommand, ConnectionStrings.MarketingOrdersConnectionString);
+                da.Fill(_frontsOrdersDt);
+            }
         }
 
         public void GetDecorOrdersForAgreed(bool fronts, bool decor)
@@ -1398,10 +1388,10 @@ where onStorage = 0 order by d.mainorderid";
 
             _decorOrdersDt.Clear();
             if (decor)
-                using (var da = new SqlDataAdapter(selectCommand, ConnectionStrings.MarketingOrdersConnectionString))
-                {
-                    da.Fill(_decorOrdersDt);
-                }
+            {
+                using var da = new SqlDataAdapter(selectCommand, ConnectionStrings.MarketingOrdersConnectionString);
+                da.Fill(_decorOrdersDt);
+            }
 
             selectCommand =
                 $@"select m.megaorderid, m.ordernumber, m.OrderDate, m.clientid, d.FrontsOrdersID, d.mainorderid,
@@ -1413,10 +1403,10 @@ where onStorage = 0 order by d.mainorderid";
 
             _frontsOrdersDt.Clear();
             if (fronts)
-                using (var da = new SqlDataAdapter(selectCommand, ConnectionStrings.MarketingOrdersConnectionString))
-                {
-                    da.Fill(_frontsOrdersDt);
-                }
+            {
+                using var da = new SqlDataAdapter(selectCommand, ConnectionStrings.MarketingOrdersConnectionString);
+                da.Fill(_frontsOrdersDt);
+            }
         }
 
         public void GetDecorOrdersAgreed(bool fronts, bool decor)
@@ -1441,10 +1431,10 @@ order by d.mainorderid";
 
             _decorOrdersDt.Clear();
             if (decor)
-                using (var da = new SqlDataAdapter(selectCommand, ConnectionStrings.MarketingOrdersConnectionString))
-                {
-                    da.Fill(_decorOrdersDt);
-                }
+            {
+                using var da = new SqlDataAdapter(selectCommand, ConnectionStrings.MarketingOrdersConnectionString);
+                da.Fill(_decorOrdersDt);
+            }
 
             selectCommand =
                 $@"select m.megaorderid, m.ordernumber, m.OrderDate, m.clientid, d.FrontsOrdersID, d.mainorderid,
@@ -1458,10 +1448,10 @@ order by d.mainorderid";
 
             _frontsOrdersDt.Clear();
             if (fronts)
-                using (var da = new SqlDataAdapter(selectCommand, ConnectionStrings.MarketingOrdersConnectionString))
-                {
-                    da.Fill(_frontsOrdersDt);
-                }
+            {
+                using var da = new SqlDataAdapter(selectCommand, ConnectionStrings.MarketingOrdersConnectionString);
+                da.Fill(_frontsOrdersDt);
+            }
         }
 
         public void GetDecorOrdersOnProduction(bool fronts, bool decor)
@@ -1486,10 +1476,10 @@ order by d.mainorderid";
 
             _decorOrdersDt.Clear();
             if (decor)
-                using (var da = new SqlDataAdapter(selectCommand, ConnectionStrings.MarketingOrdersConnectionString))
-                {
-                    da.Fill(_decorOrdersDt);
-                }
+            {
+                using var da = new SqlDataAdapter(selectCommand, ConnectionStrings.MarketingOrdersConnectionString);
+                da.Fill(_decorOrdersDt);
+            }
 
             selectCommand =
                 $@"select m.megaorderid, m.ordernumber, m.OrderDate, m.clientid, d.FrontsOrdersID, d.mainorderid,
@@ -1503,10 +1493,10 @@ order by d.mainorderid";
 
             _frontsOrdersDt.Clear();
             if (fronts)
-                using (var da = new SqlDataAdapter(selectCommand, ConnectionStrings.MarketingOrdersConnectionString))
-                {
-                    da.Fill(_frontsOrdersDt);
-                }
+            {
+                using var da = new SqlDataAdapter(selectCommand, ConnectionStrings.MarketingOrdersConnectionString);
+                da.Fill(_frontsOrdersDt);
+            }
         }
 
         public void GetDecorOrdersInProduction(bool fronts, bool decor)
@@ -1522,15 +1512,15 @@ inner join infiniu2_catalog.dbo.decorconfig as dc on d.decorconfigid = dc.decorc
 inner join newmainorders on d.mainorderid = newmainorders.mainorderid {mainOrderFilter}
 inner join newMegaorders as m on newMainorders.megaorderid = m.megaorderid {megaOrderFilter}
 where onStorage = 0 and (d.mainorderid not in (select mainorderid from packages) or
-d.decororderid not in (select orderid from packagedetails where packageid in (select packageid from packages where ProductType=1 and packagestatusid > 0)))
+d.decororderid in (select orderid from packagedetails where packageid in (select packageid from packages where ProductType=1 and packagestatusid = 0)))
 order by d.mainorderid";
 
             _decorOrdersDt.Clear();
             if (decor)
-                using (var da = new SqlDataAdapter(selectCommand, ConnectionStrings.MarketingOrdersConnectionString))
-                {
-                    da.Fill(_decorOrdersDt);
-                }
+            {
+                using var da = new SqlDataAdapter(selectCommand, ConnectionStrings.MarketingOrdersConnectionString);
+                da.Fill(_decorOrdersDt);
+            }
 
             selectCommand =
                 $@"select m.megaorderid, m.ordernumber, m.OrderDate, m.clientid, d.FrontsOrdersID, d.mainorderid,
@@ -1539,15 +1529,15 @@ inner join infiniu2_catalog.dbo.frontsconfig as dc on d.frontconfigid = dc.front
 inner join newmainorders on d.mainorderid = newmainorders.mainorderid {mainOrderFilter}
 inner join newMegaorders as m on newMainorders.megaorderid = m.megaorderid {megaOrderFilter}
 where onStorage = 0 and (d.mainorderid not in (select mainorderid from packages) or
-d.FrontsOrdersID not in (select orderid from packagedetails where packageid in (select packageid from packages where ProductType=0 and packagestatusid > 0)))
+d.FrontsOrdersID in (select orderid from packagedetails where packageid in (select packageid from packages where ProductType=0 and packagestatusid = 0)))
 order by d.mainorderid";
 
             _frontsOrdersDt.Clear();
             if (fronts)
-                using (var da = new SqlDataAdapter(selectCommand, ConnectionStrings.MarketingOrdersConnectionString))
-                {
-                    da.Fill(_frontsOrdersDt);
-                }
+            {
+                using var da = new SqlDataAdapter(selectCommand, ConnectionStrings.MarketingOrdersConnectionString);
+                da.Fill(_frontsOrdersDt);
+            }
         }
 
         public List<Sector> GetAllSectors()
@@ -1556,24 +1546,22 @@ order by d.mainorderid";
 
             const string selectCommand = @"select sectorid, sectorname, shortName from sectors order by sectorname";
 
-            using (var dt = new DataTable())
+            using var dt = new DataTable();
+            using (var da = new SqlDataAdapter(selectCommand, ConnectionStrings.CatalogConnectionString))
             {
-                using (var da = new SqlDataAdapter(selectCommand, ConnectionStrings.CatalogConnectionString))
-                {
-                    da.Fill(dt);
-                }
+                da.Fill(dt);
+            }
 
-                foreach (DataRow item in dt.Rows)
+            foreach (DataRow item in dt.Rows)
+            {
+                var sector = new Sector
                 {
-                    var sector = new Sector
-                    {
-                        Name = item["sectorname"].ToString(),
-                        ShortName = item["shortName"].ToString(),
-                        Id = Convert.ToInt32(item["sectorid"])
-                    };
+                    Name = item["sectorname"].ToString(),
+                    ShortName = item["shortName"].ToString(),
+                    Id = Convert.ToInt32(item["sectorid"])
+                };
 
-                    sectorsList.Add(sector);
-                }
+                sectorsList.Add(sector);
             }
 
             return sectorsList;
@@ -1589,10 +1577,8 @@ INNER JOIN ClientGroups ON Clients.ClientGroupID = ClientGroups.ClientGroupID
 INNER JOIN infiniu2_catalog.dbo.Countries AS Countries ON Clients.CountryID = Countries.CountryID order by Clients.ClientName";
 
             _clientsDt.Clear();
-            using (var da = new SqlDataAdapter(selectCommand, ConnectionStrings.MarketingReferenceConnectionString))
-            {
-                da.Fill(_clientsDt);
-            }
+            using var da = new SqlDataAdapter(selectCommand, ConnectionStrings.MarketingReferenceConnectionString);
+            da.Fill(_clientsDt);
         }
 
         private void GetTechStore()
@@ -1600,10 +1586,8 @@ INNER JOIN infiniu2_catalog.dbo.Countries AS Countries ON Clients.CountryID = Co
             const string selectCommand = @"select techstoreid, techstorename from techstore";
 
             _techstoreDt.Clear();
-            using (var da = new SqlDataAdapter(selectCommand, ConnectionStrings.CatalogConnectionString))
-            {
-                da.Fill(_techstoreDt);
-            }
+            using var da = new SqlDataAdapter(selectCommand, ConnectionStrings.CatalogConnectionString);
+            da.Fill(_techstoreDt);
         }
 
         private void GetMachines()
@@ -1614,10 +1598,8 @@ inner join subsectors on machines.subsectorid = subsectors.subsectorid
 inner join sectors on subsectors.sectorid = sectors.sectorid";
 
             _machinesDt.Clear();
-            using (var da = new SqlDataAdapter(selectCommand, ConnectionStrings.CatalogConnectionString))
-            {
-                da.Fill(_machinesDt);
-            }
+            using var da = new SqlDataAdapter(selectCommand, ConnectionStrings.CatalogConnectionString);
+            da.Fill(_machinesDt);
         }
 
         private void GetMachinePriority()
@@ -1626,10 +1608,8 @@ inner join sectors on subsectors.sectorid = sectors.sectorid";
                 @"select id, producttype, itemid, machineid, priority from machineitemsinhercules";
 
             _machinePriorityDt.Clear();
-            using (var da = new SqlDataAdapter(selectCommand, ConnectionStrings.CatalogConnectionString))
-            {
-                da.Fill(_machinePriorityDt);
-            }
+            using var da = new SqlDataAdapter(selectCommand, ConnectionStrings.CatalogConnectionString);
+            da.Fill(_machinePriorityDt);
         }
 
         private void GetMachineRates()
@@ -1643,10 +1623,8 @@ inner join subsectors on machines.subsectorid = subsectors.subsectorid
 inner join sectors as s on subsectors.sectorid = s.sectorid";
 
             _machineRatesDt.Clear();
-            using (var da = new SqlDataAdapter(selectCommand, ConnectionStrings.CatalogConnectionString))
-            {
-                da.Fill(_machineRatesDt);
-            }
+            using var da = new SqlDataAdapter(selectCommand, ConnectionStrings.CatalogConnectionString);
+            da.Fill(_machineRatesDt);
         }
 
         private void GetStaffing()
@@ -1659,10 +1637,8 @@ inner join positions as p on s.positionid = p.positionid
 inner join infiniu2_users.dbo.users as u on s.userid = u.userid";
 
             _staffingDt.Clear();
-            using (var da = new SqlDataAdapter(selectCommand, ConnectionStrings.LightConnectionString))
-            {
-                da.Fill(_staffingDt);
-            }
+            using var da = new SqlDataAdapter(selectCommand, ConnectionStrings.LightConnectionString);
+            da.Fill(_staffingDt);
         }
 
         public class Client

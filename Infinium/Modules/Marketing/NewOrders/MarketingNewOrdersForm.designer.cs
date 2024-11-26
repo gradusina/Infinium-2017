@@ -62,6 +62,8 @@ namespace Infinium
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.PanelSelectPalette = new ComponentFactory.Krypton.Toolkit.KryptonPalette(this.components);
             this.MenuPanel = new System.Windows.Forms.Panel();
+            this.panel9 = new System.Windows.Forms.Panel();
+            this.cbDateFilter = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
             this.ManagerCheckBox = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
             this.panel8 = new System.Windows.Forms.Panel();
             this.kryptonBorderEdge12 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
@@ -86,15 +88,6 @@ namespace Infinium
             this.NotAgreedCheckBox = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
             this.NotConfirmCheckBox = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
             this.ConfirmCheckBox = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
-            this.panel4 = new System.Windows.Forms.Panel();
-            this.kryptonCheckBox2 = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
-            this.kryptonCheckBox1 = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
-            this.kryptonBorderEdge10 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.cbDelayOfPayment = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
-            this.cbFactoring = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
-            this.cbHalfOfPayment = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
-            this.cbFullPayment = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
-            this.label4 = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
             this.kryptonBorderEdge25 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.kryptonBorderEdge24 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
@@ -195,6 +188,10 @@ namespace Infinium
             this.kryptonContextMenuItems8 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItems();
             this.kryptonContextMenuCheckBox2 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuCheckBox();
             this.kryptonContextMenuCheckButton1 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuCheckButton();
+            this.dtDateFilterTo = new ComponentFactory.Krypton.Toolkit.KryptonMonthCalendar();
+            this.label4 = new System.Windows.Forms.Label();
+            this.dtDateFilterFrom = new ComponentFactory.Krypton.Toolkit.KryptonMonthCalendar();
+            this.label5 = new System.Windows.Forms.Label();
             this.NavigatePanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MainOrdersSplitContainer)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.MainOrdersSplitContainer.Panel1)).BeginInit();
@@ -218,11 +215,11 @@ namespace Infinium
             ((System.ComponentModel.ISupportInitialize)(this.MainOrdersDecorTabControl)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.MenuPanel.SuspendLayout();
+            this.panel9.SuspendLayout();
             this.panel8.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.FilterManagersDataGrid)).BeginInit();
             this.panel6.SuspendLayout();
             this.panel5.SuspendLayout();
-            this.panel4.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.FilterClientsDataGrid)).BeginInit();
@@ -411,7 +408,7 @@ namespace Infinium
             this.MainOrdersSplitContainer.Panel2.StateCommon.Color1 = System.Drawing.Color.Transparent;
             this.MainOrdersSplitContainer.SeparatorStyle = ComponentFactory.Krypton.Toolkit.SeparatorStyle.HighProfile;
             this.MainOrdersSplitContainer.Size = new System.Drawing.Size(1241, 524);
-            this.MainOrdersSplitContainer.SplitterDistance = 247;
+            this.MainOrdersSplitContainer.SplitterDistance = 277;
             this.MainOrdersSplitContainer.StateCommon.Back.Color1 = System.Drawing.Color.Transparent;
             this.MainOrdersSplitContainer.StateCommon.Back.Color2 = System.Drawing.Color.Transparent;
             this.MainOrdersSplitContainer.StateCommon.Separator.Back.Color1 = System.Drawing.Color.Gray;
@@ -443,7 +440,7 @@ namespace Infinium
             this.MegaMainSplitter.Panel2.Controls.Add(this.panel2);
             this.MegaMainSplitter.Panel2.StateCommon.Color1 = System.Drawing.Color.Transparent;
             this.MegaMainSplitter.SeparatorStyle = ComponentFactory.Krypton.Toolkit.SeparatorStyle.HighProfile;
-            this.MegaMainSplitter.Size = new System.Drawing.Size(1241, 244);
+            this.MegaMainSplitter.Size = new System.Drawing.Size(1241, 274);
             this.MegaMainSplitter.SplitterDistance = 617;
             this.MegaMainSplitter.SplitterWidth = 6;
             this.MegaMainSplitter.StateCommon.Back.Color1 = System.Drawing.Color.Transparent;
@@ -467,7 +464,7 @@ namespace Infinium
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(617, 244);
+            this.panel1.Size = new System.Drawing.Size(617, 274);
             this.panel1.TabIndex = 73;
             // 
             // MegaOrdersDataGrid
@@ -490,7 +487,7 @@ namespace Infinium
             this.MegaOrdersDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.MegaOrdersDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
             this.MegaOrdersDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.MegaOrdersDataGrid.Size = new System.Drawing.Size(615, 242);
+            this.MegaOrdersDataGrid.Size = new System.Drawing.Size(615, 272);
             this.MegaOrdersDataGrid.StandardStyle = false;
             this.MegaOrdersDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
             this.MegaOrdersDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
@@ -549,7 +546,7 @@ namespace Infinium
             // kryptonBorderEdge2
             // 
             this.kryptonBorderEdge2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.kryptonBorderEdge2.Location = new System.Drawing.Point(1, 243);
+            this.kryptonBorderEdge2.Location = new System.Drawing.Point(1, 273);
             this.kryptonBorderEdge2.Name = "kryptonBorderEdge2";
             this.kryptonBorderEdge2.Size = new System.Drawing.Size(615, 1);
             this.kryptonBorderEdge2.StateCommon.Color1 = System.Drawing.Color.Black;
@@ -561,7 +558,7 @@ namespace Infinium
             this.kryptonBorderEdge4.Location = new System.Drawing.Point(616, 0);
             this.kryptonBorderEdge4.Name = "kryptonBorderEdge4";
             this.kryptonBorderEdge4.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge4.Size = new System.Drawing.Size(1, 244);
+            this.kryptonBorderEdge4.Size = new System.Drawing.Size(1, 274);
             this.kryptonBorderEdge4.StateCommon.Color1 = System.Drawing.Color.Black;
             this.kryptonBorderEdge4.Text = "kryptonBorderEdge4";
             // 
@@ -572,7 +569,7 @@ namespace Infinium
             this.kryptonBorderEdge5.Margin = new System.Windows.Forms.Padding(10, 0, 0, 0);
             this.kryptonBorderEdge5.Name = "kryptonBorderEdge5";
             this.kryptonBorderEdge5.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge5.Size = new System.Drawing.Size(1, 244);
+            this.kryptonBorderEdge5.Size = new System.Drawing.Size(1, 274);
             this.kryptonBorderEdge5.StateCommon.Color1 = System.Drawing.Color.Black;
             this.kryptonBorderEdge5.Text = "kryptonBorderEdge5";
             // 
@@ -586,7 +583,7 @@ namespace Infinium
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(618, 244);
+            this.panel2.Size = new System.Drawing.Size(618, 274);
             this.panel2.TabIndex = 73;
             // 
             // MainOrdersDataGrid
@@ -611,7 +608,7 @@ namespace Infinium
             this.MainOrdersDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.MainOrdersDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Blue;
             this.MainOrdersDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.MainOrdersDataGrid.Size = new System.Drawing.Size(616, 242);
+            this.MainOrdersDataGrid.Size = new System.Drawing.Size(616, 272);
             this.MainOrdersDataGrid.StandardStyle = false;
             this.MainOrdersDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
             this.MainOrdersDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
@@ -663,7 +660,7 @@ namespace Infinium
             // kryptonBorderEdge7
             // 
             this.kryptonBorderEdge7.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.kryptonBorderEdge7.Location = new System.Drawing.Point(1, 243);
+            this.kryptonBorderEdge7.Location = new System.Drawing.Point(1, 273);
             this.kryptonBorderEdge7.Name = "kryptonBorderEdge7";
             this.kryptonBorderEdge7.Size = new System.Drawing.Size(616, 1);
             this.kryptonBorderEdge7.StateCommon.Color1 = System.Drawing.Color.Black;
@@ -675,7 +672,7 @@ namespace Infinium
             this.kryptonBorderEdge8.Location = new System.Drawing.Point(617, 0);
             this.kryptonBorderEdge8.Name = "kryptonBorderEdge8";
             this.kryptonBorderEdge8.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge8.Size = new System.Drawing.Size(1, 244);
+            this.kryptonBorderEdge8.Size = new System.Drawing.Size(1, 274);
             this.kryptonBorderEdge8.StateCommon.Color1 = System.Drawing.Color.Black;
             this.kryptonBorderEdge8.Text = "kryptonBorderEdge8";
             // 
@@ -686,7 +683,7 @@ namespace Infinium
             this.kryptonBorderEdge9.Margin = new System.Windows.Forms.Padding(10, 0, 0, 0);
             this.kryptonBorderEdge9.Name = "kryptonBorderEdge9";
             this.kryptonBorderEdge9.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge9.Size = new System.Drawing.Size(1, 244);
+            this.kryptonBorderEdge9.Size = new System.Drawing.Size(1, 274);
             this.kryptonBorderEdge9.StateCommon.Color1 = System.Drawing.Color.Black;
             this.kryptonBorderEdge9.Text = "kryptonBorderEdge9";
             // 
@@ -707,7 +704,7 @@ namespace Infinium
             this.MainOrdersTabControl.LookAndFeel.UseDefaultLookAndFeel = false;
             this.MainOrdersTabControl.Name = "MainOrdersTabControl";
             this.MainOrdersTabControl.SelectedTabPage = this.xtraTabPage1;
-            this.MainOrdersTabControl.Size = new System.Drawing.Size(1244, 266);
+            this.MainOrdersTabControl.Size = new System.Drawing.Size(1244, 235);
             this.MainOrdersTabControl.TabIndex = 57;
             this.MainOrdersTabControl.TabPages.AddRange(new DevExpress.XtraTab.XtraTabPage[] {
             this.xtraTabPage1,
@@ -718,7 +715,7 @@ namespace Infinium
             this.xtraTabPage1.Controls.Add(this.MainOrdersFrontsOrdersDataGrid);
             this.xtraTabPage1.Enabled = true;
             this.xtraTabPage1.Name = "xtraTabPage1";
-            this.xtraTabPage1.Size = new System.Drawing.Size(1238, 230);
+            this.xtraTabPage1.Size = new System.Drawing.Size(1238, 199);
             this.xtraTabPage1.Text = "      Фасады      ";
             // 
             // MainOrdersFrontsOrdersDataGrid
@@ -742,7 +739,7 @@ namespace Infinium
             this.MainOrdersFrontsOrdersDataGrid.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.MainOrdersFrontsOrdersDataGrid.SelectedColorStyle = Infinium.PercentageDataGrid.ColorStyle.Green;
             this.MainOrdersFrontsOrdersDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.MainOrdersFrontsOrdersDataGrid.Size = new System.Drawing.Size(1238, 230);
+            this.MainOrdersFrontsOrdersDataGrid.Size = new System.Drawing.Size(1238, 199);
             this.MainOrdersFrontsOrdersDataGrid.StandardStyle = false;
             this.MainOrdersFrontsOrdersDataGrid.StateCommon.Background.Color1 = System.Drawing.Color.White;
             this.MainOrdersFrontsOrdersDataGrid.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
@@ -786,7 +783,7 @@ namespace Infinium
             this.xtraTabPage2.Controls.Add(this.MainOrdersDecorTabControl);
             this.xtraTabPage2.Enabled = true;
             this.xtraTabPage2.Name = "xtraTabPage2";
-            this.xtraTabPage2.Size = new System.Drawing.Size(1238, 230);
+            this.xtraTabPage2.Size = new System.Drawing.Size(1238, 229);
             this.xtraTabPage2.Text = "      Декор      ";
             // 
             // MainOrdersDecorTabControl
@@ -802,7 +799,7 @@ namespace Infinium
             this.MainOrdersDecorTabControl.Location = new System.Drawing.Point(0, 0);
             this.MainOrdersDecorTabControl.LookAndFeel.SkinName = "Office 2010 Black";
             this.MainOrdersDecorTabControl.Name = "MainOrdersDecorTabControl";
-            this.MainOrdersDecorTabControl.Size = new System.Drawing.Size(1238, 230);
+            this.MainOrdersDecorTabControl.Size = new System.Drawing.Size(1238, 229);
             this.MainOrdersDecorTabControl.TabIndex = 0;
             // 
             // tableLayoutPanel1
@@ -894,6 +891,7 @@ namespace Infinium
             // 
             this.MenuPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.MenuPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(140)))), ((int)(((byte)(140)))), ((int)(((byte)(140)))));
+            this.MenuPanel.Controls.Add(this.panel9);
             this.MenuPanel.Controls.Add(this.ManagerCheckBox);
             this.MenuPanel.Controls.Add(this.panel8);
             this.MenuPanel.Controls.Add(this.label10);
@@ -901,8 +899,6 @@ namespace Infinium
             this.MenuPanel.Controls.Add(this.panel6);
             this.MenuPanel.Controls.Add(this.label11);
             this.MenuPanel.Controls.Add(this.panel5);
-            this.MenuPanel.Controls.Add(this.panel4);
-            this.MenuPanel.Controls.Add(this.label4);
             this.MenuPanel.Controls.Add(this.panel3);
             this.MenuPanel.Controls.Add(this.ClientCheckBox);
             this.MenuPanel.Controls.Add(this.panel7);
@@ -911,15 +907,39 @@ namespace Infinium
             this.MenuPanel.Controls.Add(this.kryptonBorderEdge22);
             this.MenuPanel.Controls.Add(this.kryptonBorderEdge23);
             this.MenuPanel.Controls.Add(this.label2);
-            this.MenuPanel.Location = new System.Drawing.Point(502, 52);
+            this.MenuPanel.Location = new System.Drawing.Point(464, 52);
             this.MenuPanel.Name = "MenuPanel";
-            this.MenuPanel.Size = new System.Drawing.Size(770, 579);
+            this.MenuPanel.Size = new System.Drawing.Size(808, 579);
             this.MenuPanel.TabIndex = 257;
             this.MenuPanel.Visible = false;
             // 
+            // panel9
+            // 
+            this.panel9.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel9.Controls.Add(this.dtDateFilterTo);
+            this.panel9.Controls.Add(this.label4);
+            this.panel9.Controls.Add(this.dtDateFilterFrom);
+            this.panel9.Controls.Add(this.label5);
+            this.panel9.Controls.Add(this.cbDateFilter);
+            this.panel9.Location = new System.Drawing.Point(13, 200);
+            this.panel9.Name = "panel9";
+            this.panel9.Size = new System.Drawing.Size(419, 213);
+            this.panel9.TabIndex = 421;
+            // 
+            // cbDateFilter
+            // 
+            this.cbDateFilter.Location = new System.Drawing.Point(3, 3);
+            this.cbDateFilter.Name = "cbDateFilter";
+            this.cbDateFilter.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.cbDateFilter.Size = new System.Drawing.Size(79, 23);
+            this.cbDateFilter.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
+            this.cbDateFilter.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.cbDateFilter.TabIndex = 417;
+            this.cbDateFilter.Values.Text = "По дате";
+            // 
             // ManagerCheckBox
             // 
-            this.ManagerCheckBox.Location = new System.Drawing.Point(407, 349);
+            this.ManagerCheckBox.Location = new System.Drawing.Point(446, 349);
             this.ManagerCheckBox.Name = "ManagerCheckBox";
             this.ManagerCheckBox.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.ManagerCheckBox.Size = new System.Drawing.Size(122, 28);
@@ -937,7 +957,7 @@ namespace Infinium
             this.panel8.Controls.Add(this.kryptonBorderEdge17);
             this.panel8.Controls.Add(this.kryptonBorderEdge26);
             this.panel8.Controls.Add(this.FilterManagersDataGrid);
-            this.panel8.Location = new System.Drawing.Point(406, 383);
+            this.panel8.Location = new System.Drawing.Point(445, 383);
             this.panel8.Margin = new System.Windows.Forms.Padding(10, 3, 3, 3);
             this.panel8.Name = "panel8";
             this.panel8.Size = new System.Drawing.Size(355, 185);
@@ -1038,7 +1058,7 @@ namespace Infinium
             this.panel6.Controls.Add(this.DispatchCheckBox);
             this.panel6.Location = new System.Drawing.Point(203, 33);
             this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(197, 216);
+            this.panel6.Size = new System.Drawing.Size(197, 161);
             this.panel6.TabIndex = 409;
             // 
             // kryptonBorderEdge19
@@ -1057,9 +1077,9 @@ namespace Infinium
             this.NotProductionCheckBox.Location = new System.Drawing.Point(3, 3);
             this.NotProductionCheckBox.Name = "NotProductionCheckBox";
             this.NotProductionCheckBox.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.NotProductionCheckBox.Size = new System.Drawing.Size(177, 26);
+            this.NotProductionCheckBox.Size = new System.Drawing.Size(158, 23);
             this.NotProductionCheckBox.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
-            this.NotProductionCheckBox.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.NotProductionCheckBox.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
             this.NotProductionCheckBox.TabIndex = 357;
             this.NotProductionCheckBox.Values.Text = "Не в производстве";
             this.NotProductionCheckBox.CheckedChanged += new System.EventHandler(this.NotProductionCheckBox_CheckedChanged);
@@ -1068,12 +1088,12 @@ namespace Infinium
             // 
             this.InProductionCheckBox.Checked = true;
             this.InProductionCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.InProductionCheckBox.Location = new System.Drawing.Point(3, 68);
+            this.InProductionCheckBox.Location = new System.Drawing.Point(3, 49);
             this.InProductionCheckBox.Name = "InProductionCheckBox";
             this.InProductionCheckBox.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.InProductionCheckBox.Size = new System.Drawing.Size(152, 26);
+            this.InProductionCheckBox.Size = new System.Drawing.Size(136, 23);
             this.InProductionCheckBox.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
-            this.InProductionCheckBox.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.InProductionCheckBox.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
             this.InProductionCheckBox.TabIndex = 358;
             this.InProductionCheckBox.Values.Text = "В производстве";
             this.InProductionCheckBox.CheckedChanged += new System.EventHandler(this.InProductionCheckBox_CheckedChanged);
@@ -1082,12 +1102,12 @@ namespace Infinium
             // 
             this.OnProductionCheckBox.Checked = true;
             this.OnProductionCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.OnProductionCheckBox.Location = new System.Drawing.Point(3, 37);
+            this.OnProductionCheckBox.Location = new System.Drawing.Point(3, 26);
             this.OnProductionCheckBox.Name = "OnProductionCheckBox";
             this.OnProductionCheckBox.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.OnProductionCheckBox.Size = new System.Drawing.Size(163, 26);
+            this.OnProductionCheckBox.Size = new System.Drawing.Size(145, 23);
             this.OnProductionCheckBox.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
-            this.OnProductionCheckBox.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.OnProductionCheckBox.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
             this.OnProductionCheckBox.TabIndex = 363;
             this.OnProductionCheckBox.Values.Text = "На производстве";
             this.OnProductionCheckBox.CheckedChanged += new System.EventHandler(this.OnProductionCheckBox_CheckedChanged);
@@ -1096,12 +1116,12 @@ namespace Infinium
             // 
             this.OnStorageCheckBox.Checked = true;
             this.OnStorageCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.OnStorageCheckBox.Location = new System.Drawing.Point(3, 102);
+            this.OnStorageCheckBox.Location = new System.Drawing.Point(3, 72);
             this.OnStorageCheckBox.Name = "OnStorageCheckBox";
             this.OnStorageCheckBox.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.OnStorageCheckBox.Size = new System.Drawing.Size(106, 26);
+            this.OnStorageCheckBox.Size = new System.Drawing.Size(95, 23);
             this.OnStorageCheckBox.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
-            this.OnStorageCheckBox.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.OnStorageCheckBox.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
             this.OnStorageCheckBox.TabIndex = 368;
             this.OnStorageCheckBox.Values.Text = "На складе";
             this.OnStorageCheckBox.CheckedChanged += new System.EventHandler(this.OnStorageCheckBox_CheckedChanged);
@@ -1110,24 +1130,24 @@ namespace Infinium
             // 
             this.cbOnExpedition.Checked = true;
             this.cbOnExpedition.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbOnExpedition.Location = new System.Drawing.Point(3, 136);
+            this.cbOnExpedition.Location = new System.Drawing.Point(3, 95);
             this.cbOnExpedition.Name = "cbOnExpedition";
             this.cbOnExpedition.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.cbOnExpedition.Size = new System.Drawing.Size(147, 26);
+            this.cbOnExpedition.Size = new System.Drawing.Size(131, 23);
             this.cbOnExpedition.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
-            this.cbOnExpedition.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.cbOnExpedition.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
             this.cbOnExpedition.TabIndex = 386;
             this.cbOnExpedition.Values.Text = "На экспедиции";
             this.cbOnExpedition.CheckedChanged += new System.EventHandler(this.cbOnExpedition_CheckedChanged);
             // 
             // DispatchCheckBox
             // 
-            this.DispatchCheckBox.Location = new System.Drawing.Point(3, 170);
+            this.DispatchCheckBox.Location = new System.Drawing.Point(3, 118);
             this.DispatchCheckBox.Name = "DispatchCheckBox";
             this.DispatchCheckBox.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.DispatchCheckBox.Size = new System.Drawing.Size(114, 26);
+            this.DispatchCheckBox.Size = new System.Drawing.Size(102, 23);
             this.DispatchCheckBox.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
-            this.DispatchCheckBox.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.DispatchCheckBox.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
             this.DispatchCheckBox.TabIndex = 369;
             this.DispatchCheckBox.Values.Text = "Отгружено";
             this.DispatchCheckBox.CheckedChanged += new System.EventHandler(this.DispatchCheckBox_CheckedChanged);
@@ -1152,19 +1172,19 @@ namespace Infinium
             this.panel5.Controls.Add(this.ConfirmCheckBox);
             this.panel5.Location = new System.Drawing.Point(10, 33);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(188, 111);
+            this.panel5.Size = new System.Drawing.Size(170, 104);
             this.panel5.TabIndex = 407;
             // 
             // OnAgreementCheckBox
             // 
             this.OnAgreementCheckBox.Checked = true;
             this.OnAgreementCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.OnAgreementCheckBox.Location = new System.Drawing.Point(3, 29);
+            this.OnAgreementCheckBox.Location = new System.Drawing.Point(3, 26);
             this.OnAgreementCheckBox.Name = "OnAgreementCheckBox";
             this.OnAgreementCheckBox.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.OnAgreementCheckBox.Size = new System.Drawing.Size(162, 26);
+            this.OnAgreementCheckBox.Size = new System.Drawing.Size(144, 23);
             this.OnAgreementCheckBox.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
-            this.OnAgreementCheckBox.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.OnAgreementCheckBox.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
             this.OnAgreementCheckBox.TabIndex = 353;
             this.OnAgreementCheckBox.Values.Text = "На согласовании";
             this.OnAgreementCheckBox.CheckedChanged += new System.EventHandler(this.OnAgreementCheckBox_CheckedChanged);
@@ -1174,7 +1194,7 @@ namespace Infinium
             this.kryptonBorderEdge18.Dock = System.Windows.Forms.DockStyle.Top;
             this.kryptonBorderEdge18.Location = new System.Drawing.Point(0, 0);
             this.kryptonBorderEdge18.Name = "kryptonBorderEdge18";
-            this.kryptonBorderEdge18.Size = new System.Drawing.Size(188, 1);
+            this.kryptonBorderEdge18.Size = new System.Drawing.Size(170, 1);
             this.kryptonBorderEdge18.StateCommon.Color1 = System.Drawing.Color.White;
             this.kryptonBorderEdge18.Text = "kryptonBorderEdge18";
             // 
@@ -1185,9 +1205,9 @@ namespace Infinium
             this.NotAgreedCheckBox.Location = new System.Drawing.Point(3, 3);
             this.NotAgreedCheckBox.Name = "NotAgreedCheckBox";
             this.NotAgreedCheckBox.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.NotAgreedCheckBox.Size = new System.Drawing.Size(112, 26);
+            this.NotAgreedCheckBox.Size = new System.Drawing.Size(101, 23);
             this.NotAgreedCheckBox.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
-            this.NotAgreedCheckBox.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.NotAgreedCheckBox.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
             this.NotAgreedCheckBox.TabIndex = 346;
             this.NotAgreedCheckBox.Values.Text = "Оформлен";
             this.NotAgreedCheckBox.CheckedChanged += new System.EventHandler(this.NotAgreedCheckBox_CheckedChanged);
@@ -1196,12 +1216,12 @@ namespace Infinium
             // 
             this.NotConfirmCheckBox.Checked = true;
             this.NotConfirmCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.NotConfirmCheckBox.Location = new System.Drawing.Point(3, 55);
+            this.NotConfirmCheckBox.Location = new System.Drawing.Point(3, 49);
             this.NotConfirmCheckBox.Name = "NotConfirmCheckBox";
             this.NotConfirmCheckBox.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.NotConfirmCheckBox.Size = new System.Drawing.Size(150, 26);
+            this.NotConfirmCheckBox.Size = new System.Drawing.Size(134, 23);
             this.NotConfirmCheckBox.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
-            this.NotConfirmCheckBox.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.NotConfirmCheckBox.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
             this.NotConfirmCheckBox.TabIndex = 347;
             this.NotConfirmCheckBox.Values.Text = "Не подтвержен";
             this.NotConfirmCheckBox.CheckedChanged += new System.EventHandler(this.NotConfirmCheckBox_CheckedChanged);
@@ -1210,134 +1230,15 @@ namespace Infinium
             // 
             this.ConfirmCheckBox.Checked = true;
             this.ConfirmCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ConfirmCheckBox.Location = new System.Drawing.Point(3, 81);
+            this.ConfirmCheckBox.Location = new System.Drawing.Point(3, 72);
             this.ConfirmCheckBox.Name = "ConfirmCheckBox";
             this.ConfirmCheckBox.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.ConfirmCheckBox.Size = new System.Drawing.Size(117, 26);
+            this.ConfirmCheckBox.Size = new System.Drawing.Size(105, 23);
             this.ConfirmCheckBox.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
-            this.ConfirmCheckBox.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.ConfirmCheckBox.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
             this.ConfirmCheckBox.TabIndex = 352;
             this.ConfirmCheckBox.Values.Text = "Согласован";
             this.ConfirmCheckBox.CheckedChanged += new System.EventHandler(this.ConfirmCheckBox_CheckedChanged);
-            // 
-            // panel4
-            // 
-            this.panel4.Controls.Add(this.kryptonCheckBox2);
-            this.panel4.Controls.Add(this.kryptonCheckBox1);
-            this.panel4.Controls.Add(this.kryptonBorderEdge10);
-            this.panel4.Controls.Add(this.cbDelayOfPayment);
-            this.panel4.Controls.Add(this.cbFactoring);
-            this.panel4.Controls.Add(this.cbHalfOfPayment);
-            this.panel4.Controls.Add(this.cbFullPayment);
-            this.panel4.Location = new System.Drawing.Point(10, 168);
-            this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(188, 193);
-            this.panel4.TabIndex = 402;
-            // 
-            // kryptonCheckBox2
-            // 
-            this.kryptonCheckBox2.Checked = true;
-            this.kryptonCheckBox2.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.kryptonCheckBox2.Location = new System.Drawing.Point(3, 169);
-            this.kryptonCheckBox2.Name = "kryptonCheckBox2";
-            this.kryptonCheckBox2.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.kryptonCheckBox2.Size = new System.Drawing.Size(161, 26);
-            this.kryptonCheckBox2.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
-            this.kryptonCheckBox2.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.kryptonCheckBox2.TabIndex = 396;
-            this.kryptonCheckBox2.Values.Text = "Отсрочка (3 дня)";
-            this.kryptonCheckBox2.Visible = false;
-            // 
-            // kryptonCheckBox1
-            // 
-            this.kryptonCheckBox1.Checked = true;
-            this.kryptonCheckBox1.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.kryptonCheckBox1.Location = new System.Drawing.Point(3, 137);
-            this.kryptonCheckBox1.Name = "kryptonCheckBox1";
-            this.kryptonCheckBox1.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.kryptonCheckBox1.Size = new System.Drawing.Size(98, 26);
-            this.kryptonCheckBox1.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
-            this.kryptonCheckBox1.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.kryptonCheckBox1.TabIndex = 395;
-            this.kryptonCheckBox1.Values.Text = "75%-25%";
-            this.kryptonCheckBox1.Visible = false;
-            // 
-            // kryptonBorderEdge10
-            // 
-            this.kryptonBorderEdge10.Dock = System.Windows.Forms.DockStyle.Top;
-            this.kryptonBorderEdge10.Location = new System.Drawing.Point(0, 0);
-            this.kryptonBorderEdge10.Name = "kryptonBorderEdge10";
-            this.kryptonBorderEdge10.Size = new System.Drawing.Size(188, 1);
-            this.kryptonBorderEdge10.StateCommon.Color1 = System.Drawing.Color.White;
-            this.kryptonBorderEdge10.Text = "kryptonBorderEdge10";
-            // 
-            // cbDelayOfPayment
-            // 
-            this.cbDelayOfPayment.Checked = true;
-            this.cbDelayOfPayment.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbDelayOfPayment.Location = new System.Drawing.Point(3, 3);
-            this.cbDelayOfPayment.Name = "cbDelayOfPayment";
-            this.cbDelayOfPayment.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.cbDelayOfPayment.Size = new System.Drawing.Size(101, 26);
-            this.cbDelayOfPayment.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
-            this.cbDelayOfPayment.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.cbDelayOfPayment.TabIndex = 391;
-            this.cbDelayOfPayment.Values.Text = "Отсрочка";
-            this.cbDelayOfPayment.Visible = false;
-            // 
-            // cbFactoring
-            // 
-            this.cbFactoring.Checked = true;
-            this.cbFactoring.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbFactoring.Location = new System.Drawing.Point(3, 105);
-            this.cbFactoring.Name = "cbFactoring";
-            this.cbFactoring.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.cbFactoring.Size = new System.Drawing.Size(112, 26);
-            this.cbFactoring.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
-            this.cbFactoring.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.cbFactoring.TabIndex = 394;
-            this.cbFactoring.Values.Text = "Факторинг";
-            this.cbFactoring.Visible = false;
-            // 
-            // cbHalfOfPayment
-            // 
-            this.cbHalfOfPayment.Checked = true;
-            this.cbHalfOfPayment.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbHalfOfPayment.Location = new System.Drawing.Point(3, 37);
-            this.cbHalfOfPayment.Name = "cbHalfOfPayment";
-            this.cbHalfOfPayment.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.cbHalfOfPayment.Size = new System.Drawing.Size(98, 26);
-            this.cbHalfOfPayment.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
-            this.cbHalfOfPayment.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.cbHalfOfPayment.TabIndex = 392;
-            this.cbHalfOfPayment.Values.Text = "50%-50%";
-            this.cbHalfOfPayment.Visible = false;
-            // 
-            // cbFullPayment
-            // 
-            this.cbFullPayment.Checked = true;
-            this.cbFullPayment.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbFullPayment.Location = new System.Drawing.Point(3, 71);
-            this.cbFullPayment.Name = "cbFullPayment";
-            this.cbFullPayment.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
-            this.cbFullPayment.Size = new System.Drawing.Size(169, 26);
-            this.cbFullPayment.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
-            this.cbFullPayment.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.cbFullPayment.TabIndex = 393;
-            this.cbFullPayment.Values.Text = "Предоплата 100%";
-            this.cbFullPayment.Visible = false;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Segoe UI", 17.81F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.label4.ForeColor = System.Drawing.Color.White;
-            this.label4.Location = new System.Drawing.Point(5, 140);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(143, 25);
-            this.label4.TabIndex = 399;
-            this.label4.Text = "Условия оплаты";
-            this.label4.Visible = false;
             // 
             // panel3
             // 
@@ -1573,7 +1474,7 @@ namespace Infinium
             // 
             // ClientCheckBox
             // 
-            this.ClientCheckBox.Location = new System.Drawing.Point(407, 8);
+            this.ClientCheckBox.Location = new System.Drawing.Point(446, 8);
             this.ClientCheckBox.Name = "ClientCheckBox";
             this.ClientCheckBox.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.ClientCheckBox.Size = new System.Drawing.Size(89, 28);
@@ -1591,7 +1492,7 @@ namespace Infinium
             this.panel7.Controls.Add(this.kryptonBorderEdge31);
             this.panel7.Controls.Add(this.kryptonBorderEdge32);
             this.panel7.Controls.Add(this.kryptonBorderEdge33);
-            this.panel7.Location = new System.Drawing.Point(406, 42);
+            this.panel7.Location = new System.Drawing.Point(445, 42);
             this.panel7.Margin = new System.Windows.Forms.Padding(10, 3, 3, 3);
             this.panel7.Name = "panel7";
             this.panel7.Size = new System.Drawing.Size(355, 301);
@@ -1698,7 +1599,7 @@ namespace Infinium
             this.kryptonBorderEdge15.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.kryptonBorderEdge15.AutoSize = false;
-            this.kryptonBorderEdge15.Location = new System.Drawing.Point(768, 1);
+            this.kryptonBorderEdge15.Location = new System.Drawing.Point(806, 1);
             this.kryptonBorderEdge15.Name = "kryptonBorderEdge15";
             this.kryptonBorderEdge15.Orientation = System.Windows.Forms.Orientation.Vertical;
             this.kryptonBorderEdge15.Size = new System.Drawing.Size(1, 577);
@@ -1712,7 +1613,7 @@ namespace Infinium
             this.kryptonBorderEdge16.AutoSize = false;
             this.kryptonBorderEdge16.Location = new System.Drawing.Point(1, 577);
             this.kryptonBorderEdge16.Name = "kryptonBorderEdge16";
-            this.kryptonBorderEdge16.Size = new System.Drawing.Size(768, 1);
+            this.kryptonBorderEdge16.Size = new System.Drawing.Size(806, 1);
             this.kryptonBorderEdge16.StateCommon.Color1 = System.Drawing.Color.White;
             this.kryptonBorderEdge16.Text = "kryptonBorderEdge16";
             this.kryptonBorderEdge16.Visible = false;
@@ -1724,7 +1625,7 @@ namespace Infinium
             this.kryptonBorderEdge22.AutoSize = false;
             this.kryptonBorderEdge22.Location = new System.Drawing.Point(1, 1);
             this.kryptonBorderEdge22.Name = "kryptonBorderEdge22";
-            this.kryptonBorderEdge22.Size = new System.Drawing.Size(768, 1);
+            this.kryptonBorderEdge22.Size = new System.Drawing.Size(806, 1);
             this.kryptonBorderEdge22.StateCommon.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(123)))), ((int)(((byte)(97)))));
             this.kryptonBorderEdge22.Text = "kryptonBorderEdge22";
             // 
@@ -2465,6 +2366,62 @@ namespace Infinium
             // 
             this.kryptonContextMenuCheckButton1.Text = "CheckButton";
             // 
+            // dtDateFilterTo
+            // 
+            this.dtDateFilterTo.Location = new System.Drawing.Point(212, 52);
+            this.dtDateFilterTo.MaxSelectionCount = 1;
+            this.dtDateFilterTo.Name = "dtDateFilterTo";
+            this.dtDateFilterTo.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.dtDateFilterTo.SelectionEnd = new System.DateTime(2019, 9, 8, 0, 0, 0, 0);
+            this.dtDateFilterTo.SelectionStart = new System.DateTime(2019, 9, 8, 0, 0, 0, 0);
+            this.dtDateFilterTo.ShowWeekNumbers = true;
+            this.dtDateFilterTo.Size = new System.Drawing.Size(193, 157);
+            this.dtDateFilterTo.StateCommon.Day.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.dtDateFilterTo.StateCommon.DayOfWeek.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.dtDateFilterTo.StateCommon.Header.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.dtDateFilterTo.TabIndex = 421;
+            this.dtDateFilterTo.TodayDate = new System.DateTime(2019, 9, 8, 0, 0, 0, 0);
+            this.dtDateFilterTo.DateChanged += new System.Windows.Forms.DateRangeEventHandler(this.dtDateFilterTo_DateChanged);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.label4.ForeColor = System.Drawing.Color.White;
+            this.label4.Location = new System.Drawing.Point(209, 30);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(32, 17);
+            this.label4.TabIndex = 419;
+            this.label4.Text = "по...";
+            // 
+            // dtDateFilterFrom
+            // 
+            this.dtDateFilterFrom.Location = new System.Drawing.Point(7, 52);
+            this.dtDateFilterFrom.MaxSelectionCount = 1;
+            this.dtDateFilterFrom.Name = "dtDateFilterFrom";
+            this.dtDateFilterFrom.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.dtDateFilterFrom.SelectionEnd = new System.DateTime(2019, 9, 8, 0, 0, 0, 0);
+            this.dtDateFilterFrom.SelectionStart = new System.DateTime(2019, 9, 8, 0, 0, 0, 0);
+            this.dtDateFilterFrom.ShowWeekNumbers = true;
+            this.dtDateFilterFrom.Size = new System.Drawing.Size(193, 157);
+            this.dtDateFilterFrom.StateCommon.Day.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.dtDateFilterFrom.StateCommon.DayOfWeek.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.dtDateFilterFrom.StateCommon.Header.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.dtDateFilterFrom.TabIndex = 420;
+            this.dtDateFilterFrom.TodayDate = new System.DateTime(((long)(0)));
+            this.dtDateFilterFrom.DateChanged += new System.Windows.Forms.DateRangeEventHandler(this.dtDateFilterFrom_DateChanged);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.label5.ForeColor = System.Drawing.Color.White;
+            this.label5.Location = new System.Drawing.Point(5, 30);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(73, 17);
+            this.label5.TabIndex = 418;
+            this.label5.Text = "Период с...";
+            // 
             // MarketingNewOrdersForm
             // 
             this.AccessibleName = "false";
@@ -2516,6 +2473,8 @@ namespace Infinium
             this.tableLayoutPanel1.ResumeLayout(false);
             this.MenuPanel.ResumeLayout(false);
             this.MenuPanel.PerformLayout();
+            this.panel9.ResumeLayout(false);
+            this.panel9.PerformLayout();
             this.panel8.ResumeLayout(false);
             this.panel8.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.FilterManagersDataGrid)).EndInit();
@@ -2523,8 +2482,6 @@ namespace Infinium
             this.panel6.PerformLayout();
             this.panel5.ResumeLayout(false);
             this.panel5.PerformLayout();
-            this.panel4.ResumeLayout(false);
-            this.panel4.PerformLayout();
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
             this.panel7.ResumeLayout(false);
@@ -2647,13 +2604,6 @@ namespace Infinium
         private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem kryptonContextMenuItem10;
         private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem kryptonContextMenuItem11;
         private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem kryptonContextMenuItem13;
-        private ComponentFactory.Krypton.Toolkit.KryptonCheckBox cbFullPayment;
-        private ComponentFactory.Krypton.Toolkit.KryptonCheckBox cbHalfOfPayment;
-        private ComponentFactory.Krypton.Toolkit.KryptonCheckBox cbDelayOfPayment;
-        private ComponentFactory.Krypton.Toolkit.KryptonCheckBox cbFactoring;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge10;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Panel panel6;
         private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge19;
@@ -2687,8 +2637,6 @@ namespace Infinium
         private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItems kryptonContextMenuItems8;
         private ComponentFactory.Krypton.Toolkit.KryptonContextMenuCheckBox kryptonContextMenuCheckBox2;
         private ComponentFactory.Krypton.Toolkit.KryptonContextMenuCheckButton kryptonContextMenuCheckButton1;
-        private ComponentFactory.Krypton.Toolkit.KryptonCheckBox kryptonCheckBox2;
-        private ComponentFactory.Krypton.Toolkit.KryptonCheckBox kryptonCheckBox1;
         private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem btnSetAgreementStatus;
         private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem btnDeleteAgreedOrder;
         private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem btnDeleteAgreedMainOrder;
@@ -2706,5 +2654,11 @@ namespace Infinium
         private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge17;
         private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge26;
         private DataGridView FilterManagersDataGrid;
+        private Panel panel9;
+        private ComponentFactory.Krypton.Toolkit.KryptonCheckBox cbDateFilter;
+        private ComponentFactory.Krypton.Toolkit.KryptonMonthCalendar dtDateFilterTo;
+        private Label label4;
+        private ComponentFactory.Krypton.Toolkit.KryptonMonthCalendar dtDateFilterFrom;
+        private Label label5;
     }
 }
