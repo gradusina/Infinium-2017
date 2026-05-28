@@ -48,6 +48,7 @@ namespace Infinium
             bEdit = true;
 
             ProjectNameTextEdit.Text = InfiniumProjects.ProjectsDataTable.Select("ProjectID = " + ProjectID)[0]["ProjectName"].ToString();
+            tbArticle.Text = InfiniumProjects.ProjectsDataTable.Select("ProjectID = " + ProjectID)[0]["article"].ToString();
             ProjectDescriptionRichTextBox.Text = InfiniumProjects.ProjectsDataTable.Select("ProjectID = " + ProjectID)[0]["ProjectDescription"].ToString();
             ProposCheckBox.Checked = Convert.ToBoolean(InfiniumProjects.ProjectsDataTable.Select("ProjectID = " + ProjectID)[0]["IsProposition"]);
 
@@ -260,7 +261,7 @@ namespace Infinium
                 InfiniumTips.ShowTip(this, 50, 85, "Введите название проекта", 2300);
                 return;
             }
-
+            
             if (ProjectDescriptionRichTextBox.Text.Length < 1)
             {
                 InfiniumTips.ShowTip(this, 50, 85, "Введите описание проекта", 2300);
@@ -303,13 +304,13 @@ namespace Infinium
 
             if (!bEdit)
             {
-                ProjectID = InfiniumProjects.AddProject(MembersTree, ProjectNameTextEdit.Text, ProjectDescriptionRichTextBox.Text,
+                ProjectID = InfiniumProjects.AddProject(MembersTree, ProjectNameTextEdit.Text, tbArticle.Text, ProjectDescriptionRichTextBox.Text,
                                         Security.CurrentUserID, ProposCheckBox.Checked);
 
                 InfiniumProjects.AddProjectSubscribe(ProjectID, MembersTree, AllUsersNotifyCheckBox.Checked, ProposCheckBox.Checked);
             }
             else
-                InfiniumProjects.EditProject(MembersTree, bNeedMembersUpdate, ProjectNameTextEdit.Text, ProjectDescriptionRichTextBox.Text,
+                InfiniumProjects.EditProject(MembersTree, bNeedMembersUpdate, ProjectNameTextEdit.Text, tbArticle.Text, ProjectDescriptionRichTextBox.Text,
                                              ProjectID, ProposCheckBox.Checked);
 
             FormEvent = eClose;
@@ -329,6 +330,52 @@ namespace Infinium
         private void ProjectDescriptionRichTextBox_TextChanged(object sender, EventArgs e)
         {
             DescCountLabel.Text = (ProjectDescriptionRichTextBox.MaxLength - ProjectDescriptionRichTextBox.Text.Length) + " символов осталось";
+        }
+
+        public void SearchMembersTree(string searchText)
+        {
+            if (InfiniumProjects.DepartmentsDataTable.Rows.Count > 0)
+            {
+                foreach (DataRow Row in InfiniumProjects.DepartmentsDataTable.Rows)
+                {
+                    foreach (TreeNode Node in MembersTree.Nodes)
+                    {
+                        if (Node.Text.Contains(searchText))
+                            Node.Expand();
+                    }
+                }
+            }
+
+            if (InfiniumProjects.UsersDataTable.Rows.Count > 0)
+            {
+                bool Expand = false;
+                foreach (DataRow Row in InfiniumProjects.UsersDataTable.Rows)
+                {
+                    if (Expand)
+                        break;
+                    foreach (TreeNode Node in MembersTree.Nodes)
+                    {
+                        if (Expand)
+                            break;
+                        foreach (TreeNode SubNode in Node.Nodes)
+                            if (SubNode.Text.ToLower().Contains(searchText.ToLower()))
+                            {
+                                Node.Expand();
+                                MembersTree.SelectedNode = Node;
+                                bool b = Node.IsSelected;
+                                Expand = true;
+                                break;
+                            }
+                    }
+                }
+            }
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            var searchText = textBox1.Text;
+            SearchMembersTree(searchText);
+            //textBox1.Clear();
         }
     }
 }

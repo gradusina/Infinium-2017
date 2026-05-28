@@ -62,6 +62,12 @@ namespace Infinium.Modules.WorkAssignments
         private DataTable BergamoSimpleDT;
         private DataTable BergamoVitrinaDT;
 
+        private DataTable DunaGlassDT;
+        private DataTable DunaGridsDT;
+        private DataTable DunaOrdersDT;
+        private DataTable DunaSimpleDT;
+        private DataTable DunaVitrinaDT;
+
         private DataTable KorsikaGlassDT;
         private DataTable KorsikaGridsDT;
         private DataTable KorsikaOrdersDT;
@@ -206,10 +212,42 @@ namespace Infinium.Modules.WorkAssignments
         private DataTable MilanoOrdersDT;
         private DataTable MilanoSimpleDT;
         private DataTable MilanoVitrinaDT;
+
+        private DataTable Boston3GridsDT;
+        private DataTable Boston3OrdersDT;
+        private DataTable Boston3SimpleDT;
+        private DataTable Boston3VitrinaDT;
+
+        private DataTable Boston4GridsDT;
+        private DataTable Boston4OrdersDT;
+        private DataTable Boston4SimpleDT;
+        private DataTable Boston4VitrinaDT;
+
+        private DataTable Vest3GridsDT;
+        private DataTable Vest3OrdersDT;
+        private DataTable Vest3SimpleDT;
+        private DataTable Vest3VitrinaDT;
+
+        private DataTable Vegas3GridsDT;
+        private DataTable Vegas3OrdersDT;
+        private DataTable Vegas3SimpleDT;
+        private DataTable Vegas3VitrinaDT;
+
+        private DataTable kolibriGridsDT;
+        private DataTable kolibriOrdersDT;
+        private DataTable kolibriSimpleDT;
+        private DataTable kolibriVitrinaDT;
+
+        private DataTable Nord3GridsDT;
+        private DataTable Nord3OrdersDT;
+        private DataTable Nord3SimpleDT;
+        private DataTable Nord3VitrinaDT;
+
         private DataTable Nord95GridsDT;
         private DataTable Nord95OrdersDT;
         private DataTable Nord95SimpleDT;
         private DataTable Nord95VitrinaDT;
+
         private DataTable NotArchDecorOrdersDT;
         private DataTable PatinaRALDataTable = null;
         //DataTable ColorsDT;
@@ -1612,10 +1650,17 @@ namespace Infinium.Modules.WorkAssignments
             FrontsID.Clear();
             TechnoNOrdersDT.Clear();
             AntaliaOrdersDT.Clear();
+            Boston3OrdersDT.Clear();
+            Boston4OrdersDT.Clear();
+            Vest3OrdersDT.Clear();
+            Vegas3OrdersDT.Clear();
+            kolibriOrdersDT.Clear();
+            Nord3OrdersDT.Clear();
             Nord95OrdersDT.Clear();
             epFoxOrdersDT.Clear();
             VeneciaOrdersDT.Clear();
             BergamoOrdersDT.Clear();
+            DunaOrdersDT.Clear();
             ep041OrdersDT.Clear();
             ep071OrdersDT.Clear();
             ep206OrdersDT.Clear();
@@ -1973,6 +2018,48 @@ namespace Infinium.Modules.WorkAssignments
             AntaliaGridsDT.Clear();
             GetGridFronts(AntaliaOrdersDT, ref AntaliaGridsDT);
 
+            Boston3SimpleDT.Clear();
+            GetSimpleFronts(Boston3OrdersDT, ref Boston3SimpleDT);
+            Boston3VitrinaDT.Clear();
+            GetVitrinaFronts(Boston3OrdersDT, ref Boston3VitrinaDT);
+            Boston3GridsDT.Clear();
+            GetGridFronts(Boston3OrdersDT, ref Boston3GridsDT);
+
+            Boston4SimpleDT.Clear();
+            GetSimpleFronts(Boston4OrdersDT, ref Boston4SimpleDT);
+            Boston4VitrinaDT.Clear();
+            GetVitrinaFronts(Boston4OrdersDT, ref Boston4VitrinaDT);
+            Boston4GridsDT.Clear();
+            GetGridFronts(Boston4OrdersDT, ref Boston4GridsDT);
+
+            Vest3SimpleDT.Clear();
+            GetSimpleFronts(Vest3OrdersDT, ref Vest3SimpleDT);
+            Vest3VitrinaDT.Clear();
+            GetVitrinaFronts(Vest3OrdersDT, ref Vest3VitrinaDT);
+            Vest3GridsDT.Clear();
+            GetGridFronts(Vest3OrdersDT, ref Vest3GridsDT);
+
+            Vegas3SimpleDT.Clear();
+            GetSimpleFronts(Vegas3OrdersDT, ref Vegas3SimpleDT);
+            Vegas3VitrinaDT.Clear();
+            GetVitrinaFronts(Vegas3OrdersDT, ref Vegas3VitrinaDT);
+            Vegas3GridsDT.Clear();
+            GetGridFronts(Vegas3OrdersDT, ref Vegas3GridsDT);
+
+            kolibriSimpleDT.Clear();
+            GetSimpleFronts(kolibriOrdersDT, ref kolibriSimpleDT);
+            kolibriVitrinaDT.Clear();
+            GetVitrinaFronts(kolibriOrdersDT, ref kolibriVitrinaDT);
+            kolibriGridsDT.Clear();
+            GetGridFronts(kolibriOrdersDT, ref kolibriGridsDT);
+
+            Nord3SimpleDT.Clear();
+            GetSimpleFronts(Nord3OrdersDT, ref Nord3SimpleDT);
+            Nord3VitrinaDT.Clear();
+            GetVitrinaFronts(Nord3OrdersDT, ref Nord3VitrinaDT);
+            Nord3GridsDT.Clear();
+            GetGridFronts(Nord3OrdersDT, ref Nord3GridsDT);
+
             Nord95SimpleDT.Clear();
             GetSimpleFronts(Nord95OrdersDT, ref Nord95SimpleDT);
             Nord95VitrinaDT.Clear();
@@ -2002,6 +2089,15 @@ namespace Infinium.Modules.WorkAssignments
             GetGridFronts(BergamoOrdersDT, ref BergamoGridsDT);
             BergamoGlassDT.Clear();
             GetGlassFronts(BergamoOrdersDT, ref BergamoGlassDT);
+
+            DunaSimpleDT.Clear();
+            GetSimpleFronts(DunaOrdersDT, ref DunaSimpleDT);
+            DunaVitrinaDT.Clear();
+            GetVitrinaFronts(DunaOrdersDT, ref DunaVitrinaDT);
+            DunaGridsDT.Clear();
+            GetGridFronts(DunaOrdersDT, ref DunaGridsDT);
+            DunaGlassDT.Clear();
+            GetGlassFronts(DunaOrdersDT, ref DunaGlassDT);
 
             ep041SimpleDT.Clear();
             GetSimpleFronts(ep041OrdersDT, ref ep041SimpleDT);
@@ -2252,7 +2348,14 @@ namespace Infinium.Modules.WorkAssignments
             GetGridFronts(FatOrdersDT, ref FatGridsDT);
 
             if (TechnoNOrdersDT.Rows.Count == 0 && AntaliaOrdersDT.Rows.Count == 0 &&
-                Nord95OrdersDT.Rows.Count == 0 && epFoxOrdersDT.Rows.Count == 0 && VeneciaOrdersDT.Rows.Count == 0 && BergamoOrdersDT.Rows.Count == 0 &&
+                Boston3OrdersDT.Rows.Count == 0 && 
+                Boston4OrdersDT.Rows.Count == 0 && 
+                Vest3OrdersDT.Rows.Count == 0 && 
+                Vegas3OrdersDT.Rows.Count == 0 && 
+                kolibriOrdersDT.Rows.Count == 0 && 
+                Nord3OrdersDT.Rows.Count == 0 && 
+                Nord95OrdersDT.Rows.Count == 0 && 
+                epFoxOrdersDT.Rows.Count == 0 && VeneciaOrdersDT.Rows.Count == 0 && BergamoOrdersDT.Rows.Count == 0 && DunaOrdersDT.Rows.Count == 0 &&
                 ep041OrdersDT.Rows.Count == 0 && ep071OrdersDT.Rows.Count == 0 && ep206OrdersDT.Rows.Count == 0 && ep216OrdersDT.Rows.Count == 0 &&
                  ep111OrdersDT.Rows.Count == 0 &&
                 FenixOrdersDT.Rows.Count == 0 && 
@@ -2314,6 +2417,54 @@ namespace Infinium.Modules.WorkAssignments
                 AssemblySingly(Convert.ToInt32(DistFrameColorsDT.Rows[i]["ColorID"]), AntaliaGridsDT, ref DT1);
             }
             DistFrameColorsDT.Clear();
+            DistFrameColorsDT = DistFrameColorsTable(Boston3OrdersDT, true);
+            for (int i = 0; i < DistFrameColorsDT.Rows.Count; i++)
+            {
+                AssemblySingly(Convert.ToInt32(DistFrameColorsDT.Rows[i]["ColorID"]), Boston3SimpleDT, ref DT1);
+                AssemblySingly(Convert.ToInt32(DistFrameColorsDT.Rows[i]["ColorID"]), Boston3VitrinaDT, ref DT2);
+                AssemblySingly(Convert.ToInt32(DistFrameColorsDT.Rows[i]["ColorID"]), Boston3GridsDT, ref DT1);
+            }
+            DistFrameColorsDT.Clear();
+            DistFrameColorsDT = DistFrameColorsTable(Boston4OrdersDT, true);
+            for (int i = 0; i < DistFrameColorsDT.Rows.Count; i++)
+            {
+                AssemblySingly(Convert.ToInt32(DistFrameColorsDT.Rows[i]["ColorID"]), Boston4SimpleDT, ref DT1);
+                AssemblySingly(Convert.ToInt32(DistFrameColorsDT.Rows[i]["ColorID"]), Boston4VitrinaDT, ref DT2);
+                AssemblySingly(Convert.ToInt32(DistFrameColorsDT.Rows[i]["ColorID"]), Boston4GridsDT, ref DT1);
+            }
+            DistFrameColorsDT.Clear();
+            DistFrameColorsDT = DistFrameColorsTable(Vest3OrdersDT, true);
+            for (int i = 0; i < DistFrameColorsDT.Rows.Count; i++)
+            {
+                AssemblySingly(Convert.ToInt32(DistFrameColorsDT.Rows[i]["ColorID"]), Vest3SimpleDT, ref DT1);
+                AssemblySingly(Convert.ToInt32(DistFrameColorsDT.Rows[i]["ColorID"]), Vest3VitrinaDT, ref DT2);
+                AssemblySingly(Convert.ToInt32(DistFrameColorsDT.Rows[i]["ColorID"]), Vest3GridsDT, ref DT1);
+            }
+            DistFrameColorsDT.Clear();
+            DistFrameColorsDT = DistFrameColorsTable(Vegas3OrdersDT, true);
+            for (int i = 0; i < DistFrameColorsDT.Rows.Count; i++)
+            {
+                AssemblySingly(Convert.ToInt32(DistFrameColorsDT.Rows[i]["ColorID"]), Vegas3SimpleDT, ref DT1);
+                AssemblySingly(Convert.ToInt32(DistFrameColorsDT.Rows[i]["ColorID"]), Vegas3VitrinaDT, ref DT2);
+                AssemblySingly(Convert.ToInt32(DistFrameColorsDT.Rows[i]["ColorID"]), Vegas3GridsDT, ref DT1);
+            }
+            DistFrameColorsDT.Clear();
+            DistFrameColorsDT = DistFrameColorsTable(kolibriOrdersDT, true);
+            for (int i = 0; i < DistFrameColorsDT.Rows.Count; i++)
+            {
+                AssemblySingly(Convert.ToInt32(DistFrameColorsDT.Rows[i]["ColorID"]), kolibriSimpleDT, ref DT1);
+                AssemblySingly(Convert.ToInt32(DistFrameColorsDT.Rows[i]["ColorID"]), kolibriVitrinaDT, ref DT2);
+                AssemblySingly(Convert.ToInt32(DistFrameColorsDT.Rows[i]["ColorID"]), kolibriGridsDT, ref DT1);
+            }
+            DistFrameColorsDT.Clear();
+            DistFrameColorsDT = DistFrameColorsTable(Nord3OrdersDT, true);
+            for (int i = 0; i < DistFrameColorsDT.Rows.Count; i++)
+            {
+                AssemblySingly(Convert.ToInt32(DistFrameColorsDT.Rows[i]["ColorID"]), Nord3SimpleDT, ref DT1);
+                AssemblySingly(Convert.ToInt32(DistFrameColorsDT.Rows[i]["ColorID"]), Nord3VitrinaDT, ref DT2);
+                AssemblySingly(Convert.ToInt32(DistFrameColorsDT.Rows[i]["ColorID"]), Nord3GridsDT, ref DT1);
+            }
+            DistFrameColorsDT.Clear();
             DistFrameColorsDT = DistFrameColorsTable(Nord95OrdersDT, true);
             for (int i = 0; i < DistFrameColorsDT.Rows.Count; i++)
             {
@@ -2345,6 +2496,15 @@ namespace Infinium.Modules.WorkAssignments
                 AssemblySingly(Convert.ToInt32(DistFrameColorsDT.Rows[i]["ColorID"]), BergamoVitrinaDT, ref DT2);
                 AssemblySingly(Convert.ToInt32(DistFrameColorsDT.Rows[i]["ColorID"]), BergamoGridsDT, ref DT1);
                 AssemblySingly(Convert.ToInt32(DistFrameColorsDT.Rows[i]["ColorID"]), BergamoGlassDT, ref DT1);
+            }
+            DistFrameColorsDT.Clear();
+            DistFrameColorsDT = DistFrameColorsTable(DunaOrdersDT, true);
+            for (int i = 0; i < DistFrameColorsDT.Rows.Count; i++)
+            {
+                AssemblySingly(Convert.ToInt32(DistFrameColorsDT.Rows[i]["ColorID"]), DunaSimpleDT, ref DT1);
+                AssemblySingly(Convert.ToInt32(DistFrameColorsDT.Rows[i]["ColorID"]), DunaVitrinaDT, ref DT2);
+                AssemblySingly(Convert.ToInt32(DistFrameColorsDT.Rows[i]["ColorID"]), DunaGridsDT, ref DT1);
+                AssemblySingly(Convert.ToInt32(DistFrameColorsDT.Rows[i]["ColorID"]), DunaGlassDT, ref DT1);
             }
             DistFrameColorsDT.Clear();
             DistFrameColorsDT = DistFrameColorsTable(ep041OrdersDT, true);
@@ -3668,6 +3828,18 @@ namespace Infinium.Modules.WorkAssignments
                     GetFrontsOrders(ref TechnoNOrdersDT, WorkAssignmentID, Fronts.TechnoN);
                 if (Convert.ToInt32(Convert.ToInt32(FrontsID[i])) == Convert.ToInt32(Fronts.Antalia))
                     GetFrontsOrders(ref AntaliaOrdersDT, WorkAssignmentID, Fronts.Antalia);
+                if (Convert.ToInt32(Convert.ToInt32(FrontsID[i])) == Convert.ToInt32(Fronts.Boston3))
+                    GetFrontsOrders(ref Boston3OrdersDT, WorkAssignmentID, Fronts.Boston3);
+                if (Convert.ToInt32(Convert.ToInt32(FrontsID[i])) == Convert.ToInt32(Fronts.Boston4))
+                    GetFrontsOrders(ref Boston4OrdersDT, WorkAssignmentID, Fronts.Boston4);
+                if (Convert.ToInt32(Convert.ToInt32(FrontsID[i])) == Convert.ToInt32(Fronts.Vest3))
+                    GetFrontsOrders(ref Vest3OrdersDT, WorkAssignmentID, Fronts.Vest3);
+                if (Convert.ToInt32(Convert.ToInt32(FrontsID[i])) == Convert.ToInt32(Fronts.Vegas3))
+                    GetFrontsOrders(ref Vegas3OrdersDT, WorkAssignmentID, Fronts.Vegas3);
+                if (Convert.ToInt32(Convert.ToInt32(FrontsID[i])) == Convert.ToInt32(Fronts.kolibri))
+                    GetFrontsOrders(ref kolibriOrdersDT, WorkAssignmentID, Fronts.kolibri);
+                if (Convert.ToInt32(Convert.ToInt32(FrontsID[i])) == Convert.ToInt32(Fronts.Nord3))
+                    GetFrontsOrders(ref Nord3OrdersDT, WorkAssignmentID, Fronts.Nord3);
                 if (Convert.ToInt32(Convert.ToInt32(FrontsID[i])) == Convert.ToInt32(Fronts.Nord95))
                     GetFrontsOrders(ref Nord95OrdersDT, WorkAssignmentID, Fronts.Nord95);
                 if (Convert.ToInt32(Convert.ToInt32(FrontsID[i])) == Convert.ToInt32(Fronts.epFox))
@@ -3676,6 +3848,8 @@ namespace Infinium.Modules.WorkAssignments
                     GetFrontsOrders(ref VeneciaOrdersDT, WorkAssignmentID, Fronts.Venecia);
                 if (Convert.ToInt32(Convert.ToInt32(FrontsID[i])) == Convert.ToInt32(Fronts.Bergamo))
                     GetFrontsOrders(ref BergamoOrdersDT, WorkAssignmentID, Fronts.Bergamo);
+                if (Convert.ToInt32(Convert.ToInt32(FrontsID[i])) == Convert.ToInt32(Fronts.duna))
+                    GetFrontsOrders(ref DunaOrdersDT, WorkAssignmentID, Fronts.duna);
                 if (Convert.ToInt32(Convert.ToInt32(FrontsID[i])) == Convert.ToInt32(Fronts.ep041))
                     GetFrontsOrders(ref ep041OrdersDT, WorkAssignmentID, Fronts.ep041);
                 if (Convert.ToInt32(Convert.ToInt32(FrontsID[i])) == Convert.ToInt32(Fronts.ep071))
@@ -3751,7 +3925,14 @@ namespace Infinium.Modules.WorkAssignments
             GetGridsDecorOrders(ref GridsDecorOrdersDT, WorkAssignmentID, 1);
 
             if (TechnoNOrdersDT.Rows.Count == 0 && AntaliaOrdersDT.Rows.Count == 0 &&
-                Nord95OrdersDT.Rows.Count == 0 && epFoxOrdersDT.Rows.Count == 0 && VeneciaOrdersDT.Rows.Count == 0 && BergamoOrdersDT.Rows.Count == 0 &&
+                Boston3OrdersDT.Rows.Count == 0 && 
+                Boston4OrdersDT.Rows.Count == 0 && 
+                Vest3OrdersDT.Rows.Count == 0 && 
+                Vegas3OrdersDT.Rows.Count == 0 && 
+                kolibriOrdersDT.Rows.Count == 0 && 
+                Nord3OrdersDT.Rows.Count == 0 && 
+                Nord95OrdersDT.Rows.Count == 0 && 
+                epFoxOrdersDT.Rows.Count == 0 && VeneciaOrdersDT.Rows.Count == 0 && BergamoOrdersDT.Rows.Count == 0 && DunaOrdersDT.Rows.Count == 0 &&
                 ep041OrdersDT.Rows.Count == 0 && ep071OrdersDT.Rows.Count == 0 && ep206OrdersDT.Rows.Count == 0 && ep216OrdersDT.Rows.Count == 0 && ep111OrdersDT.Rows.Count == 0 &&
                 FenixOrdersDT.Rows.Count == 0 && 
                 MaltaOrdersDT.Rows.Count == 0 && 
@@ -4968,6 +5149,60 @@ namespace Infinium.Modules.WorkAssignments
                 RowIndex++;
                 RowIndex++;
             }
+            if (Boston3OrdersDT.Rows.Count > 0)
+            {
+                FrontName = GetFrontName(Convert.ToInt32(Boston3OrdersDT.Rows[0]["FrontID"]));
+                SummaryOrders(Boston3OrdersDT, Boston3SimpleDT, Boston3VitrinaDT, Boston3GridsDT, FrontName, ref AllSquare);
+                OrdersToExcelSingly(ref hssfworkbook, ref sheet1,
+                        Calibri11CS, CalibriBold11CS, CalibriBold11F, TableHeaderCS, TableHeaderDecCS, WorkAssignmentID, DispatchDate, BatchName, ClientName, ref RowIndex);
+                RowIndex++;
+                RowIndex++;
+            }
+            if (Boston4OrdersDT.Rows.Count > 0)
+            {
+                FrontName = GetFrontName(Convert.ToInt32(Boston4OrdersDT.Rows[0]["FrontID"]));
+                SummaryOrders(Boston4OrdersDT, Boston4SimpleDT, Boston4VitrinaDT, Boston4GridsDT, FrontName, ref AllSquare);
+                OrdersToExcelSingly(ref hssfworkbook, ref sheet1,
+                        Calibri11CS, CalibriBold11CS, CalibriBold11F, TableHeaderCS, TableHeaderDecCS, WorkAssignmentID, DispatchDate, BatchName, ClientName, ref RowIndex);
+                RowIndex++;
+                RowIndex++;
+            }
+            if (Vest3OrdersDT.Rows.Count > 0)
+            {
+                FrontName = GetFrontName(Convert.ToInt32(Vest3OrdersDT.Rows[0]["FrontID"]));
+                SummaryOrders(Vest3OrdersDT, Vest3SimpleDT, Vest3VitrinaDT, Vest3GridsDT, FrontName, ref AllSquare);
+                OrdersToExcelSingly(ref hssfworkbook, ref sheet1,
+                        Calibri11CS, CalibriBold11CS, CalibriBold11F, TableHeaderCS, TableHeaderDecCS, WorkAssignmentID, DispatchDate, BatchName, ClientName, ref RowIndex);
+                RowIndex++;
+                RowIndex++;
+            }
+            if (Vegas3OrdersDT.Rows.Count > 0)
+            {
+                FrontName = GetFrontName(Convert.ToInt32(Vegas3OrdersDT.Rows[0]["FrontID"]));
+                SummaryOrders(Vegas3OrdersDT, Vegas3SimpleDT, Vegas3VitrinaDT, Vegas3GridsDT, FrontName, ref AllSquare);
+                OrdersToExcelSingly(ref hssfworkbook, ref sheet1,
+                        Calibri11CS, CalibriBold11CS, CalibriBold11F, TableHeaderCS, TableHeaderDecCS, WorkAssignmentID, DispatchDate, BatchName, ClientName, ref RowIndex);
+                RowIndex++;
+                RowIndex++;
+            }
+            if (kolibriOrdersDT.Rows.Count > 0)
+            {
+                FrontName = GetFrontName(Convert.ToInt32(kolibriOrdersDT.Rows[0]["FrontID"]));
+                SummaryOrders(kolibriOrdersDT, kolibriSimpleDT, kolibriVitrinaDT, kolibriGridsDT, FrontName, ref AllSquare);
+                OrdersToExcelSingly(ref hssfworkbook, ref sheet1,
+                        Calibri11CS, CalibriBold11CS, CalibriBold11F, TableHeaderCS, TableHeaderDecCS, WorkAssignmentID, DispatchDate, BatchName, ClientName, ref RowIndex);
+                RowIndex++;
+                RowIndex++;
+            }
+            if (Nord3OrdersDT.Rows.Count > 0)
+            {
+                FrontName = GetFrontName(Convert.ToInt32(Nord3OrdersDT.Rows[0]["FrontID"]));
+                SummaryOrders(Nord3OrdersDT, Nord3SimpleDT, Nord3VitrinaDT, Nord3GridsDT, FrontName, ref AllSquare);
+                OrdersToExcelSingly(ref hssfworkbook, ref sheet1,
+                        Calibri11CS, CalibriBold11CS, CalibriBold11F, TableHeaderCS, TableHeaderDecCS, WorkAssignmentID, DispatchDate, BatchName, ClientName, ref RowIndex);
+                RowIndex++;
+                RowIndex++;
+            }
             if (Nord95OrdersDT.Rows.Count > 0)
             {
                 FrontName = GetFrontName(Convert.ToInt32(Nord95OrdersDT.Rows[0]["FrontID"]));
@@ -5091,6 +5326,16 @@ namespace Infinium.Modules.WorkAssignments
             {
                 FrontName = GetFrontName(Convert.ToInt32(BergamoOrdersDT.Rows[0]["FrontID"]));
                 SummaryOrders(BergamoOrdersDT, BergamoSimpleDT, BergamoVitrinaDT, BergamoGridsDT, BergamoGlassDT, FrontName, ref AllSquare);
+                OrdersToExcelSingly(ref hssfworkbook, ref sheet1,
+                        Calibri11CS, CalibriBold11CS, CalibriBold11F, TableHeaderCS, TableHeaderDecCS, WorkAssignmentID, DispatchDate, BatchName, ClientName, ref RowIndex);
+                RowIndex++;
+                RowIndex++;
+            }
+
+            if (DunaOrdersDT.Rows.Count > 0)
+            {
+                FrontName = GetFrontName(Convert.ToInt32(DunaOrdersDT.Rows[0]["FrontID"]));
+                SummaryOrders(DunaOrdersDT, DunaSimpleDT, DunaVitrinaDT, DunaGridsDT, DunaGlassDT, FrontName, ref AllSquare);
                 OrdersToExcelSingly(ref hssfworkbook, ref sheet1,
                         Calibri11CS, CalibriBold11CS, CalibriBold11F, TableHeaderCS, TableHeaderDecCS, WorkAssignmentID, DispatchDate, BatchName, ClientName, ref RowIndex);
                 RowIndex++;
@@ -6915,12 +7160,23 @@ namespace Infinium.Modules.WorkAssignments
                 AllInsets(TechnoNSimpleDT, ref DestinationDT, Convert.ToInt32(FrontMargins.TechnoNMargin), true);
             if (AntaliaSimpleDT.Rows.Count > 0)
                 AllInsets(AntaliaSimpleDT, ref DestinationDT, Convert.ToInt32(FrontMargins.AntaliaMargin), true);
+            if (Boston3SimpleDT.Rows.Count > 0)
+                AllInsets(Boston3SimpleDT, ref DestinationDT, Convert.ToInt32(FrontMargins.Boston3Margin), true);
+            if (Boston4SimpleDT.Rows.Count > 0)
+                AllInsets(Boston4SimpleDT, ref DestinationDT, Convert.ToInt32(FrontMargins.Boston4Margin), true);
+            if (Vest3SimpleDT.Rows.Count > 0)
+                AllInsets(Vest3SimpleDT, ref DestinationDT, Convert.ToInt32(FrontMargins.Vest3Margin), true);
+            if (Vegas3SimpleDT.Rows.Count > 0)
+                AllInsets(Vegas3SimpleDT, ref DestinationDT, Convert.ToInt32(FrontMargins.Vegas3Margin), true);
+            if (kolibriSimpleDT.Rows.Count > 0)
+                AllInsets(kolibriSimpleDT, ref DestinationDT, Convert.ToInt32(FrontMargins.kolibriMargin), true);
+            if (Nord3SimpleDT.Rows.Count > 0)
+                AllInsets(Nord3SimpleDT, ref DestinationDT, Convert.ToInt32(FrontMargins.Nord3Margin), true);
             if (Nord95SimpleDT.Rows.Count > 0)
                 AllInsets(Nord95SimpleDT, ref DestinationDT, Convert.ToInt32(FrontMargins.Nord95Margin), true);
             if (epFoxSimpleDT.Rows.Count > 0)
                 AllInsets(epFoxSimpleDT, ref DestinationDT, Convert.ToInt32(FrontMargins.epFoxMargin), true);
-            //if (BergamoSimpleDT.Rows.Count > 0)
-            //    AllInsets(BergamoSimpleDT, ref DestinationDT, Convert.ToInt32(FrontMargins.BergamoMargin), true);
+
             if (FenixSimpleDT.Rows.Count > 0)
                 AllInsets(FenixSimpleDT, ref DestinationDT, Convert.ToInt32(FrontMargins.FenixMargin), true);
             if (MaltaSimpleDT.Rows.Count > 0)
@@ -6954,6 +7210,19 @@ namespace Infinium.Modules.WorkAssignments
             foreach (DataRow item in rows)
                 DT.Rows.Add(item.ItemArray);
             AllInsets(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.BergamoNarrowMargin), true);
+
+            DT.Clear();
+
+            rows = DunaSimpleDT.Select("(Height>225 OR Width>225)");
+            foreach (DataRow item in rows)
+                DT.Rows.Add(item.ItemArray);
+            AllInsets(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.DunaMargin), true);
+
+            DT.Clear();
+            rows = DunaSimpleDT.Select("(Height<=225 OR Width<=225)");
+            foreach (DataRow item in rows)
+                DT.Rows.Add(item.ItemArray);
+            AllInsets(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.DunaNarrowMargin), true);
 
             if (ep041SimpleDT.Rows.Count > 0)
                 AllInsets(ep041SimpleDT, ref DestinationDT, Convert.ToInt32(FrontMargins.ep041Margin), true);
@@ -7145,12 +7414,22 @@ namespace Infinium.Modules.WorkAssignments
         {
             if (AntaliaSimpleDT.Rows.Count > 0)
                 InsetsFilenkaOnly(AntaliaSimpleDT, ref DestinationDT, Convert.ToInt32(FrontMargins.AntaliaMargin), true, string.Empty);
+            if (Boston3SimpleDT.Rows.Count > 0)
+                InsetsFilenkaOnly(Boston3SimpleDT, ref DestinationDT, Convert.ToInt32(FrontMargins.Boston3Margin), true, string.Empty);
+            if (Boston4SimpleDT.Rows.Count > 0)
+                InsetsFilenkaOnly(Boston4SimpleDT, ref DestinationDT, Convert.ToInt32(FrontMargins.Boston4Margin), true, string.Empty);
+            if (Vest3SimpleDT.Rows.Count > 0)
+                InsetsFilenkaOnly(Vest3SimpleDT, ref DestinationDT, Convert.ToInt32(FrontMargins.Vest3Margin), true, string.Empty);
+            if (Vegas3SimpleDT.Rows.Count > 0)
+                InsetsFilenkaOnly(Vegas3SimpleDT, ref DestinationDT, Convert.ToInt32(FrontMargins.Vegas3Margin), true, string.Empty);
+            if (kolibriSimpleDT.Rows.Count > 0)
+                InsetsFilenkaOnly(kolibriSimpleDT, ref DestinationDT, Convert.ToInt32(FrontMargins.kolibriMargin), true, string.Empty);
+            if (Nord3SimpleDT.Rows.Count > 0)
+                InsetsFilenkaOnly(Nord3SimpleDT, ref DestinationDT, Convert.ToInt32(FrontMargins.Nord3Margin), true, string.Empty);
             if (Nord95SimpleDT.Rows.Count > 0)
                 InsetsFilenkaOnly(Nord95SimpleDT, ref DestinationDT, Convert.ToInt32(FrontMargins.Nord95Margin), true, string.Empty);
             if (epFoxSimpleDT.Rows.Count > 0)
                 InsetsFilenkaOnly(epFoxSimpleDT, ref DestinationDT, Convert.ToInt32(FrontMargins.epFoxMargin), true, string.Empty);
-            //if (BergamoSimpleDT.Rows.Count > 0)
-            //    InsetsFilenkaOnly(BergamoSimpleDT, ref DestinationDT, Convert.ToInt32(FrontMargins.BergamoMargin), true, string.Empty);
 
             DataTable DT = BergamoSimpleDT.Clone();
 
@@ -7164,6 +7443,19 @@ namespace Infinium.Modules.WorkAssignments
             foreach (DataRow item in rows)
                 DT.Rows.Add(item.ItemArray);
             InsetsFilenkaOnly(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.BergamoNarrowMargin), true, string.Empty);
+
+            DT.Clear();
+
+            rows = DunaSimpleDT.Select("(Height>225 OR Width>225)");
+            foreach (DataRow item in rows)
+                DT.Rows.Add(item.ItemArray);
+            InsetsFilenkaOnly(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.DunaMargin), true, string.Empty);
+
+            DT.Clear();
+            rows = DunaSimpleDT.Select("(Height<=225 OR Width<=225)");
+            foreach (DataRow item in rows)
+                DT.Rows.Add(item.ItemArray);
+            InsetsFilenkaOnly(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.DunaNarrowMargin), true, string.Empty);
 
             if (ep041SimpleDT.Rows.Count > 0)
                 InsetsFilenkaOnly(ep041SimpleDT, ref DestinationDT, Convert.ToInt32(FrontMargins.ep041Margin), true, string.Empty);
@@ -7253,14 +7545,25 @@ namespace Infinium.Modules.WorkAssignments
         {
             if (AntaliaGridsDT.Rows.Count > 0)
                 InsetsGridsOnly(AntaliaGridsDT, ref DestinationDT, Convert.ToInt32(FrontMargins.AntaliaMargin), true);
+            if (Boston3GridsDT.Rows.Count > 0)
+                InsetsGridsOnly(Boston3GridsDT, ref DestinationDT, Convert.ToInt32(FrontMargins.Boston3Margin), true);
+            if (Boston4GridsDT.Rows.Count > 0)
+                InsetsGridsOnly(Boston4GridsDT, ref DestinationDT, Convert.ToInt32(FrontMargins.Boston4Margin), true);
+            if (Vest3GridsDT.Rows.Count > 0)
+                InsetsGridsOnly(Vest3GridsDT, ref DestinationDT, Convert.ToInt32(FrontMargins.Vest3Margin), true);
+            if (Vegas3GridsDT.Rows.Count > 0)
+                InsetsGridsOnly(Vegas3GridsDT, ref DestinationDT, Convert.ToInt32(FrontMargins.Vegas3Margin), true);
+            if (kolibriGridsDT.Rows.Count > 0)
+                InsetsGridsOnly(kolibriGridsDT, ref DestinationDT, Convert.ToInt32(FrontMargins.kolibriMargin), true);
+            if (Nord3GridsDT.Rows.Count > 0)
+                InsetsGridsOnly(Nord3GridsDT, ref DestinationDT, Convert.ToInt32(FrontMargins.Nord3Margin), true);
             if (Nord95GridsDT.Rows.Count > 0)
                 InsetsGridsOnly(Nord95GridsDT, ref DestinationDT, Convert.ToInt32(FrontMargins.Nord95Margin), true);
             if (epFoxGridsDT.Rows.Count > 0)
                 InsetsGridsOnly(epFoxGridsDT, ref DestinationDT, Convert.ToInt32(FrontMargins.epFoxMargin), true);
             if (VeneciaGridsDT.Rows.Count > 0)
                 InsetsGridsOnly(VeneciaGridsDT, ref DestinationDT, Convert.ToInt32(FrontMargins.VeneciaMargin), true);
-            //if (BergamoGridsDT.Rows.Count > 0)
-            //    InsetsGridsOnly(BergamoGridsDT, ref DestinationDT, Convert.ToInt32(FrontMargins.BergamoMargin), true);
+
             DataTable DT = BergamoGridsDT.Clone();
 
             DataRow[] rows = BergamoGridsDT.Select("(Height>150 OR Width>150)");
@@ -7273,6 +7576,19 @@ namespace Infinium.Modules.WorkAssignments
             foreach (DataRow item in rows)
                 DT.Rows.Add(item.ItemArray);
             InsetsGridsOnly(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.BergamoNarrowMargin), true);
+
+            DT.Clear();
+
+            rows = DunaGridsDT.Select("(Height>225 OR Width>225)");
+            foreach (DataRow item in rows)
+                DT.Rows.Add(item.ItemArray);
+            InsetsGridsOnly(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.DunaMargin), true);
+
+            DT.Clear();
+            rows = DunaGridsDT.Select("(Height<=225 OR Width<=225)");
+            foreach (DataRow item in rows)
+                DT.Rows.Add(item.ItemArray);
+            InsetsGridsOnly(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.DunaNarrowMargin), true);
 
             if (ep041GridsDT.Rows.Count > 0)
                 InsetsGridsOnly(ep041GridsDT, ref DestinationDT, Convert.ToInt32(FrontMargins.ep041Margin), true);
@@ -7541,14 +7857,25 @@ namespace Infinium.Modules.WorkAssignments
                 InsetsPressOnly(TechnoNSimpleDT, ref DestinationDT, Convert.ToInt32(FrontMargins.TechnoNMargin), true);
             if (AntaliaSimpleDT.Rows.Count > 0)
                 InsetsPressOnly(AntaliaSimpleDT, ref DestinationDT, Convert.ToInt32(FrontMargins.AntaliaMargin), true);
+            if (Boston3SimpleDT.Rows.Count > 0)
+                InsetsPressOnly(Boston3SimpleDT, ref DestinationDT, Convert.ToInt32(FrontMargins.Boston3Margin), true);
+            if (Boston4SimpleDT.Rows.Count > 0)
+                InsetsPressOnly(Boston4SimpleDT, ref DestinationDT, Convert.ToInt32(FrontMargins.Boston4Margin), true);
+            if (Vest3SimpleDT.Rows.Count > 0)
+                InsetsPressOnly(Vest3SimpleDT, ref DestinationDT, Convert.ToInt32(FrontMargins.Vest3Margin), true);
+            if (Vegas3SimpleDT.Rows.Count > 0)
+                InsetsPressOnly(Vegas3SimpleDT, ref DestinationDT, Convert.ToInt32(FrontMargins.Vegas3Margin), true);
+            if (kolibriSimpleDT.Rows.Count > 0)
+                InsetsPressOnly(kolibriSimpleDT, ref DestinationDT, Convert.ToInt32(FrontMargins.kolibriMargin), true);
+            if (Nord3SimpleDT.Rows.Count > 0)
+                InsetsPressOnly(Nord3SimpleDT, ref DestinationDT, Convert.ToInt32(FrontMargins.Nord3Margin), true);
             if (Nord95SimpleDT.Rows.Count > 0)
                 InsetsPressOnly(Nord95SimpleDT, ref DestinationDT, Convert.ToInt32(FrontMargins.Nord95Margin), true);
             if (epFoxSimpleDT.Rows.Count > 0)
                 InsetsPressOnly(epFoxSimpleDT, ref DestinationDT, Convert.ToInt32(FrontMargins.epFoxMargin), true);
             if (VeneciaSimpleDT.Rows.Count > 0)
                 InsetsPressOnly(VeneciaSimpleDT, ref DestinationDT, Convert.ToInt32(FrontMargins.VeneciaMargin), true);
-            //if (BergamoSimpleDT.Rows.Count > 0)
-            //    InsetsPressOnly(BergamoSimpleDT, ref DestinationDT, Convert.ToInt32(FrontMargins.BergamoMargin), true);
+
             DataTable DT = BergamoSimpleDT.Clone();
 
             DataRow[] rows = BergamoSimpleDT.Select("(Height>150 OR Width>150)");
@@ -7561,6 +7888,19 @@ namespace Infinium.Modules.WorkAssignments
             foreach (DataRow item in rows)
                 DT.Rows.Add(item.ItemArray);
             AllInsets(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.BergamoNarrowMargin), true);
+
+            DT.Clear();
+
+            rows = DunaSimpleDT.Select("(Height>225 OR Width>225)");
+            foreach (DataRow item in rows)
+                DT.Rows.Add(item.ItemArray);
+            AllInsets(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.DunaMargin), true);
+
+            DT.Clear();
+            rows = DunaSimpleDT.Select("(Height<=225 OR Width<=225)");
+            foreach (DataRow item in rows)
+                DT.Rows.Add(item.ItemArray);
+            AllInsets(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.DunaNarrowMargin), true);
 
             if (ep041SimpleDT.Rows.Count > 0)
                 InsetsPressOnly(ep041SimpleDT, ref DestinationDT, Convert.ToInt32(FrontMargins.ep041Margin), true);
@@ -7663,6 +8003,54 @@ namespace Infinium.Modules.WorkAssignments
                 DT.Rows.Add(item.ItemArray);
             Front = GetFrontName(Convert.ToInt32(Fronts.TechnoN));
             ComecSimpleSingly(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.TechnoNWidth), 1, Front, false);
+            
+            DT.Clear();
+            rows = Boston3OrdersDT.Select(filter +
+                " AND (Height>" + (Convert.ToInt32(FrontMargins.Boston3Margin) + 100) + " AND Width>" + (Convert.ToInt32(FrontMargins.Boston3Margin) + 100) + ")");
+            foreach (DataRow item in rows)
+                DT.Rows.Add(item.ItemArray);
+            Front = GetFrontName(Convert.ToInt32(Fronts.Boston3));
+            ComecSimpleSingly(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.Boston3Width), 1, Front, false);
+
+            DT.Clear();
+            rows = Boston4OrdersDT.Select(filter +
+                " AND (Height>" + (Convert.ToInt32(FrontMargins.Boston4Margin) + 100) + " AND Width>" + (Convert.ToInt32(FrontMargins.Boston4Margin) + 100) + ")");
+            foreach (DataRow item in rows)
+                DT.Rows.Add(item.ItemArray);
+            Front = GetFrontName(Convert.ToInt32(Fronts.Boston4));
+            ComecSimpleSingly(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.Boston4Width), 1, Front, false);
+
+            DT.Clear();
+            rows = Vest3OrdersDT.Select(filter +
+                " AND (Height>" + (Convert.ToInt32(FrontMargins.Vest3Margin) + 100) + " AND Width>" + (Convert.ToInt32(FrontMargins.Vest3Margin) + 100) + ")");
+            foreach (DataRow item in rows)
+                DT.Rows.Add(item.ItemArray);
+            Front = GetFrontName(Convert.ToInt32(Fronts.Vest3));
+            ComecSimpleSingly(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.Vest3Width), 1, Front, false);
+
+            DT.Clear();
+            rows = Vegas3OrdersDT.Select(filter +
+                " AND (Height>" + (Convert.ToInt32(FrontMargins.Vegas3Margin) + 100) + " AND Width>" + (Convert.ToInt32(FrontMargins.Vegas3Margin) + 100) + ")");
+            foreach (DataRow item in rows)
+                DT.Rows.Add(item.ItemArray);
+            Front = GetFrontName(Convert.ToInt32(Fronts.Vegas3));
+            ComecSimpleSingly(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.Vegas3Width), 1, Front, false);
+
+            DT.Clear();
+            rows = kolibriOrdersDT.Select(filter +
+                " AND (Height>" + (Convert.ToInt32(FrontMargins.kolibriMargin) + 100) + " AND Width>" + (Convert.ToInt32(FrontMargins.kolibriMargin) + 100) + ")");
+            foreach (DataRow item in rows)
+                DT.Rows.Add(item.ItemArray);
+            Front = GetFrontName(Convert.ToInt32(Fronts.kolibri));
+            ComecSimpleSingly(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.kolibriWidth), 1, Front, false);
+
+            DT.Clear();
+            rows = Nord3OrdersDT.Select(filter +
+                " AND (Height>" + (Convert.ToInt32(FrontMargins.Nord3Margin) + 100) + " AND Width>" + (Convert.ToInt32(FrontMargins.Nord3Margin) + 100) + ")");
+            foreach (DataRow item in rows)
+                DT.Rows.Add(item.ItemArray);
+            Front = GetFrontName(Convert.ToInt32(Fronts.Nord3));
+            ComecSimpleSingly(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.Nord3Width), 1, Front, false);
 
             DT.Clear();
             rows = Nord95OrdersDT.Select(filter +
@@ -7679,7 +8067,7 @@ namespace Infinium.Modules.WorkAssignments
                 DT.Rows.Add(item.ItemArray);
             Front = GetFrontName(Convert.ToInt32(Fronts.epFox));
             ComecSimpleSingly(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.epFoxWidth), 1, Front, false);
-
+                
             DT.Clear();
             rows = BergamoOrdersDT.Select(filter +
                 " AND (Height>" + (Convert.ToInt32(FrontMargins.BergamoMargin) + 100) + " AND Width>" + (Convert.ToInt32(FrontMargins.BergamoMargin) + 100) + ")");
@@ -7687,6 +8075,14 @@ namespace Infinium.Modules.WorkAssignments
                 DT.Rows.Add(item.ItemArray);
             Front = GetFrontName(Convert.ToInt32(Fronts.Bergamo));
             ComecSimpleSingly(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.BergamoWidth), 1, Front, false);
+
+            DT.Clear();
+            rows = DunaOrdersDT.Select(filter +
+                " AND (Height>" + (Convert.ToInt32(FrontMargins.DunaMargin) + 100) + " AND Width>" + (Convert.ToInt32(FrontMargins.DunaMargin) + 100) + ")");
+            foreach (DataRow item in rows)
+                DT.Rows.Add(item.ItemArray);
+            Front = GetFrontName(Convert.ToInt32(Fronts.duna));
+            ComecSimpleSingly(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.DunaWidth), 1, Front, false);
 
             DT.Clear();
             rows = ep041OrdersDT.Select(filter +
@@ -8058,6 +8454,48 @@ namespace Infinium.Modules.WorkAssignments
                 Front = GetFrontName(Convert.ToInt32(Fronts.TechnoN));
                 ComecSimpleSingly(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.TechnoNWidth), 1, Front, false);
             }
+            
+            DT.Clear();
+            rows = Boston3OrdersDT.Select(filter);
+            foreach (DataRow item in rows)
+                DT.Rows.Add(item.ItemArray);
+            Front = GetFrontName(Convert.ToInt32(Fronts.Boston3));
+            ComecSimpleSingly(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.Boston3Width), 1, Front, false);
+
+            DT.Clear();
+            rows = Boston4OrdersDT.Select(filter);
+            foreach (DataRow item in rows)
+                DT.Rows.Add(item.ItemArray);
+            Front = GetFrontName(Convert.ToInt32(Fronts.Boston4));
+            ComecSimpleSingly(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.Boston4Width), 1, Front, false);
+
+            DT.Clear();
+            rows = Vest3OrdersDT.Select(filter);
+            foreach (DataRow item in rows)
+                DT.Rows.Add(item.ItemArray);
+            Front = GetFrontName(Convert.ToInt32(Fronts.Vest3));
+            ComecSimpleSingly(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.Vest3Width), 1, Front, false);
+
+            DT.Clear();
+            rows = Vegas3OrdersDT.Select(filter);
+            foreach (DataRow item in rows)
+                DT.Rows.Add(item.ItemArray);
+            Front = GetFrontName(Convert.ToInt32(Fronts.Vegas3));
+            ComecSimpleSingly(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.Vegas3Width), 1, Front, false);
+
+            DT.Clear();
+            rows = kolibriOrdersDT.Select(filter);
+            foreach (DataRow item in rows)
+                DT.Rows.Add(item.ItemArray);
+            Front = GetFrontName(Convert.ToInt32(Fronts.kolibri));
+            ComecSimpleSingly(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.kolibriWidth), 1, Front, false);
+
+            DT.Clear();
+            rows = Nord3OrdersDT.Select(filter);
+            foreach (DataRow item in rows)
+                DT.Rows.Add(item.ItemArray);
+            Front = GetFrontName(Convert.ToInt32(Fronts.Nord3));
+            ComecSimpleSingly(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.Nord3Width), 1, Front, false);
 
             DT.Clear();
             rows = Nord95OrdersDT.Select(filter);
@@ -8086,6 +8524,20 @@ namespace Infinium.Modules.WorkAssignments
                 DT.Rows.Add(item.ItemArray);
             Front = "ПШ-050 22х55 Бергамо";
             RapidSimpleBergamoSingly(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.BergamoWidth), 1, 29548, Front, false);
+
+            DT.Clear();
+            rows = DunaOrdersDT.Select(filter + " AND (Height>225 OR Width>225)");
+            foreach (DataRow item in rows)
+                DT.Rows.Add(item.ItemArray);
+            Front = GetFrontName(Convert.ToInt32(Fronts.duna));
+            ComecSimpleSingly(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.DunaWidth), 1, Front, false);
+
+            DT.Clear();
+            rows = DunaOrdersDT.Select(filter + " AND (Height<=225 OR Width<=225)");
+            foreach (DataRow item in rows)
+                DT.Rows.Add(item.ItemArray);
+            Front = "ПШ-161 22×55 Дюна";
+            RapidSimpleBergamoSingly(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.DunaWidth), 1, 29548, Front, false);
 
             DT.Clear();
             rows = ep041OrdersDT.Select(filter);
@@ -8403,6 +8855,54 @@ namespace Infinium.Modules.WorkAssignments
                 DT.Rows.Add(item.ItemArray);
             Front = GetFrontName(Convert.ToInt32(Fronts.TechnoN));
             RapidSimpleSingly(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.TechnoNWidth), 1, Front, false);
+            
+            DT.Clear();
+            rows = Boston3OrdersDT.Select(filter +
+                " AND (Height>" + (Convert.ToInt32(FrontMargins.Boston3Margin) + 100) + " AND Width>" + (Convert.ToInt32(FrontMargins.Boston3Margin) + 100) + ")");
+            foreach (DataRow item in rows)
+                DT.Rows.Add(item.ItemArray);
+            Front = GetFrontName(Convert.ToInt32(Fronts.Boston3));
+            RapidSimpleSingly(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.Boston3Width), 1, Front, false);
+
+            DT.Clear();
+            rows = Boston4OrdersDT.Select(filter +
+                " AND (Height>" + (Convert.ToInt32(FrontMargins.Boston4Margin) + 100) + " AND Width>" + (Convert.ToInt32(FrontMargins.Boston4Margin) + 100) + ")");
+            foreach (DataRow item in rows)
+                DT.Rows.Add(item.ItemArray);
+            Front = GetFrontName(Convert.ToInt32(Fronts.Boston4));
+            RapidSimpleSingly(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.Boston4Width), 1, Front, false);
+
+            DT.Clear();
+            rows = Vest3OrdersDT.Select(filter +
+                " AND (Height>" + (Convert.ToInt32(FrontMargins.Vest3Margin) + 100) + " AND Width>" + (Convert.ToInt32(FrontMargins.Vest3Margin) + 100) + ")");
+            foreach (DataRow item in rows)
+                DT.Rows.Add(item.ItemArray);
+            Front = GetFrontName(Convert.ToInt32(Fronts.Vest3));
+            RapidSimpleSingly(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.Vest3Width), 1, Front, false);
+
+            DT.Clear();
+            rows = Vegas3OrdersDT.Select(filter +
+                " AND (Height>" + (Convert.ToInt32(FrontMargins.Vegas3Margin) + 100) + " AND Width>" + (Convert.ToInt32(FrontMargins.Vegas3Margin) + 100) + ")");
+            foreach (DataRow item in rows)
+                DT.Rows.Add(item.ItemArray);
+            Front = GetFrontName(Convert.ToInt32(Fronts.Vegas3));
+            RapidSimpleSingly(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.Vegas3Width), 1, Front, false);
+
+            DT.Clear();
+            rows = kolibriOrdersDT.Select(filter +
+                " AND (Height>" + (Convert.ToInt32(FrontMargins.kolibriMargin) + 100) + " AND Width>" + (Convert.ToInt32(FrontMargins.kolibriMargin) + 100) + ")");
+            foreach (DataRow item in rows)
+                DT.Rows.Add(item.ItemArray);
+            Front = GetFrontName(Convert.ToInt32(Fronts.kolibri));
+            RapidSimpleSingly(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.kolibriWidth), 1, Front, false);
+
+            DT.Clear();
+            rows = Nord3OrdersDT.Select(filter +
+                " AND (Height>" + (Convert.ToInt32(FrontMargins.Nord3Margin) + 100) + " AND Width>" + (Convert.ToInt32(FrontMargins.Nord3Margin) + 100) + ")");
+            foreach (DataRow item in rows)
+                DT.Rows.Add(item.ItemArray);
+            Front = GetFrontName(Convert.ToInt32(Fronts.Nord3));
+            RapidSimpleSingly(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.Nord3Width), 1, Front, false);
 
             DT.Clear();
             rows = Nord95OrdersDT.Select(filter +
@@ -8427,6 +8927,14 @@ namespace Infinium.Modules.WorkAssignments
                 DT.Rows.Add(item.ItemArray);
             Front = GetFrontName(Convert.ToInt32(Fronts.Bergamo));
             RapidSimpleSingly(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.BergamoWidth), 1, Front, false);
+
+            DT.Clear();
+            rows = DunaOrdersDT.Select(filter +
+                " AND (Height>" + (Convert.ToInt32(FrontMargins.DunaMargin) + 100) + " AND Width>" + (Convert.ToInt32(FrontMargins.DunaMargin) + 100) + ")");
+            foreach (DataRow item in rows)
+                DT.Rows.Add(item.ItemArray);
+            Front = GetFrontName(Convert.ToInt32(Fronts.duna));
+            RapidSimpleSingly(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.DunaWidth), 1, Front, false);
 
             DT.Clear();
             rows = ep041OrdersDT.Select(filter +
@@ -8748,6 +9256,54 @@ namespace Infinium.Modules.WorkAssignments
                 DT.Rows.Add(item.ItemArray);
             Front = GetFrontName(Convert.ToInt32(Fronts.TechnoN)) + " ШУФ";
             RapidSimpleSingly(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.TechnoNWidth), 2, Front, false);
+            
+            DT.Clear();
+            rows = Boston3OrdersDT.Select(filter +
+                " AND (Height<=" + (Convert.ToInt32(FrontMargins.Boston3Margin) + 100) + " OR Width<=" + (Convert.ToInt32(FrontMargins.Boston3Margin) + 100) + ")");
+            foreach (DataRow item in rows)
+                DT.Rows.Add(item.ItemArray);
+            Front = GetFrontName(Convert.ToInt32(Fronts.Boston3)) + " ШУФ";
+            RapidSimpleSingly(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.Boston3Width), 2, Front, false);
+
+            DT.Clear();
+            rows = Boston4OrdersDT.Select(filter +
+                " AND (Height<=" + (Convert.ToInt32(FrontMargins.Boston4Margin) + 100) + " OR Width<=" + (Convert.ToInt32(FrontMargins.Boston4Margin) + 100) + ")");
+            foreach (DataRow item in rows)
+                DT.Rows.Add(item.ItemArray);
+            Front = GetFrontName(Convert.ToInt32(Fronts.Boston4)) + " ШУФ";
+            RapidSimpleSingly(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.Boston4Width), 2, Front, false);
+
+            DT.Clear();
+            rows = Vest3OrdersDT.Select(filter +
+                " AND (Height<=" + (Convert.ToInt32(FrontMargins.Vest3Margin) + 100) + " OR Width<=" + (Convert.ToInt32(FrontMargins.Vest3Margin) + 100) + ")");
+            foreach (DataRow item in rows)
+                DT.Rows.Add(item.ItemArray);
+            Front = GetFrontName(Convert.ToInt32(Fronts.Vest3)) + " ШУФ";
+            RapidSimpleSingly(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.Vest3Width), 2, Front, false);
+
+            DT.Clear();
+            rows = Vegas3OrdersDT.Select(filter +
+                " AND (Height<=" + (Convert.ToInt32(FrontMargins.Vegas3Margin) + 100) + " OR Width<=" + (Convert.ToInt32(FrontMargins.Vegas3Margin) + 100) + ")");
+            foreach (DataRow item in rows)
+                DT.Rows.Add(item.ItemArray);
+            Front = GetFrontName(Convert.ToInt32(Fronts.Vegas3)) + " ШУФ";
+            RapidSimpleSingly(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.Vegas3Width), 2, Front, false);
+
+            DT.Clear();
+            rows = kolibriOrdersDT.Select(filter +
+                " AND (Height<=" + (Convert.ToInt32(FrontMargins.kolibriMargin) + 100) + " OR Width<=" + (Convert.ToInt32(FrontMargins.kolibriMargin) + 100) + ")");
+            foreach (DataRow item in rows)
+                DT.Rows.Add(item.ItemArray);
+            Front = GetFrontName(Convert.ToInt32(Fronts.kolibri)) + " ШУФ";
+            RapidSimpleSingly(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.kolibriWidth), 2, Front, false);
+
+            DT.Clear();
+            rows = Nord3OrdersDT.Select(filter +
+                " AND (Height<=" + (Convert.ToInt32(FrontMargins.Nord3Margin) + 100) + " OR Width<=" + (Convert.ToInt32(FrontMargins.Nord3Margin) + 100) + ")");
+            foreach (DataRow item in rows)
+                DT.Rows.Add(item.ItemArray);
+            Front = GetFrontName(Convert.ToInt32(Fronts.Nord3)) + " ШУФ";
+            RapidSimpleSingly(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.Nord3Width), 2, Front, false);
 
             DT.Clear();
             rows = Nord95OrdersDT.Select(filter +
@@ -8772,6 +9328,14 @@ namespace Infinium.Modules.WorkAssignments
                 DT.Rows.Add(item.ItemArray);
             Front = GetFrontName(Convert.ToInt32(Fronts.Bergamo)) + " ШУФ";
             RapidSimpleSingly(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.BergamoWidth), 2, Front, false);
+
+            DT.Clear();
+            rows = DunaOrdersDT.Select(filter +
+                " AND (Height<=" + (Convert.ToInt32(FrontMargins.DunaMargin) + 100) + " OR Width<=" + (Convert.ToInt32(FrontMargins.DunaMargin) + 100) + ")");
+            foreach (DataRow item in rows)
+                DT.Rows.Add(item.ItemArray);
+            Front = GetFrontName(Convert.ToInt32(Fronts.duna)) + " ШУФ";
+            RapidSimpleSingly(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.DunaWidth), 2, Front, false);
 
             DT.Clear();
             rows = ep041OrdersDT.Select(filter +
@@ -9113,6 +9677,36 @@ namespace Infinium.Modules.WorkAssignments
                 RapidGridsSingly(AntaliaGridsDT, ref DestinationDT, Convert.ToInt32(FrontMargins.AntaliaWidth), 3, Front, false);
             }
 
+            if (Boston3GridsDT.Rows.Count > 0)
+            {
+                string Front = GetFrontName(Convert.ToInt32(Fronts.Boston3)) + " РЕШ";
+                RapidGridsSingly(Boston3GridsDT, ref DestinationDT, Convert.ToInt32(FrontMargins.Boston3Width), 3, Front, false);
+            }
+            if (Boston4GridsDT.Rows.Count > 0)
+            {
+                string Front = GetFrontName(Convert.ToInt32(Fronts.Boston4)) + " РЕШ";
+                RapidGridsSingly(Boston4GridsDT, ref DestinationDT, Convert.ToInt32(FrontMargins.Boston4Width), 3, Front, false);
+            }
+            if (Vest3GridsDT.Rows.Count > 0)
+            {
+                string Front = GetFrontName(Convert.ToInt32(Fronts.Vest3)) + " РЕШ";
+                RapidGridsSingly(Vest3GridsDT, ref DestinationDT, Convert.ToInt32(FrontMargins.Vest3Width), 3, Front, false);
+            }
+            if (Vegas3GridsDT.Rows.Count > 0)
+            {
+                string Front = GetFrontName(Convert.ToInt32(Fronts.Vegas3)) + " РЕШ";
+                RapidGridsSingly(Vegas3GridsDT, ref DestinationDT, Convert.ToInt32(FrontMargins.Vegas3Width), 3, Front, false);
+            }
+            if (kolibriGridsDT.Rows.Count > 0)
+            {
+                string Front = GetFrontName(Convert.ToInt32(Fronts.kolibri)) + " РЕШ";
+                RapidGridsSingly(kolibriGridsDT, ref DestinationDT, Convert.ToInt32(FrontMargins.kolibriWidth), 3, Front, false);
+            }
+            if (Nord3GridsDT.Rows.Count > 0)
+            {
+                string Front = GetFrontName(Convert.ToInt32(Fronts.Nord3)) + " РЕШ";
+                RapidGridsSingly(Nord3GridsDT, ref DestinationDT, Convert.ToInt32(FrontMargins.Nord3Width), 3, Front, false);
+            }
             if (Nord95GridsDT.Rows.Count > 0)
             {
                 string Front = GetFrontName(Convert.ToInt32(Fronts.Nord95)) + " РЕШ";
@@ -9128,6 +9722,12 @@ namespace Infinium.Modules.WorkAssignments
             {
                 string Front = GetFrontName(Convert.ToInt32(Fronts.Bergamo)) + " РЕШ";
                 RapidGridsSingly(BergamoGridsDT, ref DestinationDT, Convert.ToInt32(FrontMargins.BergamoWidth), 3, Front, false);
+            }
+
+            if (DunaGridsDT.Rows.Count > 0)
+            {
+                string Front = GetFrontName(Convert.ToInt32(Fronts.duna)) + " РЕШ";
+                RapidGridsSingly(DunaGridsDT, ref DestinationDT, Convert.ToInt32(FrontMargins.DunaWidth), 3, Front, false);
             }
 
             if (ep041GridsDT.Rows.Count > 0)
@@ -9382,6 +9982,48 @@ namespace Infinium.Modules.WorkAssignments
                 Front = GetFrontName(Convert.ToInt32(Fronts.TechnoN));
                 RapidSimpleImpostSingly(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.TechnoNWidth), 1, Front, false);
             }
+            
+            DT.Clear();
+            rows = Boston3OrdersDT.Select(filter);
+            foreach (DataRow item in rows)
+                DT.Rows.Add(item.ItemArray);
+            Front = GetFrontName(Convert.ToInt32(Fronts.Boston3));
+            RapidSimpleImpostSingly(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.Boston3Width), 1, Front, false);
+
+            DT.Clear();
+            rows = Boston4OrdersDT.Select(filter);
+            foreach (DataRow item in rows)
+                DT.Rows.Add(item.ItemArray);
+            Front = GetFrontName(Convert.ToInt32(Fronts.Boston4));
+            RapidSimpleImpostSingly(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.Boston4Width), 1, Front, false);
+
+            DT.Clear();
+            rows = Vest3OrdersDT.Select(filter);
+            foreach (DataRow item in rows)
+                DT.Rows.Add(item.ItemArray);
+            Front = GetFrontName(Convert.ToInt32(Fronts.Vest3));
+            RapidSimpleImpostSingly(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.Vest3Width), 1, Front, false);
+
+            DT.Clear();
+            rows = Vegas3OrdersDT.Select(filter);
+            foreach (DataRow item in rows)
+                DT.Rows.Add(item.ItemArray);
+            Front = GetFrontName(Convert.ToInt32(Fronts.Vegas3));
+            RapidSimpleImpostSingly(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.Vegas3Width), 1, Front, false);
+
+            DT.Clear();
+            rows = kolibriOrdersDT.Select(filter);
+            foreach (DataRow item in rows)
+                DT.Rows.Add(item.ItemArray);
+            Front = GetFrontName(Convert.ToInt32(Fronts.kolibri));
+            RapidSimpleImpostSingly(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.kolibriWidth), 1, Front, false);
+
+            DT.Clear();
+            rows = Nord3OrdersDT.Select(filter);
+            foreach (DataRow item in rows)
+                DT.Rows.Add(item.ItemArray);
+            Front = GetFrontName(Convert.ToInt32(Fronts.Nord3));
+            RapidSimpleImpostSingly(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.Nord3Width), 1, Front, false);
 
             DT.Clear();
             rows = Nord95OrdersDT.Select(filter);
@@ -9410,6 +10052,20 @@ namespace Infinium.Modules.WorkAssignments
                 DT.Rows.Add(item.ItemArray);
             Front = "ПШ-050 22х55 Бергамо";
             RapidSimpleBergamoSingly(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.BergamoWidth), 1, 29548, Front, false);
+
+            DT.Clear();
+            rows = DunaOrdersDT.Select(filter + " AND (225 OR Width>225)");
+            foreach (DataRow item in rows)
+                DT.Rows.Add(item.ItemArray);
+            Front = GetFrontName(Convert.ToInt32(Fronts.duna));
+            RapidSimpleImpostSingly(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.DunaWidth), 1, Front, false);
+
+            DT.Clear();
+            rows = DunaOrdersDT.Select(filter + " AND (Height<=225 OR Width<=225)");
+            foreach (DataRow item in rows)
+                DT.Rows.Add(item.ItemArray);
+            Front = "ПШ-161 22×55 Дюна";
+            RapidSimpleBergamoSingly(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.DunaWidth), 1, 29548, Front, false);
 
             DT.Clear();
             rows = ep041OrdersDT.Select(filter);
@@ -9749,6 +10405,48 @@ namespace Infinium.Modules.WorkAssignments
                 Front = GetFrontName(Convert.ToInt32(Fronts.TechnoN));
                 RapidSimpleSingly(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.TechnoNWidth), 1, Front, false);
             }
+            
+            DT.Clear();
+            rows = Boston3OrdersDT.Select(filter);
+            foreach (DataRow item in rows)
+                DT.Rows.Add(item.ItemArray);
+            Front = GetFrontName(Convert.ToInt32(Fronts.Boston3));
+            RapidSimpleSingly(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.Boston3Width), 1, Front, false);
+
+            DT.Clear();
+            rows = Boston4OrdersDT.Select(filter);
+            foreach (DataRow item in rows)
+                DT.Rows.Add(item.ItemArray);
+            Front = GetFrontName(Convert.ToInt32(Fronts.Boston4));
+            RapidSimpleSingly(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.Boston4Width), 1, Front, false);
+
+            DT.Clear();
+            rows = Vest3OrdersDT.Select(filter);
+            foreach (DataRow item in rows)
+                DT.Rows.Add(item.ItemArray);
+            Front = GetFrontName(Convert.ToInt32(Fronts.Vest3));
+            RapidSimpleSingly(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.Vest3Width), 1, Front, false);
+
+            DT.Clear();
+            rows = Vegas3OrdersDT.Select(filter);
+            foreach (DataRow item in rows)
+                DT.Rows.Add(item.ItemArray);
+            Front = GetFrontName(Convert.ToInt32(Fronts.Vegas3));
+            RapidSimpleSingly(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.Vegas3Width), 1, Front, false);
+
+            DT.Clear();
+            rows = kolibriOrdersDT.Select(filter);
+            foreach (DataRow item in rows)
+                DT.Rows.Add(item.ItemArray);
+            Front = GetFrontName(Convert.ToInt32(Fronts.kolibri));
+            RapidSimpleSingly(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.kolibriWidth), 1, Front, false);
+
+            DT.Clear();
+            rows = Nord3OrdersDT.Select(filter);
+            foreach (DataRow item in rows)
+                DT.Rows.Add(item.ItemArray);
+            Front = GetFrontName(Convert.ToInt32(Fronts.Nord3));
+            RapidSimpleSingly(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.Nord3Width), 1, Front, false);
 
             DT.Clear();
             rows = Nord95OrdersDT.Select(filter);
@@ -9777,6 +10475,20 @@ namespace Infinium.Modules.WorkAssignments
                 DT.Rows.Add(item.ItemArray);
             Front = "ПШ-050 22х55 Бергамо";
             RapidSimpleBergamoSingly(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.BergamoWidth), 1, 29548, Front, false);
+
+            DT.Clear();
+            rows = DunaOrdersDT.Select(filter + " AND (Height>225 OR Width>225)");
+            foreach (DataRow item in rows)
+                DT.Rows.Add(item.ItemArray);
+            Front = GetFrontName(Convert.ToInt32(Fronts.duna));
+            RapidSimpleSingly(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.DunaWidth), 1, Front, false);
+
+            DT.Clear();
+            rows = DunaOrdersDT.Select(filter + " AND (Height<=225 OR Width<=225)");
+            foreach (DataRow item in rows)
+                DT.Rows.Add(item.ItemArray);
+            Front = "ПШ-161 22×55 Дюна";
+            RapidSimpleBergamoSingly(DT, ref DestinationDT, Convert.ToInt32(FrontMargins.DunaWidth), 1, 29548, Front, false);
 
             DT.Clear();
             rows = ep041OrdersDT.Select(filter);
@@ -10158,6 +10870,36 @@ namespace Infinium.Modules.WorkAssignments
             AntaliaSimpleDT = new DataTable();
             AntaliaOrdersDT = new DataTable();
 
+            Boston3VitrinaDT = new DataTable();
+            Boston3GridsDT = new DataTable();
+            Boston3SimpleDT = new DataTable();
+            Boston3OrdersDT = new DataTable();
+
+            Boston4VitrinaDT = new DataTable();
+            Boston4GridsDT = new DataTable();
+            Boston4SimpleDT = new DataTable();
+            Boston4OrdersDT = new DataTable();
+
+            Vest3VitrinaDT = new DataTable();
+            Vest3GridsDT = new DataTable();
+            Vest3SimpleDT = new DataTable();
+            Vest3OrdersDT = new DataTable();
+
+            Vegas3VitrinaDT = new DataTable();
+            Vegas3GridsDT = new DataTable();
+            Vegas3SimpleDT = new DataTable();
+            Vegas3OrdersDT = new DataTable();
+
+            kolibriVitrinaDT = new DataTable();
+            kolibriGridsDT = new DataTable();
+            kolibriSimpleDT = new DataTable();
+            kolibriOrdersDT = new DataTable();
+
+            Nord3VitrinaDT = new DataTable();
+            Nord3GridsDT = new DataTable();
+            Nord3SimpleDT = new DataTable();
+            Nord3OrdersDT = new DataTable();
+
             Nord95VitrinaDT = new DataTable();
             Nord95GridsDT = new DataTable();
             Nord95SimpleDT = new DataTable();
@@ -10178,6 +10920,12 @@ namespace Infinium.Modules.WorkAssignments
             BergamoSimpleDT = new DataTable();
             BergamoOrdersDT = new DataTable();
             BergamoGlassDT = new DataTable();
+
+            DunaVitrinaDT = new DataTable();
+            DunaGridsDT = new DataTable();
+            DunaSimpleDT = new DataTable();
+            DunaOrdersDT = new DataTable();
+            DunaGlassDT = new DataTable();
 
             ep071VitrinaDT = new DataTable();
             ep071GridsDT = new DataTable();
@@ -10474,10 +11222,17 @@ namespace Infinium.Modules.WorkAssignments
 
             DistMainOrdersTable(TechnoNOrdersDT);
             DistMainOrdersTable(AntaliaOrdersDT);
+            DistMainOrdersTable(Boston3OrdersDT);
+            DistMainOrdersTable(Boston4OrdersDT);
+            DistMainOrdersTable(Vest3OrdersDT);
+            DistMainOrdersTable(Vegas3OrdersDT);
+            DistMainOrdersTable(kolibriOrdersDT);
+            DistMainOrdersTable(Nord3OrdersDT);
             DistMainOrdersTable(Nord95OrdersDT);
             DistMainOrdersTable(epFoxOrdersDT);
             DistMainOrdersTable(VeneciaOrdersDT);
             DistMainOrdersTable(BergamoOrdersDT);
+            DistMainOrdersTable(DunaOrdersDT);
             DistMainOrdersTable(ep041OrdersDT);
             DistMainOrdersTable(ep071OrdersDT);
             DistMainOrdersTable(ep206OrdersDT);
@@ -10640,6 +11395,126 @@ namespace Infinium.Modules.WorkAssignments
                         CollectDeying(Convert.ToInt32(DT1.Rows[j]["ColorID"]), DT, ref DeyingDT, " РЕШ");
                     }
 
+                    using (DataView DV = new DataView(Boston3OrdersDT, "MainOrderID=" + MainOrderID, "ColorID", DataViewRowState.CurrentRows))
+                    {
+                        DT1.Clear();
+                        DT1 = DV.ToTable(true, new string[] { "ColorID" });
+                    }
+                    for (int j = 0; j < DT1.Rows.Count; j++)
+                    {
+                        DT.Clear();
+                        DataRow[] rows = Boston3SimpleDT.Select("MainOrderID=" + MainOrderID);
+                        foreach (DataRow item in rows)
+                            DT.Rows.Add(item.ItemArray);
+                        CollectDeying(Convert.ToInt32(DT1.Rows[j]["ColorID"]), DT, ref DeyingDT, string.Empty);
+
+                        DT.Clear();
+                        rows = Boston3GridsDT.Select("MainOrderID=" + MainOrderID);
+                        foreach (DataRow item in rows)
+                            DT.Rows.Add(item.ItemArray);
+                        CollectDeying(Convert.ToInt32(DT1.Rows[j]["ColorID"]), DT, ref DeyingDT, " РЕШ");
+                    }
+
+                    using (DataView DV = new DataView(Boston4OrdersDT, "MainOrderID=" + MainOrderID, "ColorID", DataViewRowState.CurrentRows))
+                    {
+                        DT1.Clear();
+                        DT1 = DV.ToTable(true, new string[] { "ColorID" });
+                    }
+                    for (int j = 0; j < DT1.Rows.Count; j++)
+                    {
+                        DT.Clear();
+                        DataRow[] rows = Boston4SimpleDT.Select("MainOrderID=" + MainOrderID);
+                        foreach (DataRow item in rows)
+                            DT.Rows.Add(item.ItemArray);
+                        CollectDeying(Convert.ToInt32(DT1.Rows[j]["ColorID"]), DT, ref DeyingDT, string.Empty);
+
+                        DT.Clear();
+                        rows = Boston4GridsDT.Select("MainOrderID=" + MainOrderID);
+                        foreach (DataRow item in rows)
+                            DT.Rows.Add(item.ItemArray);
+                        CollectDeying(Convert.ToInt32(DT1.Rows[j]["ColorID"]), DT, ref DeyingDT, " РЕШ");
+                    }
+
+                    using (DataView DV = new DataView(Vest3OrdersDT, "MainOrderID=" + MainOrderID, "ColorID", DataViewRowState.CurrentRows))
+                    {
+                        DT1.Clear();
+                        DT1 = DV.ToTable(true, new string[] { "ColorID" });
+                    }
+                    for (int j = 0; j < DT1.Rows.Count; j++)
+                    {
+                        DT.Clear();
+                        DataRow[] rows = Vest3SimpleDT.Select("MainOrderID=" + MainOrderID);
+                        foreach (DataRow item in rows)
+                            DT.Rows.Add(item.ItemArray);
+                        CollectDeying(Convert.ToInt32(DT1.Rows[j]["ColorID"]), DT, ref DeyingDT, string.Empty);
+
+                        DT.Clear();
+                        rows = Vest3GridsDT.Select("MainOrderID=" + MainOrderID);
+                        foreach (DataRow item in rows)
+                            DT.Rows.Add(item.ItemArray);
+                        CollectDeying(Convert.ToInt32(DT1.Rows[j]["ColorID"]), DT, ref DeyingDT, " РЕШ");
+                    }
+
+                    using (DataView DV = new DataView(Vegas3OrdersDT, "MainOrderID=" + MainOrderID, "ColorID", DataViewRowState.CurrentRows))
+                    {
+                        DT1.Clear();
+                        DT1 = DV.ToTable(true, new string[] { "ColorID" });
+                    }
+                    for (int j = 0; j < DT1.Rows.Count; j++)
+                    {
+                        DT.Clear();
+                        DataRow[] rows = Vegas3SimpleDT.Select("MainOrderID=" + MainOrderID);
+                        foreach (DataRow item in rows)
+                            DT.Rows.Add(item.ItemArray);
+                        CollectDeying(Convert.ToInt32(DT1.Rows[j]["ColorID"]), DT, ref DeyingDT, string.Empty);
+
+                        DT.Clear();
+                        rows = Vegas3GridsDT.Select("MainOrderID=" + MainOrderID);
+                        foreach (DataRow item in rows)
+                            DT.Rows.Add(item.ItemArray);
+                        CollectDeying(Convert.ToInt32(DT1.Rows[j]["ColorID"]), DT, ref DeyingDT, " РЕШ");
+                    }
+
+                    using (DataView DV = new DataView(kolibriOrdersDT, "MainOrderID=" + MainOrderID, "ColorID", DataViewRowState.CurrentRows))
+                    {
+                        DT1.Clear();
+                        DT1 = DV.ToTable(true, new string[] { "ColorID" });
+                    }
+                    for (int j = 0; j < DT1.Rows.Count; j++)
+                    {
+                        DT.Clear();
+                        DataRow[] rows = kolibriSimpleDT.Select("MainOrderID=" + MainOrderID);
+                        foreach (DataRow item in rows)
+                            DT.Rows.Add(item.ItemArray);
+                        CollectDeying(Convert.ToInt32(DT1.Rows[j]["ColorID"]), DT, ref DeyingDT, string.Empty);
+
+                        DT.Clear();
+                        rows = kolibriGridsDT.Select("MainOrderID=" + MainOrderID);
+                        foreach (DataRow item in rows)
+                            DT.Rows.Add(item.ItemArray);
+                        CollectDeying(Convert.ToInt32(DT1.Rows[j]["ColorID"]), DT, ref DeyingDT, " РЕШ");
+                    }
+
+                    using (DataView DV = new DataView(Nord3OrdersDT, "MainOrderID=" + MainOrderID, "ColorID", DataViewRowState.CurrentRows))
+                    {
+                        DT1.Clear();
+                        DT1 = DV.ToTable(true, new string[] { "ColorID" });
+                    }
+                    for (int j = 0; j < DT1.Rows.Count; j++)
+                    {
+                        DT.Clear();
+                        DataRow[] rows = Nord3SimpleDT.Select("MainOrderID=" + MainOrderID);
+                        foreach (DataRow item in rows)
+                            DT.Rows.Add(item.ItemArray);
+                        CollectDeying(Convert.ToInt32(DT1.Rows[j]["ColorID"]), DT, ref DeyingDT, string.Empty);
+
+                        DT.Clear();
+                        rows = Nord3GridsDT.Select("MainOrderID=" + MainOrderID);
+                        foreach (DataRow item in rows)
+                            DT.Rows.Add(item.ItemArray);
+                        CollectDeying(Convert.ToInt32(DT1.Rows[j]["ColorID"]), DT, ref DeyingDT, " РЕШ");
+                    }
+
                     using (DataView DV = new DataView(Nord95OrdersDT, "MainOrderID=" + MainOrderID, "ColorID", DataViewRowState.CurrentRows))
                     {
                         DT1.Clear();
@@ -10721,6 +11596,32 @@ namespace Infinium.Modules.WorkAssignments
 
                         DT.Clear();
                         rows = BergamoGlassDT.Select("MainOrderID=" + MainOrderID);
+                        foreach (DataRow item in rows)
+                            DT.Rows.Add(item.ItemArray);
+                        CollectDeying(Convert.ToInt32(DT1.Rows[j]["ColorID"]), DT, ref DeyingDT, string.Empty);
+                    }
+
+                    using (DataView DV = new DataView(DunaOrdersDT, "MainOrderID=" + MainOrderID, "ColorID", DataViewRowState.CurrentRows))
+                    {
+                        DT1.Clear();
+                        DT1 = DV.ToTable(true, new string[] { "ColorID" });
+                    }
+                    for (int j = 0; j < DT1.Rows.Count; j++)
+                    {
+                        DT.Clear();
+                        DataRow[] rows = DunaSimpleDT.Select("MainOrderID=" + MainOrderID);
+                        foreach (DataRow item in rows)
+                            DT.Rows.Add(item.ItemArray);
+                        CollectDeying(Convert.ToInt32(DT1.Rows[j]["ColorID"]), DT, ref DeyingDT, string.Empty);
+
+                        DT.Clear();
+                        rows = DunaGridsDT.Select("MainOrderID=" + MainOrderID);
+                        foreach (DataRow item in rows)
+                            DT.Rows.Add(item.ItemArray);
+                        CollectDeying(Convert.ToInt32(DT1.Rows[j]["ColorID"]), DT, ref DeyingDT, " РЕШ");
+
+                        DT.Clear();
+                        rows = DunaGlassDT.Select("MainOrderID=" + MainOrderID);
                         foreach (DataRow item in rows)
                             DT.Rows.Add(item.ItemArray);
                         CollectDeying(Convert.ToInt32(DT1.Rows[j]["ColorID"]), DT, ref DeyingDT, string.Empty);
@@ -11711,6 +12612,36 @@ namespace Infinium.Modules.WorkAssignments
                 AntaliaSimpleDT = LeonOrdersDT.Clone();
                 AntaliaOrdersDT = LeonOrdersDT.Clone();
 
+                Boston3VitrinaDT = LeonOrdersDT.Clone();
+                Boston3GridsDT = LeonOrdersDT.Clone();
+                Boston3SimpleDT = LeonOrdersDT.Clone();
+                Boston3OrdersDT = LeonOrdersDT.Clone();
+
+                Boston4VitrinaDT = LeonOrdersDT.Clone();
+                Boston4GridsDT = LeonOrdersDT.Clone();
+                Boston4SimpleDT = LeonOrdersDT.Clone();
+                Boston4OrdersDT = LeonOrdersDT.Clone();
+
+                Vest3VitrinaDT = LeonOrdersDT.Clone();
+                Vest3GridsDT = LeonOrdersDT.Clone();
+                Vest3SimpleDT = LeonOrdersDT.Clone();
+                Vest3OrdersDT = LeonOrdersDT.Clone();
+
+                Vegas3VitrinaDT = LeonOrdersDT.Clone();
+                Vegas3GridsDT = LeonOrdersDT.Clone();
+                Vegas3SimpleDT = LeonOrdersDT.Clone();
+                Vegas3OrdersDT = LeonOrdersDT.Clone();
+
+                kolibriVitrinaDT = LeonOrdersDT.Clone();
+                kolibriGridsDT = LeonOrdersDT.Clone();
+                kolibriSimpleDT = LeonOrdersDT.Clone();
+                kolibriOrdersDT = LeonOrdersDT.Clone();
+
+                Nord3VitrinaDT = LeonOrdersDT.Clone();
+                Nord3GridsDT = LeonOrdersDT.Clone();
+                Nord3SimpleDT = LeonOrdersDT.Clone();
+                Nord3OrdersDT = LeonOrdersDT.Clone();
+
                 Nord95VitrinaDT = LeonOrdersDT.Clone();
                 Nord95GridsDT = LeonOrdersDT.Clone();
                 Nord95SimpleDT = LeonOrdersDT.Clone();
@@ -11731,6 +12662,12 @@ namespace Infinium.Modules.WorkAssignments
                 BergamoSimpleDT = LeonOrdersDT.Clone();
                 BergamoOrdersDT = LeonOrdersDT.Clone();
                 BergamoGlassDT = LeonOrdersDT.Clone();
+
+                DunaVitrinaDT = LeonOrdersDT.Clone();
+                DunaGridsDT = LeonOrdersDT.Clone();
+                DunaSimpleDT = LeonOrdersDT.Clone();
+                DunaOrdersDT = LeonOrdersDT.Clone();
+                DunaGlassDT = LeonOrdersDT.Clone();
 
                 ep071VitrinaDT = LeonOrdersDT.Clone();
                 ep071GridsDT = LeonOrdersDT.Clone();
@@ -12269,7 +13206,15 @@ namespace Infinium.Modules.WorkAssignments
                 INNER JOIN infiniu2_catalog.dbo.FrontsConfig ON infiniu2_catalog.dbo.TechStore.TechStoreID = infiniu2_catalog.dbo.FrontsConfig.ProfileID AND infiniu2_catalog.dbo.FrontsConfig.FrontConfigID IN (SELECT FrontConfigID FROM FrontsOrders
                 WHERE FrontsOrders.FactoryID=1 AND FrontID IN (" +
                 Convert.ToInt32(Fronts.TechnoN) + "," +
-                Convert.ToInt32(Fronts.Antalia) + "," + Convert.ToInt32(Fronts.epFox) + "," + Convert.ToInt32(Fronts.Nord95) + "," + Convert.ToInt32(Fronts.Fat) + "," + Convert.ToInt32(Fronts.Leon) + "," +
+                Convert.ToInt32(Fronts.Antalia) + "," + Convert.ToInt32(Fronts.epFox) + "," + 
+                Convert.ToInt32(Fronts.Boston3) + "," + 
+                Convert.ToInt32(Fronts.Boston4) + "," + 
+                Convert.ToInt32(Fronts.Vest3) + "," + 
+                Convert.ToInt32(Fronts.Vegas3) + "," + 
+                Convert.ToInt32(Fronts.kolibri) + "," + 
+                Convert.ToInt32(Fronts.Nord3) + "," + 
+                Convert.ToInt32(Fronts.Nord95) + "," + 
+                Convert.ToInt32(Fronts.Fat) + "," + Convert.ToInt32(Fronts.Leon) + "," +
                 Convert.ToInt32(Fronts.Limog) + "," +
                 Convert.ToInt32(Fronts.ep066Marsel4) + "," + Convert.ToInt32(Fronts.ep110Jersy) + "," +
                 Convert.ToInt32(Fronts.ep018Marsel1) + "," + Convert.ToInt32(Fronts.ep043Shervud) + "," +
@@ -12278,7 +13223,9 @@ namespace Infinium.Modules.WorkAssignments
                 Convert.ToInt32(Fronts.epsh406Techno4) + "," +
                 Convert.ToInt32(Fronts.Luk) + "," + Convert.ToInt32(Fronts.LukPVH) + "," +
                 Convert.ToInt32(Fronts.Milano) + "," +
-                Convert.ToInt32(Fronts.Praga) + "," + Convert.ToInt32(Fronts.Sigma) + "," + Convert.ToInt32(Fronts.Venecia) + "," + Convert.ToInt32(Fronts.Bergamo) + "," +
+                Convert.ToInt32(Fronts.Praga) + "," + Convert.ToInt32(Fronts.Sigma) + "," + Convert.ToInt32(Fronts.Venecia) + "," + 
+                Convert.ToInt32(Fronts.Bergamo) + "," +
+                Convert.ToInt32(Fronts.duna) + "," +
                 Convert.ToInt32(Fronts.ep041) + "," + Convert.ToInt32(Fronts.ep071) + "," + Convert.ToInt32(Fronts.ep206) + "," + Convert.ToInt32(Fronts.ep216) + "," 
                 + Convert.ToInt32(Fronts.ep111) + "," + 
                 Convert.ToInt32(Fronts.Fenix) + "," + 
@@ -12316,7 +13263,15 @@ namespace Infinium.Modules.WorkAssignments
                 INNER JOIN infiniu2_catalog.dbo.FrontsConfig ON infiniu2_catalog.dbo.TechStore.TechStoreID = infiniu2_catalog.dbo.FrontsConfig.TechnoProfileID AND infiniu2_catalog.dbo.FrontsConfig.FrontConfigID IN (SELECT FrontConfigID FROM FrontsOrders
                 WHERE FrontsOrders.FactoryID=1 AND FrontID IN (" +
                 Convert.ToInt32(Fronts.TechnoN) + "," +
-                Convert.ToInt32(Fronts.Antalia) + "," + Convert.ToInt32(Fronts.epFox) + "," + Convert.ToInt32(Fronts.Nord95) + "," + Convert.ToInt32(Fronts.Fat) + "," + Convert.ToInt32(Fronts.Leon) + "," +
+                Convert.ToInt32(Fronts.Antalia) + "," + Convert.ToInt32(Fronts.epFox) + "," + 
+                Convert.ToInt32(Fronts.Boston3) + "," + 
+                Convert.ToInt32(Fronts.Boston4) + "," + 
+                Convert.ToInt32(Fronts.Vest3) + "," + 
+                Convert.ToInt32(Fronts.Vegas3) + "," + 
+                Convert.ToInt32(Fronts.kolibri) + "," + 
+                Convert.ToInt32(Fronts.Nord3) + "," + 
+                Convert.ToInt32(Fronts.Nord95) + "," + 
+                Convert.ToInt32(Fronts.Fat) + "," + Convert.ToInt32(Fronts.Leon) + "," +
                 Convert.ToInt32(Fronts.Limog) + "," +
                 Convert.ToInt32(Fronts.ep066Marsel4) + "," + Convert.ToInt32(Fronts.ep110Jersy) + "," +
                 Convert.ToInt32(Fronts.ep018Marsel1) + "," + Convert.ToInt32(Fronts.ep043Shervud) + "," +
@@ -12325,7 +13280,9 @@ namespace Infinium.Modules.WorkAssignments
                 Convert.ToInt32(Fronts.epsh406Techno4) + "," +
                 Convert.ToInt32(Fronts.Luk) + "," + Convert.ToInt32(Fronts.LukPVH) + "," +
                 Convert.ToInt32(Fronts.Milano) + "," +
-                Convert.ToInt32(Fronts.Praga) + "," + Convert.ToInt32(Fronts.Sigma) + "," + Convert.ToInt32(Fronts.Venecia) + "," + Convert.ToInt32(Fronts.Bergamo) + "," +
+                Convert.ToInt32(Fronts.Praga) + "," + Convert.ToInt32(Fronts.Sigma) + "," + Convert.ToInt32(Fronts.Venecia) + "," +
+                Convert.ToInt32(Fronts.Bergamo) + "," +
+                Convert.ToInt32(Fronts.duna) + "," +
                 Convert.ToInt32(Fronts.ep041) + "," + Convert.ToInt32(Fronts.ep071) + "," + Convert.ToInt32(Fronts.ep206) + "," + 
                 Convert.ToInt32(Fronts.ep216) + "," + Convert.ToInt32(Fronts.ep111) + "," + 
                 Convert.ToInt32(Fronts.Fenix) + "," + 

@@ -7,6 +7,12 @@ using System.Windows.Forms;
 
 namespace Infinium.Modules.LoadCalculations
 {
+    public enum Category
+    {
+        Clients,
+        Items
+    }
+
     public enum OrderStatus
     {
         NotConfirmed,
@@ -18,14 +24,14 @@ namespace Infinium.Modules.LoadCalculations
 
     public class LoadCalculations
     {
-        private readonly DataTable _clientsAgreedDt;
         private readonly DataTable _clientsDt;
+
+        private readonly DataTable _clientsAgreedDt;
         private readonly DataTable _clientsForAgreedDt;
         private readonly DataTable _clientsInProductionDt;
-
         private readonly DataTable _clientsNotConfirmedDt;
         private readonly DataTable _clientsOnProductionDt;
-
+        
         private readonly DataTable _clientsOrdersDt;
         private readonly DataTable _decorOrdersDt;
         private readonly DataTable _distDecorDt;
@@ -109,13 +115,15 @@ namespace Infinium.Modules.LoadCalculations
             _clientsAgreedDt = new DataTable();
             _clientsAgreedDt.Columns.Add("clientName", typeof(string));
             _clientsAgreedDt.Columns.Add("orderNumber", typeof(int));
+            _clientsAgreedDt.Columns.Add("itemName", typeof(string));
             _clientsAgreedDt.Columns.Add("OrderDate", typeof(string));
             _clientsAgreedDt.Columns.Add("sumTotal", typeof(decimal));
-
+            
             _clientsOrdersDt = new DataTable();
             _clientsOrdersDt.Columns.Add("clientId", typeof(int));
             _clientsOrdersDt.Columns.Add("clientName", typeof(string));
             _clientsOrdersDt.Columns.Add("orderNumber", typeof(int));
+            _clientsOrdersDt.Columns.Add("itemName", typeof(string));
             _clientsOrdersDt.Columns.Add("orderStatus", typeof(int));
             _clientsOrdersDt.Columns.Add("OrderDate", typeof(string));
 
@@ -270,7 +278,7 @@ namespace Infinium.Modules.LoadCalculations
         //    return list;
         //}
 
-        public List<Machine> GroupByMachines(int sectorId)
+        public List<Machine> GroupByMachines(int sectorId, Category category)
         {
             _groupbyMachinesDt.Clear();
 
@@ -292,8 +300,11 @@ namespace Infinium.Modules.LoadCalculations
                     s.Key.clientId,
                     s.Key.orderNumber,
                     s.Key.orderStatus)).OrderBy(x => x.Name).ToList();
-
-            FillClientsDt();
+            
+            if (category == Category.Clients)
+                FillClientsDt();
+            if (category == Category.Items)
+                FillItemClientsDt();
 
             foreach (var machineId in distMachines)
             {
@@ -570,17 +581,161 @@ namespace Infinium.Modules.LoadCalculations
             }
         }
 
-        private void AddClientOrder(int clientId, string clientName, int orderNumber, int orderStatus, string orderDate)
+        private void FillItemClientsDt()
+        {
+            _clientsNotConfirmedDt.Clear();
+            _clientsForAgreedDt.Clear();
+            _clientsAgreedDt.Clear();
+            _clientsOnProductionDt.Clear();
+            _clientsInProductionDt.Clear();
+
+            var distClients = _clientsOrdersDt.AsEnumerable()
+                .GroupBy(g => new
+                {
+                    clientId = g.Field<int>("clientId"),
+                    orderNumber = g.Field<int>("orderNumber"),
+                    itemName = g.Field<string>("itemName"),
+                    orderStatus = g.Field<int>("orderStatus"),
+                    OrderDate = g.Field<string>("OrderDate")
+                })
+                .Select(s => new
+                {
+                    s.Key.OrderDate,
+                    item = new Item(ClientName(s.Key.clientId),
+                        s.Key.clientId,
+                        s.Key.itemName,
+                        s.Key.orderNumber,
+                        s.Key.orderStatus)
+                }).OrderBy(x => x.item.Name).ToList();
+
+            foreach (var item in distClients)
+            {
+                decimal sumTotal;
+                DataRow newRow;
+                switch (item.item.OrderStatus)
+                {
+                    case (int)OrderStatus.NotConfirmed:
+
+                        newRow = _clientsNotConfirmedDt.NewRow();
+                        newRow["clientName"] = item.item.Name;
+                        newRow["itemName"] = item.item.ItemName;
+                        newRow["orderNumber"] = item.item.OrderNumber;
+                        newRow["OrderDate"] = item.OrderDate;
+
+                        sumTotal = _loadCalculationsDt.AsEnumerable()
+                            .Where(row => row.Field<int>("orderStatus") == (int)OrderStatus.NotConfirmed
+                                          && row.Field<int>("clientId") == item.item.ClientId
+                                          && row.Field<string>("decorName") == item.item.ItemName
+                                          && row.Field<int>("OrderNumber") == item.item.OrderNumber)
+                            .Select(x => x)
+                            .Sum(s => s.Field<decimal>("total1") +
+                                      s.Field<decimal>("total2") +
+                                      s.Field<decimal>("total3") +
+                                      s.Field<decimal>("total4"));
+                        newRow["sumTotal"] = sumTotal;
+
+                        _clientsNotConfirmedDt.Rows.Add(newRow);
+                        break;
+                    case (int)OrderStatus.ForAgreed:
+                        newRow = _clientsForAgreedDt.NewRow();
+                        newRow["clientName"] = item.item.Name;
+                        newRow["itemName"] = item.item.ItemName;
+                        newRow["orderNumber"] = item.item.OrderNumber;
+                        newRow["OrderDate"] = item.OrderDate;
+
+                        sumTotal = _loadCalculationsDt.AsEnumerable()
+                            .Where(row => row.Field<int>("orderStatus") == (int)OrderStatus.ForAgreed
+                                          && row.Field<int>("clientId") == item.item.ClientId
+                                          && row.Field<string>("decorName") == item.item.ItemName
+                                          && row.Field<int>("OrderNumber") == item.item.OrderNumber)
+                            .Select(x => x)
+                            .Sum(s => s.Field<decimal>("total1") +
+                                      s.Field<decimal>("total2") +
+                                      s.Field<decimal>("total3") +
+                                      s.Field<decimal>("total4"));
+                        newRow["sumTotal"] = sumTotal;
+
+                        _clientsForAgreedDt.Rows.Add(newRow);
+                        break;
+                    case (int)OrderStatus.Agreed:
+                        newRow = _clientsAgreedDt.NewRow();
+                        newRow["clientName"] = item.item.Name;
+                        newRow["itemName"] = item.item.ItemName;
+                        newRow["orderNumber"] = item.item.OrderNumber;
+                        newRow["OrderDate"] = item.OrderDate;
+
+                        sumTotal = _loadCalculationsDt.AsEnumerable()
+                            .Where(row => row.Field<int>("orderStatus") == (int)OrderStatus.Agreed
+                                          && row.Field<int>("clientId") == item.item.ClientId
+                                          && row.Field<string>("decorName") == item.item.ItemName
+                                          && row.Field<int>("OrderNumber") == item.item.OrderNumber)
+                            .Select(x => x)
+                            .Sum(s => s.Field<decimal>("total1") +
+                                      s.Field<decimal>("total2") +
+                                      s.Field<decimal>("total3") +
+                                      s.Field<decimal>("total4"));
+                        newRow["sumTotal"] = sumTotal;
+
+                        _clientsAgreedDt.Rows.Add(newRow);
+                        break;
+                    case (int)OrderStatus.OnProduction:
+                        newRow = _clientsOnProductionDt.NewRow();
+                        newRow["clientName"] = item.item.Name;
+                        newRow["itemName"] = item.item.ItemName;
+                        newRow["orderNumber"] = item.item.OrderNumber;
+                        newRow["OrderDate"] = item.OrderDate;
+
+                        sumTotal = _loadCalculationsDt.AsEnumerable()
+                            .Where(row => row.Field<int>("orderStatus") == (int)OrderStatus.OnProduction
+                                          && row.Field<int>("clientId") == item.item.ClientId
+                                          && row.Field<string>("decorName") == item.item.ItemName
+                                          && row.Field<int>("OrderNumber") == item.item.OrderNumber)
+                            .Select(x => x)
+                            .Sum(s => s.Field<decimal>("total1") +
+                                      s.Field<decimal>("total2") +
+                                      s.Field<decimal>("total3") +
+                                      s.Field<decimal>("total4"));
+                        newRow["sumTotal"] = sumTotal;
+
+                        _clientsOnProductionDt.Rows.Add(newRow);
+                        break;
+                    case (int)OrderStatus.InProduction:
+                        newRow = _clientsInProductionDt.NewRow();
+                        newRow["clientName"] = item.item.Name;
+                        newRow["itemName"] = item.item.ItemName;
+                        newRow["orderNumber"] = item.item.OrderNumber;
+                        newRow["OrderDate"] = item.OrderDate;
+
+                        sumTotal = _loadCalculationsDt.AsEnumerable()
+                            .Where(row => row.Field<int>("orderStatus") == (int)OrderStatus.InProduction
+                                          && row.Field<int>("clientId") == item.item.ClientId
+                                          && row.Field<string>("decorName") == item.item.ItemName
+                                          && row.Field<int>("OrderNumber") == item.item.OrderNumber)
+                            .Select(x => x)
+                            .Sum(s => s.Field<decimal>("total1") +
+                                      s.Field<decimal>("total2") +
+                                      s.Field<decimal>("total3") +
+                                      s.Field<decimal>("total4"));
+                        newRow["sumTotal"] = sumTotal;
+
+                        _clientsInProductionDt.Rows.Add(newRow);
+                        break;
+                }
+            }
+        }
+
+        private void AddClientOrder(int clientId, string clientName, int orderNumber, string itemName, int orderStatus, string orderDate)
         {
             var newRow = _clientsOrdersDt.NewRow();
             newRow["clientId"] = clientId;
             newRow["clientName"] = clientName;
+            newRow["itemName"] = itemName;
             newRow["orderNumber"] = orderNumber;
             newRow["orderStatus"] = orderStatus;
             newRow["OrderDate"] = orderDate;
             _clientsOrdersDt.Rows.Add(newRow);
         }
-
+        
         public void CreateSectors(List<int> sectorsId)
         {
             SectorsList.Clear();
@@ -793,8 +948,8 @@ and mainOrderId={mainOrderId}");
                         }
                     }
 
-                    AddClientOrder(clientId, ClientName(clientId), orderNumber, (int)orderStatus, orderDate);
-
+                    AddClientOrder(clientId, ClientName(clientId), orderNumber, decorName, (int)orderStatus, orderDate);
+                    
                     AddCalculationDecorRow(userId, machineId, sectorId, clientId, orderNumber, orderStatus, accountingName,
                         decorId, measureId, length, height, width, count, countRate1,
                         rate1, rate2, rate3, rate4);
@@ -814,7 +969,7 @@ and mainOrderId={mainOrderId}");
                 var width = Convert.ToInt32(_frontsOrdersDt.Rows[i]["width"]);
                 var count = Convert.ToInt32(_frontsOrdersDt.Rows[i]["count"]);
                 var countRate1 = 0;
-                var techStorename = TechStoreName(itemId);
+                var techStoreName = TechStoreName(itemId);
                 var accountingName = _frontsOrdersDt.Rows[i]["accountingname"].ToString();
 
                 if (_frontsOrdersDt.Rows[i]["OrderDate"] != DBNull.Value)
@@ -842,19 +997,19 @@ and mainOrderId={mainOrderId}");
                     if (sectorIndex == -1)
                         continue;
 
-                    if (techStorename.Length > 0)
+                    if (techStoreName.Length > 0)
                     {
-                        var index11 = techStorename.IndexOf(" ", StringComparison.Ordinal);
+                        var index11 = techStoreName.IndexOf(" ", StringComparison.Ordinal);
 
                         if (index11 == -1)
                         {
-                            var rows1 = _distDecorDt.Select($@"decorName='{techStorename}' and sectorId={sectorId} 
+                            var rows1 = _distDecorDt.Select($@"decorName='{techStoreName}' and sectorId={sectorId} 
 and mainOrderId={mainOrderId}");
 
                             if (!rows1.Any())
                             {
                                 var newRow = _distDecorDt.NewRow();
-                                newRow["decorName"] = techStorename;
+                                newRow["decorName"] = techStoreName;
                                 newRow["sectorId"] = sectorId;
                                 newRow["mainOrderId"] = mainOrderId;
                                 _distDecorDt.Rows.Add(newRow);
@@ -867,7 +1022,7 @@ and mainOrderId={mainOrderId}");
                         }
                         else
                         {
-                            var s11 = techStorename.Substring(0, index11);
+                            var s11 = techStoreName.Substring(0, index11);
 
                             var rows1 = _distDecorDt.Select(
                                 $@"decorName='{s11}' and sectorId={sectorId} and mainOrderId={mainOrderId}");
@@ -888,7 +1043,7 @@ and mainOrderId={mainOrderId}");
                         }
                     }
 
-                    AddClientOrder(clientId, ClientName(clientId), orderNumber, (int)orderStatus, orderDate);
+                    AddClientOrder(clientId, ClientName(clientId), orderNumber, techStoreName, (int)orderStatus, orderDate);
 
                     AddCalculationFrontRow(userId, machineId, sectorId, clientId, orderNumber, orderStatus, accountingName,
                         itemId, measureId, 0, height, width, count, countRate1,
@@ -1652,6 +1807,28 @@ inner join infiniu2_users.dbo.users as u on s.userid = u.userid";
             }
 
             public string Name { get; set; }
+
+            public int ClientId { get; set; }
+
+            public int OrderNumber { get; set; }
+
+            public int OrderStatus { get; set; }
+        }
+
+        public class Item
+        {
+            public Item(string name, int clientId, string itemName, int orderNumber, int orderStatus)
+            {
+                Name = name;
+                ItemName = itemName;
+                ClientId = clientId;
+                OrderNumber = orderNumber;
+                OrderStatus = orderStatus;
+            }
+
+            public string Name { get; set; }
+
+            public string ItemName { get; set; }
 
             public int ClientId { get; set; }
 

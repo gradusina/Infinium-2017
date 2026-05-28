@@ -13,6 +13,7 @@ using DevExpress.XtraExport;
 using System.Data.OleDb;
 using System.Text;
 using NPOI.HSSF.Record.Formula.Functions;
+using NPOI.HSSF.Model;
 
 namespace Infinium.Modules.StatisticsMarketing.Reports
 {
@@ -179,6 +180,20 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(PatinaDataTable);
+            }
+            var PatinaRALDataTable = new DataTable();
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT PatinaRAL.*, Patina.Patina FROM PatinaRAL INNER JOIN Patina ON Patina.PatinaID=PatinaRAL.PatinaID WHERE PatinaRAL.Enabled=1",
+                       ConnectionStrings.CatalogConnectionString))
+            {
+                DA.Fill(PatinaRALDataTable);
+            }
+            foreach (DataRow item in PatinaRALDataTable.Rows)
+            {
+                DataRow NewRow = PatinaDataTable.NewRow();
+                NewRow["PatinaID"] = item["PatinaRALID"];
+                NewRow["PatinaName"] = item["PatinaRAL"]; NewRow["Patina"] = item["Patina"];
+                NewRow["DisplayName"] = item["DisplayName"];
+                PatinaDataTable.Rows.Add(NewRow);
             }
             SelectCommand = @"SELECT * FROM InsetTypes";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
@@ -2186,7 +2201,7 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
             //if (FrontID == 30504 || FrontID == 30505 || FrontID == 30506 ||
             //    FrontID == 30364 || FrontID == 30366 || FrontID == 30367 ||
             //    FrontID == 30501 || FrontID == 30502 || FrontID == 30503 ||
-            //    FrontID == 16269 || FrontID == 28945 || FrontID == 41327 || FrontID == 41328 || FrontID == 41331 || 
+            //    FrontID == 16269 || FrontID == 62522 || FrontID == 28945 || FrontID == 41327 || FrontID == 41328 || FrontID == 41331 || 
             //    FrontID == 27914 || FrontID == 29597 || FrontID == 3727 || FrontID == 3728 || FrontID == 3729 ||
             //    FrontID == 3730 || FrontID == 3731 || FrontID == 3732 || FrontID == 3733 || FrontID == 3734 ||
             //    FrontID == 3735 || FrontID == 3736 || FrontID == 3737 || FrontID == 3739 || FrontID == 3740 ||
@@ -4078,7 +4093,7 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
             string Filter = " (PackingDateTime >= '" + date1.ToString("yyyy-MM-dd") + " 00:00' AND PackingDateTime <= '" + date2.ToString("yyyy-MM-dd") + " 23:59:59')";
 
             if (date1.ToShortDateString() == date2.ToShortDateString())
-                Filter = @$" (PackingDateTime > '{date1.ToString("yyyy-MM-dd")} {time1.ToString("HH:mm:ss")}' AND PackingDateTime <= '{date2:yyyy-MM-dd} {time2.ToString("HH:mm:ss")}')";
+                Filter = @$" (PackingDateTime >= '{date1.ToString("yyyy-MM-dd")} {time1.ToString("HH:mm:ss")}' AND PackingDateTime <= '{date2:yyyy-MM-dd} {time2.ToString("HH:mm:ss")}')";
 
             string MFSampleFilter = string.Empty;
             string MDSampleFilter = string.Empty;
@@ -5355,6 +5370,10 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
                 Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                 Cell1.SetCellValue("Себестоимость");
                 Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Итого");
+                Cell1.CellStyle = SimpleHeaderCS;
                 
                 pos++;
 
@@ -5381,6 +5400,13 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
                     Cell1.CellStyle = CountCS;
                     Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                     Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["Price"]));
+                    Cell1.CellStyle = PriceBelCS;
+
+                    var summary = Decimal.Round(Convert.ToDecimal(ProfilReportTable.Rows[i]["Count"]) *
+                                                Convert.ToDecimal(ProfilReportTable.Rows[i]["Price"]), 2, MidpointRounding.AwayFromZero);
+
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(Convert.ToDouble(summary));
                     Cell1.CellStyle = PriceBelCS;
                     pos++;
                 }
@@ -5476,6 +5502,12 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
                     Cell1.CellStyle = CountCS;
                     Cell1 = sheet2.CreateRow(pos).CreateCell(displayIndex++);
                     Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["Price"]));
+                    Cell1.CellStyle = PriceBelCS;
+                    var summary = Decimal.Round(Convert.ToDecimal(ProfilReportTable.Rows[i]["Count"]) *
+                                                Convert.ToDecimal(ProfilReportTable.Rows[i]["Price"]), 2, MidpointRounding.AwayFromZero);
+
+                    Cell1 = sheet2.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(Convert.ToDouble(summary));
                     Cell1.CellStyle = PriceBelCS;
                     pos++;
                 }
@@ -5575,6 +5607,12 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
                     Cell1.CellStyle = CountCS;
                     Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                     Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["Price"]));
+                    Cell1.CellStyle = PriceBelCS;
+                    var summary = Decimal.Round(Convert.ToDecimal(ProfilReportTable.Rows[i]["Count"]) *
+                                                Convert.ToDecimal(ProfilReportTable.Rows[i]["Price"]), 2, MidpointRounding.AwayFromZero);
+
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(Convert.ToDouble(summary));
                     Cell1.CellStyle = PriceBelCS;
                     Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                     Cell1.SetCellValue(ProfilReportTable.Rows[i]["IsComplaint"].ToString());
@@ -5680,6 +5718,12 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
                     Cell1.CellStyle = CountCS;
                     Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
                     Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["Price"]));
+                    Cell1.CellStyle = PriceBelCS;
+                    var summary = Decimal.Round(Convert.ToDecimal(ProfilReportTable.Rows[i]["Count"]) *
+                                                Convert.ToDecimal(ProfilReportTable.Rows[i]["Price"]), 2, MidpointRounding.AwayFromZero);
+
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(Convert.ToDouble(summary));
                     Cell1.CellStyle = PriceBelCS;
                     pos++;
                 }

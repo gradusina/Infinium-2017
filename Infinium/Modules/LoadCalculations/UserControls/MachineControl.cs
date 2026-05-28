@@ -114,10 +114,12 @@ namespace Infinium.Catalog.UserControls
         private void SettingGrid(DataGridView dgv, Dictionary<string, string> columnNames)
         {
             foreach (DataGridViewColumn column in dgv.Columns)
+            {
                 if (columnNames.ContainsKey(column.Name.ToLower()))
                     column.HeaderText = columnNames[column.Name.ToLower()];
                 else
                     column.Visible = false;
+            }
         }
 
         private void CreateDictionary()

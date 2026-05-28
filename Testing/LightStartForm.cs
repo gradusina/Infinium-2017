@@ -1,7 +1,7 @@
 ﻿using System.Windows.Forms;
 using Infinium;
 
-namespace Testing
+namespace Infinium
 {
     public partial class LightStartForm : Form
     {
@@ -30,7 +30,7 @@ namespace Testing
 
         private void button1_Click(object sender, System.EventArgs e)
         {
-            LoadCalculationsForm form = new LoadCalculationsForm(this);
+            ProjectsForm form = new ProjectsForm(this);
 
             form.Show();
         }

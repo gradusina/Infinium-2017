@@ -105,7 +105,6 @@ namespace Infinium.Modules.Marketing.NewOrders
             TempFrontsDataTable = new DataTable();
 
             ConstPatinaDataTable = new DataTable();
-            PatinaDataTable = new DataTable();
 
             HeightDataTable = new DataTable();
             WidthDataTable = new DataTable();
@@ -272,7 +271,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                 DA.Fill(ConstInsetTypesDataTable);
             }
             InsetTypesDataTable = ConstInsetTypesDataTable.Copy();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Patina",
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Patina order by PatinaName",
                 ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(ConstPatinaDataTable);
@@ -289,7 +288,8 @@ namespace Infinium.Modules.Marketing.NewOrders
             TechnoProfilesDataTable = ConstTechnoProfilesDataTable.Copy();
             PatinaDataTable = ConstPatinaDataTable.Copy();
             PatinaRALDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT PatinaRAL.*, Patina.Patina FROM PatinaRAL INNER JOIN Patina ON Patina.PatinaID=PatinaRAL.PatinaID",
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT PatinaRAL.*, Patina.Patina FROM PatinaRAL " +
+                                                          "INNER JOIN Patina ON Patina.PatinaID=PatinaRAL.PatinaID order by PatinaRal",
                 ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(PatinaRALDataTable);
@@ -298,7 +298,8 @@ namespace Infinium.Modules.Marketing.NewOrders
             {
                 DataRow NewRow = PatinaDataTable.NewRow();
                 NewRow["PatinaID"] = item["PatinaRALID"];
-                NewRow["PatinaName"] = item["PatinaRAL"]; NewRow["Patina"] = item["Patina"];
+                NewRow["PatinaName"] = item["PatinaRAL"]; 
+                NewRow["Patina"] = item["Patina"];
                 NewRow["DisplayName"] = item["DisplayName"];
                 PatinaDataTable.Rows.Add(NewRow);
             }

@@ -120,7 +120,7 @@ namespace Infinium.Modules.Marketing.NewOrders
             FrameColorsDataTable.Columns.Add(new DataColumn("ColorID", Type.GetType("System.Int64")));
             FrameColorsDataTable.Columns.Add(new DataColumn("ColorName", Type.GetType("System.String")));
             string SelectCommand = @"SELECT TechStoreID, TechStoreName FROM TechStore
-                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))
+                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11))
                 ORDER BY TechStoreName";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
@@ -212,7 +212,7 @@ namespace Infinium.Modules.Marketing.NewOrders
             }
 
             PatinaDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Patina",
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT * FROM Patina order by Patinaname",
                        ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(PatinaDataTable);
@@ -220,7 +220,7 @@ namespace Infinium.Modules.Marketing.NewOrders
 
             PatinaRALDataTable = new DataTable();
             using (SqlDataAdapter DA = new SqlDataAdapter(
-                       "SELECT PatinaRAL.*, Patina.Patina FROM PatinaRAL INNER JOIN Patina ON Patina.PatinaID=PatinaRAL.PatinaID WHERE PatinaRAL.Enabled=1",
+                       "SELECT PatinaRAL.*, Patina.Patina FROM PatinaRAL INNER JOIN Patina ON Patina.PatinaID=PatinaRAL.PatinaID WHERE PatinaRAL.Enabled=1 order by PatinaRAL",
                        ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(PatinaRALDataTable);
@@ -303,6 +303,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                 DisplayMember = "ColorName",
                 DisplayStyle = DataGridViewComboBoxDisplayStyle.Nothing
             };
+            FrameColorsColumn.AutoComplete = true;
             PatinaColumn = new DataGridViewComboBoxColumn()
             {
                 Name = "PatinaColumn",
@@ -800,7 +801,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                 return;
             }
 
-            if (Width != -1 && (Height < 110 || Width < 110) && FrontID != 3727 && FrontID != 3728 && FrontID != 3729 && FrontID != 3730 && FrontID != 3731 && FrontID != 3732 && FrontID != 3733 && FrontID != 3734 && FrontID != 3735 && FrontID != 3736 && FrontID != 3737 && FrontID != 27914 && FrontID != 29597 && FrontID != 3739 && FrontID != 3740 && FrontID != 3741 && FrontID != 3742 && FrontID != 3743 && FrontID != 3744 && FrontID != 3745 && FrontID != 3746 && FrontID != 3747 && FrontID != 3748 && FrontID != 15108 && FrontID != 3662 && FrontID != 3663 && FrontID != 3664 && FrontID != 16269 && FrontID != 28945 && FrontID != 41327 && FrontID != 41328 && FrontID != 41331 && FrontID != 16579 && FrontID != 16580 && FrontID != 16581 && FrontID != 16582 && FrontID != 16583 && FrontID != 16584 && FrontID != 29277 && FrontID != 29278 && FrontID != 15107 && FrontID != 15759 && FrontID != 15760 && FrontID != 27437 && FrontID != 27913 && FrontID != 29598)
+            if (Width != -1 && (Height < 110 || Width < 110) && FrontID != 3727 && FrontID != 3728 && FrontID != 3729 && FrontID != 3730 && FrontID != 3731 && FrontID != 3732 && FrontID != 3733 && FrontID != 3734 && FrontID != 3735 && FrontID != 3736 && FrontID != 3737 && FrontID != 27914 && FrontID != 29597 && FrontID != 3739 && FrontID != 3740 && FrontID != 3741 && FrontID != 3742 && FrontID != 3743 && FrontID != 3744 && FrontID != 3745 && FrontID != 3746 && FrontID != 3747 && FrontID != 3748 && FrontID != 15108 && FrontID != 3662 && FrontID != 3663 && FrontID != 3664 && FrontID != 16269 && FrontID != 62522 && FrontID != 28945 && FrontID != 41327 && FrontID != 41328 && FrontID != 41331 && FrontID != 16579 && FrontID != 16580 && FrontID != 16581 && FrontID != 16582 && FrontID != 16583 && FrontID != 16584 && FrontID != 29277 && FrontID != 29278 && FrontID != 15107 && FrontID != 15759 && FrontID != 15760 && FrontID != 27437 && FrontID != 27913 && FrontID != 29598)
             {
                 MessageBox.Show("Высота и ширина фасада не могут быть меньше 110 мм", "Добавление фасада");
                 return;
@@ -821,7 +822,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                                                                FrontID == 30367 ||
                                                                FrontID == 30501 || FrontID == 30502 ||
                                                                FrontID == 30503 ||
-                                                               FrontID == 16269 || FrontID == 28945 ||
+                                                               FrontID == 16269 || FrontID == 62522 || FrontID == 28945 ||
                                                                FrontID == 41327 || FrontID == 41328 ||
                                                                FrontID == 41331 || FrontID == 27914 ||
                                                                FrontID == 29597 ||
@@ -1116,7 +1117,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                     return;
                 }
 
-                if (Width != -1 && (Height < 110 || Width < 110) && FrontID != 3727 && FrontID != 3728 && FrontID != 3729 && FrontID != 3730 && FrontID != 3731 && FrontID != 3732 && FrontID != 3733 && FrontID != 3734 && FrontID != 3735 && FrontID != 3736 && FrontID != 3737 && FrontID != 27914 && FrontID != 29597 && FrontID != 3739 && FrontID != 3740 && FrontID != 3741 && FrontID != 3742 && FrontID != 3743 && FrontID != 3744 && FrontID != 3745 && FrontID != 3746 && FrontID != 3747 && FrontID != 3748 && FrontID != 15108 && FrontID != 3662 && FrontID != 3663 && FrontID != 3664 && FrontID != 16269 && FrontID != 28945 && FrontID != 41327 && FrontID != 41328 && FrontID != 41331 && FrontID != 16579 && FrontID != 16580 && FrontID != 16581 && FrontID != 16582 && FrontID != 16583 && FrontID != 16584 && FrontID != 29277 && FrontID != 29278 && FrontID != 15107 && FrontID != 15759 && FrontID != 15760 && FrontID != 27437 && FrontID != 27913 && FrontID != 29598)
+                if (Width != -1 && (Height < 110 || Width < 110) && FrontID != 3727 && FrontID != 3728 && FrontID != 3729 && FrontID != 3730 && FrontID != 3731 && FrontID != 3732 && FrontID != 3733 && FrontID != 3734 && FrontID != 3735 && FrontID != 3736 && FrontID != 3737 && FrontID != 27914 && FrontID != 29597 && FrontID != 3739 && FrontID != 3740 && FrontID != 3741 && FrontID != 3742 && FrontID != 3743 && FrontID != 3744 && FrontID != 3745 && FrontID != 3746 && FrontID != 3747 && FrontID != 3748 && FrontID != 15108 && FrontID != 3662 && FrontID != 3663 && FrontID != 3664 && FrontID != 16269 && FrontID != 62522 && FrontID != 28945 && FrontID != 41327 && FrontID != 41328 && FrontID != 41331 && FrontID != 16579 && FrontID != 16580 && FrontID != 16581 && FrontID != 16582 && FrontID != 16583 && FrontID != 16584 && FrontID != 29277 && FrontID != 29278 && FrontID != 15107 && FrontID != 15759 && FrontID != 15760 && FrontID != 27437 && FrontID != 27913 && FrontID != 29598)
                 {
                     MessageBox.Show("Высота и ширина фасада не могут быть меньше 110 мм", "Добавление фасада");
                     return;
@@ -1131,7 +1132,7 @@ namespace Infinium.Modules.Marketing.NewOrders
                      FrontID == 30504 || FrontID == 30505 || FrontID == 30506 ||
                      FrontID == 30364 || FrontID == 30366 || FrontID == 30367 ||
                      FrontID == 30501 || FrontID == 30502 || FrontID == 30503 ||
-                     FrontID == 16269 || FrontID == 28945 || FrontID == 41327 || FrontID == 41328 || FrontID == 41331 ||
+                     FrontID == 16269 || FrontID == 62522 || FrontID == 28945 || FrontID == 41327 || FrontID == 41328 || FrontID == 41331 ||
                      FrontID == 27914 || FrontID == 29597 ||
                      FrontID == 16579 || FrontID == 16580 || FrontID == 16581 || FrontID == 16582 || FrontID == 16583 ||
                      FrontID == 16584 ||
@@ -2910,7 +2911,7 @@ namespace Infinium.Modules.Marketing.NewOrders
             FrameColorsDataTable.Columns.Add(new DataColumn("ColorID", Type.GetType("System.Int64")));
             FrameColorsDataTable.Columns.Add(new DataColumn("ColorName", Type.GetType("System.String")));
             string SelectCommand = @"SELECT TechStoreID, TechStoreName FROM TechStore
-                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11 OR TechStoreGroupID = 1))
+                WHERE TechStoreSubGroupID IN (SELECT TechStoreSubGroupID FROM TechStoreSubGroups WHERE (TechStoreGroupID = 11))
                 ORDER BY TechStoreName";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
@@ -11072,7 +11073,7 @@ namespace Infinium.Modules.Marketing.NewOrders
             //if (FrontID == 30504 || FrontID == 30505 || FrontID == 30506 ||
             //    FrontID == 30364 || FrontID == 30366 || FrontID == 30367 ||
             //    FrontID == 30501 || FrontID == 30502 || FrontID == 30503 ||
-            //    FrontID == 16269 || FrontID == 28945 || FrontID == 41327 || FrontID == 41328 || FrontID == 41331 || 
+            //    FrontID == 16269 || FrontID == 62522 || FrontID == 28945 || FrontID == 41327 || FrontID == 41328 || FrontID == 41331 || 
             //    FrontID == 27914 || FrontID == 29597 || FrontID == 3727 || FrontID == 3728 || FrontID == 3729 ||
             //    FrontID == 3730 || FrontID == 3731 || FrontID == 3732 || FrontID == 3733 || FrontID == 3734 ||
             //    FrontID == 3735 || FrontID == 3736 || FrontID == 3737 || FrontID == 3739 || FrontID == 3740 ||
@@ -20324,7 +20325,7 @@ namespace Infinium.Modules.Marketing.NewOrders
 
         private void AddDecorConfig(int DecorConfigID)
         {
-            string SelectCommand = @"SELECT * FROM DecorConfig WHERE DecorConfigID=" + DecorConfigID;
+            string SelectCommand = @"SELECT * FROM DecorConfig WHERE Enabled=1 and DecorConfigID=" + DecorConfigID;
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
                 using (DataTable DT = new DataTable())
@@ -20343,7 +20344,7 @@ namespace Infinium.Modules.Marketing.NewOrders
 
         private void AddFrontsConfig(int FrontConfigID)
         {
-            string SelectCommand = @"SELECT * FROM FrontsConfig WHERE FrontConfigID=" + FrontConfigID;
+            string SelectCommand = @"SELECT * FROM FrontsConfig WHERE Enabled=1 and FrontConfigID=" + FrontConfigID;
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
                 using (DataTable DT = new DataTable())
@@ -20358,6 +20359,40 @@ namespace Infinium.Modules.Marketing.NewOrders
                     }
                 }
             }
+        }
+
+        private bool IsFrontsConfigExist(int configId)
+        {
+            string SelectCommand = @"SELECT FrontConfigID FROM FrontsConfig WHERE Enabled=1 and FrontConfigID=" + configId;
+            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
+            {
+                using (DataTable DT = new DataTable())
+                {
+                    if (DA.Fill(DT) > 0)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        private bool IsDecorConfigExist(int configId)
+        {
+            string SelectCommand = @"SELECT decorConfigID FROM DecorConfig WHERE Enabled=1 and decorConfigID=" + configId;
+            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
+            {
+                using (DataTable DT = new DataTable())
+                {
+                    if (DA.Fill(DT) > 0)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
 
         private DataTable DistOrdersTable(DataTable SourceDT)
@@ -20497,8 +20532,6 @@ namespace Infinium.Modules.Marketing.NewOrders
 
         private void CreateDecorOrders(DataRow[] rows, DateTime DocDateTime)
         {
-
-
             toDecorOrdersDT.Clear();
             string SelectCommand = @"SELECT TOP 0 * FROM NewDecorOrders WHERE MainOrderID=" + CurrentMainOrderID;
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
@@ -20513,6 +20546,9 @@ namespace Infinium.Modules.Marketing.NewOrders
                         int.TryParse(rows[i]["ConfigID"].ToString(), out DecorConfigID);
 
                         if (DecorConfigID == -1)
+                            continue;
+
+                        if (!IsDecorConfigExist(DecorConfigID))
                             continue;
 
                         if (!IsDecorConfingAdded(DecorConfigID))
@@ -20590,6 +20626,9 @@ namespace Infinium.Modules.Marketing.NewOrders
                         int.TryParse(rows[i]["ConfigID"].ToString(), out FrontConfigID);
 
                         if (FrontConfigID == -1)
+                            continue;
+
+                        if (!IsFrontsConfigExist(FrontConfigID))
                             continue;
 
                         if (!IsFrontsConfingAdded(FrontConfigID))

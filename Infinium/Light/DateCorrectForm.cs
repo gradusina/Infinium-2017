@@ -207,12 +207,13 @@ namespace Infinium
 
             if (IsOverdued)
             {
-                D = Convert.ToDateTime(OverduedDateTime.ToShortDateString() + " " + timeEdit1.Time.ToString("HH:mm:ss.fff"));
+                D = Convert.ToDateTime(OverduedDateTime.ToShortDateString() + " " + timeEdit1.Time.ToString("HH:mm"));
                 LightWorkDay.BreakStartWorkDay(Security.CurrentUserID, D, richTextBox1.Text, true);
             }
             else
             {
                 D = Convert.ToDateTime(timeEdit1.EditValue);
+                D = Convert.ToDateTime(timeEdit1.Time.ToShortDateString() + " " + timeEdit1.Time.ToString("HH:mm"));
                 LightWorkDay.BreakStartWorkDay(Security.CurrentUserID, D, richTextBox1.Text);
             }
 
@@ -246,12 +247,13 @@ namespace Infinium
 
             if (IsOverdued)
             {
-                D = Convert.ToDateTime(OverduedDateTime.ToShortDateString() + " " + timeEdit1.Time.ToString("HH:mm:ss.fff"));
+                D = Convert.ToDateTime(OverduedDateTime.ToShortDateString() + " " + timeEdit1.Time.ToString("HH:mm"));
                 LightWorkDay.EndWorkDay(Security.CurrentUserID, D, richTextBox1.Text, true);
             }
             else
             {
                 D = Convert.ToDateTime(timeEdit1.EditValue);
+                D = Convert.ToDateTime(timeEdit1.Time.ToShortDateString() + " " + timeEdit1.Time.ToString("HH:mm"));
                 LightWorkDay.EndWorkDay(Security.CurrentUserID, D, richTextBox1.Text);
             }
 
@@ -276,12 +278,13 @@ namespace Infinium
 
             if (IsOverdued)
             {
-                D = Convert.ToDateTime(OverduedDateTime.ToShortDateString() + " " + timeEdit1.Time.ToString("HH:mm:ss.fff"));
+                D = Convert.ToDateTime(OverduedDateTime.ToShortDateString() + " " + timeEdit1.Time.ToString("HH:mm"));
                 LightWorkDay.ContinueWorkDay(Security.CurrentUserID, D, richTextBox1.Text, true);
             }
             else
             {
                 D = Convert.ToDateTime(timeEdit1.EditValue);
+                D = Convert.ToDateTime(timeEdit1.Time.ToShortDateString() + " " + timeEdit1.Time.ToString("HH:mm"));
                 LightWorkDay.ContinueWorkDay(Security.CurrentUserID, D, richTextBox1.Text);
             }
 

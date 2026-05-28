@@ -1568,7 +1568,9 @@ namespace Infinium
             bool PackDate = PackDateRadioButton.Checked;
             bool StoreDate = StoreDateRadioButton.Checked;
             bool ExpDate = ExpDateRadioButton.Checked;
+            bool inProd = rbInProd.Checked;
             bool FactDispDate = FactDispDateRadioButton.Checked;
+            bool NotDispDate = NotDispDateRadioButton.Checked;
             bool OnProduction = OnProductionRadioButton.Checked;
 
             int PackageStatusID = -1;
@@ -1579,6 +1581,8 @@ namespace Infinium
                 PackageStatusID = 2;
             if (FactDispDate)
                 PackageStatusID = 3;
+            if (NotDispDate)
+                PackageStatusID = 5;
             if (ExpDate)
                 PackageStatusID = 4;
 
@@ -1623,7 +1627,10 @@ namespace Infinium
                     if (OnProduction)
                         AllProductsStatistics.FilterByOnProduction(From, To, FactoryID, cbSamples.Checked, cbNotSamples.Checked, cbTransport.Checked);
 
-                    if (PackDate || StoreDate || ExpDate || FactDispDate)
+                    if (inProd) 
+                        AllProductsStatistics.FilterInProd(From, TimeFrom, To, TimeTo, FactoryID, cbSamples.Checked, cbNotSamples.Checked, cbTransport.Checked);
+
+                    if (PackDate || StoreDate || ExpDate || FactDispDate || NotDispDate)
                         AllProductsStatistics.FilterByPackages(From, TimeFrom, To, TimeTo, PackageStatusID, FactoryID, cbSamples.Checked, cbNotSamples.Checked, cbTransport.Checked);
                 }
                 if (rbZOV.Checked)
@@ -1646,56 +1653,13 @@ namespace Infinium
                     if (OnProduction)
                         ZOVOrdersStatistics.FilterByOnProduction(From, To, FactoryID, cbSamples.Checked, cbNotSamples.Checked);
 
-                    if (PackDate || StoreDate || ExpDate || FactDispDate)
+                    if (PackDate || StoreDate || ExpDate || FactDispDate || NotDispDate)
                         ZOVOrdersStatistics.FilterByPackages(From, To, PackageStatusID, FactoryID, cbSamples.Checked, cbNotSamples.Checked);
                 }
                 while (SplashWindow.bSmallCreated)
                     SmallWaitForm.CloseS = true;
 
                 NeedSplash = true;
-            }
-            else
-            {
-                if (rbMarketing.Checked)
-                {
-                    if (PlanDispDate)
-                        AllProductsStatistics.FilterByPlanDispatch(From, To, FactoryID, cbSamples.Checked, cbNotSamples.Checked, cbTransport.Checked);
-
-                    if (OrderDate)
-                        AllProductsStatistics.FilterByOrderDate(From, To, FactoryID, cbSamples.Checked, cbNotSamples.Checked, cbTransport.Checked);
-
-                    if (ConfirmDate)
-                        AllProductsStatistics.FilterByConfirmDate(From, To, FactoryID, cbSamples.Checked, cbNotSamples.Checked, cbTransport.Checked);
-
-                    //if (PrepareZOV)
-                    //    AllProductsStatistics.FilterByPrepare(From, To);
-
-                    if (OnProduction)
-                        AllProductsStatistics.FilterByOnProduction(From, To, FactoryID, cbSamples.Checked, cbNotSamples.Checked, cbTransport.Checked);
-
-                    if (PackDate || StoreDate || ExpDate || FactDispDate)
-                        AllProductsStatistics.FilterByPackages(From, TimeFrom, To, TimeTo, PackageStatusID, FactoryID, cbSamples.Checked, cbNotSamples.Checked, cbTransport.Checked);
-                }
-                if (rbZOV.Checked)
-                {
-                    if (PlanDispDate)
-                        ZOVOrdersStatistics.FilterByPlanDispatch(From, To, FactoryID, cbSamples.Checked, cbNotSamples.Checked);
-
-                    if (OrderDate)
-                        ZOVOrdersStatistics.FilterByOrderDate(From, To, FactoryID, cbSamples.Checked, cbNotSamples.Checked);
-
-                    if (ConfirmDate)
-                        ZOVOrdersStatistics.FilterByConfirmDate(From, To, FactoryID, cbSamples.Checked, cbNotSamples.Checked);
-
-                    //if (PrepareZOV)
-                    //    ZOVOrdersStatistics.FilterByPrepare(From, To);
-
-                    if (OnProduction)
-                        ZOVOrdersStatistics.FilterByOnProduction(From, To, FactoryID, cbSamples.Checked, cbNotSamples.Checked);
-
-                    if (PackDate || StoreDate || ExpDate || FactDispDate)
-                        ZOVOrdersStatistics.FilterByPackages(From, To, PackageStatusID, FactoryID, cbSamples.Checked, cbNotSamples.Checked);
-                }
             }
 
             FrontsDataGrid_SelectionChanged(null, null);
@@ -4599,7 +4563,111 @@ namespace Infinium
             }
         }
 
+        private void kryptonContextMenuItem117_Click(object sender, EventArgs e)
+        {
+            Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Создание отчета.\r\nПодождите..."); });
+            T.Start();
+
+            while (!SplashWindow.bSmallCreated) ;
+            NeedSplash = false;
+
+            string FileName = "Не отгружено на " + CalendarFrom.SelectionStart.ToString("dd.MM.yyyy");
+
+            ClientNotDispReport report = new ClientNotDispReport();
+            ArrayList MClients = AllProductsStatistics.SelectedMarketingClients;
+            ArrayList MClientGroups = AllProductsStatistics.SelectedMarketingClientGroups;
+            report.FillTables(CalendarTo.SelectionStart, CalendarTimeTo.Value, MClients, MClientGroups);
+            if (report.HasData)
+            {
+                report.Report(FileName);
+                NeedSplash = true;
+                while (SplashWindow.bSmallCreated)
+                    SmallWaitForm.CloseS = true;
+            }
+            else
+            {
+                NeedSplash = true;
+                while (SplashWindow.bSmallCreated)
+                    SmallWaitForm.CloseS = true;
+                Infinium.LightMessageBox.Show(ref TopForm, false,
+                       "Заказов не найдено",
+                       "Не отгружено под клиента");
+            }
+        }
+
         private void kryptonContextMenuItem18_Click(object sender, EventArgs e)
+        {
+            Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Создание отчета.\r\nПодождите..."); });
+            T.Start();
+
+            while (!SplashWindow.bSmallCreated) ;
+            NeedSplash = false;
+
+            bool PlanDispDate = PlanDispDateRadioButton.Checked;
+            bool OrderDate = OrderDateRadioButton.Checked;
+            bool ConfirmDate = ConfirmDateRadioButton.Checked;
+            bool OnAgreement = OnAgreementRadioButton.Checked;
+            bool PackDate = PackDateRadioButton.Checked;
+            bool StoreDate = StoreDateRadioButton.Checked;
+            bool ExpDate = ExpDateRadioButton.Checked;
+            bool FactDispDate = FactDispDateRadioButton.Checked;
+            bool OnProduction = OnProductionRadioButton.Checked;
+
+            DateTime DateFrom = CalendarFrom.SelectionEnd;
+            DateTime DateTo = CalendarTo.SelectionEnd;
+
+            int PackageStatusID = -1;
+
+            if (PackDate)
+                PackageStatusID = 1;
+            if (StoreDate)
+                PackageStatusID = 2;
+            if (FactDispDate)
+                PackageStatusID = 3;
+            if (ExpDate)
+                PackageStatusID = 4;
+
+            string FileName = "Рекламации за период с " + DateFrom.ToString("dd.MM.yyyy") + " по " + DateTo.ToString("dd.MM.yyyy") + "";
+
+            ComplaintCostReport report = new ComplaintCostReport();
+
+            if (PlanDispDate)
+                report.FilterByPlanDispatch(DateFrom, DateTo);
+
+            if (OrderDate)
+                report.FilterByOrderDate(DateFrom, DateTo);
+
+            if (ConfirmDate)
+                report.FilterByConfirmDate(DateFrom, DateTo);
+
+            if (OnAgreement)
+                report.FilterByOnAgreement(DateFrom, DateTo);
+
+            if (OnProduction)
+                report.FilterByOnProduction(DateFrom, DateTo);
+
+            if (PackDate || StoreDate || ExpDate || FactDispDate)
+                report.FilterByPackages(DateFrom, DateTo, PackageStatusID);
+
+            if (report.HasData)
+            {
+                report.Report(FileName);
+                NeedSplash = true;
+                while (SplashWindow.bSmallCreated)
+                    SmallWaitForm.CloseS = true;
+            }
+            else
+            {
+                NeedSplash = true;
+                while (SplashWindow.bSmallCreated)
+                    SmallWaitForm.CloseS = true;
+                Infinium.LightMessageBox.Show(ref TopForm, false,
+                    "Рекламаций за выбранный период нет",
+                    "Рекламации");
+            }
+        }
+
+        private void kryptonContextMenuItem19_Click(object sender, EventArgs e)
         {
             Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Создание отчета.\r\nПодождите..."); });
             T.Start();
@@ -4675,80 +4743,8 @@ namespace Infinium
                 while (SplashWindow.bSmallCreated)
                     SmallWaitForm.CloseS = true;
                 Infinium.LightMessageBox.Show(ref TopForm, false,
-                       "Рекламаций за выбранный период нет",
-                       "Рекламации");
-            }
-        }
-
-        private void kryptonContextMenuItem19_Click(object sender, EventArgs e)
-        {
-            Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Создание отчета.\r\nПодождите..."); });
-            T.Start();
-
-            while (!SplashWindow.bSmallCreated) ;
-            NeedSplash = false;
-
-            bool PlanDispDate = PlanDispDateRadioButton.Checked;
-            bool OrderDate = OrderDateRadioButton.Checked;
-            bool ConfirmDate = ConfirmDateRadioButton.Checked;
-            bool OnAgreement = OnAgreementRadioButton.Checked;
-            bool PackDate = PackDateRadioButton.Checked;
-            bool StoreDate = StoreDateRadioButton.Checked;
-            bool ExpDate = ExpDateRadioButton.Checked;
-            bool FactDispDate = FactDispDateRadioButton.Checked;
-            bool OnProduction = OnProductionRadioButton.Checked;
-
-            DateTime DateFrom = CalendarFrom.SelectionEnd;
-            DateTime DateTo = CalendarTo.SelectionEnd;
-
-            int PackageStatusID = -1;
-
-            if (PackDate)
-                PackageStatusID = 1;
-            if (StoreDate)
-                PackageStatusID = 2;
-            if (FactDispDate)
-                PackageStatusID = 3;
-            if (ExpDate)
-                PackageStatusID = 4;
-
-            string FileName = "Рекламации за период с " + DateFrom.ToString("dd.MM.yyyy") + " по " + DateTo.ToString("dd.MM.yyyy") + "";
-
-            ComplaintCostReport report = new ComplaintCostReport();
-
-            if (PlanDispDate)
-                report.FilterByPlanDispatch(DateFrom, DateTo);
-
-            if (OrderDate)
-                report.FilterByOrderDate(DateFrom, DateTo);
-
-            if (ConfirmDate)
-                report.FilterByConfirmDate(DateFrom, DateTo);
-
-            if (OnAgreement)
-                report.FilterByOnAgreement(DateFrom, DateTo);
-
-            if (OnProduction)
-                report.FilterByOnProduction(DateFrom, DateTo);
-
-            if (PackDate || StoreDate || ExpDate || FactDispDate)
-                report.FilterByPackages(DateFrom, DateTo, PackageStatusID);
-
-            if (report.HasData)
-            {
-                report.Report(FileName);
-                NeedSplash = true;
-                while (SplashWindow.bSmallCreated)
-                    SmallWaitForm.CloseS = true;
-            }
-            else
-            {
-                NeedSplash = true;
-                while (SplashWindow.bSmallCreated)
-                    SmallWaitForm.CloseS = true;
-                Infinium.LightMessageBox.Show(ref TopForm, false,
-                       "Заказов с транспортом за выбранный период нет",
-                       "Транспорт");
+                    "Заказов с транспортом за выбранный период нет",
+                    "Транспорт");
             }
         }
 
@@ -4970,6 +4966,7 @@ namespace Infinium
             StoreDateMenuItem.Enabled = false;
             ExpDateMenuItem.Enabled = false;
             FactDispDateMenuItem.Enabled = false;
+            NotDispDateMenuItem.Enabled = false;
             if (PlanDispDateRadioButton.Checked)
             {
                 PlanDispDateMenuItem.Enabled = true;
@@ -4979,6 +4976,7 @@ namespace Infinium
                 StoreDateMenuItem.Enabled = false;
                 ExpDateMenuItem.Enabled = false;
                 FactDispDateMenuItem.Enabled = false;
+                NotDispDateMenuItem.Enabled = false;
             }
             if (OnProductionRadioButton.Checked)
             {
@@ -4989,6 +4987,7 @@ namespace Infinium
                 StoreDateMenuItem.Enabled = false;
                 ExpDateMenuItem.Enabled = false;
                 FactDispDateMenuItem.Enabled = false;
+                NotDispDateMenuItem.Enabled = false;
             }
             if (PackDateRadioButton.Checked)
             {
@@ -4999,6 +4998,7 @@ namespace Infinium
                 StoreDateMenuItem.Enabled = false;
                 ExpDateMenuItem.Enabled = false;
                 FactDispDateMenuItem.Enabled = false;
+                NotDispDateMenuItem.Enabled = false;
             }
             if (StoreDateRadioButton.Checked)
             {
@@ -5009,6 +5009,7 @@ namespace Infinium
                 StoreDateMenuItem.Enabled = true;
                 ExpDateMenuItem.Enabled = false;
                 FactDispDateMenuItem.Enabled = false;
+                NotDispDateMenuItem.Enabled = false;
             }
             if (ExpDateRadioButton.Checked)
             {
@@ -5019,6 +5020,7 @@ namespace Infinium
                 StoreDateMenuItem.Enabled = false;
                 ExpDateMenuItem.Enabled = true;
                 FactDispDateMenuItem.Enabled = false;
+                NotDispDateMenuItem.Enabled = false;
             }
             if (FactDispDateRadioButton.Checked)
             {
@@ -5029,6 +5031,18 @@ namespace Infinium
                 StoreDateMenuItem.Enabled = false;
                 ExpDateMenuItem.Enabled = false;
                 FactDispDateMenuItem.Enabled = true;
+                NotDispDateMenuItem.Enabled = false;
+            }
+            if (NotDispDateRadioButton.Checked)
+            {
+                PlanDispDateMenuItem.Enabled = false;
+                OnProdDateMenuItem.Enabled = false;
+                PackDateMenuItem.Enabled = false;
+                dbfPackDateMenuItem.Enabled = false;
+                StoreDateMenuItem.Enabled = false;
+                ExpDateMenuItem.Enabled = false;
+                FactDispDateMenuItem.Enabled = false;
+                NotDispDateMenuItem.Enabled = true;
             }
         }
 
@@ -5171,7 +5185,7 @@ namespace Infinium
                 filePath = Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/Infinium/1C data/" + currentMonthName;
 
             var dbfName = string.Empty;
-            var reportName = "OutProd " + CalendarFrom.SelectionStart.ToString("yyyy.MM.dd");
+            var reportName = $@"OutProd {CalendarFrom.SelectionStart.ToString("yyyy.MM.dd")} {CalendarTimeFrom.Value.ToString("HH.mm")}-{CalendarTimeTo.Value.ToString("HH.mm")}";
 
             producedProducts.SaveDBF(filePath, reportName, cbSamples.Checked, ref dbfName); 
             NeedSplash = true;
@@ -5182,6 +5196,31 @@ namespace Infinium
         private void FrameColorsDataGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
+        }
+
+        private void NotDispDateMenuItem_Click(object sender, EventArgs e)
+        {
+            Thread T = new Thread(delegate () { SplashWindow.CreateSmallSplash(ref TopForm, "Создание отчета.\r\nПодождите..."); });
+            T.Start();
+
+            while (!SplashWindow.bSmallCreated) ;
+            NeedSplash = false;
+
+            decimal EURBYRCurrency = 1000000;
+            DateTime date = new DateTime(CalendarFrom.SelectionStart.Year, CalendarFrom.SelectionStart.Month, 1);
+            string FileName = "Не отгружено " + CalendarFrom.SelectionStart.ToString("dd.MM.yyyy");
+
+            ArrayList MClients = AllProductsStatistics.SelectedMarketingClients;
+            ArrayList MClientGroups = AllProductsStatistics.SelectedMarketingClientGroups;
+            DecorCatalogOrder = new Modules.ZOV.DecorCatalogOrder();
+            ProducedReport ProducedProducts = new ProducedReport(ref DecorCatalogOrder);
+            ProducedProducts.GetDateRates(date, ref EURBYRCurrency);
+            //ProducedProducts.CreateZOVDispReport(CalendarFrom.SelectionStart, CalendarTo.SelectionStart, FileName, EURBYRCurrency);
+            ProducedProducts.CreateMarketingNotDispReport(CalendarFrom.SelectionStart, CalendarTo.SelectionStart, CalendarTimeTo.Value, cbSamples.Checked, cbNotSamples.Checked,
+                FileName, EURBYRCurrency, MClients, MClientGroups);
+            NeedSplash = true;
+            while (SplashWindow.bSmallCreated)
+                SmallWaitForm.CloseS = true;
         }
     }
 }

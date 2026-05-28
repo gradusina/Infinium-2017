@@ -1970,7 +1970,7 @@ namespace Infinium
             CabFurLabelManager = new CabFurLabel();
 
             TechStoreManager = new TechStoreManager();
-            //TechStoreManager.SaveCoatingRollersFromExcel();
+            //TechStoreManager.SaveNewPriceFromExcel();
             //TechStoreManager.ReplaceAccountingName();
             //TechStoreManager.DataSetIntoDBF();
             //TechStoreManager.SaveCabFurnitureDocumentTypesFromExcel();

@@ -78,6 +78,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.btnExplandSectors = new ComponentFactory.Krypton.Toolkit.KryptonButton();
             this.panel4 = new System.Windows.Forms.Panel();
+            this.btnExcelReport = new System.Windows.Forms.Button();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.cbFronts = new System.Windows.Forms.CheckBox();
             this.cbDecor = new System.Windows.Forms.CheckBox();
@@ -101,7 +102,9 @@
             this.MenuCloseButton = new ComponentFactory.Krypton.Toolkit.KryptonButton();
             this.label5 = new System.Windows.Forms.Label();
             this.coverPanel = new System.Windows.Forms.Panel();
-            this.btnExcelReport = new System.Windows.Forms.Button();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.rbClients = new System.Windows.Forms.RadioButton();
+            this.rbItems = new System.Windows.Forms.RadioButton();
             this.pnlsSectors.SuspendLayout();
             this.panel3.SuspendLayout();
             this.pnlInProduction.SuspendLayout();
@@ -127,6 +130,7 @@
             this.panel5.SuspendLayout();
             this.panel8.SuspendLayout();
             this.panel9.SuspendLayout();
+            this.groupBox5.SuspendLayout();
             this.SuspendLayout();
             // 
             // copyFrontMachineConfig
@@ -245,7 +249,7 @@
             this.dgvClientsInProduction.AllowUserToDeleteRows = false;
             this.dgvClientsInProduction.AllowUserToResizeColumns = false;
             this.dgvClientsInProduction.AllowUserToResizeRows = false;
-            this.dgvClientsInProduction.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvClientsInProduction.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dgvClientsInProduction.BackgroundColor = System.Drawing.SystemColors.ControlLightLight;
             this.dgvClientsInProduction.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvClientsInProduction.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -341,7 +345,7 @@
             this.dgvClientsOnProduction.AllowUserToDeleteRows = false;
             this.dgvClientsOnProduction.AllowUserToResizeColumns = false;
             this.dgvClientsOnProduction.AllowUserToResizeRows = false;
-            this.dgvClientsOnProduction.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvClientsOnProduction.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dgvClientsOnProduction.BackgroundColor = System.Drawing.SystemColors.ControlLightLight;
             this.dgvClientsOnProduction.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvClientsOnProduction.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -437,7 +441,7 @@
             this.dgvClientsAgreed.AllowUserToDeleteRows = false;
             this.dgvClientsAgreed.AllowUserToResizeColumns = false;
             this.dgvClientsAgreed.AllowUserToResizeRows = false;
-            this.dgvClientsAgreed.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvClientsAgreed.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dgvClientsAgreed.BackgroundColor = System.Drawing.SystemColors.ControlLightLight;
             this.dgvClientsAgreed.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvClientsAgreed.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -533,7 +537,7 @@
             this.dgvClientsForAgreed.AllowUserToDeleteRows = false;
             this.dgvClientsForAgreed.AllowUserToResizeColumns = false;
             this.dgvClientsForAgreed.AllowUserToResizeRows = false;
-            this.dgvClientsForAgreed.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvClientsForAgreed.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dgvClientsForAgreed.BackgroundColor = System.Drawing.SystemColors.ControlLightLight;
             this.dgvClientsForAgreed.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvClientsForAgreed.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -629,7 +633,7 @@
             this.dgvClientsNotConfirmed.AllowUserToDeleteRows = false;
             this.dgvClientsNotConfirmed.AllowUserToResizeColumns = false;
             this.dgvClientsNotConfirmed.AllowUserToResizeRows = false;
-            this.dgvClientsNotConfirmed.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvClientsNotConfirmed.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dgvClientsNotConfirmed.BackgroundColor = System.Drawing.SystemColors.ControlLightLight;
             this.dgvClientsNotConfirmed.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvClientsNotConfirmed.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -764,6 +768,7 @@
             // panel4
             // 
             this.panel4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel4.Controls.Add(this.groupBox5);
             this.panel4.Controls.Add(this.btnExcelReport);
             this.panel4.Controls.Add(this.groupBox4);
             this.panel4.Controls.Add(this.groupBox3);
@@ -776,11 +781,21 @@
             this.panel4.Size = new System.Drawing.Size(239, 686);
             this.panel4.TabIndex = 8;
             // 
+            // btnExcelReport
+            // 
+            this.btnExcelReport.Location = new System.Drawing.Point(119, 18);
+            this.btnExcelReport.Name = "btnExcelReport";
+            this.btnExcelReport.Size = new System.Drawing.Size(99, 33);
+            this.btnExcelReport.TabIndex = 13;
+            this.btnExcelReport.Text = "В Excel";
+            this.btnExcelReport.UseVisualStyleBackColor = true;
+            this.btnExcelReport.Click += new System.EventHandler(this.btnExcelReport_Click);
+            // 
             // groupBox4
             // 
             this.groupBox4.Controls.Add(this.cbFronts);
             this.groupBox4.Controls.Add(this.cbDecor);
-            this.groupBox4.Location = new System.Drawing.Point(18, 281);
+            this.groupBox4.Location = new System.Drawing.Point(18, 362);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(200, 75);
             this.groupBox4.TabIndex = 12;
@@ -811,7 +826,7 @@
             // 
             // groupBox3
             // 
-            this.groupBox3.Location = new System.Drawing.Point(18, 362);
+            this.groupBox3.Location = new System.Drawing.Point(18, 443);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(200, 28);
             this.groupBox3.TabIndex = 11;
@@ -1103,15 +1118,40 @@
             this.coverPanel.Size = new System.Drawing.Size(1270, 740);
             this.coverPanel.TabIndex = 0;
             // 
-            // btnExcelReport
+            // groupBox5
             // 
-            this.btnExcelReport.Location = new System.Drawing.Point(119, 18);
-            this.btnExcelReport.Name = "btnExcelReport";
-            this.btnExcelReport.Size = new System.Drawing.Size(99, 33);
-            this.btnExcelReport.TabIndex = 13;
-            this.btnExcelReport.Text = "В Excel";
-            this.btnExcelReport.UseVisualStyleBackColor = true;
-            this.btnExcelReport.Click += new System.EventHandler(this.btnExcelReport_Click);
+            this.groupBox5.Controls.Add(this.rbClients);
+            this.groupBox5.Controls.Add(this.rbItems);
+            this.groupBox5.Location = new System.Drawing.Point(17, 281);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(200, 75);
+            this.groupBox5.TabIndex = 9;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "Данные";
+            // 
+            // rbClients
+            // 
+            this.rbClients.AutoSize = true;
+            this.rbClients.BackColor = System.Drawing.Color.Transparent;
+            this.rbClients.Checked = true;
+            this.rbClients.Location = new System.Drawing.Point(6, 19);
+            this.rbClients.Name = "rbClients";
+            this.rbClients.Size = new System.Drawing.Size(69, 17);
+            this.rbClients.TabIndex = 6;
+            this.rbClients.TabStop = true;
+            this.rbClients.Text = "Клиенты";
+            this.rbClients.UseVisualStyleBackColor = false;
+            // 
+            // rbItems
+            // 
+            this.rbItems.AutoSize = true;
+            this.rbItems.BackColor = System.Drawing.Color.Transparent;
+            this.rbItems.Location = new System.Drawing.Point(6, 42);
+            this.rbItems.Name = "rbItems";
+            this.rbItems.Size = new System.Drawing.Size(80, 17);
+            this.rbItems.TabIndex = 7;
+            this.rbItems.Text = "Продукция";
+            this.rbItems.UseVisualStyleBackColor = false;
             // 
             // LoadCalculationsForm
             // 
@@ -1160,6 +1200,8 @@
             this.panel8.ResumeLayout(false);
             this.panel9.ResumeLayout(false);
             this.panel9.PerformLayout();
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1237,5 +1279,8 @@
         private System.Windows.Forms.CheckBox cbFronts;
         private System.Windows.Forms.CheckBox cbDecor;
         private System.Windows.Forms.Button btnExcelReport;
+        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.RadioButton rbClients;
+        private System.Windows.Forms.RadioButton rbItems;
     }
 }

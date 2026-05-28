@@ -1515,12 +1515,12 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
                 {
                     InfiniumProcesses.Add(item);
                 }
-            if (InfiniumProcesses.Count > 1)
+            if (InfiniumProcesses.Count > 0)
             {
-                var StartTime = ((System.Diagnostics.Process)InfiniumProcesses[0]).StartTime;
-                if (StartTime > ((System.Diagnostics.Process)InfiniumProcesses[1]).StartTime)
-                    ((System.Diagnostics.Process)InfiniumProcesses[1]).Kill();
-                else
+                //var StartTime = ((System.Diagnostics.Process)InfiniumProcesses[0]).StartTime;
+                //if (StartTime > ((System.Diagnostics.Process)InfiniumProcesses[1]).StartTime)
+                //    ((System.Diagnostics.Process)InfiniumProcesses[1]).Kill();
+                //else
                     ((System.Diagnostics.Process)InfiniumProcesses[0]).Kill();
             }
         }
@@ -2406,13 +2406,38 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
             if (!Rows.Any())
                 return null;
             if (Rows[0]["Photo"] == DBNull.Value)
-                return null;
-            if (FM.FileExist(Configs.DocumentsZOVTPSPath + FileManager.GetPath("UsersPhoto") + "/" + Rows[0]["Photo"], Configs.FTPType))
+            {
+                if (FM.FileExist(Configs.DocumentsPath + FileManager.GetPath("UsersPhoto") + "/" + "default.jpg",
+                        Configs.FTPType))
+                {
+                    try
+                    {
+                        using (var ms = new MemoryStream(
+                                   FM.ReadFile(
+                                       Configs.DocumentsPath + FileManager.GetPath("UsersPhoto") + "/" + "default.jpg",
+                                       Convert.ToInt64(Rows[0]["FileSize"]), Configs.FTPType)))
+                        {
+                            return Image.FromStream(ms);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Или здесь " + ex.Message);
+                        return null;
+                    }
+                }
+                else
+                {
+                    return null;
+                }
+            }
+
+            if (FM.FileExist(Configs.DocumentsPath + FileManager.GetPath("UsersPhoto") + "/" + Rows[0]["Photo"], Configs.FTPType))
             {
                 try
                 {
                     using (var ms = new MemoryStream(
-                        FM.ReadFile(Configs.DocumentsZOVTPSPath + FileManager.GetPath("UsersPhoto") + "/" + Rows[0]["Photo"],
+                        FM.ReadFile(Configs.DocumentsPath + FileManager.GetPath("UsersPhoto") + "/" + Rows[0]["Photo"],
                         Convert.ToInt64(Rows[0]["FileSize"]), Configs.FTPType)))
                     {
                         return Image.FromStream(ms);
@@ -2439,7 +2464,7 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
                     using (var DT = new DataTable())
                     {
                         var tempFolder = System.Environment.GetEnvironmentVariable("TEMP");
-                        var sDestFolder = Configs.DocumentsZOVTPSPath + FileManager.GetPath("UsersPhoto");
+                        var sDestFolder = Configs.DocumentsPath + FileManager.GetPath("UsersPhoto");
                         if (DA.Fill(DT) > 0)
                         {
                             if (Photo != null)
@@ -2456,6 +2481,7 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
                                 FM.UploadFile(tempFolder + "/" + sFileName,
                                     sDestFolder + "/" + sFileName, Configs.FTPType);
                                 DT.Rows[0]["FileSize"] = FileSize;
+                                DT.Rows[0]["Photo"] = sFileName;
                             }
                             else
                                 DT.Rows[0]["Photo"] = DBNull.Value;
@@ -2598,15 +2624,40 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
             var Rows = TablesManager.UsersPhotoDataTable.Select("UserID = " + Security.CurrentUserID);
             if (!Rows.Any())
                 return null;
-            if (Rows[0]["Photo"] == DBNull.Value)
-                return null;
             var FM1 = new FileManager();
-            if (FM1.FileExist(Configs.DocumentsZOVTPSPath + FileManager.GetPath("UsersPhoto") + "/" + Rows[0]["Photo"], Configs.FTPType))
+
+            if (Rows[0]["Photo"] == DBNull.Value)
+            {
+                if (FM1.FileExist(Configs.DocumentsPath + FileManager.GetPath("UsersPhoto") + "/" + "default.jpg",
+                        Configs.FTPType))
+                {
+                    try
+                    {
+                        using (var ms = new MemoryStream(
+                                   FM1.ReadFile(
+                                       Configs.DocumentsPath + FileManager.GetPath("UsersPhoto") + "/" + "default.jpg",
+                                       Convert.ToInt64(Rows[0]["FileSize"]), Configs.FTPType)))
+                        {
+                            return Image.FromStream(ms);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Или здесь " + ex.Message);
+                        return null;
+                    }
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            if (FM1.FileExist(Configs.DocumentsPath + FileManager.GetPath("UsersPhoto") + "/" + Rows[0]["Photo"], Configs.FTPType))
             {
                 try
                 {
                     using (var ms = new MemoryStream(
-                        FM1.ReadFile(Configs.DocumentsZOVTPSPath + FileManager.GetPath("UsersPhoto") + "/" + Rows[0]["Photo"],
+                        FM1.ReadFile(Configs.DocumentsPath + FileManager.GetPath("UsersPhoto") + "/" + Rows[0]["Photo"],
                         Convert.ToInt64(Rows[0]["FileSize"]), Configs.FTPType)))
                     {
                         return Image.FromStream(ms);
@@ -2646,7 +2697,7 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
                     using (var DT = new DataTable())
                     {
                         var tempFolder = System.Environment.GetEnvironmentVariable("TEMP");
-                        var sDestFolder = Configs.DocumentsZOVTPSPath + FileManager.GetPath("UsersPhoto");
+                        var sDestFolder = Configs.DocumentsPath + FileManager.GetPath("UsersPhoto");
                         if (DA.Fill(DT) > 0)
                         {
                             if (Photo != null)
@@ -2663,6 +2714,7 @@ FROM DecorOrders WHERE DecorID NOT IN (SELECT TechStoreID FROM infiniu2_catalog.
                                 FM.UploadFile(tempFolder + "/" + sFileName,
                                     sDestFolder + "/" + sFileName, Configs.FTPType);
                                 DT.Rows[0]["FileSize"] = FileSize;
+                                DT.Rows[0]["Photo"] = sFileName;
                             }
                             else
                                 DT.Rows[0]["Photo"] = DBNull.Value;
@@ -7521,6 +7573,20 @@ AND MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID = { Meg
                 arrayList.AddRange(rsaCryptoServiceProvider.Decrypt(encryptedBytes, true));
             }
             return Encoding.UTF32.GetString(arrayList.ToArray(Type.GetType("System.Byte")) as byte[]);
+        }
+
+        public string EncryptPassword(string Password)
+        {
+            try
+            {
+                var privateKey = "<RSAKeyValue><Modulus>pqJ+ilhHSM5N3XGPCAYdrpFjHlvcQQoaNPiTvUHut5dIwx40olIKRjvequY8WeGb</Modulus><Exponent>AQAB</Exponent><P>2UlRsj0mJoeGxD4AtwOEn02oCEjlYifD</P><Q>xFLlKWJuoE3mb88iI8v24/7Qt1Wvc5lJ</Q><DP>s8j4sfPqpyKoHaP3z3Y3u9/zUreOJIMl</DP><DQ>YhIOy8eR/54qeLv+D+e5o1cNKCgzhwmR</DQ><InverseQ>kU9Phb5ynWsB6ZFQoAnUPAzmirRIlqDR</InverseQ><D>J1Q64ZQsXvayUg23YIFxB/6wkj3EImWroC3gjjCvYa+fjojM1XXvE/tE5t8mnnzB</D></RSAKeyValue>";
+                sConnectionString = EncryptString(Password, 384, privateKey);
+            }
+            catch (ArgumentNullException)
+            {
+
+            }
+            return sConnectionString;
         }
 
         public string GetConnectionString(string FileName)

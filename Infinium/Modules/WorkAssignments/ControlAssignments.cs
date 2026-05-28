@@ -347,7 +347,7 @@ namespace Infinium.Modules.WorkAssignments
                 INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID
                 INNER JOIN BatchDetails ON FrontsOrders.MainOrderID = BatchDetails.MainOrderID AND BatchDetails.FactoryID = 1
                 INNER JOIN Batch ON BatchDetails.BatchID = Batch.BatchID AND Batch.ProfilWorkAssignmentID = " + WorkAssignmentID +
-                @" WHERE FrontsOrders.FactoryID=1 AND FrontID IN (1975,1976,1977,1978,15760, 3737, 30501,30502,30503,30504,30505,30506,16269,30364,30366,30367,28945,41327,41328,41331,3727,3728,3729,3730,3731,3732,3733,3734,3735,3736,3737,3739,3740,3741,3742,3743,3744,3745,3746,3747,3748,15108,29597,27914)";
+                @" WHERE FrontsOrders.FactoryID=1 AND FrontID IN (1975,1976,1977,1978,15760, 3737, 30501,30502,30503,30504,30505,30506,16269,62522,30364,30366,30367,28945,41327,41328,41331,3727,3728,3729,3730,3731,3732,3733,3734,3735,3736,3737,3739,3740,3741,3742,3743,3744,3745,3746,3747,3748,15108,29597,27914)";
 
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand,
                 ConnectionStrings.MarketingOrdersConnectionString))
@@ -412,7 +412,7 @@ namespace Infinium.Modules.WorkAssignments
         {
             int Count = 0;
             int PrintingStatus = 0;
-            int[] FrontsID = new int[36];
+            int[] FrontsID = new int[43];
             FrontsID[0] = Convert.ToInt32(Fronts.Antalia);
             FrontsID[1] = Convert.ToInt32(Fronts.Venecia);
             FrontsID[2] = Convert.ToInt32(Fronts.Leon);
@@ -451,6 +451,13 @@ namespace Infinium.Modules.WorkAssignments
             FrontsID[35] = Convert.ToInt32(Fronts.Malta);
             FrontsID[36] = Convert.ToInt32(Fronts.Vegas);
             FrontsID[37] = Convert.ToInt32(Fronts.epsh071);
+            FrontsID[38] = Convert.ToInt32(Fronts.Boston4);
+            FrontsID[39] = Convert.ToInt32(Fronts.Nord3);
+            FrontsID[40] = Convert.ToInt32(Fronts.Vegas3);
+            FrontsID[41] = Convert.ToInt32(Fronts.Vest3);
+            FrontsID[42] = Convert.ToInt32(Fronts.Boston3);
+            FrontsID[43] = Convert.ToInt32(Fronts.kolibri);
+            FrontsID[44] = Convert.ToInt32(Fronts.duna);
             string SelectCommand = @"SELECT * FROM AssignmentsInWork WHERE WorkAssignmentID=" + WorkAssignmentID;
             DataTable DT1 = new DataTable();
             DataTable DT2 = new DataTable();

@@ -206,6 +206,125 @@ namespace Infinium
 
             LoadCalculate();
 
+            dgvClientsSettings();
+        }
+
+        private void dgvClientsSettings()
+        {
+            dgvClientsNotConfirmed.DataSource = _loadCalculations.ClientsNotConfirmedList;
+            dgvClientsForAgreed.DataSource = _loadCalculations.ClientsForAgreedList;
+            dgvClientsAgreed.DataSource = _loadCalculations.ClientsAgreedList;
+            dgvClientsOnProduction.DataSource = _loadCalculations.ClientsOnProductionList;
+            dgvClientsInProduction.DataSource = _loadCalculations.ClientsInProductionList;
+
+            if (dgvClientsNotConfirmed.Columns["orderNumber"] != null)
+            {
+                //dgvClientsNotConfirmed.Columns["orderNumber"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                //dgvClientsNotConfirmed.Columns["orderNumber"].Width = 45;
+                dgvClientsNotConfirmed.Columns["orderNumber"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            }
+
+            if (dgvClientsNotConfirmed.Columns["OrderDate"] != null)
+            {
+                //dgvClientsNotConfirmed.Columns["OrderDate"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                //dgvClientsNotConfirmed.Columns["OrderDate"].Width = 85;
+                dgvClientsNotConfirmed.Columns["OrderDate"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            }
+
+            if (dgvClientsForAgreed.Columns["orderNumber"] != null)
+            {
+                //dgvClientsForAgreed.Columns["orderNumber"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                //dgvClientsForAgreed.Columns["orderNumber"].Width = 45;
+                dgvClientsForAgreed.Columns["orderNumber"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            }
+
+            if (dgvClientsForAgreed.Columns["OrderDate"] != null)
+            {
+                //dgvClientsForAgreed.Columns["OrderDate"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                //dgvClientsForAgreed.Columns["OrderDate"].Width = 85;
+                dgvClientsForAgreed.Columns["OrderDate"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            }
+
+            if (dgvClientsAgreed.Columns["orderNumber"] != null)
+            {
+                //dgvClientsAgreed.Columns["orderNumber"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                //dgvClientsAgreed.Columns["orderNumber"].Width = 45;
+                dgvClientsAgreed.Columns["orderNumber"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            }
+
+            if (dgvClientsAgreed.Columns["OrderDate"] != null)
+            {
+                //dgvClientsAgreed.Columns["OrderDate"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                //dgvClientsAgreed.Columns["OrderDate"].Width = 85;
+                dgvClientsAgreed.Columns["OrderDate"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            }
+
+            if (dgvClientsOnProduction.Columns["orderNumber"] != null)
+            {
+                //dgvClientsOnProduction.Columns["orderNumber"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                //dgvClientsOnProduction.Columns["orderNumber"].Width = 45;
+                dgvClientsOnProduction.Columns["orderNumber"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            }
+
+            if (dgvClientsOnProduction.Columns["OrderDate"] != null)
+            {
+                //dgvClientsOnProduction.Columns["OrderDate"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                //dgvClientsOnProduction.Columns["OrderDate"].Width = 85;
+                dgvClientsOnProduction.Columns["OrderDate"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            }
+
+            if (dgvClientsInProduction.Columns["orderNumber"] != null)
+            {
+                //dgvClientsInProduction.Columns["orderNumber"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                //dgvClientsInProduction.Columns["orderNumber"].Width = 45;
+                dgvClientsInProduction.Columns["orderNumber"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            }
+
+            if (dgvClientsInProduction.Columns["OrderDate"] != null)
+            {
+                //dgvClientsInProduction.Columns["OrderDate"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                //dgvClientsInProduction.Columns["OrderDate"].Width = 85;
+                dgvClientsInProduction.Columns["OrderDate"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            }
+
+            if (dgvClientsNotConfirmed.Columns["sumTotal"] != null)
+            {
+                //dgvClientsNotConfirmed.Columns["sumTotal"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                //dgvClientsNotConfirmed.Columns["sumTotal"].Width = 65;
+                dgvClientsNotConfirmed.Columns["sumTotal"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            }
+
+            if (dgvClientsForAgreed.Columns["sumTotal"] != null)
+            {
+                //dgvClientsForAgreed.Columns["sumTotal"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                //dgvClientsForAgreed.Columns["sumTotal"].Width = 65;
+                dgvClientsForAgreed.Columns["sumTotal"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            }
+
+            if (dgvClientsAgreed.Columns["sumTotal"] != null)
+            {
+                //dgvClientsAgreed.Columns["sumTotal"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                //dgvClientsAgreed.Columns["sumTotal"].Width = 65;
+                dgvClientsAgreed.Columns["sumTotal"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            }
+
+            if (dgvClientsOnProduction.Columns["sumTotal"] != null)
+            {
+                //dgvClientsOnProduction.Columns["sumTotal"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                //dgvClientsOnProduction.Columns["sumTotal"].Width = 65;
+                dgvClientsOnProduction.Columns["sumTotal"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            }
+
+            if (dgvClientsInProduction.Columns["sumTotal"] != null)
+            {
+                //dgvClientsInProduction.Columns["sumTotal"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                //dgvClientsInProduction.Columns["sumTotal"].Width = 65;
+                dgvClientsInProduction.Columns["sumTotal"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            }
+        }
+
+        private void dgvItemsSettings()
+        {
             dgvClientsNotConfirmed.DataSource = _loadCalculations.ClientsNotConfirmedList;
             dgvClientsForAgreed.DataSource = _loadCalculations.ClientsForAgreedList;
             dgvClientsAgreed.DataSource = _loadCalculations.ClientsAgreedList;
@@ -217,46 +336,55 @@ namespace Infinium
                 dgvClientsNotConfirmed.Columns["orderNumber"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
                 dgvClientsNotConfirmed.Columns["orderNumber"].Width = 45;
             }
+
             if (dgvClientsNotConfirmed.Columns["OrderDate"] != null)
             {
                 dgvClientsNotConfirmed.Columns["OrderDate"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
                 dgvClientsNotConfirmed.Columns["OrderDate"].Width = 85;
             }
+
             if (dgvClientsForAgreed.Columns["orderNumber"] != null)
             {
                 dgvClientsForAgreed.Columns["orderNumber"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
                 dgvClientsForAgreed.Columns["orderNumber"].Width = 45;
             }
+
             if (dgvClientsForAgreed.Columns["OrderDate"] != null)
             {
                 dgvClientsForAgreed.Columns["OrderDate"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
                 dgvClientsForAgreed.Columns["OrderDate"].Width = 85;
             }
+
             if (dgvClientsAgreed.Columns["orderNumber"] != null)
             {
                 dgvClientsAgreed.Columns["orderNumber"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
                 dgvClientsAgreed.Columns["orderNumber"].Width = 45;
             }
+
             if (dgvClientsAgreed.Columns["OrderDate"] != null)
             {
                 dgvClientsAgreed.Columns["OrderDate"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
                 dgvClientsAgreed.Columns["OrderDate"].Width = 85;
             }
+
             if (dgvClientsOnProduction.Columns["orderNumber"] != null)
             {
                 dgvClientsOnProduction.Columns["orderNumber"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
                 dgvClientsOnProduction.Columns["orderNumber"].Width = 45;
             }
+
             if (dgvClientsOnProduction.Columns["OrderDate"] != null)
             {
                 dgvClientsOnProduction.Columns["OrderDate"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
                 dgvClientsOnProduction.Columns["OrderDate"].Width = 85;
             }
+
             if (dgvClientsInProduction.Columns["orderNumber"] != null)
             {
                 dgvClientsInProduction.Columns["orderNumber"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
                 dgvClientsInProduction.Columns["orderNumber"].Width = 45;
             }
+
             if (dgvClientsInProduction.Columns["OrderDate"] != null)
             {
                 dgvClientsInProduction.Columns["OrderDate"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
@@ -268,27 +396,30 @@ namespace Infinium
                 dgvClientsNotConfirmed.Columns["sumTotal"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
                 dgvClientsNotConfirmed.Columns["sumTotal"].Width = 65;
             }
+
             if (dgvClientsForAgreed.Columns["sumTotal"] != null)
             {
                 dgvClientsForAgreed.Columns["sumTotal"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
                 dgvClientsForAgreed.Columns["sumTotal"].Width = 65;
             }
+
             if (dgvClientsAgreed.Columns["sumTotal"] != null)
             {
                 dgvClientsAgreed.Columns["sumTotal"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
                 dgvClientsAgreed.Columns["sumTotal"].Width = 65;
             }
+
             if (dgvClientsOnProduction.Columns["sumTotal"] != null)
             {
                 dgvClientsOnProduction.Columns["sumTotal"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
                 dgvClientsOnProduction.Columns["sumTotal"].Width = 65;
             }
+
             if (dgvClientsInProduction.Columns["sumTotal"] != null)
             {
                 dgvClientsInProduction.Columns["sumTotal"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
                 dgvClientsInProduction.Columns["sumTotal"].Width = 65;
             }
-
         }
 
         private void LoadCalculationsForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -324,6 +455,10 @@ namespace Infinium
                 _loadCalculations.RankCoef = 37;
             if (rbRankCoef12.Checked)
                 _loadCalculations.RankCoef = 51;
+
+            Category category = Category.Clients;
+            if (rbItems.Checked)
+                category = Category.Items;
 
             _loadCalculations.ClearCalculations();
             _loadCalculations.CreateSectors(sectorsId);
@@ -390,7 +525,7 @@ namespace Infinium
                     SectorName = sectorsList[i].Name
                 };
                 var sectorId = sectorsList[i].Id;
-                var machinesList = _loadCalculations.GroupByMachines(sectorId);
+                var machinesList = _loadCalculations.GroupByMachines(sectorId, category);
                 sectorsList[i].Machines = machinesList;
                 sectorControl.AddMachines(machinesList);
 

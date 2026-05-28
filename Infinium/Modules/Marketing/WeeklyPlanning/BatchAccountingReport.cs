@@ -15,6 +15,7 @@ using Infinium.Catalog.UserControls;
 using Infinium.Modules.Marketing.NewOrders;
 using Infinium.Modules.LoadCalculations;
 using static Infinium.Modules.LoadCalculations.LoadCalculations;
+using DevExpress.XtraBars;
 
 namespace Infinium.Modules.StatisticsMarketing.Reports
 {
@@ -2223,7 +2224,7 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
             //if (FrontID == 30504 || FrontID == 30505 || FrontID == 30506 ||
             //    FrontID == 30364 || FrontID == 30366 || FrontID == 30367 ||
             //    FrontID == 30501 || FrontID == 30502 || FrontID == 30503 ||
-            //    FrontID == 16269 || FrontID == 28945 || FrontID == 41327 || FrontID == 41328 || FrontID == 41331 || 
+            //    FrontID == 16269 || FrontID == 62522 || FrontID == 28945 || FrontID == 41327 || FrontID == 41328 || FrontID == 41331 || 
             //    FrontID == 27914 || FrontID == 29597 || FrontID == 3727 || FrontID == 3728 || FrontID == 3729 ||
             //    FrontID == 3730 || FrontID == 3731 || FrontID == 3732 || FrontID == 3733 || FrontID == 3734 ||
             //    FrontID == 3735 || FrontID == 3736 || FrontID == 3737 || FrontID == 3739 || FrontID == 3740 ||
@@ -4398,13 +4399,15 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
 
     public class LoadCalculationsBatchReport
     {
+        Category _category = Category.Clients;
+
         private LoadCalculations.LoadCalculations _loadCalculations;
 
         public LoadCalculationsBatchReport()
         {
             _loadCalculations = new LoadCalculations.LoadCalculations();
         }
-
+        
         public void LoadCalculate(int megaBatchId)
         {
             var sectorsList = _loadCalculations.GetAllSectors();
@@ -4412,7 +4415,7 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
 
             _loadCalculations.RankCoef = 37;
             _loadCalculations.RankCoef = 51;
-
+            
             _loadCalculations.ClearCalculations();
             _loadCalculations.CreateSectors(sectorsId);
 
@@ -4437,7 +4440,7 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
             sectorsList = _loadCalculations.SectorsList;
             foreach (var t in sectorsList)
             {
-                var machinesList = _loadCalculations.GroupByMachines(t.Id);
+                var machinesList = _loadCalculations.GroupByMachines(t.Id, _category);
                 t.Machines = machinesList;
             }
 

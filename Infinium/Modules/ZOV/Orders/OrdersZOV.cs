@@ -262,7 +262,8 @@ namespace Infinium.Modules.ZOV
             FrameColorsDataTable = ConstColorsDataTable.Copy();
             PatinaDataTable = ConstPatinaDataTable.Copy();
             PatinaRALDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT PatinaRAL.*, Patina.Patina FROM PatinaRAL INNER JOIN Patina ON Patina.PatinaID=PatinaRAL.PatinaID WHERE PatinaRAL.Enabled=1",
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT PatinaRAL.*, Patina.Patina FROM PatinaRAL " +
+                                                          "INNER JOIN Patina ON Patina.PatinaID=PatinaRAL.PatinaID order by PatinaRal",
                 ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(PatinaRALDataTable);
@@ -271,7 +272,8 @@ namespace Infinium.Modules.ZOV
             {
                 DataRow NewRow = PatinaDataTable.NewRow();
                 NewRow["PatinaID"] = item["PatinaRALID"];
-                NewRow["PatinaName"] = item["PatinaRAL"]; NewRow["Patina"] = item["Patina"];
+                NewRow["PatinaName"] = item["PatinaRAL"]; 
+                NewRow["Patina"] = item["Patina"];
                 NewRow["DisplayName"] = item["DisplayName"];
                 PatinaDataTable.Rows.Add(NewRow);
             }
@@ -605,12 +607,15 @@ namespace Infinium.Modules.ZOV
             PatinaDataTable.Clear();
 
             bool HasPatinaRAL = false;
-            if (Table.Rows.Count > 0)
-            {
 
-                DataRow[] fRows = PatinaRALDataTable.Select("PatinaID=" + Convert.ToInt32(Table.Rows[0]["PatinaID"]));
+            for (int i = 0; i < Table.Rows.Count; i++)
+            {
+                DataRow[] fRows = PatinaRALDataTable.Select("PatinaID=" + Convert.ToInt32(Table.Rows[i]["PatinaID"]));
                 if (fRows.Count() > 0)
+                {
                     HasPatinaRAL = true;
+                    break;
+                }
             }
             if (Table.Rows.Count > 0 && HasPatinaRAL)
             {
@@ -2251,9 +2256,15 @@ namespace Infinium.Modules.ZOV
             bool HasPatinaRAL = false;
             if (ItemPatinaDataTable.Rows.Count > 0)
             {
-                DataRow[] fRows = PatinaRALDataTable.Select("PatinaID=" + Convert.ToInt32(ItemPatinaDataTable.Rows[0]["PatinaID"]));
-                if (fRows.Count() > 0)
-                    HasPatinaRAL = true;
+                for (int i = 0; i < ItemPatinaDataTable.Rows.Count; i++)
+                {
+                    DataRow[] fRows = PatinaRALDataTable.Select("PatinaID=" + Convert.ToInt32(ItemPatinaDataTable.Rows[i]["PatinaID"]));
+                    if (fRows.Count() > 0)
+                    {
+                        HasPatinaRAL = true;
+                        break;
+                    }
+                }
             }
             if (ItemPatinaDataTable.Rows.Count > 0 && HasPatinaRAL)
             {
@@ -3822,14 +3833,14 @@ namespace Infinium.Modules.ZOV
         private void Fill()
         {
             string SelectCommand = @"SELECT TechStoreID AS FrontID, TechStoreName AS FrontName FROM TechStore 
-                WHERE TechStoreID IN (SELECT FrontID FROM FrontsConfig WHERE Enabled = 1)
+                WHERE TechStoreID IN (SELECT FrontID FROM FrontsConfig)
                 ORDER BY TechStoreName";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(FrontsDataTable);
             }
             SelectCommand = @"SELECT DISTINCT TechStoreID AS TechnoProfileID, TechStoreName AS TechnoProfileName FROM TechStore 
-                WHERE TechStoreID IN (SELECT TechnoProfileID FROM FrontsConfig WHERE Enabled = 1 AND AccountingName IS NOT NULL AND InvNumber IS NOT NULL)
+                WHERE TechStoreID IN (SELECT TechnoProfileID FROM FrontsConfig)
                 ORDER BY TechStoreName";
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionStrings.CatalogConnectionString))
             {
@@ -3856,7 +3867,8 @@ namespace Infinium.Modules.ZOV
                 DA.Fill(PatinaDataTable);
             }
             PatinaRALDataTable = new DataTable();
-            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT PatinaRAL.*, Patina.Patina FROM PatinaRAL INNER JOIN Patina ON Patina.PatinaID=PatinaRAL.PatinaID WHERE PatinaRAL.Enabled=1",
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT PatinaRAL.*, Patina.Patina FROM PatinaRAL " +
+                                                          "INNER JOIN Patina ON Patina.PatinaID=PatinaRAL.PatinaID order by PatinaRal",
                 ConnectionStrings.CatalogConnectionString))
             {
                 DA.Fill(PatinaRALDataTable);
@@ -6244,7 +6256,7 @@ namespace Infinium.Modules.ZOV
                      FrontID != 3735 && FrontID != 3736 && FrontID != 3737 && FrontID != 27914 && FrontID != 29597 && FrontID != 3739 && FrontID != 3740 &&
                      FrontID != 3741 && FrontID != 3742 && FrontID != 3743 && FrontID != 3744 && FrontID != 3745 &&
                      FrontID != 3746 && FrontID != 3747 && FrontID != 3748 && FrontID != 15108 && FrontID != 3662 && FrontID != 3663 && FrontID != 3664 &&
-                     FrontID != 16269 && FrontID != 28945 && FrontID != 41327 && FrontID != 41328 && FrontID != 41331 &&
+                     FrontID != 16269 && FrontID != 62522 && FrontID != 28945 && FrontID != 41327 && FrontID != 41328 && FrontID != 41331 &&
                      FrontID != 16579 && FrontID != 16580 && FrontID != 16581 && FrontID != 16582 && FrontID != 16583 && FrontID != 16584 &&
                      FrontID != 29277 && FrontID != 29278 &&
                      FrontID != 15107 && FrontID != 15759 && FrontID != 15760 && FrontID != 27437 && FrontID != 27913 && FrontID != 29598))
@@ -6260,7 +6272,7 @@ namespace Infinium.Modules.ZOV
                  FrontID == 30504 || FrontID == 30505 || FrontID == 30506 ||
                  FrontID == 30364 || FrontID == 30366 || FrontID == 30367 ||
                  FrontID == 30501 || FrontID == 30502 || FrontID == 30503 ||
-                 FrontID == 16269 || FrontID == 28945 || FrontID == 41327 || FrontID == 41328 || FrontID == 41331 || FrontID == 27914 || FrontID == 29597 ||
+                 FrontID == 16269 || FrontID == 62522 || FrontID == 28945 || FrontID == 41327 || FrontID == 41328 || FrontID == 41331 || FrontID == 27914 || FrontID == 29597 ||
                  FrontID == 16579 || FrontID == 16580 || FrontID == 16581 || FrontID == 16582 || FrontID == 16583 || FrontID == 16584 ||
                  FrontID == 29277 || FrontID == 29278 ||
                  FrontID == 15107 || FrontID == 15759 || FrontID == 15760 || FrontID == 27437 || FrontID == 27913 || FrontID == 29598))
@@ -6532,7 +6544,7 @@ namespace Infinium.Modules.ZOV
                      FrontID != 3735 && FrontID != 3736 && FrontID != 3737 && FrontID != 27914 && FrontID != 29597 && FrontID != 3739 && FrontID != 3740 &&
                      FrontID != 3741 && FrontID != 3742 && FrontID != 3743 && FrontID != 3744 && FrontID != 3745 &&
                      FrontID != 3746 && FrontID != 3747 && FrontID != 3748 && FrontID != 15108 && FrontID != 3662 && FrontID != 3663 && FrontID != 3664 &&
-                     FrontID != 16269 && FrontID != 28945 && FrontID != 41327 && FrontID != 41328 && FrontID != 41331 &&
+                     FrontID != 16269 && FrontID != 62522 && FrontID != 28945 && FrontID != 41327 && FrontID != 41328 && FrontID != 41331 &&
                      FrontID != 16579 && FrontID != 16580 && FrontID != 16581 && FrontID != 16582 && FrontID != 16583 && FrontID != 16584 &&
                      FrontID != 29277 && FrontID != 29278 &&
                      FrontID != 15107 && FrontID != 15759 && FrontID != 15760 && FrontID != 27437 && FrontID != 27913 && FrontID != 29598))
@@ -6548,7 +6560,7 @@ namespace Infinium.Modules.ZOV
                      FrontID == 30504 || FrontID == 30505 || FrontID == 30506 ||
                      FrontID == 30364 || FrontID == 30366 || FrontID == 30367 ||
                      FrontID == 30501 || FrontID == 30502 || FrontID == 30503 ||
-                     FrontID == 16269 || FrontID == 28945 || FrontID == 41327 || FrontID == 41328 || FrontID == 41331 || FrontID == 27914 || FrontID == 29597 ||
+                     FrontID == 16269 || FrontID == 62522 || FrontID == 28945 || FrontID == 41327 || FrontID == 41328 || FrontID == 41331 || FrontID == 27914 || FrontID == 29597 ||
                      FrontID == 16579 || FrontID == 16580 || FrontID == 16581 || FrontID == 16582 || FrontID == 16583 || FrontID == 16584 ||
                      FrontID == 29277 || FrontID == 29278 ||
                      FrontID == 15107 || FrontID == 15759 || FrontID == 15760 || FrontID == 27437 || FrontID == 27913 || FrontID == 29598))
@@ -9499,7 +9511,7 @@ namespace Infinium.Modules.ZOV
             //if (FrontID == 30504 || FrontID == 30505 || FrontID == 30506 ||
             //    FrontID == 30364 || FrontID == 30366 || FrontID == 30367 ||
             //    FrontID == 30501 || FrontID == 30502 || FrontID == 30503 ||
-            //    FrontID == 16269 || FrontID == 28945 || FrontID == 41327 || FrontID == 41328 || FrontID == 41331 || 
+            //    FrontID == 16269 || FrontID == 62522 || FrontID == 28945 || FrontID == 41327 || FrontID == 41328 || FrontID == 41331 || 
             //    FrontID == 27914 || FrontID == 29597 || FrontID == 3727 || FrontID == 3728 || FrontID == 3729 ||
             //    FrontID == 3730 || FrontID == 3731 || FrontID == 3732 || FrontID == 3733 || FrontID == 3734 ||
             //    FrontID == 3735 || FrontID == 3736 || FrontID == 3737 || FrontID == 3739 || FrontID == 3740 ||

@@ -59,9 +59,15 @@ namespace Infinium
             this.SymbolCountText = new System.Windows.Forms.Label();
             this.AllUsersNotifyCheckBox = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.DescCountLabel = new System.Windows.Forms.Label();
             this.ProposCheckBox = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
+            this.DescCountLabel = new System.Windows.Forms.Label();
+            this.tbArticle = new ComponentFactory.Krypton.Toolkit.KryptonTextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.panel5 = new System.Windows.Forms.Panel();
+            this.button1 = new System.Windows.Forms.Button();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.panel1.SuspendLayout();
+            this.panel5.SuspendLayout();
             this.SuspendLayout();
             // 
             // kryptonBorderEdge20
@@ -164,6 +170,7 @@ namespace Infinium
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.StandardButtonsPalette.ButtonStyles.ButtonCommon.StateTracking.Border.Rounding = 0;
+            this.StandardButtonsPalette.CustomisedKryptonPaletteFilePath = null;
             // 
             // CancelNewsButton
             // 
@@ -213,7 +220,7 @@ namespace Infinium
             this.label2.ForeColor = System.Drawing.Color.White;
             this.label2.Location = new System.Drawing.Point(3, 2);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(161, 32);
+            this.label2.Size = new System.Drawing.Size(157, 31);
             this.label2.TabIndex = 240;
             this.label2.Text = "Новый проект";
             // 
@@ -275,7 +282,7 @@ namespace Infinium
             // ProjectDescriptionRichTextBox
             // 
             this.ProjectDescriptionRichTextBox.Location = new System.Drawing.Point(28, 152);
-            this.ProjectDescriptionRichTextBox.MaxLength = 90;
+            this.ProjectDescriptionRichTextBox.MaxLength = 500;
             this.ProjectDescriptionRichTextBox.Name = "ProjectDescriptionRichTextBox";
             this.ProjectDescriptionRichTextBox.Size = new System.Drawing.Size(598, 236);
             this.ProjectDescriptionRichTextBox.StateCommon.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(200)))), ((int)(((byte)(200)))));
@@ -283,6 +290,7 @@ namespace Infinium
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.ProjectDescriptionRichTextBox.StateCommon.Content.Font = new System.Drawing.Font("Segoe UI Semilight", 11.25F);
+            this.ProjectDescriptionRichTextBox.StateCommon.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Inherit;
             this.ProjectDescriptionRichTextBox.TabIndex = 308;
             this.ProjectDescriptionRichTextBox.Text = "";
             this.ProjectDescriptionRichTextBox.TextChanged += new System.EventHandler(this.ProjectDescriptionRichTextBox_TextChanged);
@@ -290,14 +298,15 @@ namespace Infinium
             // ProjectNameTextEdit
             // 
             this.ProjectNameTextEdit.Location = new System.Drawing.Point(27, 76);
-            this.ProjectNameTextEdit.MaxLength = 40;
+            this.ProjectNameTextEdit.MaxLength = 60;
             this.ProjectNameTextEdit.Name = "ProjectNameTextEdit";
-            this.ProjectNameTextEdit.Size = new System.Drawing.Size(960, 31);
+            this.ProjectNameTextEdit.Size = new System.Drawing.Size(601, 29);
             this.ProjectNameTextEdit.StateCommon.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(200)))), ((int)(((byte)(200)))));
             this.ProjectNameTextEdit.StateCommon.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.ProjectNameTextEdit.StateCommon.Content.Font = new System.Drawing.Font("Segoe UI Semilight", 12F);
+            this.ProjectNameTextEdit.StateCommon.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Inherit;
             this.ProjectNameTextEdit.TabIndex = 307;
             this.ProjectNameTextEdit.TextChanged += new System.EventHandler(this.ProjectNameTextEdit_TextChanged);
             // 
@@ -305,12 +314,13 @@ namespace Infinium
             // 
             this.kryptonTextBox1.Location = new System.Drawing.Point(27, 83);
             this.kryptonTextBox1.Name = "kryptonTextBox1";
-            this.kryptonTextBox1.Size = new System.Drawing.Size(922, 31);
+            this.kryptonTextBox1.Size = new System.Drawing.Size(922, 29);
             this.kryptonTextBox1.StateCommon.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.kryptonTextBox1.StateCommon.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.kryptonTextBox1.StateCommon.Content.Font = new System.Drawing.Font("Segoe UI Semilight", 12F);
+            this.kryptonTextBox1.StateCommon.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Inherit;
             this.kryptonTextBox1.TabIndex = 307;
             // 
             // label5
@@ -331,7 +341,7 @@ namespace Infinium
             this.MembersTree.Location = new System.Drawing.Point(646, 152);
             this.MembersTree.Name = "MembersTree";
             this.MembersTree.ShowLines = false;
-            this.MembersTree.Size = new System.Drawing.Size(341, 236);
+            this.MembersTree.Size = new System.Drawing.Size(341, 201);
             this.MembersTree.TabIndex = 328;
             this.MembersTree.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.MembersTree_AfterCheck);
             // 
@@ -349,28 +359,36 @@ namespace Infinium
             // 
             // SymbolCountText
             // 
-            this.SymbolCountText.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.SymbolCountText.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.SymbolCountText.ForeColor = System.Drawing.Color.Gray;
-            this.SymbolCountText.Location = new System.Drawing.Point(823, 109);
+            this.SymbolCountText.Location = new System.Drawing.Point(462, 108);
             this.SymbolCountText.Name = "SymbolCountText";
             this.SymbolCountText.Size = new System.Drawing.Size(166, 23);
             this.SymbolCountText.TabIndex = 340;
-            this.SymbolCountText.Text = "40 символов осталось";
+            this.SymbolCountText.Text = "60 символов осталось";
             this.SymbolCountText.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // AllUsersNotifyCheckBox
             // 
-            this.AllUsersNotifyCheckBox.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalControl;
             this.AllUsersNotifyCheckBox.Location = new System.Drawing.Point(28, 393);
             this.AllUsersNotifyCheckBox.Name = "AllUsersNotifyCheckBox";
-            this.AllUsersNotifyCheckBox.Size = new System.Drawing.Size(230, 24);
+            this.AllUsersNotifyCheckBox.Size = new System.Drawing.Size(188, 20);
             this.AllUsersNotifyCheckBox.StateCommon.ShortText.Color1 = System.Drawing.Color.Black;
             this.AllUsersNotifyCheckBox.TabIndex = 346;
-            this.AllUsersNotifyCheckBox.Text = "Уведомить всех сотрудников";
             this.toolTip1.SetToolTip(this.AllUsersNotifyCheckBox, "Отметьте, если хотите, чтобы все сотрудники получили уведомление \r\nо создании это" +
         "го проекта. Иначе, уведомление получат только участники проекта");
             this.AllUsersNotifyCheckBox.Values.Text = "Уведомить всех сотрудников";
+            // 
+            // ProposCheckBox
+            // 
+            this.ProposCheckBox.Location = new System.Drawing.Point(273, 393);
+            this.ProposCheckBox.Name = "ProposCheckBox";
+            this.ProposCheckBox.Size = new System.Drawing.Size(103, 20);
+            this.ProposCheckBox.StateCommon.ShortText.Color1 = System.Drawing.Color.Black;
+            this.ProposCheckBox.TabIndex = 358;
+            this.toolTip1.SetToolTip(this.ProposCheckBox, "Отметьте, если хотите, чтобы все сотрудники получили уведомление \r\nо создании это" +
+        "го проекта. Иначе, уведомление получат только участники проекта");
+            this.ProposCheckBox.Values.Text = "Предложение";
             // 
             // DescCountLabel
             // 
@@ -381,27 +399,74 @@ namespace Infinium
             this.DescCountLabel.Name = "DescCountLabel";
             this.DescCountLabel.Size = new System.Drawing.Size(166, 23);
             this.DescCountLabel.TabIndex = 352;
-            this.DescCountLabel.Text = "90 символов осталось";
+            this.DescCountLabel.Text = "500 символов осталось";
             this.DescCountLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // ProposCheckBox
+            // tbArticle
             // 
-            this.ProposCheckBox.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalControl;
-            this.ProposCheckBox.Location = new System.Drawing.Point(273, 393);
-            this.ProposCheckBox.Name = "ProposCheckBox";
-            this.ProposCheckBox.Size = new System.Drawing.Size(124, 24);
-            this.ProposCheckBox.StateCommon.ShortText.Color1 = System.Drawing.Color.Black;
-            this.ProposCheckBox.TabIndex = 358;
-            this.ProposCheckBox.Text = "Предложение";
-            this.toolTip1.SetToolTip(this.ProposCheckBox, "Отметьте, если хотите, чтобы все сотрудники получили уведомление \r\nо создании это" +
-        "го проекта. Иначе, уведомление получат только участники проекта");
-            this.ProposCheckBox.Values.Text = "Предложение";
+            this.tbArticle.Location = new System.Drawing.Point(646, 76);
+            this.tbArticle.MaxLength = 40;
+            this.tbArticle.Name = "tbArticle";
+            this.tbArticle.Size = new System.Drawing.Size(341, 29);
+            this.tbArticle.StateCommon.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(200)))), ((int)(((byte)(200)))));
+            this.tbArticle.StateCommon.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.tbArticle.StateCommon.Content.Font = new System.Drawing.Font("Segoe UI Semilight", 12F);
+            this.tbArticle.StateCommon.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Inherit;
+            this.tbArticle.TabIndex = 365;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 17F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.label1.ForeColor = System.Drawing.Color.Black;
+            this.label1.Location = new System.Drawing.Point(643, 51);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(145, 23);
+            this.label1.TabIndex = 364;
+            this.label1.Text = "Артикул проекта:";
+            // 
+            // panel5
+            // 
+            this.panel5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel5.Controls.Add(this.button1);
+            this.panel5.Controls.Add(this.textBox1);
+            this.panel5.Location = new System.Drawing.Point(646, 359);
+            this.panel5.Name = "panel5";
+            this.panel5.Padding = new System.Windows.Forms.Padding(3);
+            this.panel5.Size = new System.Drawing.Size(341, 29);
+            this.panel5.TabIndex = 371;
+            // 
+            // button1
+            // 
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.button1.Location = new System.Drawing.Point(266, 6);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 329;
+            this.button1.Text = "Найти";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click_1);
+            // 
+            // textBox1
+            // 
+            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.textBox1.Location = new System.Drawing.Point(1, 7);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(259, 22);
+            this.textBox1.TabIndex = 328;
             // 
             // AddProjectForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1014, 477);
+            this.Controls.Add(this.panel5);
+            this.Controls.Add(this.tbArticle);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.ProposCheckBox);
             this.Controls.Add(this.DescCountLabel);
             this.Controls.Add(this.AllUsersNotifyCheckBox);
@@ -433,6 +498,8 @@ namespace Infinium
             this.Shown += new System.EventHandler(this.AddNewsForm_Shown);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            this.panel5.ResumeLayout(false);
+            this.panel5.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -468,5 +535,10 @@ namespace Infinium
         private ToolTip toolTip1;
         private Label DescCountLabel;
         private KryptonCheckBox ProposCheckBox;
+        private KryptonTextBox tbArticle;
+        private Label label1;
+        private Panel panel5;
+        private Button button1;
+        private TextBox textBox1;
     }
 }

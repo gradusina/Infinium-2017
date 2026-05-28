@@ -57,25 +57,29 @@ namespace Infinium
             this.panel3 = new System.Windows.Forms.Panel();
             this.ProjectsSplitContainer = new ComponentFactory.Krypton.Toolkit.KryptonSplitContainer();
             this.kryptonBorderEdge5 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.infiniumProjectsList1 = new InfiniumProjectsList();
-            this.ProjectMembersList = new InfiniumProjectsMembersList();
+            this.infiniumProjectsList1 = new Infinium.InfiniumProjectsList();
+            this.ProjectMembersList = new Infinium.InfiniumProjectsMembersList();
             this.kryptonBorderEdge2 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.label2 = new System.Windows.Forms.Label();
             this.panel4 = new System.Windows.Forms.Panel();
             this.SubscribeItLabel = new System.Windows.Forms.Label();
             this.ProjectCaptionLabel = new System.Windows.Forms.Label();
             this.AuthorLabel = new System.Windows.Forms.Label();
-            this.infiniumProjectsDescriptionBox1 = new InfiniumProjectsDescriptionBox();
+            this.articleLabel = new System.Windows.Forms.Label();
+            this.infiniumProjectsDescriptionBox1 = new Infinium.InfiniumProjectsDescriptionBox();
             this.AuthorPhotoBox = new System.Windows.Forms.PictureBox();
             this.NoNewsLabel = new System.Windows.Forms.Label();
             this.NoNewsPicture = new System.Windows.Forms.PictureBox();
             this.PauseProjectDateLabel = new System.Windows.Forms.Label();
             this.EndProjectDateLabel = new System.Windows.Forms.Label();
             this.StartProjectDateLabel = new System.Windows.Forms.Label();
-            this.NewsContainer = new InfiniumProjectNewsContainer();
+            this.NewsContainer = new Infinium.InfiniumProjectNewsContainer();
             this.CancelProjectDateLabel = new System.Windows.Forms.Label();
             this.AddNewsLabel = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.panel5 = new System.Windows.Forms.Panel();
+            this.button1 = new System.Windows.Forms.Button();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.ProposCountLabel = new System.Windows.Forms.Label();
             this.ProposInactivePicture = new System.Windows.Forms.PictureBox();
             this.ProposActivePicture = new System.Windows.Forms.PictureBox();
@@ -91,8 +95,8 @@ namespace Infinium
             this.NewProjectsCountLabel = new System.Windows.Forms.Label();
             this.NewMessagesLabel = new System.Windows.Forms.Label();
             this.NewProjectsLabel = new System.Windows.Forms.Label();
-            this.infiniumProjectsFilterStates1 = new InfiniumProjectsFilterStates();
-            this.infiniumProjectsFilterGroups1 = new InfiniumProjectsFilterGroups();
+            this.infiniumProjectsFilterStates1 = new Infinium.InfiniumProjectsFilterStates();
+            this.infiniumProjectsFilterGroups1 = new Infinium.InfiniumProjectsFilterGroups();
             this.NewProjectsActivePicture = new System.Windows.Forms.PictureBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.kryptonButton1 = new ComponentFactory.Krypton.Toolkit.KryptonButton();
@@ -121,6 +125,7 @@ namespace Infinium
             ((System.ComponentModel.ISupportInitialize)(this.AuthorPhotoBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NoNewsPicture)).BeginInit();
             this.panel1.SuspendLayout();
+            this.panel5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ProposInactivePicture)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ProposActivePicture)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NewProjectsInactivePicture)).BeginInit();
@@ -180,6 +185,7 @@ namespace Infinium
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.NavigateMenuButtonsPalette.ButtonStyles.ButtonCommon.StateTracking.Border.Rounding = 0;
             this.NavigateMenuButtonsPalette.ButtonStyles.ButtonCommon.StateTracking.Border.Width = 1;
+            this.NavigateMenuButtonsPalette.CustomisedKryptonPaletteFilePath = null;
             // 
             // ButtonsPalette
             // 
@@ -218,6 +224,7 @@ namespace Infinium
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.ButtonsPalette.ButtonStyles.ButtonCommon.StateTracking.Border.Rounding = 0;
+            this.ButtonsPalette.CustomisedKryptonPaletteFilePath = null;
             // 
             // PasswordButton
             // 
@@ -267,7 +274,7 @@ namespace Infinium
             // 
             this.AddNewsPicture.Cursor = System.Windows.Forms.Cursors.Hand;
             this.AddNewsPicture.Image = ((System.Drawing.Image)(resources.GetObject("AddNewsPicture.Image")));
-            this.AddNewsPicture.Location = new System.Drawing.Point(474, 132);
+            this.AddNewsPicture.Location = new System.Drawing.Point(474, 141);
             this.AddNewsPicture.Name = "AddNewsPicture";
             this.AddNewsPicture.Size = new System.Drawing.Size(33, 33);
             this.AddNewsPicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -280,7 +287,7 @@ namespace Infinium
             // 
             this.EditProjectActivePicture.Cursor = System.Windows.Forms.Cursors.Hand;
             this.EditProjectActivePicture.Image = ((System.Drawing.Image)(resources.GetObject("EditProjectActivePicture.Image")));
-            this.EditProjectActivePicture.Location = new System.Drawing.Point(249, 175);
+            this.EditProjectActivePicture.Location = new System.Drawing.Point(249, 184);
             this.EditProjectActivePicture.Name = "EditProjectActivePicture";
             this.EditProjectActivePicture.Size = new System.Drawing.Size(33, 33);
             this.EditProjectActivePicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -295,7 +302,7 @@ namespace Infinium
             this.EditProjectLabel.Cursor = System.Windows.Forms.Cursors.Hand;
             this.EditProjectLabel.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.EditProjectLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(205)))), ((int)(((byte)(252)))));
-            this.EditProjectLabel.Location = new System.Drawing.Point(285, 180);
+            this.EditProjectLabel.Location = new System.Drawing.Point(285, 189);
             this.EditProjectLabel.Name = "EditProjectLabel";
             this.EditProjectLabel.Size = new System.Drawing.Size(111, 20);
             this.EditProjectLabel.TabIndex = 325;
@@ -307,7 +314,7 @@ namespace Infinium
             // 
             this.DeleteProjectActivePicture.Cursor = System.Windows.Forms.Cursors.Hand;
             this.DeleteProjectActivePicture.Image = ((System.Drawing.Image)(resources.GetObject("DeleteProjectActivePicture.Image")));
-            this.DeleteProjectActivePicture.Location = new System.Drawing.Point(249, 218);
+            this.DeleteProjectActivePicture.Location = new System.Drawing.Point(249, 227);
             this.DeleteProjectActivePicture.Name = "DeleteProjectActivePicture";
             this.DeleteProjectActivePicture.Size = new System.Drawing.Size(33, 33);
             this.DeleteProjectActivePicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -322,7 +329,7 @@ namespace Infinium
             this.DeleteProjectLabel.Cursor = System.Windows.Forms.Cursors.Hand;
             this.DeleteProjectLabel.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.DeleteProjectLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(205)))), ((int)(((byte)(252)))));
-            this.DeleteProjectLabel.Location = new System.Drawing.Point(285, 223);
+            this.DeleteProjectLabel.Location = new System.Drawing.Point(285, 232);
             this.DeleteProjectLabel.Name = "DeleteProjectLabel";
             this.DeleteProjectLabel.Size = new System.Drawing.Size(65, 20);
             this.DeleteProjectLabel.TabIndex = 323;
@@ -334,7 +341,7 @@ namespace Infinium
             // 
             this.StatusCanceledActivePicture.Cursor = System.Windows.Forms.Cursors.Hand;
             this.StatusCanceledActivePicture.Image = ((System.Drawing.Image)(resources.GetObject("StatusCanceledActivePicture.Image")));
-            this.StatusCanceledActivePicture.Location = new System.Drawing.Point(18, 218);
+            this.StatusCanceledActivePicture.Location = new System.Drawing.Point(8, 227);
             this.StatusCanceledActivePicture.Name = "StatusCanceledActivePicture";
             this.StatusCanceledActivePicture.Size = new System.Drawing.Size(33, 33);
             this.StatusCanceledActivePicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -347,7 +354,7 @@ namespace Infinium
             // 
             this.StatusEndActivePicture.Cursor = System.Windows.Forms.Cursors.Hand;
             this.StatusEndActivePicture.Image = ((System.Drawing.Image)(resources.GetObject("StatusEndActivePicture.Image")));
-            this.StatusEndActivePicture.Location = new System.Drawing.Point(249, 132);
+            this.StatusEndActivePicture.Location = new System.Drawing.Point(249, 141);
             this.StatusEndActivePicture.Name = "StatusEndActivePicture";
             this.StatusEndActivePicture.Size = new System.Drawing.Size(33, 33);
             this.StatusEndActivePicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -360,7 +367,7 @@ namespace Infinium
             // 
             this.StatusStartActivePicture.Cursor = System.Windows.Forms.Cursors.Hand;
             this.StatusStartActivePicture.Image = ((System.Drawing.Image)(resources.GetObject("StatusStartActivePicture.Image")));
-            this.StatusStartActivePicture.Location = new System.Drawing.Point(18, 132);
+            this.StatusStartActivePicture.Location = new System.Drawing.Point(8, 141);
             this.StatusStartActivePicture.Name = "StatusStartActivePicture";
             this.StatusStartActivePicture.Size = new System.Drawing.Size(33, 33);
             this.StatusStartActivePicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -373,7 +380,7 @@ namespace Infinium
             // 
             this.StatusPauseActivePicture.Cursor = System.Windows.Forms.Cursors.Hand;
             this.StatusPauseActivePicture.Image = ((System.Drawing.Image)(resources.GetObject("StatusPauseActivePicture.Image")));
-            this.StatusPauseActivePicture.Location = new System.Drawing.Point(18, 175);
+            this.StatusPauseActivePicture.Location = new System.Drawing.Point(8, 184);
             this.StatusPauseActivePicture.Name = "StatusPauseActivePicture";
             this.StatusPauseActivePicture.Size = new System.Drawing.Size(33, 33);
             this.StatusPauseActivePicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -386,7 +393,7 @@ namespace Infinium
             // 
             this.SubscribeItPicture.Cursor = System.Windows.Forms.Cursors.Hand;
             this.SubscribeItPicture.Image = ((System.Drawing.Image)(resources.GetObject("SubscribeItPicture.Image")));
-            this.SubscribeItPicture.Location = new System.Drawing.Point(474, 175);
+            this.SubscribeItPicture.Location = new System.Drawing.Point(474, 184);
             this.SubscribeItPicture.Name = "SubscribeItPicture";
             this.SubscribeItPicture.Size = new System.Drawing.Size(33, 33);
             this.SubscribeItPicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -412,7 +419,7 @@ namespace Infinium
             this.kryptonBorderEdge4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.kryptonBorderEdge4.AutoSize = false;
-            this.kryptonBorderEdge4.Location = new System.Drawing.Point(311, 263);
+            this.kryptonBorderEdge4.Location = new System.Drawing.Point(308, 263);
             this.kryptonBorderEdge4.Name = "kryptonBorderEdge4";
             this.kryptonBorderEdge4.Size = new System.Drawing.Size(662, 1);
             this.kryptonBorderEdge4.StateCommon.Color1 = System.Drawing.Color.Gainsboro;
@@ -564,6 +571,7 @@ namespace Infinium
             this.panel4.Controls.Add(this.AddNewsPicture);
             this.panel4.Controls.Add(this.ProjectCaptionLabel);
             this.panel4.Controls.Add(this.AuthorLabel);
+            this.panel4.Controls.Add(this.articleLabel);
             this.panel4.Controls.Add(this.infiniumProjectsDescriptionBox1);
             this.panel4.Controls.Add(this.EditProjectActivePicture);
             this.panel4.Controls.Add(this.AuthorPhotoBox);
@@ -593,7 +601,7 @@ namespace Infinium
             this.SubscribeItLabel.Cursor = System.Windows.Forms.Cursors.Hand;
             this.SubscribeItLabel.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.SubscribeItLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(205)))), ((int)(((byte)(252)))));
-            this.SubscribeItLabel.Location = new System.Drawing.Point(510, 180);
+            this.SubscribeItLabel.Location = new System.Drawing.Point(510, 189);
             this.SubscribeItLabel.Name = "SubscribeItLabel";
             this.SubscribeItLabel.Size = new System.Drawing.Size(99, 20);
             this.SubscribeItLabel.TabIndex = 332;
@@ -605,7 +613,7 @@ namespace Infinium
             this.ProjectCaptionLabel.AutoSize = true;
             this.ProjectCaptionLabel.Font = new System.Drawing.Font("Segoe UI", 21F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.ProjectCaptionLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(184)))), ((int)(((byte)(238)))));
-            this.ProjectCaptionLabel.Location = new System.Drawing.Point(150, 0);
+            this.ProjectCaptionLabel.Location = new System.Drawing.Point(157, 0);
             this.ProjectCaptionLabel.Name = "ProjectCaptionLabel";
             this.ProjectCaptionLabel.Size = new System.Drawing.Size(0, 30);
             this.ProjectCaptionLabel.TabIndex = 299;
@@ -615,10 +623,20 @@ namespace Infinium
             this.AuthorLabel.AutoSize = true;
             this.AuthorLabel.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.AuthorLabel.ForeColor = System.Drawing.Color.Silver;
-            this.AuthorLabel.Location = new System.Drawing.Point(151, 28);
+            this.AuthorLabel.Location = new System.Drawing.Point(158, 28);
             this.AuthorLabel.Name = "AuthorLabel";
-            this.AuthorLabel.Size = new System.Drawing.Size(0, 23);
+            this.AuthorLabel.Size = new System.Drawing.Size(0, 21);
             this.AuthorLabel.TabIndex = 300;
+            // 
+            // articleLabel
+            // 
+            this.articleLabel.AutoSize = true;
+            this.articleLabel.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.articleLabel.ForeColor = System.Drawing.Color.DimGray;
+            this.articleLabel.Location = new System.Drawing.Point(158, 48);
+            this.articleLabel.Name = "articleLabel";
+            this.articleLabel.Size = new System.Drawing.Size(0, 21);
+            this.articleLabel.TabIndex = 334;
             // 
             // infiniumProjectsDescriptionBox1
             // 
@@ -632,9 +650,9 @@ namespace Infinium
             this.infiniumProjectsDescriptionBox1.DescriptionItem.Name = "";
             this.infiniumProjectsDescriptionBox1.DescriptionItem.TabIndex = 0;
             this.infiniumProjectsDescriptionBox1.DescriptionItem.TextFontColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            this.infiniumProjectsDescriptionBox1.Location = new System.Drawing.Point(153, 54);
+            this.infiniumProjectsDescriptionBox1.Location = new System.Drawing.Point(153, 77);
             this.infiniumProjectsDescriptionBox1.Name = "infiniumProjectsDescriptionBox1";
-            this.infiniumProjectsDescriptionBox1.Size = new System.Drawing.Size(515, 65);
+            this.infiniumProjectsDescriptionBox1.Size = new System.Drawing.Size(515, 58);
             this.infiniumProjectsDescriptionBox1.TabIndex = 306;
             this.infiniumProjectsDescriptionBox1.Text = "infiniumProjectsDescriptionBox1";
             // 
@@ -646,8 +664,9 @@ namespace Infinium
             this.infiniumProjectsDescriptionBox1.VerticalScrollBar.Name = "";
             this.infiniumProjectsDescriptionBox1.VerticalScrollBar.Offset = 0;
             this.infiniumProjectsDescriptionBox1.VerticalScrollBar.ScrollWheelOffset = 30;
+            this.infiniumProjectsDescriptionBox1.VerticalScrollBar.Size = new System.Drawing.Size(0, 16);
             this.infiniumProjectsDescriptionBox1.VerticalScrollBar.TabIndex = 0;
-            this.infiniumProjectsDescriptionBox1.VerticalScrollBar.TotalControlHeight = 65;
+            this.infiniumProjectsDescriptionBox1.VerticalScrollBar.TotalControlHeight = 58;
             this.infiniumProjectsDescriptionBox1.VerticalScrollBar.VerticalScrollCommonShaftBackColor = System.Drawing.Color.PowderBlue;
             this.infiniumProjectsDescriptionBox1.VerticalScrollBar.VerticalScrollCommonThumbButtonColor = System.Drawing.Color.DarkGray;
             this.infiniumProjectsDescriptionBox1.VerticalScrollBar.VerticalScrollTrackingShaftBackColor = System.Drawing.Color.PowderBlue;
@@ -656,9 +675,9 @@ namespace Infinium
             // AuthorPhotoBox
             // 
             this.AuthorPhotoBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.AuthorPhotoBox.Location = new System.Drawing.Point(16, 3);
+            this.AuthorPhotoBox.Location = new System.Drawing.Point(6, 3);
             this.AuthorPhotoBox.Name = "AuthorPhotoBox";
-            this.AuthorPhotoBox.Size = new System.Drawing.Size(125, 116);
+            this.AuthorPhotoBox.Size = new System.Drawing.Size(146, 132);
             this.AuthorPhotoBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.AuthorPhotoBox.TabIndex = 298;
             this.AuthorPhotoBox.TabStop = false;
@@ -692,7 +711,7 @@ namespace Infinium
             this.PauseProjectDateLabel.AutoSize = true;
             this.PauseProjectDateLabel.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.PauseProjectDateLabel.ForeColor = System.Drawing.Color.Silver;
-            this.PauseProjectDateLabel.Location = new System.Drawing.Point(55, 180);
+            this.PauseProjectDateLabel.Location = new System.Drawing.Point(45, 189);
             this.PauseProjectDateLabel.Name = "PauseProjectDateLabel";
             this.PauseProjectDateLabel.Size = new System.Drawing.Size(32, 20);
             this.PauseProjectDateLabel.TabIndex = 301;
@@ -703,7 +722,7 @@ namespace Infinium
             this.EndProjectDateLabel.AutoSize = true;
             this.EndProjectDateLabel.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.EndProjectDateLabel.ForeColor = System.Drawing.Color.Silver;
-            this.EndProjectDateLabel.Location = new System.Drawing.Point(285, 137);
+            this.EndProjectDateLabel.Location = new System.Drawing.Point(285, 146);
             this.EndProjectDateLabel.Name = "EndProjectDateLabel";
             this.EndProjectDateLabel.Size = new System.Drawing.Size(32, 20);
             this.EndProjectDateLabel.TabIndex = 302;
@@ -714,7 +733,7 @@ namespace Infinium
             this.StartProjectDateLabel.AutoSize = true;
             this.StartProjectDateLabel.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.StartProjectDateLabel.ForeColor = System.Drawing.Color.Silver;
-            this.StartProjectDateLabel.Location = new System.Drawing.Point(55, 137);
+            this.StartProjectDateLabel.Location = new System.Drawing.Point(45, 146);
             this.StartProjectDateLabel.Name = "StartProjectDateLabel";
             this.StartProjectDateLabel.Size = new System.Drawing.Size(32, 20);
             this.StartProjectDateLabel.TabIndex = 300;
@@ -750,25 +769,25 @@ namespace Infinium
             this.NewsContainer.VerticalScrollBar.VerticalScrollCommonThumbButtonColor = System.Drawing.Color.DarkGray;
             this.NewsContainer.VerticalScrollBar.VerticalScrollTrackingShaftBackColor = System.Drawing.Color.PowderBlue;
             this.NewsContainer.VerticalScrollBar.VerticalScrollTrackingThumbButtonColor = System.Drawing.Color.Gray;
-            this.NewsContainer.CommentSendButtonClicked += new InfiniumProjectNewsContainer.SendButtonEventHandler(this.NewsContainer_CommentSendButtonClicked);
-            this.NewsContainer.RemoveCommentClicked += new InfiniumProjectNewsContainer.CommentEventHandler(this.NewsContainer_RemoveCommentClicked);
-            this.NewsContainer.EditCommentClicked += new InfiniumProjectNewsContainer.CommentEventHandler(this.NewsContainer_EditCommentClicked);
-            this.NewsContainer.CommentLikeClicked += new InfiniumProjectNewsContainer.CommentEventHandler(this.NewsContainer_CommentLikeClicked);
-            this.NewsContainer.RemoveNewsClicked += new InfiniumProjectNewsContainer.LabelClickEventHandler(this.NewsContainer_RemoveNewsClicked);
-            this.NewsContainer.EditNewsClicked += new InfiniumProjectNewsContainer.LabelClickEventHandler(this.NewsContainer_EditNewsClicked);
-            this.NewsContainer.LikeClicked += new InfiniumProjectNewsContainer.LabelClickEventHandler(this.NewsContainer_LikeClicked);
-            this.NewsContainer.NewsQuoteLabelClicked += new InfiniumProjectNewsContainer.QuoteLabelClikedEventHandler(this.NewsContainer_NewsQuoteLabelClicked);
-            this.NewsContainer.CommentsQuoteLabelClicked += new InfiniumProjectNewsContainer.QuoteLabelClikedEventHandler(this.NewsContainer_CommentsQuoteLabelClicked);
+            this.NewsContainer.CommentSendButtonClicked += new Infinium.InfiniumProjectNewsContainer.SendButtonEventHandler(this.NewsContainer_CommentSendButtonClicked);
+            this.NewsContainer.RemoveCommentClicked += new Infinium.InfiniumProjectNewsContainer.CommentEventHandler(this.NewsContainer_RemoveCommentClicked);
+            this.NewsContainer.EditCommentClicked += new Infinium.InfiniumProjectNewsContainer.CommentEventHandler(this.NewsContainer_EditCommentClicked);
+            this.NewsContainer.CommentLikeClicked += new Infinium.InfiniumProjectNewsContainer.CommentEventHandler(this.NewsContainer_CommentLikeClicked);
+            this.NewsContainer.RemoveNewsClicked += new Infinium.InfiniumProjectNewsContainer.LabelClickEventHandler(this.NewsContainer_RemoveNewsClicked);
+            this.NewsContainer.EditNewsClicked += new Infinium.InfiniumProjectNewsContainer.LabelClickEventHandler(this.NewsContainer_EditNewsClicked);
+            this.NewsContainer.LikeClicked += new Infinium.InfiniumProjectNewsContainer.LabelClickEventHandler(this.NewsContainer_LikeClicked);
+            this.NewsContainer.NewsQuoteLabelClicked += new Infinium.InfiniumProjectNewsContainer.QuoteLabelClikedEventHandler(this.NewsContainer_NewsQuoteLabelClicked);
+            this.NewsContainer.CommentsQuoteLabelClicked += new Infinium.InfiniumProjectNewsContainer.QuoteLabelClikedEventHandler(this.NewsContainer_CommentsQuoteLabelClicked);
             this.NewsContainer.NeedMoreNews += new System.EventHandler(this.NewsContainer_NeedMoreNews);
             this.NewsContainer.NoNeedMoreNews += new System.EventHandler(this.NewsContainer_NoNeedMoreNews);
-            this.NewsContainer.AttachClicked += new InfiniumProjectNewsContainer.AttachClickedEventHandler(this.NewsContainer_AttachClicked);
+            this.NewsContainer.AttachClicked += new Infinium.InfiniumProjectNewsContainer.AttachClickedEventHandler(this.NewsContainer_AttachClicked);
             // 
             // CancelProjectDateLabel
             // 
             this.CancelProjectDateLabel.AutoSize = true;
             this.CancelProjectDateLabel.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.CancelProjectDateLabel.ForeColor = System.Drawing.Color.Silver;
-            this.CancelProjectDateLabel.Location = new System.Drawing.Point(54, 223);
+            this.CancelProjectDateLabel.Location = new System.Drawing.Point(44, 232);
             this.CancelProjectDateLabel.Name = "CancelProjectDateLabel";
             this.CancelProjectDateLabel.Size = new System.Drawing.Size(32, 20);
             this.CancelProjectDateLabel.TabIndex = 302;
@@ -780,7 +799,7 @@ namespace Infinium
             this.AddNewsLabel.Cursor = System.Windows.Forms.Cursors.Hand;
             this.AddNewsLabel.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.AddNewsLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(205)))), ((int)(((byte)(252)))));
-            this.AddNewsLabel.Location = new System.Drawing.Point(510, 137);
+            this.AddNewsLabel.Location = new System.Drawing.Point(510, 146);
             this.AddNewsLabel.Name = "AddNewsLabel";
             this.AddNewsLabel.Size = new System.Drawing.Size(160, 20);
             this.AddNewsLabel.TabIndex = 308;
@@ -791,6 +810,7 @@ namespace Infinium
             // 
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
+            this.panel1.Controls.Add(this.panel5);
             this.panel1.Controls.Add(this.ProposCountLabel);
             this.panel1.Controls.Add(this.ProposInactivePicture);
             this.panel1.Controls.Add(this.ProposActivePicture);
@@ -814,6 +834,38 @@ namespace Infinium
             this.panel1.Size = new System.Drawing.Size(242, 587);
             this.panel1.TabIndex = 296;
             // 
+            // panel5
+            // 
+            this.panel5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel5.Controls.Add(this.button1);
+            this.panel5.Controls.Add(this.textBox1);
+            this.panel5.Location = new System.Drawing.Point(3, 529);
+            this.panel5.Name = "panel5";
+            this.panel5.Padding = new System.Windows.Forms.Padding(3);
+            this.panel5.Size = new System.Drawing.Size(231, 58);
+            this.panel5.TabIndex = 329;
+            // 
+            // button1
+            // 
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.button1.Location = new System.Drawing.Point(151, 30);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 329;
+            this.button1.Text = "Найти";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // textBox1
+            // 
+            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.textBox1.Location = new System.Drawing.Point(6, 30);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(139, 22);
+            this.textBox1.TabIndex = 328;
+            // 
             // ProposCountLabel
             // 
             this.ProposCountLabel.AutoSize = true;
@@ -821,7 +873,7 @@ namespace Infinium
             this.ProposCountLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(83)))), ((int)(((byte)(206)))), ((int)(((byte)(255)))));
             this.ProposCountLabel.Location = new System.Drawing.Point(168, 98);
             this.ProposCountLabel.Name = "ProposCountLabel";
-            this.ProposCountLabel.Size = new System.Drawing.Size(0, 23);
+            this.ProposCountLabel.Size = new System.Drawing.Size(0, 21);
             this.ProposCountLabel.TabIndex = 323;
             // 
             // ProposInactivePicture
@@ -880,7 +932,7 @@ namespace Infinium
             this.ProposLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.ProposLabel.Location = new System.Drawing.Point(35, 96);
             this.ProposLabel.Name = "ProposLabel";
-            this.ProposLabel.Size = new System.Drawing.Size(134, 25);
+            this.ProposLabel.Size = new System.Drawing.Size(126, 25);
             this.ProposLabel.TabIndex = 312;
             this.ProposLabel.Tag = "false";
             this.ProposLabel.Text = "Предложения";
@@ -949,7 +1001,7 @@ namespace Infinium
             this.NewMessagesCountLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(83)))), ((int)(((byte)(206)))), ((int)(((byte)(255)))));
             this.NewMessagesCountLabel.Location = new System.Drawing.Point(148, 43);
             this.NewMessagesCountLabel.Name = "NewMessagesCountLabel";
-            this.NewMessagesCountLabel.Size = new System.Drawing.Size(0, 23);
+            this.NewMessagesCountLabel.Size = new System.Drawing.Size(0, 21);
             this.NewMessagesCountLabel.TabIndex = 303;
             // 
             // NewProjectsCountLabel
@@ -959,7 +1011,7 @@ namespace Infinium
             this.NewProjectsCountLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(83)))), ((int)(((byte)(206)))), ((int)(((byte)(255)))));
             this.NewProjectsCountLabel.Location = new System.Drawing.Point(180, 13);
             this.NewProjectsCountLabel.Name = "NewProjectsCountLabel";
-            this.NewProjectsCountLabel.Size = new System.Drawing.Size(0, 23);
+            this.NewProjectsCountLabel.Size = new System.Drawing.Size(0, 21);
             this.NewProjectsCountLabel.TabIndex = 302;
             // 
             // NewMessagesLabel
@@ -970,7 +1022,7 @@ namespace Infinium
             this.NewMessagesLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
             this.NewMessagesLabel.Location = new System.Drawing.Point(35, 41);
             this.NewMessagesLabel.Name = "NewMessagesLabel";
-            this.NewMessagesLabel.Size = new System.Drawing.Size(115, 25);
+            this.NewMessagesLabel.Size = new System.Drawing.Size(108, 25);
             this.NewMessagesLabel.TabIndex = 301;
             this.NewMessagesLabel.Tag = "false";
             this.NewMessagesLabel.Text = "Сообщения";
@@ -986,7 +1038,7 @@ namespace Infinium
             this.NewProjectsLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
             this.NewProjectsLabel.Location = new System.Drawing.Point(35, 11);
             this.NewProjectsLabel.Name = "NewProjectsLabel";
-            this.NewProjectsLabel.Size = new System.Drawing.Size(147, 25);
+            this.NewProjectsLabel.Size = new System.Drawing.Size(143, 25);
             this.NewProjectsLabel.TabIndex = 300;
             this.NewProjectsLabel.Tag = "false";
             this.NewProjectsLabel.Text = "Новые проекты";
@@ -1230,6 +1282,8 @@ namespace Infinium
             ((System.ComponentModel.ISupportInitialize)(this.NoNewsPicture)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            this.panel5.ResumeLayout(false);
+            this.panel5.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ProposInactivePicture)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ProposActivePicture)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.NewProjectsInactivePicture)).EndInit();
@@ -1312,5 +1366,9 @@ namespace Infinium
         private KryptonBorderEdge kryptonBorderEdge7;
         private Label ProposLabel;
         private Label ProposCountLabel;
+        private Panel panel5;
+        private Button button1;
+        private TextBox textBox1;
+        private Label articleLabel;
     }
 }

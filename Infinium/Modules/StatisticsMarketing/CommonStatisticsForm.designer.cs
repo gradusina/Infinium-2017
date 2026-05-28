@@ -182,6 +182,7 @@
             this.cbSamples = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
             this.ExportContextMenuButton = new ComponentFactory.Krypton.Toolkit.KryptonDropButton();
             this.panel12 = new System.Windows.Forms.Panel();
+            this.NotDispDateRadioButton = new ComponentFactory.Krypton.Toolkit.KryptonRadioButton();
             this.OnAgreementRadioButton = new ComponentFactory.Krypton.Toolkit.KryptonRadioButton();
             this.ExpDateRadioButton = new ComponentFactory.Krypton.Toolkit.KryptonRadioButton();
             this.OnProductionRadioButton = new ComponentFactory.Krypton.Toolkit.KryptonRadioButton();
@@ -574,6 +575,7 @@
             this.ExpDateMenuItem = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
             this.PlanDispDateMenuItem = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
             this.FactDispDateMenuItem = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
+            this.NotDispDateMenuItem = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
             this.kryptonContextMenu5 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenu();
             this.kryptonContextMenuItems5 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItems();
             this.kryptonContextMenuItem2 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
@@ -872,10 +874,12 @@
             this.kryptonContextMenuItem15 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
             this.kryptonContextMenuItem16 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
             this.kryptonContextMenuItem17 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
+            this.kryptonContextMenuItem117 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
             this.kryptonContextMenuItem18 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
             this.kryptonContextMenuItem19 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
             this.kryptonContextMenuItem20 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
             this.kryptonContextMenuItem21 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem();
+            this.rbInProd = new ComponentFactory.Krypton.Toolkit.KryptonRadioButton();
             this.NavigatePanel.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel115.SuspendLayout();
@@ -3164,7 +3168,7 @@
             // 
             // PlanDispDateRadioButton
             // 
-            this.PlanDispDateRadioButton.Location = new System.Drawing.Point(6, 228);
+            this.PlanDispDateRadioButton.Location = new System.Drawing.Point(6, 232);
             this.PlanDispDateRadioButton.Name = "PlanDispDateRadioButton";
             this.PlanDispDateRadioButton.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.PlanDispDateRadioButton.Size = new System.Drawing.Size(138, 21);
@@ -3551,6 +3555,8 @@
             // 
             // panel12
             // 
+            this.panel12.Controls.Add(this.rbInProd);
+            this.panel12.Controls.Add(this.NotDispDateRadioButton);
             this.panel12.Controls.Add(this.OnAgreementRadioButton);
             this.panel12.Controls.Add(this.ExpDateRadioButton);
             this.panel12.Controls.Add(this.OnProductionRadioButton);
@@ -3562,12 +3568,23 @@
             this.panel12.Controls.Add(this.OrderDateRadioButton);
             this.panel12.Location = new System.Drawing.Point(539, 15);
             this.panel12.Name = "panel12";
-            this.panel12.Size = new System.Drawing.Size(210, 289);
+            this.panel12.Size = new System.Drawing.Size(210, 315);
             this.panel12.TabIndex = 362;
+            // 
+            // NotDispDateRadioButton
+            // 
+            this.NotDispDateRadioButton.Location = new System.Drawing.Point(6, 288);
+            this.NotDispDateRadioButton.Name = "NotDispDateRadioButton";
+            this.NotDispDateRadioButton.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.NotDispDateRadioButton.Size = new System.Drawing.Size(108, 21);
+            this.NotDispDateRadioButton.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
+            this.NotDispDateRadioButton.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.NotDispDateRadioButton.TabIndex = 369;
+            this.NotDispDateRadioButton.Values.Text = "Не отгружено";
             // 
             // OnAgreementRadioButton
             // 
-            this.OnAgreementRadioButton.Location = new System.Drawing.Point(6, 36);
+            this.OnAgreementRadioButton.Location = new System.Drawing.Point(6, 32);
             this.OnAgreementRadioButton.Name = "OnAgreementRadioButton";
             this.OnAgreementRadioButton.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.OnAgreementRadioButton.Size = new System.Drawing.Size(127, 21);
@@ -3579,7 +3596,7 @@
             // 
             // ExpDateRadioButton
             // 
-            this.ExpDateRadioButton.Location = new System.Drawing.Point(6, 196);
+            this.ExpDateRadioButton.Location = new System.Drawing.Point(6, 200);
             this.ExpDateRadioButton.Name = "ExpDateRadioButton";
             this.ExpDateRadioButton.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.ExpDateRadioButton.Size = new System.Drawing.Size(173, 21);
@@ -3591,7 +3608,7 @@
             // 
             // OnProductionRadioButton
             // 
-            this.OnProductionRadioButton.Location = new System.Drawing.Point(6, 100);
+            this.OnProductionRadioButton.Location = new System.Drawing.Point(6, 91);
             this.OnProductionRadioButton.Name = "OnProductionRadioButton";
             this.OnProductionRadioButton.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.OnProductionRadioButton.Size = new System.Drawing.Size(122, 21);
@@ -3603,7 +3620,7 @@
             // 
             // ConfirmDateRadioButton
             // 
-            this.ConfirmDateRadioButton.Location = new System.Drawing.Point(6, 68);
+            this.ConfirmDateRadioButton.Location = new System.Drawing.Point(6, 63);
             this.ConfirmDateRadioButton.Name = "ConfirmDateRadioButton";
             this.ConfirmDateRadioButton.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.ConfirmDateRadioButton.Size = new System.Drawing.Size(157, 21);
@@ -3615,7 +3632,7 @@
             // 
             // StoreDateRadioButton
             // 
-            this.StoreDateRadioButton.Location = new System.Drawing.Point(6, 164);
+            this.StoreDateRadioButton.Location = new System.Drawing.Point(6, 172);
             this.StoreDateRadioButton.Name = "StoreDateRadioButton";
             this.StoreDateRadioButton.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.StoreDateRadioButton.Size = new System.Drawing.Size(132, 21);
@@ -3627,7 +3644,7 @@
             // 
             // PackDateRadioButton
             // 
-            this.PackDateRadioButton.Location = new System.Drawing.Point(6, 132);
+            this.PackDateRadioButton.Location = new System.Drawing.Point(6, 143);
             this.PackDateRadioButton.Name = "PackDateRadioButton";
             this.PackDateRadioButton.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.PackDateRadioButton.Size = new System.Drawing.Size(122, 21);
@@ -3639,7 +3656,7 @@
             // 
             // FactDispDateRadioButton
             // 
-            this.FactDispDateRadioButton.Location = new System.Drawing.Point(6, 260);
+            this.FactDispDateRadioButton.Location = new System.Drawing.Point(6, 262);
             this.FactDispDateRadioButton.Name = "FactDispDateRadioButton";
             this.FactDispDateRadioButton.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.FactDispDateRadioButton.Size = new System.Drawing.Size(156, 21);
@@ -9419,7 +9436,8 @@
             this.StoreDateMenuItem,
             this.ExpDateMenuItem,
             this.PlanDispDateMenuItem,
-            this.FactDispDateMenuItem});
+            this.FactDispDateMenuItem,
+            this.NotDispDateMenuItem});
             // 
             // kryptonContextMenuItem1
             // 
@@ -9468,6 +9486,11 @@
             this.FactDispDateMenuItem.Enabled = false;
             this.FactDispDateMenuItem.Text = "Фактически отгружено за указанный период";
             this.FactDispDateMenuItem.Click += new System.EventHandler(this.kryptonContextMenuItem9_Click);
+            // 
+            // NotDispDateMenuItem
+            // 
+            this.NotDispDateMenuItem.Text = "Не отгружено";
+            this.NotDispDateMenuItem.Click += new System.EventHandler(this.NotDispDateMenuItem_Click);
             // 
             // kryptonContextMenu5
             // 
@@ -13692,6 +13715,7 @@
             this.kryptonContextMenuItem15,
             this.kryptonContextMenuItem16,
             this.kryptonContextMenuItem17,
+            this.kryptonContextMenuItem117,
             this.kryptonContextMenuItem18,
             this.kryptonContextMenuItem19,
             this.kryptonContextMenuItem20});
@@ -13741,6 +13765,11 @@
             this.kryptonContextMenuItem17.Text = "Упаковано, но не принято на склад";
             this.kryptonContextMenuItem17.Click += new System.EventHandler(this.kryptonContextMenuItem17_Click);
             // 
+            // kryptonContextMenuItem117
+            // 
+            this.kryptonContextMenuItem117.Text = "Не отгружено";
+            this.kryptonContextMenuItem117.Click += new System.EventHandler(this.kryptonContextMenuItem117_Click);
+            // 
             // kryptonContextMenuItem18
             // 
             this.kryptonContextMenuItem18.Text = "Рекламации за период";
@@ -13759,6 +13788,17 @@
             // kryptonContextMenuItem21
             // 
             this.kryptonContextMenuItem21.Text = "Рекламации за период";
+            // 
+            // rbInProd
+            // 
+            this.rbInProd.Location = new System.Drawing.Point(6, 117);
+            this.rbInProd.Name = "rbInProd";
+            this.rbInProd.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
+            this.rbInProd.Size = new System.Drawing.Size(119, 21);
+            this.rbInProd.StateCommon.ShortText.Color1 = System.Drawing.Color.White;
+            this.rbInProd.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.rbInProd.TabIndex = 370;
+            this.rbInProd.Values.Text = "В производстве";
             // 
             // CommonStatisticsForm
             // 
@@ -14993,6 +15033,7 @@
         private System.Windows.Forms.Panel panel32;
         private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem kryptonContextMenuItem16;
         private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem kryptonContextMenuItem17;
+        private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem kryptonContextMenuItem117;
         private ComponentFactory.Krypton.Toolkit.KryptonRadioButton OnAgreementRadioButton;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem kryptonContextMenuItem18;
@@ -15015,5 +15056,8 @@
         private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem dbfPackDateMenuItem;
         private System.Windows.Forms.DateTimePicker CalendarTimeTo;
         private System.Windows.Forms.DateTimePicker CalendarTimeFrom;
+        private ComponentFactory.Krypton.Toolkit.KryptonRadioButton NotDispDateRadioButton;
+        private ComponentFactory.Krypton.Toolkit.KryptonContextMenuItem NotDispDateMenuItem;
+        private ComponentFactory.Krypton.Toolkit.KryptonRadioButton rbInProd;
     }
 }

@@ -1,5 +1,5 @@
 ﻿
-namespace Testing
+namespace Infinium
 {
     partial class LightStartForm
     {

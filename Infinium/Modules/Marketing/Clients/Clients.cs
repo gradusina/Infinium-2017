@@ -580,39 +580,52 @@ namespace Infinium.Modules.Marketing.Clients
         public void AddClient(string Name, int CountryID, string City, int ClientGroupID, string Site, string Email, int ManagerID, string UNN,
                               int NonStandard, decimal PriceGroup, int DelayOfPayment, bool Enabled)
         {
-            string Contacts = GetContactsXML(NewContactsDataTable);
+            using (SqlDataAdapter DA = new SqlDataAdapter("SELECT TOP 0 * FROM Clients", ConnectionStrings.MarketingReferenceConnectionString))
+            {
+                using (SqlCommandBuilder cb = new SqlCommandBuilder(DA))
+                {
+                    using (DataTable DT = new DataTable())
+                    {
+                        DA.Fill(DT);
 
-            string Login = GetTranslit(Name);
-            DataRow Row = ClientsDt.NewRow();
-            Row["ManagerID"] = ManagerID;
-            Row["Login"] = Login;
-            Row["Password"] = "b59c67bf196a4758191e42f76670ceba";
-            Row["ClientName"] = Name;
-            Row["ClientFolderName"] = Name.Replace('"', ' ');
-            Row["CountryID"] = CountryID;
-            Row["ClientGroupID"] = ClientGroupID;
-            Row["City"] = City;
-            Row["Token"] = GenAccessToken(Name);
 
-            if (Email.Length > 0)
-                Row["Email"] = Email;
+                        string Contacts = GetContactsXML(NewContactsDataTable);
 
-            if (Contacts.Length > 0)
-                Row["Site"] = Site;
+                        string Login = GetTranslit(Name);
+                        DataRow Row = DT.NewRow();
+                        Row["ManagerID"] = ManagerID;
+                        Row["Login"] = Login;
+                        Row["Password"] = "b59c67bf196a4758191e42f76670ceba";
+                        Row["ClientName"] = Name;
+                        Row["ClientFolderName"] = Name.Replace('"', ' ');
+                        Row["CountryID"] = CountryID;
+                        Row["ClientGroupID"] = ClientGroupID;
+                        Row["City"] = City;
+                        Row["Token"] = GenAccessToken(Name);
 
-            if (UNN != string.Empty)
-                Row["UNN"] = UNN;
-            else
-                Row["UNN"] = DBNull.Value;
+                        if (Email.Length > 0)
+                            Row["Email"] = Email;
 
-            Row["Contacts"] = Contacts;
-            Row["NonStandard"] = NonStandard;
-            Row["PriceGroup"] = PriceGroup;
-            Row["DelayOfPayment"] = DelayOfPayment;
-            Row["Enabled"] = Enabled;
+                        if (Contacts.Length > 0)
+                            Row["Site"] = Site;
 
-            ClientsDt.Rows.Add(Row);
-            ClientsDataAdapter.Update(ClientsDt);
+                        if (UNN != string.Empty)
+                            Row["UNN"] = UNN;
+                        else
+                            Row["UNN"] = DBNull.Value;
+
+                        Row["Contacts"] = Contacts;
+                        Row["NonStandard"] = NonStandard;
+                        Row["PriceGroup"] = PriceGroup;
+                        Row["DelayOfPayment"] = DelayOfPayment;
+                        Row["Enabled"] = Enabled;
+
+                        DT.Rows.Add(Row);
+                        DA.Update(DT);
+                    }
+                }
+            }
+
             ClientsDt.Clear();
             ClientsDataAdapter.Fill(ClientsDt);
         }

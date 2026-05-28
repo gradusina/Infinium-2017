@@ -292,7 +292,7 @@ namespace Infinium.Modules.WorkAssignments
 
             if (FilterType == 1)
                 FilterString =
-                    " AND FrontsOrders.FrontID IN (1975,1976,1977,1978,15760, 3737, 30501,30502,30503,30504,30505,30506,16269,30364,30366,30367,28945,41327,41328,41331,3727,3728,3729,3730,3731,3732,3733,3734,3735,3736,3737,3739,3740,3741,3742,3743,3744,3745,3746,3747,3748,15108,27914,29597)";
+                    " AND FrontsOrders.FrontID IN (1975,1976,1977,1978,15760, 3737, 30501,30502,30503,30504,30505,30506,16269,62522,30364,30366,30367,28945,41327,41328,41331,3727,3728,3729,3730,3731,3732,3733,3734,3735,3736,3737,3739,3740,3741,3742,3743,3744,3745,3746,3747,3748,15108,27914,29597)";
             if (FilterType == 2)
                 FilterString = " AND (FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.KansasPat) +
                     " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.Kansas) +
@@ -323,6 +323,12 @@ namespace Infinium.Modules.WorkAssignments
                 FilterString = " AND (FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.TechnoN) +
                     " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.Antalia) +
                     " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.Nord95) +
+                    " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.Nord3) +
+                    " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.Vest3) +
+                    " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.Vegas3) +
+                    " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.kolibri) +
+                    " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.Boston3) +
+                    " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.Boston4) +
                     " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.epFox) +
                     " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.Fat) +
                     " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.Leon) +
@@ -343,6 +349,7 @@ namespace Infinium.Modules.WorkAssignments
                     " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.Sigma) +
                     " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.Venecia) +
                     " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.Bergamo) +
+                    " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.duna) +
                     " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.ep041) +
                     " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.ep071) +
                     " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.ep206) +
@@ -412,7 +419,7 @@ namespace Infinium.Modules.WorkAssignments
             AllBatchFrontsDT.Clear();
 
             if (FilterType == 1)
-                FilterString = " AND FrontsOrders.FrontID IN (1975,1976,1977,1978,15760, 3737, 30501,30502,30503,30504,30505,30506,16269,30364,30366,30367,28945,41327,41328,41331,3727,3728,3729,3730,3731,3732,3733,3734,3735,3736,3737,3739,3740,3741,3742,3743,3744,3745,3746,3747,3748,15108,27914,29597)";
+                FilterString = " AND FrontsOrders.FrontID IN (1975,1976,1977,1978,15760, 3737, 30501,30502,30503,30504,30505,30506,16269,62522,30364,30366,30367,28945,41327,41328,41331,3727,3728,3729,3730,3731,3732,3733,3734,3735,3736,3737,3739,3740,3741,3742,3743,3744,3745,3746,3747,3748,15108,27914,29597)";
             if (FilterType == 2)
                 FilterString = " AND (FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.KansasPat) + " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.Kansas) +
                     " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.Sofia) + " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.SofiaNotColored) + 
@@ -442,6 +449,12 @@ namespace Infinium.Modules.WorkAssignments
                 FilterString = " AND (FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.TechnoN) +
                     " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.Antalia) +
                     " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.Nord95) +
+                    " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.Nord3) +
+                    " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.Vest3) +
+                    " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.Vegas3) +
+                    " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.kolibri) +
+                    " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.Boston3) +
+                    " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.Boston4) +
                     " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.epFox) +
                     " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.Fat) +
                     " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.Leon) +
@@ -462,6 +475,7 @@ namespace Infinium.Modules.WorkAssignments
                     " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.Sigma) +
                     " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.Venecia) +
                     " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.Bergamo) +
+                    " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.duna) +
                     " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.ep041) +
                     " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.ep071) +
                     " OR FrontsOrders.FrontID=" + Convert.ToInt32(Fronts.ep206) +

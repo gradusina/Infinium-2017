@@ -36,9 +36,11 @@
     <Reference Include="Krypton.Toolkit, Version=5.490.2202.0, Culture=neutral, PublicKeyToken=a87e673e9ecb6e8e, processorArchitecture=MSIL">
       <HintPath>..\packages\Krypton.Toolkit.5.490.2200\lib\net471\Krypton.Toolkit.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Design" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -50,12 +52,41 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddProjectForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddProjectForm.designer.cs">
+      <DependentUpon>AddProjectForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AddProjectNewsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddProjectNewsForm.designer.cs">
+      <DependentUpon>AddProjectNewsForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Connection.cs" />
     <Compile Include="CoverWaitForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="CoverWaitForm.designer.cs">
       <DependentUpon>CoverWaitForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Infinium.cs" />
+    <Compile Include="InfiniumControls.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="InfiniumProjects.cs" />
+    <Compile Include="InfiniumTipForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="InfiniumTipForm.designer.cs">
+      <DependentUpon>InfiniumTipForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LightMessageBoxForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LightMessageBoxForm.designer.cs">
+      <DependentUpon>LightMessageBoxForm.cs</DependentUpon>
     </Compile>
     <Compile Include="LightStartForm.cs">
       <SubType>Form</SubType>
@@ -82,6 +113,7 @@
     <Compile Include="LoadCalculations\UserControls\SectorControl.designer.cs">
       <DependentUpon>SectorControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Overrides.cs" />
     <Compile Include="PhantomForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -89,6 +121,18 @@
       <DependentUpon>PhantomForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
+    <Compile Include="ProjectAttachDownloadForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ProjectAttachDownloadForm.designer.cs">
+      <DependentUpon>ProjectAttachDownloadForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ProjectsForm.designer.cs">
+      <DependentUpon>ProjectsForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SmallWaitForm.cs">
       <SubType>Form</SubType>
@@ -108,8 +152,23 @@
     <Compile Include="WaitForm.designer.cs">
       <DependentUpon>WaitForm.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="AddProjectForm.resx">
+      <DependentUpon>AddProjectForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddProjectNewsForm.resx">
+      <DependentUpon>AddProjectNewsForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="CoverWaitForm.resx">
       <DependentUpon>CoverWaitForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InfiniumControls.resx">
+      <DependentUpon>InfiniumControls.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InfiniumTipForm.resx">
+      <DependentUpon>InfiniumTipForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LightMessageBoxForm.resx">
+      <DependentUpon>LightMessageBoxForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LightStartForm.resx">
       <DependentUpon>LightStartForm.cs</DependentUpon>
@@ -123,8 +182,17 @@
     <EmbeddedResource Include="LoadCalculations\UserControls\SectorControl.resx">
       <DependentUpon>SectorControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Overrides.resx">
+      <DependentUpon>Overrides.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="PhantomForm.resx">
       <DependentUpon>PhantomForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProjectAttachDownloadForm.resx">
+      <DependentUpon>ProjectAttachDownloadForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProjectsForm.resx">
+      <DependentUpon>ProjectsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -161,6 +229,489 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Collapsed.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\1380035188_stock_task.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ag.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ArchiveFile.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ArchiveFileIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ArrowBackBlack.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ArrowBackTracking.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ArrowBackTrackingBlue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ArrowBackTrackingWhite.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ArrowForwardBlack.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ArrowForwardTrackingBlue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ArrowForwardTrackingWhite.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cancel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CancelGrid.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\checkblack.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\checkblack2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CheckCanceled.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CheckDocOK.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\checkwhite.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\checkwhite2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Clock44.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\close-icon2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CloseGrid.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Closerun.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Closerun2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CloseUser.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Collapsed1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CommentsAlbumActive.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CommentsAlbumInactive.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ContractorContactsDown.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ContractorContactsUp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DocAdd.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DocAddButton.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DocAddButton2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DocAddUser.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DocCheckList.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DocClose.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DocCommentsCount.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DocDelete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DocEdit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DocFileCount.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DocIncomeIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DocItemDelete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DocItemEdit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DocListNote.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DocListType.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DocOuterIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DocumentsMenuAllDocs.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DocumentsMenuConfirms.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DocumentsMenuUpdates.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DocumentsMenuUser.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DocumentsSearch.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DocUserCount.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\eac.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\edit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Edit_16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ExcelFile.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ExcelFileIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ExecDaily.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ExecEvent.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ExecQuery.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ExecWeek.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Explanded.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\FavouriteNote.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\FileChecked.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\FileUnchecked.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Folder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\FolderUp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\iconfinder_printer_39263.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-refresh-30.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ImageFile.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ImageFileIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\LikeAlbumActive.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\LikeAlbumActive2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\LikeAlbumActive3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\LikeAlbumInactive.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\LikeInActive.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\LikeLiked.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\LikePicActive.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\LikePicBigActive.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\LikePicBigInactive.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\LikePicIncative.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\LikePictureActive.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\list-numbered-close.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Lock.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\lock2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\LockSmallBlack.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\LockSmallYellow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Menu.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MenuDown.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MenuUp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\n2.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\NoImage.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Offline.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\OK.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Online.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\onlinesort.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\OnTop.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\OtherFile.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\OtherFileIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PDFFile.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PDFFileIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\print_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ProjectCanceled.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ProjectCanceledGray.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ProjectGroupAll.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ProjectGroupAll2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ProjectGroupAllGray.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ProjectGroupAllGray2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ProjectGroupDeps.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ProjectGroupDeps2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ProjectGroupDepsGray.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ProjectGroupDepsGray2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ProjectGroupMy.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ProjectGroupMy2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ProjectGroupMyGray.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ProjectGroupMyGray2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ProjectGroupUsers.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ProjectGroupUsers2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ProjectGroupUsersGray.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ProjectGroupUsersGray2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ProjectIconAddNews.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ProjectIconAddUser.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ProjectIconCanceled.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ProjectIconDelete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ProjectItemCanceled.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ProjectItemPause.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ProjectItemStart.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ProjectItemStop.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ProjectPause.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ProjectPauseGray.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ProjectsAll.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ProjectsAllGray.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ProjectStart.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ProjectStartGray.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ProjectStop.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ProjectStopGray.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RemoveItem.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RST.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RST.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Running.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SimpleNote.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Small Green Add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Small Red Remove.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\small_save.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\STB.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TaskComplete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\testrec.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TimeDownCommon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TimeDownPressed.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TimeDownTracking.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TimeUpCommon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TimeUpPressed.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TimeUpTracking.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\UnlockSmallBlack.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\UnlockSmallYellow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Up.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\WordFile.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\WordFileIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\zoom_in_32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ZOVPROFIL.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ZOVTPS.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

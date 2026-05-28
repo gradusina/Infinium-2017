@@ -750,6 +750,7 @@ namespace Infinium
 
     public struct UserImagesStruct
     {
+        public bool bPhoto;
         public int UserID;
         public int UserTypeID;
         public Bitmap Photo;
@@ -1325,10 +1326,13 @@ namespace Infinium
                             UserImages[index].UserID = Convert.ToInt32(Row["UserID"]);
                             UserImages[index].UserTypeID = Convert.ToInt32(Row["SenderTypeID"]);
                             UserImages[index].Photo = new Bitmap(Bmp);
+                            UserImages[index].bPhoto = true;
 
                             Bmp.Dispose();
                         }
                     }
+                    else
+                        UserImages[index].bPhoto = false;
 
                     index++;
                 }
@@ -7390,6 +7394,7 @@ namespace Infinium
 
         public string sAuthor = "";
         private string sCaption = "Project Caption";
+        private string sArticle = "Project Caption";
 
         public bool bPropos = false;
 
@@ -8439,7 +8444,14 @@ namespace Infinium
                     NewsID = Convert.ToInt32(NewsDT.Rows[i]["NewsID"]),
                     SenderID = Convert.ToInt32(NewsDT.Rows[i]["SenderID"])
                 };
-                NewsItems[i].SenderImage = UserImages[Array.FindIndex(UserImages, UsIm => UsIm.UserID == NewsItems[i].SenderID)].Photo;
+
+                int index = Array.FindIndex(UserImages, UsIm => UsIm.UserID == NewsItems[i].SenderID);
+
+                if (index > -1)
+                {
+                    NewsItems[i].SenderImage = UserImages[Array.FindIndex(UserImages, UsIm => UsIm.UserID == NewsItems[i].SenderID)].Photo;
+                }
+
                 NewsItems[i].SenderName = UsersDT.Select("UserID = " + NewsDT.Rows[i]["SenderID"])[0]["Name"].ToString();
                 NewsItems[i].CommentsLikesRows = CommentsLikesDT.Select("NewsID = " + NewsDT.DefaultView[i]["NewsID"]);
                 NewsItems[i].NewsLikesRows = NewsLikesDT.Select("NewsID = " + NewsDT.DefaultView[i]["NewsID"]);
@@ -8643,7 +8655,11 @@ namespace Infinium
                 NewsID = Convert.ToInt32(NewsDT.DefaultView[i]["NewsID"]),
                 SenderID = Convert.ToInt32(NewsDT.DefaultView[i]["SenderID"])
             };
-            NewsItems[i].SenderImage = UserImages[Array.FindIndex(UserImages, UsIm => UsIm.UserID == NewsItems[i].SenderID)].Photo;
+
+            int index = Array.FindIndex(UserImages, UsIm => UsIm.UserID == NewsItems[i].SenderID);
+
+            if (index > -1)
+                NewsItems[i].SenderImage = UserImages[Array.FindIndex(UserImages, UsIm => UsIm.UserID == NewsItems[i].SenderID)].Photo;
             NewsItems[i].SenderName = UsersDT.Select("UserID = " + NewsDT.DefaultView[i]["SenderID"])[0]["Name"].ToString();
             NewsItems[i].CommentsLikesRows = CommentsLikesDT.Select("NewsID = " + NewsDT.DefaultView[i]["NewsID"]);
             NewsItems[i].NewsLikesRows = NewsLikesDT.Select("NewsID = " + NewsDT.DefaultView[i]["NewsID"]);
@@ -9453,7 +9469,13 @@ namespace Infinium
                         NewsCommentID = Convert.ToInt32(CommentsRows[i]["NewsCommentID"]),
                         SenderID = Convert.ToInt32(CommentsRows[i]["UserID"])
                     };
-                    CommentsItems[i].SenderImage = UsersImages[Array.FindIndex(UsersImages, UI => UI.UserID == CommentsItems[i].SenderID)].Photo;
+
+                    int index = Array.FindIndex(UsersImages, UsIm => UsIm.UserID == CommentsItems[i].SenderID);
+
+                    if (index > -1)
+                    {
+                        CommentsItems[i].SenderImage = UsersImages[Array.FindIndex(UsersImages, UI => UI.UserID == CommentsItems[i].SenderID)].Photo;
+                    }
 
                     if (UsersDT.Select("UserID = " + CommentsRows[i]["UserID"]).Any())
                         CommentsItems[i].SenderName = UsersDT.Select("UserID = " + CommentsRows[i]["UserID"])[0]["Name"].ToString();

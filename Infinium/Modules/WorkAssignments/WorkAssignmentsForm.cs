@@ -2944,9 +2944,23 @@ namespace Infinium
             {
                 int FrontID = Convert.ToInt32(dgvFrontsSummary.Rows[i].Cells["FrontID"].Value);
                 if (FrontID == Convert.ToInt32(Fronts.TechnoN) ||
-                    FrontID == Convert.ToInt32(Fronts.Antalia) || FrontID == Convert.ToInt32(Fronts.Nord95) || FrontID == Convert.ToInt32(Fronts.epFox) ||
-                    FrontID == Convert.ToInt32(Fronts.Venecia) || FrontID == Convert.ToInt32(Fronts.Bergamo) ||
-                    FrontID == Convert.ToInt32(Fronts.ep206) || FrontID == Convert.ToInt32(Fronts.ep216) || FrontID == Convert.ToInt32(Fronts.ep111) || FrontID == Convert.ToInt32(Fronts.ep041) || FrontID == Convert.ToInt32(Fronts.ep071) ||
+                    FrontID == Convert.ToInt32(Fronts.Antalia) || 
+                    FrontID == Convert.ToInt32(Fronts.Nord95) || 
+                    FrontID == Convert.ToInt32(Fronts.Nord3) || 
+                    FrontID == Convert.ToInt32(Fronts.Vest3) || 
+                    FrontID == Convert.ToInt32(Fronts.Vegas3) || 
+                    FrontID == Convert.ToInt32(Fronts.kolibri) || 
+                    FrontID == Convert.ToInt32(Fronts.Boston3) || 
+                    FrontID == Convert.ToInt32(Fronts.Boston4) || 
+                    FrontID == Convert.ToInt32(Fronts.epFox) ||
+                    FrontID == Convert.ToInt32(Fronts.Venecia) || 
+                    FrontID == Convert.ToInt32(Fronts.Bergamo) ||
+                    FrontID == Convert.ToInt32(Fronts.duna) ||
+                    FrontID == Convert.ToInt32(Fronts.ep206) || 
+                    FrontID == Convert.ToInt32(Fronts.ep216) || 
+                    FrontID == Convert.ToInt32(Fronts.ep111) || 
+                    FrontID == Convert.ToInt32(Fronts.ep041) || 
+                    FrontID == Convert.ToInt32(Fronts.ep071) ||
                     FrontID == Convert.ToInt32(Fronts.Boston) ||
                     FrontID == Convert.ToInt32(Fronts.Korsika) ||
                     FrontID == Convert.ToInt32(Fronts.Malta) ||
@@ -3054,8 +3068,18 @@ namespace Infinium
             {
                 int FrontID = Convert.ToInt32(dgvFrontsSummary.SelectedRows[i].Cells["FrontID"].Value);
                 if (FrontID == Convert.ToInt32(Fronts.TechnoN) ||
-                    FrontID == Convert.ToInt32(Fronts.Antalia) || FrontID == Convert.ToInt32(Fronts.Nord95) || FrontID == Convert.ToInt32(Fronts.epFox) ||
-                    FrontID == Convert.ToInt32(Fronts.Venecia) || FrontID == Convert.ToInt32(Fronts.Bergamo) ||
+                    FrontID == Convert.ToInt32(Fronts.Antalia) || 
+                    FrontID == Convert.ToInt32(Fronts.Nord95) || 
+                    FrontID == Convert.ToInt32(Fronts.Nord3) || 
+                    FrontID == Convert.ToInt32(Fronts.Vest3) || 
+                    FrontID == Convert.ToInt32(Fronts.Vegas3) || 
+                    FrontID == Convert.ToInt32(Fronts.kolibri) || 
+                    FrontID == Convert.ToInt32(Fronts.Boston3) || 
+                    FrontID == Convert.ToInt32(Fronts.Boston4) || 
+                    FrontID == Convert.ToInt32(Fronts.epFox) ||
+                    FrontID == Convert.ToInt32(Fronts.Venecia) || 
+                    FrontID == Convert.ToInt32(Fronts.Bergamo) ||
+                    FrontID == Convert.ToInt32(Fronts.duna) ||
                     FrontID == Convert.ToInt32(Fronts.ep206) || FrontID == Convert.ToInt32(Fronts.ep216) || FrontID == Convert.ToInt32(Fronts.ep111) || FrontID == Convert.ToInt32(Fronts.ep041) || FrontID == Convert.ToInt32(Fronts.ep071) ||
                     FrontID == Convert.ToInt32(Fronts.Boston) ||
                     FrontID == Convert.ToInt32(Fronts.Korsika) ||

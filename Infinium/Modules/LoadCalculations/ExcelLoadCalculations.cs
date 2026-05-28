@@ -6,7 +6,6 @@ using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
-using NPOI.XSSF.UserModel;
 
 
 namespace Infinium.Modules.LoadCalculations
@@ -18,6 +17,10 @@ namespace Infinium.Modules.LoadCalculations
         public int configId { get; set; }
         public int itemId { get; set; }
         public decimal sumTotal { get; set; }
+        public decimal sumTotal1 { get; set; }
+        public decimal sumTotal2 { get; set; }
+        public decimal sumTotal3 { get; set; }
+        public decimal sumTotal4 { get; set; }
         public string accountName { get; set; }
         public string invnumber { get; set; }
         public decimal count { get; set; }
@@ -42,7 +45,7 @@ namespace Infinium.Modules.LoadCalculations
         private readonly DataTable _staffingDt;
         private readonly DataTable _excelDt;
 
-        private XSSFWorkbook wBook;
+        private HSSFWorkbook wBook;
         List<Employee> listEmployees;
 
         public ExcelLoadCalculations()
@@ -408,17 +411,10 @@ namespace Infinium.Modules.LoadCalculations
         //    }
         //}
 
-        public void ExportFile(string path)
+        public void ParseSheet(HSSFSheet sheet)
         {
-            using (var fileStream = new FileStream(path, FileMode.Open, FileAccess.Read))
-            {
-
-                wBook = new XSSFWorkbook(fileStream);
-            }
-
             listEmployees = new List<Employee>();
-            var sheet = wBook.GetSheetAt(0);
-            for (var i = 1; i <= sheet.LastRowNum - 1; i++)
+            for (var i = 1; i <= sheet.LastRowNum; i++)
             {
                 if (sheet.GetRow(i) != null)
                 {
@@ -513,9 +509,17 @@ namespace Infinium.Modules.LoadCalculations
                     sumTotal += total1 + total2 + total3 + total4;
 
                     listEmployees[i].sectors[sectorIndex].SumTotal += (total1 + total2 + total3 + total4);
+                    listEmployees[i].sectors[sectorIndex].Total1 += total1;
+                    listEmployees[i].sectors[sectorIndex].Total2 += total2;
+                    listEmployees[i].sectors[sectorIndex].Total3 += total3;
+                    listEmployees[i].sectors[sectorIndex].Total4 += total4;
                     listEmployees[index].sectors[sectorIndex].SumTotal += (total1 + total2 + total3 + total4);
                 }
                 listEmployees[i].sumTotal = sumTotal;
+                listEmployees[i].sumTotal1 += sumtotal1;
+                listEmployees[i].sumTotal2 += sumtotal2;
+                listEmployees[i].sumTotal3 += sumtotal3;
+                listEmployees[i].sumTotal4 += sumtotal4;
                 listEmployees[index].sumTotal += sumTotal;
             }
         }
@@ -524,23 +528,23 @@ namespace Infinium.Modules.LoadCalculations
         {
             _ordersDt = new DataTable();
             _ordersDt.Columns.Add(new DataColumn("id", typeof(int)) { AutoIncrement = true });
-            _ordersDt.Columns.Add("configid", typeof(int));
-            _ordersDt.Columns.Add("itemid", typeof(int));
             _ordersDt.Columns.Add("accountName", typeof(string));
             _ordersDt.Columns.Add("invnumber", typeof(string));
             _ordersDt.Columns.Add("count", typeof(decimal));
+            _ordersDt.Columns.Add("cost", typeof(decimal));
             foreach (var sector in SectorsList)
             {
                 _ordersDt.Columns.Add(sector.ShortName, typeof(decimal));
             }
-
             _ordersDt.Columns.Add("sumtotal", typeof(decimal));
+            _ordersDt.Columns.Add("sumtotal1", typeof(decimal));
+            _ordersDt.Columns.Add("sumtotal2", typeof(decimal));
+            _ordersDt.Columns.Add("sumtotal3", typeof(decimal));
+            _ordersDt.Columns.Add("sumtotal4", typeof(decimal));
 
             foreach (var item in listEmployees)
             {
                 var newRow = _ordersDt.NewRow();
-                newRow["configId"] = item.configId;
-                newRow["itemId"] = item.itemId;
                 if (item.sectors != null)
                     foreach (var sector in item.sectors)
                         newRow[sector.ShortName] = sector.SumTotal;
@@ -548,6 +552,10 @@ namespace Infinium.Modules.LoadCalculations
                 newRow["invnumber"] = item.invnumber;
                 newRow["count"] = item.count;
                 newRow["sumTotal"] = item.sumTotal;
+                newRow["sumTotal1"] = item.sumTotal1;
+                newRow["sumTotal2"] = item.sumTotal2;
+                newRow["sumTotal3"] = item.sumTotal3;
+                newRow["sumTotal4"] = item.sumTotal4;
                 _ordersDt.Rows.Add(newRow);
             }
         }

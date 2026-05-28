@@ -760,7 +760,7 @@ namespace Infinium
 
         private void CurrencyForm_Load(object sender, EventArgs e)
         {
-
+            ConfirmationOKButton.Focus();
         }
 
         private void rbFactoring_CheckedChanged(object sender, EventArgs e)
@@ -1100,6 +1100,11 @@ namespace Infinium
                 if (_clientId != 145 && rbDelayOfPayment.Checked)
                     CurrencyTextBox.Text = (_eurbyrCurrency * 1.05m).ToString();
             }
+        }
+
+        private void CurrencyForm_Shown(object sender, EventArgs e)
+        {
+            ConfirmationOKButton.Focus();
         }
     }
 }

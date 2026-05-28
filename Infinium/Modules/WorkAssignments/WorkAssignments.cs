@@ -5,6 +5,7 @@
         TechnoNWidth = 280,
 
         BergamoWidth = 150,
+        DunaWidth = 110,
 
         ep041Width = 200,
 
@@ -31,6 +32,12 @@
         AntaliaWidth = 120,
 
         Nord95Width = 110,
+        Nord3Width = 110,
+        Vegas3Width = 110,
+        kolibriWidth = 110,
+        Vest3Width = 110,
+        Boston3Width = 110,
+        Boston4Width = 110,
 
         epFoxWidth = 110,
 
@@ -70,6 +77,7 @@
         TechnoNMargin = 99,
 
         BergamoMargin = 139,
+        DunaMargin = 125,
 
         ep041Margin = 178,
 
@@ -82,6 +90,7 @@
         ep111Margin = 140,
 
         BergamoNarrowMargin = 98,
+        DunaNarrowMargin = 99,
 
         KorsikaMargin = 45,
         MargoMargin = 97,
@@ -93,11 +102,17 @@
         VestMargin = 51,
         VegasMargin = 31,
         epsh071Margin = 98,
-        Boston2Margin = 21,
+        Boston2Margin = 22,
 
         AntaliaMargin = 108,
 
         Nord95Margin = 32,
+        Nord3Margin = 32,
+        Vegas3Margin = 32,
+        kolibriMargin = 84,
+        Vest3Margin = 52,
+        Boston4Margin = 22,
+        Boston3Margin = 28,
 
         epFoxMargin = 88,
 
@@ -635,6 +650,13 @@
         Antalia = 2355,
 
         Nord95 = 29844,
+        Nord3 = 72985,
+        Vegas3 = 72987,
+        kolibri = 73009,
+        duna = 73039,
+        Vest3 = 72986,
+        Boston3 = 72988,
+        Boston4 = 72984,
 
         epFox = 29845,
 

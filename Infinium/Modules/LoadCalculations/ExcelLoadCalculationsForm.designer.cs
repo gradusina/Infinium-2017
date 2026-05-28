@@ -49,6 +49,7 @@
             this.MenuCloseButton = new ComponentFactory.Krypton.Toolkit.KryptonButton();
             this.label5 = new System.Windows.Forms.Label();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.button1 = new System.Windows.Forms.Button();
             this.panel8.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel9.SuspendLayout();
@@ -184,6 +185,7 @@
             // 
             // panel8
             // 
+            this.panel8.Controls.Add(this.button1);
             this.panel8.Controls.Add(this.btnExport);
             this.panel8.Controls.Add(this.dataGridView1);
             this.panel8.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -199,7 +201,7 @@
             this.btnExport.Name = "btnExport";
             this.btnExport.Size = new System.Drawing.Size(91, 46);
             this.btnExport.TabIndex = 1;
-            this.btnExport.Text = "button1";
+            this.btnExport.Text = "Загрузить excel";
             this.btnExport.UseVisualStyleBackColor = true;
             this.btnExport.Click += new System.EventHandler(this.btnExport_Click);
             // 
@@ -265,14 +267,25 @@
             this.label5.ForeColor = System.Drawing.Color.White;
             this.label5.Location = new System.Drawing.Point(3, 5);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(315, 45);
+            this.label5.Size = new System.Drawing.Size(229, 45);
             this.label5.TabIndex = 240;
-            this.label5.Text = "Расчёты по нагрузке";
+            this.label5.Text = "Расчёты часов";
             // 
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             this.openFileDialog1.FileOk += new System.ComponentModel.CancelEventHandler(this.openFileDialog1_FileOk);
+            // 
+            // button1
+            // 
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button1.Location = new System.Drawing.Point(1167, 58);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(91, 46);
+            this.button1.TabIndex = 2;
+            this.button1.Text = "Сохранить";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // ExcelLoadCalculationsForm
             // 
@@ -319,5 +332,6 @@
         private System.Windows.Forms.Button btnExport;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.Button button1;
     }
 }

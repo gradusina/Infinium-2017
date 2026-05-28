@@ -320,7 +320,7 @@
             this.btnExplandInProduction.StateCommon.Content.ShortText.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
             this.btnExplandInProduction.StateCommon.Content.ShortText.TextV = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.btnExplandInProduction.TabIndex = 280;
-            this.btnExplandInProduction.Values.Image = global::Testing.Properties.Resources.Collapsed;
+            this.btnExplandInProduction.Values.Image = global::Infinium.Properties.Resources.Collapsed;
             this.btnExplandInProduction.Values.Text = "";
             this.btnExplandInProduction.Click += new System.EventHandler(this.btnExplandInProduction_Click);
             // 
@@ -416,7 +416,7 @@
             this.btnExplandOnProduction.StateCommon.Content.ShortText.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
             this.btnExplandOnProduction.StateCommon.Content.ShortText.TextV = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.btnExplandOnProduction.TabIndex = 280;
-            this.btnExplandOnProduction.Values.Image = global::Testing.Properties.Resources.Collapsed;
+            this.btnExplandOnProduction.Values.Image = global::Infinium.Properties.Resources.Collapsed;
             this.btnExplandOnProduction.Values.Text = "";
             this.btnExplandOnProduction.Click += new System.EventHandler(this.btnExplandOnProduction_Click);
             // 
@@ -512,7 +512,7 @@
             this.btnExplandAgreed.StateCommon.Content.ShortText.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
             this.btnExplandAgreed.StateCommon.Content.ShortText.TextV = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.btnExplandAgreed.TabIndex = 280;
-            this.btnExplandAgreed.Values.Image = global::Testing.Properties.Resources.Collapsed;
+            this.btnExplandAgreed.Values.Image = global::Infinium.Properties.Resources.Collapsed;
             this.btnExplandAgreed.Values.Text = "";
             this.btnExplandAgreed.Click += new System.EventHandler(this.btnExplandAgreed_Click);
             // 
@@ -608,7 +608,7 @@
             this.btnExplandForAgreed.StateCommon.Content.ShortText.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
             this.btnExplandForAgreed.StateCommon.Content.ShortText.TextV = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.btnExplandForAgreed.TabIndex = 280;
-            this.btnExplandForAgreed.Values.Image = global::Testing.Properties.Resources.Collapsed;
+            this.btnExplandForAgreed.Values.Image = global::Infinium.Properties.Resources.Collapsed;
             this.btnExplandForAgreed.Values.Text = "";
             this.btnExplandForAgreed.Click += new System.EventHandler(this.btnExplandForAgreed_Click);
             // 
@@ -704,7 +704,7 @@
             this.btnExplandNotConfirmed.StateCommon.Content.ShortText.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
             this.btnExplandNotConfirmed.StateCommon.Content.ShortText.TextV = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.btnExplandNotConfirmed.TabIndex = 280;
-            this.btnExplandNotConfirmed.Values.Image = global::Testing.Properties.Resources.Collapsed;
+            this.btnExplandNotConfirmed.Values.Image = global::Infinium.Properties.Resources.Collapsed;
             this.btnExplandNotConfirmed.Values.Text = "";
             this.btnExplandNotConfirmed.Click += new System.EventHandler(this.btnExplandNotConfirmed_Click);
             // 

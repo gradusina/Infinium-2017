@@ -1,6 +1,6 @@
-﻿using Infinium.Modules.StatisticsMarketing.Reports;
-
+﻿
 using NPOI.HPSF;
+using NPOI.HSSF.Record.Formula.Functions;
 using NPOI.HSSF.UserModel;
 using NPOI.HSSF.UserModel.Contrib;
 using NPOI.HSSF.Util;
@@ -13,7 +13,6 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Windows.Forms;
 
 namespace Infinium.Modules.Marketing.WeeklyPlanning
@@ -436,6 +435,8 @@ namespace Infinium.Modules.Marketing.WeeklyPlanning
             FrontsOrdersDataGrid.Columns["Notes"].MinimumWidth = 175;
             FrontsOrdersDataGrid.Columns["IsSample"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             FrontsOrdersDataGrid.Columns["TotalDiscount"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+
+
             //FrontsOrdersDataGrid.RowsDefaultCellStyle.WrapMode = DataGridViewTriState.True;
             //FrontsOrdersDataGrid.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCellsExceptHeaders;
             FrontsOrdersDataGrid.CellFormatting += FrontsOrdersDataGrid_CellFormatting;
@@ -814,6 +815,15 @@ namespace Infinium.Modules.Marketing.WeeklyPlanning
                 DecorItemOrdersDataGrids[i].Columns["Width"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                 DecorItemOrdersDataGrids[i].Columns["Count"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                 DecorItemOrdersDataGrids[i].Columns["Length"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+
+                DecorItemOrdersDataGrids[i].Columns["Cost"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                DecorItemOrdersDataGrids[i].Columns["OriginalPrice"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                DecorItemOrdersDataGrids[i].Columns["OriginalCost"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                DecorItemOrdersDataGrids[i].Columns["CostWithTransport"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                DecorItemOrdersDataGrids[i].Columns["PriceWithTransport"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                DecorItemOrdersDataGrids[i].Columns["CurrencyCost"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+
+
                 //убирание лишних столбцов
                 if (DecorItemOrdersDataGrids[i].Columns.Contains("CreateDateTime"))
                 {
@@ -1390,6 +1400,8 @@ namespace Infinium.Modules.Marketing.WeeklyPlanning
         public DataTable BatchMegaOrdersDataTable = null;
         private DataTable BatchDetailsDataTable = null;
 
+        private DataTable SumMainOrderDataTable = null;
+
         private DataTable UsersDT = null;
 
         private DataTable FrontsSummaryDataTable = null;
@@ -1581,18 +1593,18 @@ namespace Infinium.Modules.Marketing.WeeklyPlanning
             PreDecorSizesDataGrid = tPreDecorSizesDataGrid;
 
             MainOrdersFrontsOrders = new MainOrdersFrontsOrders(ref tMainOrdersFrontsOrdersDataGrid);
-            MainOrdersFrontsOrders.Initialize(false);
+            MainOrdersFrontsOrders.Initialize(true);
 
             MainOrdersDecorOrders = new MainOrdersDecorOrders(ref tMainOrdersDecorTabControl,
                 ref DecorCatalogOrder, ref tMainOrdersFrontsOrdersDataGrid);
-            MainOrdersDecorOrders.Initialize(false);
+            MainOrdersDecorOrders.Initialize(true);
 
             BatchMainOrdersFrontsOrders = new MainOrdersFrontsOrders(ref tBatchFrontsOrdersDataGrid);
-            BatchMainOrdersFrontsOrders.Initialize(false);
+            BatchMainOrdersFrontsOrders.Initialize(true);
 
             BatchMainOrdersDecorOrders = new MainOrdersDecorOrders(ref tBatchDecorTabControl,
                 ref DecorCatalogOrder, ref tBatchFrontsOrdersDataGrid);
-            BatchMainOrdersDecorOrders.Initialize(false);
+            BatchMainOrdersDecorOrders.Initialize(true);
 
             Initialize();
         }
@@ -1615,6 +1627,8 @@ namespace Infinium.Modules.Marketing.WeeklyPlanning
 
         private void Create()
         {
+            SumMainOrderDataTable = new DataTable();
+
             NotInProductionDataTable = new DataTable();
             NotInProductionDataTable.Columns.Add(new DataColumn("MegaOrderID", Type.GetType("System.Int32")));
 
@@ -2161,6 +2175,12 @@ namespace Infinium.Modules.Marketing.WeeklyPlanning
             }
 
             MainOrdersDataTable.Columns.Add(new DataColumn("BatchNumber", Type.GetType("System.String")));
+            BatchMegaOrdersDataTable.Columns.Add(new DataColumn("SumCost", Type.GetType("System.Decimal")));
+
+            //BatchMainOrdersDataTable.Columns.Add(new DataColumn("SumCost", Type.GetType("System.Decimal")));
+
+            MegaBatchDataTable.Columns.Add(new DataColumn("SumCost", Type.GetType("System.Decimal")));
+            BatchDataTable.Columns.Add(new DataColumn("SumCost", Type.GetType("System.Decimal")));
         }
 
         private void Binding()
@@ -3278,11 +3298,21 @@ namespace Infinium.Modules.Marketing.WeeklyPlanning
                 BatchDataGrid.Columns["ProfilBatchClose"].Visible = false;
             if (BatchDataGrid.Columns.Contains("TPSBatchClose"))
                 BatchDataGrid.Columns["TPSBatchClose"].Visible = false;
+
+            if (!Security.PriceAccess)
+            {
+                if (BatchDataGrid.Columns.Contains("SumCost"))
+                    BatchDataGrid.Columns["SumCost"].Visible = false;
+            }
+
             foreach (DataGridViewColumn Column in BatchDataGrid.Columns)
             {
                 Column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 Column.ReadOnly = true;
             }
+
+            if (BatchDataGrid.Columns.Contains("SumCost"))
+                BatchDataGrid.Columns["SumCost"].HeaderText = "Сумма, евро";
 
             BatchDataGrid.Columns["BatchID"].HeaderText = "№ п\\п";
             BatchDataGrid.Columns["ProfilConfirm"].HeaderText = "Утвер.";
@@ -3335,6 +3365,13 @@ namespace Infinium.Modules.Marketing.WeeklyPlanning
             BatchDataGrid.Columns["TPSConfirm"].MinimumWidth = 40;
             BatchDataGrid.Columns["BatchID"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
             BatchDataGrid.Columns["BatchID"].Width = 60;
+
+            if (BatchDataGrid.Columns.Contains("SumCost"))
+            {
+                BatchDataGrid.Columns["SumCost"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                BatchDataGrid.Columns["SumCost"].Width = 80;
+            }
+
             BatchDataGrid.Columns["ProfilName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             BatchDataGrid.Columns["ProfilName"].MinimumWidth = 130;
             BatchDataGrid.Columns["TPSName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
@@ -3386,12 +3423,20 @@ namespace Infinium.Modules.Marketing.WeeklyPlanning
             MegaBatchDataGrid.Columns["TPSAgreedUserID"].Visible = false;
             MegaBatchDataGrid.Columns["TPSAgreedDateTime"].Visible = false;
 
+            if (!Security.PriceAccess)
+            {
+                if (MegaBatchDataGrid.Columns.Contains("SumCost"))
+                    MegaBatchDataGrid.Columns["SumCost"].Visible = false;
+            }
+
             foreach (DataGridViewColumn Column in MegaBatchDataGrid.Columns)
             {
                 Column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 Column.ReadOnly = true;
             }
 
+            if (MegaBatchDataGrid.Columns.Contains("SumCost"))
+                MegaBatchDataGrid.Columns["SumCost"].HeaderText = "Сумма, евро";
             MegaBatchDataGrid.Columns["WeekNumber"].HeaderText = "Неделя";
             MegaBatchDataGrid.Columns["ProfilEntryDateTime"].HeaderText = "Вошло в пр-во";
             MegaBatchDataGrid.Columns["TPSEntryDateTime"].HeaderText = "Вошло в пр-во";
@@ -3420,6 +3465,12 @@ namespace Infinium.Modules.Marketing.WeeklyPlanning
             MegaBatchDataGrid.Columns["ProfilEnabledColumn"].Width = 40;
             MegaBatchDataGrid.Columns["TPSEnabledColumn"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
             MegaBatchDataGrid.Columns["TPSEnabledColumn"].Width = 40;
+
+            if (MegaBatchDataGrid.Columns.Contains("SumCost"))
+            {
+                MegaBatchDataGrid.Columns["SumCost"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                MegaBatchDataGrid.Columns["SumCost"].Width = 80;
+            }
 
             MegaBatchDataGrid.Columns["MegaBatchID"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
             MegaBatchDataGrid.Columns["MegaBatchID"].Width = 60;
@@ -3479,13 +3530,18 @@ namespace Infinium.Modules.Marketing.WeeklyPlanning
                 tPercentageDataGrid.Columns["MegaOrderID"].Visible = false;
             if (tPercentageDataGrid.Columns.Contains("AllocPackDateTime"))
                 tPercentageDataGrid.Columns["AllocPackDateTime"].Visible = false;
-
             if (tPercentageDataGrid.Columns.Contains("FrontsCost"))
                 tPercentageDataGrid.Columns["FrontsCost"].Visible = false;
             if (tPercentageDataGrid.Columns.Contains("DecorCost"))
                 tPercentageDataGrid.Columns["DecorCost"].Visible = false;
-            if (tPercentageDataGrid.Columns.Contains("OrderCost"))
-                tPercentageDataGrid.Columns["OrderCost"].Visible = false;
+
+            if (!Security.PriceAccess)
+            {
+                if (tPercentageDataGrid.Columns.Contains("SumCost"))
+                    tPercentageDataGrid.Columns["SumCost"].Visible = false;
+                if (tPercentageDataGrid.Columns.Contains("OrderCost"))
+                    tPercentageDataGrid.Columns["OrderCost"].Visible = false;
+            }
 
             if (tPercentageDataGrid.Columns.Contains("ProfilPackAllocStatusID"))
                 tPercentageDataGrid.Columns["ProfilPackAllocStatusID"].Visible = false;
@@ -3498,6 +3554,9 @@ namespace Infinium.Modules.Marketing.WeeklyPlanning
 
             tPercentageDataGrid.Columns["ProfilProductionDate"].DefaultCellStyle.Format = "dd.MM.yyyy HH:mm";
             tPercentageDataGrid.Columns["TPSProductionDate"].DefaultCellStyle.Format = "dd.MM.yyyy HH:mm";
+
+            if (tPercentageDataGrid.Columns.Contains("SumCost"))
+                tPercentageDataGrid.Columns["SumCost"].HeaderText = "Сумма, евро";
 
             tPercentageDataGrid.Columns["MainOrderID"].HeaderText = "№ п\\п";
             tPercentageDataGrid.Columns["FrontsCost"].HeaderText = "Стоимость\r\nфасадов, евро";
@@ -3516,7 +3575,7 @@ namespace Infinium.Modules.Marketing.WeeklyPlanning
             {
                 CurrencyGroupSeparator = " ",
                 CurrencySymbol = "",
-                CurrencyDecimalDigits = 1
+                CurrencyDecimalDigits = 2
             };
             tPercentageDataGrid.Columns["FrontsCost"].DefaultCellStyle.Format = "C";
             tPercentageDataGrid.Columns["FrontsCost"].DefaultCellStyle.FormatProvider = nfi1;
@@ -3529,6 +3588,12 @@ namespace Infinium.Modules.Marketing.WeeklyPlanning
 
             tPercentageDataGrid.Columns["Weight"].DefaultCellStyle.Format = "C";
             tPercentageDataGrid.Columns["Weight"].DefaultCellStyle.FormatProvider = nfi1;
+
+            if (tPercentageDataGrid.Columns.Contains("SumCost"))
+            {
+                tPercentageDataGrid.Columns["SumCost"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                tPercentageDataGrid.Columns["SumCost"].Width = 80;
+            }
 
             tPercentageDataGrid.Columns["ProfilOnProductionDate"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
             tPercentageDataGrid.Columns["ProfilOnProductionDate"].MinimumWidth = 165;
@@ -3589,8 +3654,9 @@ namespace Infinium.Modules.Marketing.WeeklyPlanning
             tPercentageDataGrid.Columns["TPSDispatchStatusColumn"].DisplayIndex = 11;
             tPercentageDataGrid.Columns["FrontsSquare"].DisplayIndex = 12;
             tPercentageDataGrid.Columns["Weight"].DisplayIndex = 13;
-            tPercentageDataGrid.Columns["DocDateTime"].DisplayIndex = 14;
-            tPercentageDataGrid.Columns["Notes"].DisplayIndex = 15;
+            tPercentageDataGrid.Columns["Weight"].DisplayIndex = 14;
+            tPercentageDataGrid.Columns["DocDateTime"].DisplayIndex = 15;
+            tPercentageDataGrid.Columns["Notes"].DisplayIndex = 16;
 
             if (tPercentageDataGrid.Columns.Contains("BatchID"))
             {
@@ -3606,6 +3672,13 @@ namespace Infinium.Modules.Marketing.WeeklyPlanning
                 tPercentageDataGrid.Columns["BatchNumber"].Width = 80;
                 tPercentageDataGrid.Columns["BatchNumber"].HeaderText = "    №\n\rпартии";
                 tPercentageDataGrid.Columns["BatchNumber"].DisplayIndex = 1;
+            }
+            if (tPercentageDataGrid.Columns.Contains("SumCost"))
+            {
+                tPercentageDataGrid.Columns["SumCost"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                tPercentageDataGrid.Columns["SumCost"].Width = 80;
+                tPercentageDataGrid.Columns["SumCost"].HeaderText = "Сумма";
+                tPercentageDataGrid.Columns["SumCost"].DisplayIndex = 1;
             }
 
             tPercentageDataGrid.Columns["FrontsSquare"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
@@ -3638,16 +3711,12 @@ namespace Infinium.Modules.Marketing.WeeklyPlanning
                 tPercentageDataGrid.Columns["CurrencyTypeID"].Visible = false;
             if (tPercentageDataGrid.Columns.Contains("FactoryID"))
                 tPercentageDataGrid.Columns["FactoryID"].Visible = false;
-            if (tPercentageDataGrid.Columns.Contains("OrderCost"))
-                tPercentageDataGrid.Columns["OrderCost"].Visible = false;
             if (tPercentageDataGrid.Columns.Contains("TransportCost"))
                 tPercentageDataGrid.Columns["TransportCost"].Visible = false;
             if (tPercentageDataGrid.Columns.Contains("AdditionalCost"))
                 tPercentageDataGrid.Columns["AdditionalCost"].Visible = false;
             if (tPercentageDataGrid.Columns.Contains("CurrencyOrderCost"))
                 tPercentageDataGrid.Columns["CurrencyOrderCost"].Visible = false;
-            if (tPercentageDataGrid.Columns.Contains("CurrencyTotalCost"))
-                tPercentageDataGrid.Columns["CurrencyTotalCost"].Visible = false;
             if (tPercentageDataGrid.Columns.Contains("CurrencyTransportCost"))
                 tPercentageDataGrid.Columns["CurrencyTransportCost"].Visible = false;
             if (tPercentageDataGrid.Columns.Contains("CurrencyAdditionalCost"))
@@ -3664,8 +3733,17 @@ namespace Infinium.Modules.Marketing.WeeklyPlanning
                 tPercentageDataGrid.Columns["CurrencyComplaintTPSCost"].Visible = false;
             if (tPercentageDataGrid.Columns.Contains("DelayOfPayment"))
                 tPercentageDataGrid.Columns["DelayOfPayment"].Visible = false;
-            if (tPercentageDataGrid.Columns.Contains("TotalCost"))
-                tPercentageDataGrid.Columns["TotalCost"].Visible = false;
+            if (tPercentageDataGrid.Columns.Contains("CurrencyTotalCost"))
+                tPercentageDataGrid.Columns["CurrencyTotalCost"].Visible = false;
+
+            if (!Security.PriceAccess)
+            {
+                if (tPercentageDataGrid.Columns.Contains("TotalCost"))
+                    tPercentageDataGrid.Columns["TotalCost"].Visible = false;
+                if (tPercentageDataGrid.Columns.Contains("SumCost"))
+                    tPercentageDataGrid.Columns["SumCost"].Visible = false;
+            }
+
             if (tPercentageDataGrid.Columns.Contains("Rate"))
                 tPercentageDataGrid.Columns["Rate"].Visible = false;
             if (tPercentageDataGrid.Columns.Contains("PaymentRate"))
@@ -3705,6 +3783,8 @@ namespace Infinium.Modules.Marketing.WeeklyPlanning
             if (tPercentageDataGrid.Columns.Contains("TPSProductionUserID"))
                 tPercentageDataGrid.Columns["TPSProductionUserID"].Visible = false;
 
+            if (tPercentageDataGrid.Columns.Contains("SumCost"))
+                tPercentageDataGrid.Columns["SumCost"].HeaderText = "Сумма, евро";
             tPercentageDataGrid.Columns["MegaOrderID"].HeaderText = "№ п\\п";
             tPercentageDataGrid.Columns["ClientName"].HeaderText = "Клиент";
             tPercentageDataGrid.Columns["OrderNumber"].HeaderText = "№\r\nзаказа";
@@ -3769,7 +3849,15 @@ namespace Infinium.Modules.Marketing.WeeklyPlanning
             tPercentageDataGrid.Columns["Square"].DefaultCellStyle.Format = "C";
             tPercentageDataGrid.Columns["Square"].DefaultCellStyle.FormatProvider = nfi3;
 
-            tPercentageDataGrid.Columns["ClientName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            tPercentageDataGrid.Columns["TotalCost"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            tPercentageDataGrid.Columns["CurrencyTotalCost"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+
+            if (tPercentageDataGrid.Columns.Contains("SumCost"))
+            {
+                tPercentageDataGrid.Columns["SumCost"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                tPercentageDataGrid.Columns["SumCost"].Width = 80;
+            }
+
             tPercentageDataGrid.Columns["ClientName"].MinimumWidth = 240;
             tPercentageDataGrid.Columns["MegaOrderID"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
             tPercentageDataGrid.Columns["MegaOrderID"].Width = 70;
@@ -3858,6 +3946,12 @@ namespace Infinium.Modules.Marketing.WeeklyPlanning
                 BatchDataTable.Clear();
                 DA.Fill(BatchDataTable);
             }
+            
+            for (int i = 0; i < BatchDataTable.Rows.Count; i++)
+            {
+                GetSumMainOrdersByBatch(Convert.ToInt32(BatchDataTable.Rows[i]["BatchID"]));
+                BatchDataTable.Rows[i]["sumCost"] = SumMegaOrdersCost(Convert.ToInt32(BatchDataTable.Rows[i]["BatchID"]));
+            }
         }
 
         private void FillBatchNumber()
@@ -3900,7 +3994,16 @@ namespace Infinium.Modules.Marketing.WeeklyPlanning
             {
                 MessageBox.Show(ex.Message);
             }
-            MegaBatchBindingSource.Position = MegaBatchBindingSource.Find("MegaBatchID", MegaBatchID);
+            for (int i = 0; i < MegaBatchDataTable.Rows.Count; i++)
+            {
+                GetSumMainOrdersByMegaBatch(Convert.ToInt32(MegaBatchDataTable.Rows[i]["MegaBatchID"]));
+                MegaBatchDataTable.Rows[i]["sumCost"] = SumBatchCost();
+            }
+            if (MegaBatchID != -1)
+                MegaBatchBindingSource.Position = MegaBatchBindingSource.Find("MegaBatchID", MegaBatchID);
+            else
+                MegaBatchBindingSource.Position = 0;
+
             FillWeekNumber();
             SetMegaBatchEnable();
             ShowMegaOrdersColumns(ref BatchMegaOrdersDataGrid, FactoryID);
@@ -4242,9 +4345,11 @@ namespace Infinium.Modules.Marketing.WeeklyPlanning
             {
                 DA.Fill(BatchMegaOrdersDataTable);
 
+                GetSumMainOrdersByBatch(BatchID);
                 for (int i = 0; i < BatchMegaOrdersDataTable.Rows.Count; i++)
                 {
                     array.Add(Convert.ToInt32(BatchMegaOrdersDataTable.Rows[i]["MegaOrderID"]));
+                    BatchMegaOrdersDataTable.Rows[i]["sumCost"] = SumMainOrdersCost(Convert.ToInt32(BatchMegaOrdersDataTable.Rows[i]["MegaOrderID"]));
                 }
             }
 
@@ -4253,7 +4358,7 @@ namespace Infinium.Modules.Marketing.WeeklyPlanning
 
             return array;
         }
-
+        
         public ArrayList FilterBatchMainOrdersByMegaOrder(
             int BatchID, int MegaOrderID, int FactoryID,
             bool BatchOnProduction,
@@ -4398,10 +4503,50 @@ namespace Infinium.Modules.Marketing.WeeklyPlanning
                     }
                 }
             }
-
+            
             ShowMainOrdersColumns(ref BatchMainOrdersDataGrid, FactoryID);
 
             return array;
+        }
+
+        public void GetSumMainOrdersByMegaBatch(int MegaBatchID)
+        {
+            SumMainOrderDataTable.Clear();
+            using (SqlDataAdapter DA = new SqlDataAdapter($@"SELECT MainOrders.OrderCost as cost, batchid, MainOrders.megaorderid FROM MainOrders
+                LEFT JOIN BatchDetails ON MainOrders.MainOrderID = BatchDetails.MainOrderID
+                inner join megaorders on MainOrders.megaorderid=megaorders.megaorderid
+                WHERE MainOrders.MainOrderID IN (SELECT MainOrderID FROM BatchDetails
+                WHERE BatchID in (select batchid from batch where megabatchid = {MegaBatchID}))",
+                ConnectionStrings.MarketingOrdersConnectionString))
+            {
+                DA.Fill(SumMainOrderDataTable);
+            }
+        }
+
+        public void GetSumMainOrdersByBatch(int BatchID)
+        {
+            SumMainOrderDataTable.Clear();
+            using (SqlDataAdapter DA = new SqlDataAdapter($@"SELECT MainOrders.OrderCost as cost, batchid, MainOrders.megaorderid FROM MainOrders
+                LEFT JOIN BatchDetails ON MainOrders.MainOrderID = BatchDetails.MainOrderID
+                inner join megaorders on MainOrders.megaorderid=megaorders.megaorderid
+                WHERE MainOrders.MainOrderID IN (SELECT MainOrderID FROM BatchDetails
+                WHERE BatchID = {BatchID})",
+                ConnectionStrings.MarketingOrdersConnectionString))
+            {
+                DA.Fill(SumMainOrderDataTable);
+            }
+        }
+
+        public void GetSumMainOrdersByMegaOrder(int MegaOrderId)
+        {
+            SumMainOrderDataTable.Clear();
+            using (SqlDataAdapter DA = new SqlDataAdapter($@"SELECT MainOrders.OrderCost as cost, batchid, MainOrders.megaorderid FROM MainOrders
+                LEFT JOIN BatchDetails ON MainOrders.MainOrderID = BatchDetails.MainOrderID
+                inner join megaorders on MainOrders.megaorderid=megaorders.megaorderid and MainOrders.MegaOrderId = {MegaOrderId}",
+                ConnectionStrings.MarketingOrdersConnectionString))
+            {
+                DA.Fill(SumMainOrderDataTable);
+            }
         }
 
         public ArrayList FilterBatchMainOrdersByFront(int BatchID,
@@ -5289,7 +5434,7 @@ namespace Infinium.Modules.Marketing.WeeklyPlanning
                 BatchID = Convert.ToInt32(((DataRowView)BatchBindingSource.Current).Row["BatchID"]);
             }
         }
-        
+
         /// <summary>
         /// Удаление выбранного заказа из партии
         /// </summary>
@@ -5433,7 +5578,7 @@ namespace Infinium.Modules.Marketing.WeeklyPlanning
                 BatchFactoryFilter = " and MegaBatchID IN (SELECT MegaBatchID FROM Batch WHERE BatchID IN (SELECT BatchID FROM BatchDetails WHERE BatchDetails.FactoryID = " + FactoryID +
                     ") OR BatchID NOT IN (SELECT BatchID FROM BatchDetails)) OR MegaBatchID NOT IN (SELECT MegaBatchID FROM Batch)";
 
-            SelectCommand = "SELECT * FROM MegaBatch" + CreateDateFilter + BatchFactoryFilter  + " ORDER BY MegaBatchID DESC";
+            SelectCommand = "SELECT * FROM MegaBatch" + CreateDateFilter + BatchFactoryFilter + " ORDER BY MegaBatchID DESC";
 
             using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand,
                 ConnectionStrings.MarketingOrdersConnectionString))
@@ -13649,6 +13794,49 @@ namespace Infinium.Modules.Marketing.WeeklyPlanning
             return BatchNumber;
         }
 
+        private decimal SumMainOrdersCost(int megaOrderId)
+        {
+            decimal sum = 0;
+            if (SumMainOrderDataTable.Rows.Count == 0)
+                return 0;
+
+            DataRow[] Rows = SumMainOrderDataTable.Select("megaOrderId = " + megaOrderId);
+
+            for (int i = 0; i < Rows.Length; i++)
+                if (Rows[i]["cost"] != DBNull.Value)
+                    sum += Convert.ToDecimal(Rows[i]["cost"]);
+
+            return sum;
+        }
+
+        private decimal SumMegaOrdersCost(int batchId)
+        {
+            decimal sum = 0;
+
+            if (SumMainOrderDataTable.Rows.Count == 0)
+                return 0;
+            DataRow[] Rows = SumMainOrderDataTable.Select("batchId = " + batchId);
+
+            for (int i = 0; i < Rows.Length; i++)
+                if (Rows[i]["cost"] != DBNull.Value)
+                    sum += Convert.ToDecimal(Rows[i]["cost"]);
+
+            return sum;
+        }
+
+        private decimal SumBatchCost()
+        {
+            decimal sum = 0;
+
+            if (SumMainOrderDataTable.Rows.Count == 0)
+                return 0;
+            for (int i = 0; i < SumMainOrderDataTable.Rows.Count; i++)
+                if (SumMainOrderDataTable.Rows[i]["cost"] != DBNull.Value)
+                    sum += Convert.ToDecimal(SumMainOrderDataTable.Rows[i]["cost"]);
+
+            return sum;
+        }
+
         public bool HasOrders(int[] MegaOrders, int FactoryID)
         {
             using (SqlDataAdapter DA = new SqlDataAdapter(
@@ -16083,7 +16271,7 @@ namespace Infinium.Modules.Marketing.WeeklyPlanning
                 }
                 #endregion
             }
-            
+
             string sSourceFolder = System.Environment.GetEnvironmentVariable("TEMP");
             string sFolderPath = "Общие файлы/Производство/Недельное планирование (маркетинг)";
             //string sDestFolder = Configs.DocumentsPath + sFolderPath;
@@ -16692,7 +16880,7 @@ namespace Infinium.Modules.Marketing.WeeklyPlanning
                 PackNumberFont, TempStyle, MegaBatchID, BatchID, FactoryID);
 
             string ReportFilePath = string.Empty;
-            
+
             string sSourceFolder = System.Environment.GetEnvironmentVariable("TEMP");
             string sFolderPath = "Общие файлы/Производство/Недельное планирование (маркетинг)";
             //string sDestFolder = Configs.DocumentsPath + sFolderPath;

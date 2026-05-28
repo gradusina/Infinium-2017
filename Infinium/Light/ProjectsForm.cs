@@ -1,5 +1,9 @@
-﻿using System;
+﻿using ComponentFactory.Krypton.Toolkit;
+using Infinium.Modules.Marketing.Expedition;
+
+using System;
 using System.Drawing;
+using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -28,6 +32,13 @@ namespace Infinium
         private bool bNewMessagesSelected;
         private bool bProposSelected;
 
+        private const int iAdminRole = 109;
+        private readonly RoleTypes RoleType = RoleTypes.OrdinaryRole;
+        public enum RoleTypes
+        {
+            OrdinaryRole = 0,
+            AdminRole = 1
+        }
         public ProjectsForm(LightStartForm tLightStartForm)
         {
             InitializeComponent();
@@ -51,6 +62,11 @@ namespace Infinium
 
             //LightNewsContainer.PageChanged(null);
 
+            InfiniumProjects.GetPermissions(Security.CurrentUserID, this.Name);
+            if (InfiniumProjects.PermissionGranted(iAdminRole))
+            {
+                RoleType = RoleTypes.AdminRole;
+            }
             OnANSUpdate();
             CheckNewsAndProjects();
 
@@ -572,6 +588,8 @@ namespace Infinium
                      Convert.ToDateTime(
                          InfiniumProjects.ProjectsDataTable.Rows[infiniumProjectsList1.Selected]["CreationDate"]).ToString("dd MMMM yyyy HH:mm");
 
+                articleLabel.Text = "Артикул проекта: " + InfiniumProjects.ProjectsDataTable.Rows[infiniumProjectsList1.Selected]["article"].ToString();
+
                 AuthorPhotoBox.Image = InfiniumProjects.GetUserPhoto(
                     Convert.ToInt32(InfiniumProjects.ProjectsDataTable.Rows[infiniumProjectsList1.Selected]["AuthorID"]));
 
@@ -667,6 +685,7 @@ namespace Infinium
                 NewsContainer.Clear();
                 ProjectCaptionLabel.Text = "";
                 AuthorLabel.Text = "";
+                articleLabel.Text = "";
                 AuthorPhotoBox.Image = null;
 
                 panel4.Visible = false;
@@ -1157,10 +1176,18 @@ namespace Infinium
             if (infiniumProjectsList1.ProjectID == -1)
                 return;
 
-            if (InfiniumProjects.CanRemove(infiniumProjectsList1.ProjectID) == false)
+            //if (InfiniumProjects.CanRemove(infiniumProjectsList1.ProjectID) == false)
+            //{
+            //    InfiniumTips.ShowTip(this, 50, 85, "Только автор проекта может его удалить", 2200);
+            //    return;
+            //}
+            if (RoleType != RoleTypes.AdminRole)
             {
-                InfiniumTips.ShowTip(this, 50, 85, "Только автор проекта может его удалить", 2200);
-                return;
+                if (InfiniumProjects.CanRemove(infiniumProjectsList1.ProjectID) == false)
+                {
+                    InfiniumTips.ShowTip(this, 50, 85, "Только админ или автор проекта может его удалить", 2200);
+                    return;
+                }
             }
 
 
@@ -1321,9 +1348,13 @@ namespace Infinium
                 infiniumProjectsList1.Filter();
             }
 
-            infiniumProjectsList1.Selected = infiniumProjectsList1.ProjectsDataTable.Rows.IndexOf(
+            if (infiniumProjectsList1.ProjectsDataTable.Select("ProjectID = " + iProjectID).Any())
+                infiniumProjectsList1.Selected = infiniumProjectsList1.ProjectsDataTable.Rows.IndexOf(
                                 infiniumProjectsList1.ProjectsDataTable.Select("ProjectID = " + iProjectID)[0]);
-
+            else
+            {
+                infiniumProjectsList1.Selected = 0;
+            }
             if (bNeedSplash)
                 bC = true;
 
@@ -1732,5 +1763,76 @@ namespace Infinium
             ProposCountLabel.Text = "";
         }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (bNeedSplash)
+            {
+                bNeedNewsSplash = false;
+                Thread T = new Thread(delegate ()
+                {
+                    SplashWindow.CreateCoverSplash(UpdatePanel.Top, UpdatePanel.Left,
+                                                   UpdatePanel.Height, UpdatePanel.Width);
+                });
+                T.Start();
+
+                while (!SplashWindow.bSmallCreated) ;
+            }
+
+            StatusStartActivePicture.SendToBack();
+            StatusCanceledActivePicture.SendToBack();
+            StatusPauseActivePicture.SendToBack();
+            StatusEndActivePicture.SendToBack();
+
+            StartProjectDateLabel.Text = "нет";
+            PauseProjectDateLabel.Text = "нет";
+            CancelProjectDateLabel.Text = "нет";
+            EndProjectDateLabel.Text = "нет";
+
+            if (infiniumProjectsFilterGroups1.Selected == -1)
+                infiniumProjectsFilterGroups1.Selected = 0;
+
+            if (bNewProjectsSelected)
+            {
+                NewProjectsCountLabel.Text = "";
+                NewProjectsLabel.ForeColor = Color.FromArgb(180, 180, 180);
+                NewProjectsLabel.Tag = "false";
+                NewProjectsInactivePicture.BringToFront();
+
+                bNewProjectsSelected = false;
+            }
+
+            if (bNewMessagesSelected)
+            {
+                NewMessagesCountLabel.Text = "";
+                NewMessagesLabel.ForeColor = Color.FromArgb(180, 180, 180);
+                NewMessagesLabel.Tag = "false";
+                MessagesInactivePicture.BringToFront();
+
+                bNewMessagesSelected = false;
+            }
+
+            if (bProposSelected)
+            {
+                ProposCountLabel.Text = "";
+                ProposLabel.ForeColor = Color.FromArgb(60, 60, 60);
+                ProposLabel.Tag = "false";
+                ProposInactivePicture.BringToFront();
+
+                bProposSelected = false;
+            }
+
+            var searchText = textBox1.Text;
+            InfiniumProjects.FillProjects(searchText);
+            //InfiniumProjects.FillMembers(infiniumProjectsFilterStates1.Selected);
+            infiniumProjectsFilterGroups1.UsersDataTable = InfiniumProjects.ProjectUsersMembersDataTable;
+            //infiniumProjectsFilterGroups1.DepartmentsDataTable = InfiniumProjects.ProjectDepsMembersDataTable;
+            infiniumProjectsFilterGroups1.Expand();
+            infiniumProjectsList1.Filter();
+            textBox1.Clear();
+            if (bNeedSplash)
+                bC = true;
+
+            bNeedNewsSplash = true;
+        }
     }
 }

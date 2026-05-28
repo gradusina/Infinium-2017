@@ -4415,6 +4415,132 @@ namespace Infinium.Modules.TechnologyCatalog
             }
         }
 
+        public void SavePatinaRalFromExcel()
+        {
+            DataTable table = new DataTable();
+            table.Columns.Add(new DataColumn("PatinaID", Type.GetType("System.Int32")));
+            table.Columns.Add(new DataColumn("PatinaRAL", Type.GetType("System.String")));
+            table.Columns.Add(new DataColumn("DisplayName", Type.GetType("System.String")));
+            table.TableName = "ImportedTable";
+
+            string s = Clipboard.GetText();
+            string[] lines = s.Split('\n');
+            List<string> data = new List<string>(lines);
+
+            if (data.Count > 0 && string.IsNullOrWhiteSpace(data[data.Count - 1]))
+            {
+                data.RemoveAt(data.Count - 1);
+            }
+
+            foreach (string iterationRow in data)
+            {
+                string row = iterationRow;
+                if (row.EndsWith("\r"))
+                {
+                    row = row.Substring(0, row.Length - "\r".Length);
+                }
+
+                string[] rowData = row.Split(new char[] { '\r', '\x09' });
+                DataRow newRow = table.NewRow();
+
+                for (int i = 0; i < rowData.Length; i++)
+                {
+                    if (i >= table.Columns.Count) break;
+                    if (rowData[i].Length > 0)
+                        newRow[i] = rowData[i];
+                }
+                table.Rows.Add(newRow);
+            }
+
+            using (SqlDataAdapter DA = new SqlDataAdapter(@"SELECT TOP 0 * FROM PatinaRAL",
+                ConnectionStrings.CatalogConnectionString))
+            {
+                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                {
+                    using (DataTable DT = new DataTable())
+                    {
+                        DA.Fill(DT);
+                        for (int i = 0; i < table.Rows.Count; i++)
+                        {
+                            string PatinaRAL = "";
+                            string DisplayName = "";
+                            int PatinaID = 0;
+
+                            PatinaRAL = table.Rows[i]["PatinaRAL"].ToString();
+                            DisplayName = table.Rows[i]["DisplayName"].ToString();
+                            PatinaID = Convert.ToInt32(table.Rows[i]["PatinaID"]);
+
+                            DataRow NewRow = DT.NewRow();
+                            NewRow["PatinaRAL"] = PatinaRAL;
+                            NewRow["DisplayName"] = DisplayName;
+                            NewRow["PatinaID"] = PatinaID;
+                            DT.Rows.Add(NewRow);
+                        }
+                        DA.Update(DT);
+                    }
+                }
+            }
+        }
+
+        public void SaveNewPriceFromExcel()
+        {
+            DataTable table = new DataTable();
+            table.Columns.Add(new DataColumn("FrontConfigID", Type.GetType("System.Int32")));
+            table.Columns.Add(new DataColumn("MarketingCost", Type.GetType("System.Decimal")));
+            table.TableName = "ImportedTable";
+
+            string s = Clipboard.GetText();
+            string[] lines = s.Split('\n');
+            List<string> data = new List<string>(lines);
+
+            if (data.Count > 0 && string.IsNullOrWhiteSpace(data[data.Count - 1]))
+            {
+                data.RemoveAt(data.Count - 1);
+            }
+
+            foreach (string iterationRow in data)
+            {
+                string row = iterationRow;
+                if (row.EndsWith("\r"))
+                {
+                    row = row.Substring(0, row.Length - "\r".Length);
+                }
+
+                string[] rowData = row.Split(new char[] { '\r', '\x09' });
+                DataRow newRow = table.NewRow();
+
+                for (int i = 0; i < rowData.Length; i++)
+                {
+                    if (i >= table.Columns.Count) break;
+                    if (rowData[i].Length > 0)
+                        newRow[i] = rowData[i];
+                }
+                table.Rows.Add(newRow);
+            }
+
+            using (SqlDataAdapter DA = new SqlDataAdapter(@"SELECT * FROM FrontsConfig",
+                       ConnectionStrings.CatalogConnectionString))
+            {
+                using (SqlCommandBuilder CB = new SqlCommandBuilder(DA))
+                {
+                    using (DataTable DT = new DataTable())
+                    {
+                        DA.Fill(DT);
+                        for (int i = 0; i < table.Rows.Count; i++)
+                        {
+                            int DecorConfigID = Convert.ToInt32(table.Rows[i]["FrontConfigID"]);
+                            decimal MarketingCost = Convert.ToDecimal(table.Rows[i]["MarketingCost"]);
+                            
+                            DataRow[] rows = DT.Select("FrontConfigID=" + DecorConfigID);
+                            if (rows.Count() > 0)
+                                rows[0]["MarketingCost"] = MarketingCost;
+                        }
+                        DA.Update(DT);
+                    }
+                }
+            }
+        }
+
         public void SaveCabFurnitureDocumentTypesFromExcel()
         {
             ManufactureDT = new DataTable();

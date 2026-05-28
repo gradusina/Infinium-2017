@@ -105,9 +105,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Infinium\bin\Debug\NPOI.dll</HintPath>
     </Reference>
-    <Reference Include="NPOI.Core">
-      <HintPath>..\..\..\..\..\Downloads\Виталич\NPOI.Core.dll</HintPath>
-    </Reference>
     <Reference Include="NPOI.DDF">
       <HintPath>..\..\..\..\..\..\Program Files (x86)\InfiniumAgent\NPOI.DDF.dll</HintPath>
     </Reference>
@@ -115,11 +112,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Infinium\bin\Debug\NPOI.HPSF.dll</HintPath>
     </Reference>
-    <Reference Include="NPOI.OOXML">
-      <HintPath>..\..\..\..\..\Downloads\Виталич\NPOI.OOXML.dll</HintPath>
-    </Reference>
-    <Reference Include="NPOI.OpenXml4Net">
-      <HintPath>..\..\..\..\..\Downloads\Виталич\NPOI.OpenXml4Net.dll</HintPath>
+    <Reference Include="NPOI.HSSF, Version=1.2.1.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Infinium\bin\Debug\NPOI.HSSF.dll</HintPath>
     </Reference>
     <Reference Include="NPOI.POIFS">
       <HintPath>..\..\..\..\..\..\Program Files (x86)\InfiniumAgent\NPOI.POIFS.dll</HintPath>
@@ -351,6 +346,7 @@
     <Compile Include="Light\FilesForm.designer.cs">
       <DependentUpon>FilesForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Light\InfiniumProjects.cs" />
     <Compile Include="Light\Light.cs" />
     <Compile Include="Light\LightMessageBoxForm.cs">
       <SubType>Form</SubType>
@@ -925,6 +921,7 @@
       <DependentUpon>ZOVExpeditionForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Modules\LoadCalculations\ExcelLoadCalculations.cs" />
+    <Compile Include="Modules\LoadCalculations\ExcelLoadCalculationsReport.cs" />
     <Compile Include="Modules\LoadCalculations\LoadCalculations.cs" />
     <Compile Include="Modules\LoadCalculations\ExcelLoadCalculationsForm.cs">
       <SubType>Form</SubType>
@@ -1351,6 +1348,13 @@
     <Compile Include="Modules\PaymentWeeks\PaymentWeeksZOVSelectDateForm.designer.cs">
       <DependentUpon>PaymentWeeksZOVSelectDateForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Modules\Permits\EntranceCheck.cs" />
+    <Compile Include="Modules\Permits\EntranceForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modules\Permits\EntranceForm.designer.cs">
+      <DependentUpon>EntranceForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Modules\Permits\HistoryScanPermitsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -1536,6 +1540,7 @@
     </Compile>
     <Compile Include="Modules\StatisticsMarketing\Reports\AdditionalCostReport.cs" />
     <Compile Include="Modules\StatisticsMarketing\Reports\BatchProducedReport.cs" />
+    <Compile Include="Modules\StatisticsMarketing\Reports\ClientNotDispReport.cs" />
     <Compile Include="Modules\StatisticsMarketing\Reports\ClientNotPackedReport.cs" />
     <Compile Include="Modules\StatisticsMarketing\Reports\ClientNotStoredReport.cs" />
     <Compile Include="Modules\StatisticsMarketing\Reports\ClientStoreReport.cs" />
@@ -2648,6 +2653,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Modules\PaymentWeeks\PaymentWeeksZOVSelectDateForm.resx">
       <DependentUpon>PaymentWeeksZOVSelectDateForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modules\Permits\EntranceForm.resx">
+      <DependentUpon>EntranceForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Modules\Permits\HistoryScanPermitsForm.resx">
       <DependentUpon>HistoryScanPermitsForm.cs</DependentUpon>

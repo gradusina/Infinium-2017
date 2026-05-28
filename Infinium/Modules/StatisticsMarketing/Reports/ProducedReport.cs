@@ -1285,8 +1285,6 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
                     DataRow Row = ReportDataTable.NewRow();
                     Row["OriginalPrice"] = ScagenPrice;
                     Row["UNN"] = UNN;
-                    Row["batchId"] = Convert.ToInt32(Fronts.Rows[i]["batchId"]);
-                    Row["IsComplaint"] = Convert.ToInt32(Fronts.Rows[i]["IsComplaint"]);
                     Row["Cvet"] = GetColorCode(Convert.ToInt32(Fronts.Rows[i]["ColorID"]));
                     Row["Patina"] = GetPatinaCode(Convert.ToInt32(Fronts.Rows[i]["PatinaID"]));
                     Row["AccountingName"] = AccountingName;
@@ -3473,7 +3471,7 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
             //if (FrontID == 30504 || FrontID == 30505 || FrontID == 30506 ||
             //    FrontID == 30364 || FrontID == 30366 || FrontID == 30367 ||
             //    FrontID == 30501 || FrontID == 30502 || FrontID == 30503 ||
-            //    FrontID == 16269 || FrontID == 28945 || FrontID == 41327 || FrontID == 41328 || FrontID == 41331 || 
+            //    FrontID == 16269 || FrontID == 62522 || FrontID == 28945 || FrontID == 41327 || FrontID == 41328 || FrontID == 41331 || 
             //    FrontID == 27914 || FrontID == 29597 || FrontID == 3727 || FrontID == 3728 || FrontID == 3729 ||
             //    FrontID == 3730 || FrontID == 3731 || FrontID == 3732 || FrontID == 3733 || FrontID == 3734 ||
             //    FrontID == 3735 || FrontID == 3736 || FrontID == 3737 || FrontID == 3739 || FrontID == 3740 ||
@@ -3768,6 +3766,147 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
                 using (DataTable DT = new DataTable())
                 {
                     if (DA.Fill(DT) == 0)
+                        return;
+
+                    ProfilFrontsOrdersDataTable = DT.Clone();
+                    TPSFrontsOrdersDataTable = DT.Clone();
+
+                    SplitTables(DT, ref ProfilFrontsOrdersDataTable, ref TPSFrontsOrdersDataTable);
+
+                    if (ProfilFrontsOrdersDataTable.Rows.Count > 0)
+                    {
+                        DataTable[] DTs = GroupInvNumber(ProfilFrontsOrdersDataTable);
+
+                        for (int i = 0; i < DTs.Count(); i++)
+                        {
+                            GetSimpleFronts(DTs[i], ProfilReportDataTable);
+
+                            GetCurvedFronts(DTs[i], ProfilReportDataTable);
+
+                            GetGrids(DTs[i], ProfilReportDataTable, TPSReportDataTable, 1);
+
+                            GetInsets(DTs[i], ProfilReportDataTable);
+
+                            GetGlass(DTs[i], ProfilReportDataTable, TPSReportDataTable, 1);
+                        }
+                    }
+
+                    if (TPSFrontsOrdersDataTable.Rows.Count > 0)
+                    {
+                        DataTable[] DTs = GroupInvNumber(TPSFrontsOrdersDataTable);
+
+                        for (int i = 0; i < DTs.Count(); i++)
+                        {
+                            GetSimpleFronts(DTs[i], TPSReportDataTable);
+
+                            GetCurvedFronts(DTs[i], TPSReportDataTable);
+
+                            GetGrids(DTs[i], TPSReportDataTable, ProfilReportDataTable, 2);
+
+                            GetInsets(DTs[i], TPSReportDataTable);
+
+                            GetGlass(DTs[i], TPSReportDataTable, ProfilReportDataTable, 2);
+                        }
+                    }
+                }
+            }
+        }
+
+        public void NotDispReport(DateTime date1, DateTime date2, DateTime time2, bool ZOV, bool IsSample, bool IsNotSample, ArrayList MClients, ArrayList MClientGroups)
+        {
+            string MClientFilter = string.Empty;
+            if (MClients.Count > 0)
+            {
+                if (MClientFilter.Length > 0)
+                    MClientFilter += " AND ClientID IN (" + string.Join(",", MClients.OfType<Int32>().ToArray()) + ")";
+                else
+                    MClientFilter = " WHERE ClientID IN (" + string.Join(",", MClients.OfType<Int32>().ToArray()) + ")";
+            }
+            if (MClientGroups.Count > 0)
+            {
+                if (MClientFilter.Length > 0)
+                    MClientFilter += " AND ClientID IN" +
+                        " (SELECT ClientID FROM infiniu2_marketingreference.dbo.Clients" +
+                        " WHERE ClientGroupID IN (" + string.Join(",", MClientGroups.OfType<Int32>().ToArray()) + "))";
+                else
+                    MClientFilter = " WHERE ClientID IN" +
+                        " (SELECT ClientID FROM infiniu2_marketingreference.dbo.Clients" +
+                        " WHERE ClientGroupID IN (" + string.Join(",", MClientGroups.OfType<Int32>().ToArray()) + "))";
+            }
+            if (MClients.Count < 1 && MClientGroups.Count < 1)
+                MClientFilter = " WHERE ClientID = -1";
+
+            ProfilFrontsOrdersDataTable.Clear();
+            TPSFrontsOrdersDataTable.Clear();
+            DecorInvNumbersDT.Clear();
+            string ConnectionString = ConnectionStrings.MarketingOrdersConnectionString;
+            if (ZOV)
+                ConnectionString = ConnectionStrings.ZOVOrdersConnectionString;
+
+            string Filter = @$" (DispatchDateTime is null or DispatchDateTime >= '{date2:yyyy-MM-dd} {time2.ToString("HH: mm: ss")}')";
+
+            string MFSampleFilter = string.Empty;
+            string MDSampleFilter = string.Empty;
+            if (!IsSample || !IsNotSample)
+            {
+                if (IsSample)
+                    MFSampleFilter = " AND FrontsOrders.IsSample = 1";
+                if (IsNotSample)
+                    MFSampleFilter = " AND FrontsOrders.IsSample = 0";
+                if (IsSample)
+                    MDSampleFilter = " AND (DecorOrders.IsSample = 1 OR (DecorOrders.ProductID=42 AND DecorOrders.IsSample = 0)) ";
+                if (IsNotSample)
+                    MDSampleFilter = " AND DecorOrders.IsSample = 0";
+            }
+
+            DataTable dt1 = new DataTable();
+            string SelectCommand = @$"SELECT dbo.FrontsOrders.FrontsOrdersID, dbo.FrontsOrders.FrontID, dbo.FrontsOrders.ColorID, dbo.FrontsOrders.PatinaID, dbo.FrontsOrders.InsetTypeID, dbo.FrontsOrders.InsetColorID,
+                dbo.FrontsOrders.TechnoColorID, dbo.FrontsOrders.TechnoInsetTypeID, dbo.FrontsOrders.TechnoInsetColorID, dbo.FrontsOrders.Height, dbo.FrontsOrders.Width, FrontsOrders.Count,
+                dbo.FrontsOrders.FrontConfigID, infiniu2_catalog.dbo.FrontsConfig.measureId, dbo.FrontsOrders.FactoryID, dbo.FrontsOrders.FrontPrice, dbo.FrontsOrders.InsetPrice,
+                (FrontsOrders.Square) AS Square, dbo.FrontsOrders.Cost, infiniu2_catalog.dbo.TechStore.Cvet, 
+infiniu2_catalog.dbo.Patina.Patina, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, 
+infiniu2_catalog.dbo.Measures.Measure, dbo.FrontsOrders.CreateDateTime FROM FrontsOrders
+                INNER JOIN infiniu2_catalog.dbo.FrontsConfig ON FrontsOrders.FrontConfigID = infiniu2_catalog.dbo.FrontsConfig.FrontConfigID LEFT JOIN
+                infiniu2_catalog.dbo.TechStore ON infiniu2_catalog.dbo.FrontsConfig.ColorID = infiniu2_catalog.dbo.TechStore.TechStoreID LEFT JOIN
+                infiniu2_catalog.dbo.Patina ON infiniu2_catalog.dbo.FrontsConfig.PatinaID = infiniu2_catalog.dbo.Patina.PatinaID
+                INNER JOIN infiniu2_catalog.dbo.Measures ON infiniu2_catalog.dbo.FrontsConfig.MeasureID=infiniu2_catalog.dbo.Measures.MeasureID
+                WHERE 
+FrontsOrders.MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE 
+not (ProfilProductionStatusID = 1 AND ProfilStorageStatusID = 1 AND ProfilExpeditionStatusID = 1 AND ProfilDispatchStatusID = 2)
+and MainOrders.mainorderid not in (select packages.mainorderid from packages)
+and MegaOrderID IN (SELECT MegaOrderID FROM MegaOrders {MClientFilter}))
+and FrontsOrders.CreateDateTime <= '{date2:yyyy-MM-dd} {time2:HH:mm:ss}' {MFSampleFilter}
+and InvNumber IS NOT NULL ORDER BY InvNumber";
+
+            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionString))
+            {
+                DA.Fill(dt1);
+            }
+            SelectCommand = @$"SELECT dbo.FrontsOrders.FrontsOrdersID, dbo.FrontsOrders.FrontID, dbo.FrontsOrders.ColorID, dbo.FrontsOrders.PatinaID, dbo.FrontsOrders.InsetTypeID, dbo.FrontsOrders.InsetColorID,
+                dbo.FrontsOrders.TechnoColorID, dbo.FrontsOrders.TechnoInsetTypeID, dbo.FrontsOrders.TechnoInsetColorID, dbo.FrontsOrders.Height, dbo.FrontsOrders.Width, PackageDetails.Count,
+                dbo.FrontsOrders.FrontConfigID, infiniu2_catalog.dbo.FrontsConfig.measureId, dbo.FrontsOrders.FactoryID, dbo.FrontsOrders.FrontPrice, dbo.FrontsOrders.InsetPrice,
+                (FrontsOrders.Square * PackageDetails.Count / FrontsOrders.Count) AS Square, dbo.FrontsOrders.Cost, infiniu2_catalog.dbo.TechStore.Cvet, infiniu2_catalog.dbo.Patina.Patina, infiniu2_catalog.dbo.FrontsConfig.AccountingName, infiniu2_catalog.dbo.FrontsConfig.InvNumber, infiniu2_catalog.dbo.Measures.Measure, dbo.FrontsOrders.CreateDateTime FROM PackageDetails
+                INNER JOIN FrontsOrders ON PackageDetails.OrderID = FrontsOrders.FrontsOrdersID {MFSampleFilter} AND FrontsOrders.MainOrderID 
+    IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID IN (SELECT MegaOrderID FROM MegaOrders {MClientFilter}))
+                INNER JOIN infiniu2_catalog.dbo.FrontsConfig ON FrontsOrders.FrontConfigID = infiniu2_catalog.dbo.FrontsConfig.FrontConfigID LEFT JOIN
+                infiniu2_catalog.dbo.TechStore ON infiniu2_catalog.dbo.FrontsConfig.ColorID = infiniu2_catalog.dbo.TechStore.TechStoreID LEFT JOIN
+                infiniu2_catalog.dbo.Patina ON infiniu2_catalog.dbo.FrontsConfig.PatinaID = infiniu2_catalog.dbo.Patina.PatinaID
+                INNER JOIN infiniu2_catalog.dbo.Measures ON infiniu2_catalog.dbo.FrontsConfig.MeasureID=infiniu2_catalog.dbo.Measures.MeasureID
+                WHERE InvNumber IS NOT NULL AND PackageID IN (SELECT PackageID FROM Packages WHERE ProductType = 0 AND {Filter}) ORDER BY InvNumber";
+
+            
+            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionString))
+            {
+                using (DataTable DT = new DataTable())
+                {
+                    DA.Fill(DT);
+
+                    for (int i = 0; i < dt1.Rows.Count; i++)
+                    {
+                        DT.ImportRow(dt1.Rows[i]);
+                    }
+
+                    if (DT.Rows.Count == 0)
                         return;
 
                     ProfilFrontsOrdersDataTable = DT.Clone();
@@ -7759,6 +7898,81 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
             Collect();
         }
 
+        public void NotDispReport(DateTime date1, DateTime date2, DateTime time2, bool ZOV, bool IsSample, bool IsNotSample, ArrayList MClients, ArrayList MClientGroups)
+        {
+            string MClientFilter = string.Empty;
+            if (MClients.Count > 0)
+            {
+                MClientFilter = " WHERE ClientID IN (" + string.Join(",", MClients.OfType<Int32>().ToArray()) + ")";
+            }
+            if (MClientGroups.Count > 0)
+            {
+                MClientFilter = " WHERE ClientID IN" +
+                    " (SELECT ClientID FROM infiniu2_marketingreference.dbo.Clients" +
+                    " WHERE ClientGroupID IN (" + string.Join(",", MClientGroups.OfType<Int32>().ToArray()) + "))";
+            }
+            if (MClients.Count < 1 && MClientGroups.Count < 1)
+                MClientFilter = " WHERE ClientID = -1";
+
+            string ConnectionString = ConnectionStrings.MarketingOrdersConnectionString;
+            if (ZOV)
+                ConnectionString = ConnectionStrings.ZOVOrdersConnectionString;
+            string Filter = @$" (DispatchDateTime is null or DispatchDateTime >= '{date2:yyyy-MM-dd} {time2.ToString("HH: mm: ss")}')";
+
+            string MFSampleFilter = string.Empty;
+            string MDSampleFilter = string.Empty;
+            if (!IsSample || !IsNotSample)
+            {
+                if (IsSample)
+                    MFSampleFilter = " AND FrontsOrders.IsSample = 1";
+                if (IsNotSample)
+                    MFSampleFilter = " AND FrontsOrders.IsSample = 0";
+                if (IsSample)
+                    MDSampleFilter = " AND (DecorOrders.IsSample = 1 OR (DecorOrders.ProductID=42 AND DecorOrders.IsSample = 0)) ";
+                if (IsNotSample)
+                    MDSampleFilter = " AND DecorOrders.IsSample = 0";
+            }
+
+            DataTable dt1 = new DataTable();
+            string SelectCommand = @$"SELECT dbo.DecorOrders.DecorOrderID, dbo.DecorOrders.ProductID, dbo.DecorOrders.DecorID, dbo.DecorOrders.ColorID, dbo.DecorOrders.PatinaID, dbo.DecorOrders.Length,
+                dbo.DecorOrders.Height, dbo.DecorOrders.Width, dbo.DecorOrders.Count, dbo.DecorOrders.DecorConfigID, dbo.DecorOrders.FactoryID, dbo.DecorOrders.Price, dbo.DecorOrders.Cost,
+                dbo.DecorOrders.ItemWeight, dbo.DecorOrders.Weight, infiniu2_catalog.dbo.DecorConfig.AccountingName, infiniu2_catalog.dbo.DecorConfig.InvNumber, infiniu2_catalog.dbo.Measures.Measure FROM DecorOrders
+                INNER JOIN infiniu2_catalog.dbo.DecorConfig ON DecorOrders.DecorConfigID = infiniu2_catalog.dbo.DecorConfig.DecorConfigID
+                INNER JOIN infiniu2_catalog.dbo.Measures ON infiniu2_catalog.dbo.DecorConfig.MeasureID=infiniu2_catalog.dbo.Measures.MeasureID
+                WHERE 
+DecorOrders.MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE 
+not (ProfilProductionStatusID = 1 AND ProfilStorageStatusID = 1 AND ProfilExpeditionStatusID = 1 AND ProfilDispatchStatusID = 2)
+and MainOrders.mainorderid not in (select packages.mainorderid from packages)
+and MegaOrderID IN (SELECT MegaOrderID FROM MegaOrders {MClientFilter}))
+and DecorOrders.CreateDateTime <= '{date2:yyyy-MM-dd} {time2:HH:mm:ss}' {MDSampleFilter} 
+and InvNumber IS NOT NULL ORDER BY InvNumber";
+            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionString))
+            {
+                DA.Fill(dt1);
+            }
+
+             SelectCommand = @$"SELECT dbo.DecorOrders.DecorOrderID, dbo.DecorOrders.ProductID, dbo.DecorOrders.DecorID, dbo.DecorOrders.ColorID, dbo.DecorOrders.PatinaID, dbo.DecorOrders.Length,
+                dbo.DecorOrders.Height, dbo.DecorOrders.Width, dbo.PackageDetails.Count, dbo.DecorOrders.DecorConfigID, dbo.DecorOrders.FactoryID, dbo.DecorOrders.Price, dbo.DecorOrders.Cost,
+                dbo.DecorOrders.ItemWeight, dbo.DecorOrders.Weight, infiniu2_catalog.dbo.DecorConfig.AccountingName, infiniu2_catalog.dbo.DecorConfig.InvNumber, infiniu2_catalog.dbo.Measures.Measure FROM PackageDetails
+                INNER JOIN DecorOrders ON PackageDetails.OrderID = DecorOrders.DecorOrderID {MDSampleFilter} AND DecorOrders.MainOrderID 
+IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID IN (SELECT MegaOrderID FROM MegaOrders {MClientFilter}))
+                INNER JOIN infiniu2_catalog.dbo.DecorConfig ON DecorOrders.DecorConfigID = infiniu2_catalog.dbo.DecorConfig.DecorConfigID
+                INNER JOIN infiniu2_catalog.dbo.Measures ON infiniu2_catalog.dbo.DecorConfig.MeasureID=infiniu2_catalog.dbo.Measures.MeasureID
+                WHERE 
+DecorOrders.CreateDateTime <= '{date2:yyyy-MM-dd} {time2:HH:mm:ss}'
+and InvNumber IS NOT NULL AND PackageID IN (SELECT PackageID FROM Packages WHERE ProductType = 1 AND {Filter}) ORDER BY InvNumber";
+            using (SqlDataAdapter DA = new SqlDataAdapter(SelectCommand, ConnectionString))
+            {
+                DA.Fill(DecorOrdersDataTable);
+            }
+
+            for (int i = 0; i < dt1.Rows.Count; i++)
+            {
+                DecorOrdersDataTable.ImportRow(dt1.Rows[i]);
+            }
+            Collect();
+        }
+
         public void OnProdReport(DateTime date1, DateTime date2, bool ZOV, bool IsSample, bool IsNotSample, ArrayList MClients, ArrayList MClientGroups)
         {
             string MClientFilter = string.Empty;
@@ -9031,6 +9245,374 @@ ORDER BY infiniu2_zovreference.dbo.Clients.ClientName, MainOrders.DocNumber";
 
             FrontsReport.DispReport(date1, date2, false, IsSample, IsNotSample, MClients, MClientGroups);
             DecorReport.DispReport(date1, date2, false, IsSample, IsNotSample, MClients, MClientGroups);
+
+            //PROFIL
+            if (FrontsReport.ProfilReportDataTable.Rows.Count > 0)
+            {
+                for (int i = 0; i < FrontsReport.ProfilReportDataTable.Rows.Count; i++)
+                {
+                    ProfilReportTable.ImportRow(FrontsReport.ProfilReportDataTable.Rows[i]);
+                }
+            }
+
+            if (DecorReport.ProfilReportDataTable.Rows.Count > 0)
+            {
+                for (int i = 0; i < DecorReport.ProfilReportDataTable.Rows.Count; i++)
+                {
+                    ProfilReportTable.ImportRow(DecorReport.ProfilReportDataTable.Rows[i]);
+                }
+            }
+
+            //TPS
+            if (FrontsReport.TPSReportDataTable.Rows.Count > 0)
+            {
+                for (int i = 0; i < FrontsReport.TPSReportDataTable.Rows.Count; i++)
+                {
+                    TPSReportTable.ImportRow(FrontsReport.TPSReportDataTable.Rows[i]);
+                }
+            }
+
+            if (DecorReport.TPSReportDataTable.Rows.Count > 0)
+            {
+                for (int i = 0; i < DecorReport.TPSReportDataTable.Rows.Count; i++)
+                {
+                    TPSReportTable.ImportRow(DecorReport.TPSReportDataTable.Rows[i]);
+                }
+            }
+
+            Collect(Rate);
+            //Export to excel
+            HSSFWorkbook hssfworkbook = new HSSFWorkbook();
+
+            ////create a entry of DocumentSummaryInformation
+            DocumentSummaryInformation dsi = PropertySetFactory.CreateDocumentSummaryInformation();
+            dsi.Company = "NPOI Team";
+            hssfworkbook.DocumentSummaryInformation = dsi;
+
+            ////create a entry of SummaryInformation
+            SummaryInformation si = PropertySetFactory.CreateSummaryInformation();
+            si.Subject = "NPOI SDK Example";
+            hssfworkbook.SummaryInformation = si;
+
+            #region Create fonts and styles
+
+            HSSFFont HeaderF1 = hssfworkbook.CreateFont();
+            HeaderF1.FontHeightInPoints = 11;
+            HeaderF1.Boldweight = 11 * 256;
+            HeaderF1.FontName = "Calibri";
+
+            HSSFFont HeaderF2 = hssfworkbook.CreateFont();
+            HeaderF2.FontHeightInPoints = 10;
+            HeaderF2.Boldweight = 10 * 256;
+            HeaderF2.FontName = "Calibri";
+
+            HSSFFont HeaderF3 = hssfworkbook.CreateFont();
+            HeaderF3.FontHeightInPoints = 9;
+            HeaderF3.Boldweight = 9 * 256;
+            HeaderF3.FontName = "Calibri";
+
+            HSSFFont SimpleF = hssfworkbook.CreateFont();
+            SimpleF.FontHeightInPoints = 8;
+            SimpleF.FontName = "Calibri";
+
+            HSSFCellStyle SimpleCS = hssfworkbook.CreateCellStyle();
+            SimpleCS.BorderBottom = HSSFCellStyle.BORDER_THIN;
+            SimpleCS.BottomBorderColor = HSSFColor.BLACK.index;
+            SimpleCS.BorderLeft = HSSFCellStyle.BORDER_THIN;
+            SimpleCS.LeftBorderColor = HSSFColor.BLACK.index;
+            SimpleCS.BorderRight = HSSFCellStyle.BORDER_THIN;
+            SimpleCS.RightBorderColor = HSSFColor.BLACK.index;
+            SimpleCS.BorderTop = HSSFCellStyle.BORDER_THIN;
+            SimpleCS.TopBorderColor = HSSFColor.BLACK.index;
+            SimpleCS.SetFont(SimpleF);
+
+            HSSFCellStyle CountCS = hssfworkbook.CreateCellStyle();
+            CountCS.DataFormat = hssfworkbook.CreateDataFormat().GetFormat("### ### ##0.000");
+            CountCS.BorderBottom = HSSFCellStyle.BORDER_THIN;
+            CountCS.BottomBorderColor = HSSFColor.BLACK.index;
+            CountCS.BorderLeft = HSSFCellStyle.BORDER_THIN;
+            CountCS.LeftBorderColor = HSSFColor.BLACK.index;
+            CountCS.BorderRight = HSSFCellStyle.BORDER_THIN;
+            CountCS.RightBorderColor = HSSFColor.BLACK.index;
+            CountCS.BorderTop = HSSFCellStyle.BORDER_THIN;
+            CountCS.TopBorderColor = HSSFColor.BLACK.index;
+            CountCS.SetFont(SimpleF);
+
+            HSSFCellStyle WeightCS = hssfworkbook.CreateCellStyle();
+            WeightCS.DataFormat = hssfworkbook.CreateDataFormat().GetFormat("### ### ##0.00");
+            WeightCS.BorderBottom = HSSFCellStyle.BORDER_THIN;
+            WeightCS.BottomBorderColor = HSSFColor.BLACK.index;
+            WeightCS.BorderLeft = HSSFCellStyle.BORDER_THIN;
+            WeightCS.LeftBorderColor = HSSFColor.BLACK.index;
+            WeightCS.BorderRight = HSSFCellStyle.BORDER_THIN;
+            WeightCS.RightBorderColor = HSSFColor.BLACK.index;
+            WeightCS.BorderTop = HSSFCellStyle.BORDER_THIN;
+            WeightCS.TopBorderColor = HSSFColor.BLACK.index;
+            WeightCS.SetFont(SimpleF);
+
+            HSSFCellStyle PriceBelCS = hssfworkbook.CreateCellStyle();
+            PriceBelCS.DataFormat = hssfworkbook.CreateDataFormat().GetFormat("### ### ##0.00");
+            PriceBelCS.BorderBottom = HSSFCellStyle.BORDER_THIN;
+            PriceBelCS.BottomBorderColor = HSSFColor.BLACK.index;
+            PriceBelCS.BorderLeft = HSSFCellStyle.BORDER_THIN;
+            PriceBelCS.LeftBorderColor = HSSFColor.BLACK.index;
+            PriceBelCS.BorderRight = HSSFCellStyle.BORDER_THIN;
+            PriceBelCS.RightBorderColor = HSSFColor.BLACK.index;
+            PriceBelCS.BorderTop = HSSFCellStyle.BORDER_THIN;
+            PriceBelCS.TopBorderColor = HSSFColor.BLACK.index;
+            PriceBelCS.SetFont(SimpleF);
+
+            HSSFCellStyle PriceForeignCS = hssfworkbook.CreateCellStyle();
+            PriceForeignCS.DataFormat = hssfworkbook.CreateDataFormat().GetFormat("### ### ##0.00");
+            PriceForeignCS.BorderBottom = HSSFCellStyle.BORDER_THIN;
+            PriceForeignCS.BottomBorderColor = HSSFColor.BLACK.index;
+            PriceForeignCS.BorderLeft = HSSFCellStyle.BORDER_THIN;
+            PriceForeignCS.LeftBorderColor = HSSFColor.BLACK.index;
+            PriceForeignCS.BorderRight = HSSFCellStyle.BORDER_THIN;
+            PriceForeignCS.RightBorderColor = HSSFColor.BLACK.index;
+            PriceForeignCS.BorderTop = HSSFCellStyle.BORDER_THIN;
+            PriceForeignCS.TopBorderColor = HSSFColor.BLACK.index;
+            PriceForeignCS.SetFont(SimpleF);
+
+            HSSFCellStyle ReportCS1 = hssfworkbook.CreateCellStyle();
+            ReportCS1.BorderBottom = HSSFCellStyle.BORDER_MEDIUM;
+            ReportCS1.BottomBorderColor = HSSFColor.BLACK.index;
+            ReportCS1.SetFont(HeaderF1);
+
+            HSSFCellStyle ReportCS2 = hssfworkbook.CreateCellStyle();
+            ReportCS2.SetFont(HeaderF1);
+
+            HSSFCellStyle SummaryWithoutBorderBelCS = hssfworkbook.CreateCellStyle();
+            SummaryWithoutBorderBelCS.DataFormat = hssfworkbook.CreateDataFormat().GetFormat("### ### ##0");
+            SummaryWithoutBorderBelCS.SetFont(HeaderF2);
+
+            HSSFCellStyle SummaryWithoutBorderForeignCS = hssfworkbook.CreateCellStyle();
+            SummaryWithoutBorderForeignCS.DataFormat = hssfworkbook.CreateDataFormat().GetFormat("### ### ##0.00");
+            SummaryWithoutBorderForeignCS.SetFont(HeaderF2);
+
+            HSSFCellStyle SummaryWeightCS = hssfworkbook.CreateCellStyle();
+            SummaryWeightCS.DataFormat = hssfworkbook.CreateDataFormat().GetFormat("### ### ##0.00");
+            SummaryWeightCS.SetFont(HeaderF2);
+
+            HSSFCellStyle SummaryWithBorderBelCS = hssfworkbook.CreateCellStyle();
+            SummaryWithBorderBelCS.DataFormat = hssfworkbook.CreateDataFormat().GetFormat("### ### ##0");
+            SummaryWithBorderBelCS.BorderBottom = HSSFCellStyle.BORDER_THIN;
+            SummaryWithBorderBelCS.BottomBorderColor = HSSFColor.BLACK.index;
+            SummaryWithBorderBelCS.BorderLeft = HSSFCellStyle.BORDER_THIN;
+            SummaryWithBorderBelCS.LeftBorderColor = HSSFColor.BLACK.index;
+            SummaryWithBorderBelCS.BorderRight = HSSFCellStyle.BORDER_THIN;
+            SummaryWithBorderBelCS.RightBorderColor = HSSFColor.BLACK.index;
+            SummaryWithBorderBelCS.BorderTop = HSSFCellStyle.BORDER_THIN;
+            SummaryWithBorderBelCS.TopBorderColor = HSSFColor.BLACK.index;
+            SummaryWithBorderBelCS.WrapText = true;
+            SummaryWithBorderBelCS.SetFont(HeaderF2);
+
+            HSSFCellStyle SummaryWithBorderForeignCS = hssfworkbook.CreateCellStyle();
+            SummaryWithBorderForeignCS.DataFormat = hssfworkbook.CreateDataFormat().GetFormat("### ### ##0.00");
+            SummaryWithBorderForeignCS.BorderBottom = HSSFCellStyle.BORDER_THIN;
+            SummaryWithBorderForeignCS.BottomBorderColor = HSSFColor.BLACK.index;
+            SummaryWithBorderForeignCS.BorderLeft = HSSFCellStyle.BORDER_THIN;
+            SummaryWithBorderForeignCS.LeftBorderColor = HSSFColor.BLACK.index;
+            SummaryWithBorderForeignCS.BorderRight = HSSFCellStyle.BORDER_THIN;
+            SummaryWithBorderForeignCS.RightBorderColor = HSSFColor.BLACK.index;
+            SummaryWithBorderForeignCS.BorderTop = HSSFCellStyle.BORDER_THIN;
+            SummaryWithBorderForeignCS.TopBorderColor = HSSFColor.BLACK.index;
+            SummaryWithBorderForeignCS.WrapText = true;
+            SummaryWithBorderForeignCS.SetFont(HeaderF2);
+
+            HSSFCellStyle SimpleHeaderCS = hssfworkbook.CreateCellStyle();
+            SimpleHeaderCS.BorderBottom = HSSFCellStyle.BORDER_MEDIUM;
+            SimpleHeaderCS.BottomBorderColor = HSSFColor.BLACK.index;
+            SimpleHeaderCS.BorderLeft = HSSFCellStyle.BORDER_MEDIUM;
+            SimpleHeaderCS.LeftBorderColor = HSSFColor.BLACK.index;
+            SimpleHeaderCS.BorderRight = HSSFCellStyle.BORDER_MEDIUM;
+            SimpleHeaderCS.RightBorderColor = HSSFColor.BLACK.index;
+            SimpleHeaderCS.BorderTop = HSSFCellStyle.BORDER_MEDIUM;
+            SimpleHeaderCS.TopBorderColor = HSSFColor.BLACK.index;
+            //SimpleHeaderCS.WrapText = true;
+            SimpleHeaderCS.SetFont(HeaderF3);
+
+            #endregion Create fonts and styles
+
+            HSSFSheet sheet1 = hssfworkbook.CreateSheet("Отчет Маркетинг");
+            sheet1.PrintSetup.PaperSize = (short)PaperSizeType.A4;
+
+            sheet1.SetMargin(HSSFSheet.LeftMargin, (double).12);
+            sheet1.SetMargin(HSSFSheet.RightMargin, (double).07);
+            sheet1.SetMargin(HSSFSheet.TopMargin, (double).20);
+            sheet1.SetMargin(HSSFSheet.BottomMargin, (double).20);
+
+            int displayIndex = 0;
+
+            sheet1.SetColumnWidth(displayIndex++, 12 * 256);
+            sheet1.SetColumnWidth(displayIndex++, 61 * 256);
+            sheet1.SetColumnWidth(displayIndex++, 15 * 256);
+            sheet1.SetColumnWidth(displayIndex++, 12 * 256);
+            sheet1.SetColumnWidth(displayIndex++, 8 * 256);
+            sheet1.SetColumnWidth(displayIndex++, 8 * 256);
+            sheet1.SetColumnWidth(displayIndex, 14 * 256);
+
+            HSSFCell Cell1;
+
+            if (ProfilReportTable.Rows.Count > 0)
+            {
+                displayIndex = 0;
+
+                Cell1 = sheet1.CreateRow(pos++).CreateCell(0);
+                Cell1.SetCellValue("ОМЦ-ПРОФИЛЬ:");
+                Cell1.CellStyle = SummaryWithoutBorderBelCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Инв.№");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Наименование");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Цвет");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Патина");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Ед.изм.");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Кол-во");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Себестоимость");
+                Cell1.CellStyle = SimpleHeaderCS;
+                pos++;
+
+                for (int i = 0; i < ProfilReportTable.Rows.Count; i++)
+                {
+                    displayIndex = 0;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(ProfilReportTable.Rows[i]["InvNumber"].ToString());
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(ProfilReportTable.Rows[i]["AccountingName"].ToString());
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(FrontsReport.GetColorNameByCode(ProfilReportTable.Rows[i]["Cvet"].ToString()));
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(FrontsReport.GetPatinaNameByCode(ProfilReportTable.Rows[i]["Patina"].ToString()));
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(ProfilReportTable.Rows[i]["Measure"].ToString());
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["Count"]));
+                    Cell1.CellStyle = CountCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(Convert.ToDouble(ProfilReportTable.Rows[i]["Price"]));
+                    Cell1.CellStyle = PriceBelCS;
+                    pos++;
+                }
+            }
+
+            if (TPSReportTable.Rows.Count > 0)
+            {
+                //ТПС
+                pos++;
+                displayIndex = 0;
+
+                Cell1 = sheet1.CreateRow(pos++).CreateCell(0);
+                Cell1.SetCellValue("ЗОВ-ТПС:");
+                Cell1.CellStyle = SummaryWithoutBorderBelCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Инв.№");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Наименование");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Цвет");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Патина");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Ед.изм.");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Кол-во");
+                Cell1.CellStyle = SimpleHeaderCS;
+
+                Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                Cell1.SetCellValue("Себестоимость");
+                Cell1.CellStyle = SimpleHeaderCS;
+                pos++;
+
+                for (int i = 0; i < TPSReportTable.Rows.Count; i++)
+                {
+                    displayIndex = 0;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(TPSReportTable.Rows[i]["InvNumber"].ToString());
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(TPSReportTable.Rows[i]["AccountingName"].ToString());
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(FrontsReport.GetColorNameByCode(TPSReportTable.Rows[i]["Cvet"].ToString()));
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(FrontsReport.GetPatinaNameByCode(TPSReportTable.Rows[i]["Patina"].ToString()));
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(TPSReportTable.Rows[i]["Measure"].ToString());
+                    Cell1.CellStyle = SimpleCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["Count"]));
+                    Cell1.CellStyle = CountCS;
+                    Cell1 = sheet1.CreateRow(pos).CreateCell(displayIndex++);
+                    Cell1.SetCellValue(Convert.ToDouble(TPSReportTable.Rows[i]["Price"]));
+                    Cell1.CellStyle = PriceBelCS;
+                    pos++;
+                }
+            }
+            pos++;
+            FileName += " Маркетинг";
+            string tempFolder = System.Environment.GetEnvironmentVariable("TEMP");
+            FileInfo file = new FileInfo(tempFolder + @"\" + FileName + ".xls");
+            int j = 1;
+            while (file.Exists == true)
+            {
+                file = new FileInfo(tempFolder + @"\" + FileName + "(" + j++ + ").xls");
+            }
+
+            FileStream NewFile = new FileStream(file.FullName, FileMode.Create);
+            hssfworkbook.Write(NewFile);
+            NewFile.Close();
+
+            System.Diagnostics.Process.Start(file.FullName);
+            ClearReport();
+        }
+
+        public void CreateMarketingNotDispReport(DateTime date1, DateTime date2, DateTime time2, bool IsSample, bool IsNotSample, string FileName, decimal Rate, ArrayList MClients, ArrayList MClientGroups)
+        {
+            ClearReport();
+
+            string MainOrdersList = string.Empty;
+
+            int pos = 0;
+
+            FrontsReport.NotDispReport(date1, date2, time2, false, IsSample, IsNotSample, MClients, MClientGroups);
+            DecorReport.NotDispReport(date1, date2, time2, false, IsSample, IsNotSample, MClients, MClientGroups);
 
             //PROFIL
             if (FrontsReport.ProfilReportDataTable.Rows.Count > 0)

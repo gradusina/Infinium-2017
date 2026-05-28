@@ -45,6 +45,7 @@ namespace Infinium
             //Configs.DocumentsPathHost = CommonVariables.DocumentsPath;
             //Configs.FTPType = CommonVariables.FTPType;
 
+            //var newpass = _connection.EncryptPassword("newinF8259)(*");
             ConnectionStrings.UsersConnectionString = _connection.GetConnectionString("ConnectionUsers.config");
             ConnectionStrings.CatalogConnectionString = _connection.GetConnectionString("ConnectionCatalog.config");
             ConnectionStrings.LightConnectionString = _connection.GetConnectionString("ConnectionLight.config");

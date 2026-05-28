@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections;
 using System.Data;
 using System.Data.SqlClient;
@@ -802,7 +803,7 @@ namespace Infinium.Modules.StatisticsMarketing
             GetDecorColors();
             GetDecorSizes();
         }
-
+        
         public void FilterByConfirmDate(
             DateTime DateFrom, DateTime DateTo,
             int FactoryID, bool IsSample, bool IsNotSample, bool IsTransport)
@@ -1040,7 +1041,7 @@ namespace Infinium.Modules.StatisticsMarketing
         }
 
         public void FilterByPackages(
-            DateTime date1, DateTime time1, DateTime date2, DateTime time2, 
+            DateTime date1, DateTime time1, DateTime date2, DateTime time2,
             int PackageStatusID,
             int FactoryID, bool IsSample, bool IsNotSample, bool IsTransport)
         {
@@ -1069,10 +1070,17 @@ namespace Infinium.Modules.StatisticsMarketing
                 Date = "ExpeditionDateTime";
             //DateFilter = " (CAST(" + Date + " AS DATE) >= '" + DateFrom.ToString("yyyy-MM-dd") +
             //    "' AND CAST(" + Date + " AS DATE) <= '" + DateTo.ToString("yyyy-MM-dd") + "')"; ;
-            DateFilter = $" ({Date} > '{date1:yyyy-MM-dd} 00:00' AND {Date} <= '{date2:yyyy-MM-dd} 23:59:59')";
+            DateFilter = $" ({Date} >= '{date1:yyyy-MM-dd} 00:00' AND {Date} <= '{date2:yyyy-MM-dd} 23:59:59')";
 
             if (date1.ToShortDateString() == date2.ToShortDateString())
-                DateFilter = @$" ({Date} > '{date1:yyyy-MM-dd} {time1:HH:mm:ss}' AND {Date} <= '{date2:yyyy-MM-dd} {time2:HH:mm:ss}')";
+                DateFilter = @$" ({Date} >= '{date1:yyyy-MM-dd} {time1:HH:mm}' AND {Date} <= '{date2:yyyy-MM-dd} {time2:HH:mm:ss}')";
+
+            if (PackageStatusID == 5)
+            {
+                DateFilter =
+                    @$" (DispatchDateTime is null or DispatchDateTime >= '{date2:yyyy-MM-dd} {time2:HH:mm:ss}')";
+            }
+
 
             if (FactoryID != 0)
                 PackageFactoryFilter = " AND FactoryID = " + FactoryID;
@@ -1126,7 +1134,259 @@ namespace Infinium.Modules.StatisticsMarketing
             if (IsTransport)
                 TransportFilter = " AND MegaOrders.TransportCost<>0 ";
 
-            MarketingSelectCommand = "SELECT MegaOrders.MegaOrderID, MegaOrders.OrderNumber, FrontsOrdersID, FrontsOrders.MainOrderID, FrontsOrders.FrontID, FrontsOrders.PatinaID, FrontsOrders.ColorID, FrontsOrders.InsetTypeID," +
+            if (PackageStatusID == 5)
+            {
+                MarketingSelectCommand =
+                    @$"SELECT MegaOrders.MegaOrderID, MegaOrders.OrderNumber, FrontsOrdersID, FrontsOrders.MainOrderID, FrontsOrders.FrontID, FrontsOrders.PatinaID, FrontsOrders.ColorID, FrontsOrders.InsetTypeID,
+                    FrontsOrders.InsetColorID, FrontsOrders.TechnoColorID, FrontsOrders.TechnoInsetTypeID, FrontsOrders.TechnoInsetColorID, FrontsOrders.Height, FrontsOrders.Width,
+                    FrontsOrders.Count, FrontsOrders.IsSample, (FrontsOrders.Square) AS Square, MeasureID, (FrontsOrders.Cost) AS Cost, ClientID, JoinMainOrders.ZOVClientID FROM FrontsOrders
+                    INNER JOIN MainOrders ON FrontsOrders.MainOrderID = MainOrders.MainOrderID
+and not (ProfilProductionStatusID = 1 AND ProfilStorageStatusID = 1 AND ProfilExpeditionStatusID = 1 AND ProfilDispatchStatusID = 2)
+and MainOrders.mainorderid not in (select packages.mainorderid from packages)
+                    INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID {TransportFilter}
+                    LEFT OUTER JOIN JoinMainOrders ON FrontsOrders.MainOrderID = JoinMainOrders.MarketMainOrderID
+                    INNER JOIN infiniu2_catalog.dbo.FrontsConfig
+                    ON FrontsOrders.FrontConfigID=infiniu2_catalog.dbo.FrontsConfig.FrontConfigID
+                    WHERE FrontsOrders.CreateDateTime <= '{date2:yyyy-MM-dd} {time2:HH:mm:ss}' {MFSampleFilter}
+                    AND FrontsOrders.MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID IN
+                    (SELECT MegaOrderID FROM MegaOrders {MClientFilter} )) ORDER BY FrontsOrdersID";
+
+                using (SqlDataAdapter DA = new SqlDataAdapter(MarketingSelectCommand,
+                           ConnectionStrings.MarketingOrdersConnectionString))
+                {
+                    FrontsOrdersDataTable.Clear();
+                    DA.Fill(FrontsOrdersDataTable);
+                }
+
+                MarketingSelectCommand =
+                    @$"SELECT MegaOrders.MegaOrderID, MegaOrders.OrderNumber, FrontsOrdersID, FrontsOrders.MainOrderID, FrontsOrders.FrontID, FrontsOrders.PatinaID, FrontsOrders.ColorID, FrontsOrders.InsetTypeID,
+                    FrontsOrders.InsetColorID, FrontsOrders.TechnoColorID, FrontsOrders.TechnoInsetTypeID, FrontsOrders.TechnoInsetColorID, FrontsOrders.Height, FrontsOrders.Width,
+                    PackageDetails.Count, FrontsOrders.IsSample, (FrontsOrders.Square * PackageDetails.Count / FrontsOrders.Count) AS Square, MeasureID, (FrontsOrders.Cost * PackageDetails.Count / FrontsOrders.Count) AS Cost, ClientID, JoinMainOrders.ZOVClientID FROM PackageDetails
+                    INNER JOIN FrontsOrders ON PackageDetails.OrderID = FrontsOrders.FrontsOrdersID and FrontsOrders.CreateDateTime <= '{date2:yyyy-MM-dd} {time2:HH:mm:ss}'
+                    INNER JOIN MainOrders ON FrontsOrders.MainOrderID = MainOrders.MainOrderID
+                    INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID {TransportFilter}
+                    LEFT OUTER JOIN JoinMainOrders ON FrontsOrders.MainOrderID = JoinMainOrders.MarketMainOrderID
+                    INNER JOIN infiniu2_catalog.dbo.FrontsConfig
+                    ON FrontsOrders.FrontConfigID=infiniu2_catalog.dbo.FrontsConfig.FrontConfigID
+                    WHERE packageid in (select packageid from packages 
+                    where (DispatchDateTime is null or DispatchDateTime >= '{date2:yyyy-MM-dd} {time2:HH:mm:ss}')) and {MFrontsPackageFilter} {MFSampleFilter}
+                    AND FrontsOrders.MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID IN
+                    (SELECT MegaOrderID FROM MegaOrders {MClientFilter} )) ORDER BY FrontsOrdersID";
+                DataTable dt1 = new DataTable();
+                using (SqlDataAdapter DA = new SqlDataAdapter(MarketingSelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
+                {
+                    DA.Fill(dt1);
+                }
+
+                for (int i = 0; i < dt1.Rows.Count; i++)
+                {
+                    FrontsOrdersDataTable.ImportRow(dt1.Rows[i]);
+                }
+            }
+            else
+            {
+
+                MarketingSelectCommand = "SELECT MegaOrders.MegaOrderID, MegaOrders.OrderNumber, FrontsOrdersID, FrontsOrders.MainOrderID, FrontsOrders.FrontID, FrontsOrders.PatinaID, FrontsOrders.ColorID, FrontsOrders.InsetTypeID," +
+                                         " FrontsOrders.InsetColorID, FrontsOrders.TechnoColorID, FrontsOrders.TechnoInsetTypeID, FrontsOrders.TechnoInsetColorID, FrontsOrders.Height, FrontsOrders.Width," +
+                                         " PackageDetails.Count, FrontsOrders.IsSample, (FrontsOrders.Square * PackageDetails.Count / FrontsOrders.Count) AS Square, MeasureID, (FrontsOrders.Cost * PackageDetails.Count / FrontsOrders.Count) AS Cost, ClientID, JoinMainOrders.ZOVClientID FROM PackageDetails" +
+                                         " INNER JOIN FrontsOrders ON PackageDetails.OrderID = FrontsOrders.FrontsOrdersID" +
+                                         " INNER JOIN MainOrders ON FrontsOrders.MainOrderID = MainOrders.MainOrderID" +
+                                         " INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID" + TransportFilter +
+                                         " LEFT OUTER JOIN JoinMainOrders ON FrontsOrders.MainOrderID = JoinMainOrders.MarketMainOrderID" +
+                                         " INNER JOIN infiniu2_catalog.dbo.FrontsConfig" +
+                                         " ON FrontsOrders.FrontConfigID=infiniu2_catalog.dbo.FrontsConfig.FrontConfigID" +
+                                         " WHERE " + MFrontsPackageFilter + MFSampleFilter + " AND FrontsOrders.MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID IN" +
+                                         " (SELECT MegaOrderID FROM MegaOrders " + MClientFilter + " )) ORDER BY FrontsOrdersID";
+
+                using (SqlDataAdapter DA = new SqlDataAdapter(MarketingSelectCommand,
+                           ConnectionStrings.MarketingOrdersConnectionString))
+                {
+                    FrontsOrdersDataTable.Clear();
+                    DA.Fill(FrontsOrdersDataTable);
+                }
+            }
+
+            GetFronts();
+            GetFrameColors();
+            GetTechnoColors();
+            GetInsetTypes();
+            GetInsetColors();
+            GetTechnoInsetTypes();
+            GetTechnoInsetColors();
+            GetSizes();
+
+            if (PackageStatusID == 5)
+            {
+                MarketingSelectCommand =
+                    @$"SELECT MegaOrders.MegaOrderID, MegaOrders.OrderNumber, DecorOrders.MainOrderID, DecorOrders.ProductID, DecorOrders.DecorID, DecorOrders.ColorID,DecorOrders.PatinaID,
+                    DecorOrders.Height, DecorOrders.Length, DecorOrders.Width, DecorOrders.Count, DecorOrders.IsSample, (DecorOrders.Cost) AS Cost, DecorOrders.DecorConfigID, 
+                    MeasureID, ClientID, JoinMainOrders.ZOVClientID FROM DecorOrders
+                    INNER JOIN MainOrders ON DecorOrders.MainOrderID = MainOrders.MainOrderID
+and not (ProfilProductionStatusID = 1 AND ProfilStorageStatusID = 1 AND ProfilExpeditionStatusID = 1 AND ProfilDispatchStatusID = 2)
+and MainOrders.mainorderid not in (select packages.mainorderid from packages)
+                    INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID {TransportFilter}
+                    LEFT OUTER JOIN JoinMainOrders ON DecorOrders.MainOrderID = JoinMainOrders.MarketMainOrderID
+                    INNER JOIN infiniu2_catalog.dbo.DecorConfig
+                    ON DecorOrders.DecorConfigID=infiniu2_catalog.dbo.DecorConfig.DecorConfigID
+                    WHERE DecorOrders.CreateDateTime <= '{date2:yyyy-MM-dd} {time2:HH:mm:ss}' {MDSampleFilter}
+                    AND DecorOrders.MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID IN
+                    (SELECT MegaOrderID FROM MegaOrders {MClientFilter} ))";
+
+                using (SqlDataAdapter DA = new SqlDataAdapter(MarketingSelectCommand,
+                           ConnectionStrings.MarketingOrdersConnectionString))
+                {
+                    DecorOrdersDataTable.Clear();
+                    DA.Fill(DecorOrdersDataTable);
+                }
+
+                MarketingSelectCommand =
+                    @$"SELECT MegaOrders.MegaOrderID, MegaOrders.OrderNumber, DecorOrders.MainOrderID, DecorOrders.ProductID, DecorOrders.DecorID, DecorOrders.ColorID,DecorOrders.PatinaID,
+                    DecorOrders.Height, DecorOrders.Length, DecorOrders.Width, PackageDetails.Count, DecorOrders.IsSample, (DecorOrders.Cost * PackageDetails.Count / DecorOrders.Count) AS Cost, DecorOrders.DecorConfigID, 
+                    MeasureID, ClientID, JoinMainOrders.ZOVClientID FROM PackageDetails
+                    INNER JOIN DecorOrders ON PackageDetails.OrderID = DecorOrders.DecorOrderID and DecorOrders.CreateDateTime <= '{date2:yyyy-MM-dd} {time2:HH:mm:ss}'
+                    INNER JOIN MainOrders ON DecorOrders.MainOrderID = MainOrders.MainOrderID
+                    INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID {TransportFilter}
+                    LEFT OUTER JOIN JoinMainOrders ON DecorOrders.MainOrderID = JoinMainOrders.MarketMainOrderID
+                    INNER JOIN infiniu2_catalog.dbo.DecorConfig
+                    ON DecorOrders.DecorConfigID=infiniu2_catalog.dbo.DecorConfig.DecorConfigID
+                                        WHERE packageid in (select packageid from packages 
+WHERE (DispatchDateTime is null or DispatchDateTime >= '{date2:yyyy-MM-dd} {time2:HH:mm:ss}')) and {MDecorPackageFilter} {MDSampleFilter}
+                    AND DecorOrders.MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID IN
+                    (SELECT MegaOrderID FROM MegaOrders {MClientFilter} ))";
+
+                DataTable dt1 = new DataTable();
+                using (SqlDataAdapter DA = new SqlDataAdapter(MarketingSelectCommand, ConnectionStrings.MarketingOrdersConnectionString))
+                {
+                    DA.Fill(dt1);
+                }
+
+                for (int i = 0; i < dt1.Rows.Count; i++)
+                {
+                    DecorOrdersDataTable.ImportRow(dt1.Rows[i]);
+                }
+            }
+            else
+            {
+
+                //decor
+                MarketingSelectCommand =
+                    "SELECT MegaOrders.MegaOrderID, MegaOrders.OrderNumber, DecorOrders.MainOrderID, DecorOrders.ProductID, DecorOrders.DecorID, DecorOrders.ColorID,DecorOrders.PatinaID," +
+                    " DecorOrders.Height, DecorOrders.Length, DecorOrders.Width, PackageDetails.Count, DecorOrders.IsSample, (DecorOrders.Cost * PackageDetails.Count / DecorOrders.Count) AS Cost, DecorOrders.DecorConfigID, " +
+                    " MeasureID, ClientID, JoinMainOrders.ZOVClientID FROM PackageDetails" +
+                    " INNER JOIN DecorOrders ON PackageDetails.OrderID = DecorOrders.DecorOrderID" +
+                    " INNER JOIN MainOrders ON DecorOrders.MainOrderID = MainOrders.MainOrderID" +
+                    " INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID" + TransportFilter +
+                    " LEFT OUTER JOIN JoinMainOrders ON DecorOrders.MainOrderID = JoinMainOrders.MarketMainOrderID" +
+                    " INNER JOIN infiniu2_catalog.dbo.DecorConfig" +
+                    " ON DecorOrders.DecorConfigID=infiniu2_catalog.dbo.DecorConfig.DecorConfigID" +
+                    " WHERE " + MDecorPackageFilter + MDSampleFilter +
+                    " AND DecorOrders.MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID IN" +
+                    " (SELECT MegaOrderID FROM MegaOrders " + MClientFilter + " ))";
+
+                using (SqlDataAdapter DA = new SqlDataAdapter(MarketingSelectCommand,
+                           ConnectionStrings.MarketingOrdersConnectionString))
+                {
+                    DecorOrdersDataTable.Clear();
+                    DA.Fill(DecorOrdersDataTable);
+                }
+            }
+
+            GetDecorProducts();
+            GetDecorItems();
+            GetDecorColors();
+            GetDecorSizes();
+        }
+
+        public void FilterInProd(
+            DateTime date1, DateTime time1, DateTime date2, DateTime time2,
+            int FactoryID, bool IsSample, bool IsNotSample, bool IsTransport)
+        {
+            string MarketingSelectCommand = string.Empty;
+            string MClientFilter = string.Empty;
+
+            string Date = string.Empty;
+            string DateFilter = string.Empty;
+            string MMainOrdersFilter = string.Empty;
+
+            string MFrontsPackageFilter = string.Empty;
+            string MDecorPackageFilter = string.Empty;
+
+            string PackageFactoryFilter = string.Empty;
+            string PackageProductFilter = string.Empty;
+
+            ArrayList MClients = SelectedMarketingClients;
+            ArrayList MClientGroups = SelectedMarketingClientGroups;
+
+            //DateFilter = " (CAST(" + Date + " AS DATE) >= '" + DateFrom.ToString("yyyy-MM-dd") +
+            //    "' AND CAST(" + Date + " AS DATE) <= '" + DateTo.ToString("yyyy-MM-dd") + "')"; ;
+            DateFilter = $" ({Date} >= '{date1:yyyy-MM-dd} 00:00' AND {Date} <= '{date2:yyyy-MM-dd} 23:59:59')";
+
+            if (date1.ToShortDateString() == date2.ToShortDateString())
+                DateFilter =
+                    @$" ({Date} >= '{date1:yyyy-MM-dd} {time1:HH:mm}' AND {Date} <= '{date2:yyyy-MM-dd} {time2:HH:mm:ss}')";
+
+            if (FactoryID != 0)
+                PackageFactoryFilter = " AND FactoryID = " + FactoryID;
+
+            PackageProductFilter = " AND ProductType = 0";
+            MFrontsPackageFilter = " PackageID IN" +
+                                   " (SELECT PackageID FROM Packages WHERE PackageStatusID=0 " + PackageFactoryFilter + PackageProductFilter + ")";
+
+            PackageProductFilter = " AND ProductType = 1";
+            MDecorPackageFilter = " PackageID IN" +
+                                  " (SELECT PackageID FROM Packages WHERE PackageStatusID=0 " + PackageFactoryFilter + PackageProductFilter + ")";
+
+
+            MMainOrdersFilter = " WHERE not (ProfilProductionStatusID = 1 AND ProfilStorageStatusID = 1 AND ProfilExpeditionStatusID = 1 AND ProfilDispatchStatusID = 2)" +
+                                " and (CAST(ProfilOnProductionDate AS Date) >= '" + date1.ToString("yyyy-MM-dd") +
+                                "' AND CAST(ProfilOnProductionDate AS Date) <= '" + date2.ToString("yyyy-MM-dd") + "')";
+
+            if (MClients.Count > 0)
+            {
+                if (MClientFilter.Length > 0)
+                    MClientFilter += " AND ClientID IN (" + string.Join(",", MClients.OfType<Int32>().ToArray()) + ")";
+                else
+                    MClientFilter = " WHERE ClientID IN (" + string.Join(",", MClients.OfType<Int32>().ToArray()) + ")";
+            }
+
+            if (MClientGroups.Count > 0)
+            {
+                if (MClientFilter.Length > 0)
+                    MClientFilter += " AND ClientID IN" +
+                                     " (SELECT ClientID FROM infiniu2_marketingreference.dbo.Clients" +
+                                     " WHERE ClientGroupID IN (" +
+                                     string.Join(",", MClientGroups.OfType<Int32>().ToArray()) + "))";
+                else
+                    MClientFilter = " WHERE ClientID IN" +
+                                    " (SELECT ClientID FROM infiniu2_marketingreference.dbo.Clients" +
+                                    " WHERE ClientGroupID IN (" +
+                                    string.Join(",", MClientGroups.OfType<Int32>().ToArray()) + "))";
+            }
+
+            if (MClients.Count < 1 && MClientGroups.Count < 1)
+                MClientFilter = " WHERE ClientID = -1";
+
+            string MFSampleFilter = string.Empty;
+            string MDSampleFilter = string.Empty;
+            if (!IsSample || !IsNotSample)
+            {
+                if (IsSample)
+                    MFSampleFilter = " AND FrontsOrders.IsSample = 1";
+                if (IsNotSample)
+                    MFSampleFilter = " AND FrontsOrders.IsSample = 0";
+                if (IsSample)
+                    MDSampleFilter =
+                        " AND (DecorOrders.IsSample = 1 OR (DecorOrders.ProductID=42 AND DecorOrders.IsSample = 0)) ";
+                if (IsNotSample)
+                    MDSampleFilter = " AND DecorOrders.IsSample = 0";
+            }
+
+            string TransportFilter = " ";
+            if (IsTransport)
+                TransportFilter = " AND MegaOrders.TransportCost<>0 ";
+
+            MarketingSelectCommand =
+                "SELECT MegaOrders.MegaOrderID, MegaOrders.OrderNumber, FrontsOrdersID, FrontsOrders.MainOrderID, FrontsOrders.FrontID, FrontsOrders.PatinaID, FrontsOrders.ColorID, FrontsOrders.InsetTypeID," +
                 " FrontsOrders.InsetColorID, FrontsOrders.TechnoColorID, FrontsOrders.TechnoInsetTypeID, FrontsOrders.TechnoInsetColorID, FrontsOrders.Height, FrontsOrders.Width," +
                 " PackageDetails.Count, FrontsOrders.IsSample, (FrontsOrders.Square * PackageDetails.Count / FrontsOrders.Count) AS Square, MeasureID, (FrontsOrders.Cost * PackageDetails.Count / FrontsOrders.Count) AS Cost, ClientID, JoinMainOrders.ZOVClientID FROM PackageDetails" +
                 " INNER JOIN FrontsOrders ON PackageDetails.OrderID = FrontsOrders.FrontsOrdersID" +
@@ -1135,14 +1395,38 @@ namespace Infinium.Modules.StatisticsMarketing
                 " LEFT OUTER JOIN JoinMainOrders ON FrontsOrders.MainOrderID = JoinMainOrders.MarketMainOrderID" +
                 " INNER JOIN infiniu2_catalog.dbo.FrontsConfig" +
                 " ON FrontsOrders.FrontConfigID=infiniu2_catalog.dbo.FrontsConfig.FrontConfigID" +
-                " WHERE " + MFrontsPackageFilter + MFSampleFilter + " AND FrontsOrders.MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID IN" +
+                " WHERE " + MFrontsPackageFilter + MFSampleFilter + " AND FrontsOrders.MainOrderID IN " +
+                " (SELECT MainOrderID FROM MainOrders where MegaOrderID IN" +
                 " (SELECT MegaOrderID FROM MegaOrders " + MClientFilter + " )) ORDER BY FrontsOrdersID";
 
             using (SqlDataAdapter DA = new SqlDataAdapter(MarketingSelectCommand,
-                ConnectionStrings.MarketingOrdersConnectionString))
+                       ConnectionStrings.MarketingOrdersConnectionString))
             {
                 FrontsOrdersDataTable.Clear();
                 DA.Fill(FrontsOrdersDataTable);
+            }
+
+            MarketingSelectCommand = "SELECT MegaOrders.MegaOrderID, MegaOrders.OrderNumber, FrontsOrders.MainOrderID, FrontsOrders.FrontID, FrontsOrders.PatinaID, FrontsOrders.ColorID, FrontsOrders.InsetTypeID," +
+                                     " FrontsOrders.InsetColorID, FrontsOrders.TechnoColorID, FrontsOrders.TechnoInsetTypeID, FrontsOrders.TechnoInsetColorID, FrontsOrders.Height, FrontsOrders.Width, " +
+                                     " FrontsOrders.Count, FrontsOrders.IsSample, FrontsOrders.Square, FrontsOrders.Cost, MeasureID, ClientID, JoinMainOrders.ZOVClientID FROM FrontsOrders" +
+                                     " INNER JOIN MainOrders ON FrontsOrders.MainOrderID = MainOrders.MainOrderID" +
+                                     " INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID" + TransportFilter +
+                                     " LEFT OUTER JOIN JoinMainOrders ON FrontsOrders.MainOrderID = JoinMainOrders.MarketMainOrderID" +
+                                     " INNER JOIN infiniu2_catalog.dbo.FrontsConfig" +
+                                     " ON FrontsOrders.FrontConfigID=infiniu2_catalog.dbo.FrontsConfig.FrontConfigID" +
+                                     " WHERE FrontsOrdersID not in (select orderid from PackageDetails) " + MFSampleFilter + " and FrontsOrders.MainOrderID IN (SELECT MainOrderID FROM MainOrders " + MMainOrdersFilter +
+                                     " AND MegaOrderID IN" +
+                                     " (SELECT MegaOrderID FROM MegaOrders " + MClientFilter + " ))";
+
+            using (SqlDataAdapter DA = new SqlDataAdapter(MarketingSelectCommand,
+                       ConnectionStrings.MarketingOrdersConnectionString))
+            {
+                using (DataTable dt = new DataTable())
+                {
+                    DA.Fill(dt);
+                    foreach (DataRow item in dt.Rows)
+                        FrontsOrdersDataTable.ImportRow(item);
+                }
             }
 
             GetFronts();
@@ -1155,7 +1439,8 @@ namespace Infinium.Modules.StatisticsMarketing
             GetSizes();
 
             //decor
-            MarketingSelectCommand = "SELECT MegaOrders.MegaOrderID, MegaOrders.OrderNumber, DecorOrders.MainOrderID, DecorOrders.ProductID, DecorOrders.DecorID, DecorOrders.ColorID,DecorOrders.PatinaID," +
+            MarketingSelectCommand =
+                "SELECT MegaOrders.MegaOrderID, MegaOrders.OrderNumber, DecorOrders.MainOrderID, DecorOrders.ProductID, DecorOrders.DecorID, DecorOrders.ColorID,DecorOrders.PatinaID," +
                 " DecorOrders.Height, DecorOrders.Length, DecorOrders.Width, PackageDetails.Count, DecorOrders.IsSample, (DecorOrders.Cost * PackageDetails.Count / DecorOrders.Count) AS Cost, DecorOrders.DecorConfigID, " +
                 " MeasureID, ClientID, JoinMainOrders.ZOVClientID FROM PackageDetails" +
                 " INNER JOIN DecorOrders ON PackageDetails.OrderID = DecorOrders.DecorOrderID" +
@@ -1164,14 +1449,39 @@ namespace Infinium.Modules.StatisticsMarketing
                 " LEFT OUTER JOIN JoinMainOrders ON DecorOrders.MainOrderID = JoinMainOrders.MarketMainOrderID" +
                 " INNER JOIN infiniu2_catalog.dbo.DecorConfig" +
                 " ON DecorOrders.DecorConfigID=infiniu2_catalog.dbo.DecorConfig.DecorConfigID" +
-                " WHERE " + MDecorPackageFilter + MDSampleFilter + " AND DecorOrders.MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID IN" +
+                " WHERE " + MDecorPackageFilter + MDSampleFilter +
+                " AND DecorOrders.MainOrderID IN (SELECT MainOrderID FROM MainOrders WHERE MegaOrderID IN" +
                 " (SELECT MegaOrderID FROM MegaOrders " + MClientFilter + " ))";
 
             using (SqlDataAdapter DA = new SqlDataAdapter(MarketingSelectCommand,
-                ConnectionStrings.MarketingOrdersConnectionString))
+                       ConnectionStrings.MarketingOrdersConnectionString))
             {
                 DecorOrdersDataTable.Clear();
                 DA.Fill(DecorOrdersDataTable);
+            }
+
+            //decor
+            MarketingSelectCommand = "SELECT MegaOrders.MegaOrderID, MegaOrders.OrderNumber, DecorOrders.MainOrderID, DecorOrders.ProductID, DecorOrders.DecorID, DecorOrders.ColorID,DecorOrders.PatinaID," +
+                                     " DecorOrders.Height, DecorOrders.Length, DecorOrders.Width, DecorOrders.Count, DecorOrders.IsSample, DecorOrders.Cost, DecorOrders.DecorConfigID, " +
+                                     " MeasureID, ClientID, JoinMainOrders.ZOVClientID FROM DecorOrders" +
+                                     " INNER JOIN MainOrders ON DecorOrders.MainOrderID = MainOrders.MainOrderID" +
+                                     " INNER JOIN MegaOrders ON MainOrders.MegaOrderID = MegaOrders.MegaOrderID" + TransportFilter +
+                                     " LEFT OUTER JOIN JoinMainOrders ON DecorOrders.MainOrderID = JoinMainOrders.MarketMainOrderID" +
+                                     " INNER JOIN infiniu2_catalog.dbo.DecorConfig" +
+                                     " ON DecorOrders.DecorConfigID=infiniu2_catalog.dbo.DecorConfig.DecorConfigID" +
+                                     " WHERE DecorOrderId not in (select orderid from PackageDetails) " + MDSampleFilter + " and DecorOrders.MainOrderID IN (SELECT MainOrderID FROM MainOrders " + MMainOrdersFilter +
+                                     " AND MegaOrderID IN" +
+                                     " (SELECT MegaOrderID FROM MegaOrders " + MClientFilter + " ))";
+
+            using (SqlDataAdapter DA = new SqlDataAdapter(MarketingSelectCommand,
+                       ConnectionStrings.MarketingOrdersConnectionString))
+            {
+                using (DataTable dt = new DataTable())
+                {
+                    DA.Fill(dt);
+                    foreach (DataRow item in dt.Rows)
+                        DecorOrdersDataTable.ImportRow(item);
+                }
             }
 
             GetDecorProducts();

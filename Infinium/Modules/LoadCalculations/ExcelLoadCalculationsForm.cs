@@ -1,15 +1,7 @@
-﻿
-using ComponentFactory.Krypton.Toolkit;
-
-using Infinium.Catalog.UserControls;
-using Infinium.Modules.LoadCalculations;
+﻿using Infinium.Modules.LoadCalculations;
 
 using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Globalization;
-using System.Reflection;
-using System.Threading;
+using System.IO;
 using System.Windows.Forms;
 
 namespace Infinium
@@ -21,9 +13,12 @@ namespace Infinium
         private const int eClose = 3;
 
         private ExcelLoadCalculations _excelLoadCalculations;
+        private ExcelLoadCalculationsReport _report;
+
+        private FileInfo fileInfo;
 
         public static bool BSmallCreated;
-        
+
         private int FormEvent = 0;
         private bool NeedSplash = false;
 
@@ -37,10 +32,10 @@ namespace Infinium
             LightStartForm = tLightStartForm;
 
             MaximumSize = Screen.PrimaryScreen.WorkingArea.Size;
-            
+
             while (!SplashForm.bCreated) ;
         }
-        
+
         private void MenuCloseButton_Click(object sender, EventArgs e)
         {
             FormEvent = eClose;
@@ -138,6 +133,12 @@ namespace Infinium
 
         private void LoadCalculationsForm_Load(object sender, EventArgs e)
         {
+            _excelLoadCalculations = new ExcelLoadCalculations();
+
+            _report = new ExcelLoadCalculationsReport
+            {
+                NeedStartFile = true
+            };
         }
 
         private void LoadCalculationsForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -180,6 +181,8 @@ namespace Infinium
                 grid.Columns["count"].HeaderText = "Кол-во";
             }
 
+            if (grid.Columns.Contains("cost"))
+                grid.Columns["cost"].Visible = false;
             if (grid.Columns.Contains("configid"))
                 grid.Columns["configid"].Visible = false;
             if (grid.Columns.Contains("itemid"))
@@ -204,31 +207,28 @@ namespace Infinium
 
         private void openFileDialog1_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            var fileInfo = new System.IO.FileInfo(openFileDialog1.FileName);
+            fileInfo = new FileInfo(openFileDialog1.FileName);
 
-            LoadCalculationsReport _loadCalculationsReport = new LoadCalculationsReport
-            {
-                NeedStartFile = true
-            };
-            //_loadCalculationsReport.CreateReport();
+            _excelLoadCalculations.ParseSheet(_report.ExportFile(fileInfo));
 
-            _excelLoadCalculations.ExportFile(openFileDialog1.FileName);
             _excelLoadCalculations.CreateSectors();
             _excelLoadCalculations.CalculateLoad();
             _excelLoadCalculations.CreateReportTable();
 
             dataGridView1.DataSource = _excelLoadCalculations.ReportDt;
             dataGridSettings(ref dataGridView1);
-
-            //_excelLoadCalculations.GetOrdersFromExcel();
-            //_excelLoadCalculations.GetOrders();
-
-
         }
 
         private void btnExport_Click(object sender, EventArgs e)
         {
             openFileDialog1.ShowDialog();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (fileInfo == null || _excelLoadCalculations.ReportDt.Rows.Count == 0)
+                return;
+            _report.CreateReport(_excelLoadCalculations.ReportDt, fileInfo);
         }
     }
 }

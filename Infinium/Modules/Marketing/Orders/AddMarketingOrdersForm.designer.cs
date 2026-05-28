@@ -451,7 +451,7 @@
             this.FrontsComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.FrontsComboBox.DropDownWidth = 251;
-            this.FrontsComboBox.Enabled = false;
+            this.FrontsComboBox.Enabled = true;
             this.FrontsComboBox.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.FrontsComboBox.FormattingEnabled = true;
             this.FrontsComboBox.IntegralHeight = false;
@@ -473,7 +473,7 @@
             this.FrameColorComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.FrameColorComboBox.DropDownWidth = 251;
-            this.FrameColorComboBox.Enabled = false;
+            this.FrameColorComboBox.Enabled = true;
             this.FrameColorComboBox.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.FrameColorComboBox.FormattingEnabled = true;
             this.FrameColorComboBox.IntegralHeight = false;
@@ -495,7 +495,7 @@
             this.InsetColorComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.InsetColorComboBox.DropDownWidth = 251;
-            this.InsetColorComboBox.Enabled = false;
+            this.InsetColorComboBox.Enabled = true;
             this.InsetColorComboBox.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.InsetColorComboBox.FormattingEnabled = true;
             this.InsetColorComboBox.IntegralHeight = false;
@@ -517,7 +517,7 @@
             this.PatinaComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.PatinaComboBox.DropDownWidth = 251;
-            this.PatinaComboBox.Enabled = false;
+            this.PatinaComboBox.Enabled = true;
             this.PatinaComboBox.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.PatinaComboBox.FormattingEnabled = true;
             this.PatinaComboBox.IntegralHeight = false;
@@ -539,7 +539,7 @@
             this.TechnoInsetTypesComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.TechnoInsetTypesComboBox.DropDownWidth = 251;
-            this.TechnoInsetTypesComboBox.Enabled = false;
+            this.TechnoInsetTypesComboBox.Enabled = true;
             this.TechnoInsetTypesComboBox.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.TechnoInsetTypesComboBox.FormattingEnabled = true;
             this.TechnoInsetTypesComboBox.IntegralHeight = false;
@@ -561,7 +561,7 @@
             this.InsetTypesComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.InsetTypesComboBox.DropDownWidth = 251;
-            this.InsetTypesComboBox.Enabled = false;
+            this.InsetTypesComboBox.Enabled = true;
             this.InsetTypesComboBox.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.InsetTypesComboBox.FormattingEnabled = true;
             this.InsetTypesComboBox.IntegralHeight = false;
@@ -581,7 +581,7 @@
             // FrontsWidthComboBox
             // 
             this.FrontsWidthComboBox.DropDownWidth = 121;
-            this.FrontsWidthComboBox.Enabled = false;
+            this.FrontsWidthComboBox.Enabled = true;
             this.FrontsWidthComboBox.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.FrontsWidthComboBox.FormattingEnabled = true;
             this.FrontsWidthComboBox.IntegralHeight = false;
@@ -599,7 +599,7 @@
             // FrontsHeightComboBox
             // 
             this.FrontsHeightComboBox.DropDownWidth = 121;
-            this.FrontsHeightComboBox.Enabled = false;
+            this.FrontsHeightComboBox.Enabled = true;
             this.FrontsHeightComboBox.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.FrontsHeightComboBox.FormattingEnabled = true;
             this.FrontsHeightComboBox.IntegralHeight = false;
@@ -791,7 +791,7 @@
             // 
             this.TechnoFrameColorsDropButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.TechnoFrameColorsDropButton.DropDownPosition = ComponentFactory.Krypton.Toolkit.VisualOrientation.Bottom;
-            this.TechnoFrameColorsDropButton.Enabled = false;
+            this.TechnoFrameColorsDropButton.Enabled = true;
             this.TechnoFrameColorsDropButton.Location = new System.Drawing.Point(162, 24);
             this.TechnoFrameColorsDropButton.Name = "TechnoFrameColorsDropButton";
             this.TechnoFrameColorsDropButton.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -824,7 +824,7 @@
             this.TechnoFrameColorComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.TechnoFrameColorComboBox.DropDownWidth = 251;
-            this.TechnoFrameColorComboBox.Enabled = false;
+            this.TechnoFrameColorComboBox.Enabled = true;
             this.TechnoFrameColorComboBox.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.TechnoFrameColorComboBox.FormattingEnabled = true;
             this.TechnoFrameColorComboBox.IntegralHeight = false;
@@ -957,7 +957,7 @@
             // 
             // FrontAddButton
             // 
-            this.FrontAddButton.Enabled = false;
+            this.FrontAddButton.Enabled = true;
             this.FrontAddButton.Location = new System.Drawing.Point(7, 11);
             this.FrontAddButton.Name = "FrontAddButton";
             this.FrontAddButton.OverrideDefault.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(158)))), ((int)(((byte)(0)))));
@@ -1031,7 +1031,7 @@
             // 
             this.TechnoInsetColorsDropButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.TechnoInsetColorsDropButton.DropDownPosition = ComponentFactory.Krypton.Toolkit.VisualOrientation.Bottom;
-            this.TechnoInsetColorsDropButton.Enabled = false;
+            this.TechnoInsetColorsDropButton.Enabled = true;
             this.TechnoInsetColorsDropButton.Location = new System.Drawing.Point(162, 24);
             this.TechnoInsetColorsDropButton.Name = "TechnoInsetColorsDropButton";
             this.TechnoInsetColorsDropButton.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -1064,7 +1064,7 @@
             this.TechnoInsetColorsComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.TechnoInsetColorsComboBox.DropDownWidth = 251;
-            this.TechnoInsetColorsComboBox.Enabled = false;
+            this.TechnoInsetColorsComboBox.Enabled = true;
             this.TechnoInsetColorsComboBox.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.TechnoInsetColorsComboBox.FormattingEnabled = true;
             this.TechnoInsetColorsComboBox.IntegralHeight = false;
@@ -1146,7 +1146,7 @@
             // cbImpostMargin
             // 
             this.cbImpostMargin.DropDownWidth = 121;
-            this.cbImpostMargin.Enabled = false;
+            this.cbImpostMargin.Enabled = true;
             this.cbImpostMargin.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.cbImpostMargin.FormattingEnabled = true;
             this.cbImpostMargin.IntegralHeight = false;
@@ -1162,7 +1162,7 @@
             // FrontsCountComboBox
             // 
             this.FrontsCountComboBox.DropDownWidth = 121;
-            this.FrontsCountComboBox.Enabled = false;
+            this.FrontsCountComboBox.Enabled = true;
             this.FrontsCountComboBox.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.FrontsCountComboBox.FormattingEnabled = true;
             this.FrontsCountComboBox.IntegralHeight = false;
@@ -1192,7 +1192,7 @@
             // 
             this.TechnoInsetTypesDropButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.TechnoInsetTypesDropButton.DropDownPosition = ComponentFactory.Krypton.Toolkit.VisualOrientation.Bottom;
-            this.TechnoInsetTypesDropButton.Enabled = false;
+            this.TechnoInsetTypesDropButton.Enabled = true;
             this.TechnoInsetTypesDropButton.Location = new System.Drawing.Point(162, 24);
             this.TechnoInsetTypesDropButton.Name = "TechnoInsetTypesDropButton";
             this.TechnoInsetTypesDropButton.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -1222,7 +1222,7 @@
             // 
             this.FrontsDropButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.FrontsDropButton.DropDownPosition = ComponentFactory.Krypton.Toolkit.VisualOrientation.Bottom;
-            this.FrontsDropButton.Enabled = false;
+            this.FrontsDropButton.Enabled = true;
             this.FrontsDropButton.Location = new System.Drawing.Point(162, 24);
             this.FrontsDropButton.Name = "FrontsDropButton";
             this.FrontsDropButton.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -1252,7 +1252,7 @@
             // 
             this.FrameColorsDropButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.FrameColorsDropButton.DropDownPosition = ComponentFactory.Krypton.Toolkit.VisualOrientation.Bottom;
-            this.FrameColorsDropButton.Enabled = false;
+            this.FrameColorsDropButton.Enabled = true;
             this.FrameColorsDropButton.Location = new System.Drawing.Point(162, 24);
             this.FrameColorsDropButton.Name = "FrameColorsDropButton";
             this.FrameColorsDropButton.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -1282,7 +1282,7 @@
             // 
             this.InsetColorsDropButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.InsetColorsDropButton.DropDownPosition = ComponentFactory.Krypton.Toolkit.VisualOrientation.Bottom;
-            this.InsetColorsDropButton.Enabled = false;
+            this.InsetColorsDropButton.Enabled = true;
             this.InsetColorsDropButton.Location = new System.Drawing.Point(161, 24);
             this.InsetColorsDropButton.Name = "InsetColorsDropButton";
             this.InsetColorsDropButton.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -1312,7 +1312,7 @@
             // 
             this.PatinaDropButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.PatinaDropButton.DropDownPosition = ComponentFactory.Krypton.Toolkit.VisualOrientation.Bottom;
-            this.PatinaDropButton.Enabled = false;
+            this.PatinaDropButton.Enabled = true;
             this.PatinaDropButton.Location = new System.Drawing.Point(162, 24);
             this.PatinaDropButton.Name = "PatinaDropButton";
             this.PatinaDropButton.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -1342,7 +1342,7 @@
             // 
             this.InsetTypesDropButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.InsetTypesDropButton.DropDownPosition = ComponentFactory.Krypton.Toolkit.VisualOrientation.Bottom;
-            this.InsetTypesDropButton.Enabled = false;
+            this.InsetTypesDropButton.Enabled = true;
             this.InsetTypesDropButton.Location = new System.Drawing.Point(161, 24);
             this.InsetTypesDropButton.Name = "InsetTypesDropButton";
             this.InsetTypesDropButton.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -1452,7 +1452,7 @@
             // 
             // DecorAddButton
             // 
-            this.DecorAddButton.Enabled = false;
+            this.DecorAddButton.Enabled = true;
             this.DecorAddButton.Location = new System.Drawing.Point(7, 11);
             this.DecorAddButton.Name = "DecorAddButton";
             this.DecorAddButton.OverrideDefault.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(158)))), ((int)(((byte)(0)))));
@@ -1483,7 +1483,7 @@
             // 
             // DecorRemoveButton
             // 
-            this.DecorRemoveButton.Enabled = false;
+            this.DecorRemoveButton.Enabled = true;
             this.DecorRemoveButton.Location = new System.Drawing.Point(102, 11);
             this.DecorRemoveButton.Name = "DecorRemoveButton";
             this.DecorRemoveButton.OverrideDefault.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(158)))), ((int)(((byte)(0)))));
@@ -1561,7 +1561,7 @@
             // 
             this.DecorProductDropButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.DecorProductDropButton.DropDownPosition = ComponentFactory.Krypton.Toolkit.VisualOrientation.Bottom;
-            this.DecorProductDropButton.Enabled = false;
+            this.DecorProductDropButton.Enabled = true;
             this.DecorProductDropButton.Location = new System.Drawing.Point(212, 24);
             this.DecorProductDropButton.Name = "DecorProductDropButton";
             this.DecorProductDropButton.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -1581,7 +1581,7 @@
             this.DecorProductsComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.DecorProductsComboBox.DropDownWidth = 251;
-            this.DecorProductsComboBox.Enabled = false;
+            this.DecorProductsComboBox.Enabled = true;
             this.DecorProductsComboBox.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.DecorProductsComboBox.FormattingEnabled = true;
             this.DecorProductsComboBox.IntegralHeight = false;
@@ -1626,7 +1626,7 @@
             // 
             this.DecorItemDropButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.DecorItemDropButton.DropDownPosition = ComponentFactory.Krypton.Toolkit.VisualOrientation.Bottom;
-            this.DecorItemDropButton.Enabled = false;
+            this.DecorItemDropButton.Enabled = true;
             this.DecorItemDropButton.Location = new System.Drawing.Point(212, 24);
             this.DecorItemDropButton.Name = "DecorItemDropButton";
             this.DecorItemDropButton.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -1659,7 +1659,7 @@
             this.DecorItemsComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.DecorItemsComboBox.DropDownWidth = 251;
-            this.DecorItemsComboBox.Enabled = false;
+            this.DecorItemsComboBox.Enabled = true;
             this.DecorItemsComboBox.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.DecorItemsComboBox.FormattingEnabled = true;
             this.DecorItemsComboBox.IntegralHeight = false;
@@ -1711,7 +1711,7 @@
             // 
             this.DecorColorDropButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.DecorColorDropButton.DropDownPosition = ComponentFactory.Krypton.Toolkit.VisualOrientation.Bottom;
-            this.DecorColorDropButton.Enabled = false;
+            this.DecorColorDropButton.Enabled = true;
             this.DecorColorDropButton.Location = new System.Drawing.Point(211, 18);
             this.DecorColorDropButton.Name = "DecorColorDropButton";
             this.DecorColorDropButton.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -1744,7 +1744,7 @@
             this.DecorColorsComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.DecorColorsComboBox.DropDownWidth = 251;
-            this.DecorColorsComboBox.Enabled = false;
+            this.DecorColorsComboBox.Enabled = true;
             this.DecorColorsComboBox.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.DecorColorsComboBox.FormattingEnabled = true;
             this.DecorColorsComboBox.IntegralHeight = false;
@@ -1775,7 +1775,7 @@
             // 
             this.DecorPatinaDropButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.DecorPatinaDropButton.DropDownPosition = ComponentFactory.Krypton.Toolkit.VisualOrientation.Bottom;
-            this.DecorPatinaDropButton.Enabled = false;
+            this.DecorPatinaDropButton.Enabled = true;
             this.DecorPatinaDropButton.Location = new System.Drawing.Point(211, 18);
             this.DecorPatinaDropButton.Name = "DecorPatinaDropButton";
             this.DecorPatinaDropButton.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -1808,7 +1808,7 @@
             this.DecorPatinaComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.DecorPatinaComboBox.DropDownWidth = 251;
-            this.DecorPatinaComboBox.Enabled = false;
+            this.DecorPatinaComboBox.Enabled = true;
             this.DecorPatinaComboBox.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.DecorPatinaComboBox.FormattingEnabled = true;
             this.DecorPatinaComboBox.IntegralHeight = false;
@@ -1848,7 +1848,7 @@
             // 
             this.DecorInsetTypeDropButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.DecorInsetTypeDropButton.DropDownPosition = ComponentFactory.Krypton.Toolkit.VisualOrientation.Bottom;
-            this.DecorInsetTypeDropButton.Enabled = false;
+            this.DecorInsetTypeDropButton.Enabled = true;
             this.DecorInsetTypeDropButton.Location = new System.Drawing.Point(211, 18);
             this.DecorInsetTypeDropButton.Name = "DecorInsetTypeDropButton";
             this.DecorInsetTypeDropButton.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -1881,7 +1881,7 @@
             this.DecorInsetTypesComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.DecorInsetTypesComboBox.DropDownWidth = 251;
-            this.DecorInsetTypesComboBox.Enabled = false;
+            this.DecorInsetTypesComboBox.Enabled = true;
             this.DecorInsetTypesComboBox.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.DecorInsetTypesComboBox.FormattingEnabled = true;
             this.DecorInsetTypesComboBox.IntegralHeight = false;
@@ -1912,7 +1912,7 @@
             // 
             this.DecorInsetColorDropButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.DecorInsetColorDropButton.DropDownPosition = ComponentFactory.Krypton.Toolkit.VisualOrientation.Bottom;
-            this.DecorInsetColorDropButton.Enabled = false;
+            this.DecorInsetColorDropButton.Enabled = true;
             this.DecorInsetColorDropButton.Location = new System.Drawing.Point(211, 18);
             this.DecorInsetColorDropButton.Name = "DecorInsetColorDropButton";
             this.DecorInsetColorDropButton.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -1945,7 +1945,7 @@
             this.DecorInsetColorsComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.DecorInsetColorsComboBox.DropDownWidth = 251;
-            this.DecorInsetColorsComboBox.Enabled = false;
+            this.DecorInsetColorsComboBox.Enabled = true;
             this.DecorInsetColorsComboBox.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.DecorInsetColorsComboBox.FormattingEnabled = true;
             this.DecorInsetColorsComboBox.IntegralHeight = false;
@@ -1968,7 +1968,7 @@
             this.flowLayoutPanel4.Controls.Add(this.panel1);
             this.flowLayoutPanel4.Controls.Add(this.panel2);
             this.flowLayoutPanel4.Controls.Add(this.panel3);
-            this.flowLayoutPanel4.Enabled = false;
+            this.flowLayoutPanel4.Enabled = true;
             this.flowLayoutPanel4.Location = new System.Drawing.Point(509, 3);
             this.flowLayoutPanel4.Name = "flowLayoutPanel4";
             this.flowLayoutPanel4.Size = new System.Drawing.Size(218, 128);
@@ -2000,7 +2000,7 @@
             // DecorLengthComboBox
             // 
             this.DecorLengthComboBox.DropDownWidth = 121;
-            this.DecorLengthComboBox.Enabled = false;
+            this.DecorLengthComboBox.Enabled = true;
             this.DecorLengthComboBox.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.DecorLengthComboBox.FormattingEnabled = true;
             this.DecorLengthComboBox.IntegralHeight = false;
@@ -2042,7 +2042,7 @@
             // DecorHeightComboBox
             // 
             this.DecorHeightComboBox.DropDownWidth = 121;
-            this.DecorHeightComboBox.Enabled = false;
+            this.DecorHeightComboBox.Enabled = true;
             this.DecorHeightComboBox.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.DecorHeightComboBox.FormattingEnabled = true;
             this.DecorHeightComboBox.IntegralHeight = false;
@@ -2084,7 +2084,7 @@
             // DecorWidthComboBox
             // 
             this.DecorWidthComboBox.DropDownWidth = 121;
-            this.DecorWidthComboBox.Enabled = false;
+            this.DecorWidthComboBox.Enabled = true;
             this.DecorWidthComboBox.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.DecorWidthComboBox.FormattingEnabled = true;
             this.DecorWidthComboBox.IntegralHeight = false;
@@ -2125,7 +2125,7 @@
             // DecorCountNumUpDown
             // 
             this.DecorCountNumUpDown.DropDownWidth = 121;
-            this.DecorCountNumUpDown.Enabled = false;
+            this.DecorCountNumUpDown.Enabled = true;
             this.DecorCountNumUpDown.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.DecorCountNumUpDown.FormattingEnabled = true;
             this.DecorCountNumUpDown.IntegralHeight = false;

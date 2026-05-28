@@ -183,6 +183,7 @@
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.StandardButtonsPalette.ButtonStyles.ButtonCommon.StateTracking.Border.Rounding = 0;
+            this.StandardButtonsPalette.CustomisedKryptonPaletteFilePath = null;
             // 
             // panel1
             // 
@@ -320,7 +321,6 @@
             // 
             // IsComplaintCheckBox
             // 
-            this.IsComplaintCheckBox.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalControl;
             this.IsComplaintCheckBox.Location = new System.Drawing.Point(16, 77);
             this.IsComplaintCheckBox.Name = "IsComplaintCheckBox";
             this.IsComplaintCheckBox.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -329,7 +329,6 @@
             this.IsComplaintCheckBox.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.IsComplaintCheckBox.StateDisabled.ShortText.Color1 = System.Drawing.Color.Silver;
             this.IsComplaintCheckBox.TabIndex = 396;
-            this.IsComplaintCheckBox.Text = "Рекламация";
             this.IsComplaintCheckBox.Values.Text = "Рекламация";
             this.IsComplaintCheckBox.CheckedChanged += new System.EventHandler(this.IsComplaintCheckBox_CheckedChanged);
             // 
@@ -462,6 +461,7 @@
             this.CurrencyDateTimePicker.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.CurrencyDateTimePicker.Size = new System.Drawing.Size(160, 24);
             this.CurrencyDateTimePicker.StateCommon.Content.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.CurrencyDateTimePicker.StateCommon.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Inherit;
             this.CurrencyDateTimePicker.TabIndex = 391;
             this.CurrencyDateTimePicker.ValueChanged += new System.EventHandler(this.CurrencyDateTimePicker_ValueChanged);
             // 
@@ -514,11 +514,13 @@
             // CurrencyTypeComboBox
             // 
             this.CurrencyTypeComboBox.DropDownWidth = 363;
+            this.CurrencyTypeComboBox.IntegralHeight = false;
             this.CurrencyTypeComboBox.Location = new System.Drawing.Point(16, 30);
             this.CurrencyTypeComboBox.Name = "CurrencyTypeComboBox";
             this.CurrencyTypeComboBox.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.CurrencyTypeComboBox.Size = new System.Drawing.Size(265, 24);
             this.CurrencyTypeComboBox.StateCommon.ComboBox.Content.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.CurrencyTypeComboBox.StateCommon.ComboBox.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.CurrencyTypeComboBox.StateCommon.Item.Content.ShortText.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.CurrencyTypeComboBox.TabIndex = 401;
             this.CurrencyTypeComboBox.SelectionChangeCommitted += new System.EventHandler(this.CurrencyTypeComboBox_SelectionChangeCommitted);
@@ -654,11 +656,11 @@
             this.DispatchDateTimePicker.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
             this.DispatchDateTimePicker.Size = new System.Drawing.Size(158, 24);
             this.DispatchDateTimePicker.StateCommon.Content.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.DispatchDateTimePicker.StateCommon.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Inherit;
             this.DispatchDateTimePicker.TabIndex = 394;
             // 
             // NoDateCheckBox
             // 
-            this.NoDateCheckBox.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalControl;
             this.NoDateCheckBox.Location = new System.Drawing.Point(13, 95);
             this.NoDateCheckBox.Name = "NoDateCheckBox";
             this.NoDateCheckBox.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Black;
@@ -667,7 +669,6 @@
             this.NoDateCheckBox.StateCommon.ShortText.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.NoDateCheckBox.StateDisabled.ShortText.Color1 = System.Drawing.Color.Silver;
             this.NoDateCheckBox.TabIndex = 388;
-            this.NoDateCheckBox.Text = "Дата отгрузки не известна";
             this.NoDateCheckBox.Values.Text = "Дата отгрузки не известна";
             this.NoDateCheckBox.CheckedChanged += new System.EventHandler(this.NoDateCheckBox_CheckedChanged);
             // 
@@ -948,6 +949,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Infinium";
             this.Load += new System.EventHandler(this.CurrencyForm_Load);
+            this.Shown += new System.EventHandler(this.CurrencyForm_Shown);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);

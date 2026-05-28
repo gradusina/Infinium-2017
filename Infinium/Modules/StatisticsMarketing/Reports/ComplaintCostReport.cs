@@ -24,6 +24,7 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
                 " 00:00' AND CAST(NewMegaOrders.OrderDate AS date) <= '" + DateTo.ToString("yyyy-MM-dd") + " 23:59'";
 
             string SelectCommand = @"SELECT clients.ClientName, NewMegaOrders.OrderNumber, ClientsManagers.Name, NewMegaOrders.ConfirmDateTime, NewMegaOrders.ComplaintProfilCost + NewMegaOrders.ComplaintTPSCost, NewMegaOrders.TotalCost, CurrencyTypes.CurrencyType, NewMegaOrders.Rate, NewMegaOrders.PaymentRate, NewMegaOrders.CurrencyComplaintProfilCost + NewMegaOrders.CurrencyComplaintTPSCost, NewMegaOrders.CurrencyTotalCost
+FROM            NewMegaOrders INNER JOIN
                                      infiniu2_marketingreference.dbo.Clients AS clients ON NewMegaOrders.ClientID = clients.ClientID INNER JOIN
                                      infiniu2_marketingreference.dbo.ClientsManagers AS ClientsManagers ON clients.ManagerID = ClientsManagers.ManagerID INNER JOIN
                                      infiniu2_catalog.dbo.CurrencyTypes AS CurrencyTypes ON NewMegaOrders.CurrencyTypeID = CurrencyTypes.CurrencyTypeID
@@ -42,6 +43,7 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
                 " 00:00' AND CAST(MegaOrders.ConfirmDateTime AS date) <= '" + DateTo.ToString("yyyy-MM-dd") + " 23:59'";
 
             string SelectCommand = @"SELECT clients.ClientName, MegaOrders.OrderNumber, ClientsManagers.Name, MegaOrders.ConfirmDateTime, MegaOrders.ComplaintProfilCost + MegaOrders.ComplaintTPSCost, MegaOrders.TotalCost, CurrencyTypes.CurrencyType, MegaOrders.Rate, MegaOrders.PaymentRate, MegaOrders.CurrencyComplaintProfilCost + MegaOrders.CurrencyComplaintTPSCost, MegaOrders.CurrencyTotalCost
+FROM            MegaOrders INNER JOIN
                                      infiniu2_marketingreference.dbo.Clients AS clients ON MegaOrders.ClientID = clients.ClientID INNER JOIN
                                      infiniu2_marketingreference.dbo.ClientsManagers AS ClientsManagers ON clients.ManagerID = ClientsManagers.ManagerID INNER JOIN
                                      infiniu2_catalog.dbo.CurrencyTypes AS CurrencyTypes ON MegaOrders.CurrencyTypeID = CurrencyTypes.CurrencyTypeID
@@ -62,6 +64,7 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
                     "' AND CAST(TPSDispatchDate AS DATE) <= '" + DateTo.ToString("yyyy-MM-dd") + "')) ";
 
             string SelectCommand = @"SELECT clients.ClientName, MegaOrders.OrderNumber, ClientsManagers.Name, MegaOrders.ConfirmDateTime, MegaOrders.ComplaintProfilCost + MegaOrders.ComplaintTPSCost, MegaOrders.TotalCost, CurrencyTypes.CurrencyType, MegaOrders.Rate, MegaOrders.PaymentRate, MegaOrders.CurrencyComplaintProfilCost + MegaOrders.CurrencyComplaintTPSCost, MegaOrders.CurrencyTotalCost
+FROM            MegaOrders INNER JOIN
                                      infiniu2_marketingreference.dbo.Clients AS clients ON MegaOrders.ClientID = clients.ClientID INNER JOIN
                                      infiniu2_marketingreference.dbo.ClientsManagers AS ClientsManagers ON clients.ManagerID = ClientsManagers.ManagerID INNER JOIN
                                      infiniu2_catalog.dbo.CurrencyTypes AS CurrencyTypes ON MegaOrders.CurrencyTypeID = CurrencyTypes.CurrencyTypeID
@@ -79,7 +82,8 @@ namespace Infinium.Modules.StatisticsMarketing.Reports
             string Filter = " WHERE ((CAST(ProfilOnProductionDate AS Date) >= '" + DateFrom.ToString("yyyy-MM-dd") + "' AND CAST(ProfilOnProductionDate AS Date) <= '" + DateTo.ToString("yyyy-MM-dd") +
                     "') OR (CAST(TPSOnProductionDate AS Date) >= '" + DateFrom.ToString("yyyy-MM-dd") + "' AND CAST(TPSOnProductionDate AS Date) <= '" + DateTo.ToString("yyyy-MM-dd") + "'))";
             string SelectCommand = @"SELECT clients.ClientName, MegaOrders.OrderNumber, ClientsManagers.Name, MegaOrders.ConfirmDateTime, MegaOrders.ComplaintProfilCost + MegaOrders.ComplaintTPSCost, MegaOrders.TotalCost, CurrencyTypes.CurrencyType, MegaOrders.Rate, MegaOrders.PaymentRate, MegaOrders.CurrencyComplaintProfilCost + MegaOrders.CurrencyComplaintTPSCost, MegaOrders.CurrencyTotalCost
-                                     infiniu2_marketingreference.dbo.Clients AS clients ON MegaOrders.ClientID = clients.ClientID INNER JOIN
+FROM            MegaOrders INNER JOIN            
+infiniu2_marketingreference.dbo.Clients AS clients ON MegaOrders.ClientID = clients.ClientID INNER JOIN
                                      infiniu2_marketingreference.dbo.ClientsManagers AS ClientsManagers ON clients.ManagerID = ClientsManagers.ManagerID INNER JOIN
                                      infiniu2_catalog.dbo.CurrencyTypes AS CurrencyTypes ON MegaOrders.CurrencyTypeID = CurrencyTypes.CurrencyTypeID
             " + Filter + @" AND (MegaOrders.ComplaintProfilCost > 0 OR MegaOrders.ComplaintTPSCost > 0 OR MegaOrders.IsComplaint = 1)
